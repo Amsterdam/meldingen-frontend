@@ -1,0 +1,69 @@
+{
+  "root": true,
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nx"],
+  "overrides": [
+    {
+      "files": "*.json",
+      "parser": "jsonc-eslint-parser",
+      "rules": {}
+    },
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "extends": ["airbnb", "airbnb-typescript", "plugin:jsx-a11y/strict", "prettier"],
+      "plugins": ["import", "@typescript-eslint"],
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "project": "./tsconfig.json"
+      },
+      "rules": {
+        "@nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": ["*"]
+              }
+            ]
+          }
+        ],
+        "@typescript-eslint/consistent-type-imports": "error",
+        "import/no-extraneous-dependencies": "off",
+        "import/order": [
+          "error",
+          {
+            "groups": ["external", "internal", "parent", "sibling"],
+            "newlines-between": "always",
+            "alphabetize": {
+              "order": "asc",
+              "caseInsensitive": true
+            }
+          }
+        ],
+        "import/prefer-default-export": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/react-in-jsx-scope": "off"
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nx/typescript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nx/javascript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
+      "env": {
+        "jest": true
+      },
+      "rules": {}
+    }
+  ]
+}

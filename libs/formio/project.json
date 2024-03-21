@@ -1,0 +1,16 @@
+{
+  "name": "formio",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/formio/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "stylelint": {
+      "executor": "nx-stylelint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/formio/**/*.css"]
+      }
+    }
+  }
+}

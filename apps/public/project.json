@@ -1,0 +1,16 @@
+{
+  "name": "public",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/public",
+  "projectType": "application",
+  "targets": {
+    "stylelint": {
+      "executor": "nx-stylelint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/public/**/*.css"]
+      }
+    }
+  },
+  "tags": []
+}
