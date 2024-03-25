@@ -6,10 +6,8 @@
   "license": "EUPL-1.2",
   "private": true,
   "engines": {
-    "node": ">=20",
-    "npm": ">=10",
-    "yarn": "please-use-npm",
-    "pnpm": "please-use-npm"
+    "node": "^20",
+    "npm": "^10"
   },
   "repository": {
     "type": "git",
