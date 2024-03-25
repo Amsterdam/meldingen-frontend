@@ -7,7 +7,9 @@
   "private": true,
   "engines": {
     "node": "^20",
-    "npm": "^10"
+    "npm": "^10",
+    "yarn": "please-use-npm",
+    "pnpm": "please-use-npm"
   },
   "repository": {
     "type": "git",
