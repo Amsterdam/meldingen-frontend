@@ -1,8 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-
-import form from '../mocks/formio-output.json'
+import { useEffect, useState } from 'react'
 
 const FormBuilder = dynamic(() => import('@meldingen/formio').then((mod) => mod.FormBuilder), {
   ssr: false,
@@ -10,9 +9,24 @@ const FormBuilder = dynamic(() => import('@meldingen/formio').then((mod) => mod.
 })
 
 export default function Home() {
+  const [data, setData] = useState(null)
+  const [isLoading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('http://localhost:8000/form/primary/') // Use 'formio-output.json' if you're not using the local BE
+      .then((res) => res.json())
+      .then((res) => {
+        setData(res)
+        setLoading(false)
+      })
+  }, [])
+
+  if (isLoading) return <p>Loading...</p>
+  if (!data) return <p>No data</p>
+
   return (
     <FormBuilder
-      form={form}
+      form={data}
       options={{
         noDefaultSubmitButton: true,
         builder: {
