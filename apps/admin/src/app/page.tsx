@@ -1,6 +1,6 @@
 // import data from '../mocks/formio-output.json' // Use this if you're not using the local BE
 
-import { Builder } from './_components'
+import { AdminHOC, Builder } from './_components'
 
 async function getData() {
   const res = await fetch('http://localhost:8000/form/primary/')
@@ -17,7 +17,8 @@ export default async function Home() {
 
   return (
     <main>
-      <Builder data={data} />
+      {/* <Builder data={data} /> */}
+      <AdminHOC data={data} />
     </main>
   )
 }
