@@ -1,7 +1,9 @@
-import { Datagrid, List, TextField } from 'react-admin'
+import { Datagrid, List, TextField, TextInput } from 'react-admin'
+
+const categoryFilters = [<TextInput label="Search" source="q" alwaysOn />]
 
 export const CategoryList = () => (
-  <List>
+  <List filters={categoryFilters}>
     <Datagrid rowClick="edit">
       <TextField source="name" />
       <TextField source="id" />
