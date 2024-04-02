@@ -2,7 +2,7 @@
 
 import { Builder } from './_components'
 
-async function getData() {
+const getData = async () => {
   const res = await fetch('http://localhost:8000/form/primary/')
 
   if (!res.ok) {
@@ -12,7 +12,7 @@ async function getData() {
   return res.json()
 }
 
-export default async function Home() {
+const Home = async () => {
   const data = await getData()
 
   return (
@@ -21,3 +21,5 @@ export default async function Home() {
     </main>
   )
 }
+
+export default Home
