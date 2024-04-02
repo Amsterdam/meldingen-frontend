@@ -11,7 +11,7 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "extends": ["airbnb", "airbnb-typescript", "plugin:jsx-a11y/strict", "prettier"],
-      "plugins": ["import", "@typescript-eslint"],
+      "plugins": ["import", "@typescript-eslint", "prefer-arrow-functions"],
       "parserOptions": {
         "parser": "@typescript-eslint/parser",
         "project": "./tsconfig.json"
@@ -53,6 +53,7 @@
         ],
         "import/prefer-default-export": "off",
         "import/no-default-export": "error",
+        "prefer-arrow-functions/prefer-arrow-functions": "error",
         "react/function-component-definition": [
           "error",
           {
