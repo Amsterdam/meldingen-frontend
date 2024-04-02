@@ -2,12 +2,10 @@
 
 import { Edit, SimpleForm, TextInput } from 'react-admin'
 
-export function CategoryEdit() {
-  return (
-    <Edit>
-      <SimpleForm>
-        <TextInput source="name" />
-      </SimpleForm>
-    </Edit>
-  )
-}
+export const CategoryEdit = () => (
+  <Edit>
+    <SimpleForm>
+      <TextInput source="name" />
+    </SimpleForm>
+  </Edit>
+)

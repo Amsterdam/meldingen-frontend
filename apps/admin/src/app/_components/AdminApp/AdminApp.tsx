@@ -48,12 +48,10 @@ const dataProvider = fakeDataProvider({
   ],
 })
 
-export function AdminApp({ data }: any) {
-  return (
-    <Admin dataProvider={dataProvider}>
-      <Resource name="landingspagina" list={<Builder data={data} />} />
-      <Resource name="categories" list={<CategoryList />} edit={<CategoryEdit />} recordRepresentation="name" />
-      <Resource name="surveys" list={<SurveyList />} edit={<SurveyEdit />} recordRepresentation="name" />
-    </Admin>
-  )
-}
+export const AdminApp = ({ data }: any) => (
+  <Admin dataProvider={dataProvider}>
+    <Resource name="landingspagina" list={<Builder data={data} />} />
+    <Resource name="categories" list={<CategoryList />} edit={<CategoryEdit />} recordRepresentation="name" />
+    <Resource name="surveys" list={<SurveyList />} edit={<SurveyEdit />} recordRepresentation="name" />
+  </Admin>
+)
