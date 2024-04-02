@@ -1,5 +1,3 @@
-'use client'
-
 import dynamic from 'next/dynamic'
 
 const FormBuilder = dynamic(() => import('@meldingen/formio').then((mod) => mod.FormBuilder), {

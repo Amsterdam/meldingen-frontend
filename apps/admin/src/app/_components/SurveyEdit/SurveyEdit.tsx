@@ -1,5 +1,3 @@
-'use client'
-
 import { Edit, SimpleForm, TextInput } from 'react-admin'
 
 export const SurveyEdit = () => (

@@ -1,11 +1,9 @@
-'use client'
-
 import fakeDataProvider from 'ra-data-fakerest'
-import { Admin, Resource } from 'react-admin'
+import { Admin as ReactAdmin, Resource } from 'react-admin'
 
-import { Builder } from '../Builder'
 import { CategoryEdit } from '../CategoryEdit'
 import { CategoryList } from '../CategoryList'
+import { MainForm } from '../MainForm'
 import { SurveyEdit } from '../SurveyEdit'
 import { SurveyList } from '../SurveyList'
 
@@ -48,10 +46,10 @@ const dataProvider = fakeDataProvider({
   ],
 })
 
-export const AdminApp = ({ data }: any) => (
-  <Admin dataProvider={dataProvider}>
-    <Resource name="landingspagina" list={<Builder data={data} />} />
+export const Admin = () => (
+  <ReactAdmin dataProvider={dataProvider}>
+    <Resource name="landingspagina" list={<MainForm />} />
     <Resource name="categories" list={<CategoryList />} edit={<CategoryEdit />} recordRepresentation="name" />
     <Resource name="surveys" list={<SurveyList />} edit={<SurveyEdit />} recordRepresentation="name" />
-  </Admin>
+  </ReactAdmin>
 )
