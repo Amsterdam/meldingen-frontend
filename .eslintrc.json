@@ -11,11 +11,19 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "extends": ["airbnb", "airbnb-typescript", "plugin:jsx-a11y/strict", "prettier"],
-      "plugins": ["import", "@typescript-eslint"],
+      "plugins": ["import", "@typescript-eslint", "prefer-arrow-functions"],
       "parserOptions": {
         "parser": "@typescript-eslint/parser",
         "project": "./tsconfig.json"
       },
+      "overrides": [
+        {
+          "files": ["**/page.tsx", "**/layout.tsx", "**/index.d.ts", "**/vite.config.ts"],
+          "rules": {
+            "import/no-default-export": "off"
+          }
+        }
+      ],
       "rules": {
         "@nx/enforce-module-boundaries": [
           "error",
@@ -44,6 +52,15 @@
           }
         ],
         "import/prefer-default-export": "off",
+        "import/no-default-export": "error",
+        "prefer-arrow-functions/prefer-arrow-functions": "error",
+        "react/function-component-definition": [
+          "error",
+          {
+            "namedComponents": "arrow-function",
+            "unnamedComponents": "arrow-function"
+          }
+        ],
         "react/jsx-props-no-spreading": "off",
         "react/react-in-jsx-scope": "off"
       }

@@ -11,12 +11,12 @@ const FormRenderer = dynamic(() => import('@meldingen/formio').then((mod) => mod
   loading: () => <p>Loading...</p>,
 })
 
-export default function Home() {
-  return (
-    <Grid paddingBottom="large" paddingTop="medium">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
-        <FormRenderer form={mockData} />
-      </Grid.Cell>
-    </Grid>
-  )
-}
+const Home = () => (
+  <Grid paddingBottom="large" paddingTop="medium">
+    <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
+      <FormRenderer form={mockData} />
+    </Grid.Cell>
+  </Grid>
+)
+
+export default Home
