@@ -1,4 +1,12 @@
-# Architecture
+<!-- @license CC0-1.0 -->
+
+# Meldingen front-end architecture
+
+Meldingen is an application with three separate front-ends:
+
+- Public: where the general public can create notifications.
+- Backoffice: where professionals can handle these notifications.
+- Admin: where admins can manage the Public and Backoffice apps.
 
 ```mermaid
 graph TD
@@ -10,7 +18,6 @@ graph TD
         - Meldformulier
         - Openbare kaart
         - Mijn melding
-        - KTO user feedback
     "]
     PFE -->|Signal| BE
     BE -->|Form config| BFE["
@@ -33,3 +40,7 @@ graph TD
     BFE <-.-> EXT["Extern"]
     AFE <-.-> FB["Functioneel beheer"]
 ```
+
+## Further documentation
+
+1. [Library and framework](./0001-library-and-framework.md)
