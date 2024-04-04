@@ -44,3 +44,9 @@ graph TD
 ## Further documentation
 
 1. [Library and framework](./0001-library-and-framework.md)
+2. Typescript
+3. Testing
+4. Styling
+5. Linting
+6. Monorepo tooling
+7. Authentication
