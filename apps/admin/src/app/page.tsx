@@ -1,23 +1,13 @@
-// import data from '../mocks/formio-output.json' // Use this if you're not using the local BE
+'use client'
 
-import { Builder } from './_components'
+import dynamic from 'next/dynamic'
 
-async function getData() {
-  const res = await fetch('http://localhost:8000/form/primary/')
+const Admin = dynamic(() => import('./_components/Admin').then((mod) => mod.Admin), { ssr: false })
 
-  if (!res.ok) {
-    throw new Error('Failed to fetch data')
-  }
+const Home = () => (
+  <main>
+    <Admin />
+  </main>
+)
 
-  return res.json()
-}
-
-export default async function Home() {
-  const data = await getData()
-
-  return (
-    <main>
-      <Builder data={data} />
-    </main>
-  )
-}
+export default Home

@@ -12,16 +12,16 @@ export const metadata: Metadata = {
   title: 'Meldingen',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="nl">
-      <body>
-        <Screen maxWidth="wide">
-          <Header />
-          <main id="main">{children}</main>
-          <Footer />
-        </Screen>
-      </body>
-    </html>
-  )
-}
+const RootLayout = ({ children }: { children: React.ReactNode }) => (
+  <html lang="nl">
+    <body>
+      <Screen maxWidth="wide">
+        <Header />
+        <main id="main">{children}</main>
+        <Footer />
+      </Screen>
+    </body>
+  </html>
+)
+
+export default RootLayout
