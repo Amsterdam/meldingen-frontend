@@ -44,9 +44,10 @@ graph TD
 ## Further documentation
 
 1. [Library and framework](./0001-library-and-framework.md)
-2. Typescript
-3. Testing
-4. Styling
-5. Linting
+2. [Type safety](./0002-type-safety.md)
+3. [Testing](./0003-testing.md)
+4. [Styling](./0004-styling.md)
+5. [Linting](./0005-linting.md)
 6. Monorepo tooling
-7. Authentication
+7. Forms
+8. Authentication

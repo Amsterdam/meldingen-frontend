@@ -1,10 +1,13 @@
-<!-- @license CC0-1.0 -->
+# Styling
 
-# Style code conventions
+For styling, we want to stay as close to vanilla CSS as possible, to avoid an extra dependency on third-party packages.
+Because we chose Next.js for our framework,
+simply using vanilla css (with a BEM methodology for example) doesn’t really work.
+Next.js uses CSS Modules by default for component level styling to ensure correct scoping and for performance optimalisations.
+Because of that, we use CSS Modules for our styling.
+This stays closest to vanilla CSS within the Next.js framework.
 
-## Component level styling
-
-We [decided to use CSS Modules](../adr//0004-styling.md) for our component level styling.
+## Code conventions
 
 ### File naming
 
