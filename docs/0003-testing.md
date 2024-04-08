@@ -2,6 +2,13 @@
 
 # Testing
 
+## End-to-end tests
+
+Currently we do not have any automated end-to-end tests.
+During development, we will describe which features we add to the `requirements.md` file in the docs of the respective app.
+This will result in a list of features and requirements that we can test.
+Initially, this testing will be done manually. Eventually, we will create automated tests for this.
+
 ## Unit tests
 
 To ensure the quality of our code, we write unit tests for our React components.
