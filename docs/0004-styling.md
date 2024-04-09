@@ -1,15 +1,18 @@
-<!-- @license CC0-1.0 -->
+# Styling
 
-# Style code conventions
+For styling, we want to stay as close to vanilla CSS as possible, to avoid an extra dependency on third-party packages.
+Because we chose Next.js for our framework,
+simply using vanilla CSS (with a BEM methodology for example) doesn’t really work.
+Next.js uses CSS Modules by default for component level styling to ensure correct scoping and for performance optimalisations.
+Because of that, we use CSS Modules for our styling.
+This stays closest to vanilla CSS within the Next.js framework.
 
-## Component level styling
-
-We [decided to use CSS Modules](../adr//0004-styling.md) for our component level styling.
+## Code conventions
 
 ### File naming
 
 Add the `*.module.css` file to the component folder.
-Give the css file the same name as the component, so it’s easier to find in your IDE.
+Give the CSS file the same name as the component, so it’s easier to find in your IDE.
 For example:
 
 ```text
@@ -87,7 +90,7 @@ For pages with Latin scripts you should use the following alternatives:
 ### Only use relative size units
 
 Users can change the base font size from the default size to something bigger or smaller.
-Using `px` values in your css can break this functionality.
+Using `px` values in your CSS can break this functionality.
 Therefore, (almost) always use relative sizes, `rem` often being the most convenient.
 Only use `px` values if you specifically do not want something to become bigger or smaller
 when the user changes the base font size.
