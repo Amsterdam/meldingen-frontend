@@ -38,6 +38,7 @@
     "@formio/js": "5.0.0-rc.42",
     "@formio/react": "5.3.1-dev.AvA08V.6",
     "next": "14.1.4",
+    "next-auth": "4.24.7",
     "ra-data-fakerest": "4.16.15",
     "react": "18.2.0",
     "react-admin": "4.16.15",
