@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 
 import { Grid } from '@meldingen/ui'
 
-import mockData from '../mocks/formio-output.json'
+import mockData from '../mocks/wizard-test.json'
 
 const FormRenderer = dynamic(() => import('@meldingen/formio').then((mod) => mod.FormRenderer), {
   ssr: false,
