@@ -1,0 +1,43 @@
+{
+  "display": "wizard",
+  "components": [
+    {
+      "title": "Page 1",
+      "label": "Page 1",
+      "type": "panel",
+      "key": "page1",
+      "components": [
+        {
+          "label": "Waar is het?",
+          "key": "waarIsHet",
+          "type": "textfield",
+          "input": true
+        }
+      ],
+      "input": false
+    },
+    {
+      "title": "Page 2",
+      "label": "Page 2",
+      "type": "panel",
+      "key": "page2",
+      "components": [
+        {
+          "key": "page2Content",
+          "input": false,
+          "html": "<p>Het antwoord op de vorige vraag is: <strong>{{ data.waarIsHet }}</strong></p>",
+          "type": "content",
+          "label": "Content"
+        },
+        {
+          "label": "Wanneer was het?",
+          "autoExpand": false,
+          "key": "wanneerWasHet",
+          "type": "textarea",
+          "input": true
+        }
+      ],
+      "input": false
+    }
+  ]
+}

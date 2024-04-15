@@ -7,7 +7,7 @@ const FormBuilder = dynamic(() => import('@meldingen/formio').then((mod) => mod.
 
 export const Builder = ({ data }: any) => (
   <FormBuilder
-    form={data}
+    form={data || { display: 'form' }}
     options={{
       noDefaultSubmitButton: true,
       builder: {
