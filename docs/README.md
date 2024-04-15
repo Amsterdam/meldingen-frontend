@@ -49,4 +49,4 @@ graph TD
 5. [Linting](./0005-linting.md)
 6. [Monorepo tooling](./0006-monorepo-tooling.md)
 7. [Forms](./0007-forms.md)
-8. Authentication
+8. [Authentication](./0008-authentication.md)
