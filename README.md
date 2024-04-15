@@ -16,6 +16,11 @@ This monorepo houses three separate front-ends:
 - Start all applications in development mode with `npm run dev`
 - Build all applications for production using `npm run build`
 
+## Code of Conduct
+
+We pledge to act and interact in ways that contribute to an open, welcoming, diverse, inclusive, and healthy community.
+Read [our Code of Conduct](https://github.com/Amsterdam/.github/blob/main/CODE_OF_CONDUCT.md) if you haven’t already.
+
 ## License
 
 This project is free and open-source software licensed under the
