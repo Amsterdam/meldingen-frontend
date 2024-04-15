@@ -4,8 +4,8 @@
 
 Meldingen is an application with three separate front-ends:
 
-- Public: where the general public can create notifications.
-- Backoffice: where professionals can handle these notifications.
+- Public: where the general public can create nuisance reports.
+- Backoffice: where professionals can handle these reports.
 - Admin: where admins can manage the Public and Backoffice apps.
 
 ```mermaid
