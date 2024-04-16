@@ -13,7 +13,7 @@ Next.js takes care of the heavy lifting with regards to routing, data fetching, 
 
 Our Admin app is a completely client side app, which makes Next.js an unlikely choice.
 The reason we've chosen Next.js for that app as well is because it works well with [NextAuth.js](https://next-auth.js.org/).
-This way, we can keep our authentication the same for all our apps.
+This way, we can keep our [authentication](./0008-authentication.md) the same for all our apps.
 NextAuth.js is planning to remove their dependency on Next.js.
 When that is stable, we will reconsider this decision.
 
