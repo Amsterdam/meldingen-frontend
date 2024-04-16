@@ -2,7 +2,7 @@ import { Datagrid, List, TextField, TextInput } from 'react-admin'
 
 const surveyFilters = [<TextInput label="Search" source="q" alwaysOn />]
 
-export const SurveyList = () => (
+export const FormList = () => (
   <List filters={surveyFilters} hasCreate>
     <Datagrid rowClick="edit">
       <TextField source="name" />

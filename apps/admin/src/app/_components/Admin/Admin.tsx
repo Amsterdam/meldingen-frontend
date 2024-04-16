@@ -4,9 +4,9 @@ import { Admin as ReactAdmin, Resource } from 'react-admin'
 // import { dataProvider } from '../../dataProvider'
 import { CategoryEdit } from '../CategoryEdit'
 import { CategoryList } from '../CategoryList'
+import { FormEdit } from '../FormEdit'
+import { FormList } from '../FormList'
 import { MainForm } from '../MainForm'
-import { SurveyEdit } from '../SurveyEdit'
-import { SurveyList } from '../SurveyList'
 
 const dataProvider = fakeDataProvider({
   categories: [
@@ -51,6 +51,6 @@ export const Admin = () => (
   <ReactAdmin dataProvider={dataProvider}>
     <Resource name="landingspagina" list={<MainForm />} />
     <Resource name="categories" list={<CategoryList />} edit={<CategoryEdit />} recordRepresentation="name" />
-    <Resource name="form" list={<SurveyList />} edit={<SurveyEdit />} recordRepresentation="name" />
+    <Resource name="form" list={<FormList />} edit={<FormEdit />} recordRepresentation="name" />
   </ReactAdmin>
 )
