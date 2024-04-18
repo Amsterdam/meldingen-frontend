@@ -5,7 +5,7 @@ import { Builder } from '../Builder'
 export const FormEdit = () => (
   <Edit>
     <SimpleForm>
-      <TextInput source="name" />
+      <TextInput source="title" />
       <Builder />
     </SimpleForm>
   </Edit>

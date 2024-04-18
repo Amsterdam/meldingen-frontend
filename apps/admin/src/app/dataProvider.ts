@@ -9,10 +9,7 @@ const fetchJson = async (url: string, options: fetchUtils.Options = {}) => {
     new Headers({
       Accept: 'application/json',
     })) as Headers
-  // add your own headers here
   customHeaders.set('Authorization', `Bearer ${session?.accessToken}`)
-  // customHeaders.set('Access-Control-Expose-Headers', 'Content-Range')
-  customHeaders.set('Content-Range', 'posts 0-24/319')
 
   const newOptions = {
     ...options,
