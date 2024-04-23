@@ -12,10 +12,10 @@ type BuilderProps = {
   onChange: (schema: FormioSchema) => void
 }
 
-export const Builder = ({ data = { title: '', display: 'form', components: [] }, onChange }: BuilderProps) => (
+export const Builder = ({ data, onChange }: BuilderProps) => (
   <FormBuilder
     onChange={onChange}
-    form={data}
+    form={data || { display: 'form' }}
     options={{
       noDefaultSubmitButton: true,
       builder: {
