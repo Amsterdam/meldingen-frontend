@@ -22,7 +22,12 @@ export const FormCreate = () => {
   }
 
   return (
-    <Create>
+    <Create
+      transform={(data: any) => ({
+        ...data,
+        components: JSON.parse(data.components),
+      })}
+    >
       <SimpleForm
         toolbar={
           <Toolbar>
