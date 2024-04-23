@@ -1,32 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Create, SaveButton, SimpleForm, TextInput, Toolbar, useRefresh } from 'react-admin'
-import { JsonInput } from 'react-admin-json-view'
-import { useFormContext } from 'react-hook-form'
 
+import { filterAttributes } from '../../../utils/filterAttributes'
 import { Builder } from '../Builder'
-
-const allowed = ['label', 'description', 'key', 'type', 'input', 'autoExpand', 'showCharCount']
-
-const filterAttributes = (raw: any) =>
-  Object.keys(raw)
-    .filter((key) => allowed.includes(key))
-    .reduce(
-      (obj, key) => ({
-        ...obj,
-        [key]: raw[key],
-      }),
-      {},
-    )
-
-const HiddenComponentsInput = ({ value }: { value: any }) => {
-  const { setValue } = useFormContext()
-
-  useEffect(() => {
-    setValue('components', value)
-  }, [setValue, value])
-
-  return <JsonInput source="components" />
-}
+import { HiddenComponentsInput } from '../HiddenComponentsInput'
 
 export const FormCreate = () => {
   const [builderJson, setBuilderJson] = useState([])
