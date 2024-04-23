@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job: [lint, build] # TODO: add 'test' here when we get it working
+
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+
+      - name: Cache .npm
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-dot-npm
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ${{ matrix.job }}
+        run: npm run ${{ matrix.job }}
