@@ -1,14 +1,21 @@
 import dynamic from 'next/dynamic'
 
+import type { FormioSchema } from '../../../types/formio'
+
 const FormBuilder = dynamic(() => import('@meldingen/formio').then((mod) => mod.FormBuilder), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 })
 
-export const Builder = ({ data, onChange }: any) => (
+type BuilderProps = {
+  data?: FormioSchema
+  onChange: (schema: FormioSchema) => void
+}
+
+export const Builder = ({ data = { title: '', display: 'form', components: [] }, onChange }: BuilderProps) => (
   <FormBuilder
     onChange={onChange}
-    form={data || { display: 'form' }}
+    form={data}
     options={{
       noDefaultSubmitButton: true,
       builder: {

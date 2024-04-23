@@ -1,8 +1,9 @@
+import type { ExtendedComponentSchema } from '@formio/js'
 import { useEffect } from 'react'
 import { TextInput } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
 
-export const HiddenComponentsInput = ({ value }: { value: any }) => {
+export const HiddenComponentsInput = ({ value }: { value: ExtendedComponentSchema }) => {
   const { setValue } = useFormContext()
 
   useEffect(() => {
