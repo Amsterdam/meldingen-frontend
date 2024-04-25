@@ -25,5 +25,12 @@ export const HiddenComponentsInput = ({ value, setInitialValue }: HiddenComponen
     setValue('components', value)
   }, [setValue, value])
 
-  return <TextInput source="components" parse={(val) => JSON.parse(val)} format={(val) => JSON.stringify(val)} />
+  return (
+    <TextInput
+      defaultValue=""
+      source="components"
+      parse={(val) => JSON.parse(val)}
+      format={(val) => JSON.stringify(val)}
+    />
+  )
 }
