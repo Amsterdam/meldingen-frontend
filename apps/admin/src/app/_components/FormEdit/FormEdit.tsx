@@ -8,13 +8,12 @@ import { Builder } from '../Builder'
 import { HiddenComponentsInput } from '../HiddenComponentsInput'
 
 export const FormEdit = () => {
+  const [initialValue, setInitialValue] = useState(undefined)
   const [builderJson, setBuilderJson] = useState(undefined)
 
   const refresh = useRefresh()
 
   const onChange = (schema: FormioSchema) => {
-    console.log(schema)
-
     // TODO: we currently filter all attributes that aren't supported by the backend from the schema.
     // When the backend supports all these, we can remove this filter.
     const filteredSchema = schema?.components.map((item: ComponentSchema) => filterAttributes(item))
@@ -42,8 +41,8 @@ export const FormEdit = () => {
       >
         <TextInput source="title" />
         <TextInput source="display" defaultValue="form" readOnly />
-        <HiddenComponentsInput value={builderJson} setBuilderJson={setBuilderJson} />
-        <Builder data={builderJson} onChange={onChange} />
+        <HiddenComponentsInput value={builderJson} setInitialValue={setInitialValue} />
+        <Builder data={initialValue} onChange={onChange} />
       </SimpleForm>
     </Edit>
   )

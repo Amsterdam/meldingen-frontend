@@ -1,16 +1,13 @@
-import type { ExtendedComponentSchema } from '@formio/js'
 import { useEffect } from 'react'
 import { TextInput } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
 
-import { filterAttributes } from '../../../utils/filterAttributes'
-
 type HiddenComponentsInputProps = {
   value?: any
-  setBuilderJson?: any
+  setInitialValue?: any
 }
 
-export const HiddenComponentsInput = ({ value, setBuilderJson }: HiddenComponentsInputProps) => {
+export const HiddenComponentsInput = ({ value, setInitialValue }: HiddenComponentsInputProps) => {
   const { getValues, setValue } = useFormContext()
 
   useEffect(() => {
@@ -18,10 +15,10 @@ export const HiddenComponentsInput = ({ value, setBuilderJson }: HiddenComponent
       const inputValue = getValues('components')
 
       if (inputValue) {
-        setBuilderJson(inputValue)
+        setInitialValue(inputValue)
       }
     }
-  }, [getValues, value, setBuilderJson])
+  }, [getValues, value, setInitialValue])
 
   useEffect(() => {
     setValue('components', JSON.stringify(value))
