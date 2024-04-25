@@ -25,7 +25,7 @@ export const FormCreate = () => {
     <Create
       transform={(data: any) => ({
         ...data,
-        components: JSON.parse(data.components),
+        components: data.components,
       })}
     >
       <SimpleForm

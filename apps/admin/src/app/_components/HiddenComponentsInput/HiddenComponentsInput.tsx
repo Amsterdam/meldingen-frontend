@@ -22,8 +22,8 @@ export const HiddenComponentsInput = ({ value, setInitialValue }: HiddenComponen
   }, [getValues, value, setInitialValue])
 
   useEffect(() => {
-    setValue('components', JSON.stringify(value))
+    setValue('components', value)
   }, [setValue, value])
 
-  return <TextInput source="components" />
+  return <TextInput source="components" parse={(val) => JSON.parse(val)} format={(val) => JSON.stringify(val)} />
 }
