@@ -1,6 +1,6 @@
 import type { ComponentSchema } from '@formio/js'
 import { useState } from 'react'
-import { Edit, SaveButton, SimpleForm, TextInput, Toolbar, useRefresh } from 'react-admin'
+import { DeleteButton, Edit, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses, useRefresh } from 'react-admin'
 
 import type { FormioSchema } from '../../../types/formio'
 import { filterAttributes } from '../../../utils/filterAttributes'
@@ -33,7 +33,10 @@ export const FormEdit = () => {
       <SimpleForm
         toolbar={
           <Toolbar>
-            <SaveButton alwaysEnable />
+            <div className={ToolbarClasses.defaultToolbar}>
+              <SaveButton alwaysEnable />
+              <DeleteButton />
+            </div>
           </Toolbar>
         }
       >
