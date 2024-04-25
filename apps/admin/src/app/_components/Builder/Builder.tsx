@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
 
 import type { FormioSchema } from '../../../types/formio'
 
@@ -15,7 +16,7 @@ type BuilderProps = {
 export const Builder = ({ data, onChange }: BuilderProps) => (
   <FormBuilder
     onChange={onChange}
-    form={data || { display: 'form' }}
+    form={data ? { display: 'form', components: data } : { display: 'form' }}
     options={{
       noDefaultSubmitButton: true,
       builder: {

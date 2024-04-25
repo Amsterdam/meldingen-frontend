@@ -3,12 +3,29 @@ import { useEffect } from 'react'
 import { TextInput } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
 
-export const HiddenComponentsInput = ({ value }: { value: ExtendedComponentSchema }) => {
-  const { setValue } = useFormContext()
+import { filterAttributes } from '../../../utils/filterAttributes'
+
+type HiddenComponentsInputProps = {
+  value?: any
+  setBuilderJson?: any
+}
+
+export const HiddenComponentsInput = ({ value, setBuilderJson }: HiddenComponentsInputProps) => {
+  const { getValues, setValue } = useFormContext()
+
+  useEffect(() => {
+    if (!value) {
+      const inputValue = getValues('components')
+
+      if (inputValue) {
+        setBuilderJson(inputValue)
+      }
+    }
+  }, [getValues, value, setBuilderJson])
 
   useEffect(() => {
     setValue('components', JSON.stringify(value))
   }, [setValue, value])
 
-  return <TextInput source="components" hidden />
+  return <TextInput source="components" />
 }
