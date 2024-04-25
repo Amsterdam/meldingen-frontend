@@ -1,9 +1,10 @@
+import type { ExtendedComponentSchema } from '@formio/js'
 import { useEffect } from 'react'
 import { TextInput } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
 
 type HiddenComponentsInputProps = {
-  value?: any
+  value?: ExtendedComponentSchema
   setInitialValue?: any
 }
 
