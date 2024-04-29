@@ -54,13 +54,21 @@ export const Builder = ({ data, onChange }: BuilderProps) => (
         },
       },
       editForm: {
-        textfield: [
+        textarea: [
           {
             key: 'display',
             components: [
               {
+                key: 'applyMaskOn', // Use this to hide fields from edit form panels ('display' in this case)
+                ignore: true,
+              },
+              {
+                key: 'displayMask',
+                ignore: true,
+              },
+              {
                 key: 'labelPosition',
-                ignore: true, // Use this to hide fields from edit form panels ('display' in this case)
+                ignore: true,
               },
               {
                 key: 'tooltip',
