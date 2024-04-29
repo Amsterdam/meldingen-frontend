@@ -9,6 +9,7 @@ export const FormCreate = () => (
       ...data,
       components: data.components,
     })}
+    redirect="list"
   >
     <CreateEditForm />
   </Create>

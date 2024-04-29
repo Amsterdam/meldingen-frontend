@@ -31,6 +31,7 @@ export const HiddenComponentsInput = ({ value, setInitialValue }: HiddenComponen
       source="components"
       parse={(val) => JSON.parse(val)}
       format={(val) => JSON.stringify(val)}
+      hidden
     />
   )
 }
