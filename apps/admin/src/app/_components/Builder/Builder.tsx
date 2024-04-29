@@ -1,3 +1,4 @@
+import type { ComponentSchema } from '@formio/js'
 import dynamic from 'next/dynamic'
 
 import type { FormioSchema } from '../../../types/formio'
@@ -8,7 +9,7 @@ const FormBuilder = dynamic(() => import('@meldingen/formio').then((mod) => mod.
 })
 
 type BuilderProps = {
-  data?: FormioSchema
+  data?: ComponentSchema[]
   onChange: (schema: FormioSchema) => void
 }
 

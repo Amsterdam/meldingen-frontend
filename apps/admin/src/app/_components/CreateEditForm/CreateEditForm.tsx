@@ -12,15 +12,15 @@ type CreateEditFormProps = {
 }
 
 export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => {
-  const [initialValue, setInitialValue] = useState(undefined)
-  const [builderJson, setBuilderJson] = useState(undefined)
+  const [initialValue, setInitialValue] = useState<ComponentSchema[] | undefined>(undefined)
+  const [builderJson, setBuilderJson] = useState<ComponentSchema[] | undefined>(undefined)
 
   const refresh = useRefresh()
 
   const onChange = (schema: FormioSchema) => {
     // TODO: we currently filter all attributes that aren't supported by the backend from the schema.
     // When the backend supports all these, we can remove this filter.
-    const filteredSchema = schema?.components.map((item: ComponentSchema) => filterAttributes(item))
+    const filteredSchema: ComponentSchema[] = schema?.components.map((item) => filterAttributes(item))
 
     setBuilderJson(filteredSchema)
     refresh()
