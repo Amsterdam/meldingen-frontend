@@ -35,7 +35,7 @@ const dataProvider = fakeDataProvider({
       components: [
         {
           label: 'Text Area',
-          description: 'lala',
+          description: 'Description text from api',
           autoExpand: false,
           showCharCount: false,
           key: 'textArea',

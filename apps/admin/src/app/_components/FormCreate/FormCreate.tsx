@@ -8,7 +8,7 @@ import { Builder } from '../Builder'
 import { HiddenComponentsInput } from '../HiddenComponentsInput'
 
 export const FormCreate = () => {
-  const [builderJson, setBuilderJson] = useState([])
+  const [builderJson, setBuilderJson] = useState(undefined)
 
   const refresh = useRefresh()
 
