@@ -4,3 +4,18 @@
   - Go to any url of the app
   - See the login screen
   - Be able to log in with your credentials
+- View all forms
+  - Go to the Forms page
+  - See a list of all forms
+- Create a new form
+  - Click the Create button on the Forms page
+  - See a form, including a Form.io form builder
+  - Enter values and save. This returns you to the Forms page
+- Edit an existing form
+  - Click on an existing form on the Forms page
+  - See a form, including a Form.io form builder, which shows the existing values
+  - Change values and save. This returns you to the Forms page
+- Delete an existing form
+  - Click on an existing form on the Forms page
+  - Click on the Delete button
+  - You’re returned to the Forms page, where the deleted form isn’t shown anymore.

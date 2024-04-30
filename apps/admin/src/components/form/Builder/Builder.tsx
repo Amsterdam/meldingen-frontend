@@ -1,13 +1,22 @@
+import type { ComponentSchema } from '@formio/js'
 import dynamic from 'next/dynamic'
+
+import type { FormioSchema } from '../../../types/formio'
 
 const FormBuilder = dynamic(() => import('@meldingen/formio').then((mod) => mod.FormBuilder), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 })
 
-export const Builder = ({ data }: any) => (
+type BuilderProps = {
+  data?: ComponentSchema[]
+  onChange: (schema: FormioSchema) => void
+}
+
+export const Builder = ({ data, onChange }: BuilderProps) => (
   <FormBuilder
-    form={data || { display: 'form' }}
+    onChange={onChange}
+    form={data ? { display: 'form', components: data } : { display: 'form' }}
     options={{
       noDefaultSubmitButton: true,
       builder: {
@@ -45,13 +54,21 @@ export const Builder = ({ data }: any) => (
         },
       },
       editForm: {
-        textfield: [
+        textarea: [
           {
             key: 'display',
             components: [
               {
+                key: 'applyMaskOn', // Use this to hide fields from edit form panels ('display' in this case)
+                ignore: true,
+              },
+              {
+                key: 'displayMask',
+                ignore: true,
+              },
+              {
                 key: 'labelPosition',
-                ignore: true, // Use this to hide fields from edit form panels ('display' in this case)
+                ignore: true,
               },
               {
                 key: 'tooltip',

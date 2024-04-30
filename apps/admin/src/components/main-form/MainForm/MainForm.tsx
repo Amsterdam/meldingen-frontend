@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 // import data from '../../../mocks/formio-output.json' // Use this if you're not using the local BE
-import { Builder } from '../Builder'
+// import { Builder } from '../Builder'
 
 export const MainForm = () => {
   const [data, setData] = useState()
@@ -14,5 +14,5 @@ export const MainForm = () => {
       })
   }, [])
 
-  return data && <Builder data={data} />
+  return data && 'MAINFORM'
 }

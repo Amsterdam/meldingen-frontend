@@ -40,6 +40,7 @@
     "next": "14.2.2",
     "next-auth": "4.24.7",
     "ra-data-fakerest": "4.16.16",
+    "ra-data-simple-rest": "4.16.15",
     "react": "18.2.0",
     "react-admin": "4.16.16",
     "react-dom": "18.2.0",
