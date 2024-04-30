@@ -7,7 +7,7 @@ import { CategoryList } from '../CategoryList'
 import { FormCreate } from '../FormCreate'
 import { FormEdit } from '../FormEdit'
 import { FormList } from '../FormList'
-import { MainForm } from '../MainForm'
+// import { MainForm } from '../MainForm'
 
 const dataProvider = fakeDataProvider({
   categories: [
@@ -61,14 +61,14 @@ const dataProvider = fakeDataProvider({
 
 export const Admin = () => (
   <ReactAdmin dataProvider={dataProvider}>
-    <Resource name="landingspagina" list={<MainForm />} />
-    <Resource name="categories" list={<CategoryList />} edit={<CategoryEdit />} recordRepresentation="name" />
+    {/* <Resource name="landingspagina" list={<MainForm />} /> */}
     <Resource
       name="form"
       list={<FormList />}
       edit={<FormEdit />}
       create={<FormCreate />}
-      recordRepresentation="title"
+      options={{ label: 'Vragenlijsten' }}
     />
+    <Resource name="categories" list={<CategoryList />} edit={<CategoryEdit />} options={{ label: 'Categorieën' }} />
   </ReactAdmin>
 )
