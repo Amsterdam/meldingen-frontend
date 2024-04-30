@@ -23,7 +23,9 @@
 - Delete an existing form
   - Click on an existing form on the _Vragenlijsten_ page
   - Click on the Delete button
-  - You’re returned to the _Vragenlijsten_ page, where the deleted form isn’t shown anymore.
+  - See a confirmation dialog
+  - Choosing Cancel returns you to the existing form
+  - Choosing Confirm returns you to the _Vragenlijsten_ page, where the deleted form isn’t shown anymore.
 
 ## Categories
 
@@ -41,4 +43,6 @@
 - Delete an existing category
   - Click on an existing category on the _Categorieën_ page
   - Click on the Delete button
-  - You’re returned to the _Categorieën_ page, where the deleted category isn’t shown anymore.
+  - See a confirmation dialog
+  - Choosing Cancel returns you to the existing form
+  - Choosing Confirm returns you to the _Categorieën_ page, where the deleted category isn’t shown anymore.

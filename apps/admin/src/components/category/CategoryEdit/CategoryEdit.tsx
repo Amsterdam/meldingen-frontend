@@ -1,4 +1,4 @@
-import { DeleteButton, Edit, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
+import { DeleteWithConfirmButton, Edit, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
 
 export const CategoryEdit = () => (
   <Edit>
@@ -7,7 +7,7 @@ export const CategoryEdit = () => (
         <Toolbar>
           <div className={ToolbarClasses.defaultToolbar}>
             <SaveButton alwaysEnable />
-            <DeleteButton />
+            <DeleteWithConfirmButton />
           </div>
         </Toolbar>
       }
