@@ -2,11 +2,11 @@ import fakeDataProvider from 'ra-data-fakerest'
 import { Admin as ReactAdmin, Resource } from 'react-admin'
 
 // import { dataProvider } from '../../dataProvider'
-import { CategoryEdit } from '../CategoryEdit'
-import { CategoryList } from '../CategoryList'
-import { FormCreate } from '../FormCreate'
-import { FormEdit } from '../FormEdit'
-import { FormList } from '../FormList'
+import { CategoryEdit } from '../../category/CategoryEdit'
+import { CategoryList } from '../../category/CategoryList'
+import { FormCreate } from '../../form/FormCreate'
+import { FormEdit } from '../../form/FormEdit'
+import { FormList } from '../../form/FormList'
 // import { MainForm } from '../MainForm'
 
 const dataProvider = fakeDataProvider({
