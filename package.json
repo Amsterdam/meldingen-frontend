@@ -37,7 +37,7 @@
     "@amsterdam/design-system-tokens": "0.8.0",
     "@formio/js": "5.0.0-rc.43",
     "@formio/react": "5.3.1-dev.AvA08V.6",
-    "next": "14.2.2",
+    "next": "14.2.3",
     "next-auth": "4.24.7",
     "ra-data-fakerest": "4.16.16",
     "ra-data-simple-rest": "4.16.15",
