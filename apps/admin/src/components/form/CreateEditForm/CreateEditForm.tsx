@@ -38,7 +38,7 @@ export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => {
       }
     >
       <TextInput source="title" />
-      <TextInput source="display" defaultValue="form" readOnly />
+      <TextInput source="display" defaultValue="form" hidden />
       <HiddenComponentsInput value={builderJson} setInitialValue={setInitialValue} />
       <Builder data={initialValue} onChange={onChange} />
     </SimpleForm>
