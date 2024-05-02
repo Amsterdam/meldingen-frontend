@@ -1,7 +1,7 @@
 import fakeDataProvider from 'ra-data-fakerest'
 import { Admin as ReactAdmin, Resource } from 'react-admin'
 
-// import { dataProvider } from '../../dataProvider'
+// import { dataProvider } from '../../../app/dataProvider'
 import { CategoryCreate } from '../../category/CategoryCreate/CategoryCreate'
 import { CategoryEdit } from '../../category/CategoryEdit'
 import { CategoryList } from '../../category/CategoryList'
@@ -71,7 +71,7 @@ export const Admin = () => (
       options={{ label: 'Vragenlijsten' }}
     />
     <Resource
-      name="categories"
+      name="classification"
       list={<CategoryList />}
       edit={<CategoryEdit />}
       create={<CategoryCreate />}
