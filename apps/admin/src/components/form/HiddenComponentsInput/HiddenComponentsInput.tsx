@@ -1,4 +1,4 @@
-import type { ComponentSchema } from '@formio/js'
+import type { ComponentSchema } from 'formiojs'
 import { useEffect } from 'react'
 import { TextInput } from 'react-admin'
 import { useFormContext } from 'react-hook-form'

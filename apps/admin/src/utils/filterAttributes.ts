@@ -1,4 +1,4 @@
-import type { ExtendedComponentSchema } from '@formio/js'
+import type { ExtendedComponentSchema } from 'formiojs'
 
 const allowed = ['label', 'description', 'key', 'type', 'input', 'autoExpand', 'showCharCount']
 

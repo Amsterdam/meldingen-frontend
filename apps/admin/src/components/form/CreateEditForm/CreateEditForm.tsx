@@ -1,4 +1,4 @@
-import type { ComponentSchema } from '@formio/js'
+import type { ComponentSchema } from 'formiojs'
 import { useState } from 'react'
 import {
   useRefresh,

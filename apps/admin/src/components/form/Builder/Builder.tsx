@@ -1,4 +1,4 @@
-import type { ComponentSchema } from '@formio/js'
+import type { ComponentSchema } from 'formiojs'
 import dynamic from 'next/dynamic'
 
 import type { FormioSchema } from '../../../types/formio'
