@@ -11,7 +11,7 @@ import { FormList } from '../../form/FormList'
 // import { MainForm } from '../MainForm'
 
 const dataProvider = fakeDataProvider({
-  categories: [
+  classification: [
     {
       name: 'afval',
       id: 1,
