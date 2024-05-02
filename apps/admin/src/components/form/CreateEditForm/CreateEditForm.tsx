@@ -1,6 +1,14 @@
 import type { ComponentSchema } from '@formio/js'
 import { useState } from 'react'
-import { useRefresh, SimpleForm, Toolbar, SaveButton, TextInput, DeleteButton, ToolbarClasses } from 'react-admin'
+import {
+  useRefresh,
+  SimpleForm,
+  Toolbar,
+  SaveButton,
+  TextInput,
+  ToolbarClasses,
+  DeleteWithConfirmButton,
+} from 'react-admin'
 
 import type { FormioSchema } from '../../../types/formio'
 import { filterAttributes } from '../../../utils/filterAttributes'
@@ -32,13 +40,13 @@ export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => {
         <Toolbar>
           <div className={ToolbarClasses.defaultToolbar}>
             <SaveButton alwaysEnable />
-            {isEditForm && <DeleteButton />}
+            {isEditForm && <DeleteWithConfirmButton />}
           </div>
         </Toolbar>
       }
     >
       <TextInput source="title" />
-      <TextInput source="display" defaultValue="form" readOnly />
+      <TextInput source="display" defaultValue="form" hidden />
       <HiddenComponentsInput value={builderJson} setInitialValue={setInitialValue} />
       <Builder data={initialValue} onChange={onChange} />
     </SimpleForm>
