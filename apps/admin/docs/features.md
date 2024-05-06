@@ -10,8 +10,7 @@
 
 - Log out
   - Select the profile icon in the menu bar
-  - Click to logout button
-  - Will redirect to login form and session cookie is deleted
+  - Click on the logout button. This deletes the session cookie and redirects you to the login form
 
 ## Forms
 
