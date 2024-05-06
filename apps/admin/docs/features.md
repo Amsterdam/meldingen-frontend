@@ -3,9 +3,15 @@
 ## Authentication
 
 - Log in
+
   - Go to any url of the app
   - See the login screen
   - Be able to log in with your credentials
+
+- Log out
+  - Select the profile icon in the menu bar
+  - Click to logout button
+  - Will redirect to login form and session cookie is deleted
 
 ## Forms
 
