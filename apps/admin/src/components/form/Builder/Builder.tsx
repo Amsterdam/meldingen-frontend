@@ -16,7 +16,7 @@ type BuilderProps = {
 export const Builder = ({ data, onChange }: BuilderProps) => (
   <FormBuilder
     onChange={onChange}
-    form={data ? { display: 'form', components: data } : { display: 'form' }}
+    form={data ? { display: 'wizard', components: data } : { display: 'wizard' }}
     options={{
       noDefaultSubmitButton: true,
       builder: {
