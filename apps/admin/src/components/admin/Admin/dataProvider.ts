@@ -20,21 +20,19 @@ const fetchJson = async (url: string, options: fetchUtils.Options = {}) => {
   return fetchUtils.fetchJson(url, newOptions)
 }
 
-const baseDataProvider = simpleRestProvider('http://localhost:8000', fetchJson)
-
-export const dataProvider: DataProvider = {
-  ...baseDataProvider,
+export const dataProvider = (apiUrl = 'http://localhost:8000', httpClient = fetchJson): DataProvider => ({
+  ...simpleRestProvider(apiUrl, httpClient),
   update: (resource, params) => {
     // 'form' updates use PUT requests, all other updates use PATCH requests
     if (resource === 'form') {
-      return fetchJson(`http://localhost:8000/${resource}/${params.id}`, {
+      return httpClient(`${apiUrl}/${resource}/${params.id}`, {
         method: 'PUT',
         body: JSON.stringify(params.data),
       }).then(({ json }) => ({ data: json }))
     }
-    return fetchJson(`http://localhost:8000/${resource}/${params.id}`, {
+    return httpClient(`${apiUrl}/${resource}/${params.id}`, {
       method: 'PATCH',
       body: JSON.stringify(params.data),
     }).then(({ json }) => ({ data: json }))
   },
-}
+})

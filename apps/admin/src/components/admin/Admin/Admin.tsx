@@ -62,7 +62,7 @@ import { dataProvider } from './dataProvider'
 // })
 
 export const Admin = () => (
-  <ReactAdmin dataProvider={dataProvider}>
+  <ReactAdmin dataProvider={dataProvider()}>
     {/* <Resource name="landingspagina" list={<MainForm />} /> */}
     <Resource
       name="form"
