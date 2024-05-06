@@ -3,7 +3,6 @@ import { Admin as ReactAdmin, Resource } from 'react-admin'
 
 import { CategoryEdit } from '../CategoryEdit'
 import { CategoryList } from '../CategoryList'
-import { Layout } from '../Layout'
 import { MainForm } from '../MainForm'
 import { SurveyEdit } from '../SurveyEdit'
 import { SurveyList } from '../SurveyList'
@@ -48,7 +47,7 @@ const dataProvider = fakeDataProvider({
 })
 
 export const Admin = () => (
-  <ReactAdmin layout={Layout} dataProvider={dataProvider}>
+  <ReactAdmin dataProvider={dataProvider}>
     <Resource name="landingspagina" list={<MainForm />} />
     <Resource name="categories" list={<CategoryList />} edit={<CategoryEdit />} recordRepresentation="name" />
     <Resource name="surveys" list={<SurveyList />} edit={<SurveyEdit />} recordRepresentation="name" />
