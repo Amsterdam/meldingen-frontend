@@ -1,4 +1,4 @@
-import type { ComponentSchema } from '@formio/js'
+import type { ComponentSchema } from 'formiojs'
 
 // TODO: this schema should probably come from the backend
 export type FormioSchema = {

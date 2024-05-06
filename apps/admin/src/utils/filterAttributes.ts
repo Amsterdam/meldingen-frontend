@@ -1,4 +1,4 @@
-import type { ComponentSchema, ExtendedComponentSchema } from '@formio/js'
+import type { ComponentSchema, ExtendedComponentSchema } from 'formiojs'
 
 const textareaAllowed = ['label', 'description', 'key', 'type', 'input', 'autoExpand', 'showCharCount']
 const panelAllowed = ['label', 'key', 'type', 'input', 'components']

@@ -1,4 +1,4 @@
-import type { ComponentSchema, ExtendedComponentSchema } from '@formio/js'
+import type { ComponentSchema, ExtendedComponentSchema } from 'formiojs'
 import { useState } from 'react'
 import {
   useRefresh,
@@ -15,6 +15,8 @@ import type { FormioSchema } from '../../../types/formio'
 import { filterAttributes } from '../../../utils/filterAttributes'
 import { Builder } from '../Builder'
 import { HiddenComponentsInput } from '../HiddenComponentsInput'
+
+import styles from './CreateEditForm.module.css'
 
 type CreateEditFormProps = {
   isEditForm?: boolean
@@ -49,7 +51,9 @@ export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => {
       <TextInput source="title" validate={required()} />
       <TextInput source="display" defaultValue="wizard" hidden />
       <HiddenComponentsInput value={builderJson} setInitialValue={setInitialValue} />
-      <Builder data={initialValue} onChange={onChange} />
+      <div className={styles.builder}>
+        <Builder data={initialValue} onChange={onChange} />
+      </div>
     </SimpleForm>
   )
 }
