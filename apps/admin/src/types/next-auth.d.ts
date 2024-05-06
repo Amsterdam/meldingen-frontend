@@ -9,6 +9,14 @@ declare module 'next-auth' {
   interface Session {
     accessToken?: string
   }
+
+  /**
+   * Usually contains information about the provider being used
+   * and also extends `TokenSet`, which is different tokens returned by OAuth Providers.
+   */
+  interface Account {
+    refresh_expires_in: number
+  }
 }
 
 declare module 'next-auth/jwt' {
@@ -16,5 +24,8 @@ declare module 'next-auth/jwt' {
   interface JWT {
     /** OpenID accessToken */
     accessToken?: string
+    accessTokenExpired?: number
+    refreshTokenExpired?: number
+    refreshToken?: string
   }
 }
