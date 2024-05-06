@@ -1,4 +1,4 @@
-import type { ComponentSchema } from '@formio/js'
+import type { ComponentSchema, ExtendedComponentSchema } from '@formio/js'
 import { useState } from 'react'
 import {
   useRefresh,
@@ -8,6 +8,7 @@ import {
   TextInput,
   ToolbarClasses,
   DeleteWithConfirmButton,
+  required,
 } from 'react-admin'
 
 import type { FormioSchema } from '../../../types/formio'
@@ -28,7 +29,7 @@ export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => {
   const onChange = (schema: FormioSchema) => {
     // TODO: we currently filter all attributes that aren't supported by the backend from the schema.
     // When the backend supports all these, we can remove this filter.
-    const filteredSchema: ComponentSchema[] = schema?.components.map((item) => filterAttributes(item))
+    const filteredSchema: ExtendedComponentSchema[] = schema?.components.map((item) => filterAttributes(item))
 
     setBuilderJson(filteredSchema)
     refresh()
@@ -45,8 +46,8 @@ export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => {
         </Toolbar>
       }
     >
-      <TextInput source="title" />
-      <TextInput source="display" defaultValue="form" hidden />
+      <TextInput source="title" validate={required()} />
+      <TextInput source="display" defaultValue="wizard" hidden />
       <HiddenComponentsInput value={builderJson} setInitialValue={setInitialValue} />
       <Builder data={initialValue} onChange={onChange} />
     </SimpleForm>
