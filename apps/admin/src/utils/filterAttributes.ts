@@ -1,12 +1,10 @@
-import type { ExtendedComponentSchema } from '@formio/js'
+import type { ComponentSchema, ExtendedComponentSchema } from '@formio/js'
 
 const textareaAllowed = ['label', 'description', 'key', 'type', 'input', 'autoExpand', 'showCharCount']
 const panelAllowed = ['label', 'key', 'type', 'input', 'components']
 
-export const filterAttributes = (raw: ExtendedComponentSchema) => {
-  const allowed = raw.type === 'textarea' ? textareaAllowed : panelAllowed
-
-  return Object.keys(raw)
+const filterFunction = (raw: ExtendedComponentSchema, allowed: string[]) =>
+  Object.keys(raw)
     .filter((key) => allowed.includes(key))
     .reduce(
       (obj, key) => ({
@@ -15,4 +13,13 @@ export const filterAttributes = (raw: ExtendedComponentSchema) => {
       }),
       {},
     )
+
+export const filterAttributes = (raw: ExtendedComponentSchema) => {
+  const filteredComponents = raw.components.map((item: ComponentSchema) => filterFunction(item, textareaAllowed))
+  const filteredPanel = filterFunction(raw, panelAllowed)
+
+  return {
+    ...filteredPanel,
+    components: filteredComponents,
+  }
 }
