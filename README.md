@@ -12,6 +12,11 @@ This monorepo houses three separate front-ends:
 
 ## Getting started
 
+To use this repository, you need [Node.js](https://nodejs.org/) and [npm](https://nodejs.org/en/learn/getting-started/an-introduction-to-the-npm-package-manager).
+The required versions of these are defined [here](https://github.com/Amsterdam/meldingen-frontend/blob/main/package.json#L8).
+
+If you have those, you can:
+
 - Install all dependencies with `npm install`
 - Start all applications in development mode with `npm run dev`
 - Build all applications for production using `npm run build`
