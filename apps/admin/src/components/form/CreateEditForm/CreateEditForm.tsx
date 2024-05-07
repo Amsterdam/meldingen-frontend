@@ -9,6 +9,9 @@ import {
   ToolbarClasses,
   DeleteWithConfirmButton,
   required,
+  ReferenceInput,
+  useRecordContext,
+  AutocompleteInput,
 } from 'react-admin'
 
 import type { FormioSchema } from '../../../types/formio'
@@ -21,6 +24,18 @@ import styles from './CreateEditForm.module.css'
 type CreateEditFormProps = {
   isEditForm?: boolean
 }
+
+const OptionRenderer = () => {
+  const record = useRecordContext()
+  return (
+    <span>
+      {record.name}
+      {record.form && ' GEKOPPELD'}
+    </span>
+  )
+}
+
+const inputText = (choice) => `${choice.name}`
 
 export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => {
   const [initialValue, setInitialValue] = useState<ComponentSchema[] | undefined>(undefined)
@@ -50,6 +65,9 @@ export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => {
     >
       <TextInput source="title" validate={required()} />
       <TextInput source="display" defaultValue="wizard" hidden />
+      <ReferenceInput source="classification" reference="classification">
+        <AutocompleteInput inputText={inputText} optionText={<OptionRenderer />} />
+      </ReferenceInput>
       <HiddenComponentsInput value={builderJson} setInitialValue={setInitialValue} />
       <div className={styles.builder}>
         <Builder data={initialValue} onChange={onChange} />
