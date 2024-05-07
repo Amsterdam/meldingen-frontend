@@ -16,16 +16,31 @@ const unfilteredObjMock = {
   key: 'key',
   type: 'textarea',
   input: true,
+  components: [
+    {
+      label: 'Label',
+      description: 'Description',
+      applyMaskOn: 'change',
+      autoExpand: false,
+      showCharCount: true,
+      tableView: true,
+    },
+  ],
 }
 
 const filteredObjMock = {
   label: 'Label',
-  description: 'Description',
-  autoExpand: false,
-  showCharCount: true,
   key: 'key',
   type: 'textarea',
   input: true,
+  components: [
+    {
+      label: 'Label',
+      description: 'Description',
+      autoExpand: false,
+      showCharCount: true,
+    },
+  ],
 }
 
 describe('filterAttributes', () => {
