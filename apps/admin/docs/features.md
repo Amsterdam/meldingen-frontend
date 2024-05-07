@@ -9,6 +9,7 @@
   - Be able to log in with your credentials
 
 - Log out
+  - Log in
   - Select the profile icon in the menu bar
   - Click on the logout button. This deletes the session cookie and redirects you to the login form
 
