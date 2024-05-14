@@ -16,22 +16,22 @@ const dataProvider = fakeDataProvider({
     {
       name: 'afval',
       id: 1,
-      form: 'Afval',
+      form_id: 1,
     },
     {
       name: 'afval-container',
       id: 2,
-      form: undefined,
+      form_id: null,
     },
     {
       name: 'boom-illegale-kap',
       id: 3,
-      form: undefined,
+      form_id: null,
     },
     {
       name: 'bouw-sloop-overlast',
       id: 4,
-      form: undefined,
+      form_id: null,
     },
   ],
   form: [
