@@ -8,6 +8,7 @@ import { FormCreate } from '../../form/FormCreate'
 import { FormEdit } from '../../form/FormEdit'
 import { FormList } from '../../form/FormList'
 
+import { CustomLayout } from './CustomLayout'
 // import { dataProvider } from './dataProvider'
 // import { MainForm } from '../MainForm'
 
@@ -70,7 +71,7 @@ const dataProvider = fakeDataProvider({
 })
 
 export const Admin = () => (
-  <ReactAdmin dataProvider={dataProvider}>
+  <ReactAdmin layout={CustomLayout} dataProvider={dataProvider}>
     {/* <Resource name="landingspagina" list={<MainForm />} /> */}
     <Resource
       name="form"
