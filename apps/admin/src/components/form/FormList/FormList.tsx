@@ -7,7 +7,7 @@ export const FormList = () => (
     <Datagrid rowClick="edit">
       <TextField source="id" />
       <TextField source="title" />
-      <TextField source="classification" sortable={false} />
+      <TextField source="classification_id" sortable={false} />
     </Datagrid>
   </List>
 )

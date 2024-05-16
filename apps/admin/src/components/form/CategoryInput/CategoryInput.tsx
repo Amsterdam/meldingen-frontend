@@ -1,63 +1,56 @@
-import { useEffect, useState } from 'react'
-import type { AutocompleteInputProps } from 'react-admin'
+import { Icon } from '@amsterdam/design-system-react'
+import { ApiIcon } from '@amsterdam/design-system-react-icons'
+import { useState } from 'react'
+import type { AutocompleteInputProps, RaRecord } from 'react-admin'
 import { AutocompleteInput, Confirm, ReferenceInput, useRecordContext } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
+
+import styles from './CategoryInput.module.css'
 
 const OptionRenderer = () => {
   const record = useRecordContext()
   return (
-    <span>
-      {record.name}
-      {record.form_id && ' GEKOPPELD'}
+    <span className={styles.autoCompleteOption}>
+      <span>{record.name}</span>
+      {record.form_id && <Icon size="level-5" svg={ApiIcon} className={styles.autoCompleteOptionIcon} />}
     </span>
   )
 }
 
-const inputText = (choice) => `${choice.name}`
+const inputText = (choice: RaRecord) => `${choice.name}`
 
 export const CategoryInput = () => {
-  const [selectedValue, setSelectedValue] = useState({ value: undefined, form_id: undefined })
-  const [previousSelectedValue, setPreviousSelectedValue] = useState(false)
+  const record = useRecordContext()
+  const { setValue } = useFormContext()
+
+  const [selectedValue, setSelectedValue] = useState(record.classification_id)
+  const [previousSelectedValue, setPreviousSelectedValue] = useState(record.classification_id)
+
   const [dialogOpen, setDialogOpen] = useState(false)
   const [autocompleteOpen, setAutocompleteOpen] = useState(false)
 
-  const { setValue } = useFormContext()
-
-  useEffect(() => {
-    if (selectedValue.form_id) {
-      setDialogOpen(true)
-    } else {
-      setPreviousSelectedValue(selectedValue.value)
-    }
-  }, [selectedValue, setPreviousSelectedValue])
-
   const handleDialogClose = () => {
-    setValue('classification', previousSelectedValue)
+    setValue('classification_id', previousSelectedValue)
     setDialogOpen(false)
   }
 
   const handleDialogConfirm = () => {
-    // functie om classification van andere form op undefined te zetten (oid)
-    setPreviousSelectedValue(selectedValue.value)
+    setPreviousSelectedValue(selectedValue)
     setDialogOpen(false)
   }
 
-  // Zie ook https://marmelab.com/react-admin/Confirm.html#usage
-  // https://marmelab.com/react-admin/AutocompleteInput.html#onchange
-  // https://stackoverflow.com/questions/72263148/how-to-set-input-value-base-on-usestate-in-react-admin-v4
-
-  // TODO: autcomplete open werkt nog niet helemaal lekker. Waarschijnlijk zit er iets van open on focus op?
-
-  const handleChange: AutocompleteInputProps['onChange'] = (value, record) => {
-    setSelectedValue({
-      value,
-      form_id: record?.form_id,
-    })
+  const handleChange: AutocompleteInputProps['onChange'] = (value, classificationRecord) => {
+    if (classificationRecord?.form_id) {
+      setSelectedValue(value)
+      setDialogOpen(true)
+    } else {
+      setPreviousSelectedValue(value)
+    }
   }
 
   return (
     <>
-      <ReferenceInput source="classification" reference="classification">
+      <ReferenceInput source="classification_id" reference="classification">
         <AutocompleteInput
           open={autocompleteOpen}
           onOpen={() => {
@@ -68,6 +61,7 @@ export const CategoryInput = () => {
           onClose={() => {
             setAutocompleteOpen(false)
           }}
+          openOnFocus={false}
           inputText={inputText}
           optionText={<OptionRenderer />}
           onChange={handleChange}

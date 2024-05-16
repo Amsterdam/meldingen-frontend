@@ -21,7 +21,7 @@ const dataProvider = fakeDataProvider({
     {
       name: 'afval-container',
       id: 2,
-      form_id: null,
+      form_id: 2,
     },
     {
       name: 'boom-illegale-kap',
@@ -38,6 +38,7 @@ const dataProvider = fakeDataProvider({
     {
       title: 'Afval',
       id: 1,
+      classification_id: 1,
       components: [
         {
           label: 'Text Area',
@@ -53,14 +54,17 @@ const dataProvider = fakeDataProvider({
     {
       title: 'Afval bij container',
       id: 2,
+      classification_id: 2,
     },
     {
       title: 'Illegale boomkap',
       id: 3,
+      classification_id: null,
     },
     {
       title: 'Bouw- en sloopoverlast',
       id: 4,
+      classification_id: null,
     },
   ],
 })
