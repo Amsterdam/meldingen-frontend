@@ -40,7 +40,7 @@ export const CategoryInput = () => {
   }
 
   const handleChange: AutocompleteInputProps['onChange'] = (value, classificationRecord) => {
-    if (classificationRecord?.form_id) {
+    if (typeof classificationRecord === 'object' && classificationRecord?.form_id) {
       setSelectedValue(value)
       setDialogOpen(true)
     } else {
@@ -67,7 +67,6 @@ export const CategoryInput = () => {
           onChange={handleChange}
         />
       </ReferenceInput>
-
       <Confirm
         isOpen={dialogOpen}
         title="Ontkoppel bestaande vragenlijst"
