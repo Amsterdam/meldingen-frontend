@@ -12,7 +12,6 @@ export const CategoryCreate = () => (
       }
     >
       <TextInput source="name" />
-      <TextInput source="form_id" />
     </SimpleForm>
   </Create>
 )
