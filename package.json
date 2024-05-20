@@ -42,7 +42,7 @@
     "ra-data-fakerest": "4.16.17",
     "ra-data-simple-rest": "4.16.17",
     "react": "18.3.1",
-    "react-admin": "4.16.17",
+    "react-admin": "4.16.18",
     "react-dom": "18.3.1",
     "tslib": "2.6.2"
   },
