@@ -21,11 +21,9 @@ const inputText = (choice: RaRecord) => `${choice.name}`
 
 export const CategoryInput = () => {
   const record = useRecordContext()
-  const { setValue } = useFormContext()
+  const { setValue, getValues } = useFormContext()
 
-  const [selectedValue, setSelectedValue] = useState(record.classification_id)
   const [previousSelectedValue, setPreviousSelectedValue] = useState(record.classification_id)
-
   const [dialogOpen, setDialogOpen] = useState(false)
   const [autocompleteOpen, setAutocompleteOpen] = useState(false)
 
@@ -35,13 +33,13 @@ export const CategoryInput = () => {
   }
 
   const handleDialogConfirm = () => {
+    const selectedValue = getValues('classification_id')
     setPreviousSelectedValue(selectedValue)
     setDialogOpen(false)
   }
 
   const handleChange: AutocompleteInputProps['onChange'] = (value, classificationRecord) => {
     if (typeof classificationRecord === 'object' && classificationRecord?.form_id) {
-      setSelectedValue(value)
       setDialogOpen(true)
     } else {
       setPreviousSelectedValue(value)
