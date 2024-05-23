@@ -8,6 +8,13 @@ type HiddenComponentsInputProps = {
   setInitialValue: (value: ComponentSchema[]) => void
 }
 
+// This function filters the keys 'position' and 'question' from the API response.
+// These keys should be removed from the API response, after which this function can be removed.
+const tempReplacerFn = (key: string, value: any) => {
+  if (key === 'position' || key === 'question') return undefined
+  return value
+}
+
 export const HiddenComponentsInput = ({ value, setInitialValue }: HiddenComponentsInputProps) => {
   const { getValues, setValue } = useFormContext()
 
@@ -30,8 +37,8 @@ export const HiddenComponentsInput = ({ value, setInitialValue }: HiddenComponen
       defaultValue=""
       source="components"
       parse={(val) => JSON.parse(val)}
-      format={(val) => JSON.stringify(val)}
-      hidden
+      format={(val) => JSON.stringify(val, tempReplacerFn)}
+      // hidden
     />
   )
 }
