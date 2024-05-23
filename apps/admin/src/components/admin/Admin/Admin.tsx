@@ -17,29 +17,29 @@ import { dataProvider } from './dataProvider'
 //     {
 //       name: 'afval',
 //       id: 1,
-//       form_id: 1,
+//       form: 1,
 //     },
 //     {
 //       name: 'afval-container',
 //       id: 2,
-//       form_id: 2,
+//       form: 2,
 //     },
 //     {
 //       name: 'boom-illegale-kap',
 //       id: 3,
-//       form_id: null,
+//       form: null,
 //     },
 //     {
 //       name: 'bouw-sloop-overlast',
 //       id: 4,
-//       form_id: null,
+//       form: null,
 //     },
 //   ],
 //   form: [
 //     {
 //       title: 'Afval',
 //       id: 1,
-//       classification_id: 1,
+//       classification: 1,
 //       components: [
 //         {
 //           label: 'Text Area',
@@ -55,17 +55,17 @@ import { dataProvider } from './dataProvider'
 //     {
 //       title: 'Afval bij container',
 //       id: 2,
-//       classification_id: 2,
+//       classification: 2,
 //     },
 //     {
 //       title: 'Illegale boomkap',
 //       id: 3,
-//       classification_id: null,
+//       classification: null,
 //     },
 //     {
 //       title: 'Bouw- en sloopoverlast',
 //       id: 4,
-//       classification_id: null,
+//       classification: null,
 //     },
 //   ],
 // })

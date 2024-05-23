@@ -12,7 +12,7 @@ const OptionRenderer = () => {
   return (
     <span className={styles.autoCompleteOption}>
       <span>{record.name}</span>
-      {record.form_id && <Icon size="level-5" svg={ApiIcon} className={styles.autoCompleteOptionIcon} />}
+      {record.form && <Icon size="level-5" svg={ApiIcon} className={styles.autoCompleteOptionIcon} />}
     </span>
   )
 }
@@ -23,23 +23,23 @@ export const CategoryInput = () => {
   const record = useRecordContext()
   const { setValue, getValues } = useFormContext()
 
-  const [previousSelectedValue, setPreviousSelectedValue] = useState(record.classification_id)
+  const [previousSelectedValue, setPreviousSelectedValue] = useState(record.classification)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [autocompleteOpen, setAutocompleteOpen] = useState(false)
 
   const handleDialogClose = () => {
-    setValue('classification_id', previousSelectedValue)
+    setValue('classification', previousSelectedValue)
     setDialogOpen(false)
   }
 
   const handleDialogConfirm = () => {
-    const selectedValue = getValues('classification_id')
+    const selectedValue = getValues('classification')
     setPreviousSelectedValue(selectedValue)
     setDialogOpen(false)
   }
 
   const handleChange: AutocompleteInputProps['onChange'] = (value, classificationRecord) => {
-    if (typeof classificationRecord === 'object' && classificationRecord?.form_id) {
+    if (typeof classificationRecord === 'object' && classificationRecord?.form) {
       setDialogOpen(true)
     } else {
       setPreviousSelectedValue(value)
@@ -48,7 +48,7 @@ export const CategoryInput = () => {
 
   return (
     <>
-      <ReferenceInput source="classification_id" reference="classification">
+      <ReferenceInput source="classification" reference="classification">
         <AutocompleteInput
           open={autocompleteOpen}
           onOpen={() => {
