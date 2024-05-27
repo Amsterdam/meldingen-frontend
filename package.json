@@ -89,7 +89,7 @@
     "lint-staged": "15.2.5",
     "markdownlint-cli": "0.41.0",
     "npm-check-updates": "16.14.20",
-    "nx": "18.3.5",
+    "nx": "19.1.0",
     "nx-stylelint": "17.1.4",
     "prettier": "3.2.5",
     "stylelint": "16.6.0",
