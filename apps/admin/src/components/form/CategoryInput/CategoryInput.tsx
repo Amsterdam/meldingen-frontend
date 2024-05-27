@@ -23,7 +23,7 @@ export const CategoryInput = () => {
   const record = useRecordContext()
   const { setValue, getValues } = useFormContext()
 
-  const [previousSelectedValue, setPreviousSelectedValue] = useState(record.classification)
+  const [previousSelectedValue, setPreviousSelectedValue] = useState(record?.classification)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [autocompleteOpen, setAutocompleteOpen] = useState(false)
 
