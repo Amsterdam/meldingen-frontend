@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.24.5",
-    "@babel/preset-react": "7.24.1",
+    "@babel/preset-react": "7.24.6",
     "@nx/eslint": "18.3.4",
     "@nx/eslint-plugin": "18.3.4",
     "@nx/jest": "18.3.4",
