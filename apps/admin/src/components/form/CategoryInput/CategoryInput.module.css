@@ -1,0 +1,10 @@
+.autoCompleteOption {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.autoCompleteOptionIcon {
+  width: 1rem;
+}

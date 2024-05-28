@@ -17,24 +17,29 @@ import { dataProvider } from './dataProvider'
 //     {
 //       name: 'afval',
 //       id: 1,
+//       form: 1,
 //     },
 //     {
 //       name: 'afval-container',
 //       id: 2,
+//       form: 2,
 //     },
 //     {
 //       name: 'boom-illegale-kap',
 //       id: 3,
+//       form: null,
 //     },
 //     {
 //       name: 'bouw-sloop-overlast',
 //       id: 4,
+//       form: null,
 //     },
 //   ],
 //   form: [
 //     {
 //       title: 'Afval',
 //       id: 1,
+//       classification: 1,
 //       components: [
 //         {
 //           label: 'Text Area',
@@ -50,14 +55,17 @@ import { dataProvider } from './dataProvider'
 //     {
 //       title: 'Afval bij container',
 //       id: 2,
+//       classification: 2,
 //     },
 //     {
 //       title: 'Illegale boomkap',
 //       id: 3,
+//       classification: null,
 //     },
 //     {
 //       title: 'Bouw- en sloopoverlast',
 //       id: 4,
+//       classification: null,
 //     },
 //   ],
 // })
@@ -78,6 +86,7 @@ export const Admin = () => (
       edit={<CategoryEdit />}
       create={<CategoryCreate />}
       options={{ label: 'Categorieën' }}
+      recordRepresentation="name"
     />
   </ReactAdmin>
 )

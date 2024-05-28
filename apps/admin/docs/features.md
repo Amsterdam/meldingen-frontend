@@ -41,6 +41,42 @@
   - Choosing Cancel returns you to the existing form
   - Choosing Confirm returns you to the _Vragenlijsten_ page, where the deleted form isn’t shown anymore.
 
+## Connecting a form to a category
+
+- Connect a form without a category to a category that isn’t already connected
+
+  - Click on a form without a category on the _Vragenlijsten_ page
+  - Select an unused category and save. This returns you to the _Vragenlijsten_ page
+  - The selected category should also be connected to the form on the _Categorieën_ page
+
+- Connect a form with a category to a category that isn’t already connected
+
+  - Click on a form with a category on the _Vragenlijsten_ page
+  - Select an unused category and save. This returns you to the _Vragenlijsten_ page
+  - The selected category should also be connected to the form on the _Categorieën_ page
+  - The previously selected category should not be connected to any form anymore
+
+- Connect a form without a category to a category that is already connected
+
+  - Click on a form without a category on the _Vragenlijsten_ page
+  - Select a used category. This will open a Confirm dialog.
+  - If you press Cancel, the category should be blank again
+  - If you press Confirm, the selected category should be shown
+  - Press Save. This returns you to the _Vragenlijsten_ page
+  - The form that was previously connected to this category should not be connected anymore
+  - The selected category should also be connected to the form on the _Categorieën_ page
+
+- Connect a form with a category to a category that is already connected
+
+  - Click on a form with a category on the _Vragenlijsten_ page
+  - Select a used category. This will open a Confirm dialog.
+  - If you press Cancel, the category should be returned to the original category.
+  - If you press Confirm, the selected category should be shown.
+  - Press Save. This returns you to the _Vragenlijsten_ page
+  - The form that was previously connected to this category should not be connected anymore
+  - The selected category should also be connected to the form on the _Categorieën_ page
+  - The previously selected category should not be connected anymore on the _Categorieën_ page
+
 ## Categories
 
 - View all categories

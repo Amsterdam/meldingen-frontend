@@ -13,6 +13,7 @@ export const CategoryEdit = () => (
       }
     >
       <TextInput source="name" />
+      <TextInput source="form" readOnly />
     </SimpleForm>
   </Edit>
 )
