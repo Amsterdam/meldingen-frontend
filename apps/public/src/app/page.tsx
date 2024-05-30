@@ -6,7 +6,7 @@ import { Grid } from '@meldingen/ui'
 
 import mockData from '../mocks/wizard-test.json'
 
-import { AdditionalQuestionsPage } from './additionalQuestions/page'
+import AdditionalQuestionsPage from './additionalQuestions/page'
 
 const FormRenderer = dynamic(() => import('@meldingen/formio').then((mod) => mod.FormRenderer), {
   ssr: false,

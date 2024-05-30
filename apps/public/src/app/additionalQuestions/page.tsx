@@ -1,3 +1,5 @@
+'use client'
+
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 
@@ -8,7 +10,7 @@ const FormRenderer = dynamic(() => import('@meldingen/formio').then((mod) => mod
   loading: () => <p>Loading...</p>,
 })
 
-export const AdditionalQuestionsPage = () => {
+const AdditionalQuestionsPage = () => {
   const [data, setData] = useState(null)
 
   const result = async () => {
@@ -32,3 +34,5 @@ export const AdditionalQuestionsPage = () => {
 
   return <FormRenderer form={data} />
 }
+
+export default AdditionalQuestionsPage
