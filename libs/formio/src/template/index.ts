@@ -5,6 +5,8 @@ import { input } from './input'
 import { label } from './label'
 import { webform } from './webform'
 
+export { component, field, html, input, label, webform }
+
 export const template = {
   component: {
     form: component,
@@ -21,7 +23,7 @@ export const template = {
   label: {
     form: label,
   },
-  webform: {
-    form: webform,
-  },
+  // webform: {
+  //   form: webform,
+  // },
 }

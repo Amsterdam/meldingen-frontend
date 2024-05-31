@@ -4,7 +4,9 @@ import { Button, Textarea } from './components'
 import { template } from './template'
 
 export const FormRenderer = ({ form }: any) => {
-  Components.setComponents({ button: Button, textarea: Textarea })
+  Components.addComponent('textarea', Textarea)
+  Components.addComponent('button', Button)
+
   Templates.current = template
 
   return <Form form={form} />
