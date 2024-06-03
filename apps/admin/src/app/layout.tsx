@@ -1,5 +1,9 @@
 import './global.css'
 
+import '@amsterdam/design-system-tokens/dist/index.css'
+import '@amsterdam/design-system-assets/font/index.css'
+import '@amsterdam/design-system-css/dist/index.css'
+
 export const metadata = {
   title: 'Admin',
 }
