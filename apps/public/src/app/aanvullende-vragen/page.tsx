@@ -1,7 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Grid } from '@meldingen/ui'
 
@@ -12,7 +12,7 @@ const FormRenderer = dynamic(() => import('@meldingen/formio').then((mod) => mod
   loading: () => <p>Loading...</p>,
 })
 
-const AdditionalQuestionsPage = () => {
+const AanvullendeVragen = () => {
   const [data, setData] = useState(null)
 
   const result = async () => {
@@ -30,9 +30,7 @@ const AdditionalQuestionsPage = () => {
     }
   }
 
-  useEffect(() => {
-    if (!data) result()
-  }, [data])
+  if (!data) result()
 
   return (
     <Grid paddingBottom="large" paddingTop="medium">
@@ -43,4 +41,4 @@ const AdditionalQuestionsPage = () => {
   )
 }
 
-export default AdditionalQuestionsPage
+export default AanvullendeVragen
