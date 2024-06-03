@@ -48,7 +48,7 @@ export const CategoryInput = () => {
 
   return (
     <>
-      <ReferenceInput source="classification" reference="classification">
+      <ReferenceInput source="classification" reference="classification" sort={{ field: 'name', order: 'ASC' }}>
         <AutocompleteInput
           open={autocompleteOpen}
           onOpen={() => {
