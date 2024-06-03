@@ -6,7 +6,7 @@ const allowLists: Record<string, string[]> = {
 // TODO: second 'any' should be a type supplied by the BE?
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const filterFormResponse = (obj: any): any => {
-  // If the input is not an object, return the input
+  // If the input is a JS primitive, return the unmodified input
   if (obj !== Object(obj)) {
     return obj
   }
