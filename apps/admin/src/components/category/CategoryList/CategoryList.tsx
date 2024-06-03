@@ -1,6 +1,6 @@
 import { Datagrid, List, TextField, TextInput } from 'react-admin'
 
-const categoryFilters = [<TextInput label="Search" source="q" alwaysOn />]
+const categoryFilters = [<TextInput label="Zoeken" source="q" alwaysOn />]
 
 export const CategoryList = () => (
   <List filters={categoryFilters} hasCreate>
