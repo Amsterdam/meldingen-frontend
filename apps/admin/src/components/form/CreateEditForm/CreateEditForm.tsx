@@ -1,4 +1,4 @@
-import type { ComponentSchema, ExtendedComponentSchema } from 'formiojs'
+import type { ComponentSchema } from 'formiojs'
 import { useState } from 'react'
 import {
   useRefresh,
@@ -12,7 +12,6 @@ import {
 } from 'react-admin'
 
 import type { FormioSchema } from '../../../types/formio'
-import { filterAttributes } from '../../../utils/filterAttributes'
 import { Builder } from '../Builder'
 import { CategoryInput } from '../CategoryInput'
 import { HiddenComponentsInput } from '../HiddenComponentsInput'
@@ -30,11 +29,7 @@ export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => {
   const refresh = useRefresh()
 
   const onChange = (schema: FormioSchema) => {
-    // TODO: we currently filter all attributes that aren't supported by the backend from the schema.
-    // When the backend supports all these, we can remove this filter.
-    const filteredSchema: ExtendedComponentSchema[] = schema?.components.map((item) => filterAttributes(item))
-
-    setBuilderJson(filteredSchema)
+    setBuilderJson(schema?.components)
     refresh()
   }
 
