@@ -50,7 +50,6 @@ export const CategoryInput = () => {
     <>
       <ReferenceInput reference="classification" sort={{ field: 'name', order: 'ASC' }} source="classification">
         <AutocompleteInput
-          label="ma.fields.classification"
           open={autocompleteOpen}
           onOpen={() => {
             if (!dialogOpen) {

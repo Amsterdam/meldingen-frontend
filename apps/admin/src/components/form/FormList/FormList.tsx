@@ -6,8 +6,8 @@ export const FormList = () => (
   <List filters={surveyFilters}>
     <Datagrid rowClick="edit">
       <TextField source="id" />
-      <TextField source="title" label="ma.fields.title" />
-      <TextField source="classification" label="ma.fields.classification" sortable={false} />
+      <TextField source="title" />
+      <TextField source="classification" sortable={false} />
     </Datagrid>
   </List>
 )

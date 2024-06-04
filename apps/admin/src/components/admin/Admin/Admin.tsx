@@ -74,6 +74,22 @@ import { dataProvider } from './dataProvider'
 
 const nl = {
   ...dutchMessages,
+  resources: {
+    classification: {
+      name: 'Categorie |||| Categorieën',
+      fields: {
+        form: 'Vragenlijst',
+        name: 'Naam',
+      },
+    },
+    form: {
+      name: 'Vragenlijst |||| Vragenlijsten',
+      fields: {
+        classification: 'Categorie',
+        title: 'Naam',
+      },
+    },
+  },
   ma: {
     dialog: {
       overwriteClassification: {
@@ -81,16 +97,6 @@ const nl = {
           'Hier haal je de gekoppelde vragenlijst offline en zet je de huidige vragenlijst online. Is dat wat je wilt?',
         title: 'Ontkoppel bestaande vragenlijst',
       },
-    },
-    fields: {
-      classification: 'Categorie',
-      form: 'Vragenlijst',
-      name: 'Naam',
-      title: 'Naam',
-    },
-    tabs: {
-      categories: 'Categorieën',
-      forms: 'Vragenlijsten',
     },
   },
 }
@@ -100,19 +106,12 @@ const i18nProvider = polyglotI18nProvider(() => nl, 'nl')
 export const Admin = () => (
   <ReactAdmin layout={CustomLayout} dataProvider={dataProvider()} i18nProvider={i18nProvider}>
     {/* <Resource name="landingspagina" list={<MainForm />} /> */}
-    <Resource
-      name="form"
-      list={<FormList />}
-      edit={<FormEdit />}
-      create={<FormCreate />}
-      options={{ label: 'ma.tabs.forms' }}
-    />
+    <Resource name="form" list={<FormList />} edit={<FormEdit />} create={<FormCreate />} />
     <Resource
       name="classification"
       list={<CategoryList />}
       edit={<CategoryEdit />}
       create={<CategoryCreate />}
-      options={{ label: 'ma.tabs.categories' }}
       recordRepresentation="name"
     />
   </ReactAdmin>
