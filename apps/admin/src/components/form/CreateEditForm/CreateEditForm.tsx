@@ -44,7 +44,7 @@ export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => {
         </Toolbar>
       }
     >
-      <TextInput source="title" validate={required()} />
+      <TextInput source="title" label="ma.fields.title" validate={required()} />
       <TextInput source="display" defaultValue="wizard" hidden />
       <CategoryInput />
       <HiddenComponentsInput value={builderJson} setInitialValue={setInitialValue} />

@@ -11,7 +11,7 @@ export const CategoryCreate = () => (
         </Toolbar>
       }
     >
-      <TextInput source="name" />
+      <TextInput source="name" label="ma.fields.name" />
     </SimpleForm>
   </Create>
 )

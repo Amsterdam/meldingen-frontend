@@ -1,6 +1,6 @@
 // import fakeDataProvider from 'ra-data-fakerest'
 import polyglotI18nProvider from 'ra-i18n-polyglot'
-import nl from 'ra-language-dutch'
+import dutchMessages from 'ra-language-dutch'
 import { Admin as ReactAdmin, Resource } from 'react-admin'
 
 import { CategoryCreate } from '../../category/CategoryCreate/CategoryCreate'
@@ -72,6 +72,29 @@ import { dataProvider } from './dataProvider'
 //   ],
 // })
 
+const nl = {
+  ...dutchMessages,
+  ma: {
+    dialog: {
+      overwriteClassification: {
+        content:
+          'Hier haal je de gekoppelde vragenlijst offline en zet je de huidige vragenlijst online. Is dat wat je wilt?',
+        title: 'Ontkoppel bestaande vragenlijst',
+      },
+    },
+    fields: {
+      classification: 'Categorie',
+      form: 'Vragenlijst',
+      name: 'Naam',
+      title: 'Naam',
+    },
+    tabs: {
+      categories: 'Categorieën',
+      forms: 'Vragenlijsten',
+    },
+  },
+}
+
 const i18nProvider = polyglotI18nProvider(() => nl, 'nl')
 
 export const Admin = () => (
@@ -82,14 +105,14 @@ export const Admin = () => (
       list={<FormList />}
       edit={<FormEdit />}
       create={<FormCreate />}
-      options={{ label: 'Vragenlijsten' }}
+      options={{ label: 'ma.tabs.forms' }}
     />
     <Resource
       name="classification"
       list={<CategoryList />}
       edit={<CategoryEdit />}
       create={<CategoryCreate />}
-      options={{ label: 'Categorieën' }}
+      options={{ label: 'ma.tabs.categories' }}
       recordRepresentation="name"
     />
   </ReactAdmin>

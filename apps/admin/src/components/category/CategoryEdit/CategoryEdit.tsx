@@ -12,8 +12,8 @@ export const CategoryEdit = () => (
         </Toolbar>
       }
     >
-      <TextInput source="name" />
-      <TextInput source="form" readOnly />
+      <TextInput source="name" label="ma.fields.name" />
+      <TextInput source="form" label="ma.fields.form" readOnly />
     </SimpleForm>
   </Edit>
 )
