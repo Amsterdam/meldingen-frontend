@@ -1,10 +1,14 @@
-import { getSession } from 'next-auth/react'
+import { getSession, signIn } from 'next-auth/react'
 import simpleRestProvider from 'ra-data-simple-rest'
 import type { DataProvider } from 'react-admin'
 import { fetchUtils } from 'react-admin'
 
 const fetchJson = async (url: string, options: fetchUtils.Options = {}) => {
   const session = await getSession()
+
+  if (session?.error === 'RefreshAccessTokenError') {
+    signIn()
+  }
 
   const customHeaders = (options.headers ||
     new Headers({
