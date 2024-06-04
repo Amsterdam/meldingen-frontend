@@ -20,7 +20,6 @@ export const authOptions: NextAuthOptions = {
           accessToken: account.access_token,
           accessTokenExpired: account.expires_at && account.expires_at * 1000,
           refreshToken: account.refresh_token,
-          refreshTokenExpired: Date.now() + account.refresh_expires_in * 1000,
           user,
         }
       }
@@ -34,7 +33,7 @@ export const authOptions: NextAuthOptions = {
     },
     session: async ({ session, token }) => {
       session.accessToken = token.accessToken
-
+      session.error = token.error
       return session
     },
   },

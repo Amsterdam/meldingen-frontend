@@ -6,8 +6,6 @@ import type { JWT } from 'next-auth/jwt'
  * returns the old token and an error property
  */
 export const refreshAccessToken = async (token: JWT) => {
-  if (token.refreshTokenExpired && Date.now() > token.refreshTokenExpired) throw new Error()
-
   try {
     const response = await fetch(`${process.env.AUTH_ISSUER}/protocol/openid-connect/token`, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
