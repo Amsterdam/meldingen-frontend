@@ -6,6 +6,6 @@ import type { Ref } from 'react'
 
 export const LogoutButton = forwardRef((props, ref: Ref<HTMLAnchorElement>) => (
   <MenuItem href="#" onClick={() => signOut()} ref={ref} {...props}>
-    <ExitIcon /> Logout
+    <ExitIcon /> Uitloggen
   </MenuItem>
 ))
