@@ -1,17 +1,17 @@
-import { useSession } from 'next-auth/react'
+// import { useSession } from 'next-auth/react'
 
 export const useAuthenticatedFetch = async (url: string, options: RequestInit) => {
-  const { data } = useSession()
+  // const { data } = useSession()
 
-  if (!data) {
-    throw new Error('No session found')
-  }
+  // if (!data) {
+  //   throw new Error('No session found')
+  // }
 
   const response = await fetch(url, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${data.accessToken}`,
+      // Authorization: `Bearer ${data.accessToken}`,
     },
   })
 
