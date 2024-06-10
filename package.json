@@ -31,7 +31,7 @@
     "update-minor": "npm-check-updates --target minor --upgrade && npm install"
   },
   "dependencies": {
-    "@amsterdam/design-system-assets": "0.2.0",
+    "@amsterdam/design-system-assets": "0.2.1",
     "@amsterdam/design-system-css": "0.8.0",
     "@amsterdam/design-system-react": "0.8.0",
     "@amsterdam/design-system-tokens": "0.8.0",
