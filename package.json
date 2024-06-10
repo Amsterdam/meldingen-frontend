@@ -60,7 +60,7 @@
     "@nx/vite": "19.1.1",
     "@nx/web": "19.1.1",
     "@nx/workspace": "19.1.1",
-    "@swc-node/register": "1.9.1",
+    "@swc-node/register": "1.9.2",
     "@swc/core": "1.5.24",
     "@swc/helpers": "0.5.11",
     "@testing-library/react": "15.0.7",
