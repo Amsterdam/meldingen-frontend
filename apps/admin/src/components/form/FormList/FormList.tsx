@@ -1,6 +1,6 @@
 import { Datagrid, List, TextField, TextInput } from 'react-admin'
 
-const surveyFilters = [<TextInput label="Zoeken" source="q" alwaysOn />]
+const surveyFilters = [<TextInput label="ra.action.search" source="q" alwaysOn />]
 
 export const FormList = () => (
   <List filters={surveyFilters}>

@@ -3,6 +3,8 @@ import dynamic from 'next/dynamic'
 
 import type { FormioSchema } from '../../../types/formio'
 
+import nl from './translations/nl.json'
+
 const FormBuilder = dynamic(() => import('@meldingen/formio').then((mod) => mod.FormBuilder), {
   ssr: false,
   loading: () => <p>Loading...</p>,
@@ -18,6 +20,10 @@ export const Builder = ({ data, onChange }: BuilderProps) => (
     onChange={onChange}
     form={data ? { display: 'wizard', components: data } : { display: 'wizard' }}
     options={{
+      language: 'nl',
+      i18n: {
+        nl,
+      },
       noDefaultSubmitButton: true,
       builder: {
         basic: {

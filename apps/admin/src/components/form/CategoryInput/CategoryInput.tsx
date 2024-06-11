@@ -48,7 +48,7 @@ export const CategoryInput = () => {
 
   return (
     <>
-      <ReferenceInput source="classification" reference="classification" sort={{ field: 'name', order: 'ASC' }}>
+      <ReferenceInput reference="classification" sort={{ field: 'name', order: 'ASC' }} source="classification">
         <AutocompleteInput
           open={autocompleteOpen}
           onOpen={() => {
@@ -67,8 +67,8 @@ export const CategoryInput = () => {
       </ReferenceInput>
       <Confirm
         isOpen={dialogOpen}
-        title="Ontkoppel bestaande vragenlijst"
-        content="Hier haal je de gekoppelde vragenlijst offline en zet je de huidige vragenlijst online. Is dat wat je wilt?"
+        title="ma.dialog.overwriteClassification.title"
+        content="ma.dialog.overwriteClassification.content"
         onConfirm={handleDialogConfirm}
         onClose={handleDialogClose}
       />
