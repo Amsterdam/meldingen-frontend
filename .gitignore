@@ -44,6 +44,9 @@ Thumbs.db
 .next
 out
 
+# Nx
+.nx
+
 # Files that (sometimes) contain secrets
 *.der
 *.env
