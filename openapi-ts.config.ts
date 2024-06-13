@@ -8,7 +8,6 @@ export default defineConfig({
     lint: 'eslint',
     path: './libs/api-client/src',
   },
-
   services: {
     operationId: false,
   },
