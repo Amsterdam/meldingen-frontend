@@ -6,3 +6,6 @@ build
 coverage
 dist
 tmp
+
+# Ignore generated api client
+libs/api-client
