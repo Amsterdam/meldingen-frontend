@@ -63,7 +63,7 @@
     "@nx/web": "19.2.3",
     "@nx/workspace": "19.2.3",
     "@swc-node/register": "1.9.2",
-    "@swc/core": "1.5.28",
+    "@swc/core": "1.6.1",
     "@swc/helpers": "0.5.11",
     "@testing-library/react": "15.0.7",
     "@types/jest": "29.5.12",
