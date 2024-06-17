@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@meldingen/api-client": ["libs/api-client/src/index.ts"],
       "@meldingen/formio": ["libs/formio/src/index.ts"],
       "@meldingen/ui": ["libs/ui/src/index.ts"]
     }
