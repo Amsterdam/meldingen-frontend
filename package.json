@@ -59,7 +59,7 @@
     "@nx/js": "19.2.3",
     "@nx/next": "19.2.3",
     "@nx/react": "19.2.3",
-    "@nx/vite": "19.2.3",
+    "@nx/vite": "19.3.1",
     "@nx/web": "19.2.3",
     "@nx/workspace": "19.2.3",
     "@swc-node/register": "1.9.2",
