@@ -22,9 +22,8 @@ const nl = {
   ma: {
     dialog: {
       overwriteClassification: {
-        content:
-          'Hier haal je de gekoppelde vragenlijst offline en zet je de huidige vragenlijst online. Is dat wat je wilt?',
-        title: 'Ontkoppel bestaande vragenlijst',
+        content: 'De oude koppeling wordt hiermee verbroken.',
+        title: 'Let op, deze categorie was al gekoppeld aan een vragenlijst.',
       },
     },
   },
