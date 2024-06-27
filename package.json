@@ -40,7 +40,7 @@
     "formiojs": "4.21.0",
     "next": "14.2.4",
     "next-auth": "4.24.7",
-    "ra-data-fakerest": "4.16.19",
+    "ra-data-fakerest": "5.0.2",
     "ra-data-simple-rest": "4.16.19",
     "ra-i18n-polyglot": "4.16.19",
     "ra-language-dutch": "4.6.1",
