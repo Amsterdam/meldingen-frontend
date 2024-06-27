@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 import { Grid } from '@meldingen/ui'
 
-const mockCategoryId = '2'
+const mockCategoryId = '1'
 
 const FormRenderer = dynamic(() => import('@meldingen/formio').then((mod) => mod.FormRenderer), {
   ssr: false,
