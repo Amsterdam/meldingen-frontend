@@ -8,6 +8,8 @@ import type { StaticFormOutput } from '@meldingen/api-client'
 import { getStaticFormByFormType, postMelding } from '@meldingen/api-client'
 import { Grid } from '@meldingen/ui'
 
+import { useAppContext } from '../context/context'
+
 // import mockData from '../mocks/wizard-test.json'
 
 const FormRenderer = dynamic(() => import('@meldingen/formio').then((mod) => mod.FormRenderer), {
@@ -36,11 +38,8 @@ const addSubmitButton = (form: StaticFormOutput) => ({
 
 const Home = () => {
   const [primaryForm, setPrimaryForm] = useState<StaticFormOutput | null>(null)
-  const [data, setData] = useState<{ id: number; token: string; classification: number | null | undefined } | null>(
-    null,
-  )
-
   const router = useRouter()
+  const { setMeldingInfo } = useAppContext()
 
   const onSubmit = ({ data: formInputData }: { [key: string]: any[] }) => {
     const primaryQuestionKey = primaryForm?.components[0].key as keyof typeof formInputData
@@ -48,7 +47,7 @@ const Home = () => {
     if (!primaryQuestionKey) throw new Error('Primary question key not found')
 
     postMelding({ requestBody: { text: formInputData[primaryQuestionKey] } }).then((response) => {
-      setData({ id: response.id, token: response.token, classification: response.classification })
+      setMeldingInfo({ id: response.id, token: response.token, classification: response.classification })
       router.push('/aanvullende-vragen')
     })
   }
@@ -64,7 +63,7 @@ const Home = () => {
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
-        <FormRenderer form={primaryForm} onSubmit={onSubmit} />
+        <FormRenderer form={primaryForm} onSubmit={onSubmit} options={{ noAlerts: true }} />
       </Grid.Cell>
     </Grid>
   )
