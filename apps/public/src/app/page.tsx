@@ -25,9 +25,7 @@ const addSubmitButton = (form: StaticFormOutput) => ({
       type: 'button',
       key: 'submit',
       label: 'Submit',
-
       description: '',
-
       input: false,
       autoExpand: false,
       showCharCount: false,
@@ -63,7 +61,7 @@ const Home = () => {
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
-        <FormRenderer form={primaryForm} onSubmit={onSubmit} options={{ noAlerts: true }} />
+        <FormRenderer form={primaryForm} onSubmit={onSubmit} />
       </Grid.Cell>
     </Grid>
   )
