@@ -22,7 +22,7 @@
     "dev": "nx run-many --parallel --target=dev --projects=admin,public",
     "dev:admin": "nx dev admin",
     "dev:public": "nx dev public",
-    "generate-api-client": "openapi-ts && npm run lint:fix",
+    "generate-api-client": "openapi-ts",
     "lint": "markdownlint **/*.md && prettier --check . && nx run-many --target=lint,stylelint --exclude=api-client",
     "lint:fix": "markdownlint --fix **/*.md && prettier --write . && nx run-many --target=lint,stylelint --exclude=api-client --fix",
     "prepare": "husky",
