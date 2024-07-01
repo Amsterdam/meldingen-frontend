@@ -65,6 +65,7 @@
     "@swc-node/register": "1.9.2",
     "@swc/core": "1.6.5",
     "@swc/helpers": "0.5.11",
+    "@testing-library/jest-dom": "6.4.6",
     "@testing-library/react": "15.0.7",
     "@types/jest": "29.5.12",
     "@types/node": "20.14.9",
@@ -105,5 +106,6 @@
     "typescript": "5.5.2",
     "vite": "5.3.1",
     "vitest": "1.6.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
