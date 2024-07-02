@@ -11,7 +11,7 @@ import { Grid } from '@meldingen/ui'
 
 import { useMeldingContext } from '../context/meldingContext'
 
-type StaticFormWithSubmit = StaticFormOutput & { components: ComponentSchema[] }
+type StaticFormWithSubmit = Omit<StaticFormOutput, 'components'> & { components: ComponentSchema[] }
 
 // import mockData from '../mocks/wizard-test.json'
 
@@ -28,11 +28,7 @@ const addSubmitButton = (form: StaticFormOutput): StaticFormWithSubmit => ({
       type: 'button',
       key: 'submit',
       label: 'Submit',
-      description: '',
       input: false,
-      autoExpand: false,
-      showCharCount: false,
-      position: 0,
     },
   ],
 })
