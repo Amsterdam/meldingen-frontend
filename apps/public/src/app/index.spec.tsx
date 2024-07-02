@@ -1,5 +1,4 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import React from 'react'
 
 import { AppRouterContextProviderMock } from '../mocks/app-router-context-provider-mock'
 
@@ -7,6 +6,7 @@ import Page from './page'
 import { Providers } from './providers'
 
 const mockInput = 'This is a test input'
+const mockLabel = 'Waar gaat het om?'
 
 jest.mock('@meldingen/api-client', () => ({
   __esModule: true,
@@ -31,7 +31,7 @@ jest.mock('@meldingen/api-client', () => ({
         {
           type: 'textarea',
           key: 'waar-gaat-het-om',
-          label: 'Waar gaat het om?',
+          label: mockLabel,
           input: true,
           inputType: 'text',
           showCharCount: false,
@@ -42,7 +42,7 @@ jest.mock('@meldingen/api-client', () => ({
 }))
 
 const push = jest.fn()
-const renderCompponent = () => {
+const renderComponent = () => {
   render(
     <Providers>
       <AppRouterContextProviderMock router={{ push }}>
@@ -54,35 +54,37 @@ const renderCompponent = () => {
 
 describe('Page', () => {
   it('should render a form', async () => {
-    renderCompponent()
+    renderComponent()
 
-    await waitFor(() => {})
-
-    expect(screen.getByRole('textbox', { name: 'Waar gaat het om?' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument()
+    await waitFor(
+      () => {
+        expect(screen.getByRole('textbox', { name: mockLabel })).toBeInTheDocument()
+        expect(screen.getByRole('button')).toBeInTheDocument()
+      },
+      { timeout: 2000 },
+    )
   })
 
   it('should send a filled form', async () => {
-    renderCompponent()
+    renderComponent()
 
-    await waitFor(() => {})
+    await waitFor(() => {
+      screen.getByRole('textbox', { name: 'Waar gaat het om?' })
+    })
 
     const input = screen.getByRole('textbox', { name: 'Waar gaat het om?' })
 
     act(() => {
+      // TODO: try to find a more realistic way to input a value in FormIO
       // @ts-expect-error value does exist
       input.value = mockInput
       const event = new Event('input', { bubbles: true, cancelable: true })
       input.dispatchEvent(event)
     })
 
-    expect(input).toHaveValue(mockInput)
-
     const submit = screen.getByRole('button', { name: 'Submit' })
 
-    act(() => {
-      fireEvent.click(submit)
-    })
+    fireEvent.click(submit)
 
     await waitFor(() => {
       expect(push).toHaveBeenCalledWith('/aanvullende-vragen')

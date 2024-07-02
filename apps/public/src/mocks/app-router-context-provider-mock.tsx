@@ -1,6 +1,5 @@
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { AppRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime'
-import React from 'react'
 
 export type AppRouterContextProviderMockProps = {
   router: Partial<AppRouterInstance>

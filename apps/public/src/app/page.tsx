@@ -1,5 +1,6 @@
 'use client'
 
+import type { ComponentSchema } from 'formiojs'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -8,7 +9,9 @@ import type { StaticFormOutput } from '@meldingen/api-client'
 import { getStaticFormByFormType, postMelding } from '@meldingen/api-client'
 import { Grid } from '@meldingen/ui'
 
-import { useAppContext } from '../context/context'
+import { useMeldingContext } from '../context/meldingContext'
+
+type StaticFormWithSubmit = StaticFormOutput & { components: ComponentSchema[] }
 
 // import mockData from '../mocks/wizard-test.json'
 
@@ -17,7 +20,7 @@ const FormRenderer = dynamic(() => import('@meldingen/formio').then((mod) => mod
   loading: () => <p>Loading...</p>,
 })
 
-const addSubmitButton = (form: StaticFormOutput) => ({
+const addSubmitButton = (form: StaticFormOutput): StaticFormWithSubmit => ({
   ...form,
   components: [
     ...form.components,
@@ -35,17 +38,13 @@ const addSubmitButton = (form: StaticFormOutput) => ({
 })
 
 const Home = () => {
-  const [primaryForm, setPrimaryForm] = useState<StaticFormOutput | null>(null)
+  const [primaryForm, setPrimaryForm] = useState<StaticFormWithSubmit | null>(null)
   const router = useRouter()
-  const { setMeldingInfo } = useAppContext()
+  const { setData } = useMeldingContext()
 
-  const onSubmit = ({ data: formInputData }: { [key: string]: any[] }) => {
-    const primaryQuestionKey = primaryForm?.components[0].key as keyof typeof formInputData
-
-    if (!primaryQuestionKey) throw new Error('Primary question key not found')
-
-    postMelding({ requestBody: { text: formInputData[primaryQuestionKey] } }).then((response) => {
-      setMeldingInfo({ id: response.id, token: response.token, classification: response.classification })
+  const onSubmit = ({ data }: { [key: string]: any }) => {
+    postMelding({ requestBody: { text: data[Object.keys(data)[0]] } }).then(({ id, token, classification }) => {
+      setData({ id, token, classification })
       router.push('/aanvullende-vragen')
     })
   }
