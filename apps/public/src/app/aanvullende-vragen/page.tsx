@@ -48,6 +48,14 @@ const AanvullendeVragen = () => {
             formInstance.current = instance
           }}
           onNextPage={(instance: any) => setPage(instance.page)}
+          options={{
+            language: 'nl',
+            i18n: {
+              nl: {
+                next: 'Volgende vraag',
+              },
+            },
+          }}
         />
       </Grid.Cell>
     </Grid>
