@@ -1,12 +1,21 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { AppRouterContextProviderMock } from '../../mocks/app-router-context-provider-mock'
+import { NextRouterContextProviderMock } from '../../mocks/NextRouterContextProviderMock'
 
 import Page from './page'
 
+const push = jest.fn()
+const renderPage = () => {
+  render(
+    <NextRouterContextProviderMock router={{ push }}>
+      <Page />
+    </NextRouterContextProviderMock>,
+  )
+}
+
 describe('Aanvullende vragen page', () => {
   it('should render a form', async () => {
-    render(<Page />)
+    renderPage()
 
     await waitFor(() => {
       expect(screen.getByRole('textbox', { name: 'Waar is het?' })).toBeInTheDocument()
@@ -14,7 +23,7 @@ describe('Aanvullende vragen page', () => {
   })
 
   it('should render a submit button', async () => {
-    render(<Page />)
+    renderPage()
 
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'Volgende vraag' })).toBeInTheDocument()
@@ -22,18 +31,13 @@ describe('Aanvullende vragen page', () => {
   })
 
   it('should render a back link', async () => {
-    render(<Page />)
+    renderPage()
 
     expect(screen.getByRole('link', { name: 'Vorige vraag' })).toBeInTheDocument()
   })
 
   it('should navigate to home page after click on back link on first page', async () => {
-    const push = jest.fn()
-    render(
-      <AppRouterContextProviderMock router={{ push }}>
-        <Page />
-      </AppRouterContextProviderMock>,
-    )
+    renderPage()
 
     const backLink = screen.getByRole('link', { name: 'Vorige vraag' })
 
@@ -47,7 +51,7 @@ describe('Aanvullende vragen page', () => {
   })
 
   it('should navigate to second page after click on submit button on first page', async () => {
-    render(<Page />)
+    renderPage()
 
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'Volgende vraag' })).toBeInTheDocument()
@@ -65,7 +69,7 @@ describe('Aanvullende vragen page', () => {
   })
 
   it('should navigate to first page after click on back link on second page', async () => {
-    render(<Page />)
+    renderPage()
 
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'Volgende vraag' })).toBeInTheDocument()
