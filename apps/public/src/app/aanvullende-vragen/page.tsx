@@ -19,9 +19,7 @@ const FormRenderer = dynamic(() => import('@meldingen/formio').then((mod) => mod
 
 const AanvullendeVragen = () => {
   const [page, setPage] = useState<number>(0)
-
   const formInstance = useRef<any>(null)
-
   const router = useRouter()
 
   const handleClick = () => {
