@@ -47,9 +47,9 @@ const Home = () => {
 
   if (!primaryForm) {
     getStaticFormByFormType({ formType: 'primary' }).then((response) => {
-      const withSubmitButton = addSubmitButton(response)
+      const responseWithSubmitButton = addSubmitButton(response)
 
-      setPrimaryForm(withSubmitButton)
+      setPrimaryForm(responseWithSubmitButton)
     })
   }
 
