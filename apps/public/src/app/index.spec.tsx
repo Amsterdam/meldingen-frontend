@@ -1,9 +1,9 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
+import { MeldingContextProvider } from '../context/MeldingContextProvider'
 import { NextRouterContextProviderMock } from '../mocks/NextRouterContextProviderMock'
 
 import Page from './page'
-import { Providers } from './providers'
 
 const mockInput = 'This is a test input'
 const mockLabel = 'Waar gaat het om?'
@@ -44,11 +44,11 @@ jest.mock('@meldingen/api-client', () => ({
 const push = jest.fn()
 const renderComponent = () => {
   render(
-    <Providers>
+    <MeldingContextProvider>
       <NextRouterContextProviderMock router={{ push }}>
         <Page />
       </NextRouterContextProviderMock>
-    </Providers>,
+    </MeldingContextProvider>,
   )
 }
 

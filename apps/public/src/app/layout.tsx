@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { Footer, Header, Screen } from '@meldingen/ui'
 
-import { Providers } from './providers'
+import { MeldingContextProvider } from '../context/MeldingContextProvider'
 
 import '@amsterdam/design-system-tokens/dist/index.css'
 import '@amsterdam/design-system-assets/font/index.css'
@@ -17,13 +17,13 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => (
   <html lang="nl">
     <body>
-      <Providers>
+      <MeldingContextProvider>
         <Screen maxWidth="wide">
           <Header />
           <main id="main">{children}</main>
           <Footer />
         </Screen>
-      </Providers>
+      </MeldingContextProvider>
     </body>
   </html>
 )

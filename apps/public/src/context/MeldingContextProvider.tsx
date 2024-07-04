@@ -1,5 +1,7 @@
-import { createContext, useContext } from 'react'
-import type { FC, ReactNode } from 'react'
+'use client'
+
+import { createContext, useContext, useMemo, useState } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 
 export interface Data {
   id: number
@@ -9,7 +11,7 @@ export interface Data {
 
 interface MeldingContextType {
   data: Data | null
-  setData: (meldingInfo: Data) => void
+  setData: (data: Data) => void
 }
 
 export const initialValue: MeldingContextType = {
@@ -30,11 +32,11 @@ export const useMeldingContext = (): MeldingContextType => {
 
   return context
 }
-interface Props {
-  children: ReactNode
-  value: MeldingContextType
-}
 
-export const MeldingProvider: FC<Props> = ({ value, children }) => (
-  <MeldingContext.Provider value={value}>{children}</MeldingContext.Provider>
-)
+export const MeldingContextProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [data, setData] = useState<Data | null>(null)
+
+  const value = useMemo(() => ({ data, setData }), [data])
+
+  return <MeldingContext.Provider value={value}>{children}</MeldingContext.Provider>
+}

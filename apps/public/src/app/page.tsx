@@ -9,7 +9,7 @@ import type { StaticFormOutput } from '@meldingen/api-client'
 import { getStaticFormByFormType, postMelding } from '@meldingen/api-client'
 import { Grid } from '@meldingen/ui'
 
-import { useMeldingContext } from '../context/meldingContext'
+import { useMeldingContext } from '../context/MeldingContextProvider'
 
 type StaticFormWithSubmit = Omit<StaticFormOutput, 'components'> & { components: ComponentSchema[] }
 
