@@ -25,7 +25,16 @@ const fetchJson = async (url: string, options: fetchUtils.Options = {}) => {
   return fetchUtils.fetchJson(url, newOptions)
 }
 
-export const dataProvider = (apiUrl = 'http://localhost:8000', httpClient = fetchJson): DataProvider => ({
+const customHttpClient = (url, options = {}) => {
+  if (!options.headers) {
+    options.headers = new Headers({ Accept: 'application/json' })
+  }
+  const token = localStorage.getItem('token')
+  options.headers.set('Authorization', `Bearer ${token}`)
+  return fetchUtils.fetchJson(url, options)
+}
+
+export const dataProvider = (apiUrl = 'http://localhost:8000', httpClient = customHttpClient): DataProvider => ({
   ...simpleRestProvider(apiUrl, httpClient),
   update: (resource, params) => {
     // 'form' updates use PUT requests, all other updates use PATCH requests
@@ -45,10 +54,12 @@ export const dataProvider = (apiUrl = 'http://localhost:8000', httpClient = fetc
 export const keyCloakTokenDataProviderBuilder = (dataProvider: DataProvider, keycloak: Keycloak) =>
   new Proxy(dataProvider, {
     get: (target, name) => (resource, params) => {
+      console.log('keycloak', keycloak)
       if (typeof name === 'symbol' || name === 'then') {
         return
       }
-      console.log(`Simulating call to dataprovider.${name}() with keycloak token: ${keycloak.token}`)
+      console.log(`Simulating call to dataprovider.${name}() with keycloak token: ${keycloak.idToken}`)
+
       return dataProvider[name](resource, params)
     },
   })

@@ -17,25 +17,23 @@ import { FormEdit } from '../../form/FormEdit'
 import { FormList } from '../../form/FormList'
 
 import { CustomLayout } from './CustomLayout'
-// import { dataProvider } from './dataProvider'
+import { dataProvider as myDataProvider, keyCloakTokenDataProviderBuilder } from './dataProvider'
 // import { MainForm } from '../MainForm'
 
 // import { Admin, Resource, AuthProvider, DataProvider } from 'react-admin';
 
 const config: KeycloakConfig = {
-  url: 'http://localhost:8002/',
+  url: "http://localhost:8002/",
   realm: 'meldingen',
   clientId: `meldingen`,
 }
 
 // here you can set options for the keycloak client
-const initOptions: KeycloakInitOptions = {
-  onLoad: 'login-required',
-  checkLoginIframe: false,
-}
+const initOptions: KeycloakInitOptions = { onLoad: 'login-required', checkLoginIframe: false}
 
 // here you can implement the permission mapping logic for react-admin
 const getPermissions = (decoded: KeycloakTokenParsed) => {
+  console.log("---  decoded:", decoded)
   const roles = decoded?.realm_access?.roles
   if (!roles) {
     return false
@@ -53,27 +51,36 @@ const i18nProvider = polyglotI18nProvider(() => nl, 'nl')
 
 export const Admin = () => {
   const [keycloak, setKeycloak] = useState<Keycloak>(undefined)
+  // console.log("---  keycloak:", keycloak)
   const authProvider = useRef<AuthProvider>(undefined)
+  // console.log("---  authProvider:", authProvider)
   const dataProvider = useRef<DataProvider>(undefined)
+  // console.log("---  dataProvider:", dataProvider)
+  
+  const keycloakClient = new Keycloak(config)
+  console.log("---  keycloakClient:", keycloakClient)
+  const initKeyCloakClient = async () => {
+    // console.log('init keycloak');
+    
+    
+    // init the keycloak client
+    // console.log("---  keycloakClient:", keycloakClient)
+    await keycloakClient.init(initOptions)
+    // console.log("---  keycloakClient:", keycloakClient)
+    // use keycloakAuthProvider to create an authProvider
+    authProvider.current = keycloakAuthProvider(keycloakClient, raKeycloakOptions)
 
+    dataProvider.current = keyCloakTokenDataProviderBuilder(myDataProvider(), keycloakClient)
+    // example dataProvider using the httpClient helper
+    // dataProvider = simpleRestProvider('http://localhost:8000', httpClient(keycloakClient))
+    setKeycloak(keycloakClient)
+  }
   useEffect(() => {
-    const initKeyCloakClient = async () => {
-      // init the keycloak client
-      const keycloakClient = new Keycloak(config)
-      console.log('---  keycloakClient:', keycloakClient)
-      await keycloakClient.init(initOptions)
-      // use keycloakAuthProvider to create an authProvider
-      authProvider.current = keycloakAuthProvider(keycloakClient, raKeycloakOptions)
-      // example dataProvider using the httpClient helper
-      dataProvider.current = simpleRestProvider('http://localhost:8000', httpClient(keycloakClient))
-      setKeycloak(keycloakClient)
-    }
-    if (!keycloak) {
-      console.log('--- INIT EFFECT ---')
-
+    // if (keycloakClient === undefined) {
+      console.log("---  keycloak init:", keycloak)
       initKeyCloakClient()
-    }
-  }, [keycloak])
+    // }
+  }, [])
 
   // hide the admin until the keycloak client is ready
   if (!keycloak) return <p>Loading...</p>
@@ -86,13 +93,13 @@ export const Admin = () => {
       i18nProvider={i18nProvider}
     >
       {/* <Resource name="landingspagina" list={<MainForm />} /> */}
-      <Resource
+      {/* <Resource
         name="form"
         list={<FormList />}
         edit={<FormEdit />}
         create={<FormCreate />}
         options={{ label: 'Vragenlijsten' }}
-      />
+      /> */}
       <Resource
         name="classification"
         list={<CategoryList />}
