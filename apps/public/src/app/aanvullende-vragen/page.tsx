@@ -5,6 +5,7 @@
 import { Link } from '@amsterdam/design-system-react'
 import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 
 import { Grid } from '@meldingen/ui'
@@ -21,11 +22,17 @@ const AanvullendeVragen = () => {
 
   const formInstance = useRef<any>(null)
 
+  const router = useRouter()
+
   const handleClick = () => {
     if (formInstance.current) {
       formInstance.current.setPage(page - 1)
       setPage(page - 1)
     }
+  }
+
+  const handleSubmit = () => {
+    router.push('/bedankt')
   }
 
   return (
@@ -48,11 +55,13 @@ const AanvullendeVragen = () => {
             formInstance.current = instance
           }}
           onNextPage={(instance: any) => setPage(instance.page)}
+          onSubmit={handleSubmit}
           options={{
             language: 'nl',
             i18n: {
               nl: {
                 next: 'Volgende vraag',
+                submit: 'Volgende vraag',
               },
             },
           }}
