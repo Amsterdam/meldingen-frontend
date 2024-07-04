@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { AppRouterContextProviderMock } from '../mocks/app-router-context-provider-mock'
+import { NextRouterContextProviderMock } from '../mocks/NextRouterContextProviderMock'
 
 import Page from './page'
 import { Providers } from './providers'
@@ -45,9 +45,9 @@ const push = jest.fn()
 const renderComponent = () => {
   render(
     <Providers>
-      <AppRouterContextProviderMock router={{ push }}>
+      <NextRouterContextProviderMock router={{ push }}>
         <Page />
-      </AppRouterContextProviderMock>
+      </NextRouterContextProviderMock>
     </Providers>,
   )
 }

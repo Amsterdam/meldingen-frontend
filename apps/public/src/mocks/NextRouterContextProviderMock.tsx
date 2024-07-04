@@ -1,15 +1,15 @@
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { AppRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 
-export type AppRouterContextProviderMockProps = {
+export type NextRouterContextProviderMockProps = {
   router: Partial<AppRouterInstance>
   children: React.ReactNode
 }
 
-export const AppRouterContextProviderMock = ({
+export const NextRouterContextProviderMock = ({
   router,
   children,
-}: AppRouterContextProviderMockProps): React.ReactNode => {
+}: NextRouterContextProviderMockProps): React.ReactNode => {
   // eslint-disable-next-line react/jsx-no-constructed-context-values
   const mockedRouter: AppRouterInstance = {
     back: jest.fn(),
