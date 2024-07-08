@@ -2,11 +2,10 @@
 
 import type {
   KeycloakConfig,
-  KeycloakTokenParsed,
+  // KeycloakTokenParsed,
   KeycloakInitOptions,
 } from 'keycloak-js';
 import Keycloak from 'keycloak-js';
-import simpleRestProvider from 'ra-data-simple-rest';
 import { keycloakAuthProvider, httpClient } from 'ra-keycloak';
 import { useEffect, useRef, useState } from "react"
 import type { AuthProvider, DataProvider } from 'react-admin';
@@ -18,7 +17,7 @@ import { CategoryList } from '../../category/CategoryList'
 import { FormCreate } from '../../form/FormCreate'
 import { FormEdit } from '../../form/FormEdit'
 import { FormList } from '../../form/FormList'
-import { MainForm } from "../../main-form/MainForm";
+// import { MainForm } from "../../main-form/MainForm";
 
 import { CustomLayout } from './CustomLayout'
 import { dataProvider } from './dataProvider'
@@ -94,19 +93,19 @@ const config: KeycloakConfig = {
 const initOptions: KeycloakInitOptions = { onLoad: "login-required"};
 
 // here you can implement the permission mapping logic for react-admin
-const getPermissions = (decoded: KeycloakTokenParsed) => {
-  const roles = decoded?.realm_access?.roles;
-  if (!roles) {
-      return false;
-  }
-  if (roles.includes('admin')) return 'admin';
-  if (roles.includes('user')) return 'user';
-  return false;
-};
+// const getPermissions = (decoded: KeycloakTokenParsed) => {
+//   const roles = decoded?.realm_access?.roles;
+//   if (!roles) {
+//       return false;
+//   }
+//   if (roles.includes('admin')) return 'admin';
+//   if (roles.includes('user')) return 'user';
+//   return false;
+// };
 
-const raKeycloakOptions = {
-  onPermissions: getPermissions,
-};
+// const raKeycloakOptions = {
+//   onPermissions: getPermissions,
+// };
 
 export const Admin = () => {
   
@@ -120,20 +119,18 @@ export const Admin = () => {
       // perform an action like state update
       
     const initKeyCloakClient = async () => {
-      console.log('init keyCloak', keycloak);
+      
       // init the keycloak client
       const keycloakClient = new Keycloak(config);
       await keycloakClient.init(initOptions)
       // use keycloakAuthProvider to create an authProvider
       authProvider.current = keycloakAuthProvider(
             keycloakClient,
-            raKeycloakOptions
+            // raKeycloakOptions
         );
         // example dataProvider using the httpClient helper
-        dataProviderRef.current = simpleRestProvider(
-              'http://localhost:8000/',
-              httpClient(keycloakClient)
-          );
+        dataProviderRef.current = dataProvider('http://localhost:8000', httpClient(keycloakClient));
+
           setKeycloak(keycloakClient);
       };
     if (!keycloak) {
@@ -147,16 +144,17 @@ export const Admin = () => {
   // hide the admin until the keycloak client is ready
   if (!keycloak) return <p>Loading...</p>;
   return (
+
   <ReactAdmin layout={CustomLayout}  dataProvider={dataProviderRef.current} authProvider={authProvider.current}
   i18nProvider={i18nProvider}>
     {/* <Resource name="landingspagina" list={<MainForm />} /> */}
-    {/* <Resource name="form" list={<FormList />} edit={<FormEdit />} create={<FormCreate />} /> */}
-    {/* <Resource
+    <Resource name="form" list={<FormList />} edit={<FormEdit />} create={<FormCreate />} />
+    <Resource
       name="classification"
       list={<CategoryList />}
       edit={<CategoryEdit />}
       create={<CategoryCreate />}
       recordRepresentation="name"
-    /> */}
+    />
   </ReactAdmin>
 )}
