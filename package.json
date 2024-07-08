@@ -41,7 +41,7 @@
     "next": "14.2.4",
     "next-auth": "4.24.7",
     "ra-data-fakerest": "4.16.19",
-    "ra-data-simple-rest": "4.16.19",
+    "ra-data-simple-rest": "5.0.3",
     "ra-i18n-polyglot": "4.16.19",
     "ra-language-dutch": "4.6.1",
     "react": "18.3.1",
