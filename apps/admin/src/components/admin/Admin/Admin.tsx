@@ -83,7 +83,7 @@ const config: KeycloakConfig = {
 }
 
 // here you can set options for the keycloak client
-const initOptions: KeycloakInitOptions = { onLoad: 'login-required' }
+const initOptions: KeycloakInitOptions = { onLoad: 'login-required', checkLoginIframe: false }
 
 export const Admin = () => {
   const [keycloak, setKeycloak] = useState<Keycloak | undefined>(undefined)
