@@ -134,7 +134,7 @@ export const Admin = () => {
 
   // hide the admin until the keycloak client is ready
   if (!keycloak) return <p>Loading...</p>
-
+  console.log('authProvider.current ', authProvider.current)
   return (
     <ReactAdmin
       layout={CustomLayout}
