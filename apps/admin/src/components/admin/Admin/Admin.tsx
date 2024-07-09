@@ -84,9 +84,9 @@ import { i18nProvider } from './i18nProvider'
 // })
 
 const config: KeycloakConfig = {
-  url: 'http://localhost:8002/',
-  realm: 'meldingen',
-  clientId: 'meldingen',
+  url: process.env.AUTH_URL || "",
+  realm: process.env.AUTH_REALM || "",
+  clientId: process.env.CLIENT_ID || "",
 };
 
 // here you can set options for the keycloak client
@@ -116,12 +116,26 @@ export const Admin = () => {
   useEffect(() => {
     
     const timerId = setTimeout(() => {
-      // perform an action like state update
-      
     const initKeyCloakClient = async () => {
       
       // init the keycloak client
       const keycloakClient = new Keycloak(config);
+
+      keycloakClient.onTokenExpired = () => {
+        keycloakClient.updateToken(5).then((refreshed) => {
+          if (refreshed) {
+              console.log('Token refreshed', refreshed);
+          } else {
+              console.log('Token not refreshed, valid for', Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000), 'seconds');
+          }
+      }).catch(() => {
+          console.error('Failed to refresh token');
+          // Optionally, you can force a login in case of a failure to refresh the token
+          keycloakClient.login();
+      });
+      }
+
+
       await keycloakClient.init(initOptions)
       // use keycloakAuthProvider to create an authProvider
       authProvider.current = keycloakAuthProvider(
@@ -129,7 +143,7 @@ export const Admin = () => {
             // raKeycloakOptions
         );
         // example dataProvider using the httpClient helper
-        dataProviderRef.current = dataProvider('http://localhost:8000', httpClient(keycloakClient));
+        dataProviderRef.current = dataProvider(process.env.BACKEND_URL, httpClient(keycloakClient));
 
           setKeycloak(keycloakClient);
       };
@@ -144,7 +158,6 @@ export const Admin = () => {
   // hide the admin until the keycloak client is ready
   if (!keycloak) return <p>Loading...</p>;
   return (
-
   <ReactAdmin layout={CustomLayout}  dataProvider={dataProviderRef.current} authProvider={authProvider.current}
   i18nProvider={i18nProvider}>
     {/* <Resource name="landingspagina" list={<MainForm />} /> */}
