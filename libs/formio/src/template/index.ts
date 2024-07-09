@@ -10,11 +10,11 @@ export const template = {
   button: {
     form: button,
   },
-  cssClasses: {
-    'form-group': 'ams-field',
-  },
   component: {
     form: component,
+  },
+  cssClasses: {
+    'form-group': 'ams-field',
   },
   field: {
     form: field,
