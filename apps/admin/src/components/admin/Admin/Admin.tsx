@@ -1,14 +1,10 @@
 // import fakeDataProvider from 'ra-data-fakerest'
 
-import type {
-  KeycloakConfig,
-  // KeycloakTokenParsed,
-  KeycloakInitOptions,
-} from 'keycloak-js';
-import Keycloak from 'keycloak-js';
-import { keycloakAuthProvider, httpClient } from 'ra-keycloak';
-import { useEffect, useRef, useState } from "react"
-import type { AuthProvider, DataProvider } from 'react-admin';
+import type { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js'
+import Keycloak from 'keycloak-js'
+import { keycloakAuthProvider, httpClient } from 'ra-keycloak'
+import { useEffect, useRef, useState } from 'react'
+import type { AuthProvider, DataProvider } from 'react-admin'
 import { Admin as ReactAdmin, Resource } from 'react-admin'
 
 import { CategoryCreate } from '../../category/CategoryCreate/CategoryCreate'
@@ -84,90 +80,77 @@ import { i18nProvider } from './i18nProvider'
 // })
 
 const config: KeycloakConfig = {
-  url: process.env.AUTH_URL || "",
-  realm: process.env.AUTH_REALM || "",
-  clientId: process.env.CLIENT_ID || "",
-};
+  url: 'http://localhost:8002',
+  realm: 'meldingen',
+  clientId: `meldingen`,
+}
 
 // here you can set options for the keycloak client
-const initOptions: KeycloakInitOptions = { onLoad: "login-required"};
-
-// here you can implement the permission mapping logic for react-admin
-// const getPermissions = (decoded: KeycloakTokenParsed) => {
-//   const roles = decoded?.realm_access?.roles;
-//   if (!roles) {
-//       return false;
-//   }
-//   if (roles.includes('admin')) return 'admin';
-//   if (roles.includes('user')) return 'user';
-//   return false;
-// };
-
-// const raKeycloakOptions = {
-//   onPermissions: getPermissions,
-// };
+const initOptions: KeycloakInitOptions = { onLoad: 'login-required' }
 
 export const Admin = () => {
-  
-  const [keycloak, setKeycloak] = useState<Keycloak | undefined>(undefined);
-  const authProvider = useRef<AuthProvider | undefined>(undefined);
-  const dataProviderRef = useRef<DataProvider | undefined>(dataProvider());
+  const [keycloak, setKeycloak] = useState<Keycloak | undefined>(undefined)
+  const authProvider = useRef<AuthProvider | undefined>(undefined)
+  const dataProviderRef = useRef<DataProvider | undefined>(dataProvider())
 
   useEffect(() => {
-    
     const timerId = setTimeout(() => {
-    const initKeyCloakClient = async () => {
-      
-      // init the keycloak client
-      const keycloakClient = new Keycloak(config);
+      const initKeyCloakClient = async () => {
+        const keycloakClient = new Keycloak(config)
 
-      keycloakClient.onTokenExpired = () => {
-        keycloakClient.updateToken(5).then((refreshed) => {
-          if (refreshed) {
-              console.log('Token refreshed', refreshed);
-          } else {
-              console.log('Token not refreshed, valid for', Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000), 'seconds');
-          }
-      }).catch(() => {
-          console.error('Failed to refresh token');
-          // Optionally, you can force a login in case of a failure to refresh the token
-          keycloakClient.login();
-      });
+        keycloakClient.onTokenExpired = () => {
+          keycloakClient
+            .updateToken(5)
+            .then((refreshed) => {
+              if (refreshed) {
+                // eslint-disable-next-line no-console
+                console.log('Token refreshed', refreshed)
+              } else {
+                // eslint-disable-next-line no-console
+                console.log('Token not refreshed')
+              }
+            })
+            .catch(() => {
+              // eslint-disable-next-line no-console
+              console.error('Failed to refresh token')
+              keycloakClient.login()
+            })
+        }
+
+        await keycloakClient.init(initOptions)
+
+        authProvider.current = keycloakAuthProvider(keycloakClient)
+        dataProviderRef.current = dataProvider(process.env.BACKEND_URL, httpClient(keycloakClient))
+
+        setKeycloak(keycloakClient)
       }
+      if (!keycloak) {
+        initKeyCloakClient()
+      }
+    }, 0)
 
-
-      await keycloakClient.init(initOptions)
-      // use keycloakAuthProvider to create an authProvider
-      authProvider.current = keycloakAuthProvider(
-            keycloakClient,
-            // raKeycloakOptions
-        );
-        // example dataProvider using the httpClient helper
-        dataProviderRef.current = dataProvider(process.env.BACKEND_URL, httpClient(keycloakClient));
-
-          setKeycloak(keycloakClient);
-      };
-    if (!keycloak) {
-        initKeyCloakClient();
-    }
-    }, 0);
-    
-      return () => clearTimeout(timerId);
-  }, [keycloak]);
+    return () => clearTimeout(timerId)
+  }, [keycloak])
 
   // hide the admin until the keycloak client is ready
-  if (!keycloak) return <p>Loading...</p>;
+  if (!keycloak) return <p>Loading...</p>
+
   return (
-  <ReactAdmin layout={CustomLayout}  dataProvider={dataProviderRef.current} authProvider={authProvider.current}
-  i18nProvider={i18nProvider}>
-    {/* <Resource name="landingspagina" list={<MainForm />} /> */}
-    <Resource name="form" list={<FormList />} edit={<FormEdit />} create={<FormCreate />} />
-    <Resource
-      name="classification"
-      list={<CategoryList />}
-      edit={<CategoryEdit />}
-      create={<CategoryCreate />}
-      recordRepresentation="name"
-    />
-  </ReactAdmin>
-)}
+    <ReactAdmin
+      layout={CustomLayout}
+      dataProvider={dataProviderRef.current}
+      authProvider={authProvider.current}
+      i18nProvider={i18nProvider}
+    >
+      {/* <Resource name="landingspagina" list={<MainForm />} /> */}
+      <Resource name="form" list={<FormList />} edit={<FormEdit />} create={<FormCreate />} />
+      <Resource
+        name="classification"
+        list={<CategoryList />}
+        edit={<CategoryEdit />}
+        create={<CategoryCreate />}
+        recordRepresentation="name"
+      />
+    </ReactAdmin>
+  )
+}
