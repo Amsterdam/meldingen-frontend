@@ -1,3 +1,4 @@
+import { button } from './button'
 import { component } from './component'
 import { field } from './field'
 import { html } from './html'
@@ -6,6 +7,12 @@ import { label } from './label'
 import { webform } from './webform'
 
 export const template = {
+  button: {
+    form: button,
+  },
+  cssClasses: {
+    'form-group': 'ams-field',
+  },
   component: {
     form: component,
   },
