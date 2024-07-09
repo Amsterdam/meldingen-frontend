@@ -4,6 +4,8 @@ import { html } from './html'
 import { input } from './input'
 import { label } from './label'
 import { webform } from './webform'
+import { wizard } from './wizard'
+import { wizardNav } from './wizardNav'
 
 export const template = {
   component: {
@@ -23,5 +25,11 @@ export const template = {
   },
   webform: {
     form: webform,
+  },
+  wizard: {
+    form: wizard,
+  },
+  wizardNav: {
+    form: wizardNav,
   },
 }
