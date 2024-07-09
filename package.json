@@ -53,6 +53,7 @@
     "formiojs": "4.20.0",
     "keycloak-js": "25.0.1",
     "next": "14.2.3",
+    "next-auth": "4.24.7",
     "ra-data-fakerest": "4.16.17",
     "ra-data-simple-rest": "4.16.17",
     "ra-i18n-polyglot": "4.16.17",
