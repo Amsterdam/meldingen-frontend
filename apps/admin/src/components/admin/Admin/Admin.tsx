@@ -13,13 +13,10 @@ import { CategoryList } from '../../category/CategoryList'
 import { FormCreate } from '../../form/FormCreate'
 import { FormEdit } from '../../form/FormEdit'
 import { FormList } from '../../form/FormList'
-// import { MainForm } from "../../main-form/MainForm";
 
 import { CustomLayout } from './CustomLayout'
 import { dataProvider } from './dataProvider'
 import { i18nProvider } from './i18nProvider'
-
-// import { MainForm } from '../MainForm'
 
 // const dataProvider = fakeDataProvider({
 //   classification: [
@@ -91,7 +88,7 @@ const initOptions: KeycloakInitOptions = { onLoad: 'login-required' }
 export const Admin = () => {
   const [keycloak, setKeycloak] = useState<Keycloak | undefined>(undefined)
   const authProvider = useRef<AuthProvider | undefined>(undefined)
-  const dataProviderRef = useRef<DataProvider | undefined>(dataProvider())
+  const dataProviderRef = useRef<DataProvider | undefined>()
 
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -120,7 +117,7 @@ export const Admin = () => {
         await keycloakClient.init(initOptions)
 
         authProvider.current = keycloakAuthProvider(keycloakClient)
-        dataProviderRef.current = dataProvider(process.env.BACKEND_URL, httpClient(keycloakClient))
+        dataProviderRef.current = dataProvider(httpClient(keycloakClient), process.env.BACKEND_URL)
 
         setKeycloak(keycloakClient)
       }
@@ -142,7 +139,6 @@ export const Admin = () => {
       authProvider={authProvider.current}
       i18nProvider={i18nProvider}
     >
-      {/* <Resource name="landingspagina" list={<MainForm />} /> */}
       <Resource name="form" list={<FormList />} edit={<FormEdit />} create={<FormCreate />} />
       <Resource
         name="classification"
