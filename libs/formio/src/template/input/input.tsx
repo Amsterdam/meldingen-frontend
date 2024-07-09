@@ -9,7 +9,7 @@ export const input = (ctx: any) => {
   return `
   <${ctx.input.type}
     ${generateAttrs()}
-    aria-describedby="${ctx.id}-descr"
+    ${ctx.component.description ? `aria-describedby="${ctx.id}-descr"` : ''}
     id="${ctx.instance.id}-${ctx.component.key}"
     ref="${ctx.input.ref ? ctx.input.ref : 'input'}"
     ${ctx.input.type !== 'textarea' ? `type="${ctx.input.attr.type}"` : undefined}
