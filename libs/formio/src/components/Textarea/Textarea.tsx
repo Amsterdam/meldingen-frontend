@@ -1,5 +1,3 @@
-'use client'
-
 import { Components } from '@formio/react'
 
 const FormioTextArea = (Components as any).components.textarea

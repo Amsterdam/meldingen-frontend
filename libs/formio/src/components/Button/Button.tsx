@@ -1,5 +1,3 @@
-'use client'
-
 import { Components } from '@formio/react'
 
 const FormioButton = (Components as any).components.button
