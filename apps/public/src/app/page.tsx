@@ -34,7 +34,7 @@ const addSubmitButton = (form: StaticFormOutput): StaticFormWithSubmit => ({
 })
 
 const Home = () => {
-  const [primaryForm, setPrimaryForm] = useState<StaticFormWithSubmit | null>(null)
+  const [primaryForm, setPrimaryForm] = useState<StaticFormWithSubmit | undefined>()
   const router = useRouter()
   const { setData } = useMeldingContext()
 
