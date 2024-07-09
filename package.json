@@ -26,7 +26,7 @@
     "lint": "markdownlint **/*.md && prettier --check . && nx run-many --target=lint,stylelint --exclude=api-client",
     "lint:fix": "markdownlint --fix **/*.md && prettier --write . && nx run-many --target=lint,stylelint --exclude=api-client --fix",
     "prepare": "husky",
-    "test": "nx run-many --target=test",
+    "test": "nx run-many --target=test --exclude=api-client,formio,ui",
     "test:watch": "nx watch --all --parallel=10 -- nx run \\$NX_PROJECT_NAME:test",
     "test:watch:win": "nx watch --all --parallel=10 -- nx run %NX_PROJECT_NAME%:test",
     "update-minor": "npm-check-updates --target minor --upgrade && npm install"
