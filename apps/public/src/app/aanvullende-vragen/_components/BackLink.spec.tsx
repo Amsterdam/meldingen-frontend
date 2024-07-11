@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { NextRouterContextProviderMock } from '../../../mocks/NextRouterContextProviderMock'
 
@@ -16,7 +17,8 @@ describe('Back link', () => {
     expect(component).toBeVisible()
   })
 
-  it('renders a Next link on the first page', () => {
+  it('renders a Next link on the first page', async () => {
+    const user = userEvent.setup()
     const clickHandler = jest.fn()
     const nextRouterPush = jest.fn()
 
@@ -28,13 +30,14 @@ describe('Back link', () => {
 
     const component = screen.getByRole('link')
 
-    fireEvent.click(component)
+    await user.click(component)
 
     expect(nextRouterPush).toHaveBeenCalled()
     expect(clickHandler).not.toHaveBeenCalled()
   })
 
-  it('renders a regular link with a handler on the other pages', () => {
+  it('renders a regular link with a handler on the other pages', async () => {
+    const user = userEvent.setup()
     const clickHandler = jest.fn()
     const nextRouterPush = jest.fn()
 
@@ -46,7 +49,7 @@ describe('Back link', () => {
 
     const component = screen.getByRole('link')
 
-    fireEvent.click(component)
+    await user.click(component)
 
     expect(nextRouterPush).not.toHaveBeenCalled()
     expect(clickHandler).toHaveBeenCalled()
