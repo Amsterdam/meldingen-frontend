@@ -10,6 +10,8 @@ type BackLinkProps = {
 
 // TODO: i18n of Link label
 export const BackLink = ({ page, handleClick }: BackLinkProps) => {
+  // On the first page the back link navigates between different Next pages
+  // On all other pages, it navigates between steps in the wizard
   if (page === 0)
     return (
       <NextLink href="/" legacyBehavior passHref>
