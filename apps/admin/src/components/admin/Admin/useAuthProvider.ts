@@ -15,8 +15,8 @@ const config: KeycloakConfig = {
 }
 
 export const useAuthProvider = () => {
-  const [keycloak, setKeycloak] = useState<Keycloak | undefined>(undefined)
-  const authProvider = useRef<AuthProvider | undefined>(undefined)
+  const [keycloak, setKeycloak] = useState<Keycloak | undefined>()
+  const authProvider = useRef<AuthProvider | undefined>()
   const dataProviderRef = useRef<DataProvider | undefined>()
 
   useEffect(() => {
@@ -27,8 +27,6 @@ export const useAuthProvider = () => {
 
         keycloakClient.onTokenExpired = () => {
           keycloakClient.updateToken().catch(() => {
-            // eslint-disable-next-line no-console
-            console.error('Failed to refresh token')
             keycloakClient.login()
           })
         }
