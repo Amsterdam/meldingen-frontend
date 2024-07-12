@@ -1,0 +1,79 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "heading",
+      "tag": "h1",
+      "attrs": [
+        {
+          "attr": "",
+          "value": ""
+        }
+      ],
+      "content": "Beschrijf uw melding",
+      "refreshOnChange": false,
+      "key": "beschrijfUwMelding",
+      "type": "htmlelement",
+      "input": false,
+      "tableView": false
+    },
+    {
+      "label": "intro",
+      "attrs": [
+        {
+          "attr": "",
+          "value": ""
+        }
+      ],
+      "content": "Voordat u een melding doet kunt u op de <a href=\"https://acc.meldingen.amsterdam.nl/meldingenkaart\" target=\"_blank\" class=\"ams-link ams-link--inline\">meldingenkaart</a> zien welke meldingen bekend zijn bij de gemeente.",
+      "refreshOnChange": false,
+      "key": "html",
+      "type": "htmlelement",
+      "input": false,
+      "tableView": false
+    },
+    {
+      "label": "Waar gaat het om?",
+      "description": "Typ geen persoonsgegevens in deze omschrijving. We vragen dit later in dit formulier aan u.",
+      "applyMaskOn": "change",
+      "autoExpand": false,
+      "showCharCount": true,
+      "tableView": true,
+      "validate": {
+        "required": true
+      },
+      "errors": {
+        "required": "Dit is een verplicht veld"
+      },
+      "key": "waarGaatHetOm",
+      "type": "textarea",
+      "input": true
+    },
+    {
+      "label": "Foto’s toevoegen",
+      "description": "Voeg een foto toe om de situatie te verduidelijken",
+      "tableView": false,
+      "webcam": false,
+      "capture": false,
+      "fileTypes": [
+        {
+          "label": "",
+          "value": ""
+        }
+      ],
+      "key": "fotosToevoegen",
+      "type": "file",
+      "input": true
+    },
+    {
+      "label": "Volgende",
+      "showValidations": false,
+      "disableOnInvalid": true,
+      "tableView": false,
+      "key": "volgende",
+      "type": "button",
+      "saveOnEnter": false,
+      "input": true
+    }
+  ]
+}
