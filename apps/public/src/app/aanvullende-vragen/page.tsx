@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 import type { FormOutput } from '@meldingen/api-client'
-import { getFormByFormId } from '@meldingen/api-client'
+import { getFormByFormId, postMeldingByMeldingIdQuestionByQuestionId } from '@meldingen/api-client'
 import { Grid } from '@meldingen/ui'
 
 import { useMeldingContext } from '../../context/MeldingContextProvider'
@@ -33,6 +33,7 @@ const formOptions = {
 type FormInstance = {
   page: number
   setPage: (page: number) => void
+  submission: any
 }
 
 const AanvullendeVragen = () => {
@@ -54,7 +55,26 @@ const AanvullendeVragen = () => {
     formInstance.current = instance
   }
 
-  const handleSubmit = () => {
+  const postAnswer = (instance: FormInstance) => {
+    if (formData && data) {
+      formData.components[page].components.map((component) =>
+        postMeldingByMeldingIdQuestionByQuestionId({
+          meldingId: data.id,
+          questionId: component.question, // deze blijft nu nog null
+          token: data.token,
+          requestBody: { text: 'halala' }, // instance.submission.data[component.key]
+        }),
+      )
+    }
+  }
+
+  const handleOnNextPage = (instance: FormInstance) => {
+    postAnswer(instance)
+    setPage(instance.page)
+  }
+
+  const handleSubmit = (instance: FormInstance) => {
+    postAnswer(instance)
     router.push('/bedankt')
   }
 
@@ -75,7 +95,7 @@ const AanvullendeVragen = () => {
         <FormRenderer
           form={formData}
           formReady={handleFormReady}
-          onNextPage={(instance: FormInstance) => setPage(instance.page)}
+          onNextPage={handleOnNextPage}
           onSubmit={handleSubmit}
           options={formOptions}
         />
