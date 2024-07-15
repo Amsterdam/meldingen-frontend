@@ -5,7 +5,7 @@ import { NextRouterContextProviderMock } from '../../../mocks/NextRouterContextP
 
 import { BackLink } from './BackLink'
 
-describe('Back link', () => {
+describe('BackLink', () => {
   it('renders', () => {
     const clickHandler = jest.fn()
 
