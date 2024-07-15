@@ -1,11 +1,17 @@
-export const input = (ctx: any) => `
+export const input = (ctx: any) => {
+  const generateAttrs = () => {
+    // Loop through the object of attrs and generate strings.
+    // The attr 'type' is skipped, we set that later.
+    const attrs = Object.keys(ctx.input.attr).map((key) => (key !== 'type' ? `${key}="${ctx.input.attr[key]}"` : ''))
+    return attrs.join(' ')
+  }
+
+  return `
   <${ctx.input.type}
-    class="${ctx.input.attr.class}"
+    ${generateAttrs()}
+    ${ctx.component.description ? `aria-describedby="${ctx.id}-descr"` : ''}
     id="${ctx.instance.id}-${ctx.component.key}"
-    name="${ctx.input.attr.name}"
     ref="${ctx.input.ref ? ctx.input.ref : 'input'}"
-    rows=${ctx.input.attr.rows}
-    spellcheck=${ctx.input.attr.spellcheck}
     ${ctx.input.type !== 'textarea' ? `type="${ctx.input.attr.type}"` : undefined}
   >
     ${ctx.input.content}
@@ -21,3 +27,4 @@ export const input = (ctx: any) => `
       : ''
   }
 `
+}
