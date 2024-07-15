@@ -7,11 +7,11 @@ on:
 
 jobs:
   test:
-    name: Test
+    name: Lint, test and build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        job: [lint, build] # TODO: add 'test' here when we get it working
+        job: [lint, test, build]
 
     steps:
       - name: Check out branch
