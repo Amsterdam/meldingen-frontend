@@ -33,7 +33,10 @@ const formOptions = {
 type FormInstance = {
   page: number
   setPage: (page: number) => void
-  submission: any
+}
+
+type AnswerObject = {
+  [key: string]: string
 }
 
 const AanvullendeVragen = () => {
@@ -55,26 +58,31 @@ const AanvullendeVragen = () => {
     formInstance.current = instance
   }
 
-  const postAnswer = (instance: FormInstance) => {
+  const postAnswer = (answerObj: AnswerObject, currentPage?: number) => {
     if (formData && data) {
-      formData.components[page].components.map((component) =>
+      // @ts-expect-error: TODO: FormComponentOutput | FormPanelComponentOutput means you can only use attrs present in both...
+      formData.components[currentPage ?? formData.components.length - 1].components.map((component) =>
         postMeldingByMeldingIdQuestionByQuestionId({
           meldingId: data.id,
           questionId: component.question, // deze blijft nu nog null
           token: data.token,
-          requestBody: { text: 'halala' }, // instance.submission.data[component.key]
+          requestBody: { text: answerObj[component.key] },
         }),
       )
     }
   }
 
-  const handleOnNextPage = (instance: FormInstance) => {
-    postAnswer(instance)
+  type NextPageInstance = FormInstance & { submission: { data: AnswerObject } }
+
+  const handleOnNextPage = (instance: NextPageInstance) => {
     setPage(instance.page)
+    postAnswer(instance.submission.data, instance.page - 1)
   }
 
-  const handleSubmit = (instance: FormInstance) => {
-    postAnswer(instance)
+  type SubmitInstance = FormInstance & { data: AnswerObject }
+
+  const handleSubmit = (instance: SubmitInstance) => {
+    postAnswer(instance.data)
     router.push('/bedankt')
   }
 
