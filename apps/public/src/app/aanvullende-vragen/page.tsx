@@ -2,10 +2,13 @@
 
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
+import type { FormOutput } from '@meldingen/api-client'
+import { getFormByFormId } from '@meldingen/api-client'
 import { Grid } from '@meldingen/ui'
 
+import { useMeldingContext } from '../../context/MeldingContextProvider'
 import mockData from '../../mocks/wizard-test.json'
 
 import { BackLink } from './_components/BackLink'
@@ -34,8 +37,10 @@ type FormInstance = {
 
 const AanvullendeVragen = () => {
   const [page, setPage] = useState<number>(0)
+  const [formData, setFormData] = useState<FormOutput>()
   const formInstance = useRef<FormInstance | null>(null)
   const router = useRouter()
+  const { data } = useMeldingContext()
 
   const handleClick = () => {
     if (formInstance.current) {
@@ -53,12 +58,22 @@ const AanvullendeVragen = () => {
     router.push('/bedankt')
   }
 
+  useEffect(() => {
+    const classification = data?.classification
+
+    if (classification) {
+      getFormByFormId({ formId: classification }).then((response) => setFormData(response))
+    } else {
+      setFormData(mockData)
+    }
+  }, [data])
+
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         <BackLink page={page} handleClick={handleClick} />
         <FormRenderer
-          form={mockData}
+          form={formData}
           formReady={handleFormReady}
           onNextPage={(instance: FormInstance) => setPage(instance.page)}
           onSubmit={handleSubmit}
