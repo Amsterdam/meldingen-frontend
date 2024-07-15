@@ -2,7 +2,12 @@
 
 # Library and framework for our applications
 
-All of our applications use [React](https://react.dev/) with [Next.js](https://nextjs.org/) as their frontend framework.
+Our Admin is based on [React Admin](https://marmelab.com/react-admin/) and completely client side.
+We tried to use NextJS to keep the framework consistent throughout the codebase but ran into performace issues.
+Therefore we use [Vite](https://vitejs.dev/) to bundle the application.
+
+Our Public App can benifit from server side rendering.
+Therefore we chose [React](https://react.dev/) with [Next.js](https://nextjs.org/) as its frontend framework.
 
 We’ve chosen React because it is the standard UI library for the City of Amsterdam.
 This means it will be easier to find developers that can work on the project, which in turn makes it easier to maintain.
@@ -10,12 +15,6 @@ Another benefit is that the [Amsterdam Design System](https://github.com/amsterd
 which we can use.
 
 Next.js takes care of the heavy lifting with regards to routing, data fetching, caching, server side rendering etc.
-
-Our Admin app is a completely client side app, which makes Next.js an unlikely choice.
-The reason we've chosen Next.js for that app as well is because it works well with [NextAuth.js](https://next-auth.js.org/).
-This way, we can keep our [authentication](./0008-authentication.md) the same for all our apps.
-NextAuth.js is planning to remove their dependency on Next.js.
-When that is stable, we will reconsider this decision.
 
 ## Decision
 
