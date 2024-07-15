@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/apps/admin-vite',
+  cacheDir: '../../node_modules/.vite/apps/admin',
 
   server: {
     port: 4200,
@@ -25,7 +25,7 @@ export default defineConfig({
   // },
 
   build: {
-    outDir: '../../dist/apps/admin-vite',
+    outDir: '../../dist/apps/admin',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {

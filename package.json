@@ -19,8 +19,8 @@
     "build": "nx run-many --target=build",
     "build:admin": "nx build admin",
     "build:public": "nx build public",
-    "dev": "nx run-many --parallel --target=dev --projects=admin,public",
-    "dev:admin": "nx dev admin",
+    "dev": "nx run-many --parallel --target=dev --projects=public --target=serve --projects=admin",
+    "serve:admin": "nx serve admin",
     "dev:public": "nx dev public",
     "generate-api-client": "openapi-ts",
     "lint": "markdownlint **/*.md && prettier --check . && nx run-many --target=lint,stylelint --exclude=api-client",
@@ -107,5 +107,6 @@
     "typescript": "5.5.3",
     "vite": "5.3.3",
     "vitest": "1.6.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
