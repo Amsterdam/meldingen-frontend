@@ -1,14 +1,10 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.css'
+/* eslint-disable import/no-default-export */
+import { Admin } from '../components/admin/Admin'
 
-import NxWelcome from './nx-welcome'
-
-export function App() {
-  return (
-    <div>
-      <NxWelcome title="admin-vite" />
-    </div>
-  )
-}
+export const App = () => (
+  <main>
+    <Admin />
+  </main>
+)
 
 export default App
