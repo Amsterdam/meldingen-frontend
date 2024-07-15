@@ -1,7 +1,7 @@
 /* eslint-disable import/no-default-export */
 import { Admin } from '../components/admin/Admin'
 
-export const App = () => (
+const App = () => (
   <main>
     <Admin />
   </main>

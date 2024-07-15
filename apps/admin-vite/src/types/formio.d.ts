@@ -1,6 +1,5 @@
-import type { ComponentSchema } from 'formiojs'
-
 import type { FormIoFormDisplayEnum } from '@meldingen/api-client'
+import type { ComponentSchema } from 'formiojs'
 
 /**
  * This is the schema for the Formio builder output. It allows pretty much anything as a component.
