@@ -15,9 +15,9 @@ const config: KeycloakConfig = {
 }
 
 export const useAuthProvider = () => {
-  const [keycloak, setKeycloak] = useState<Keycloak | undefined>()
-  const authProvider = useRef<AuthProvider | undefined>()
-  const dataProviderRef = useRef<DataProvider | undefined>()
+  const [keycloak, setKeycloak] = useState<Keycloak>()
+  const authProvider = useRef<AuthProvider>()
+  const dataProviderRef = useRef<DataProvider>()
 
   useEffect(() => {
     // setTimeout is needed to prevent an infinite refresh loop caused by keyCloakClient.init()
