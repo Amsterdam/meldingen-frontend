@@ -64,7 +64,7 @@ const AanvullendeVragen = () => {
       formData.components[currentPage ?? formData.components.length - 1].components.map((component) =>
         postMeldingByMeldingIdQuestionByQuestionId({
           meldingId: data.id,
-          questionId: component.question, // deze blijft nu nog null
+          questionId: component.question,
           token: data.token,
           requestBody: { text: answerObj[component.key] },
         }),
