@@ -3,13 +3,13 @@
 import { Link } from '@amsterdam/design-system-react'
 import NextLink from 'next/link'
 
-type BackLinkProps = {
+type Props = {
   page: number
   handleClick: () => void
 }
 
 // TODO: i18n of Link label
-export const BackLink = ({ page, handleClick }: BackLinkProps) => {
+export const BackLink = ({ page, handleClick }: Props) => {
   // On the first page the back link navigates between different Next pages
   // On all other pages, it navigates between steps in the wizard
   if (page === 0)
