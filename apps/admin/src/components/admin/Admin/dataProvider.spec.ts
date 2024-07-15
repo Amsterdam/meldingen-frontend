@@ -4,7 +4,7 @@ describe('dataProvider', () => {
   it('uses a PUT request for the `form` resource', async () => {
     const httpClient = jest.fn().mockResolvedValue({ json: { id: 1 } })
 
-    const client = dataProvider('http://localhost:3000', httpClient)
+    const client = dataProvider(httpClient, 'http://localhost:3000')
 
     await client.update('form', {
       id: 1,
@@ -21,7 +21,7 @@ describe('dataProvider', () => {
   it('uses a PATCH request for all other resources', async () => {
     const httpClient = jest.fn().mockResolvedValue({ json: { id: 1 } })
 
-    const client = dataProvider('http://localhost:3000', httpClient)
+    const client = dataProvider(httpClient, 'http://localhost:3000')
 
     await client.update('other', {
       id: 1,
