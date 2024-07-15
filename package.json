@@ -76,7 +76,7 @@
     "@typescript-eslint/parser": "7.15.0",
     "@vitejs/plugin-react": "4.3.1",
     "@vitest/coverage-v8": "1.6.0",
-    "@vitest/ui": "1.6.0",
+    "@vitest/ui": "2.0.3",
     "babel-jest": "29.7.0",
     "eslint": "8.57.0",
     "eslint-config-airbnb": "19.0.4",
