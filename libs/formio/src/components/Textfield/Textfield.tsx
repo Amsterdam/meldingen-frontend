@@ -1,12 +1,12 @@
 import { Components } from '@formio/react'
 
-const FormioTextarea = (Components as any).components.textarea
+const FormioTextfield = (Components as any).components.textfield
 
-export class Textarea extends FormioTextarea {
+export class Textfield extends FormioTextfield {
   get inputInfo() {
     const inputInfo = super.inputInfo
 
-    inputInfo.attr.class = 'ams-text-area'
+    inputInfo.attr.class = 'ams-text-input'
     inputInfo.attr.dir = 'auto'
 
     return inputInfo

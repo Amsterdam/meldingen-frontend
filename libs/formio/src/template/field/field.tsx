@@ -3,9 +3,7 @@ export const field = (ctx: any) => `
 
   ${
     ctx.component.description &&
-    `<p class="ams-paragraph ams-paragraph--small ams-mb-xs">${ctx.t(ctx.component.description, {
-      _userInput: true,
-    })}</p>`
+    `<p class="ams-paragraph ams-paragraph--small" id="${ctx.id}-descr">${ctx.t(ctx.component.description)}</p>`
   }
 
   ${ctx.element}
