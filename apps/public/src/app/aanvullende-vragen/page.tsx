@@ -8,6 +8,7 @@ import type { FormOutput } from '@meldingen/api-client'
 import {
   getFormClassificationByClassificationId,
   postMeldingByMeldingIdQuestionByQuestionId,
+  putMeldingByMeldingIdAnswerQuestions,
 } from '@meldingen/api-client'
 import { Grid } from '@meldingen/ui'
 
@@ -90,6 +91,10 @@ const AanvullendeVragen = () => {
 
   const handleSubmit = (instance: SubmitInstance) => {
     postAnswer(instance.data)
+    // Call to let BE know we're at the end of this form
+    if (data) {
+      putMeldingByMeldingIdAnswerQuestions({ meldingId: data.id, token: data.token })
+    }
     router.push('/bedankt')
   }
 
