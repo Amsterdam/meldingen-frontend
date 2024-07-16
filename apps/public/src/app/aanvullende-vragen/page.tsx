@@ -60,8 +60,12 @@ const AanvullendeVragen = () => {
 
   const postAnswer = (answerObj: AnswerObject, currentPage?: number) => {
     if (formData && data) {
+      // handleOnNextPage passes what page it's on.
+      // handleSubmit doesn't, but that's always the last page.
+      const selectedPage = currentPage ?? formData.components.length - 1
+
       // @ts-expect-error: TODO: FormComponentOutput | FormPanelComponentOutput means you can only use attrs present in both...
-      formData.components[currentPage ?? formData.components.length - 1].components.forEach((component) =>
+      formData.components[selectedPage].components.forEach((component) =>
         postMeldingByMeldingIdQuestionByQuestionId({
           meldingId: data.id,
           questionId: component.question,
