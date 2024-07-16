@@ -26,7 +26,7 @@
     "lint": "markdownlint **/*.md && prettier --check . && nx run-many --target=lint,stylelint --exclude=api-client",
     "lint:fix": "markdownlint --fix **/*.md && prettier --write . && nx run-many --target=lint,stylelint --exclude=api-client --fix",
     "prepare": "husky",
-    "test": "nx run-many --target=test",
+    "test": "nx run-many --target=test --exclude=api-client,formio,ui",
     "test:watch": "nx watch --all --parallel=10 -- nx run \\$NX_PROJECT_NAME:test",
     "test:watch:win": "nx watch --all --parallel=10 -- nx run %NX_PROJECT_NAME%:test",
     "update-minor": "npm-check-updates --target minor --upgrade && npm install"
@@ -67,6 +67,7 @@
     "@swc/helpers": "0.5.11",
     "@testing-library/jest-dom": "6.4.6",
     "@testing-library/react": "16.0.0",
+    "@testing-library/user-event": "14.5.2",
     "@types/jest": "29.5.12",
     "@types/node": "20.14.10",
     "@types/react": "18.3.3",

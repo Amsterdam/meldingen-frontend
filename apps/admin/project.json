@@ -1,15 +1,16 @@
 {
   "name": "admin",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/admin",
+  "sourceRoot": "apps/admin/src",
   "projectType": "application",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project admin --web",
   "targets": {
     "dev": {
-      "executor": "@nx/next:server",
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "build",
-        "dev": true,
-        "port": 3001
+        "buildTarget": "admin:build"
       }
     },
     "stylelint": {
@@ -19,6 +20,5 @@
         "lintFilePatterns": ["apps/admin/**/*.css"]
       }
     }
-  },
-  "tags": []
+  }
 }

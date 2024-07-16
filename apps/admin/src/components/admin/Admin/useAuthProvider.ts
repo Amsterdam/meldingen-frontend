@@ -34,7 +34,7 @@ export const useAuthProvider = () => {
         await keycloakClient.init(initOptions)
 
         authProvider.current = keycloakAuthProvider(keycloakClient)
-        dataProviderRef.current = dataProvider(httpClient(keycloakClient))
+        dataProviderRef.current = dataProvider('http://localhost:8000', httpClient(keycloakClient))
 
         setKeycloak(keycloakClient)
       }

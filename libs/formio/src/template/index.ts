@@ -1,3 +1,4 @@
+import { button } from './button'
 import { component } from './component'
 import { field } from './field'
 import { html } from './html'
@@ -8,8 +9,14 @@ import { wizard } from './wizard'
 import { wizardNav } from './wizardNav'
 
 export const template = {
+  button: {
+    form: button,
+  },
   component: {
     form: component,
+  },
+  cssClasses: {
+    'form-group': 'ams-field',
   },
   field: {
     form: field,
