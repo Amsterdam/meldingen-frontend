@@ -5,7 +5,10 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 import type { FormOutput } from '@meldingen/api-client'
-import { getFormByFormId, postMeldingByMeldingIdQuestionByQuestionId } from '@meldingen/api-client'
+import {
+  getFormClassificationByClassificationId,
+  postMeldingByMeldingIdQuestionByQuestionId,
+} from '@meldingen/api-client'
 import { Grid } from '@meldingen/ui'
 
 import { useMeldingContext } from '../../context/MeldingContextProvider'
@@ -94,7 +97,9 @@ const AanvullendeVragen = () => {
     const classification = data?.classification
 
     if (classification) {
-      getFormByFormId({ formId: classification }).then((response) => setFormData(response))
+      getFormClassificationByClassificationId({ classificationId: classification }).then((response) =>
+        setFormData(response),
+      )
     } else {
       setFormData(mockData)
     }
