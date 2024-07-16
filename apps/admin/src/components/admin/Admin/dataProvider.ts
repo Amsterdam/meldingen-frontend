@@ -3,10 +3,10 @@ import type { DataProvider, fetchUtils } from 'react-admin'
 
 type HttpClient = (
   url: string,
-  options?: fetchUtils.Options | undefined,
+  options?: fetchUtils.Options,
 ) => Promise<{ status: number; headers: Headers; body: string; json: any }>
 
-export const dataProvider = (httpClient: HttpClient, apiUrl = 'http://localhost:8000'): DataProvider => ({
+export const dataProvider = (apiUrl: string, httpClient: HttpClient): DataProvider => ({
   ...simpleRestProvider(apiUrl, httpClient),
   update: (resource, params) => {
     // 'form' updates use PUT requests, all other updates use PATCH requests

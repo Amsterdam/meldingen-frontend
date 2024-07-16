@@ -13,7 +13,7 @@ const renderPage = () => {
   )
 }
 
-describe('Aanvullende vragen page', () => {
+describe('AanvullendeVragen', () => {
   it('should render a form', async () => {
     renderPage()
 
