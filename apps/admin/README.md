@@ -11,4 +11,4 @@ It allows an admin to...
 
 ## Getting started
 
-Run `npm run dev:admin` in the root directory to start the Admin app.
+Run `npm run serve:admin` in the root directory to start the Admin app.
