@@ -61,7 +61,7 @@ const AanvullendeVragen = () => {
   const postAnswer = (answerObj: AnswerObject, currentPage?: number) => {
     if (formData && data) {
       // @ts-expect-error: TODO: FormComponentOutput | FormPanelComponentOutput means you can only use attrs present in both...
-      formData.components[currentPage ?? formData.components.length - 1].components.map((component) =>
+      formData.components[currentPage ?? formData.components.length - 1].components.forEach((component) =>
         postMeldingByMeldingIdQuestionByQuestionId({
           meldingId: data.id,
           questionId: component.question,
