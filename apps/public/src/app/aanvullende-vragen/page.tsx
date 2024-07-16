@@ -42,6 +42,10 @@ type AnswerObject = {
   [key: string]: string
 }
 
+type NextPageInstance = FormInstance & { submission: { data: AnswerObject } }
+
+type SubmitInstance = FormInstance & { data: AnswerObject }
+
 const AanvullendeVragen = () => {
   const [page, setPage] = useState<number>(0)
   const [formData, setFormData] = useState<FormOutput>()
@@ -79,14 +83,10 @@ const AanvullendeVragen = () => {
     }
   }
 
-  type NextPageInstance = FormInstance & { submission: { data: AnswerObject } }
-
   const handleOnNextPage = (instance: NextPageInstance) => {
     setPage(instance.page)
     postAnswer(instance.submission.data, instance.page - 1)
   }
-
-  type SubmitInstance = FormInstance & { data: AnswerObject }
 
   const handleSubmit = (instance: SubmitInstance) => {
     postAnswer(instance.data)
