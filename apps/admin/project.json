@@ -6,6 +6,13 @@
   "tags": [],
   "// targets": "to see all targets run: nx show project admin --web",
   "targets": {
+    "dev": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "admin:build"
+      }
+    },
     "stylelint": {
       "executor": "nx-stylelint:lint",
       "outputs": ["{options.outputFile}"],
