@@ -109,13 +109,17 @@ const AanvullendeVragen = () => {
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         <BackLink page={page} handleClick={handleClick} />
-        <FormRenderer
-          form={formData}
-          formReady={handleFormReady}
-          onNextPage={handleOnNextPage}
-          onSubmit={handleSubmit}
-          options={formOptions}
-        />
+        {formData ? (
+          <FormRenderer
+            form={formData}
+            formReady={handleFormReady}
+            onNextPage={handleOnNextPage}
+            onSubmit={handleSubmit}
+            options={formOptions}
+          />
+        ) : (
+          <p>Loading...</p>
+        )}
       </Grid.Cell>
     </Grid>
   )
