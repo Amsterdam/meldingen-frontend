@@ -20,6 +20,10 @@ const addSubmitButton = (form: StaticFormOutput): StaticFormWithSubmit => ({
   ],
 })
 
+// TODO: Force dynamic rendering for now, because the api doesn't exist yet.
+// We can remove this when the api is deployed.
+export const dynamic = 'force-dynamic'
+
 export default async () => {
   const data = await getStaticFormByFormType({ formType: 'primary' }).then((response) => addSubmitButton(response))
 
