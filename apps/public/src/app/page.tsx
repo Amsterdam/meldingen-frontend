@@ -20,7 +20,7 @@ const addSubmitButton = (form: StaticFormOutput): StaticFormWithSubmit => ({
   ],
 })
 
-// TODO: Force dynamic rendering for now, because the api doesn't exist yet.
+// TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.
 export const dynamic = 'force-dynamic'
 
