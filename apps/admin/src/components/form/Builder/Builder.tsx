@@ -1,14 +1,9 @@
-import type { ComponentSchema } from 'formiojs'
-import dynamic from 'next/dynamic'
+import { FormBuilder } from '@meldingen/formio'
 
+import type { ComponentSchema } from 'formiojs'
 import type { FormioSchema } from '../../../types/formio'
 
 import nl from './translations/nl.json'
-
-const FormBuilder = dynamic(() => import('@meldingen/formio').then((mod) => mod.FormBuilder), {
-  ssr: false,
-  loading: () => <p>Loading...</p>,
-})
 
 type BuilderProps = {
   data?: ComponentSchema[]
