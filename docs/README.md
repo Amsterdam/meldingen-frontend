@@ -42,7 +42,7 @@ graph TD
 
 ## Further documentation
 
-1. [Library and framework](./0001-library-and-framework.md)
+1. [Libraries and frameworks](./0001-libraries-and-frameworks.md)
 2. [Type safety](./0002-type-safety.md)
 3. [Testing](./0003-testing.md)
 4. [Styling](./0004-styling.md)
