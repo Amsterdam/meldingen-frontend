@@ -3,7 +3,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MeldingContextProvider } from '../context/MeldingContextProvider'
 import { NextRouterContextProviderMock } from '../mocks/NextRouterContextProviderMock'
 
-import Page from './page'
+import { Home } from './Home'
 
 const mockInput = 'This is a test input'
 const mockLabel = 'Waar gaat het om?'
@@ -21,32 +21,34 @@ jest.mock('@meldingen/api-client', () => ({
       classification: null,
       token: 'qHaOTJy4j_wwIw_pHT1xqTEmpUO3tHkQYLXtLC6Gp58',
     }),
-  getStaticFormByFormType: () =>
-    Promise.resolve({
-      id: 1,
-      created_at: '2024-07-01T08:54:59.731119',
-      updated_at: '2024-07-01T08:54:59.884144',
-      formType: 'primary',
-      components: [
-        {
-          type: 'textarea',
-          key: 'waar-gaat-het-om',
-          label: mockLabel,
-          input: true,
-          inputType: 'text',
-          showCharCount: false,
-          position: 0,
-        },
-      ],
-    }),
 }))
+
+const mockFormData = {
+  title: 'Hoofd formulier',
+  display: 'form',
+  created_at: '2024-07-15T14:00:56.112771',
+  updated_at: '2024-07-15T14:00:56.112771',
+  type: 'primary',
+  components: [
+    {
+      type: 'textarea',
+      key: 'waar-gaat-het-om',
+      label: mockLabel,
+      input: true,
+      inputType: 'text',
+      showCharCount: false,
+      position: 0,
+    },
+    { type: 'button', key: 'submit', label: 'Submit', input: false },
+  ],
+}
 
 const push = jest.fn()
 const renderComponent = () => {
   render(
     <MeldingContextProvider>
       <NextRouterContextProviderMock router={{ push }}>
-        <Page />
+        <Home formData={mockFormData} />
       </NextRouterContextProviderMock>
     </MeldingContextProvider>,
   )
