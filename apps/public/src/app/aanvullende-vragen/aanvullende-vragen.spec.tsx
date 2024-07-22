@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -141,13 +141,7 @@ describe('AanvullendeVragen', () => {
 
     const input = screen.getByRole('textbox', { name: mockFirstQuestionText })
 
-    act(() => {
-      // TODO: try to find a more realistic way to input a value in FormIO
-      // @ts-expect-error value does exist
-      input.value = mockInput
-      const event = new Event('input', { bubbles: true, cancelable: true })
-      input.dispatchEvent(event)
-    })
+    await user.type(input, mockInput)
 
     const nextButton = screen.getByRole('button', { name: 'Volgende vraag' })
 
@@ -159,8 +153,6 @@ describe('AanvullendeVragen', () => {
       http.post('http://localhost:8000/melding/2/question/2', async ({ request }) => {
         const data = (await request.json()) as { text: string }
         // Check if request payload equals input. If not, throw an error.
-
-        console.log(data)
         if (data?.text !== mockInput) {
           return new HttpResponse('Missing body text', { status: 400 })
         }
@@ -185,13 +177,6 @@ describe('AanvullendeVragen', () => {
     const input = screen.getByRole('textbox', { name: mockSecondQuestionText })
 
     await user.type(input, mockInput)
-    // act(() => {
-    //   // TODO: try to find a more realistic way to input a value in FormIO
-    //   // @ts-expect-error value does exist
-    //   input.value = mockInput
-    //   const event = new Event('input', { bubbles: true, cancelable: true })
-    //   input.dispatchEvent(event)
-    // })
 
     const submitButton = screen.getByRole('button', { name: 'Volgende vraag' })
 
