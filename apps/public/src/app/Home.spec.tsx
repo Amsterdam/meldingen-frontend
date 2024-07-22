@@ -74,10 +74,6 @@ describe('Page', () => {
   it('should send a filled form and navigate to /aanvullende-vragen', async () => {
     renderComponent()
 
-    await waitFor(() => {
-      screen.getByRole('textbox', { name: mockQuestionText })
-    })
-
     const input = screen.getByRole('textbox', { name: mockQuestionText })
 
     act(() => {
