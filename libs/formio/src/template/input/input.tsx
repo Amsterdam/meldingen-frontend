@@ -13,9 +13,7 @@ export const input = (ctx: any) => {
     id="${ctx.instance.id}-${ctx.component.key}"
     ref="${ctx.input.ref ? ctx.input.ref : 'input'}"
     ${ctx.input.type !== 'textarea' ? `type="${ctx.input.attr.type}"` : undefined}
-  >
-    ${ctx.input.content}
-  </${ctx.input.type}>
+  >${ctx.input.content}</${ctx.input.type}>
   ${
     ctx.component.showCharCount
       ? `<span aria-live="polite" class="ams-paragraph ams-paragraph--small" ref="charcount"></span>`
