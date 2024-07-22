@@ -13,7 +13,7 @@ import {
 import { Grid } from '@meldingen/ui'
 
 import { useMeldingContext } from '../../context/MeldingContextProvider'
-import mockData from '../../mocks/wizard-test.json'
+import mockData from '../../mocks/mockFormData.json'
 
 import { BackLink } from './_components/BackLink'
 
@@ -106,6 +106,7 @@ const AanvullendeVragen = () => {
         setFormData(response),
       )
     } else {
+      // TODO: this should be a default form we get from the api
       setFormData(mockData)
     }
   }, [data])

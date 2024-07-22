@@ -92,4 +92,6 @@ describe('Page', () => {
       expect(push).toHaveBeenCalledWith('/aanvullende-vragen')
     })
   })
+
+  it.skip('should set context with the right values', () => {})
 })

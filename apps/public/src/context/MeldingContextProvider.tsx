@@ -19,7 +19,7 @@ export const initialValue: MeldingContextType = {
   setData: () => {},
 }
 
-const MeldingContext = createContext<MeldingContextType>(initialValue)
+export const MeldingContext = createContext<MeldingContextType>(initialValue)
 
 export const useMeldingContext = (): MeldingContextType => {
   const context = useContext(MeldingContext)
