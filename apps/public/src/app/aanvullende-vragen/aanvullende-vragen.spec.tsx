@@ -11,6 +11,7 @@ import Page from './page'
 
 const mockFirstQuestionText = 'First question'
 const mockSecondQuestionText = 'Second question'
+const mockInput = 'This is test user input'
 const mockContextValue = {
   data: {
     id: 2,
@@ -19,7 +20,6 @@ const mockContextValue = {
   },
   setData: () => {},
 }
-const mockInput = 'This is test user input'
 
 const server = setupServer(
   http.get('http://localhost:8000/form/classification/1', () => HttpResponse.json(mockFormData)),
