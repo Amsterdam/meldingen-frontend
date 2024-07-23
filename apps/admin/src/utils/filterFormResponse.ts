@@ -1,6 +1,9 @@
 const allowLists: Record<string, string[]> = {
   panel: ['label', 'key', 'type', 'input', 'components'],
+  radio: ['label', 'description', 'key', 'type', 'input', 'values'],
+  selectboxes: ['label', 'description', 'key', 'type', 'input', 'inputType', 'values'],
   textarea: ['label', 'description', 'key', 'type', 'input', 'autoExpand', 'showCharCount'],
+  textfield: ['label', 'description', 'key', 'type', 'input'],
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
