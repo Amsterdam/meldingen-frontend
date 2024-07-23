@@ -94,6 +94,7 @@
     "jsdom": "24.1.1",
     "lint-staged": "15.2.7",
     "markdownlint-cli": "0.41.0",
+    "msw": "2.3.2",
     "npm-check-updates": "16.14.20",
     "nx": "19.5.1",
     "nx-stylelint": "17.1.5",
@@ -105,6 +106,7 @@
     "ts-jest": "29.2.3",
     "ts-node": "10.9.2",
     "typescript": "5.5.3",
+    "undici": "6.19.3",
     "vite": "5.3.4",
     "vitest": "1.6.0"
   }

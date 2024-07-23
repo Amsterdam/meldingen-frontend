@@ -1,30 +1,34 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import { MeldingContextProvider } from '../context/MeldingContextProvider'
 import { NextRouterContextProviderMock } from '../mocks/NextRouterContextProviderMock'
 
 import { Home } from './Home'
 
-const mockInput = 'This is a test input'
-const mockLabel = 'Waar gaat het om?'
+const mockInput = 'This is test user input'
+const mockQuestionText = 'What is it about?'
 
-jest.mock('@meldingen/api-client', () => ({
-  __esModule: true,
-  ...jest.requireActual('@meldingen/api-client'),
-  postMelding: () =>
-    Promise.resolve({
-      id: 35,
-      created_at: '2024-07-01T08:54:59.731119',
-      updated_at: '2024-07-01T08:54:59.884144',
-      text: mockInput,
-      state: 'new',
-      classification: null,
-      token: 'qHaOTJy4j_wwIw_pHT1xqTEmpUO3tHkQYLXtLC6Gp58',
-    }),
-}))
+const server = setupServer(
+  http.post('http://localhost:8000/melding', async ({ request }) => {
+    const data = (await request.json()) as { text: string }
+
+    // Check if request payload equals input. If not, throw an error.
+    if (data?.text !== mockInput) {
+      return new HttpResponse('Incorrect body text', { status: 400 })
+    }
+
+    return new HttpResponse('Succesful response')
+  }),
+)
+
+beforeAll(() => server.listen())
+afterEach(() => server.resetHandlers())
+afterAll(() => server.close())
 
 const mockFormData = {
-  title: 'Hoofd formulier',
+  title: 'Hoofdformulier',
   display: 'form',
   created_at: '2024-07-15T14:00:56.112771',
   updated_at: '2024-07-15T14:00:56.112771',
@@ -32,8 +36,8 @@ const mockFormData = {
   components: [
     {
       type: 'textarea',
-      key: 'waar-gaat-het-om',
-      label: mockLabel,
+      key: 'what',
+      label: mockQuestionText,
       input: true,
       inputType: 'text',
       showCharCount: false,
@@ -44,7 +48,7 @@ const mockFormData = {
 }
 
 const push = jest.fn()
-const renderComponent = () => {
+const renderPage = () => {
   render(
     <MeldingContextProvider>
       <NextRouterContextProviderMock router={{ push }}>
@@ -56,25 +60,21 @@ const renderComponent = () => {
 
 describe('Page', () => {
   it('should render a form', async () => {
-    renderComponent()
+    renderPage()
 
     await waitFor(
       () => {
-        expect(screen.getByRole('textbox', { name: mockLabel })).toBeInTheDocument()
+        expect(screen.getByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
         expect(screen.getByRole('button')).toBeInTheDocument()
       },
       { timeout: 2000 },
     )
   })
 
-  it('should send a filled form', async () => {
-    renderComponent()
+  it('should send a filled form and navigate to /aanvullende-vragen', async () => {
+    renderPage()
 
-    await waitFor(() => {
-      screen.getByRole('textbox', { name: 'Waar gaat het om?' })
-    })
-
-    const input = screen.getByRole('textbox', { name: 'Waar gaat het om?' })
+    const input = screen.getByRole('textbox', { name: mockQuestionText })
 
     act(() => {
       // TODO: try to find a more realistic way to input a value in FormIO
@@ -92,4 +92,6 @@ describe('Page', () => {
       expect(push).toHaveBeenCalledWith('/aanvullende-vragen')
     })
   })
+
+  it.skip('should set context with the right values', () => {})
 })

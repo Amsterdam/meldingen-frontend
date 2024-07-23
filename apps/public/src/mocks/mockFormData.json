@@ -1,0 +1,52 @@
+{
+  "title": "Wizard form mock",
+  "display": "wizard",
+  "created_at": "2024-07-16T13:13:30.968809",
+  "updated_at": "2024-07-16T13:13:30.968809",
+  "id": 2,
+  "classification": 1,
+  "components": [
+    {
+      "label": "Page 1",
+      "key": "page1",
+      "type": "panel",
+      "input": false,
+      "position": 1,
+      "components": [
+        {
+          "label": "First question",
+          "description": "",
+          "key": "textArea1",
+          "type": "textarea",
+          "input": true,
+          "autoExpand": false,
+          "showCharCount": false,
+          "position": 1,
+          "question": 1,
+          "values": null
+        }
+      ]
+    },
+    {
+      "label": "Page 2",
+      "key": "page2",
+      "type": "panel",
+      "input": false,
+      "position": 2,
+      "components": [
+        {
+          "label": "Second question",
+          "description": "",
+          "key": "textArea2",
+          "type": "textarea",
+          "input": true,
+          "autoExpand": false,
+          "showCharCount": false,
+          "position": 1,
+          "question": 2,
+          "values": null
+        }
+      ]
+    }
+  ]
+}
