@@ -48,7 +48,7 @@ const mockFormData = {
 }
 
 const push = jest.fn()
-const renderComponent = () => {
+const renderPage = () => {
   render(
     <MeldingContextProvider>
       <NextRouterContextProviderMock router={{ push }}>
@@ -60,7 +60,7 @@ const renderComponent = () => {
 
 describe('Page', () => {
   it('should render a form', async () => {
-    renderComponent()
+    renderPage()
 
     await waitFor(
       () => {
@@ -72,7 +72,7 @@ describe('Page', () => {
   })
 
   it('should send a filled form and navigate to /aanvullende-vragen', async () => {
-    renderComponent()
+    renderPage()
 
     const input = screen.getByRole('textbox', { name: mockQuestionText })
 
