@@ -16,7 +16,7 @@ const server = setupServer(
 
     // Check if request payload equals input. If not, throw an error.
     if (data?.text !== mockInput) {
-      return new HttpResponse('Missing body text', { status: 422 })
+      return new HttpResponse('Incorrect body text', { status: 400 })
     }
 
     return new HttpResponse('Succesful response')
