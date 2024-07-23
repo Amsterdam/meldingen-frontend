@@ -124,7 +124,7 @@ describe('AanvullendeVragen', () => {
 
         // Check if request payload equals input. If not, throw an error.
         if (data?.text !== mockInput) {
-          return new HttpResponse('Missing body text', { status: 400 })
+          return new HttpResponse('Incorrect body text', { status: 400 })
         }
 
         return new HttpResponse('Succesful response')
@@ -154,7 +154,7 @@ describe('AanvullendeVragen', () => {
         const data = (await request.json()) as { text: string }
         // Check if request payload equals input. If not, throw an error.
         if (data?.text !== mockInput) {
-          return new HttpResponse('Missing body text', { status: 400 })
+          return new HttpResponse('Incorrect body text', { status: 400 })
         }
         return new HttpResponse('Succesful response')
       }),
