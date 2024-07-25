@@ -1,4 +1,4 @@
-import { isGroup } from '../utils'
+import { hasDescription, isGroup } from '../utils'
 
 const renderField = (ctx: any) => {
   const isField = ctx.component.type !== 'button'
@@ -15,11 +15,10 @@ const renderField = (ctx: any) => {
 
 const renderFieldSet = (ctx: any) => {
   const isRadio = ctx.component.type === 'radio'
-  const hasDescription = ctx.component.description.length > 0
 
   return `
 <fieldset
-  ${hasDescription ? `aria-describedby="${ctx.id}-descr"` : ''}
+  ${hasDescription(ctx) ? `aria-describedby="${ctx.id}-descr"` : ''}
   class="ams-field-set"
   ref="component"
   ${isRadio ? `role="radiogroup"` : ''}
