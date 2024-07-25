@@ -188,6 +188,8 @@ export const selectsMockBefore = [
   },
   {
     label: 'Select 2',
+    widget: 'html5',
+    placeholder: '',
     description: '',
     data: {
       values: [
@@ -229,6 +231,8 @@ export const selectsMockBefore = [
 export const selectsMockAfter = [
   {
     label: 'Select 1',
+    widget: 'html5',
+    placeholder: '',
     description: '',
     key: 'select1',
     type: 'select',
@@ -252,6 +256,8 @@ export const selectsMockAfter = [
   },
   {
     label: 'Select 2',
+    widget: 'html5',
+    placeholder: '',
     description: '',
     key: 'select2',
     type: 'select',
