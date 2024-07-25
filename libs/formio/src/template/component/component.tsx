@@ -1,3 +1,5 @@
+import { isGroup } from '../utils'
+
 const renderField = (ctx: any) => {
   const isField = ctx.component.type !== 'button'
 
@@ -27,8 +29,4 @@ const renderFieldSet = (ctx: any) => {
 `
 }
 
-export const component = (ctx: any) => {
-  const isGroup = ctx.component.type === 'radio' || ctx.component.type === 'selectboxes'
-
-  return isGroup ? renderFieldSet(ctx) : renderField(ctx)
-}
+export const component = (ctx: any) => (isGroup(ctx) ? renderFieldSet(ctx) : renderField(ctx))

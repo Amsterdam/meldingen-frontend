@@ -1,7 +1,7 @@
-const labelMarkup = (ctx: any) => {
-  const isGroup = ctx.component.type === 'radio' || ctx.component.type === 'selectboxes'
+import { isGroup } from '../utils'
 
-  return isGroup
+const labelMarkup = (ctx: any) =>
+  isGroup(ctx)
     ? `
 <legend class="ams-field-set__legend">
   ${ctx.t(ctx.component.label)}
@@ -15,6 +15,5 @@ const labelMarkup = (ctx: any) => {
   ${ctx.t(ctx.component.label)}
 </label>
 `
-}
 
 export const label = (ctx: any) => (ctx.component.input ? labelMarkup(ctx) : '')
