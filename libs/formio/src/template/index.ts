@@ -16,9 +16,6 @@ export const template = {
   component: {
     form: component,
   },
-  cssClasses: {
-    'form-group': 'ams-field',
-  },
   field: {
     form: field,
   },

@@ -29,9 +29,9 @@ const radioButton = ({ ctx, item, index }: Props) => {
 <div class="ams-radio" ref="wrapper">
   <input
     ${generateAttrs()}
-    checked="${isChecked}"
+    ${isChecked ? 'checked' : ''}
     class="ams-radio__input"
-    ${item.disabled && 'disabled'}
+    ${item.disabled ? 'disabled' : ''}
     id="${id}"
     type="radio"
     value="${item.value}"
