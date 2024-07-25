@@ -11,28 +11,6 @@ const addSubmitButton = (form: StaticFormOutput): StaticFormWithSubmit => ({
   ...form,
   components: [
     ...form.components,
-
-    {
-      label: 'Vraagtekst',
-      description: 'Omschrijving van de vraag',
-      values: [
-        {
-          label: 'Optie 1',
-          value: 'optie1', // Waarde die naar de server wordt gestuurd
-        },
-        {
-          label: 'Optie 2',
-          value: 'optie2',
-        },
-        {
-          label: 'Optie 3',
-          value: 'optie3',
-        },
-      ],
-      key: 'vraagtekst', // Wordt gegenereerd door Formio obv het label
-      type: 'radio',
-      input: true,
-    },
     {
       type: 'button',
       key: 'submit',
