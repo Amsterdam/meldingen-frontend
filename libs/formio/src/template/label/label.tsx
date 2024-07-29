@@ -1,12 +1,14 @@
 import { isGroup } from '../utils'
 
-const labelMarkup = (ctx: any) =>
-  isGroup(ctx)
-    ? `
+const labelMarkup = (ctx: any) => {
+  if (isGroup(ctx)) {
+    return `
 <legend class="ams-field-set__legend">
   ${ctx.t(ctx.component.label)}
 </legend>`
-    : `
+  }
+
+  return `
 <label
   ref="label"
   class="ams-label"
@@ -15,5 +17,6 @@ const labelMarkup = (ctx: any) =>
   ${ctx.t(ctx.component.label)}
 </label>
 `
+}
 
 export const label = (ctx: any) => (ctx.component.input ? labelMarkup(ctx) : '')
