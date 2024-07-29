@@ -96,7 +96,7 @@
     "markdownlint-cli": "0.41.0",
     "msw": "2.3.2",
     "npm-check-updates": "16.14.20",
-    "nx": "19.5.1",
+    "nx": "19.5.3",
     "nx-stylelint": "17.1.5",
     "prettier": "3.3.3",
     "stylelint": "16.7.0",
