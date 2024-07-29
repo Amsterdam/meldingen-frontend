@@ -1,7 +1,22 @@
 import { hasDescription, isGroup } from '../utils'
 
-export const field = (ctx: any) => `
+export const field = (ctx: any) => {
+  const baseClass = 'ams-paragraph ams-paragraph--small'
+  const groupClass = `${baseClass} ams-mb--xs`
+
+  return `
 ${ctx.labelMarkup}
-${hasDescription(ctx) ? `<p class="ams-paragraph ams-paragraph--small${isGroup(ctx) ? ' ams-mb--xs' : ''}" id="${ctx.id}-descr">${ctx.t(ctx.component.description)}</p>` : ''}
+${
+  hasDescription(ctx)
+    ? `
+<p
+  class="${isGroup(ctx) ? groupClass : baseClass}"
+  id="${ctx.id}-descr"
+>
+  ${ctx.t(ctx.component.description)}
+</p>`
+    : ''
+}
 ${ctx.element}
 `
+}
