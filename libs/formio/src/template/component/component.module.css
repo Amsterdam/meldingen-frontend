@@ -1,4 +1,0 @@
-/* TODO: this could be nicer */
-.component:global(.formio-component-submit) label {
-  display: none;
-}

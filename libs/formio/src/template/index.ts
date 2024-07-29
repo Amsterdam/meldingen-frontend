@@ -4,6 +4,7 @@ import { field } from './field'
 import { html } from './html'
 import { input } from './input'
 import { label } from './label'
+import { radio } from './radio'
 import { webform } from './webform'
 import { wizard } from './wizard'
 import { wizardNav } from './wizardNav'
@@ -14,9 +15,6 @@ export const template = {
   },
   component: {
     form: component,
-  },
-  cssClasses: {
-    'form-group': 'ams-field',
   },
   field: {
     form: field,
@@ -29,6 +27,9 @@ export const template = {
   },
   label: {
     form: label,
+  },
+  radio: {
+    form: radio,
   },
   webform: {
     form: webform,

@@ -12,7 +12,7 @@ export const input = (ctx: any) => {
     ${ctx.component.description ? `aria-describedby="${ctx.id}-descr"` : ''}
     id="${ctx.instance.id}-${ctx.component.key}"
     ref="${ctx.input.ref ? ctx.input.ref : 'input'}"
-    ${ctx.input.type !== 'textarea' ? `type="${ctx.input.attr.type}"` : undefined}
+    ${ctx.input.type !== 'textarea' ? `type="${ctx.input.attr.type}"` : ''}
   >${ctx.input.content}</${ctx.input.type}>
   ${
     ctx.component.showCharCount
