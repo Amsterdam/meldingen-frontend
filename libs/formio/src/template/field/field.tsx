@@ -4,19 +4,21 @@ export const field = (ctx: any) => {
   const baseClass = 'ams-paragraph ams-paragraph--small'
   const groupClass = `${baseClass} ams-mb--xs`
 
-  return `
+  if (hasDescription(ctx)) {
+    return `
 ${ctx.labelMarkup}
-${
-  hasDescription(ctx)
-    ? `
 <p
   class="${isGroup(ctx) ? groupClass : baseClass}"
   id="${ctx.id}-descr"
 >
   ${ctx.t(ctx.component.description)}
-</p>`
-    : ''
-}
+</p>
+${ctx.element}
+`
+  }
+
+  return `
+${ctx.labelMarkup}
 ${ctx.element}
 `
 }
