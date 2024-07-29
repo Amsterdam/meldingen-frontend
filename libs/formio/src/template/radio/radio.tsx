@@ -13,8 +13,10 @@ const radioButton = ({ ctx, item, index }: Props) => {
 
   const generateAttrs = () => {
     // Loop through the object of attrs and generate strings.
-    // The attr 'type' is skipped, we set that later.
-    const attrs = Object.keys(ctx.input.attr).map((key) => (key !== 'type' ? `${key}="${ctx.input.attr[key]}"` : ''))
+    // The attrs 'type' and 'class' are skipped, we set that later.
+    const attrs = Object.keys(ctx.input.attr).map((key) =>
+      key !== 'type' && key !== 'class' ? `${key}="${ctx.input.attr[key]}"` : '',
+    )
     return attrs.join(' ')
   }
 
@@ -25,23 +27,25 @@ const radioButton = ({ ctx, item, index }: Props) => {
         Object.prototype.hasOwnProperty.call(ctx.value, item.value) &&
         ctx.value[item.value]))
 
+  const type = ctx.component.type === 'selectboxes' ? 'checkbox' : 'radio'
+
   return `
-<div class="ams-radio" ref="wrapper">
+<div class="ams-${type}" ref="wrapper">
   <input
     ${generateAttrs()}
     ${isChecked ? 'checked' : ''}
-    class="ams-radio__input"
+    class="ams-${type}__input"
     ${item.disabled ? 'disabled' : ''}
     id="${id}"
-    type="radio"
+    type="${type}"
     value="${item.value}"
     ref="input"
   />
   <label
-    class="ams-radio__label"
+    class="ams-${type}__label"
     for="${id}"
   >
-    <span class="ams-radio__circle"></span>
+    <span class="ams-${type}__${type === 'checkbox' ? 'checkmark' : 'circle'}"></span>
     ${ctx.t(item.label)}
   </label>
 </div>
