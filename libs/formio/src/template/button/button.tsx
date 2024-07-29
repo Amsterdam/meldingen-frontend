@@ -4,6 +4,6 @@ export const button = (ctx: any) => `
   ref="button"
   type="submit"
 >
-${ctx.input.content}
+  ${ctx.input.content}
 </button>
 `
