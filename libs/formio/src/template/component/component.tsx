@@ -14,14 +14,25 @@ const renderField = (ctx: any) => {
 }
 
 const renderFieldSet = (ctx: any) => {
-  const isRadio = ctx.component.type === 'radio'
-
-  return `
+  if (ctx.component.type === 'radio') {
+    return `
 <fieldset
   ${hasDescription(ctx) ? `aria-describedby="${ctx.id}-descr"` : ''}
   class="ams-field-set"
   ref="component"
-  ${isRadio ? `role="radiogroup"` : ''}
+  role="radiogroup"
+>
+  ${ctx.visible && ctx.children}
+</fieldset>
+    `
+  }
+
+  return `
+<fieldset
+  ${hasDescription(ctx) ? `aria-labelledby="${ctx.id}-fieldset ${ctx.id}-descr"` : ''}
+  class="ams-field-set"
+  ${hasDescription(ctx) ? `id="${ctx.id}-fieldset"` : ''}
+  ref="component"
 >
   ${ctx.visible && ctx.children}
 </fieldset>
