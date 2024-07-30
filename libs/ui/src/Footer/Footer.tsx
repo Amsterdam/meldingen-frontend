@@ -1,22 +1,13 @@
 'use client'
 
-import {
-  Footer as ADSFooter,
-  Grid,
-  Heading,
-  Link,
-  PageMenu,
-  Paragraph,
-  VisuallyHidden,
-  Column,
-} from '@amsterdam/design-system-react'
+import { Footer as ADSFooter, Grid, Heading, Link, PageMenu, Paragraph, Column } from '@amsterdam/design-system-react'
 
 export const Footer = () => (
   <ADSFooter>
     <ADSFooter.Top>
-      <VisuallyHidden>
-        <Heading>Colofon</Heading>
-      </VisuallyHidden>
+      <Heading className="ams-visually-hidden" inverseColor>
+        Colofon
+      </Heading>
       <Grid gapVertical="large" paddingVertical="medium">
         <Grid.Cell span={{ narrow: 3, medium: 4, wide: 4 }}>
           <Column gap="small">
@@ -38,9 +29,9 @@ export const Footer = () => (
       </Grid>
     </ADSFooter.Top>
     <ADSFooter.Bottom>
-      <VisuallyHidden>
-        <Heading level={2}>Over deze website</Heading>
-      </VisuallyHidden>
+      <Heading className="ams-visually-hidden" level={2}>
+        Over deze website
+      </Heading>
       <Grid paddingVertical="small">
         <Grid.Cell span="all">
           <PageMenu>
