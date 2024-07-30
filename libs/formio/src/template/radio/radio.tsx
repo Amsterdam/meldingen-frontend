@@ -1,3 +1,5 @@
+import { generateAttrs } from '../utils'
+
 type Props = {
   ctx: any
   item: {
@@ -11,15 +13,6 @@ type Props = {
 const radioButton = ({ ctx, item, index }: Props) => {
   const id = `${ctx.instance.root && ctx.instance.root.id}-${ctx.id}-${ctx.row}-${typeof item.value === 'object' ? `${item.value}-${index}` : item.value}`
 
-  const generateAttrs = () => {
-    // Loop through the object of attrs and generate strings.
-    // The attrs 'type' and 'class' are skipped, we set that later.
-    const attrs = Object.keys(ctx.input.attr).map((key) =>
-      key !== 'type' && key !== 'class' ? `${key}="${ctx.input.attr[key]}"` : '',
-    )
-    return attrs.join(' ')
-  }
-
   const isChecked =
     ctx.value &&
     (ctx.value === item.value ||
@@ -32,7 +25,7 @@ const radioButton = ({ ctx, item, index }: Props) => {
   return `
 <div class="ams-${type}" ref="wrapper">
   <input
-    ${generateAttrs()}
+    ${generateAttrs({ attrs: ctx.input.attr })}
     ${isChecked ? 'checked' : ''}
     class="ams-${type}__input"
     ${item.disabled ? 'disabled' : ''}

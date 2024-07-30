@@ -1,14 +1,8 @@
-export const input = (ctx: any) => {
-  const generateAttrs = () => {
-    // Loop through the object of attrs and generate strings.
-    // The attr 'type' is skipped, we set that later.
-    const attrs = Object.keys(ctx.input.attr).map((key) => (key !== 'type' ? `${key}="${ctx.input.attr[key]}"` : ''))
-    return attrs.join(' ')
-  }
+import { generateAttrs } from '../utils'
 
-  return `
+export const input = (ctx: any) => `
   <${ctx.input.type}
-    ${generateAttrs()}
+    ${generateAttrs({ attrs: ctx.input.attr, filterClass: false })}
     ${ctx.component.description ? `aria-describedby="${ctx.id}-descr"` : ''}
     id="${ctx.instance.id}-${ctx.component.key}"
     ref="${ctx.input.ref ? ctx.input.ref : 'input'}"
@@ -25,4 +19,3 @@ export const input = (ctx: any) => {
       : ''
   }
 `
-}
