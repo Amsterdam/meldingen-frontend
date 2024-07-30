@@ -11,8 +11,8 @@ type GenerateAttrsParams = {
 
 /** Loop through the object of attrs and generate strings. */
 export const generateAttrs = ({ attrs, filterClass = true }: GenerateAttrsParams) => {
-  // Always skip the 'type' attribute. Only skip 'class' if filterClass is false.
-  // We set these attributes manually.
+  // Always skip the 'type' attribute. Only skip 'class' if filterClass is true.
+  // We set the skipped attributes manually.
   const filter = filterClass ? ['class', 'type'] : ['type']
 
   const attrStrings = Object.keys(attrs).map((key: string) => (!filter.includes(key) ? `${key}="${attrs[key]}"` : ''))
