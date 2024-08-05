@@ -40,7 +40,7 @@
     "formiojs": "4.21.1",
     "keycloak-js": "25.0.2",
     "next": "14.2.5",
-    "ra-data-simple-rest": "5.1.0",
+    "ra-data-simple-rest": "5.1.1",
     "ra-i18n-polyglot": "5.1.0",
     "ra-keycloak": "1.0.1",
     "ra-language-dutch": "4.6.1",
