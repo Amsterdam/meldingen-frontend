@@ -53,7 +53,7 @@
     "@babel/core": "7.25.2",
     "@babel/preset-react": "7.24.7",
     "@hey-api/openapi-ts": "0.51.0",
-    "@nx/eslint": "19.5.3",
+    "@nx/eslint": "19.5.6",
     "@nx/eslint-plugin": "19.5.3",
     "@nx/jest": "19.5.3",
     "@nx/js": "19.5.3",
