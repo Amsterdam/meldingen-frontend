@@ -5,6 +5,8 @@ import { html } from './html'
 import { input } from './input'
 import { label } from './label'
 import { radio } from './radio'
+import { select } from './select'
+import { selectOption } from './selectOption'
 import { webform } from './webform'
 import { wizard } from './wizard'
 import { wizardNav } from './wizardNav'
@@ -30,6 +32,12 @@ export const template = {
   },
   radio: {
     form: radio,
+  },
+  select: {
+    form: select,
+  },
+  selectOption: {
+    form: selectOption,
   },
   webform: {
     form: webform,
