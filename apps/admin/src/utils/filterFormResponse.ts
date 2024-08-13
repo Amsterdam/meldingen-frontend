@@ -2,6 +2,7 @@ const allowLists: Record<string, string[]> = {
   panel: ['label', 'key', 'type', 'input', 'components'],
   radio: ['label', 'description', 'key', 'type', 'input', 'values'],
   select: ['label', 'description', 'key', 'type', 'input', 'widget', 'placeholder', 'data'],
+  selectboxes: ['label', 'description', 'key', 'type', 'input', 'values'],
   textarea: ['label', 'description', 'key', 'type', 'input', 'autoExpand', 'showCharCount'],
   textfield: ['label', 'description', 'key', 'type', 'input'],
 }
