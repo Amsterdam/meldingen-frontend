@@ -21,5 +21,6 @@ export default defineConfig({
     reporters: ['default'],
     setupFiles: ['./vitest.setup.ts'],
     coverage: { reportsDirectory: '../../coverage/libs/formio', provider: 'v8' },
+    watch: false,
   },
 })

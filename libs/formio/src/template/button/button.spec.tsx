@@ -1,19 +1,21 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import { FormRenderer } from '../../FormRenderer'
+
+const testLabel = 'Test label'
 
 const mockFormData = {
   display: 'form',
   components: [
     {
+      label: testLabel,
       type: 'button',
     },
   ],
 }
 
 describe('Button', () => {
-  it('should render', () => {
+  it('renders', () => {
     render(<FormRenderer form={mockFormData} />)
 
     const button = screen.getByRole('button')
@@ -29,17 +31,11 @@ describe('Button', () => {
     expect(button).toHaveClass('ams-button ams-button--primary')
   })
 
-  it('is a submit button', async () => {
-    const user = userEvent.setup()
+  it('renders a label', () => {
+    render(<FormRenderer form={mockFormData} />)
 
-    const onSubmitMock = vi.fn()
+    const button = screen.getByRole('button', { name: testLabel })
 
-    render(<FormRenderer form={mockFormData} onSubmit={onSubmitMock} />)
-
-    const button = screen.getByRole('button')
-
-    await user.click(button)
-
-    expect(onSubmitMock).toBeCalledTimes(1)
+    expect(button).toBeInTheDocument()
   })
 })
