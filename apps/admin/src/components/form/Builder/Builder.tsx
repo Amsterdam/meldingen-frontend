@@ -25,34 +25,15 @@ export const Builder = ({ data, onChange }: BuilderProps) => (
           default: true,
           components: {
             button: false, // Use this to hide components on the left
+            checkbox: false,
+            number: false,
             password: false,
           },
         },
-        advanced: {
-          default: true, // Use this to show all components on load
-          components: {
-            tags: false,
-            currency: false,
-            survey: false,
-            signature: false,
-          },
-        },
-        layout: {
-          default: true,
-          components: {
-            table: false,
-            well: false,
-          },
-        },
+        advanced: false,
+        layout: false,
         data: false,
-        premium: {
-          default: true,
-          components: {
-            recaptcha: false,
-            form: false,
-            custom: false, // This doesn't seem to work
-          },
-        },
+        premium: false,
       },
       editForm: {
         textarea: [
