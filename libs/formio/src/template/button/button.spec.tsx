@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { FormRenderer } from '../../FormRenderer'
 
@@ -26,5 +27,19 @@ describe('Button', () => {
     const button = screen.getByRole('button')
 
     expect(button).toHaveClass('ams-button ams-button--primary')
+  })
+
+  it('is a submit button', async () => {
+    const user = userEvent.setup()
+
+    const onSubmitMock = vi.fn()
+
+    render(<FormRenderer form={mockFormData} onSubmit={onSubmitMock} />)
+
+    const button = screen.getByRole('button')
+
+    await user.click(button)
+
+    expect(onSubmitMock).toBeCalledTimes(1)
   })
 })
