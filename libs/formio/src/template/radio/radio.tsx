@@ -47,7 +47,7 @@ const radioButton = ({ ctx, item, index }: Props) => {
 
 export const radio = (ctx: any) => `
 <div
-  class="ams-column ams-column--extra-small"
+  class="ams-column ams-column--gap-extra-small"
   ref="radioGroup"
 >
   ${ctx.values.map((item: any, index: number) => radioButton({ ctx, item, index })).join('')}
