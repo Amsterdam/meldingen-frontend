@@ -1,6 +1,6 @@
 import { Create } from 'react-admin'
 
-import type { FormioSchema } from '../types/formio'
+import type { FormioSchema } from '../../../../../../libs/formio/src/types/formio'
 import { filterFormResponse } from '../utils/filterFormResponse'
 import { CreateEditForm } from './CreateEditForm'
 
