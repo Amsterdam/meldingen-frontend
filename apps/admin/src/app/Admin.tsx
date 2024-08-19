@@ -1,17 +1,17 @@
 import { Admin as ReactAdmin, Resource } from 'react-admin'
 
-import { CategoryCreate } from '../../category/CategoryCreate/CategoryCreate'
-import { CategoryEdit } from '../../category/CategoryEdit'
-import { CategoryList } from '../../category/CategoryList'
-import { FormCreate } from '../../form/FormCreate'
-import { FormEdit } from '../../form/FormEdit'
-import { FormList } from '../../form/FormList'
+import { CategoryCreate } from '../pages/category/CategoryCreate'
+import { CategoryEdit } from '../pages/category/CategoryEdit'
+import { CategoryList } from '../pages/category/CategoryList'
+import { FormCreate } from '../pages/form/components/FormCreate'
+import { FormEdit } from '../pages/form/components/FormEdit'
+import { FormList } from '../pages/form/components/FormList'
 
-import { CustomLayout } from './CustomLayout'
-import { i18nProvider } from './i18nProvider'
-import { useAuthProvider } from './useAuthProvider'
+import { CustomLayout } from './components/CustomLayout'
+import { i18nProvider } from './providers/i18nProvider'
+import { useAuthProvider } from './providers/useAuthProvider'
 
-export const Admin = () => {
+const Admin = () => {
   const { keycloak, dataProviderRef, authProvider } = useAuthProvider()
 
   if (!keycloak) return <p>Loading...</p>
@@ -34,3 +34,5 @@ export const Admin = () => {
     </ReactAdmin>
   )
 }
+
+export default Admin

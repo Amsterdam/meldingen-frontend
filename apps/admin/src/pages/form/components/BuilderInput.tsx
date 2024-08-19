@@ -1,7 +1,7 @@
 import { TextInput } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
 
-import type { FormioSchema } from '../../../types/formio'
+import type { FormioSchema } from '../types/formio'
 import { Builder } from '../Builder'
 
 import styles from './BuilderInput.module.css'

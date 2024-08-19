@@ -8,8 +8,8 @@ import {
   required,
 } from 'react-admin'
 
-import { BuilderInput } from '../BuilderInput'
-import { CategoryInput } from '../CategoryInput'
+import { BuilderInput } from './BuilderInput'
+import { CategoryInput } from './CategoryInput'
 
 type CreateEditFormProps = {
   isEditForm?: boolean

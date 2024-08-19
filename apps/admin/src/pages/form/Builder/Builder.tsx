@@ -1,7 +1,7 @@
 import { FormBuilder } from '@meldingen/formio'
 
 import type { ComponentSchema } from 'formiojs'
-import type { FormioSchema } from '../../../types/formio'
+import type { FormioSchema } from '../types/formio'
 
 import nl from './translations/nl.json'
 
