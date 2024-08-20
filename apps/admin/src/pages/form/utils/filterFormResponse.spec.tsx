@@ -11,7 +11,7 @@ import {
   textAreasMockAfter,
   textFieldMockBefore,
   textFieldMockAfter,
-} from './mocks/filterFormResponseMocks'
+} from './filterFormResponseMocks'
 
 describe('filterFormResponse', () => {
   it('should not filter the root object', () => {

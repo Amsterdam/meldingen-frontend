@@ -6,7 +6,7 @@ import { FormCreate, FormEdit, FormList } from '../pages/form/components'
 import { CustomLayout } from './components'
 import { i18nProvider, useAuthProvider } from './providers'
 
-const Admin = () => {
+export const Admin = () => {
   const { keycloak, dataProviderRef, authProvider } = useAuthProvider()
 
   if (!keycloak) return <p>Loading...</p>
@@ -29,5 +29,3 @@ const Admin = () => {
     </ReactAdmin>
   )
 }
-
-export default Admin
