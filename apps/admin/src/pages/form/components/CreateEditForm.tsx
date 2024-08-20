@@ -9,7 +9,7 @@ import {
 } from 'react-admin'
 
 import { BuilderInput } from './BuilderInput'
-import { CategoryInput } from './CategoryInput'
+import { ClassificationInput } from './ClassificationInput'
 
 type CreateEditFormProps = {
   isEditForm?: boolean
@@ -28,7 +28,7 @@ export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => (
   >
     <TextInput source="title" validate={required()} />
     <TextInput source="display" defaultValue="wizard" hidden />
-    <CategoryInput />
+    <ClassificationInput />
     <BuilderInput />
   </SimpleForm>
 )

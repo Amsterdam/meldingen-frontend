@@ -1,6 +1,6 @@
 import { Admin as ReactAdmin, Resource } from 'react-admin'
 
-import { CategoryCreate, CategoryEdit, CategoryList } from '../pages/category'
+import { ClassificationCreate, ClassificationEdit, ClassificationList } from '../pages/classification'
 import { FormCreate, FormEdit, FormList } from '../pages/form/components'
 
 import { CustomLayout } from './components'
@@ -21,9 +21,9 @@ const Admin = () => {
       <Resource name="form" list={<FormList />} edit={<FormEdit />} create={<FormCreate />} />
       <Resource
         name="classification"
-        list={<CategoryList />}
-        edit={<CategoryEdit />}
-        create={<CategoryCreate />}
+        list={<ClassificationList />}
+        edit={<ClassificationEdit />}
+        create={<ClassificationCreate />}
         recordRepresentation="name"
       />
     </ReactAdmin>

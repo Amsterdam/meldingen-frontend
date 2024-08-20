@@ -41,41 +41,41 @@
   - Choosing Cancel returns you to the existing form
   - Choosing Confirm returns you to the _Vragenlijsten_ page, where the deleted form isn’t shown anymore.
 
-## Connecting a form to a category
+## Connecting a form to a classification
 
-- Connect a form without a category to a category that isn’t already connected
+- Connect a form without a classification to a classification that isn’t already connected
 
-  - Click on a form without a category on the _Vragenlijsten_ page
-  - Select an unused category and save. This returns you to the _Vragenlijsten_ page
-  - The selected category should also be connected to the form on the _Categorieën_ page
+  - Click on a form without a classification on the _Vragenlijsten_ page
+  - Select an unused classification and save. This returns you to the _Vragenlijsten_ page
+  - The selected classification should also be connected to the form on the _Categorieën_ page
 
-- Connect a form with a category to a category that isn’t already connected
+- Connect a form with a classification to a classification that isn’t already connected
 
-  - Click on a form with a category on the _Vragenlijsten_ page
-  - Select an unused category and save. This returns you to the _Vragenlijsten_ page
-  - The selected category should also be connected to the form on the _Categorieën_ page
-  - The previously selected category should not be connected to any form anymore
+  - Click on a form with a classification on the _Vragenlijsten_ page
+  - Select an unused classification and save. This returns you to the _Vragenlijsten_ page
+  - The selected classification should also be connected to the form on the _Categorieën_ page
+  - The previously selected classification should not be connected to any form anymore
 
-- Connect a form without a category to a category that is already connected
+- Connect a form without a classification to a classification that is already connected
 
-  - Click on a form without a category on the _Vragenlijsten_ page
-  - Select a used category. This will open a Confirm dialog.
-  - If you press Cancel, the category should be blank again
-  - If you press Confirm, the selected category should be shown
+  - Click on a form without a classification on the _Vragenlijsten_ page
+  - Select a used classification. This will open a Confirm dialog.
+  - If you press Cancel, the classification should be blank again
+  - If you press Confirm, the selected classification should be shown
   - Press Save. This returns you to the _Vragenlijsten_ page
-  - The form that was previously connected to this category should not be connected anymore
-  - The selected category should also be connected to the form on the _Categorieën_ page
+  - The form that was previously connected to this classification should not be connected anymore
+  - The selected classification should also be connected to the form on the _Categorieën_ page
 
-- Connect a form with a category to a category that is already connected
+- Connect a form with a classification to a classification that is already connected
 
-  - Click on a form with a category on the _Vragenlijsten_ page
-  - Select a used category. This will open a Confirm dialog.
-  - If you press Cancel, the category should be returned to the original category.
-  - If you press Confirm, the selected category should be shown.
+  - Click on a form with a classification on the _Vragenlijsten_ page
+  - Select a used classification. This will open a Confirm dialog.
+  - If you press Cancel, the classification should be returned to the original classification.
+  - If you press Confirm, the selected classification should be shown.
   - Press Save. This returns you to the _Vragenlijsten_ page
-  - The form that was previously connected to this category should not be connected anymore
-  - The selected category should also be connected to the form on the _Categorieën_ page
-  - The previously selected category should not be connected anymore on the _Categorieën_ page
+  - The form that was previously connected to this classification should not be connected anymore
+  - The selected classification should also be connected to the form on the _Categorieën_ page
+  - The previously selected classification should not be connected anymore on the _Categorieën_ page
 
 ## Categories
 
@@ -84,22 +84,22 @@
   - Go to the _Categorieën_ page
   - See a list of all categories
 
-- Create a new category
+- Create a new classification
 
   - Click the Create button on the _Categorieën_ page
   - See a form
   - Enter values and save. This returns you to the _Categorieën_ page
 
-- Edit an existing category
+- Edit an existing classification
 
-  - Click on an existing category on the _Categorieën_ page
+  - Click on an existing classification on the _Categorieën_ page
   - See a form that shows the existing values
   - Change values and save. This returns you to the _Categorieën_ page
 
-- Delete an existing category
+- Delete an existing classification
 
-  - Click on an existing category on the _Categorieën_ page
+  - Click on an existing classification on the _Categorieën_ page
   - Click on the Delete button
   - See a confirmation dialog
   - Choosing Cancel returns you to the existing form
-  - Choosing Confirm returns you to the _Categorieën_ page, where the deleted category isn’t shown anymore.
+  - Choosing Confirm returns you to the _Categorieën_ page, where the deleted classification isn’t shown anymore.
