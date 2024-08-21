@@ -25,5 +25,6 @@ export default defineConfig({
       reportsDirectory: '../../coverage/libs/ui',
       provider: 'v8',
     },
+    watch: false,
   },
 })

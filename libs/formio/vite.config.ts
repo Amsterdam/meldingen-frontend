@@ -19,6 +19,8 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default'],
+    setupFiles: ['./vitest.setup.ts'],
     coverage: { reportsDirectory: '../../coverage/libs/formio', provider: 'v8' },
+    watch: false,
   },
 })
