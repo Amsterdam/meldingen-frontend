@@ -10,6 +10,14 @@
       "options": {
         "lintFilePatterns": ["apps/public/**/*.css"]
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.spec.json --noEmit",
+        "cwd": "apps/public",
+        "forwardAllArgs": false
+      }
     }
   },
   "tags": []

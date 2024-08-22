@@ -19,6 +19,14 @@
       "options": {
         "lintFilePatterns": ["apps/admin/**/*.css"]
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.spec.json --noEmit",
+        "cwd": "apps/admin",
+        "forwardAllArgs": false
+      }
     }
   }
 }
