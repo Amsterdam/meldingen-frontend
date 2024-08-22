@@ -5,7 +5,7 @@ import type { AutocompleteInputProps, RaRecord } from 'react-admin'
 import { AutocompleteInput, Confirm, ReferenceInput, useRecordContext } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
 
-import styles from './CategoryInput.module.css'
+import styles from './ClassificationInput.module.css'
 
 const OptionRenderer = () => {
   const record = useRecordContext()
@@ -19,7 +19,7 @@ const OptionRenderer = () => {
 
 const inputText = (choice: RaRecord) => `${choice.name}`
 
-export const CategoryInput = () => {
+export const ClassificationInput = () => {
   const record = useRecordContext()
   const { setValue, getValues } = useFormContext()
 

@@ -1,15 +1,10 @@
 import { Admin as ReactAdmin, Resource } from 'react-admin'
 
-import { CategoryCreate } from '../../category/CategoryCreate/CategoryCreate'
-import { CategoryEdit } from '../../category/CategoryEdit'
-import { CategoryList } from '../../category/CategoryList'
-import { FormCreate } from '../../form/FormCreate'
-import { FormEdit } from '../../form/FormEdit'
-import { FormList } from '../../form/FormList'
+import { ClassificationCreate, ClassificationEdit, ClassificationList } from '../pages/classification'
+import { FormCreate, FormEdit, FormList } from '../pages/form/components'
 
-import { CustomLayout } from './CustomLayout'
-import { i18nProvider } from './i18nProvider'
-import { useAuthProvider } from './useAuthProvider'
+import { CustomLayout } from './components'
+import { i18nProvider, useAuthProvider } from './providers'
 
 export const Admin = () => {
   const { keycloak, dataProviderRef, authProvider } = useAuthProvider()
@@ -26,9 +21,9 @@ export const Admin = () => {
       <Resource name="form" list={<FormList />} edit={<FormEdit />} create={<FormCreate />} />
       <Resource
         name="classification"
-        list={<CategoryList />}
-        edit={<CategoryEdit />}
-        create={<CategoryCreate />}
+        list={<ClassificationList />}
+        edit={<ClassificationEdit />}
+        create={<ClassificationCreate />}
         recordRepresentation="name"
       />
     </ReactAdmin>

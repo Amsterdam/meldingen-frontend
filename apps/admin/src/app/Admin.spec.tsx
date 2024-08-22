@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react'
 
-import App from './app'
+import { Admin } from './Admin'
 
-describe('App', () => {
+describe('Admin', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<App />)
+    const { baseElement } = render(<Admin />)
     expect(baseElement).toBeTruthy()
   })
 })
