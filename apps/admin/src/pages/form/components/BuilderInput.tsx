@@ -5,14 +5,23 @@ import type { FormioSchema } from '@meldingen/formio'
 import { FormBuilder } from '@meldingen/formio'
 
 import styles from './BuilderInput.module.css'
+import { useEffect, useState } from 'react'
+import { ComponentSchema } from 'formiojs'
 
 export const BuilderInput = () => {
+  const [formValue, setFormValue] = useState<ComponentSchema[]>()
+
   const { getValues, setValue } = useFormContext()
 
-  const initialValue = getValues('components')
+  useEffect(() => {
+    const initialValue = getValues('components')
+
+    setFormValue(initialValue)
+  }, [])
 
   const onChange = (schema: FormioSchema) => {
     setValue('components', schema?.components)
+    setFormValue(schema?.components)
   }
 
   return (
@@ -25,7 +34,7 @@ export const BuilderInput = () => {
         hidden
       />
       <div className={styles.builder}>
-        <FormBuilder data={initialValue} onChange={onChange} />
+        <FormBuilder data={formValue} onChange={onChange} />
       </div>
     </>
   )
