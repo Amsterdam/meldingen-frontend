@@ -1,7 +1,7 @@
 import { Components, FormBuilder as FormioFormBuilder, Templates } from '@formio/react'
 import type { ComponentSchema } from 'formiojs'
 
-import { Textarea, Textfield } from './components'
+import { Textarea, Textfield, Select } from './components'
 import { template } from './template'
 import nl from './translations/nl.json'
 import type { FormioSchema } from './types/formio'
@@ -14,7 +14,7 @@ type Props = {
 }
 
 export const FormBuilder = ({ data, onChange }: Props) => {
-  Components.setComponents({ textarea: Textarea, textfield: Textfield })
+  Components.setComponents({ textarea: Textarea, textfield: Textfield, select: Select })
   Templates.current = template
 
   return (
