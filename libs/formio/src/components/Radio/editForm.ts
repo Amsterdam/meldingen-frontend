@@ -90,16 +90,19 @@ export const editForm = () => ({
           label: 'Validation',
           components: [
             {
+              weight: 10,
+              type: 'checkbox',
+              label: 'Required',
+              tooltip: 'A required field must be filled in before the form can be submitted.',
+              key: 'validate.required',
+              input: true,
+            },
+            {
               type: 'panel',
               title: 'JSONLogic Validation',
               key: 'json-validation-json',
               weight: 400,
               components: [
-                {
-                  type: 'htmlelement',
-                  tag: 'div',
-                  content: '<h6>MinLength:</h6><pre>{"<": [{"var": "value"}, minLength]}</pre>',
-                },
                 {
                   type: 'textarea',
                   key: 'validate.json',
