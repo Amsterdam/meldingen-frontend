@@ -1,13 +1,12 @@
 // Sourced from:
 // - https://github.com/formio/formio.js/blob/master/src/components/_classes/component/editForm
-// - https://github.com/formio/formio.js/blob/master/src/components/select/editForm
+// - https://github.com/formio/formio.js/tree/master/src/components/textfield/editForm
 
 export const editForm = () => ({
   components: [
     {
       type: 'tabs',
       keys: 'tabs',
-      weight: 0,
       components: [
         {
           key: 'display',
@@ -27,28 +26,6 @@ export const editForm = () => ({
               autofocus: true,
             },
             {
-              type: 'select',
-              input: true,
-              weight: 20,
-              tooltip: "Select the type of widget you'd like to use.",
-              key: 'widget',
-              defaultValue: 'html5',
-              label: 'Widget Type',
-              dataSrc: 'values',
-              data: {
-                values: [{ label: 'HTML 5', value: 'html5' }],
-              },
-            },
-            {
-              weight: 100,
-              type: 'textfield',
-              input: true,
-              key: 'placeholder',
-              label: 'Placeholder',
-              placeholder: 'Placeholder',
-              tooltip: 'The placeholder text that will appear when this field is empty.',
-            },
-            {
               weight: 200,
               type: 'textarea',
               input: true,
@@ -61,43 +38,6 @@ export const editForm = () => ({
               wysiwyg: {
                 minLines: 3,
                 isUseWorkerDisabled: true,
-              },
-            },
-          ],
-        },
-        {
-          label: 'Data',
-          key: 'data',
-          components: [
-            {
-              type: 'datagrid',
-              input: true,
-              label: 'Data Source Values',
-              key: 'data.values',
-              weight: 10,
-              reorder: true,
-              defaultValue: [{ label: '', value: '' }],
-              validate: {
-                required: true,
-              },
-              components: [
-                {
-                  label: 'Label',
-                  key: 'label',
-                  input: true,
-                  type: 'textfield',
-                },
-                {
-                  label: 'Value',
-                  key: 'value',
-                  input: true,
-                  type: 'textfield',
-                  allowCalculateOverride: true,
-                  calculateValue: 'value = _.camelCase(row.label);',
-                },
-              ],
-              conditional: {
-                json: { '===': [{ var: 'data.dataSrc' }, 'values'] },
               },
             },
           ],
