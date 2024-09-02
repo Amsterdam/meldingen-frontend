@@ -1,7 +1,6 @@
 // Sourced from:
 // - https://github.com/formio/formio.js/blob/master/src/components/_classes/component/editForm
-// - https://github.com/formio/formio.js/blob/master/src/components/textarea/editForm
-// - https://github.com/formio/formio.js/blob/master/src/components/textfield/editForm/TextField.edit.display.js
+// - https://github.com/formio/formio.js/blob/master/src/components/selectboxes/editForm
 
 export const editForm = () => ({
   components: [
@@ -42,13 +41,45 @@ export const editForm = () => ({
                 isUseWorkerDisabled: true,
               },
             },
+          ],
+        },
+        {
+          key: 'data',
+          label: 'Data',
+          components: [
             {
-              weight: 1201,
-              type: 'checkbox',
-              label: 'Show Character Counter',
-              tooltip: 'Show a live count of the number of characters.',
-              key: 'showCharCount',
+              type: 'datagrid',
               input: true,
+              label: 'Values',
+              key: 'values',
+              weight: 10,
+              reorder: true,
+              defaultValue: [{ label: '', value: '' }],
+              validate: {
+                required: true,
+              },
+              components: [
+                {
+                  label: 'Label',
+                  key: 'label',
+                  input: true,
+                  type: 'textfield',
+                },
+                {
+                  label: 'Value',
+                  key: 'value',
+                  input: true,
+                  type: 'textfield',
+                  allowCalculateOverride: true,
+                  calculateValue: 'value = _.camelCase(row.label);',
+                  validate: {
+                    required: true,
+                  },
+                },
+              ],
+              conditional: {
+                json: { '===': [{ var: 'data.dataSrc' }, 'values'] },
+              },
             },
           ],
         },
