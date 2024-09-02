@@ -55,7 +55,14 @@ export const editForm = () => ({
                 {
                   type: 'htmlelement',
                   tag: 'div',
-                  content: '<h6>MinLength:</h6><pre>{"<": [{"var": "value"}, minLength]}</pre>',
+                  content: `
+                    <p>Validation examples:</p>
+                    <ul>
+                      <li>Required: <code>{">": [{ "var": "value.length" }, 0]}</code></li>
+                      <li>Minimum length: <code>{">=": [{ "var": "value.length" }, minLength]}</code></li>
+                      <li>Maximum length: <code>{"<=": [{ "var": "value.length" }, maxLength]}</code></li>
+                    </ul>
+                  `,
                 },
                 {
                   type: 'textarea',
