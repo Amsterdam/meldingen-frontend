@@ -66,8 +66,8 @@ export const editForm = () => ({
                   content: `
                     <p>Validation examples:</p>
                     <ul>
-                      <li>Minimum length: <code>{">=": [{ "var": "value.length" }, minLength]}</code></li>
-                      <li>Maximum length: <code>{"<=": [{ "var": "value.length" }, maxLength]}</code></li>
+                      <li>Should be 3 characters or more: <code>{">=": [{ "var": "value.length" }, 3]}</code></li>
+                      <li>Should be a 100 characters or less: <code>{"<=": [{ "var": "value.length" }, 100]}</code></li>
                     </ul>
                   `,
                 },
