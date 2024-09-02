@@ -1,7 +1,7 @@
 import { Components, FormBuilder as FormioFormBuilder } from '@formio/react'
 import type { ComponentSchema } from 'formiojs'
 
-import { Textarea, Textfield, Select, SelectBoxes } from './components'
+import { Radio, Select, SelectBoxes, Textarea, Textfield } from './components'
 import nl from './translations/nl.json'
 import type { FormioSchema } from './types/formio'
 
@@ -13,7 +13,13 @@ type Props = {
 }
 
 export const FormBuilder = ({ data, onChange }: Props) => {
-  Components.setComponents({ textarea: Textarea, textfield: Textfield, select: Select, selectboxes: SelectBoxes })
+  Components.setComponents({
+    radio: Radio,
+    select: Select,
+    selectboxes: SelectBoxes,
+    textarea: Textarea,
+    textfield: Textfield,
+  })
 
   return (
     <FormioFormBuilder
