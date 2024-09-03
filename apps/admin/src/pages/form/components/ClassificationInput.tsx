@@ -9,6 +9,9 @@ import styles from './ClassificationInput.module.css'
 
 const OptionRenderer = () => {
   const record = useRecordContext()
+
+  if (!record) return
+
   return (
     <span className={styles.autoCompleteOption}>
       <span>{record.name}</span>
