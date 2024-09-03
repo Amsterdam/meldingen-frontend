@@ -13,15 +13,16 @@ export const BuilderInput = () => {
 
   const { getValues, setValue } = useFormContext()
 
-  useEffect(() => {
-    const initialValue = getValues('components')
+  // This is undefined on first render, but it rerenders a couple of times.
+  // That is why the useEffect is necessary.
+  const formValueOnRender = getValues('components')
 
-    setFormValue(initialValue)
-  }, [])
+  useEffect(() => {
+    setFormValue(formValueOnRender)
+  }, [formValueOnRender])
 
   const onChange = (schema: FormioSchema) => {
     setValue('components', schema?.components)
-    setFormValue(schema?.components)
   }
 
   return (
