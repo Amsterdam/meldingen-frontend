@@ -35,6 +35,7 @@ export const editForm = () => ({
               defaultValue: 'html5',
               label: 'Widget Type',
               dataSrc: 'values',
+              widget: 'html5',
               data: {
                 values: [{ label: 'HTML 5', value: 'html5' }],
               },
