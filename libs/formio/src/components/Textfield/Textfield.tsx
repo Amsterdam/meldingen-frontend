@@ -1,5 +1,7 @@
 import { Components } from '@formio/react'
 
+import { editForm } from './editForm'
+
 const FormioTextfield = (Components as any).components.textfield
 
 export class Textfield extends FormioTextfield {
@@ -11,4 +13,6 @@ export class Textfield extends FormioTextfield {
 
     return inputInfo
   }
+
+  static editForm = editForm
 }

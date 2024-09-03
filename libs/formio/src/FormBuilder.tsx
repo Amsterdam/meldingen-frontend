@@ -1,6 +1,7 @@
-import { FormBuilder as FormioFormBuilder } from '@formio/react'
+import { Components, FormBuilder as FormioFormBuilder } from '@formio/react'
 import type { ComponentSchema } from 'formiojs'
 
+import { Radio, Select, SelectBoxes, Textarea, Textfield } from './components'
 import nl from './translations/nl.json'
 import type { FormioSchema } from './types/formio'
 
@@ -11,68 +12,41 @@ type Props = {
   onChange: (schema: FormioSchema) => void
 }
 
-export const FormBuilder = ({ data, onChange }: Props) => (
-  <FormioFormBuilder
-    onChange={onChange}
-    form={data ? { display: 'wizard', components: data } : { display: 'wizard' }}
-    options={{
-      language: 'nl',
-      i18n: {
-        nl,
-      },
-      noDefaultSubmitButton: true,
-      builder: {
-        basic: {
-          default: true,
-          components: {
-            button: false, // Use this to hide components on the left
-            checkbox: false,
-            number: false,
-            password: false,
-          },
+export const FormBuilder = ({ data, onChange }: Props) => {
+  Components.setComponents({
+    radio: Radio,
+    select: Select,
+    selectboxes: SelectBoxes,
+    textarea: Textarea,
+    textfield: Textfield,
+  })
+
+  return (
+    <FormioFormBuilder
+      onChange={onChange}
+      form={data ? { display: 'wizard', components: data } : { display: 'wizard' }}
+      options={{
+        language: 'nl',
+        i18n: {
+          nl,
         },
-        advanced: false,
-        layout: false,
-        data: false,
-        premium: false,
-      },
-      editForm: {
-        textarea: [
-          {
-            key: 'display',
-            components: [
-              {
-                key: 'applyMaskOn', // Use this to hide fields from edit form panels ('display' in this case)
-                ignore: true,
-              },
-              {
-                key: 'displayMask',
-                ignore: true,
-              },
-              {
-                key: 'labelPosition',
-                ignore: true,
-              },
-              {
-                key: 'tooltip',
-                ignore: true,
-              },
-              {
-                key: 'prefix',
-                ignore: true,
-              },
-              {
-                key: 'suffix',
-                ignore: true,
-              },
-            ],
+        noDefaultSubmitButton: true,
+        builder: {
+          basic: {
+            default: true,
+            components: {
+              button: false, // Use this to hide components on the left
+              checkbox: false,
+              number: false,
+              password: false,
+            },
           },
-          {
-            key: 'api',
-            ignore: true, // Use this to hide entire panels
-          },
-        ],
-      },
-    }}
-  />
-)
+          advanced: false,
+          layout: false,
+          data: false,
+          premium: false,
+        },
+      }}
+    />
+  )
+}
