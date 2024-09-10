@@ -37,6 +37,14 @@ describe('Input', () => {
       expect(textArea).toHaveClass('ams-text-area')
     })
 
+    it('has the correct dir attribute', () => {
+      render(<FormRenderer form={mockFormData} />)
+
+      const textArea = screen.getByRole('textbox', { name: testLabel })
+
+      expect(textArea).toHaveAttribute('dir', 'auto')
+    })
+
     describe('Character counter', () => {
       it('renders', () => {
         render(<FormRenderer form={mockFormData} />)
