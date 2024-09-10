@@ -71,6 +71,10 @@ describe('Input', () => {
         const textarea = screen.getByRole('textbox', { name: testLabel })
 
         await user.type(textarea, '0123456789')
+
+        const charCount = screen.getByRole('status')
+
+        expect(charCount).toHaveTextContent('10 van 1000 tekens')
       })
 
       // TODO: couldn't get this to work
