@@ -47,6 +47,16 @@ type NextPageInstance = FormInstance & { submission: { data: AnswerObject } }
 
 type SubmitInstance = FormInstance & { data: AnswerObject }
 
+const transformAnswer = (answer: string | { [key: string]: string }) => {
+  if (typeof answer === 'object') {
+    const checkedAnswers = Object.keys(answer).filter((key) => answer[key])
+
+    return checkedAnswers.join(', ')
+  }
+
+  return answer
+}
+
 const AanvullendeVragen = () => {
   const [page, setPage] = useState<number>(0)
   const [formData, setFormData] = useState<FormOutput>()
@@ -73,14 +83,20 @@ const AanvullendeVragen = () => {
       const selectedPage = currentPage ?? formData.components.length - 1
 
       // @ts-expect-error: TODO: FormComponentOutput | FormPanelComponentOutput means you can only use attrs present in both...
-      formData.components[selectedPage].components.forEach((component) =>
-        postMeldingByMeldingIdQuestionByQuestionId({
+      formData.components[selectedPage].components.forEach((component) => {
+        // Transform all answers to strings (including checkbox objects)
+        const answer = transformAnswer(answerObj[component.key])
+
+        // Filter out empty answers
+        if (answer.length === 0) return null
+
+        return postMeldingByMeldingIdQuestionByQuestionId({
           meldingId: data.id,
           questionId: component.question,
           token: data.token,
-          requestBody: { text: answerObj[component.key] },
-        }),
-      )
+          requestBody: { text: answer },
+        })
+      })
     }
   }
 
