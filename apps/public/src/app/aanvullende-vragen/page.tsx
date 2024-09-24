@@ -90,14 +90,16 @@ const AanvullendeVragen = () => {
         // Filter out empty answers
         if (answer.length === 0) return null
 
+        const { id, token } = data
+
         return postMeldingByMeldingIdQuestionByQuestionId({
           body: { text: answer },
           path: {
-            melding_id: data.id,
+            melding_id: id,
             question_id: component.question,
           },
           query: {
-            token: data.token,
+            token,
           },
         })
       })
@@ -113,12 +115,13 @@ const AanvullendeVragen = () => {
     postAnswer(instance.data)
     // Call to let BE know we're at the end of this form
     if (data) {
+      const { id, token } = data
       putMeldingByMeldingIdAnswerQuestions({
         path: {
-          melding_id: data.id,
+          melding_id: id,
         },
         query: {
-          token: data.token,
+          token,
         },
       })
     }
