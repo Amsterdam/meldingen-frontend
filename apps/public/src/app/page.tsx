@@ -7,7 +7,7 @@ import { Home } from './Home'
 
 export type StaticFormWithSubmit = Omit<StaticFormOutput, 'components'> & { components: ComponentSchema[] }
 
-const addSubmitButton = (form: StaticFormOutput): StaticFormWithSubmit => ({
+const addSubmitButton = (form: any): StaticFormWithSubmit => ({
   ...form,
   components: [
     ...form.components,
@@ -25,7 +25,9 @@ const addSubmitButton = (form: StaticFormOutput): StaticFormWithSubmit => ({
 export const dynamic = 'force-dynamic'
 
 export default async () => {
-  const data = await getStaticFormByFormType({ formType: 'primary' }).then((response) => addSubmitButton(response))
+  const formData = await getStaticFormByFormType({ path: { form_type: 'primary' } }).then(
+    ({ data }) => data && addSubmitButton(data),
+  )
 
-  return <Home formData={data} />
+  return formData && <Home formData={formData} />
 }

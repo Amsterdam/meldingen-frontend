@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 
-import { postMelding } from '@meldingen/api-client'
+import { postMelding, client } from '@meldingen/api-client'
 import { Grid } from '@meldingen/ui'
 
 import { useMeldingContext } from '../context/MeldingContextProvider'
@@ -15,6 +15,11 @@ const FormRenderer = dynamic(() => import('@meldingen/formio').then((mod) => mod
   loading: () => <p>Loading...</p>,
 })
 
+// Set client on client
+client.setConfig({
+  baseUrl: 'http://localhost:8000/',
+})
+
 export const Home = ({ formData }: { formData: StaticFormWithSubmit }) => {
   const router = useRouter()
   const { setData } = useMeldingContext()
@@ -22,8 +27,10 @@ export const Home = ({ formData }: { formData: StaticFormWithSubmit }) => {
   const onSubmit = ({ data }: { [key: string]: any }) => {
     const firstKey = Object.keys(data)[0]
 
-    postMelding({ requestBody: { text: data[firstKey] } }).then(({ id, token, classification }) => {
-      setData({ id, token, classification })
+    postMelding({ body: { text: data[firstKey] } }).then(({ data: respData }) => {
+      if (respData) {
+        setData({ id: respData.id, token: respData.token, classification: respData.classification })
+      }
       router.push('/aanvullende-vragen')
     })
   }

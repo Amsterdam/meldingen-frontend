@@ -91,10 +91,14 @@ const AanvullendeVragen = () => {
         if (answer.length === 0) return null
 
         return postMeldingByMeldingIdQuestionByQuestionId({
-          meldingId: data.id,
-          questionId: component.question,
-          token: data.token,
-          requestBody: { text: answer },
+          body: { text: answer },
+          path: {
+            melding_id: data.id,
+            question_id: component.question,
+          },
+          query: {
+            token: data.token,
+          },
         })
       })
     }
@@ -109,7 +113,14 @@ const AanvullendeVragen = () => {
     postAnswer(instance.data)
     // Call to let BE know we're at the end of this form
     if (data) {
-      putMeldingByMeldingIdAnswerQuestions({ meldingId: data.id, token: data.token })
+      putMeldingByMeldingIdAnswerQuestions({
+        path: {
+          melding_id: data.id,
+        },
+        query: {
+          token: data.token,
+        },
+      })
     }
     router.push('/bedankt')
   }
@@ -118,8 +129,8 @@ const AanvullendeVragen = () => {
     const classification = data?.classification
 
     if (classification) {
-      getFormClassificationByClassificationId({ classificationId: classification }).then((response) =>
-        setFormData(response),
+      getFormClassificationByClassificationId({ path: { classification_id: classification } }).then(
+        ({ data: formDataByClassification }) => setFormData(formDataByClassification),
       )
     } else {
       // TODO: this should be a default form we get from the api
