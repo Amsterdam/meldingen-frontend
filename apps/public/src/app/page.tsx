@@ -7,7 +7,7 @@ import { Home } from './Home'
 
 export type StaticFormWithSubmit = Omit<StaticFormOutput, 'components'> & { components: ComponentSchema[] }
 
-const addSubmitButton = (form: StaticFormOutput): StaticFormWithSubmit => ({
+const addSubmitButton = (form: any): StaticFormWithSubmit => ({
   ...form,
   components: [
     ...form.components,

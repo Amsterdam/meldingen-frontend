@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { PostClassificationData, PostClassificationResponse, GetClassificationData, GetClassificationResponse, GetClassificationByClassificationIdData, GetClassificationByClassificationIdResponse, PatchClassificationByClassificationIdData, PatchClassificationByClassificationIdResponse, DeleteClassificationByClassificationIdData, DeleteClassificationByClassificationIdResponse, PostMeldingData, PostMeldingResponse, GetMeldingData, GetMeldingResponse, GetMeldingByMeldingIdData, GetMeldingByMeldingIdResponse, PatchMeldingByMeldingIdData, PatchMeldingByMeldingIdResponse, PutMeldingByMeldingIdAnswerQuestionsData, PutMeldingByMeldingIdAnswerQuestionsResponse, PutMeldingByMeldingIdProcessData, PutMeldingByMeldingIdProcessResponse, PutMeldingByMeldingIdCompleteData, PutMeldingByMeldingIdCompleteResponse, PostMeldingByMeldingIdQuestionByQuestionIdData, PostMeldingByMeldingIdQuestionByQuestionIdResponse, PostUserData, PostUserResponse, GetUserData, GetUserResponse, GetUserByUserIdData, GetUserByUserIdResponse, DeleteUserByUserIdData, DeleteUserByUserIdResponse, PatchUserByUserIdData, PatchUserByUserIdResponse, GetFormData, GetFormResponse, PostFormData, PostFormResponse, GetFormByFormIdData, GetFormByFormIdResponse, PutFormByFormIdData, PutFormByFormIdResponse, DeleteFormByFormIdData, DeleteFormByFormIdResponse, GetFormClassificationByClassificationIdData, GetFormClassificationByClassificationIdResponse, GetStaticFormByFormTypeData, GetStaticFormByFormTypeResponse, PutStaticFormByFormTypeData, PutStaticFormByFormTypeResponse } from './types.gen';
+import type { PostClassificationData, PostClassificationResponse, GetClassificationData, GetClassificationResponse, GetClassificationByClassificationIdData, GetClassificationByClassificationIdResponse, PatchClassificationByClassificationIdData, PatchClassificationByClassificationIdResponse, DeleteClassificationByClassificationIdData, DeleteClassificationByClassificationIdResponse, PostMeldingData, PostMeldingResponse, GetMeldingData, GetMeldingResponse, GetMeldingByMeldingIdData, GetMeldingByMeldingIdResponse, PatchMeldingByMeldingIdData, PatchMeldingByMeldingIdResponse, PutMeldingByMeldingIdAnswerQuestionsData, PutMeldingByMeldingIdAnswerQuestionsResponse, PutMeldingByMeldingIdProcessData, PutMeldingByMeldingIdProcessResponse, PutMeldingByMeldingIdCompleteData, PutMeldingByMeldingIdCompleteResponse, PostMeldingByMeldingIdQuestionByQuestionIdData, PostMeldingByMeldingIdQuestionByQuestionIdResponse, PostMeldingByMeldingIdAttachmentData, PostMeldingByMeldingIdAttachmentResponse, PostUserData, PostUserResponse, GetUserData, GetUserResponse, GetUserByUserIdData, GetUserByUserIdResponse, DeleteUserByUserIdData, DeleteUserByUserIdResponse, PatchUserByUserIdData, PatchUserByUserIdResponse, GetFormData, GetFormResponse, PostFormData, PostFormResponse, GetFormByFormIdData, GetFormByFormIdResponse, PutFormByFormIdData, PutFormByFormIdResponse, DeleteFormByFormIdData, DeleteFormByFormIdResponse, GetFormClassificationByClassificationIdData, GetFormClassificationByClassificationIdResponse, GetStaticFormByFormTypeData, GetStaticFormByFormTypeResponse, PutStaticFormByFormTypeData, PutStaticFormByFormTypeResponse } from './types.gen';
 
 /**
  * Classification:Create
@@ -296,6 +296,33 @@ export const postMeldingByMeldingIdQuestionByQuestionId = (data: PostMeldingByMe
 }); };
 
 /**
+ * Melding:Attachment
+ * @param data The data for the request.
+ * @param data.meldingId The id of the melding.
+ * @param data.token The token of the melding.
+ * @param data.formData
+ * @returns AttachmentOutput Successful Response
+ * @throws ApiError
+ */
+export const postMeldingByMeldingIdAttachment = (data: PostMeldingByMeldingIdAttachmentData): CancelablePromise<PostMeldingByMeldingIdAttachmentResponse> => { return __request(OpenAPI, {
+    method: 'POST',
+    url: '/melding/{melding_id}/attachment',
+    path: {
+        melding_id: data.meldingId
+    },
+    query: {
+        token: data.token
+    },
+    formData: data.formData,
+    mediaType: 'multipart/form-data',
+    errors: {
+        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+        404: 'Not Found',
+        422: 'Validation Error'
+    }
+}); };
+
+/**
  * User:Create
  * @param data The data for the request.
  * @param data.requestBody
@@ -408,7 +435,7 @@ export const patchUserByUserId = (data: PatchUserByUserIdData): CancelablePromis
  * @param data.limit
  * @param data.offset
  * @param data.sort
- * @returns FormOnlyOutput Successful Response
+ * @returns SimpleFormOutput Successful Response
  * @throws ApiError
  */
 export const getForm = (data: GetFormData = {}): CancelablePromise<GetFormResponse> => { return __request(OpenAPI, {
