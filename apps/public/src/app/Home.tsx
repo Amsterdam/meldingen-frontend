@@ -29,7 +29,9 @@ export const Home = ({ formData }: { formData: StaticFormWithSubmit }) => {
 
     postMelding({ body: { text: data[firstKey] } }).then(({ data: respData }) => {
       if (respData) {
-        setData({ id: respData.id, token: respData.token, classification: respData.classification })
+        const { id, token, classification } = respData
+
+        setData({ id, token, classification })
       }
       router.push('/aanvullende-vragen')
     })
