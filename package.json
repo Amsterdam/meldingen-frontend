@@ -52,7 +52,7 @@
   "devDependencies": {
     "@babel/core": "7.25.2",
     "@babel/preset-react": "7.24.7",
-    "@hey-api/openapi-ts": "0.53.0",
+    "@hey-api/openapi-ts": "0.48.0",
     "@nx/eslint": "19.7.2",
     "@nx/eslint-plugin": "19.7.2",
     "@nx/jest": "19.7.2",
