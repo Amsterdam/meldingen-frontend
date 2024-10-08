@@ -43,11 +43,12 @@ export const editForm = () => ({
               },
             },
             {
-              weight: 1201,
-              type: 'checkbox',
-              label: 'Show Character Counter',
-              tooltip: 'Show a live count of the number of characters.',
-              key: 'showCharCount',
+              weight: 1202,
+              type: 'textfield',
+              label: 'Max character count',
+              tooltip:
+                'Show a live count of the number of characters with a maximum amount of characters. Leave empty when the character counter should not be shown.',
+              key: 'maxCharCount',
               input: true,
             },
             {

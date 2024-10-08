@@ -3,7 +3,7 @@ const allowLists: Record<string, string[]> = {
   radio: ['label', 'description', 'key', 'type', 'input', 'values'],
   select: ['label', 'description', 'key', 'type', 'input', 'widget', 'placeholder', 'data'],
   selectboxes: ['label', 'description', 'key', 'type', 'input', 'values'],
-  textarea: ['label', 'description', 'key', 'type', 'input', 'autoExpand', 'showCharCount'],
+  textarea: ['label', 'description', 'key', 'type', 'input', 'autoExpand', 'maxCharCount'],
   textfield: ['label', 'description', 'key', 'type', 'input'],
 }
 

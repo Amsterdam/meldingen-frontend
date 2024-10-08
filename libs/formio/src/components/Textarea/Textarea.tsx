@@ -33,12 +33,8 @@ export class Textarea extends FormioTextarea {
   }
 
   updateValueAt(value: string, index: number) {
-    // TODO: this should check for maxCharCount
-    if (this.component?.showCharCount) {
-      if (this.refs.charcount && this.refs.charcount[index]) {
-        // const maxChars = _.parseInt(_.get(this.component, 'validate.maxLength', 0), 10)
-        this.setCounter(this.refs.charcount[index], value.length, 1000) // TODO: 1000 should be maxCharCount
-      }
+    if (this.component?.maxCharCount) {
+      this.setCounter(this.refs.charcount[index], value.length, this.component.maxCharCount)
     }
   }
 
