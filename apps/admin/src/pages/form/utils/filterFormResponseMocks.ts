@@ -436,7 +436,7 @@ export const textAreasMockBefore = [
     type: 'textarea',
     input: true,
     autoExpand: false,
-    showCharCount: false,
+    maxCharCount: 80,
     position: 1,
     question: null,
     placeholder: '',
@@ -451,7 +451,7 @@ export const textAreasMockBefore = [
     type: 'textarea',
     input: true,
     autoExpand: false,
-    showCharCount: false,
+    maxCharCount: 80,
     position: 2,
     question: null,
     placeholder: '',
@@ -469,7 +469,7 @@ export const textAreasMockAfter = [
     type: 'textarea',
     input: true,
     autoExpand: false,
-    showCharCount: false,
+    maxCharCount: 80,
   },
   {
     label: 'Text Area 2',
@@ -478,7 +478,7 @@ export const textAreasMockAfter = [
     type: 'textarea',
     input: true,
     autoExpand: false,
-    showCharCount: false,
+    maxCharCount: 80,
   },
 ]
 
