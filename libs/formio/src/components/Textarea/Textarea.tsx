@@ -33,7 +33,7 @@ export class Textarea extends FormioTextarea {
   }
 
   updateValueAt(value: string, index: number) {
-    if (this.component?.maxCharCount) {
+    if (this.component?.maxCharCount && this.refs.charcount) {
       this.setCounter(this.refs.charcount[index], value.length, this.component.maxCharCount)
     }
   }
