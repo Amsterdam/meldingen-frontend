@@ -37,7 +37,7 @@ const filterBySchemaPerType = (obj: any) => {
 const getFilteredValidateObject = (validateObj: any) => {
   const validate = filter($FormComponentInputValidate, validateObj)
 
-  // Explicitly remove the 'json' key if it's an empty string, the API doesn't accept that
+  // Explicitly remove the 'json' key if its value is an empty string, the API doesn't accept that
   if (validate?.json === '') {
     delete validate.json
   }

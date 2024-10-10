@@ -1,16 +1,140 @@
-export const rootObjMockBefore = {
+export const mockData = {
   title: 'Test title',
   display: 'wizard',
   id: 2,
   classification: null,
-  components: [],
-}
-
-export const rootObjMockAfter = {
-  title: 'Test title',
-  display: 'wizard',
-  classification: null,
-  components: [],
+  components: [
+    {
+      title: 'Page 1',
+      label: 'Page 1',
+      type: 'panel',
+      key: 'page1',
+      input: false,
+      tableView: false,
+      position: 1,
+      placeholder: '',
+      prefix: '',
+      showCharCount: false,
+      components: [
+        {
+          label: 'Text Field',
+          applyMaskOn: 'change',
+          tableView: true,
+          validateWhenHidden: false,
+          key: 'textField',
+          type: 'textfield',
+          input: true,
+        },
+        {
+          label: 'Text Area',
+          applyMaskOn: 'change',
+          autoExpand: false,
+          tableView: true,
+          validateWhenHidden: false,
+          key: 'textArea',
+          type: 'textarea',
+          input: true,
+        },
+        {
+          label: 'Select Boxes',
+          optionsLabelPosition: 'right',
+          tableView: false,
+          values: [
+            {
+              label: 'one',
+              value: 'one',
+              shortcut: '',
+            },
+            {
+              label: 'two',
+              value: 'two',
+              shortcut: '',
+            },
+          ],
+          validateWhenHidden: false,
+          key: 'selectBoxes',
+          type: 'selectboxes',
+          input: true,
+          inputType: 'checkbox',
+          defaultValue: {
+            one: false,
+          },
+        },
+        {
+          label: 'Select',
+          widget: 'html5',
+          tableView: true,
+          data: {
+            values: [
+              {
+                label: 'one',
+                value: 'one',
+              },
+              {
+                label: 'two',
+                value: 'two',
+              },
+            ],
+          },
+          validateWhenHidden: false,
+          key: 'select',
+          type: 'select',
+          input: true,
+        },
+        {
+          label: 'Radio',
+          optionsLabelPosition: 'right',
+          inline: false,
+          tableView: false,
+          values: [
+            {
+              label: 'one',
+              value: 'one',
+              shortcut: '',
+            },
+            {
+              label: 'two',
+              value: 'two',
+              shortcut: '',
+            },
+          ],
+          validateWhenHidden: false,
+          key: 'radio',
+          type: 'radio',
+          input: true,
+        },
+      ],
+    },
+    {
+      title: 'Page 2',
+      label: 'Page 2',
+      type: 'panel',
+      key: 'page2',
+      components: [
+        {
+          label: 'Text Field',
+          applyMaskOn: 'change',
+          tableView: true,
+          validateWhenHidden: false,
+          key: 'textField1',
+          type: 'textfield',
+          input: true,
+        },
+        {
+          label: 'Text Area',
+          applyMaskOn: 'change',
+          autoExpand: false,
+          tableView: true,
+          validateWhenHidden: false,
+          key: 'textArea1',
+          type: 'textarea',
+          input: true,
+        },
+      ],
+      input: false,
+      tableView: false,
+    },
+  ],
 }
 
 export const panelsMockBefore = [

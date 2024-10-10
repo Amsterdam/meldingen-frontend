@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`filterFormResponse renders the correct output 1`] = `
+{
+  "classification": null,
+  "components": [
+    {
+      "components": [
+        {
+          "input": true,
+          "key": "textField",
+          "label": "Text Field",
+          "type": "textfield",
+          "validate": undefined,
+        },
+        {
+          "autoExpand": false,
+          "input": true,
+          "key": "textArea",
+          "label": "Text Area",
+          "type": "textarea",
+          "validate": undefined,
+        },
+        {
+          "input": true,
+          "key": "selectBoxes",
+          "label": "Select Boxes",
+          "type": "selectboxes",
+          "validate": undefined,
+          "values": [
+            {
+              "label": "one",
+              "shortcut": "",
+              "value": "one",
+            },
+            {
+              "label": "two",
+              "shortcut": "",
+              "value": "two",
+            },
+          ],
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "label": "one",
+                "value": "one",
+              },
+              {
+                "label": "two",
+                "value": "two",
+              },
+            ],
+          },
+          "input": true,
+          "key": "select",
+          "label": "Select",
+          "type": "select",
+          "validate": undefined,
+          "widget": "html5",
+        },
+        {
+          "input": true,
+          "key": "radio",
+          "label": "Radio",
+          "type": "radio",
+          "validate": undefined,
+          "values": [
+            {
+              "label": "one",
+              "shortcut": "",
+              "value": "one",
+            },
+            {
+              "label": "two",
+              "shortcut": "",
+              "value": "two",
+            },
+          ],
+        },
+      ],
+      "input": false,
+      "key": "page1",
+      "label": "Page 1",
+      "type": "panel",
+    },
+  ],
+  "display": "wizard",
+  "title": "Test title",
+}
+`;
