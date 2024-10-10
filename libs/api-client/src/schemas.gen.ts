@@ -1330,13 +1330,20 @@ export const $FormComponentInputValidate = {
                 },
                 {
                     '$ref': '#/components/schemas/Var'
+                },
+                {
+                    type: 'null'
                 }
             ],
             title: 'Json'
+        },
+        required: {
+            type: 'boolean',
+            title: 'Required',
+            default: false
         }
     },
     type: 'object',
-    required: ['json'],
     title: 'FormComponentInputValidate'
 } as const;
 
@@ -1445,13 +1452,20 @@ export const $FormComponentOutputValidate = {
                 },
                 {
                     '$ref': '#/components/schemas/Var'
+                },
+                {
+                    type: 'null'
                 }
             ],
             title: 'Json'
+        },
+        required: {
+            type: 'boolean',
+            title: 'Required'
         }
     },
     type: 'object',
-    required: ['json'],
+    required: ['required'],
     title: 'FormComponentOutputValidate'
 } as const;
 
@@ -2033,13 +2047,21 @@ export const $FormTextAreaComponentInput = {
             title: 'Autoexpand'
         },
         maxCharCount: {
-            type: 'integer',
+            anyOf: [
+                {
+                    type: 'integer',
+                    exclusiveMinimum: 0
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Maxcharcount'
         }
     },
     additionalProperties: false,
     type: 'object',
-    required: ['label', 'description', 'key', 'input', 'autoExpand', 'maxCharCount'],
+    required: ['label', 'description', 'key', 'input', 'autoExpand'],
     title: 'FormTextAreaComponentInput'
 } as const;
 
@@ -2084,7 +2106,14 @@ export const $FormTextAreaComponentOutput = {
             title: 'Autoexpand'
         },
         maxCharCount: {
-            type: 'integer',
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Maxcharcount'
         },
         question: {
@@ -4968,7 +4997,14 @@ export const $StaticFormTextAreaComponentOutput = {
             title: 'Autoexpand'
         },
         maxCharCount: {
-            type: 'integer',
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Maxcharcount'
         }
     },

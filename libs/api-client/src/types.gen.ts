@@ -114,11 +114,13 @@ export type FormCheckboxComponentOutput = {
 };
 
 export type FormComponentInputValidate = {
-    json: Add | All_Input | And_Input | Cat | Divide | Equals | Filter_Input | GreaterThan | GreaterThanOrEqual | If | In_Input | LessThan | LessThanOrEqual | Log | Map_Input | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | None__Input | Not | NotEquals | NotNot | Or_Input | Reduce_Input | Some_Input | StrictEquals | StrictNotEquals | Substr | Subtract | Var;
+    json?: Add | All_Input | And_Input | Cat | Divide | Equals | Filter_Input | GreaterThan | GreaterThanOrEqual | If | In_Input | LessThan | LessThanOrEqual | Log | Map_Input | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | None__Input | Not | NotEquals | NotNot | Or_Input | Reduce_Input | Some_Input | StrictEquals | StrictNotEquals | Substr | Subtract | Var | null;
+    required?: boolean;
 };
 
 export type FormComponentOutputValidate = {
-    json: Add | All_Output | And_Output | Cat | Divide | Equals | Filter_Output | GreaterThan | GreaterThanOrEqual | If | In_Output | LessThan | LessThanOrEqual | Log | Map_Output | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | None__Output | Not | NotEquals | NotNot | Or_Output | Reduce_Output | Some_Output | StrictEquals | StrictNotEquals | Substr | Subtract | Var;
+    json?: Add | All_Output | And_Output | Cat | Divide | Equals | Filter_Output | GreaterThan | GreaterThanOrEqual | If | In_Output | LessThan | LessThanOrEqual | Log | Map_Output | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | None__Output | Not | NotEquals | NotNot | Or_Output | Reduce_Output | Some_Output | StrictEquals | StrictNotEquals | Substr | Subtract | Var | null;
+    required: boolean;
 };
 
 export type FormComponentValueInput = {
@@ -243,7 +245,7 @@ export type FormTextAreaComponentInput = {
     input: boolean;
     validate?: FormComponentInputValidate | null;
     autoExpand: boolean;
-    maxCharCount: number;
+    maxCharCount?: number | null;
 };
 
 export type FormTextAreaComponentOutput = {
@@ -255,7 +257,7 @@ export type FormTextAreaComponentOutput = {
     position: number;
     validate?: FormComponentOutputValidate | null;
     autoExpand: boolean;
-    maxCharCount: number;
+    maxCharCount: number | null;
     question: number;
 };
 
@@ -564,7 +566,7 @@ export type StaticFormTextAreaComponentOutput = {
     position: number;
     validate?: FormComponentOutputValidate | null;
     autoExpand: boolean;
-    maxCharCount: number;
+    maxCharCount: number | null;
 };
 
 export type StaticFormTextFieldInputComponentOutput = {

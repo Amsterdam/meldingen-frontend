@@ -1,7 +1,14 @@
-export const rootObjMock = {
+export const rootObjMockBefore = {
   title: 'Test title',
   display: 'wizard',
   id: 2,
+  classification: null,
+  components: [],
+}
+
+export const rootObjMockAfter = {
+  title: 'Test title',
+  display: 'wizard',
   classification: null,
   components: [],
 }
