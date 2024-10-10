@@ -9,8 +9,8 @@ export const input = (ctx: any) => `
     ${ctx.input.type !== 'textarea' ? `type="${ctx.input.attr.type}"` : ''}
   >${ctx.input.content}</${ctx.input.type}>
   ${
-    ctx.component.position === 1 // TODO: this should be a new maxCharCount attribute
-      ? `<div class="ams-character-count" role="status" ref="charcount">0 van 1000 tekens</div>` // TODO: 1000 should be maxCharCount
+    ctx.component.maxCharCount
+      ? `<div class="ams-character-count" role="status" ref="charcount">0 van ${ctx.component.maxCharCount} tekens</div>`
       : ''
   }
 `
