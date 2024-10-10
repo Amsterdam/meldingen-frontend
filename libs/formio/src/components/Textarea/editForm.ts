@@ -50,6 +50,15 @@ export const editForm = () => ({
                 'Show a live count of the number of characters with a maximum amount of characters. Leave empty when the character counter should not be shown.',
               key: 'maxCharCount',
               input: true,
+              validate: {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                custom: (context: any) => {
+                  if (!context.data.maxCharCount) {
+                    context.data.maxCharCount = null
+                  }
+                  return true
+                },
+              },
             },
             {
               type: 'checkbox',
