@@ -1,4 +1,4 @@
-import { TranslationMessages } from 'ra-core'
+import type { TranslationMessages } from 'ra-core'
 import polyglotI18nProvider from 'ra-i18n-polyglot'
 
 const nl: TranslationMessages = {
