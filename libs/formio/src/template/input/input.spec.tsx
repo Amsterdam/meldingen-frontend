@@ -12,7 +12,7 @@ const mockFormData = {
       label: testLabel,
       type: 'textarea',
       position: 1,
-      showCharCount: true,
+      maxCharCount: 80,
       input: true,
       key: 'textArea',
     },
