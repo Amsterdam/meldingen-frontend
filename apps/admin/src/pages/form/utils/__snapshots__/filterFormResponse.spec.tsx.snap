@@ -133,6 +133,7 @@ exports[`filterFormResponse renders the correct output 1`] = `
           "input": true,
           "key": "textArea2",
           "label": "Text Area",
+          "maxCharCount": "80",
           "type": "textarea",
           "validate": {
             "json": {
