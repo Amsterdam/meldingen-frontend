@@ -7,74 +7,96 @@ exports[`filterFormResponse renders the correct output 1`] = `
     {
       "components": [
         {
+          "description": "",
           "input": true,
-          "key": "textField",
+          "key": "textField1",
           "label": "Text Field",
           "type": "textfield",
-          "validate": undefined,
+          "validate": {
+            "json": null,
+            "required": false,
+          },
         },
         {
           "autoExpand": false,
+          "description": "",
           "input": true,
-          "key": "textArea",
+          "key": "textArea1",
           "label": "Text Area",
+          "maxCharCount": null,
           "type": "textarea",
-          "validate": undefined,
+          "validate": {
+            "json": null,
+            "required": false,
+          },
         },
         {
+          "description": "",
           "input": true,
           "key": "selectBoxes",
           "label": "Select Boxes",
           "type": "selectboxes",
-          "validate": undefined,
+          "validate": {
+            "json": null,
+            "required": false,
+          },
           "values": [
             {
-              "label": "one",
-              "shortcut": "",
+              "label": "One",
+              "position": 1,
               "value": "one",
             },
             {
-              "label": "two",
-              "shortcut": "",
+              "label": "Two",
+              "position": 2,
               "value": "two",
             },
           ],
         },
         {
           "data": {
+            "custom": "",
+            "json": "",
+            "resource": "",
+            "url": "",
             "values": [
               {
-                "label": "one",
+                "label": "One",
                 "value": "one",
               },
               {
-                "label": "two",
+                "label": "Two",
                 "value": "two",
               },
             ],
           },
+          "description": "",
           "input": true,
           "key": "select",
           "label": "Select",
+          "placeholder": "",
           "type": "select",
-          "validate": undefined,
+          "validate": {
+            "required": false,
+          },
           "widget": "html5",
         },
         {
+          "description": "",
           "input": true,
           "key": "radio",
           "label": "Radio",
           "type": "radio",
-          "validate": undefined,
+          "validate": {
+            "required": false,
+          },
           "values": [
             {
-              "label": "one",
-              "shortcut": "",
+              "label": "One",
               "value": "one",
             },
             {
-              "label": "two",
-              "shortcut": "",
+              "label": "Two",
               "value": "two",
             },
           ],
@@ -83,6 +105,143 @@ exports[`filterFormResponse renders the correct output 1`] = `
       "input": false,
       "key": "page1",
       "label": "Page 1",
+      "type": "panel",
+    },
+    {
+      "components": [
+        {
+          "description": "Description",
+          "input": true,
+          "key": "textField2",
+          "label": "Text Field",
+          "type": "textfield",
+          "validate": {
+            "json": {
+              "==": [
+                {
+                  "var": "text",
+                },
+                "Bob",
+              ],
+            },
+            "required": true,
+          },
+        },
+        {
+          "autoExpand": true,
+          "description": "Description",
+          "input": true,
+          "key": "textArea2",
+          "label": "Text Area",
+          "type": "textarea",
+          "validate": {
+            "json": {
+              "==": [
+                {
+                  "var": "text",
+                },
+                "Bob",
+              ],
+            },
+            "required": true,
+          },
+        },
+        {
+          "description": "Description",
+          "input": true,
+          "key": "selectBoxes1",
+          "label": "Select Boxes",
+          "type": "selectboxes",
+          "validate": {
+            "json": {
+              "==": [
+                {
+                  "var": "text",
+                },
+                "Bob",
+              ],
+            },
+            "required": true,
+          },
+          "values": [
+            {
+              "label": "One",
+              "value": "one",
+            },
+            {
+              "label": "Two",
+              "value": "two",
+            },
+          ],
+        },
+        {
+          "data": {
+            "custom": "",
+            "json": "",
+            "resource": "",
+            "url": "",
+            "values": [
+              {
+                "label": "One",
+                "value": "one",
+              },
+              {
+                "label": "Two",
+                "value": "two",
+              },
+            ],
+          },
+          "description": "Description",
+          "input": true,
+          "key": "select1",
+          "label": "Select",
+          "placeholder": "Placeholder",
+          "type": "select",
+          "validate": {
+            "json": {
+              "==": [
+                {
+                  "var": "text",
+                },
+                "Bob",
+              ],
+            },
+            "required": true,
+          },
+          "widget": "html5",
+        },
+        {
+          "description": "Description",
+          "input": true,
+          "key": "radio1",
+          "label": "Radio",
+          "type": "radio",
+          "validate": {
+            "json": {
+              "==": [
+                {
+                  "var": "text",
+                },
+                "Bob",
+              ],
+            },
+            "required": true,
+          },
+          "values": [
+            {
+              "label": "One",
+              "value": "one",
+            },
+            {
+              "label": "Two",
+              "value": "two",
+            },
+          ],
+        },
+      ],
+      "input": false,
+      "key": "page2",
+      "label": "Page 2",
       "type": "panel",
     },
   ],
