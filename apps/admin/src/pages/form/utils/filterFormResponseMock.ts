@@ -401,7 +401,7 @@ const mockTextAreas = [
   {
     label: 'Text Area',
     description: 'Description',
-    showCharCount: true,
+    maxCharCount: '80',
     validate: {
       required: true,
       json: {
@@ -471,6 +471,7 @@ const mockTextAreas = [
     },
     allowCalculateOverride: false,
     encrypted: false,
+    showCharCount: false,
     showWordCount: false,
     properties: {},
     allowMultipleMasks: false,
