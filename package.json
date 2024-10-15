@@ -46,7 +46,8 @@
     "react": "18.3.1",
     "react-admin": "5.1.4",
     "react-dom": "18.3.1",
-    "tslib": "2.7.0"
+    "tslib": "2.7.0",
+    "uber-json-schema-filter": "2.0.5"
   },
   "devDependencies": {
     "@babel/core": "7.25.8",
