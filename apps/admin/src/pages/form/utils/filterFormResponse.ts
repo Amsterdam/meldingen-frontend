@@ -7,6 +7,7 @@ import {
   $FormSelectComponentInput,
   $FormTextAreaComponentInput,
   $FormTextFieldComponentInput,
+  FormInput,
 } from '@meldingen/api-client'
 import filter from 'uber-json-schema-filter'
 
@@ -46,7 +47,7 @@ const getFilteredValidateObject = (validateObj: any) => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const filterFormResponse = (obj: any): any => {
+export const filterFormResponse = (obj: any): FormInput => {
   const firstLevelComponents = obj.components.map((firstLevelComponent: any) => {
     const secondLevelComponents = firstLevelComponent.components.map((secondLevelComponent: any) => {
       return {
