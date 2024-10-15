@@ -54,7 +54,7 @@
     "@hey-api/openapi-ts": "0.48.0",
     "@nx/eslint": "19.8.4",
     "@nx/eslint-plugin": "19.8.4",
-    "@nx/jest": "19.8.4",
+    "@nx/jest": "20.0.0",
     "@nx/js": "19.8.4",
     "@nx/next": "19.8.4",
     "@nx/react": "19.8.4",
