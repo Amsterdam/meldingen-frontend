@@ -1,0 +1,32 @@
+.file-upload-wrapper {
+  position: relative;
+  padding: var(--ams-space-lg);
+
+  background-color: var(--ams-color-primary-white);
+  border: var(--ams-border-width-sm) dashed var(--ams-color-neutral-grey3);
+  color: var(--ams-color-pimary-black);
+  cursor: var(--ams-action-activate-cursor);
+  font-family: var(--ams-text-font-family);
+  font-size: var(--ams-text-level-5-font-size);
+  font-weight: var(--ams-text-font-weight-normal);
+  line-height: var(--ams-text-level-5-line-height);
+}
+
+.file-upload-input {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0;
+
+  max-inline-size: calc(100% - var(--ams-space-md) * 2);
+  outline-offset: calc(var(--ams-focus-outline-offset) * 2);
+  padding-block: var(--ams-space-md);
+  padding-inline: var(--ams-space-md);
+  touch-action: manipulation;
+}
+
+.file-upload-drop-area {
+  padding-inline: var(--ams-space-md);
+}
