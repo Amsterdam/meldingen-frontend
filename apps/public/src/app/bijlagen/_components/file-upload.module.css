@@ -1,10 +1,12 @@
 .file-upload-wrapper {
   position: relative;
-  padding: var(--ams-space-lg);
-  border: var(--ams-border-width-sm) dashed var(--ams-color-neutral-grey3);
-  cursor: var(--ams-action-activate-cursor);
-  font-size: var(--ams-text-level-5-font-size);
-  line-height: var(--ams-text-level-5-line-height);
+  @media screen and (min-width: 36rem) {
+    padding: var(--ams-space-lg);
+    border: var(--ams-border-width-sm) dashed var(--ams-color-neutral-grey3);
+    cursor: var(--ams-action-activate-cursor);
+    font-size: var(--ams-text-level-5-font-size);
+    line-height: var(--ams-text-level-5-line-height);
+  }
 }
 
 .file-upload-input {
@@ -18,12 +20,22 @@
 }
 
 .file-upload-drop-area-text {
-  padding-inline: var(--ams-space-md);
+  display: none;
+  @media screen and (min-width: 36rem) {
+    display: inline;
+    padding-inline: var(--ams-space-md);
+  }
 }
 
 .file-upload-button {
+  @media screen and (min-width: 36rem) {
+    display: inline;
+  }
   padding-block: var(--ams-button-padding-block);
   padding-inline: var(--ams-button-padding-inline);
   box-shadow: var(--ams-button-secondary-box-shadow);
   color: var(--ams-button-secondary-color);
+
+  display: flex;
+  justify-content: center;
 }
