@@ -4,20 +4,22 @@
   @media screen and (min-width: 36rem) {
     padding: var(--ams-space-md);
     border: var(--ams-border-width-sm) dashed var(--ams-color-neutral-grey3);
-    cursor: var(--ams-action-activate-cursor);
     font-size: var(--ams-text-level-5-font-size);
     line-height: var(--ams-text-level-5-line-height);
+
+    &:has(:focus-visible) {
+      outline-color: -webkit-focus-ring-color;
+      outline-style: auto;
+      outline-width: 0.0625rem;
+    }
   }
 }
 
 .file-upload-input {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  inset: 0;
   opacity: 0;
-  cursor: var(--ams-action-activate-cursor);
+  cursor: pointer;
 }
 
 .file-upload-drop-area-text {
@@ -30,7 +32,11 @@
 }
 
 .file-upload-button {
-  width: 100%;
+  display: block;
+  padding-block: var(--ams-button-padding-block);
+  padding-inline: var(--ams-button-padding-inline);
+  box-shadow: var(--ams-button-secondary-box-shadow);
+  color: var(--ams-button-secondary-color);
 
   @media screen and (min-width: 36rem) {
     display: inline;
