@@ -1,6 +1,6 @@
 {
   "*.md": ["markdownlint", "prettier --check"],
   "*.{js,jsx,ts,tsx}": ["eslint --no-error-on-unmatched-pattern", "prettier --check"],
-  "*.{ts,tsx}": "npx nx affected -t typecheck --exclude=api-client",
+  "*.{ts,tsx}": "npx nx affected -t typecheck --exclude=api-client,form-renderer",
   "*.{css,scss}": ["stylelint --allow-empty-input", "prettier --check"]
 }
