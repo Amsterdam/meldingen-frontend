@@ -48,6 +48,8 @@ const getFilteredValidateObject = (validateObj: any) => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const filterFormResponse = (obj: any): FormInput => {
+  // This function is used to filter an additional questions form, which is always
+  // a wizard with panels containing questions. Therefore the form has a fixed depth of two levels.
   const firstLevelComponents = obj.components.map((firstLevelComponent: any) => {
     const secondLevelComponents = firstLevelComponent.components.map((secondLevelComponent: any) => {
       return {
