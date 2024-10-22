@@ -1,10 +1,10 @@
-.file-upload-wrapper {
+.wrapper {
   position: relative;
   font-size: var(--ams-text-level-5-font-size);
   line-height: var(--ams-text-level-5-line-height);
   outline-offset: var(--ams-focus-outline-offset);
 
-  &:hover .file-upload-button {
+  &:hover .button {
     box-shadow: var(--ams-button-secondary-hover-box-shadow);
     color: var(--ams-button-secondary-hover-color);
   }
@@ -22,12 +22,12 @@
   }
 }
 
-.file-upload-label {
+.label {
   display: flex;
   align-items: baseline;
 }
 
-.file-upload-button {
+.button {
   box-shadow: var(--ams-button-secondary-box-shadow);
   color: var(--ams-button-secondary-color);
   padding-block: var(--ams-button-padding-block);
@@ -41,7 +41,7 @@
   }
 }
 
-.file-upload-drop-area-text {
+.drop-area-text {
   display: none;
 
   @media screen and (min-width: 36rem) {
@@ -50,7 +50,7 @@
   }
 }
 
-.file-upload-input {
+.input {
   cursor: pointer;
   inset: 0;
   opacity: 0;
