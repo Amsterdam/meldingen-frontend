@@ -1,10 +1,16 @@
 .file-upload-wrapper {
   position: relative;
 
+  &:hover .file-upload-button {
+    box-shadow: var(--ams-button-secondary-hover-box-shadow);
+    color: var(--ams-button-secondary-hover-color);
+  }
+
   &:has(:focus-visible) {
     outline-color: -webkit-focus-ring-color;
     outline-style: auto;
     outline-width: 0.0625rem;
+    outline-offset: var(ams.focus.outline-offset);
   }
 
   @media screen and (min-width: 36rem) {
@@ -15,11 +21,23 @@
   }
 }
 
-.file-upload-input {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
+.file-upload-label {
+  display: flex;
+  align-items: center;
+}
+
+.file-upload-button {
+  width: 100%;
+  text-align: center;
+  padding-block: var(--ams-button-padding-block);
+  padding-inline: var(--ams-button-padding-inline);
+  box-shadow: var(--ams-button-secondary-box-shadow);
+  color: var(--ams-button-secondary-color);
+
+  @media screen and (min-width: 36rem) {
+    display: inline;
+    width: auto;
+  }
 }
 
 .file-upload-drop-area-text {
@@ -31,15 +49,9 @@
   }
 }
 
-.file-upload-button {
-  display: block;
-  padding-block: var(--ams-button-padding-block);
-  padding-inline: var(--ams-button-padding-inline);
-  box-shadow: var(--ams-button-secondary-box-shadow);
-  color: var(--ams-button-secondary-color);
-
-  @media screen and (min-width: 36rem) {
-    display: inline;
-    width: auto;
-  }
+.file-upload-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
 }
