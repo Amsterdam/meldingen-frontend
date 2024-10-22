@@ -1,21 +1,49 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { TextArea } from './TextArea'
 
-const requiredProps = { id: 'test-id', name: 'test-name', label: 'Test label' }
+const requiredProps = { id: 'test-id', label: 'Test label' }
 
 describe('TextArea Component', () => {
-  test('renders the TextArea component', () => {
+  it('renders the TextArea component', () => {
     render(<TextArea {...requiredProps} />)
-    const textAreaElement = screen.getByRole('textbox', { name: requiredProps.label })
-    expect(textAreaElement).toBeInTheDocument()
+
+    const textArea = screen.getByRole('textbox', { name: requiredProps.label })
+
+    expect(textArea).toBeInTheDocument()
   })
 
-  // test('calls onChange handler when text is entered', () => {
-  //   const handleChange = jest.fn()
-  //   render(<TextArea onChange={handleChange} />)
-  //   const textAreaElement = screen.getByRole('textbox')
-  //   fireEvent.change(textAreaElement, { target: { value: 'New text' } })
-  //   expect(handleChange).toHaveBeenCalledTimes(1)
-  // })
+  it('renders a description', () => {
+    render(<TextArea description="Test description" {...requiredProps} />)
+
+    const textAreaWithDescription = screen.getByRole('textbox', {
+      name: requiredProps.label,
+      description: 'Test description',
+    })
+
+    expect(textAreaWithDescription).toBeInTheDocument()
+  })
+
+  it('renders a character count', () => {
+    render(<TextArea maxCharCount={80} {...requiredProps} />)
+
+    const characterCount = screen.getByRole('status')
+
+    expect(characterCount).toBeInTheDocument()
+  })
+
+  it('counts the number of characters', async () => {
+    const user = userEvent.setup()
+
+    render(<TextArea maxCharCount={80} {...requiredProps} />)
+
+    const textArea = screen.getByRole('textbox', { name: requiredProps.label })
+
+    await user.type(textArea, '0123456789')
+
+    const characterCount = screen.getByRole('status')
+
+    expect(characterCount).toHaveTextContent('10 van 80 tekens')
+  })
 })
