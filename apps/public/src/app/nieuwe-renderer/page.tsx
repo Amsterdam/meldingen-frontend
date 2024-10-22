@@ -20,19 +20,19 @@ const mockFormData = {
       input: false,
       position: 1,
       components: [
-        // {
-        //   label: 'Text Field',
-        //   description: '',
-        //   key: 'textField1',
-        //   type: 'textfield',
-        //   input: true,
-        //   position: 1,
-        //   validate: {
-        //     json: null,
-        //     required: false,
-        //   },
-        //   question: 79,
-        // },
+        {
+          label: 'Text Field',
+          description: '',
+          key: 'textField1',
+          type: 'textfield',
+          input: true,
+          position: 1,
+          validate: {
+            json: null,
+            required: true,
+          },
+          question: 79,
+        },
         {
           label: 'Text Area',
           description: '',
@@ -136,19 +136,19 @@ const mockFormData = {
       input: false,
       position: 3,
       components: [
-        // {
-        //   label: 'Text Field',
-        //   description: 'Description',
-        //   key: 'textField3',
-        //   type: 'textfield',
-        //   input: true,
-        //   position: 1,
-        //   validate: {
-        //     json: null,
-        //     required: false,
-        //   },
-        //   question: 85,
-        // },
+        {
+          label: 'Text Field',
+          description: 'Description',
+          key: 'textField3',
+          type: 'textfield',
+          input: true,
+          position: 1,
+          validate: {
+            json: null,
+            required: false,
+          },
+          question: 85,
+        },
         {
           label: 'Text Area',
           description: 'Description',
