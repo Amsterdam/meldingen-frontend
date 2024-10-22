@@ -8,7 +8,7 @@ export const FileUpload = () => {
 
   return (
     <div className={styles['file-upload-wrapper']}>
-      <label htmlFor="file-input" className={styles['file-upload-label']}>
+      <label htmlFor="file-input">
         <span id="label" className={styles['file-upload-button']}>
           Selecteer bestanden
         </span>

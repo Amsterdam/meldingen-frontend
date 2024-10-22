@@ -1,17 +1,17 @@
 .file-upload-wrapper {
   position: relative;
 
+  &:has(:focus-visible) {
+    outline-color: -webkit-focus-ring-color;
+    outline-style: auto;
+    outline-width: 0.0625rem;
+  }
+
   @media screen and (min-width: 36rem) {
     padding: var(--ams-space-md);
     border: var(--ams-border-width-sm) dashed var(--ams-color-neutral-grey3);
     font-size: var(--ams-text-level-5-font-size);
     line-height: var(--ams-text-level-5-line-height);
-
-    &:has(:focus-visible) {
-      outline-color: -webkit-focus-ring-color;
-      outline-style: auto;
-      outline-width: 0.0625rem;
-    }
   }
 }
 
