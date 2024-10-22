@@ -1,14 +1,16 @@
 import type {
   FormCheckboxComponentOutput,
   FormOutput,
+  FormRadioComponentOutput,
   FormSelectComponentOutput,
   FormTextAreaComponentOutput,
   FormTextFieldInputComponentOutput,
 } from '@meldingen/api-client'
 
-import { Checkbox, Select, TextArea, TextInput } from './components'
+import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 
 type Component = FormCheckboxComponentOutput &
+  FormRadioComponentOutput &
   FormSelectComponentOutput &
   FormTextAreaComponentOutput &
   FormTextFieldInputComponentOutput
@@ -17,6 +19,8 @@ const getComponent = (component: Component) => {
   const { key, type, ...restProps } = component
 
   switch (type) {
+    case 'radio':
+      return <Radio key={key} id={key} {...restProps} />
     case 'select':
       return <Select key={key} id={key} {...restProps} />
     case 'selectboxes':

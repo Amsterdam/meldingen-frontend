@@ -102,31 +102,31 @@ const mockFormData = {
           },
           question: 82,
         },
-        // {
-        //   label: 'Radio',
-        //   description: '',
-        //   key: 'radio',
-        //   type: 'radio',
-        //   input: true,
-        //   position: 5,
-        //   validate: {
-        //     json: null,
-        //     required: false,
-        //   },
-        //   values: [
-        //     {
-        //       label: 'One',
-        //       value: 'one',
-        //       position: 1,
-        //     },
-        //     {
-        //       label: 'Two',
-        //       value: 'two',
-        //       position: 2,
-        //     },
-        //   ],
-        //   question: 83,
-        // },
+        {
+          label: 'Radio',
+          description: '',
+          key: 'radio',
+          type: 'radio',
+          input: true,
+          position: 5,
+          validate: {
+            json: null,
+            required: true,
+          },
+          values: [
+            {
+              label: 'One',
+              value: 'one',
+              position: 1,
+            },
+            {
+              label: 'Two',
+              value: 'two',
+              position: 2,
+            },
+          ],
+          question: 83,
+        },
       ],
     },
     {
@@ -218,31 +218,31 @@ const mockFormData = {
           },
           question: 88,
         },
-        // {
-        //   label: 'Radio',
-        //   description: 'Description',
-        //   key: 'radio1',
-        //   type: 'radio',
-        //   input: true,
-        //   position: 5,
-        //   validate: {
-        //     json: null,
-        //     required: false,
-        //   },
-        //   values: [
-        //     {
-        //       label: 'One',
-        //       value: 'one',
-        //       position: 1,
-        //     },
-        //     {
-        //       label: 'Two',
-        //       value: 'two',
-        //       position: 2,
-        //     },
-        //   ],
-        //   question: 89,
-        // },
+        {
+          label: 'Radio',
+          description: 'Description',
+          key: 'radio1',
+          type: 'radio',
+          input: true,
+          position: 5,
+          validate: {
+            json: null,
+            required: false,
+          },
+          values: [
+            {
+              label: 'One',
+              value: 'one',
+              position: 1,
+            },
+            {
+              label: 'Two',
+              value: 'two',
+              position: 2,
+            },
+          ],
+          question: 89,
+        },
       ],
     },
   ],
