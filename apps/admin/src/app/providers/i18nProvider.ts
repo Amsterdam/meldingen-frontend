@@ -49,6 +49,8 @@ const nl: TranslationMessages = {
       null: '',
     },
     page: {
+      access_denied: 'Toegang geweigerd',
+      authentication_error: 'Authenticatie fout',
       create: '%{name} toevoegen',
       dashboard: 'Dashboard',
       edit: '%{name} #%{id}',
@@ -80,6 +82,8 @@ const nl: TranslationMessages = {
       },
     },
     message: {
+      access_denied: 'Toegang geweigerd',
+      authentication_error: 'Authenticatie fout',
       about: 'Over',
       are_you_sure: 'Weet u het zeker?',
       auth_error: 'auth_error',
