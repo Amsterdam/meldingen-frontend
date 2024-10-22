@@ -48,31 +48,31 @@ const mockFormData = {
           maxCharCount: 100,
           question: 80,
         },
-        // {
-        //   label: 'Select Boxes',
-        //   description: '',
-        //   key: 'selectBoxes',
-        //   type: 'selectboxes',
-        //   input: true,
-        //   position: 3,
-        //   validate: {
-        //     json: null,
-        //     required: false,
-        //   },
-        //   values: [
-        //     {
-        //       label: 'One',
-        //       value: 'one',
-        //       position: 1,
-        //     },
-        //     {
-        //       label: 'Two',
-        //       value: 'two',
-        //       position: 2,
-        //     },
-        //   ],
-        //   question: 81,
-        // },
+        {
+          label: 'Select Boxes',
+          description: '',
+          key: 'selectBoxes',
+          type: 'selectboxes',
+          input: true,
+          position: 3,
+          validate: {
+            json: null,
+            required: true,
+          },
+          values: [
+            {
+              label: 'One',
+              value: 'one',
+              position: 1,
+            },
+            {
+              label: 'Two',
+              value: 'two',
+              position: 2,
+            },
+          ],
+          question: 81,
+        },
         // {
         //   label: 'Select',
         //   description: '',
@@ -164,31 +164,31 @@ const mockFormData = {
           maxCharCount: null,
           question: 86,
         },
-        // {
-        //   label: 'Select Boxes',
-        //   description: 'Description',
-        //   key: 'selectBoxes1',
-        //   type: 'selectboxes',
-        //   input: true,
-        //   position: 3,
-        //   validate: {
-        //     json: null,
-        //     required: false,
-        //   },
-        //   values: [
-        //     {
-        //       label: 'One',
-        //       value: 'one',
-        //       position: 1,
-        //     },
-        //     {
-        //       label: 'Two',
-        //       value: 'two',
-        //       position: 2,
-        //     },
-        //   ],
-        //   question: 87,
-        // },
+        {
+          label: 'Select Boxes',
+          description: 'Description',
+          key: 'selectBoxes1',
+          type: 'selectboxes',
+          input: true,
+          position: 3,
+          validate: {
+            json: null,
+            required: false,
+          },
+          values: [
+            {
+              label: 'One',
+              value: 'one',
+              position: 1,
+            },
+            {
+              label: 'Two',
+              value: 'two',
+              position: 2,
+            },
+          ],
+          question: 87,
+        },
         // {
         //   label: 'Select',
         //   description: 'Description',

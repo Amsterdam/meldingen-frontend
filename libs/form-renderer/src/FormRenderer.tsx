@@ -1,11 +1,20 @@
-import type { FormOutput, FormTextAreaComponentOutput, FormTextFieldInputComponentOutput } from '@meldingen/api-client'
+import type {
+  FormCheckboxComponentOutput,
+  FormOutput,
+  FormTextAreaComponentOutput,
+  FormTextFieldInputComponentOutput,
+} from '@meldingen/api-client'
 
-import { TextArea, TextInput } from './components'
+import { Checkbox, TextArea, TextInput } from './components'
 
-const getComponent = (component: FormTextAreaComponentOutput | FormTextFieldInputComponentOutput) => {
+type Component = FormCheckboxComponentOutput & FormTextAreaComponentOutput & FormTextFieldInputComponentOutput
+
+const getComponent = (component: Component) => {
   const { key, type, ...restProps } = component
 
   switch (type) {
+    case 'selectboxes':
+      return <Checkbox key={key} id={key} {...restProps} />
     case 'textarea':
       return <TextArea key={key} id={key} {...restProps} />
     case 'textfield':
