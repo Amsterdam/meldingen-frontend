@@ -18,7 +18,5 @@ export const FormRenderer = ({ form }: { form: FormOutput }) => {
   // @ts-expect-error: Temp code
   const components = form.components.reduce((acc, panel) => acc.concat(panel?.components), [])
 
-  console.log(components)
-
   return <form className="ams-gap--md">{components.map((component) => getComponent(component))}</form>
 }
