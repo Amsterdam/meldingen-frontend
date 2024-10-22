@@ -1,5 +1,7 @@
 .file-upload-wrapper {
   position: relative;
+  font-size: var(--ams-text-level-5-font-size);
+  line-height: var(--ams-text-level-5-line-height);
 
   &:hover .file-upload-button {
     box-shadow: var(--ams-button-secondary-hover-box-shadow);
@@ -16,8 +18,6 @@
   @media screen and (min-width: 36rem) {
     padding: var(--ams-space-md);
     border: var(--ams-border-width-sm) dashed var(--ams-color-neutral-grey3);
-    font-size: var(--ams-text-level-5-font-size);
-    line-height: var(--ams-text-level-5-line-height);
   }
 }
 
