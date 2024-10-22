@@ -42,7 +42,7 @@ const mockFormData = {
           position: 2,
           validate: {
             json: null,
-            required: false,
+            required: true,
           },
           autoExpand: false,
           maxCharCount: 100,

@@ -6,9 +6,12 @@ type TextAreaProps = {
   id: string
   label: string
   maxCharCount?: number | null
+  validate?: {
+    required: boolean
+  } | null
 }
 
-export const TextArea = ({ description, id, label, maxCharCount }: TextAreaProps) => {
+export const TextArea = ({ description, id, label, maxCharCount, validate }: TextAreaProps) => {
   const ref = useRef<HTMLTextAreaElement>(null)
   const [charCount, setCharCount] = useState(0)
 
@@ -27,10 +30,11 @@ export const TextArea = ({ description, id, label, maxCharCount }: TextAreaProps
         </Paragraph>
       )}
       <ADSTextArea
+        aria-describedby={description ? `${id}-description` : undefined}
+        aria-required={validate?.required ? 'true' : undefined}
+        id={id}
         onChange={typeof maxCharCount === 'number' ? handleChange : undefined}
         ref={ref}
-        aria-describedby={description ? `${id}-description` : undefined}
-        id={id}
         rows={4}
       />
       {maxCharCount && <CharacterCount length={charCount} maxLength={maxCharCount} />}

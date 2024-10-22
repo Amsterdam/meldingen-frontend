@@ -46,4 +46,12 @@ describe('TextArea Component', () => {
 
     expect(characterCount).toHaveTextContent('10 van 80 tekens')
   })
+
+  it('correctly marks TextArea as required', async () => {
+    render(<TextArea validate={{ required: true }} {...requiredProps} />)
+
+    const textArea = screen.getByRole('textbox', { name: requiredProps.label })
+
+    expect(textArea).toBeRequired()
+  })
 })
