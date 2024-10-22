@@ -28,7 +28,7 @@ describe('Select Component', () => {
     expect(selectWithDescription).toBeInTheDocument()
   })
 
-  it('renders the values', () => {
+  it('renders the Select options', () => {
     render(<Select {...requiredProps} />)
 
     const selectItem = screen.getByRole('option', { name: requiredProps.data.values[0].label })

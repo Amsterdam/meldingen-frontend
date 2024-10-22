@@ -25,7 +25,7 @@ describe('Checkbox Component', () => {
     expect(checkboxWithDescriptionAddedToLabel).toBeInTheDocument()
   })
 
-  it('renders the values', () => {
+  it('renders the Checkbox items', () => {
     render(<Checkbox {...requiredProps} />)
 
     const checkboxItem = screen.getByRole('checkbox', { name: requiredProps.values[0].label })

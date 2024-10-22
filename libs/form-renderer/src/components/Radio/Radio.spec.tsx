@@ -24,7 +24,7 @@ describe('Radio Component', () => {
     expect(radioWithDescription).toBeInTheDocument()
   })
 
-  it('renders the values', () => {
+  it('renders the Radio items', () => {
     render(<Radio {...requiredProps} />)
 
     const radioItem = screen.getByRole('radio', { name: requiredProps.values[0].label })
