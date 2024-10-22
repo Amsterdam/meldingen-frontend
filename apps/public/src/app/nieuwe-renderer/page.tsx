@@ -73,35 +73,35 @@ const mockFormData = {
           ],
           question: 81,
         },
-        // {
-        //   label: 'Select',
-        //   description: '',
-        //   key: 'select',
-        //   type: 'select',
-        //   input: true,
-        //   position: 4,
-        //   validate: {
-        //     json: null,
-        //     required: false,
-        //   },
-        //   widget: 'html5',
-        //   placeholder: '',
-        //   data: {
-        //     values: [
-        //       {
-        //         label: 'One',
-        //         value: 'one',
-        //         position: 1,
-        //       },
-        //       {
-        //         label: 'Two',
-        //         value: 'two',
-        //         position: 2,
-        //       },
-        //     ],
-        //   },
-        //   question: 82,
-        // },
+        {
+          label: 'Select',
+          description: '',
+          key: 'select',
+          type: 'select',
+          input: true,
+          position: 4,
+          validate: {
+            json: null,
+            required: true,
+          },
+          widget: 'html5',
+          placeholder: '',
+          data: {
+            values: [
+              {
+                label: 'One',
+                value: 'one',
+                position: 1,
+              },
+              {
+                label: 'Two',
+                value: 'two',
+                position: 2,
+              },
+            ],
+          },
+          question: 82,
+        },
         // {
         //   label: 'Radio',
         //   description: '',
@@ -189,35 +189,35 @@ const mockFormData = {
           ],
           question: 87,
         },
-        // {
-        //   label: 'Select',
-        //   description: 'Description',
-        //   key: 'select1',
-        //   type: 'select',
-        //   input: true,
-        //   position: 4,
-        //   validate: {
-        //     json: null,
-        //     required: false,
-        //   },
-        //   widget: 'html5',
-        //   placeholder: 'Placeholder',
-        //   data: {
-        //     values: [
-        //       {
-        //         label: 'One',
-        //         value: 'one',
-        //         position: 1,
-        //       },
-        //       {
-        //         label: 'Two',
-        //         value: 'two',
-        //         position: 2,
-        //       },
-        //     ],
-        //   },
-        //   question: 88,
-        // },
+        {
+          label: 'Select',
+          description: 'Description',
+          key: 'select1',
+          type: 'select',
+          input: true,
+          position: 4,
+          validate: {
+            json: null,
+            required: false,
+          },
+          widget: 'html5',
+          placeholder: 'Placeholder',
+          data: {
+            values: [
+              {
+                label: 'One',
+                value: 'one',
+                position: 1,
+              },
+              {
+                label: 'Two',
+                value: 'two',
+                position: 2,
+              },
+            ],
+          },
+          question: 88,
+        },
         // {
         //   label: 'Radio',
         //   description: 'Description',
