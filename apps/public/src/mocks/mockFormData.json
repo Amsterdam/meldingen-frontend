@@ -15,7 +15,7 @@
       "components": [
         {
           "label": "First question",
-          "description": "description",
+          "description": "",
           "key": "textArea1",
           "type": "textarea",
           "input": true,
@@ -36,7 +36,7 @@
       "components": [
         {
           "label": "Second question",
-          "description": "description 2",
+          "description": "",
           "key": "textArea2",
           "type": "textarea",
           "input": true,
