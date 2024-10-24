@@ -4,7 +4,7 @@ import { Heading } from '@amsterdam/design-system-react'
 
 import { Grid } from '@meldingen/ui'
 
-import { FileUpload } from './_components/file-upload'
+import { FileUpload } from './_components/FileUpload'
 
 const Bijlagen = () => (
   <Grid paddingBottom="large" paddingTop="medium">

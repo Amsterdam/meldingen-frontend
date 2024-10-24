@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
 import '@testing-library/jest-dom'
-import { FileUpload } from './file-upload'
+import { FileUpload } from './FileUpload'
 
 describe('FileUpload Component', () => {
   it('renders the drop area text', () => {
