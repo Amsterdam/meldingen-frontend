@@ -8,6 +8,7 @@ import type {
 } from '@meldingen/api-client'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
+import mockFormData from './mocks/mockFormData.json'
 
 type Component = FormCheckboxComponentOutput &
   FormRadioComponentOutput &
@@ -34,10 +35,12 @@ const getComponent = (component: Component) => {
   }
 }
 
-export const FormRenderer = ({ form }: { form: FormOutput }) => {
+export const FormRenderer = ({ form }: { form?: FormOutput }) => {
+  const tempForm = form ?? mockFormData
+
   // Temporarily flatten panels and render all components on a single page
   // @ts-expect-error: Temp code
-  const components = form.components.reduce((acc, panel) => acc.concat(panel?.components), [])
+  const components = tempForm.components.reduce((acc, panel) => acc.concat(panel?.components), [])
 
   return <form className="ams-gap--md">{components.map((component) => getComponent(component))}</form>
 }
