@@ -1,4 +1,4 @@
-import styles from './file-upload.module.css'
+import styles from './FileUpload.module.css'
 
 export const FileUpload = () => {
   const handleOnChange = (acceptedFiles: any) => {
