@@ -9,5 +9,5 @@ export default {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/public',
   setupFilesAfterEnv: ['./jest.setup.ts'],
-  setupFiles: ['./jest.polyfills.js'],
+  testEnvironment: 'jest-fixed-jsdom',
 }
