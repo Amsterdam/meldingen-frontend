@@ -1,6 +1,6 @@
 import { Field, Label, Paragraph, TextInput as ADSTextInput } from '@amsterdam/design-system-react'
 
-type TextInputProps = {
+type Props = {
   description?: string
   id: string
   label: string
@@ -9,7 +9,7 @@ type TextInputProps = {
   } | null
 }
 
-export const TextInput = ({ description, id, label, validate }: TextInputProps) => (
+export const TextInput = ({ description, id, label, validate }: Props) => (
   <Field key={id}>
     <Label htmlFor={id}>{label}</Label>
     {description && (

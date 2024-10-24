@@ -1,6 +1,6 @@
 import { Field, Label, Select as ADSSelect, Paragraph } from '@amsterdam/design-system-react'
 
-type SelectProps = {
+type Props = {
   description?: string
   id: string
   label: string
@@ -15,7 +15,7 @@ type SelectProps = {
   }
 }
 
-export const Select = ({ description, id, label, validate, data }: SelectProps) => (
+export const Select = ({ description, id, label, validate, data }: Props) => (
   <Field key={id}>
     <Label htmlFor={id}>{label}</Label>
     {description && (

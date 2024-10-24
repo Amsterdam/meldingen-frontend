@@ -1,7 +1,7 @@
 import { CharacterCount, Field, Label, Paragraph, TextArea as ADSTextArea } from '@amsterdam/design-system-react'
 import { useRef, useState } from 'react'
 
-type TextAreaProps = {
+type Props = {
   description?: string
   id: string
   label: string
@@ -11,7 +11,7 @@ type TextAreaProps = {
   } | null
 }
 
-export const TextArea = ({ description, id, label, maxCharCount, validate }: TextAreaProps) => {
+export const TextArea = ({ description, id, label, maxCharCount, validate }: Props) => {
   const ref = useRef<HTMLTextAreaElement>(null)
   const [charCount, setCharCount] = useState(0)
 

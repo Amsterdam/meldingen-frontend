@@ -1,6 +1,6 @@
 import { FieldSet, Paragraph, Checkbox as ADSCheckbox, Column } from '@amsterdam/design-system-react'
 
-type CheckboxProps = {
+type Props = {
   description?: string
   id: string
   label: string
@@ -13,7 +13,7 @@ type CheckboxProps = {
   }[]
 }
 
-export const Checkbox = ({ description, id, label, validate, values }: CheckboxProps) => (
+export const Checkbox = ({ description, id, label, validate, values }: Props) => (
   <FieldSet id={`${id}-fieldset`} aria-labelledby={`${id}-fieldset ${id}-description`} legend={label}>
     {description && (
       <Paragraph className="ams-mb--sm" id={`${id}-description`} size="small">

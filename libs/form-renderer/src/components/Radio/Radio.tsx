@@ -1,6 +1,6 @@
 import { FieldSet, Paragraph, Radio as ADSRadio, Column } from '@amsterdam/design-system-react'
 
-type RadioProps = {
+type Props = {
   description?: string
   id: string
   label: string
@@ -13,7 +13,7 @@ type RadioProps = {
   }[]
 }
 
-export const Radio = ({ description, id, label, validate, values }: RadioProps) => (
+export const Radio = ({ description, id, label, validate, values }: Props) => (
   <FieldSet
     aria-describedby={description ? `${id}-description` : undefined}
     aria-required={validate?.required ? 'true' : undefined}
