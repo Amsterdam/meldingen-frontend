@@ -1,13 +1,7 @@
 import { Field, Label, Paragraph, TextInput as ADSTextInput } from '@amsterdam/design-system-react'
+import type { FormTextFieldInputComponentOutput } from '@meldingen/api-client'
 
-type Props = {
-  description?: string
-  id: string
-  label: string
-  validate?: {
-    required: boolean
-  } | null
-}
+type Props = FormTextFieldInputComponentOutput & { id: string }
 
 export const TextInput = ({ description, id, label, validate }: Props) => (
   <Field key={id}>

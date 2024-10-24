@@ -1,15 +1,8 @@
 import { CharacterCount, Field, Label, Paragraph, TextArea as ADSTextArea } from '@amsterdam/design-system-react'
+import type { FormTextAreaComponentOutput } from '@meldingen/api-client'
 import { useRef, useState } from 'react'
 
-type Props = {
-  description?: string
-  id: string
-  label: string
-  maxCharCount?: number | null
-  validate?: {
-    required: boolean
-  } | null
-}
+type Props = FormTextAreaComponentOutput & { id: string }
 
 export const TextArea = ({ description, id, label, maxCharCount, validate }: Props) => {
   const ref = useRef<HTMLTextAreaElement>(null)

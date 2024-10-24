@@ -17,9 +17,9 @@ type Component = FormCheckboxComponentOutput &
   FormTextFieldInputComponentOutput
 
 const getComponent = (component: Component) => {
-  const { key, type, ...restProps } = component
+  const { key, ...restProps } = component
 
-  switch (type) {
+  switch (component.type) {
     case 'radio':
       return <Radio key={key} id={key} {...restProps} />
     case 'select':
@@ -31,7 +31,7 @@ const getComponent = (component: Component) => {
     case 'textfield':
       return <TextInput key={key} id={key} {...restProps} />
     default:
-      throw Error(`Type ${type} is unknown, please add it to FormRenderer.`)
+      throw Error(`Type ${component.type} is unknown, please add it to FormRenderer.`)
   }
 }
 
