@@ -61,7 +61,7 @@
     "@nx/next": "20.0.5",
     "@nx/react": "20.0.5",
     "@nx/vite": "20.0.5",
-    "@nx/web": "20.0.5",
+    "@nx/web": "20.0.6",
     "@nx/workspace": "20.0.5",
     "@swc-node/register": "1.10.9",
     "@swc/core": "1.7.39",
