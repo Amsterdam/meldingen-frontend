@@ -40,7 +40,7 @@
     "formiojs": "4.21.5",
     "jest-fixed-jsdom": "0.0.6",
     "keycloak-js": "25.0.6",
-    "next": "14.2.16",
+    "next": "15.0.1",
     "ra-data-simple-rest": "5.3.1",
     "ra-i18n-polyglot": "5.3.1",
     "ra-keycloak": "1.0.1",
