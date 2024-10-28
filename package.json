@@ -39,7 +39,7 @@
     "@formio/react": "5.3.0",
     "formiojs": "4.21.5",
     "jest-fixed-jsdom": "0.0.6",
-    "keycloak-js": "25.0.6",
+    "keycloak-js": "26.0.2",
     "next": "14.2.16",
     "ra-data-simple-rest": "5.3.1",
     "ra-i18n-polyglot": "5.3.1",
