@@ -55,7 +55,7 @@
     "@babel/preset-react": "7.25.9",
     "@hey-api/openapi-ts": "0.48.0",
     "@nx/eslint": "20.0.5",
-    "@nx/eslint-plugin": "20.0.5",
+    "@nx/eslint-plugin": "20.0.6",
     "@nx/jest": "20.0.5",
     "@nx/js": "20.0.5",
     "@nx/next": "20.0.5",
