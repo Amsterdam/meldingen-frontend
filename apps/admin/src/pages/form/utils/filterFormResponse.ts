@@ -1,12 +1,12 @@
 import {
-  $FormCheckboxComponentInput,
-  $FormComponentInputValidate,
-  $FormInput,
-  $FormPanelComponentInput,
-  $FormRadioComponentInput,
-  $FormSelectComponentInput,
-  $FormTextAreaComponentInput,
-  $FormTextFieldComponentInput,
+  FormCheckboxComponentInputSchema,
+  FormComponentInputValidateSchema,
+  FormInputSchema,
+  FormPanelComponentInputSchema,
+  FormRadioComponentInputSchema,
+  FormSelectComponentInputSchema,
+  FormTextAreaComponentInputSchema,
+  FormTextFieldComponentInputSchema,
   FormInput,
 } from '@meldingen/api-client'
 import filter from 'uber-json-schema-filter'
@@ -14,29 +14,29 @@ import filter from 'uber-json-schema-filter'
 const filterBySchemaPerType = (obj: any) => {
   switch (obj.type) {
     case 'panel':
-      return filter($FormPanelComponentInput, obj)
+      return filter(FormPanelComponentInputSchema, obj)
     case 'radio':
-      return filter($FormRadioComponentInput, obj)
+      return filter(FormRadioComponentInputSchema, obj)
     case 'select':
-      return filter($FormSelectComponentInput, obj)
+      return filter(FormSelectComponentInputSchema, obj)
     case 'selectboxes':
-      return filter($FormCheckboxComponentInput, obj)
+      return filter(FormCheckboxComponentInputSchema, obj)
     case 'textarea':
       // Add autoExpand to object if it doesn't exist, the builder doesn't do that by default
       if (!obj.hasOwnProperty('autoExpand')) {
-        return filter($FormTextAreaComponentInput, { ...obj, autoExpand: false })
+        return filter(FormTextAreaComponentInputSchema, { ...obj, autoExpand: false })
       }
 
-      return filter($FormTextAreaComponentInput, obj)
+      return filter(FormTextAreaComponentInputSchema, obj)
     case 'textfield':
-      return filter($FormTextFieldComponentInput, obj)
+      return filter(FormTextFieldComponentInputSchema, obj)
     default:
       throw Error(`Type ${obj.type} is unknown, please add it to filterFormResponse.`)
   }
 }
 
 const getFilteredValidateObject = (validateObj: any) => {
-  const validate = filter($FormComponentInputValidate, validateObj)
+  const validate = filter(FormComponentInputValidateSchema, validateObj)
 
   // Explicitly remove the 'json' key if its value is an empty string, the API doesn't accept that
   if (validate?.json === '') {
@@ -73,7 +73,7 @@ export const filterFormResponse = (obj: any): FormInput => {
   })
 
   return {
-    ...filter($FormInput, obj),
+    ...filter(FormInputSchema, obj),
     components: firstLevelComponents,
   }
 }
