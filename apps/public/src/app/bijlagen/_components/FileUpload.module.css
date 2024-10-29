@@ -38,7 +38,7 @@
 * Set focus outline on the label. This is removed again in .wrapper using a :has selector.
 * This fallback means that browsers that do not support :has will at least show the focus outline on the label.
 */
-.input:focus + label {
+.input:focus-visible + label {
   outline: auto;
   outline-offset: var(--ams-focus-outline-offset);
 }

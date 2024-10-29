@@ -16,7 +16,7 @@ export const Footer = () => (
             </Heading>
             <Paragraph size="small" inverseColor>
               Lukt het niet om een melding te doen? Bel het telefoonnummer{' '}
-              <Link href="tel:+3114020" onBackground="dark" variant="inline">
+              <Link href="tel:+3114020" inverseColor variant="inline">
                 14 020
               </Link>
               .
