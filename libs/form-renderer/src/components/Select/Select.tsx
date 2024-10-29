@@ -5,7 +5,9 @@ type Props = FormSelectComponentOutput & { id: string }
 
 export const Select = ({ description, id, label, validate, data }: Props) => (
   <Field key={id}>
-    <Label htmlFor={id}>{label}</Label>
+    <Label htmlFor={id} optional={!validate?.required}>
+      {label}
+    </Label>
     {description && (
       <Paragraph size="small" id={`${id}-description`}>
         {description}

@@ -16,7 +16,9 @@ export const TextArea = ({ description, id, label, maxCharCount, validate }: Pro
 
   return (
     <Field key={id}>
-      <Label htmlFor={id}>{label}</Label>
+      <Label htmlFor={id} optional={!validate?.required}>
+        {label}
+      </Label>
       {description && (
         <Paragraph size="small" id={`${id}-description`}>
           {description}

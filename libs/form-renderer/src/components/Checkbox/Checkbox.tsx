@@ -4,7 +4,12 @@ import type { FormCheckboxComponentOutput } from '@meldingen/api-client'
 type Props = FormCheckboxComponentOutput & { id: string }
 
 export const Checkbox = ({ description, id, label, validate, values }: Props) => (
-  <FieldSet id={`${id}-fieldset`} aria-labelledby={`${id}-fieldset ${id}-description`} legend={label}>
+  <FieldSet
+    aria-labelledby={`${id}-fieldset ${id}-description`}
+    id={`${id}-fieldset`}
+    legend={label}
+    optional={!validate?.required}
+  >
     {description && (
       <Paragraph className="ams-mb--sm" id={`${id}-description`} size="small">
         {description}

@@ -8,6 +8,7 @@ export const Radio = ({ description, id, label, validate, values }: Props) => (
     aria-describedby={description ? `${id}-description` : undefined}
     aria-required={validate?.required ? 'true' : undefined}
     legend={label}
+    optional={!validate?.required}
     role="radiogroup"
   >
     {description && (

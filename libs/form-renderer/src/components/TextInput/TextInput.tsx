@@ -5,7 +5,9 @@ type Props = FormTextFieldInputComponentOutput & { id: string }
 
 export const TextInput = ({ description, id, label, validate }: Props) => (
   <Field key={id}>
-    <Label htmlFor={id}>{label}</Label>
+    <Label htmlFor={id} optional={!validate?.required}>
+      {label}
+    </Label>
     {description && (
       <Paragraph size="small" id={`${id}-description`}>
         {description}
