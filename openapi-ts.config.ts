@@ -2,6 +2,7 @@ import { defineConfig } from '@hey-api/openapi-ts'
 
 export default defineConfig({
   base: 'http://localhost:8000',
+  client: 'legacy/fetch',
   input: 'http://localhost:8000/openapi.json',
   output: {
     format: 'prettier',
