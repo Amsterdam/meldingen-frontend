@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { PostClassificationData, PostClassificationResponse, GetClassificationData, GetClassificationResponse, GetClassificationByClassificationIdData, GetClassificationByClassificationIdResponse, PatchClassificationByClassificationIdData, PatchClassificationByClassificationIdResponse, DeleteClassificationByClassificationIdData, DeleteClassificationByClassificationIdResponse, PostMeldingData, PostMeldingResponse, GetMeldingData, GetMeldingResponse, GetMeldingByMeldingIdData, GetMeldingByMeldingIdResponse, PatchMeldingByMeldingIdData, PatchMeldingByMeldingIdResponse, PutMeldingByMeldingIdAnswerQuestionsData, PutMeldingByMeldingIdAnswerQuestionsResponse, PutMeldingByMeldingIdProcessData, PutMeldingByMeldingIdProcessResponse, PutMeldingByMeldingIdCompleteData, PutMeldingByMeldingIdCompleteResponse, PostMeldingByMeldingIdQuestionByQuestionIdData, PostMeldingByMeldingIdQuestionByQuestionIdResponse, PostMeldingByMeldingIdAttachmentData, PostMeldingByMeldingIdAttachmentResponse, PostUserData, PostUserResponse, GetUserData, GetUserResponse, GetUserByUserIdData, GetUserByUserIdResponse, DeleteUserByUserIdData, DeleteUserByUserIdResponse, PatchUserByUserIdData, PatchUserByUserIdResponse, GetFormData, GetFormResponse, PostFormData, PostFormResponse, GetFormByFormIdData, GetFormByFormIdResponse, PutFormByFormIdData, PutFormByFormIdResponse, DeleteFormByFormIdData, DeleteFormByFormIdResponse, GetFormClassificationByClassificationIdData, GetFormClassificationByClassificationIdResponse, GetStaticFormByFormTypeData, GetStaticFormByFormTypeResponse, PutStaticFormByFormTypeData, PutStaticFormByFormTypeResponse } from './types.gen';
+import type { PostClassificationData, PostClassificationResponse, GetClassificationData, GetClassificationResponse, GetClassificationByClassificationIdData, GetClassificationByClassificationIdResponse, PatchClassificationByClassificationIdData, PatchClassificationByClassificationIdResponse, DeleteClassificationByClassificationIdData, DeleteClassificationByClassificationIdResponse, PostMeldingData, PostMeldingResponse, GetMeldingData, GetMeldingResponse, GetMeldingByMeldingIdData, GetMeldingByMeldingIdResponse, PatchMeldingByMeldingIdData, PatchMeldingByMeldingIdResponse, PutMeldingByMeldingIdAnswerQuestionsData, PutMeldingByMeldingIdAnswerQuestionsResponse, PutMeldingByMeldingIdAddAttachmentsData, PutMeldingByMeldingIdAddAttachmentsResponse, PutMeldingByMeldingIdProcessData, PutMeldingByMeldingIdProcessResponse, PutMeldingByMeldingIdCompleteData, PutMeldingByMeldingIdCompleteResponse, PostMeldingByMeldingIdQuestionByQuestionIdData, PostMeldingByMeldingIdQuestionByQuestionIdResponse, PostMeldingByMeldingIdAttachmentData, PostMeldingByMeldingIdAttachmentResponse, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponse, GetMeldingByMeldingIdAttachmentsData, GetMeldingByMeldingIdAttachmentsResponse, PostUserData, PostUserResponse, GetUserData, GetUserResponse, GetUserByUserIdData, GetUserByUserIdResponse, DeleteUserByUserIdData, DeleteUserByUserIdResponse, PatchUserByUserIdData, PatchUserByUserIdResponse, GetFormData, GetFormResponse, PostFormData, PostFormResponse, GetFormByFormIdData, GetFormByFormIdResponse, PutFormByFormIdData, PutFormByFormIdResponse, DeleteFormByFormIdData, DeleteFormByFormIdResponse, GetFormClassificationByClassificationIdData, GetFormClassificationByClassificationIdResponse, GetStaticFormByFormTypeData, GetStaticFormByFormTypeResponse, PutStaticFormByFormTypeData, PutStaticFormByFormTypeResponse, GetStaticFormResponse } from './types.gen';
 
 /**
  * Classification:Create
@@ -224,6 +224,31 @@ export const putMeldingByMeldingIdAnswerQuestions = (data: PutMeldingByMeldingId
 }); };
 
 /**
+ * Melding:Add-Attachments
+ * @param data The data for the request.
+ * @param data.meldingId The id of the melding.
+ * @param data.token The token of the melding.
+ * @returns MeldingOutput Successful Response
+ * @throws ApiError
+ */
+export const putMeldingByMeldingIdAddAttachments = (data: PutMeldingByMeldingIdAddAttachmentsData): CancelablePromise<PutMeldingByMeldingIdAddAttachmentsResponse> => { return __request(OpenAPI, {
+    method: 'PUT',
+    url: '/melding/{melding_id}/add_attachments',
+    path: {
+        melding_id: data.meldingId
+    },
+    query: {
+        token: data.token
+    },
+    errors: {
+        400: 'Transition not allowed from current state',
+        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+        404: 'Not Found',
+        default: 'Unexpected error'
+    }
+}); };
+
+/**
  * Melding:Process
  * @param data The data for the request.
  * @param data.meldingId The id of the melding.
@@ -315,6 +340,58 @@ export const postMeldingByMeldingIdAttachment = (data: PostMeldingByMeldingIdAtt
     },
     formData: data.formData,
     mediaType: 'multipart/form-data',
+    errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+        404: 'Not Found',
+        413: 'Uploading attachment that is too large.',
+        422: 'Validation Error'
+    }
+}); };
+
+/**
+ * Melding:Attachment-Download
+ * @param data The data for the request.
+ * @param data.meldingId The id of the melding.
+ * @param data.attachmentId The id of the attachment.
+ * @param data.token The token of the melding.
+ * @returns unknown Successful Response
+ * @throws ApiError
+ */
+export const getMeldingByMeldingIdAttachmentByAttachmentIdDownload = (data: GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData): CancelablePromise<GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponse> => { return __request(OpenAPI, {
+    method: 'GET',
+    url: '/melding/{melding_id}/attachment/{attachment_id}/download',
+    path: {
+        melding_id: data.meldingId,
+        attachment_id: data.attachmentId
+    },
+    query: {
+        token: data.token
+    },
+    errors: {
+        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+        404: 'Not Found',
+        422: 'Validation Error'
+    }
+}); };
+
+/**
+ * Melding:Attachments
+ * @param data The data for the request.
+ * @param data.meldingId The id of the melding.
+ * @param data.token The token of the melding.
+ * @returns AttachmentOutput Successful Response
+ * @throws ApiError
+ */
+export const getMeldingByMeldingIdAttachments = (data: GetMeldingByMeldingIdAttachmentsData): CancelablePromise<GetMeldingByMeldingIdAttachmentsResponse> => { return __request(OpenAPI, {
+    method: 'GET',
+    url: '/melding/{melding_id}/attachments',
+    path: {
+        melding_id: data.meldingId
+    },
+    query: {
+        token: data.token
+    },
     errors: {
         401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
         404: 'Not Found',
@@ -592,5 +669,18 @@ export const putStaticFormByFormType = (data: PutStaticFormByFormTypeData): Canc
         401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
         404: 'Not Found',
         422: 'Validation Error'
+    }
+}); };
+
+/**
+ * Static-Form:List
+ * @returns StaticFormOutput Successful Response
+ * @throws ApiError
+ */
+export const getStaticForm = (): CancelablePromise<GetStaticFormResponse> => { return __request(OpenAPI, {
+    method: 'GET',
+    url: '/static-form/',
+    errors: {
+        404: 'Not Found'
     }
 }); };
