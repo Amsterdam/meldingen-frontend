@@ -12,6 +12,8 @@ updates:
     groups:
       patch-and-minor-dependencies:
         applies-to: 'version-updates'
+        exclude-patterns:
+          - '@hey-api/openapi-ts'
         update-types:
           - 'patch'
           - 'minor'
