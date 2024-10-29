@@ -740,6 +740,19 @@ export type PutMeldingByMeldingIdAnswerQuestionsData = {
 
 export type PutMeldingByMeldingIdAnswerQuestionsResponse = MeldingOutput;
 
+export type PutMeldingByMeldingIdAddAttachmentsData = {
+    /**
+     * The id of the melding.
+     */
+    meldingId: number;
+    /**
+     * The token of the melding.
+     */
+    token: string;
+};
+
+export type PutMeldingByMeldingIdAddAttachmentsResponse = MeldingOutput;
+
 export type PutMeldingByMeldingIdProcessData = {
     /**
      * The id of the melding.
@@ -789,6 +802,23 @@ export type PostMeldingByMeldingIdAttachmentData = {
 };
 
 export type PostMeldingByMeldingIdAttachmentResponse = AttachmentOutput;
+
+export type GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData = {
+    /**
+     * The id of the attachment.
+     */
+    attachmentId: number;
+    /**
+     * The id of the melding.
+     */
+    meldingId: number;
+    /**
+     * The token of the melding.
+     */
+    token: string;
+};
+
+export type GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponse = unknown;
 
 export type PostUserData = {
     requestBody: UserCreateInput;
@@ -1115,6 +1145,33 @@ export type $OpenApiTs = {
             };
         };
     };
+    '/melding/{melding_id}/add_attachments': {
+        put: {
+            req: PutMeldingByMeldingIdAddAttachmentsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: MeldingOutput;
+                /**
+                 * Transition not allowed from current state
+                 */
+                400: unknown;
+                /**
+                 * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+                 */
+                401: unknown;
+                /**
+                 * Not Found
+                 */
+                404: unknown;
+                /**
+                 * Unexpected error
+                 */
+                default: unknown;
+            };
+        };
+    };
     '/melding/{melding_id}/process': {
         put: {
             req: PutMeldingByMeldingIdProcessData;
@@ -1204,6 +1261,37 @@ export type $OpenApiTs = {
                  * Successful Response
                  */
                 200: AttachmentOutput;
+                /**
+                 * Bad Request
+                 */
+                400: unknown;
+                /**
+                 * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+                 */
+                401: unknown;
+                /**
+                 * Not Found
+                 */
+                404: unknown;
+                /**
+                 * Uploading attachment that is too large.
+                 */
+                413: unknown;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
+    '/melding/{melding_id}/attachment/{attachment_id}/download': {
+        get: {
+            req: GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: unknown;
                 /**
                  * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
                  */
