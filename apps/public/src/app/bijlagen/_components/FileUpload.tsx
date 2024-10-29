@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { ChangeEvent } from 'react'
 
 import type { AttachmentOutput } from '@meldingen/api-client'
 import { postMeldingByMeldingIdAttachment } from '@meldingen/api-client'
@@ -9,9 +10,10 @@ import styles from './FileUpload.module.css'
 
 export const FileUpload = () => {
   const [uploadedFiles, setUploadedFiles] = useState<AttachmentOutput[]>([])
+
   const { data } = useMeldingContext()
 
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (data && event.currentTarget.files) {
       const filesArray = Array.from(event.currentTarget.files)
 
@@ -22,7 +24,6 @@ export const FileUpload = () => {
             meldingId: data.id,
             token: data.token,
           })
-
           setUploadedFiles((currentFiles) => [...currentFiles, result])
         } catch (error) {
           console.error('Error uploading file: ', error)
@@ -38,15 +39,13 @@ export const FileUpload = () => {
           multiple
           type="file"
           id="file-input"
-          aria-label="file-input"
+          data-testid="file-input"
           className={styles.input}
           onChange={handleOnChange}
         />
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label htmlFor="file-input" className={styles.label}>
-          <span id="label" className={styles.button}>
-            Selecteer bestanden
-          </span>
+          <span className={styles.button}>Selecteer bestanden</span>
           <span className={styles['drop-area-text']}>Of sleep de bestanden in dit vak.</span>
         </label>
       </div>
