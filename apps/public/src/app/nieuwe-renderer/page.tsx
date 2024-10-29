@@ -7,7 +7,7 @@ import { Heading } from '@amsterdam/design-system-react'
 import { FormRenderer } from '@meldingen/form-renderer'
 import { Grid } from '@meldingen/ui'
 
-const Bedankt = () => (
+const NewRender = () => (
   <Grid paddingBottom="large" paddingTop="medium">
     <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
       <Heading>Test</Heading>
@@ -16,4 +16,4 @@ const Bedankt = () => (
   </Grid>
 )
 
-export default Bedankt
+export default NewRender
