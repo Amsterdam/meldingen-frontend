@@ -33,13 +33,13 @@ export const FileUpload = () => {
   }
 
   return (
-    <div>
+    <>
       <div className={styles.wrapper}>
         <input
           multiple
           type="file"
           id="file-input"
-          data-testid="file-input"
+          // data-testid="file-input"
           className={styles.input}
           onChange={handleOnChange}
         />
@@ -57,6 +57,6 @@ export const FileUpload = () => {
           </div>
         ))}
       </div>
-    </div>
+    </>
   )
 }

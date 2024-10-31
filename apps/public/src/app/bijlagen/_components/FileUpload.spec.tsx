@@ -67,7 +67,7 @@ describe('FileUpload Component', () => {
   it('uploads multiple files', async () => {
     renderComponent()
 
-    const fileInput = screen.getByTestId('file-input') as HTMLInputElement
+    const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
 
     const file = new File(['dummy content'], 'example.png', { type: 'image/png' })
     const file2 = new File(['dummy content two'], 'hoi.png', { type: 'image/png' })
@@ -80,7 +80,7 @@ describe('FileUpload Component', () => {
   it('uploads a file and displays name', async () => {
     renderComponent()
 
-    const fileInput = screen.getByTestId('file-input') as HTMLInputElement
+    const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
 
     const file = new File(['dummy content'], 'example.png', { type: 'image/png' })
 
