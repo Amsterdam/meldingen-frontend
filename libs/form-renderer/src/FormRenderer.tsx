@@ -16,22 +16,20 @@ type Component = FormCheckboxComponentOutput &
   FormTextAreaComponentOutput &
   FormTextFieldInputComponentOutput
 
-const getComponent = (component: Component) => {
-  const { key, ...restProps } = component
-
-  switch (component.type) {
+const getComponent = ({ key, data, description, label, type, values, validate }: Component) => {
+  switch (type) {
     case 'radio':
-      return <Radio key={key} id={key} {...restProps} />
+      return <Radio key={key} id={key} description={description} label={label} values={values} validate={validate} />
     case 'select':
-      return <Select key={key} id={key} {...restProps} />
+      return <Select key={key} id={key} description={description} label={label} data={data} validate={validate} />
     case 'selectboxes':
-      return <Checkbox key={key} id={key} {...restProps} />
+      return <Checkbox key={key} id={key} description={description} label={label} values={values} validate={validate} />
     case 'textarea':
-      return <TextArea key={key} id={key} {...restProps} />
+      return <TextArea key={key} id={key} description={description} label={label} validate={validate} />
     case 'textfield':
-      return <TextInput key={key} id={key} {...restProps} />
+      return <TextInput key={key} id={key} description={description} label={label} validate={validate} />
     default:
-      throw Error(`Type ${component.type} is unknown, please add it to FormRenderer.`)
+      throw Error(`Type ${type} is unknown, please add it to FormRenderer.`)
   }
 }
 

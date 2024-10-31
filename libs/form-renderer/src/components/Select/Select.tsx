@@ -1,7 +1,17 @@
 import { Field, Label, Select as ADSSelect, Paragraph } from '@amsterdam/design-system-react'
-import type { FormSelectComponentOutput } from '@meldingen/api-client'
 
-type Props = FormSelectComponentOutput & { id: string }
+type Props = {
+  data: {
+    values: {
+      label: string
+      value: string
+    }[]
+  }
+  description?: string
+  id: string
+  label: string
+  validate?: { required: boolean } | null
+}
 
 export const Select = ({ description, id, label, validate, data }: Props) => (
   <Field key={id}>

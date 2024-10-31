@@ -4,20 +4,14 @@ import { Checkbox } from './Checkbox'
 
 const requiredProps = {
   id: 'test-id',
-  key: 'test-key',
   label: 'Test label',
-  description: '',
-  type: '',
-  input: true,
-  position: 1,
   validate: { required: true },
-  values: [{ label: 'Test value', value: 'test-value', position: 1 }],
-  question: 1,
+  values: [{ label: 'Test value', value: 'test-value' }],
 }
 
 describe('Checkbox Component', () => {
   it('renders the Checkbox component', () => {
-    render(<Checkbox {...requiredProps} key={requiredProps.key} />)
+    render(<Checkbox {...requiredProps} />)
 
     const checkbox = screen.getByRole('group', { name: requiredProps.label })
 
@@ -27,7 +21,7 @@ describe('Checkbox Component', () => {
   it('adds the description to the label', () => {
     // Because of an NVDA bug, we need to add the description to the label (https://github.com/nvaccess/nvda/issues/12718)
     // For more information, see https://designsystem.amsterdam/?path=/docs/components-forms-field-set--docs#checkbox-group
-    render(<Checkbox {...requiredProps} key={requiredProps.key} description="Test description" />)
+    render(<Checkbox {...requiredProps} description="Test description" />)
 
     const checkboxWithDescriptionAddedToLabel = screen.getByRole('group', {
       name: `${requiredProps.label} Test description`,
@@ -37,7 +31,7 @@ describe('Checkbox Component', () => {
   })
 
   it('renders the Checkbox items', () => {
-    render(<Checkbox {...requiredProps} key={requiredProps.key} />)
+    render(<Checkbox {...requiredProps} />)
 
     const checkboxItem = screen.getByRole('checkbox', { name: requiredProps.values[0].label })
 
@@ -45,7 +39,7 @@ describe('Checkbox Component', () => {
   })
 
   it('correctly marks Checkbox as not required', () => {
-    render(<Checkbox {...requiredProps} key={requiredProps.key} validate={{ required: false }} />)
+    render(<Checkbox {...requiredProps} validate={{ required: false }} />)
 
     const checkbox = screen.getByRole('group', { name: `${requiredProps.label} (niet verplicht)` })
 
@@ -53,7 +47,7 @@ describe('Checkbox Component', () => {
   })
 
   it('correctly marks Checkbox item as required', () => {
-    render(<Checkbox {...requiredProps} key={requiredProps.key} />)
+    render(<Checkbox {...requiredProps} />)
 
     const checkboxItem = screen.getByRole('checkbox', { name: requiredProps.values[0].label })
 

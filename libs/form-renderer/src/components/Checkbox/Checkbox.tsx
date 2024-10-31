@@ -1,7 +1,15 @@
 import { FieldSet, Paragraph, Checkbox as ADSCheckbox, Column } from '@amsterdam/design-system-react'
-import type { FormCheckboxComponentOutput } from '@meldingen/api-client'
 
-type Props = FormCheckboxComponentOutput & { id: string }
+type Props = {
+  description?: string
+  id: string
+  label: string
+  validate?: { required: boolean } | null
+  values: {
+    label: string
+    value: string
+  }[]
+}
 
 export const Checkbox = ({ description, id, label, validate, values }: Props) => (
   <FieldSet
