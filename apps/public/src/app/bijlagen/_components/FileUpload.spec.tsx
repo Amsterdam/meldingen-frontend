@@ -5,57 +5,12 @@ import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { MeldingContext } from '../../../context/MeldingContextProvider'
-import { NextRouterContextProviderMock } from '../../../mocks/NextRouterContextProviderMock'
 
 import { FileUpload } from './FileUpload'
 
-const mockResponseData = {
-  id: 1,
-  original_filename: 'example.png',
-  filename: 'example.png',
-  created_at: '2021-10-14T14:05:41.000000Z',
-}
-
-let callCount = 0
-
-const server = setupServer(
-  http.post('http://localhost:8000/melding/2/attachment', () => {
-    callCount += 1
-    if (callCount === 1) {
-      return HttpResponse.json(mockResponseData)
-    }
-    return HttpResponse.json({ ...mockResponseData, id: callCount })
-  }),
-)
-
-beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
-
-const push = jest.fn()
-
-const mockContextValue = {
-  data: {
-    id: 2,
-    token: 'test',
-    classification: 1,
-  },
-  setData: () => {},
-}
-
-const renderComponent = () => {
-  render(
-    <MeldingContext.Provider value={mockContextValue}>
-      <NextRouterContextProviderMock router={{ push }}>
-        <FileUpload />
-      </NextRouterContextProviderMock>
-    </MeldingContext.Provider>,
-  )
-}
-
 describe('FileUpload Component', () => {
   it('renders the drop area text', () => {
-    renderComponent()
+    render(<FileUpload />)
 
     const buttonText = screen.getByText('Selecteer bestanden')
     const dropAreaText = screen.getByText('Of sleep de bestanden in dit vak.')
@@ -65,7 +20,7 @@ describe('FileUpload Component', () => {
   })
 
   it('uploads multiple files', async () => {
-    renderComponent()
+    render(<FileUpload />)
 
     const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
 
@@ -78,7 +33,33 @@ describe('FileUpload Component', () => {
   })
 
   it('uploads a file and displays name', async () => {
-    renderComponent()
+    const mockResponseData = {
+      id: 1,
+      original_filename: 'example.png',
+      filename: 'example.png',
+      created_at: '2021-10-14T14:05:41.000000Z',
+    }
+
+    const server = setupServer(
+      http.post('http://localhost:8000/melding/2/attachment', () => HttpResponse.json(mockResponseData)),
+    )
+
+    const mockContextValue = {
+      data: {
+        id: 2,
+        token: 'test',
+        classification: 1,
+      },
+      setData: () => {},
+    }
+
+    server.listen()
+
+    render(
+      <MeldingContext.Provider value={mockContextValue}>
+        <FileUpload />
+      </MeldingContext.Provider>,
+    )
 
     const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
 
@@ -89,5 +70,7 @@ describe('FileUpload Component', () => {
     expect(fileInput.files).toHaveLength(1)
 
     expect(screen.getByText('example.png')).toBeInTheDocument()
+
+    server.close()
   })
 })
