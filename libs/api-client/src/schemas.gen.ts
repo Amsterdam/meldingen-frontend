@@ -5057,8 +5057,7 @@ export const StaticFormTextFieldInputComponentOutputSchema = {
 
 export const StaticFormTypeEnumSchema = {
     type: 'string',
-    enum: ['primary'],
-    const: 'primary',
+    enum: ['primary', 'attachments', 'location', 'contact'],
     title: 'StaticFormTypeEnum'
 } as const;
 
