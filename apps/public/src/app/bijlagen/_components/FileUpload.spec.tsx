@@ -8,8 +8,6 @@ import { MeldingContext } from '../../../context/MeldingContextProvider'
 
 import { FileUpload } from './FileUpload'
 
-const user = userEvent.setup()
-
 describe('FileUpload Component', () => {
   it('renders the drop area text', () => {
     render(<FileUpload />)
@@ -22,6 +20,8 @@ describe('FileUpload Component', () => {
   })
 
   it('uploads multiple files', async () => {
+    const user = userEvent.setup()
+
     render(<FileUpload />)
 
     const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
@@ -35,6 +35,8 @@ describe('FileUpload Component', () => {
   })
 
   it('uploads a file and displays name', async () => {
+    const user = userEvent.setup()
+
     const mockResponseData = {
       id: 1,
       original_filename: 'example.png',
