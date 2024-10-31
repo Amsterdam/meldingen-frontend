@@ -8,6 +8,8 @@ import { MeldingContext } from '../../../context/MeldingContextProvider'
 
 import { FileUpload } from './FileUpload'
 
+const user = userEvent.setup()
+
 describe('FileUpload Component', () => {
   it('renders the drop area text', () => {
     render(<FileUpload />)
@@ -27,7 +29,7 @@ describe('FileUpload Component', () => {
     const file = new File(['dummy content'], 'example.png', { type: 'image/png' })
     const file2 = new File(['dummy content two'], 'hoi.png', { type: 'image/png' })
 
-    await userEvent.upload(fileInput, [file, file2])
+    await user.upload(fileInput, [file, file2])
 
     expect(fileInput.files).toHaveLength(2)
   })
@@ -65,7 +67,7 @@ describe('FileUpload Component', () => {
 
     const file = new File(['dummy content'], 'example.png', { type: 'image/png' })
 
-    await userEvent.upload(fileInput, file)
+    await user.upload(fileInput, file)
 
     expect(fileInput.files).toHaveLength(1)
 

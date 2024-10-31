@@ -35,14 +35,7 @@ export const FileUpload = () => {
   return (
     <>
       <div className={styles.wrapper}>
-        <input
-          multiple
-          type="file"
-          id="file-input"
-          // data-testid="file-input"
-          className={styles.input}
-          onChange={handleOnChange}
-        />
+        <input multiple type="file" id="file-input" className={styles.input} onChange={handleOnChange} />
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label htmlFor="file-input" className={styles.label}>
           <span className={styles.button}>Selecteer bestanden</span>
