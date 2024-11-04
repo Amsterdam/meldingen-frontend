@@ -21,10 +21,10 @@
     "dev:admin": "nx dev admin",
     "dev:public": "nx dev public",
     "generate-api-client": "openapi-ts",
-    "lint": "markdownlint **/*.md && prettier --check . && nx run-many --target=lint,stylelint --exclude=api-client,form-renderer",
-    "lint:fix": "markdownlint --fix **/*.md && prettier --write . && nx run-many --target=lint,stylelint --exclude=api-client,form-renderer --fix",
+    "lint": "markdownlint **/*.md && prettier --check . && nx run-many --target=lint,stylelint --exclude=api-client,form-renderer && pnpm -r --no-bail lint && pnpm -r --no-bail typecheck",
+    "lint:fix": "markdownlint --fix **/*.md && prettier --write . && nx run-many --target=lint,stylelint --exclude=api-client,form-renderer --fix && pnpm -r --no-bail lint --fix && pnpm -r --no-bail typecheck",
     "prepare": "husky",
-    "test": "nx run-many --target=test --exclude=api-client,ui,form-renderer",
+    "test": "nx run-many --target=test --exclude=api-client,ui,form-renderer && pnpm -r --no-bail test",
     "test:watch": "nx watch --all --parallel=10 --exclude=api-client,ui,form-renderer -- nx run \\$NX_PROJECT_NAME:test",
     "test:watch:win": "nx watch --all --parallel=10 --exclude=api-client,ui,form-renderer -- nx run %NX_PROJECT_NAME%:test",
     "update-minor": "npm-check-updates --target minor --upgrade && pnpm install"
