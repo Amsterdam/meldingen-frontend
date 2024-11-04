@@ -106,6 +106,7 @@
     "stylelint-order": "6.0.4",
     "ts-jest": "29.2.5",
     "ts-node": "10.9.2",
+    "tsc-files": "1.1.4",
     "typescript": "5.6.3",
     "undici": "6.20.1",
     "vite": "5.4.10",
