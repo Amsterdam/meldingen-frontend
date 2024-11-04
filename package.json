@@ -7,9 +7,7 @@
   "private": true,
   "engines": {
     "node": "^20",
-    "npm": "^10",
-    "yarn": "please-use-npm",
-    "pnpm": "please-use-npm"
+    "pnpm": "^9"
   },
   "repository": {
     "type": "git",
@@ -35,6 +33,7 @@
     "@amsterdam/design-system-assets": "0.2.2",
     "@amsterdam/design-system-css": "0.13.0",
     "@amsterdam/design-system-react": "0.13.0",
+    "@amsterdam/design-system-react-icons": "0.1.13",
     "@amsterdam/design-system-tokens": "0.13.0",
     "@formio/react": "5.3.0",
     "formiojs": "4.21.5",
@@ -47,6 +46,7 @@
     "react": "18.3.1",
     "react-admin": "5.3.1",
     "react-dom": "18.3.1",
+    "react-hook-form": "7.53.1",
     "tslib": "2.8.0",
     "uber-json-schema-filter": "2.0.5"
   },
