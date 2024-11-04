@@ -182,6 +182,6 @@ describe('AanvullendeVragen', () => {
 
     await user.click(submitButton)
 
-    expect(push).toHaveBeenCalledWith('/bedankt')
+    expect(push).toHaveBeenCalledWith('/bijlagen')
   })
 })

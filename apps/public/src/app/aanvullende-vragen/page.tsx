@@ -111,7 +111,7 @@ const AanvullendeVragen = () => {
     if (data) {
       putMeldingByMeldingIdAnswerQuestions({ meldingId: data.id, token: data.token })
     }
-    router.push('/bedankt')
+    router.push('/bijlagen')
   }
 
   useEffect(() => {
