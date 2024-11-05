@@ -2,22 +2,26 @@ import { render, screen } from '@testing-library/react'
 
 import { TextInput } from './TextInput'
 
-const requiredProps = { id: 'test-id', label: 'Test label' }
+const defaultProps = {
+  id: 'test-id',
+  label: 'Test label',
+  validate: { required: true },
+}
 
 describe('TextInput Component', () => {
   it('renders the TextInput component', () => {
-    render(<TextInput {...requiredProps} />)
+    render(<TextInput {...defaultProps} />)
 
-    const textInput = screen.getByRole('textbox', { name: requiredProps.label })
+    const textInput = screen.getByRole('textbox', { name: defaultProps.label })
 
     expect(textInput).toBeInTheDocument()
   })
 
   it('renders a description', () => {
-    render(<TextInput description="Test description" {...requiredProps} />)
+    render(<TextInput {...defaultProps} description="Test description" />)
 
     const textInputWithDescription = screen.getByRole('textbox', {
-      name: requiredProps.label,
+      name: defaultProps.label,
       description: 'Test description',
     })
 
@@ -25,10 +29,18 @@ describe('TextInput Component', () => {
   })
 
   it('correctly marks TextInput as required', () => {
-    render(<TextInput validate={{ required: true }} {...requiredProps} />)
+    render(<TextInput {...defaultProps} />)
 
-    const textInput = screen.getByRole('textbox', { name: requiredProps.label })
+    const textInput = screen.getByRole('textbox', { name: defaultProps.label })
 
     expect(textInput).toBeRequired()
+  })
+
+  it('correctly marks TextInput as not required', () => {
+    render(<TextInput {...defaultProps} validate={{ required: false }} />)
+
+    const textInput = screen.getByRole('textbox', { name: `${defaultProps.label} (niet verplicht)` })
+
+    expect(textInput).toBeInTheDocument()
   })
 })
