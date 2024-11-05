@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 
 import { TextArea } from './TextArea'
 
-const requiredProps = {
+const defaultProps = {
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
@@ -11,18 +11,18 @@ const requiredProps = {
 
 describe('TextArea Component', () => {
   it('renders the TextArea component', () => {
-    render(<TextArea {...requiredProps} />)
+    render(<TextArea {...defaultProps} />)
 
-    const textArea = screen.getByRole('textbox', { name: requiredProps.label })
+    const textArea = screen.getByRole('textbox', { name: defaultProps.label })
 
     expect(textArea).toBeInTheDocument()
   })
 
   it('renders a description', () => {
-    render(<TextArea {...requiredProps} description="Test description" />)
+    render(<TextArea {...defaultProps} description="Test description" />)
 
     const textAreaWithDescription = screen.getByRole('textbox', {
-      name: requiredProps.label,
+      name: defaultProps.label,
       description: 'Test description',
     })
 
@@ -30,7 +30,7 @@ describe('TextArea Component', () => {
   })
 
   it('renders a character count', () => {
-    render(<TextArea {...requiredProps} maxCharCount={80} />)
+    render(<TextArea {...defaultProps} maxCharCount={80} />)
 
     const characterCount = screen.getByRole('status')
 
@@ -40,9 +40,9 @@ describe('TextArea Component', () => {
   it('counts the number of characters', async () => {
     const user = userEvent.setup()
 
-    render(<TextArea {...requiredProps} maxCharCount={80} />)
+    render(<TextArea {...defaultProps} maxCharCount={80} />)
 
-    const textArea = screen.getByRole('textbox', { name: requiredProps.label })
+    const textArea = screen.getByRole('textbox', { name: defaultProps.label })
 
     await user.type(textArea, '0123456789')
 
@@ -52,17 +52,17 @@ describe('TextArea Component', () => {
   })
 
   it('correctly marks TextArea as required', () => {
-    render(<TextArea {...requiredProps} />)
+    render(<TextArea {...defaultProps} />)
 
-    const textArea = screen.getByRole('textbox', { name: requiredProps.label })
+    const textArea = screen.getByRole('textbox', { name: defaultProps.label })
 
     expect(textArea).toBeRequired()
   })
 
   it('correctly marks TextArea as not required', () => {
-    render(<TextArea {...requiredProps} validate={{ required: false }} />)
+    render(<TextArea {...defaultProps} validate={{ required: false }} />)
 
-    const textArea = screen.getByRole('textbox', { name: `${requiredProps.label} (niet verplicht)` })
+    const textArea = screen.getByRole('textbox', { name: `${defaultProps.label} (niet verplicht)` })
 
     expect(textArea).toBeInTheDocument()
   })

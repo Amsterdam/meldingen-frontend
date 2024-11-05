@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 
 import { Select } from './Select'
 
-const requiredProps = {
+const defaultProps = {
   data: { values: [{ label: 'Test value', value: 'test-value', position: 1 }] },
   id: 'test-id',
   label: 'Test label',
@@ -11,18 +11,18 @@ const requiredProps = {
 
 describe('Select Component', () => {
   it('renders the Select component', () => {
-    render(<Select {...requiredProps} />)
+    render(<Select {...defaultProps} />)
 
-    const select = screen.getByRole('combobox', { name: requiredProps.label })
+    const select = screen.getByRole('combobox', { name: defaultProps.label })
 
     expect(select).toBeInTheDocument()
   })
 
   it('renders a description', () => {
-    render(<Select {...requiredProps} description="Test description" />)
+    render(<Select {...defaultProps} description="Test description" />)
 
     const selectWithDescription = screen.getByRole('combobox', {
-      name: requiredProps.label,
+      name: defaultProps.label,
       description: 'Test description',
     })
 
@@ -30,25 +30,25 @@ describe('Select Component', () => {
   })
 
   it('renders the Select options', () => {
-    render(<Select {...requiredProps} />)
+    render(<Select {...defaultProps} />)
 
-    const selectItem = screen.getByRole('option', { name: requiredProps.data.values[0].label })
+    const selectItem = screen.getByRole('option', { name: defaultProps.data.values[0].label })
 
     expect(selectItem).toBeInTheDocument()
   })
 
   it('correctly marks Select as required', () => {
-    render(<Select {...requiredProps} />)
+    render(<Select {...defaultProps} />)
 
-    const select = screen.getByRole('combobox', { name: requiredProps.label })
+    const select = screen.getByRole('combobox', { name: defaultProps.label })
 
     expect(select).toBeRequired()
   })
 
   it('correctly marks Select as not required', () => {
-    render(<Select {...requiredProps} validate={{ required: false }} />)
+    render(<Select {...defaultProps} validate={{ required: false }} />)
 
-    const select = screen.getByRole('combobox', { name: `${requiredProps.label} (niet verplicht)` })
+    const select = screen.getByRole('combobox', { name: `${defaultProps.label} (niet verplicht)` })
 
     expect(select).toBeInTheDocument()
   })
