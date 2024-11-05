@@ -1,6 +1,7 @@
 import { Admin as ReactAdmin, Resource } from 'react-admin'
 
 import { ClassificationCreate, ClassificationEdit, ClassificationList } from '../pages/classification'
+import { StaticFormList, StaticFormEdit } from '../pages/static-form'
 import { FormCreate, FormEdit, FormList } from '../pages/form/components'
 
 import { CustomLayout } from './components'
@@ -26,6 +27,7 @@ export const Admin = () => {
         create={<ClassificationCreate />}
         recordRepresentation="name"
       />
+      <Resource name="static-form" list={<StaticFormList />} edit={<StaticFormEdit />} recordRepresentation="name" />
     </ReactAdmin>
   )
 }
