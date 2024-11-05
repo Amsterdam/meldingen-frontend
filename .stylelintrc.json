@@ -2,6 +2,7 @@
   "extends": ["stylelint-config-standard", "stylelint-config-css-modules"],
   "plugins": ["stylelint-order"],
   "rules": {
+    "media-feature-range-notation": "prefix",
     "order/order": ["custom-properties", "declarations"],
     "order/properties-order": [
       ["composes"],
