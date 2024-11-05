@@ -1,13 +1,22 @@
 import { FieldSet, Paragraph, Radio as ADSRadio, Column } from '@amsterdam/design-system-react'
-import type { FormRadioComponentOutput } from '@meldingen/api-client'
 
-type Props = FormRadioComponentOutput & { id: string }
+type Props = {
+  description?: string
+  id: string
+  label: string
+  validate?: { required: boolean } | null
+  values: {
+    label: string
+    value: string
+  }[]
+}
 
 export const Radio = ({ description, id, label, validate, values }: Props) => (
   <FieldSet
     aria-describedby={description ? `${id}-description` : undefined}
     aria-required={validate?.required ? 'true' : undefined}
     legend={label}
+    optional={!validate?.required}
     role="radiogroup"
   >
     {description && (
