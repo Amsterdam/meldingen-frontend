@@ -1,29 +1,14 @@
 .wrapper {
-  position: relative;
   font-size: var(--ams-text-level-5-font-size);
   line-height: var(--ams-text-level-5-line-height);
   outline-offset: var(--ams-focus-outline-offset);
-
-  &:hover .button {
-    box-shadow: var(--ams-button-secondary-hover-box-shadow);
-    color: var(--ams-button-secondary-hover-color);
-  }
-
-  &:has(:focus-visible) {
-    outline-color: -webkit-focus-ring-color;
-    outline-style: auto;
-    outline-width: 0.0625rem;
-
-    /* This removes the fallback outline set on the label. */
-    .label {
-      outline: none;
-    }
-  }
+  position: relative;
 
   @media screen and (min-width: 36rem) {
-    padding: var(--ams-space-md);
     border: var(--ams-border-width-sm) dashed var(--ams-color-neutral-grey3);
     outline-offset: calc(var(--ams-focus-outline-offset) * 2); /* Increase outline offset to account for border width */
+    padding-block: var(--ams-space-md);
+    padding-inline: var(--ams-space-md);
   }
 }
 
@@ -44,8 +29,17 @@
 }
 
 .label {
-  display: flex;
   align-items: baseline;
+  display: flex;
+}
+
+.wrapper:has(:focus-visible) {
+  outline: -webkit-focus-ring-color auto 0.0625rem;
+
+  /* This removes the fallback outline set on the label. */
+  .label {
+    outline: none;
+  }
 }
 
 .button {
@@ -57,9 +51,14 @@
   width: 100%;
 
   @media screen and (min-width: 36rem) {
-    width: auto;
     flex-shrink: 0;
+    width: auto;
   }
+}
+
+.wrapper:hover .button {
+  box-shadow: var(--ams-button-secondary-hover-box-shadow);
+  color: var(--ams-button-secondary-hover-color);
 }
 
 .drop-area-text {

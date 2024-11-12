@@ -7,34 +7,39 @@
   "private": true,
   "engines": {
     "node": "^20",
-    "npm": "^10",
-    "yarn": "please-use-npm",
-    "pnpm": "please-use-npm"
+    "pnpm": "^9"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alimpens/meldingen-frontend-nx.git"
   },
   "scripts": {
-    "build": "nx run-many --target=build",
+    "build": "nx run-many --target=build --exclude=form-renderer",
     "build:admin": "nx build admin",
     "build:public": "nx build public",
     "dev": "nx run-many --parallel --target=dev --projects=admin,public",
     "dev:admin": "nx dev admin",
     "dev:public": "nx dev public",
     "generate-api-client": "openapi-ts",
-    "lint": "markdownlint **/*.md && prettier --check . && nx run-many --target=lint,stylelint --exclude=api-client",
-    "lint:fix": "markdownlint --fix **/*.md && prettier --write . && nx run-many --target=lint,stylelint --exclude=api-client --fix",
+    "lint": "npm run lint:css && npm run lint:md && npm run prettier && nx run-many --target=lint --exclude=api-client,form-renderer && pnpm -r --no-bail lint && pnpm -r --no-bail typecheck",
+    "lint:css": "stylelint --allow-empty-input '**/*.{css,scss}'",
+    "lint:md": "markdownlint **/*.md --ignore node_modules",
+    "lint-fix": "npm run lint-fix:css && npm run lint-fix:md && npm run prettier-fix && nx run-many --target=lint --exclude=api-client,form-renderer --fix && pnpm -r --no-bail lint --fix && pnpm -r --no-bail typecheck",
+    "lint-fix:css": "stylelint --fix '**/*.{css,scss}'",
+    "lint-fix:md": "markdownlint --fix **/*.md",
     "prepare": "husky",
-    "test": "nx run-many --target=test --exclude=api-client,ui",
-    "test:watch": "nx watch --all --parallel=10 -- nx run \\$NX_PROJECT_NAME:test",
-    "test:watch:win": "nx watch --all --parallel=10 -- nx run %NX_PROJECT_NAME%:test",
-    "update-minor": "npm-check-updates --target minor --upgrade && npm install"
+    "prettier": "prettier --check .",
+    "prettier-fix": "prettier --write .",
+    "test": "nx run-many --target=test --exclude=api-client,ui,form-renderer && pnpm -r --no-bail test",
+    "test:watch": "nx watch --all --parallel=10 --exclude=api-client,ui,form-renderer -- nx run \\$NX_PROJECT_NAME:test",
+    "test:watch:win": "nx watch --all --parallel=10 --exclude=api-client,ui,form-renderer -- nx run %NX_PROJECT_NAME%:test",
+    "update-minor": "npm-check-updates --target minor --upgrade && pnpm install"
   },
   "dependencies": {
     "@amsterdam/design-system-assets": "0.2.2",
     "@amsterdam/design-system-css": "0.13.1",
     "@amsterdam/design-system-react": "0.13.1",
+    "@amsterdam/design-system-react-icons": "0.1.13",
     "@amsterdam/design-system-tokens": "0.13.0",
     "@formio/react": "5.3.0",
     "formiojs": "4.21.5",
@@ -47,6 +52,7 @@
     "react": "18.3.1",
     "react-admin": "5.3.3",
     "react-dom": "18.3.1",
+    "react-hook-form": "7.53.1",
     "tslib": "2.8.1",
     "uber-json-schema-filter": "2.0.5"
   },
@@ -106,6 +112,7 @@
     "stylelint-order": "6.0.4",
     "ts-jest": "29.2.5",
     "ts-node": "10.9.2",
+    "tsc-files": "1.1.4",
     "typescript": "5.6.3",
     "undici": "6.20.1",
     "vite": "5.4.11",
