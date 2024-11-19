@@ -1,8 +1,22 @@
-import { DeleteWithConfirmButton, Edit, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
+import {
+  DeleteWithConfirmButton,
+  Edit,
+  required,
+  SaveButton,
+  SimpleForm,
+  TextInput,
+  Toolbar,
+  ToolbarClasses,
+} from 'react-admin'
 import { BuilderInput } from '../form/components/BuilderInput'
+import type { FormioSchema } from '@meldingen/formio'
+import { filterFormResponse } from '../form/utils/filterFormResponse'
+
+// The data is filtered here before being passed to the API
+const transform = (data: FormioSchema) => filterFormResponse(data)
 
 export const StaticFormEdit = () => (
-  <Edit>
+  <Edit transform={transform}>
     <SimpleForm
       toolbar={
         <Toolbar>
@@ -13,7 +27,7 @@ export const StaticFormEdit = () => (
         </Toolbar>
       }
     >
-      <TextInput source="name" readOnly />
+      <TextInput source="title" readOnly />
       <BuilderInput />
     </SimpleForm>
   </Edit>
