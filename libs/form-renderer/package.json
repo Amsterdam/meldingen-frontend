@@ -1,0 +1,13 @@
+{
+  "name": "form-renderer",
+  "version": "0.1.0",
+  "description": "Form renderer for the Meldingen applications",
+  "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  },
+  "license": "EUPL-1.2",
+  "private": true
+}

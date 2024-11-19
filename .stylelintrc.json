@@ -1,36 +1,30 @@
 {
-  "ignoreFiles": ["**/*"],
-  "overrides": [
-    {
-      "files": ["**/*.css"],
-      "extends": ["stylelint-config-standard", "stylelint-config-css-modules"],
-      "plugins": ["stylelint-order"],
-      "rules": {
-        "order/order": ["custom-properties", "declarations"],
-        "order/properties-order": [
-          ["composes"],
-          {
-            "unspecified": "bottomAlphabetical"
-          }
-        ],
-        "property-disallowed-list": [
-          [
-            "margin",
-            "margin-bottom",
-            "margin-left",
-            "margin-right",
-            "margin-top",
-            "padding",
-            "padding-bottom",
-            "padding-left",
-            "padding-right",
-            "padding-top"
-          ]
-        ],
-        "selector-class-pattern": null,
-        "unit-disallowed-list": ["px"]
+  "extends": ["stylelint-config-standard", "stylelint-config-css-modules"],
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "media-feature-range-notation": "prefix",
+    "order/order": ["custom-properties", "declarations"],
+    "order/properties-order": [
+      ["composes"],
+      {
+        "unspecified": "bottomAlphabetical"
       }
-    }
-  ],
-  "rules": {}
+    ],
+    "property-disallowed-list": [
+      [
+        "margin",
+        "margin-bottom",
+        "margin-left",
+        "margin-right",
+        "margin-top",
+        "padding",
+        "padding-bottom",
+        "padding-left",
+        "padding-right",
+        "padding-top"
+      ]
+    ],
+    "selector-class-pattern": null,
+    "unit-disallowed-list": ["px"]
+  }
 }
