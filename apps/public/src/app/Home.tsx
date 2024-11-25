@@ -28,6 +28,11 @@ export const Home = ({ formData }: { formData: StaticFormWithSubmit }) => {
     })
   }
 
+  // TODO: ESLint test, remove when ESlint works
+  // var hello = (name: any) => {
+  //   return 'Hello, ' + name + '!'
+  // }
+
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>

@@ -14,12 +14,12 @@
     "url": "git+https://github.com/alimpens/meldingen-frontend-nx.git"
   },
   "scripts": {
-    "build": "nx run-many --target=build --exclude=form-renderer",
+    "build": "pnpm run /^build:/",
     "build:admin": "nx build admin",
-    "build:public": "nx build public",
-    "dev": "nx run-many --parallel --target=dev --projects=admin,public",
+    "build:public": "pnpm -F=public build",
+    "dev": "pnpm run /^dev:/",
     "dev:admin": "nx dev admin",
-    "dev:public": "nx dev public",
+    "dev:public": "pnpm -F=public dev",
     "generate-api-client": "openapi-ts",
     "lint": "npm run lint:css && npm run lint:md && npm run prettier && nx run-many --target=lint --exclude=api-client,form-renderer && pnpm -r --no-bail lint && pnpm -r --no-bail typecheck",
     "lint:css": "stylelint --allow-empty-input '**/*.{css,scss}'",
