@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
+import { vi } from 'vitest'
 
 import { MeldingContextProvider } from '../context/MeldingContextProvider'
 import { NextRouterContextProviderMock } from '../mocks/NextRouterContextProviderMock'
@@ -47,7 +48,7 @@ const mockFormData = {
   ],
 }
 
-const push = jest.fn()
+const push = vi.fn()
 const renderPage = () => {
   render(
     <MeldingContextProvider>

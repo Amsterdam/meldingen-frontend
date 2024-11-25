@@ -1,2 +1,3 @@
 packages:
   - 'libs/form-renderer'
+  - 'apps/public'

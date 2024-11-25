@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { vi } from 'vitest'
 
 import { NextRouterContextProviderMock } from '../../../mocks/NextRouterContextProviderMock'
 
@@ -7,7 +8,7 @@ import { BackLink } from './BackLink'
 
 describe('BackLink', () => {
   it('renders', () => {
-    const clickHandler = jest.fn()
+    const clickHandler = vi.fn()
 
     render(<BackLink page={0} handleClick={clickHandler} />)
 
@@ -19,8 +20,8 @@ describe('BackLink', () => {
 
   it('renders a Next link on the first page', async () => {
     const user = userEvent.setup()
-    const clickHandler = jest.fn()
-    const nextRouterPush = jest.fn()
+    const clickHandler = vi.fn()
+    const nextRouterPush = vi.fn()
 
     render(
       <NextRouterContextProviderMock router={{ push: nextRouterPush }}>
@@ -38,8 +39,8 @@ describe('BackLink', () => {
 
   it('renders a regular link with a handler on the other pages', async () => {
     const user = userEvent.setup()
-    const clickHandler = jest.fn()
-    const nextRouterPush = jest.fn()
+    const clickHandler = vi.fn()
+    const nextRouterPush = vi.fn()
 
     render(
       <NextRouterContextProviderMock router={{ push: nextRouterPush }}>
