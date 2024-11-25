@@ -9,8 +9,8 @@ type HttpClient = (
 export const dataProvider = (apiUrl: string, httpClient: HttpClient): DataProvider => ({
   ...simpleRestProvider(apiUrl, httpClient),
   update: (resource, params) => {
-    // 'form' updates use PUT requests, all other updates use PATCH requests
-    if (resource === 'form') {
+    // 'form' and 'static-form' updates use PUT requests, all other updates use PATCH requests
+    if (resource === 'form' || resource === 'static-form') {
       return httpClient(`${apiUrl}/${resource}/${params.id}`, {
         method: 'PUT',
         body: JSON.stringify(params.data),
