@@ -216,6 +216,14 @@ const nl: TranslationMessages = {
         title: 'Naam',
       },
     },
+    'static-form': {
+      name: 'Statische vragenlijst |||| Statische vragenlijsten',
+      fields: {
+        title: 'Naam',
+        'components[0].label': 'Label',
+        'components[0].description': 'Beschrijving',
+      },
+    },
   },
   ma: {
     dialog: {
