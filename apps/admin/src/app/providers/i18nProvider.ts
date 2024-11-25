@@ -220,6 +220,8 @@ const nl: TranslationMessages = {
       name: 'Statische vragenlijst |||| Statische vragenlijsten',
       fields: {
         title: 'Naam',
+        'components[0].label': 'Label',
+        'components[0].description': 'Beschrijving',
       },
     },
   },
