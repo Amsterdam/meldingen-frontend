@@ -18,26 +18,13 @@
       },
       "overrides": [
         {
-          "files": ["**/page.tsx", "**/layout.tsx", "**/index.d.ts", "**/vite.config.ts"],
+          "files": ["vite.config.ts"],
           "rules": {
             "import/no-default-export": "off"
           }
         }
       ],
       "rules": {
-        "@nx/enforce-module-boundaries": [
-          "error",
-          {
-            "enforceBuildableLibDependency": true,
-            "allow": [],
-            "depConstraints": [
-              {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
-              }
-            ]
-          }
-        ],
         "@typescript-eslint/consistent-type-imports": "error",
         "import/no-extraneous-dependencies": "off",
         "import/order": [

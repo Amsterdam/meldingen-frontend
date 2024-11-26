@@ -1,7 +1,6 @@
 'use client'
 
 import { Heading } from '@amsterdam/design-system-react'
-
 import { Grid } from '@meldingen/ui'
 
 import { FileUpload } from './_components/FileUpload'

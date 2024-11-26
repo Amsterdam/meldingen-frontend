@@ -1,7 +1,6 @@
-import type { ComponentSchema } from 'formiojs'
-
 import type { StaticFormOutput } from '@meldingen/api-client'
 import { getStaticFormByFormType } from '@meldingen/api-client'
+import type { ComponentSchema } from 'formiojs'
 
 import { Home } from './Home'
 

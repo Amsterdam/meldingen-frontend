@@ -1,9 +1,5 @@
 'use client'
 
-import dynamic from 'next/dynamic'
-import { useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
-
 import type { FormOutput } from '@meldingen/api-client'
 import {
   getFormClassificationByClassificationId,
@@ -11,6 +7,9 @@ import {
   putMeldingByMeldingIdAnswerQuestions,
 } from '@meldingen/api-client'
 import { Grid } from '@meldingen/ui'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 
 import { useMeldingContext } from '../../context/MeldingContextProvider'
 import mockData from '../../mocks/mockFormData.json'

@@ -1,6 +1,5 @@
-import type { Metadata } from 'next'
-
 import { Footer, Header, Screen } from '@meldingen/ui'
+import type { Metadata } from 'next'
 
 import { MeldingContextProvider } from '../context/MeldingContextProvider'
 

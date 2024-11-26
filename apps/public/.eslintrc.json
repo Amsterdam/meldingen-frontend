@@ -1,25 +1,11 @@
 {
-  "extends": ["plugin:@nx/react-typescript", "next", "next/core-web-vitals", "../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*", ".next/**/*"],
+  "extends": ["next/core-web-vitals", "next/typescript", "../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "files": ["**/page.tsx", "**/layout.tsx"],
       "rules": {
-        "@next/next/no-html-link-for-pages": ["error", "apps/public/pages"]
-      }
-    },
-    {
-      "files": ["*.ts", "*.tsx"],
-      "rules": {}
-    },
-    {
-      "files": ["*.js", "*.jsx"],
-      "rules": {}
-    },
-    {
-      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
-      "env": {
-        "jest": true
+        "import/no-default-export": "off"
       }
     }
   ]
