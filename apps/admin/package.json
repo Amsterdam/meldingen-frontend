@@ -22,5 +22,7 @@
     "react-admin": "5.3.4",
     "uber-json-schema-filter": "2.0.5"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "ra-core": "5.3.4"
+  }
 }
