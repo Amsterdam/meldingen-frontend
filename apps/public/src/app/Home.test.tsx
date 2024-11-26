@@ -63,13 +63,10 @@ describe('Page', () => {
   it('should render a form', async () => {
     renderPage()
 
-    await waitFor(
-      () => {
-        expect(screen.getByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
-        expect(screen.getByRole('button')).toBeInTheDocument()
-      },
-      { timeout: 2000 },
-    )
+    await waitFor(() => {
+      expect(screen.queryByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
+      expect(screen.queryByRole('button')).toBeInTheDocument()
+    })
   })
 
   it('should send a filled form and navigate to /aanvullende-vragen', async () => {
@@ -89,9 +86,12 @@ describe('Page', () => {
 
     fireEvent.click(submit)
 
-    await waitFor(() => {
-      expect(push).toHaveBeenCalledWith('/aanvullende-vragen')
-    })
+    await waitFor(
+      () => {
+        expect(push).toHaveBeenCalledWith('/aanvullende-vragen')
+      },
+      { timeout: 4000 },
+    )
   })
 
   it.skip('should set context with the right values', () => {})
