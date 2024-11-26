@@ -1,4 +1,12 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript", "../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*"]
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["**/page.tsx", "**/layout.tsx", "vite.config.js"],
+      "rules": {
+        "import/no-default-export": "off"
+      }
+    }
+  ]
 }
