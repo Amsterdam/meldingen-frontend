@@ -73,8 +73,8 @@ importers:
         specifier: 7.25.9
         version: 7.25.9(@babel/core@7.26.0)
       '@hey-api/openapi-ts':
-        specifier: 0.54.0
-        version: 0.54.0(magicast@0.3.5)(typescript@5.6.3)
+        specifier: 0.56.0
+        version: 0.56.0(magicast@0.3.5)(typescript@5.6.3)
       '@nx/eslint':
         specifier: 20.1.2
         version: 20.1.2(@babel/traverse@7.25.9)(@swc-node/register@1.10.9(@swc/core@1.9.2(@swc/helpers@0.5.15))(@swc/types@0.1.15)(typescript@5.6.3))(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@22.9.0)(@zkochan/js-yaml@0.0.7)(eslint@8.57.1)(nx@20.1.2(@swc-node/register@1.10.9(@swc/core@1.9.2(@swc/helpers@0.5.15))(@swc/types@0.1.15)(typescript@5.6.3))(@swc/core@1.9.2(@swc/helpers@0.5.15)))
@@ -1271,8 +1271,8 @@ packages:
   '@formio/vanilla-text-mask@5.1.1-formio.1':
     resolution: {integrity: sha512-rYBlvIPMNUd6sAaduOaiIwI4vfTAjHDRonko2qJn2RP1O//TQ7rcFIPYVYePJZ4OtOpwHiHAvAIh79McphZotQ==}
 
-  '@hey-api/openapi-ts@0.54.0':
-    resolution: {integrity: sha512-Uouh1WTwEWhlBaDxWlDnPgMcT3I9QpkA2qnVZvc37tgZm9CRN4H0PCrHX7VKIEU/GqHvNRZPDYfT+z1Z+P4Rkg==}
+  '@hey-api/openapi-ts@0.56.0':
+    resolution: {integrity: sha512-bwqfuqJVNRVsbyC+jlAY2geJOWVQZWpVKS9z9sFeuTeRMJ5C8m+WzucMP0hurqYy67I90GaRyFSepvL1+miSXg==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -8276,7 +8276,7 @@ snapshots:
 
   '@formio/vanilla-text-mask@5.1.1-formio.1': {}
 
-  '@hey-api/openapi-ts@0.54.0(magicast@0.3.5)(typescript@5.6.3)':
+  '@hey-api/openapi-ts@0.56.0(magicast@0.3.5)(typescript@5.6.3)':
     dependencies:
       '@apidevtools/json-schema-ref-parser': 11.7.2
       c12: 2.0.1(magicast@0.3.5)
