@@ -1,10 +1,9 @@
 'use client'
 
-import dynamic from 'next/dynamic'
-import { useRouter } from 'next/navigation'
-
 import { postMelding } from '@meldingen/api-client'
 import { Grid } from '@meldingen/ui'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
 
 import { useMeldingContext } from '../context/MeldingContextProvider'
 
@@ -27,11 +26,6 @@ export const Home = ({ formData }: { formData: StaticFormWithSubmit }) => {
       router.push('/aanvullende-vragen')
     })
   }
-
-  // TODO: ESLint test, remove when ESlint works
-  // var hello = (name: any) => {
-  //   return 'Hello, ' + name + '!'
-  // }
 
   return (
     <Grid paddingBottom="large" paddingTop="medium">
