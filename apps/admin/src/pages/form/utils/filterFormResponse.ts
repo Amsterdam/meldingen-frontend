@@ -23,7 +23,7 @@ const filterBySchemaPerType = (obj: any) => {
       return filter(FormCheckboxComponentInputSchema, obj)
     case 'textarea':
       // Add autoExpand to object if it doesn't exist, the builder doesn't do that by default
-      if (!obj.prototype.hasOwnProperty.call('autoExpand')) {
+      if (!Object.hasOwn(obj, 'autoExpand')) {
         return filter(FormTextAreaComponentInputSchema, { ...obj, autoExpand: false })
       }
 
