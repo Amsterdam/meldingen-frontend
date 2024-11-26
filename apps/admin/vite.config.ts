@@ -4,6 +4,9 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   plugins: [tsconfigPaths(), react()],
+  server: {
+    port: 3001,
+  },
   test: {
     coverage: {
       enabled: true,

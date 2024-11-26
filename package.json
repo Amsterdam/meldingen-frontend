@@ -15,10 +15,10 @@
   },
   "scripts": {
     "build": "pnpm run /^build:/",
-    "build:admin": "nx build admin",
+    "build:admin": "pnpm -F=admin build",
     "build:public": "pnpm -F=public build",
     "dev": "pnpm run /^dev:/",
-    "dev:admin": "nx dev admin",
+    "dev:admin": "pnpm -F=admin dev",
     "dev:public": "pnpm -F=public dev",
     "generate-api-client": "openapi-ts",
     "lint": "npm run lint:css && npm run lint:md && npm run prettier && nx run-many --target=lint --exclude=api-client,form-renderer && pnpm -r --no-bail lint && pnpm -r --no-bail typecheck",
