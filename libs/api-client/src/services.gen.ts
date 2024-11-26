@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { PostClassificationData, PostClassificationResponse, GetClassificationData, GetClassificationResponse, GetClassificationByClassificationIdData, GetClassificationByClassificationIdResponse, PatchClassificationByClassificationIdData, PatchClassificationByClassificationIdResponse, DeleteClassificationByClassificationIdData, DeleteClassificationByClassificationIdResponse, PostMeldingData, PostMeldingResponse, GetMeldingData, GetMeldingResponse, GetMeldingByMeldingIdData, GetMeldingByMeldingIdResponse, PatchMeldingByMeldingIdData, PatchMeldingByMeldingIdResponse, PutMeldingByMeldingIdAnswerQuestionsData, PutMeldingByMeldingIdAnswerQuestionsResponse, PutMeldingByMeldingIdAddAttachmentsData, PutMeldingByMeldingIdAddAttachmentsResponse, PutMeldingByMeldingIdProcessData, PutMeldingByMeldingIdProcessResponse, PutMeldingByMeldingIdCompleteData, PutMeldingByMeldingIdCompleteResponse, PostMeldingByMeldingIdQuestionByQuestionIdData, PostMeldingByMeldingIdQuestionByQuestionIdResponse, PostMeldingByMeldingIdAttachmentData, PostMeldingByMeldingIdAttachmentResponse, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponse, GetMeldingByMeldingIdAttachmentsData, GetMeldingByMeldingIdAttachmentsResponse, DeleteMeldingByMeldingIdAttachmentByAttachmentIdData, DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponse, PostUserData, PostUserResponse, GetUserData, GetUserResponse, GetUserByUserIdData, GetUserByUserIdResponse, DeleteUserByUserIdData, DeleteUserByUserIdResponse, PatchUserByUserIdData, PatchUserByUserIdResponse, GetFormData, GetFormResponse, PostFormData, PostFormResponse, GetFormByFormIdData, GetFormByFormIdResponse, PutFormByFormIdData, PutFormByFormIdResponse, DeleteFormByFormIdData, DeleteFormByFormIdResponse, GetFormClassificationByClassificationIdData, GetFormClassificationByClassificationIdResponse, GetStaticFormByFormTypeData, GetStaticFormByFormTypeResponse, PutStaticFormByFormTypeData, PutStaticFormByFormTypeResponse, GetStaticFormResponse } from './types.gen';
+import type { PostClassificationData, PostClassificationResponse, GetClassificationData, GetClassificationResponse, GetClassificationByClassificationIdData, GetClassificationByClassificationIdResponse, PatchClassificationByClassificationIdData, PatchClassificationByClassificationIdResponse, DeleteClassificationByClassificationIdData, DeleteClassificationByClassificationIdResponse, PostMeldingData, PostMeldingResponse, GetMeldingData, GetMeldingResponse, GetMeldingByMeldingIdData, GetMeldingByMeldingIdResponse, PatchMeldingByMeldingIdData, PatchMeldingByMeldingIdResponse, PutMeldingByMeldingIdAnswerQuestionsData, PutMeldingByMeldingIdAnswerQuestionsResponse, PutMeldingByMeldingIdAddAttachmentsData, PutMeldingByMeldingIdAddAttachmentsResponse, PutMeldingByMeldingIdProcessData, PutMeldingByMeldingIdProcessResponse, PutMeldingByMeldingIdCompleteData, PutMeldingByMeldingIdCompleteResponse, PostMeldingByMeldingIdQuestionByQuestionIdData, PostMeldingByMeldingIdQuestionByQuestionIdResponse, PostMeldingByMeldingIdAttachmentData, PostMeldingByMeldingIdAttachmentResponse, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponse, GetMeldingByMeldingIdAttachmentsData, GetMeldingByMeldingIdAttachmentsResponse, DeleteMeldingByMeldingIdAttachmentByAttachmentIdData, DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponse, PostUserData, PostUserResponse, GetUserData, GetUserResponse, GetUserByUserIdData, GetUserByUserIdResponse, DeleteUserByUserIdData, DeleteUserByUserIdResponse, PatchUserByUserIdData, PatchUserByUserIdResponse, GetFormData, GetFormResponse, PostFormData, PostFormResponse, GetFormByFormIdData, GetFormByFormIdResponse, PutFormByFormIdData, PutFormByFormIdResponse, DeleteFormByFormIdData, DeleteFormByFormIdResponse, GetFormClassificationByClassificationIdData, GetFormClassificationByClassificationIdResponse, GetStaticFormByStaticFormIdData, GetStaticFormByStaticFormIdResponse, PutStaticFormByStaticFormIdData, PutStaticFormByStaticFormIdResponse, GetStaticFormData, GetStaticFormResponse } from './types.gen';
 
 /**
  * Classification:Create
@@ -355,6 +355,7 @@ export const postMeldingByMeldingIdAttachment = (data: PostMeldingByMeldingIdAtt
  * @param data.meldingId The id of the melding.
  * @param data.attachmentId The id of the attachment.
  * @param data.token The token of the melding.
+ * @param data.type The type of the attachment to download.
  * @returns unknown Successful Response
  * @throws ApiError
  */
@@ -366,7 +367,8 @@ export const getMeldingByMeldingIdAttachmentByAttachmentIdDownload = (data: GetM
         attachment_id: data.attachmentId
     },
     query: {
-        token: data.token
+        token: data.token,
+        type: data.type
     },
     errors: {
         401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
@@ -657,17 +659,17 @@ export const getFormClassificationByClassificationId = (data: GetFormClassificat
 }); };
 
 /**
- * Static-Form:Retrieve-By-Type
+ * Static-Form:Retrieve
  * @param data The data for the request.
- * @param data.formType The type of the static form.
+ * @param data.staticFormId The id of the static form.
  * @returns StaticFormOutput Successful Response
  * @throws ApiError
  */
-export const getStaticFormByFormType = (data: GetStaticFormByFormTypeData): CancelablePromise<GetStaticFormByFormTypeResponse> => { return __request(OpenAPI, {
+export const getStaticFormByStaticFormId = (data: GetStaticFormByStaticFormIdData): CancelablePromise<GetStaticFormByStaticFormIdResponse> => { return __request(OpenAPI, {
     method: 'GET',
-    url: '/static-form/{form_type}',
+    url: '/static-form/{static_form_id}',
     path: {
-        form_type: data.formType
+        static_form_id: data.staticFormId
     },
     errors: {
         404: 'Not Found',
@@ -678,16 +680,16 @@ export const getStaticFormByFormType = (data: GetStaticFormByFormTypeData): Canc
 /**
  * Static-Form:Update
  * @param data The data for the request.
- * @param data.formType The type of the static form.
+ * @param data.staticFormId The id of the static form.
  * @param data.requestBody
  * @returns StaticFormOutput Successful Response
  * @throws ApiError
  */
-export const putStaticFormByFormType = (data: PutStaticFormByFormTypeData): CancelablePromise<PutStaticFormByFormTypeResponse> => { return __request(OpenAPI, {
+export const putStaticFormByStaticFormId = (data: PutStaticFormByStaticFormIdData): CancelablePromise<PutStaticFormByStaticFormIdResponse> => { return __request(OpenAPI, {
     method: 'PUT',
-    url: '/static-form/{form_type}',
+    url: '/static-form/{static_form_id}',
     path: {
-        form_type: data.formType
+        static_form_id: data.staticFormId
     },
     body: data.requestBody,
     mediaType: 'application/json',
@@ -700,13 +702,23 @@ export const putStaticFormByFormType = (data: PutStaticFormByFormTypeData): Canc
 
 /**
  * Static-Form:List
+ * @param data The data for the request.
+ * @param data.limit
+ * @param data.offset
+ * @param data.sort
  * @returns StaticFormOutput Successful Response
  * @throws ApiError
  */
-export const getStaticForm = (): CancelablePromise<GetStaticFormResponse> => { return __request(OpenAPI, {
+export const getStaticForm = (data: GetStaticFormData = {}): CancelablePromise<GetStaticFormResponse> => { return __request(OpenAPI, {
     method: 'GET',
     url: '/static-form/',
+    query: {
+        limit: data.limit,
+        offset: data.offset,
+        sort: data.sort
+    },
     errors: {
-        404: 'Not Found'
+        404: 'Not Found',
+        422: 'Validation Error'
     }
 }); };
