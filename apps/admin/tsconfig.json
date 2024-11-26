@@ -1,14 +1,13 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": false,
     "jsx": "react-jsx",
     "resolveJsonModule": true,
-    "types": ["vite/client"],
+    "types": ["vite/client", "jest", "node"],
     "strict": true
   },
-  "files": [],
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
-  "extends": "../../tsconfig.base.json"
+  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
 }
