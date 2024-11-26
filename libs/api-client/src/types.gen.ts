@@ -43,6 +43,8 @@ export type AttachmentOutput = {
     original_filename: string;
 };
 
+export type AttachmentTypes = 'original' | 'optimized' | 'thumbnail';
+
 export type Body_melding_attachment_melding__melding_id__attachment_post = {
     file: (Blob | File);
 };
@@ -516,11 +518,12 @@ export type StaticFormInput = {
 };
 
 export type StaticFormOutput = {
-    type: string;
+    id: number;
     title: string;
     display: string;
     created_at: string;
     updated_at: string;
+    type: string;
     components: Array<(StaticFormPanelComponentOutput | StaticFormTextAreaComponentOutput | StaticFormTextFieldInputComponentOutput | StaticFormCheckboxComponentOutput | StaticFormRadioComponentOutput | StaticFormSelectComponentOutput)>;
 };
 
@@ -578,8 +581,6 @@ export type StaticFormTextFieldInputComponentOutput = {
     position: number;
     validate?: (FormComponentOutputValidate | null);
 };
-
-export type StaticFormTypeEnum = 'primary' | 'attachments' | 'location' | 'contact';
 
 export type StrictEquals = {
     '===': [
@@ -816,6 +817,10 @@ export type GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData = {
      * The token of the melding.
      */
     token: string;
+    /**
+     * The type of the attachment to download.
+     */
+    type?: AttachmentTypes;
 };
 
 export type GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponse = (unknown);
@@ -943,23 +948,29 @@ export type GetFormClassificationByClassificationIdData = {
 
 export type GetFormClassificationByClassificationIdResponse = (FormOutput);
 
-export type GetStaticFormByFormTypeData = {
+export type GetStaticFormByStaticFormIdData = {
     /**
-     * The type of the static form.
+     * The id of the static form.
      */
-    formType: StaticFormTypeEnum;
+    staticFormId: number;
 };
 
-export type GetStaticFormByFormTypeResponse = (StaticFormOutput);
+export type GetStaticFormByStaticFormIdResponse = (StaticFormOutput);
 
-export type PutStaticFormByFormTypeData = {
-    /**
-     * The type of the static form.
-     */
-    formType: StaticFormTypeEnum;
+export type PutStaticFormByStaticFormIdData = {
     requestBody: StaticFormInput;
+    /**
+     * The id of the static form.
+     */
+    staticFormId: number;
 };
 
-export type PutStaticFormByFormTypeResponse = (StaticFormOutput);
+export type PutStaticFormByStaticFormIdResponse = (StaticFormOutput);
+
+export type GetStaticFormData = {
+    limit?: number;
+    offset?: (number | null);
+    sort?: string;
+};
 
 export type GetStaticFormResponse = (Array<StaticFormOutput>);

@@ -1,5 +1,5 @@
 import type { StaticFormOutput } from '@meldingen/api-client'
-import { getStaticFormByFormType } from '@meldingen/api-client'
+import { getStaticForm } from '@meldingen/api-client'
 import type { ComponentSchema } from 'formiojs'
 
 import { Home } from './Home'
@@ -24,7 +24,9 @@ const addSubmitButton = (form: any): StaticFormWithSubmit => ({
 export const dynamic = 'force-dynamic'
 
 export default async () => {
-  const data = await getStaticFormByFormType({ formType: 'primary' }).then((response) => addSubmitButton(response))
+  const staticForm = await getStaticForm().then((response) => response.find((form) => form.type === 'primary'))
 
-  return <Home formData={data} />
+  const staticFormWithSubmitButton = addSubmitButton(staticForm)
+
+  return <Home formData={staticFormWithSubmitButton} />
 }

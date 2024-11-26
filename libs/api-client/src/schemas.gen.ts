@@ -660,6 +660,12 @@ export const AttachmentOutputSchema = {
     title: 'AttachmentOutput'
 } as const;
 
+export const AttachmentTypesSchema = {
+    type: 'string',
+    enum: ['original', 'optimized', 'thumbnail'],
+    title: 'AttachmentTypes'
+} as const;
+
 export const Body_melding_attachment_melding__melding_id__attachment_postSchema = {
     properties: {
         file: {
@@ -4749,9 +4755,9 @@ export const StaticFormInputSchema = {
 
 export const StaticFormOutputSchema = {
     properties: {
-        type: {
-            type: 'string',
-            title: 'Type'
+        id: {
+            type: 'integer',
+            title: 'Id'
         },
         title: {
             type: 'string',
@@ -4770,6 +4776,10 @@ export const StaticFormOutputSchema = {
             type: 'string',
             format: 'date-time',
             title: 'Updated At'
+        },
+        type: {
+            type: 'string',
+            title: 'Type'
         },
         components: {
             items: {
@@ -4799,7 +4809,7 @@ export const StaticFormOutputSchema = {
         }
     },
     type: 'object',
-    required: ['type', 'title', 'display', 'created_at', 'updated_at', 'components'],
+    required: ['id', 'title', 'display', 'created_at', 'updated_at', 'type', 'components'],
     title: 'StaticFormOutput'
 } as const;
 
@@ -5053,12 +5063,6 @@ export const StaticFormTextFieldInputComponentOutputSchema = {
     type: 'object',
     required: ['label', 'description', 'key', 'type', 'input', 'position'],
     title: 'StaticFormTextFieldInputComponentOutput'
-} as const;
-
-export const StaticFormTypeEnumSchema = {
-    type: 'string',
-    enum: ['primary', 'attachments', 'location', 'contact'],
-    title: 'StaticFormTypeEnum'
 } as const;
 
 export const StrictEqualsSchema = {
