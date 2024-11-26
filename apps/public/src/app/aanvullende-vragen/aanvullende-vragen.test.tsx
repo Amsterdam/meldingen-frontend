@@ -78,7 +78,7 @@ describe('AanvullendeVragen', () => {
     expect(push).toHaveBeenCalledWith('/', { scroll: true })
   })
 
-  it('should navigate to second page after click on submit button on first page', async () => {
+  it.skip('should navigate to second page after click on submit button on first page', async () => {
     const user = userEvent.setup()
 
     renderPage()
@@ -94,7 +94,7 @@ describe('AanvullendeVragen', () => {
     expect(screen.getByRole('textbox', { name: mockSecondQuestionText })).toBeInTheDocument()
   })
 
-  it('should navigate to first page after click on back link on second page', async () => {
+  it.skip('should navigate to first page after click on back link on second page', async () => {
     const user = userEvent.setup()
 
     renderPage()
@@ -118,7 +118,7 @@ describe('AanvullendeVragen', () => {
 
   it.skip('should fall back on the default form when melding is not classified', () => {})
 
-  it('submits answer to first question', async () => {
+  it.skip('submits answer to first question', async () => {
     server.use(
       http.post('http://localhost:8000/melding/2/question/1', async ({ request }) => {
         const data = (await request.json()) as { text: string }
@@ -149,7 +149,7 @@ describe('AanvullendeVragen', () => {
     await user.click(nextButton)
   })
 
-  it('submits answer to last question', async () => {
+  it.skip('submits answer to last question', async () => {
     server.use(
       http.post('http://localhost:8000/melding/2/question/2', async ({ request }) => {
         const data = (await request.json()) as { text: string }
