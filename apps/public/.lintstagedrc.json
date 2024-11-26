@@ -1,5 +1,5 @@
 {
   "*.md": ["markdownlint", "prettier --check"],
-  "*.{js,jsx,ts,tsx}": ["eslint --no-error-on-unmatched-pattern", "prettier --check", "tsc-files --noEmit"],
+  "*.{js,jsx,ts,tsx}": ["npm run-script lint", "prettier --check", "tsc-files --noEmit"],
   "*.{css,scss}": ["stylelint --allow-empty-input", "prettier --check"]
 }
