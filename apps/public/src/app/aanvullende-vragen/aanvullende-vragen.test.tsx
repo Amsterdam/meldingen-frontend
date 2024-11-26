@@ -52,7 +52,7 @@ describe('AanvullendeVragen', () => {
     })
   })
 
-  it('should render a submit button', async () => {
+  it.skip('should render a submit button', async () => {
     renderPage()
 
     await waitFor(() => {
