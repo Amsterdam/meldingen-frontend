@@ -1,3 +1,4 @@
+import type { FormInput } from '@meldingen/api-client'
 import {
   FormCheckboxComponentInputSchema,
   FormComponentInputValidateSchema,
@@ -7,7 +8,6 @@ import {
   FormSelectComponentInputSchema,
   FormTextAreaComponentInputSchema,
   FormTextFieldComponentInputSchema,
-  FormInput,
 } from '@meldingen/api-client'
 import filter from 'uber-json-schema-filter'
 
@@ -23,7 +23,7 @@ const filterBySchemaPerType = (obj: any) => {
       return filter(FormCheckboxComponentInputSchema, obj)
     case 'textarea':
       // Add autoExpand to object if it doesn't exist, the builder doesn't do that by default
-      if (!obj.hasOwnProperty('autoExpand')) {
+      if (!Object.hasOwn(obj, 'autoExpand')) {
         return filter(FormTextAreaComponentInputSchema, { ...obj, autoExpand: false })
       }
 
@@ -51,12 +51,10 @@ export const filterFormResponse = (obj: any): FormInput => {
   // This function is used to filter an additional questions form, which is always
   // a wizard with panels containing questions. Therefore the form has a fixed depth of two levels.
   const firstLevelComponents = obj.components.map((firstLevelComponent: any) => {
-    const secondLevelComponents = firstLevelComponent.components.map((secondLevelComponent: any) => {
-      return {
-        ...filterBySchemaPerType(secondLevelComponent),
-        validate: getFilteredValidateObject(secondLevelComponent.validate),
-      }
-    })
+    const secondLevelComponents = firstLevelComponent.components.map((secondLevelComponent: any) => ({
+      ...filterBySchemaPerType(secondLevelComponent),
+      validate: getFilteredValidateObject(secondLevelComponent.validate),
+    }))
 
     const filteredObject = {
       ...filterBySchemaPerType(firstLevelComponent),

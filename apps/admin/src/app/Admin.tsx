@@ -1,8 +1,8 @@
 import { Admin as ReactAdmin, Resource } from 'react-admin'
 
 import { ClassificationCreate, ClassificationEdit, ClassificationList } from '../pages/classification'
-import { StaticFormList, StaticFormEdit } from '../pages/static-form'
 import { FormCreate, FormEdit, FormList } from '../pages/form/components'
+import { StaticFormList, StaticFormEdit } from '../pages/static-form'
 
 import { CustomLayout } from './components'
 import { i18nProvider, useAuthProvider } from './providers'

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`filterFormResponse renders the correct output 1`] = `
+exports[`filterFormResponse > renders the correct output 1`] = `
 {
   "classification": null,
   "components": [

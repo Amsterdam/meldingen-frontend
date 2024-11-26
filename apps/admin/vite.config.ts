@@ -1,30 +1,20 @@
-/// <reference types='vitest' />
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
-  root: __dirname,
-  cacheDir: '../../node_modules/.vite/apps/admin',
-
+  plugins: [tsconfigPaths(), react()],
   server: {
     port: 3001,
-    host: 'localhost',
   },
-
-  plugins: [react(), nxViteTsPaths()],
-
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
-
-  build: {
-    outDir: '../../dist/apps/admin',
-    emptyOutDir: true,
-    reportCompressedSize: true,
-    commonjsOptions: {
-      transformMixedEsModules: true,
+  test: {
+    coverage: {
+      enabled: true,
     },
+    globals: true,
+    environment: 'jsdom',
+    include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    setupFiles: ['./vitest.setup.ts'],
+    watch: false,
   },
 })
