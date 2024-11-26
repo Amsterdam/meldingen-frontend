@@ -3,7 +3,7 @@
   "ignorePatterns": ["!**/*"],
   "overrides": [
     {
-      "files": ["**/page.tsx", "**/layout.tsx", "vite.config.js"],
+      "files": ["**/page.tsx", "**/layout.tsx"],
       "rules": {
         "import/no-default-export": "off"
       }
