@@ -1,0 +1,25 @@
+{
+  "name": "admin",
+  "version": "0.1.0",
+  "description": "Front-end for the admin of the Meldingen application",
+  "author": "Gemeente Amsterdam",
+  "license": "EUPL-1.2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "lint": "next lint",
+    "test": "vitest",
+    "test:watch": "vitest watch"
+  },
+  "dependencies": {
+    "keycloak-js": "25.0.6",
+    "ra-data-simple-rest": "5.3.4",
+    "ra-i18n-polyglot": "5.3.4",
+    "ra-keycloak": "1.0.1",
+    "react-admin": "5.3.4",
+    "uber-json-schema-filter": "2.0.5"
+  },
+  "devDependencies": {}
+}
