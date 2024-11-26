@@ -29,6 +29,7 @@ afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
 const mockFormData = {
+  id: 1,
   title: 'Hoofdformulier',
   display: 'form',
   created_at: '2024-07-15T14:00:56.112771',
