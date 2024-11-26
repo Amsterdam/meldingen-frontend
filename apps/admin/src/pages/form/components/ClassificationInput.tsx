@@ -10,7 +10,7 @@ import styles from './ClassificationInput.module.css'
 const OptionRenderer = () => {
   const record = useRecordContext()
 
-  if (!record) return
+  if (!record) return undefined
 
   return (
     <span className={styles.autoCompleteOption}>
