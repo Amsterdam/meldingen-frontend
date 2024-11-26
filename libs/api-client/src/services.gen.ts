@@ -12,17 +12,19 @@ import type { PostClassificationData, PostClassificationResponse, GetClassificat
  * @returns ClassificationOutput Successful Response
  * @throws ApiError
  */
-export const postClassification = (data: PostClassificationData): CancelablePromise<PostClassificationResponse> => { return __request(OpenAPI, {
-    method: 'POST',
-    url: '/classification/',
-    body: data.requestBody,
-    mediaType: 'application/json',
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        409: 'Conflict, a uniqueness error occurred',
-        422: 'Validation Error'
-    }
-}); };
+export const postClassification = (data: PostClassificationData): CancelablePromise<PostClassificationResponse> => {
+    return __request(OpenAPI, {
+        method: 'POST',
+        url: '/classification/',
+        body: data.requestBody,
+        mediaType: 'application/json',
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            409: 'Conflict, a uniqueness error occurred',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Classification:List
@@ -33,19 +35,21 @@ export const postClassification = (data: PostClassificationData): CancelableProm
  * @returns ClassificationOutput Successful Response
  * @throws ApiError
  */
-export const getClassification = (data: GetClassificationData = {}): CancelablePromise<GetClassificationResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/classification/',
-    query: {
-        limit: data.limit,
-        offset: data.offset,
-        sort: data.sort
-    },
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        422: 'Validation Error'
-    }
-}); };
+export const getClassification = (data: GetClassificationData = {}): CancelablePromise<GetClassificationResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/classification/',
+        query: {
+            limit: data.limit,
+            offset: data.offset,
+            sort: data.sort
+        },
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Classification:Retrieve
@@ -54,18 +58,20 @@ export const getClassification = (data: GetClassificationData = {}): CancelableP
  * @returns ClassificationOutput Successful Response
  * @throws ApiError
  */
-export const getClassificationByClassificationId = (data: GetClassificationByClassificationIdData): CancelablePromise<GetClassificationByClassificationIdResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/classification/{classification_id}',
-    path: {
-        classification_id: data.classificationId
-    },
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const getClassificationByClassificationId = (data: GetClassificationByClassificationIdData): CancelablePromise<GetClassificationByClassificationIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/classification/{classification_id}',
+        path: {
+            classification_id: data.classificationId
+        },
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Classification:Update
@@ -75,21 +81,23 @@ export const getClassificationByClassificationId = (data: GetClassificationByCla
  * @returns ClassificationOutput Successful Response
  * @throws ApiError
  */
-export const patchClassificationByClassificationId = (data: PatchClassificationByClassificationIdData): CancelablePromise<PatchClassificationByClassificationIdResponse> => { return __request(OpenAPI, {
-    method: 'PATCH',
-    url: '/classification/{classification_id}',
-    path: {
-        classification_id: data.classificationId
-    },
-    body: data.requestBody,
-    mediaType: 'application/json',
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        409: 'Conflict, a uniqueness error occurred',
-        422: 'Validation Error'
-    }
-}); };
+export const patchClassificationByClassificationId = (data: PatchClassificationByClassificationIdData): CancelablePromise<PatchClassificationByClassificationIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'PATCH',
+        url: '/classification/{classification_id}',
+        path: {
+            classification_id: data.classificationId
+        },
+        body: data.requestBody,
+        mediaType: 'application/json',
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            409: 'Conflict, a uniqueness error occurred',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Classification:Delete
@@ -98,18 +106,20 @@ export const patchClassificationByClassificationId = (data: PatchClassificationB
  * @returns void Successful Response
  * @throws ApiError
  */
-export const deleteClassificationByClassificationId = (data: DeleteClassificationByClassificationIdData): CancelablePromise<DeleteClassificationByClassificationIdResponse> => { return __request(OpenAPI, {
-    method: 'DELETE',
-    url: '/classification/{classification_id}',
-    path: {
-        classification_id: data.classificationId
-    },
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const deleteClassificationByClassificationId = (data: DeleteClassificationByClassificationIdData): CancelablePromise<DeleteClassificationByClassificationIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'DELETE',
+        url: '/classification/{classification_id}',
+        path: {
+            classification_id: data.classificationId
+        },
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Melding:Create
@@ -118,15 +128,17 @@ export const deleteClassificationByClassificationId = (data: DeleteClassificatio
  * @returns MeldingCreateOutput Successful Response
  * @throws ApiError
  */
-export const postMelding = (data: PostMeldingData): CancelablePromise<PostMeldingResponse> => { return __request(OpenAPI, {
-    method: 'POST',
-    url: '/melding/',
-    body: data.requestBody,
-    mediaType: 'application/json',
-    errors: {
-        422: 'Validation Error'
-    }
-}); };
+export const postMelding = (data: PostMeldingData): CancelablePromise<PostMeldingResponse> => {
+    return __request(OpenAPI, {
+        method: 'POST',
+        url: '/melding/',
+        body: data.requestBody,
+        mediaType: 'application/json',
+        errors: {
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Melding:List
@@ -137,19 +149,21 @@ export const postMelding = (data: PostMeldingData): CancelablePromise<PostMeldin
  * @returns MeldingOutput Successful Response
  * @throws ApiError
  */
-export const getMelding = (data: GetMeldingData = {}): CancelablePromise<GetMeldingResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/melding/',
-    query: {
-        limit: data.limit,
-        offset: data.offset,
-        sort: data.sort
-    },
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        422: 'Validation Error'
-    }
-}); };
+export const getMelding = (data: GetMeldingData = {}): CancelablePromise<GetMeldingResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/melding/',
+        query: {
+            limit: data.limit,
+            offset: data.offset,
+            sort: data.sort
+        },
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Melding:Retrieve
@@ -158,18 +172,20 @@ export const getMelding = (data: GetMeldingData = {}): CancelablePromise<GetMeld
  * @returns MeldingOutput Successful Response
  * @throws ApiError
  */
-export const getMeldingByMeldingId = (data: GetMeldingByMeldingIdData): CancelablePromise<GetMeldingByMeldingIdResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/melding/{melding_id}',
-    path: {
-        melding_id: data.meldingId
-    },
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const getMeldingByMeldingId = (data: GetMeldingByMeldingIdData): CancelablePromise<GetMeldingByMeldingIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/melding/{melding_id}',
+        path: {
+            melding_id: data.meldingId
+        },
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Melding:Update
@@ -180,23 +196,25 @@ export const getMeldingByMeldingId = (data: GetMeldingByMeldingIdData): Cancelab
  * @returns MeldingOutput Successful Response
  * @throws ApiError
  */
-export const patchMeldingByMeldingId = (data: PatchMeldingByMeldingIdData): CancelablePromise<PatchMeldingByMeldingIdResponse> => { return __request(OpenAPI, {
-    method: 'PATCH',
-    url: '/melding/{melding_id}',
-    path: {
-        melding_id: data.meldingId
-    },
-    query: {
-        token: data.token
-    },
-    body: data.requestBody,
-    mediaType: 'application/json',
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const patchMeldingByMeldingId = (data: PatchMeldingByMeldingIdData): CancelablePromise<PatchMeldingByMeldingIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'PATCH',
+        url: '/melding/{melding_id}',
+        path: {
+            melding_id: data.meldingId
+        },
+        query: {
+            token: data.token
+        },
+        body: data.requestBody,
+        mediaType: 'application/json',
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Melding:Answer Questions
@@ -206,22 +224,24 @@ export const patchMeldingByMeldingId = (data: PatchMeldingByMeldingIdData): Canc
  * @returns MeldingOutput Successful Response
  * @throws ApiError
  */
-export const putMeldingByMeldingIdAnswerQuestions = (data: PutMeldingByMeldingIdAnswerQuestionsData): CancelablePromise<PutMeldingByMeldingIdAnswerQuestionsResponse> => { return __request(OpenAPI, {
-    method: 'PUT',
-    url: '/melding/{melding_id}/answer_questions',
-    path: {
-        melding_id: data.meldingId
-    },
-    query: {
-        token: data.token
-    },
-    errors: {
-        400: 'Transition not allowed from current state',
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        default: 'Unexpected error'
-    }
-}); };
+export const putMeldingByMeldingIdAnswerQuestions = (data: PutMeldingByMeldingIdAnswerQuestionsData): CancelablePromise<PutMeldingByMeldingIdAnswerQuestionsResponse> => {
+    return __request(OpenAPI, {
+        method: 'PUT',
+        url: '/melding/{melding_id}/answer_questions',
+        path: {
+            melding_id: data.meldingId
+        },
+        query: {
+            token: data.token
+        },
+        errors: {
+            400: 'Transition not allowed from current state',
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            default: 'Unexpected error'
+        }
+    });
+};
 
 /**
  * Melding:Add-Attachments
@@ -231,22 +251,24 @@ export const putMeldingByMeldingIdAnswerQuestions = (data: PutMeldingByMeldingId
  * @returns MeldingOutput Successful Response
  * @throws ApiError
  */
-export const putMeldingByMeldingIdAddAttachments = (data: PutMeldingByMeldingIdAddAttachmentsData): CancelablePromise<PutMeldingByMeldingIdAddAttachmentsResponse> => { return __request(OpenAPI, {
-    method: 'PUT',
-    url: '/melding/{melding_id}/add_attachments',
-    path: {
-        melding_id: data.meldingId
-    },
-    query: {
-        token: data.token
-    },
-    errors: {
-        400: 'Transition not allowed from current state',
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        default: 'Unexpected error'
-    }
-}); };
+export const putMeldingByMeldingIdAddAttachments = (data: PutMeldingByMeldingIdAddAttachmentsData): CancelablePromise<PutMeldingByMeldingIdAddAttachmentsResponse> => {
+    return __request(OpenAPI, {
+        method: 'PUT',
+        url: '/melding/{melding_id}/add_attachments',
+        path: {
+            melding_id: data.meldingId
+        },
+        query: {
+            token: data.token
+        },
+        errors: {
+            400: 'Transition not allowed from current state',
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            default: 'Unexpected error'
+        }
+    });
+};
 
 /**
  * Melding:Process
@@ -255,19 +277,21 @@ export const putMeldingByMeldingIdAddAttachments = (data: PutMeldingByMeldingIdA
  * @returns MeldingOutput Successful Response
  * @throws ApiError
  */
-export const putMeldingByMeldingIdProcess = (data: PutMeldingByMeldingIdProcessData): CancelablePromise<PutMeldingByMeldingIdProcessResponse> => { return __request(OpenAPI, {
-    method: 'PUT',
-    url: '/melding/{melding_id}/process',
-    path: {
-        melding_id: data.meldingId
-    },
-    errors: {
-        400: 'Transition not allowed from current state',
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        default: 'Unexpected error'
-    }
-}); };
+export const putMeldingByMeldingIdProcess = (data: PutMeldingByMeldingIdProcessData): CancelablePromise<PutMeldingByMeldingIdProcessResponse> => {
+    return __request(OpenAPI, {
+        method: 'PUT',
+        url: '/melding/{melding_id}/process',
+        path: {
+            melding_id: data.meldingId
+        },
+        errors: {
+            400: 'Transition not allowed from current state',
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            default: 'Unexpected error'
+        }
+    });
+};
 
 /**
  * Melding:Complete
@@ -276,19 +300,21 @@ export const putMeldingByMeldingIdProcess = (data: PutMeldingByMeldingIdProcessD
  * @returns MeldingOutput Successful Response
  * @throws ApiError
  */
-export const putMeldingByMeldingIdComplete = (data: PutMeldingByMeldingIdCompleteData): CancelablePromise<PutMeldingByMeldingIdCompleteResponse> => { return __request(OpenAPI, {
-    method: 'PUT',
-    url: '/melding/{melding_id}/complete',
-    path: {
-        melding_id: data.meldingId
-    },
-    errors: {
-        400: 'Transition not allowed from current state',
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        default: 'Unexpected error'
-    }
-}); };
+export const putMeldingByMeldingIdComplete = (data: PutMeldingByMeldingIdCompleteData): CancelablePromise<PutMeldingByMeldingIdCompleteResponse> => {
+    return __request(OpenAPI, {
+        method: 'PUT',
+        url: '/melding/{melding_id}/complete',
+        path: {
+            melding_id: data.meldingId
+        },
+        errors: {
+            400: 'Transition not allowed from current state',
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            default: 'Unexpected error'
+        }
+    });
+};
 
 /**
  * Melding:Answer-Question
@@ -300,25 +326,27 @@ export const putMeldingByMeldingIdComplete = (data: PutMeldingByMeldingIdComplet
  * @returns AnswerOutput Successful Response
  * @throws ApiError
  */
-export const postMeldingByMeldingIdQuestionByQuestionId = (data: PostMeldingByMeldingIdQuestionByQuestionIdData): CancelablePromise<PostMeldingByMeldingIdQuestionByQuestionIdResponse> => { return __request(OpenAPI, {
-    method: 'POST',
-    url: '/melding/{melding_id}/question/{question_id}',
-    path: {
-        melding_id: data.meldingId,
-        question_id: data.questionId
-    },
-    query: {
-        token: data.token
-    },
-    body: data.requestBody,
-    mediaType: 'application/json',
-    errors: {
-        400: 'Bad Request',
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        default: 'Unexpected error'
-    }
-}); };
+export const postMeldingByMeldingIdQuestionByQuestionId = (data: PostMeldingByMeldingIdQuestionByQuestionIdData): CancelablePromise<PostMeldingByMeldingIdQuestionByQuestionIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'POST',
+        url: '/melding/{melding_id}/question/{question_id}',
+        path: {
+            melding_id: data.meldingId,
+            question_id: data.questionId
+        },
+        query: {
+            token: data.token
+        },
+        body: data.requestBody,
+        mediaType: 'application/json',
+        errors: {
+            400: 'Bad Request',
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            default: 'Unexpected error'
+        }
+    });
+};
 
 /**
  * Melding:Attachment
@@ -329,25 +357,27 @@ export const postMeldingByMeldingIdQuestionByQuestionId = (data: PostMeldingByMe
  * @returns AttachmentOutput Successful Response
  * @throws ApiError
  */
-export const postMeldingByMeldingIdAttachment = (data: PostMeldingByMeldingIdAttachmentData): CancelablePromise<PostMeldingByMeldingIdAttachmentResponse> => { return __request(OpenAPI, {
-    method: 'POST',
-    url: '/melding/{melding_id}/attachment',
-    path: {
-        melding_id: data.meldingId
-    },
-    query: {
-        token: data.token
-    },
-    formData: data.formData,
-    mediaType: 'multipart/form-data',
-    errors: {
-        400: 'Bad Request',
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        413: 'Uploading attachment that is too large.',
-        422: 'Validation Error'
-    }
-}); };
+export const postMeldingByMeldingIdAttachment = (data: PostMeldingByMeldingIdAttachmentData): CancelablePromise<PostMeldingByMeldingIdAttachmentResponse> => {
+    return __request(OpenAPI, {
+        method: 'POST',
+        url: '/melding/{melding_id}/attachment',
+        path: {
+            melding_id: data.meldingId
+        },
+        query: {
+            token: data.token
+        },
+        formData: data.formData,
+        mediaType: 'multipart/form-data',
+        errors: {
+            400: 'Bad Request',
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            413: 'Uploading attachment that is too large.',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Melding:Attachment-Download
@@ -359,23 +389,25 @@ export const postMeldingByMeldingIdAttachment = (data: PostMeldingByMeldingIdAtt
  * @returns unknown Successful Response
  * @throws ApiError
  */
-export const getMeldingByMeldingIdAttachmentByAttachmentIdDownload = (data: GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData): CancelablePromise<GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/melding/{melding_id}/attachment/{attachment_id}/download',
-    path: {
-        melding_id: data.meldingId,
-        attachment_id: data.attachmentId
-    },
-    query: {
-        token: data.token,
-        type: data.type
-    },
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const getMeldingByMeldingIdAttachmentByAttachmentIdDownload = (data: GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData): CancelablePromise<GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/melding/{melding_id}/attachment/{attachment_id}/download',
+        path: {
+            melding_id: data.meldingId,
+            attachment_id: data.attachmentId
+        },
+        query: {
+            token: data.token,
+            type: data.type
+        },
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Melding:Attachments
@@ -385,21 +417,23 @@ export const getMeldingByMeldingIdAttachmentByAttachmentIdDownload = (data: GetM
  * @returns AttachmentOutput Successful Response
  * @throws ApiError
  */
-export const getMeldingByMeldingIdAttachments = (data: GetMeldingByMeldingIdAttachmentsData): CancelablePromise<GetMeldingByMeldingIdAttachmentsResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/melding/{melding_id}/attachments',
-    path: {
-        melding_id: data.meldingId
-    },
-    query: {
-        token: data.token
-    },
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const getMeldingByMeldingIdAttachments = (data: GetMeldingByMeldingIdAttachmentsData): CancelablePromise<GetMeldingByMeldingIdAttachmentsResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/melding/{melding_id}/attachments',
+        path: {
+            melding_id: data.meldingId
+        },
+        query: {
+            token: data.token
+        },
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Melding:Attachment-Delete
@@ -410,22 +444,24 @@ export const getMeldingByMeldingIdAttachments = (data: GetMeldingByMeldingIdAtta
  * @returns unknown Successful Response
  * @throws ApiError
  */
-export const deleteMeldingByMeldingIdAttachmentByAttachmentId = (data: DeleteMeldingByMeldingIdAttachmentByAttachmentIdData): CancelablePromise<DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponse> => { return __request(OpenAPI, {
-    method: 'DELETE',
-    url: '/melding/{melding_id}/attachment/{attachment_id}',
-    path: {
-        melding_id: data.meldingId,
-        attachment_id: data.attachmentId
-    },
-    query: {
-        token: data.token
-    },
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const deleteMeldingByMeldingIdAttachmentByAttachmentId = (data: DeleteMeldingByMeldingIdAttachmentByAttachmentIdData): CancelablePromise<DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'DELETE',
+        url: '/melding/{melding_id}/attachment/{attachment_id}',
+        path: {
+            melding_id: data.meldingId,
+            attachment_id: data.attachmentId
+        },
+        query: {
+            token: data.token
+        },
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * User:Create
@@ -434,17 +470,19 @@ export const deleteMeldingByMeldingIdAttachmentByAttachmentId = (data: DeleteMel
  * @returns UserOutput Successful Response
  * @throws ApiError
  */
-export const postUser = (data: PostUserData): CancelablePromise<PostUserResponse> => { return __request(OpenAPI, {
-    method: 'POST',
-    url: '/user/',
-    body: data.requestBody,
-    mediaType: 'application/json',
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        409: 'Conflict, a uniqueness error occurred',
-        422: 'Validation Error'
-    }
-}); };
+export const postUser = (data: PostUserData): CancelablePromise<PostUserResponse> => {
+    return __request(OpenAPI, {
+        method: 'POST',
+        url: '/user/',
+        body: data.requestBody,
+        mediaType: 'application/json',
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            409: 'Conflict, a uniqueness error occurred',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * User:List
@@ -455,19 +493,21 @@ export const postUser = (data: PostUserData): CancelablePromise<PostUserResponse
  * @returns UserOutput Successful Response
  * @throws ApiError
  */
-export const getUser = (data: GetUserData = {}): CancelablePromise<GetUserResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/user/',
-    query: {
-        limit: data.limit,
-        offset: data.offset,
-        sort: data.sort
-    },
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        422: 'Validation Error'
-    }
-}); };
+export const getUser = (data: GetUserData = {}): CancelablePromise<GetUserResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/user/',
+        query: {
+            limit: data.limit,
+            offset: data.offset,
+            sort: data.sort
+        },
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * User:Retrieve
@@ -476,18 +516,20 @@ export const getUser = (data: GetUserData = {}): CancelablePromise<GetUserRespon
  * @returns UserOutput Successful Response
  * @throws ApiError
  */
-export const getUserByUserId = (data: GetUserByUserIdData): CancelablePromise<GetUserByUserIdResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/user/{user_id}',
-    path: {
-        user_id: data.userId
-    },
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const getUserByUserId = (data: GetUserByUserIdData): CancelablePromise<GetUserByUserIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/user/{user_id}',
+        path: {
+            user_id: data.userId
+        },
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * User:Delete
@@ -496,19 +538,21 @@ export const getUserByUserId = (data: GetUserByUserIdData): CancelablePromise<Ge
  * @returns void Successful Response
  * @throws ApiError
  */
-export const deleteUserByUserId = (data: DeleteUserByUserIdData): CancelablePromise<DeleteUserByUserIdResponse> => { return __request(OpenAPI, {
-    method: 'DELETE',
-    url: '/user/{user_id}',
-    path: {
-        user_id: data.userId
-    },
-    errors: {
-        400: 'Delete own account',
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const deleteUserByUserId = (data: DeleteUserByUserIdData): CancelablePromise<DeleteUserByUserIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'DELETE',
+        url: '/user/{user_id}',
+        path: {
+            user_id: data.userId
+        },
+        errors: {
+            400: 'Delete own account',
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * User:Update
@@ -518,21 +562,23 @@ export const deleteUserByUserId = (data: DeleteUserByUserIdData): CancelableProm
  * @returns UserOutput Successful Response
  * @throws ApiError
  */
-export const patchUserByUserId = (data: PatchUserByUserIdData): CancelablePromise<PatchUserByUserIdResponse> => { return __request(OpenAPI, {
-    method: 'PATCH',
-    url: '/user/{user_id}',
-    path: {
-        user_id: data.userId
-    },
-    body: data.requestBody,
-    mediaType: 'application/json',
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        409: 'Conflict, a uniqueness error occurred',
-        422: 'Validation Error'
-    }
-}); };
+export const patchUserByUserId = (data: PatchUserByUserIdData): CancelablePromise<PatchUserByUserIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'PATCH',
+        url: '/user/{user_id}',
+        path: {
+            user_id: data.userId
+        },
+        body: data.requestBody,
+        mediaType: 'application/json',
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            409: 'Conflict, a uniqueness error occurred',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Form:List
@@ -543,19 +589,21 @@ export const patchUserByUserId = (data: PatchUserByUserIdData): CancelablePromis
  * @returns SimpleFormOutput Successful Response
  * @throws ApiError
  */
-export const getForm = (data: GetFormData = {}): CancelablePromise<GetFormResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/form/',
-    query: {
-        limit: data.limit,
-        offset: data.offset,
-        sort: data.sort
-    },
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        422: 'Validation Error'
-    }
-}); };
+export const getForm = (data: GetFormData = {}): CancelablePromise<GetFormResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/form/',
+        query: {
+            limit: data.limit,
+            offset: data.offset,
+            sort: data.sort
+        },
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Form:Create
@@ -564,17 +612,19 @@ export const getForm = (data: GetFormData = {}): CancelablePromise<GetFormRespon
  * @returns FormOutput Successful Response
  * @throws ApiError
  */
-export const postForm = (data: PostFormData): CancelablePromise<PostFormResponse> => { return __request(OpenAPI, {
-    method: 'POST',
-    url: '/form/',
-    body: data.requestBody,
-    mediaType: 'application/json',
-    errors: {
-        400: 'Providing a classification id that does not exist',
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        422: 'Validation Error'
-    }
-}); };
+export const postForm = (data: PostFormData): CancelablePromise<PostFormResponse> => {
+    return __request(OpenAPI, {
+        method: 'POST',
+        url: '/form/',
+        body: data.requestBody,
+        mediaType: 'application/json',
+        errors: {
+            400: 'Providing a classification id that does not exist',
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Form:Retrieve
@@ -583,17 +633,19 @@ export const postForm = (data: PostFormData): CancelablePromise<PostFormResponse
  * @returns FormOutput Successful Response
  * @throws ApiError
  */
-export const getFormByFormId = (data: GetFormByFormIdData): CancelablePromise<GetFormByFormIdResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/form/{form_id}',
-    path: {
-        form_id: data.formId
-    },
-    errors: {
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const getFormByFormId = (data: GetFormByFormIdData): CancelablePromise<GetFormByFormIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/form/{form_id}',
+        path: {
+            form_id: data.formId
+        },
+        errors: {
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Form:Update
@@ -603,21 +655,23 @@ export const getFormByFormId = (data: GetFormByFormIdData): CancelablePromise<Ge
  * @returns FormOutput Successful Response
  * @throws ApiError
  */
-export const putFormByFormId = (data: PutFormByFormIdData): CancelablePromise<PutFormByFormIdResponse> => { return __request(OpenAPI, {
-    method: 'PUT',
-    url: '/form/{form_id}',
-    path: {
-        form_id: data.formId
-    },
-    body: data.requestBody,
-    mediaType: 'application/json',
-    errors: {
-        400: 'Providing a classification id that does not exist',
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const putFormByFormId = (data: PutFormByFormIdData): CancelablePromise<PutFormByFormIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'PUT',
+        url: '/form/{form_id}',
+        path: {
+            form_id: data.formId
+        },
+        body: data.requestBody,
+        mediaType: 'application/json',
+        errors: {
+            400: 'Providing a classification id that does not exist',
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Form:Delete
@@ -626,18 +680,20 @@ export const putFormByFormId = (data: PutFormByFormIdData): CancelablePromise<Pu
  * @returns void Successful Response
  * @throws ApiError
  */
-export const deleteFormByFormId = (data: DeleteFormByFormIdData): CancelablePromise<DeleteFormByFormIdResponse> => { return __request(OpenAPI, {
-    method: 'DELETE',
-    url: '/form/{form_id}',
-    path: {
-        form_id: data.formId
-    },
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const deleteFormByFormId = (data: DeleteFormByFormIdData): CancelablePromise<DeleteFormByFormIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'DELETE',
+        url: '/form/{form_id}',
+        path: {
+            form_id: data.formId
+        },
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Form:Classification
@@ -646,17 +702,19 @@ export const deleteFormByFormId = (data: DeleteFormByFormIdData): CancelableProm
  * @returns FormOutput Successful Response
  * @throws ApiError
  */
-export const getFormClassificationByClassificationId = (data: GetFormClassificationByClassificationIdData): CancelablePromise<GetFormClassificationByClassificationIdResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/form/classification/{classification_id}',
-    path: {
-        classification_id: data.classificationId
-    },
-    errors: {
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const getFormClassificationByClassificationId = (data: GetFormClassificationByClassificationIdData): CancelablePromise<GetFormClassificationByClassificationIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/form/classification/{classification_id}',
+        path: {
+            classification_id: data.classificationId
+        },
+        errors: {
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Static-Form:Retrieve
@@ -665,17 +723,19 @@ export const getFormClassificationByClassificationId = (data: GetFormClassificat
  * @returns StaticFormOutput Successful Response
  * @throws ApiError
  */
-export const getStaticFormByStaticFormId = (data: GetStaticFormByStaticFormIdData): CancelablePromise<GetStaticFormByStaticFormIdResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/static-form/{static_form_id}',
-    path: {
-        static_form_id: data.staticFormId
-    },
-    errors: {
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const getStaticFormByStaticFormId = (data: GetStaticFormByStaticFormIdData): CancelablePromise<GetStaticFormByStaticFormIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/static-form/{static_form_id}',
+        path: {
+            static_form_id: data.staticFormId
+        },
+        errors: {
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Static-Form:Update
@@ -685,20 +745,22 @@ export const getStaticFormByStaticFormId = (data: GetStaticFormByStaticFormIdDat
  * @returns StaticFormOutput Successful Response
  * @throws ApiError
  */
-export const putStaticFormByStaticFormId = (data: PutStaticFormByStaticFormIdData): CancelablePromise<PutStaticFormByStaticFormIdResponse> => { return __request(OpenAPI, {
-    method: 'PUT',
-    url: '/static-form/{static_form_id}',
-    path: {
-        static_form_id: data.staticFormId
-    },
-    body: data.requestBody,
-    mediaType: 'application/json',
-    errors: {
-        401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const putStaticFormByStaticFormId = (data: PutStaticFormByStaticFormIdData): CancelablePromise<PutStaticFormByStaticFormIdResponse> => {
+    return __request(OpenAPI, {
+        method: 'PUT',
+        url: '/static-form/{static_form_id}',
+        path: {
+            static_form_id: data.staticFormId
+        },
+        body: data.requestBody,
+        mediaType: 'application/json',
+        errors: {
+            401: 'Unauthorized, perhaps the token was invalid or expired, or the user could not be found.',
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
 
 /**
  * Static-Form:List
@@ -709,16 +771,18 @@ export const putStaticFormByStaticFormId = (data: PutStaticFormByStaticFormIdDat
  * @returns StaticFormOutput Successful Response
  * @throws ApiError
  */
-export const getStaticForm = (data: GetStaticFormData = {}): CancelablePromise<GetStaticFormResponse> => { return __request(OpenAPI, {
-    method: 'GET',
-    url: '/static-form/',
-    query: {
-        limit: data.limit,
-        offset: data.offset,
-        sort: data.sort
-    },
-    errors: {
-        404: 'Not Found',
-        422: 'Validation Error'
-    }
-}); };
+export const getStaticForm = (data: GetStaticFormData = {}): CancelablePromise<GetStaticFormResponse> => {
+    return __request(OpenAPI, {
+        method: 'GET',
+        url: '/static-form/',
+        query: {
+            limit: data.limit,
+            offset: data.offset,
+            sort: data.sort
+        },
+        errors: {
+            404: 'Not Found',
+            422: 'Validation Error'
+        }
+    });
+};
