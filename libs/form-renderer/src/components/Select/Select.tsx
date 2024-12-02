@@ -10,10 +10,11 @@ type Props = {
   description?: string
   id: string
   label: string
+  name?: string
   validate?: { required: boolean } | null
 }
 
-export const Select = ({ description, id, label, validate, data }: Props) => (
+export const Select = ({ description, id, label, name, validate, data }: Props) => (
   <Field key={id}>
     <Label htmlFor={id} optional={!validate?.required}>
       {label}
@@ -27,6 +28,7 @@ export const Select = ({ description, id, label, validate, data }: Props) => (
       aria-describedby={description ? `${id}-description` : undefined}
       aria-required={validate?.required ? 'true' : undefined}
       id={id}
+      name={name}
     >
       {data.values.map(({ label: optionLabel, value }) => (
         <ADSSelect.Option key={value} value={value}>

@@ -6,10 +6,11 @@ type Props = {
   id: string
   label: string
   maxCharCount?: number | null
+  name?: string
   validate?: { required: boolean } | null
 }
 
-export const TextArea = ({ description, id, label, maxCharCount, validate }: Props) => {
+export const TextArea = ({ description, id, label, maxCharCount, name, validate }: Props) => {
   const ref = useRef<HTMLTextAreaElement>(null)
   const [charCount, setCharCount] = useState(0)
 
@@ -33,6 +34,7 @@ export const TextArea = ({ description, id, label, maxCharCount, validate }: Pro
         aria-describedby={description ? `${id}-description` : undefined}
         aria-required={validate?.required ? 'true' : undefined}
         id={id}
+        name={name}
         onChange={typeof maxCharCount === 'number' ? handleChange : undefined}
         ref={ref}
         rows={4}

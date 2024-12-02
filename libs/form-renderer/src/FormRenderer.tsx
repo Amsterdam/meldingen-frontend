@@ -21,13 +21,15 @@ const getComponent = ({ key, data, description, label, type, values, validate }:
     case 'radio':
       return <Radio key={key} id={key} description={description} label={label} values={values} validate={validate} />
     case 'select':
-      return <Select key={key} id={key} description={description} label={label} data={data} validate={validate} />
+      return (
+        <Select key={key} id={key} description={description} label={label} name={key} data={data} validate={validate} />
+      )
     case 'selectboxes':
       return <Checkbox key={key} id={key} description={description} label={label} values={values} validate={validate} />
     case 'textarea':
-      return <TextArea key={key} id={key} description={description} label={label} validate={validate} />
+      return <TextArea key={key} id={key} description={description} label={label} name={key} validate={validate} />
     case 'textfield':
-      return <TextInput key={key} id={key} description={description} label={label} validate={validate} />
+      return <TextInput key={key} id={key} description={description} label={label} name={key} validate={validate} />
     default:
       throw Error(`Type ${type} is unknown, please add it to FormRenderer.`)
   }

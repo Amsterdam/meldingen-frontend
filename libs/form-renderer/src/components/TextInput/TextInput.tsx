@@ -4,10 +4,11 @@ type Props = {
   description?: string
   id: string
   label: string
+  name?: string
   validate?: { required: boolean } | null
 }
 
-export const TextInput = ({ description, id, label, validate }: Props) => (
+export const TextInput = ({ description, id, label, name, validate }: Props) => (
   <Field key={id}>
     <Label htmlFor={id} optional={!validate?.required}>
       {label}
@@ -21,6 +22,7 @@ export const TextInput = ({ description, id, label, validate }: Props) => (
       aria-describedby={description ? `${id}-description` : undefined}
       aria-required={validate?.required ? 'true' : undefined}
       id={id}
+      name={name}
     />
   </Field>
 )
