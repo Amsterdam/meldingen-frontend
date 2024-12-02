@@ -5,7 +5,7 @@ import mockFormData from './mocks/mockFormData.json'
 
 describe('FormRenderer', () => {
   it('renders a form', () => {
-    const { container } = render(<FormRenderer form={mockFormData} />)
+    const { container } = render(<FormRenderer formData={mockFormData.components[0].components} />)
 
     const form = container.querySelector('form')
 
@@ -13,7 +13,7 @@ describe('FormRenderer', () => {
   })
 
   it('renders a TextInput', () => {
-    render(<FormRenderer form={mockFormData} />)
+    render(<FormRenderer formData={mockFormData.components[0].components} />)
 
     const textInput = screen.getByRole('textbox', { name: mockFormData.components[0].components[0].label })
 
@@ -21,7 +21,7 @@ describe('FormRenderer', () => {
   })
 
   it('renders a TextArea', () => {
-    render(<FormRenderer form={mockFormData} />)
+    render(<FormRenderer formData={mockFormData.components[0].components} />)
 
     const textArea = screen.getByRole('textbox', { name: mockFormData.components[0].components[1].label })
 
@@ -29,7 +29,7 @@ describe('FormRenderer', () => {
   })
 
   it('renders a Checkbox group', () => {
-    render(<FormRenderer form={mockFormData} />)
+    render(<FormRenderer formData={mockFormData.components[0].components} />)
 
     const checkboxGroup = screen.getByRole('group', { name: mockFormData.components[0].components[2].label })
 
@@ -37,7 +37,7 @@ describe('FormRenderer', () => {
   })
 
   it('renders a Select', () => {
-    render(<FormRenderer form={mockFormData} />)
+    render(<FormRenderer formData={mockFormData.components[0].components} />)
 
     const select = screen.getByRole('combobox', { name: mockFormData.components[0].components[3].label })
 
@@ -45,7 +45,7 @@ describe('FormRenderer', () => {
   })
 
   it('renders a Radio group', () => {
-    render(<FormRenderer form={mockFormData} />)
+    render(<FormRenderer formData={mockFormData.components[0].components} />)
 
     const radioGroup = screen.getByRole('radiogroup', { name: mockFormData.components[0].components[4].label })
 
