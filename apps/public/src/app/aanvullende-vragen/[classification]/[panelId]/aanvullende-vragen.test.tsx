@@ -43,6 +43,10 @@
 //   )
 // }
 
+describe('AanvullendeVragen', () => {
+  it('should render a form', async () => {})
+})
+
 // describe('AanvullendeVragen', () => {
 //   it.skip('should render a form', async () => {
 //     renderPage()
