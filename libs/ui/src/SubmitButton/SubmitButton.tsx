@@ -1,3 +1,5 @@
+'use client'
+
 import type { ButtonProps } from '@amsterdam/design-system-react'
 import { Button } from '@amsterdam/design-system-react'
 
