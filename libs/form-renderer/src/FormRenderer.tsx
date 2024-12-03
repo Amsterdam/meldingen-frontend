@@ -1,4 +1,3 @@
-import { Button } from '@amsterdam/design-system-react'
 import type {
   FormCheckboxComponentOutput,
   FormRadioComponentOutput,
@@ -6,6 +5,7 @@ import type {
   FormTextAreaComponentOutput,
   FormTextFieldInputComponentOutput,
 } from '@meldingen/api-client'
+import { SubmitButton } from '@meldingen/ui'
 import type { FormEvent } from 'react'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
@@ -42,8 +42,6 @@ type Props = {
 export const FormRenderer = ({ formData, onSubmit }: Props) => (
   <form className="ams-gap--md" onSubmit={onSubmit}>
     {formData.map((component) => getComponent(component))}
-    <Button type="submit" style={{ width: 'fit-content' }}>
-      Volgende vraag
-    </Button>
+    <SubmitButton>Volgende vraag</SubmitButton>
   </form>
 )
