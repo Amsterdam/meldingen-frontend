@@ -1,10 +1,10 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
     "resolveJsonModule": true,
     "strict": true
-  },
-  "extends": "../../tsconfig.base.json"
+  }
 }
