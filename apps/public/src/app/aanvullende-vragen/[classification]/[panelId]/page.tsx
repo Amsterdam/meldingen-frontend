@@ -1,5 +1,5 @@
 import type { FormPanelComponentOutput } from '@meldingen/api-client'
-import { getForm, getFormClassificationByClassificationId } from '@meldingen/api-client'
+import { getFormClassificationByClassificationId } from '@meldingen/api-client'
 import { Suspense } from 'react'
 
 import { AanvullendeVragenRenderer } from '../../_components/AanvullendeVragenRenderer'
@@ -7,30 +7,34 @@ import { AanvullendeVragenRenderer } from '../../_components/AanvullendeVragenRe
 // TODO: pagina's die niet bestaan moeten redirect krijgen
 // TODO: pagina's die wel bestaan maar geen token in url param moeten redirect krijgen
 
-export const generateStaticParams = async () => {
-  // Fetch a list of all forms
-  const forms = await getForm()
+// TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
+// We can remove this and uncomment generateStaticParams when the api is deployed.
+export const dynamic = 'force-dynamic'
 
-  // Use classification id to get the panel ids per form
-  const panelIdsByForm = await Promise.all(
-    forms
-      .filter((form) => form.classification)
-      .map(async (form) => {
-        const formByClassification = await getFormClassificationByClassificationId({
-          classificationId: form.classification as number,
-        })
+// export const generateStaticParams = async () => {
+//   // Fetch a list of all forms
+//   const forms = await getForm()
 
-        const panelIds = formByClassification?.components.map((panel) => ({
-          classification: `${form.classification}`,
-          panelId: panel.key,
-        }))
+//   // Use classification id to get the panel ids per form
+//   const panelIdsByForm = await Promise.all(
+//     forms
+//       .filter((form) => form.classification)
+//       .map(async (form) => {
+//         const formByClassification = await getFormClassificationByClassificationId({
+//           classificationId: form.classification as number,
+//         })
 
-        return panelIds
-      }),
-  )
+//         const panelIds = formByClassification?.components.map((panel) => ({
+//           classification: `${form.classification}`,
+//           panelId: panel.key,
+//         }))
 
-  return panelIdsByForm.flat()
-}
+//         return panelIds
+//       }),
+//   )
+
+//   return panelIdsByForm.flat()
+// }
 
 type Params = Promise<{
   classification: number
