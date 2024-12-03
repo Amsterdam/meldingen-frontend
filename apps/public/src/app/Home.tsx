@@ -24,7 +24,7 @@ export const Home = ({ formData }: { formData: Component[] }) => {
         const nextFormData = await getFormClassificationByClassificationId({ classificationId: classification })
         const nextFormFirstKey = nextFormData.components[0].key
 
-        router.push(`/nieuwe-renderer/${classification}/${nextFormFirstKey}?token=${token}&id=${id}`)
+        router.push(`/aanvullende-vragen/${classification}/${nextFormFirstKey}?token=${token}&id=${id}`)
       }
     })
   }

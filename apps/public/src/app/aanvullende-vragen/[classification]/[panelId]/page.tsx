@@ -39,13 +39,13 @@ type Params = {
 const getNextPanelPath = (classification: number, currentPanelIndex: number, formData: any) => {
   if (currentPanelIndex === formData.components.length - 1) return '/bijlagen'
 
-  return `/nieuwe-renderer/${classification}/${formData.components[currentPanelIndex + 1].key}`
+  return `/aanvullende-vragen/${classification}/${formData.components[currentPanelIndex + 1].key}`
 }
 
 const getPreviousPanelPath = (classification: number, currentPanelIndex: number, formData: any) => {
   if (currentPanelIndex === 0) return '/'
 
-  return `/nieuwe-renderer/${classification}/${formData.components[currentPanelIndex - 1].key}`
+  return `/aanvullende-vragen/${classification}/${formData.components[currentPanelIndex - 1].key}`
 }
 
 export default async ({ params }: { params: Params }) => {

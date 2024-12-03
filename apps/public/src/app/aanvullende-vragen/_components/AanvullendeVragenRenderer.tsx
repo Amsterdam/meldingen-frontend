@@ -14,14 +14,39 @@ type Props = {
   previousPanelPath: string
 }
 
-const transformAnswer = (answer: string | { [key: string]: string }) => {
-  if (typeof answer === 'object') {
-    const checkedAnswers = Object.keys(answer).filter((key) => answer[key])
+type Answer = {
+  [key: string]: string | File
+}
 
-    return checkedAnswers.join(', ')
-  }
+type CheckboxAnswers = {
+  [questionId: string]: string
+}
 
-  return answer
+// Checkbox answers are stored as separate key-value pairs in the FormData object.
+// This function merges these answers into a single string value per question, using an identifier in the Checkbox component.
+// TODO: This isn't the most robust solution.
+const mergeCheckboxAnswers = (answers: [string, string | File][]): Answer => {
+  const checkboxAnswers = answers.filter(([key]) => key.startsWith('checkbox___'))
+
+  const groupedCheckboxAnswers = checkboxAnswers.reduce<CheckboxAnswers>((acc, [key, value]) => {
+    const questionId = key.split('___')[1]
+
+    if (!acc[questionId]) {
+      acc[questionId] = ''
+    }
+
+    if (acc[questionId].length === 0) {
+      acc[questionId] = value as string
+    } else {
+      acc[questionId] = `${acc[questionId]}, ${value}`
+    }
+
+    return acc
+  }, {})
+
+  const answerObjWithoutCheckboxes = Object.fromEntries(answers.filter(([key]) => !key.startsWith('checkbox___')))
+
+  return { ...answerObjWithoutCheckboxes, ...groupedCheckboxAnswers }
 }
 
 export const AanvullendeVragenRenderer = ({ formData, nextPanelPath, previousPanelPath }: Props) => {
@@ -38,14 +63,13 @@ export const AanvullendeVragenRenderer = ({ formData, nextPanelPath, previousPan
     const answerObject = Object.fromEntries(data)
     const answers = Object.entries(answerObject)
 
-    answers.forEach(([key, value]) => {
+    const answersWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(answers))
+
+    answersWithMergedCheckboxes.forEach(([key, value]) => {
       if (value instanceof File) return undefined
 
-      // Transform all answers to strings (including checkbox objects)
-      const answerString = transformAnswer(value)
-
       // // Filter out empty answers
-      if (answerString.length === 0) return undefined
+      if (value.length === 0) return undefined
 
       const questionId = formData.find((component) => component.key === key)?.question
 
@@ -55,7 +79,7 @@ export const AanvullendeVragenRenderer = ({ formData, nextPanelPath, previousPan
         meldingId: parseInt(meldingId, 10),
         questionId,
         token,
-        requestBody: { text: answerString },
+        requestBody: { text: value },
       })
     })
 
