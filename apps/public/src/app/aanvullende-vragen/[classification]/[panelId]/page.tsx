@@ -1,5 +1,6 @@
 import type { FormPanelComponentOutput } from '@meldingen/api-client'
 import { getForm, getFormClassificationByClassificationId } from '@meldingen/api-client'
+import { Suspense } from 'react'
 
 import { AanvullendeVragenRenderer } from '../../_components/AanvullendeVragenRenderer'
 
@@ -31,10 +32,10 @@ export const generateStaticParams = async () => {
   return panelIdsByForm.flat()
 }
 
-type Params = {
+type Params = Promise<{
   classification: number
   panelId: string
-}
+}>
 
 const getNextPanelPath = (classification: number, currentPanelIndex: number, formData: any) => {
   if (currentPanelIndex === formData.components.length - 1) return '/bijlagen'
@@ -65,10 +66,12 @@ export default async ({ params }: { params: Params }) => {
   const previousPanelPath = getPreviousPanelPath(classification, currentPanelIndex, formData)
 
   return (
-    <AanvullendeVragenRenderer
-      formData={panelQuestions}
-      nextPanelPath={nextPanelPath}
-      previousPanelPath={previousPanelPath}
-    />
+    <Suspense>
+      <AanvullendeVragenRenderer
+        formData={panelQuestions}
+        nextPanelPath={nextPanelPath}
+        previousPanelPath={previousPanelPath}
+      />
+    </Suspense>
   )
 }
