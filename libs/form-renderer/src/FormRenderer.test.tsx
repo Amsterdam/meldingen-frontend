@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 
 import { FormRenderer } from './FormRenderer'
@@ -84,7 +85,26 @@ describe('FormRenderer', () => {
     expect(component).not.toBeInTheDocument()
   })
 
-  // It renders a SubmitButton
+  it('renders a submit button', () => {
+    const onSubmitMock = vi.fn()
 
-  // It calls the onSubmit function when the form is submitted
+    render(<FormRenderer formData={mockFormData.components[0].components} onSubmit={onSubmitMock} />)
+
+    const submitButton = screen.getByRole('button', { name: 'Volgende vraag' })
+
+    expect(submitButton).toBeInTheDocument()
+  })
+
+  it('calls the onSubmit function when the form is submitted', async () => {
+    const onSubmitMock = vi.fn((e) => e.preventDefault())
+    const user = userEvent.setup()
+
+    render(<FormRenderer formData={mockFormData.components[0].components} onSubmit={onSubmitMock} />)
+
+    const submitButton = screen.getByRole('button', { name: 'Volgende vraag' })
+
+    await user.click(submitButton)
+
+    expect(onSubmitMock).toHaveBeenCalled()
+  })
 })
