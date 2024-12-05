@@ -27,6 +27,7 @@ export const Select = ({ description, id, label, validate, data }: Props) => (
       aria-describedby={description ? `${id}-description` : undefined}
       aria-required={validate?.required ? 'true' : undefined}
       id={id}
+      name={id}
     >
       {data.values.map(({ label: optionLabel, value }) => (
         <ADSSelect.Option key={value} value={value}>

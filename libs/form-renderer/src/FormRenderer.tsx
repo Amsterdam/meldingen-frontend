@@ -1,14 +1,14 @@
 import type {
   FormCheckboxComponentOutput,
-  FormOutput,
   FormRadioComponentOutput,
   FormSelectComponentOutput,
   FormTextAreaComponentOutput,
   FormTextFieldInputComponentOutput,
 } from '@meldingen/api-client'
+import { SubmitButton } from '@meldingen/ui'
+import type { FormEvent } from 'react'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
-import mockFormData from './mocks/mockFormData.json'
 
 type Component = FormCheckboxComponentOutput &
   FormRadioComponentOutput &
@@ -29,16 +29,22 @@ const getComponent = ({ key, data, description, label, type, values, validate }:
     case 'textfield':
       return <TextInput key={key} id={key} description={description} label={label} validate={validate} />
     default:
-      throw Error(`Type ${type} is unknown, please add it to FormRenderer.`)
+      // TODO: error handling can probably be improved
+      // eslint-disable-next-line no-console
+      console.error(`Type ${type} is unknown, please add it to FormRenderer.`)
+      return undefined
   }
 }
 
-export const FormRenderer = ({ form }: { form?: FormOutput }) => {
-  const tempForm = form ?? mockFormData
-
-  // Temporarily flatten panels and render all components on a single page
-  // @ts-expect-error: Temp code
-  const components = tempForm.components.reduce((acc, panel) => acc.concat(panel?.components), [])
-
-  return <form className="ams-gap--md">{components.map((component) => getComponent(component))}</form>
+// TODO: fix formData type
+type Props = {
+  formData: any[]
+  onSubmit: (e: FormEvent) => void
 }
+
+export const FormRenderer = ({ formData, onSubmit }: Props) => (
+  <form className="ams-gap--md" onSubmit={onSubmit}>
+    {formData.map((component) => getComponent(component))}
+    <SubmitButton>Volgende vraag</SubmitButton>
+  </form>
+)

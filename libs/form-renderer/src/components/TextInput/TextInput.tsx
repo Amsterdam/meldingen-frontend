@@ -21,6 +21,7 @@ export const TextInput = ({ description, id, label, validate }: Props) => (
       aria-describedby={description ? `${id}-description` : undefined}
       aria-required={validate?.required ? 'true' : undefined}
       id={id}
+      name={id}
     />
   </Field>
 )

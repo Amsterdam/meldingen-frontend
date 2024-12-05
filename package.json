@@ -30,7 +30,7 @@
     "prepare": "husky",
     "prettier": "prettier --check .",
     "prettier-fix": "prettier --write .",
-    "test": "nx run-many --target=test --exclude=api-client,ui,form-renderer && pnpm -r --no-bail test",
+    "test": "nx run-many --target=test --exclude=api-client,ui,form-renderer,formio && pnpm -r --no-bail test",
     "test:watch": "nx watch --all --parallel=10 --exclude=api-client,ui,form-renderer -- nx run \\$NX_PROJECT_NAME:test",
     "test:watch:win": "nx watch --all --parallel=10 --exclude=api-client,ui,form-renderer -- nx run %NX_PROJECT_NAME%:test",
     "update-minor": "npm-check-updates --target minor --upgrade && pnpm install"
