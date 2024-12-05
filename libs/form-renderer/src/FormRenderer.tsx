@@ -29,7 +29,10 @@ const getComponent = ({ key, data, description, label, type, values, validate }:
     case 'textfield':
       return <TextInput key={key} id={key} description={description} label={label} validate={validate} />
     default:
-      throw Error(`Type ${type} is unknown, please add it to FormRenderer.`)
+      // TODO: error handling can probably be improved
+      // eslint-disable-next-line no-console
+      console.error(`Type ${type} is unknown, please add it to FormRenderer.`)
+      return undefined
   }
 }
 

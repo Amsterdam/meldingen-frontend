@@ -7,6 +7,7 @@ export default defineConfig({
   test: {
     coverage: {
       enabled: true,
+      exclude: ['src/index.ts'],
     },
     globals: true,
     environment: 'jsdom',

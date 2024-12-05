@@ -66,4 +66,21 @@ describe('FormRenderer', () => {
 
     expect(radioGroup).toBeInTheDocument()
   })
+
+  it('renders nothing if an unsupported component is passed', () => {
+    const onSubmitMock = vi.fn()
+
+    const unsupportedComponentMock = [
+      {
+        ...mockFormData.components[0].components[0],
+        type: 'unsupported',
+      },
+    ]
+
+    const { container } = render(<FormRenderer formData={unsupportedComponentMock} onSubmit={onSubmitMock} />)
+
+    const component = container.querySelector('input, textarea')
+
+    expect(component).not.toBeInTheDocument()
+  })
 })
