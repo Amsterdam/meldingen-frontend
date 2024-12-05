@@ -7,6 +7,8 @@ import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import type { FormEvent } from 'react'
 
+import { mergeCheckboxAnswers } from './mergeCheckboxAnswers'
+
 // TODO: fix formData type
 type Props = {
   formData: any[]
@@ -14,47 +16,12 @@ type Props = {
   previousPanelPath: string
 }
 
-type Answer = {
-  [key: string]: string | File
-}
-
-type CheckboxAnswers = {
-  [questionId: string]: string
-}
-
-// Checkbox answers are stored as separate key-value pairs in the FormData object.
-// This function merges these answers into a single string value per question, using an identifier in the Checkbox component.
-// TODO: This isn't the most robust solution.
-const mergeCheckboxAnswers = (answers: [string, string | File][]): Answer => {
-  const checkboxAnswers = answers.filter(([key]) => key.startsWith('checkbox___'))
-
-  const groupedCheckboxAnswers = checkboxAnswers.reduce<CheckboxAnswers>((acc, [key, value]) => {
-    const questionId = key.split('___')[1]
-
-    if (!acc[questionId]) {
-      acc[questionId] = ''
-    }
-
-    if (acc[questionId].length === 0) {
-      acc[questionId] = value as string
-    } else {
-      acc[questionId] = `${acc[questionId]}, ${value}`
-    }
-
-    return acc
-  }, {})
-
-  const answerObjWithoutCheckboxes = Object.fromEntries(answers.filter(([key]) => !key.startsWith('checkbox___')))
-
-  return { ...answerObjWithoutCheckboxes, ...groupedCheckboxAnswers }
-}
-
 export const AanvullendeVragenRenderer = ({ formData, nextPanelPath, previousPanelPath }: Props) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const meldingId = searchParams.get('id')
-  const token = searchParams.get('token')
+  const meldingId = searchParams?.get('id')
+  const token = searchParams?.get('token')
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -63,6 +30,9 @@ export const AanvullendeVragenRenderer = ({ formData, nextPanelPath, previousPan
     const answerObject = Object.fromEntries(data)
     const answers = Object.entries(answerObject)
 
+    // Checkbox answers are stored as separate key-value pairs in the FormData object.
+    // This function merges these answers into a single string value per question, using an identifier in the Checkbox component.
+    // TODO: This isn't the most robust solution.
     const answersWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(answers))
 
     answersWithMergedCheckboxes.forEach(([key, value]) => {

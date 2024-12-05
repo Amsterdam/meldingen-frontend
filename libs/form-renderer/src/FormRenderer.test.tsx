@@ -83,4 +83,8 @@ describe('FormRenderer', () => {
 
     expect(component).not.toBeInTheDocument()
   })
+
+  // It renders a SubmitButton
+
+  // It calls the onSubmit function when the form is submitted
 })
