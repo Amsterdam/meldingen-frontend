@@ -2,9 +2,8 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
+import * as mockRouter from 'next-router-mock'
 import { vi } from 'vitest'
-
-import { NextRouterContextProviderMock } from '../mocks/NextRouterContextProviderMock'
 
 import { Home } from './Home'
 
@@ -12,6 +11,7 @@ const mockInput = 'This is test user input'
 const mockQuestionText = /What is it about?/ // This is a regex to account for the label text being dynamic
 
 const server = setupServer(
+  http.get('http://localhost:8000/form/classification/123', () => new HttpResponse('Succesful response')),
   http.post('http://localhost:8000/melding', async ({ request }) => {
     const data = (await request.json()) as { text: string }
 
@@ -20,7 +20,7 @@ const server = setupServer(
       return new HttpResponse('Incorrect body text', { status: 400 })
     }
 
-    return new HttpResponse('Succesful response')
+    return HttpResponse.json({ classification: '123' })
   }),
 )
 
@@ -41,18 +41,20 @@ const mockFormData = [
   },
 ]
 
-const push = vi.fn()
-const renderPage = () => {
-  render(
-    <NextRouterContextProviderMock router={{ push }}>
-      <Home formData={mockFormData} />
-    </NextRouterContextProviderMock>,
-  )
-}
+const { useRouter } = mockRouter
+
+vi.mock('next/navigation', () => ({
+  ...mockRouter,
+  useSearchParams: () => {
+    const router = useRouter()
+    const path = router.query
+    return new URLSearchParams(path as never)
+  },
+}))
 
 describe('Page', () => {
   it('should render a form', async () => {
-    renderPage()
+    render(<Home formData={mockFormData} />)
 
     await waitFor(() => {
       expect(screen.queryByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
@@ -63,7 +65,7 @@ describe('Page', () => {
   it('should send a filled form and navigate to /aanvullende-vragen', async () => {
     const user = userEvent.setup()
 
-    renderPage()
+    render(<Home formData={mockFormData} />)
 
     const input = screen.getByRole('textbox', { name: mockQuestionText })
 
@@ -73,11 +75,10 @@ describe('Page', () => {
 
     await user.click(submit)
 
-    // await waitFor(
-    //   () => {
-    //     expect(push).toHaveBeenCalledWith('/aanvullende-vragen')
-    //   },
-    //   { timeout: 4000 },
-    // )
+    await waitFor(() => {
+      expect(mockRouter.default).toMatchObject({
+        pathname: '/aanvullende-vragen/123/undefined',
+      })
+    })
   })
 })

@@ -22,7 +22,7 @@ export const Home = ({ formData }: { formData: Component[] }) => {
     postMelding({ requestBody: { text: values[firstKey].toString() } }).then(async ({ id, token, classification }) => {
       if (classification) {
         const nextFormData = await getFormClassificationByClassificationId({ classificationId: classification })
-        const nextFormFirstKey = nextFormData.components[0].key
+        const nextFormFirstKey = nextFormData.components && nextFormData.components[0].key
 
         router.push(`/aanvullende-vragen/${classification}/${nextFormFirstKey}?token=${token}&id=${id}`)
       }
