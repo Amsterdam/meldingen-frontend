@@ -25,7 +25,12 @@ export const Checkbox = ({ description, id, label, validate, values }: Props) =>
     )}
     <Column gap="extra-small">
       {values.map(({ label: checkboxLabel, value }) => (
-        <ADSCheckbox key={value} aria-required={validate?.required ? 'true' : undefined} name={id} value={value}>
+        <ADSCheckbox
+          key={value}
+          aria-required={validate?.required ? 'true' : undefined}
+          name={`checkbox___${id}___${value}`}
+          value={value}
+        >
           {checkboxLabel}
         </ADSCheckbox>
       ))}

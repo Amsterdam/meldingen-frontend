@@ -33,6 +33,7 @@ export const TextArea = ({ description, id, label, maxCharCount, validate }: Pro
         aria-describedby={description ? `${id}-description` : undefined}
         aria-required={validate?.required ? 'true' : undefined}
         id={id}
+        name={id}
         onChange={typeof maxCharCount === 'number' ? handleChange : undefined}
         ref={ref}
         rows={4}
