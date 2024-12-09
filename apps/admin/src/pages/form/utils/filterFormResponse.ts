@@ -8,7 +8,7 @@ import {
   FormSelectComponentInputSchema,
   FormTextAreaComponentInputSchema,
   FormTextFieldComponentInputSchema,
-} from '@meldingen/api-client'
+} from 'libs/api-client/src/schemas.gen'
 import filter from 'uber-json-schema-filter'
 
 const filterBySchemaPerType = (obj: any) => {

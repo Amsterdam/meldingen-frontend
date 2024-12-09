@@ -1,5 +1,5 @@
-import { FormTextAreaComponentInputSchema } from '@meldingen/api-client'
 import type { FormioSchema } from '@meldingen/formio'
+import { FormTextAreaComponentInputSchema } from 'libs/api-client/src/schemas.gen'
 import { Edit, SaveButton, SimpleForm, TextInput, Toolbar } from 'react-admin'
 import filter from 'uber-json-schema-filter'
 

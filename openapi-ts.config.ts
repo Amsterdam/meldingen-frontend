@@ -9,5 +9,5 @@ export default defineConfig({
     lint: 'eslint',
     path: './libs/api-client/src',
   },
-  plugins: ['@hey-api/schemas', { name: '@hey-api/services', operationId: false }],
+  plugins: ['@hey-api/schemas', { name: '@hey-api/sdk', operationId: false }],
 })
