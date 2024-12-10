@@ -49,6 +49,11 @@ export const BaseLayer = () => {
     createdMapInstance.current = true
     setMapInstance(map)
 
+    // TODO: temporarily log coordinates on click
+    map.on('click', (e) => {
+      console.log(`Lat, Lon : ${e.latlng.lat}, ${e.latlng.lng}`)
+    })
+
     // On component unmount, destroy the map and all related events
     return () => {
       if (mapInstance) mapInstance.remove()
