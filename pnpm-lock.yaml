@@ -220,8 +220,8 @@ importers:
   apps/admin:
     dependencies:
       keycloak-js:
-        specifier: 25.0.6
-        version: 25.0.6
+        specifier: 26.0.7
+        version: 26.0.7
       ra-data-simple-rest:
         specifier: 5.4.2
         version: 5.4.2(ra-core@5.4.2(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.54.0(react@18.3.1))(react-router-dom@6.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router@6.28.0(react@18.3.1))(react@18.3.1))
@@ -4971,9 +4971,6 @@ packages:
   js-sha256@0.10.1:
     resolution: {integrity: sha512-5obBtsz9301ULlsgggLg542s/jqtddfOpV5KJc4hajc9JV8GeY2gZHSVpYBn4nWqAUTJ9v+xwtbJ1mIBgIH5Vw==}
 
-  js-sha256@0.11.0:
-    resolution: {integrity: sha512-6xNlKayMZvds9h1Y1VWc0fQHQ82BxTXizWPEtEeGvmOUYpBRy4gbWroHLpzowe6xiQhHpelCQiE7HEdznyBL9Q==}
-
   js-sha3@0.8.0:
     resolution: {integrity: sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q==}
 
@@ -5082,8 +5079,8 @@ packages:
   keycloak-js@23.0.7:
     resolution: {integrity: sha512-OmszsKzBhhm5yP4W1q/tMd+nNnKpOAdeVYcoGhphlv8Fj1bNk4wRTYzp7pn5BkvueLz7fhvKHz7uOc33524YrA==}
 
-  keycloak-js@25.0.6:
-    resolution: {integrity: sha512-Km+dc+XfNvY6a4az5jcxTK0zPk52ns9mAxLrHj7lF3V+riVYvQujfHmhayltJDjEpSOJ4C8a57LFNNKnNnRP2g==}
+  keycloak-js@26.0.7:
+    resolution: {integrity: sha512-vKCk1ISMiouYRLjMzi5fKp58RnYxKEBS29BoDgVfYwVW94IXchj9jLqBvIet31VD1v79l3WaWT+WMX7fH8O4wA==}
 
   keygrip@1.1.0:
     resolution: {integrity: sha512-iYSchDJ+liQ8iwbSI2QqsQOvqv58eJCEanyJPJi+Khyu8smkcKSFUCbPwzFcL7YVtZ6eONjqRX/38caJ7QjRAQ==}
@@ -13005,8 +13002,6 @@ snapshots:
 
   js-sha256@0.10.1: {}
 
-  js-sha256@0.11.0: {}
-
   js-sha3@0.8.0: {}
 
   js-tokens@4.0.0: {}
@@ -13147,10 +13142,7 @@ snapshots:
       js-sha256: 0.10.1
       jwt-decode: 4.0.0
 
-  keycloak-js@25.0.6:
-    dependencies:
-      js-sha256: 0.11.0
-      jwt-decode: 4.0.0
+  keycloak-js@26.0.7: {}
 
   keygrip@1.1.0:
     dependencies:
