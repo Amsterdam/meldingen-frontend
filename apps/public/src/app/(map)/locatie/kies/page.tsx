@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic'
 
-const Map = dynamic(() => import('./_components/Map').then((module) => module.Map), {
+const Map = dynamic(() => import('./_components/BaseLayer').then((module) => module.BaseLayer), {
   loading: () => <p>Loading...</p>, // TODO: improve loading state
   ssr: false,
 })

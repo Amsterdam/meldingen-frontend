@@ -31,7 +31,8 @@ export const BaseLayer = () => {
       zoomControl: false,
       maxZoom: 18,
       minZoom: 11,
-      // Prevent the user browsing too far outside Amsterdam otherwise the map will render blank greyspace. Amsterdam tile layer only supports Amsterdam and the immediate surrounding areas
+      // Prevent the user browsing too far outside Amsterdam otherwise the map will render blank greyspace.
+      // Amsterdam tile layer only supports Amsterdam and the immediate surrounding areas
       maxBounds: [
         [52.25168, 4.64034],
         [52.50536, 5.10737],
