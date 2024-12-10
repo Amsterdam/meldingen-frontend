@@ -3,7 +3,7 @@ import { postMeldingByMeldingIdAttachment } from '@meldingen/api-client'
 import { useState } from 'react'
 import type { ChangeEvent } from 'react'
 
-import { useMeldingContext } from '../../../context/MeldingContextProvider'
+import { useMeldingContext } from '../../../../context/MeldingContextProvider'
 
 import styles from './FileUpload.module.css'
 

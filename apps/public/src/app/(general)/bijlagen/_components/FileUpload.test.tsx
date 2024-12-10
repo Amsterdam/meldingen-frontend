@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { MeldingContext } from '../../../context/MeldingContextProvider'
+import { MeldingContext } from '../../../../context/MeldingContextProvider'
 
 import { FileUpload } from './FileUpload'
 
