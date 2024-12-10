@@ -24,7 +24,7 @@
     "lint": "pnpm run /^lint:/ && npm run prettier && pnpm -r --no-bail lint && pnpm -r --no-bail typecheck",
     "lint:css": "stylelint --allow-empty-input '**/*.{css,scss}'",
     "lint:md": "markdownlint **/*.md --ignore node_modules",
-    "lint-fix": "pnpm run /^lint-fix:/  && npm run prettier-fix && pnpm -r --no-bail lint --fix && pnpm -r --no-bail typecheck",
+    "lint-fix": "pnpm run /^lint-fix:/ && npm run prettier-fix && pnpm -r --no-bail lint --fix && pnpm -r --no-bail typecheck",
     "lint-fix:css": "stylelint --fix '**/*.{css,scss}'",
     "lint-fix:md": "markdownlint --fix **/*.md",
     "prepare": "husky",
