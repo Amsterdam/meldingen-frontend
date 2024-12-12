@@ -1,13 +1,13 @@
 import type { AttachmentOutput } from '@meldingen/api-client'
 import { postMeldingByMeldingIdAttachment } from '@meldingen/api-client'
 import { useState } from 'react'
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, InputHTMLAttributes } from 'react'
 
 import { useMeldingContext } from '../../../../context/MeldingContextProvider'
 
 import styles from './FileUpload.module.css'
 
-export const FileUpload = () => {
+export const FileUpload = ({ id, ...restProps }: InputHTMLAttributes<HTMLInputElement>) => {
   const [uploadedFiles, setUploadedFiles] = useState<AttachmentOutput[]>([])
 
   const { data } = useMeldingContext()
@@ -34,9 +34,9 @@ export const FileUpload = () => {
   return (
     <>
       <div className={styles.wrapper}>
-        <input multiple type="file" id="file-input" className={styles.input} onChange={handleOnChange} />
+        <input {...restProps} multiple type="file" id={id} className={styles.input} onChange={handleOnChange} />
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-        <label htmlFor="file-input" className={styles.label}>
+        <label htmlFor={id} className={styles.label}>
           <span className={styles.button}>Selecteer bestanden</span>
           <span className={styles['drop-area-text']}>Of sleep de bestanden in dit vak.</span>
         </label>
