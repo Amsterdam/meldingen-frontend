@@ -42,7 +42,7 @@ type Params = Promise<{
 }>
 
 const getNextPanelPath = (classification: number, currentPanelIndex: number, formData: any) => {
-  if (currentPanelIndex === formData.components.length - 1) return '/bijlage'
+  if (currentPanelIndex === formData.components.length - 1) return '/locatie'
 
   return `/aanvullende-vragen/${classification}/${formData.components[currentPanelIndex + 1].key}`
 }
