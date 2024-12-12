@@ -41,7 +41,7 @@ export const FileUpload = ({ id, ...restProps }: InputHTMLAttributes<HTMLInputEl
           <span className={styles['drop-area-text']}>Of sleep de bestanden in dit vak.</span>
         </label>
       </div>
-      <div>
+      <div className="ams-mb--sm">
         Dummy List
         {uploadedFiles.map((file) => (
           <div key={file.id}>
