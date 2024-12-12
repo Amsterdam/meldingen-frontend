@@ -754,6 +754,19 @@ export type PutMeldingByMeldingIdAddAttachmentsData = {
 
 export type PutMeldingByMeldingIdAddAttachmentsResponse = (MeldingOutput);
 
+export type PutMeldingByMeldingIdSubmitLocationData = {
+    /**
+     * The id of the melding.
+     */
+    meldingId: number;
+    /**
+     * The token of the melding.
+     */
+    token: string;
+};
+
+export type PutMeldingByMeldingIdSubmitLocationResponse = (MeldingOutput);
+
 export type PutMeldingByMeldingIdProcessData = {
     /**
      * The id of the melding.
