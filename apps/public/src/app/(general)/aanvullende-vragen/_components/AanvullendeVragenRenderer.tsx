@@ -1,11 +1,12 @@
 'use client'
 
-import { Grid, Heading, Link } from '@amsterdam/design-system-react'
+import { Grid, Heading } from '@amsterdam/design-system-react'
 import { postMeldingByMeldingIdQuestionByQuestionId } from '@meldingen/api-client'
 import { FormRenderer } from '@meldingen/form-renderer'
-import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import type { FormEvent } from 'react'
+
+import { BackLink } from '../../_components/BackLink'
 
 import { mergeCheckboxAnswers } from './mergeCheckboxAnswers'
 
@@ -59,11 +60,7 @@ export const AanvullendeVragenRenderer = ({ formData, nextPanelPath, previousPan
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
-        <NextLink href={`${previousPanelPath}?token=${token}&id=${meldingId}`} legacyBehavior passHref>
-          <Link className="ams-mb--xs" href="dummy-href">
-            Vorige vraag
-          </Link>
-        </NextLink>
+        <BackLink href={`${previousPanelPath}?token=${token}&id=${meldingId}`}>Vorige vraag</BackLink>
         <Heading>Beschrijf uw melding</Heading>
         <FormRenderer formData={formData} onSubmit={handleSubmit} />
       </Grid.Cell>
