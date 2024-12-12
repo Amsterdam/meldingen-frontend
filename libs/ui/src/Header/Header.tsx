@@ -10,7 +10,7 @@ export const Header = () => (
         logoLinkTitle="Signalen homepage"
         links={
           <PageMenu alignEnd>
-            <PageMenu.Link href="#">Doe een melding</PageMenu.Link>
+            <PageMenu.Link href="/">Doe een melding</PageMenu.Link>
             <PageMenu.Link href="#">Meldingenkaart</PageMenu.Link>
             <PageMenu.Link href="#">Mijn meldingen</PageMenu.Link>
           </PageMenu>
