@@ -1,8 +1,9 @@
 import type { FormPanelComponentOutput } from '@meldingen/api-client'
 import { getFormClassificationByClassificationId } from '@meldingen/api-client'
-import { Suspense } from 'react'
 
 import { AanvullendeVragenRenderer } from '../../_components/AanvullendeVragenRenderer'
+
+import { postForm } from './actions'
 
 // TODO: pagina's die niet bestaan moeten redirect krijgen
 // TODO: pagina's die wel bestaan maar geen token in url param moeten redirect krijgen
@@ -63,19 +64,22 @@ export default async ({ params }: { params: Params }) => {
   const currentPanelIndex = formData.components.findIndex((component) => component.key === panelId)
 
   const panel = formData.components[currentPanelIndex] as FormPanelComponentOutput
+
   const panelQuestions = panel.components
+
+  const questionIds = panelQuestions.map((question) => ({
+    key: question.key,
+    id: question.question,
+  }))
 
   const nextPanelPath = getNextPanelPath(classification, currentPanelIndex, formData)
 
-  const previousPanelPath = getPreviousPanelPath(classification, currentPanelIndex, formData)
+  const extraArgs = {
+    questionIds,
+    nextPanelPath,
+  }
 
-  return (
-    <Suspense>
-      <AanvullendeVragenRenderer
-        formData={panelQuestions}
-        nextPanelPath={nextPanelPath}
-        previousPanelPath={previousPanelPath}
-      />
-    </Suspense>
-  )
+  const postFormWithExtraArgs = postForm.bind(null, extraArgs)
+
+  return <AanvullendeVragenRenderer formData={panelQuestions} action={postFormWithExtraArgs} />
 }

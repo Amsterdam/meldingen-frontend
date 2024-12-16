@@ -6,7 +6,6 @@ import type {
   FormTextFieldInputComponentOutput,
 } from '@meldingen/api-client'
 import { SubmitButton } from '@meldingen/ui'
-import type { FormEvent } from 'react'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 
@@ -39,11 +38,11 @@ const getComponent = ({ key, data, description, label, type, values, validate }:
 // TODO: fix formData type
 type Props = {
   formData: any[]
-  onSubmit: (e: FormEvent) => void
+  action: (formData: FormData) => void
 }
 
-export const FormRenderer = ({ formData, onSubmit }: Props) => (
-  <form className="ams-gap--md" onSubmit={onSubmit}>
+export const FormRenderer = ({ formData, action }: Props) => (
+  <form className="ams-gap--md" action={action}>
     {formData.map((component) => getComponent(component))}
     <SubmitButton>Volgende vraag</SubmitButton>
   </form>
