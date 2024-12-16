@@ -7,7 +7,11 @@ import { useMeldingContext } from '../../../../context/MeldingContextProvider'
 
 import styles from './FileUpload.module.css'
 
-export const FileUpload = ({ id, ...restProps }: InputHTMLAttributes<HTMLInputElement>) => {
+type Props = {
+  id: string
+} & InputHTMLAttributes<HTMLInputElement>
+
+export const FileUpload = ({ id, ...restProps }: Props) => {
   const [uploadedFiles, setUploadedFiles] = useState<AttachmentOutput[]>([])
 
   const { data } = useMeldingContext()
