@@ -4,21 +4,35 @@ import { getFormClassificationByClassificationId, postMelding } from '@meldingen
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-export const postPrimaryForm = async (formData: FormData) => {
+export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)
 
-  const { classification, id, token } = await postMelding({ requestBody: { text: formDataObj.primary.toString() } })
+  let success = false
+  let nextPage = ''
 
-  if (classification) {
-    // Set session variables in cookies
-    const cookieStore = await cookies()
-    cookieStore.set('id', id.toString())
-    cookieStore.set('token', token)
+  try {
+    const { classification, id, token } = await postMelding({ requestBody: { text: formDataObj.primary.toString() } })
 
-    // Get entire form, in order to redirect to its first panel
-    const nextFormData = await getFormClassificationByClassificationId({ classificationId: classification })
-    const nextFormFirstKey = nextFormData.components && nextFormData.components[0].key
+    if (classification) {
+      // Set session variables in cookies
+      const cookieStore = await cookies()
+      cookieStore.set('id', id.toString())
+      cookieStore.set('token', token)
 
-    redirect(`/aanvullende-vragen/${classification}/${nextFormFirstKey}`)
+      // Get entire form, in order to redirect to its first panel
+      const nextFormData = await getFormClassificationByClassificationId({ classificationId: classification })
+      const nextFormFirstKey = nextFormData.components && nextFormData.components[0].key
+
+      nextPage = `/aanvullende-vragen/${classification}/${nextFormFirstKey}`
+      success = true
+    }
+  } catch (error) {
+    return { message: (error as Error).message }
   }
+
+  if (success) {
+    redirect(nextPage)
+  }
+
+  return undefined
 }
