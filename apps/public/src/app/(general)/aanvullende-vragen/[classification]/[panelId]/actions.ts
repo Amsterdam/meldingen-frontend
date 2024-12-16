@@ -4,7 +4,7 @@ import { postMeldingByMeldingIdQuestionByQuestionId } from '@meldingen/api-clien
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { mergeCheckboxAnswers } from '../../_components/mergeCheckboxAnswers'
+import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 
 type ArgsType = {
   questionIds: { key: string; id: number }[]

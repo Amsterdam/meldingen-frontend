@@ -1,8 +1,7 @@
 import type { FormPanelComponentOutput } from '@meldingen/api-client'
 import { getFormClassificationByClassificationId } from '@meldingen/api-client'
 
-import { AanvullendeVragenRenderer } from '../../_components/AanvullendeVragenRenderer'
-
+import { AanvullendeVragenRenderer } from './_components/AanvullendeVragenRenderer'
 import { postForm } from './actions'
 
 // TODO: pagina's die niet bestaan moeten redirect krijgen
