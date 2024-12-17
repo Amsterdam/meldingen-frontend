@@ -1,7 +1,7 @@
 import type { FormPanelComponentOutput } from '@meldingen/api-client'
 import { getFormClassificationByClassificationId } from '@meldingen/api-client'
 
-import { AanvullendeVragenRenderer } from './_components/AanvullendeVragenRenderer'
+import { AanvullendeVragen } from './AanvullendeVragen'
 import { postForm } from './actions'
 
 // TODO: pagina's die niet bestaan moeten redirect krijgen
@@ -81,5 +81,5 @@ export default async ({ params }: { params: Params }) => {
 
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)
 
-  return <AanvullendeVragenRenderer formData={panelQuestions} action={postFormWithExtraArgs} />
+  return <AanvullendeVragen formData={panelQuestions} action={postFormWithExtraArgs} />
 }

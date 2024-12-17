@@ -14,7 +14,7 @@ type Props = {
 
 const initialState: { message?: string } = {}
 
-export const AanvullendeVragenRenderer = ({ formData, action }: Props) => {
+export const AanvullendeVragen = ({ formData, action }: Props) => {
   const [formState, formAction] = useActionState(action, initialState)
 
   return (
