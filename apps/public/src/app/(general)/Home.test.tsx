@@ -1,4 +1,6 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import { useActionState } from 'react'
+import { vi } from 'vitest'
 
 import { Home } from './Home'
 
@@ -17,13 +19,27 @@ const mockFormData = [
   },
 ]
 
+vi.mock('react', async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...(typeof actual === 'object' ? actual : {}),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+  }
+})
+
 describe('Page', () => {
-  it('should render a form', async () => {
+  it('should render a form', () => {
     render(<Home formData={mockFormData} />)
 
-    await waitFor(() => {
-      expect(screen.queryByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
-      expect(screen.queryByRole('button', { name: 'Volgende vraag' })).toBeInTheDocument()
-    })
+    expect(screen.queryByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Volgende vraag' })).toBeInTheDocument()
+  })
+
+  it('should render an error message', () => {
+    ;(useActionState as jest.Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
+
+    render(<Home formData={mockFormData} />)
+
+    expect(screen.queryByText('Test error message')).toBeInTheDocument()
   })
 })
