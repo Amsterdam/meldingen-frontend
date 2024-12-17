@@ -8,6 +8,7 @@ export const postAttachmentForm = async () => {
   const cookieStore = await cookies()
   cookieStore.delete('id')
   cookieStore.delete('token')
+  cookieStore.delete('lastPanelPath')
 
   return redirect('/bedankt')
 }

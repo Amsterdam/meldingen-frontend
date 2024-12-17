@@ -8,6 +8,7 @@ import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 
 type ArgsType = {
   questionIds: { key: string; id: number }[]
+  lastPanelPath: string
   nextPanelPath: string
 }
 
@@ -16,6 +17,9 @@ export const postForm = async (args: ArgsType, _: unknown, formData: FormData) =
   const cookieStore = await cookies()
   const meldingId = cookieStore.get('id')?.value
   const token = cookieStore.get('token')?.value
+
+  // Set last panel path in cookies
+  cookieStore.set('lastPanelPath', args.lastPanelPath)
 
   // Checkbox answers are stored as separate key-value pairs in the FormData object.
   // This function merges these answers into a single string value per question, using an identifier in the Checkbox component.

@@ -1,5 +1,6 @@
 import type { FormPanelComponentOutput } from '@meldingen/api-client'
 import { getFormClassificationByClassificationId } from '@meldingen/api-client'
+import { cookies } from 'next/headers'
 
 import { AanvullendeVragen } from './AanvullendeVragen'
 import { postForm } from './actions'
@@ -71,15 +72,24 @@ export default async ({ params }: { params: Params }) => {
     id: question.question,
   }))
 
+  // Pass last panel path to the action
+  const lastPanelPath = `/aanvullende-vragen/${classification}/${formData.components[formData.components.length - 1].key}`
+
   // Pass next panel path to the action
   const nextPanelPath = getNextPanelPath(classification, currentPanelIndex, formData)
 
   const extraArgs = {
     questionIds,
+    lastPanelPath,
     nextPanelPath,
   }
 
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)
 
-  return <AanvullendeVragen formData={panelQuestions} action={postFormWithExtraArgs} />
+  // Pass previous panel path to the Aanvullende vragen component
+  const previousPanelPath = getPreviousPanelPath(classification, currentPanelIndex, formData)
+
+  return (
+    <AanvullendeVragen action={postFormWithExtraArgs} formData={panelQuestions} previousPanelPath={previousPanelPath} />
+  )
 }
