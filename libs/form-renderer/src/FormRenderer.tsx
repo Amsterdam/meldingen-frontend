@@ -42,7 +42,8 @@ type Props = {
 }
 
 export const FormRenderer = ({ formData, action }: Props) => (
-  // @ts-expect-error: 'action' type should get overridden by Next types
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   <form className="ams-gap--md" action={action}>
     {formData.map((component) => getComponent(component))}
     <SubmitButton>Volgende vraag</SubmitButton>
