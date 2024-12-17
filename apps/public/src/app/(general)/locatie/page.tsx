@@ -3,33 +3,10 @@
 import { Heading, Link, Paragraph } from '@amsterdam/design-system-react'
 import { Grid, SubmitButton } from '@meldingen/ui'
 import NextLink from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { Suspense, type FormEvent } from 'react'
 
 import { BackLink } from '../_components/BackLink'
 
-const Form = () => {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-
-  const meldingId = searchParams?.get('id')
-  const token = searchParams?.get('token')
-  // TODO: how do we want to handle missing token or id?
-  // Redirect to root?
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
-
-    router.push(`/bijlage?token=${token}&id=${meldingId}`)
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input type="hidden" />
-      <SubmitButton>Volgende vraag</SubmitButton>
-    </form>
-  )
-}
+import { postLocationForm } from './actions'
 
 const Locatie = () => (
   <Grid paddingBottom="large" paddingTop="medium">
@@ -51,9 +28,10 @@ const Locatie = () => (
           Selecteer de locatie
         </Link>
       </NextLink>
-      <Suspense>
-        <Form />
-      </Suspense>
+      <form action={postLocationForm}>
+        <input type="hidden" />
+        <SubmitButton>Volgende vraag</SubmitButton>
+      </form>
     </Grid.Cell>
   </Grid>
 )
