@@ -7,7 +7,6 @@ import { redirect } from 'next/navigation'
 export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)
 
-  let success = false
   let nextPage = ''
 
   try {
@@ -24,15 +23,10 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
       const nextFormFirstKey = nextFormData.components && nextFormData.components[0].key
 
       nextPage = `/aanvullende-vragen/${classification}/${nextFormFirstKey}`
-      success = true
     }
   } catch (error) {
     return { message: (error as Error).message }
   }
 
-  if (success) {
-    redirect(nextPage)
-  }
-
-  return undefined
+  return redirect(nextPage)
 }

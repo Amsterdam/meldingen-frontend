@@ -11,7 +11,7 @@ type ArgsType = {
   nextPanelPath: string
 }
 
-export const postForm = async (args: ArgsType, formData: FormData) => {
+export const postForm = async (args: ArgsType, _: unknown, formData: FormData) => {
   // Get session variables from cookies
   const cookieStore = await cookies()
   const meldingId = cookieStore.get('id')?.value
@@ -24,10 +24,10 @@ export const postForm = async (args: ArgsType, formData: FormData) => {
   const entries = Object.entries(formDataObj)
   const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(entries))
 
-  entriesWithMergedCheckboxes.forEach(([key, value]) => {
+  const promiseArray = entriesWithMergedCheckboxes.map(([key, value]) => {
     if (value instanceof File) return undefined
 
-    // // Filter out empty answers
+    // Filter out empty answers
     if (value.length === 0) return undefined
 
     const questionId = args.questionIds.find((component) => component.key === key)?.id
@@ -39,8 +39,17 @@ export const postForm = async (args: ArgsType, formData: FormData) => {
       questionId,
       token,
       requestBody: { text: value },
-    })
+    }).catch((error) => error)
   })
 
-  redirect(args.nextPanelPath)
+  const results = await Promise.all(promiseArray)
+
+  // Return a string of all error messages and do not redirect if one of the requests failed
+  const erroredResults = results.filter((result) => result instanceof Error)
+
+  if (erroredResults.length > 0) {
+    return { message: erroredResults.map((error) => error.message).join(', ') }
+  }
+
+  return redirect(args.nextPanelPath)
 }

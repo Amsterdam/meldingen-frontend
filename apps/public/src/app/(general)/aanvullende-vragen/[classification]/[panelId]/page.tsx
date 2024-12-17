@@ -60,17 +60,18 @@ export default async ({ params }: { params: Params }) => {
 
   if (formData.components[0].type !== 'panel') return undefined
 
+  // Get current panel questions
   const currentPanelIndex = formData.components.findIndex((component) => component.key === panelId)
-
   const panel = formData.components[currentPanelIndex] as FormPanelComponentOutput
-
   const panelQuestions = panel.components
 
+  // Pass question ids to the action
   const questionIds = panelQuestions.map((question) => ({
     key: question.key,
     id: question.question,
   }))
 
+  // Pass next panel path to the action
   const nextPanelPath = getNextPanelPath(classification, currentPanelIndex, formData)
 
   const extraArgs = {
