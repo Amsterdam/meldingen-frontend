@@ -1,7 +1,7 @@
 {
-  "name": "formio",
+  "name": "form-builder",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/formio/src",
+  "sourceRoot": "libs/form-builder/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -9,14 +9,14 @@
       "executor": "nx-stylelint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/formio/**/*.css"]
+        "lintFilePatterns": ["libs/form-builder/**/*.css"]
       }
     },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
         "command": "tsc -p tsconfig.lib.json --noEmit && tsc -p tsconfig.spec.json --noEmit",
-        "cwd": "libs/formio",
+        "cwd": "libs/form-builder",
         "forwardAllArgs": false
       }
     }
