@@ -1,4 +1,4 @@
-import { getStaticForm } from '@meldingen/api-client'
+import { getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
 
 import { Home } from './Home'
 
@@ -7,9 +7,11 @@ import { Home } from './Home'
 export const dynamic = 'force-dynamic'
 
 export default async () => {
-  const staticForm = await getStaticForm().then((response) => response.find((form) => form.type === 'primary'))
+  const primaryFormId = await getStaticForm().then((response) => response.find((form) => form.type === 'primary')?.id)
 
-  if (!staticForm) return undefined
+  if (!primaryFormId) return undefined
 
-  return <Home formData={staticForm.components} />
+  const primaryForm = (await getStaticFormByStaticFormId({ staticFormId: primaryFormId }))?.components
+
+  return <Home formData={primaryForm} />
 }
