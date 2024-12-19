@@ -1,8 +1,9 @@
 import type { FormPanelComponentOutput } from '@meldingen/api-client'
 import { getFormClassificationByClassificationId } from '@meldingen/api-client'
-import { Suspense } from 'react'
+import { cookies } from 'next/headers'
 
-import { AanvullendeVragenRenderer } from '../../_components/AanvullendeVragenRenderer'
+import { AanvullendeVragen } from './AanvullendeVragen'
+import { postForm } from './actions'
 
 // TODO: pagina's die niet bestaan moeten redirect krijgen
 // TODO: pagina's die wel bestaan maar geen token in url param moeten redirect krijgen
@@ -60,22 +61,35 @@ export default async ({ params }: { params: Params }) => {
 
   if (formData.components[0].type !== 'panel') return undefined
 
+  // Get current panel questions
   const currentPanelIndex = formData.components.findIndex((component) => component.key === panelId)
-
   const panel = formData.components[currentPanelIndex] as FormPanelComponentOutput
   const panelQuestions = panel.components
 
+  // Pass question ids to the action
+  const questionIds = panelQuestions.map((question) => ({
+    key: question.key,
+    id: question.question,
+  }))
+
+  // Pass last panel path to the action
+  const lastPanelPath = `/aanvullende-vragen/${classification}/${formData.components[formData.components.length - 1].key}`
+
+  // Pass next panel path to the action
   const nextPanelPath = getNextPanelPath(classification, currentPanelIndex, formData)
 
+  const extraArgs = {
+    questionIds,
+    lastPanelPath,
+    nextPanelPath,
+  }
+
+  const postFormWithExtraArgs = postForm.bind(null, extraArgs)
+
+  // Pass previous panel path to the Aanvullende vragen component
   const previousPanelPath = getPreviousPanelPath(classification, currentPanelIndex, formData)
 
   return (
-    <Suspense>
-      <AanvullendeVragenRenderer
-        formData={panelQuestions}
-        nextPanelPath={nextPanelPath}
-        previousPanelPath={previousPanelPath}
-      />
-    </Suspense>
+    <AanvullendeVragen action={postFormWithExtraArgs} formData={panelQuestions} previousPanelPath={previousPanelPath} />
   )
 }
