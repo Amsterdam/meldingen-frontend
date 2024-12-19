@@ -72,6 +72,9 @@ export default async ({ params }: { params: Params }) => {
     id: question.question,
   }))
 
+  // Pass isLastPanel to the action
+  const isLastPanel = currentPanelIndex === formData.components.length - 1
+
   // Pass last panel path to the action
   const lastPanelPath = `/aanvullende-vragen/${classification}/${formData.components[formData.components.length - 1].key}`
 
@@ -79,9 +82,10 @@ export default async ({ params }: { params: Params }) => {
   const nextPanelPath = getNextPanelPath(classification, currentPanelIndex, formData)
 
   const extraArgs = {
-    questionIds,
+    isLastPanel,
     lastPanelPath,
     nextPanelPath,
+    questionIds,
   }
 
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)

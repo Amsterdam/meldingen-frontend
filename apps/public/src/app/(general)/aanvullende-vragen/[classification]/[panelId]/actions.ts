@@ -1,25 +1,32 @@
 'use server'
 
-import { postMeldingByMeldingIdQuestionByQuestionId } from '@meldingen/api-client'
+import { postMeldingByMeldingIdQuestionByQuestionId, putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 
 type ArgsType = {
-  questionIds: { key: string; id: number }[]
+  isLastPanel: boolean
   lastPanelPath: string
   nextPanelPath: string
+  questionIds: { key: string; id: number }[]
 }
 
-export const postForm = async (args: ArgsType, _: unknown, formData: FormData) => {
+export const postForm = async (
+  { isLastPanel, lastPanelPath, nextPanelPath, questionIds }: ArgsType,
+  _: unknown,
+  formData: FormData,
+) => {
   // Get session variables from cookies
   const cookieStore = await cookies()
   const meldingId = cookieStore.get('id')?.value
   const token = cookieStore.get('token')?.value
 
+  if (!meldingId || !token) return undefined
+
   // Set last panel path in cookies
-  cookieStore.set('lastPanelPath', args.lastPanelPath)
+  cookieStore.set('lastPanelPath', lastPanelPath)
 
   // Checkbox answers are stored as separate key-value pairs in the FormData object.
   // This function merges these answers into a single string value per question, using an identifier in the Checkbox component.
@@ -34,9 +41,9 @@ export const postForm = async (args: ArgsType, _: unknown, formData: FormData) =
     // Filter out empty answers
     if (value.length === 0) return undefined
 
-    const questionId = args.questionIds.find((component) => component.key === key)?.id
+    const questionId = questionIds.find((component) => component.key === key)?.id
 
-    if (!meldingId || !questionId || !token) return undefined
+    if (!questionId) return undefined
 
     return postMeldingByMeldingIdQuestionByQuestionId({
       meldingId: parseInt(meldingId, 10),
@@ -55,5 +62,10 @@ export const postForm = async (args: ArgsType, _: unknown, formData: FormData) =
     return { message: erroredResults.map((error) => error.message).join(', ') }
   }
 
-  return redirect(args.nextPanelPath)
+  // Let BE know the last panel has successfully been submitted
+  if (isLastPanel) {
+    putMeldingByMeldingIdAnswerQuestions({ meldingId: parseInt(meldingId, 10), token })
+  }
+
+  return redirect(nextPanelPath)
 }
