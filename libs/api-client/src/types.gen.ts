@@ -45,6 +45,10 @@ export type AttachmentOutput = {
 
 export type AttachmentTypes = 'original' | 'optimized' | 'thumbnail';
 
+export type BaseModel = {
+    [key: string]: unknown;
+};
+
 export type Body_melding_attachment_melding__melding_id__attachment_post = {
     file: (Blob | File);
 };
@@ -168,6 +172,7 @@ export type FormOutput = {
 
 export type FormPanelComponentInput = {
     label: string;
+    title: string;
     key: string;
     type?: FormIoComponentTypeEnum;
     input?: boolean;
@@ -175,6 +180,7 @@ export type FormPanelComponentInput = {
 };
 
 export type FormPanelComponentOutput = {
+    title: string;
     label: string;
     key: string;
     type: string;
@@ -283,6 +289,50 @@ export type FormTextFieldInputComponentOutput = {
     question: number;
 };
 
+export type GeoJson_Input = {
+    bbox?: ([
+    number,
+    number,
+    number,
+    number
+] | [
+    number,
+    number,
+    number,
+    number,
+    number,
+    number
+] | null);
+    type: "Feature";
+    geometry: (Point | null);
+    properties: ({
+    [key: string]: unknown;
+} | BaseModel | null);
+    id?: (number | string | null);
+};
+
+export type GeoJson_Output = {
+    bbox?: ([
+    number,
+    number,
+    number,
+    number
+] | [
+    number,
+    number,
+    number,
+    number,
+    number,
+    number
+] | null);
+    type: "Feature";
+    geometry: (Point | null);
+    properties: ({
+    [key: string]: unknown;
+} | BaseModel | null);
+    id?: (number | string | null);
+};
+
 export type GreaterThan = {
     '>': [
         (number | string | Var),
@@ -372,6 +422,7 @@ export type MeldingCreateOutput = {
     text: string;
     state: string;
     classification?: (number | null);
+    geo_location?: (GeoJson_Output | null);
     token: string;
 };
 
@@ -386,6 +437,7 @@ export type MeldingOutput = {
     text: string;
     state: string;
     classification?: (number | null);
+    geo_location?: (GeoJson_Output | null);
 };
 
 export type Merge = {
@@ -461,6 +513,38 @@ export type Or_Output = {
     or: Array<(boolean | number | string | Array<(null)> | Add | All_Output | And_Output | Cat | Divide | Equals | Filter_Output | GreaterThan | GreaterThanOrEqual | If | In_Output | LessThan | LessThanOrEqual | Log | Map_Output | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | None__Output | Not | NotEquals | NotNot | Or_Output | Reduce_Output | Some_Output | StrictEquals | StrictNotEquals | Substr | Subtract | Var)>;
 };
 
+/**
+ * Point Model
+ */
+export type Point = {
+    bbox?: ([
+    number,
+    number,
+    number,
+    number
+] | [
+    number,
+    number,
+    number,
+    number,
+    number,
+    number
+] | null);
+    type: "Point";
+    coordinates: (Position2D | Position3D);
+};
+
+export type Position2D = [
+    number,
+    number
+];
+
+export type Position3D = [
+    number,
+    number,
+    number
+];
+
 export type Reduce_Input = {
     reduce: [
         (Array<unknown> | Var | Missing | MissingSome | If | Merge | Filter_Input | Map_Input),
@@ -484,6 +568,15 @@ export type SimpleFormOutput = {
     created_at: string;
     updated_at: string;
     classification?: (number | null);
+};
+
+export type SimpleStaticFormOutput = {
+    id: number;
+    title: string;
+    display: string;
+    created_at: string;
+    updated_at: string;
+    type: string;
 };
 
 export type Some_Input = {
@@ -528,6 +621,7 @@ export type StaticFormOutput = {
 };
 
 export type StaticFormPanelComponentOutput = {
+    title: string;
     label: string;
     key: string;
     type: string;
@@ -868,6 +962,20 @@ export type DeleteMeldingByMeldingIdAttachmentByAttachmentIdData = {
 
 export type DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponse = (unknown);
 
+export type PostMeldingByMeldingIdLocationData = {
+    /**
+     * The id of the melding.
+     */
+    meldingId: number;
+    requestBody: GeoJson_Input;
+    /**
+     * The token of the melding.
+     */
+    token: string;
+};
+
+export type PostMeldingByMeldingIdLocationResponse = (MeldingOutput);
+
 export type PostUserData = {
     requestBody: UserCreateInput;
 };
@@ -986,4 +1094,4 @@ export type GetStaticFormData = {
     sort?: string;
 };
 
-export type GetStaticFormResponse = (Array<StaticFormOutput>);
+export type GetStaticFormResponse = (Array<SimpleStaticFormOutput>);
