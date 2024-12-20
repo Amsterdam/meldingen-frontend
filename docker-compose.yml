@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  build:
+    build:
+      context: ./
+      target: build
+  public:
+    build:
+      context: .
+      target: admin_signalen
+    depends_on:
+      - build
+    ports:
+      - '3000:80'
+networks:
+  signalen:
