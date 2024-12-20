@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/libs/formio',
+  cacheDir: '../../node_modules/.vite/libs/form-builder',
 
   plugins: [react(), nxViteTsPaths()],
 
@@ -20,7 +20,7 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default'],
     setupFiles: ['./vitest.setup.ts'],
-    coverage: { reportsDirectory: '../../coverage/libs/formio', provider: 'v8' },
+    coverage: { reportsDirectory: '../../coverage/libs/form-builder', provider: 'v8' },
     watch: false,
   },
 })

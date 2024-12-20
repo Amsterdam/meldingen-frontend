@@ -5,7 +5,8 @@
     {
       "files": ["**/page.tsx", "**/layout.tsx", "next.config.ts"],
       "rules": {
-        "import/no-default-export": "off"
+        "import/no-default-export": "off",
+        "react/jsx-no-bind": "off"
       }
     }
   ]

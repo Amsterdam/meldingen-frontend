@@ -105,6 +105,7 @@ exports[`filterFormResponse > renders the correct output 1`] = `
       "input": false,
       "key": "page1",
       "label": "Page 1",
+      "title": "Page 1",
       "type": "panel",
     },
     {
@@ -243,6 +244,7 @@ exports[`filterFormResponse > renders the correct output 1`] = `
       "input": false,
       "key": "page2",
       "label": "Page 2",
+      "title": "Page 2",
       "type": "panel",
     },
   ],

@@ -1,4 +1,4 @@
-import type { FormioSchema } from '@meldingen/formio'
+import type { FormioSchema } from '@meldingen/form-builder'
 import { Create } from 'react-admin'
 
 import { filterFormResponse } from '../utils/filterFormResponse'

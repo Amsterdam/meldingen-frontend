@@ -9,7 +9,7 @@ import { FileUpload } from './FileUpload'
 
 describe('FileUpload Component', () => {
   it('renders the drop area text', () => {
-    render(<FileUpload />)
+    render(<FileUpload id="test" />)
 
     const buttonText = screen.getByText('Selecteer bestanden')
     const dropAreaText = screen.getByText('Of sleep de bestanden in dit vak.')
@@ -21,7 +21,7 @@ describe('FileUpload Component', () => {
   it('uploads multiple files', async () => {
     const user = userEvent.setup()
 
-    render(<FileUpload />)
+    render(<FileUpload id="test" />)
 
     const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
 
@@ -60,7 +60,7 @@ describe('FileUpload Component', () => {
 
     render(
       <MeldingContext.Provider value={mockContextValue}>
-        <FileUpload />
+        <FileUpload id="test" />
       </MeldingContext.Provider>,
     )
 

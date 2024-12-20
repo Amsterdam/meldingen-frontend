@@ -666,6 +666,12 @@ export const AttachmentTypesSchema = {
     title: 'AttachmentTypes'
 } as const;
 
+export const BaseModelSchema = {
+    properties: {},
+    type: 'object',
+    title: 'BaseModel'
+} as const;
+
 export const Body_melding_attachment_melding__melding_id__attachment_postSchema = {
     properties: {
         file: {
@@ -1658,6 +1664,11 @@ export const FormPanelComponentInputSchema = {
             minLength: 3,
             title: 'Label'
         },
+        title: {
+            type: 'string',
+            minLength: 3,
+            title: 'Title'
+        },
         key: {
             type: 'string',
             minLength: 3,
@@ -1698,12 +1709,16 @@ export const FormPanelComponentInputSchema = {
     },
     additionalProperties: false,
     type: 'object',
-    required: ['label', 'key', 'components'],
+    required: ['label', 'title', 'key', 'components'],
     title: 'FormPanelComponentInput'
 } as const;
 
 export const FormPanelComponentOutputSchema = {
     properties: {
+        title: {
+            type: 'string',
+            title: 'Title'
+        },
         label: {
             type: 'string',
             title: 'Label'
@@ -1749,7 +1764,7 @@ export const FormPanelComponentOutputSchema = {
         }
     },
     type: 'object',
-    required: ['label', 'key', 'type', 'input', 'position', 'components'],
+    required: ['title', 'label', 'key', 'type', 'input', 'position', 'components'],
     title: 'FormPanelComponentOutput'
 } as const;
 
@@ -2224,6 +2239,212 @@ export const FormTextFieldInputComponentOutputSchema = {
     type: 'object',
     required: ['label', 'description', 'key', 'type', 'input', 'position', 'question'],
     title: 'FormTextFieldInputComponentOutput'
+} as const;
+
+export const GeoJson_InputSchema = {
+    properties: {
+        bbox: {
+            anyOf: [
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 4,
+                    minItems: 4
+                },
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 6,
+                    minItems: 6
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Bbox'
+        },
+        type: {
+            type: 'string',
+            const: 'Feature',
+            title: 'Type'
+        },
+        geometry: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/Point'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        properties: {
+            anyOf: [
+                {
+                    type: 'object'
+                },
+                {
+                    '$ref': '#/components/schemas/BaseModel'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Properties'
+        },
+        id: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Id'
+        }
+    },
+    type: 'object',
+    required: ['type', 'geometry', 'properties'],
+    title: 'GeoJson'
+} as const;
+
+export const GeoJson_OutputSchema = {
+    properties: {
+        bbox: {
+            anyOf: [
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 4,
+                    minItems: 4
+                },
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 6,
+                    minItems: 6
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Bbox'
+        },
+        type: {
+            type: 'string',
+            const: 'Feature',
+            title: 'Type'
+        },
+        geometry: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/Point'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        properties: {
+            anyOf: [
+                {
+                    type: 'object'
+                },
+                {
+                    '$ref': '#/components/schemas/BaseModel'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Properties'
+        },
+        id: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Id'
+        }
+    },
+    type: 'object',
+    required: ['type', 'geometry', 'properties'],
+    title: 'GeoJson'
 } as const;
 
 export const GreaterThanSchema = {
@@ -3136,6 +3357,16 @@ export const MeldingCreateOutputSchema = {
             ],
             title: 'Classification'
         },
+        geo_location: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/GeoJson-Output'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         token: {
             type: 'string',
             title: 'Token'
@@ -3193,6 +3424,16 @@ export const MeldingOutputSchema = {
                 }
             ],
             title: 'Classification'
+        },
+        geo_location: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/GeoJson-Output'
+                },
+                {
+                    type: 'null'
+                }
+            ]
         }
     },
     type: 'object',
@@ -4009,6 +4250,119 @@ export const Or_OutputSchema = {
     title: 'Or'
 } as const;
 
+export const PointSchema = {
+    properties: {
+        bbox: {
+            anyOf: [
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 4,
+                    minItems: 4
+                },
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 6,
+                    minItems: 6
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Bbox'
+        },
+        type: {
+            type: 'string',
+            const: 'Point',
+            title: 'Type'
+        },
+        coordinates: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/Position2D'
+                },
+                {
+                    '$ref': '#/components/schemas/Position3D'
+                }
+            ],
+            title: 'Coordinates'
+        }
+    },
+    type: 'object',
+    required: ['type', 'coordinates'],
+    title: 'Point',
+    description: 'Point Model'
+} as const;
+
+export const Position2DSchema = {
+    prefixItems: [
+        {
+            type: 'number',
+            title: 'Longitude'
+        },
+        {
+            type: 'number',
+            title: 'Latitude'
+        }
+    ],
+    type: 'array',
+    maxItems: 2,
+    minItems: 2
+} as const;
+
+export const Position3DSchema = {
+    prefixItems: [
+        {
+            type: 'number',
+            title: 'Longitude'
+        },
+        {
+            type: 'number',
+            title: 'Latitude'
+        },
+        {
+            type: 'number',
+            title: 'Altitude'
+        }
+    ],
+    type: 'array',
+    maxItems: 3,
+    minItems: 3
+} as const;
+
 export const Reduce_InputSchema = {
     properties: {
         reduce: {
@@ -4352,6 +4706,40 @@ export const SimpleFormOutputSchema = {
     type: 'object',
     required: ['id', 'title', 'display', 'created_at', 'updated_at'],
     title: 'SimpleFormOutput'
+} as const;
+
+export const SimpleStaticFormOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        title: {
+            type: 'string',
+            title: 'Title'
+        },
+        display: {
+            type: 'string',
+            title: 'Display'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
+        },
+        type: {
+            type: 'string',
+            title: 'Type'
+        }
+    },
+    type: 'object',
+    required: ['id', 'title', 'display', 'created_at', 'updated_at', 'type'],
+    title: 'SimpleStaticFormOutput'
 } as const;
 
 export const Some_InputSchema = {
@@ -4815,6 +5203,10 @@ export const StaticFormOutputSchema = {
 
 export const StaticFormPanelComponentOutputSchema = {
     properties: {
+        title: {
+            type: 'string',
+            title: 'Title'
+        },
         label: {
             type: 'string',
             title: 'Label'
@@ -4860,7 +5252,7 @@ export const StaticFormPanelComponentOutputSchema = {
         }
     },
     type: 'object',
-    required: ['label', 'key', 'type', 'input', 'position', 'components'],
+    required: ['title', 'label', 'key', 'type', 'input', 'position', 'components'],
     title: 'StaticFormPanelComponentOutput'
 } as const;
 

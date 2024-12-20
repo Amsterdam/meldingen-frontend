@@ -1,5 +1,5 @@
-import type { FormioSchema } from '@meldingen/formio'
-import { FormBuilder } from '@meldingen/formio'
+import type { FormioSchema } from '@meldingen/form-builder'
+import { FormBuilder } from '@meldingen/form-builder'
 import type { ComponentSchema } from 'formiojs'
 import { useEffect, useState } from 'react'
 import { TextInput } from 'react-admin'
