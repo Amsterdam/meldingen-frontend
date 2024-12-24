@@ -5,13 +5,21 @@ services:
     build:
       context: ./
       target: build
-  public:
+  admin:
     build:
       context: .
       target: admin_signalen
     depends_on:
       - build
     ports:
-      - '3000:80'
+      - '3001:80'
+  public:
+    build:
+      context: .
+      target: public_signalen
+    depends_on:
+      - build
+    ports:
+      - '3000:3000'
 networks:
   signalen:

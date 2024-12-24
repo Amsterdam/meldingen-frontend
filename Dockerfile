@@ -20,19 +20,34 @@ COPY ./libs ./libs
 COPY ./apps/public/ ./apps/public/
 COPY ./apps/admin/ ./apps/admin/
 RUN pnpm install
-RUN export NODE_OPTIONS="--max-old-space-size=(8 * 1024)"
-ENV GENERATE_SOURCEMAP=false
 RUN pnpm build
+
+#################################################
+##                   NGINX                      #
+#################################################
+#FROM nginx:stable-alpine AS public_signalen
+#
+#WORKDIR /usr/share/nginx/html
+#RUN rm -rf ./*
+#
+#COPY --from=builder /app/dist/apps/my-app ./
+#RUN sed -i '10i \\ttry_files $uri $uri/ /index.html;' /etc/nginx/conf.d/default.conf
+#ENTRYPOINT ["nginx", "-g", "daemon off;"]
+#
+#EXPOSE 3000
 
 ################################################
 #                   NGINX                      #
 ################################################
 FROM nginx:stable-alpine AS admin_signalen
 
-COPY --from=build /app/apps/admin/dist /usr/share/nginx/html
+WORKDIR /usr/share/nginx/html
+RUN rm -rf ./*
+
+COPY --from=build /app/apps/admin/dist ./
 
 CMD exec nginx -g 'daemon off;'
-EXPOSE 3000
+EXPOSE 3001
 
 #
 #FROM mitchpash/pnpm AS deps
@@ -115,31 +130,36 @@ EXPOSE 3000
 #  else echo "Lockfile not found." && exit 1; \
 #  fi
 #
-## Production image, copy all the files and run next
-#FROM base AS runner
-#WORKDIR /app
-#
-#ENV NODE_ENV=production
-## Uncomment the following line in case you want to disable telemetry during runtime.
-## ENV NEXT_TELEMETRY_DISABLED=1
-#
-#RUN addgroup --system --gid 1001 nodejs
-#RUN adduser --system --uid 1001 nextjs
-#
-#COPY --from=builder /app/public ./public
-#
-## Automatically leverage output traces to reduce image size
-## https://nextjs.org/docs/advanced-features/output-file-tracing
-#COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-#COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-#
-#USER nextjs
-#
-#EXPOSE 3000
-#
-#ENV PORT=3000
-#
-## server.js is created by next build from the standalone output
-## https://nextjs.org/docs/pages/api-reference/next-config-js/output
-#ENV HOSTNAME="0.0.0.0"
-#CMD ["node", "server.js"]
+
+
+################################################
+#                   NODE                       #
+################################################
+FROM base AS public_signalen
+WORKDIR /app
+RUN npm i -g next
+
+ENV NODE_ENV=production
+# Uncomment the following line in case you want to disable telemetry during runtime.
+# ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=build /app/apps/public/public ./public
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+#COPY --from=build --chown=nextjs:nodejs /app/apps/public/.next/standalone ./
+COPY --from=build --chown=nextjs:nodejs /app/apps/public/.next ./.next
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT=3000
+
+# server.js is created by next build from the standalone output
+# https://nextjs.org/docs/pages/api-reference/next-config-js/output
+ENV HOSTNAME="0.0.0.0"
+CMD ["node", ".next/standalone/apps/public/server.js"]
