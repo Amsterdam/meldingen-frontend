@@ -9,7 +9,7 @@ import { dataProvider } from './dataProvider'
 const initOptions: KeycloakInitOptions = { onLoad: 'login-required', checkLoginIframe: false }
 // TODO: use .env variables
 const config: KeycloakConfig = {
-  url: 'http://localhost:8002',
+  url: 'http://keycloak:8002',
   realm: 'meldingen',
   clientId: `meldingen`,
 }
@@ -34,7 +34,7 @@ export const useAuthProvider = () => {
         await keycloakClient.init(initOptions)
 
         authProvider.current = keycloakAuthProvider(keycloakClient)
-        dataProviderRef.current = dataProvider('http://localhost:8000', httpClient(keycloakClient))
+        dataProviderRef.current = dataProvider('http://meldingen:8000', httpClient(keycloakClient))
 
         setKeycloak(keycloakClient)
       }

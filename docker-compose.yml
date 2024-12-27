@@ -13,6 +13,8 @@ services:
       - build
     ports:
       - '3001:80'
+    networks:
+      - meldingen_default
   public:
     build:
       context: .
@@ -21,5 +23,8 @@ services:
       - build
     ports:
       - '3000:3000'
+    networks:
+      - meldingen_default
 networks:
-  signalen:
+  meldingen_default:
+    external: true
