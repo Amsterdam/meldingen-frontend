@@ -50,14 +50,19 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=build /app/apps/public/public ./public
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+USER nextjs
+
+COPY --from=build --chown=nextjs:nodejs /app/apps/public/next.config.ts ./
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=build --chown=nextjs:nodejs /app/apps/public/.next/standalone ./
-COPY --from=build --chown=nextjs:nodejs /app/apps/public/.next ./.next
-
-USER nextjs
+COPY --from=build --chown=nextjs:nodejs /app/apps/public/.next/static ./apps/public/.next/static
+COPY --from=build --chown=nextjs:nodejs /app/apps/public/public ./apps/public/public
 
 EXPOSE 3000
 
