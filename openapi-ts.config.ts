@@ -1,6 +1,7 @@
 import { defineConfig } from '@hey-api/openapi-ts'
 
 export default defineConfig({
+  // TODO: use .env variables here
   base: 'http://localhost:8000',
   client: 'legacy/fetch',
   input: 'http://localhost:8000/openapi.json',
