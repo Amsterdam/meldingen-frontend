@@ -1,11 +1,16 @@
+import { Paragraph } from '@amsterdam/design-system-react'
 import L from 'leaflet'
 import { useEffect, useRef, useState } from 'react'
 
 import 'leaflet/dist/leaflet.css'
+import { CurrentLocationButton } from './CurrentLocationButton/CurrentLocationButton'
 import styles from './map.module.css'
+import { Notification } from './Notification/Notification'
 
 export const BaseLayer = () => {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const mapRef = useRef<HTMLDivElement>(null)
+
+  const [notification, setNotification] = useState<{ heading: string; description: string } | null>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
@@ -15,11 +20,11 @@ export const BaseLayer = () => {
 
   useEffect(() => {
     // Ensure that the target DOM element exists and that the map doesn't already exist (to prevent duplicate renders in StrictMode)
-    if (containerRef.current === null || createdMapInstance.current !== false) {
+    if (mapRef.current === null || createdMapInstance.current !== false) {
       return undefined
     }
 
-    const map = new L.Map(containerRef.current, {
+    const map = new L.Map(mapRef.current, {
       center: L.latLng([52.370216, 4.895168]),
       zoom: 14,
       layers: [
@@ -57,5 +62,17 @@ export const BaseLayer = () => {
     }
   }, [mapInstance])
 
-  return <div className={styles.container} ref={containerRef} />
+  return (
+    <div className={styles.container}>
+      <div className={styles.map} ref={mapRef} />
+      <div className={styles.overlay}>
+        <CurrentLocationButton setNotification={setNotification}>Mijn locatie</CurrentLocationButton>
+        {notification && (
+          <Notification heading={notification.heading} closeable onClose={() => setNotification(null)}>
+            <Paragraph>{notification.description}</Paragraph>
+          </Notification>
+        )}
+      </div>
+    </div>
+  )
 }
