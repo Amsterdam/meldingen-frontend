@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import 'leaflet/dist/leaflet.css'
 import styles from './map.module.css'
+import { marker } from './Marker/Marker'
 import { Notification } from './Notification/Notification'
 
 export const BaseLayer = () => {
@@ -73,10 +74,10 @@ export const BaseLayer = () => {
     markerLayer?.remove()
 
     // Create marker layer and add to map
-    const marker = L.marker(L.latLng([latitude, longitude])).addTo(mapInstance)
+    const newMarker = L.marker(L.latLng([latitude, longitude]), { icon: marker }).addTo(mapInstance)
 
     // Store marker layer in state
-    setMarkerLayer(marker)
+    setMarkerLayer(newMarker)
   }
 
   const onError = () => {
