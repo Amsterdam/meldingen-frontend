@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import 'leaflet/dist/leaflet.css'
 import styles from './map.module.css'
 
-export const BaseLayer = () => {
+export const BaseLayer = ({ setLocation }: any) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
@@ -46,16 +46,15 @@ export const BaseLayer = () => {
     createdMapInstance.current = true
     setMapInstance(map)
 
-    // TODO: temporarily log coordinates on click
     map.on('click', (e) => {
-      console.log(`Lat, Lon : ${e.latlng.lat}, ${e.latlng.lng}`)
+      setLocation({ lat: e.latlng.lat, lon: e.latlng.lng })
     })
 
     // On component unmount, destroy the map and all related events
     return () => {
       if (mapInstance) mapInstance.remove()
     }
-  }, [mapInstance])
+  }, [mapInstance, setLocation])
 
   return <div className={styles.container} ref={containerRef} />
 }
