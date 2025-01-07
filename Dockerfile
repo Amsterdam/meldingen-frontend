@@ -1,5 +1,10 @@
+ARG VITE_KEYCLOAK_BASE_URL
+ARG VITE_KEYCLOAK_REALM
+ARG VITE_KEYCLOAK_CLIENT_ID
+ARG VITE_BACKEND_BASE_URL
+
 #################################################
-##                   NODE                       #
+##                   BASE                       #
 #################################################
 FROM node:20 AS base
 ENV PNPM_HOME="/pnpm"
@@ -11,10 +16,17 @@ RUN npm i -g pnpm --force
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install
 
+
+#################################################
+##                   BUILD                      #
+#################################################
 FROM base AS build
-WORKDIR /app
-RUN npm i -g pnpm
-COPY --from=base /app/node_modules ./node_modules
+
+ARG VITE_KEYCLOAK_BASE_URL
+ARG VITE_KEYCLOAK_REALM
+ARG VITE_KEYCLOAK_CLIENT_ID
+ARG VITE_BACKEND_BASE_URL
+
 COPY tsconfig.base.json tsconfig.json .eslintrc.json ./
 COPY ./libs ./libs
 COPY ./apps/public/ ./apps/public/
@@ -22,8 +34,9 @@ COPY ./apps/admin/ ./apps/admin/
 RUN pnpm install
 RUN pnpm build
 
+
 ################################################
-#                   NGINX                      #
+#                   ADMIN                      #
 ################################################
 FROM nginx:stable-alpine AS admin_signalen
 
@@ -37,7 +50,7 @@ EXPOSE 3001
 
 
 ################################################
-#                   NODE                       #
+#                   PUBLIC                     #
 ################################################
 FROM base AS public_signalen
 WORKDIR /app

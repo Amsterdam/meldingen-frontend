@@ -1,30 +1,20 @@
 version: '3.8'
 
 services:
-  build:
-    build:
-      context: ./
-      target: build
   admin:
     build:
       context: .
       target: admin_signalen
-    depends_on:
-      - build
+      args:
+        VITE_KEYCLOAK_BASE_URL: http://localhost:8002
+        VITE_KEYCLOAK_REALM: meldingen
+        VITE_KEYCLOAK_CLIENT_ID: meldingen
+        VITE_BACKEND_BASE_URL: http://localhost:8000
     ports:
       - '3001:80'
-    networks:
-      - meldingen_default
   public:
     build:
       context: .
       target: public_signalen
-    depends_on:
-      - build
     ports:
       - '3000:3000'
-    networks:
-      - meldingen_default
-networks:
-  meldingen_default:
-    external: true
