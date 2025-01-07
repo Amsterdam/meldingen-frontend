@@ -7,6 +7,12 @@
 }
 
 .overlay {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ams-space-sm);
+  padding-block: var(--ams-space-sm);
+  padding-inline: var(--ams-space-sm);
   position: absolute;
   top: 0;
 
