@@ -7,11 +7,11 @@ import type { AuthProvider, DataProvider } from 'react-admin'
 import { dataProvider } from './dataProvider'
 
 const initOptions: KeycloakInitOptions = { onLoad: 'login-required', checkLoginIframe: false }
-// TODO: use .env variables
+
 const config: KeycloakConfig = {
-  url: 'http://localhost:8002',
-  realm: 'meldingen',
-  clientId: `meldingen`,
+  url: import.meta.env.VITE_KEYCLOAK_BASE_URL,
+  realm: import.meta.env.VITE_KEYCLOAK_REALM,
+  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
 }
 
 export const useAuthProvider = () => {
@@ -34,7 +34,7 @@ export const useAuthProvider = () => {
         await keycloakClient.init(initOptions)
 
         authProvider.current = keycloakAuthProvider(keycloakClient)
-        dataProviderRef.current = dataProvider('http://localhost:8000', httpClient(keycloakClient))
+        dataProviderRef.current = dataProvider(import.meta.env.VITE_BACKEND_BASE_URL, httpClient(keycloakClient))
 
         setKeycloak(keycloakClient)
       }
