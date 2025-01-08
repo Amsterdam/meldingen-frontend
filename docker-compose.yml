@@ -4,7 +4,7 @@ services:
   admin:
     build:
       context: .
-      target: admin_signalen
+      target: admin_meldingen
       args:
         VITE_KEYCLOAK_BASE_URL: http://localhost:8002
         VITE_KEYCLOAK_REALM: meldingen
@@ -15,6 +15,6 @@ services:
   public:
     build:
       context: .
-      target: public_signalen
+      target: public_meldingen
     ports:
       - '3000:3000'

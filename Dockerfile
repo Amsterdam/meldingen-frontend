@@ -38,7 +38,7 @@ RUN pnpm build
 ################################################
 #                   ADMIN                      #
 ################################################
-FROM nginx:stable-alpine AS admin_signalen
+FROM nginx:stable-alpine AS admin_meldingen
 
 WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
@@ -52,7 +52,7 @@ EXPOSE 3001
 ################################################
 #                   PUBLIC                     #
 ################################################
-FROM base AS public_signalen
+FROM base AS public_meldingen
 WORKDIR /app
 RUN npm i -g next
 
