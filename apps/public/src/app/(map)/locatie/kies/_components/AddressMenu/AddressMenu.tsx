@@ -1,15 +1,13 @@
-import { Heading, Icon, Paragraph } from '@amsterdam/design-system-react'
+import { Column, Heading, Icon, Paragraph } from '@amsterdam/design-system-react'
 import { ChevronLeftIcon } from '@amsterdam/design-system-react-icons'
 import Link from 'next/link'
-
-import styles from './AddressMenu.module.css'
 
 type Props = {
   address: string | null
 }
 
 export const AddressMenu = ({ address }: Props) => (
-  <div className={styles.container}>
+  <Column>
     <Link href="/locatie">
       <Icon svg={ChevronLeftIcon} size="level-4" />
       {/* TODO: Icon becomes red when clicking it.  */}
@@ -28,5 +26,5 @@ export const AddressMenu = ({ address }: Props) => (
       </Heading>
       {address && <span>{address}</span>}
     </span>
-  </div>
+  </Column>
 )
