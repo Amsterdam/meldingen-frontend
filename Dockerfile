@@ -52,6 +52,7 @@ EXPOSE 3001
 ################################################
 #                   PUBLIC                     #
 ################################################
+# Sourced from https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 FROM base AS public_meldingen
 WORKDIR /app
 

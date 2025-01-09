@@ -17,6 +17,6 @@ services:
       context: .
       target: public_meldingen
       args:
-        NEXT_BACKEND_BASE_URL: http://localhost:8000
+        NEXT_PUBLIC_BACKEND_BASE_URL: http://localhost:8000
     ports:
       - '3000:3000'
