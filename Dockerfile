@@ -54,7 +54,6 @@ EXPOSE 3001
 ################################################
 FROM base AS public_meldingen
 WORKDIR /app
-RUN npm i -g next
 
 ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
