@@ -1,6 +1,6 @@
 import type { FormPanelComponentOutput } from '@meldingen/api-client'
 
-import { getFormClassificationByClassificationId } from 'apps/public/src/apiClient'
+import { getFormClassificationByClassificationId } from 'apps/public/src/apiClientProxy'
 
 import { AanvullendeVragen } from './AanvullendeVragen'
 import { postForm } from './actions'

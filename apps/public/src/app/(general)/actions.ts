@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { getFormClassificationByClassificationId, postMelding } from 'apps/public/src/apiClient'
+import { getFormClassificationByClassificationId, postMelding } from 'apps/public/src/apiClientProxy'
 
 export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)

@@ -1,4 +1,4 @@
-import { getStaticForm, getStaticFormByStaticFormId } from 'apps/public/src/apiClient'
+import { getStaticForm, getStaticFormByStaticFormId } from 'apps/public/src/apiClientProxy'
 
 import { Home } from './Home'
 

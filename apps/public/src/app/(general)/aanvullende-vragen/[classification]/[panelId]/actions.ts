@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 import {
   postMeldingByMeldingIdQuestionByQuestionId,
   putMeldingByMeldingIdAnswerQuestions,
-} from 'apps/public/src/apiClient'
+} from 'apps/public/src/apiClientProxy'
 
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 
