@@ -1,7 +1,8 @@
-import type { AttachmentOutput } from '@meldingen/api-client'
-import { postMeldingByMeldingIdAttachment } from '@meldingen/api-client'
 import { useState } from 'react'
 import type { ChangeEvent, InputHTMLAttributes } from 'react'
+
+import type { AttachmentOutput } from 'apps/public/src/apiClient'
+import { postMeldingByMeldingIdAttachment } from 'apps/public/src/apiClient'
 
 import { useMeldingContext } from '../../../../context/MeldingContextProvider'
 

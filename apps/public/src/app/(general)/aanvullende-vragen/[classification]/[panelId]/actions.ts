@@ -1,8 +1,12 @@
 'use server'
 
-import { postMeldingByMeldingIdQuestionByQuestionId, putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+
+import {
+  postMeldingByMeldingIdQuestionByQuestionId,
+  putMeldingByMeldingIdAnswerQuestions,
+} from 'apps/public/src/apiClient'
 
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 

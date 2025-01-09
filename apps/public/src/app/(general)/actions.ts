@@ -1,8 +1,9 @@
 'use server'
 
-import { getFormClassificationByClassificationId, postMelding } from '@meldingen/api-client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+
+import { getFormClassificationByClassificationId, postMelding } from 'apps/public/src/apiClient'
 
 export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)

@@ -1,4 +1,4 @@
-import { getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
+import { getStaticForm, getStaticFormByStaticFormId } from 'apps/public/src/apiClient'
 
 import { Home } from './Home'
 

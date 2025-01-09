@@ -1,6 +1,6 @@
 import type { FormPanelComponentOutput } from '@meldingen/api-client'
-import { getFormClassificationByClassificationId } from '@meldingen/api-client'
-import { cookies } from 'next/headers'
+
+import { getFormClassificationByClassificationId } from 'apps/public/src/apiClient'
 
 import { AanvullendeVragen } from './AanvullendeVragen'
 import { postForm } from './actions'
