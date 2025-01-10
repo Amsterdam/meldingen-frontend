@@ -1,0 +1,14 @@
+{
+  "name": "form-builder",
+  "version": "0.1.0",
+  "description": "Form builder which is used to create forms with the FormIO builder.",
+  "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  },
+  "license": "EUPL-1.2",
+  "private": true,
+  "type": "module"
+}
