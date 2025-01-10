@@ -111,5 +111,6 @@
     "overrides": {
       "webpack@>=5.0.0-alpha.0 <5.94.0": ">=5.94.0"
     }
-  }
+  },
+  "packageManager": "pnpm@9.0.1+sha1.0e0a9c2d140ddf9aab730067eb7bcfb9e18bdee7"
 }
