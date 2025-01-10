@@ -49,7 +49,6 @@ out
 
 # Files that (sometimes) contain secrets
 *.der
-*.env
 *.key
 *.pem
 .env.*
