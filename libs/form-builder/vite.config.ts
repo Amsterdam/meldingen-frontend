@@ -7,9 +7,8 @@ export default defineConfig({
   test: {
     coverage: {
       enabled: false,
-      // include: ['src/**/*.{js,jsx,ts,tsx}'],
-      // Exclude src/* since there are no tests
-      exclude: ['src/*'],
+      include: ['src/**/*.{js,jsx,ts,tsx}'],
+      exclude: ['src/indes.ts'],
     },
     globals: true,
     environment: 'jsdom',
