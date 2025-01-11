@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 if (process.env.NEXT_PUBLIC_BACKEND_BASE_URL !== undefined) {
-  // Set the backend address for use in the API client
+  // Set the backend address for use in the API client on the client side
   OpenAPI.BASE = process.env.NEXT_PUBLIC_BACKEND_BASE_URL
 }
 
