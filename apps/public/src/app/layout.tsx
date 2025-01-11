@@ -12,8 +12,10 @@ export const metadata: Metadata = {
   title: 'Meldingen',
 }
 
-// Set the backend address for use in the API client
-OpenAPI.BASE = 'http://localhost:8000'
+if (process.env.NEXT_PUBLIC_BACKEND_BASE_URL !== undefined) {
+  // Set the backend address for use in the API client
+  OpenAPI.BASE = process.env.NEXT_PUBLIC_BACKEND_BASE_URL
+}
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
   <html lang="nl">
