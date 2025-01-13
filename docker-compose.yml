@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   admin:
     build:
@@ -12,11 +10,18 @@ services:
         VITE_BACKEND_BASE_URL: http://localhost:8000
     ports:
       - '3001:80'
+    networks:
+      - meldingen_network
   public:
     build:
       context: .
       target: public_meldingen
       args:
-        NEXT_PUBLIC_BACKEND_BASE_URL: http://localhost:8000
+        NEXT_BACKEND_BASE_URL: http://meldingen:8000
     ports:
       - '3000:3000'
+    networks:
+      - meldingen_network
+networks:
+  meldingen_network:
+    external: true
