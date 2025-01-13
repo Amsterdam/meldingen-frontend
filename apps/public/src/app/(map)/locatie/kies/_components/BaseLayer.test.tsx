@@ -1,8 +1,25 @@
-import { screen, render } from '@testing-library/react'
+import { screen, render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import leaflet from 'leaflet'
 import { vi } from 'vitest'
 
 import { BaseLayer } from './BaseLayer'
+import { marker } from './Marker/Marker'
+
+vi.mock('leaflet', async (importOriginal) => {
+  const actual = await importOriginal()
+
+  const markerMock = {
+    addTo: vi.fn(),
+  }
+
+  return {
+    default: {
+      ...(typeof actual === 'object' ? actual : {}),
+      marker: vi.fn(() => markerMock),
+    },
+  }
+})
 
 describe('BaseLayer', () => {
   it('renders the component', () => {
@@ -46,7 +63,7 @@ describe('BaseLayer', () => {
     expect(notification).toBeInTheDocument()
   })
 
-  it('calls onSuccess on geolocation success', async () => {
+  it('adds a marker on geolocation success', async () => {
     const mockGeolocation = {
       getCurrentPosition: vi.fn().mockImplementationOnce((success) =>
         success({
@@ -70,7 +87,17 @@ describe('BaseLayer', () => {
     await user.click(button)
 
     expect(mockGeolocation.getCurrentPosition).toHaveBeenCalled()
+
+    await waitFor(() => {
+      expect(leaflet.marker).toHaveBeenCalledWith(
+        {
+          lat: 52.370216,
+          lng: 4.895168,
+        },
+        {
+          icon: marker,
+        },
+      )
+    })
   })
 })
-
-// TODO: add tests
