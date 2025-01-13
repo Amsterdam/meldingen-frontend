@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { reverseGeocodeService } from './reverse-geocode-service'
+import { getAddressFromCoordinates } from './getAddressFromCoordinates'
 
 const mockResponseData = {
   response: {
@@ -21,7 +21,7 @@ const mockResponseData = {
   },
 }
 
-describe('reverseGeocodeService', () => {
+describe('getAddressFromCoordinates', () => {
   it('should return correct address', async () => {
     const server = setupServer(
       http.get('https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse', () => HttpResponse.json(mockResponseData)),
@@ -30,7 +30,7 @@ describe('reverseGeocodeService', () => {
     server.listen()
 
     const coordinates = { lat: 52.37239126063553, lon: 4.900905743712159 }
-    const result = await reverseGeocodeService(coordinates)
+    const result = await getAddressFromCoordinates(coordinates)
 
     expect(result).toEqual(mockResponseData)
   })
