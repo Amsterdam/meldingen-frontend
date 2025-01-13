@@ -2,14 +2,13 @@ import L from 'leaflet'
 import { useEffect, useRef, useState } from 'react'
 
 import 'leaflet/dist/leaflet.css'
-import type { SetState } from 'apps/public/src/genericTypes'
 
 import type { Coordinates } from '../page'
 
 import styles from './map.module.css'
 
 type Props = {
-  setCoordinates: SetState<Coordinates | null>
+  setCoordinates: (coordinates: Coordinates) => void
 }
 
 export const BaseLayer = ({ setCoordinates }: Props) => {
