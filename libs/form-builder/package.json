@@ -4,8 +4,6 @@
   "description": "Form builder which is used to create forms with the FormIO builder.",
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx",
-    "test": "vitest --passWithNoTests",
-    "test:watch": "vitest watch",
     "typecheck": "tsc --project ./tsconfig.json --noEmit"
   },
   "license": "EUPL-1.2",

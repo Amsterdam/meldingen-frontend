@@ -4,16 +4,4 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   plugins: [tsconfigPaths()],
-  test: {
-    coverage: {
-      enabled: false,
-      include: ['src/**/*.{js,jsx,ts,tsx}'],
-      exclude: ['src/indes.ts'],
-    },
-    globals: true,
-    environment: 'jsdom',
-    include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    setupFiles: ['./vitest.setup.ts'],
-    watch: false,
-  },
 })

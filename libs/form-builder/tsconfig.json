@@ -5,7 +5,6 @@
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
     "resolveJsonModule": true,
-    "strict": true,
-    "types": ["../../typings/cssmodules.d.ts"]
+    "strict": true
   }
 }
