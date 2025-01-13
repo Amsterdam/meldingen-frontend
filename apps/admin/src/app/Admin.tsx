@@ -8,9 +8,9 @@ import { CustomLayout } from './components'
 import { i18nProvider, useAuthProvider } from './providers'
 
 export const Admin = () => {
-  const { keycloak, dataProviderRef, authProvider } = useAuthProvider()
+  const { keycloakClient, dataProviderRef, authProvider } = useAuthProvider()
 
-  if (!keycloak) return <p>Loading...</p>
+  if (!keycloakClient) return <p>Loading...</p>
 
   return (
     <ReactAdmin
