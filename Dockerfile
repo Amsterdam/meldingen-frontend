@@ -1,8 +1,3 @@
-ARG VITE_KEYCLOAK_BASE_URL
-ARG VITE_KEYCLOAK_REALM
-ARG VITE_KEYCLOAK_CLIENT_ID
-ARG VITE_BACKEND_BASE_URL
-
 #################################################
 ##                   BASE                       #
 #################################################
@@ -22,6 +17,7 @@ RUN pnpm install
 #################################################
 FROM base AS build
 
+# Set args for the Admin application. These are inlined at build time.
 ARG VITE_KEYCLOAK_BASE_URL
 ARG VITE_KEYCLOAK_REALM
 ARG VITE_KEYCLOAK_CLIENT_ID
@@ -55,6 +51,10 @@ EXPOSE 3001
 # Sourced from https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 FROM base AS public_meldingen
 WORKDIR /app
+
+# Set the backend URL to a runtime environment variable
+ARG NEXT_BACKEND_BASE_URL
+ENV NEXT_BACKEND_BASE_URL=$NEXT_BACKEND_BASE_URL
 
 ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
