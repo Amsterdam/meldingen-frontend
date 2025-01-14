@@ -1,3 +1,4 @@
 packages:
   - 'libs/form-renderer'
+  - 'libs/form-builder'
   - 'apps/*'
