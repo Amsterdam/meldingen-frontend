@@ -5,11 +5,8 @@ FROM node:20-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
-
+COPY . /app
 WORKDIR /app
-RUN npm i -g pnpm --force
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install
 
 
 #################################################
@@ -23,11 +20,7 @@ ARG VITE_KEYCLOAK_REALM
 ARG VITE_KEYCLOAK_CLIENT_ID
 ARG VITE_BACKEND_BASE_URL
 
-COPY tsconfig.base.json tsconfig.json .eslintrc.json ./
-COPY ./libs ./libs
-COPY ./apps/public/ ./apps/public/
-COPY ./apps/admin/ ./apps/admin/
-RUN pnpm install
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm build
 
 

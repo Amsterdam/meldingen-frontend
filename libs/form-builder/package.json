@@ -1,0 +1,12 @@
+{
+  "name": "form-builder",
+  "version": "0.1.0",
+  "description": "A plugin to create forms.",
+  "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  },
+  "license": "EUPL-1.2",
+  "private": true,
+  "type": "module"
+}
