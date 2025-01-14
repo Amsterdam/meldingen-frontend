@@ -3,7 +3,7 @@ import { vi } from 'vitest'
 
 import { SideBar } from './SideBar'
 
-vi.mock('../../utils', () => ({
+vi.mock('../../_utils', () => ({
   getAddressFromCoordinates: vi.fn().mockReturnValue('Nieuwmarkt 15, 1011JR Amsterdam'),
 }))
 

@@ -3,8 +3,8 @@ import { ChevronLeftIcon } from '@amsterdam/design-system-react-icons'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
+import { getAddressFromCoordinates } from '../../_utils'
 import type { Coordinates } from '../../page'
-import { getAddressFromCoordinates } from '../../utils'
 
 type Props = {
   coordinates: Coordinates | null
