@@ -3,11 +3,18 @@ import L from 'leaflet'
 import { useEffect, useRef, useState } from 'react'
 
 import 'leaflet/dist/leaflet.css'
+
+import type { Coordinates } from '../page'
+
 import styles from './map.module.css'
 import { marker } from './Marker/Marker'
 import { Notification } from './Notification/Notification'
 
-export const BaseLayer = () => {
+type Props = {
+  setCoordinates: (coordinates: Coordinates) => void
+}
+
+export const BaseLayer = ({ setCoordinates }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
@@ -53,16 +60,15 @@ export const BaseLayer = () => {
     createdMapInstance.current = true
     setMapInstance(map)
 
-    // TODO: temporarily log coordinates on click
     map.on('click', (e) => {
-      console.log(`Lat, Lon : ${e.latlng.lat}, ${e.latlng.lng}`)
+      setCoordinates({ lat: e.latlng.lat, lon: e.latlng.lng })
     })
 
     // On component unmount, destroy the map and all related events
     return () => {
       if (mapInstance) mapInstance.remove()
     }
-  }, [mapInstance])
+  }, [mapInstance, setCoordinates])
 
   const onSuccess: PositionCallback = ({ coords }) => {
     // TODO: is this correct? What should happen when you click the button without a map instance?

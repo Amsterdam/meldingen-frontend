@@ -1,0 +1,1 @@
+export { getAddressFromCoordinates } from './getAddressFromCoordinates'
