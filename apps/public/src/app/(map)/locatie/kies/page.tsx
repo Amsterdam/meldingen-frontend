@@ -14,7 +14,7 @@ const Map = dynamic(() => import('./_components/BaseLayer').then((module) => mod
 })
 
 const KiesLocatie = () => {
-  const [coordinates, setCoordinates] = useState<Coordinates | null>(null)
+  const [coordinates, setCoordinates] = useState<Coordinates>()
 
   return (
     // TODO: Create a compact grid with padding 24px and the map that overflows it. https://designsystem.amsterdam/?path=/docs/brand-design-tokens-grid--docs
