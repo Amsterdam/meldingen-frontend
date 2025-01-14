@@ -9,7 +9,7 @@ vi.mock('../../_utils', () => ({
 
 describe('SideBar', () => {
   it('should render correctly', () => {
-    render(<SideBar coordinates={null} />)
+    render(<SideBar />)
 
     const heading = screen.getByRole('heading', { name: 'Selecteer de locatie' })
     const paragraph = screen.getByRole('paragraph')

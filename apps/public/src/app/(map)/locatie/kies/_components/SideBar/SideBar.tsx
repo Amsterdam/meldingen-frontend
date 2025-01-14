@@ -7,7 +7,7 @@ import { getAddressFromCoordinates } from '../../_utils'
 import type { Coordinates } from '../../page'
 
 type Props = {
-  coordinates: Coordinates | null
+  coordinates?: Coordinates | null
 }
 
 export const SideBar = ({ coordinates }: Props) => {
