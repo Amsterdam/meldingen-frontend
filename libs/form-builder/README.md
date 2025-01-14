@@ -1,3 +1,3 @@
 # Form builder
 
-Form builder which is used to create forms with the FormIO builder.
+A plugin to create forms. Uses [the Form.io builder](https://help.form.io/developers/form-development/form-builder).

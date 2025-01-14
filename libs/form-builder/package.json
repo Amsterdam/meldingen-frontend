@@ -1,7 +1,7 @@
 {
   "name": "form-builder",
   "version": "0.1.0",
-  "description": "Form builder which is used to create forms with the FormIO builder.",
+  "description": "A plugin to create forms.",
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "tsc --project ./tsconfig.json --noEmit"
