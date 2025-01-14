@@ -23,7 +23,7 @@ vi.mock('leaflet', async (importOriginal) => {
 
 describe('BaseLayer', () => {
   it('renders the component', () => {
-    const { container } = render(<BaseLayer />)
+    const { container } = render(<BaseLayer setCoordinates={() => {}} />)
     expect(container.firstChild).toBeInTheDocument()
   })
 
