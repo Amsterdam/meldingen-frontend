@@ -6,8 +6,10 @@ describe('Layout', () => {
   it('should render', () => {
     const { container } = render(<Layout>Test</Layout>)
 
-    const main = container.querySelector('main')
+    const outerWrapper = container.querySelector('html')
+    const body = container.querySelector('body')
 
-    expect(main).toBeInTheDocument()
+    expect(outerWrapper).toHaveAttribute('lang', 'nl')
+    expect(body).toBeInTheDocument()
   })
 })
