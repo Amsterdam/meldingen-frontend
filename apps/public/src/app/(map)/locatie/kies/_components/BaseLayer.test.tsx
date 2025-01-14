@@ -28,7 +28,7 @@ describe('BaseLayer', () => {
   })
 
   it('renders the current location button', () => {
-    render(<BaseLayer />)
+    render(<BaseLayer setCoordinates={() => {}} />)
 
     const button = screen.getByRole('button', { name: 'Mijn locatie' })
 
@@ -50,7 +50,7 @@ describe('BaseLayer', () => {
 
     const user = userEvent.setup()
 
-    render(<BaseLayer />)
+    render(<BaseLayer setCoordinates={() => {}} />)
 
     const button = screen.getByRole('button', { name: 'Mijn locatie' })
 
@@ -80,7 +80,7 @@ describe('BaseLayer', () => {
 
     const user = userEvent.setup()
 
-    render(<BaseLayer />)
+    render(<BaseLayer setCoordinates={() => {}} />)
 
     const button = screen.getByRole('button', { name: 'Mijn locatie' })
 
