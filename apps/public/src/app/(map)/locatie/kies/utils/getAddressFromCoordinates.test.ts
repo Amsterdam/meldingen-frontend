@@ -32,6 +32,6 @@ describe('getAddressFromCoordinates', () => {
     const coordinates = { lat: 52.37239126063553, lon: 4.900905743712159 }
     const result = await getAddressFromCoordinates(coordinates)
 
-    expect(result).toEqual(mockResponseData)
+    expect(result).toEqual('Nieuwmarkt 15, 1011JR Amsterdam')
   })
 })

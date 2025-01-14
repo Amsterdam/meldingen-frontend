@@ -18,7 +18,7 @@ export const SideBar = ({ coordinates }: Props) => {
       if (!coordinates) return
       const result = await getAddressFromCoordinates({ lat: coordinates.lat, lon: coordinates.lon })
 
-      setAddress(result.response.docs[0].weergavenaam)
+      setAddress(result)
     }
     getAddress()
   }, [coordinates])
