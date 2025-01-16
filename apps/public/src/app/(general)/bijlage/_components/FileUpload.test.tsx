@@ -33,8 +33,6 @@ describe('FileUpload Component', () => {
   })
 
   it('uploads a file and displays name', async () => {
-    server.listen()
-
     const user = userEvent.setup()
 
     const mockContextValue = {
@@ -61,7 +59,5 @@ describe('FileUpload Component', () => {
     expect(fileInput.files).toHaveLength(1)
 
     expect(screen.getByText('example.png')).toBeInTheDocument()
-
-    server.close()
   })
 })

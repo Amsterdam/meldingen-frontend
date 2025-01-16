@@ -1,10 +1,10 @@
 import { http, HttpResponse } from 'msw'
 
-import * as API from './api'
+import * as endpoints from './endpoints'
 
 export const handlers = [
-  /* GET * */
-  http.get(API.PDOK_REVERSE, () =>
+  /** GET */
+  http.get(endpoints.PDOK_REVERSE, () =>
     HttpResponse.json({
       response: {
         numFound: 1,
@@ -24,8 +24,8 @@ export const handlers = [
     }),
   ),
 
-  /* POST * */
-  http.post(API.MELDING_ATTACHMENT_BY_ID, () =>
+  /** POST */
+  http.post(endpoints.MELDING_ATTACHMENT_BY_ID, () =>
     HttpResponse.json({
       id: 2,
       original_filename: 'example.png',
