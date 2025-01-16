@@ -1,5 +1,6 @@
-import { Column, Heading, Icon, Paragraph, Link } from '@amsterdam/design-system-react'
+import { Column, Heading, Icon, Paragraph, Link, TextInput, Label } from '@amsterdam/design-system-react'
 import { ChevronLeftIcon } from '@amsterdam/design-system-react-icons'
+import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Field, Label as HUILabel } from '@headlessui/react'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -10,8 +11,24 @@ type Props = {
   coordinates?: Coordinates
 }
 
+const addressOptions = [
+  {
+    id: 1,
+    weergave_naam: 'Amsterdam',
+  },
+  {
+    id: 2,
+    weergave_naam: 'Rotterdam',
+  },
+  {
+    id: 3,
+    weergave_naam: 'Utrecht',
+  },
+]
+
 export const SideBar = ({ coordinates }: Props) => {
   const [address, setAddress] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const getAddress = async () => {
@@ -44,6 +61,34 @@ export const SideBar = ({ coordinates }: Props) => {
           Zoek op adres
         </Heading>
         {address && <div>{address}</div>}
+        <Field>
+          <HUILabel as={Label}>Zoek op adres</HUILabel>
+          <Combobox>
+            <ComboboxInput
+              aria-label="Adres"
+              as={TextInput}
+              displayValue={(a: any) => a?.weergave_naam}
+              name="address"
+              // onChange={(event) => setQuery(event.target.value)}
+              autoComplete="off"
+            />
+            {!loading && (
+              <ComboboxOptions as="ul">
+                {addressOptions.length > 0 ? (
+                  addressOptions.map(({ id, weergave_naam }) => (
+                    <ComboboxOption key={id} value={weergave_naam} as="li">
+                      {weergave_naam}
+                    </ComboboxOption>
+                  ))
+                ) : (
+                  <ComboboxOption value="" disabled as="li">
+                    Geen resultaten gevonden
+                  </ComboboxOption>
+                )}
+              </ComboboxOptions>
+            )}
+          </Combobox>
+        </Field>
       </div>
     </Column>
   )
