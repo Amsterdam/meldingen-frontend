@@ -1,0 +1,25 @@
+.list {
+  box-shadow: var(--ams-text-input-box-shadow);
+  color: var(--ams-text-input-color);
+  font-family: var(--ams-text-input-font-family);
+  font-size: var(--ams-text-input-font-size);
+  font-weight: var(--ams-text-input-font-weight);
+  line-height: var(--ams-text-input-line-height);
+  list-style-type: none;
+  margin-block: 0;
+  padding-inline: 0;
+}
+
+.option {
+  padding-block: var(--ams-text-input-padding-block);
+  padding-inline: var(--ams-text-input-padding-inline);
+}
+
+.option:not(:last-child) {
+  box-shadow: inset 0 calc(var(--ams-border-width-sm) * -1) 0 0 var(--ams-color-primary-black);
+}
+
+.option[data-active] {
+  background-color: var(--ams-color-neutral-grey1);
+  box-shadow: 0 var(--ams-border-width-sm) 0 var(--ams-border-width-sm) var(--ams-color-primary-black);
+}

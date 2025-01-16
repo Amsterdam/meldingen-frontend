@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 
 import { getAddressFromCoordinates } from '../../_utils'
 import type { Coordinates } from '../../page'
+import { ListBox } from '../ListBox/ListBox'
 
 type Props = {
   coordinates?: Coordinates
@@ -73,15 +74,15 @@ export const SideBar = ({ coordinates }: Props) => {
               autoComplete="off"
             />
             {!loading && (
-              <ComboboxOptions as="ul">
+              <ComboboxOptions as={ListBox}>
                 {addressOptions.length > 0 ? (
                   addressOptions.map(({ id, weergave_naam }) => (
-                    <ComboboxOption key={id} value={weergave_naam} as="li">
+                    <ComboboxOption key={id} value={weergave_naam} as={ListBox.Option}>
                       {weergave_naam}
                     </ComboboxOption>
                   ))
                 ) : (
-                  <ComboboxOption value="" disabled as="li">
+                  <ComboboxOption value="" disabled as={ListBox.Option}>
                     Geen resultaten gevonden
                   </ComboboxOption>
                 )}
