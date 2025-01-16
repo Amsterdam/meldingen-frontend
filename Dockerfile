@@ -30,9 +30,17 @@ RUN pnpm build
 FROM nginx:stable-alpine AS admin_meldingen
 
 WORKDIR /usr/share/nginx/html
-RUN rm -rf ./*
+
+RUN set -eux; \
+    rm -rf ./*; \
+    mkdir -p /var/cache/nginx; \
+    chown -R nginx:nginx /var/cache/nginx; \
+    touch /var/run/nginx.pid; \
+    chown -R nginx:nginx /var/run/nginx.pid
 
 COPY --from=build /app/apps/admin/dist ./
+
+USER nginx
 
 CMD exec nginx -g 'daemon off;'
 EXPOSE 3001
