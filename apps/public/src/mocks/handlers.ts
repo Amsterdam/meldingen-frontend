@@ -1,7 +1,10 @@
 import { http, HttpResponse } from 'msw'
 
+import * as API from './api'
+
 export const handlers = [
-  http.get('https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse', () =>
+  /* GET * */
+  http.get(API.PDOK_REVERSE, () =>
     HttpResponse.json({
       response: {
         numFound: 1,
@@ -21,9 +24,10 @@ export const handlers = [
     }),
   ),
 
-  http.post('/melding/2/attachment', () =>
+  /* POST * */
+  http.post(API.MELDING_ATTACHMENT_BY_ID, () =>
     HttpResponse.json({
-      id: 1,
+      id: 2,
       original_filename: 'example.png',
       filename: 'example.png',
       created_at: '2021-10-14T14:05:41.000000Z',
