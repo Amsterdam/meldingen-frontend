@@ -1,12 +1,4 @@
 {
   "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*"],
-  "overrides": [
-    {
-      "files": ["**/vite.config.ts"],
-      "rules": {
-        "import/no-default-export": "off"
-      }
-    }
-  ]
+  "ignorePatterns": ["!**/*"]
 }

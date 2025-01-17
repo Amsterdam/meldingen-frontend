@@ -7,6 +7,7 @@
       "parser": "jsonc-eslint-parser",
       "rules": {}
     },
+
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "extends": ["airbnb", "airbnb-typescript", "plugin:jsx-a11y/strict", "prettier"],
@@ -38,6 +39,12 @@
         "react/jsx-props-no-spreading": "off",
         "react/react-in-jsx-scope": "off",
         "react/require-default-props": "off"
+      }
+    },
+    {
+      "files": ["**/vite.config.ts"],
+      "rules": {
+        "import/no-default-export": "off"
       }
     }
   ]
