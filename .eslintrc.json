@@ -7,7 +7,6 @@
       "parser": "jsonc-eslint-parser",
       "rules": {}
     },
-
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "extends": ["airbnb", "airbnb-typescript", "plugin:jsx-a11y/strict", "prettier"],
