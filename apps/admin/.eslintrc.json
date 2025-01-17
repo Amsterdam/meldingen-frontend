@@ -6,9 +6,6 @@
       "files": ["./vite.config.ts", "./vitest.setup.ts"],
       "rules": {
         "import/no-default-export": "off"
-      },
-      "parserOptions": {
-        "project": "tsconfig.vite.json"
       }
     }
   ]
