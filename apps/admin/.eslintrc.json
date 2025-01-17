@@ -8,7 +8,7 @@
         "import/no-default-export": "off"
       },
       "parserOptions": {
-        "project": "apps/admin/tsconfig.vite.json"
+        "project": "tsconfig.vite.json"
       }
     }
   ]
