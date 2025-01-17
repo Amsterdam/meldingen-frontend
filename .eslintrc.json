@@ -15,15 +15,9 @@
         "parser": "@typescript-eslint/parser",
         "project": "./tsconfig.json"
       },
-      "overrides": [
-        {
-          "files": ["vite.config.ts"],
-          "rules": {
-            "import/no-default-export": "off"
-          }
-        }
-      ],
+
       "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/consistent-type-imports": "error",
         "import/no-extraneous-dependencies": "off",
         "import/order": [

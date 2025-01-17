@@ -8,9 +8,9 @@ export default defineConfig({
     port: 3001,
   },
   test: {
-    // coverage: {
-    //   enabled: true,
-    // },
+    coverage: {
+      provider: 'istanbul',
+    },
     globals: true,
     environment: 'jsdom',
     include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],

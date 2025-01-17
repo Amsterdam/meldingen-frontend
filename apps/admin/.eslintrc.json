@@ -1,4 +1,15 @@
 {
   "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*", "node_modules"]
+  "ignorePatterns": ["!**/*", "node_modules"],
+  "overrides": [
+    {
+      "files": ["./vite.config.ts", "./vitest.setup.ts"],
+      "rules": {
+        "import/no-default-export": "off"
+      },
+      "parserOptions": {
+        "project": "apps/admin/tsconfig.vite.json"
+      }
+    }
+  ]
 }
