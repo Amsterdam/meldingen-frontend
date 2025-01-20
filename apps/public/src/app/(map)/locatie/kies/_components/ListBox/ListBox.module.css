@@ -15,8 +15,13 @@
     inset var(--ams-border-width-sm) 0 0 0 var(--ams-color-primary-black),
     /* Right border */ inset calc(var(--ams-border-width-sm) * -1) 0 0 0 var(--ams-color-primary-black),
     /* Bottom border */ inset 0 calc(var(--ams-border-width-sm) * -1) 0 0 var(--ams-color-primary-black);
+  cursor: pointer;
   padding-block: var(--ams-space-sm);
   padding-inline: var(--ams-space-md);
+}
+
+.option[aria-disabled] {
+  cursor: auto;
 }
 
 .option[data-active] {
