@@ -97,7 +97,6 @@ export const SideBar = ({ coordinates }: Props) => {
           <HUILabel as={Label}>Zoek op adres</HUILabel>
           <Combobox value={address} onChange={setAddress} onClose={() => fetchAddressList('')}>
             <ComboboxInput
-              aria-label="Adres"
               as={TextInput}
               displayValue={(item: Address) => item?.weergave_naam}
               name="address"
