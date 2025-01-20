@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { MeldingContext } from '../../../../context/MeldingContextProvider'
-import { server } from '../../../../mocks/node'
 
 import { FileUpload } from './FileUpload'
 
