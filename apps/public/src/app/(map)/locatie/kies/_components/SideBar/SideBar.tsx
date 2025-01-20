@@ -14,29 +14,43 @@ type Props = {
 
 const addressOptions = [
   {
-    id: 1,
+    id: 'a',
     weergave_naam: 'Amsterdam',
   },
   {
-    id: 2,
+    id: 'b',
     weergave_naam: 'Rotterdam',
   },
   {
-    id: 3,
+    id: 'c',
     weergave_naam: 'Utrecht',
   },
 ]
 
+type Address = {
+  id: string
+  weergave_naam: string
+}
+
 export const SideBar = ({ coordinates }: Props) => {
-  const [address, setAddress] = useState<string | null>(null)
+  const [address, setAddress] = useState<Address | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
+
+  const [query, setQuery] = useState('')
+
+  const filteredAddresses =
+    query === ''
+      ? addressOptions
+      : addressOptions.filter((option) => option.weergave_naam.toLowerCase().includes(query.toLowerCase()))
 
   useEffect(() => {
     const getAddress = async () => {
       if (!coordinates) return
       const result = await getAddressFromCoordinates({ lat: coordinates.lat, lon: coordinates.lon })
 
-      setAddress(result)
+      if (result) {
+        setAddress(result)
+      }
     }
     getAddress()
   }, [coordinates])
@@ -58,27 +72,23 @@ export const SideBar = ({ coordinates }: Props) => {
         </Paragraph>
       </div>
       <div>
-        <Heading level={2} size="level-4">
-          Zoek op adres
-        </Heading>
-        {address && <div>{address}</div>}
         <Field>
           <HUILabel as={Label}>Zoek op adres</HUILabel>
-          <Combobox>
+          <Combobox value={address} onChange={setAddress} onClose={() => setQuery('')}>
             <ComboboxInput
               aria-label="Adres"
               as={TextInput}
-              displayValue={(a: any) => a?.weergave_naam}
+              displayValue={(item: Address) => item?.weergave_naam}
               name="address"
-              // onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => setQuery(event.target.value)}
               autoComplete="off"
             />
             {!loading && (
               <ComboboxOptions as={ListBox} modal={false}>
-                {addressOptions.length > 0 ? (
-                  addressOptions.map(({ id, weergave_naam }) => (
-                    <ComboboxOption key={id} value={weergave_naam} as={ListBox.Option}>
-                      {weergave_naam}
+                {filteredAddresses.length > 0 ? (
+                  filteredAddresses.map((test) => (
+                    <ComboboxOption key={test.id} value={test} as={ListBox.Option}>
+                      {test.weergave_naam}
                     </ComboboxOption>
                   ))
                 ) : (
