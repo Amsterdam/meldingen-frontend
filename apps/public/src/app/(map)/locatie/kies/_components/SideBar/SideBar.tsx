@@ -12,37 +12,44 @@ type Props = {
   coordinates?: Coordinates
 }
 
-const addressOptions = [
-  {
-    id: 'a',
-    weergave_naam: 'Amsterdam',
-  },
-  {
-    id: 'b',
-    weergave_naam: 'Rotterdam',
-  },
-  {
-    id: 'c',
-    weergave_naam: 'Utrecht',
-  },
-]
-
 type Address = {
   id: string
   weergave_naam: string
 }
 
+const pdokQueryParams =
+  'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam&rows=5'
+
 export const SideBar = ({ coordinates }: Props) => {
   const [address, setAddress] = useState<Address | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
+  const [addressList, setAddressList] = useState<Address[]>([])
 
-  const [query, setQuery] = useState('')
+  const fetchAddressList = async (query: string) => {
+    if (query.length >= 3) {
+      try {
+        const response = await fetch(
+          `https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?${pdokQueryParams}&q=${query}`,
+        )
+        const responseData = await response.json()
 
-  const filteredAddresses =
-    query === ''
-      ? addressOptions
-      : addressOptions.filter((option) => option.weergave_naam.toLowerCase().includes(query.toLowerCase()))
+        if (response.ok) {
+          const responseList = responseData.response.docs.map((item: any) => ({
+            id: item.id,
+            weergave_naam: item.weergavenaam,
+          }))
 
+          setAddressList(responseList)
+        }
+      } catch (error) {
+        // TODO: handle error properly
+        console.log(error)
+      }
+    } else {
+      setAddressList([])
+    }
+  }
+
+  // TODO: this can just be a function, called on setCoordinates I think
   useEffect(() => {
     const getAddress = async () => {
       if (!coordinates) return
@@ -74,30 +81,28 @@ export const SideBar = ({ coordinates }: Props) => {
       <div>
         <Field>
           <HUILabel as={Label}>Zoek op adres</HUILabel>
-          <Combobox value={address} onChange={setAddress} onClose={() => setQuery('')}>
+          <Combobox value={address} onChange={setAddress} onClose={() => fetchAddressList('')}>
             <ComboboxInput
               aria-label="Adres"
               as={TextInput}
               displayValue={(item: Address) => item?.weergave_naam}
               name="address"
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => fetchAddressList(event.target.value)}
               autoComplete="off"
             />
-            {!loading && (
-              <ComboboxOptions as={ListBox} modal={false}>
-                {filteredAddresses.length > 0 ? (
-                  filteredAddresses.map((test) => (
-                    <ComboboxOption key={test.id} value={test} as={ListBox.Option}>
-                      {test.weergave_naam}
-                    </ComboboxOption>
-                  ))
-                ) : (
-                  <ComboboxOption value="" disabled as={ListBox.Option}>
-                    Geen resultaten gevonden
+            <ComboboxOptions as={ListBox} modal={false}>
+              {addressList.length > 0 ? (
+                addressList.map((test) => (
+                  <ComboboxOption key={test.id} value={test} as={ListBox.Option}>
+                    {test.weergave_naam}
                   </ComboboxOption>
-                )}
-              </ComboboxOptions>
-            )}
+                ))
+              ) : (
+                <ComboboxOption value="" disabled as={ListBox.Option}>
+                  Geen resultaten gevonden
+                </ComboboxOption>
+              )}
+            </ComboboxOptions>
           </Combobox>
         </Field>
       </div>
