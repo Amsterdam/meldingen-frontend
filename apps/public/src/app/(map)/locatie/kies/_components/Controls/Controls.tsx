@@ -9,14 +9,16 @@ import styles from './Controls.module.css'
 
 type Controls = 'IN' | 'OUT'
 
-export const Controls = ({ mapInstance }: any) => {
+type Props = {
+  mapInstance: L.Map | null
+}
+
+export const Controls = ({ mapInstance }: Props) => {
   const [markerLayer, setMarkerLayer] = useState<L.Marker | null>(null)
 
   const [notification, setNotification] = useState<{ heading: string; description: string } | null>(null)
 
   const handleZoom = (control: Controls) => {
-    console.log('handle zoom', control)
-
     if (control === 'IN') {
       mapInstance?.setZoom(mapInstance.getZoom() + 1)
     }
