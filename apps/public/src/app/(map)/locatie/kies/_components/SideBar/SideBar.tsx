@@ -20,13 +20,23 @@ type Address = {
 const pdokQueryParams =
   'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam&rows=5'
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+const debounce = (fn: Function, delay = 250) => {
+  let timer: ReturnType<typeof setTimeout>
+
+  return (...args: unknown[]) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => fn(...args), delay)
+  }
+}
+
 export const SideBar = ({ coordinates }: Props) => {
   const [address, setAddress] = useState<Address | null>(null)
   const [addressList, setAddressList] = useState<Address[]>([])
   const [showListBox, setShowListBox] = useState(false)
 
   // TODO: do we want to show a loading state?
-  const fetchAddressList = async (query: string) => {
+  const fetchAddressList = debounce(async (query: string) => {
     if (query.length >= 3) {
       try {
         const response = await fetch(
@@ -45,13 +55,13 @@ export const SideBar = ({ coordinates }: Props) => {
         }
       } catch (error) {
         // TODO: handle error properly
-        console.log(error)
+        console.error(error)
       }
     } else {
       setAddressList([])
       setShowListBox(false)
     }
-  }
+  })
 
   // TODO: this can just be a function, called on setCoordinates I think
   useEffect(() => {
