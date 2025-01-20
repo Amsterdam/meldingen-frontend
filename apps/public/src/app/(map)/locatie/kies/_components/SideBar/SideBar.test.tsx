@@ -8,10 +8,6 @@ import { server } from 'apps/public/src/mocks/node'
 
 import { SideBar } from './SideBar'
 
-vi.mock('../../_utils', () => ({
-  getAddressFromCoordinates: vi.fn().mockReturnValue('Nieuwmarkt 15, 1011JR Amsterdam'),
-}))
-
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
   unobserve: vi.fn(),
@@ -29,12 +25,11 @@ describe('SideBar', () => {
     expect(paragraph).toBeInTheDocument()
   })
 
-  // TODO: fix this test, or move this logic
-  it.skip('should render render address based on provided coordinates ', async () => {
+  it('should render render address based on provided coordinates ', async () => {
     render(<SideBar coordinates={{ lat: 52.37239126063553, lon: 4.900905743712159 }} />)
 
     await waitFor(() => {
-      expect(screen.getByText('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
+      expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
     })
   })
 

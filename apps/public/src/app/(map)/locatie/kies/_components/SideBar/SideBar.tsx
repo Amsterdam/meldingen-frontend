@@ -67,6 +67,7 @@ export const SideBar = ({ coordinates }: Props) => {
   useEffect(() => {
     const getAddress = async () => {
       if (!coordinates) return
+
       const result = await getAddressFromCoordinates({ lat: coordinates.lat, lon: coordinates.lon })
 
       if (result) {
