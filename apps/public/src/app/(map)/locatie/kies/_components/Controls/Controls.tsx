@@ -1,13 +1,14 @@
-import L from 'leaflet'
 import { Button, Paragraph } from '@amsterdam/design-system-react'
 import { EnlargeIcon, IndeterminateIcon } from '@amsterdam/design-system-react-icons'
-import { Notification } from '../Notification/Notification'
+import L from 'leaflet'
 import { useState } from 'react'
+
 import { marker } from '../Marker/Marker'
+import { Notification } from '../Notification/Notification'
 
 import styles from './Controls.module.css'
 
-type Controls = 'IN' | 'OUT'
+type ZoomControls = 'IN' | 'OUT'
 
 type Props = {
   mapInstance: L.Map | null
@@ -18,7 +19,7 @@ export const Controls = ({ mapInstance }: Props) => {
 
   const [notification, setNotification] = useState<{ heading: string; description: string } | null>(null)
 
-  const handleZoom = (control: Controls) => {
+  const handleZoom = (control: ZoomControls) => {
     if (control === 'IN') {
       mapInstance?.setZoom(mapInstance.getZoom() + 1)
     }

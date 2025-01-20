@@ -1,11 +1,11 @@
 import { screen, render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import leaflet from 'leaflet'
+import L from 'leaflet'
 import { vi } from 'vitest'
 
-import { Controls } from './Controls'
 import { marker } from '../Marker/Marker'
-import L from 'leaflet'
+
+import { Controls } from './Controls'
 
 const INITIAL_ZOOM = 10
 
@@ -93,7 +93,7 @@ describe('Controls', () => {
     expect(mockGeolocation.getCurrentPosition).toHaveBeenCalled()
 
     await waitFor(() => {
-      expect(leaflet.marker).toHaveBeenCalledWith(
+      expect(L.marker).toHaveBeenCalledWith(
         {
           lat: 52.370216,
           lng: 4.895168,
