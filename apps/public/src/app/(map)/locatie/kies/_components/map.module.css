@@ -5,30 +5,3 @@
 .map {
   height: 100vh;
 }
-
-.overlay {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: var(--ams-space-sm);
-  padding-block: var(--ams-space-sm);
-  padding-inline: var(--ams-space-sm);
-  position: absolute;
-
-  /*
-    Leaflet uses z-indexes to stack layers. The highest Leaflet z-index is 700.
-    https://leafletjs.com/reference.html#map-pane
-  */
-  z-index: 701;
-}
-
-.overlay-top-left {
-  composes: overlay;
-  top: 0;
-}
-
-.overlay-bottom-right {
-  composes: overlay;
-  bottom: 0;
-  right: 0;
-}
