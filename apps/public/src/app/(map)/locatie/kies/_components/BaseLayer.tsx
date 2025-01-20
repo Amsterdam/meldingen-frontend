@@ -1,7 +1,7 @@
 import { Button, Paragraph } from '@amsterdam/design-system-react'
 import L from 'leaflet'
 import { useEffect, useRef, useState } from 'react'
-
+import { EnlargeIcon, IndeterminateIcon } from '@amsterdam/design-system-react-icons'
 import 'leaflet/dist/leaflet.css'
 
 import type { Coordinates } from '../page'
@@ -13,6 +13,8 @@ import { Notification } from './Notification/Notification'
 type Props = {
   setCoordinates: (coordinates: Coordinates) => void
 }
+
+type Controls = 'IN' | 'OUT'
 
 export const BaseLayer = ({ setCoordinates }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
@@ -86,6 +88,15 @@ export const BaseLayer = ({ setCoordinates }: Props) => {
     setMarkerLayer(newMarker)
   }
 
+  const handleZoom = (control: Controls) => {
+    if (control === 'IN') {
+      mapInstance?.setZoom(mapInstance.getZoom() + 1)
+    }
+    if (control === 'OUT') {
+      mapInstance?.setZoom(mapInstance.getZoom() - 1)
+    }
+  }
+
   const onError = () => {
     // TODO: these texts should come from the BE, or a config / env vars
     setNotification({
@@ -99,7 +110,7 @@ export const BaseLayer = ({ setCoordinates }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.map} ref={mapRef} />
-      <div className={styles.overlay}>
+      <div className={styles['overlay-top-left']}>
         <Button variant="secondary" onClick={handleCurrentLocationButtonClick}>
           Mijn locatie
         </Button>
@@ -108,6 +119,14 @@ export const BaseLayer = ({ setCoordinates }: Props) => {
             <Paragraph>{notification.description}</Paragraph>
           </Notification>
         )}
+      </div>
+      <div className={styles['overlay-bottom-right']}>
+        <Button variant="secondary" iconOnly icon={EnlargeIcon} onClick={() => handleZoom('IN')}>
+          Inzoomen
+        </Button>
+        <Button variant="secondary" iconOnly icon={IndeterminateIcon} onClick={() => handleZoom('OUT')}>
+          Uitzoomen
+        </Button>
       </div>
     </div>
   )
