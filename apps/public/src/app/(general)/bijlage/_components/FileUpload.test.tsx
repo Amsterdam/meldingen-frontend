@@ -1,7 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { http, HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import { MeldingContext } from '../../../../context/MeldingContextProvider'
 
@@ -33,19 +31,8 @@ describe('FileUpload Component', () => {
     expect(fileInput.files).toHaveLength(2)
   })
 
-  it.skip('uploads a file and displays name', async () => {
+  it('uploads a file and displays name', async () => {
     const user = userEvent.setup()
-
-    const mockResponseData = {
-      id: 1,
-      original_filename: 'example.png',
-      filename: 'example.png',
-      created_at: '2021-10-14T14:05:41.000000Z',
-    }
-
-    const server = setupServer(
-      http.post('http://localhost:8000/melding/2/attachment', () => HttpResponse.json(mockResponseData)),
-    )
 
     const mockContextValue = {
       data: {
@@ -55,8 +42,6 @@ describe('FileUpload Component', () => {
       },
       setData: () => {},
     }
-
-    server.listen()
 
     render(
       <MeldingContext.Provider value={mockContextValue}>
@@ -73,7 +58,5 @@ describe('FileUpload Component', () => {
     expect(fileInput.files).toHaveLength(1)
 
     expect(screen.getByText('example.png')).toBeInTheDocument()
-
-    server.close()
   })
 })
