@@ -1,12 +1,12 @@
 import { Column, Heading, Icon, Paragraph, Link, TextInput, Label } from '@amsterdam/design-system-react'
 import { ChevronLeftIcon } from '@amsterdam/design-system-react-icons'
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Field, Label as HUILabel } from '@headlessui/react'
+import { ListBox } from '@meldingen/ui'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { getAddressFromCoordinates } from '../../_utils'
 import type { Coordinates } from '../../page'
-import { ListBox } from '../ListBox/ListBox'
 
 type Props = {
   coordinates?: Coordinates
