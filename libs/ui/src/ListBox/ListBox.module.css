@@ -5,7 +5,7 @@
   font-weight: var(--ams-text-font-weight-normal);
   line-height: var(--ams-text-level-5-line-height);
   list-style-type: none;
-  margin-block: 0;
+  margin-block: 0 var(--ams-space-grid-md);
   padding-inline: 0;
 }
 
