@@ -23,7 +23,9 @@ const pdokQueryParams =
 export const SideBar = ({ coordinates }: Props) => {
   const [address, setAddress] = useState<Address | null>(null)
   const [addressList, setAddressList] = useState<Address[]>([])
+  const [showListBox, setShowListBox] = useState(false)
 
+  // TODO: do we want to show a loading state?
   const fetchAddressList = async (query: string) => {
     if (query.length >= 3) {
       try {
@@ -39,6 +41,7 @@ export const SideBar = ({ coordinates }: Props) => {
           }))
 
           setAddressList(responseList)
+          setShowListBox(true)
         }
       } catch (error) {
         // TODO: handle error properly
@@ -46,6 +49,7 @@ export const SideBar = ({ coordinates }: Props) => {
       }
     } else {
       setAddressList([])
+      setShowListBox(false)
     }
   }
 
@@ -90,19 +94,21 @@ export const SideBar = ({ coordinates }: Props) => {
               onChange={(event) => fetchAddressList(event.target.value)}
               autoComplete="off"
             />
-            <ComboboxOptions as={ListBox} modal={false}>
-              {addressList.length > 0 ? (
-                addressList.map((test) => (
-                  <ComboboxOption key={test.id} value={test} as={ListBox.Option}>
-                    {test.weergave_naam}
+            {showListBox && (
+              <ComboboxOptions as={ListBox} modal={false}>
+                {addressList.length > 0 ? (
+                  addressList.map((test) => (
+                    <ComboboxOption key={test.id} value={test} as={ListBox.Option}>
+                      {test.weergave_naam}
+                    </ComboboxOption>
+                  ))
+                ) : (
+                  <ComboboxOption value="" disabled as={ListBox.Option}>
+                    Geen resultaten gevonden
                   </ComboboxOption>
-                ))
-              ) : (
-                <ComboboxOption value="" disabled as={ListBox.Option}>
-                  Geen resultaten gevonden
-                </ComboboxOption>
-              )}
-            </ComboboxOptions>
+                )}
+              </ComboboxOptions>
+            )}
           </Combobox>
         </Field>
       </div>
