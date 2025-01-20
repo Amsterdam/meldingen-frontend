@@ -74,7 +74,7 @@ export const SideBar = ({ coordinates }: Props) => {
               autoComplete="off"
             />
             {!loading && (
-              <ComboboxOptions as={ListBox}>
+              <ComboboxOptions as={ListBox} modal={false}>
                 {addressOptions.length > 0 ? (
                   addressOptions.map(({ id, weergave_naam }) => (
                     <ComboboxOption key={id} value={weergave_naam} as={ListBox.Option}>
