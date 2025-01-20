@@ -1,11 +1,12 @@
-import type { PropsWithChildren, LiHTMLAttributes } from 'react'
+import type { ForwardedRef, PropsWithChildren, LiHTMLAttributes } from 'react'
+import { forwardRef } from 'react'
 
 import styles from './ListBox.module.css'
 
 type Props = PropsWithChildren<LiHTMLAttributes<HTMLLIElement>>
 
-export const ListBoxOption = ({ children, ...restProps }: Props) => (
-  <li className={styles.option} {...restProps}>
+export const ListBoxOption = forwardRef(({ children, ...restProps }: Props, ref: ForwardedRef<HTMLLIElement>) => (
+  <li {...restProps} ref={ref} className={styles.option}>
     {children}
   </li>
-)
+))
