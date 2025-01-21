@@ -11,10 +11,10 @@
 
 .option {
   box-shadow:
-    /* Left border */
-    inset var(--ams-border-width-sm) 0 0 0 var(--ams-color-primary-black),
-    /* Right border */ inset calc(var(--ams-border-width-sm) * -1) 0 0 0 var(--ams-color-primary-black),
-    /* Bottom border */ inset 0 calc(var(--ams-border-width-sm) * -1) 0 0 var(--ams-color-primary-black);
+    inset var(--ams-border-width-sm) 0 0 0 var(--ams-color-primary-black) /* Left border */,
+    inset calc(var(--ams-border-width-sm) * -1) 0 0 0 var(--ams-color-primary-black) /* Right border */,
+    inset 0 calc(var(--ams-border-width-sm) * -1) 0 0 var(--ams-color-primary-black); /* Bottom border */
+
   cursor: pointer;
   padding-block: var(--ams-space-sm);
   padding-inline: var(--ams-space-md);
@@ -27,9 +27,8 @@
 .option[data-active] {
   background-color: var(--ams-color-neutral-grey1);
   box-shadow:
-    /* Left border */
-    inset var(--ams-border-width-md) 0 0 0 var(--ams-color-primary-black),
-    /* Right border */ inset calc(var(--ams-border-width-md) * -1) 0 0 0 var(--ams-color-primary-black),
-    /* Top border */ inset 0 var(--ams-border-width-sm) 0 0 var(--ams-color-primary-black),
-    /* Bottom border */ inset 0 calc(var(--ams-border-width-md) * -1) 0 0 var(--ams-color-primary-black);
+    inset var(--ams-border-width-md) 0 0 0 var(--ams-color-primary-black) /* Left border */,
+    inset calc(var(--ams-border-width-md) * -1) 0 0 0 var(--ams-color-primary-black) /* Right border */,
+    inset 0 var(--ams-border-width-sm) 0 0 var(--ams-color-primary-black) /* Top border */,
+    inset 0 calc(var(--ams-border-width-md) * -1) 0 0 var(--ams-color-primary-black); /* Bottom border */
 }
