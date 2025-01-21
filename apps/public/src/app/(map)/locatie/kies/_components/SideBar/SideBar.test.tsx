@@ -7,10 +7,10 @@ describe('SideBar', () => {
     render(<SideBar />)
 
     const heading = screen.getByRole('heading', { name: 'Selecteer de locatie' })
-    const paragraph = screen.getByRole('paragraph')
+    const paragraph = screen.getAllByRole('paragraph')
 
     expect(heading).toBeInTheDocument()
-    expect(paragraph).toBeInTheDocument()
+    expect(paragraph[0]).toBeInTheDocument()
   })
 
   it('should show an address based on provided coordinates ', async () => {
