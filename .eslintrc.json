@@ -1,7 +1,6 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nx"],
   "overrides": [
     {
       "files": "*.json",
@@ -16,15 +15,8 @@
         "parser": "@typescript-eslint/parser",
         "project": "./tsconfig.json"
       },
-      "overrides": [
-        {
-          "files": ["vite.config.ts"],
-          "rules": {
-            "import/no-default-export": "off"
-          }
-        }
-      ],
       "rules": {
+        "@typescript-eslint/no-explicit-any": "warn",
         "@typescript-eslint/consistent-type-imports": "error",
         "import/no-extraneous-dependencies": "off",
         "import/order": [
@@ -48,21 +40,10 @@
       }
     },
     {
-      "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nx/typescript"],
-      "rules": {}
-    },
-    {
-      "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nx/javascript"],
-      "rules": {}
-    },
-    {
-      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
-      "env": {
-        "jest": true
-      },
-      "rules": {}
+      "files": ["**/vite.config.ts"],
+      "rules": {
+        "import/no-default-export": "off"
+      }
     }
   ]
 }
