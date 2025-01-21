@@ -11,9 +11,10 @@ more focused and highly cohesive units.
 
 ## PNPM
 
-We use [PNPM](https://pnpm.io/) as package manager of our monorepo. It uses workspaces to manage dependecies
-and let them interact with each other. Previously we used NX to manage our monorepo but faced a lot of issues
-and inconsistencies with it. Therefore we moved to PNPM.
+We use [PNPM](https://pnpm.io/) as the package manager for our monorepo.
+It uses workspaces to manage multiple projects inside a single repository.
+PNPM allows you to easily define scripts in the root which you can run for all apps.
+We used NX to handle our monorepo before, but we encountered many problems and inconsistencies. So, we switched to PNPM.
 
 ### Importing from local libraries
 
