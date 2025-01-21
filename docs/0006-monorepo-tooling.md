@@ -9,17 +9,12 @@ You can find our internal libraries in the `/libs` directory.
 By separating our code like this, we hope to stimulate organizing our source code and logic into smaller,
 more focused and highly cohesive units.
 
-## Nx
+## PNPM
 
-We use [Nx](https://nx.dev/) to stay on top of the different apps and libs in this project.
-Nx does a lot of things, but we mainly use it for these reasons:
-
-- It’s easy to scaffold a new app or lib, with a preconfigured setup for things like linting and testing.
-- Because it’s easy to start a new lib, it is easier to move code out of your apps and into libs,
-  resulting in a more modular organisation of our code.
-  [Nx recommends having roughly 20% of your code in apps, and 80% in libs](https://nx.dev/concepts/more-concepts/applications-and-libraries#mental-model).
-- It allows you to easily define scripts in the root which you can run for all apps.
-- Nx caches builds and linting and testing runs, which means you spend less time waiting for these to finish.
+We use [PNPM](https://pnpm.io/) as the package manager for our monorepo.
+It uses workspaces to manage multiple projects inside a single repository.
+PNPM allows you to easily define scripts in the root which you can run for all apps.
+We used NX to handle our monorepo before, but we encountered many problems and inconsistencies. So, we switched to PNPM.
 
 ### Importing from local libraries
 

@@ -33,6 +33,7 @@ const nl: TranslationMessages = {
       save: 'Opslaan',
       search: 'Zoeken',
       select_all: 'Alles selecteren',
+      select_all_button: 'Alles selecteren',
       select_columns: 'Kolommen',
       select_row: 'Selecteer rij',
       show: 'Tonen',
@@ -102,8 +103,9 @@ const nl: TranslationMessages = {
       loading: 'De pagina is aan het laden, een moment a.u.b.',
       no: 'Nee',
       not_found: 'U heeft een verkeerde URL ingevoerd of een defecte link aangeklikt.',
-      yes: 'Ja',
+      select_all_limit_reached: 'U heeft de limiet bereikt.',
       unsaved_changes: 'Sommige van uw wijzigingen zijn niet opgeslagen. Weet u zeker dat u ze wilt negeren?',
+      yes: 'Ja',
     },
     sort: {
       sort_by: 'Sorteren op %{field} %{order}',
