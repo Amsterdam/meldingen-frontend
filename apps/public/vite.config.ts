@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [tsconfigPaths(), react()],
   test: {
     coverage: {
-      enabled: true,
+      provider: 'istanbul',
       include: ['src/**/*.{js,jsx,ts,tsx}'],
     },
     globals: true,

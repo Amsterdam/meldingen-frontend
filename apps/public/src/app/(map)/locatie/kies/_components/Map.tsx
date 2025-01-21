@@ -6,7 +6,7 @@ import 'leaflet/dist/leaflet.css'
 import type { Coordinates } from '../page'
 
 import { Controls } from './Controls/Controls'
-import styles from './Map-rename.module.css'
+import styles from './Map.module.css'
 
 type Props = {
   setCoordinates: (coordinates: Coordinates) => void
