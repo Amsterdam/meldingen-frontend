@@ -1,5 +1,13 @@
 import { Label, TextInput } from '@amsterdam/design-system-react'
-import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Field, Label as HUILabel } from '@headlessui/react'
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxOption,
+  ComboboxOptions,
+  Description,
+  Field,
+  Label as HUILabel,
+} from '@headlessui/react'
 import { ListBox } from '@meldingen/ui'
 import { useState } from 'react'
 
@@ -58,13 +66,18 @@ export const AddressComboBox = ({ address, setAddress }: Props) => {
   return (
     <Field>
       <HUILabel as={Label}>Zoek op adres</HUILabel>
-      <Combobox value={address} onChange={setAddress} onClose={() => fetchAddressList('')}>
+      <Description className="ams-visually-hidden">
+        Als er autoaanvul-resultaten zijn, gebruik dan de pijltjes omhoog en omlaag om te bekijken en druk op enter om
+        te kiezen. Voor <span lang="en">touch</span>-apparaten, verken met aanraking of veegbewegingen{' '}
+        <span lang="en">(swipe)</span>.
+      </Description>
+      <Combobox onChange={setAddress} onClose={() => fetchAddressList('')} value={address}>
         <ComboboxInput
           as={TextInput}
+          autoComplete="off"
           displayValue={(item: Address) => item?.weergave_naam}
           name="address"
           onChange={(event) => fetchAddressList(event.target.value)}
-          autoComplete="off"
         />
         {showListBox && (
           <ComboboxOptions as={ListBox} modal={false}>
