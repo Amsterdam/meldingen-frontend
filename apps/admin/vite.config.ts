@@ -9,7 +9,7 @@ export default defineConfig({
   },
   test: {
     coverage: {
-      provider: 'istanbul',
+      enabled: true,
     },
     globals: true,
     environment: 'jsdom',
