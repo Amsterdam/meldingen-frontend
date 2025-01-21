@@ -19,7 +19,7 @@ vi.mock('leaflet', async (importOriginal) => {
 })
 
 describe('Map', () => {
-  it.only('renders the component', () => {
+  it('renders the component', () => {
     const { container } = render(<Map setCoordinates={() => {}} />)
     expect(container.firstChild).toBeInTheDocument()
   })
