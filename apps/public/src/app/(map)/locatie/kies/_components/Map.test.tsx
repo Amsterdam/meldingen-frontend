@@ -1,7 +1,7 @@
 import { screen, render } from '@testing-library/react'
 import { vi } from 'vitest'
 
-import { BaseLayer } from './BaseLayer'
+import { Map } from './Map'
 
 vi.mock('leaflet', async (importOriginal) => {
   const actual = await importOriginal()
@@ -18,14 +18,14 @@ vi.mock('leaflet', async (importOriginal) => {
   }
 })
 
-describe('BaseLayer', () => {
+describe('Map', () => {
   it('renders the component', () => {
-    const { container } = render(<BaseLayer setCoordinates={() => {}} />)
+    const { container } = render(<Map setCoordinates={() => {}} />)
     expect(container.firstChild).toBeInTheDocument()
   })
 
   it('renders the current location button', () => {
-    render(<BaseLayer setCoordinates={() => {}} />)
+    render(<Map setCoordinates={() => {}} />)
 
     const button = screen.getByRole('button', { name: 'Mijn locatie' })
 

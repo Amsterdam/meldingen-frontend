@@ -1,5 +1,5 @@
 import { Button, Paragraph } from '@amsterdam/design-system-react'
-import { EnlargeIcon, IndeterminateIcon } from '@amsterdam/design-system-react-icons'
+import { EnlargeIcon, MinimiseIcon } from '@amsterdam/design-system-react-icons'
 import L from 'leaflet'
 import { useState } from 'react'
 
@@ -7,8 +7,6 @@ import { marker } from '../Marker/Marker'
 import { Notification } from '../Notification/Notification'
 
 import styles from './Controls.module.css'
-
-type ZoomControls = 'IN' | 'OUT'
 
 type Props = {
   mapInstance: L.Map | null
@@ -19,13 +17,11 @@ export const Controls = ({ mapInstance }: Props) => {
 
   const [notification, setNotification] = useState<{ heading: string; description: string } | null>(null)
 
-  const handleZoom = (control: ZoomControls) => {
-    if (control === 'IN') {
-      mapInstance?.setZoom(mapInstance.getZoom() + 1)
-    }
-    if (control === 'OUT') {
-      mapInstance?.setZoom(mapInstance.getZoom() - 1)
-    }
+  const handleZoomIn = () => {
+    mapInstance?.setZoom(mapInstance.getZoom() + 1)
+  }
+  const handleZoomOut = () => {
+    mapInstance?.setZoom(mapInstance.getZoom() - 1)
   }
 
   const onSuccess: PositionCallback = ({ coords }) => {
@@ -67,10 +63,10 @@ export const Controls = ({ mapInstance }: Props) => {
         )}
       </div>
       <div className={styles['overlay-bottom-right']}>
-        <Button variant="secondary" iconOnly icon={EnlargeIcon} onClick={() => handleZoom('IN')}>
+        <Button variant="secondary" iconOnly icon={EnlargeIcon} onClick={handleZoomIn}>
           Inzoomen
         </Button>
-        <Button variant="secondary" iconOnly icon={IndeterminateIcon} onClick={() => handleZoom('OUT')}>
+        <Button variant="secondary" iconOnly icon={MinimiseIcon} onClick={handleZoomOut}>
           Uitzoomen
         </Button>
       </div>

@@ -6,13 +6,13 @@ import 'leaflet/dist/leaflet.css'
 import type { Coordinates } from '../page'
 
 import { Controls } from './Controls/Controls'
-import styles from './map.module.css'
+import styles from './Map-rename.module.css'
 
 type Props = {
   setCoordinates: (coordinates: Coordinates) => void
 }
 
-export const BaseLayer = ({ setCoordinates }: Props) => {
+export const Map = ({ setCoordinates }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled

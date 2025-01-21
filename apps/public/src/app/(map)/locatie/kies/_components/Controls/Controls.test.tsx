@@ -9,16 +9,7 @@ import { Controls } from './Controls'
 
 const INITIAL_ZOOM = 10
 
-const mapMock = {
-  center: [52.370216, 4.895168],
-  zoom: 14,
-  layers: [],
-  maxZoom: 18,
-  minZoom: 11,
-  maxBounds: [
-    [52.25168, 4.64034],
-    [52.50536, 5.10737],
-  ],
+const mapInstanceMock = {
   getZoom: vi.fn().mockImplementation(() => INITIAL_ZOOM),
   setZoom: vi.fn(),
 } as unknown as L.Map
@@ -54,7 +45,7 @@ describe('Controls', () => {
 
     const user = userEvent.setup()
 
-    render(<Controls mapInstance={mapMock} />)
+    render(<Controls mapInstance={mapInstanceMock} />)
 
     const button = screen.getByRole('button', { name: 'Mijn locatie' })
 
@@ -84,7 +75,7 @@ describe('Controls', () => {
 
     const user = userEvent.setup()
 
-    render(<Controls mapInstance={mapMock} />)
+    render(<Controls mapInstance={mapInstanceMock} />)
 
     const button = screen.getByRole('button', { name: 'Mijn locatie' })
 
@@ -108,18 +99,18 @@ describe('Controls', () => {
   it('should zoom in and out when zoom controls are used', async () => {
     const user = userEvent.setup()
 
-    render(<Controls mapInstance={mapMock} />)
+    render(<Controls mapInstance={mapInstanceMock} />)
 
     const ZoomInButton = screen.getByRole('button', { name: 'Inzoomen' })
 
     await user.click(ZoomInButton)
 
-    expect(mapMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM + 1)
+    expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM + 1)
 
     const ZoomOutButton = screen.getByRole('button', { name: 'Uitzoomen' })
 
     await user.click(ZoomOutButton)
 
-    expect(mapMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM - 1)
+    expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM - 1)
   })
 })
