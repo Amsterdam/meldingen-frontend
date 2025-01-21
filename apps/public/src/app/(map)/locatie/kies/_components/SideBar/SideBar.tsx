@@ -45,7 +45,7 @@ export const SideBar = ({ coordinates }: Props) => {
         const responseData = await response.json()
 
         if (response.ok) {
-          const responseList = responseData.response.docs.map((item: any) => ({
+          const responseList = responseData.response.docs.map((item: { id: string; weergavenaam: string }) => ({
             id: item.id,
             weergave_naam: item.weergavenaam,
           }))
