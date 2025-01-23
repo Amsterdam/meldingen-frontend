@@ -24,6 +24,39 @@ export const handlers = [
     }),
   ),
 
+  http.get(ENDPOINTS.PDOK_SUGGEST, () =>
+    HttpResponse.json({
+      response: {
+        numFound: 566689,
+        start: 0,
+        maxScore: 1.4264281,
+        numFoundExact: true,
+        docs: [
+          {
+            weergavenaam: 'Amsteldijk 152A-H, 1079LG Amsterdam',
+            id: 'adr-bc581db7d4fc654e4ed35abce874ee11',
+          },
+          {
+            weergavenaam: 'Amstelkade 166A-H, 1078AX Amsterdam',
+            id: 'adr-8d27e7c75aef4349f37e1bebae62d45a',
+          },
+          {
+            weergavenaam: 'Amstelkade 169A-H, 1078AZ Amsterdam',
+            id: 'adr-6da11c41a94dad446b1ddcf3cdf927e6',
+          },
+          {
+            weergavenaam: 'Amstelveenseweg 170B-H, 1075XP Amsterdam',
+            id: 'adr-e15725abe37eb0e4dfeecad2f1055f83',
+          },
+          {
+            weergavenaam: 'Amstel 312A-H, 1017AP Amsterdam',
+            id: 'adr-1e36f861ba5cede46a2c8e1b53bd55a2',
+          },
+        ],
+      },
+    }),
+  ),
+
   /** POST */
   http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () =>
     HttpResponse.json({
