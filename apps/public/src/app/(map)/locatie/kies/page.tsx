@@ -8,7 +8,7 @@ import { SideBar } from './_components/SideBar/SideBar'
 
 export type Coordinates = { lat: number; lon: number }
 
-const Map = dynamic(() => import('./_components/BaseLayer').then((module) => module.BaseLayer), {
+const Map = dynamic(() => import('./_components/Map').then((module) => module.Map), {
   loading: () => <p>Loading...</p>, // TODO: improve loading state
   ssr: false,
 })
