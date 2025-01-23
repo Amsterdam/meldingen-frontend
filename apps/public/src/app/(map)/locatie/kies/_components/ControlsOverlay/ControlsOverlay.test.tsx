@@ -29,7 +29,7 @@ vi.mock('leaflet', async (importOriginal) => {
   }
 })
 
-describe('Controls', () => {
+describe('ControlsOverlay', () => {
   it('displays a notification on geolocation error', async () => {
     const mockGeolocation = {
       getCurrentPosition: vi.fn().mockImplementationOnce((_, error) =>
@@ -96,7 +96,7 @@ describe('Controls', () => {
     })
   })
 
-  it('should zoom in and out when zoom controls are used', async () => {
+  it('should zoom in when zoom controls are used', async () => {
     const user = userEvent.setup()
 
     render(<ControlsOverlay mapInstance={mapInstanceMock} />)
@@ -105,12 +105,18 @@ describe('Controls', () => {
 
     await user.click(ZoomInButton)
 
-    expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM + 1)
+    expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(11)
+  })
+
+  it('should zoom out when zoom controls are used', async () => {
+    const user = userEvent.setup()
+
+    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
 
     const ZoomOutButton = screen.getByRole('button', { name: 'Uitzoomen' })
 
     await user.click(ZoomOutButton)
 
-    expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM - 1)
+    expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(9)
   })
 })
