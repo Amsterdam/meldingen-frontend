@@ -16,18 +16,19 @@ export const writeAddressAndCoordinateToCookie = async (_: unknown, formData: Fo
       `https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`,
     ).then((res) => res.json())
 
-    const cookieStore = await cookies()
+    if (!coordinate.response.docs.length) {
+      throw new Error('Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam.')
+    }
 
     const location = {
       name: coordinate.response.docs[0].weergavenaam,
       coordinate: convertPointToCoordinates(coordinate.response.docs[0].centroide_ll),
     }
 
-    console.log(location)
-
+    const cookieStore = await cookies()
     cookieStore.set('location', JSON.stringify(location))
   } catch (error) {
-    console.error(error)
+    return { message: (error as Error).message }
   }
 
   return redirect('/locatie')

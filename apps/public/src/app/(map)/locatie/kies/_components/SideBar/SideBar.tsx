@@ -23,8 +23,6 @@ const initialState: { message?: string } = {}
 export const SideBar = ({ coordinates }: Props) => {
   const [formState, formAction] = useActionState(writeAddressAndCoordinateToCookie, initialState)
 
-  console.log('----formstate', formState)
-
   const [address, setAddress] = useState<Address | null>(null)
 
   // TODO: this can just be a function, called on setCoordinates I think
@@ -58,7 +56,7 @@ export const SideBar = ({ coordinates }: Props) => {
         </Paragraph>
       </div>
       <form action={formAction}>
-        <AddressComboBox address={address} setAddress={setAddress} />
+        <AddressComboBox address={address} setAddress={setAddress} errorMessage={formState?.message} />
         <Button type="submit">Bevestigen</Button>
       </form>
     </Column>

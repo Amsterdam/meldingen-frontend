@@ -1,11 +1,11 @@
-import { Label, TextInput } from '@amsterdam/design-system-react'
+import { ErrorMessage, Field, Label, TextInput } from '@amsterdam/design-system-react'
 import {
   Combobox,
   ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
   Description,
-  Field,
+  Field as HUIField,
   Label as HUILabel,
 } from '@headlessui/react'
 import { ListBox } from '@meldingen/ui'
@@ -28,10 +28,11 @@ const debounce = (fn: Function, delay = 250) => {
 
 type Props = {
   address: Address | null
+  errorMessage: string | undefined
   setAddress: (address: Address | null) => void
 }
 
-export const AddressComboBox = ({ address, setAddress }: Props) => {
+export const AddressComboBox = ({ address, errorMessage, setAddress }: Props) => {
   const [addressList, setAddressList] = useState<Address[]>([])
   const [showListBox, setShowListBox] = useState(false)
 
@@ -64,8 +65,9 @@ export const AddressComboBox = ({ address, setAddress }: Props) => {
   })
 
   return (
-    <Field>
+    <HUIField as={Field} invalid={!!errorMessage}>
       <HUILabel as={Label}>Zoek op adres</HUILabel>
+      {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Description className="ams-visually-hidden">
         Als er autoaanvul-resultaten zijn, gebruik dan de pijltjes omhoog en omlaag om te bekijken en druk op enter om
         te kiezen. Voor <span lang="en">touch</span>-apparaten, verken met aanraking of veegbewegingen{' '}
@@ -95,6 +97,6 @@ export const AddressComboBox = ({ address, setAddress }: Props) => {
           </ComboboxOptions>
         )}
       </Combobox>
-    </Field>
+    </HUIField>
   )
 }

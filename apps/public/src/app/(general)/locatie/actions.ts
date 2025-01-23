@@ -15,8 +15,6 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
 
   if (!parsedCoordinate || !meldingId || !token) return undefined
 
-  console.log(coordinate)
-
   try {
     postMeldingByMeldingIdLocation({
       meldingId: parseInt(meldingId, 10),
@@ -30,9 +28,9 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
         properties: {},
       },
     })
-
-    return redirect('/bijlage')
   } catch (error) {
     return { message: (error as Error).message }
   }
+
+  return redirect('/bijlage')
 }
