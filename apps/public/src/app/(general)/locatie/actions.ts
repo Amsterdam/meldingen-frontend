@@ -1,22 +1,38 @@
 'use server'
 
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-export const postLocationForm = async () => redirect('/bijlage')
+import { postMeldingByMeldingIdLocation } from 'apps/public/src/apiClientProxy'
 
-// import { postMeldingByMeldingIdLocation } from '@meldingen/api-client'
+export const postLocationForm = async (_: unknown, formData: FormData) => {
+  const coordinate = formData.get('coordinate')
+  const parsedCoordinate = coordinate ? JSON.parse(coordinate as string) : undefined
 
-// export const postLocation = async (_: unknown, formData: FormData) => {
-//   postMeldingByMeldingIdLocation({
-//     meldingId: 1,
-//     token: 'token',
-//     requestBody: {
-//       type: 'Feature',
-//       geometry: {
-//         type: 'Point',
-//         coordinates: [1, 2],
-//       },
-//       properties: {},
-//     },
-//   })
-// }
+  const cookieStore = await cookies()
+  const meldingId = cookieStore.get('id')?.value
+  const token = cookieStore.get('token')?.value
+
+  if (!parsedCoordinate || !meldingId || !token) return undefined
+
+  console.log(coordinate)
+
+  try {
+    postMeldingByMeldingIdLocation({
+      meldingId: parseInt(meldingId, 10),
+      token,
+      requestBody: {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: parsedCoordinate,
+        },
+        properties: {},
+      },
+    })
+
+    return redirect('/bijlage')
+  } catch (error) {
+    return { message: (error as Error).message }
+  }
+}
