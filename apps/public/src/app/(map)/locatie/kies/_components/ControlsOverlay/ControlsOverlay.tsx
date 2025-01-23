@@ -6,13 +6,13 @@ import { useState } from 'react'
 import { marker } from '../Marker/Marker'
 import { Notification } from '../Notification/Notification'
 
-import styles from './Controls.module.css'
+import styles from './ControlsOverlay.module.css'
 
 type Props = {
   mapInstance: L.Map | null
 }
 
-export const Controls = ({ mapInstance }: Props) => {
+export const ControlsOverlay = ({ mapInstance }: Props) => {
   const [markerLayer, setMarkerLayer] = useState<L.Marker | null>(null)
 
   const [notification, setNotification] = useState<{ heading: string; description: string } | null>(null)

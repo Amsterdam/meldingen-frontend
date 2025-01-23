@@ -5,7 +5,7 @@ import { vi } from 'vitest'
 
 import { marker } from '../Marker/Marker'
 
-import { Controls } from './Controls'
+import { ControlsOverlay } from './ControlsOverlay'
 
 const INITIAL_ZOOM = 10
 
@@ -45,7 +45,7 @@ describe('Controls', () => {
 
     const user = userEvent.setup()
 
-    render(<Controls mapInstance={mapInstanceMock} />)
+    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
 
     const button = screen.getByRole('button', { name: 'Mijn locatie' })
 
@@ -75,7 +75,7 @@ describe('Controls', () => {
 
     const user = userEvent.setup()
 
-    render(<Controls mapInstance={mapInstanceMock} />)
+    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
 
     const button = screen.getByRole('button', { name: 'Mijn locatie' })
 
@@ -99,7 +99,7 @@ describe('Controls', () => {
   it('should zoom in and out when zoom controls are used', async () => {
     const user = userEvent.setup()
 
-    render(<Controls mapInstance={mapInstanceMock} />)
+    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
 
     const ZoomInButton = screen.getByRole('button', { name: 'Inzoomen' })
 

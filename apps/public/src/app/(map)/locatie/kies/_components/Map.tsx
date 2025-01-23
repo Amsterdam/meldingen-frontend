@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css'
 
 import type { Coordinates } from '../page'
 
-import { Controls } from './Controls/Controls'
+import { ControlsOverlay } from './ControlsOverlay/ControlsOverlay'
 import styles from './Map.module.css'
 
 type Props = {
@@ -67,7 +67,7 @@ export const Map = ({ setCoordinates }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.map} ref={mapRef} />
-      <Controls mapInstance={mapInstance} />
+      <ControlsOverlay mapInstance={mapInstance} />
     </div>
   )
 }
