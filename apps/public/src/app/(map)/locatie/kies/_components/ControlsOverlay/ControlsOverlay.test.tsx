@@ -105,7 +105,7 @@ describe('ControlsOverlay', () => {
 
     await user.click(ZoomInButton)
 
-    expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(11)
+    expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM + 1)
   })
 
   it('should zoom out when zoom controls are used', async () => {
@@ -117,6 +117,6 @@ describe('ControlsOverlay', () => {
 
     await user.click(ZoomOutButton)
 
-    expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(9)
+    expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM - 1)
   })
 })
