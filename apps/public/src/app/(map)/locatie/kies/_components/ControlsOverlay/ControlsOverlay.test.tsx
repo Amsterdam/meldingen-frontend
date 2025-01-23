@@ -1,10 +1,18 @@
 import { screen, render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import leaflet from 'leaflet'
+import L from 'leaflet'
 import { vi } from 'vitest'
 
-import { BaseLayer } from './BaseLayer'
-import { marker } from './Marker/Marker'
+import { marker } from '../Marker/Marker'
+
+import { ControlsOverlay } from './ControlsOverlay'
+
+const INITIAL_ZOOM = 10
+
+const mapInstanceMock = {
+  getZoom: vi.fn().mockImplementation(() => INITIAL_ZOOM),
+  setZoom: vi.fn(),
+} as unknown as L.Map
 
 vi.mock('leaflet', async (importOriginal) => {
   const actual = await importOriginal()
@@ -21,20 +29,7 @@ vi.mock('leaflet', async (importOriginal) => {
   }
 })
 
-describe('BaseLayer', () => {
-  it('renders the component', () => {
-    const { container } = render(<BaseLayer setCoordinates={() => {}} />)
-    expect(container.firstChild).toBeInTheDocument()
-  })
-
-  it('renders the current location button', () => {
-    render(<BaseLayer setCoordinates={() => {}} />)
-
-    const button = screen.getByRole('button', { name: 'Mijn locatie' })
-
-    expect(button).toBeInTheDocument()
-  })
-
+describe('ControlsOverlay', () => {
   it('displays a notification on geolocation error', async () => {
     const mockGeolocation = {
       getCurrentPosition: vi.fn().mockImplementationOnce((_, error) =>
@@ -50,7 +45,7 @@ describe('BaseLayer', () => {
 
     const user = userEvent.setup()
 
-    render(<BaseLayer setCoordinates={() => {}} />)
+    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
 
     const button = screen.getByRole('button', { name: 'Mijn locatie' })
 
@@ -80,7 +75,7 @@ describe('BaseLayer', () => {
 
     const user = userEvent.setup()
 
-    render(<BaseLayer setCoordinates={() => {}} />)
+    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
 
     const button = screen.getByRole('button', { name: 'Mijn locatie' })
 
@@ -89,7 +84,7 @@ describe('BaseLayer', () => {
     expect(mockGeolocation.getCurrentPosition).toHaveBeenCalled()
 
     await waitFor(() => {
-      expect(leaflet.marker).toHaveBeenCalledWith(
+      expect(L.marker).toHaveBeenCalledWith(
         {
           lat: 52.370216,
           lng: 4.895168,
@@ -99,5 +94,29 @@ describe('BaseLayer', () => {
         },
       )
     })
+  })
+
+  it('should zoom in when zoom controls are used', async () => {
+    const user = userEvent.setup()
+
+    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
+
+    const ZoomInButton = screen.getByRole('button', { name: 'Inzoomen' })
+
+    await user.click(ZoomInButton)
+
+    expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM + 1)
+  })
+
+  it('should zoom out when zoom controls are used', async () => {
+    const user = userEvent.setup()
+
+    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
+
+    const ZoomOutButton = screen.getByRole('button', { name: 'Uitzoomen' })
+
+    await user.click(ZoomOutButton)
+
+    expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM - 1)
   })
 })
