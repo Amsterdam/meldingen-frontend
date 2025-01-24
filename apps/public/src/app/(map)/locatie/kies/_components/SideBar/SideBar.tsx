@@ -16,6 +16,7 @@ type Props = {
 export type Address = {
   id: string
   weergave_naam: string
+  centroide_ll: string
 }
 
 const initialState: { message?: string } = {}
@@ -57,6 +58,7 @@ export const SideBar = ({ coordinates }: Props) => {
       </div>
       <form action={formAction}>
         <AddressComboBox address={address} setAddress={setAddress} errorMessage={formState?.message} />
+        <input type="hidden" name="coordinate" defaultValue={address ? address.centroide_ll : undefined} />
         <Button type="submit">Bevestigen</Button>
       </form>
     </Column>

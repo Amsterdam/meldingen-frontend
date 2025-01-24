@@ -14,7 +14,7 @@ import { useState } from 'react'
 import type { Address } from '../SideBar/SideBar'
 
 const pdokQueryParams =
-  'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam&rows=10'
+  'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=10'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const debounce = (fn: Function, delay = 250) => {
@@ -46,10 +46,13 @@ export const AddressComboBox = ({ address, errorMessage, setAddress }: Props) =>
         const responseData = await response.json()
 
         if (response.ok) {
-          const responseList = responseData.response.docs.map((item: { id: string; weergavenaam: string }) => ({
-            id: item.id,
-            weergave_naam: item.weergavenaam,
-          }))
+          const responseList = responseData.response.docs.map(
+            (item: { id: string; weergavenaam: string; centroide_ll: string }) => ({
+              id: item.id,
+              weergave_naam: item.weergavenaam,
+              centroide_ll: item.centroide_ll,
+            }),
+          )
 
           setAddressList(responseList)
           setShowListBox(true)
