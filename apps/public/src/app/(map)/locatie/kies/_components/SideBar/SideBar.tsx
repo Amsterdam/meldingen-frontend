@@ -49,9 +49,8 @@ export const SideBar = ({ coordinates }: Props) => {
           Typ het dichtstbijzijnde adres, klik de locatie aan op de kaart of gebruik &quot;Mijn locatie&quot;
         </Paragraph>
       </div>
-      <form>
+      <form id="address">
         <AddressComboBox address={address} setAddress={setAddress} />
-        <Button type="submit">Bevestigen</Button>
       </form>
     </Column>
   )

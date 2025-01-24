@@ -14,6 +14,7 @@ type Props = {
 
 export const Map = ({ setCoordinates }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
+  console.log('render map')
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
