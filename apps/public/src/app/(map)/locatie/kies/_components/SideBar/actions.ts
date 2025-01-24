@@ -11,6 +11,8 @@ const convertPointToCoordinates = (point: string) => point.replace('POINT(', '')
 export const writeAddressAndCoordinateToCookie = async (_: unknown, formData: FormData) => {
   const address = formData.get('address')
 
+  if (!address) return { message: 'Vul een locatie in.' }
+
   try {
     const coordinate = await fetch(
       `https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`,
