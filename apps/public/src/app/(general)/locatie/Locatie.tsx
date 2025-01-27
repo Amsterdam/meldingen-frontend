@@ -11,7 +11,15 @@ import { postLocationForm } from './actions'
 
 const initialState: { message?: string } = {}
 
-export const Locatie = ({ prevPage, locationData }: { prevPage: string; locationData: any }) => {
+type Props = {
+  prevPage: string
+  locationData?: {
+    name: string
+    coordinate: string[]
+  }
+}
+
+export const Locatie = ({ prevPage, locationData }: Props) => {
   const [formState, formAction] = useActionState(postLocationForm, initialState)
 
   return (
