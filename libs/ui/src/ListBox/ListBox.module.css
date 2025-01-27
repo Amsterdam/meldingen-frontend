@@ -1,0 +1,34 @@
+.list {
+  color: var(--ams-color-primary-black);
+  font-family: var(--ams-text-font-family);
+  font-size: var(--ams-text-level-5-font-size);
+  font-weight: var(--ams-text-font-weight-normal);
+  line-height: var(--ams-text-level-5-line-height);
+  list-style-type: none;
+  margin-block: 0 var(--ams-space-grid-md);
+  padding-inline: 0;
+}
+
+.option {
+  box-shadow:
+    inset var(--ams-border-width-sm) 0 0 0 var(--ams-color-primary-black) /* Left border */,
+    inset calc(var(--ams-border-width-sm) * -1) 0 0 0 var(--ams-color-primary-black) /* Right border */,
+    inset 0 calc(var(--ams-border-width-sm) * -1) 0 0 var(--ams-color-primary-black); /* Bottom border */
+
+  cursor: pointer;
+  padding-block: var(--ams-space-sm);
+  padding-inline: var(--ams-space-md);
+}
+
+.option[aria-disabled] {
+  cursor: auto;
+}
+
+.option[data-active] {
+  background-color: var(--ams-color-neutral-grey1);
+  box-shadow:
+    inset var(--ams-border-width-md) 0 0 0 var(--ams-color-primary-black) /* Left border */,
+    inset calc(var(--ams-border-width-md) * -1) 0 0 0 var(--ams-color-primary-black) /* Right border */,
+    inset 0 var(--ams-border-width-sm) 0 0 var(--ams-color-primary-black) /* Top border */,
+    inset 0 calc(var(--ams-border-width-md) * -1) 0 0 var(--ams-color-primary-black); /* Bottom border */
+}
