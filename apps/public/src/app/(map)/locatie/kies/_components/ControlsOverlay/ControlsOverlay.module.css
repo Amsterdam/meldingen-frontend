@@ -14,12 +14,12 @@
   z-index: 701;
 }
 
-.overlay-top-left {
+.overlayTopLeft {
   composes: overlay;
   top: 0;
 }
 
-.overlay-bottom-right {
+.overlayBottomRight {
   display: none;
 
   @media screen and (min-width: 68rem) {

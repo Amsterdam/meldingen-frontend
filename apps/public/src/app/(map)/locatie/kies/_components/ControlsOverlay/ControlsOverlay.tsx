@@ -53,9 +53,9 @@ export const ControlsOverlay = ({ hideListView, mapInstance }: Props) => {
 
   return (
     <>
-      <div className={styles['overlay-top-left']}>
+      <div className={styles.overlayTopLeft}>
         {hideListView && (
-          <Button variant="secondary" onClick={handleCurrentLocationButtonClick} className={styles['location-button']}>
+          <Button variant="secondary" onClick={handleCurrentLocationButtonClick}>
             Mijn locatie
           </Button>
         )}
@@ -65,7 +65,7 @@ export const ControlsOverlay = ({ hideListView, mapInstance }: Props) => {
           </Notification>
         )}
       </div>
-      <div className={styles['overlay-bottom-right']}>
+      <div className={styles.overlayBottomRight}>
         <Button variant="secondary" iconOnly icon={EnlargeIcon} onClick={handleZoomIn}>
           Inzoomen
         </Button>
