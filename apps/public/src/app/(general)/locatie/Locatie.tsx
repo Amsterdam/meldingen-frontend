@@ -15,7 +15,7 @@ type Props = {
   prevPage: string
   locationData?: {
     name: string
-    coordinate: string[]
+    coordinate: string
   }
 }
 
@@ -45,11 +45,7 @@ export const Locatie = ({ prevPage, locationData }: Props) => {
         </NextLink>
 
         <form action={formAction}>
-          <input
-            type="hidden"
-            name="coordinate"
-            value={locationData?.coordinate ? JSON.stringify(locationData.coordinate) : ''}
-          />
+          <input type="hidden" name="coordinate" value={locationData?.coordinate ?? undefined} />
           <SubmitButton>Volgende vraag</SubmitButton>
         </form>
       </Grid.Cell>

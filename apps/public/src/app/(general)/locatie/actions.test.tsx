@@ -66,7 +66,7 @@ describe('postLocationForm', () => {
     })
 
     const formData = new FormData()
-    formData.set('coordinate', JSON.stringify([4.895168, 52.370216]))
+    formData.set('coordinate', 'POINT(4.895168 52.370216)')
 
     await postLocationForm(null, formData)
 
@@ -77,7 +77,7 @@ describe('postLocationForm', () => {
         type: 'Feature',
         geometry: {
           type: 'Point',
-          coordinates: [4.895168, 52.370216],
+          coordinates: [52.370216, 4.895168],
         },
         properties: {},
       },
@@ -100,7 +100,7 @@ describe('postLocationForm', () => {
     })
 
     const formData = new FormData()
-    formData.set('coordinate', JSON.stringify([4.895168, 52.370216]))
+    formData.set('coordinate', 'POINT(4.895168 52.370216)')
 
     const result = await postLocationForm(null, formData)
 
