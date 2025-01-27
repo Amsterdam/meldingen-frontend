@@ -12,7 +12,7 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
 
   const coordinate = formData.get('coordinate')
 
-  if (!coordinate || !meldingId || !token) return undefined
+  if (!coordinate || !meldingId || !token) return { message: 'Vul een locatie in.' }
 
   const parsedCoordinate = JSON.parse(coordinate as string)
 
