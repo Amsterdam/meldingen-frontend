@@ -9,7 +9,7 @@ import {
   Label as HUILabel,
 } from '@headlessui/react'
 import { ListBox } from '@meldingen/ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { Address } from '../SideBar/SideBar'
 
@@ -33,9 +33,13 @@ type Props = {
 }
 
 export const AddressComboBox = ({ address, errorMessage, setAddress }: Props) => {
-  const [query, setQuery] = useState(address?.weergave_naam ?? '')
+  const [query, setQuery] = useState('')
   const [addressList, setAddressList] = useState<Address[]>([])
   const [showListBox, setShowListBox] = useState(false)
+
+  useEffect(() => {
+    if (address?.weergave_naam) setQuery(address?.weergave_naam)
+  }, [address])
 
   // TODO: do we want to show a loading state?
   const fetchAddressList = debounce(async (value: string) => {

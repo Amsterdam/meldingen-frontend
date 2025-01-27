@@ -1,6 +1,15 @@
 import { render, screen, waitFor } from '@testing-library/react'
+import { vi } from 'vitest'
 
 import { SideBar } from './SideBar'
+
+vi.mock('react', async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...(typeof actual === 'object' ? actual : {}),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+  }
+})
 
 describe('SideBar', () => {
   it('should render correctly', () => {
