@@ -4,11 +4,11 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 export const postAttachmentForm = async () => {
-  // Delete session cookies
+  // Delete all session cookies
   const cookieStore = await cookies()
-  cookieStore.delete('id')
-  cookieStore.delete('token')
-  cookieStore.delete('lastPanelPath')
+  cookieStore.getAll().forEach((cookie) => {
+    cookieStore.delete(cookie.name)
+  })
 
   return redirect('/bedankt')
 }
