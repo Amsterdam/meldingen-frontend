@@ -104,9 +104,9 @@ export const AddressComboBox = ({ address, errorMessage, setAddress }: Props) =>
         {showListBox && (
           <ComboboxOptions as={ListBox} modal={false}>
             {addressList.length > 0 ? (
-              addressList.map((test) => (
-                <ComboboxOption key={test.id} value={test} as={ListBox.Option}>
-                  {test.weergave_naam}
+              addressList.map((option) => (
+                <ComboboxOption key={option.id} value={option} as={ListBox.Option}>
+                  {option.weergave_naam}
                 </ComboboxOption>
               ))
             ) : (
