@@ -30,11 +30,16 @@ const KiesLocatie = () => {
       </Grid.Cell>
       <Grid.Cell
         span={{ narrow: 4, medium: 8, wide: 4 }}
+        start={{ narrow: 1, medium: 1, wide: 1 }}
         className={`${styles.listView} ${hideListView && styles.hideListView}`}
       >
         <ListView />
       </Grid.Cell>
-      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 8 }} className={styles.mapView}>
+      <Grid.Cell
+        span={{ narrow: 4, medium: 8, wide: 8 }}
+        start={{ narrow: 1, medium: 1, wide: 5 }}
+        className={styles.mapView}
+      >
         <Map setCoordinates={setCoordinates} hideListView={hideListView} />
       </Grid.Cell>
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 4 }}>
@@ -42,7 +47,6 @@ const KiesLocatie = () => {
           <Button id="address" type="submit">
             Bevestigen
           </Button>
-
           <Button variant="secondary" className={styles.toggle} onClick={handleToggle}>
             {hideListView ? 'Lijst' : 'Kaart'}
           </Button>
