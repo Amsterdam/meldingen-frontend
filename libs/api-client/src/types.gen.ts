@@ -54,7 +54,7 @@ export type Body_melding_attachment_melding__melding_id__attachment_post = {
 };
 
 export type Cat = {
-    cat: (number | string | Array<(number | string)>);
+    cat: (number | string | boolean | Array<(number | string | boolean)>);
 };
 
 export type ClassificationInput = {
@@ -62,10 +62,10 @@ export type ClassificationInput = {
 };
 
 export type ClassificationOutput = {
-    name: string;
     id: number;
     created_at: string;
     updated_at: string;
+    name: string;
     form?: (number | null);
 };
 
@@ -162,10 +162,10 @@ export type FormIoFormDisplayEnum = 'form' | 'wizard' | 'pdf';
 
 export type FormOutput = {
     id: number;
-    title: string;
-    display: string;
     created_at: string;
     updated_at: string;
+    title: string;
+    display: string;
     classification?: (number | null);
     components: Array<(FormPanelComponentOutput | FormTextAreaComponentOutput | FormTextFieldInputComponentOutput | FormCheckboxComponentOutput | FormRadioComponentOutput | FormSelectComponentOutput)>;
 };
@@ -374,9 +374,9 @@ export type LessThan = {
     (number | string | Var),
     (number | string)
 ] | [
-    number,
-    number,
-    number
+    (number),
+    (number),
+    (number)
 ]);
 };
 
@@ -385,16 +385,14 @@ export type LessThanOrEqual = {
     (number | string),
     (number | string)
 ] | [
-    number,
-    number,
-    number
+    (number),
+    (number),
+    (number)
 ]);
 };
 
 export type Log = {
-    log: (number | string | boolean | [
-    (number | string | boolean)
-]);
+    log: (number | string | boolean | Array<(number | string | boolean)>);
 };
 
 export type Map_Input = {
@@ -415,6 +413,11 @@ export type Max = {
     max: Array<(number)>;
 };
 
+export type MeldingContactInput = {
+    email?: (string | null);
+    phone?: (string | null);
+};
+
 export type MeldingCreateOutput = {
     id: number;
     created_at: string;
@@ -423,6 +426,8 @@ export type MeldingCreateOutput = {
     state: string;
     classification?: (number | null);
     geo_location?: (GeoJson_Output | null);
+    email?: (string | null);
+    phone?: (string | null);
     token: string;
 };
 
@@ -438,6 +443,8 @@ export type MeldingOutput = {
     state: string;
     classification?: (number | null);
     geo_location?: (GeoJson_Output | null);
+    email?: (string | null);
+    phone?: (string | null);
 };
 
 export type Merge = {
@@ -461,8 +468,8 @@ export type MissingSome = {
 
 export type Modulo = {
     '%': [
-        (number | Var),
-        number
+        (number | string | Var),
+        (number | string)
     ];
 };
 
@@ -500,9 +507,9 @@ export type NotEquals = {
 };
 
 export type NotNot = {
-    '!!': [
-        (number | string | Array<(null)>)
-    ];
+    '!!': ([
+    (number | string | Array<(null)> | boolean)
+] | number | string | boolean);
 };
 
 export type Or_Input = {
@@ -563,19 +570,19 @@ export type Reduce_Output = {
 
 export type SimpleFormOutput = {
     id: number;
-    title: string;
-    display: string;
     created_at: string;
     updated_at: string;
+    title: string;
+    display: string;
     classification?: (number | null);
 };
 
 export type SimpleStaticFormOutput = {
     id: number;
-    title: string;
-    display: string;
     created_at: string;
     updated_at: string;
+    title: string;
+    display: string;
     type: string;
 };
 
@@ -612,10 +619,10 @@ export type StaticFormInput = {
 
 export type StaticFormOutput = {
     id: number;
-    title: string;
-    display: string;
     created_at: string;
     updated_at: string;
+    title: string;
+    display: string;
     type: string;
     components: Array<(StaticFormPanelComponentOutput | StaticFormTextAreaComponentOutput | StaticFormTextFieldInputComponentOutput | StaticFormCheckboxComponentOutput | StaticFormRadioComponentOutput | StaticFormSelectComponentOutput)>;
 };
@@ -975,6 +982,33 @@ export type PostMeldingByMeldingIdLocationData = {
 };
 
 export type PostMeldingByMeldingIdLocationResponse = (MeldingOutput);
+
+export type PostMeldingByMeldingIdContactData = {
+    /**
+     * The id of the melding.
+     */
+    meldingId: number;
+    requestBody: MeldingContactInput;
+    /**
+     * The token of the melding.
+     */
+    token: string;
+};
+
+export type PostMeldingByMeldingIdContactResponse = (MeldingOutput);
+
+export type PutMeldingByMeldingIdAddContactInfoData = {
+    /**
+     * The id of the melding.
+     */
+    meldingId: number;
+    /**
+     * The token of the melding.
+     */
+    token: string;
+};
+
+export type PutMeldingByMeldingIdAddContactInfoResponse = (MeldingOutput);
 
 export type PostUserData = {
     requestBody: UserCreateInput;
