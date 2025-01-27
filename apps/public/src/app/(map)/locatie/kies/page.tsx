@@ -24,7 +24,6 @@ const KiesLocatie = () => {
   }
 
   return (
-    // TODO: Create a compact grid with padding 24px and the map that overflows it. https://designsystem.amsterdam/?path=/docs/brand-design-tokens-grid--docs
     <Grid className={styles.container}>
       <Grid.Cell span={{ narrow: 4, medium: 5, wide: 4 }}>
         <SideBar coordinates={coordinates} />
@@ -36,7 +35,7 @@ const KiesLocatie = () => {
         <ListView />
       </Grid.Cell>
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 8 }} className={styles.cellMap}>
-        <Map setCoordinates={setCoordinates} />
+        <Map setCoordinates={setCoordinates} hideListView={hideListView} />
       </Grid.Cell>
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 4 }}>
         <Column className={styles.cellButton}>
