@@ -1,24 +1,34 @@
-import { Column, Heading, Icon, Paragraph, Link } from '@amsterdam/design-system-react'
+import { Column, Heading, Icon, Paragraph, Link, Button } from '@amsterdam/design-system-react'
 import { ChevronLeftIcon } from '@amsterdam/design-system-react-icons'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { getAddressFromCoordinates } from '../../_utils'
 import type { Coordinates } from '../../page'
+import { AddressComboBox } from '../AddressComboBox/AddressComboBox'
 
 type Props = {
   coordinates?: Coordinates
 }
 
-export const SideBar = ({ coordinates }: Props) => {
-  const [address, setAddress] = useState<string | null>(null)
+export type Address = {
+  id: string
+  weergave_naam: string
+}
 
+export const SideBar = ({ coordinates }: Props) => {
+  const [address, setAddress] = useState<Address | null>(null)
+
+  // TODO: this can just be a function, called on setCoordinates I think
   useEffect(() => {
     const getAddress = async () => {
       if (!coordinates) return
+
       const result = await getAddressFromCoordinates({ lat: coordinates.lat, lon: coordinates.lon })
 
-      setAddress(result)
+      if (result) {
+        setAddress(result)
+      }
     }
     getAddress()
   }, [coordinates])
@@ -39,12 +49,10 @@ export const SideBar = ({ coordinates }: Props) => {
           Typ het dichtstbijzijnde adres, klik de locatie aan op de kaart of gebruik &quot;Mijn locatie&quot;
         </Paragraph>
       </div>
-      <div>
-        <Heading level={2} size="level-4">
-          Zoek op adres
-        </Heading>
-        {address && <div>{address}</div>}
-      </div>
+      <form>
+        <AddressComboBox address={address} setAddress={setAddress} />
+        <Button type="submit">Bevestigen</Button>
+      </form>
     </Column>
   )
 }
