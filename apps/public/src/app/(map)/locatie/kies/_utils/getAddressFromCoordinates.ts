@@ -6,7 +6,7 @@ export const getAddressFromCoordinates = async ({ lat, lon }: Coordinates) =>
     .then((result) => ({
       id: result.response.docs[0].id,
       weergave_naam: result.response.docs[0].weergavenaam,
-      centroide_ll: `POINT(${lat} ${lon})`,
+      centroide_ll: `POINT(${lon} ${lat})`,
     }))
     // TODO: add generic error handling
     // eslint-disable-next-line no-console
