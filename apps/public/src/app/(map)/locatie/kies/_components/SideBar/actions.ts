@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam'
 
 // TODO: not sure if this is a good idea...
-const convertPointToCoordinates = (point: string) => point.replace('POINT(', '').replace(')', '').split(' ')
+export const convertPointToCoordinates = (point: string) => point.replace('POINT(', '').replace(')', '').split(' ')
 
 export const writeAddressAndCoordinateToCookie = async (_: unknown, formData: FormData) => {
   const address = formData.get('address')

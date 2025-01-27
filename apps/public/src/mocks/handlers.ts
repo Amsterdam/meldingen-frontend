@@ -4,6 +4,19 @@ import { ENDPOINTS } from './endpoints'
 
 export const handlers = [
   /** GET */
+  http.get(ENDPOINTS.PDOK_FREE, () =>
+    HttpResponse.json({
+      response: {
+        docs: [
+          {
+            weergavenaam: 'Amstel 1, Amsterdam',
+            centroide_ll: 'POINT(4.895168 52.370216)',
+          },
+        ],
+      },
+    }),
+  ),
+
   http.get(ENDPOINTS.PDOK_REVERSE, () =>
     HttpResponse.json({
       response: {

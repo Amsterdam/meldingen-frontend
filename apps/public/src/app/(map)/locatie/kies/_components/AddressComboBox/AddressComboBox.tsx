@@ -28,7 +28,7 @@ const debounce = (fn: Function, delay = 250) => {
 
 type Props = {
   address: Address | null
-  errorMessage: string | undefined
+  errorMessage?: string
   setAddress: (address: Address | null) => void
 }
 
