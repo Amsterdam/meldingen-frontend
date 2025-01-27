@@ -10,5 +10,5 @@ export const postAttachmentForm = async () => {
     cookieStore.delete(cookie.name)
   })
 
-  return redirect('/bedankt')
+  return redirect('/contact')
 }
