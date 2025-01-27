@@ -55,8 +55,8 @@ importers:
         specifier: 7.26.3
         version: 7.26.3(@babel/core@7.26.0)
       '@hey-api/openapi-ts':
-        specifier: 0.61.2
-        version: 0.61.2(magicast@0.3.5)(typescript@5.7.3)
+        specifier: 0.62.3
+        version: 0.62.3(magicast@0.3.5)(typescript@5.7.3)
       '@swc-node/register':
         specifier: 1.10.9
         version: 1.10.9(@swc/core@1.10.8(@swc/helpers@0.5.15))(@swc/types@0.1.17)(typescript@5.7.3)
@@ -884,12 +884,12 @@ packages:
     resolution: {integrity: sha512-dBt0A7op9kf4BcK++x6HBYDmvCvnJUZEGe5QytghPFHnMXPyKwDKomwL/v5e9ERk6E0e1GzL/e/y6pWUso9zrQ==}
     engines: {node: '>= 16'}
 
-  '@hey-api/openapi-ts@0.61.2':
-    resolution: {integrity: sha512-E0b8PibVqmZd/E/MB0h8Q2VXObZc+nhHHx3quLwNM08QgEtkC29vMcayzmuG+rR4nGvZGvREP1a4rZc0v6Xjgg==}
-    engines: {node: ^18.0.0 || >=20.0.0}
+  '@hey-api/openapi-ts@0.62.3':
+    resolution: {integrity: sha512-5XZRHjImsB+z0S4tYs5HZ1RQqgxYk6bCQ4NrmHFA92Zs75W1BW87fvF1grFu9bJ7ZtFhOadRkV0oZ5Z6FFX+yg==}
+    engines: {node: ^18.20.5 || ^20.11.1 || >=22.11.0}
     hasBin: true
     peerDependencies:
-      typescript: ^5.x
+      typescript: ^5.5.3
 
   '@humanwhocodes/config-array@0.13.0':
     resolution: {integrity: sha512-DZLEEqFWQFiyK6h5YIeynKx7JlvCYWL0cImfSRXZ9l4Sg2efkFGTuFf6vzXjK1cq6IYkU+Eg/JizXw+TD2vRNw==}
@@ -6361,7 +6361,7 @@ snapshots:
       '@types/json-schema': 7.0.15
       js-yaml: 4.1.0
 
-  '@hey-api/openapi-ts@0.61.2(magicast@0.3.5)(typescript@5.7.3)':
+  '@hey-api/openapi-ts@0.62.3(magicast@0.3.5)(typescript@5.7.3)':
     dependencies:
       '@hey-api/json-schema-ref-parser': 1.0.1
       c12: 2.0.1(magicast@0.3.5)

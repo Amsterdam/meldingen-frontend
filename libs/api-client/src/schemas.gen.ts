@@ -9,6 +9,9 @@ export const AddSchema = {
                         type: 'integer'
                     },
                     {
+                        type: 'number'
+                    },
+                    {
                         type: 'string'
                     },
                     {
@@ -345,6 +348,9 @@ export const And_InputSchema = {
                         type: 'integer'
                     },
                     {
+                        type: 'number'
+                    },
+                    {
                         type: 'string'
                     },
                     {
@@ -476,6 +482,9 @@ export const And_OutputSchema = {
                     },
                     {
                         type: 'integer'
+                    },
+                    {
+                        type: 'number'
                     },
                     {
                         type: 'string'
@@ -693,7 +702,13 @@ export const CatSchema = {
                     type: 'integer'
                 },
                 {
+                    type: 'number'
+                },
+                {
                     type: 'string'
+                },
+                {
+                    type: 'boolean'
                 },
                 {
                     items: {
@@ -702,7 +717,13 @@ export const CatSchema = {
                                 type: 'integer'
                             },
                             {
+                                type: 'number'
+                            },
+                            {
                                 type: 'string'
+                            },
+                            {
+                                type: 'boolean'
                             }
                         ]
                     },
@@ -732,10 +753,6 @@ export const ClassificationInputSchema = {
 
 export const ClassificationOutputSchema = {
     properties: {
-        name: {
-            type: 'string',
-            title: 'Name'
-        },
         id: {
             type: 'integer',
             title: 'Id'
@@ -750,6 +767,10 @@ export const ClassificationOutputSchema = {
             format: 'date-time',
             title: 'Updated At'
         },
+        name: {
+            type: 'string',
+            title: 'Name'
+        },
         form: {
             anyOf: [
                 {
@@ -763,7 +784,7 @@ export const ClassificationOutputSchema = {
         }
     },
     type: 'object',
-    required: ['name', 'id', 'created_at', 'updated_at'],
+    required: ['id', 'created_at', 'updated_at', 'name'],
     title: 'ClassificationOutput'
 } as const;
 
@@ -777,6 +798,9 @@ export const DivideSchema = {
                             type: 'integer'
                         },
                         {
+                            type: 'number'
+                        },
+                        {
                             type: 'string'
                         }
                     ]
@@ -785,6 +809,9 @@ export const DivideSchema = {
                     anyOf: [
                         {
                             type: 'integer'
+                        },
+                        {
+                            type: 'number'
                         },
                         {
                             type: 'string'
@@ -1596,14 +1623,6 @@ export const FormOutputSchema = {
             type: 'integer',
             title: 'Id'
         },
-        title: {
-            type: 'string',
-            title: 'Title'
-        },
-        display: {
-            type: 'string',
-            title: 'Display'
-        },
         created_at: {
             type: 'string',
             format: 'date-time',
@@ -1613,6 +1632,14 @@ export const FormOutputSchema = {
             type: 'string',
             format: 'date-time',
             title: 'Updated At'
+        },
+        title: {
+            type: 'string',
+            title: 'Title'
+        },
+        display: {
+            type: 'string',
+            title: 'Display'
         },
         classification: {
             anyOf: [
@@ -1653,7 +1680,7 @@ export const FormOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'title', 'display', 'created_at', 'updated_at', 'components'],
+    required: ['id', 'created_at', 'updated_at', 'title', 'display', 'components'],
     title: 'FormOutput'
 } as const;
 
@@ -2457,6 +2484,9 @@ export const GreaterThanSchema = {
                             type: 'integer'
                         },
                         {
+                            type: 'number'
+                        },
+                        {
                             type: 'string'
                         },
                         {
@@ -2468,6 +2498,9 @@ export const GreaterThanSchema = {
                     anyOf: [
                         {
                             type: 'integer'
+                        },
+                        {
+                            type: 'number'
                         },
                         {
                             type: 'string'
@@ -2496,6 +2529,9 @@ export const GreaterThanOrEqualSchema = {
                             type: 'integer'
                         },
                         {
+                            type: 'number'
+                        },
+                        {
                             type: 'string'
                         },
                         {
@@ -2507,6 +2543,9 @@ export const GreaterThanOrEqualSchema = {
                     anyOf: [
                         {
                             type: 'integer'
+                        },
+                        {
+                            type: 'number'
                         },
                         {
                             type: 'string'
@@ -2860,6 +2899,9 @@ export const LessThanSchema = {
                                     type: 'integer'
                                 },
                                 {
+                                    type: 'number'
+                                },
+                                {
                                     type: 'string'
                                 },
                                 {
@@ -2871,6 +2913,9 @@ export const LessThanSchema = {
                             anyOf: [
                                 {
                                     type: 'integer'
+                                },
+                                {
+                                    type: 'number'
                                 },
                                 {
                                     type: 'string'
@@ -2885,13 +2930,34 @@ export const LessThanSchema = {
                 {
                     prefixItems: [
                         {
-                            type: 'integer'
+                            anyOf: [
+                                {
+                                    type: 'integer'
+                                },
+                                {
+                                    type: 'number'
+                                }
+                            ]
                         },
                         {
-                            type: 'integer'
+                            anyOf: [
+                                {
+                                    type: 'integer'
+                                },
+                                {
+                                    type: 'number'
+                                }
+                            ]
                         },
                         {
-                            type: 'integer'
+                            anyOf: [
+                                {
+                                    type: 'integer'
+                                },
+                                {
+                                    type: 'number'
+                                }
+                            ]
                         }
                     ],
                     type: 'array',
@@ -2919,6 +2985,9 @@ export const LessThanOrEqualSchema = {
                                     type: 'integer'
                                 },
                                 {
+                                    type: 'number'
+                                },
+                                {
                                     type: 'string'
                                 }
                             ]
@@ -2927,6 +2996,9 @@ export const LessThanOrEqualSchema = {
                             anyOf: [
                                 {
                                     type: 'integer'
+                                },
+                                {
+                                    type: 'number'
                                 },
                                 {
                                     type: 'string'
@@ -2941,13 +3013,34 @@ export const LessThanOrEqualSchema = {
                 {
                     prefixItems: [
                         {
-                            type: 'integer'
+                            anyOf: [
+                                {
+                                    type: 'integer'
+                                },
+                                {
+                                    type: 'number'
+                                }
+                            ]
                         },
                         {
-                            type: 'integer'
+                            anyOf: [
+                                {
+                                    type: 'integer'
+                                },
+                                {
+                                    type: 'number'
+                                }
+                            ]
                         },
                         {
-                            type: 'integer'
+                            anyOf: [
+                                {
+                                    type: 'integer'
+                                },
+                                {
+                                    type: 'number'
+                                }
+                            ]
                         }
                     ],
                     type: 'array',
@@ -2971,30 +3064,32 @@ export const LogSchema = {
                     type: 'integer'
                 },
                 {
+                    type: 'number'
+                },
+                {
                     type: 'string'
                 },
                 {
                     type: 'boolean'
                 },
                 {
-                    prefixItems: [
-                        {
-                            anyOf: [
-                                {
-                                    type: 'integer'
-                                },
-                                {
-                                    type: 'string'
-                                },
-                                {
-                                    type: 'boolean'
-                                }
-                            ]
-                        }
-                    ],
-                    type: 'array',
-                    maxItems: 1,
-                    minItems: 1
+                    items: {
+                        anyOf: [
+                            {
+                                type: 'integer'
+                            },
+                            {
+                                type: 'number'
+                            },
+                            {
+                                type: 'string'
+                            },
+                            {
+                                type: 'boolean'
+                            }
+                        ]
+                    },
+                    type: 'array'
                 }
             ],
             title: 'Log'
@@ -3311,7 +3406,14 @@ export const MaxSchema = {
     properties: {
         max: {
             items: {
-                type: 'integer'
+                anyOf: [
+                    {
+                        type: 'integer'
+                    },
+                    {
+                        type: 'number'
+                    }
+                ]
             },
             type: 'array',
             title: 'Max'
@@ -3320,6 +3422,37 @@ export const MaxSchema = {
     type: 'object',
     required: ['max'],
     title: 'Max'
+} as const;
+
+export const MeldingContactInputSchema = {
+    properties: {
+        email: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'email'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Email'
+        },
+        phone: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'phone'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Phone'
+        }
+    },
+    type: 'object',
+    title: 'MeldingContactInput'
 } as const;
 
 export const MeldingCreateOutputSchema = {
@@ -3366,6 +3499,30 @@ export const MeldingCreateOutputSchema = {
                     type: 'null'
                 }
             ]
+        },
+        email: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'email'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Email'
+        },
+        phone: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'phone'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Phone'
         },
         token: {
             type: 'string',
@@ -3434,6 +3591,30 @@ export const MeldingOutputSchema = {
                     type: 'null'
                 }
             ]
+        },
+        email: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'email'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Email'
+        },
+        phone: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'phone'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Phone'
         }
     },
     type: 'object',
@@ -3456,7 +3637,14 @@ export const MinSchema = {
     properties: {
         min: {
             items: {
-                type: 'integer'
+                anyOf: [
+                    {
+                        type: 'integer'
+                    },
+                    {
+                        type: 'number'
+                    }
+                ]
             },
             type: 'array',
             title: 'Min'
@@ -3527,12 +3715,28 @@ export const ModuloSchema = {
                             type: 'integer'
                         },
                         {
+                            type: 'number'
+                        },
+                        {
+                            type: 'string'
+                        },
+                        {
                             '$ref': '#/components/schemas/Var'
                         }
                     ]
                 },
                 {
-                    type: 'integer'
+                    anyOf: [
+                        {
+                            type: 'integer'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'string'
+                        }
+                    ]
                 }
             ],
             type: 'array',
@@ -3553,6 +3757,9 @@ export const MultiplySchema = {
                 anyOf: [
                     {
                         type: 'integer'
+                    },
+                    {
+                        type: 'number'
                     },
                     {
                         type: 'string'
@@ -3894,6 +4101,9 @@ export const NotSchema = {
                                     type: 'integer'
                                 },
                                 {
+                                    type: 'number'
+                                },
+                                {
                                     type: 'string'
                                 }
                             ]
@@ -3908,6 +4118,9 @@ export const NotSchema = {
                 },
                 {
                     type: 'integer'
+                },
+                {
+                    type: 'number'
                 },
                 {
                     type: 'string'
@@ -3955,27 +4168,49 @@ export const NotEqualsSchema = {
 export const NotNotSchema = {
     properties: {
         '!!': {
-            prefixItems: [
+            anyOf: [
                 {
-                    anyOf: [
+                    prefixItems: [
                         {
-                            type: 'integer'
-                        },
-                        {
-                            type: 'string'
-                        },
-                        {
-                            items: {
-                                type: 'null'
-                            },
-                            type: 'array'
+                            anyOf: [
+                                {
+                                    type: 'integer'
+                                },
+                                {
+                                    type: 'number'
+                                },
+                                {
+                                    type: 'string'
+                                },
+                                {
+                                    items: {
+                                        type: 'null'
+                                    },
+                                    type: 'array'
+                                },
+                                {
+                                    type: 'boolean'
+                                }
+                            ]
                         }
-                    ]
+                    ],
+                    type: 'array',
+                    maxItems: 1,
+                    minItems: 1
+                },
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'number'
+                },
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'boolean'
                 }
             ],
-            type: 'array',
-            maxItems: 1,
-            minItems: 1,
             title: '!!'
         }
     },
@@ -3994,6 +4229,9 @@ export const Or_InputSchema = {
                     },
                     {
                         type: 'integer'
+                    },
+                    {
+                        type: 'number'
                     },
                     {
                         type: 'string'
@@ -4127,6 +4365,9 @@ export const Or_OutputSchema = {
                     },
                     {
                         type: 'integer'
+                    },
+                    {
+                        type: 'number'
                     },
                     {
                         type: 'string'
@@ -4673,14 +4914,6 @@ export const SimpleFormOutputSchema = {
             type: 'integer',
             title: 'Id'
         },
-        title: {
-            type: 'string',
-            title: 'Title'
-        },
-        display: {
-            type: 'string',
-            title: 'Display'
-        },
         created_at: {
             type: 'string',
             format: 'date-time',
@@ -4690,6 +4923,14 @@ export const SimpleFormOutputSchema = {
             type: 'string',
             format: 'date-time',
             title: 'Updated At'
+        },
+        title: {
+            type: 'string',
+            title: 'Title'
+        },
+        display: {
+            type: 'string',
+            title: 'Display'
         },
         classification: {
             anyOf: [
@@ -4704,7 +4945,7 @@ export const SimpleFormOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'title', 'display', 'created_at', 'updated_at'],
+    required: ['id', 'created_at', 'updated_at', 'title', 'display'],
     title: 'SimpleFormOutput'
 } as const;
 
@@ -4713,14 +4954,6 @@ export const SimpleStaticFormOutputSchema = {
         id: {
             type: 'integer',
             title: 'Id'
-        },
-        title: {
-            type: 'string',
-            title: 'Title'
-        },
-        display: {
-            type: 'string',
-            title: 'Display'
         },
         created_at: {
             type: 'string',
@@ -4732,13 +4965,21 @@ export const SimpleStaticFormOutputSchema = {
             format: 'date-time',
             title: 'Updated At'
         },
+        title: {
+            type: 'string',
+            title: 'Title'
+        },
+        display: {
+            type: 'string',
+            title: 'Display'
+        },
         type: {
             type: 'string',
             title: 'Type'
         }
     },
     type: 'object',
-    required: ['id', 'title', 'display', 'created_at', 'updated_at', 'type'],
+    required: ['id', 'created_at', 'updated_at', 'title', 'display', 'type'],
     title: 'SimpleStaticFormOutput'
 } as const;
 
@@ -5147,14 +5388,6 @@ export const StaticFormOutputSchema = {
             type: 'integer',
             title: 'Id'
         },
-        title: {
-            type: 'string',
-            title: 'Title'
-        },
-        display: {
-            type: 'string',
-            title: 'Display'
-        },
         created_at: {
             type: 'string',
             format: 'date-time',
@@ -5164,6 +5397,14 @@ export const StaticFormOutputSchema = {
             type: 'string',
             format: 'date-time',
             title: 'Updated At'
+        },
+        title: {
+            type: 'string',
+            title: 'Title'
+        },
+        display: {
+            type: 'string',
+            title: 'Display'
         },
         type: {
             type: 'string',
@@ -5197,7 +5438,7 @@ export const StaticFormOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'title', 'display', 'created_at', 'updated_at', 'type', 'components'],
+    required: ['id', 'created_at', 'updated_at', 'title', 'display', 'type', 'components'],
     title: 'StaticFormOutput'
 } as const;
 
@@ -5547,6 +5788,9 @@ export const SubtractSchema = {
                                     type: 'integer'
                                 },
                                 {
+                                    type: 'number'
+                                },
+                                {
                                     type: 'string'
                                 }
                             ]
@@ -5564,6 +5808,9 @@ export const SubtractSchema = {
                                     type: 'integer'
                                 },
                                 {
+                                    type: 'number'
+                                },
+                                {
                                     type: 'string'
                                 }
                             ]
@@ -5572,6 +5819,9 @@ export const SubtractSchema = {
                             anyOf: [
                                 {
                                     type: 'integer'
+                                },
+                                {
+                                    type: 'number'
                                 },
                                 {
                                     type: 'string'
@@ -5731,6 +5981,9 @@ export const VarSchema = {
                 },
                 {
                     type: 'integer'
+                },
+                {
+                    type: 'number'
                 },
                 {
                     items: {
