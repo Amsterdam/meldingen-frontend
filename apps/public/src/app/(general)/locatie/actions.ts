@@ -10,9 +10,11 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
   const meldingId = cookieStore.get('id')?.value
   const token = cookieStore.get('token')?.value
 
+  if (!meldingId || !token) return undefined
+
   const coordinate = formData.get('coordinate')
 
-  if (!coordinate || !meldingId || !token) return { message: 'Vul een locatie in.' }
+  if (!coordinate) return { message: 'Vul een locatie in.' }
 
   const parsedCoordinate = JSON.parse(coordinate as string)
 
