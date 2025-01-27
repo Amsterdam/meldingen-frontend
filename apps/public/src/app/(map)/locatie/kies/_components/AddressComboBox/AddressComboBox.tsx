@@ -91,7 +91,7 @@ export const AddressComboBox = ({ address, errorMessage, setAddress }: Props) =>
         te kiezen. Voor <span lang="en">touch</span>-apparaten, verken met aanraking of veegbewegingen{' '}
         <span lang="en">(swipe)</span>.
       </Description>
-      <Combobox onChange={onChangeHandler} onClose={() => fetchAddressList('')} value={query}>
+      <Combobox as="div" onChange={onChangeHandler} onClose={() => fetchAddressList('')} value={query}>
         <ComboboxInput
           as={TextInput}
           autoComplete="off"
