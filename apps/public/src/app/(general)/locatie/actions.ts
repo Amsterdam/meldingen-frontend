@@ -6,17 +6,18 @@ import { redirect } from 'next/navigation'
 import { postMeldingByMeldingIdLocation } from 'apps/public/src/apiClientProxy'
 
 export const postLocationForm = async (_: unknown, formData: FormData) => {
-  const coordinate = formData.get('coordinate')
-  const parsedCoordinate = coordinate ? JSON.parse(coordinate as string) : undefined
-
   const cookieStore = await cookies()
   const meldingId = cookieStore.get('id')?.value
   const token = cookieStore.get('token')?.value
 
-  if (!parsedCoordinate || !meldingId || !token) return undefined
+  const coordinate = formData.get('coordinate')
+
+  if (!coordinate || !meldingId || !token) return undefined
+
+  const parsedCoordinate = JSON.parse(coordinate as string)
 
   try {
-    postMeldingByMeldingIdLocation({
+    await postMeldingByMeldingIdLocation({
       meldingId: parseInt(meldingId, 10),
       token,
       requestBody: {

@@ -60,6 +60,7 @@ export const AddressComboBox = ({ address, errorMessage, setAddress }: Props) =>
         }
       } catch (error) {
         // TODO: do we want to show a message to the user here?
+        // eslint-disable-next-line no-console
         console.error(error)
       }
     } else {

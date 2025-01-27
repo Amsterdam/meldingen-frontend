@@ -14,13 +14,13 @@ const initialState: { message?: string } = {}
 export const Locatie = ({ prevPage, locationData }: { prevPage: string; locationData: any }) => {
   const [formState, formAction] = useActionState(postLocationForm, initialState)
 
-  console.log(formState)
-
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         <BackLink href={prevPage}>Vorige vraag</BackLink>
         <Heading className="ams-mb--sm">Locatie</Heading>
+
+        {formState?.message && <Paragraph>{formState.message}</Paragraph>}
 
         {/* TODO: text should come from api */}
         <Heading level={2} size="level-4">
