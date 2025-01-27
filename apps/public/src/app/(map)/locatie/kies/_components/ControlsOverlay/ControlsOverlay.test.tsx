@@ -45,7 +45,7 @@ describe('ControlsOverlay', () => {
 
     const user = userEvent.setup()
 
-    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
+    render(<ControlsOverlay hideListView mapInstance={mapInstanceMock} />)
 
     const button = screen.getByRole('button', { name: 'Mijn locatie' })
 
@@ -75,7 +75,7 @@ describe('ControlsOverlay', () => {
 
     const user = userEvent.setup()
 
-    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
+    render(<ControlsOverlay hideListView mapInstance={mapInstanceMock} />)
 
     const button = screen.getByRole('button', { name: 'Mijn locatie' })
 
@@ -99,7 +99,7 @@ describe('ControlsOverlay', () => {
   it('should zoom in when zoom controls are used', async () => {
     const user = userEvent.setup()
 
-    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
+    render(<ControlsOverlay hideListView mapInstance={mapInstanceMock} />)
 
     const ZoomInButton = screen.getByRole('button', { name: 'Inzoomen' })
 
@@ -111,7 +111,7 @@ describe('ControlsOverlay', () => {
   it('should zoom out when zoom controls are used', async () => {
     const user = userEvent.setup()
 
-    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
+    render(<ControlsOverlay hideListView mapInstance={mapInstanceMock} />)
 
     const ZoomOutButton = screen.getByRole('button', { name: 'Uitzoomen' })
 
