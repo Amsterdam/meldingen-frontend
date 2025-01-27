@@ -33,15 +33,16 @@ type Props = {
 }
 
 export const AddressComboBox = ({ address, errorMessage, setAddress }: Props) => {
+  const [query, setQuery] = useState(address?.weergave_naam ?? '')
   const [addressList, setAddressList] = useState<Address[]>([])
   const [showListBox, setShowListBox] = useState(false)
 
   // TODO: do we want to show a loading state?
-  const fetchAddressList = debounce(async (query: string) => {
-    if (query.length >= 3) {
+  const fetchAddressList = debounce(async (value: string) => {
+    if (value.length >= 3) {
       try {
         const response = await fetch(
-          `https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?${pdokQueryParams}&q=${query}`,
+          `https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?${pdokQueryParams}&q=${value}`,
         )
         const responseData = await response.json()
 
@@ -58,7 +59,7 @@ export const AddressComboBox = ({ address, errorMessage, setAddress }: Props) =>
           setShowListBox(true)
         }
       } catch (error) {
-        // TODO: handle error properly
+        // TODO: do we want to show a message to the user here?
         console.error(error)
       }
     } else {
@@ -66,6 +67,19 @@ export const AddressComboBox = ({ address, errorMessage, setAddress }: Props) =>
       setShowListBox(false)
     }
   })
+
+  const onChangeHandler = (value: Address | string | null) => {
+    if (typeof value === 'string' || value === null) {
+      setQuery(value ?? '')
+    } else {
+      setAddress({
+        id: value.id,
+        weergave_naam: value.weergave_naam,
+        centroide_ll: value.centroide_ll,
+      })
+      setQuery(value.weergave_naam)
+    }
+  }
 
   return (
     <HUIField as={Field} invalid={!!errorMessage}>
@@ -76,13 +90,15 @@ export const AddressComboBox = ({ address, errorMessage, setAddress }: Props) =>
         te kiezen. Voor <span lang="en">touch</span>-apparaten, verken met aanraking of veegbewegingen{' '}
         <span lang="en">(swipe)</span>.
       </Description>
-      <Combobox onChange={setAddress} onClose={() => fetchAddressList('')} value={address}>
+      <Combobox onChange={onChangeHandler} onClose={() => fetchAddressList('')} value={query}>
         <ComboboxInput
           as={TextInput}
           autoComplete="off"
-          displayValue={(item: Address) => item?.weergave_naam}
           name="address"
-          onChange={(event) => fetchAddressList(event.target.value)}
+          onChange={(event) => {
+            setQuery(event.target.value)
+            fetchAddressList(event.target.value)
+          }}
         />
         {showListBox && (
           <ComboboxOptions as={ListBox} modal={false}>
