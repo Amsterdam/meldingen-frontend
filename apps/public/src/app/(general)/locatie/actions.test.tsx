@@ -28,7 +28,7 @@ describe('postLocationForm', () => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  it('returns undefined if coordinate, meldingId, or token is missing', async () => {
+  it('returns an error when coordinate, meldingId, or token is missing', async () => {
     mockCookies.get.mockReturnValue(undefined)
 
     const formData = new FormData()
