@@ -24,21 +24,21 @@ const KiesLocatie = () => {
   }
 
   return (
-    <Grid className={styles.container}>
+    <Grid className={styles.page}>
       <Grid.Cell span={{ narrow: 4, medium: 5, wide: 4 }}>
         <SideBar coordinates={coordinates} />
       </Grid.Cell>
       <Grid.Cell
         span={{ narrow: 4, medium: 8, wide: 4 }}
-        className={`${styles.cell} ${hideListView && styles.NotShowList}`}
+        className={`${styles.listView} ${hideListView && styles.hideListView}`}
       >
         <ListView />
       </Grid.Cell>
-      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 8 }} className={styles.cellMap}>
+      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 8 }} className={styles.mapView}>
         <Map setCoordinates={setCoordinates} hideListView={hideListView} />
       </Grid.Cell>
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 4 }}>
-        <Column className={styles.cellButton}>
+        <Column className={styles.buttonColumn}>
           <Button id="address" type="submit">
             Bevestigen
           </Button>

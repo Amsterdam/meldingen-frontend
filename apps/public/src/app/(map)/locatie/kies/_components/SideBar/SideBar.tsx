@@ -1,4 +1,4 @@
-import { Column, Heading, Icon, Paragraph, Link, Button } from '@amsterdam/design-system-react'
+import { Column, Heading, Icon, Paragraph, Link } from '@amsterdam/design-system-react'
 import { ChevronLeftIcon } from '@amsterdam/design-system-react-icons'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'

@@ -1,15 +1,9 @@
-.container {
+.page {
   grid-template-rows: 1fr 3fr 0fr;
   height: 100vh;
 }
 
-.toggle {
-  @media screen and (min-width: 68rem) {
-    display: none;
-  }
-}
-
-.cell {
+.listView {
   grid-column-start: 1;
   grid-row-start: 2;
   position: relative;
@@ -20,7 +14,7 @@
   }
 }
 
-.NotShowList {
+.hideListView {
   visibility: hidden;
 
   @media screen and (min-width: 68rem) {
@@ -28,7 +22,7 @@
   }
 }
 
-.cellMap {
+.mapView {
   grid-column-start: 1;
   grid-row-start: 2;
   position: relative;
@@ -40,8 +34,14 @@
   }
 }
 
-.cellButton {
+.buttonColumn {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.toggle {
+  @media screen and (min-width: 68rem) {
+    display: none;
+  }
 }
