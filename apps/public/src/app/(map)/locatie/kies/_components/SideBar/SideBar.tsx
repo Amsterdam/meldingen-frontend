@@ -1,4 +1,4 @@
-import { Column, Heading, Icon, Paragraph, Link, Button } from '@amsterdam/design-system-react'
+import { Column, Heading, Icon, Paragraph, Link } from '@amsterdam/design-system-react'
 import { ChevronLeftIcon } from '@amsterdam/design-system-react-icons'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
@@ -49,9 +49,8 @@ export const SideBar = ({ coordinates }: Props) => {
           Typ het dichtstbijzijnde adres, klik de locatie aan op de kaart of gebruik &quot;Mijn locatie&quot;
         </Paragraph>
       </div>
-      <form>
+      <form id="address">
         <AddressComboBox address={address} setAddress={setAddress} />
-        <Button type="submit">Bevestigen</Button>
       </form>
     </Column>
   )

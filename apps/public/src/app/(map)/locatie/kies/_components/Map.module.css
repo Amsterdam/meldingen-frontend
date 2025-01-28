@@ -1,7 +1,12 @@
 .container {
+  height: 100%;
   position: relative;
 }
 
 .map {
-  height: 100vh;
+  height: 100%;
+}
+
+.hideMap {
+  display: none;
 }

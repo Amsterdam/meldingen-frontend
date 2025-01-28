@@ -52,7 +52,7 @@ export const ControlsOverlay = ({ mapInstance }: Props) => {
 
   return (
     <>
-      <div className={styles['overlay-top-left']}>
+      <div className={styles.overlayTopLeft}>
         <Button variant="secondary" onClick={handleCurrentLocationButtonClick}>
           Mijn locatie
         </Button>
@@ -62,7 +62,7 @@ export const ControlsOverlay = ({ mapInstance }: Props) => {
           </Notification>
         )}
       </div>
-      <div className={styles['overlay-bottom-right']}>
+      <div className={styles.overlayBottomRight}>
         <Button variant="secondary" iconOnly icon={EnlargeIcon} onClick={handleZoomIn}>
           Inzoomen
         </Button>

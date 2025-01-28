@@ -9,10 +9,11 @@ import { ControlsOverlay } from './ControlsOverlay/ControlsOverlay'
 import styles from './Map.module.css'
 
 type Props = {
+  showAssetList?: boolean
   setCoordinates: (coordinates: Coordinates) => void
 }
 
-export const Map = ({ setCoordinates }: Props) => {
+export const Map = ({ showAssetList, setCoordinates }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
@@ -65,7 +66,7 @@ export const Map = ({ setCoordinates }: Props) => {
   }, [mapInstance, setCoordinates])
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>
       <div className={styles.map} ref={mapRef} />
       <ControlsOverlay mapInstance={mapInstance} />
     </div>
