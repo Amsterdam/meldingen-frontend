@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
+import type { Mock } from 'vitest'
 import { vi } from 'vitest'
 
 import { Home } from './Home'
@@ -36,7 +37,7 @@ describe('Page', () => {
   })
 
   it('should render an error message', () => {
-    ;(useActionState as jest.Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
 
     render(<Home formData={mockFormData} />)
 
