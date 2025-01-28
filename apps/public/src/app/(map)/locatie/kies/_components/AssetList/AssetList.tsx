@@ -1,3 +1,3 @@
 import styles from './AssetList.module.css'
 
-export const AssetList = () => <div className={styles.container}>List view</div>
+export const AssetList = () => <div className={styles.container}>Asset List</div>
