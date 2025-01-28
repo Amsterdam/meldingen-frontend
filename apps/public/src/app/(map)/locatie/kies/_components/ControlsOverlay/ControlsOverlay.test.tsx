@@ -119,14 +119,4 @@ describe('ControlsOverlay', () => {
 
     expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM - 1)
   })
-
-  it('should hide the location button when the asset list is shown', () => {
-    const { rerender } = render(<ControlsOverlay mapInstance={mapInstanceMock} />)
-
-    expect(screen.getByRole('button', { name: 'Mijn locatie' })).toBeInTheDocument()
-
-    rerender(<ControlsOverlay showAssetList mapInstance={mapInstanceMock} />)
-
-    expect(screen.queryByRole('button', { name: 'Mijn locatie' })).not.toBeInTheDocument()
-  })
 })

@@ -9,11 +9,10 @@ import { Notification } from '../Notification/Notification'
 import styles from './ControlsOverlay.module.css'
 
 type Props = {
-  showAssetList?: boolean
   mapInstance: L.Map | null
 }
 
-export const ControlsOverlay = ({ showAssetList, mapInstance }: Props) => {
+export const ControlsOverlay = ({ mapInstance }: Props) => {
   const [markerLayer, setMarkerLayer] = useState<L.Marker | null>(null)
 
   const [notification, setNotification] = useState<{ heading: string; description: string } | null>(null)
@@ -54,11 +53,9 @@ export const ControlsOverlay = ({ showAssetList, mapInstance }: Props) => {
   return (
     <>
       <div className={styles.overlayTopLeft}>
-        {!showAssetList && (
-          <Button variant="secondary" onClick={handleCurrentLocationButtonClick}>
-            Mijn locatie
-          </Button>
-        )}
+        <Button variant="secondary" onClick={handleCurrentLocationButtonClick}>
+          Mijn locatie
+        </Button>
         {notification && (
           <Notification heading={notification.heading} closeable onClose={() => setNotification(null)}>
             <Paragraph>{notification.description}</Paragraph>

@@ -66,9 +66,9 @@ export const Map = ({ showAssetList, setCoordinates }: Props) => {
   }, [mapInstance, setCoordinates])
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>
       <div className={styles.map} ref={mapRef} />
-      <ControlsOverlay mapInstance={mapInstance} showAssetList={showAssetList} />
+      <ControlsOverlay mapInstance={mapInstance} />
     </div>
   )
 }
