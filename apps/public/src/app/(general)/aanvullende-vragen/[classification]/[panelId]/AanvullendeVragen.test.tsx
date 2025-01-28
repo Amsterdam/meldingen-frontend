@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
+import type { Mock } from 'vitest'
 import { vi } from 'vitest'
 
 import mockFormData from 'apps/public/src/mocks/mockFormData.json'
@@ -40,7 +41,7 @@ describe('AanvullendeVragen', () => {
   })
 
   it('should render an error message', () => {
-    ;(useActionState as jest.Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
 
     const action = vi.fn()
 

@@ -1,6 +1,5 @@
 import type { FormioSchema } from '@meldingen/form-builder'
 import { FormBuilder } from '@meldingen/form-builder'
-import type { ComponentSchema } from 'formiojs'
 import { useEffect, useState } from 'react'
 import { TextInput } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
@@ -8,7 +7,7 @@ import { useFormContext } from 'react-hook-form'
 import styles from './BuilderInput.module.css'
 
 export const BuilderInput = () => {
-  const [formValue, setFormValue] = useState<ComponentSchema[]>()
+  const [formValue, setFormValue] = useState<FormioSchema['components']>()
 
   const { getValues, setValue } = useFormContext()
 
