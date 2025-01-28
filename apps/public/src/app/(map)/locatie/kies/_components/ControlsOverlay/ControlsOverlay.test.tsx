@@ -99,7 +99,7 @@ describe('ControlsOverlay', () => {
   it('should zoom in when zoom controls are used', async () => {
     const user = userEvent.setup()
 
-    render(<ControlsOverlay showAssetList mapInstance={mapInstanceMock} />)
+    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
 
     const ZoomInButton = screen.getByRole('button', { name: 'Inzoomen' })
 
@@ -111,12 +111,22 @@ describe('ControlsOverlay', () => {
   it('should zoom out when zoom controls are used', async () => {
     const user = userEvent.setup()
 
-    render(<ControlsOverlay showAssetList mapInstance={mapInstanceMock} />)
+    render(<ControlsOverlay mapInstance={mapInstanceMock} />)
 
     const ZoomOutButton = screen.getByRole('button', { name: 'Uitzoomen' })
 
     await user.click(ZoomOutButton)
 
     expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM - 1)
+  })
+
+  it('should hide the location button when the asset list is shown', () => {
+    const { rerender } = render(<ControlsOverlay mapInstance={mapInstanceMock} />)
+
+    expect(screen.getByRole('button', { name: 'Mijn locatie' })).toBeInTheDocument()
+
+    rerender(<ControlsOverlay showAssetList mapInstance={mapInstanceMock} />)
+
+    expect(screen.queryByRole('button', { name: 'Mijn locatie' })).not.toBeInTheDocument()
   })
 })

@@ -6,7 +6,6 @@
 .assetList {
   display: none;
   grid-row-start: 2;
-  position: relative;
 
   @media screen and (min-width: 68rem) {
     display: block;

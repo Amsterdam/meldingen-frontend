@@ -9,7 +9,7 @@ import { ControlsOverlay } from './ControlsOverlay/ControlsOverlay'
 import styles from './Map.module.css'
 
 type Props = {
-  showAssetList: boolean
+  showAssetList?: boolean
   setCoordinates: (coordinates: Coordinates) => void
 }
 
