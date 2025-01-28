@@ -1,7 +1,13 @@
 {
   "extends": ["stylelint-config-standard", "stylelint-config-css-modules"],
-  "plugins": ["stylelint-order"],
+  "plugins": ["stylelint-order", "stylelint-value-no-unknown-custom-properties"],
   "rules": {
+    "csstools/value-no-unknown-custom-properties": [
+      true,
+      {
+        "importFrom": ["node_modules/@amsterdam/design-system-tokens/dist/index.css"]
+      }
+    ],
     "media-feature-range-notation": "prefix",
     "order/order": ["custom-properties", "declarations"],
     "order/properties-order": [

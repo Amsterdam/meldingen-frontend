@@ -79,6 +79,7 @@
     "stylelint-config-css-modules": "4.4.0",
     "stylelint-config-standard": "37.0.0",
     "stylelint-order": "6.0.4",
+    "stylelint-value-no-unknown-custom-properties": "6.0.1",
     "tsc-files": "1.1.4",
     "typescript": "5.7.3",
     "vite-tsconfig-paths": "5.1.4",

@@ -138,6 +138,9 @@ importers:
       stylelint-order:
         specifier: 6.0.4
         version: 6.0.4(stylelint@16.14.0(typescript@5.7.3))
+      stylelint-value-no-unknown-custom-properties:
+        specifier: 6.0.1
+        version: 6.0.1(stylelint@16.14.0(typescript@5.7.3))
       tsc-files:
         specifier: 1.1.4
         version: 1.1.4(typescript@5.7.3)
@@ -4270,6 +4273,12 @@ packages:
     engines: {node: '>=18.12.0'}
     peerDependencies:
       stylelint: ^16.0.2
+
+  stylelint-value-no-unknown-custom-properties@6.0.1:
+    resolution: {integrity: sha512-N60PTdaTknB35j6D4FhW0GL2LlBRV++bRpXMMldWMQZ240yFQaoltzlLY4lXXs7Z0J5mNUYZQ/gjyVtU2DhCMA==}
+    engines: {node: '>=18.12.0'}
+    peerDependencies:
+      stylelint: '>=16'
 
   stylelint@16.14.0:
     resolution: {integrity: sha512-orePw2dKxzXC0hd1VmxrDBqgf1KUV9DYsZY4guKLE9XcQD7m0BxVnWMaoQqMNsQIG14MyyTHf6zoajvOnDra8g==}
@@ -9371,6 +9380,12 @@ snapshots:
       postcss-value-parser: 4.2.0
       stylelint: 16.14.0(typescript@5.7.3)
     optional: true
+
+  stylelint-value-no-unknown-custom-properties@6.0.1(stylelint@16.14.0(typescript@5.7.3)):
+    dependencies:
+      postcss-value-parser: 4.2.0
+      resolve: 1.22.10
+      stylelint: 16.14.0(typescript@5.7.3)
 
   stylelint@16.14.0(typescript@5.7.3):
     dependencies:
