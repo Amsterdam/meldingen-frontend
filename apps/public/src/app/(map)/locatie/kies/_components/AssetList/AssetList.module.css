@@ -1,6 +1,7 @@
 .container {
   background-color: white;
   height: 100%;
+  position: relative;
   width: 100%;
 
   /*
@@ -11,6 +12,5 @@
 
   @media screen and (min-width: 68rem) {
     height: auto;
-    position: relative;
   }
 }

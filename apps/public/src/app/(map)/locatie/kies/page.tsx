@@ -31,7 +31,7 @@ const KiesLocatie = () => {
       <Grid.Cell
         span={{ narrow: 4, medium: 8, wide: 4 }}
         start={{ narrow: 1, medium: 1, wide: 1 }}
-        className={`${styles.assetList} ${showAssetList && styles.toggleAssetList}`}
+        className={`${styles.assetList} ${showAssetList && styles.showAssetList}`}
       >
         <AssetList />
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
@@ -44,12 +44,12 @@ const KiesLocatie = () => {
         className={styles.map}
       >
         <Map setCoordinates={setCoordinates} showAssetList={showAssetList} />
-        <div className={`${styles.submitButton} ${styles.hideButtonDesktop}`}>
+        <div className={styles.submitbutton}>
           <Button form="address" type="submit">
             Bevestigen
           </Button>
         </div>
-        <div className={`${styles.toggleButton} ${styles.hideButtonDesktop}`}>
+        <div className={styles.toggleButton}>
           <Button variant="secondary" onClick={handleAssetListToggle}>
             {showAssetList ? 'Kaart' : 'Lijst'}
           </Button>
