@@ -54,7 +54,7 @@ export const ControlsOverlay = ({ showAssetList, mapInstance }: Props) => {
   return (
     <>
       <div className={styles.overlayTopLeft}>
-        {showAssetList && (
+        {!showAssetList && (
           <Button variant="secondary" onClick={handleCurrentLocationButtonClick}>
             Mijn locatie
           </Button>

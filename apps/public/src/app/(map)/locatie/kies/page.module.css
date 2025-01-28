@@ -4,16 +4,17 @@
 }
 
 .assetList {
+  display: none;
   grid-row-start: 2;
   position: relative;
-}
-
-.toggleAssetList {
-  display: none;
 
   @media screen and (min-width: 68rem) {
     display: block;
   }
+}
+
+.toggleAssetList {
+  display: block;
 }
 
 .hideButtonDesktop {

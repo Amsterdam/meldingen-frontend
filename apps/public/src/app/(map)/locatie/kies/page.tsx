@@ -51,7 +51,7 @@ const KiesLocatie = () => {
         </div>
         <div className={`${styles.toggleButton} ${styles.hideButtonDesktop}`}>
           <Button variant="secondary" onClick={handleAssetListToggle}>
-            {showAssetList ? 'Lijst' : 'Kaart'}
+            {showAssetList ? 'Kaart' : 'Lijst'}
           </Button>
         </div>
       </Grid.Cell>

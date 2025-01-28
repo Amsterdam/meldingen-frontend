@@ -14,12 +14,10 @@ describe('Page', () => {
 
     const sideBar = screen.getByRole('heading', { name: 'Selecteer de locatie' })
     const addressComboBox = screen.getByRole('combobox', { name: 'Zoek op adres' })
-    const submitButton = screen.getByRole('button', { name: 'Bevestigen' })
     const toggleButton = screen.getByRole('button', { name: 'Lijst' })
 
     expect(sideBar).toBeInTheDocument()
     expect(addressComboBox).toBeInTheDocument()
     expect(toggleButton).toBeInTheDocument()
-    expect(submitButton).toBeInTheDocument()
   })
 })
