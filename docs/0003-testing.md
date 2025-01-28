@@ -12,12 +12,8 @@ Initially, this testing will be done manually. Eventually, we will create automa
 ## Unit tests
 
 To ensure the quality of our code, we write unit tests for our React components.
-For the components in our libraries (`/libs`) we use [Vitest](https://vitest.dev/) with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro).
-For the components in our applications (`/apps`) we use [Jest](https://jestjs.io/) with React Testing Library.
-
-The reason for this difference is simply that Nx, our monorepo tool, automatically sets it up this way.
-We currently don’t have any reason to change it, seeing as the syntax for Jest and Vitest is largely the same.
-If this causes issues in the future, we might reconsider this choice.
+We use [Vitest](https://vitest.dev/) with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
+for this.
 
 ### Code conventions
 
