@@ -35,8 +35,8 @@
 
 .submitbutton {
   bottom: 0;
-  padding-block: var(--ams-space-sm);
-  padding-inline: var(--ams-space-sm);
+  margin-block: var(--ams-space-sm);
+  margin-inline: var(--ams-space-sm);
   position: absolute;
 
   /*

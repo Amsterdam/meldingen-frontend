@@ -44,16 +44,12 @@ const KiesLocatie = () => {
         className={styles.map}
       >
         <Map setCoordinates={setCoordinates} showAssetList={showAssetList} />
-        <div className={styles.submitbutton}>
-          <Button form="address" type="submit">
-            Bevestigen
-          </Button>
-        </div>
-        <div className={styles.toggleButton}>
-          <Button variant="secondary" onClick={handleAssetListToggle}>
-            {showAssetList ? 'Kaart' : 'Lijst'}
-          </Button>
-        </div>
+        <Button form="address" type="submit" className={styles.submitbutton}>
+          Bevestigen
+        </Button>
+        <Button variant="secondary" onClick={handleAssetListToggle} className={styles.toggleButton}>
+          {showAssetList ? 'Kaart' : 'Lijst'}
+        </Button>
       </Grid.Cell>
     </Grid>
   )
