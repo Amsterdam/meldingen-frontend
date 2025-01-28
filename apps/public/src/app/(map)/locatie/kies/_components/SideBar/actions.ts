@@ -12,18 +12,16 @@ export const writeAddressAndCoordinateToCookie = async (_: unknown, formData: Fo
   if (!address) return { message: 'Vul een locatie in.' }
 
   try {
-    let PDOKLocation
-
     // If we don't have a coordinate for some reason, we fetch it from the PDOK API using the address.
     // This should only happen if the user has disabled JavaScript or a PDOK service is down.
-    if (!coordinate) {
-      PDOKLocation = await fetch(
-        `https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`,
-      ).then((res) => res.json())
+    const PDOKLocation = !coordinate
+      ? await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`).then((res) =>
+          res.json(),
+        )
+      : null
 
-      if (!PDOKLocation.response.docs.length) {
-        throw new Error('Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam.')
-      }
+    if (PDOKLocation && !PDOKLocation.response.docs.length) {
+      throw new Error('Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam.')
     }
 
     const location = {
