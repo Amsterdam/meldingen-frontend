@@ -1,10 +1,10 @@
 'use client'
 
-import { Button, Column, Grid } from '@amsterdam/design-system-react'
+import { Button, Grid } from '@amsterdam/design-system-react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 
-import { ListView } from './_components/ListView/ListView'
+import { AssetList } from './_components/AssetList/AssetList'
 import { SideBar } from './_components/SideBar/SideBar'
 import styles from './page.module.css'
 
@@ -17,10 +17,10 @@ const Map = dynamic(() => import('./_components/Map').then((module) => module.Ma
 
 const KiesLocatie = () => {
   const [coordinates, setCoordinates] = useState<Coordinates>()
-  const [hideListView, setHideListView] = useState(true)
+  const [showAssetList, setShowAssetList] = useState(false)
 
-  const handleToggle = () => {
-    setHideListView((prevState) => !prevState)
+  const handleAssetListToggle = () => {
+    setShowAssetList((prevState) => !prevState)
   }
 
   return (
@@ -31,26 +31,29 @@ const KiesLocatie = () => {
       <Grid.Cell
         span={{ narrow: 4, medium: 8, wide: 4 }}
         start={{ narrow: 1, medium: 1, wide: 1 }}
-        className={`${styles.listView} ${hideListView && styles.hideListView}`}
+        className={`${styles.assetList} ${showAssetList && styles.toggleAssetList}`}
       >
-        <ListView />
+        <AssetList />
+        <Button form="address" type="submit" className={styles.hideButtonMobile}>
+          Bevestigen
+        </Button>
       </Grid.Cell>
       <Grid.Cell
         span={{ narrow: 4, medium: 8, wide: 8 }}
         start={{ narrow: 1, medium: 1, wide: 5 }}
-        className={styles.mapView}
+        className={styles.map}
       >
-        <Map setCoordinates={setCoordinates} hideListView={hideListView} />
-      </Grid.Cell>
-      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 4 }}>
-        <Column className={styles.buttonColumn}>
-          <Button id="address" type="submit">
+        <Map setCoordinates={setCoordinates} showAssetList={showAssetList} />
+        <div className={`${styles.submitButton} ${styles.hideButtonDesktop}`}>
+          <Button form="address" type="submit">
             Bevestigen
           </Button>
-          <Button variant="secondary" className={styles.toggle} onClick={handleToggle}>
-            {hideListView ? 'Lijst' : 'Kaart'}
+        </div>
+        <div className={`${styles.toggleButton} ${styles.hideButtonDesktop}`}>
+          <Button variant="secondary" onClick={handleAssetListToggle}>
+            {showAssetList ? 'Lijst' : 'Kaart'}
           </Button>
-        </Column>
+        </div>
       </Grid.Cell>
     </Grid>
   )

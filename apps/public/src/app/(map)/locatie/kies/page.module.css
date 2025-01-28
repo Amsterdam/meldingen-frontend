@@ -3,39 +3,55 @@
   height: 100vh;
 }
 
-.listView {
+.assetList {
   grid-row-start: 2;
   position: relative;
+}
+
+.toggleAssetList {
+  display: none;
 
   @media screen and (min-width: 68rem) {
-    grid-row-start: 2;
+    display: block;
   }
 }
 
-.hideListView {
-  visibility: hidden;
-
+.hideButtonDesktop {
   @media screen and (min-width: 68rem) {
-    visibility: unset;
+    display: none;
   }
 }
 
-.mapView {
+.hideButtonMobile {
+  display: none;
+
+  @media screen and (min-width: 68rem) {
+    display: block;
+  }
+}
+
+.map {
   grid-row-start: 2;
+  position: relative;
 
   @media screen and (min-width: 68rem) {
     grid-row: 1 / -1;
   }
 }
 
-.buttonColumn {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+.button {
+  bottom: 0;
+  padding-block: var(--ams-space-sm);
+  padding-inline: var(--ams-space-sm);
+  position: absolute;
+  z-index: 702;
 }
 
-.toggle {
-  @media screen and (min-width: 68rem) {
-    display: none;
-  }
+.submitButton {
+  composes: button;
+}
+
+.toggleButton {
+  composes: button;
+  right: 0;
 }

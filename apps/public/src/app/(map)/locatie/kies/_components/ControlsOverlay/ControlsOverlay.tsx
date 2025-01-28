@@ -9,11 +9,11 @@ import { Notification } from '../Notification/Notification'
 import styles from './ControlsOverlay.module.css'
 
 type Props = {
-  hideListView: boolean
+  showAssetList?: boolean
   mapInstance: L.Map | null
 }
 
-export const ControlsOverlay = ({ hideListView, mapInstance }: Props) => {
+export const ControlsOverlay = ({ showAssetList, mapInstance }: Props) => {
   const [markerLayer, setMarkerLayer] = useState<L.Marker | null>(null)
 
   const [notification, setNotification] = useState<{ heading: string; description: string } | null>(null)
@@ -54,7 +54,7 @@ export const ControlsOverlay = ({ hideListView, mapInstance }: Props) => {
   return (
     <>
       <div className={styles.overlayTopLeft}>
-        {hideListView && (
+        {showAssetList && (
           <Button variant="secondary" onClick={handleCurrentLocationButtonClick}>
             Mijn locatie
           </Button>
