@@ -11,17 +11,17 @@ import { writeAddressAndCoordinateToCookie } from './actions'
 
 type Props = {
   coordinates?: Coordinates
+  setCoordinates: (coordinates: Coordinates) => void
 }
 
 export type Address = {
   id: string
   weergave_naam: string
-  centroide_ll: string
 }
 
 const initialState: { message?: string } = {}
 
-export const SideBar = ({ coordinates }: Props) => {
+export const SideBar = ({ coordinates, setCoordinates }: Props) => {
   const [formState, formAction] = useActionState(writeAddressAndCoordinateToCookie, initialState)
 
   const [address, setAddress] = useState<Address | null>(null)
@@ -31,7 +31,7 @@ export const SideBar = ({ coordinates }: Props) => {
     const getAddress = async () => {
       if (!coordinates) return
 
-      const result = await getAddressFromCoordinates({ lat: coordinates.lat, lon: coordinates.lon })
+      const result = await getAddressFromCoordinates({ lat: coordinates.lat, lng: coordinates.lng })
 
       if (result) {
         setAddress(result)
@@ -57,8 +57,13 @@ export const SideBar = ({ coordinates }: Props) => {
         </Paragraph>
       </div>
       <form action={formAction} id="address">
-        <AddressComboBox address={address} setAddress={setAddress} errorMessage={formState?.message} />
-        <input type="hidden" name="coordinate" defaultValue={address ? address.centroide_ll : undefined} />
+        <AddressComboBox
+          address={address}
+          setAddress={setAddress}
+          setCoordinates={setCoordinates}
+          errorMessage={formState?.message}
+        />
+        <input type="hidden" name="coordinate" defaultValue={address ? JSON.stringify(coordinates) : undefined} />
       </form>
     </Column>
   )

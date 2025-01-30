@@ -1,9 +1,8 @@
 import { Button, Paragraph } from '@amsterdam/design-system-react'
 import { EnlargeIcon, MinimiseIcon } from '@amsterdam/design-system-react-icons'
-import L from 'leaflet'
+import type L from 'leaflet'
 import { useState } from 'react'
 
-import { marker } from '../Marker/Marker'
 import { Notification } from '../Notification/Notification'
 
 import styles from './ControlsOverlay.module.css'
@@ -13,8 +12,6 @@ type Props = {
 }
 
 export const ControlsOverlay = ({ mapInstance }: Props) => {
-  const [markerLayer, setMarkerLayer] = useState<L.Marker | null>(null)
-
   const [notification, setNotification] = useState<{ heading: string; description: string } | null>(null)
 
   const handleZoomIn = () => {
@@ -28,16 +25,11 @@ export const ControlsOverlay = ({ mapInstance }: Props) => {
     // TODO: is this correct? What should happen when you click the button without a map instance?
     if (!mapInstance) return
 
-    const { latitude, longitude } = coords
+    console.log(coords)
 
-    // Remove existing marker layer
-    markerLayer?.remove()
+    // const { latitude, longitude } = coords
 
-    // Create marker layer and add to map
-    const newMarker = L.marker(L.latLng([latitude, longitude]), { icon: marker }).addTo(mapInstance)
-
-    // Store marker layer in state
-    setMarkerLayer(newMarker)
+    // TODO: should be setcoordinates
   }
 
   const onError = () => {
