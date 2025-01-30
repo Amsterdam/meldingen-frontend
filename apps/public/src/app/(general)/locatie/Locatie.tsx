@@ -5,6 +5,7 @@ import { Grid, SubmitButton } from '@meldingen/ui'
 import NextLink from 'next/link'
 import { useActionState } from 'react'
 
+import type { LatLngTuple } from '../../(map)/locatie/kies/_utils/convertWktPointToCoordinates'
 import { BackLink } from '../_components/BackLink'
 
 import { postLocationForm } from './actions'
@@ -15,7 +16,7 @@ type Props = {
   prevPage: string
   locationData?: {
     name: string
-    coordinate: string
+    coordinate: LatLngTuple
   }
 }
 
@@ -45,7 +46,11 @@ export const Locatie = ({ prevPage, locationData }: Props) => {
         </NextLink>
 
         <form action={formAction}>
-          <input type="hidden" name="coordinate" value={locationData?.coordinate ?? undefined} />
+          <input
+            type="hidden"
+            name="coordinate"
+            value={locationData?.coordinate ? JSON.stringify(locationData?.coordinate) : undefined}
+          />
           <SubmitButton>Volgende vraag</SubmitButton>
         </form>
       </Grid.Cell>

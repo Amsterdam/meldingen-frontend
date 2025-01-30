@@ -5,8 +5,6 @@ import { redirect } from 'next/navigation'
 
 import { postMeldingByMeldingIdLocation } from 'apps/public/src/apiClientProxy'
 
-import { convertWktPointToCoordinates } from '../../(map)/locatie/kies/_utils/convertWktPointToCoordinates'
-
 export const postLocationForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()
   const meldingId = cookieStore.get('id')?.value
@@ -18,7 +16,7 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
 
   if (!coordinate) return { message: 'Vul een locatie in.' }
 
-  const { lat, lng } = convertWktPointToCoordinates(coordinate as string)
+  const parsedCoordinate = JSON.parse(coordinate as string)
 
   try {
     await postMeldingByMeldingIdLocation({
@@ -28,7 +26,7 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
         type: 'Feature',
         geometry: {
           type: 'Point',
-          coordinates: [lat, lng],
+          coordinates: [parsedCoordinate.lat, parsedCoordinate.lng],
         },
         properties: {},
       },

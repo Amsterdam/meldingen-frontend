@@ -3,6 +3,8 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
+import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
+
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam'
 
 export const writeAddressAndCoordinateToCookie = async (_: unknown, formData: FormData) => {
@@ -26,7 +28,9 @@ export const writeAddressAndCoordinateToCookie = async (_: unknown, formData: Fo
 
     const location = {
       name: coordinate ? address : PDOKLocation.response.docs[0].weergavenaam,
-      coordinate: coordinate || PDOKLocation.response.docs[0].centroide_ll,
+      coordinate: coordinate
+        ? JSON.parse(coordinate as string)
+        : convertWktPointToCoordinates(PDOKLocation.response.docs[0].centroide_ll),
     }
 
     const cookieStore = await cookies()

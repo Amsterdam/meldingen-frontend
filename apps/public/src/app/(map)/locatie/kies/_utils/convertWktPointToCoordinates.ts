@@ -1,4 +1,4 @@
-type LatLngTuple = [number, number]
+export type LatLngTuple = [number, number]
 
 const convertCoordsToLatLng = (coordinates: LatLngTuple) => {
   const coordsWithoutAltitude = [coordinates[0], coordinates[1]]
