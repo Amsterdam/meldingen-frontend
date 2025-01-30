@@ -1,6 +1,6 @@
 {
   "extends": ["stylelint-config-standard", "stylelint-config-css-modules"],
-  "plugins": ["stylelint-order"],
+  "plugins": ["stylelint-order", "stylelint-value-no-unknown-custom-properties"],
   "rules": {
     "media-feature-range-notation": "prefix",
     "order/order": ["custom-properties", "declarations"],
