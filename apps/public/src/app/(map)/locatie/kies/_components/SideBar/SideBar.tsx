@@ -1,11 +1,13 @@
 import { Column, Heading, Icon, Paragraph, Link } from '@amsterdam/design-system-react'
 import { ChevronLeftIcon } from '@amsterdam/design-system-react-icons'
 import NextLink from 'next/link'
-import { useEffect, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import { getAddressFromCoordinates } from '../../_utils'
 import type { Coordinates } from '../../page'
 import { AddressComboBox } from '../AddressComboBox/AddressComboBox'
+
+import { writeAddressAndCoordinateToCookie } from './actions'
 
 type Props = {
   coordinates?: Coordinates
@@ -14,9 +16,14 @@ type Props = {
 export type Address = {
   id: string
   weergave_naam: string
+  centroide_ll: string
 }
 
+const initialState: { message?: string } = {}
+
 export const SideBar = ({ coordinates }: Props) => {
+  const [formState, formAction] = useActionState(writeAddressAndCoordinateToCookie, initialState)
+
   const [address, setAddress] = useState<Address | null>(null)
 
   // TODO: this can just be a function, called on setCoordinates I think
@@ -49,8 +56,9 @@ export const SideBar = ({ coordinates }: Props) => {
           Typ het dichtstbijzijnde adres, klik de locatie aan op de kaart of gebruik &quot;Mijn locatie&quot;
         </Paragraph>
       </div>
-      <form id="address">
-        <AddressComboBox address={address} setAddress={setAddress} />
+      <form action={formAction} id="address">
+        <AddressComboBox address={address} setAddress={setAddress} errorMessage={formState?.message} />
+        <input type="hidden" name="coordinate" defaultValue={address ? address.centroide_ll : undefined} />
       </form>
     </Column>
   )
