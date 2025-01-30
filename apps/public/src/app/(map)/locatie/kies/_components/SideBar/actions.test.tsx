@@ -17,10 +17,6 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
-vi.mock('./utils', () => ({
-  convertPointToCoordinates: vi.fn(),
-}))
-
 describe('writeAddressAndCoordinateToCookie', () => {
   const mockCookies = {
     set: vi.fn(),
