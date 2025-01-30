@@ -2,14 +2,17 @@
 
 import { Column, Field, FieldSet, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-system-react'
 import { Grid, SubmitButton } from '@meldingen/ui'
+
 import { BackLink } from '../_components/BackLink'
+
+import { postContactForm } from './actions'
 
 const Contact = () => (
   <Grid paddingBottom="large" paddingTop="medium">
     <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
       <BackLink href="/bijlage">Vorige vraag</BackLink>
       <Heading className="ams-mb--sm">Contact</Heading>
-      <form>
+      <form action={postContactForm}>
         <FieldSet
           aria-labelledby="contact-details-description"
           legend="Mogen we u bellen voor vragen? En op de hoogte houden via e-mail?"
@@ -25,13 +28,20 @@ const Contact = () => (
             <Label htmlFor="email-input" optional>
               Wat is uw e-mailadres?
             </Label>
-            <TextInput id="email-input" type="email" autoComplete="email" autoCorrect="off" spellCheck="false" />
+            <TextInput
+              name="email"
+              id="email-input"
+              type="email"
+              autoComplete="email"
+              autoCorrect="off"
+              spellCheck="false"
+            />
           </Field>
           <Field className="ams-mb--sm">
             <Label htmlFor="tel-input" optional>
               Wat is uw telefoonnummer?
             </Label>
-            <TextInput id="tel-input" type="tel" autoComplete="tel" />
+            <TextInput name="phone" id="tel-input" type="tel" autoComplete="tel" />
           </Field>
         </FieldSet>
         <SubmitButton>Volgende vraag</SubmitButton>
