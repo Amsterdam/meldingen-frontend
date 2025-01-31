@@ -9,7 +9,8 @@ export default defineConfig({
   },
   test: {
     coverage: {
-      enabled: true,
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
     },
     globals: true,
     environment: 'jsdom',
