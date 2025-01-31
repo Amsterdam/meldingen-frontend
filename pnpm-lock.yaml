@@ -8001,6 +8001,10 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
 
+  magic-string@0.30.17:
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.5.0
+
   magicast@0.3.5:
     dependencies:
       '@babel/parser': 7.26.7
@@ -9151,6 +9155,8 @@ snapshots:
   stackback@0.0.2: {}
 
   statuses@2.0.1: {}
+
+  std-env@3.8.0: {}
 
   std-env@3.8.0: {}
 
