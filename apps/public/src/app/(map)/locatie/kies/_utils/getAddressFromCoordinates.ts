@@ -1,4 +1,4 @@
-import type { Coordinates } from '../page'
+import type { Coordinates } from 'apps/public/src/types'
 
 export const getAddressFromCoordinates = async ({ lat, lng }: Coordinates) =>
   fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?lat=${lat}&lon=${lng}&rows=1`)
