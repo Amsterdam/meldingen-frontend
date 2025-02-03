@@ -3,12 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import type { Position2D } from 'apps/public/src/apiClientProxy'
 import { postMeldingByMeldingIdLocation } from 'apps/public/src/apiClientProxy'
-
-// TODO: not sure if this is a good idea...
-const convertWktPointToCoordinates = (point: string) =>
-  point.replace('POINT(', '').replace(')', '').split(' ').map(parseFloat).reverse()
 
 export const postLocationForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()
@@ -17,11 +12,11 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
 
   if (!meldingId || !token) return undefined
 
-  const coordinate = formData.get('coordinate')
+  const coordinates = formData.get('coordinates')
 
-  if (!coordinate) return { message: 'Vul een locatie in.' }
+  if (!coordinates) return { message: 'Vul een locatie in.' }
 
-  const parsedCoordinate = convertWktPointToCoordinates(coordinate as string) as Position2D
+  const parsedCoordinates = JSON.parse(coordinates as string)
 
   try {
     await postMeldingByMeldingIdLocation({
@@ -31,7 +26,7 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
         type: 'Feature',
         geometry: {
           type: 'Point',
-          coordinates: parsedCoordinate,
+          coordinates: [parsedCoordinates.lat, parsedCoordinates.lng],
         },
         properties: {},
       },

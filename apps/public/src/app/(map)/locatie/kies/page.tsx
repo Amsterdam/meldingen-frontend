@@ -4,11 +4,11 @@ import { Button, Grid } from '@amsterdam/design-system-react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 
+import type { Coordinates } from 'apps/public/src/types'
+
 import { AssetList } from './_components/AssetList/AssetList'
 import { SideBar } from './_components/SideBar/SideBar'
 import styles from './page.module.css'
-
-export type Coordinates = { lat: number; lon: number }
 
 const Map = dynamic(() => import('./_components/Map').then((module) => module.Map), {
   loading: () => <p>Loading...</p>, // TODO: improve loading state
@@ -26,7 +26,7 @@ const KiesLocatie = () => {
   return (
     <Grid className={styles.page}>
       <Grid.Cell span={{ narrow: 4, medium: 5, wide: 4 }}>
-        <SideBar coordinates={coordinates} />
+        <SideBar coordinates={coordinates} setCoordinates={setCoordinates} />
       </Grid.Cell>
       <Grid.Cell
         span={{ narrow: 4, medium: 8, wide: 4 }}
@@ -43,7 +43,7 @@ const KiesLocatie = () => {
         start={{ narrow: 1, medium: 1, wide: 5 }}
         className={styles.map}
       >
-        <Map setCoordinates={setCoordinates} showAssetList={showAssetList} />
+        <Map coordinates={coordinates} setCoordinates={setCoordinates} showAssetList={showAssetList} />
         <Button form="address" type="submit" className={styles.submitbutton}>
           Bevestigen
         </Button>

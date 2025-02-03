@@ -3,18 +3,22 @@ import { useEffect, useRef, useState } from 'react'
 
 import 'leaflet/dist/leaflet.css'
 
-import type { Coordinates } from '../page'
+import type { Coordinates } from 'apps/public/src/types'
 
 import { ControlsOverlay } from './ControlsOverlay/ControlsOverlay'
 import styles from './Map.module.css'
+import { marker } from './Marker/Marker'
 
 type Props = {
+  coordinates?: Coordinates
   showAssetList?: boolean
   setCoordinates: (coordinates: Coordinates) => void
 }
 
-export const Map = ({ showAssetList, setCoordinates }: Props) => {
+export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
+
+  const markerRef = useRef<L.Marker | null>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
@@ -56,7 +60,7 @@ export const Map = ({ showAssetList, setCoordinates }: Props) => {
     setMapInstance(map)
 
     map.on('click', (e) => {
-      setCoordinates({ lat: e.latlng.lat, lon: e.latlng.lng })
+      setCoordinates({ lat: e.latlng.lat, lng: e.latlng.lng })
     })
 
     // On component unmount, destroy the map and all related events
@@ -64,6 +68,20 @@ export const Map = ({ showAssetList, setCoordinates }: Props) => {
       if (mapInstance) mapInstance.remove()
     }
   }, [mapInstance, setCoordinates])
+
+  // Add marker to map based on coordinates
+  useEffect(() => {
+    if (mapInstance && coordinates) {
+      // Remove existing marker layer
+      markerRef.current?.remove()
+
+      // Create marker layer and add to map
+      const newMarker = L.marker(L.latLng([coordinates.lat, coordinates.lng]), { icon: marker }).addTo(mapInstance)
+
+      // Store marker layer in ref
+      markerRef.current = newMarker
+    }
+  }, [mapInstance, coordinates])
 
   return (
     <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>
