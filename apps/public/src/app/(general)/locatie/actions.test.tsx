@@ -66,7 +66,7 @@ describe('postLocationForm', () => {
     })
 
     const formData = new FormData()
-    formData.set('coordinate', 'POINT(4.895168 52.370216)')
+    formData.set('coordinate', '{"lat":52.370216,"lng":4.895168}')
 
     await postLocationForm(null, formData)
 
@@ -100,7 +100,7 @@ describe('postLocationForm', () => {
     })
 
     const formData = new FormData()
-    formData.set('coordinate', 'POINT(4.895168 52.370216)')
+    formData.set('coordinate', '{"lat":52.370216,"lng":4.895168}')
 
     const result = await postLocationForm(null, formData)
 

@@ -21,15 +21,12 @@ export const ControlsOverlay = ({ mapInstance }: Props) => {
     mapInstance?.setZoom(mapInstance.getZoom() - 1)
   }
 
-  const onSuccess: PositionCallback = ({ coords }) => {
+  const onSuccess: PositionCallback = () => {
     // TODO: is this correct? What should happen when you click the button without a map instance?
-    if (!mapInstance) return
+    if (!mapInstance) return undefined
 
-    console.log(coords)
-
-    // const { latitude, longitude } = coords
-
-    // TODO: should be setcoordinates
+    // TODO: call setCoordinates from here, the marker should be set based on that
+    return undefined
   }
 
   const onError = () => {
