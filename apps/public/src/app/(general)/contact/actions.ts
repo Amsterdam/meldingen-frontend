@@ -29,7 +29,8 @@ export const postContactForm = async (formData: FormData) => {
       token: token.value,
     })
   } catch (error) {
-    return { message: (error as Error).message }
+    // eslint-disable-next-line no-console
+    console.error(error)
   }
 
   return redirect('/bedankt')
