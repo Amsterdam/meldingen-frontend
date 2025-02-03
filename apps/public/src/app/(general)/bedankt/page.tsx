@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 import { Bedankt } from './Bedankt'
 
@@ -7,7 +8,9 @@ export default async () => {
 
   const meldingId = cookieStore.get('id')?.value
 
-  if (!meldingId) return null
+  if (!meldingId) {
+    redirect('/')
+  }
 
   return <Bedankt meldingId={meldingId} />
 }
