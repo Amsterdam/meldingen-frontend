@@ -11,8 +11,9 @@ import {
 import { ListBox } from '@meldingen/ui'
 import { useEffect, useState } from 'react'
 
+import type { Coordinates } from 'apps/public/src/types'
+
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
-import type { Coordinates } from '../../page'
 import type { Address } from '../SideBar/SideBar'
 
 const pdokQueryParams =

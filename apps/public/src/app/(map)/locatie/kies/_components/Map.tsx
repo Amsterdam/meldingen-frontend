@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import 'leaflet/dist/leaflet.css'
 
-import type { Coordinates } from '../page'
+import type { Coordinates } from 'apps/public/src/types'
 
 import { ControlsOverlay } from './ControlsOverlay/ControlsOverlay'
 import styles from './Map.module.css'

@@ -4,11 +4,11 @@ import { Button, Grid } from '@amsterdam/design-system-react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 
+import type { Coordinates } from 'apps/public/src/types'
+
 import { AssetList } from './_components/AssetList/AssetList'
 import { SideBar } from './_components/SideBar/SideBar'
 import styles from './page.module.css'
-
-export type Coordinates = { lat: number; lng: number }
 
 const Map = dynamic(() => import('./_components/Map').then((module) => module.Map), {
   loading: () => <p>Loading...</p>, // TODO: improve loading state

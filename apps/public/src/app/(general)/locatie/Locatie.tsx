@@ -5,7 +5,8 @@ import { Grid, SubmitButton } from '@meldingen/ui'
 import NextLink from 'next/link'
 import { useActionState } from 'react'
 
-import type { Coordinates } from '../../(map)/locatie/kies/page'
+import type { Coordinates } from 'apps/public/src/types'
+
 import { BackLink } from '../_components/BackLink'
 
 import { postLocationForm } from './actions'
