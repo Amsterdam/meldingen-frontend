@@ -12,7 +12,7 @@ import { writeAddressAndCoordinateToCookie } from './actions'
 
 type Props = {
   coordinates?: Coordinates
-  setCoordinates?: (coordinates: Coordinates) => void
+  setCoordinates: (coordinates: Coordinates) => void
 }
 
 export type Address = {

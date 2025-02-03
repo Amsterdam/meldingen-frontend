@@ -12,7 +12,7 @@ import { marker } from './Marker/Marker'
 type Props = {
   coordinates?: Coordinates
   showAssetList?: boolean
-  setCoordinates?: (coordinates: Coordinates) => void
+  setCoordinates: (coordinates: Coordinates) => void
 }
 
 export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
@@ -60,9 +60,7 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
     setMapInstance(map)
 
     map.on('click', (e) => {
-      if (setCoordinates) {
-        setCoordinates({ lat: e.latlng.lat, lng: e.latlng.lng })
-      }
+      setCoordinates({ lat: e.latlng.lat, lng: e.latlng.lng })
     })
 
     // On component unmount, destroy the map and all related events
