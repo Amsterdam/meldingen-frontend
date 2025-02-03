@@ -41,7 +41,7 @@ describe('writeAddressAndCoordinateToCookie', () => {
       'location',
       JSON.stringify({
         name: address,
-        coordinate: { lat: 52.370216, lng: 4.895168 },
+        coordinates: { lat: 52.370216, lng: 4.895168 },
       }),
     )
     expect(redirect).toHaveBeenCalledWith('/locatie')
@@ -59,7 +59,7 @@ describe('writeAddressAndCoordinateToCookie', () => {
       'location',
       JSON.stringify({
         name: 'Amstel 1, Amsterdam',
-        coordinate: { lat: 52.370216, lng: 4.895168 },
+        coordinates: { lat: 52.370216, lng: 4.895168 },
       }),
     )
     expect(redirect).toHaveBeenCalledWith('/locatie')
