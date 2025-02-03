@@ -12,7 +12,7 @@ import { writeAddressAndCoordinateToCookie } from './actions'
 
 type Props = {
   coordinates?: Coordinates
-  setCoordinates: (coordinates: Coordinates) => void
+  setCoordinates?: (coordinates: Coordinates) => void
 }
 
 export type Address = {
@@ -25,7 +25,7 @@ const initialState: { message?: string } = {}
 export const SideBar = ({ coordinates, setCoordinates }: Props) => {
   const [formState, formAction] = useActionState(writeAddressAndCoordinateToCookie, initialState)
 
-  const [address, setAddress] = useState<Address | null>(null)
+  const [address, setAddress] = useState<Address>()
 
   // TODO: this can just be a function, called on setCoordinates I think
   useEffect(() => {

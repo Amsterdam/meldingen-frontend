@@ -20,12 +20,12 @@ vi.mock('leaflet', async (importOriginal) => {
 
 describe('Map', () => {
   it('renders the component', () => {
-    const { container } = render(<Map setCoordinates={() => {}} />)
+    const { container } = render(<Map />)
     expect(container.firstChild).toBeInTheDocument()
   })
 
   it('renders the current location button', () => {
-    render(<Map setCoordinates={() => {}} />)
+    render(<Map />)
 
     const button = screen.getByRole('button', { name: 'Mijn locatie' })
 

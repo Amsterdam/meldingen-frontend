@@ -30,10 +30,10 @@ const debounce = (fn: Function, delay = 250) => {
 }
 
 type Props = {
-  address: Address | null
+  address?: Address
   errorMessage?: string
-  setAddress: (address: Address | null) => void
-  setCoordinates: (coordinates: Coordinates) => void
+  setAddress?: (address: Address) => void
+  setCoordinates?: (coordinates: Coordinates) => void
 }
 
 export const AddressComboBox = ({ address, errorMessage, setAddress, setCoordinates }: Props) => {
@@ -81,11 +81,15 @@ export const AddressComboBox = ({ address, errorMessage, setAddress, setCoordina
     if (typeof value === 'string' || value === null) {
       setQuery(value ?? '')
     } else {
-      setAddress({
-        id: value.id,
-        weergave_naam: value.weergave_naam,
-      })
-      setCoordinates(convertWktPointToCoordinates(value.centroide_ll))
+      if (setAddress) {
+        setAddress({
+          id: value.id,
+          weergave_naam: value.weergave_naam,
+        })
+      }
+      if (setCoordinates) {
+        setCoordinates(convertWktPointToCoordinates(value.centroide_ll))
+      }
       setQuery(value.weergave_naam)
     }
   }
