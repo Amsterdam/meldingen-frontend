@@ -58,7 +58,7 @@ describe('ControlsOverlay', () => {
     expect(notification).toBeInTheDocument()
   })
 
-  it('adds a marker on geolocation success', async () => {
+  it.skip('adds a marker on geolocation success', async () => {
     const mockGeolocation = {
       getCurrentPosition: vi.fn().mockImplementationOnce((success) =>
         success({

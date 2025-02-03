@@ -5,6 +5,8 @@ import { Grid, SubmitButton } from '@meldingen/ui'
 import NextLink from 'next/link'
 import { useActionState } from 'react'
 
+import type { Coordinates } from 'apps/public/src/types'
+
 import { BackLink } from '../_components/BackLink'
 
 import { postLocationForm } from './actions'
@@ -15,7 +17,7 @@ type Props = {
   prevPage: string
   locationData?: {
     name: string
-    coordinate: string
+    coordinates?: Coordinates
   }
 }
 
@@ -45,7 +47,11 @@ export const Locatie = ({ prevPage, locationData }: Props) => {
         </NextLink>
 
         <form action={formAction}>
-          <input type="hidden" name="coordinate" value={locationData?.coordinate ?? undefined} />
+          <input
+            type="hidden"
+            name="coordinates"
+            value={locationData?.coordinates ? JSON.stringify(locationData?.coordinates) : undefined}
+          />
           <SubmitButton>Volgende vraag</SubmitButton>
         </form>
       </Grid.Cell>

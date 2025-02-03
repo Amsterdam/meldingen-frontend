@@ -11,6 +11,9 @@ import {
 import { ListBox } from '@meldingen/ui'
 import { useEffect, useState } from 'react'
 
+import type { Coordinates } from 'apps/public/src/types'
+
+import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
 import type { Address } from '../SideBar/SideBar'
 
 const pdokQueryParams =
@@ -27,12 +30,13 @@ const debounce = (fn: Function, delay = 250) => {
 }
 
 type Props = {
-  address: Address | null
+  address?: Address
   errorMessage?: string
-  setAddress: (address: Address | null) => void
+  setAddress: (address?: Address) => void
+  setCoordinates: (coordinates: Coordinates) => void
 }
 
-export const AddressComboBox = ({ address, errorMessage, setAddress }: Props) => {
+export const AddressComboBox = ({ address, errorMessage, setAddress, setCoordinates }: Props) => {
   const [query, setQuery] = useState('')
   const [addressList, setAddressList] = useState<Address[]>([])
   const [showListBox, setShowListBox] = useState(false)
@@ -73,15 +77,15 @@ export const AddressComboBox = ({ address, errorMessage, setAddress }: Props) =>
     }
   })
 
-  const onChangeHandler = (value: Address | string | null) => {
+  const onChangeHandler = (value: (Address & { centroide_ll: string }) | string | null) => {
     if (typeof value === 'string' || value === null) {
       setQuery(value ?? '')
     } else {
       setAddress({
         id: value.id,
         weergave_naam: value.weergave_naam,
-        centroide_ll: value.centroide_ll,
       })
+      setCoordinates(convertWktPointToCoordinates(value.centroide_ll))
       setQuery(value.weergave_naam)
     }
   }
