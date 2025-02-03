@@ -62,7 +62,7 @@ describe('Locatie', () => {
   })
 
   it('renders the location data name when it is provided', () => {
-    render(<Locatie prevPage="/previous" locationData={{ name: 'Test location', coordinate: [] }} />)
+    render(<Locatie prevPage="/previous" locationData={{ name: 'Test location' }} />)
 
     const paragraph = screen.getByText('Test location')
 
@@ -78,7 +78,7 @@ describe('Locatie', () => {
   })
 
   it('renders a link with updated text when there is location data', () => {
-    render(<Locatie prevPage="/previous" locationData={{ name: 'Test location', coordinate: [] }} />)
+    render(<Locatie prevPage="/previous" locationData={{ name: 'Test location' }} />)
 
     const link = screen.getByRole('link', { name: 'Wijzig locatie' })
 
