@@ -63,7 +63,7 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
           setCoordinates={setCoordinates}
           errorMessage={formState?.message}
         />
-        <input type="hidden" name="coordinate" defaultValue={address ? JSON.stringify(coordinates) : undefined} />
+        <input type="hidden" name="coordinates" defaultValue={address ? JSON.stringify(coordinates) : undefined} />
       </form>
     </Column>
   )

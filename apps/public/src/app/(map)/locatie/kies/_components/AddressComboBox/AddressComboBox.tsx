@@ -12,6 +12,7 @@ import { ListBox } from '@meldingen/ui'
 import { useEffect, useState } from 'react'
 
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
+import type { Coordinates } from '../../page'
 import type { Address } from '../SideBar/SideBar'
 
 const pdokQueryParams =
@@ -31,7 +32,7 @@ type Props = {
   address: Address | null
   errorMessage?: string
   setAddress: (address: Address | null) => void
-  setCoordinates: (coordinates: { lat: number; lng: number }) => void
+  setCoordinates: (coordinates: Coordinates) => void
 }
 
 export const AddressComboBox = ({ address, errorMessage, setAddress, setCoordinates }: Props) => {

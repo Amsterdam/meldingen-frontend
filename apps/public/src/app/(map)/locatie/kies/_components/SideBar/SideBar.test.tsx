@@ -13,7 +13,7 @@ vi.mock('react', async (importOriginal) => {
 
 describe('SideBar', () => {
   it('should render correctly', () => {
-    render(<SideBar />)
+    render(<SideBar setCoordinates={() => {}} />)
 
     const heading = screen.getByRole('heading', { name: 'Selecteer de locatie' })
     const paragraph = screen.getAllByRole('paragraph')
@@ -23,7 +23,7 @@ describe('SideBar', () => {
   })
 
   it('should show an address based on provided coordinates ', async () => {
-    render(<SideBar coordinates={{ lat: 52.37239126063553, lon: 4.900905743712159 }} />)
+    render(<SideBar coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} setCoordinates={() => {}} />)
 
     await waitFor(() => {
       expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
