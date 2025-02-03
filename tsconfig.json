@@ -19,8 +19,7 @@
       "@meldingen/form-builder": ["libs/form-builder/src/index.ts"],
       "@meldingen/form-renderer": ["libs/form-renderer/src/index.ts"],
       "@meldingen/ui": ["libs/ui/src/index.ts"]
-    },
-    "types": ["vitest/globals"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

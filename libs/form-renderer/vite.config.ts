@@ -5,8 +5,7 @@ export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      enabled: true,
       include: ['src/**/*.{js,jsx,ts,tsx}'],
       exclude: ['src/index.ts'],
     },
