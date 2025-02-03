@@ -28,12 +28,12 @@ describe('writeAddressAndCoordinateToCookie', () => {
   })
 
   it('sets the form location data in cookies and redirects', async () => {
-    const address = 'Amstel 1, Amsterdam'
-    const coordinate = '{"lat":52.370216,"lng":4.895168}'
+    const address = 'Oudezijds Voorburgwal 300, Amsterdam'
+    const coordinates = '{"lat":52.37065901,"lng":4.89367338}'
 
     const formData = new FormData()
     formData.set('address', address)
-    formData.set('coordinate', coordinate)
+    formData.set('coordinates', coordinates)
 
     await writeAddressAndCoordinateToCookie(null, formData)
 
@@ -41,7 +41,7 @@ describe('writeAddressAndCoordinateToCookie', () => {
       'location',
       JSON.stringify({
         name: address,
-        coordinates: { lat: 52.370216, lng: 4.895168 },
+        coordinates: { lat: 52.37065901, lng: 4.89367338 },
       }),
     )
     expect(redirect).toHaveBeenCalledWith('/locatie')
