@@ -12,11 +12,11 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
 
   if (!meldingId || !token) return undefined
 
-  const coordinate = formData.get('coordinate')
+  const coordinates = formData.get('coordinates')
 
-  if (!coordinate) return { message: 'Vul een locatie in.' }
+  if (!coordinates) return { message: 'Vul een locatie in.' }
 
-  const parsedCoordinate = JSON.parse(coordinate as string)
+  const parsedCoordinates = JSON.parse(coordinates as string)
 
   try {
     await postMeldingByMeldingIdLocation({
@@ -26,7 +26,7 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
         type: 'Feature',
         geometry: {
           type: 'Point',
-          coordinates: [parsedCoordinate.lat, parsedCoordinate.lng],
+          coordinates: [parsedCoordinates.lat, parsedCoordinates.lng],
         },
         properties: {},
       },

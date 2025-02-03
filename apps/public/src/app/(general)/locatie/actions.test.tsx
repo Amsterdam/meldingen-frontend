@@ -37,7 +37,7 @@ describe('postLocationForm', () => {
     expect(result).toBeUndefined()
   })
 
-  it('returns an error when coordinate is missing', async () => {
+  it('returns an error when coordinates are missing', async () => {
     mockCookies.get.mockImplementation((name) => {
       if (name === 'id') {
         return { value: '123' }
@@ -66,7 +66,7 @@ describe('postLocationForm', () => {
     })
 
     const formData = new FormData()
-    formData.set('coordinate', '{"lat":52.370216,"lng":4.895168}')
+    formData.set('coordinates', '{"lat":52.370216,"lng":4.895168}')
 
     await postLocationForm(null, formData)
 
@@ -100,7 +100,7 @@ describe('postLocationForm', () => {
     })
 
     const formData = new FormData()
-    formData.set('coordinate', '{"lat":52.370216,"lng":4.895168}')
+    formData.set('coordinates', '{"lat":52.370216,"lng":4.895168}')
 
     const result = await postLocationForm(null, formData)
 
