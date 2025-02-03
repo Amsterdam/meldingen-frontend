@@ -28,7 +28,7 @@ describe('postContactForm', () => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  it.only('should post contact details to backend and redirect to /bedankt page', async () => {
+  it('should post contact details to backend and redirect to /bedankt page', async () => {
     mockCookies.get.mockImplementation((name) => {
       if (name === 'id') {
         return { value: '21' }
