@@ -17,7 +17,11 @@ export const FileUpload = ({ id, ...restProps }: Props) => {
 
   const { data } = useMeldingContext()
 
+  console.log('data', data)
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log('hanlde on change')
+    console.log('---  event:', event)
+
     if (data && event.currentTarget.files) {
       const filesArray = Array.from(event.currentTarget.files)
 
