@@ -10,6 +10,6 @@ describe('Bedankt', () => {
     const link = screen.getByRole('link', { name: 'Doe een melding' })
 
     expect(paragraph).toBeInTheDocument()
-    expect(button).toBeInTheDocument()
+    expect(link).toBeInTheDocument()
   })
 })
