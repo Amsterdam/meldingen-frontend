@@ -28,7 +28,7 @@ describe('Page', () => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  it('renders redirect to home page when there is no meldingId', async () => {
+  it('returns undefined when there is no meldingId', async () => {
     mockCookies.get.mockReturnValue(undefined)
 
     const PageComponent = await Page()
