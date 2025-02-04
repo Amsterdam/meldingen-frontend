@@ -35,7 +35,7 @@ describe('Page', () => {
 
     render(PageComponent)
 
-    expect(redirect).toHaveBeenCalledWith('/')
+    expect(PageComponent).toBeUndefined()
   })
 
   it('renders bedankt page', async () => {
