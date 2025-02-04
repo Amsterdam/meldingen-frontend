@@ -6,7 +6,7 @@
     "esModuleInterop": false,
     "jsx": "react-jsx",
     "resolveJsonModule": true,
-    "types": ["vite/client", "jest", "node"],
+    "types": ["vite/client", "vitest/globals", "node"],
     "strict": true
   },
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx", "./vite.config.ts", "./vitest.setup.ts"]

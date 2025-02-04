@@ -1,0 +1,56 @@
+.page {
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+}
+
+.assetList {
+  display: none;
+  grid-row-start: 2;
+
+  @media screen and (min-width: 68rem) {
+    display: block;
+  }
+}
+
+.showAssetList {
+  display: block;
+}
+
+.hideButtonMobile {
+  display: none;
+
+  @media screen and (min-width: 68rem) {
+    display: block;
+  }
+}
+
+.map {
+  grid-row-start: 2;
+  position: relative;
+
+  @media screen and (min-width: 68rem) {
+    grid-row: 1 / -1;
+  }
+}
+
+.submitbutton {
+  bottom: 0;
+  margin-block: var(--ams-space-sm);
+  margin-inline: var(--ams-space-sm);
+  position: absolute;
+
+  /*
+      Leaflet uses z-indexes to stack layers. The highest Leaflet z-index is 700. And the overlay uses 701.
+      https://leafletjs.com/reference.html#map-pane
+    */
+  z-index: 702;
+
+  @media screen and (min-width: 68rem) {
+    display: none;
+  }
+}
+
+.toggleButton {
+  composes: submitbutton;
+  right: 0;
+}

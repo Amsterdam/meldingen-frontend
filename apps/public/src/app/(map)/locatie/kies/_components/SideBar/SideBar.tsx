@@ -1,14 +1,18 @@
-import { Column, Heading, Icon, Paragraph, Link, Button } from '@amsterdam/design-system-react'
+import { Column, Heading, Icon, Paragraph, Link } from '@amsterdam/design-system-react'
 import { ChevronLeftIcon } from '@amsterdam/design-system-react-icons'
 import NextLink from 'next/link'
-import { useEffect, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
+
+import type { Coordinates } from 'apps/public/src/types'
 
 import { getAddressFromCoordinates } from '../../_utils'
-import type { Coordinates } from '../../page'
 import { AddressComboBox } from '../AddressComboBox/AddressComboBox'
+
+import { writeAddressAndCoordinateToCookie } from './actions'
 
 type Props = {
   coordinates?: Coordinates
+  setCoordinates: (coordinates: Coordinates) => void
 }
 
 export type Address = {
@@ -16,15 +20,19 @@ export type Address = {
   weergave_naam: string
 }
 
-export const SideBar = ({ coordinates }: Props) => {
-  const [address, setAddress] = useState<Address | null>(null)
+const initialState: { message?: string } = {}
+
+export const SideBar = ({ coordinates, setCoordinates }: Props) => {
+  const [formState, formAction] = useActionState(writeAddressAndCoordinateToCookie, initialState)
+
+  const [address, setAddress] = useState<Address>()
 
   // TODO: this can just be a function, called on setCoordinates I think
   useEffect(() => {
     const getAddress = async () => {
       if (!coordinates) return
 
-      const result = await getAddressFromCoordinates({ lat: coordinates.lat, lon: coordinates.lon })
+      const result = await getAddressFromCoordinates({ lat: coordinates.lat, lng: coordinates.lng })
 
       if (result) {
         setAddress(result)
@@ -49,9 +57,14 @@ export const SideBar = ({ coordinates }: Props) => {
           Typ het dichtstbijzijnde adres, klik de locatie aan op de kaart of gebruik &quot;Mijn locatie&quot;
         </Paragraph>
       </div>
-      <form>
-        <AddressComboBox address={address} setAddress={setAddress} />
-        <Button type="submit">Bevestigen</Button>
+      <form action={formAction} id="address">
+        <AddressComboBox
+          address={address}
+          setAddress={setAddress}
+          setCoordinates={setCoordinates}
+          errorMessage={formState?.message}
+        />
+        <input type="hidden" name="coordinates" defaultValue={address ? JSON.stringify(coordinates) : undefined} />
       </form>
     </Column>
   )

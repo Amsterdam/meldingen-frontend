@@ -1,20 +1,23 @@
-import { Label, TextInput } from '@amsterdam/design-system-react'
+import { ErrorMessage, Field, Label, TextInput } from '@amsterdam/design-system-react'
 import {
   Combobox,
   ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
   Description,
-  Field,
+  Field as HUIField,
   Label as HUILabel,
 } from '@headlessui/react'
 import { ListBox } from '@meldingen/ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
+import type { Coordinates } from 'apps/public/src/types'
+
+import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
 import type { Address } from '../SideBar/SideBar'
 
 const pdokQueryParams =
-  'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam&rows=10'
+  'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=10'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const debounce = (fn: Function, delay = 250) => {
@@ -27,34 +30,45 @@ const debounce = (fn: Function, delay = 250) => {
 }
 
 type Props = {
-  address: Address | null
-  setAddress: (address: Address | null) => void
+  address?: Address
+  errorMessage?: string
+  setAddress: (address?: Address) => void
+  setCoordinates: (coordinates: Coordinates) => void
 }
 
-export const AddressComboBox = ({ address, setAddress }: Props) => {
+export const AddressComboBox = ({ address, errorMessage, setAddress, setCoordinates }: Props) => {
+  const [query, setQuery] = useState('')
   const [addressList, setAddressList] = useState<Address[]>([])
   const [showListBox, setShowListBox] = useState(false)
 
+  useEffect(() => {
+    if (address?.weergave_naam) setQuery(address?.weergave_naam)
+  }, [address])
+
   // TODO: do we want to show a loading state?
-  const fetchAddressList = debounce(async (query: string) => {
-    if (query.length >= 3) {
+  const fetchAddressList = debounce(async (value: string) => {
+    if (value.length >= 3) {
       try {
         const response = await fetch(
-          `https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?${pdokQueryParams}&q=${query}`,
+          `https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?${pdokQueryParams}&q=${value}`,
         )
         const responseData = await response.json()
 
         if (response.ok) {
-          const responseList = responseData.response.docs.map((item: { id: string; weergavenaam: string }) => ({
-            id: item.id,
-            weergave_naam: item.weergavenaam,
-          }))
+          const responseList = responseData.response.docs.map(
+            (item: { id: string; weergavenaam: string; centroide_ll: string }) => ({
+              id: item.id,
+              weergave_naam: item.weergavenaam,
+              centroide_ll: item.centroide_ll,
+            }),
+          )
 
           setAddressList(responseList)
           setShowListBox(true)
         }
       } catch (error) {
-        // TODO: handle error properly
+        // TODO: do we want to show a message to the user here?
+        // eslint-disable-next-line no-console
         console.error(error)
       }
     } else {
@@ -63,28 +77,44 @@ export const AddressComboBox = ({ address, setAddress }: Props) => {
     }
   })
 
+  const onChangeHandler = (value: (Address & { centroide_ll: string }) | string | null) => {
+    if (typeof value === 'string' || value === null) {
+      setQuery(value ?? '')
+    } else {
+      setAddress({
+        id: value.id,
+        weergave_naam: value.weergave_naam,
+      })
+      setCoordinates(convertWktPointToCoordinates(value.centroide_ll))
+      setQuery(value.weergave_naam)
+    }
+  }
+
   return (
-    <Field>
+    <HUIField as={Field} invalid={!!errorMessage}>
       <HUILabel as={Label}>Zoek op adres</HUILabel>
+      {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Description className="ams-visually-hidden">
         Als er autoaanvul-resultaten zijn, gebruik dan de pijltjes omhoog en omlaag om te bekijken en druk op enter om
         te kiezen. Voor <span lang="en">touch</span>-apparaten, verken met aanraking of veegbewegingen{' '}
         <span lang="en">(swipe)</span>.
       </Description>
-      <Combobox onChange={setAddress} onClose={() => fetchAddressList('')} value={address}>
+      <Combobox as="div" onChange={onChangeHandler} onClose={() => fetchAddressList('')} value={query}>
         <ComboboxInput
           as={TextInput}
           autoComplete="off"
-          displayValue={(item: Address) => item?.weergave_naam}
           name="address"
-          onChange={(event) => fetchAddressList(event.target.value)}
+          onChange={(event) => {
+            setQuery(event.target.value)
+            fetchAddressList(event.target.value)
+          }}
         />
         {showListBox && (
           <ComboboxOptions as={ListBox} modal={false}>
             {addressList.length > 0 ? (
-              addressList.map((test) => (
-                <ComboboxOption key={test.id} value={test} as={ListBox.Option}>
-                  {test.weergave_naam}
+              addressList.map((option) => (
+                <ComboboxOption key={option.id} value={option} as={ListBox.Option}>
+                  {option.weergave_naam}
                 </ComboboxOption>
               ))
             ) : (
@@ -95,6 +125,6 @@ export const AddressComboBox = ({ address, setAddress }: Props) => {
           </ComboboxOptions>
         )}
       </Combobox>
-    </Field>
+    </HUIField>
   )
 }

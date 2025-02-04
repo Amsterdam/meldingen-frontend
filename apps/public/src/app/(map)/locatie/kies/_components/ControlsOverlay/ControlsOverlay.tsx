@@ -1,9 +1,8 @@
 import { Button, Paragraph } from '@amsterdam/design-system-react'
 import { EnlargeIcon, MinimiseIcon } from '@amsterdam/design-system-react-icons'
-import L from 'leaflet'
+import type L from 'leaflet'
 import { useState } from 'react'
 
-import { marker } from '../Marker/Marker'
 import { Notification } from '../Notification/Notification'
 
 import styles from './ControlsOverlay.module.css'
@@ -13,8 +12,6 @@ type Props = {
 }
 
 export const ControlsOverlay = ({ mapInstance }: Props) => {
-  const [markerLayer, setMarkerLayer] = useState<L.Marker | null>(null)
-
   const [notification, setNotification] = useState<{ heading: string; description: string } | null>(null)
 
   const handleZoomIn = () => {
@@ -24,20 +21,12 @@ export const ControlsOverlay = ({ mapInstance }: Props) => {
     mapInstance?.setZoom(mapInstance.getZoom() - 1)
   }
 
-  const onSuccess: PositionCallback = ({ coords }) => {
+  const onSuccess: PositionCallback = () => {
     // TODO: is this correct? What should happen when you click the button without a map instance?
-    if (!mapInstance) return
+    if (!mapInstance) return undefined
 
-    const { latitude, longitude } = coords
-
-    // Remove existing marker layer
-    markerLayer?.remove()
-
-    // Create marker layer and add to map
-    const newMarker = L.marker(L.latLng([latitude, longitude]), { icon: marker }).addTo(mapInstance)
-
-    // Store marker layer in state
-    setMarkerLayer(newMarker)
+    // TODO: call setCoordinates from here, the marker should be set based on that
+    return undefined
   }
 
   const onError = () => {
@@ -52,7 +41,7 @@ export const ControlsOverlay = ({ mapInstance }: Props) => {
 
   return (
     <>
-      <div className={styles['overlay-top-left']}>
+      <div className={styles.overlayTopLeft}>
         <Button variant="secondary" onClick={handleCurrentLocationButtonClick}>
           Mijn locatie
         </Button>
@@ -62,7 +51,7 @@ export const ControlsOverlay = ({ mapInstance }: Props) => {
           </Notification>
         )}
       </div>
-      <div className={styles['overlay-bottom-right']}>
+      <div className={styles.overlayBottomRight}>
         <Button variant="secondary" iconOnly icon={EnlargeIcon} onClick={handleZoomIn}>
           Inzoomen
         </Button>
