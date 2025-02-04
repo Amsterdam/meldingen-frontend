@@ -1,14 +1,13 @@
-'use client'
+import { cookies } from 'next/headers'
 
-import { Heading } from '@amsterdam/design-system-react'
-import { Grid } from '@meldingen/ui'
+import { Bedankt } from './Bedankt'
 
-const Bedankt = () => (
-  <Grid paddingBottom="large" paddingTop="medium">
-    <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
-      <Heading>Bedankt</Heading>
-    </Grid.Cell>
-  </Grid>
-)
+export default async () => {
+  const cookieStore = await cookies()
 
-export default Bedankt
+  const meldingId = cookieStore.get('id')?.value
+
+  if (!meldingId) return undefined
+
+  return <Bedankt meldingId={meldingId} />
+}
