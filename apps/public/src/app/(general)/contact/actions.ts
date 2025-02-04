@@ -4,33 +4,30 @@ import { postMeldingByMeldingIdContact } from '@meldingen/api-client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-export const postContactForm = async (formData: FormData) => {
+export const postContactForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()
 
   const meldingId = cookieStore.get('id')
   const token = cookieStore.get('token')
 
-  if (!meldingId || !token) {
-    // eslint-disable-next-line no-console
-    console.error('Geen meldingId of token aanwezig.')
-    redirect('/')
-  }
+  if (!meldingId || !token) return { message: 'Geen meldingId of token bekend.' }
 
-  const email = formData.get('email')?.toString() ?? ''
-  const phone = formData.get('phone')?.toString() ?? ''
+  const email = formData.get('email')
+  const phone = formData.get('phone')
 
-  try {
-    postMeldingByMeldingIdContact({
-      meldingId: Number(meldingId.value),
-      requestBody: {
-        email,
-        phone,
-      },
-      token: token.value,
-    })
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error)
+  if (email || phone) {
+    try {
+      postMeldingByMeldingIdContact({
+        meldingId: Number(meldingId.value),
+        requestBody: {
+          email: email as string,
+          phone: phone as string,
+        },
+        token: token.value,
+      })
+    } catch (error) {
+      return { message: (error as Error).message }
+    }
   }
 
   return redirect('/bedankt')
