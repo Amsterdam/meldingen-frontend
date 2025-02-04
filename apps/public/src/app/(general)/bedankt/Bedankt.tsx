@@ -38,7 +38,7 @@ export const Bedankt = ({ meldingId }: Props) => (
       <Heading level={2} size="level-3" className="ams-mb--xs">
         Wilt u nog een andere melding doen?
       </Heading>
-      <NextLink href="/locatie" legacyBehavior passHref>
+      <NextLink href="/" legacyBehavior passHref>
         <Link href="dummy-href">Doe een melding</Link>
       </NextLink>
     </Grid.Cell>
