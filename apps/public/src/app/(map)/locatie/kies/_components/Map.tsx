@@ -78,13 +78,13 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
       // Create marker layer and add to map
       const newMarker = L.marker(L.latLng([coordinates.lat, coordinates.lng]), { icon: marker }).addTo(mapInstance)
 
+      // Store marker layer in ref
+      markerRef.current = newMarker
+
       // Zoom to the marker location
       const currentZoom = mapInstance.getZoom()
       const flyToMinZoom = 18
       mapInstance.flyTo([coordinates.lat, coordinates.lng], currentZoom < flyToMinZoom ? flyToMinZoom : currentZoom)
-
-      // Store marker layer in ref
-      markerRef.current = newMarker
     }
   }, [mapInstance, coordinates])
 
