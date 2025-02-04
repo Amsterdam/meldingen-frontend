@@ -1,7 +1,6 @@
 'use client'
 
-import { ErrorMessage, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-system-react'
-import { Description } from '@headlessui/react'
+import { Alert, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-system-react'
 import { Grid, SubmitButton } from '@meldingen/ui'
 import { useActionState } from 'react'
 
@@ -18,7 +17,6 @@ const Contact = () => {
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         <BackLink href="/bijlage">Vorige vraag</BackLink>
-        {formState.message && <Description as={ErrorMessage}>{formState.message}</Description>}
         <Heading level={1} className="ams-mb--sm">
           Contact
         </Heading>
@@ -33,6 +31,11 @@ const Contact = () => {
           Wij gebruiken uw telefoonnummer en e-mailadres alléén voor deze melding.
         </Paragraph>
         <form action={formAction}>
+          {formState?.message && (
+            <Alert severity="error" heading="Let op" className="ams-mb--sm">
+              <Paragraph>{formState?.message}</Paragraph>
+            </Alert>
+          )}
           <Label htmlFor="email-input" optional className="ams-mb--sm">
             Wat is uw e-mailadres?
           </Label>

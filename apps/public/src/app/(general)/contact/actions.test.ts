@@ -43,7 +43,7 @@ describe('postContactForm', () => {
     formData.set('email', 'user@example.com')
     formData.set('phone', '0612345678')
 
-    await postContactForm(formData)
+    await postContactForm(undefined, formData)
 
     expect(postMeldingByMeldingIdContact).toHaveBeenCalledWith({
       meldingId: 21,
@@ -57,6 +57,26 @@ describe('postContactForm', () => {
     expect(redirect).toHaveBeenCalledWith('/bedankt')
   })
 
+  it('should not do a query when email and phone are left empty', async () => {
+    mockCookies.get.mockImplementation((name) => {
+      if (name === 'id') {
+        return { value: '21' }
+      }
+      if (name === 'token') {
+        return { value: 'z123890' }
+      }
+      return undefined
+    })
+
+    const formData = new FormData()
+
+    await postContactForm(undefined, formData)
+
+    expect(postMeldingByMeldingIdContact).not.toHaveBeenCalled()
+
+    expect(redirect).toHaveBeenCalledWith('/bedankt')
+  })
+
   it('should redirect to home page when there is no meldingId or token', async () => {
     mockCookies.get.mockReturnValue(undefined)
 
@@ -64,8 +84,8 @@ describe('postContactForm', () => {
     formData.set('email', 'user@example.com')
     formData.set('phone', '0612345678')
 
-    await postContactForm(formData)
+    const result = await postContactForm(undefined, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/')
+    expect(result).toBeUndefined()
   })
 })

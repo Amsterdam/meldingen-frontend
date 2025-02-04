@@ -10,7 +10,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
   const meldingId = cookieStore.get('id')
   const token = cookieStore.get('token')
 
-  if (!meldingId || !token) return { message: 'Geen meldingId of token bekend.' }
+  if (!meldingId || !token) return undefined
 
   const email = formData.get('email')
   const phone = formData.get('phone')
