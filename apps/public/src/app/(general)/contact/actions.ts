@@ -7,8 +7,8 @@ import { redirect } from 'next/navigation'
 export const postContactForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()
 
-  const meldingId = cookieStore.get('id')
-  const token = cookieStore.get('token')
+  const meldingId = cookieStore.get('id')?.value
+  const token = cookieStore.get('token')?.value
 
   if (!meldingId || !token) return undefined
 
@@ -18,12 +18,12 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
   if (email || phone) {
     try {
       postMeldingByMeldingIdContact({
-        meldingId: Number(meldingId.value),
+        meldingId: Number(meldingId),
         requestBody: {
           email: email as string,
           phone: phone as string,
         },
-        token: token.value,
+        token,
       })
     } catch (error) {
       return { message: (error as Error).message }

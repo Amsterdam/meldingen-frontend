@@ -77,7 +77,7 @@ describe('postContactForm', () => {
     expect(redirect).toHaveBeenCalledWith('/bedankt')
   })
 
-  it('should redirect to home page when there is no meldingId or token', async () => {
+  it('should return undefined when there is no meldingId or token', async () => {
     mockCookies.get.mockReturnValue(undefined)
 
     const formData = new FormData()
