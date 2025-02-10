@@ -48,12 +48,14 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
           <Icon svg={ChevronLeftIcon} size="level-4" />
         </Link>
       </NextLink>
-      <Heading level={1} size="level-4">
-        Selecteer de locatie
-      </Heading>
-      <Paragraph size="small">
-        Typ het dichtstbijzijnde adres, klik de locatie aan op de kaart of gebruik &quot;Mijn locatie&quot;
-      </Paragraph>
+      <div>
+        <Heading level={1} size="level-4">
+          Selecteer de locatie
+        </Heading>
+        <Paragraph size="small">
+          Typ het dichtstbijzijnde adres, klik de locatie aan op de kaart of gebruik &quot;Mijn locatie&quot;
+        </Paragraph>
+      </div>
       <form action={formAction} id="address">
         <Combobox
           address={address}

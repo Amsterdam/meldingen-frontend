@@ -15,9 +15,3 @@
 .comboboxOptions ul {
   margin-block-end: 0;
 }
-
-.comboboxOptions li {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
