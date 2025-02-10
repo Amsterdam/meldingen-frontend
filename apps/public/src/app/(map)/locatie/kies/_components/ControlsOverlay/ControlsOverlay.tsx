@@ -3,15 +3,18 @@ import { EnlargeIcon, MinimiseIcon } from '@amsterdam/design-system-react-icons'
 import type L from 'leaflet'
 import { useState } from 'react'
 
+import type { Coordinates } from 'apps/public/src/types'
+
 import { Notification } from '../Notification/Notification'
 
 import styles from './ControlsOverlay.module.css'
 
 type Props = {
   mapInstance: L.Map | null
+  setCoordinates: (coordinates: Coordinates) => void
 }
 
-export const ControlsOverlay = ({ mapInstance }: Props) => {
+export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
   const [notification, setNotification] = useState<{ heading: string; description: string } | null>(null)
 
   const handleZoomIn = () => {
@@ -21,12 +24,16 @@ export const ControlsOverlay = ({ mapInstance }: Props) => {
     mapInstance?.setZoom(mapInstance.getZoom() - 1)
   }
 
-  const onSuccess: PositionCallback = () => {
+  const onSuccess: PositionCallback = ({ coords }) => {
     // TODO: is this correct? What should happen when you click the button without a map instance?
     if (!mapInstance) return undefined
 
-    // TODO: call setCoordinates from here, the marker should be set based on that
-    return undefined
+    const { latitude, longitude } = coords
+
+    return setCoordinates({
+      lat: latitude,
+      lng: longitude,
+    })
   }
 
   const onError = () => {
