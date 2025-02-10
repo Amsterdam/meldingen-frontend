@@ -16,7 +16,7 @@ import type { Coordinates } from 'apps/public/src/types'
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
 import type { Address } from '../SideBar/SideBar'
 
-import styles from './Combo.module.css'
+import styles from './Combobox.module.css'
 
 const pdokQueryParams =
   'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=10'
@@ -38,7 +38,7 @@ type Props = {
   setCoordinates: (coordinates: Coordinates) => void
 }
 
-export const Combo = ({ address, errorMessage, setAddress, setCoordinates }: Props) => {
+export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: Props) => {
   const [query, setQuery] = useState('')
   const [addressList, setAddressList] = useState<Address[]>([])
   const [showListBox, setShowListBox] = useState(false)

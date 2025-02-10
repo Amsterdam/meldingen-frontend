@@ -6,7 +6,7 @@ import { useActionState, useEffect, useState } from 'react'
 import type { Coordinates } from 'apps/public/src/types'
 
 import { getAddressFromCoordinates } from '../../_utils'
-import { Combo } from '../Combo/Combo'
+import { Combobox } from '../Combobox/Combobox'
 
 import { writeAddressAndCoordinateToCookie } from './actions'
 
@@ -55,7 +55,7 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
         Typ het dichtstbijzijnde adres, klik de locatie aan op de kaart of gebruik &quot;Mijn locatie&quot;
       </Paragraph>
       <form action={formAction} id="address">
-        <Combo
+        <Combobox
           address={address}
           setAddress={setAddress}
           setCoordinates={setCoordinates}
