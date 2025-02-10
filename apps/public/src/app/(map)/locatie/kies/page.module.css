@@ -1,11 +1,19 @@
-.page {
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
   height: 100vh;
+
+  @media screen and (min-width: 68rem) {
+    grid-template-columns: 1fr 2fr;
+  }
 }
 
 .assetList {
   display: none;
   grid-row-start: 2;
+  padding-block-end: var(--ams-space-md);
+  padding-inline: var(--ams-space-md);
 
   @media screen and (min-width: 68rem) {
     display: block;
@@ -25,7 +33,6 @@
 }
 
 .map {
-  grid-row-start: 2;
   position: relative;
 
   @media screen and (min-width: 68rem) {

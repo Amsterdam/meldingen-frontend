@@ -1,0 +1,4 @@
+.container {
+  padding-block: var(--ams-space-md);
+  padding-inline: var(--ams-space-md);
+}

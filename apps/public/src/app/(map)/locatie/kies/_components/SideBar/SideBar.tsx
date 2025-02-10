@@ -9,6 +9,7 @@ import { getAddressFromCoordinates } from '../../_utils'
 import { AddressComboBox } from '../AddressComboBox/AddressComboBox'
 
 import { writeAddressAndCoordinateToCookie } from './actions'
+import styles from './SideBar.module.css'
 
 type Props = {
   coordinates?: Coordinates
@@ -42,7 +43,7 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
   }, [coordinates])
 
   return (
-    <Column>
+    <Column className={styles.container}>
       <NextLink href="/locatie" legacyBehavior passHref>
         <Link href="dummy-href">
           <Icon svg={ChevronLeftIcon} size="level-4" />
