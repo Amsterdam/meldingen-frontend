@@ -18,7 +18,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
   if (email || phone) {
     try {
       postMeldingByMeldingIdContact({
-        meldingId: Number(meldingId),
+        meldingId: parseInt(meldingId, 10),
         requestBody: {
           email: email as string,
           phone: phone as string,
