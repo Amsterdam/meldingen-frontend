@@ -19,7 +19,7 @@ import type { Address } from '../SideBar/SideBar'
 import styles from './Combobox.module.css'
 
 const pdokQueryParams =
-  'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=10'
+  'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=6'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const debounce = (fn: Function, delay = 250) => {
@@ -122,7 +122,7 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
         {showListBox && (
           <ComboboxOptions as={ListBox} className={styles.comboboxOptions} modal={false}>
             {addressList.length > 0 ? (
-              addressList.slice(0, 6).map((option) => (
+              addressList.map((option) => (
                 <ComboboxOption key={option.id} value={option} as={ListBox.Option}>
                   {option.weergave_naam}
                 </ComboboxOption>
