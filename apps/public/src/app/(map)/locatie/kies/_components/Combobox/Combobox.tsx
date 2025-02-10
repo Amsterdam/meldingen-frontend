@@ -1,6 +1,6 @@
 import { ErrorMessage, Field, Label, TextInput } from '@amsterdam/design-system-react'
 import {
-  Combobox,
+  Combobox as HUICombobox,
   ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
@@ -102,7 +102,7 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
         <span lang="en">(swipe)</span>.
       </Description>
 
-      <Combobox
+      <HUICombobox
         as="div"
         onChange={onChangeHandler}
         onClose={() => fetchAddressList('')}
@@ -136,7 +136,7 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
             </ComboboxOptions>
           </div>
         )}
-      </Combobox>
+      </HUICombobox>
     </HUIField>
   )
 }
