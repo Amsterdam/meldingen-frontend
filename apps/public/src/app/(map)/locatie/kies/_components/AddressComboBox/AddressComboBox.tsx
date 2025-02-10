@@ -16,6 +16,8 @@ import type { Coordinates } from 'apps/public/src/types'
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
 import type { Address } from '../SideBar/SideBar'
 
+import styles from './AddressComboBox.module.css'
+
 const pdokQueryParams =
   'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=10'
 
@@ -99,7 +101,14 @@ export const AddressComboBox = ({ address, errorMessage, setAddress, setCoordina
         te kiezen. Voor <span lang="en">touch</span>-apparaten, verken met aanraking of veegbewegingen{' '}
         <span lang="en">(swipe)</span>.
       </Description>
-      <Combobox as="div" onChange={onChangeHandler} onClose={() => fetchAddressList('')} value={query}>
+
+      <Combobox
+        as="div"
+        onChange={onChangeHandler}
+        onClose={() => fetchAddressList('')}
+        value={query}
+        className={styles.combobox}
+      >
         <ComboboxInput
           as={TextInput}
           autoComplete="off"
@@ -109,20 +118,23 @@ export const AddressComboBox = ({ address, errorMessage, setAddress, setCoordina
             fetchAddressList(event.target.value)
           }}
         />
+
         {showListBox && (
-          <ComboboxOptions as={ListBox} modal={false}>
-            {addressList.length > 0 ? (
-              addressList.map((option) => (
-                <ComboboxOption key={option.id} value={option} as={ListBox.Option}>
-                  {option.weergave_naam}
+          <div className={styles.comboboxOptions}>
+            <ComboboxOptions as={ListBox} modal={false}>
+              {addressList.length > 0 ? (
+                addressList.slice(0, 6).map((option) => (
+                  <ComboboxOption key={option.id} value={option} as={ListBox.Option}>
+                    {option.weergave_naam}
+                  </ComboboxOption>
+                ))
+              ) : (
+                <ComboboxOption value="" disabled as={ListBox.Option}>
+                  Geen resultaten gevonden
                 </ComboboxOption>
-              ))
-            ) : (
-              <ComboboxOption value="" disabled as={ListBox.Option}>
-                Geen resultaten gevonden
-              </ComboboxOption>
-            )}
-          </ComboboxOptions>
+              )}
+            </ComboboxOptions>
+          </div>
         )}
       </Combobox>
     </HUIField>

@@ -1,0 +1,26 @@
+.combobox {
+  position: relative;
+  width: 100%;
+}
+
+.comboboxOptions {
+  background-color: white;
+  position: absolute;
+  width: 100%;
+
+  /*
+      Leaflet uses z-indexes to stack layers. The highest Leaflet z-index is 700. And the SidePanel uses 702.
+      https://leafletjs.com/reference.html#map-pane
+    */
+  z-index: 703;
+}
+
+.comboboxOptions ul {
+  margin-block-end: 0;
+}
+
+.comboboxOptions li {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
