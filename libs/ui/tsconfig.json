@@ -6,6 +6,6 @@
     "jsx": "react-jsx",
     "resolveJsonModule": true,
     "strict": true,
-    "types": ["../../typings/cssmodules.d.ts"]
+    "types": ["../../typings/cssmodules.d.ts", "vitest/globals"]
   }
 }

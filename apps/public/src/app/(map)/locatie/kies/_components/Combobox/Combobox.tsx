@@ -120,21 +120,19 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
         />
 
         {showListBox && (
-          <div className={styles.comboboxOptions}>
-            <ComboboxOptions as={ListBox} modal={false}>
-              {addressList.length > 0 ? (
-                addressList.slice(0, 6).map((option) => (
-                  <ComboboxOption key={option.id} value={option} as={ListBox.Option}>
-                    {option.weergave_naam}
-                  </ComboboxOption>
-                ))
-              ) : (
-                <ComboboxOption value="" disabled as={ListBox.Option}>
-                  Geen resultaten gevonden
+          <ComboboxOptions as={ListBox} className={styles.comboboxOptions} modal={false}>
+            {addressList.length > 0 ? (
+              addressList.slice(0, 6).map((option) => (
+                <ComboboxOption key={option.id} value={option} as={ListBox.Option}>
+                  {option.weergave_naam}
                 </ComboboxOption>
-              )}
-            </ComboboxOptions>
-          </div>
+              ))
+            ) : (
+              <ComboboxOption value="" disabled as={ListBox.Option}>
+                Geen resultaten gevonden
+              </ComboboxOption>
+            )}
+          </ComboboxOptions>
         )}
       </HUICombobox>
     </HUIField>
