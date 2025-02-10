@@ -8,10 +8,7 @@
   position: absolute;
   width: 100%;
 
-  /*
-      Leaflet uses z-indexes to stack layers. The highest Leaflet z-index is 700. And the SidePanel uses 702.
-      https://leafletjs.com/reference.html#map-pane
-    */
+  /* The ComboxBoxOptions need to be on top of the AssetList and submit button, which have a z-index of 702. */
   z-index: 703;
 }
 
