@@ -4,7 +4,7 @@ export const getAddressFromCoordinates = async ({ lat, lng }: Coordinates) =>
   fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?lat=${lat}&lon=${lng}&rows=1&distance=30`)
     .then((res) => res.json())
     .then((result) => {
-      // If there is no address nearby (>30m) the location that is clicked (e.g. water or middle of a park),
+      // If there is no address nearby (<30m) the location that is clicked (e.g. water or middle of a park),
       // PDOK does not return an address. Therefore we use "Pinned on map".
       if (result.response.numFound === 0) {
         return {
