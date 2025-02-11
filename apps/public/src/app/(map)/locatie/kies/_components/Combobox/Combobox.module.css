@@ -5,7 +5,5 @@
 
 .comboboxOptions {
   position: absolute;
-
-  /* The ComboxBoxOptions need to be on top of the AssetList and submit button, which have a z-index of 702. */
-  z-index: 703;
+  z-index: 1; /* The ComboxBoxOptions need to be shown above the map.  */
 }
