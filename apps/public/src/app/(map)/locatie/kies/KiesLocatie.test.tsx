@@ -11,7 +11,7 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-describe('Page', () => {
+describe('KiesLocatie', () => {
   it('should render', () => {
     const { container } = render(<KiesLocatie />)
 
