@@ -20,6 +20,7 @@ export const handlers = [
   http.get(ENDPOINTS.PDOK_REVERSE, () =>
     HttpResponse.json({
       response: {
+        numFound: 1,
         docs: [
           {
             type: 'adres',
