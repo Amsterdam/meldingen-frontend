@@ -6,7 +6,7 @@ import { useActionState, useEffect, useState } from 'react'
 import type { Coordinates } from 'apps/public/src/types'
 
 import { getAddressFromCoordinates } from '../../_utils'
-import { AddressComboBox } from '../AddressComboBox/AddressComboBox'
+import { Combobox } from '../Combobox/Combobox'
 
 import { writeAddressAndCoordinateToCookie } from './actions'
 
@@ -48,7 +48,6 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
           <Icon svg={ChevronLeftIcon} size="level-4" />
         </Link>
       </NextLink>
-
       <div>
         <Heading level={1} size="level-4">
           Selecteer de locatie
@@ -58,7 +57,7 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
         </Paragraph>
       </div>
       <form action={formAction} id="address">
-        <AddressComboBox
+        <Combobox
           address={address}
           setAddress={setAddress}
           setCoordinates={setCoordinates}
