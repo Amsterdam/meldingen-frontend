@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
 import type { Mock } from 'vitest'
 
-import Contact from './page'
+import { Contact } from './Contact'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
