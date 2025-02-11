@@ -2,7 +2,8 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
-  height: 100vh;
+  height: 100vh; /* Fallback for browsers that do not support dvh */
+  height: 100dvh;
 
   @media screen and (min-width: 68rem) {
     grid-template-columns: 1fr 2fr;
