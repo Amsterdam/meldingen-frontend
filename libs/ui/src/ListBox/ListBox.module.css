@@ -1,5 +1,5 @@
 .list {
-  background-color: white;
+  background-color: var(--ams-color-primary-white);
   color: var(--ams-color-primary-black);
   font-family: var(--ams-text-font-family);
   font-size: var(--ams-text-level-5-font-size);
