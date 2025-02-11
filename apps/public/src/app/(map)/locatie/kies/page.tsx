@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Grid } from '@amsterdam/design-system-react'
+import { Button } from '@amsterdam/design-system-react'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 
@@ -24,25 +24,15 @@ const KiesLocatie = () => {
   }
 
   return (
-    <Grid className={styles.page}>
-      <Grid.Cell span={{ narrow: 4, medium: 5, wide: 4 }}>
-        <SideBar coordinates={coordinates} setCoordinates={setCoordinates} />
-      </Grid.Cell>
-      <Grid.Cell
-        span={{ narrow: 4, medium: 8, wide: 4 }}
-        start={{ narrow: 1, medium: 1, wide: 1 }}
-        className={`${styles.assetList} ${showAssetList && styles.showAssetList}`}
-      >
+    <div className={styles.grid}>
+      <SideBar coordinates={coordinates} setCoordinates={setCoordinates} />
+      <div className={`${styles.assetList} ${showAssetList && styles.showAssetList}`}>
         <AssetList />
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
           Bevestigen
         </Button>
-      </Grid.Cell>
-      <Grid.Cell
-        span={{ narrow: 4, medium: 8, wide: 8 }}
-        start={{ narrow: 1, medium: 1, wide: 5 }}
-        className={styles.map}
-      >
+      </div>
+      <div className={styles.map}>
         <Map coordinates={coordinates} setCoordinates={setCoordinates} showAssetList={showAssetList} />
         <Button form="address" type="submit" className={styles.submitbutton}>
           Bevestigen
@@ -50,8 +40,8 @@ const KiesLocatie = () => {
         <Button variant="secondary" onClick={handleAssetListToggle} className={styles.toggleButton}>
           {showAssetList ? 'Kaart' : 'Lijst'}
         </Button>
-      </Grid.Cell>
-    </Grid>
+      </div>
+    </div>
   )
 }
 
