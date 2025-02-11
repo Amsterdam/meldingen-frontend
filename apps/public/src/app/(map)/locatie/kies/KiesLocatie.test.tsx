@@ -1,7 +1,7 @@
 import { screen, render, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
 
-import Page from './page'
+import { KiesLocatie } from './KiesLocatie'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -13,7 +13,7 @@ vi.mock('react', async (importOriginal) => {
 
 describe('Page', () => {
   it('should render', () => {
-    const { container } = render(<Page />)
+    const { container } = render(<KiesLocatie />)
 
     const outerWrapper = container.querySelector('div')
 
