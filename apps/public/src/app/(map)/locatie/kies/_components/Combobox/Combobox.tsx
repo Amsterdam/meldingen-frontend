@@ -19,7 +19,7 @@ import type { Address } from '../SideBar/SideBar'
 import styles from './Combobox.module.css'
 
 const pdokQueryParams =
-  'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=6'
+  'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=7'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const debounce = (fn: Function, delay = 250) => {
