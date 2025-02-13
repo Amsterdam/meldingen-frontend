@@ -1,5 +1,4 @@
 import { screen, render } from '@testing-library/react'
-import { vi } from 'vitest'
 
 import { Map } from './Map'
 
