@@ -16,7 +16,9 @@ const Contact = () => {
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
-        <BackLink href="/bijlage">Vorige vraag</BackLink>
+        <BackLink href="/bijlage" className="ams-mb--xs">
+          Vorige vraag
+        </BackLink>
         <Heading level={1} className="ams-mb--sm">
           Contact
         </Heading>

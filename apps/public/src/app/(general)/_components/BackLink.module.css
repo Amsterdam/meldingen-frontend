@@ -1,0 +1,6 @@
+.link {
+  display: inline-flex;
+  gap: var(--ams-space-xs);
+  text-decoration-line: none;
+  width: fit-content;
+}
