@@ -11,7 +11,9 @@ import { postAttachmentForm } from './actions'
 export const Bijlage = () => (
   <Grid paddingBottom="large" paddingTop="medium">
     <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
-      <BackLink href="/locatie">Vorige vraag</BackLink>
+      <BackLink href="/locatie" className="ams-mb--xs">
+        Vorige vraag
+      </BackLink>
       <Heading className="ams-mb--sm">Foto’s</Heading>
       <form action={postAttachmentForm}>
         <Field>
