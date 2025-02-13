@@ -1,6 +1,7 @@
 import { http, HttpResponse } from 'msw'
 
 import { ENDPOINTS } from './endpoints'
+import mockFormData from './mockFormData.json'
 
 export const handlers = [
   /** GET */
@@ -60,6 +61,17 @@ export const handlers = [
       },
     }),
   ),
+
+  http.get(ENDPOINTS.STATIC_FORM, () =>
+    HttpResponse.json([
+      {
+        id: '123',
+        type: 'primary',
+      },
+    ]),
+  ),
+
+  http.get(ENDPOINTS.STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(mockFormData)),
 
   /** POST */
   http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () =>
