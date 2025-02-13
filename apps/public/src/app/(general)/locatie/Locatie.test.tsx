@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
 import type { Mock } from 'vitest'
-import { vi } from 'vitest'
 
 import { Locatie } from './Locatie'
 
