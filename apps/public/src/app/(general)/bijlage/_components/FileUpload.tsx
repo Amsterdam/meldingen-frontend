@@ -12,7 +12,15 @@ type Props = {
 export const FileUpload = ({ id, handleOnChange, uploadedFiles, ...restProps }: Props) => (
   <>
     <div className={styles.wrapper}>
-      <input {...restProps} multiple type="file" id={id} className={styles.input} onChange={handleOnChange} />
+      <input
+        {...restProps}
+        className={styles.input}
+        id={id}
+        multiple
+        name="file"
+        onChange={handleOnChange}
+        type="file"
+      />
       {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
       <label htmlFor={id} className={styles.label}>
         <span className={styles.button}>Selecteer bestanden</span>
