@@ -16,20 +16,20 @@ export const getSummaryData = ({ melding, primaryFormLabel, additionalQuestionsA
   const additionalQuestionsSummary = additionalQuestionsAnswers.map((answer) => ({
     key: answer.question.id,
     term: answer.question.text,
-    description: answer.text,
+    description: [answer.text],
   }))
 
   return [
     {
       key: 'primary',
       term: primaryFormLabel,
-      description: melding.text,
+      description: [melding.text],
     },
     ...additionalQuestionsSummary,
     location && {
       key: 'location',
       term: 'Waar is het?', // TODO: use i18n slug here
-      description: location.name,
+      description: [location.name],
     },
     (melding.email || melding.phone) && {
       key: 'contact',

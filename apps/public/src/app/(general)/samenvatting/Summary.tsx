@@ -34,10 +34,12 @@ export const Summary = ({ data }: Props) => {
         {formState?.message && <Paragraph>{formState.message}</Paragraph>}
 
         <SummaryList className="ams-mb--sm">
-          {data.map((item) => (
-            <SummaryList.Item key={item?.key}>
-              <SummaryList.Term>{item?.term}</SummaryList.Term>
-              <SummaryList.Description>{item?.description}</SummaryList.Description>
+          {data.map(({ key, term, description }) => (
+            <SummaryList.Item key={key}>
+              <SummaryList.Term>{term}</SummaryList.Term>
+              {description.map((item) => (
+                <SummaryList.Description key={item}>{item}</SummaryList.Description>
+              ))}
             </SummaryList.Item>
           ))}
         </SummaryList>

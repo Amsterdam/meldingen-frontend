@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export type SummaryData = {
   key: string
   term: string
-  description: string
+  description: string[]
 }[]
 
 export default async () => {
