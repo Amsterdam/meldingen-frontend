@@ -17,7 +17,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
 
   if (email || phone) {
     try {
-      postMeldingByMeldingIdContact({
+      await postMeldingByMeldingIdContact({
         meldingId: parseInt(meldingId, 10),
         requestBody: {
           email: email as string,
@@ -30,5 +30,5 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
     }
   }
 
-  return redirect('/bedankt')
+  return redirect('/samenvatting')
 }
