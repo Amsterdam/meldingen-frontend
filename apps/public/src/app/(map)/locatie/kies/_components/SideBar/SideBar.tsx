@@ -1,8 +1,7 @@
-import { Heading, Icon, Paragraph, Link } from '@amsterdam/design-system-react'
-import { ChevronLeftIcon } from '@amsterdam/design-system-react-icons'
-import NextLink from 'next/link'
+import { Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useActionState, useEffect, useState } from 'react'
 
+import { BackLink } from 'apps/public/src/app/(general)/_components/BackLink'
 import type { Coordinates } from 'apps/public/src/types'
 
 import { getAddressFromCoordinates } from '../../_utils'
@@ -44,11 +43,7 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
 
   return (
     <div className={styles.container}>
-      <NextLink href="/locatie" legacyBehavior passHref>
-        <Link href="dummy-href" className={styles.backLink}>
-          <Icon svg={ChevronLeftIcon} size="level-4" />
-        </Link>
-      </NextLink>
+      <BackLink href="/locatie">Vorige vraag</BackLink>
       <div className={styles.intro}>
         <Heading level={1} size="level-4">
           Selecteer de locatie

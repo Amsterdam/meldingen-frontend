@@ -643,6 +643,35 @@ export const AnswerOutputSchema = {
     title: 'AnswerOutput'
 } as const;
 
+export const AnswerQuestionOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
+        },
+        text: {
+            type: 'string',
+            title: 'Text'
+        },
+        question: {
+            '$ref': '#/components/schemas/QuestionOutput'
+        }
+    },
+    type: 'object',
+    required: ['id', 'created_at', 'updated_at', 'text', 'question'],
+    title: 'AnswerQuestionOutput'
+} as const;
+
 export const AttachmentOutputSchema = {
     properties: {
         id: {
@@ -4602,6 +4631,32 @@ export const Position3DSchema = {
     type: 'array',
     maxItems: 3,
     minItems: 3
+} as const;
+
+export const QuestionOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
+        },
+        text: {
+            type: 'string',
+            title: 'Text'
+        }
+    },
+    type: 'object',
+    required: ['id', 'created_at', 'updated_at', 'text'],
+    title: 'QuestionOutput'
 } as const;
 
 export const Reduce_InputSchema = {

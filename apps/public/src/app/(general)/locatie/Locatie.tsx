@@ -26,8 +26,10 @@ export const Locatie = ({ prevPage, locationData }: Props) => {
 
   return (
     <Grid paddingBottom="large" paddingTop="medium">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
-        <BackLink href={prevPage}>Vorige vraag</BackLink>
+      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
+        <BackLink href={prevPage} className="ams-mb--xs">
+          Vorige vraag
+        </BackLink>
         <Heading className="ams-mb--sm">Locatie</Heading>
 
         {formState?.message && <Paragraph>{formState.message}</Paragraph>}

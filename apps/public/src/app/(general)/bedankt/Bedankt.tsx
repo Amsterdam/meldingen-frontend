@@ -10,7 +10,7 @@ type Props = {
 
 export const Bedankt = ({ meldingId }: Props) => (
   <Grid paddingBottom="large" paddingTop="medium">
-    <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
+    <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
       <Heading className="ams-mb--xs">Bedankt</Heading>
       <Paragraph>Bedankt voor uw melding.</Paragraph>
       <Paragraph className="ams-mb--sm">{`Wij hebben uw melding ontvangen op 21-11-2023 om 17:11. Uw meldnummer is ${meldingId}.`}</Paragraph>
