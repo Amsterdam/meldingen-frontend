@@ -1,14 +1,14 @@
-import { Column, Heading, Icon, Paragraph, Link } from '@amsterdam/design-system-react'
-import { ChevronLeftIcon } from '@amsterdam/design-system-react-icons'
-import NextLink from 'next/link'
+import { Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useActionState, useEffect, useState } from 'react'
 
+import { BackLink } from 'apps/public/src/app/(general)/_components/BackLink'
 import type { Coordinates } from 'apps/public/src/types'
 
 import { getAddressFromCoordinates } from '../../_utils'
-import { AddressComboBox } from '../AddressComboBox/AddressComboBox'
+import { Combobox } from '../Combobox/Combobox'
 
 import { writeAddressAndCoordinateToCookie } from './actions'
+import styles from './SideBar.module.css'
 
 type Props = {
   coordinates?: Coordinates
@@ -42,14 +42,9 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
   }, [coordinates])
 
   return (
-    <Column>
-      <NextLink href="/locatie" legacyBehavior passHref>
-        <Link href="dummy-href">
-          <Icon svg={ChevronLeftIcon} size="level-4" />
-        </Link>
-      </NextLink>
-
-      <div>
+    <div className={styles.container}>
+      <BackLink href="/locatie">Vorige vraag</BackLink>
+      <div className={styles.intro}>
         <Heading level={1} size="level-4">
           Selecteer de locatie
         </Heading>
@@ -58,7 +53,7 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
         </Paragraph>
       </div>
       <form action={formAction} id="address">
-        <AddressComboBox
+        <Combobox
           address={address}
           setAddress={setAddress}
           setCoordinates={setCoordinates}
@@ -66,6 +61,6 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
         />
         <input type="hidden" name="coordinates" defaultValue={address ? JSON.stringify(coordinates) : undefined} />
       </form>
-    </Column>
+    </div>
   )
 }

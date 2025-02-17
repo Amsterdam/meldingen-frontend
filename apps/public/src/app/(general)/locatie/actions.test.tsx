@@ -2,7 +2,6 @@ import { postMeldingByMeldingIdLocation } from '@meldingen/api-client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
-import { vi } from 'vitest'
 
 import { postLocationForm } from './actions'
 

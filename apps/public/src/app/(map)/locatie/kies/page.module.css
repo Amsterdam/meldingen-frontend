@@ -1,11 +1,20 @@
-.page {
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
-  height: 100vh;
+  height: 100vh; /* Fallback for browsers that do not support dvh */
+  height: 100dvh;
+
+  @media screen and (min-width: 68rem) {
+    grid-template-columns: 1fr 2fr;
+  }
 }
 
 .assetList {
   display: none;
   grid-row-start: 2;
+  padding-block-end: var(--ams-space-md);
+  padding-inline: var(--ams-space-md);
 
   @media screen and (min-width: 68rem) {
     display: block;
@@ -25,7 +34,6 @@
 }
 
 .map {
-  grid-row-start: 2;
   position: relative;
 
   @media screen and (min-width: 68rem) {
@@ -38,12 +46,6 @@
   margin-block: var(--ams-space-sm);
   margin-inline: var(--ams-space-sm);
   position: absolute;
-
-  /*
-      Leaflet uses z-indexes to stack layers. The highest Leaflet z-index is 700. And the overlay uses 701.
-      https://leafletjs.com/reference.html#map-pane
-    */
-  z-index: 702;
 
   @media screen and (min-width: 68rem) {
     display: none;

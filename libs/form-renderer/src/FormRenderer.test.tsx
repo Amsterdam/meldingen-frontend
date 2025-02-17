@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import { vi } from 'vitest'
 
 import { FormRenderer } from './FormRenderer'
 import mockFormData from './mocks/mockFormData.json'

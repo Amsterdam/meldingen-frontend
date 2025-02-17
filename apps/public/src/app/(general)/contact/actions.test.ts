@@ -1,7 +1,6 @@
 import { postMeldingByMeldingIdContact } from '@meldingen/api-client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { vi } from 'vitest'
 import type { Mock } from 'vitest'
 
 import { postContactForm } from './actions'

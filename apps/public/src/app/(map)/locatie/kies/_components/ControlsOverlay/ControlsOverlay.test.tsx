@@ -1,7 +1,6 @@
 import { screen, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type L from 'leaflet'
-import { vi } from 'vitest'
 
 import { ControlsOverlay } from './ControlsOverlay'
 

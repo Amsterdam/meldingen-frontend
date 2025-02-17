@@ -1,4 +1,5 @@
 import type { FormPanelComponentOutput } from '@meldingen/api-client'
+import type { Metadata } from 'next'
 
 import { getFormClassificationByClassificationId } from 'apps/public/src/apiClientProxy'
 
@@ -36,6 +37,10 @@ export const dynamic = 'force-dynamic'
 
 //   return panelIdsByForm.flat()
 // }
+
+export const metadata: Metadata = {
+  title: 'Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam',
+}
 
 type Params = Promise<{
   classification: number

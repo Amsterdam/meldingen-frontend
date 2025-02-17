@@ -1,12 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
-import { vi } from 'vitest'
 
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
 import { server } from 'apps/public/src/mocks/node'
 
-import { AddressComboBox } from './AddressComboBox'
+import { Combobox } from './Combobox'
 
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
@@ -14,9 +13,9 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   disconnect: vi.fn(),
 }))
 
-describe('AddressComboBox', () => {
+describe('Combobox', () => {
   it('should render the address input', () => {
-    render(<AddressComboBox setAddress={() => {}} setCoordinates={() => {}} />)
+    render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
 
     const input = screen.getByRole('combobox', { name: 'Zoek op adres' })
 
@@ -24,7 +23,7 @@ describe('AddressComboBox', () => {
   })
 
   it('should not show the list box initially', () => {
-    render(<AddressComboBox setAddress={() => {}} setCoordinates={() => {}} />)
+    render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
 
     const listBox = screen.queryByRole('listbox')
 
@@ -34,7 +33,7 @@ describe('AddressComboBox', () => {
   it('should not show the list box on 2 character input', async () => {
     const user = userEvent.setup()
 
-    render(<AddressComboBox setAddress={() => {}} setCoordinates={() => {}} />)
+    render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
 
     const input = screen.getByRole('combobox', { name: 'Zoek op adres' })
 
@@ -49,7 +48,7 @@ describe('AddressComboBox', () => {
   it('should show the list box on 3 or more character input', async () => {
     const user = userEvent.setup()
 
-    render(<AddressComboBox setAddress={() => {}} setCoordinates={() => {}} />)
+    render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
 
     const input = screen.getByRole('combobox', { name: 'Zoek op adres' })
 
@@ -64,7 +63,7 @@ describe('AddressComboBox', () => {
   it('should show all options returned by the API', async () => {
     const user = userEvent.setup()
 
-    render(<AddressComboBox setAddress={() => {}} setCoordinates={() => {}} />)
+    render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
 
     const input = screen.getByRole('combobox', { name: 'Zoek op adres' })
 
@@ -92,7 +91,7 @@ describe('AddressComboBox', () => {
 
     const user = userEvent.setup()
 
-    render(<AddressComboBox setAddress={() => {}} setCoordinates={() => {}} />)
+    render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
 
     const input = screen.getByRole('combobox', { name: 'Zoek op adres' })
 

@@ -1,5 +1,3 @@
-import { vi } from 'vitest'
-
 import { dataProvider } from './dataProvider'
 
 describe('dataProvider', () => {

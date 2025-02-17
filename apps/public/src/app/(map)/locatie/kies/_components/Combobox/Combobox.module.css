@@ -1,0 +1,9 @@
+.combobox {
+  position: relative;
+  width: 100%;
+}
+
+.comboboxOptions {
+  position: absolute;
+  z-index: 1; /* The ComboxBoxOptions need to be shown above the map.  */
+}
