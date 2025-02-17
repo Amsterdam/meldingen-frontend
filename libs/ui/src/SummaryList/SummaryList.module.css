@@ -1,0 +1,29 @@
+.list {
+  color: var(--ams-color-primary-black);
+  display: grid;
+  font-family: var(--ams-text-font-family);
+  hyphenate-limit-chars: var(--ams-hyphenation-hyphenate-limit-chars);
+  hyphens: var(--ams-hyphenation-hyphens);
+  margin-block: 0;
+  overflow-wrap: var(--ams-hyphenation-overflow-wrap);
+  row-gap: var(--ams-space-md);
+  text-rendering: optimizelegibility;
+  text-size-adjust: none;
+}
+
+.item {
+  display: grid;
+  row-gap: var(--ams-space-sm);
+}
+
+.term {
+  font-size: var(--ams-text-level-4-font-size);
+  font-weight: var(--ams-description-list-term-font-weight);
+  line-height: var(--ams-text-level-4-line-height);
+}
+
+.description {
+  font-size: var(--ams-text-level-5-font-size);
+  line-height: var(--ams-text-level-5-line-height);
+  margin-inline-start: 0;
+}
