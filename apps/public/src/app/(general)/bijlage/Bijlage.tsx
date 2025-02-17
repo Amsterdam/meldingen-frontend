@@ -10,15 +10,24 @@ import { BackLink } from '../_components/BackLink'
 import { FileUpload } from './_components/FileUpload'
 import { postAttachmentForm, redirectToNextPage } from './actions'
 
+const isErrorMessage = (obj: unknown): obj is { message: string } => {
+  return typeof obj === 'object' && obj !== null && 'message' in obj && typeof (obj as any).message === 'string'
+}
+
 export const Bijlage = () => {
   const [uploadedFiles, setUploadedFiles] = useState<AttachmentOutput[]>([])
+  const [errorMessage, setErrorMessage] = useState<string>()
 
   const handleOnChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.currentTarget.files) return
 
-    const results = await postAttachmentForm(event.currentTarget.files)
+    const result = await postAttachmentForm(event.currentTarget.files)
 
-    if (results) setUploadedFiles((currentFiles) => [...currentFiles, ...results])
+    if (isErrorMessage(result)) {
+      setErrorMessage(result.message)
+    } else {
+      result && setUploadedFiles((currentFiles) => [...currentFiles, ...result])
+    }
   }
 
   return (
@@ -26,6 +35,7 @@ export const Bijlage = () => {
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         <BackLink href="/locatie">Vorige vraag</BackLink>
         <Heading className="ams-mb--sm">Foto’s</Heading>
+        {errorMessage && <Paragraph>{errorMessage}</Paragraph>}
         <form action={redirectToNextPage}>
           <Field>
             <Label htmlFor="file-upload" optional>

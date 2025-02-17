@@ -1,24 +1,27 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
+import { postAttachmentForm } from './actions'
 import { Bijlage } from './Bijlage'
+import { Mock } from 'vitest'
 
 vi.mock('./actions', () => {
   return {
-    postAttachmentForm: vi.fn().mockImplementation(() => [
-      {
-        id: 42,
-        created_at: '2025-02-17T08:29:10.617091',
-        updated_at: '2025-02-17T08:29:10.617091',
-        original_filename: 'Screenshot 2025-02-10 at 08.29.41.png',
-      },
-      {
-        id: 43,
-        created_at: '2025-02-17T08:29:10.629835',
-        updated_at: '2025-02-17T08:29:10.629835',
-        original_filename: 'Screenshot 2025-02-10 at 15.47.24.png',
-      },
-    ]),
+    postAttachmentForm: vi.fn().mockImplementation(() => {
+      return [
+        {
+          id: 42,
+          created_at: '2025-02-17T08:29:10.617091',
+          updated_at: '2025-02-17T08:29:10.617091',
+          original_filename: 'Screenshot 2025-02-10 at 08.29.41.png',
+        },
+        {
+          id: 43,
+          created_at: '2025-02-17T08:29:10.629835',
+          updated_at: '2025-02-17T08:29:10.629835',
+          original_filename: 'Screenshot 2025-02-10 at 15.47.24.png',
+        },
+      ]
+    }),
     redirectToNextPage: vi.fn(),
   }
 })
@@ -53,5 +56,25 @@ describe('Bijlage', () => {
 
     expect(fileName1).toBeInTheDocument()
     expect(fileName2).toBeInTheDocument()
+  })
+
+  it.only('should render an error message', async () => {
+    // @ts-ignore
+    ;(postAttachmentForm as Mock<typeof postAttachmentForm>).mockReturnValueOnce({ message: 'Something bad happened' })
+
+    const user = userEvent.setup()
+
+    render(<Bijlage />)
+
+    const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
+
+    const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
+    const file2 = new File(['dummy content two'], 'Screenshot 2025-02-10 at 15.47.24.png', { type: 'image/png' })
+
+    await user.upload(fileInput, [file, file2])
+
+    const errorMessage = screen.getByText('Something bad happened')
+
+    expect(errorMessage).toBeInTheDocument()
   })
 })

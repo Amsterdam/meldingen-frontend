@@ -24,7 +24,7 @@ export const postAttachmentForm = async (fileList: FileList) => {
       ),
     )
   } catch (error) {
-    console.error('Error uploading file: ', error)
+    return { message: (error as Error).message }
   }
 }
 
