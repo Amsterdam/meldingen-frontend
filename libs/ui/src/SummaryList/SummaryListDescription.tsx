@@ -7,7 +7,7 @@ export type SummaryListDescriptionProps = PropsWithChildren<HTMLAttributes<HTMLE
 
 export const SummaryListDescription = forwardRef(
   ({ children, className, ...restProps }: SummaryListDescriptionProps, ref: ForwardedRef<HTMLElement>) => (
-    <dd {...restProps} className={`${styles.description} ${className}`} ref={ref}>
+    <dd {...restProps} className={`${styles.description} ${className ?? ''}`} ref={ref}>
       {children}
     </dd>
   ),

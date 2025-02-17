@@ -7,7 +7,7 @@ export type SummaryListItemProps = PropsWithChildren<HTMLAttributes<HTMLDivEleme
 
 export const SummaryListItem = forwardRef(
   ({ children, className, ...restProps }: SummaryListItemProps, ref: ForwardedRef<HTMLDivElement>) => (
-    <div {...restProps} className={`${styles.item} ${className}`} ref={ref}>
+    <div {...restProps} className={`${styles.item} ${className ?? ''}`} ref={ref}>
       {children}
     </div>
   ),
