@@ -36,6 +36,14 @@ export type AnswerOutput = {
     updated_at: string;
 };
 
+export type AnswerQuestionOutput = {
+    id: number;
+    created_at: string;
+    updated_at: string;
+    text: string;
+    question: QuestionOutput;
+};
+
 export type AttachmentOutput = {
     id: number;
     created_at: string;
@@ -552,6 +560,13 @@ export type Position3D = [
     number
 ];
 
+export type QuestionOutput = {
+    id: number;
+    created_at: string;
+    updated_at: string;
+    text: string;
+};
+
 export type Reduce_Input = {
     reduce: [
         (Array<unknown> | Var | Missing | MissingSome | If | Merge | Filter_Input | Map_Input),
@@ -829,6 +844,19 @@ export type PatchMeldingByMeldingIdData = {
 
 export type PatchMeldingByMeldingIdResponse = (MeldingOutput);
 
+export type GetMeldingByMeldingIdMelderData = {
+    /**
+     * The id of the melding.
+     */
+    meldingId: number;
+    /**
+     * The token of the melding.
+     */
+    token: string;
+};
+
+export type GetMeldingByMeldingIdMelderResponse = (MeldingOutput);
+
 export type PutMeldingByMeldingIdAnswerQuestionsData = {
     /**
      * The id of the melding.
@@ -867,6 +895,19 @@ export type PutMeldingByMeldingIdSubmitLocationData = {
 };
 
 export type PutMeldingByMeldingIdSubmitLocationResponse = (MeldingOutput);
+
+export type PutMeldingByMeldingIdSubmitData = {
+    /**
+     * The id of the melding.
+     */
+    meldingId: number;
+    /**
+     * The token of the melding.
+     */
+    token: string;
+};
+
+export type PutMeldingByMeldingIdSubmitResponse = (MeldingOutput);
 
 export type PutMeldingByMeldingIdProcessData = {
     /**
@@ -1009,6 +1050,19 @@ export type PutMeldingByMeldingIdAddContactInfoData = {
 };
 
 export type PutMeldingByMeldingIdAddContactInfoResponse = (MeldingOutput);
+
+export type GetMeldingByMeldingIdAnswersData = {
+    /**
+     * The id of the melding.
+     */
+    meldingId: number;
+    /**
+     * The token of the melding.
+     */
+    token: string;
+};
+
+export type GetMeldingByMeldingIdAnswersResponse = (Array<AnswerQuestionOutput>);
 
 export type PostUserData = {
     requestBody: UserCreateInput;
