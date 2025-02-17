@@ -1,32 +1,17 @@
-import { screen, render, waitFor } from '@testing-library/react'
-import { vi } from 'vitest'
+import { render, screen } from '@testing-library/react'
 
 import Page from './page'
 
-vi.mock('react', async (importOriginal) => {
-  const actual = await importOriginal()
-  return {
-    ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
-  }
-})
+vi.mock('./KiesLocatie', () => ({
+  KiesLocatie: vi.fn(() => <div>KiesLocatie Component</div>),
+}))
 
 describe('Page', () => {
-  it('should render', () => {
-    const { container } = render(<Page />)
+  it('renders the KiesLocatie component', async () => {
+    const PageComponent = await Page()
 
-    const outerWrapper = container.querySelector('div')
+    render(PageComponent)
 
-    waitFor(() => {
-      expect(outerWrapper).toBeInTheDocument()
-    })
-
-    const sideBar = screen.getByRole('heading', { name: 'Selecteer de locatie' })
-    const addressCombobox = screen.getByRole('combobox', { name: 'Zoek op adres' })
-    const toggleButton = screen.getByRole('button', { name: 'Lijst' })
-
-    expect(sideBar).toBeInTheDocument()
-    expect(addressCombobox).toBeInTheDocument()
-    expect(toggleButton).toBeInTheDocument()
+    expect(screen.getByText('KiesLocatie Component')).toBeInTheDocument()
   })
 })
