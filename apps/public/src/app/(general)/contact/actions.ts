@@ -1,8 +1,9 @@
 'use server'
 
-import { postMeldingByMeldingIdContact } from '@meldingen/api-client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+
+import { postMeldingByMeldingIdContact } from 'apps/public/src/apiClientProxy'
 
 export const postContactForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()
@@ -20,8 +21,8 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
       await postMeldingByMeldingIdContact({
         meldingId: parseInt(meldingId, 10),
         requestBody: {
-          email: email as string,
-          phone: phone as string,
+          ...(email && { email: email as string }),
+          ...(phone && { phone: phone as string }),
         },
         token,
       })
