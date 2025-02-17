@@ -44,7 +44,7 @@ export const redirectToNextPage = async (formData: FormData) => {
   if (uploadedFiles.length === 0) {
     const files = formData.getAll('file') as File[]
     try {
-      Promise.all(
+      await Promise.all(
         files.map((file) =>
           postMeldingByMeldingIdAttachment({
             formData: { file },
