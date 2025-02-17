@@ -6,8 +6,8 @@ import { redirect } from 'next/navigation'
 
 export const postAttachmentForm = async (fileList: FileList) => {
   const cookieStore = await cookies()
-  const meldingId = cookieStore.get('id')
-  const token = cookieStore.get('token')
+  const meldingId = cookieStore.get('id')?.value
+  const token = cookieStore.get('token')?.value
 
   if (!meldingId || !token) return undefined
 
@@ -18,8 +18,8 @@ export const postAttachmentForm = async (fileList: FileList) => {
       files.map((file) =>
         postMeldingByMeldingIdAttachment({
           formData: { file },
-          meldingId: Number(meldingId.value),
-          token: token.value,
+          meldingId: Number(meldingId),
+          token: token,
         }),
       ),
     )
@@ -30,14 +30,14 @@ export const postAttachmentForm = async (fileList: FileList) => {
 
 export const redirectToNextPage = async (formData: FormData) => {
   const cookieStore = await cookies()
-  const meldingId = cookieStore.get('id')
-  const token = cookieStore.get('token')
+  const meldingId = cookieStore.get('id')?.value
+  const token = cookieStore.get('token')?.value
 
   if (!meldingId || !token) return undefined
 
   const uploadedFiles = await getMeldingByMeldingIdAttachments({
-    meldingId: Number(meldingId.value),
-    token: token.value,
+    meldingId: Number(meldingId),
+    token: token,
   })
 
   // This is a fallback when JavaScript is disabled/not working
@@ -48,8 +48,8 @@ export const redirectToNextPage = async (formData: FormData) => {
         files.map((file) =>
           postMeldingByMeldingIdAttachment({
             formData: { file },
-            meldingId: Number(meldingId.value),
-            token: token.value,
+            meldingId: Number(meldingId),
+            token: token,
           }),
         ),
       )
@@ -70,8 +70,8 @@ export const redirectToNextPage = async (formData: FormData) => {
           newFiles.map((file) =>
             postMeldingByMeldingIdAttachment({
               formData: { file },
-              meldingId: Number(meldingId.value),
-              token: token.value,
+              meldingId: Number(meldingId),
+              token: token,
             }),
           ),
         )
