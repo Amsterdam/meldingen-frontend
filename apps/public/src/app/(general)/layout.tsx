@@ -6,7 +6,7 @@ const GeneralLayout = ({ children }: { children: React.ReactNode }) => (
   <MeldingContextProvider>
     <Screen maxWidth="wide">
       <Header />
-      <main id="main">{children}</main>
+      <main>{children}</main>
       <Footer />
     </Screen>
   </MeldingContextProvider>

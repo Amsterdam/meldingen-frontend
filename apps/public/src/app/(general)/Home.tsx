@@ -17,7 +17,7 @@ export const Home = ({ formData }: { formData: Component[] }) => {
 
   return (
     <Grid paddingBottom="large" paddingTop="medium">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 7 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
+      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
         {formState?.message && <Paragraph>{formState.message}</Paragraph>}
         <FormRenderer formData={formData} action={formAction} />
       </Grid.Cell>
