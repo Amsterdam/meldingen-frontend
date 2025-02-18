@@ -28,13 +28,12 @@ export const Bijlage = ({ meldingId, token }: Props) => {
 
     try {
       const result = await Promise.all(
-        files.map(
-          async (file) =>
-            await postMeldingByMeldingIdAttachment({
-              formData: { file },
-              meldingId: Number(meldingId),
-              token,
-            }),
+        files.map((file) =>
+          postMeldingByMeldingIdAttachment({
+            formData: { file },
+            meldingId: Number(meldingId),
+            token,
+          }),
         ),
       )
       setUploadedFiles((currentFiles) => [...currentFiles, ...result])
