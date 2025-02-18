@@ -1,15 +1,11 @@
 import { Footer, Header, Screen } from '@meldingen/ui'
 
-import { MeldingContextProvider } from '../../context/MeldingContextProvider'
-
 const GeneralLayout = ({ children }: { children: React.ReactNode }) => (
-  <MeldingContextProvider>
-    <Screen maxWidth="wide">
-      <Header />
-      <main>{children}</main>
-      <Footer />
-    </Screen>
-  </MeldingContextProvider>
+  <Screen maxWidth="wide">
+    <Header />
+    <main>{children}</main>
+    <Footer />
+  </Screen>
 )
 
 export default GeneralLayout

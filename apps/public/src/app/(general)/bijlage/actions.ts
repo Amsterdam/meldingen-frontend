@@ -2,4 +2,4 @@
 
 import { redirect } from 'next/navigation'
 
-export const postAttachmentForm = async () => redirect('/contact')
+export const redirectToNextPage = async () => redirect('/contact')
