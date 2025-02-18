@@ -49,7 +49,7 @@ describe('ControlsOverlay', () => {
     await user.click(button)
 
     const notification = screen.getByRole('heading', {
-      name: 'meldingen.amsterdam.nl heeft geen toestemming om uw locatie te gebruiken.',
+      name: 'Geen toestemming om uw locatie te gebruiken',
     })
 
     expect(notification).toBeInTheDocument()
