@@ -19,7 +19,7 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(screen.getByText('Home Component')).toBeInTheDocument()
-    expect(Home).toHaveBeenCalledWith({ formData: mockFormData.components }, {})
+    expect(Home).toHaveBeenCalledWith({ formData: mockFormData.components[0].components }, {})
   })
 
   it('returns undefined if no primary form is found', async () => {
