@@ -19,7 +19,7 @@ export const uploadFiles = async (fileList: FileList) => {
         postMeldingByMeldingIdAttachment({
           formData: { file },
           meldingId: Number(meldingId),
-          token: token,
+          token,
         }),
       ),
     )
@@ -37,7 +37,7 @@ export const redirectToNextPage = async (formData: FormData) => {
 
   const uploadedFiles = await getMeldingByMeldingIdAttachments({
     meldingId: Number(meldingId),
-    token: token,
+    token,
   })
 
   // This is a fallback when JavaScript is disabled/not working
@@ -49,7 +49,7 @@ export const redirectToNextPage = async (formData: FormData) => {
           postMeldingByMeldingIdAttachment({
             formData: { file },
             meldingId: Number(meldingId),
-            token: token,
+            token,
           }),
         ),
       )
@@ -71,7 +71,7 @@ export const redirectToNextPage = async (formData: FormData) => {
             postMeldingByMeldingIdAttachment({
               formData: { file },
               meldingId: Number(meldingId),
-              token: token,
+              token,
             }),
           ),
         )

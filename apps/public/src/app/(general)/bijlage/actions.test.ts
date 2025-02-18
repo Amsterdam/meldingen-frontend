@@ -1,8 +1,8 @@
-import { cookies } from 'next/headers'
-import { Mock } from 'vitest'
-
-import { postAttachmentForm } from './actions'
 import { postMeldingByMeldingIdAttachment } from '@meldingen/api-client'
+import { cookies } from 'next/headers'
+import type { Mock } from 'vitest'
+
+import { uploadFiles } from './actions'
 
 vi.mock('@meldingen/api-client', () => ({
   postMeldingByMeldingIdAttachment: vi.fn(),
@@ -27,7 +27,7 @@ describe('actions', () => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  describe('postAttachmentForm', () => {
+  describe('uploadFiles', () => {
     it('should post all files', async () => {
       mockCookies.get.mockImplementation((name) => {
         if (name === 'id') {
@@ -44,7 +44,7 @@ describe('actions', () => {
 
       const fileList = [file, file2] as unknown as FileList
 
-      await postAttachmentForm(fileList)
+      await uploadFiles(fileList)
 
       expect(postMeldingByMeldingIdAttachment).toHaveBeenCalledTimes(2)
       expect(postMeldingByMeldingIdAttachment).toHaveBeenCalledWith({
@@ -78,7 +78,7 @@ describe('actions', () => {
 
       const fileList = [file, file2] as unknown as FileList
 
-      const result = await postAttachmentForm(fileList)
+      const result = await uploadFiles(fileList)
 
       expect(result).toEqual(mockError)
     })
@@ -99,7 +99,7 @@ describe('actions', () => {
 
       const fileList = [file, file2] as unknown as FileList
 
-      const result = await postAttachmentForm(fileList)
+      const result = await uploadFiles(fileList)
 
       expect(result).toBe(undefined)
     })
@@ -120,7 +120,7 @@ describe('actions', () => {
 
       const fileList = [file, file2] as unknown as FileList
 
-      const result = await postAttachmentForm(fileList)
+      const result = await uploadFiles(fileList)
 
       expect(result).toBe(undefined)
     })

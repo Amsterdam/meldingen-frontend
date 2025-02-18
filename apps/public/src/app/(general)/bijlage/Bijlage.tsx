@@ -10,9 +10,8 @@ import { BackLink } from '../_components/BackLink'
 import { FileUpload } from './_components/FileUpload'
 import { uploadFiles, redirectToNextPage } from './actions'
 
-const isErrorMessage = (obj: unknown): obj is { message: string } => {
-  return typeof obj === 'object' && obj !== null && 'message' in obj && typeof (obj as any).message === 'string'
-}
+const isErrorMessage = (obj: unknown): obj is { message: string } =>
+  typeof obj === 'object' && obj !== null && 'message' in obj && typeof obj.message === 'string'
 
 export const Bijlage = () => {
   const [uploadedFiles, setUploadedFiles] = useState<AttachmentOutput[]>([])
@@ -25,8 +24,8 @@ export const Bijlage = () => {
 
     if (isErrorMessage(result)) {
       setErrorMessage(result.message)
-    } else {
-      result && setUploadedFiles((currentFiles) => [...currentFiles, ...result])
+    } else if (result) {
+      setUploadedFiles((currentFiles) => [...currentFiles, ...result])
     }
   }
 
