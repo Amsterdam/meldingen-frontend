@@ -8,12 +8,6 @@
         "import/no-default-export": "off",
         "react/jsx-no-bind": "off"
       }
-    },
-    {
-      "files": ["**/actions.ts"],
-      "rules": {
-        "consistent-return": "off"
-      }
     }
   ]
 }

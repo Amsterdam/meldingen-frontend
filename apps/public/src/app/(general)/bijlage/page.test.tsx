@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { cookies } from 'next/headers'
+import type { Mock } from 'vitest'
 
 import Page from './page'
-import { Mock } from 'vitest'
 
 vi.mock('./Bijlage', () => ({
   Bijlage: vi.fn(() => <div>Bijlage Component</div>),
