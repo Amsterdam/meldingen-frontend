@@ -1,4 +1,5 @@
 .combobox {
+  /* The longest address in Amsterdam is 77 characters  */
   max-width: calc((var(--ams-text-input-padding-inline) * 2) + 77ch);
   position: relative;
   width: 100%;
