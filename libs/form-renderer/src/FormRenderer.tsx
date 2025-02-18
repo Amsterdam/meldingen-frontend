@@ -15,7 +15,7 @@ type Component = FormCheckboxComponentOutput &
   FormTextAreaComponentOutput &
   FormTextFieldInputComponentOutput
 
-const getComponent = ({ key, data, description, label, type, values, validate }: Component) => {
+const getComponent = ({ key, data, description, label, maxCharCount, type, values, validate }: Component) => {
   switch (type) {
     case 'radio':
       return <Radio key={key} id={key} description={description} label={label} values={values} validate={validate} />
@@ -24,7 +24,16 @@ const getComponent = ({ key, data, description, label, type, values, validate }:
     case 'selectboxes':
       return <Checkbox key={key} id={key} description={description} label={label} values={values} validate={validate} />
     case 'textarea':
-      return <TextArea key={key} id={key} description={description} label={label} validate={validate} />
+      return (
+        <TextArea
+          key={key}
+          id={key}
+          description={description}
+          label={label}
+          maxCharCount={maxCharCount}
+          validate={validate}
+        />
+      )
     case 'textfield':
       return <TextInput key={key} id={key} description={description} label={label} validate={validate} />
     default:
