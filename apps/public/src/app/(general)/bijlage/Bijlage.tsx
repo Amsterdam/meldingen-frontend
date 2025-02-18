@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { BackLink } from '../_components/BackLink'
 
 import { FileUpload } from './_components/FileUpload'
-import { postAttachmentForm, redirectToNextPage } from './actions'
+import { uploadFiles, redirectToNextPage } from './actions'
 
 const isErrorMessage = (obj: unknown): obj is { message: string } => {
   return typeof obj === 'object' && obj !== null && 'message' in obj && typeof (obj as any).message === 'string'
@@ -21,7 +21,7 @@ export const Bijlage = () => {
   const handleOnChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.currentTarget.files) return
 
-    const result = await postAttachmentForm(event.currentTarget.files)
+    const result = await uploadFiles(event.currentTarget.files)
 
     if (isErrorMessage(result)) {
       setErrorMessage(result.message)

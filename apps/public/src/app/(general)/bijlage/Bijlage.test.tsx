@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { postAttachmentForm } from './actions'
+import { uploadFiles } from './actions'
 import { Bijlage } from './Bijlage'
 import { Mock } from 'vitest'
 
 vi.mock('./actions', () => {
   return {
-    postAttachmentForm: vi.fn().mockImplementation(() => {
+    uploadFiles: vi.fn().mockImplementation(() => {
       return [
         {
           id: 42,
@@ -60,7 +60,7 @@ describe('Bijlage', () => {
 
   it.only('should render an error message', async () => {
     // @ts-ignore
-    ;(postAttachmentForm as Mock<typeof postAttachmentForm>).mockReturnValueOnce({ message: 'Something bad happened' })
+    ;(uploadFiles as Mock<typeof uploadFiles>).mockReturnValueOnce({ message: 'Something bad happened' })
 
     const user = userEvent.setup()
 

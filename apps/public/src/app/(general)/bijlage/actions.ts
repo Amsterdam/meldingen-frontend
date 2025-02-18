@@ -4,7 +4,7 @@ import { getMeldingByMeldingIdAttachments, postMeldingByMeldingIdAttachment } fr
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-export const postAttachmentForm = async (fileList: FileList) => {
+export const uploadFiles = async (fileList: FileList) => {
   const cookieStore = await cookies()
   const meldingId = cookieStore.get('id')?.value
   const token = cookieStore.get('token')?.value
