@@ -1,7 +1,6 @@
 import type { AttachmentOutput } from '@meldingen/api-client'
-import type { InputHTMLAttributes } from 'react'
+import type { InputHTMLAttributes, ChangeEvent } from 'react'
 
-import type { ChangeEvent } from 'react'
 import styles from './FileUpload.module.css'
 
 type Props = {

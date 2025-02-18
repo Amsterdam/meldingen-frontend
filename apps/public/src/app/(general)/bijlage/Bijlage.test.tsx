@@ -1,5 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { http, HttpResponse } from 'msw'
+
+import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
+import { server } from 'apps/public/src/mocks/node'
 
 import { Bijlage } from './Bijlage'
 
@@ -39,5 +43,23 @@ describe('Bijlage', () => {
     const fileName1 = screen.getByText('Screenshot 2025-02-10 at 08.29.41.png')
 
     expect(fileName1).toBeInTheDocument()
+  })
+
+  it.only('should show an error', async () => {
+    server.use(http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () => HttpResponse.error()))
+
+    const user = userEvent.setup()
+
+    render(<Bijlage {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
+
+    const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
+
+    await user.upload(fileInput, [file])
+
+    const errorMessage = screen.getByText('Failed to fetch')
+
+    expect(errorMessage).toBeInTheDocument()
   })
 })
