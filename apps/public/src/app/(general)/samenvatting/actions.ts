@@ -20,5 +20,10 @@ export const postSummaryForm = async () => {
     return { message: (error as Error).message }
   }
 
+  // Delete location, token and lastPanelpath cookies
+  ;['location', 'token', 'lastPanelPath'].forEach((cookie) => {
+    cookieStore.delete(cookie)
+  })
+
   return redirect('/bedankt')
 }
