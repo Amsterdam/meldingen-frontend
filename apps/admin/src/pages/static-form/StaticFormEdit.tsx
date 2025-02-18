@@ -27,7 +27,7 @@ export const StaticFormEdit = () => {
       >
         <TextInput source="title" readOnly />
         <TextInput source="components[0].label" />
-        <TextInput source="components[0].description" />
+        <TextInput multiline source="components[0].description" />
       </SimpleForm>
     </Edit>
   )
