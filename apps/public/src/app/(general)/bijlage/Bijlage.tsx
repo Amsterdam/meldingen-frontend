@@ -4,28 +4,40 @@ import { Column, Field, Heading, Label, Paragraph, UnorderedList } from '@amster
 import type { AttachmentOutput } from '@meldingen/api-client'
 import { Grid, SubmitButton } from '@meldingen/ui'
 import { useState } from 'react'
-
+import { postMeldingByMeldingIdAttachment } from 'apps/public/src/apiClientProxy'
 import { BackLink } from '../_components/BackLink'
 
 import { FileUpload } from './_components/FileUpload'
-import { uploadFiles, redirectToNextPage } from './actions'
+import { redirectToNextPage } from './actions'
 
-const isErrorMessage = (obj: unknown): obj is { message: string } =>
-  typeof obj === 'object' && obj !== null && 'message' in obj && typeof obj.message === 'string'
+type Props = {
+  meldingId: number
+  token: string
+}
 
-export const Bijlage = () => {
+export const Bijlage = ({ meldingId, token }: Props) => {
   const [uploadedFiles, setUploadedFiles] = useState<AttachmentOutput[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
 
   const handleOnChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.currentTarget.files) return
 
-    const result = await uploadFiles(event.currentTarget.files)
+    const files = Array.from(event.currentTarget.files)
 
-    if (isErrorMessage(result)) {
-      setErrorMessage(result.message)
-    } else if (result) {
+    try {
+      const result = await Promise.all(
+        files.map(
+          async (file) =>
+            await postMeldingByMeldingIdAttachment({
+              formData: { file },
+              meldingId: Number(meldingId),
+              token,
+            }),
+        ),
+      )
       setUploadedFiles((currentFiles) => [...currentFiles, ...result])
+    } catch (error) {
+      setErrorMessage((error as Error).message)
     }
   }
 
