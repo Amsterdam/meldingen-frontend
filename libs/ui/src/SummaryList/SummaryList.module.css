@@ -18,7 +18,7 @@
 
 .term {
   font-size: var(--ams-text-level-4-font-size);
-  font-weight: var(--ams-description-list-term-font-weight);
+  font-weight: var(--ams-text-font-weight-bold);
   line-height: var(--ams-text-level-4-line-height);
 }
 
