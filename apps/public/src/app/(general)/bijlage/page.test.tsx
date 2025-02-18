@@ -14,11 +14,7 @@ vi.mock('next/headers', () => ({
 
 describe('Page', () => {
   const mockCookies = {
-    get: vi
-      .fn()
-      .mockImplementationOnce(() => ({ name: 'id', value: '1234' }))
-      .mockImplementationOnce(() => ({ name: 'token', value: 'mock-token' }))
-      .mockImplementation(() => {}),
+    get: vi.fn(),
   }
 
   beforeEach(() => {
@@ -27,6 +23,10 @@ describe('Page', () => {
   })
 
   it('renders the Bijlage component', async () => {
+    mockCookies.get
+      .mockImplementationOnce(() => ({ name: 'id', value: '1234' }))
+      .mockImplementationOnce(() => ({ name: 'token', value: 'mock-token' }))
+
     const PageComponent = await Page()
 
     render(PageComponent)
@@ -35,6 +35,8 @@ describe('Page', () => {
   })
 
   it('should render undefined when there is no meldingId or token', async () => {
+    mockCookies.get.mockImplementation(() => {})
+
     const PageComponent = await Page()
 
     render(PageComponent)

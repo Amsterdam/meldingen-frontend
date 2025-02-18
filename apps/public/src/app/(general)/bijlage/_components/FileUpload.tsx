@@ -1,11 +1,12 @@
 import type { AttachmentOutput } from '@meldingen/api-client'
 import type { InputHTMLAttributes } from 'react'
 
+import type { ChangeEvent } from 'react'
 import styles from './FileUpload.module.css'
 
 type Props = {
   id: string
-  handleOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void
   uploadedFiles: AttachmentOutput[]
 } & InputHTMLAttributes<HTMLInputElement>
 
