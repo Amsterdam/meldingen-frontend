@@ -639,7 +639,7 @@ export const putMeldingByMeldingIdAddContactInfo = (data: PutMeldingByMeldingIdA
 export const getMeldingByMeldingIdAnswers = (data: GetMeldingByMeldingIdAnswersData): CancelablePromise<GetMeldingByMeldingIdAnswersResponse> => {
     return __request(OpenAPI, {
         method: 'GET',
-        url: '/melding/{melding_id}/answers}',
+        url: '/melding/{melding_id}/answers',
         path: {
             melding_id: data.meldingId
         },
