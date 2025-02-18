@@ -73,6 +73,73 @@ export const handlers = [
 
   http.get(ENDPOINTS.STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(mockFormData)),
 
+  http.get(ENDPOINTS.MELDING_BY_ID, () =>
+    HttpResponse.json({
+      id: 123,
+      created_at: '2025-02-18T10:34:29.103642',
+      updated_at: '2025-02-18T10:34:40.730569',
+      text: 'Alles',
+      state: 'questions_answered',
+      classification: null,
+      geo_location: null,
+      email: null,
+      phone: null,
+    }),
+  ),
+
+  http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID, () =>
+    HttpResponse.json([
+      {
+        id: 123,
+        created_at: '2025-02-18T10:34:32.181638',
+        updated_at: '2025-02-18T10:34:32.181638',
+        text: 'q1',
+        question: {
+          id: 35,
+          created_at: '2025-02-17T11:06:22.137002',
+          updated_at: '2025-02-17T11:06:22.137002',
+          text: 'Wat wilt u melden?',
+        },
+      },
+      {
+        id: 124,
+        created_at: '2025-02-18T10:34:32.187573',
+        updated_at: '2025-02-18T10:34:32.187573',
+        text: 'q2',
+        question: {
+          id: 36,
+          created_at: '2025-02-17T11:06:22.137002',
+          updated_at: '2025-02-17T11:06:22.137002',
+          text: 'Text Field',
+        },
+      },
+      {
+        id: 125,
+        created_at: '2025-02-18T10:34:34.259985',
+        updated_at: '2025-02-18T10:34:34.259985',
+        text: 'q3',
+        question: {
+          id: 37,
+          created_at: '2025-02-17T11:06:22.137002',
+          updated_at: '2025-02-17T11:06:22.137002',
+          text: 'Text Field',
+        },
+      },
+      {
+        id: 126,
+        created_at: '2025-02-18T10:34:35.684575',
+        updated_at: '2025-02-18T10:34:35.684575',
+        text: 'one',
+        question: {
+          id: 38,
+          created_at: '2025-02-17T11:06:22.137002',
+          updated_at: '2025-02-17T11:06:22.137002',
+          text: 'Radio',
+        },
+      },
+    ]),
+  ),
+
   /** POST */
   http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () =>
     HttpResponse.json({
