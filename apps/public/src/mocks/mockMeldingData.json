@@ -6,6 +6,6 @@
   "state": "questions_answered",
   "classification": null,
   "geo_location": null,
-  "email": null,
-  "phone": null
+  "email": "email@email.email",
+  "phone": "0612345678"
 }
