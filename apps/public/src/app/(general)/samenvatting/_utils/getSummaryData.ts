@@ -25,11 +25,18 @@ export const getSummaryData = ({ melding, primaryFormLabel, additionalQuestionsA
     description: [melding.text],
   }
 
-  const additionalQuestionsSummary = additionalQuestionsAnswers.map((answer) => ({
-    key: answer.question.id,
-    term: answer.question.text,
-    description: [answer.text],
-  }))
+  const additionalQuestionsSummary = additionalQuestionsAnswers
+    .map((answer) => {
+      if (answer.text !== null && answer.text !== undefined) {
+        return {
+          key: `${answer.question.id}`,
+          term: answer.question.text,
+          description: [answer.text],
+        }
+      }
+      return undefined
+    })
+    .filter((item) => item !== undefined) // Filter out undefined items
 
   const locationSummary = {
     key: 'location',
@@ -40,13 +47,13 @@ export const getSummaryData = ({ melding, primaryFormLabel, additionalQuestionsA
   const contactSummary = {
     key: 'contact',
     term: 'Wat zijn uw contactgegevens?',
-    description: [melding.email, melding.phone],
+    description: [melding.email, melding.phone].filter((item) => item !== undefined && item !== null), // Filter out undefined or null items
   }
 
   return [
-    primaryFormSummary,
+    melding.text ? primaryFormSummary : undefined,
     ...additionalQuestionsSummary,
-    location && locationSummary,
-    (melding.email || melding.phone) && contactSummary,
-  ].filter((item) => item) as SummaryData // Filter out undefined items
+    location.name ? locationSummary : undefined,
+    melding.email || melding.phone ? contactSummary : undefined,
+  ].filter((item) => item !== undefined) // Filter out undefined items
 }
