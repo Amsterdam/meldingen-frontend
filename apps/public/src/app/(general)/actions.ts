@@ -8,7 +8,7 @@ import { getFormClassificationByClassificationId, postMelding } from 'apps/publi
 export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)
 
-  let nextPage = ''
+  let nextPage = '/locatie'
 
   try {
     const { classification, id, token } = await postMelding({ requestBody: { text: formDataObj.primary.toString() } })
