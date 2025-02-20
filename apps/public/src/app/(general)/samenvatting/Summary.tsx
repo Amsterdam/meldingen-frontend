@@ -6,11 +6,14 @@ import { useActionState } from 'react'
 
 import { BackLink } from '../_components/BackLink'
 
-import type { SummaryData } from './_utils/getSummaryData'
 import { postSummaryForm } from './actions'
 
 type Props = {
-  data: SummaryData
+  data: {
+    key: string
+    term: string
+    description: string[]
+  }[]
 }
 
 const initialState: { message?: string } = {}

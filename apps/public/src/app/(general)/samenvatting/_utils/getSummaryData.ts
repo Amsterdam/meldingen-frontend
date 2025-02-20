@@ -12,12 +12,6 @@ type Props = {
   }
 }
 
-export type SummaryData = {
-  key: string
-  term: string
-  description: string[]
-}[]
-
 export const getSummaryData = ({ melding, primaryFormLabel, additionalQuestionsAnswers, location }: Props) => {
   const primaryFormSummary = {
     key: 'primary',
