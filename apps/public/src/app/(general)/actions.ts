@@ -35,5 +35,5 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
     return { message: (error as Error).message }
   }
 
-  redirect(nextPage)
+  return redirect(nextPage)
 }
