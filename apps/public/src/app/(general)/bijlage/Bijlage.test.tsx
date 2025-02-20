@@ -45,7 +45,7 @@ describe('Bijlage', () => {
     expect(fileName1).toBeInTheDocument()
   })
 
-  it.only('should show an error', async () => {
+  it('should show an error', async () => {
     server.use(http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () => HttpResponse.error()))
 
     const user = userEvent.setup()
