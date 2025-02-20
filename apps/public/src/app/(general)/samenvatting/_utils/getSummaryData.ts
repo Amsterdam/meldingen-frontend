@@ -53,7 +53,7 @@ export const getSummaryData = ({ melding, primaryFormLabel, additionalQuestionsA
   return [
     melding.text ? primaryFormSummary : undefined,
     ...additionalQuestionsSummary,
-    location.name ? locationSummary : undefined,
+    location?.name ? locationSummary : undefined,
     melding.email || melding.phone ? contactSummary : undefined,
   ].filter((item) => item !== undefined) // Filter out undefined items
 }
