@@ -41,7 +41,7 @@ export const getSummaryData = ({ melding, primaryFormLabel, additionalQuestionsA
   const locationSummary = {
     key: 'location',
     term: 'Waar is het?',
-    description: [location.name],
+    description: [location?.name],
   }
 
   const contactSummary = {
