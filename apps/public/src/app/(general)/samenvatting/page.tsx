@@ -8,18 +8,12 @@ import {
   getStaticFormByStaticFormId,
 } from 'apps/public/src/apiClientProxy'
 
-import { getSummaryData } from './getSummaryData'
+import { getSummaryData } from './_utils/getSummaryData'
 import { Summary } from './Summary'
 
 export const metadata: Metadata = {
   title: 'Stap 4 van 4 - Samenvatting - Gemeente Amsterdam',
 }
-
-export type SummaryData = {
-  key: string
-  term: string
-  description: string[]
-}[]
 
 export default async () => {
   // Get session variables from cookies
@@ -45,7 +39,7 @@ export default async () => {
     primaryFormLabel: primaryForm?.label,
     additionalQuestionsAnswers,
     location: location ? JSON.parse(location) : undefined,
-  }) as SummaryData
+  })
 
   return <Summary data={data} />
 }

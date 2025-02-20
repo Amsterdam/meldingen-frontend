@@ -6,8 +6,8 @@ import { useActionState } from 'react'
 
 import { BackLink } from '../_components/BackLink'
 
+import type { SummaryData } from './_utils/getSummaryData'
 import { postSummaryForm } from './actions'
-import type { SummaryData } from './page'
 
 type Props = {
   data: SummaryData

@@ -12,6 +12,12 @@ type Props = {
   }
 }
 
+export type SummaryData = {
+  key: string
+  term: string
+  description: string[]
+}[]
+
 export const getSummaryData = ({ melding, primaryFormLabel, additionalQuestionsAnswers, location }: Props) => {
   const primaryFormSummary = {
     key: 'primary',
@@ -27,13 +33,13 @@ export const getSummaryData = ({ melding, primaryFormLabel, additionalQuestionsA
 
   const locationSummary = {
     key: 'location',
-    term: 'Waar is het?', // TODO: use i18n slug here
+    term: 'Waar is het?',
     description: [location.name],
   }
 
   const contactSummary = {
     key: 'contact',
-    term: 'Wat zijn uw contactgegevens?', // TODO: use i18n slug here
+    term: 'Wat zijn uw contactgegevens?',
     description: [melding.email, melding.phone],
   }
 
@@ -42,5 +48,5 @@ export const getSummaryData = ({ melding, primaryFormLabel, additionalQuestionsA
     ...additionalQuestionsSummary,
     location && locationSummary,
     (melding.email || melding.phone) && contactSummary,
-  ].filter((item) => item) // Filter out undefined items
+  ].filter((item) => item) as SummaryData // Filter out undefined items
 }
