@@ -46,5 +46,7 @@ describe('Page', () => {
     const PageComponent = await Page()
 
     render(PageComponent)
+
+    expect(PageComponent).toBeUndefined()
   })
 })
