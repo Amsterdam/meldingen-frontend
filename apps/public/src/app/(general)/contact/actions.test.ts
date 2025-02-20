@@ -19,7 +19,15 @@ vi.mock('next/headers', () => ({
 
 describe('postContactForm', () => {
   const mockCookies = {
-    get: vi.fn(),
+    get: vi.fn().mockImplementation((name) => {
+      if (name === 'id') {
+        return { value: '21' }
+      }
+      if (name === 'token') {
+        return { value: 'z123890' }
+      }
+      return undefined
+    }),
   }
 
   beforeEach(() => {

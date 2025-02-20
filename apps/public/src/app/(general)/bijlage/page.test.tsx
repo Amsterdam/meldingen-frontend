@@ -23,9 +23,15 @@ describe('Page', () => {
   })
 
   it('renders the Bijlage component', async () => {
-    mockCookies.get
-      .mockImplementationOnce(() => ({ name: 'id', value: '1234' }))
-      .mockImplementationOnce(() => ({ name: 'token', value: 'mock-token' }))
+    mockCookies.get.mockImplementation((name) => {
+      if (name === 'id') {
+        return { value: '21' }
+      }
+      if (name === 'token') {
+        return { value: 'z123890' }
+      }
+      return undefined
+    })
 
     const PageComponent = await Page()
 
