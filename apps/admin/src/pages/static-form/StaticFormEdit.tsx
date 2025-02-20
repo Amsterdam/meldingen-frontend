@@ -1,10 +1,12 @@
 import type { FormType } from '@formio/react'
 import { FormTextAreaComponentInputSchema } from 'libs/api-client/src/schemas.gen'
-import { Edit, SaveButton, SimpleForm, TextInput, Toolbar, useEditContext } from 'react-admin'
+import { Edit, minLength, required, SaveButton, SimpleForm, TextInput, Toolbar, useEditContext } from 'react-admin'
 import filter from 'uber-json-schema-filter'
 
 const Form = () => {
   const { record } = useEditContext()
+
+  const validateLabel = [required(), minLength(3)]
 
   return (
     <SimpleForm
@@ -21,16 +23,16 @@ const Form = () => {
           <strong>E-mail</strong>
         </span>
       )}
-      <TextInput source="components[0].label" />
-      <TextInput multiline source="components[0].description" />
+      <TextInput source="components[0].label" validate={validateLabel} />
+      <TextInput multiline source="components[0].description" parse={(value) => value ?? ''} />
 
       {record.type === 'contact' && (
         <>
           <span>
             <strong>Telefoonnummer</strong>
           </span>
-          <TextInput source="components[1].label" />
-          <TextInput multiline source="components[1].description" />
+          <TextInput source="components[1].label" validate={validateLabel} />
+          <TextInput multiline source="components[1].description" parse={(value) => value ?? ''} />
         </>
       )}
     </SimpleForm>
