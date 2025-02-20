@@ -6,7 +6,7 @@ type Props = {
   melding: MeldingOutput
   primaryFormLabel: string
   additionalQuestionsAnswers: GetMeldingByMeldingIdAnswersResponse
-  location: {
+  location?: {
     name: string
     coordinates: Coordinates
   }
@@ -28,7 +28,7 @@ export const getSummaryData = ({ melding, primaryFormLabel, additionalQuestionsA
   const locationSummary = {
     key: 'location',
     term: 'Waar is het?',
-    description: [location?.name],
+    description: [location?.name].filter((item) => item !== undefined), // Filter out undefined items,
   }
 
   const contactSummary = {
