@@ -26,7 +26,7 @@ export const Summary = ({ data }: Props) => {
         </BackLink>
         <Heading className="ams-mb--sm">Samenvatting</Heading>
 
-        <Heading level={2} className="ams-mb--xs">
+        <Heading level={2} size="level-4" className="ams-mb--xs">
           Versturen
         </Heading>
         <Paragraph className="ams-mb--sm">Controleer uw gegevens en verstuur uw melding.</Paragraph>
