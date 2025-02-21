@@ -1,15 +1,27 @@
 import type { AttachmentOutput } from '@meldingen/api-client'
-import type { InputHTMLAttributes, ChangeEvent } from 'react'
+import type { InputHTMLAttributes, ChangeEvent, Dispatch, SetStateAction } from 'react'
 
+import { FileList } from './FileList'
 import styles from './FileUpload.module.css'
 
 type Props = {
   id: string
   handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void
   uploadedFiles: AttachmentOutput[]
+  meldingId: number
+  token: string
+  setUploadedFiles: Dispatch<SetStateAction<AttachmentOutput[]>>
 } & InputHTMLAttributes<HTMLInputElement>
 
-export const FileUpload = ({ id, handleOnChange, uploadedFiles, ...restProps }: Props) => (
+export const FileUpload = ({
+  id,
+  handleOnChange,
+  uploadedFiles,
+  meldingId,
+  token,
+  setUploadedFiles,
+  ...restProps
+}: Props) => (
   <>
     <div className={styles.wrapper}>
       <input
@@ -27,14 +39,6 @@ export const FileUpload = ({ id, handleOnChange, uploadedFiles, ...restProps }: 
         <span className={styles['drop-area-text']}>Of sleep de bestanden in dit vak.</span>
       </label>
     </div>
-    {uploadedFiles.length > 0 && (
-      <div className="ams-mb--sm">
-        {uploadedFiles.map((file) => (
-          <div key={file.id}>
-            <span>{file.original_filename}</span>
-          </div>
-        ))}
-      </div>
-    )}
+    <FileList uploadedFiles={uploadedFiles} meldingId={meldingId} token={token} setUploadedFiles={setUploadedFiles} />
   </>
 )

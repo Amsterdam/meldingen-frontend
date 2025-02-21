@@ -69,6 +69,9 @@ export const Bijlage = ({ meldingId, token }: Props) => {
               handleOnChange={handleOnChange}
               aria-describedby="file-upload-description"
               uploadedFiles={uploadedFiles}
+              meldingId={meldingId}
+              token={token}
+              setUploadedFiles={setUploadedFiles}
             />
           </Field>
           <SubmitButton>Volgende vraag</SubmitButton>

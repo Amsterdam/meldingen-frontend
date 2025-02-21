@@ -3,8 +3,11 @@
   line-height: var(--ams-text-level-5-line-height);
   outline-offset: var(--ams-focus-outline-offset);
   position: relative;
+  margin-block-end: var(--ams-mb--xs);
+  width: 100%;
 
   @media screen and (min-width: 36rem) {
+    box-sizing: border-box;
     border: var(--ams-border-width-sm) dashed var(--ams-color-neutral-grey3);
     outline-offset: calc(var(--ams-focus-outline-offset) * 2); /* Increase outline offset to account for border width */
     padding-block: var(--ams-space-md);
@@ -31,6 +34,7 @@
 .label {
   align-items: baseline;
   display: flex;
+  margin-block-end: var(--ams-mb--sm);
 }
 
 .wrapper:has(:focus-visible) {
