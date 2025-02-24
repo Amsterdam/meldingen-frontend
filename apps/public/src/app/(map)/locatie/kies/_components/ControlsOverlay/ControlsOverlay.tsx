@@ -39,7 +39,7 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
   const onError = () => {
     // TODO: these texts should come from the BE, or a config / env vars
     setNotification({
-      heading: 'meldingen.amsterdam.nl heeft geen toestemming om uw locatie te gebruiken.',
+      heading: 'Geen toestemming om uw locatie te gebruiken',
       description: 'Dit kunt u wijzigen in de voorkeuren of instellingen van uw browser of systeem.',
     })
   }

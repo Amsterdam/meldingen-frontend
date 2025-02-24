@@ -27,7 +27,7 @@ describe('postContactForm', () => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  it('should post contact details to backend and redirect to /bedankt page', async () => {
+  it('should post contact details to backend and redirect to /samenvatting page', async () => {
     mockCookies.get.mockImplementation((name) => {
       if (name === 'id') {
         return { value: '21' }
@@ -53,7 +53,7 @@ describe('postContactForm', () => {
       token: 'z123890',
     })
 
-    expect(redirect).toHaveBeenCalledWith('/bedankt')
+    expect(redirect).toHaveBeenCalledWith('/samenvatting')
   })
 
   it('should not do a query when email and phone are left empty', async () => {
@@ -73,7 +73,7 @@ describe('postContactForm', () => {
 
     expect(postMeldingByMeldingIdContact).not.toHaveBeenCalled()
 
-    expect(redirect).toHaveBeenCalledWith('/bedankt')
+    expect(redirect).toHaveBeenCalledWith('/samenvatting')
   })
 
   it('should return undefined when there is no meldingId or token', async () => {

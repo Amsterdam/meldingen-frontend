@@ -1,7 +1,9 @@
 import { http, HttpResponse } from 'msw'
 
 import { ENDPOINTS } from './endpoints'
+import mockAdditionalQuestionsAnswerData from './mockAdditionalQuestionsAnswerData.json'
 import mockFormData from './mockFormData.json'
+import mockMeldingData from './mockMeldingData.json'
 
 export const handlers = [
   /** GET */
@@ -71,7 +73,11 @@ export const handlers = [
     ]),
   ),
 
-  http.get(ENDPOINTS.STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(mockFormData)),
+  http.get(ENDPOINTS.STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(mockFormData.components[0])),
+
+  http.get(ENDPOINTS.MELDING_BY_ID, () => HttpResponse.json(mockMeldingData)),
+
+  http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID, () => HttpResponse.json(mockAdditionalQuestionsAnswerData)),
 
   /** POST */
   http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () =>
