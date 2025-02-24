@@ -8,7 +8,7 @@ import type { UploadedFiles } from '../Bijlage'
 
 import styles from './FileList.module.css'
 
-type Props = {
+export type Props = {
   meldingId: number
   setUploadedFiles: Dispatch<SetStateAction<UploadedFiles[]>>
   token: string

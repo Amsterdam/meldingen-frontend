@@ -66,4 +66,24 @@ describe('Bijlage', () => {
 
     expect(errorMessage).toBeInTheDocument()
   })
+
+  it('should throw an error when attempting to upload too many files', async () => {
+    const user = userEvent.setup()
+
+    render(<Bijlage {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
+
+    const file = new File(['dummy content'], 'example.png', { type: 'image/png' })
+    const file2 = new File(['dummy content two'], 'example2.png', { type: 'image/png' })
+    const file3 = new File(['dummy content three'], 'example3.png', { type: 'image/png' })
+    const file4 = new File(['dummy content four'], 'example4.png', { type: 'image/png' })
+
+    await user.upload(fileInput, [file, file2, file3, file4])
+
+    const errorMessage = screen.getByText('Je kunt maximaal 3 bestanden uploaden.')
+
+    expect(fileInput.files).toHaveLength(4)
+    expect(errorMessage).toBeInTheDocument()
+  })
 })

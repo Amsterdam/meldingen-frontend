@@ -36,7 +36,6 @@ export const Bijlage = ({ meldingId, token }: Props) => {
 
     if (files.length > MAX_FILES) {
       setErrorMessage(`Je kunt maximaal ${MAX_FILES} bestanden uploaden.`)
-
       return
     }
 
