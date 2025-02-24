@@ -1,7 +1,7 @@
 'use client'
 
-import { Column, Field, Heading, Label, Paragraph, UnorderedList } from '@amsterdam/design-system-react'
-import type { AttachmentOutput } from '@meldingen/api-client'
+import { Column, ErrorMessage, Field, Heading, Label, Paragraph, UnorderedList } from '@amsterdam/design-system-react'
+import type { ApiError, AttachmentOutput } from '@meldingen/api-client'
 import { Grid, SubmitButton } from '@meldingen/ui'
 import { useState } from 'react'
 import type { ChangeEvent } from 'react'
@@ -18,6 +18,8 @@ type Props = {
   token: string
 }
 
+const MAX_FILES = 3
+
 export type UploadedFiles = AttachmentOutput & { image: string }
 
 export const Bijlage = ({ meldingId, token }: Props) => {
@@ -25,9 +27,17 @@ export const Bijlage = ({ meldingId, token }: Props) => {
   const [errorMessage, setErrorMessage] = useState<string>()
 
   const handleOnChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    setErrorMessage(undefined)
+
     if (!event.currentTarget.files) return
 
     const files = Array.from(event.currentTarget.files)
+
+    if (files.length > MAX_FILES) {
+      setErrorMessage(`Je kunt maximaal ${MAX_FILES} bestanden uploaden.`)
+
+      return
+    }
 
     try {
       const result = await Promise.all(
@@ -45,7 +55,7 @@ export const Bijlage = ({ meldingId, token }: Props) => {
       )
       setUploadedFiles((currentFiles) => [...currentFiles, ...result])
     } catch (error) {
-      setErrorMessage((error as Error).message)
+      setErrorMessage((error as ApiError).message)
     }
   }
 
@@ -54,9 +64,8 @@ export const Bijlage = ({ meldingId, token }: Props) => {
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
         <BackLink href="/locatie">Vorige vraag</BackLink>
         <Heading className="ams-mb--sm">Foto’s</Heading>
-        {errorMessage && <Paragraph>{errorMessage}</Paragraph>}
         <form action={redirectToNextPage}>
-          <Field>
+          <Field invalid={Boolean(errorMessage)} className="ams-mb--sm">
             <Label htmlFor="file-upload" optional>
               Heeft u een foto om toe te voegen?
             </Label>
@@ -70,11 +79,13 @@ export const Bijlage = ({ meldingId, token }: Props) => {
                 <UnorderedList.Item>Een bestand mag maximaal 20 MB groot zijn.</UnorderedList.Item>
               </UnorderedList>
             </Column>
+            {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
             <FileUpload
               aria-describedby="file-upload-description"
               handleOnChange={handleOnChange}
               id="file-upload"
               meldingId={meldingId}
+              setErrorMessage={setErrorMessage}
               setUploadedFiles={setUploadedFiles}
               token={token}
               uploadedFiles={uploadedFiles}

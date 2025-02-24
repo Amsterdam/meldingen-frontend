@@ -10,6 +10,7 @@ type Props = {
   handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void
   uploadedFiles: UploadedFiles[]
   meldingId: number
+  setErrorMessage: (errorMessage?: string) => void
   token: string
   setUploadedFiles: Dispatch<SetStateAction<UploadedFiles[]>>
 } & InputHTMLAttributes<HTMLInputElement>
@@ -21,12 +22,14 @@ export const FileUpload = ({
   meldingId,
   token,
   setUploadedFiles,
+  setErrorMessage,
   ...restProps
 }: Props) => (
   <>
     <div className={styles.wrapper}>
       <input
         {...restProps}
+        aria-describedby="error-message"
         className={styles.input}
         id={id}
         multiple
@@ -40,6 +43,15 @@ export const FileUpload = ({
         <span className={styles['drop-area-text']}>Of sleep de bestanden in dit vak.</span>
       </label>
     </div>
-    <FileList uploadedFiles={uploadedFiles} meldingId={meldingId} token={token} setUploadedFiles={setUploadedFiles} />
+
+    {uploadedFiles.length > 0 && (
+      <FileList
+        meldingId={meldingId}
+        setErrorMessage={setErrorMessage}
+        setUploadedFiles={setUploadedFiles}
+        token={token}
+        uploadedFiles={uploadedFiles}
+      />
+    )}
   </>
 )

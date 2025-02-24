@@ -1,6 +1,7 @@
 import { Button, Grid, Image, Paragraph } from '@amsterdam/design-system-react'
 import type { Dispatch, SetStateAction } from 'react'
 
+import type { ApiError } from 'apps/public/src/apiClientProxy'
 import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from 'apps/public/src/apiClientProxy'
 
 import type { UploadedFiles } from '../Bijlage'
@@ -12,10 +13,13 @@ type Props = {
   setUploadedFiles: Dispatch<SetStateAction<UploadedFiles[]>>
   token: string
   uploadedFiles: UploadedFiles[]
+  setErrorMessage: (errorMessage?: string) => void
 }
 
-export const FileList = ({ uploadedFiles, meldingId, token, setUploadedFiles }: Props) => {
-  const onClick = async (attachmentId: number) => {
+export const FileList = ({ uploadedFiles, meldingId, token, setUploadedFiles, setErrorMessage }: Props) => {
+  const handleOnClick = async (attachmentId: number) => {
+    setErrorMessage(undefined)
+
     try {
       await deleteMeldingByMeldingIdAttachmentByAttachmentId({
         meldingId,
@@ -24,18 +28,18 @@ export const FileList = ({ uploadedFiles, meldingId, token, setUploadedFiles }: 
       })
       setUploadedFiles((files) => files.filter((file) => file.id !== attachmentId))
     } catch (error) {
-      console.error('error', error)
+      setErrorMessage((error as ApiError).message)
     }
   }
 
   return (
     <Grid className={`${styles.grid} ams-mb--sm`}>
       {uploadedFiles.map((file) => (
-        <Grid.Cell span={6}>
+        <Grid.Cell span={6} key={file.id}>
           <Image alt="" src={file.image} />
-          <div key={file.id} className={styles.description}>
+          <div className={styles.description}>
             <Paragraph className={styles.paragraph}>{file.original_filename}</Paragraph>
-            <Button variant="tertiary" onClick={() => onClick(file.id)} className={styles.button}>
+            <Button variant="tertiary" onClick={() => handleOnClick(file.id)} className={styles.button}>
               Verwijder foto
             </Button>
           </div>
