@@ -33,7 +33,6 @@
 .label {
   align-items: baseline;
   display: flex;
-  margin-block-end: var(ams-space-md);
 }
 
 .wrapper:has(:focus-visible) {
