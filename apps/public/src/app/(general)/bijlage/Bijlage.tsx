@@ -10,6 +10,7 @@ import { postMeldingByMeldingIdAttachment } from 'apps/public/src/apiClientProxy
 
 import { BackLink } from '../_components/BackLink'
 
+import { FileList } from './_components/FileList'
 import { FileUpload } from './_components/FileUpload'
 import { redirectToNextPage } from './actions'
 
@@ -69,6 +70,7 @@ export const Bijlage = ({ meldingId, token }: Props) => {
             <Label htmlFor="file-upload" optional>
               Heeft u een foto om toe te voegen?
             </Label>
+
             <Column id="file-upload-description" className="ams-mb--sm">
               <Paragraph>
                 Voeg een foto toe om de situatie te verduidelijken. Verwijder alle persoonsgegevens van u en derden.
@@ -79,17 +81,20 @@ export const Bijlage = ({ meldingId, token }: Props) => {
                 <UnorderedList.Item>Een bestand mag maximaal 20 MB groot zijn.</UnorderedList.Item>
               </UnorderedList>
             </Column>
+
             {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
-            <FileUpload
-              aria-describedby="file-upload-description"
-              handleOnChange={handleOnChange}
-              id="file-upload"
-              meldingId={meldingId}
-              setErrorMessage={setErrorMessage}
-              setUploadedFiles={setUploadedFiles}
-              token={token}
-              uploadedFiles={uploadedFiles}
-            />
+
+            <FileUpload handleOnChange={handleOnChange} id="file-upload" />
+
+            {uploadedFiles.length > 0 && (
+              <FileList
+                meldingId={meldingId}
+                setErrorMessage={setErrorMessage}
+                setUploadedFiles={setUploadedFiles}
+                token={token}
+                uploadedFiles={uploadedFiles}
+              />
+            )}
           </Field>
           <SubmitButton>Volgende vraag</SubmitButton>
         </form>
