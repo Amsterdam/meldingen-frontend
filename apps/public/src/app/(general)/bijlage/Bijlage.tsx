@@ -10,16 +10,16 @@ import { postMeldingByMeldingIdAttachment } from 'apps/public/src/apiClientProxy
 
 import { BackLink } from '../_components/BackLink'
 
+import { FileInput } from './_components/FileInput'
 import { FileList } from './_components/FileList'
-import { FileUpload } from './_components/FileUpload'
 import { redirectToNextPage } from './actions'
+
+const MAX_FILES = 3
 
 type Props = {
   meldingId: number
   token: string
 }
-
-const MAX_FILES = 3
 
 export type UploadedFiles = AttachmentOutput & { image: string }
 
@@ -84,7 +84,7 @@ export const Bijlage = ({ meldingId, token }: Props) => {
 
             {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
 
-            <FileUpload handleOnChange={handleOnChange} id="file-upload" />
+            <FileInput handleOnChange={handleOnChange} id="file-upload" />
 
             {uploadedFiles.length > 0 && (
               <FileList

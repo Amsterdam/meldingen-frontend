@@ -1,16 +1,16 @@
 import type { ChangeEvent } from 'react'
 
-import styles from './FileUpload.module.css'
+import styles from './FileInput.module.css'
 
 type Props = {
   id: string
   handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
-export const FileUpload = ({ id, handleOnChange }: Props) => (
+export const FileInput = ({ id, handleOnChange }: Props) => (
   <div className={styles.wrapper}>
     <input
-      aria-describedby="file-upload-description error-message"
+      aria-describedby="file-input-description error-message"
       className={styles.input}
       id={id}
       multiple
