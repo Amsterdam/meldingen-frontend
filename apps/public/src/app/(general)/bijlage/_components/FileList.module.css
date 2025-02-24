@@ -1,20 +1,19 @@
-.wrapper {
-  width: 100%;
+.grid {
   padding-inline: 0;
+  width: 100%;
 }
 
-.item {
+.description {
   display: flex;
   flex-direction: column;
-
   justify-content: space-between;
 }
 
-.name {
-  padding-inline: var(--ams-space-md);
-  white-space: nowrap;
+.paragraph {
   overflow: hidden;
+  padding-inline: var(--ams-space-md);
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .button {

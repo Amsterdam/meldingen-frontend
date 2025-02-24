@@ -71,13 +71,13 @@ export const Bijlage = ({ meldingId, token }: Props) => {
               </UnorderedList>
             </Column>
             <FileUpload
-              id="file-upload"
-              handleOnChange={handleOnChange}
               aria-describedby="file-upload-description"
-              uploadedFiles={uploadedFiles}
+              handleOnChange={handleOnChange}
+              id="file-upload"
               meldingId={meldingId}
-              token={token}
               setUploadedFiles={setUploadedFiles}
+              token={token}
+              uploadedFiles={uploadedFiles}
             />
           </Field>
           <SubmitButton>Volgende vraag</SubmitButton>

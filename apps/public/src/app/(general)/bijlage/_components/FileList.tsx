@@ -8,10 +8,10 @@ import type { UploadedFiles } from '../Bijlage'
 import styles from './FileList.module.css'
 
 type Props = {
-  uploadedFiles: UploadedFiles[]
   meldingId: number
-  token: string
   setUploadedFiles: Dispatch<SetStateAction<UploadedFiles[]>>
+  token: string
+  uploadedFiles: UploadedFiles[]
 }
 
 export const FileList = ({ uploadedFiles, meldingId, token, setUploadedFiles }: Props) => {
@@ -29,12 +29,12 @@ export const FileList = ({ uploadedFiles, meldingId, token, setUploadedFiles }: 
   }
 
   return (
-    <Grid className={`${styles.wrapper} ams-mb--sm`}>
+    <Grid className={`${styles.grid} ams-mb--sm`}>
       {uploadedFiles.map((file) => (
         <Grid.Cell span={6}>
           <Image alt="" src={file.image} />
-          <div key={file.id} className={styles.item}>
-            <Paragraph className={styles.name}>{file.original_filename}</Paragraph>
+          <div key={file.id} className={styles.description}>
+            <Paragraph className={styles.paragraph}>{file.original_filename}</Paragraph>
             <Button variant="tertiary" onClick={() => onClick(file.id)} className={styles.button}>
               Verwijder foto
             </Button>
