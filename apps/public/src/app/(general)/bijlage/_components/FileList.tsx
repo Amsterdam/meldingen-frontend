@@ -1,16 +1,17 @@
-import { Button } from '@amsterdam/design-system-react'
+import { Button, Grid, Image, Paragraph } from '@amsterdam/design-system-react'
 import type { Dispatch, SetStateAction } from 'react'
 
-import type { AttachmentOutput } from 'apps/public/src/apiClientProxy'
 import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from 'apps/public/src/apiClientProxy'
+
+import type { UploadedFiles } from '../Bijlage'
 
 import styles from './FileList.module.css'
 
 type Props = {
-  uploadedFiles: AttachmentOutput[]
+  uploadedFiles: UploadedFiles[]
   meldingId: number
   token: string
-  setUploadedFiles: Dispatch<SetStateAction<AttachmentOutput[]>>
+  setUploadedFiles: Dispatch<SetStateAction<UploadedFiles[]>>
 }
 
 export const FileList = ({ uploadedFiles, meldingId, token, setUploadedFiles }: Props) => {
@@ -28,15 +29,18 @@ export const FileList = ({ uploadedFiles, meldingId, token, setUploadedFiles }: 
   }
 
   return (
-    <div className={`${styles.wrapper} ams-mb--sm`}>
+    <Grid className={`${styles.wrapper} ams-mb--sm`}>
       {uploadedFiles.map((file) => (
-        <div key={file.id} className={styles.item}>
-          <span className={styles.name}>{file.original_filename}</span>
-          <Button variant="tertiary" onClick={() => onClick(file.id)}>
-            Verwijderen
-          </Button>
-        </div>
+        <Grid.Cell span={6}>
+          <Image alt="" src={file.image} />
+          <div key={file.id} className={styles.item}>
+            <Paragraph className={styles.name}>{file.original_filename}</Paragraph>
+            <Button variant="tertiary" onClick={() => onClick(file.id)} className={styles.button}>
+              Verwijder foto
+            </Button>
+          </div>
+        </Grid.Cell>
       ))}
-    </div>
+    </Grid>
   )
 }

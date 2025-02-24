@@ -18,8 +18,10 @@ type Props = {
   token: string
 }
 
+export type UploadedFiles = AttachmentOutput & { image: string }
+
 export const Bijlage = ({ meldingId, token }: Props) => {
-  const [uploadedFiles, setUploadedFiles] = useState<AttachmentOutput[]>([])
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
 
   const handleOnChange = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -29,13 +31,17 @@ export const Bijlage = ({ meldingId, token }: Props) => {
 
     try {
       const result = await Promise.all(
-        files.map((file) =>
-          postMeldingByMeldingIdAttachment({
+        files.map(async (file) => {
+          const uploadedFile = await postMeldingByMeldingIdAttachment({
             formData: { file },
             meldingId,
             token,
-          }),
-        ),
+          })
+
+          const image = URL.createObjectURL(file)
+
+          return { ...uploadedFile, image }
+        }),
       )
       setUploadedFiles((currentFiles) => [...currentFiles, ...result])
     } catch (error) {

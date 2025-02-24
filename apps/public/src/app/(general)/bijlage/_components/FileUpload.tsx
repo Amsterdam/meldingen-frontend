@@ -1,5 +1,6 @@
-import type { AttachmentOutput } from '@meldingen/api-client'
 import type { InputHTMLAttributes, ChangeEvent, Dispatch, SetStateAction } from 'react'
+
+import type { UploadedFiles } from '../Bijlage'
 
 import { FileList } from './FileList'
 import styles from './FileUpload.module.css'
@@ -7,10 +8,10 @@ import styles from './FileUpload.module.css'
 type Props = {
   id: string
   handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void
-  uploadedFiles: AttachmentOutput[]
+  uploadedFiles: UploadedFiles[]
   meldingId: number
   token: string
-  setUploadedFiles: Dispatch<SetStateAction<AttachmentOutput[]>>
+  setUploadedFiles: Dispatch<SetStateAction<UploadedFiles[]>>
 } & InputHTMLAttributes<HTMLInputElement>
 
 export const FileUpload = ({

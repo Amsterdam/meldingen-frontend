@@ -1,13 +1,22 @@
 .wrapper {
   width: 100%;
+  padding-inline: 0;
 }
 
 .item {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+
   justify-content: space-between;
 }
 
 .name {
   padding-inline: var(--ams-space-md);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.button {
+  width: fit-content;
 }
