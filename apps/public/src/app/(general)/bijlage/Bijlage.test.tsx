@@ -17,6 +17,10 @@ const defaultProps = {
 }
 
 describe('Bijlage', () => {
+  beforeAll(() => {
+    global.URL.createObjectURL = vi.fn(() => 'mocked-url')
+  })
+
   it('should render correctly', () => {
     render(<Bijlage {...defaultProps} />)
 
