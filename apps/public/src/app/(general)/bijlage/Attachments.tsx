@@ -23,7 +23,7 @@ type Props = {
 
 export type UploadedFiles = AttachmentOutput & { image: string }
 
-export const Bijlage = ({ meldingId, token }: Props) => {
+export const Attachments = ({ meldingId, token }: Props) => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
 

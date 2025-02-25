@@ -5,7 +5,7 @@ import { http, HttpResponse } from 'msw'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
 import { server } from 'apps/public/src/mocks/node'
 
-import { Bijlage } from './Bijlage'
+import { Attachments } from './Attachments'
 
 vi.mock('./actions', () => ({
   redirectToNextPage: vi.fn(),
@@ -16,13 +16,13 @@ const defaultProps = {
   token: 'mock-token',
 }
 
-describe('Bijlage', () => {
+describe('Attachments', () => {
   beforeAll(() => {
     global.URL.createObjectURL = vi.fn(() => 'mocked-url')
   })
 
   it('should render correctly', () => {
-    render(<Bijlage {...defaultProps} />)
+    render(<Attachments {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'Vorige vraag' })
     const header = screen.getByRole('heading', { name: 'Foto’s' })
@@ -36,7 +36,7 @@ describe('Bijlage', () => {
   it('should show file names when a file is uploaded', async () => {
     const user = userEvent.setup()
 
-    render(<Bijlage {...defaultProps} />)
+    render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
 
@@ -54,7 +54,7 @@ describe('Bijlage', () => {
 
     const user = userEvent.setup()
 
-    render(<Bijlage {...defaultProps} />)
+    render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
 
@@ -70,7 +70,7 @@ describe('Bijlage', () => {
   it('should throw an error when attempting to upload too many files', async () => {
     const user = userEvent.setup()
 
-    render(<Bijlage {...defaultProps} />)
+    render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
 

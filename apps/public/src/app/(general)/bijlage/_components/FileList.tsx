@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from 'react'
 import type { ApiError } from 'apps/public/src/apiClientProxy'
 import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from 'apps/public/src/apiClientProxy'
 
-import type { UploadedFiles } from '../Bijlage'
+import type { UploadedFiles } from '../Attachments'
 
 import styles from './FileList.module.css'
 
