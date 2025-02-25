@@ -1,18 +1,30 @@
 'use client'
 
-import { Column, ErrorMessage, Field, Heading, Label, Paragraph, UnorderedList } from '@amsterdam/design-system-react'
-import type { ApiError, AttachmentOutput } from '@meldingen/api-client'
+import {
+  Column,
+  ErrorMessage,
+  Field,
+  FileList,
+  Heading,
+  Label,
+  Paragraph,
+  UnorderedList,
+} from '@amsterdam/design-system-react'
+import type { ApiError } from '@meldingen/api-client'
 import { Grid, SubmitButton } from '@meldingen/ui'
 import { useState } from 'react'
 import type { ChangeEvent } from 'react'
 
-import { postMeldingByMeldingIdAttachment } from 'apps/public/src/apiClientProxy'
+import {
+  deleteMeldingByMeldingIdAttachmentByAttachmentId,
+  postMeldingByMeldingIdAttachment,
+} from 'apps/public/src/apiClientProxy'
 
 import { BackLink } from '../_components/BackLink'
 
 import { FileInput } from './_components/FileInput'
-import { FileList } from './_components/FileList'
 import { redirectToNextPage } from './actions'
+import styles from './Attachments.module.css'
 
 const MAX_FILES = 3
 
@@ -21,7 +33,7 @@ type Props = {
   token: string
 }
 
-export type UploadedFiles = AttachmentOutput & { image: string }
+export type UploadedFiles = { file: File; id: number }
 
 export const Attachments = ({ meldingId, token }: Props) => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([])
@@ -48,12 +60,25 @@ export const Attachments = ({ meldingId, token }: Props) => {
             token,
           })
 
-          const image = URL.createObjectURL(file)
-
-          return { ...uploadedFile, image }
+          return { file, id: uploadedFile.id }
         }),
       )
       setUploadedFiles((currentFiles) => [...currentFiles, ...result])
+    } catch (error) {
+      setErrorMessage((error as ApiError).message)
+    }
+  }
+
+  const removeFile = async (attachmentId: number) => {
+    setErrorMessage(undefined)
+
+    try {
+      await deleteMeldingByMeldingIdAttachmentByAttachmentId({
+        meldingId,
+        attachmentId,
+        token,
+      })
+      setUploadedFiles((files) => files.filter((file) => file.id !== attachmentId))
     } catch (error) {
       setErrorMessage((error as ApiError).message)
     }
@@ -86,13 +111,15 @@ export const Attachments = ({ meldingId, token }: Props) => {
             <FileInput handleOnChange={handleOnChange} id="file-upload" />
 
             {uploadedFiles.length > 0 && (
-              <FileList
-                meldingId={meldingId}
-                setErrorMessage={setErrorMessage}
-                setUploadedFiles={setUploadedFiles}
-                token={token}
-                uploadedFiles={uploadedFiles}
-              />
+              <FileList className={styles.fileList}>
+                {Array.from(uploadedFiles).map((attachment) => (
+                  <FileList.Item
+                    key={attachment.id}
+                    file={attachment.file}
+                    onDelete={() => removeFile(attachment.id)}
+                  />
+                ))}
+              </FileList>
             )}
           </Field>
           <SubmitButton>Volgende vraag</SubmitButton>

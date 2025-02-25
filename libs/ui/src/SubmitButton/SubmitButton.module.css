@@ -1,7 +1,7 @@
 .button {
   width: 100%;
 
-  @media screen and (min-width: 26rem) {
+  @media screen and (min-width: 36rem) {
     width: fit-content;
   }
 }
