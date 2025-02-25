@@ -2,15 +2,15 @@ import { render, screen } from '@testing-library/react'
 import { cookies } from 'next/headers'
 import type { Mock } from 'vitest'
 
-import { Locatie } from './Locatie'
+import { Location } from './Location'
 import Page from './page'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
 }))
 
-vi.mock('./Locatie', () => ({
-  Locatie: vi.fn(() => <div>Locatie Component</div>),
+vi.mock('./Location', () => ({
+  Location: vi.fn(() => <div>Location Component</div>),
 }))
 
 describe('Page', () => {
@@ -23,18 +23,18 @@ describe('Page', () => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  it('renders Locatie component with default props when cookies are not set', async () => {
+  it('renders Location component with default props when cookies are not set', async () => {
     mockCookies.get.mockReturnValue(undefined)
 
     const PageComponent = await Page()
 
     render(PageComponent)
 
-    expect(screen.getByText('Locatie Component')).toBeInTheDocument()
-    expect(Locatie).toHaveBeenCalledWith({ prevPage: '/', locationData: undefined }, {})
+    expect(screen.getByText('Location Component')).toBeInTheDocument()
+    expect(Location).toHaveBeenCalledWith({ prevPage: '/', locationData: undefined }, {})
   })
 
-  it('renders Locatie component with props from cookies', async () => {
+  it('renders Location component with props from cookies', async () => {
     mockCookies.get.mockImplementation((name) => {
       if (name === 'lastPanelPath') {
         return { value: '/previous' }
@@ -49,7 +49,10 @@ describe('Page', () => {
 
     render(PageComponent)
 
-    expect(screen.getByText('Locatie Component')).toBeInTheDocument()
-    expect(Locatie).toHaveBeenCalledWith({ prevPage: '/previous', locationData: { lat: 52.370216, lng: 4.895168 } }, {})
+    expect(screen.getByText('Location Component')).toBeInTheDocument()
+    expect(Location).toHaveBeenCalledWith(
+      { prevPage: '/previous', locationData: { lat: 52.370216, lng: 4.895168 } },
+      {},
+    )
   })
 })
