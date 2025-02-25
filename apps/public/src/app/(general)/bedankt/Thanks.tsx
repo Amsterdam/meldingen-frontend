@@ -8,7 +8,7 @@ type Props = {
   meldingId: string
 }
 
-export const Bedankt = ({ meldingId }: Props) => (
+export const Thanks = ({ meldingId }: Props) => (
   <Grid paddingBottom="large" paddingTop="medium">
     <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
       <Heading className="ams-mb--xs">Bedankt</Heading>
