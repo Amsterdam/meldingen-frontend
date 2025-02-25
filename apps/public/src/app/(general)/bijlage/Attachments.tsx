@@ -46,7 +46,7 @@ export const Attachments = ({ meldingId, token }: Props) => {
 
     const files = Array.from(event.currentTarget.files)
 
-    if (files.length > MAX_FILES) {
+    if (files.length + uploadedFiles.length > MAX_FILES) {
       setErrorMessage(`Je kunt maximaal ${MAX_FILES} bestanden uploaden.`)
       return
     }

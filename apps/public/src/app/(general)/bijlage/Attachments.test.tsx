@@ -49,7 +49,56 @@ describe('Attachments', () => {
     expect(fileName1).toBeInTheDocument()
   })
 
-  it('should show an error', async () => {
+  it('should delete a file with the delete button', async () => {
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
+
+    const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
+
+    await user.upload(fileInput, [file])
+
+    const fileName1 = screen.getByText('Screenshot 2025-02-10 at 08.29.41.png')
+
+    expect(fileName1).toBeInTheDocument()
+
+    const deleteButtons = screen.getAllByRole('button')
+
+    await user.click(deleteButtons[0])
+
+    const file1SecondRender = screen.queryByText('Screenshot 2025-02-10 at 08.29.41.png')
+
+    expect(file1SecondRender).not.toBeInTheDocument()
+  })
+
+  it('should throw an error when delete request fails', async () => {
+    server.use(http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => HttpResponse.error()))
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
+
+    const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
+
+    await user.upload(fileInput, [file])
+
+    const fileName1 = screen.getByText('Screenshot 2025-02-10 at 08.29.41.png')
+
+    expect(fileName1).toBeInTheDocument()
+
+    const deleteButtons = screen.getAllByRole('button')
+
+    await user.click(deleteButtons[0])
+
+    const file1SecondRender = screen.queryByText('Screenshot 2025-02-10 at 08.29.41.png')
+
+    expect(file1SecondRender).toBeInTheDocument()
+  })
+
+  it('should show an error when post fails', async () => {
     server.use(http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () => HttpResponse.error()))
 
     const user = userEvent.setup()
