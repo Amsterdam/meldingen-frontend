@@ -10,6 +10,7 @@ type Props = {
 export const FileInput = ({ id, handleOnChange }: Props) => (
   <div className={styles.wrapper}>
     <input
+      accept={`${['image/jpeg', 'image/jpg', 'image/png', 'image/gif'].join(',')},android/force-camera-workaround`}
       aria-describedby="file-input-description error-message"
       className={styles.input}
       id={id}

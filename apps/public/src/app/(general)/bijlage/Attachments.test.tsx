@@ -130,7 +130,7 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [file, file2, file3, file4])
 
-    const errorMessage = screen.getByText('Je kunt maximaal 3 bestanden uploaden.')
+    const errorMessage = screen.getByText('U kunt maximaal 3 bestanden uploaden.')
 
     expect(fileInput.files).toHaveLength(4)
     expect(errorMessage).toBeInTheDocument()

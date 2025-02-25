@@ -47,7 +47,7 @@ export const Attachments = ({ meldingId, token }: Props) => {
     const files = Array.from(event.currentTarget.files)
 
     if (files.length + uploadedFiles.length > MAX_FILES) {
-      setErrorMessage(`Je kunt maximaal ${MAX_FILES} bestanden uploaden.`)
+      setErrorMessage(`U kunt maximaal ${MAX_FILES} bestanden uploaden.`)
       return
     }
 
@@ -100,7 +100,7 @@ export const Attachments = ({ meldingId, token }: Props) => {
                 Voeg een foto toe om de situatie te verduidelijken. Verwijder alle persoonsgegevens van u en derden.
               </Paragraph>
               <UnorderedList>
-                <UnorderedList.Item>U kunt maximaal drie bestanden tegelijk toevoegen.</UnorderedList.Item>
+                <UnorderedList.Item>U kunt maximaal 3 bestanden tegelijk toevoegen.</UnorderedList.Item>
                 <UnorderedList.Item>Toegestane bestandtypes: jpg, jpeg en png.</UnorderedList.Item>
                 <UnorderedList.Item>Een bestand mag maximaal 20 MB groot zijn.</UnorderedList.Item>
               </UnorderedList>

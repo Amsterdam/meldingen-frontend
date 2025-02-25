@@ -90,5 +90,5 @@ export const handlers = [
   ),
 
   /** DELETE */
-  http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => HttpResponse.json(null)),
+  http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => new HttpResponse(null)),
 ]
