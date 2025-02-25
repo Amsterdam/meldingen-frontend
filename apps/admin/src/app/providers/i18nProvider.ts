@@ -224,6 +224,8 @@ const nl: TranslationMessages = {
         title: 'Naam',
         'components[0].label': 'Label',
         'components[0].description': 'Beschrijving',
+        'components[1].label': 'Label',
+        'components[1].description': 'Beschrijving',
       },
     },
   },
