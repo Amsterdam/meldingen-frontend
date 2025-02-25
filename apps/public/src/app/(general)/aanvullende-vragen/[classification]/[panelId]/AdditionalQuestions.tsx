@@ -15,7 +15,7 @@ type Props = {
 
 const initialState: { message?: string } = {}
 
-export const AanvullendeVragen = ({ action, formData, previousPanelPath }: Props) => {
+export const AdditionalQuestions = ({ action, formData, previousPanelPath }: Props) => {
   const [formState, formAction] = useActionState(action, initialState)
 
   return (
