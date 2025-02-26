@@ -5,6 +5,7 @@ export const ENDPOINTS = {
   MELDING_BY_ID: '/melding/:id/melder',
   MELDING_ANSWERS_BY_ID: '/melding/:id/answers',
   MELDING_ATTACHMENT_BY_ID: '/melding/:id/attachment',
+  MELDING_ATTACHMENT_DELETE_BY_ID: '/melding/:id/attachment/:meldingId',
   STATIC_FORM: '/static-form',
   STATIC_FORM_BY_STATIC_FORM_ID: '/static-form/:staticFormId',
 }
