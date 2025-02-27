@@ -108,11 +108,11 @@ export const Attachments = ({ meldingId, token }: Props) => {
 
             {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
 
-            <FileInput handleOnChange={handleOnChange} id="file-upload" />
+            <FileInput handleOnChange={handleOnChange} id="file-upload" errorMessage={errorMessage} />
 
             {uploadedFiles.length > 0 && (
               <FileList className={styles.fileList}>
-                {Array.from(uploadedFiles).map((attachment) => (
+                {uploadedFiles.map((attachment) => (
                   <FileList.Item
                     key={attachment.id}
                     file={attachment.file}

@@ -64,9 +64,9 @@ describe('Attachments', () => {
 
     expect(fileName1).toBeInTheDocument()
 
-    const deleteButtons = screen.getAllByRole('button')
+    const deleteButton = screen.getByRole('button', { name: 'Verwijder' })
 
-    await user.click(deleteButtons[0])
+    await user.click(deleteButton)
 
     const file1SecondRender = screen.queryByText('Screenshot 2025-02-10 at 08.29.41.png')
 
@@ -89,13 +89,15 @@ describe('Attachments', () => {
 
     expect(fileName1).toBeInTheDocument()
 
-    const deleteButtons = screen.getAllByRole('button')
+    const deleteButton = screen.getByRole('button', { name: 'Verwijder' })
 
-    await user.click(deleteButtons[0])
+    await user.click(deleteButton)
 
-    const file1SecondRender = screen.queryByText('Screenshot 2025-02-10 at 08.29.41.png')
+    const file1SecondRender = screen.getByText('Screenshot 2025-02-10 at 08.29.41.png')
+    const errorMessage = screen.getByText('Failed to fetch')
 
     expect(file1SecondRender).toBeInTheDocument()
+    expect(errorMessage).toBeInTheDocument()
   })
 
   it('should show an error when post fails', async () => {
@@ -134,5 +136,9 @@ describe('Attachments', () => {
 
     expect(fileInput.files).toHaveLength(4)
     expect(errorMessage).toBeInTheDocument()
+    expect(screen.queryByText('example.png')).not.toBeInTheDocument()
+    expect(screen.queryByText('example2.png')).not.toBeInTheDocument()
+    expect(screen.queryByText('example3.png')).not.toBeInTheDocument()
+    expect(screen.queryByText('example4.png')).not.toBeInTheDocument()
   })
 })
