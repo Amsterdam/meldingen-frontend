@@ -1,0 +1,11 @@
+{
+  "name": "markdown-to-html",
+  "version": "0.1.0",
+  "description": "Renders Markdown strings to HTML",
+  "license": "EUPL-1.2",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "react-markdown": "10.0.0"
+  }
+}
