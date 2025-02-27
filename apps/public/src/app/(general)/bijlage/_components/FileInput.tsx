@@ -4,15 +4,15 @@ import styles from './FileInput.module.css'
 
 type Props = {
   id: string
-  errorMessage?: string
+  hasErrorMessage: boolean
   handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
-export const FileInput = ({ id, handleOnChange, errorMessage }: Props) => (
+export const FileInput = ({ id, handleOnChange, hasErrorMessage }: Props) => (
   <div className={styles.wrapper}>
     <input
       accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
-      aria-describedby={`file-upload-description ${errorMessage ? 'error-message' : ''}`}
+      aria-describedby={`file-upload-description ${hasErrorMessage ? 'error-message' : ''}`}
       className={styles.input}
       id={id}
       multiple

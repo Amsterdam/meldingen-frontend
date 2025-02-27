@@ -108,7 +108,7 @@ export const Attachments = ({ meldingId, token }: Props) => {
 
             {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
 
-            <FileInput handleOnChange={handleOnChange} id="file-upload" errorMessage={errorMessage} />
+            <FileInput handleOnChange={handleOnChange} id="file-upload" hasErrorMessage={Boolean(errorMessage)} />
 
             {uploadedFiles.length > 0 && (
               <FileList className={styles.fileList}>
