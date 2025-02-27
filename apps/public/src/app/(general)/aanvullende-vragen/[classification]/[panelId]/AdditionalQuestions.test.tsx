@@ -4,7 +4,7 @@ import type { Mock } from 'vitest'
 
 import mockFormData from 'apps/public/src/mocks/mockFormData.json'
 
-import { AanvullendeVragen } from './AanvullendeVragen'
+import { AdditionalQuestions } from './AdditionalQuestions'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -14,13 +14,15 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-describe('AanvullendeVragen', () => {
-  it('renders a heading', () => {
-    const action = vi.fn()
+const defaultProps = {
+  action: vi.fn(),
+  formData: mockFormData.components[0].components,
+  previousPanelPath: '/prev',
+}
 
-    render(
-      <AanvullendeVragen action={action} formData={mockFormData.components[0].components} previousPanelPath="/prev" />,
-    )
+describe('AdditionalQuestions', () => {
+  it('renders a heading', () => {
+    render(<AdditionalQuestions {...defaultProps} />)
 
     const heading = screen.getByRole('heading', { name: 'Beschrijf uw melding' })
 
@@ -28,11 +30,7 @@ describe('AanvullendeVragen', () => {
   })
 
   it('renders form data', () => {
-    const action = vi.fn()
-
-    render(
-      <AanvullendeVragen action={action} formData={mockFormData.components[0].components} previousPanelPath="/prev" />,
-    )
+    render(<AdditionalQuestions {...defaultProps} />)
 
     const question = screen.getByRole('textbox', { name: /First question/ })
 
@@ -42,11 +40,7 @@ describe('AanvullendeVragen', () => {
   it('should render an error message', () => {
     ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
 
-    const action = vi.fn()
-
-    render(
-      <AanvullendeVragen action={action} formData={mockFormData.components[0].components} previousPanelPath="/prev" />,
-    )
+    render(<AdditionalQuestions {...defaultProps} />)
 
     expect(screen.queryByText('Test error message')).toBeInTheDocument()
   })

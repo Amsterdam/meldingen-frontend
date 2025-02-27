@@ -15,7 +15,7 @@ const Map = dynamic(() => import('./_components/Map').then((module) => module.Ma
   ssr: false,
 })
 
-export const KiesLocatie = () => {
+export const SelectLocation = () => {
   const [coordinates, setCoordinates] = useState<Coordinates>()
   const [showAssetList, setShowAssetList] = useState(false)
 

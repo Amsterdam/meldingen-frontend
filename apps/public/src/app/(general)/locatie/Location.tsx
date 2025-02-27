@@ -21,7 +21,7 @@ type Props = {
   }
 }
 
-export const Locatie = ({ prevPage, locationData }: Props) => {
+export const Location = ({ prevPage, locationData }: Props) => {
   const [formState, formAction] = useActionState(postLocationForm, initialState)
 
   return (

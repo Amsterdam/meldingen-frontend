@@ -13,8 +13,8 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
-vi.mock('./Bedankt', () => ({
-  Bedankt: vi.fn(() => <div>Bedankt Component</div>),
+vi.mock('./Thanks', () => ({
+  Thanks: vi.fn(() => <div>Thanks Component</div>),
 }))
 
 describe('Page', () => {
@@ -37,7 +37,7 @@ describe('Page', () => {
     expect(PageComponent).toBeUndefined()
   })
 
-  it('renders bedankt page', async () => {
+  it('renders Thanks page', async () => {
     mockCookies.get.mockReturnValue({ value: '1234' })
 
     const PageComponent = await Page()
@@ -45,6 +45,6 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(redirect).not.toHaveBeenCalledWith('/')
-    expect(screen.getByText('Bedankt Component')).toBeInTheDocument()
+    expect(screen.getByText('Thanks Component')).toBeInTheDocument()
   })
 })
