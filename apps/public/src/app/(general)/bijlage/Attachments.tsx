@@ -12,7 +12,7 @@ import {
 } from '@amsterdam/design-system-react'
 import type { ApiError } from '@meldingen/api-client'
 import { Grid, SubmitButton } from '@meldingen/ui'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 
 import {
@@ -36,6 +36,7 @@ type Props = {
 export type UploadedFiles = { file: File; id: number }
 
 export const Attachments = ({ meldingId, token }: Props) => {
+  const formRef = useRef<HTMLFormElement>(null)
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
 
@@ -46,12 +47,11 @@ export const Attachments = ({ meldingId, token }: Props) => {
 
     const files = Array.from(event.currentTarget.files)
 
-    if (files.length + uploadedFiles.length > MAX_FILES) {
-      setErrorMessage(`U kunt maximaal ${MAX_FILES} bestanden uploaden.`)
-      return
-    }
-
     try {
+      if (files.length + uploadedFiles.length > MAX_FILES) {
+        throw new Error(`U kunt maximaal ${MAX_FILES} bestanden uploaden.`)
+      }
+
       const result = await Promise.all(
         files.map(async (file) => {
           const uploadedFile = await postMeldingByMeldingIdAttachment({
@@ -65,6 +65,7 @@ export const Attachments = ({ meldingId, token }: Props) => {
       )
       setUploadedFiles((currentFiles) => [...currentFiles, ...result])
     } catch (error) {
+      formRef.current?.reset()
       setErrorMessage((error as ApiError).message)
     }
   }
@@ -89,7 +90,7 @@ export const Attachments = ({ meldingId, token }: Props) => {
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
         <BackLink href="/locatie">Vorige vraag</BackLink>
         <Heading className="ams-mb--sm">Foto’s</Heading>
-        <form action={redirectToNextPage}>
+        <form ref={formRef} action={redirectToNextPage}>
           <Field invalid={Boolean(errorMessage)} className="ams-mb--sm">
             <Label htmlFor="file-upload" optional>
               Heeft u een foto om toe te voegen?
