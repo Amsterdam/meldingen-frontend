@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
 
-import { Bedankt } from './Bedankt'
+import { Thanks } from './Thanks'
 
 export const metadata: Metadata = {
   title: 'Bedankt - Gemeente Amsterdam',
@@ -14,5 +14,5 @@ export default async () => {
 
   if (!meldingId) return undefined
 
-  return <Bedankt meldingId={meldingId} />
+  return <Thanks meldingId={meldingId} />
 }
