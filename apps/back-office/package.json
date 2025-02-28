@@ -1,0 +1,23 @@
+{
+  "name": "back-office",
+  "version": "0.1.0",
+  "description": "Front-end for the back office of the Meldingen application",
+  "author": "Gemeente Amsterdam",
+  "license": "EUPL-1.2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest",
+    "test:watch": "vitest watch"
+  },
+  "dependencies": {
+    "next": "15.2.0-canary.63"
+  },
+  "devDependencies": {
+    "eslint-config-next": "15.1.7"
+  }
+}
