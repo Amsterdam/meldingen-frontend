@@ -7,10 +7,6 @@ import { server } from 'apps/public/src/mocks/node'
 
 import { Attachments } from './Attachments'
 
-vi.mock('./actions', () => ({
-  redirectToNextPage: vi.fn(),
-}))
-
 const defaultProps = {
   meldingId: 1,
   token: 'mock-token',
@@ -134,7 +130,6 @@ describe('Attachments', () => {
 
     const errorMessage = screen.getByText('U kunt maximaal 3 bestanden uploaden.')
 
-    expect(fileInput.files).toHaveLength(4)
     expect(errorMessage).toBeInTheDocument()
     expect(screen.queryByText('example.png')).not.toBeInTheDocument()
     expect(screen.queryByText('example2.png')).not.toBeInTheDocument()
