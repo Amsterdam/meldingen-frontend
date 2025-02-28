@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
 
-import { Bijlage } from './Bijlage'
+import { Attachments } from './Attachments'
 
 export const metadata: Metadata = {
   title: 'Stap 2 van 4 - Foto’s - Gemeente Amsterdam',
@@ -14,5 +14,5 @@ export default async () => {
 
   if (!meldingId || !token) return undefined
 
-  return <Bijlage meldingId={parseInt(meldingId, 10)} token={token} />
+  return <Attachments meldingId={parseInt(meldingId, 10)} token={token} />
 }
