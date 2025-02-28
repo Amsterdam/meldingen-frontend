@@ -1,7 +1,7 @@
 # Forms
 
 Meldingen revolves for a large part around forms.
-Our Admin app allows admins to create and update forms, which are shown in our Public and Backoffice apps.
+Our Admin app allows admins to create and update forms, which are shown in our Public and Back Office apps.
 
 To make dealing with forms easier, we use [Form.io](https://form.io/).
 Form.io allows us to easily build forms, using the included [Builder](https://help.form.io/developers/form-development/form-builder),
