@@ -18,6 +18,7 @@
       "@meldingen/api-client": ["libs/api-client/src/index.ts"],
       "@meldingen/form-builder": ["libs/form-builder/src/index.ts"],
       "@meldingen/form-renderer": ["libs/form-renderer/src/index.ts"],
+      "@meldingen/markdown-to-html": ["libs/markdown-to-html/src/index.ts"],
       "@meldingen/ui": ["libs/ui/src/index.ts"]
     }
   },
