@@ -1,4 +1,4 @@
-import type { AttachmentOutput } from 'apps/public/src/apiClientProxy'
+import type { AttachmentOutput } from '@meldingen/api-client'
 import type { InputHTMLAttributes, ChangeEvent } from 'react'
 
 import styles from './FileUpload.module.css'

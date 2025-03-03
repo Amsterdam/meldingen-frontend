@@ -1,4 +1,4 @@
-import type { FormPanelComponentOutput } from 'apps/public/src/apiClientProxy'
+import type { FormPanelComponentOutput } from '@meldingen/api-client'
 import type { Metadata } from 'next'
 
 import { getFormClassificationByClassificationId } from 'apps/public/src/apiClientProxy'
