@@ -1,11 +1,11 @@
-import { SubmitButton } from '@meldingen/ui'
 import type {
   FormCheckboxComponentOutput,
   FormRadioComponentOutput,
   FormSelectComponentOutput,
   FormTextAreaComponentOutput,
   FormTextFieldInputComponentOutput,
-} from 'apps/public/src/apiClientProxy'
+} from '@meldingen/api-client'
+import { SubmitButton } from '@meldingen/ui'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 
