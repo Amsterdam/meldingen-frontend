@@ -1,0 +1,29 @@
+/*
+  Recreate the Design System ordered and unordered list item styling,
+  because there is no way to use the correct component in react-markdown.
+  Sourced from:
+    - https://github.com/Amsterdam/design-system/blob/main/packages/css/src/components/ordered-list/ordered-list.scss
+    - https://github.com/Amsterdam/design-system/blob/main/packages/css/src/components/unordered-list/unordered-list.scss
+*/
+
+.container {
+  .ams-ordered-list li {
+    margin-inline-start: var(--ams-ordered-list-item-margin-inline-start);
+    padding-inline-start: var(--ams-ordered-list-item-padding-inline-start);
+  }
+
+  .ams-unordered-list li {
+    margin-inline-start: var(--ams-unordered-list-item-margin-inline-start);
+    padding-inline-start: var(--ams-unordered-list-item-padding-inline-start);
+  }
+
+  :is(.ams-ordered-list, .ams-unordered-list) .ams-ordered-list li {
+    margin-inline-start: var(--ams-ordered-list-ordered-list-item-margin-inline-start);
+    padding-inline-start: var(--ams-ordered-list-ordered-list-item-padding-inline-start);
+  }
+
+  :is(.ams-unordered-list, .ams-ununordered-list) .ams-unordered-list li {
+    margin-inline-start: var(--ams-unordered-list-unordered-list-item-margin-inline-start);
+    padding-inline-start: var(--ams-unordered-list-unordered-list-item-padding-inline-start);
+  }
+}
