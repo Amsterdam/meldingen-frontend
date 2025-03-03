@@ -5,6 +5,12 @@
   "license": "EUPL-1.2",
   "private": true,
   "type": "module",
+  "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  },
   "dependencies": {
     "react-markdown": "10.0.0"
   }
