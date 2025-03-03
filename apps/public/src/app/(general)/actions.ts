@@ -27,6 +27,11 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
       nextPage = `/aanvullende-vragen/${classification}/${nextFormFirstKey}`
     }
   } catch (error) {
+    // If there are no additional questions for a classification, redirect to /locatie.
+    if ((error as ApiError)?.status === 404) {
+      redirect(nextPage)
+    }
+
     return { message: (error as ApiError).message }
   }
 
