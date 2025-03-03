@@ -3,8 +3,8 @@ import type { Metadata } from 'next'
 
 import { getFormClassificationByClassificationId } from 'apps/public/src/apiClientProxy'
 
-import { AanvullendeVragen } from './AanvullendeVragen'
 import { postForm } from './actions'
+import { AdditionalQuestions } from './AdditionalQuestions'
 
 // TODO: pagina's die niet bestaan moeten redirect krijgen
 // TODO: pagina's die wel bestaan maar geen token in url param moeten redirect krijgen
@@ -99,6 +99,10 @@ export default async ({ params }: { params: Params }) => {
   const previousPanelPath = getPreviousPanelPath(classification, currentPanelIndex, formData)
 
   return (
-    <AanvullendeVragen action={postFormWithExtraArgs} formData={panelQuestions} previousPanelPath={previousPanelPath} />
+    <AdditionalQuestions
+      action={postFormWithExtraArgs}
+      formData={panelQuestions}
+      previousPanelPath={previousPanelPath}
+    />
   )
 }

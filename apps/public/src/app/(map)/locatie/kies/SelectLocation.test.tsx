@@ -1,6 +1,6 @@
 import { screen, render, waitFor } from '@testing-library/react'
 
-import { KiesLocatie } from './KiesLocatie'
+import { SelectLocation } from './SelectLocation'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -10,9 +10,9 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-describe('KiesLocatie', () => {
+describe('SelectLocation', () => {
   it('should render', () => {
-    const { container } = render(<KiesLocatie />)
+    const { container } = render(<SelectLocation />)
 
     const outerWrapper = container.querySelector('div')
 

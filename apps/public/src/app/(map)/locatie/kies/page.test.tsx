@@ -2,16 +2,16 @@ import { render, screen } from '@testing-library/react'
 
 import Page from './page'
 
-vi.mock('./KiesLocatie', () => ({
-  KiesLocatie: vi.fn(() => <div>KiesLocatie Component</div>),
+vi.mock('./SelectLocation', () => ({
+  SelectLocation: vi.fn(() => <div>SelectLocation Component</div>),
 }))
 
 describe('Page', () => {
-  it('renders the KiesLocatie component', async () => {
+  it('renders the SelectLocation component', async () => {
     const PageComponent = await Page()
 
     render(PageComponent)
 
-    expect(screen.getByText('KiesLocatie Component')).toBeInTheDocument()
+    expect(screen.getByText('SelectLocation Component')).toBeInTheDocument()
   })
 })
