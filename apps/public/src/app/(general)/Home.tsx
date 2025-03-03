@@ -9,11 +9,9 @@ import type { StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClien
 
 import { postPrimaryForm } from './actions'
 
-type Component = StaticFormTextAreaComponentOutput
-
 const initialState: { message?: string } = {}
 
-export const Home = ({ formData }: { formData: Component[] }) => {
+export const Home = ({ formData }: { formData: StaticFormTextAreaComponentOutput[] }) => {
   const [formState, formAction] = useActionState(postPrimaryForm, initialState)
 
   return (

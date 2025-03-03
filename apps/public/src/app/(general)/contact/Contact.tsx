@@ -10,11 +10,9 @@ import { BackLink } from '../_components/BackLink'
 
 import { postContactForm } from './actions'
 
-type Component = StaticFormTextAreaComponentOutput
-
 const initialState: { message?: string } = {}
 
-export const Contact = ({ formData }: { formData: Component[] }) => {
+export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOutput[] }) => {
   const [formState, formAction] = useActionState(postContactForm, initialState)
 
   return (
