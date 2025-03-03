@@ -1,14 +1,15 @@
 'use client'
 
 import { Paragraph } from '@amsterdam/design-system-react'
-import type { StaticFormPanelComponentOutput, StaticFormTextFieldInputComponentOutput } from '@meldingen/api-client'
 import { FormRenderer } from '@meldingen/form-renderer'
 import { Grid } from '@meldingen/ui'
 import { useActionState } from 'react'
 
+import type { StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
+
 import { postPrimaryForm } from './actions'
 
-type Component = StaticFormPanelComponentOutput | StaticFormTextFieldInputComponentOutput
+type Component = StaticFormTextAreaComponentOutput
 
 const initialState: { message?: string } = {}
 

@@ -4,13 +4,17 @@ import { Alert, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-s
 import { Grid, SubmitButton } from '@meldingen/ui'
 import { useActionState } from 'react'
 
+import type { StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
+
 import { BackLink } from '../_components/BackLink'
 
 import { postContactForm } from './actions'
 
+type Component = StaticFormTextAreaComponentOutput
+
 const initialState: { message?: string } = {}
 
-export const Contact = () => {
+export const Contact = ({ formData }: { formData: Component[] }) => {
   const [formState, formAction] = useActionState(postContactForm, initialState)
 
   return (
@@ -39,9 +43,15 @@ export const Contact = () => {
             </Alert>
           )}
           <Label htmlFor="email-input" optional className="ams-mb--sm">
-            Wat is uw e-mailadres?
+            {formData[0].label}
           </Label>
+          {formData[0].description && (
+            <Paragraph size="small" id="email-input-description">
+              {formData[0].description}
+            </Paragraph>
+          )}
           <TextInput
+            aria-describedby={formData[0].description ? 'email-input-description' : undefined}
             name="email"
             id="email-input"
             type="email"
@@ -51,9 +61,21 @@ export const Contact = () => {
             className="ams-mb--sm"
           />
           <Label htmlFor="tel-input" optional className="ams-mb--sm">
-            Wat is uw telefoonnummer?
+            {formData[1].label}
           </Label>
-          <TextInput name="phone" id="tel-input" type="tel" autoComplete="tel" className="ams-mb--sm" />
+          {formData[1].description && (
+            <Paragraph size="small" id="tel-input-description">
+              {formData[1].description}
+            </Paragraph>
+          )}
+          <TextInput
+            aria-describedby={formData[1].description ? 'tel-input-description' : undefined}
+            autoComplete="tel"
+            className="ams-mb--sm"
+            id="tel-input"
+            name="phone"
+            type="tel"
+          />
           <SubmitButton>Volgende vraag</SubmitButton>
         </form>
       </Grid.Cell>

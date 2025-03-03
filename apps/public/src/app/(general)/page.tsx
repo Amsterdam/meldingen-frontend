@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import type { StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
 import { getStaticForm, getStaticFormByStaticFormId } from 'apps/public/src/apiClientProxy'
 
 import { Home } from './Home'
@@ -19,5 +20,9 @@ export default async () => {
 
   const primaryForm = (await getStaticFormByStaticFormId({ staticFormId: primaryFormId }))?.components
 
-  return <Home formData={primaryForm} />
+  const textareaComponents =
+    primaryForm?.filter((component): component is StaticFormTextAreaComponentOutput => component.type === 'textarea') ||
+    []
+
+  return <Home formData={textareaComponents} />
 }

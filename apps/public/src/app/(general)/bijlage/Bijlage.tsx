@@ -1,7 +1,7 @@
 'use client'
 
 import { Column, Field, Heading, Label, Paragraph, UnorderedList } from '@amsterdam/design-system-react'
-import type { AttachmentOutput } from '@meldingen/api-client'
+import type { AttachmentOutput } from 'apps/public/src/apiClientProxy'
 import { Grid, SubmitButton } from '@meldingen/ui'
 import { useState } from 'react'
 import type { ChangeEvent } from 'react'
