@@ -22,9 +22,9 @@
 }
 
 /*
-* Set focus outline on the label. This is removed again in .wrapper using a :has selector.
-* This fallback means that browsers that do not support :has will at least show the focus outline on the label.
-*/
+  * Set focus outline on the label. This is removed again in .wrapper using a :has selector.
+  * This fallback means that browsers that do not support :has will at least show the focus outline on the label.
+  */
 .input:focus-visible + label {
   outline: auto;
   outline-offset: var(--ams-focus-outline-offset);
@@ -63,7 +63,7 @@
   color: var(--ams-button-secondary-hover-color);
 }
 
-.drop-area-text {
+.dropAreaText {
   display: none;
 
   @media screen and (min-width: 36rem) {

@@ -11,7 +11,7 @@ import {
   UnorderedList,
 } from '@amsterdam/design-system-react'
 import type { ApiError } from '@meldingen/api-client'
-import { Grid, SubmitButton } from '@meldingen/ui'
+import { Grid, FileInput, SubmitButton } from '@meldingen/ui'
 import { useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 
@@ -22,7 +22,6 @@ import {
 
 import { BackLink } from '../_components/BackLink'
 
-import { FileInput } from './_components/FileInput'
 import { redirectToNextPage } from './actions'
 import styles from './Attachments.module.css'
 
@@ -109,7 +108,13 @@ export const Attachments = ({ meldingId, token }: Props) => {
 
             {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
 
-            <FileInput handleOnChange={handleOnChange} id="file-upload" hasErrorMessage={Boolean(errorMessage)} />
+            <FileInput
+              handleOnChange={handleOnChange}
+              id="file-upload"
+              accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
+              ariaDescribedBy={`file-upload-description ${Boolean(errorMessage) ? 'error-message' : ''}`}
+              name="file"
+            />
 
             {uploadedFiles.length > 0 && (
               <FileList className={styles.fileList}>
