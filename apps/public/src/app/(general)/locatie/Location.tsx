@@ -3,6 +3,7 @@
 import { Heading, Link, Paragraph } from '@amsterdam/design-system-react'
 import { Grid, SubmitButton } from '@meldingen/ui'
 import NextLink from 'next/link'
+import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
 import type { Coordinates } from 'apps/public/src/types'
@@ -24,27 +25,26 @@ type Props = {
 export const Location = ({ prevPage, locationData }: Props) => {
   const [formState, formAction] = useActionState(postLocationForm, initialState)
 
+  const t = useTranslations('location')
+
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
         <BackLink href={prevPage} className="ams-mb--xs">
-          Vorige vraag
+          {t('back-link')}
         </BackLink>
-        <Heading className="ams-mb--sm">Locatie</Heading>
+        <Heading className="ams-mb--sm">{t('step.title')}</Heading>
 
         {formState?.message && <Paragraph>{formState.message}</Paragraph>}
 
-        {/* TODO: text should come from api */}
         <Heading level={2} size="level-4">
-          Waar staat de container?
+          {t('title')}
         </Heading>
-        <Paragraph className="ams-mb--xs">
-          {locationData?.name ?? 'In het volgende scherm kunt u op de kaart een adres of container opzoeken.'}
-        </Paragraph>
+        <Paragraph className="ams-mb--xs">{locationData?.name ?? t('description')}</Paragraph>
 
         <NextLink href="/locatie/kies" legacyBehavior passHref>
           <Link variant="standalone" href="dummy-href" className="ams-mb--md">
-            {locationData?.name ? 'Wijzig locatie' : 'Selecteer de locatie'}
+            {locationData?.name ? t('link.with-location') : t('link.without-location')}
           </Link>
         </NextLink>
 
@@ -54,7 +54,7 @@ export const Location = ({ prevPage, locationData }: Props) => {
             name="coordinates"
             value={locationData?.coordinates ? JSON.stringify(locationData?.coordinates) : undefined}
           />
-          <SubmitButton>Volgende vraag</SubmitButton>
+          <SubmitButton>{t('submit-button')}</SubmitButton>
         </form>
       </Grid.Cell>
     </Grid>

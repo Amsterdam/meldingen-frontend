@@ -1,0 +1,46 @@
+{
+  "homepage": {
+    "step": {
+      "title": "Beschrijf uw melding",
+      "description": "Stap 1 van 4"
+    },
+    "submit-button": "Volgende vraag"
+  },
+  "additional-questions": {
+    "back-link": "Vorige vraag",
+    "step": {
+      "title": "Beschrijf uw melding",
+      "description": "Stap 1 van 4"
+    },
+    "submit-button": "Volgende vraag"
+  },
+  "location": {
+    "back-link": "Vorige vraag",
+    "step": {
+      "title": "Beschrijf uw melding",
+      "description": "Stap 1 van 4"
+    },
+    "title": "Waar staat de container?",
+    "description": "In het volgende scherm kunt u op de kaart een adres of container opzoeken.",
+    "link": {
+      "without-location": "Selecteer de locatie",
+      "with-location": "Wijzig locatie"
+    },
+    "submit-button": "Volgende vraag"
+  },
+  "summary": {
+    "back-link": "Vorige vraag",
+    "step": {
+      "title": "Samenvatting",
+      "description": "Stap 4 van 4"
+    },
+    "title": "Versturen",
+    "description": "Controleer uw gegevens en verstuur uw melding.",
+    "submit-button": "Verstuur melding"
+  },
+  "thanks": {
+    "title": "Bedankt",
+    "description": "Bedankt voor uw melding.\n\nWij hebben uw melding ontvangen op 21-11-2023 om 17:11. Uw meldnummer is {meldingId}.\n\n## Wat doen we met uw melding?\n\nMeldingen pakken we binnen 3 werkdagen op.\n\n## Vragen of meer informatie?\n\nNeem dan contact met ons op via 14 020. Vermeld hierbij alstublieft uw meldnummer. Meer informatie kunt u eventueel ook vinden op [www.amsterdam.nl](https://www.amsterdam.nl/).\n\n## Wilt u nog een andere melding doen?",
+    "link": "Doe een melding"
+  }
+}
