@@ -1,5 +1,11 @@
 {
+  "metadata": {
+    "description": "Maak een melding van een probleem in de openbare ruimte."
+  },
   "homepage": {
+    "metadata": {
+      "title": "Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam"
+    },
     "step": {
       "title": "Beschrijf uw melding",
       "description": "Stap 1 van 4"
@@ -7,6 +13,9 @@
     "submit-button": "Volgende vraag"
   },
   "additional-questions": {
+    "metadata": {
+      "title": "Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam"
+    },
     "back-link": "Vorige vraag",
     "step": {
       "title": "Beschrijf uw melding",
@@ -15,6 +24,9 @@
     "submit-button": "Volgende vraag"
   },
   "location": {
+    "metadata": {
+      "title": "Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam"
+    },
     "back-link": "Vorige vraag",
     "step": {
       "title": "Beschrijf uw melding",
@@ -32,6 +44,9 @@
     }
   },
   "select-location": {
+    "metadata": {
+      "title": "Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam"
+    },
     "back-link": "Vorige vraag",
     "title": "Selecteer de locatie",
     "description": "Typ het dichtstbijzijnde adres, klik de locatie aan op de kaart of gebruik “Mijn locatie”.",
@@ -63,6 +78,9 @@
     }
   },
   "summary": {
+    "metadata": {
+      "title": "Stap 4 van 4 - Samenvatting - Gemeente Amsterdam"
+    },
     "back-link": "Vorige vraag",
     "step": {
       "title": "Samenvatting",
@@ -73,6 +91,9 @@
     "submit-button": "Verstuur melding"
   },
   "thanks": {
+    "metadata": {
+      "title": "Bedankt - Gemeente Amsterdam"
+    },
     "title": "Bedankt",
     "description": "Bedankt voor uw melding.\n\nWij hebben uw melding ontvangen op 21-11-2023 om 17:11. Uw meldnummer is {meldingId}.\n\n## Wat doen we met uw melding?\n\nMeldingen pakken we binnen 3 werkdagen op.\n\n## Vragen of meer informatie?\n\nNeem dan contact met ons op via [14 020](tel:14020). Vermeld hierbij alstublieft uw meldnummer. Meer informatie kunt u eventueel ook vinden op [www.amsterdam.nl](https://www.amsterdam.nl/).\n\n## Wilt u nog een andere melding doen?",
     "link": "Doe een melding"
