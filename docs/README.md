@@ -5,8 +5,8 @@
 Meldingen is an application with three separate front-ends:
 
 - Public: where the general public can create nuisance reports.
-- Backoffice: where professionals can handle these reports.
-- Admin: where admins can manage the Public and Backoffice apps.
+- Back Office: where professionals can handle these reports.
+- Admin: where admins can manage the Public and Back Office apps.
 
 ```mermaid
 graph TD
@@ -21,7 +21,7 @@ graph TD
     "]
     PFE -->|Signal| BE
     BE -->|Form config| BFE["
-        Backoffice Frontend
+        Back Office Frontend
 
         - Maken en afhandelen melding
     "]
