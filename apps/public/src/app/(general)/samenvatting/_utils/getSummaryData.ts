@@ -10,9 +10,16 @@ type Props = {
     name: string
     coordinates: Coordinates
   }
+  locationLabel: string
 }
 
-export const getSummaryData = ({ melding, primaryFormLabel, additionalQuestionsAnswers, location }: Props) => {
+export const getSummaryData = ({
+  melding,
+  primaryFormLabel,
+  additionalQuestionsAnswers,
+  location,
+  locationLabel,
+}: Props) => {
   const primaryFormSummary = {
     key: 'primary',
     term: primaryFormLabel,
@@ -27,7 +34,7 @@ export const getSummaryData = ({ melding, primaryFormLabel, additionalQuestionsA
 
   const locationSummary = {
     key: 'location',
-    term: 'Waar is het?',
+    term: locationLabel,
     description: [location?.name].filter((item) => item !== undefined), // Filter out undefined items,
   }
 

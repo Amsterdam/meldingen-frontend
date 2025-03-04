@@ -38,11 +38,14 @@ export default async () => {
 
   const additionalQuestionsAnswers = await getMeldingByMeldingIdAnswers({ meldingId: parseInt(meldingId, 10), token })
 
+  const t = await getTranslations('location')
+
   const data = getSummaryData({
     melding,
     primaryFormLabel: primaryForm?.label,
     additionalQuestionsAnswers,
     location: location ? JSON.parse(location) : undefined,
+    locationLabel: t('title'),
   })
 
   return <Summary data={data} />
