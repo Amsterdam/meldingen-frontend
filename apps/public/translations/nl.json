@@ -53,7 +53,8 @@
     "combo-box": {
       "label": "Zoek op adres",
       "description": "Als er autoaanvul-resultaten zijn, gebruik dan de pijltjes omhoog en omlaag om te bekijken en druk op enter om te kiezen. Voor <english>touch</english>-apparaten, verken met aanraking of veegbewegingen <english>(swipe)</english>.",
-      "no-results": "Geen resultaten gevonden"
+      "no-results": "Geen resultaten gevonden",
+      "no-address": "Pin op de kaart"
     },
     "submit-button": {
       "mobile": "Bevestigen",

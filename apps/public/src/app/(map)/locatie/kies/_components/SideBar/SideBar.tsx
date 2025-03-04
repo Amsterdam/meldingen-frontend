@@ -17,7 +17,7 @@ type Props = {
 }
 
 export type Address = {
-  id: string
+  id?: string
   weergave_naam: string
 }
 
@@ -35,14 +35,24 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
     const getAddress = async () => {
       if (!coordinates) return
 
-      const result = await getAddressFromCoordinates({ lat: coordinates.lat, lng: coordinates.lng })
+      const result = await getAddressFromCoordinates({
+        lat: coordinates.lat,
+        lng: coordinates.lng,
+      })
 
-      if (result) {
+      if (result?.id && result?.weergave_naam) {
         setAddress(result)
+      } else {
+        // If there is no address within 30 meters of the location that is clicked (e.g. water or middle of a park),
+        // PDOK does not return an address. Therefore we use a default no address label.
+        setAddress({
+          id: undefined,
+          weergave_naam: t('combo-box.no-address'),
+        })
       }
     }
     getAddress()
-  }, [coordinates])
+  }, [coordinates, t])
 
   return (
     <div className={styles.container}>
