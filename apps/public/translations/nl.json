@@ -26,7 +26,10 @@
       "without-location": "Selecteer de locatie",
       "with-location": "Wijzig locatie"
     },
-    "submit-button": "Volgende vraag"
+    "submit-button": "Volgende vraag",
+    "errors": {
+      "no-location": "Vul een locatie in."
+    }
   },
   "select-location": {
     "back-link": "Vorige vraag",
@@ -53,6 +56,10 @@
       },
       "zoom-in": "Inzoomen",
       "zoom-out": "Uitzoomen"
+    },
+    "errors": {
+      "no-location": "Vul een locatie in.",
+      "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam."
     }
   },
   "summary": {
