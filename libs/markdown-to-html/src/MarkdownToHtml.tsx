@@ -13,9 +13,21 @@ const markdownToHtmlMap = {
       </Link>
     )
   },
-  h2: ({ children }: PropsWithChildren) => <Heading level={2}>{children}</Heading>,
-  h3: ({ children }: PropsWithChildren) => <Heading level={3}>{children}</Heading>,
-  h4: ({ children }: PropsWithChildren) => <Heading level={4}>{children}</Heading>,
+  h2: ({ children }: PropsWithChildren) => (
+    <Heading level={2} size="level-3">
+      {children}
+    </Heading>
+  ),
+  h3: ({ children }: PropsWithChildren) => (
+    <Heading level={3} size="level-4">
+      {children}
+    </Heading>
+  ),
+  h4: ({ children }: PropsWithChildren) => (
+    <Heading level={4} size="level-5">
+      {children}
+    </Heading>
+  ),
   ol: ({ children }: PropsWithChildren) => {
     const replacedChildren = Children.map(children, (child) => {
       if (isValidElement(child) && child.type === 'li') {
