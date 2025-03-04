@@ -48,7 +48,7 @@ const getComponent = ({ key, data, description, label, maxCharCount, type, value
 type Props = {
   formData: any[]
   action: (formData: FormData) => void
-  submitButtonText?: string // TODO
+  submitButtonText: string
 }
 
 export const FormRenderer = ({ formData, action, submitButtonText }: Props) => (
