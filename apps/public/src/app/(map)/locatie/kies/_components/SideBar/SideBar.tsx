@@ -1,4 +1,5 @@
 import { Heading, Paragraph } from '@amsterdam/design-system-react'
+import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useState } from 'react'
 
 import { BackLink } from 'apps/public/src/app/(general)/_components/BackLink'
@@ -27,6 +28,8 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
 
   const [address, setAddress] = useState<Address>()
 
+  const t = useTranslations('select-location')
+
   // TODO: this can just be a function, called on setCoordinates I think
   useEffect(() => {
     const getAddress = async () => {
@@ -43,14 +46,12 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
 
   return (
     <div className={styles.container}>
-      <BackLink href="/locatie">Vorige vraag</BackLink>
+      <BackLink href="/locatie">{t('back-link')}</BackLink>
       <div className={styles.intro}>
         <Heading level={1} size="level-4">
-          Selecteer de locatie
+          {t('title')}
         </Heading>
-        <Paragraph size="small">
-          Typ het dichtstbijzijnde adres, klik de locatie aan op de kaart of gebruik &quot;Mijn locatie&quot;
-        </Paragraph>
+        <Paragraph size="small">{t('description')}</Paragraph>
       </div>
       <form action={formAction} id="address">
         <Combobox

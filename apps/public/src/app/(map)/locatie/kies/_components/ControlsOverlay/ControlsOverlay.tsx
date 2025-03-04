@@ -1,6 +1,7 @@
 import { Button, Paragraph } from '@amsterdam/design-system-react'
 import { EnlargeIcon, MinimiseIcon } from '@amsterdam/design-system-react-icons'
 import type L from 'leaflet'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import type { Coordinates } from 'apps/public/src/types'
@@ -15,7 +16,9 @@ type Props = {
 }
 
 export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
-  const [notification, setNotification] = useState<{ heading: string; description: string } | null>(null)
+  const [showNotification, setShowNotification] = useState<boolean>(false)
+
+  const t = useTranslations('select-location.controls-overlay')
 
   const handleZoomIn = () => {
     mapInstance?.setZoom(mapInstance.getZoom() + 1)
@@ -36,13 +39,7 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
     })
   }
 
-  const onError = () => {
-    // TODO: these texts should come from the BE, or a config / env vars
-    setNotification({
-      heading: 'Geen toestemming om uw locatie te gebruiken',
-      description: 'Dit kunt u wijzigen in de voorkeuren of instellingen van uw browser of systeem.',
-    })
-  }
+  const onError = () => setShowNotification(true)
 
   const handleCurrentLocationButtonClick = () => navigator.geolocation.getCurrentPosition(onSuccess, onError)
 
@@ -50,20 +47,20 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
     <>
       <div className={styles.overlayTopLeft}>
         <Button variant="secondary" onClick={handleCurrentLocationButtonClick}>
-          Mijn locatie
+          {t('current-location-button')}
         </Button>
-        {notification && (
-          <Notification heading={notification.heading} closeable onClose={() => setNotification(null)}>
-            <Paragraph>{notification.description}</Paragraph>
+        {showNotification && (
+          <Notification heading={t('notification.title')} closeable onClose={() => setShowNotification(false)}>
+            <Paragraph>{t('notification.description')}</Paragraph>
           </Notification>
         )}
       </div>
       <div className={styles.overlayBottomRight}>
         <Button variant="secondary" iconOnly icon={EnlargeIcon} onClick={handleZoomIn}>
-          Inzoomen
+          {t('zoom-in')}
         </Button>
         <Button variant="secondary" iconOnly icon={MinimiseIcon} onClick={handleZoomOut}>
-          Uitzoomen
+          {t('zoom-out')}
         </Button>
       </div>
     </>

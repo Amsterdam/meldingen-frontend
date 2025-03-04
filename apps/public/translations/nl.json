@@ -28,6 +28,33 @@
     },
     "submit-button": "Volgende vraag"
   },
+  "select-location": {
+    "back-link": "Vorige vraag",
+    "title": "Selecteer de locatie",
+    "description": "Typ het dichtstbijzijnde adres, klik de locatie aan op de kaart of gebruik “Mijn locatie”.",
+    "combo-box": {
+      "label": "Zoek op adres",
+      "description": "Als er autoaanvul-resultaten zijn, gebruik dan de pijltjes omhoog en omlaag om te bekijken en druk op enter om te kiezen. Voor <english>touch</english>-apparaten, verken met aanraking of veegbewegingen <english>(swipe)</english>.",
+      "no-results": "Geen resultaten gevonden"
+    },
+    "submit-button": {
+      "mobile": "Bevestigen",
+      "desktop": "Bevestig locatie"
+    },
+    "toggle-button": {
+      "map": "Kaart",
+      "list": "Lijst"
+    },
+    "controls-overlay": {
+      "current-location-button": "Mijn locatie",
+      "notification": {
+        "title": "Geen toestemming om uw locatie te gebruiken",
+        "description": "Dit kunt u wijzigen in de voorkeuren of instellingen van uw browser of systeem."
+      },
+      "zoom-in": "Inzoomen",
+      "zoom-out": "Uitzoomen"
+    }
+  },
   "summary": {
     "back-link": "Vorige vraag",
     "step": {
