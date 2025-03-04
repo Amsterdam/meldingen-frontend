@@ -65,9 +65,9 @@ export const Attachments = ({ meldingId, token }: Props) => {
       )
       setUploadedFiles((currentFiles) => [...currentFiles, ...result])
     } catch (error) {
-      formRef.current?.reset()
       setErrorMessage((error as ApiError).message)
     }
+    formRef.current?.reset()
   }
 
   const removeFile = async (attachmentId: number) => {
