@@ -55,8 +55,8 @@ const markdownToHtmlMap = {
 
 const disallowedElements = ['blockquote', 'code', 'h1', 'h5', 'h6', 'hr', 'img']
 
-export const MarkdownToHtml = ({ children }: { children: string }) => (
-  <Column>
+export const MarkdownToHtml = ({ children, className }: { children: string; className?: string }) => (
+  <Column className={className ?? ''}>
     <ReactMarkdown components={markdownToHtmlMap} disallowedElements={disallowedElements} skipHtml>
       {children}
     </ReactMarkdown>
