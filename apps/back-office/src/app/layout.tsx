@@ -8,7 +8,7 @@ import '@amsterdam/design-system-css/dist/index.css'
 import './global.css'
 
 export const metadata: Metadata = {
-  description: 'Afhandelen van meldingen van de openbare ruimte',
+  description: 'Beheer van meldingen over de openbare ruimte',
 }
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
