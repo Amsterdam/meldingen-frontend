@@ -112,7 +112,7 @@ export const Attachments = ({ meldingId, token }: Props) => {
               handleOnChange={handleOnChange}
               id="file-upload"
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
-              ariaDescribedBy={`file-upload-description ${Boolean(errorMessage) ? 'error-message' : ''}`}
+              ariaDescribedBy={`file-upload-description ${errorMessage ? 'error-message' : ''}`}
               name="file"
             />
 

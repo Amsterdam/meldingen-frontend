@@ -1,5 +1,6 @@
-import { redirectToNextPage } from './actions'
 import { redirect } from 'next/navigation'
+
+import { redirectToNextPage } from './actions'
 
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
