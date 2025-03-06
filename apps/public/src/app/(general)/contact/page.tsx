@@ -18,11 +18,17 @@ const isTextArea = (
 ): component is StaticFormTextAreaComponentOutput => component.type === 'textarea'
 
 export default async () => {
-  const contactFormId = await getStaticForm().then((response) => response.find((form) => form.type === 'contact')?.id)
+  let contactForm
 
-  if (!contactFormId) return undefined
+  try {
+    const contactFormId = await getStaticForm().then((response) => response.find((form) => form.type === 'contact')?.id)
 
-  const contactForm = (await getStaticFormByStaticFormId({ staticFormId: contactFormId })).components.filter(isTextArea)
+    if (!contactFormId) throw new Error('Contact form id not found')
+
+    contactForm = (await getStaticFormByStaticFormId({ staticFormId: contactFormId })).components.filter(isTextArea)
+  } catch (error) {
+    throw new Error((error as Error).message)
+  }
 
   return <Contact formData={contactForm} />
 }
