@@ -37,12 +37,15 @@ describe('Attachments', () => {
     const fileInput = screen.getByLabelText(/Selecteer bestanden/i) as HTMLInputElement
 
     const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
+    const file2 = new File(['dummy content two'], 'hoi.png', { type: 'image/png' })
 
-    await user.upload(fileInput, [file])
+    await user.upload(fileInput, [file, file2])
 
     const fileName1 = screen.getByText('Screenshot 2025-02-10 at 08.29.41.png')
+    const fileName2 = screen.getByText('hoi.png')
 
     expect(fileName1).toBeInTheDocument()
+    expect(fileName2).toBeInTheDocument()
   })
 
   it('should delete a file with the delete button', async () => {
