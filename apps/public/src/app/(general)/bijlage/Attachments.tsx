@@ -39,7 +39,7 @@ export const Attachments = ({ meldingId, token }: Props) => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
 
-  const handleOnChange = async (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     setErrorMessage(undefined)
 
     if (!event.currentTarget.files) return
@@ -111,11 +111,12 @@ export const Attachments = ({ meldingId, token }: Props) => {
             {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
 
             <FileInput
-              handleOnChange={handleOnChange}
-              id="file-upload"
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
-              ariaDescribedBy={`file-upload-description ${errorMessage ? 'error-message' : ''}`}
+              aria-describedby={`file-upload-description ${errorMessage ? 'error-message' : ''}`}
+              id="file-upload"
               name="file"
+              multiple
+              onChange={handleChange}
             />
 
             {uploadedFiles.length > 0 && (

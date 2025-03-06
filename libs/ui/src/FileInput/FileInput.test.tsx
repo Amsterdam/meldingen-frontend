@@ -7,11 +7,8 @@ import type { Props } from './FileInput'
 const mockHandleOnChange = vi.fn()
 
 const defaultProps: Props = {
-  accept: '.png',
-  ariaDescribedBy: 'file-upload-description',
-  handleOnChange: mockHandleOnChange,
+  onChange: mockHandleOnChange,
   id: 'file-upload',
-  name: 'file',
 }
 
 describe('FileInput Component', () => {
