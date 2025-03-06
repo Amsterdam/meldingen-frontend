@@ -34,6 +34,10 @@ describe('Page', () => {
       ),
     )
 
-    expect(() => render(<Page />)).toThrow()
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    expect(screen.getByText('Primary form id not found')).toBeInTheDocument()
   })
 })

@@ -27,7 +27,7 @@ export default async () => {
 
     primaryForm = (await getStaticFormByStaticFormId({ staticFormId: primaryFormId })).components.filter(isTextArea)
   } catch (error) {
-    throw new Error((error as Error).message)
+    return (error as Error).message
   }
 
   return <Home formData={primaryForm} />

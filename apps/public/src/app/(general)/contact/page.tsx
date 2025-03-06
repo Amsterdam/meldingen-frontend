@@ -27,7 +27,7 @@ export default async () => {
 
     contactForm = (await getStaticFormByStaticFormId({ staticFormId: contactFormId })).components.filter(isTextArea)
   } catch (error) {
-    throw new Error((error as Error).message)
+    return (error as Error).message
   }
 
   return <Contact formData={contactForm} />
