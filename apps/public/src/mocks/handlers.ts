@@ -88,4 +88,7 @@ export const handlers = [
       original_filename: 'Screenshot 2025-02-10 at 08.29.41.png',
     }),
   ),
+
+  /** DELETE */
+  http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => new HttpResponse(null)),
 ]

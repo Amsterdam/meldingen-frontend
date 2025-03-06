@@ -3,9 +3,11 @@
   line-height: var(--ams-text-level-5-line-height);
   outline-offset: var(--ams-focus-outline-offset);
   position: relative;
+  width: 100%;
 
   @media screen and (min-width: 36rem) {
     border: var(--ams-border-width-sm) dashed var(--ams-color-neutral-grey3);
+    box-sizing: border-box;
     outline-offset: calc(var(--ams-focus-outline-offset) * 2); /* Increase outline offset to account for border width */
     padding-block: var(--ams-space-md);
     padding-inline: var(--ams-space-md);
@@ -20,9 +22,9 @@
 }
 
 /*
-* Set focus outline on the label. This is removed again in .wrapper using a :has selector.
-* This fallback means that browsers that do not support :has will at least show the focus outline on the label.
-*/
+  * Set focus outline on the label. This is removed again in .wrapper using a :has selector.
+  * This fallback means that browsers that do not support :has will at least show the focus outline on the label.
+  */
 .input:focus-visible + label {
   outline: auto;
   outline-offset: var(--ams-focus-outline-offset);
@@ -61,7 +63,7 @@
   color: var(--ams-button-secondary-hover-color);
 }
 
-.drop-area-text {
+.dropAreaText {
   display: none;
 
   @media screen and (min-width: 36rem) {
