@@ -30,7 +30,7 @@ describe('Page', () => {
     expect(screen.getByText('Contact Component')).toBeInTheDocument()
   })
 
-  it('returns undefined if no contact form is found', async () => {
+  it('throws an error if no contact form is found', async () => {
     server.use(
       http.get(ENDPOINTS.STATIC_FORM, () =>
         HttpResponse.json([
@@ -42,8 +42,6 @@ describe('Page', () => {
       ),
     )
 
-    const PageComponent = await Page()
-
-    expect(PageComponent).toBeUndefined()
+    expect(() => render(<Page />)).toThrow()
   })
 })
