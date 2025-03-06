@@ -66,6 +66,8 @@ export const Attachments = ({ meldingId, token }: Props) => {
     } catch (error) {
       setErrorMessage((error as ApiError).message)
     }
+    // A file input in a form by default sends the files to the Next backend on submit.
+    // We do not want to do this since we're sending them directly from the client.
     formRef.current?.reset()
   }
 
