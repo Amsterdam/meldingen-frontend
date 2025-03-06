@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import type { StaticFormTextAreaComponentOutput, StaticFormOutput } from 'apps/public/src/apiClientProxy'
 import { getStaticForm, getStaticFormByStaticFormId } from 'apps/public/src/apiClientProxy'
 
 import { Home } from './Home'
@@ -12,12 +13,22 @@ export const metadata: Metadata = {
   title: 'Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam',
 }
 
+const isTextArea = (
+  component: StaticFormOutput['components'][number],
+): component is StaticFormTextAreaComponentOutput => component.type === 'textarea'
+
 export default async () => {
-  const primaryFormId = await getStaticForm().then((response) => response.find((form) => form.type === 'primary')?.id)
+  let primaryForm
 
-  if (!primaryFormId) return undefined
+  try {
+    const primaryFormId = await getStaticForm().then((response) => response.find((form) => form.type === 'primary')?.id)
 
-  const primaryForm = (await getStaticFormByStaticFormId({ staticFormId: primaryFormId }))?.components
+    if (!primaryFormId) throw new Error('Primary form id not found')
+
+    primaryForm = (await getStaticFormByStaticFormId({ staticFormId: primaryFormId })).components.filter(isTextArea)
+  } catch (error) {
+    return (error as Error).message
+  }
 
   return <Home formData={primaryForm} />
 }

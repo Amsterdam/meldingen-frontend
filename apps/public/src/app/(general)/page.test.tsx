@@ -22,7 +22,7 @@ describe('Page', () => {
     expect(Home).toHaveBeenCalledWith({ formData: mockFormData.components[0].components }, {})
   })
 
-  it('returns undefined if no primary form is found', async () => {
+  it('throws an error if no primary form is found', async () => {
     server.use(
       http.get(ENDPOINTS.STATIC_FORM, () =>
         HttpResponse.json([
@@ -36,6 +36,8 @@ describe('Page', () => {
 
     const PageComponent = await Page()
 
-    expect(PageComponent).toBeUndefined()
+    render(PageComponent)
+
+    expect(screen.getByText('Primary form id not found')).toBeInTheDocument()
   })
 })

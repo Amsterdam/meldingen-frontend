@@ -16,6 +16,8 @@ const mockFormData = [
     inputType: 'text',
     showCharCount: false,
     position: 0,
+    maxCharCount: 0,
+    autoExpand: false,
   },
 ]
 
