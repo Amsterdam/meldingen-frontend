@@ -17,11 +17,11 @@
   "dependencies": {
     "@headlessui/react": "2.2.0",
     "leaflet": "1.9.4",
-    "next": "15.2.0-canary.63"
+    "next": "15.2.1"
   },
   "devDependencies": {
     "@types/leaflet": "1.9.16",
-    "eslint-config-next": "15.1.7",
+    "eslint-config-next": "15.2.1",
     "next-router-mock": "0.9.13"
   }
 }
