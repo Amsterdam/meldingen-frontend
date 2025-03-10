@@ -24,7 +24,7 @@ export default async () => {
     if (!contactFormId) throw new Error('Contact form id not found')
 
     const contactForm = (await getStaticFormByStaticFormId({ staticFormId: contactFormId })).components
-    // A contact form is always an array of text area components, but TypeScript doesn't know that
+    // A contact form is always an array of two text area components, but TypeScript doesn't know that
     // We use a type guard here to make sure we're always working with the right type
     const filteredContactForm = contactForm.filter(isTextArea)
 
