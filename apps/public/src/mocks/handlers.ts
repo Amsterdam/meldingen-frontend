@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 
 import { ENDPOINTS } from './endpoints'
 import mockAdditionalQuestionsAnswerData from './mockAdditionalQuestionsAnswerData.json'
+import mockContactFormData from './mockContactFormData.json'
 import mockFormData from './mockFormData.json'
 import mockMeldingData from './mockMeldingData.json'
 
@@ -67,13 +68,25 @@ export const handlers = [
   http.get(ENDPOINTS.STATIC_FORM, () =>
     HttpResponse.json([
       {
-        id: '123',
+        id: '1',
         type: 'primary',
+      },
+      {
+        id: '2',
+        type: 'contact',
       },
     ]),
   ),
 
-  http.get(ENDPOINTS.STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(mockFormData.components[0])),
+  http.get(ENDPOINTS.STATIC_FORM_BY_STATIC_FORM_ID, ({ params }) => {
+    if (params.staticFormId === '1') {
+      return HttpResponse.json(mockFormData.components[0])
+    }
+    if (params.staticFormId === '2') {
+      return HttpResponse.json(mockContactFormData)
+    }
+    return undefined
+  }),
 
   http.get(ENDPOINTS.MELDING_BY_ID, () => HttpResponse.json(mockMeldingData)),
 

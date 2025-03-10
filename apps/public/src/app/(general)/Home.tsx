@@ -1,19 +1,18 @@
 'use client'
 
 import { Paragraph } from '@amsterdam/design-system-react'
-import type { StaticFormPanelComponentOutput, StaticFormTextFieldInputComponentOutput } from '@meldingen/api-client'
 import { FormRenderer } from '@meldingen/form-renderer'
 import { Grid } from '@meldingen/ui'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
-import { postPrimaryForm } from './actions'
+import type { StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
 
-type Component = StaticFormPanelComponentOutput | StaticFormTextFieldInputComponentOutput
+import { postPrimaryForm } from './actions'
 
 const initialState: { message?: string } = {}
 
-export const Home = ({ formData }: { formData: Component[] }) => {
+export const Home = ({ formData }: { formData: StaticFormTextAreaComponentOutput[] }) => {
   const [formState, formAction] = useActionState(postPrimaryForm, initialState)
 
   const t = useTranslations('homepage')

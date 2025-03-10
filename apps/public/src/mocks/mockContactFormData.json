@@ -1,0 +1,28 @@
+{
+  "components": [
+    {
+      "label": "First question",
+      "description": "",
+      "key": "textArea1",
+      "type": "textarea",
+      "input": true,
+      "autoExpand": false,
+      "showCharCount": false,
+      "position": 1,
+      "question": 1,
+      "values": null
+    },
+    {
+      "label": "Second question",
+      "description": "",
+      "key": "textArea2",
+      "type": "textarea",
+      "input": true,
+      "autoExpand": false,
+      "showCharCount": false,
+      "position": 2,
+      "question": 2,
+      "values": null
+    }
+  ]
+}
