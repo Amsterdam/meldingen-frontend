@@ -43,8 +43,8 @@
 
 .submitbutton {
   bottom: 0;
-  margin-block: var(--ams-space-sm);
-  margin-inline: var(--ams-space-sm);
+  margin-block: var(--ams-space-md);
+  margin-inline: var(--ams-space-md);
   position: absolute;
 
   @media screen and (min-width: 68rem) {
