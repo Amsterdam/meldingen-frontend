@@ -12,17 +12,6 @@ vi.mock('./Contact', () => ({
 
 describe('Page', () => {
   it('renders the Contact component', async () => {
-    server.use(
-      http.get(ENDPOINTS.STATIC_FORM, () =>
-        HttpResponse.json([
-          {
-            id: '123',
-            type: 'contact',
-          },
-        ]),
-      ),
-    )
-
     const PageComponent = await Page()
 
     render(PageComponent)
