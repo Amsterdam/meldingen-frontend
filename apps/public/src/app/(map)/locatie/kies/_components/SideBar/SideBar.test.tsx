@@ -1,4 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
+
+import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
+import { server } from 'apps/public/src/mocks/node'
 
 import { SideBar } from './SideBar'
 
@@ -26,6 +30,25 @@ describe('SideBar', () => {
 
     await waitFor(() => {
       expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
+    })
+  })
+
+  it('should show a generic label if no address is found within 30 meters of the coordinates', async () => {
+    server.use(
+      http.get(ENDPOINTS.PDOK_REVERSE, () =>
+        HttpResponse.json({
+          response: {
+            numFound: 0,
+            docs: [],
+          },
+        }),
+      ),
+    )
+
+    render(<SideBar coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} setCoordinates={() => {}} />)
+
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('combo-box.no-address')).toBeInTheDocument()
     })
   })
 })
