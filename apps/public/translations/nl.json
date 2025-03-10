@@ -68,7 +68,8 @@
       "current-location-button": "Mijn locatie",
       "notification": {
         "title": "Geen toestemming om uw locatie te gebruiken",
-        "description": "Dit kunt u wijzigen in de voorkeuren of instellingen van uw browser of systeem."
+        "description": "Dit kunt u wijzigen in de voorkeuren of instellingen van uw browser of systeem.",
+        "button": "Sluiten"
       },
       "zoom-in": "Inzoomen",
       "zoom-out": "Uitzoomen"
