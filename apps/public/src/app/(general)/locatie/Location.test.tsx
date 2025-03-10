@@ -16,7 +16,7 @@ const defaultProps = {
   prevPage: '/previous',
 }
 
-describe('Locatie', () => {
+describe('Location', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     ;(useActionState as Mock).mockReturnValue([{}, vi.fn()])
@@ -25,7 +25,7 @@ describe('Locatie', () => {
   it('renders', () => {
     render(<Location {...defaultProps} />)
 
-    const heading = screen.getByRole('heading', { name: 'Locatie' })
+    const heading = screen.getByRole('heading', { name: 'step.title' })
 
     expect(heading).toBeInTheDocument()
   })
@@ -33,7 +33,7 @@ describe('Locatie', () => {
   it('renders the correct backlink', () => {
     render(<Location {...defaultProps} />)
 
-    const backLink = screen.getByRole('link', { name: 'Vorige vraag' })
+    const backLink = screen.getByRole('link', { name: 'back-link' })
 
     expect(backLink).toBeInTheDocument()
     expect(backLink).toHaveAttribute('href', '/previous')
@@ -59,7 +59,7 @@ describe('Locatie', () => {
   it('renders the default text when there is no location data', () => {
     render(<Location {...defaultProps} />)
 
-    const paragraph = screen.getByText('In het volgende scherm kunt u op de kaart een adres of container opzoeken.')
+    const paragraph = screen.getByText('description')
 
     expect(paragraph).toBeInTheDocument()
   })
@@ -75,7 +75,7 @@ describe('Locatie', () => {
   it('renders a link with the default text when there is no location data', () => {
     render(<Location {...defaultProps} />)
 
-    const link = screen.getByRole('link', { name: 'Selecteer de locatie' })
+    const link = screen.getByRole('link', { name: 'link.without-location' })
 
     expect(link).toBeInTheDocument()
   })
@@ -83,7 +83,7 @@ describe('Locatie', () => {
   it('renders a link with updated text when there is location data', () => {
     render(<Location {...defaultProps} locationData={{ name: 'Test location' }} />)
 
-    const link = screen.getByRole('link', { name: 'Wijzig locatie' })
+    const link = screen.getByRole('link', { name: 'link.with-location' })
 
     expect(link).toBeInTheDocument()
   })

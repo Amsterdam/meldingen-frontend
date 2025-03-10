@@ -1,10 +1,14 @@
-import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
+import { getTranslations } from 'next-intl/server'
 
 import { Thanks } from './Thanks'
 
-export const metadata: Metadata = {
-  title: 'Bedankt - Gemeente Amsterdam',
+export const generateMetadata = async () => {
+  const t = await getTranslations('thanks')
+
+  return {
+    title: t('metadata.title'),
+  }
 }
 
 export default async () => {

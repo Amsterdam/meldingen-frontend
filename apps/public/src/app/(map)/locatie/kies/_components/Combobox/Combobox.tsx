@@ -9,6 +9,7 @@ import {
   Label as HUILabel,
 } from '@headlessui/react'
 import { ListBox } from '@meldingen/ui'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 import type { Coordinates } from 'apps/public/src/types'
@@ -42,6 +43,8 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
   const [query, setQuery] = useState('')
   const [addressList, setAddressList] = useState<Address[]>([])
   const [showListBox, setShowListBox] = useState(false)
+
+  const t = useTranslations('select-location.combo-box')
 
   useEffect(() => {
     if (address?.weergave_naam) setQuery(address?.weergave_naam)
@@ -94,14 +97,12 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
 
   return (
     <HUIField as={Field} invalid={!!errorMessage}>
-      <HUILabel as={Label}>Zoek op adres</HUILabel>
+      <HUILabel as={Label}>{t('label')}</HUILabel>
       {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Description className="ams-visually-hidden">
-        Als er autoaanvul-resultaten zijn, gebruik dan de pijltjes omhoog en omlaag om te bekijken en druk op enter om
-        te kiezen. Voor <span lang="en">touch</span>-apparaten, verken met aanraking of veegbewegingen{' '}
-        <span lang="en">(swipe)</span>.
+        {/* eslint-disable-next-line react/no-unstable-nested-components */}
+        {t.rich('description', { english: (chunks) => <span lang="en">{chunks}</span> })}
       </Description>
-
       <HUICombobox
         as="div"
         onChange={onChangeHandler}
@@ -118,7 +119,6 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
             fetchAddressList(event.target.value)
           }}
         />
-
         {showListBox && (
           <ComboboxOptions as={ListBox} className={styles.comboboxOptions} modal={false}>
             {addressList.length > 0 ? (
@@ -129,7 +129,7 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
               ))
             ) : (
               <ComboboxOption value="" disabled as={ListBox.Option}>
-                Geen resultaten gevonden
+                {t('no-results')}
               </ComboboxOption>
             )}
           </ComboboxOptions>

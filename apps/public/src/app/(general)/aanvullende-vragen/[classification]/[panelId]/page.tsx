@@ -1,5 +1,5 @@
 import type { FormPanelComponentOutput } from '@meldingen/api-client'
-import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 
 import { getFormClassificationByClassificationId } from 'apps/public/src/apiClientProxy'
 
@@ -38,8 +38,12 @@ export const dynamic = 'force-dynamic'
 //   return panelIdsByForm.flat()
 // }
 
-export const metadata: Metadata = {
-  title: 'Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam',
+export const generateMetadata = async () => {
+  const t = await getTranslations('additional-questions')
+
+  return {
+    title: t('metadata.title'),
+  }
 }
 
 type Params = Promise<{

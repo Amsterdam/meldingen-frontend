@@ -48,13 +48,14 @@ const getComponent = ({ key, data, description, label, maxCharCount, type, value
 type Props = {
   formData: any[]
   action: (formData: FormData) => void
+  submitButtonText: string
 }
 
-export const FormRenderer = ({ formData, action }: Props) => (
+export const FormRenderer = ({ formData, action, submitButtonText }: Props) => (
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   <form className="ams-gap--md" action={action}>
     {formData.map((component) => getComponent(component))}
-    <SubmitButton>Volgende vraag</SubmitButton>
+    <SubmitButton>{submitButtonText}</SubmitButton>
   </form>
 )

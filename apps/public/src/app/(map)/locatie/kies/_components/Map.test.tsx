@@ -26,7 +26,7 @@ describe('Map', () => {
   it('renders the current location button', () => {
     render(<Map setCoordinates={() => {}} />)
 
-    const button = screen.getByRole('button', { name: 'Mijn locatie' })
+    const button = screen.getByRole('button', { name: 'current-location-button' })
 
     expect(button).toBeInTheDocument()
   })

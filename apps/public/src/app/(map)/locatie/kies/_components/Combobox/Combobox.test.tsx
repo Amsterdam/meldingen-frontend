@@ -17,7 +17,7 @@ describe('Combobox', () => {
   it('should render the address input', () => {
     render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
 
-    const input = screen.getByRole('combobox', { name: 'Zoek op adres' })
+    const input = screen.getByRole('combobox', { name: 'label' })
 
     expect(input).toBeInTheDocument()
   })
@@ -35,7 +35,7 @@ describe('Combobox', () => {
 
     render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
 
-    const input = screen.getByRole('combobox', { name: 'Zoek op adres' })
+    const input = screen.getByRole('combobox', { name: 'label' })
 
     await user.type(input, 'aa')
 
@@ -50,7 +50,7 @@ describe('Combobox', () => {
 
     render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
 
-    const input = screen.getByRole('combobox', { name: 'Zoek op adres' })
+    const input = screen.getByRole('combobox', { name: 'label' })
 
     await user.type(input, 'abc')
 
@@ -65,7 +65,7 @@ describe('Combobox', () => {
 
     render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
 
-    const input = screen.getByRole('combobox', { name: 'Zoek op adres' })
+    const input = screen.getByRole('combobox', { name: 'label' })
 
     await user.type(input, 'abc')
 
@@ -93,12 +93,12 @@ describe('Combobox', () => {
 
     render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
 
-    const input = screen.getByRole('combobox', { name: 'Zoek op adres' })
+    const input = screen.getByRole('combobox', { name: 'label' })
 
     await user.type(input, 'abc')
 
     await waitFor(() => {
-      const noResults = screen.getByRole('option', { name: 'Geen resultaten gevonden' })
+      const noResults = screen.getByRole('option', { name: 'no-results' })
       expect(noResults).toBeInTheDocument()
     })
   })

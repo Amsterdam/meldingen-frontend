@@ -34,7 +34,7 @@ describe('Page', () => {
     render(<Home formData={mockFormData} />)
 
     expect(screen.queryByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Volgende vraag' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'submit-button' })).toBeInTheDocument()
   })
 
   it('should render an error message', () => {

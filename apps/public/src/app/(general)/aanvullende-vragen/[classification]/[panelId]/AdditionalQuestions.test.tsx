@@ -24,7 +24,7 @@ describe('AdditionalQuestions', () => {
   it('renders a heading', () => {
     render(<AdditionalQuestions {...defaultProps} />)
 
-    const heading = screen.getByRole('heading', { name: 'Beschrijf uw melding' })
+    const heading = screen.getByRole('heading', { name: 'step.title' })
 
     expect(heading).toBeInTheDocument()
   })

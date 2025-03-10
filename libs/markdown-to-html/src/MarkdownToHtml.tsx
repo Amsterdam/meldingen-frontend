@@ -13,9 +13,21 @@ const markdownToHtmlMap = {
       </Link>
     )
   },
-  h2: ({ children }: PropsWithChildren) => <Heading level={2}>{children}</Heading>,
-  h3: ({ children }: PropsWithChildren) => <Heading level={3}>{children}</Heading>,
-  h4: ({ children }: PropsWithChildren) => <Heading level={4}>{children}</Heading>,
+  h2: ({ children }: PropsWithChildren) => (
+    <Heading level={2} size="level-3">
+      {children}
+    </Heading>
+  ),
+  h3: ({ children }: PropsWithChildren) => (
+    <Heading level={3} size="level-4">
+      {children}
+    </Heading>
+  ),
+  h4: ({ children }: PropsWithChildren) => (
+    <Heading level={4} size="level-5">
+      {children}
+    </Heading>
+  ),
   ol: ({ children }: PropsWithChildren) => {
     const replacedChildren = Children.map(children, (child) => {
       if (isValidElement(child) && child.type === 'li') {
@@ -43,9 +55,14 @@ const markdownToHtmlMap = {
 
 const disallowedElements = ['blockquote', 'code', 'h1', 'h5', 'h6', 'hr', 'img']
 
-export const MarkdownToHtml = ({ children }: { children: string }) => (
-  <Column>
-    <ReactMarkdown components={markdownToHtmlMap} disallowedElements={disallowedElements} skipHtml>
+export const MarkdownToHtml = ({ children, className }: { children: string; className?: string }) => (
+  <Column className={className ?? ''}>
+    <ReactMarkdown
+      urlTransform={(url) => url} // Force ReactMarkdown to pass urls as-is
+      components={markdownToHtmlMap}
+      disallowedElements={disallowedElements}
+      skipHtml
+    >
       {children}
     </ReactMarkdown>
   </Column>

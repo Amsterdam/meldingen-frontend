@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 
 import type { StaticFormTextAreaComponentOutput, StaticFormOutput } from 'apps/public/src/apiClientProxy'
 import { getStaticForm, getStaticFormByStaticFormId } from 'apps/public/src/apiClientProxy'
@@ -9,8 +9,12 @@ import { Home } from './Home'
 // We can remove this when the api is deployed.
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  title: 'Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam',
+export const generateMetadata = async () => {
+  const t = await getTranslations('homepage')
+
+  return {
+    title: t('metadata.title'),
+  }
 }
 
 const isTextArea = (
