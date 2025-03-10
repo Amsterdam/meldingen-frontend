@@ -68,7 +68,7 @@ describe('Contact', () => {
     expect(telInput).toHaveAccessibleDescription('Test 2')
   })
 
-  it('should not render descriptions that are connected the e-mail and tel inputs when they are not provided', () => {
+  it('should not render descriptions when they are not provided', () => {
     const mockFormDataWithoutDescriptions = [
       {
         ...mockFormData[0],
