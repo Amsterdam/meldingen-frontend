@@ -58,7 +58,7 @@ describe('Contact', () => {
     expect(screen.queryByText('Test error message')).toBeInTheDocument()
   })
 
-  it('should render descriptions that are connected the e-mail and tel inputs', () => {
+  it('should render descriptions that are connected to the e-mail and tel inputs', () => {
     render(<Contact formData={mockFormData} />)
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
