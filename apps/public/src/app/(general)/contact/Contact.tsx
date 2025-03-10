@@ -15,6 +15,11 @@ const initialState: { message?: string } = {}
 export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOutput[] }) => {
   const [formState, formAction] = useActionState(postContactForm, initialState)
 
+  const emailLabel = formData[0].label
+  const emailDescription = formData[0].description
+  const telLabel = formData[1].label
+  const telDescription = formData[1].description
+
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
@@ -41,15 +46,15 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
             </Alert>
           )}
           <Label htmlFor="email-input" optional className="ams-mb--sm">
-            {formData[0].label}
+            {emailLabel}
           </Label>
-          {formData[0].description && (
+          {emailDescription && (
             <Paragraph size="small" id="email-input-description">
-              {formData[0].description}
+              {emailDescription}
             </Paragraph>
           )}
           <TextInput
-            aria-describedby={formData[0].description ? 'email-input-description' : undefined}
+            aria-describedby={emailDescription ? 'email-input-description' : undefined}
             name="email"
             id="email-input"
             type="email"
@@ -59,15 +64,15 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
             className="ams-mb--sm"
           />
           <Label htmlFor="tel-input" optional className="ams-mb--sm">
-            {formData[1].label}
+            {telLabel}
           </Label>
-          {formData[1].description && (
+          {telDescription && (
             <Paragraph size="small" id="tel-input-description">
-              {formData[1].description}
+              {telDescription}
             </Paragraph>
           )}
           <TextInput
-            aria-describedby={formData[1].description ? 'tel-input-description' : undefined}
+            aria-describedby={telDescription ? 'tel-input-description' : undefined}
             autoComplete="tel"
             className="ams-mb--sm"
             id="tel-input"

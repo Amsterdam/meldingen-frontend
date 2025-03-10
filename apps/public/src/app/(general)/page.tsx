@@ -18,17 +18,17 @@ const isTextArea = (
 ): component is StaticFormTextAreaComponentOutput => component.type === 'textarea'
 
 export default async () => {
-  let primaryForm
-
   try {
     const primaryFormId = await getStaticForm().then((response) => response.find((form) => form.type === 'primary')?.id)
 
     if (!primaryFormId) throw new Error('Primary form id not found')
 
-    primaryForm = (await getStaticFormByStaticFormId({ staticFormId: primaryFormId })).components.filter(isTextArea)
+    const primaryForm = (await getStaticFormByStaticFormId({ staticFormId: primaryFormId })).components
+    // A primary form is always an array with 1 text area component, but TypeScript doesn't know that
+    // We use a type guard here to make sure we're always working with the right type
+    const filteredPrimaryForm = primaryForm.filter(isTextArea)
+    return <Home formData={filteredPrimaryForm} />
   } catch (error) {
     return (error as Error).message
   }
-
-  return <Home formData={primaryForm} />
 }
