@@ -76,7 +76,7 @@ describe('ControlsOverlay', () => {
 
     await user.click(button)
 
-    const closeButton = screen.getByRole('button', { name: 'Sluiten' })
+    const closeButton = screen.getByRole('button', { name: 'notification.close-button' })
 
     await user.click(closeButton)
 

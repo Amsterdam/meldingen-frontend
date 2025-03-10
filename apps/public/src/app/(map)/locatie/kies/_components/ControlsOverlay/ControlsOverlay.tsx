@@ -53,7 +53,7 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
           <Notification
             heading={t('notification.title')}
             closeable
-            closeButtonLabel={t('notification.button')}
+            closeButtonLabel={t('notification.close-button')}
             onClose={() => setShowNotification(false)}
           >
             <Paragraph>{t('notification.description')}</Paragraph>
