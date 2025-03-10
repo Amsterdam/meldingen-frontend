@@ -3,12 +3,14 @@ import { render, screen } from '@testing-library/react'
 import { Thanks } from './Thanks'
 
 describe('Thanks', () => {
-  it('should render meldingId and Doe een melding-link', () => {
+  it('should render', () => {
     render(<Thanks meldingId="1" />)
 
-    const paragraph = screen.getByText('Wij hebben uw melding ontvangen op 21-11-2023 om 17:11. Uw meldnummer is 1.')
-    const link = screen.getByRole('link', { name: 'Doe een melding' })
+    const heading = screen.getByRole('heading', { name: 'title' })
+    const paragraph = screen.getByText('description')
+    const link = screen.getByRole('link', { name: 'link' })
 
+    expect(heading).toBeInTheDocument()
     expect(paragraph).toBeInTheDocument()
     expect(link).toBeInTheDocument()
   })

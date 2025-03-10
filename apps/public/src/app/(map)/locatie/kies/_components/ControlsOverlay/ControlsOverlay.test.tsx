@@ -44,12 +44,12 @@ describe('ControlsOverlay', () => {
 
     render(<ControlsOverlay mapInstance={mapInstanceMock} setCoordinates={() => {}} />)
 
-    const button = screen.getByRole('button', { name: 'Mijn locatie' })
+    const button = screen.getByRole('button', { name: 'current-location-button' })
 
     await user.click(button)
 
     const notification = screen.getByRole('heading', {
-      name: 'Geen toestemming om uw locatie te gebruiken',
+      name: 'notification.title',
     })
 
     expect(notification).toBeInTheDocument()
@@ -72,16 +72,16 @@ describe('ControlsOverlay', () => {
 
     render(<ControlsOverlay mapInstance={mapInstanceMock} setCoordinates={() => {}} />)
 
-    const button = screen.getByRole('button', { name: 'Mijn locatie' })
+    const button = screen.getByRole('button', { name: 'current-location-button' })
 
     await user.click(button)
 
-    const closeButton = screen.getByRole('button', { name: 'Sluiten' })
+    const closeButton = screen.getByRole('button', { name: 'notification.close-button' })
 
     await user.click(closeButton)
 
     const notification = screen.queryByRole('heading', {
-      name: 'meldingen.amsterdam.nl heeft geen toestemming om uw locatie te gebruiken.',
+      name: 'notification.title',
     })
 
     expect(notification).not.toBeInTheDocument()
@@ -108,7 +108,7 @@ describe('ControlsOverlay', () => {
 
     render(<ControlsOverlay mapInstance={mapInstanceMock} setCoordinates={mockSetCoordinates} />)
 
-    const button = screen.getByRole('button', { name: 'Mijn locatie' })
+    const button = screen.getByRole('button', { name: 'current-location-button' })
 
     await user.click(button)
 
@@ -141,7 +141,7 @@ describe('ControlsOverlay', () => {
 
     render(<ControlsOverlay mapInstance={null} setCoordinates={mockSetCoordinates} />)
 
-    const button = screen.getByRole('button', { name: 'Mijn locatie' })
+    const button = screen.getByRole('button', { name: 'current-location-button' })
 
     await user.click(button)
 
@@ -155,7 +155,7 @@ describe('ControlsOverlay', () => {
 
     render(<ControlsOverlay mapInstance={mapInstanceMock} setCoordinates={() => {}} />)
 
-    const ZoomInButton = screen.getByRole('button', { name: 'Inzoomen' })
+    const ZoomInButton = screen.getByRole('button', { name: 'zoom-in' })
 
     await user.click(ZoomInButton)
 
@@ -167,7 +167,7 @@ describe('ControlsOverlay', () => {
 
     render(<ControlsOverlay mapInstance={mapInstanceMock} setCoordinates={() => {}} />)
 
-    const ZoomOutButton = screen.getByRole('button', { name: 'Uitzoomen' })
+    const ZoomOutButton = screen.getByRole('button', { name: 'zoom-out' })
 
     await user.click(ZoomOutButton)
 

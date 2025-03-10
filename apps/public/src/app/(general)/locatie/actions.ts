@@ -2,6 +2,7 @@
 
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 import { postMeldingByMeldingIdLocation } from 'apps/public/src/apiClientProxy'
 
@@ -14,7 +15,9 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
 
   const coordinates = formData.get('coordinates')
 
-  if (!coordinates) return { message: 'Vul een locatie in.' }
+  const t = await getTranslations('location')
+
+  if (!coordinates) return { message: t('errors.no-location') }
 
   const parsedCoordinates = JSON.parse(coordinates as string)
 

@@ -2,6 +2,7 @@
 
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
 
@@ -11,7 +12,9 @@ export const writeAddressAndCoordinateToCookie = async (_: unknown, formData: Fo
   const address = formData.get('address')
   const coordinates = formData.get('coordinates')
 
-  if (!address) return { message: 'Vul een locatie in.' }
+  const t = await getTranslations('select-location')
+
+  if (!address) return { message: t('errors.no-location') }
 
   try {
     // If we don't have coordinates for some reason, we fetch it from the PDOK API using the address.
@@ -23,7 +26,7 @@ export const writeAddressAndCoordinateToCookie = async (_: unknown, formData: Fo
       : null
 
     if (PDOKLocation && !PDOKLocation.response.docs.length) {
-      throw new Error('Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam.')
+      throw new Error(t('pdok-no-address-found'))
     }
 
     const location = {

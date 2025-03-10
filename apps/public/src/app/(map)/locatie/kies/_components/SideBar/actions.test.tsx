@@ -80,7 +80,7 @@ describe('writeAddressAndCoordinateToCookie', () => {
 
     const result = await writeAddressAndCoordinateToCookie(null, formData)
 
-    expect(result).toEqual({ message: 'Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam.' })
+    expect(result).toEqual({ message: 'pdok-no-address-found' })
   })
 
   it('returns an error message if an error occurs', async () => {
@@ -99,6 +99,6 @@ describe('writeAddressAndCoordinateToCookie', () => {
 
     const result = await writeAddressAndCoordinateToCookie(null, formData)
 
-    expect(result).toEqual({ message: 'Vul een locatie in.' })
+    expect(result).toEqual({ message: 'errors.no-location' })
   })
 })

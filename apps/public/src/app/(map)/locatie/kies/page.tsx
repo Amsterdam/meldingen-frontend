@@ -1,9 +1,13 @@
-import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 
 import { SelectLocation } from './SelectLocation'
 
-export const metadata: Metadata = {
-  title: 'Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam',
+export const generateMetadata = async () => {
+  const t = await getTranslations('select-location')
+
+  return {
+    title: t('metadata.title'),
+  }
 }
 
 export default async () => <SelectLocation />

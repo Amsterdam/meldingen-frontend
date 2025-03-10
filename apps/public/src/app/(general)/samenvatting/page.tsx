@@ -1,5 +1,5 @@
-import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
+import { getTranslations } from 'next-intl/server'
 
 import {
   getMeldingByMeldingIdAnswers,
@@ -11,8 +11,12 @@ import {
 import { getSummaryData } from './_utils/getSummaryData'
 import { Summary } from './Summary'
 
-export const metadata: Metadata = {
-  title: 'Stap 4 van 4 - Samenvatting - Gemeente Amsterdam',
+export const generateMetadata = async () => {
+  const t = await getTranslations('summary')
+
+  return {
+    title: t('metadata.title'),
+  }
 }
 
 export default async () => {
@@ -34,11 +38,14 @@ export default async () => {
 
   const additionalQuestionsAnswers = await getMeldingByMeldingIdAnswers({ meldingId: parseInt(meldingId, 10), token })
 
+  const t = await getTranslations('location')
+
   const data = getSummaryData({
     melding,
     primaryFormLabel: primaryForm?.label,
     additionalQuestionsAnswers,
     location: location ? JSON.parse(location) : undefined,
+    locationLabel: t('title'),
   })
 
   return <Summary data={data} />

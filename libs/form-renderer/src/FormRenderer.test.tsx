@@ -3,11 +3,15 @@ import { render, screen } from '@testing-library/react'
 import { FormRenderer } from './FormRenderer'
 import mockFormData from './mocks/mockFormData.json'
 
+const defaultProps = {
+  action: vi.fn(),
+  formData: mockFormData.components[0].components,
+  submitButtonText: 'Volgende vraag',
+}
+
 describe('FormRenderer', () => {
   it('renders a form', () => {
-    const action = vi.fn()
-
-    const { container } = render(<FormRenderer formData={mockFormData.components[0].components} action={action} />)
+    const { container } = render(<FormRenderer {...defaultProps} />)
 
     const form = container.querySelector('form')
 
@@ -15,9 +19,7 @@ describe('FormRenderer', () => {
   })
 
   it('renders a TextInput', () => {
-    const action = vi.fn()
-
-    render(<FormRenderer formData={mockFormData.components[0].components} action={action} />)
+    render(<FormRenderer {...defaultProps} />)
 
     const textInput = screen.getByRole('textbox', { name: mockFormData.components[0].components[0].label })
 
@@ -25,9 +27,7 @@ describe('FormRenderer', () => {
   })
 
   it('renders a TextArea', () => {
-    const action = vi.fn()
-
-    render(<FormRenderer formData={mockFormData.components[0].components} action={action} />)
+    render(<FormRenderer {...defaultProps} />)
 
     const textArea = screen.getByRole('textbox', { name: mockFormData.components[0].components[1].label })
 
@@ -35,9 +35,7 @@ describe('FormRenderer', () => {
   })
 
   it('renders a Checkbox group', () => {
-    const action = vi.fn()
-
-    render(<FormRenderer formData={mockFormData.components[0].components} action={action} />)
+    render(<FormRenderer {...defaultProps} />)
 
     const checkboxGroup = screen.getByRole('group', { name: mockFormData.components[0].components[2].label })
 
@@ -45,9 +43,7 @@ describe('FormRenderer', () => {
   })
 
   it('renders a Select', () => {
-    const action = vi.fn()
-
-    render(<FormRenderer formData={mockFormData.components[0].components} action={action} />)
+    render(<FormRenderer {...defaultProps} />)
 
     const select = screen.getByRole('combobox', { name: mockFormData.components[0].components[3].label })
 
@@ -55,9 +51,7 @@ describe('FormRenderer', () => {
   })
 
   it('renders a Radio group', () => {
-    const action = vi.fn()
-
-    render(<FormRenderer formData={mockFormData.components[0].components} action={action} />)
+    render(<FormRenderer {...defaultProps} />)
 
     const radioGroup = screen.getByRole('radiogroup', { name: mockFormData.components[0].components[4].label })
 
@@ -65,16 +59,17 @@ describe('FormRenderer', () => {
   })
 
   it('renders nothing if an unsupported component is passed', () => {
-    const action = vi.fn()
+    const props = {
+      ...defaultProps,
+      formData: [
+        {
+          ...mockFormData.components[0].components[0],
+          type: 'unsupported',
+        },
+      ],
+    }
 
-    const unsupportedComponentMock = [
-      {
-        ...mockFormData.components[0].components[0],
-        type: 'unsupported',
-      },
-    ]
-
-    const { container } = render(<FormRenderer formData={unsupportedComponentMock} action={action} />)
+    const { container } = render(<FormRenderer {...props} />)
 
     const component = container.querySelector('input, textarea')
 
@@ -82,9 +77,7 @@ describe('FormRenderer', () => {
   })
 
   it('renders a submit button', () => {
-    const action = vi.fn()
-
-    render(<FormRenderer formData={mockFormData.components[0].components} action={action} />)
+    render(<FormRenderer {...defaultProps} />)
 
     const submitButton = screen.getByRole('button', { name: 'Volgende vraag' })
 
