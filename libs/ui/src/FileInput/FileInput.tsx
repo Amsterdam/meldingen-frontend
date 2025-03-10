@@ -8,7 +8,7 @@ export type Props = {
 
 export const FileInput = ({ id, ...restProps }: Props) => (
   <div className={styles.wrapper}>
-    <input id={id} type="file" {...restProps} />
+    <input id={id} type="file" className={styles.input} {...restProps} />
     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
     <label htmlFor={id} className={styles.label}>
       <span className={styles.button}>Selecteer bestanden</span>
