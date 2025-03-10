@@ -14,11 +14,11 @@ describe('SideBar', () => {
   it('should render correctly', () => {
     render(<SideBar setCoordinates={() => {}} />)
 
-    const heading = screen.getByRole('heading', { name: 'Selecteer de locatie' })
-    const paragraph = screen.getAllByRole('paragraph')
+    const heading = screen.getByRole('heading', { name: 'title' })
+    const description = screen.getAllByText('description')
 
     expect(heading).toBeInTheDocument()
-    expect(paragraph[0]).toBeInTheDocument()
+    expect(description[0]).toBeInTheDocument()
   })
 
   it('should show an address based on provided coordinates ', async () => {

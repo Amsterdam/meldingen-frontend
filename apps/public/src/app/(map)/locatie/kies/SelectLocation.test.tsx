@@ -20,9 +20,9 @@ describe('SelectLocation', () => {
       expect(outerWrapper).toBeInTheDocument()
     })
 
-    const sideBar = screen.getByRole('heading', { name: 'Selecteer de locatie' })
-    const addressCombobox = screen.getByRole('combobox', { name: 'Zoek op adres' })
-    const toggleButton = screen.getByRole('button', { name: 'Lijst' })
+    const sideBar = screen.getByRole('heading', { name: 'title' })
+    const addressCombobox = screen.getByRole('combobox', { name: 'label' })
+    const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
 
     expect(sideBar).toBeInTheDocument()
     expect(addressCombobox).toBeInTheDocument()

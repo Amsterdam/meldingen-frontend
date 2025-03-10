@@ -50,7 +50,7 @@ describe('postLocationForm', () => {
     const formData = new FormData()
     const result = await postLocationForm(null, formData)
 
-    expect(result).toEqual({ message: 'Vul een locatie in.' })
+    expect(result).toEqual({ message: 'errors.no-location' })
   })
 
   it('posts the location and redirects to /bijlage', async () => {

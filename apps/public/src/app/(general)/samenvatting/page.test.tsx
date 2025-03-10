@@ -67,7 +67,7 @@ describe('Page', () => {
           {
             description: ['Test address'],
             key: 'location',
-            term: 'Waar is het?',
+            term: 'title',
           },
           {
             description: ['email@email.email', '0612345678'],
@@ -194,7 +194,7 @@ describe('Page', () => {
           {
             description: ['Test address'],
             key: 'location',
-            term: 'Waar is het?',
+            term: 'title',
           },
         ],
       },
