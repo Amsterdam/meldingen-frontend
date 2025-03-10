@@ -67,12 +67,12 @@ describe('Page', () => {
           {
             description: ['Test address'],
             key: 'location',
-            term: 'title',
+            term: 'location.title',
           },
           {
             description: ['email@email.email', '0612345678'],
             key: 'contact',
-            term: 'Wat zijn uw contactgegevens?',
+            term: 'summary.contact-label',
           },
         ],
       },
@@ -139,7 +139,7 @@ describe('Page', () => {
           {
             description: ['email@email.email', '0612345678'],
             key: 'contact',
-            term: 'Wat zijn uw contactgegevens?',
+            term: 'summary.contact-label',
           },
         ],
       },
@@ -194,7 +194,7 @@ describe('Page', () => {
           {
             description: ['Test address'],
             key: 'location',
-            term: 'title',
+            term: 'location.title',
           },
         ],
       },
