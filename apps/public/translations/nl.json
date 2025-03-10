@@ -88,6 +88,10 @@
       "title": "Foto’s",
       "description": "Stap 2 van 4"
     },
+    "file-input": {
+      "button": "Selecteer bestanden sdsd",
+      "drop-area": "Of sleep de bestanden in dit vak."
+    },
     "errors": {
       "too-many-files": "U kunt maximaal {maxFiles} bestanden uploaden."
     }

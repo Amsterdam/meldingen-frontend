@@ -116,6 +116,8 @@ export const Attachments = ({ meldingId, token }: Props) => {
             <FileInput
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
               aria-describedby={`file-upload-description ${errorMessage ? 'error-message' : ''}`}
+              buttonText={t('file-input.button')}
+              dropAreaText={t('file-input.drop-area')}
               id="file-upload"
               name="file"
               multiple
