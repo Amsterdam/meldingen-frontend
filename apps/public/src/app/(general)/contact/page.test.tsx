@@ -35,6 +35,6 @@ describe('Page', () => {
 
     render(PageComponent)
 
-    expect(screen.getByText('Contact form id not found')).toBeInTheDocument()
+    expect(screen.getByText('errors.form-id-not-found')).toBeInTheDocument()
   })
 })
