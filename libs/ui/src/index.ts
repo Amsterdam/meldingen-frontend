@@ -1,3 +1,4 @@
+export * from './FileInput'
 export * from './Footer'
 export * from './Grid'
 export * from './Header'

@@ -4,8 +4,8 @@ import type { Mock } from 'vitest'
 
 import Page from './page'
 
-vi.mock('./Bijlage', () => ({
-  Bijlage: vi.fn(() => <div>Bijlage Component</div>),
+vi.mock('./Attachments', () => ({
+  Attachments: vi.fn(() => <div>Attachments Component</div>),
 }))
 
 vi.mock('next/headers', () => ({
@@ -22,7 +22,7 @@ describe('Page', () => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  it('renders the Bijlage component', async () => {
+  it('renders the Attachments component', async () => {
     mockCookies.get.mockImplementation((name) => {
       if (name === 'id') {
         return { value: '21' }
@@ -37,7 +37,7 @@ describe('Page', () => {
 
     render(PageComponent)
 
-    expect(screen.getByText('Bijlage Component')).toBeInTheDocument()
+    expect(screen.getByText('Attachments Component')).toBeInTheDocument()
   })
 
   it('should render undefined when there is no meldingId or token', async () => {
