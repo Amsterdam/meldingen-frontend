@@ -107,6 +107,7 @@
     },
     "title": "Versturen",
     "description": "Controleer uw gegevens en verstuur uw melding.",
+    "contact-label": "Wat zijn uw contactgegevens?",
     "submit-button": "Verstuur melding"
   },
   "thanks": {
