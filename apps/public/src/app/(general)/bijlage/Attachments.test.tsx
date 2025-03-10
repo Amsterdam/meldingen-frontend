@@ -20,8 +20,8 @@ describe('Attachments', () => {
   it('should render correctly', () => {
     render(<Attachments {...defaultProps} />)
 
-    const backLink = screen.getByRole('link', { name: 'Vorige vraag' })
-    const header = screen.getByRole('heading', { name: 'Foto’s' })
+    const backLink = screen.getByRole('link', { name: 'back-link' })
+    const header = screen.getByRole('heading', { name: 'step.title' })
     const fileUpload = screen.getByLabelText(/Selecteer bestanden/i)
 
     expect(backLink).toBeInTheDocument()
@@ -131,7 +131,7 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [file, file2, file3, file4])
 
-    const errorMessage = screen.getByText('U kunt maximaal 3 bestanden uploaden.')
+    const errorMessage = screen.getByText('errors.too-many-files')
 
     expect(errorMessage).toBeInTheDocument()
     expect(screen.queryByText('example.png')).not.toBeInTheDocument()

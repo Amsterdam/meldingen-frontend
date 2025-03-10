@@ -79,6 +79,19 @@
       "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam."
     }
   },
+  "attachments": {
+    "metadata": {
+      "title": "Stap 2 van 4 - Foto’s - Gemeente Amsterdam"
+    },
+    "back-link": "Vorige vraag",
+    "step": {
+      "title": "Foto’s",
+      "description": "Stap 2 van 4"
+    },
+    "errors": {
+      "too-many-files": "U kunt maximaal {maxFiles} bestanden uploaden."
+    }
+  },
   "summary": {
     "metadata": {
       "title": "Stap 4 van 4 - Samenvatting - Gemeente Amsterdam"

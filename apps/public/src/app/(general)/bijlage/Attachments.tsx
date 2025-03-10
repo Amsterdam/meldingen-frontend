@@ -12,6 +12,7 @@ import {
 } from '@amsterdam/design-system-react'
 import type { ApiError } from '@meldingen/api-client'
 import { Grid, FileInput, SubmitButton } from '@meldingen/ui'
+import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 
@@ -39,6 +40,8 @@ export const Attachments = ({ meldingId, token }: Props) => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
 
+  const t = useTranslations('attachments')
+
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     setErrorMessage(undefined)
 
@@ -48,7 +51,7 @@ export const Attachments = ({ meldingId, token }: Props) => {
 
     try {
       if (files.length + uploadedFiles.length > MAX_FILES) {
-        throw new Error(`U kunt maximaal ${MAX_FILES} bestanden uploaden.`)
+        throw new Error(t('errors.too-many-files', { maxFiles: MAX_FILES }))
       }
 
       const result = await Promise.all(
@@ -89,8 +92,8 @@ export const Attachments = ({ meldingId, token }: Props) => {
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <BackLink href="/locatie">Vorige vraag</BackLink>
-        <Heading className="ams-mb--sm">Foto’s</Heading>
+        <BackLink href="/locatie">{t('back-link')}</BackLink>
+        <Heading className="ams-mb--sm">{t('step.title')}</Heading>
         <form ref={formRef} action={redirectToNextPage}>
           <Field invalid={Boolean(errorMessage)} className="ams-mb--sm">
             <Label htmlFor="file-upload" optional>
