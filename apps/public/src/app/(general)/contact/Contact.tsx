@@ -4,14 +4,21 @@ import { Alert, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-s
 import { Grid, SubmitButton } from '@meldingen/ui'
 import { useActionState } from 'react'
 
+import type { StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
+
 import { BackLink } from '../_components/BackLink'
 
 import { postContactForm } from './actions'
 
 const initialState: { message?: string } = {}
 
-export const Contact = () => {
+export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOutput[] }) => {
   const [formState, formAction] = useActionState(postContactForm, initialState)
+
+  const emailLabel = formData[0].label
+  const emailDescription = formData[0].description
+  const telLabel = formData[1].label
+  const telDescription = formData[1].description
 
   return (
     <Grid paddingBottom="large" paddingTop="medium">
@@ -39,9 +46,15 @@ export const Contact = () => {
             </Alert>
           )}
           <Label htmlFor="email-input" optional className="ams-mb--sm">
-            Wat is uw e-mailadres?
+            {emailLabel}
           </Label>
+          {emailDescription && (
+            <Paragraph size="small" id="email-input-description">
+              {emailDescription}
+            </Paragraph>
+          )}
           <TextInput
+            aria-describedby={emailDescription ? 'email-input-description' : undefined}
             name="email"
             id="email-input"
             type="email"
@@ -51,9 +64,21 @@ export const Contact = () => {
             className="ams-mb--sm"
           />
           <Label htmlFor="tel-input" optional className="ams-mb--sm">
-            Wat is uw telefoonnummer?
+            {telLabel}
           </Label>
-          <TextInput name="phone" id="tel-input" type="tel" autoComplete="tel" className="ams-mb--sm" />
+          {telDescription && (
+            <Paragraph size="small" id="tel-input-description">
+              {telDescription}
+            </Paragraph>
+          )}
+          <TextInput
+            aria-describedby={telDescription ? 'tel-input-description' : undefined}
+            autoComplete="tel"
+            className="ams-mb--sm"
+            id="tel-input"
+            name="phone"
+            type="tel"
+          />
           <SubmitButton>Volgende vraag</SubmitButton>
         </form>
       </Grid.Cell>
