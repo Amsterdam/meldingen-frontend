@@ -10,7 +10,7 @@ export type Props = {
 
 export const FileInput = ({ buttonText, dropAreaText, id, ...restProps }: Props) => (
   <div className={styles.wrapper}>
-    <input id={id} type="file" {...restProps} />
+    <input id={id} type="file" className={styles.input} {...restProps} />
     <label htmlFor={id} className={styles.label}>
       <span className={styles.button}>{buttonText}</span>
       <span className={styles.dropAreaText}>{dropAreaText}</span>
