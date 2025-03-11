@@ -35,8 +35,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
   const t = useTranslations('attachments')
 
-  const { label } = formData[0]
-  const { description } = formData[0]
+  const { label, description } = formData[0]
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     setErrorMessage(undefined)

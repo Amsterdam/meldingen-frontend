@@ -57,7 +57,7 @@ const descriptionMarkdownToHtmlMap = {
   p: ({ children }: PropsWithChildren) => <Paragraph size="small">{children}</Paragraph>,
 }
 
-const richTextAllowedElements = ['a', 'br', 'em', 'h2', 'h3', 'h4', 'ol', 'p', 'strong', 'ul']
+const richTextAllowedElements = ['a', 'br', 'em', 'h2', 'h3', 'h4', 'li', 'ol', 'p', 'strong', 'ul']
 // Some screen readers do not read rich text content in input descriptions.
 // For this reason, we only allow paragraphs.
 const descriptionAllowedElements = ['p']

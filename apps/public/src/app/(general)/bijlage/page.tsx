@@ -32,14 +32,14 @@ export default async () => {
       (response) => response.find((form) => form.type === 'attachments')?.id,
     )
 
-    if (!attachmentsFormId) throw new Error(t('errors.form-id-not-found')) // TODO
+    if (!attachmentsFormId) throw new Error(t('errors.form-id-not-found'))
 
     const attachmentsForm = (await getStaticFormByStaticFormId({ staticFormId: attachmentsFormId })).components
     // A attachments form is always an array with 1 text area component, but TypeScript doesn't know that
     // We use a type guard here to make sure we're always working with the right type
     const filteredAttachmentsForm = attachmentsForm.filter(isTextArea)
 
-    if (!filteredAttachmentsForm[0].label) throw new Error(t('errors.form-label-not-found')) // TODO
+    if (!filteredAttachmentsForm[0].label) throw new Error(t('errors.form-label-not-found'))
 
     return <Attachments formData={filteredAttachmentsForm} meldingId={parseInt(meldingId, 10)} token={token} />
   } catch (error) {

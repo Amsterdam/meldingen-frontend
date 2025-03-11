@@ -94,6 +94,8 @@
     },
     "submit-button": "Volgende vraag",
     "errors": {
+      "form-id-not-found": "Attachments form id not found",
+      "form-label-not-found": "Attachments form label not found",
       "too-many-files": "U kunt maximaal {maxFiles} bestanden uploaden."
     }
   },
