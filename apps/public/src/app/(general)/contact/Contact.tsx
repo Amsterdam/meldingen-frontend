@@ -1,7 +1,9 @@
 'use client'
 
 import { Alert, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-system-react'
+import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Grid, SubmitButton } from '@meldingen/ui'
+import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
@@ -15,6 +17,8 @@ const initialState: { message?: string } = {}
 export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOutput[] }) => {
   const [formState, formAction] = useActionState(postContactForm, initialState)
 
+  const t = useTranslations('contact')
+
   const emailLabel = formData[0].label
   const emailDescription = formData[0].description
   const telLabel = formData[1].label
@@ -24,21 +28,15 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
         <BackLink href="/bijlage" className="ams-mb--xs">
-          Vorige vraag
+          {t('back-link')}
         </BackLink>
         <Heading level={1} className="ams-mb--sm">
-          Gegevens
+          {t('step.title')}
         </Heading>
         <Heading level={2} size="level-4" className="ams-mb--xs">
-          Mogen we u bellen voor vragen? En op de hoogte houden via e-mail?
+          {t('title')}
         </Heading>
-        <Paragraph className="ams-mb--xs">
-          Vaak hebben we nog een vraag. Daarmee kunnen we het probleem sneller of beter oplossen. Of we willen iets
-          uitleggen. Wij willen u dan graag even bellen. Of anders e-mailen wij u.
-        </Paragraph>
-        <Paragraph className="ams-mb--sm">
-          Wij gebruiken uw telefoonnummer en e-mailadres alléén voor deze melding.
-        </Paragraph>
+        <MarkdownToHtml className="ams-mb--sm">{t('description')}</MarkdownToHtml>
         <form action={formAction}>
           {formState?.message && (
             <Alert severity="error" heading="Let op" className="ams-mb--sm">
@@ -79,7 +77,7 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
             name="phone"
             type="tel"
           />
-          <SubmitButton>Volgende vraag</SubmitButton>
+          <SubmitButton>{t('submit-button')}</SubmitButton>
         </form>
       </Grid.Cell>
     </Grid>

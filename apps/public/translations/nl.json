@@ -79,6 +79,40 @@
       "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam."
     }
   },
+  "attachments": {
+    "metadata": {
+      "title": "Stap 2 van 4 - Foto’s - Gemeente Amsterdam"
+    },
+    "back-link": "Vorige vraag",
+    "step": {
+      "title": "Foto’s",
+      "description": "Stap 2 van 4"
+    },
+    "file-input": {
+      "button": "Selecteer bestanden",
+      "drop-area": "Of sleep de bestanden in dit vak."
+    },
+    "errors": {
+      "too-many-files": "U kunt maximaal {maxFiles} bestanden uploaden."
+    }
+  },
+  "contact": {
+    "metadata": {
+      "title": "Stap 3 van 4 - Gegevens - Gemeente Amsterdam"
+    },
+    "back-link": "Vorige vraag",
+    "step": {
+      "title": "Gegevens",
+      "description": "Stap 3 van 4"
+    },
+    "title": "Mogen we u bellen voor vragen? En op de hoogte houden via e-mail?",
+    "description": "Vaak hebben we nog een vraag. Daarmee kunnen we het probleem sneller of beter oplossen. Of we willen iets uitleggen. Wij willen u dan graag even bellen. Of anders e-mailen wij u.\n\nWij gebruiken uw telefoonnummer en e-mailadres alléén voor deze melding.",
+    "submit-button": "Volgende vraag",
+    "errors": {
+      "form-id-not-found": "Contact form id not found",
+      "form-labels-not-found": "Contact form labels not found"
+    }
+  },
   "summary": {
     "metadata": {
       "title": "Stap 4 van 4 - Samenvatting - Gemeente Amsterdam"
@@ -90,6 +124,7 @@
     },
     "title": "Versturen",
     "description": "Controleer uw gegevens en verstuur uw melding.",
+    "contact-label": "Wat zijn uw contactgegevens?",
     "submit-button": "Verstuur melding"
   },
   "thanks": {
