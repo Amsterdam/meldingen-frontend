@@ -6,8 +6,10 @@ import type { Props } from './FileInput'
 const mockHandleOnChange = vi.fn()
 
 const defaultProps: Props = {
-  onChange: mockHandleOnChange,
+  buttonText: 'Selecteer bestanden',
+  dropAreaText: 'Of sleep de bestanden in dit vak.',
   id: 'file-upload',
+  onChange: mockHandleOnChange,
 }
 
 describe('FileInput Component', () => {
