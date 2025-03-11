@@ -11,6 +11,7 @@ type Props = {
     coordinates: Coordinates
   }
   locationLabel: string
+  contactLabel: string
 }
 
 export const getSummaryData = ({
@@ -19,6 +20,7 @@ export const getSummaryData = ({
   additionalQuestionsAnswers,
   location,
   locationLabel,
+  contactLabel,
 }: Props) => {
   const primaryFormSummary = {
     key: 'primary',
@@ -40,7 +42,7 @@ export const getSummaryData = ({
 
   const contactSummary = {
     key: 'contact',
-    term: 'Wat zijn uw contactgegevens?',
+    term: contactLabel,
     description: [melding.email, melding.phone].filter((item) => item !== undefined && item !== null), // Filter out undefined or null items
   }
 
