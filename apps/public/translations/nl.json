@@ -89,7 +89,7 @@
       "description": "Stap 2 van 4"
     },
     "file-input": {
-      "button": "Selecteer bestanden sdsd",
+      "button": "Selecteer bestanden",
       "drop-area": "Of sleep de bestanden in dit vak."
     },
     "errors": {
