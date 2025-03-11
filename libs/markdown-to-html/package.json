@@ -12,6 +12,6 @@
     "typecheck": "tsc --project ./tsconfig.json --noEmit"
   },
   "dependencies": {
-    "react-markdown": "10.0.0"
+    "react-markdown": "10.1.0"
   }
 }
