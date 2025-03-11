@@ -96,7 +96,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
               {label}
             </Label>
             {description && (
-              <MarkdownToHtml className="ams-mb--sm" id="file-upload-description" type="description">
+              <MarkdownToHtml id="file-upload-description" type="description">
                 {description}
               </MarkdownToHtml>
             )}
