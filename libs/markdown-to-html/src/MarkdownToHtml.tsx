@@ -53,15 +53,28 @@ const markdownToHtmlMap = {
   },
 }
 
-const disallowedElements = ['blockquote', 'code', 'h1', 'h5', 'h6', 'hr', 'img']
+const richTextAllowedElements = ['a', 'br', 'em', 'h2', 'h3', 'h4', 'ol', 'p', 'strong', 'ul']
+// Some screen readers do not read rich text content in input descriptions.
+// For this reason, we only allow paragraphs.
+const descriptionAllowedElements = ['p']
 
-export const MarkdownToHtml = ({ children, className }: { children: string; className?: string }) => (
-  <Column className={className ?? ''}>
+export const MarkdownToHtml = ({
+  children,
+  className,
+  id,
+  type = 'rich-text',
+}: {
+  children: string
+  className?: string
+  id?: string
+  type?: 'description' | 'rich-text'
+}) => (
+  <Column className={className ?? ''} id={id}>
     <ReactMarkdown
-      urlTransform={(url) => url} // Force ReactMarkdown to pass urls as-is
+      allowedElements={type === 'description' ? descriptionAllowedElements : richTextAllowedElements}
       components={markdownToHtmlMap}
-      disallowedElements={disallowedElements}
       skipHtml
+      urlTransform={(url) => url} // Force ReactMarkdown to pass urls as-is
     >
       {children}
     </ReactMarkdown>

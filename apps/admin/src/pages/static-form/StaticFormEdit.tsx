@@ -24,7 +24,7 @@ const Form = () => {
         </span>
       )}
       <TextInput source="components[0].label" validate={validateLabel} />
-      <TextInput source="components[0].description" parse={(value) => value ?? ''} />
+      <TextInput source="components[0].description" multiline parse={(value) => value ?? ''} />
 
       {record.type === 'contact' && (
         <>
@@ -32,7 +32,7 @@ const Form = () => {
             <strong>Telefoonnummer</strong>
           </span>
           <TextInput source="components[1].label" validate={validateLabel} />
-          <TextInput source="components[1].description" parse={(value) => value ?? ''} />
+          <TextInput source="components[1].description" multiline parse={(value) => value ?? ''} />
         </>
       )}
     </SimpleForm>

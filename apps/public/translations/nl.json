@@ -92,6 +92,7 @@
       "button": "Selecteer bestanden",
       "drop-area": "Of sleep de bestanden in dit vak."
     },
+    "submit-button": "Volgende vraag",
     "errors": {
       "too-many-files": "U kunt maximaal {maxFiles} bestanden uploaden."
     }
