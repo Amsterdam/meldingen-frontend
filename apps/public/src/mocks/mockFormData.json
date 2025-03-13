@@ -20,7 +20,7 @@
           "type": "textarea",
           "input": true,
           "autoExpand": false,
-          "showCharCount": false,
+          "maxCharCount": 0,
           "position": 1,
           "question": 1,
           "values": null
@@ -41,7 +41,7 @@
           "type": "textarea",
           "input": true,
           "autoExpand": false,
-          "showCharCount": false,
+          "maxCharCount": 0,
           "position": 1,
           "question": 2,
           "values": null

@@ -1,4 +1,5 @@
-import { FieldSet, Paragraph, Checkbox as ADSCheckbox, Column } from '@amsterdam/design-system-react'
+import { FieldSet, Checkbox as ADSCheckbox, Column } from '@amsterdam/design-system-react'
+import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
 type Props = {
   description?: string
@@ -19,9 +20,9 @@ export const Checkbox = ({ description, id, label, validate, values }: Props) =>
     optional={!validate?.required}
   >
     {description && (
-      <Paragraph className="ams-mb--sm" id={`${id}-description`} size="small">
+      <MarkdownToHtml id={`${id}-description`} type="description">
         {description}
-      </Paragraph>
+      </MarkdownToHtml>
     )}
     <Column gap="extra-small">
       {values.map(({ label: checkboxLabel, value }) => (

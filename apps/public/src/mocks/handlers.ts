@@ -73,6 +73,10 @@ export const handlers = [
       },
       {
         id: '2',
+        type: 'attachments',
+      },
+      {
+        id: '3',
         type: 'contact',
       },
     ]),
@@ -83,6 +87,9 @@ export const handlers = [
       return HttpResponse.json(mockFormData.components[0])
     }
     if (params.staticFormId === '2') {
+      return HttpResponse.json(mockFormData.components[0])
+    }
+    if (params.staticFormId === '3') {
       return HttpResponse.json(mockContactFormData)
     }
     return undefined
