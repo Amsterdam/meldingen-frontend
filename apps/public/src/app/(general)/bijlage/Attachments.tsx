@@ -1,21 +1,13 @@
 'use client'
 
-import {
-  Column,
-  ErrorMessage,
-  Field,
-  FileList,
-  Heading,
-  Label,
-  Paragraph,
-  UnorderedList,
-} from '@amsterdam/design-system-react'
-import type { ApiError } from '@meldingen/api-client'
+import { ErrorMessage, Field, FileList, Heading, Label } from '@amsterdam/design-system-react'
+import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Grid, FileInput, SubmitButton } from '@meldingen/ui'
 import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 
+import type { ApiError, StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
 import {
   deleteMeldingByMeldingIdAttachmentByAttachmentId,
   postMeldingByMeldingIdAttachment,
@@ -29,18 +21,21 @@ import styles from './Attachments.module.css'
 const MAX_FILES = 3
 
 type Props = {
+  formData: StaticFormTextAreaComponentOutput[]
   meldingId: number
   token: string
 }
 
 export type UploadedFiles = { file: File; id: number }
 
-export const Attachments = ({ meldingId, token }: Props) => {
+export const Attachments = ({ formData, meldingId, token }: Props) => {
   const formRef = useRef<HTMLFormElement>(null)
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
 
   const t = useTranslations('attachments')
+
+  const { label, description } = formData[0]
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     setErrorMessage(undefined)
@@ -97,25 +92,23 @@ export const Attachments = ({ meldingId, token }: Props) => {
         <form ref={formRef} action={redirectToNextPage}>
           <Field invalid={Boolean(errorMessage)} className="ams-mb--sm">
             <Label htmlFor="file-upload" optional>
-              Heeft u een foto om toe te voegen?
+              {label}
             </Label>
-
-            <Column id="file-upload-description" className="ams-mb--sm">
-              <Paragraph>
-                Voeg een foto toe om de situatie te verduidelijken. Verwijder alle persoonsgegevens van u en derden.
-              </Paragraph>
-              <UnorderedList>
-                <UnorderedList.Item>U kunt maximaal 3 bestanden tegelijk toevoegen.</UnorderedList.Item>
-                <UnorderedList.Item>Toegestane bestandtypes: jpg, jpeg en png.</UnorderedList.Item>
-                <UnorderedList.Item>Een bestand mag maximaal 20 MB groot zijn.</UnorderedList.Item>
-              </UnorderedList>
-            </Column>
+            {description && (
+              <MarkdownToHtml id="file-upload-description" type="description">
+                {description}
+              </MarkdownToHtml>
+            )}
 
             {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
 
             <FileInput
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
-              aria-describedby={`file-upload-description ${errorMessage ? 'error-message' : ''}`}
+              aria-describedby={
+                description || errorMessage
+                  ? `${description ? 'file-upload-description' : ''} ${errorMessage ? 'error-message' : ''}`
+                  : undefined
+              }
               buttonText={t('file-input.button')}
               dropAreaText={t('file-input.drop-area')}
               id="file-upload"
@@ -136,7 +129,7 @@ export const Attachments = ({ meldingId, token }: Props) => {
               </FileList>
             )}
           </Field>
-          <SubmitButton>Volgende vraag</SubmitButton>
+          <SubmitButton>{t('submit-button')}</SubmitButton>
         </form>
       </Grid.Cell>
     </Grid>

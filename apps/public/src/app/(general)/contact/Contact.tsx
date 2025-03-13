@@ -47,9 +47,9 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
             {emailLabel}
           </Label>
           {emailDescription && (
-            <Paragraph size="small" id="email-input-description">
+            <MarkdownToHtml id="email-input-description" type="description">
               {emailDescription}
-            </Paragraph>
+            </MarkdownToHtml>
           )}
           <TextInput
             aria-describedby={emailDescription ? 'email-input-description' : undefined}
@@ -65,9 +65,9 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
             {telLabel}
           </Label>
           {telDescription && (
-            <Paragraph size="small" id="tel-input-description">
+            <MarkdownToHtml id="tel-input-description" type="description">
               {telDescription}
-            </Paragraph>
+            </MarkdownToHtml>
           )}
           <TextInput
             aria-describedby={telDescription ? 'tel-input-description' : undefined}

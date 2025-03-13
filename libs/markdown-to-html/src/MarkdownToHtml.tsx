@@ -3,7 +3,7 @@ import { Children, isValidElement } from 'react'
 import type { PropsWithChildren } from 'react'
 import ReactMarkdown from 'react-markdown'
 
-const markdownToHtmlMap = {
+const richTextMarkdownToHtmlMap = {
   a: ({ children, href }: PropsWithChildren<{ href?: string }>) => {
     const isExternal = href?.startsWith('http')
 
@@ -53,15 +53,32 @@ const markdownToHtmlMap = {
   },
 }
 
-const disallowedElements = ['blockquote', 'code', 'h1', 'h5', 'h6', 'hr', 'img']
+const descriptionMarkdownToHtmlMap = {
+  p: ({ children }: PropsWithChildren) => <Paragraph size="small">{children}</Paragraph>,
+}
 
-export const MarkdownToHtml = ({ children, className }: { children: string; className?: string }) => (
-  <Column className={className ?? ''}>
+const richTextAllowedElements = ['a', 'br', 'em', 'h2', 'h3', 'h4', 'li', 'ol', 'p', 'strong', 'ul']
+// Some screen readers do not read rich text content in input descriptions.
+// For this reason, we only allow paragraphs.
+const descriptionAllowedElements = ['p']
+
+export const MarkdownToHtml = ({
+  children,
+  className,
+  id,
+  type = 'rich-text',
+}: {
+  children: string
+  className?: string
+  id?: string
+  type?: 'description' | 'rich-text'
+}) => (
+  <Column className={className ?? ''} id={id}>
     <ReactMarkdown
-      urlTransform={(url) => url} // Force ReactMarkdown to pass urls as-is
-      components={markdownToHtmlMap}
-      disallowedElements={disallowedElements}
+      allowedElements={type === 'description' ? descriptionAllowedElements : richTextAllowedElements}
+      components={type === 'description' ? descriptionMarkdownToHtmlMap : richTextMarkdownToHtmlMap}
       skipHtml
+      urlTransform={(url) => url} // Force ReactMarkdown to pass urls as-is
     >
       {children}
     </ReactMarkdown>
