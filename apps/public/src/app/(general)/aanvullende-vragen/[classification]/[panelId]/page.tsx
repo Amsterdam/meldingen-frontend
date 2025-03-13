@@ -1,6 +1,6 @@
-import type { FormPanelComponentOutput } from '@meldingen/api-client'
 import { getTranslations } from 'next-intl/server'
 
+import type { FormPanelComponentOutput } from 'apps/public/src/apiClientProxy'
 import { getFormClassificationByClassificationId } from 'apps/public/src/apiClientProxy'
 
 import { postForm } from './actions'
