@@ -5,9 +5,6 @@ describe('getAddressFromCoordinates', () => {
     const coordinates = { lat: 52.37239126063553, lng: 4.900905743712159 }
     const result = await getAddressFromCoordinates(coordinates)
 
-    expect(result).toEqual({
-      id: 'adr-758e934b8651217819abcf0e60a45b39',
-      weergave_naam: 'Nieuwmarkt 15, 1011JR Amsterdam',
-    })
+    expect(result).toEqual('Nieuwmarkt 15, 1011JR Amsterdam')
   })
 })
