@@ -10,12 +10,12 @@ import {
   Paragraph,
   UnorderedList,
 } from '@amsterdam/design-system-react'
-import type { ApiError } from '@meldingen/api-client'
 import { Grid, FileInput, SubmitButton } from '@meldingen/ui'
 import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 
+import type { ApiError } from 'apps/public/src/apiClientProxy'
 import {
   deleteMeldingByMeldingIdAttachmentByAttachmentId,
   postMeldingByMeldingIdAttachment,

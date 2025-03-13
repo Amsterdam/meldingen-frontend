@@ -1,5 +1,4 @@
-import type { GetMeldingByMeldingIdAnswersResponse, MeldingOutput } from '@meldingen/api-client'
-
+import type { GetMeldingByMeldingIdAnswersResponse, MeldingOutput } from 'apps/public/src/apiClientProxy'
 import type { Coordinates } from 'apps/public/src/types'
 
 type Props = {
