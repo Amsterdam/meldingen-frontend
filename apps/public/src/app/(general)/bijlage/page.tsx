@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
 
-import type { StaticFormOutput, StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
 import { getStaticForm, getStaticFormByStaticFormId } from 'apps/public/src/apiClientProxy'
+import { isTypeTextAreaComponent } from 'apps/public/src/typeguards'
 
 import { Attachments } from './Attachments'
 
@@ -13,10 +13,6 @@ export const generateMetadata = async () => {
     title: t('metadata.title'),
   }
 }
-
-const isTextArea = (
-  component: StaticFormOutput['components'][number],
-): component is StaticFormTextAreaComponentOutput => component.type === 'textarea'
 
 export default async () => {
   const cookieStore = await cookies()
@@ -37,7 +33,7 @@ export default async () => {
     const attachmentsForm = (await getStaticFormByStaticFormId({ staticFormId: attachmentsFormId })).components
     // A attachments form is always an array with 1 text area component, but TypeScript doesn't know that
     // We use a type guard here to make sure we're always working with the right type
-    const filteredAttachmentsForm = attachmentsForm.filter(isTextArea)
+    const filteredAttachmentsForm = attachmentsForm.filter(isTypeTextAreaComponent)
 
     if (!filteredAttachmentsForm[0].label) throw new Error(t('errors.form-label-not-found'))
 
