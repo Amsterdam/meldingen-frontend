@@ -7,6 +7,7 @@ import globals from 'globals'
 import json from '@eslint/json'
 import markdown from '@eslint/markdown'
 import path from 'node:path'
+import pluginNext from '@next/eslint-plugin-next'
 import react from 'eslint-plugin-react'
 import tseslint from 'typescript-eslint'
 import tsParser from '@typescript-eslint/parser'
@@ -42,29 +43,46 @@ export default tseslint.config(
   ...compat.extends('eslint-config-prettier'),
 
   // JavaScript, TypeScript & React
-  ...compat.extends('plugin:react/recommended').map(() => ({
-    files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
-    plugins: {
-      '@typescript-eslint': tsPlugin,
-      import: fixupPluginRules(_import),
-      react,
-    },
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
+  ...compat
+    .extends('airbnb', 'airbnb-typescript', 'prettier', 'plugin:jsx-a11y/strict', 'plugin:react/recommended')
+    .map(() => ({
+      files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
+      plugins: {
+        '@typescript-eslint': tsPlugin,
+        import: fixupPluginRules(_import),
+        react,
       },
-    },
-    settings: {
-      'import/resolver': {
-        node: {
-          extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
+      languageOptions: {
+        parser: tsParser,
+        parserOptions: {
+          ecmaFeatures: { jsx: true },
         },
       },
-      react: { version: 'detect' },
+      settings: {
+        'import/resolver': {
+          node: {
+            extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
+          },
+        },
+        react: { version: 'detect' },
+      },
+      rules: {
+        '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+        '@typescript-eslint/no-unused-vars': 'error',
+        'import/prefer-default-export': 'off',
+        'import/no-default-export': 'error',
+        'react/function-component-definition': 'off',
+        'react/jsx-props-no-spreading': 'off',
+        'react/react-in-jsx-scope': 'off',
+        'react/require-default-props': 'off',
+      },
+    })),
+  {
+    files: ['**/vite.config.ts'],
+    rules: {
+      'import/no-default-export': 'off',
     },
-    rules: {},
-  })),
+  },
 
   // JSON
   {
@@ -80,5 +98,24 @@ export default tseslint.config(
     plugins: { markdown },
     processor: 'markdown/markdown',
     rules: {},
+  },
+
+  // Next.js apps
+  {
+    files: ['apps/public/**/*', 'apps/back-office/**/*'],
+    plugins: {
+      '@next/next': pluginNext,
+    },
+    rules: {
+      ...pluginNext.configs.recommended.rules,
+      ...pluginNext.configs['core-web-vitals'].rules,
+    },
+  },
+  {
+    files: ['**/page.tsx', '**/layout.tsx', '**/next.config.ts', '**/request.ts'],
+    rules: {
+      'import/no-default-export': 'off',
+      'react/jsx-no-bind': 'off',
+    },
   },
 )

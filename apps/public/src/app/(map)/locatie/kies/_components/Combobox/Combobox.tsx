@@ -22,7 +22,6 @@ import styles from './Combobox.module.css'
 const pdokQueryParams =
   'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=7'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 const debounce = (fn: Function, delay = 250) => {
   let timer: ReturnType<typeof setTimeout>
 
@@ -73,7 +72,6 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
         }
       } catch (error) {
         // TODO: do we want to show a message to the user here?
-        // eslint-disable-next-line no-console
         console.error(error)
       }
     } else {
@@ -100,7 +98,6 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
       <HUILabel as={Label}>{t('label')}</HUILabel>
       {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Description className="ams-visually-hidden">
-        {/* eslint-disable-next-line react/no-unstable-nested-components */}
         {t.rich('description', { english: (chunks) => <span lang="en">{chunks}</span> })}
       </Description>
       <HUICombobox
