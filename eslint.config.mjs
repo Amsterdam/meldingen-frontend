@@ -68,7 +68,6 @@ export default tseslint.config(
       },
       rules: {
         '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
-        '@typescript-eslint/no-unused-vars': 'error',
         'import/prefer-default-export': 'off',
         'import/no-default-export': 'error',
         'react/function-component-definition': 'off',
