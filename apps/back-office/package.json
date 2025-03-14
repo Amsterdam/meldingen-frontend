@@ -15,7 +15,8 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
-    "next": "15.2.1"
+    "next": "15.2.1",
+    "next-auth": "4.24.11"
   },
   "devDependencies": {
     "eslint-config-next": "15.2.1"
