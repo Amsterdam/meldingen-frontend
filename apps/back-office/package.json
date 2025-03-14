@@ -19,6 +19,7 @@
     "next-auth": "4.24.11"
   },
   "devDependencies": {
+    "@types/next-auth": "3.15.0",
     "eslint-config-next": "15.2.1"
   }
 }
