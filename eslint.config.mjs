@@ -117,12 +117,7 @@ export default tseslint.config(
   },
 
   // Markdown
-  {
-    files: ['**/*.md'],
-    plugins: { markdown },
-    processor: 'markdown/markdown',
-    rules: {},
-  },
+  ...markdown.configs.recommended,
 
   // Next.js apps
   {
