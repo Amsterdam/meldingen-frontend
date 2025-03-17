@@ -44,72 +44,69 @@ export default tseslint.config(
   },
 
   // JavaScript, TypeScript & React
-  ...compat
-    .extends('airbnb', 'airbnb-typescript', 'prettier', 'plugin:jsx-a11y/strict', 'plugin:react/recommended')
-    .map(() => ({
-      files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
-      plugins: {
-        '@typescript-eslint': tsPlugin,
-        import: fixupPluginRules(_import),
-        'prefer-arrow-functions': preferArrowFunctions,
-        react,
+  ...compat.extends('airbnb', 'airbnb-typescript', 'plugin:jsx-a11y/strict', 'plugin:react/recommended').map(() => ({
+    files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+      import: fixupPluginRules(_import),
+      'prefer-arrow-functions': preferArrowFunctions,
+      react,
+    },
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
       },
-      languageOptions: {
-        parser: tsParser,
-        parserOptions: {
-          ecmaFeatures: { jsx: true },
+    },
+    settings: {
+      'import/resolver': {
+        node: {
+          extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
         },
       },
-      settings: {
-        'import/resolver': {
-          node: {
-            extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
-          },
-        },
-        react: { version: 'detect' },
-      },
-      rules: {
-        '@typescript-eslint/no-explicit-any': 'warn',
-        '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
-        'import/prefer-default-export': 'off',
-        'import/no-default-export': 'error',
-        'import/order': [
-          'error',
-          {
-            groups: ['external', 'internal', ['parent', 'sibling', 'index']],
-            pathGroups: [
-              {
-                pattern: '@meldingen/**',
-                group: 'internal',
-              },
-              {
-                pattern: 'apps/**',
-                group: 'parent',
-              },
-            ],
-            pathGroupsExcludedImportTypes: ['builtin'],
-            'newlines-between': 'always',
-            alphabetize: {
-              order: 'asc',
-              caseInsensitive: true,
+      react: { version: 'detect' },
+    },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      'import/prefer-default-export': 'off',
+      'import/no-default-export': 'error',
+      'import/order': [
+        'error',
+        {
+          groups: ['external', 'internal', ['parent', 'sibling', 'index']],
+          pathGroups: [
+            {
+              pattern: '@meldingen/**',
+              group: 'internal',
             },
+            {
+              pattern: 'apps/**',
+              group: 'parent',
+            },
+          ],
+          pathGroupsExcludedImportTypes: ['builtin'],
+          'newlines-between': 'always',
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
           },
-        ],
-        'no-console': 'warn',
-        'prefer-arrow-functions/prefer-arrow-functions': 'error',
-        'react/function-component-definition': 'off',
-        'react/jsx-props-no-spreading': 'off',
-        'react/react-in-jsx-scope': 'off',
-        'react/require-default-props': 'off',
-      },
-    })),
+        },
+      ],
+      'no-console': 'warn',
+      'prefer-arrow-functions/prefer-arrow-functions': 'error',
+      'react/function-component-definition': 'off',
+      'react/jsx-props-no-spreading': 'off',
+      'react/react-in-jsx-scope': 'off',
+      'react/require-default-props': 'off',
+    },
+  })),
   {
     files: ['**/vite.config.ts'],
     rules: {
       'import/no-default-export': 'off',
     },
   },
-  eslintConfigPrettier,
 
   // JSON
   {
@@ -144,4 +141,7 @@ export default tseslint.config(
       'import/no-default-export': 'off',
     },
   },
+
+  // Global Prettier config. Defined here to make sure no other rules override it.
+  eslintConfigPrettier,
 )
