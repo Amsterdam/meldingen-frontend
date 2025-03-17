@@ -25,6 +25,7 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
     mapInstance?.setZoom(mapInstance.getZoom() - 1)
   }
 
+  // eslint-disable-next-line no-undef
   const onSuccess: PositionCallback = ({ coords }) => {
     // TODO: is this correct? What should happen when you click the button without a map instance?
     if (!mapInstance) return undefined

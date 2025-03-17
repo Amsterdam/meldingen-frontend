@@ -21,6 +21,7 @@ import type { Coordinates } from 'apps/public/src/types'
 const pdokQueryParams =
   'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=7'
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 const debounce = (fn: Function, delay = 250) => {
   let timer: ReturnType<typeof setTimeout>
 
