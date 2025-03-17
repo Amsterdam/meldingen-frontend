@@ -127,6 +127,7 @@ export default tseslint.config(
   // Next.js apps
   {
     files: ['apps/public/**/*', 'apps/back-office/**/*'],
+    ignores: ['**/.next/'],
     plugins: {
       '@next/next': pluginNext,
     },
