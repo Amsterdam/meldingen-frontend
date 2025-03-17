@@ -72,6 +72,7 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
         }
       } catch (error) {
         // TODO: do we want to show a message to the user here?
+        // eslint-disable-next-line no-console
         console.error(error)
       }
     } else {

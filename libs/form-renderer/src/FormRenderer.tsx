@@ -52,7 +52,6 @@ type Props = {
 }
 
 export const FormRenderer = ({ formData, action, submitButtonText }: Props) => (
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   <form className="ams-gap--md" action={action}>
     {formData.map((component) => getComponent(component))}

@@ -67,9 +67,11 @@ export default tseslint.config(
         react: { version: 'detect' },
       },
       rules: {
+        '@typescript-eslint/no-explicit-any': 'warn',
         '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
         'import/prefer-default-export': 'off',
         'import/no-default-export': 'error',
+        'no-console': 'warn',
         'react/function-component-definition': 'off',
         'react/jsx-props-no-spreading': 'off',
         'react/react-in-jsx-scope': 'off',
@@ -114,7 +116,6 @@ export default tseslint.config(
     files: ['**/page.tsx', '**/layout.tsx', '**/next.config.ts', '**/request.ts'],
     rules: {
       'import/no-default-export': 'off',
-      'react/jsx-no-bind': 'off',
     },
   },
 )
