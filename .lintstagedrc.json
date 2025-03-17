@@ -1,5 +1,5 @@
 {
-  "*.{md,js,json,jsx,ts,tsx}": ["eslint --no-error-on-unmatched-pattern", "prettier --check"],
-  "*.{js,jsx,ts,tsx}": ["tsc-files --noEmit"],
+  "*.{md,js,json,jsx,ts,tsx,mjs,cjs}": ["eslint --no-error-on-unmatched-pattern", "prettier --check"],
+  "*.{ts,tsx}": ["tsc-files --noEmit"],
   "*.{css,scss}": ["stylelint --allow-empty-input", "prettier --check"]
 }
