@@ -71,6 +71,28 @@ export default tseslint.config(
         '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
         'import/prefer-default-export': 'off',
         'import/no-default-export': 'error',
+        'import/order': [
+          'error',
+          {
+            groups: ['external', 'internal', ['parent', 'sibling', 'index']],
+            pathGroups: [
+              {
+                pattern: '@meldingen/**',
+                group: 'internal',
+              },
+              {
+                pattern: 'apps/**',
+                group: 'parent',
+              },
+            ],
+            pathGroupsExcludedImportTypes: ['builtin'],
+            'newlines-between': 'always',
+            alphabetize: {
+              order: 'asc',
+              caseInsensitive: true,
+            },
+          },
+        ],
         'no-console': 'warn',
         'react/function-component-definition': 'off',
         'react/jsx-props-no-spreading': 'off',

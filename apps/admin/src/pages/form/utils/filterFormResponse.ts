@@ -1,4 +1,3 @@
-import type { FormInput } from '@meldingen/api-client'
 import {
   FormCheckboxComponentInputSchema,
   FormComponentInputValidateSchema,
@@ -10,6 +9,8 @@ import {
   FormTextFieldComponentInputSchema,
 } from 'libs/api-client/src/schemas.gen'
 import filter from 'uber-json-schema-filter'
+
+import type { FormInput } from '@meldingen/api-client'
 
 const filterBySchemaPerType = (obj: any) => {
   switch (obj.type) {

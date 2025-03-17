@@ -3,10 +3,9 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
 
+import { writeAddressAndCoordinateToCookie } from './actions'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
 import { server } from 'apps/public/src/mocks/node'
-
-import { writeAddressAndCoordinateToCookie } from './actions'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),

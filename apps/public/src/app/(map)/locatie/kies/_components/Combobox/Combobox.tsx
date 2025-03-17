@@ -8,16 +8,15 @@ import {
   Field as HUIField,
   Label as HUILabel,
 } from '@headlessui/react'
-import { ListBox } from '@meldingen/ui'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
-import type { Coordinates } from 'apps/public/src/types'
-
-import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
-import type { Address } from '../SideBar/SideBar'
+import { ListBox } from '@meldingen/ui'
 
 import styles from './Combobox.module.css'
+import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
+import type { Address } from '../SideBar/SideBar'
+import type { Coordinates } from 'apps/public/src/types'
 
 const pdokQueryParams =
   'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=7'
