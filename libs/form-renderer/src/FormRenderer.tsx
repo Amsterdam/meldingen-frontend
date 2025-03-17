@@ -38,7 +38,7 @@ const getComponent = ({ key, data, description, label, maxCharCount, type, value
       return <TextInput key={key} id={key} description={description} label={label} validate={validate} />
     default:
       // TODO: error handling can probably be improved
-      // eslint-disable-next-line no-console
+
       console.error(`Type ${type} is unknown, please add it to FormRenderer.`)
       return undefined
   }
@@ -52,7 +52,7 @@ type Props = {
 }
 
 export const FormRenderer = ({ formData, action, submitButtonText }: Props) => (
-  // @ts-ignore
+  // @ts-expect-error: should use Next.js form types
   <form className="ams-gap--md" action={action}>
     {formData.map((component) => getComponent(component))}
     <SubmitButton>{submitButtonText}</SubmitButton>

@@ -1,27 +1,17 @@
-import _import from 'eslint-plugin-import'
-import { fileURLToPath } from 'node:url'
 import { fixupPluginRules } from '@eslint/compat'
-import { FlatCompat } from '@eslint/eslintrc'
 import eslint from '@eslint/js'
-import eslintConfigPrettier from 'eslint-config-prettier/flat'
-import globals from 'globals'
 import json from '@eslint/json'
 import markdown from '@eslint/markdown'
-import path from 'node:path'
 import pluginNext from '@next/eslint-plugin-next'
+import tsPlugin from '@typescript-eslint/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
+import eslintConfigPrettier from 'eslint-config-prettier/flat'
+import _import from 'eslint-plugin-import'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 import react from 'eslint-plugin-react'
+import globals from 'globals'
 import tseslint from 'typescript-eslint'
-import tsParser from '@typescript-eslint/parser'
-import tsPlugin from '@typescript-eslint/eslint-plugin'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: eslint.configs.recommended,
-  allConfig: eslint.configs.all,
-})
 
 export default tseslint.config(
   // Global
@@ -41,16 +31,17 @@ export default tseslint.config(
   },
   {
     languageOptions: {
-      globals: { ...globals.browser, ...globals.es6 },
+      globals: { ...globals.browser, ...globals.es6, ...globals.node, ...globals.vitest },
     },
   },
 
   // JavaScript, TypeScript & React
-  ...compat.extends('airbnb', 'airbnb-typescript', 'plugin:jsx-a11y/strict', 'plugin:react/recommended').map(() => ({
-    files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
+  {
+    files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
     plugins: {
       '@typescript-eslint': tsPlugin,
       import: fixupPluginRules(_import),
+      'jsx-a11y': jsxA11y,
       'prefer-arrow-functions': preferArrowFunctions,
       react,
     },
@@ -69,8 +60,14 @@ export default tseslint.config(
       react: { version: 'detect' },
     },
     rules: {
+      ...eslint.configs.recommended.rules,
+      ...jsxA11y.configs.strict.rules,
+      ...react.configs.recommended.rules,
+      ...tsPlugin.configs.recommended.rules,
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      'no-console': 'warn',
+      'prefer-arrow-functions/prefer-arrow-functions': 'error',
       'import/prefer-default-export': 'off',
       'import/no-default-export': 'error',
       'import/order': [
@@ -95,16 +92,17 @@ export default tseslint.config(
           },
         },
       ],
-      'no-console': 'warn',
-      'prefer-arrow-functions/prefer-arrow-functions': 'error',
+      'react/display-name': 'off',
       'react/function-component-definition': 'off',
       'react/jsx-props-no-spreading': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/require-default-props': 'off',
     },
-  })),
+  },
+
+  // Don't force named exports for non-React files
   {
-    files: ['openapi-ts.config.ts', '**/cssmodules.d.ts', '**/vite.config.ts'],
+    files: ['**/*.{js,ts,mjs,cjs}'],
     rules: {
       'import/no-default-export': 'off',
     },
@@ -134,7 +132,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['**/page.tsx', '**/layout.tsx', '**/next.config.ts', '**/request.ts'],
+    files: ['**/page.tsx', '**/layout.tsx'],
     rules: {
       'import/no-default-export': 'off',
     },
