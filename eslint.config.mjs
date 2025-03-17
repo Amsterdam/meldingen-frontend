@@ -12,6 +12,7 @@ import react from 'eslint-plugin-react'
 import tseslint from 'typescript-eslint'
 import tsParser from '@typescript-eslint/parser'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
+import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -50,6 +51,7 @@ export default tseslint.config(
       plugins: {
         '@typescript-eslint': tsPlugin,
         import: fixupPluginRules(_import),
+        'prefer-arrow-functions': preferArrowFunctions,
         react,
       },
       languageOptions: {
@@ -94,6 +96,7 @@ export default tseslint.config(
           },
         ],
         'no-console': 'warn',
+        'prefer-arrow-functions/prefer-arrow-functions': 'error',
         'react/function-component-definition': 'off',
         'react/jsx-props-no-spreading': 'off',
         'react/react-in-jsx-scope': 'off',
