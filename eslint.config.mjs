@@ -130,6 +130,7 @@ export default tseslint.config(
     rules: {
       ...pluginNext.configs.recommended.rules,
       ...pluginNext.configs['core-web-vitals'].rules,
+      '@next/next/no-html-link-for-pages': ['error', ['apps/public/src', 'apps/back-office/src']],
     },
   },
   {
