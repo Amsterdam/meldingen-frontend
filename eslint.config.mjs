@@ -3,16 +3,17 @@ import { fileURLToPath } from 'node:url'
 import { fixupPluginRules } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
 import eslint from '@eslint/js'
+import eslintConfigPrettier from 'eslint-config-prettier/flat'
 import globals from 'globals'
 import json from '@eslint/json'
 import markdown from '@eslint/markdown'
 import path from 'node:path'
 import pluginNext from '@next/eslint-plugin-next'
+import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 import react from 'eslint-plugin-react'
 import tseslint from 'typescript-eslint'
 import tsParser from '@typescript-eslint/parser'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
-import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -41,7 +42,6 @@ export default tseslint.config(
       globals: { ...globals.browser, ...globals.es6 },
     },
   },
-  ...compat.extends('eslint-config-prettier'),
 
   // JavaScript, TypeScript & React
   ...compat
@@ -109,6 +109,7 @@ export default tseslint.config(
       'import/no-default-export': 'off',
     },
   },
+  eslintConfigPrettier,
 
   // JSON
   {
