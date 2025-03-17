@@ -8,14 +8,15 @@ import KeycloakProvider from 'next-auth/providers/keycloak'
  * returns the old token and an error property
  */
 const refreshAccessToken = async (token: JWT) => {
-  if (token.refreshTokenExpired && Date.now() > token.refreshTokenExpired) throw new Error()
-
   try {
+    if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
+      throw new Error('Refresh token expired')
+
     const response = await fetch(`${process.env.AUTH_ISSUER}/protocol/openid-connect/token`, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
-        client_id: process.env.CLIENT_ID || '',
-        client_secret: process.env.CLIENT_SECRET || '',
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET,
         grant_type: 'refresh_token',
         refresh_token: token.refreshToken || '',
       }),
@@ -28,13 +29,14 @@ const refreshAccessToken = async (token: JWT) => {
     if (!response.ok) {
       throw refreshedTokens
     }
-    console.log('--- TOKEN REFRESHED --- ')
 
     return {
       ...token,
       accessToken: refreshedTokens.access_token,
-      accessTokenExpired: Date.now() + refreshedTokens.expires_in * 1000,
+      accessTokenExpiresAt: Date.now() + refreshedTokens.expires_in * 1000,
       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+      refreshTokenExpiresAt:
+        refreshedTokens.refresh_expires_in && Date.now() + refreshedTokens.refresh_expires_in * 1000,
     }
   } catch (error) {
     return {
@@ -47,39 +49,28 @@ const refreshAccessToken = async (token: JWT) => {
 const handler = NextAuth({
   providers: [
     KeycloakProvider({
-      clientId: process.env.KEYCLOAK_CLIENT_ID,
-      clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
-      issuer: process.env.KEYCLOAK_ISSUER,
+      clientId: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      issuer: process.env.AUTH_ISSUER,
     }),
   ],
   callbacks: {
-    // jwt: async ({ token, account, profile }) => {
-    //   // Persist the OAuth access_token and or the user id to the token right after signin
-    //   if (account) {
-    //     // eslint-disable-next-line no-param-reassign
-    //     token.accessToken = account.access_token
-    //     // eslint-disable-next-line no-param-reassign
-    //     token.id = profile.id
-    //   }
-    //   return token
-    // },
     jwt: async ({ account, token, user }) => {
-      console.log('--- account:', account)
-      console.log('--- token:', token)
-      console.log('--- user:', user)
       if (account && user) {
         // account is only available the first time this callback is called on a new session (after the user signs in)
         return {
           accessToken: account.access_token,
-          accessTokenExpired: account.expires_at && account.expires_at * 1000,
+          // Access token expiry date in millisconds
+          accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
           refreshToken: account.refresh_token,
-          refreshTokenExpired: Date.now() + account.refresh_expires_in * 1000,
+          // Refresh token expiry date in millisconds
+          refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
           user,
         }
       }
 
       // Return previous token if the access token has not expired yet
-      if (token.accessTokenExpired && Date.now() < token.accessTokenExpired) {
+      if (token.accessTokenExpiresAt && Date.now() < token.accessTokenExpiresAt) {
         return token
       }
 
@@ -91,7 +82,7 @@ const handler = NextAuth({
       // eslint-disable-next-line no-param-reassign
       session.accessToken = token.accessToken
       // eslint-disable-next-line no-param-reassign
-      // session.user.id = token.id
+      session.error = token.error
 
       return session
     },
