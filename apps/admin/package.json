@@ -9,7 +9,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint . --ext .ts,.tsx",
     "test": "vitest",
     "test:watch": "vitest watch",
     "typecheck": "tsc --project ./tsconfig.json --noEmit"

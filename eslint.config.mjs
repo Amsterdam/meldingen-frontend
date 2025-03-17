@@ -35,6 +35,8 @@ export default tseslint.config(
       '**/tmp/',
       // Ignore generated api client
       'libs/api-client',
+      // Next.js generated files
+      '**/.next/',
     ],
   },
   {
@@ -102,7 +104,7 @@ export default tseslint.config(
     },
   })),
   {
-    files: ['**/vite.config.ts'],
+    files: ['openapi-ts.config.ts', '**/cssmodules.d.ts', '**/vite.config.ts'],
     rules: {
       'import/no-default-export': 'off',
     },
@@ -122,7 +124,6 @@ export default tseslint.config(
   // Next.js apps
   {
     files: ['apps/public/**/*', 'apps/back-office/**/*'],
-    ignores: ['**/.next/'],
     plugins: {
       '@next/next': pluginNext,
     },
