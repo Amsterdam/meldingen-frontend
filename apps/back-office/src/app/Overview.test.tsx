@@ -34,7 +34,6 @@ describe('Overview', () => {
 
     render(<Overview />)
 
-    screen.debug()
     expect(signIn).toBeCalledTimes(1)
   })
 })
