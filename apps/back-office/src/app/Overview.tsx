@@ -1,10 +1,10 @@
 'use client'
 
 import { Paragraph } from '@amsterdam/design-system-react'
-
-import { Grid } from '@meldingen/ui'
 import { signIn, useSession } from 'next-auth/react'
 import { useEffect } from 'react'
+
+import { Grid } from '@meldingen/ui'
 
 export const Overview = () => {
   const session = useSession()
