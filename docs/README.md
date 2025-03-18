@@ -10,30 +10,15 @@ Meldingen is an application with three separate front-ends:
 
 ```mermaid
 graph TD
-    DB[("Database")] <-->|Data| BE["Backend"]
-    AI -->|Text recognition| BE["Backend"]
-    BE -->|Form config| PFE["
-        Public Frontend
-
-        - Meldformulier
-        - Openbare kaart
-        - Mijn melding
-    "]
-    PFE -->|Signal| BE
-    BE -->|Form config| BFE["
-        Back Office Frontend
-
-        - Maken en afhandelen melding
-    "]
-    BE -->|CMS config| PFE
-    BE <-->|Signal status| BFE
-    BE <-->|CMS config| AFE["
-        Admin Frontend
-
-        - Form builder
-        - CMS texts public FE & mails
-    "]
-    BE <-->|Form config| AFE
+    DB[("Database")] <-->|Data| BE["Back-end"]
+    AI -->|Tekstherkenning| BE
+    BE -->|Formulier config| PFE["Public Front-end: Meldformulier, Openbare kaart, Mijn melding"]
+    PFE -->|Melding| BE
+    BE -->|Formulier config| BFE["Back Office Front-end: Maken en afhandelen melding"]
+    BE -->|Teksten| PFE
+    BE <-->|Status van melding| BFE
+    BE <-->|Teksten| AFE["Admin Front-end: Form builder, teksten van Public front-end & mails"]
+    BE <-->|Formulier config| AFE
     PFE <-.-> BOB
     BFE <-.-> AMBT["Ambtenaar"]
     BFE <-.-> EXT["Extern"]
@@ -51,3 +36,4 @@ graph TD
 7. [Forms](./0007-forms.md)
 8. [Authentication](./0008-authentication.md)
 9. [Directory structure](./0009-directory-structure.md)
+10. [Progressive enhancement](./0010-progressive-enhancement.md)

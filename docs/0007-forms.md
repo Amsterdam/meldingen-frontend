@@ -3,8 +3,16 @@
 Meldingen revolves for a large part around forms.
 Our Admin app allows admins to create and update forms, which are shown in our Public and Back Office apps.
 
-To make dealing with forms easier, we use [Form.io](https://form.io/).
-Form.io allows us to easily build forms, using the included [Builder](https://help.form.io/developers/form-development/form-builder),
-and render and validate them on the client side, using the included [Renderer](https://help.form.io/developers/form-development/form-renderer).
+## Guidelines
 
-Form.io uses a relatively simple JSON schema, which our back-end can also use.
+We follow [NL Design System’s form guidelines](https://nldesignsystem.nl/richtlijnen/formulieren/).
+
+## Schema
+
+To make dealing with forms easier, we use the [Form.io](https://form.io/) JSON schema.
+Form.io uses a relatively simple schema, which our back-end can also use.
+
+In the Admin application, we use Form.io’s [Builder](https://help.form.io/developers/form-development/form-builder) to build forms.
+
+We tried to use Form.io’s Renderer in the Public application, but it didn’t integrate well with Next.js and server-side rendering.
+So we built [our own renderer](/libs/form-renderer), which uses the same schema.
