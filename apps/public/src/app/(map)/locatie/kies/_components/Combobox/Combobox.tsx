@@ -8,21 +8,20 @@ import {
   Field as HUIField,
   Label as HUILabel,
 } from '@headlessui/react'
-import { ListBox } from '@meldingen/ui'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
-import type { Coordinates } from 'apps/public/src/types'
+import { ListBox } from '@meldingen/ui'
 
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
-import type { Address } from '../SideBar/SideBar'
+import type { Coordinates } from 'apps/public/src/types'
 
 import styles from './Combobox.module.css'
 
 const pdokQueryParams =
   'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=7'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 const debounce = (fn: Function, delay = 250) => {
   let timer: ReturnType<typeof setTimeout>
 
@@ -33,21 +32,27 @@ const debounce = (fn: Function, delay = 250) => {
 }
 
 type Props = {
-  address?: Address
+  address?: string
   errorMessage?: string
-  setAddress: (address?: Address) => void
+  setAddress: (address?: string) => void
   setCoordinates: (coordinates: Coordinates) => void
+}
+
+type PDOKItem = {
+  id: string
+  weergave_naam: string
+  centroide_ll: string
 }
 
 export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: Props) => {
   const [query, setQuery] = useState('')
-  const [addressList, setAddressList] = useState<Address[]>([])
+  const [addressList, setAddressList] = useState<PDOKItem[]>([])
   const [showListBox, setShowListBox] = useState(false)
 
   const t = useTranslations('select-location.combo-box')
 
   useEffect(() => {
-    if (address?.weergave_naam) setQuery(address?.weergave_naam)
+    if (address) setQuery(address)
   }, [address])
 
   // TODO: do we want to show a loading state?
@@ -60,8 +65,8 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
         const responseData = await response.json()
 
         if (response.ok) {
-          const responseList = responseData.response.docs.map(
-            (item: { id: string; weergavenaam: string; centroide_ll: string }) => ({
+          const responseList: PDOKItem[] = responseData.response.docs.map(
+            (item: { id: string; weergavenaam: string; centroide_ll: string }): PDOKItem => ({
               id: item.id,
               weergave_naam: item.weergavenaam,
               centroide_ll: item.centroide_ll,
@@ -82,14 +87,11 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
     }
   })
 
-  const onChangeHandler = (value: (Address & { centroide_ll: string }) | string | null) => {
+  const onChangeHandler = (value: PDOKItem | string | null) => {
     if (typeof value === 'string' || value === null) {
       setQuery(value ?? '')
     } else {
-      setAddress({
-        id: value.id,
-        weergave_naam: value.weergave_naam,
-      })
+      setAddress(value.weergave_naam)
       setCoordinates(convertWktPointToCoordinates(value.centroide_ll))
       setQuery(value.weergave_naam)
     }
@@ -100,7 +102,6 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
       <HUILabel as={Label}>{t('label')}</HUILabel>
       {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Description className="ams-visually-hidden">
-        {/* eslint-disable-next-line react/no-unstable-nested-components */}
         {t.rich('description', { english: (chunks) => <span lang="en">{chunks}</span> })}
       </Description>
       <HUICombobox

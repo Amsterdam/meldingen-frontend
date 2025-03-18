@@ -5,10 +5,10 @@ import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
-import type { Coordinates } from 'apps/public/src/types'
-
 import { AssetList } from './_components/AssetList/AssetList'
 import { SideBar } from './_components/SideBar/SideBar'
+import type { Coordinates } from 'apps/public/src/types'
+
 import styles from './page.module.css'
 
 const Map = dynamic(() => import('./_components/Map').then((module) => module.Map), {

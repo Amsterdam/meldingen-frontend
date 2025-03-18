@@ -1,4 +1,4 @@
-import type { ForwardedRef, PropsWithChildren, LiHTMLAttributes } from 'react'
+import type { ForwardedRef, LiHTMLAttributes, PropsWithChildren } from 'react'
 import { forwardRef } from 'react'
 
 import styles from './ListBox.module.css'

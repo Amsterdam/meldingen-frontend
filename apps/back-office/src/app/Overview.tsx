@@ -1,6 +1,7 @@
 'use client'
 
 import { Paragraph } from '@amsterdam/design-system-react'
+
 import { Grid } from '@meldingen/ui'
 
 export const Overview = () => (

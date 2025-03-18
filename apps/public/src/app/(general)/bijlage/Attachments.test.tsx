@@ -2,11 +2,10 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 
+import { Attachments } from './Attachments'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
 import mockFormData from 'apps/public/src/mocks/mockFormData.json'
 import { server } from 'apps/public/src/mocks/node'
-
-import { Attachments } from './Attachments'
 
 const defaultProps = {
   meldingId: 1,

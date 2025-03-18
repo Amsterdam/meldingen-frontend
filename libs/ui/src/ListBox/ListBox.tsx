@@ -1,8 +1,9 @@
 import type { ForwardedRef, HTMLAttributes, PropsWithChildren } from 'react'
 import { forwardRef } from 'react'
 
-import styles from './ListBox.module.css'
 import { ListBoxOption } from './ListBoxOption'
+
+import styles from './ListBox.module.css'
 
 type Props = PropsWithChildren<HTMLAttributes<HTMLUListElement>>
 
