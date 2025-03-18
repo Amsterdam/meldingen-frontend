@@ -2,9 +2,8 @@ import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
 import type { Mock } from 'vitest'
 
-import mockFormData from 'apps/public/src/mocks/mockFormData.json'
-
 import { AdditionalQuestions } from './AdditionalQuestions'
+import mockFormData from 'apps/public/src/mocks/mockFormData.json'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()

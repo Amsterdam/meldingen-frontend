@@ -1,4 +1,3 @@
-import type { FormInput } from '@meldingen/api-client'
 import {
   FormCheckboxComponentInputSchema,
   FormComponentInputValidateSchema,
@@ -10,6 +9,8 @@ import {
   FormTextFieldComponentInputSchema,
 } from 'libs/api-client/src/schemas.gen'
 import filter from 'uber-json-schema-filter'
+
+import type { FormInput } from '@meldingen/api-client'
 
 const filterBySchemaPerType = (obj: any) => {
   switch (obj.type) {
@@ -46,7 +47,6 @@ const getFilteredValidateObject = (validateObj: any) => {
   return validate
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const filterFormResponse = (obj: any): FormInput => {
   // This function is used to filter an additional questions form, which is always
   // a wizard with panels containing questions. Therefore the form has a fixed depth of two levels.

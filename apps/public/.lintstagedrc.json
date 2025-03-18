@@ -1,5 +1,0 @@
-{
-  "*.md": ["markdownlint", "prettier --check"],
-  "*.{js,jsx,ts,tsx}": ["prettier --check", "tsc-files --noEmit"],
-  "*.{css,scss}": ["stylelint --allow-empty-input", "prettier --check"]
-}

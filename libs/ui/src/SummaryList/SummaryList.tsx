@@ -1,10 +1,11 @@
 import { forwardRef } from 'react'
 import type { ForwardedRef, HTMLAttributes, PropsWithChildren } from 'react'
 
-import styles from './SummaryList.module.css'
 import { SummaryListDescription } from './SummaryListDescription'
 import { SummaryListItem } from './SummaryListItem'
 import { SummaryListTerm } from './SummaryListTerm'
+
+import styles from './SummaryList.module.css'
 
 export type SummaryListProps = PropsWithChildren<HTMLAttributes<HTMLDListElement>>
 

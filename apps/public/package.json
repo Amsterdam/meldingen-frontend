@@ -10,9 +10,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "test": "vitest",
-    "test:watch": "vitest watch"
+    "test:watch": "vitest watch",
+    "type-check": "tsc --incremental false"
   },
   "dependencies": {
     "@headlessui/react": "2.2.0",

@@ -1,9 +1,10 @@
 'use client'
 
 import { Grid, Heading, Paragraph } from '@amsterdam/design-system-react'
-import { FormRenderer } from '@meldingen/form-renderer'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
+
+import { FormRenderer } from '@meldingen/form-renderer'
 
 import { BackLink } from '../../../_components/BackLink'
 

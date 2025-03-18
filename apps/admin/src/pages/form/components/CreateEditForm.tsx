@@ -1,11 +1,11 @@
 import {
-  SimpleForm,
-  Toolbar,
-  SaveButton,
-  TextInput,
-  ToolbarClasses,
   DeleteWithConfirmButton,
   required,
+  SaveButton,
+  SimpleForm,
+  TextInput,
+  Toolbar,
+  ToolbarClasses,
 } from 'react-admin'
 
 import { BuilderInput } from './BuilderInput'

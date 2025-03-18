@@ -1,6 +1,6 @@
 'use client'
 
-import { Footer as ADSFooter, Grid, Heading, Link, PageMenu, Paragraph, Column } from '@amsterdam/design-system-react'
+import { Column, Footer as ADSFooter, Grid, Heading, Link, PageMenu, Paragraph } from '@amsterdam/design-system-react'
 
 export const Footer = () => (
   <ADSFooter>

@@ -1,12 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
+import { Home } from './Home'
+import Page from './page'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
 import mockFormData from 'apps/public/src/mocks/mockFormData.json'
 import { server } from 'apps/public/src/mocks/node'
-
-import { Home } from './Home'
-import Page from './page'
 
 vi.mock('./Home', () => ({
   Home: vi.fn(() => <div>Home Component</div>),

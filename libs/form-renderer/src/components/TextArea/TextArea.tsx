@@ -1,6 +1,7 @@
 import { CharacterCount, Field, Label, TextArea as ADSTextArea } from '@amsterdam/design-system-react'
-import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { useRef, useState } from 'react'
+
+import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
 type Props = {
   description?: string

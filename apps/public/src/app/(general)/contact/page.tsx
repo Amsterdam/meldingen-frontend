@@ -1,9 +1,8 @@
 import { getTranslations } from 'next-intl/server'
 
+import { Contact } from './Contact'
 import { getStaticForm, getStaticFormByStaticFormId } from 'apps/public/src/apiClientProxy'
 import { isTypeTextAreaComponent } from 'apps/public/src/typeguards'
-
-import { Contact } from './Contact'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.

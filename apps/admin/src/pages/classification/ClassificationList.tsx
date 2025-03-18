@@ -1,6 +1,6 @@
 import { Datagrid, List, TextField, TextInput } from 'react-admin'
 
-const classificationFilters = [<TextInput label="ra.action.search" source="q" alwaysOn />]
+const classificationFilters = [<TextInput label="ra.action.search" source="q" alwaysOn key="search" />]
 
 export const ClassificationList = () => (
   <List filters={classificationFilters}>
