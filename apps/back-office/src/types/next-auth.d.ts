@@ -6,7 +6,7 @@ declare module 'next-auth' {
   /**
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
-  interface Session {
+  type Session = {
     accessToken?: string
     error?: string
   }
@@ -15,14 +15,14 @@ declare module 'next-auth' {
    * Usually contains information about the provider being used
    * and also extends `TokenSet`, which is different tokens returned by OAuth Providers.
    */
-  interface Account {
+  type Account = {
     refresh_expires_in?: number
   }
 }
 
 declare module 'next-auth/jwt' {
   /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
-  interface JWT {
+  type JWT = {
     /** OpenID accessToken */
     accessToken?: string
     accessTokenExpiresAt?: number

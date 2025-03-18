@@ -38,7 +38,7 @@ const refreshAccessToken = async (token: JWT) => {
       refreshTokenExpiresAt:
         refreshedTokens.refresh_expires_in && Date.now() + refreshedTokens.refresh_expires_in * 1000,
     }
-  } catch (error) {
+  } catch {
     return {
       ...token,
       error: 'RefreshAccessTokenError',
@@ -79,9 +79,9 @@ const handler = NextAuth({
     },
     session: async ({ session, token }) => {
       // Send properties to the client, like an access_token and user id from a provider.
-      // eslint-disable-next-line no-param-reassign
+
       session.accessToken = token.accessToken
-      // eslint-disable-next-line no-param-reassign
+
       session.error = token.error
 
       return session
