@@ -4,9 +4,10 @@ import type L from 'leaflet'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
-import styles from './ControlsOverlay.module.css'
 import { Notification } from '../Notification/Notification'
 import type { Coordinates } from 'apps/public/src/types'
+
+import styles from './ControlsOverlay.module.css'
 
 type Props = {
   mapInstance: L.Map | null

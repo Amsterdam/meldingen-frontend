@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from 'react'
 import 'leaflet/dist/leaflet.css'
 
 import { ControlsOverlay } from './ControlsOverlay/ControlsOverlay'
-import styles from './Map.module.css'
 import { marker } from './Marker/Marker'
 import type { Coordinates } from 'apps/public/src/types'
+
+import styles from './Map.module.css'
 
 type Props = {
   coordinates?: Coordinates

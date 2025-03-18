@@ -1,4 +1,4 @@
-import { FieldSet, Radio as ADSRadio, Column } from '@amsterdam/design-system-react'
+import { Column, FieldSet, Radio as ADSRadio } from '@amsterdam/design-system-react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 

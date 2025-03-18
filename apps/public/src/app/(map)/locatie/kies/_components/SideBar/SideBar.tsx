@@ -3,11 +3,12 @@ import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useState } from 'react'
 
 import { writeAddressAndCoordinateToCookie } from './actions'
-import styles from './SideBar.module.css'
 import { getAddressFromCoordinates } from '../../_utils'
 import { Combobox } from '../Combobox/Combobox'
 import { BackLink } from 'apps/public/src/app/(general)/_components/BackLink'
 import type { Coordinates } from 'apps/public/src/types'
+
+import styles from './SideBar.module.css'
 
 type Props = {
   coordinates?: Coordinates

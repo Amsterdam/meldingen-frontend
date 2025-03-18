@@ -1,4 +1,4 @@
-import { FieldSet, Checkbox as ADSCheckbox, Column } from '@amsterdam/design-system-react'
+import { Checkbox as ADSCheckbox, Column, FieldSet } from '@amsterdam/design-system-react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 

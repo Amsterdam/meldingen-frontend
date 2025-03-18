@@ -73,7 +73,13 @@ export default tseslint.config(
       'import/order': [
         'error',
         {
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
           groups: ['external', 'internal', ['parent', 'sibling', 'index']],
+          named: true,
+          'newlines-between': 'always',
           pathGroups: [
             {
               pattern: '@meldingen/**',
@@ -83,13 +89,15 @@ export default tseslint.config(
               pattern: 'apps/**',
               group: 'parent',
             },
+            {
+              // It's not possible to match *.module.css files on all depths,
+              // so the most common depths are specified here. Add to this list if needed.
+              pattern: '{./,../,../../}*.module.css',
+              group: 'unknown',
+              position: 'after',
+            },
           ],
           pathGroupsExcludedImportTypes: ['builtin'],
-          'newlines-between': 'always',
-          alphabetize: {
-            order: 'asc',
-            caseInsensitive: true,
-          },
         },
       ],
       'react/display-name': 'off',

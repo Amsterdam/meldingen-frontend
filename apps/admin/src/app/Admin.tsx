@@ -4,7 +4,7 @@ import { CustomLayout } from './components'
 import { i18nProvider, useAuthProvider } from './providers'
 import { ClassificationCreate, ClassificationEdit, ClassificationList } from '../pages/classification'
 import { FormCreate, FormEdit, FormList } from '../pages/form/components'
-import { StaticFormList, StaticFormEdit } from '../pages/static-form'
+import { StaticFormEdit, StaticFormList } from '../pages/static-form'
 
 export const Admin = () => {
   const { keycloakClient, dataProviderRef, authProvider } = useAuthProvider()

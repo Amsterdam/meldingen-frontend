@@ -7,8 +7,9 @@ import { useState } from 'react'
 
 import { AssetList } from './_components/AssetList/AssetList'
 import { SideBar } from './_components/SideBar/SideBar'
-import styles from './page.module.css'
 import type { Coordinates } from 'apps/public/src/types'
+
+import styles from './page.module.css'
 
 const Map = dynamic(() => import('./_components/Map').then((module) => module.Map), {
   loading: () => <p>Loading...</p>, // TODO: improve loading state

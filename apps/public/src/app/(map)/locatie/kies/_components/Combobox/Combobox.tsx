@@ -13,10 +13,11 @@ import { useEffect, useState } from 'react'
 
 import { ListBox } from '@meldingen/ui'
 
-import styles from './Combobox.module.css'
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
 import type { Address } from '../SideBar/SideBar'
 import type { Coordinates } from 'apps/public/src/types'
+
+import styles from './Combobox.module.css'
 
 const pdokQueryParams =
   'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=7'
