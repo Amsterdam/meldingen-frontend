@@ -107,7 +107,13 @@ export default tseslint.config(
       'react/require-default-props': 'off',
     },
   },
-
+  // Don't force using type over interface in .d.ts files
+  {
+    files: ['*.d.ts'],
+    rules: {
+      '@typescript-eslint/consistent-type-definitions': 'off',
+    },
+  },
   // Don't force named exports for non-React files
   {
     files: ['**/*.{js,ts,mjs,cjs}'],

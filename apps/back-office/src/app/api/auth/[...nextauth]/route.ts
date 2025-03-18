@@ -60,10 +60,10 @@ const handler = NextAuth({
         // account is only available the first time this callback is called on a new session (after the user signs in)
         return {
           accessToken: account.access_token,
-          // Access token expiry date in millisconds
+          // Access token expiry date in milliseconds
           accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
           refreshToken: account.refresh_token,
-          // Refresh token expiry date in millisconds
+          // Refresh token expiry date in milliseconds
           refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
           user,
         }
@@ -79,9 +79,7 @@ const handler = NextAuth({
     },
     session: async ({ session, token }) => {
       // Send properties to the client, like an access_token and user id from a provider.
-
       session.accessToken = token.accessToken
-
       session.error = token.error
 
       return session
