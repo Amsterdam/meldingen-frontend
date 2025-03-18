@@ -1,5 +1,6 @@
-import { Screen } from '@meldingen/ui'
 import type { ReactNode } from 'react'
+
+import { Screen } from '@meldingen/ui'
 
 const MapLayout = ({ children }: { children: ReactNode }) => (
   <Screen maxWidth="x-wide">

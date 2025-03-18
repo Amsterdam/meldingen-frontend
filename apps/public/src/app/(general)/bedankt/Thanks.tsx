@@ -1,10 +1,11 @@
 'use client'
 
 import { Heading, Link } from '@amsterdam/design-system-react'
-import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Grid } from '@meldingen/ui'
 import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
+
+import { MarkdownToHtml } from '@meldingen/markdown-to-html'
+import { Grid } from '@meldingen/ui'
 
 type Props = {
   meldingId: string

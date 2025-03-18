@@ -1,10 +1,9 @@
 import { cookies } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
 
+import { Attachments } from './Attachments'
 import { getStaticForm, getStaticFormByStaticFormId } from 'apps/public/src/apiClientProxy'
 import { isTypeTextAreaComponent } from 'apps/public/src/typeguards'
-
-import { Attachments } from './Attachments'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('attachments')

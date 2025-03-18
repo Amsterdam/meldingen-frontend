@@ -1,10 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
+import { SideBar } from './SideBar'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
 import { server } from 'apps/public/src/mocks/node'
-
-import { SideBar } from './SideBar'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()

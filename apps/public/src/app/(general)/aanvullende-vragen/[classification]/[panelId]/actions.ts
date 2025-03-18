@@ -3,12 +3,11 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
+import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 import {
   postMeldingByMeldingIdQuestionByQuestionId,
   putMeldingByMeldingIdAnswerQuestions,
 } from 'apps/public/src/apiClientProxy'
-
-import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 
 type ArgsType = {
   isLastPanel: boolean

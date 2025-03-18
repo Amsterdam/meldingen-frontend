@@ -3,14 +3,13 @@ import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import type { Mock } from 'vitest'
 
+import Page from './page'
+import { Summary } from './Summary'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
 import mockAdditionalQuestionsAnswerData from 'apps/public/src/mocks/mockAdditionalQuestionsAnswerData.json'
 import mockFormData from 'apps/public/src/mocks/mockFormData.json'
 import mockMeldingData from 'apps/public/src/mocks/mockMeldingData.json'
 import { server } from 'apps/public/src/mocks/node'
-
-import Page from './page'
-import { Summary } from './Summary'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),

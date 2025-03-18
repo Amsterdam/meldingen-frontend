@@ -1,8 +1,9 @@
 import type { FormType } from '@formio/react'
-import { FormBuilder } from '@meldingen/form-builder'
 import { useEffect, useState } from 'react'
 import { TextInput } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
+
+import { FormBuilder } from '@meldingen/form-builder'
 
 import styles from './BuilderInput.module.css'
 

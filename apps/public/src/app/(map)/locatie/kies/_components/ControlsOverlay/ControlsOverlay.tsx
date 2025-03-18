@@ -4,9 +4,8 @@ import type L from 'leaflet'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
-import type { Coordinates } from 'apps/public/src/types'
-
 import { Notification } from '../Notification/Notification'
+import type { Coordinates } from 'apps/public/src/types'
 
 import styles from './ControlsOverlay.module.css'
 
@@ -27,6 +26,7 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
     mapInstance?.setZoom(mapInstance.getZoom() - 1)
   }
 
+  // eslint-disable-next-line no-undef
   const onSuccess: PositionCallback = ({ coords }) => {
     // TODO: is this correct? What should happen when you click the button without a map instance?
     if (!mapInstance) return undefined

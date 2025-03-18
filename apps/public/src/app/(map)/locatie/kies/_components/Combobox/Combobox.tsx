@@ -8,20 +8,20 @@ import {
   Field as HUIField,
   Label as HUILabel,
 } from '@headlessui/react'
-import { ListBox } from '@meldingen/ui'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
-import type { Coordinates } from 'apps/public/src/types'
+import { ListBox } from '@meldingen/ui'
 
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
+import type { Coordinates } from 'apps/public/src/types'
 
 import styles from './Combobox.module.css'
 
 const pdokQueryParams =
   'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=7'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 const debounce = (fn: Function, delay = 250) => {
   let timer: ReturnType<typeof setTimeout>
 
@@ -102,7 +102,6 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
       <HUILabel as={Label}>{t('label')}</HUILabel>
       {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Description className="ams-visually-hidden">
-        {/* eslint-disable-next-line react/no-unstable-nested-components */}
         {t.rich('description', { english: (chunks) => <span lang="en">{chunks}</span> })}
       </Description>
       <HUICombobox

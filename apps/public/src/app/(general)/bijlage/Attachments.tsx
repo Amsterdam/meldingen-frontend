@@ -1,21 +1,21 @@
 'use client'
 
 import { ErrorMessage, Field, FileList, Heading, Label } from '@amsterdam/design-system-react'
-import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Grid, FileInput, SubmitButton } from '@meldingen/ui'
 import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 
-import type { ApiError, StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
+import { MarkdownToHtml } from '@meldingen/markdown-to-html'
+import { FileInput, Grid, SubmitButton } from '@meldingen/ui'
+
+import { redirectToNextPage } from './actions'
+import { BackLink } from '../_components/BackLink'
 import {
   deleteMeldingByMeldingIdAttachmentByAttachmentId,
   postMeldingByMeldingIdAttachment,
 } from 'apps/public/src/apiClientProxy'
+import type { ApiError, StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
 
-import { BackLink } from '../_components/BackLink'
-
-import { redirectToNextPage } from './actions'
 import styles from './Attachments.module.css'
 
 const MAX_FILES = 3
