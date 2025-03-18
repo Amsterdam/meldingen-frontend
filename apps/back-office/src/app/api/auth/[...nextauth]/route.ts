@@ -4,7 +4,7 @@ import KeycloakProvider from 'next-auth/providers/keycloak'
 
 /**
  * Takes a token, and returns a new token with updated
- * `accessToken`, `accessTokenExpiresAt`. The same for the refresh token If an error occurs,
+ * `accessToken`, `accessTokenExpiresAt`, `refreshToken` and `refreshTokenExpiresAt` when an error occurs,
  * returns the old token and an error property
  */
 const refreshAccessToken = async (token: JWT) => {
