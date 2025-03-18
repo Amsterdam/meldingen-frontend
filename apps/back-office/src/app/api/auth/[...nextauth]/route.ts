@@ -7,7 +7,7 @@ import KeycloakProvider from 'next-auth/providers/keycloak'
  * `accessToken`, `accessTokenExpiresAt`, `refreshToken` and `refreshTokenExpiresAt` when an error occurs,
  * returns the old token and an error property
  */
-const refreshAccessToken = async (token: JWT) => {
+export const refreshAccessToken = async (token: JWT) => {
   try {
     if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
       throw new Error('Refresh token expired')
