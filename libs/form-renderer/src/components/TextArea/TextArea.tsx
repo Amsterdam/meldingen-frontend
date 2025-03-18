@@ -1,5 +1,7 @@
-import { CharacterCount, Field, Label, Paragraph, TextArea as ADSTextArea } from '@amsterdam/design-system-react'
+import { CharacterCount, Field, Label, TextArea as ADSTextArea } from '@amsterdam/design-system-react'
 import { useRef, useState } from 'react'
+
+import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
 type Props = {
   description?: string
@@ -25,9 +27,9 @@ export const TextArea = ({ description, id, label, maxCharCount, validate }: Pro
         {label}
       </Label>
       {description && (
-        <Paragraph size="small" id={`${id}-description`}>
+        <MarkdownToHtml id={`${id}-description`} type="description">
           {description}
-        </Paragraph>
+        </MarkdownToHtml>
       )}
       <ADSTextArea
         aria-describedby={description ? `${id}-description` : undefined}

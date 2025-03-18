@@ -1,4 +1,6 @@
-import { Field, Label, Select as ADSSelect, Paragraph } from '@amsterdam/design-system-react'
+import { Field, Label, Select as ADSSelect } from '@amsterdam/design-system-react'
+
+import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
 type Props = {
   data: {
@@ -19,9 +21,9 @@ export const Select = ({ description, id, label, validate, data }: Props) => (
       {label}
     </Label>
     {description && (
-      <Paragraph size="small" id={`${id}-description`}>
+      <MarkdownToHtml id={`${id}-description`} type="description">
         {description}
-      </Paragraph>
+      </MarkdownToHtml>
     )}
     <ADSSelect
       aria-describedby={description ? `${id}-description` : undefined}

@@ -1,10 +1,9 @@
 import { getTranslations } from 'next-intl/server'
 
-import type { FormPanelComponentOutput } from 'apps/public/src/apiClientProxy'
-import { getFormClassificationByClassificationId } from 'apps/public/src/apiClientProxy'
-
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
+import type { FormPanelComponentOutput } from 'apps/public/src/apiClientProxy'
+import { getFormClassificationByClassificationId } from 'apps/public/src/apiClientProxy'
 
 // TODO: pagina's die niet bestaan moeten redirect krijgen
 // TODO: pagina's die wel bestaan maar geen token in url param moeten redirect krijgen

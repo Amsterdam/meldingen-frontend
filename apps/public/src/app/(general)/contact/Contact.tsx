@@ -1,16 +1,15 @@
 'use client'
 
 import { Alert, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-system-react'
-import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Grid, SubmitButton } from '@meldingen/ui'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
-import type { StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
-
-import { BackLink } from '../_components/BackLink'
+import { MarkdownToHtml } from '@meldingen/markdown-to-html'
+import { Grid, SubmitButton } from '@meldingen/ui'
 
 import { postContactForm } from './actions'
+import { BackLink } from '../_components/BackLink'
+import type { StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
 
 const initialState: { message?: string } = {}
 
@@ -47,9 +46,9 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
             {emailLabel}
           </Label>
           {emailDescription && (
-            <Paragraph size="small" id="email-input-description">
+            <MarkdownToHtml id="email-input-description" type="description">
               {emailDescription}
-            </Paragraph>
+            </MarkdownToHtml>
           )}
           <TextInput
             aria-describedby={emailDescription ? 'email-input-description' : undefined}
@@ -65,9 +64,9 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
             {telLabel}
           </Label>
           {telDescription && (
-            <Paragraph size="small" id="tel-input-description">
+            <MarkdownToHtml id="tel-input-description" type="description">
               {telDescription}
-            </Paragraph>
+            </MarkdownToHtml>
           )}
           <TextInput
             aria-describedby={telDescription ? 'tel-input-description' : undefined}

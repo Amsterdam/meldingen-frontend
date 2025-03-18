@@ -1,4 +1,6 @@
-import { FieldSet, Paragraph, Radio as ADSRadio, Column } from '@amsterdam/design-system-react'
+import { Column, FieldSet, Radio as ADSRadio } from '@amsterdam/design-system-react'
+
+import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
 type Props = {
   description?: string
@@ -20,9 +22,9 @@ export const Radio = ({ description, id, label, validate, values }: Props) => (
     role="radiogroup"
   >
     {description && (
-      <Paragraph className="ams-mb--sm" id={`${id}-description`} size="small">
+      <MarkdownToHtml id={`${id}-description`} type="description">
         {description}
-      </Paragraph>
+      </MarkdownToHtml>
     )}
     <Column gap="extra-small">
       {values.map(({ label: radioLabel, value }) => (

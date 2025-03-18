@@ -1,4 +1,6 @@
-import { Field, Label, Paragraph, TextInput as ADSTextInput } from '@amsterdam/design-system-react'
+import { Field, Label, TextInput as ADSTextInput } from '@amsterdam/design-system-react'
+
+import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
 type Props = {
   description?: string
@@ -13,9 +15,9 @@ export const TextInput = ({ description, id, label, validate }: Props) => (
       {label}
     </Label>
     {description && (
-      <Paragraph size="small" id={`${id}-description`}>
+      <MarkdownToHtml id={`${id}-description`} type="description">
         {description}
-      </Paragraph>
+      </MarkdownToHtml>
     )}
     <ADSTextInput
       aria-describedby={description ? `${id}-description` : undefined}
