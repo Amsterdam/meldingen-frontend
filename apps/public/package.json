@@ -11,7 +11,8 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest",
-    "test:watch": "vitest watch"
+    "test:watch": "vitest watch",
+    "typecheck": "tsc --incremental false"
   },
   "dependencies": {
     "@headlessui/react": "2.2.0",
