@@ -8,7 +8,7 @@
   "scripts": {
     "test": "vitest",
     "test:watch": "vitest watch",
-    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+    "type-check": "tsc --project ./tsconfig.json --noEmit"
   },
   "dependencies": {
     "react-markdown": "10.1.0"

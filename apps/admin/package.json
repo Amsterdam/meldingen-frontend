@@ -11,7 +11,7 @@
     "build": "vite build",
     "test": "vitest",
     "test:watch": "vitest watch",
-    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+    "type-check": "tsc --project ./tsconfig.json --noEmit"
   },
   "dependencies": {
     "keycloak-js": "26.1.3",

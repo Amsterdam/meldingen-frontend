@@ -5,7 +5,7 @@
   "scripts": {
     "test": "vitest",
     "test:watch": "vitest watch",
-    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+    "type-check": "tsc --project ./tsconfig.json --noEmit"
   },
   "license": "EUPL-1.2",
   "private": true,
