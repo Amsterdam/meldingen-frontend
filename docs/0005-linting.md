@@ -11,7 +11,6 @@ We use linters for JavaScript / TypeScript files, style files and Markdown files
 
 For JavaScript / TypeScript we use ESLint and the TypeScript compiler itself.
 For style files we use Stylelint.
-For Markdown files we use Markdownlint.
 
 We use Prettier for code formatting of all these files.
 
@@ -28,7 +27,6 @@ If you use [Visual Studio Code](https://code.visualstudio.com/),
 you can use the following extensions for automatic linting and formatting:
 
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
 - [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 - [stylelint](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint)
 
@@ -41,7 +39,6 @@ To enable correct validation and to fix lint/style errors on save, add this to y
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true,
-    "source.fixAll.markdownlint": true
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
