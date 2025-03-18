@@ -1,16 +1,15 @@
 'use client'
 
 import { Heading, Link, Paragraph } from '@amsterdam/design-system-react'
-import { Grid, SubmitButton } from '@meldingen/ui'
 import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
-import type { Coordinates } from 'apps/public/src/types'
-
-import { BackLink } from '../_components/BackLink'
+import { Grid, SubmitButton } from '@meldingen/ui'
 
 import { postLocationForm } from './actions'
+import { BackLink } from '../_components/BackLink'
+import type { Coordinates } from 'apps/public/src/types'
 
 const initialState: { message?: string } = {}
 

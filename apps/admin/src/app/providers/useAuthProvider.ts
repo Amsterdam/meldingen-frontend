@@ -1,6 +1,6 @@
 import type { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js'
 import Keycloak from 'keycloak-js'
-import { keycloakAuthProvider, httpClient } from 'ra-keycloak'
+import { httpClient, keycloakAuthProvider } from 'ra-keycloak'
 import { useRef } from 'react'
 import type { AuthProvider, DataProvider } from 'react-admin'
 
