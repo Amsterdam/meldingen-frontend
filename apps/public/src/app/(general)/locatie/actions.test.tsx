@@ -2,9 +2,8 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
 
-import { postMeldingByMeldingIdLocation } from '@meldingen/api-client'
-
 import { postLocationForm } from './actions'
+import { postMeldingByMeldingIdLocation } from 'apps/public/src/apiClientProxy'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
@@ -14,7 +13,7 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
-vi.mock('@meldingen/api-client', () => ({
+vi.mock('apps/public/src/apiClientProxy', () => ({
   postMeldingByMeldingIdLocation: vi.fn(),
 }))
 
