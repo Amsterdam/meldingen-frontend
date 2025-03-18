@@ -36,3 +36,4 @@ graph TD
 7. [Forms](./0007-forms.md)
 8. [Authentication](./0008-authentication.md)
 9. [Directory structure](./0009-directory-structure.md)
+10. [Progressive enhancement](./0010-progressive-enhancement.md)
