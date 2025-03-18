@@ -109,7 +109,7 @@ export default tseslint.config(
   },
   // Don't force using type over interface in .d.ts files
   {
-    files: ['*.d.ts'],
+    files: ['**/*.d.ts'],
     rules: {
       '@typescript-eslint/consistent-type-definitions': 'off',
     },
