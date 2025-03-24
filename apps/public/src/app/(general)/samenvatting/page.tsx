@@ -1,14 +1,15 @@
 import { cookies } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
 
-import { getSummaryData } from './_utils/getSummaryData'
-import { Summary } from './Summary'
 import {
   getMeldingByMeldingIdAnswers,
   getMeldingByMeldingIdMelder,
   getStaticForm,
   getStaticFormByStaticFormId,
-} from 'apps/public/src/apiClientProxy'
+} from '@meldingen/api-client'
+
+import { getSummaryData } from './_utils/getSummaryData'
+import { Summary } from './Summary'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('summary')

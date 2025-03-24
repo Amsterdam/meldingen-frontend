@@ -2,10 +2,11 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
 
-import { postContactForm } from './actions'
-import { postMeldingByMeldingIdContact } from 'apps/public/src/apiClientProxy'
+import { postMeldingByMeldingIdContact } from '@meldingen/api-client'
 
-vi.mock('apps/public/src/apiClientProxy', () => ({
+import { postContactForm } from './actions'
+
+vi.mock('@meldingen/api-client', () => ({
   postMeldingByMeldingIdContact: vi.fn(),
 }))
 

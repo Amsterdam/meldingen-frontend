@@ -3,8 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import type { ApiError } from 'apps/public/src/apiClientProxy'
-import { getFormClassificationByClassificationId, postMelding } from 'apps/public/src/apiClientProxy'
+import { getFormClassificationByClassificationId, postMelding } from '@meldingen/api-client'
 
 export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)
@@ -12,7 +11,10 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   let nextPage = '/locatie'
 
   try {
-    const { classification, id, token } = await postMelding({ requestBody: { text: formDataObj.primary.toString() } })
+    const response = await postMelding({ body: { text: formDataObj.primary.toString() } })
+    const { classification, id, token } = response.data || {}
+
+    if (!id || !token) return
 
     // Set session variables in cookies
     const cookieStore = await cookies()
@@ -21,18 +23,18 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
 
     if (classification) {
       // Get entire form, in order to redirect to its first panel
-      const nextFormData = await getFormClassificationByClassificationId({ classificationId: classification })
-      const nextFormFirstKey = nextFormData.components && nextFormData.components[0].key
+      const { data } = await getFormClassificationByClassificationId({ path: { classification_id: classification } })
+      const nextFormFirstKey = data?.components && data.components[0].key
 
       nextPage = `/aanvullende-vragen/${classification}/${nextFormFirstKey}`
     }
   } catch (error) {
     // If there are no additional questions for a classification, redirect to /locatie.
-    if ((error as ApiError)?.status === 404) {
+    if ((error as { status?: number }).status === 404) {
       redirect(nextPage)
     }
 
-    return { message: (error as ApiError).message }
+    return { message: (error as Error).message }
   }
 
   return redirect(nextPage)

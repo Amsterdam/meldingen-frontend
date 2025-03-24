@@ -1,9 +1,10 @@
 import { getTranslations } from 'next-intl/server'
 
+import type { FormPanelComponentOutput } from '@meldingen/api-client'
+import { getFormClassificationByClassificationId } from '@meldingen/api-client'
+
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
-import type { FormPanelComponentOutput } from 'apps/public/src/apiClientProxy'
-import { getFormClassificationByClassificationId } from 'apps/public/src/apiClientProxy'
 
 // TODO: pagina's die niet bestaan moeten redirect krijgen
 // TODO: pagina's die wel bestaan maar geen token in url param moeten redirect krijgen
@@ -65,13 +66,13 @@ const getPreviousPanelPath = (classification: number, currentPanelIndex: number,
 export default async ({ params }: { params: Params }) => {
   const { classification, panelId } = await params
 
-  const formData = await getFormClassificationByClassificationId({ classificationId: classification })
+  const { data } = await getFormClassificationByClassificationId({ path: { classification_id: classification } })
 
-  if (formData.components[0].type !== 'panel') return undefined
+  if (data?.components[0].type !== 'panel') return undefined
 
   // Get current panel questions
-  const currentPanelIndex = formData.components.findIndex((component) => component.key === panelId)
-  const panel = formData.components[currentPanelIndex] as FormPanelComponentOutput
+  const currentPanelIndex = data.components.findIndex((component) => component.key === panelId)
+  const panel = data.components[currentPanelIndex] as FormPanelComponentOutput
   const panelQuestions = panel.components
 
   // Pass question ids to the action
@@ -81,13 +82,13 @@ export default async ({ params }: { params: Params }) => {
   }))
 
   // Pass isLastPanel to the action
-  const isLastPanel = currentPanelIndex === formData.components.length - 1
+  const isLastPanel = currentPanelIndex === data.components.length - 1
 
   // Pass last panel path to the action
-  const lastPanelPath = `/aanvullende-vragen/${classification}/${formData.components[formData.components.length - 1].key}`
+  const lastPanelPath = `/aanvullende-vragen/${classification}/${data.components[data.components.length - 1].key}`
 
   // Pass next panel path to the action
-  const nextPanelPath = getNextPanelPath(classification, currentPanelIndex, formData)
+  const nextPanelPath = getNextPanelPath(classification, currentPanelIndex, data)
 
   const extraArgs = {
     isLastPanel,
@@ -99,7 +100,7 @@ export default async ({ params }: { params: Params }) => {
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)
 
   // Pass previous panel path to the Aanvullende vragen component
-  const previousPanelPath = getPreviousPanelPath(classification, currentPanelIndex, formData)
+  const previousPanelPath = getPreviousPanelPath(classification, currentPanelIndex, data)
 
   return (
     <AdditionalQuestions

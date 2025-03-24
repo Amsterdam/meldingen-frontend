@@ -3,11 +3,9 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
+import { postMeldingByMeldingIdQuestionByQuestionId, putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
+
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
-import {
-  postMeldingByMeldingIdQuestionByQuestionId,
-  putMeldingByMeldingIdAnswerQuestions,
-} from 'apps/public/src/apiClientProxy'
 
 type ArgsType = {
   isLastPanel: boolean
@@ -49,10 +47,12 @@ export const postForm = async (
     if (!questionId) return undefined
 
     return postMeldingByMeldingIdQuestionByQuestionId({
-      meldingId: parseInt(meldingId, 10),
-      questionId,
-      token,
-      requestBody: { text: value },
+      body: { text: value },
+      path: {
+        melding_id: parseInt(meldingId, 10),
+        question_id: questionId,
+      },
+      query: { token },
     }).catch((error) => error)
   })
 
@@ -67,7 +67,10 @@ export const postForm = async (
 
   // Let BE know the last panel has successfully been submitted
   if (isLastPanel) {
-    putMeldingByMeldingIdAnswerQuestions({ meldingId: parseInt(meldingId, 10), token })
+    putMeldingByMeldingIdAnswerQuestions({
+      path: { melding_id: parseInt(meldingId, 10) },
+      query: { token },
+    })
   }
 
   return redirect(nextPanelPath)

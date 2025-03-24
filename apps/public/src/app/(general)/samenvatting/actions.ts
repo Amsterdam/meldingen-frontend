@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-// import { putMeldingByMeldingIdSubmit } from 'apps/public/src/apiClientProxy'
+// import { putMeldingByMeldingIdSubmit } from '@meldingen/api-client'
 
 export const postSummaryForm = async () => {
   const cookieStore = await cookies()
