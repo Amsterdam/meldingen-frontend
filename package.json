@@ -40,7 +40,7 @@
     "@amsterdam/design-system-tokens": "0.14.0",
     "@formio/react": "6.0.1",
     "formiojs": "4.21.6",
-    "next-intl": "3.26.5",
+    "next-intl": "4.0.2",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tslib": "2.8.1"
@@ -50,8 +50,8 @@
     "@eslint/js": "9.22.0",
     "@eslint/json": "0.11.0",
     "@eslint/markdown": "6.3.0",
-    "@hey-api/openapi-ts": "0.64.10",
-    "@next/eslint-plugin-next": "15.2.2",
+    "@hey-api/openapi-ts": "0.64.13",
+    "@next/eslint-plugin-next": "15.2.3",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.2.0",
     "@testing-library/user-event": "14.6.1",
@@ -61,7 +61,7 @@
     "@typescript-eslint/eslint-plugin": "8.26.1",
     "@typescript-eslint/parser": "8.26.1",
     "@vitejs/plugin-react": "4.3.4",
-    "@vitest/coverage-v8": "3.0.8",
+    "@vitest/coverage-v8": "3.0.9",
     "eslint": "9.22.0",
     "eslint-config-prettier": "10.1.1",
     "eslint-plugin-import": "2.31.0",
@@ -84,7 +84,7 @@
     "typescript": "5.8.2",
     "typescript-eslint": "8.26.1",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "3.0.8"
+    "vitest": "3.0.9"
   },
   "pnpm": {
     "overrides": {
