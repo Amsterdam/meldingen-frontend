@@ -13,7 +13,7 @@ Do this:
       /components
         /ComponentA
           ComponentA.tsx
-          ComponentA.spec.tsx
+          ComponentA.test.tsx
       page.tsx
 ```
 
@@ -24,7 +24,7 @@ Instead of this:
   /components
     /ComponentA
       ComponentA.tsx
-      ComponentA.spec.tsx
+      ComponentA.test.tsx
   /pages
     /page
       page.tsx
@@ -59,7 +59,7 @@ Do this:
 /components
   /ComponentA
     ComponentA.tsx
-    ComponentA.spec.tsx
+    ComponentA.test.tsx
     useHookForComponentA.tsx
     index.ts
   ComponentB.tsx
@@ -70,7 +70,7 @@ Instead of this:
 ```lang-plaintext
 /components
   ComponentA.tsx
-  ComponentA.spec.tsx
+  ComponentA.test.tsx
   useHookForComponentA.tsx
   ComponentB.tsx
 ```
