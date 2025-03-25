@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
 
 import { Contact } from './Contact'
+import { handleApiError } from 'apps/public/src/handleApiError'
 import { isTypeTextAreaComponent } from 'apps/public/src/typeguards'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
@@ -20,25 +21,28 @@ export const generateMetadata = async () => {
 export default async () => {
   const t = await getTranslations('contact')
 
-  try {
-    const contactFormId = await getStaticForm().then(
-      (response) => response.data?.find((form) => form.type === 'contact')?.id,
-    )
+  const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
-    if (!contactFormId) throw new Error(t('errors.form-id-not-found'))
+  if (staticFormsError) return handleApiError(staticFormsError)
 
-    const response = await getStaticFormByStaticFormId({ path: { static_form_id: contactFormId } })
-    const contactForm = response.data?.components
+  const contactFormId = staticFormsData?.find((form) => form.type === 'contact')?.id
 
-    // A contact form is always an array of two text area components, but TypeScript doesn't know that
-    // We use a type guard here to make sure we're always working with the right type
-    const filteredContactForm = contactForm?.filter(isTypeTextAreaComponent)
+  if (!contactFormId) return t('errors.form-id-not-found')
 
-    if (!filteredContactForm || !filteredContactForm[0].label || !filteredContactForm[1].label)
-      throw new Error(t('errors.form-labels-not-found'))
+  const { data, error } = await getStaticFormByStaticFormId({ path: { static_form_id: contactFormId } })
 
-    return <Contact formData={filteredContactForm} />
-  } catch (error) {
-    return (error as Error).message
-  }
+  if (error) return handleApiError(error)
+
+  if (!data) return 'Contact form data not found'
+
+  const contactForm = data.components
+
+  // A contact form is always an array of two text area components, but TypeScript doesn't know that
+  // We use a type guard here to make sure we're always working with the right type
+  const filteredContactForm = contactForm?.filter(isTypeTextAreaComponent)
+
+  if (!filteredContactForm || !filteredContactForm[0].label || !filteredContactForm[1].label)
+    return t('errors.form-labels-not-found')
+
+  return <Contact formData={filteredContactForm} />
 }

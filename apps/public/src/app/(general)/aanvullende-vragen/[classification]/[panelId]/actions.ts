@@ -59,10 +59,10 @@ export const postForm = async (
   const results = await Promise.all(promiseArray)
 
   // Return a string of all error messages and do not redirect if one of the requests failed
-  const erroredResults = results.filter((result) => result instanceof Error)
+  const erroredResults = results.filter((result) => result?.error)
 
   if (erroredResults.length > 0) {
-    return { message: erroredResults.map((error) => error.message).join(', ') }
+    return { message: erroredResults.map(({ error }) => error.detail[0].msg).join(', ') }
   }
 
   // Let BE know the last panel has successfully been submitted

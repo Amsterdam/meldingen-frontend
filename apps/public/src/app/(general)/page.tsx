@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
 
 import { Home } from './Home'
+import { handleApiError } from '../../handleApiError'
 import { isTypeTextAreaComponent } from '../../typeguards'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
@@ -17,21 +18,10 @@ export const generateMetadata = async () => {
   }
 }
 
-// The API client currently doesn't return strongly typed errors, so we have to manually type them here
-type StaticFormsError = {
-  detail: { msg: string }[]
-}
-
-type StaticFormError = {
-  detail: string
-}
-
 export default async () => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
-  if (staticFormsError) {
-    return (staticFormsError as StaticFormsError).detail[0].msg
-  }
+  if (staticFormsError) return handleApiError(staticFormsError)
 
   const primaryFormId = staticFormsData?.find((form) => form.type === 'primary')?.id
 
@@ -41,9 +31,7 @@ export default async () => {
     path: { static_form_id: primaryFormId },
   })
 
-  if (error) {
-    return (error as StaticFormError).detail
-  }
+  if (error) return handleApiError(error)
 
   if (!data) return 'Primary form data not found'
 

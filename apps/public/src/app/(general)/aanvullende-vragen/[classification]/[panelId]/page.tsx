@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
 import type { FormPanelComponentOutput } from '@meldingen/api-client'
@@ -68,7 +69,7 @@ export default async ({ params }: { params: Params }) => {
 
   const { data } = await getFormClassificationByClassificationId({ path: { classification_id: classification } })
 
-  if (data?.components[0].type !== 'panel') return undefined
+  if (data?.components[0].type !== 'panel') return redirect('/locatie')
 
   // Get current panel questions
   const currentPanelIndex = data.components.findIndex((component) => component.key === panelId)

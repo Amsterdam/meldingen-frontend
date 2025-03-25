@@ -5,36 +5,39 @@ import { redirect } from 'next/navigation'
 
 import { getFormClassificationByClassificationId, postMelding } from '@meldingen/api-client'
 
+import { handleApiError } from '../../handleApiError'
+
 export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)
 
   let nextPage = '/locatie'
 
-  try {
-    const response = await postMelding({ body: { text: formDataObj.primary.toString() } })
-    const { classification, id, token } = response.data || {}
+  const { data, error } = await postMelding({ body: { text: formDataObj.primary.toString() } })
 
-    if (!id || !token) return
+  if (error) return { message: handleApiError(error) }
 
-    // Set session variables in cookies
-    const cookieStore = await cookies()
-    cookieStore.set('id', id.toString())
-    cookieStore.set('token', token)
+  const { classification, id, token } = data
 
-    if (classification) {
-      // Get entire form, in order to redirect to its first panel
-      const { data } = await getFormClassificationByClassificationId({ path: { classification_id: classification } })
-      const nextFormFirstKey = data?.components && data.components[0].key
+  // Set session variables in cookies
+  const cookieStore = await cookies()
+  cookieStore.set('id', id.toString())
+  cookieStore.set('token', token)
 
-      nextPage = `/aanvullende-vragen/${classification}/${nextFormFirstKey}`
-    }
-  } catch (error) {
+  if (classification) {
+    // Get entire form, in order to redirect to its first panel
+    const { data, error } = await getFormClassificationByClassificationId({
+      path: { classification_id: classification },
+    })
+
     // If there are no additional questions for a classification, redirect to /locatie.
-    if ((error as { status?: number }).status === 404) {
-      redirect(nextPage)
-    }
+    if (handleApiError(error) === 'Not Found') return redirect(nextPage)
 
-    return { message: (error as Error).message }
+    // Return other errors to the user
+    if (error) return { message: handleApiError(error) }
+
+    const nextFormFirstKey = data?.components[0].key
+
+    nextPage = `/aanvullende-vragen/${classification}/${nextFormFirstKey}`
   }
 
   return redirect(nextPage)
