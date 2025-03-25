@@ -28,22 +28,30 @@ export default async () => {
 
   if (!meldingId || !token) return undefined
 
-  const primaryFormId = await getStaticForm().then((response) => response.find((form) => form.type === 'primary')?.id)
+  const primaryFormId = await getStaticForm().then(
+    (response) => response.data?.find((form) => form.type === 'primary')?.id,
+  )
 
   if (!primaryFormId) return undefined
 
-  const primaryForm = (await getStaticFormByStaticFormId({ staticFormId: primaryFormId }))?.components[0]
+  const response = await getStaticFormByStaticFormId({ path: { static_form_id: primaryFormId } })
+  const primaryForm = response.data?.components[0]
 
-  const melding = await getMeldingByMeldingIdMelder({ meldingId: parseInt(meldingId, 10), token })
+  const melding = await getMeldingByMeldingIdMelder({ path: { melding_id: parseInt(meldingId, 10) }, query: { token } })
 
-  const additionalQuestionsAnswers = await getMeldingByMeldingIdAnswers({ meldingId: parseInt(meldingId, 10), token })
+  if (!melding.data) return undefined
+
+  const additionalQuestionsAnswers = await getMeldingByMeldingIdAnswers({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
 
   const t = await getTranslations()
 
   const data = getSummaryData({
-    melding,
-    primaryFormLabel: primaryForm?.label,
-    additionalQuestionsAnswers,
+    melding: melding.data,
+    primaryFormLabel: primaryForm?.label ?? '',
+    additionalQuestionsAnswers: additionalQuestionsAnswers.data ?? [],
     location: location ? JSON.parse(location) : undefined,
     locationLabel: t('location.title'),
     contactLabel: t('summary.contact-label'),
