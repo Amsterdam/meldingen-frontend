@@ -16,31 +16,29 @@ export const writeAddressAndCoordinateToCookie = async (_: unknown, formData: Fo
 
   if (!address) return { message: t('errors.no-location') }
 
-  try {
-    // If we don't have coordinates for some reason, we fetch it from the PDOK API using the address.
-    // This should only happen if the user has disabled JavaScript or a PDOK service is down.
-    const PDOKLocation = !coordinates
-      ? await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`).then((res) =>
-          res.json(),
-        )
-      : null
+  let PDOKLocation = null
 
-    if (PDOKLocation && !PDOKLocation.response.docs.length) {
-      throw new Error(t('pdok-no-address-found'))
-    }
+  if (!coordinates) {
+    const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`)
 
-    const location = {
-      name: coordinates ? address : PDOKLocation.response.docs[0].weergavenaam,
-      coordinates: coordinates
-        ? JSON.parse(coordinates as string)
-        : convertWktPointToCoordinates(PDOKLocation.response.docs[0].centroide_ll),
-    }
+    if (!res.ok) return { message: 'PDOK API error' }
 
-    const cookieStore = await cookies()
-    cookieStore.set('location', JSON.stringify(location))
-  } catch (error) {
-    return { message: (error as Error).message }
+    PDOKLocation = await res.json()
+
+    if (!PDOKLocation.response.docs.length) return { message: t('errors.pdok-no-address-found') }
   }
+
+  const PDOKCoordinates = PDOKLocation && convertWktPointToCoordinates(PDOKLocation.response.docs[0].centroide_ll)
+
+  if (!coordinates && !PDOKCoordinates) return { message: 'No coordinates found' }
+
+  const location = {
+    name: coordinates ? address : PDOKLocation.response.docs[0].weergavenaam,
+    coordinates: coordinates ? JSON.parse(coordinates as string) : PDOKCoordinates,
+  }
+
+  const cookieStore = await cookies()
+  cookieStore.set('location', JSON.stringify(location))
 
   return redirect('/locatie')
 }

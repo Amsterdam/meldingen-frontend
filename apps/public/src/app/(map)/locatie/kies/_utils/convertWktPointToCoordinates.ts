@@ -9,9 +9,7 @@ const convertCoordsToLatLng = (coordinates: LatLngTuple) => {
 export const convertWktPointToCoordinates = (wktPoint: string) => {
   const pointMatch = wktPoint.match(/\d+\.\d+/gi)
 
-  if (!wktPoint.includes('POINT') || !pointMatch || pointMatch?.length <= 1) {
-    throw new TypeError('Provided WKT geometry is not a point.')
-  }
+  if (!wktPoint.includes('POINT') || !pointMatch || pointMatch?.length <= 1) return undefined
 
   const [lat, lng] = convertCoordsToLatLng(pointMatch.map((str) => Number.parseFloat(str)) as LatLngTuple)
 
