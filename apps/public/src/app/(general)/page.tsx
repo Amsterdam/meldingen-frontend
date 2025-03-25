@@ -17,25 +17,38 @@ export const generateMetadata = async () => {
   }
 }
 
+// The API client currently doesn't return strongly typed errors, so we have to manually type them here
+type StaticFormsError = {
+  detail: { msg: string }[]
+}
+
+type StaticFormError = {
+  detail: string
+}
+
 export default async () => {
-  try {
-    const primaryFormId = await getStaticForm().then(
-      (response) => response.data?.find((form) => form.type === 'primary')?.id,
-    )
+  const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
-    if (!primaryFormId) throw new Error('Primary form id not found')
-
-    const response = await getStaticFormByStaticFormId({ path: { static_form_id: primaryFormId } })
-
-    if (!response.data) throw new Error('Primary form data not found')
-
-    const primaryForm = response.data.components
-
-    // A primary form is always an array with 1 text area component, but TypeScript doesn't know that
-    // We use a type guard here to make sure we're always working with the right type
-    const filteredPrimaryForm = primaryForm.filter(isTypeTextAreaComponent)
-    return <Home formData={filteredPrimaryForm} />
-  } catch (error) {
-    return (error as Error).message
+  if (staticFormsError) {
+    return (staticFormsError as StaticFormsError).detail[0].msg
   }
+
+  const primaryFormId = staticFormsData?.find((form) => form.type === 'primary')?.id
+
+  if (!primaryFormId) return 'Primary form id not found'
+
+  const { data, error } = await getStaticFormByStaticFormId({
+    path: { static_form_id: primaryFormId },
+  })
+
+  if (error) {
+    return (error as StaticFormError).detail
+  }
+
+  if (!data) return 'Primary form data not found'
+
+  // A primary form is always an array with 1 text area component, but TypeScript doesn't know that
+  // We use a type guard here to make sure we're always working with the right type
+  const filteredPrimaryForm = data.components.filter(isTypeTextAreaComponent)
+  return <Home formData={filteredPrimaryForm} />
 }
