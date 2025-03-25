@@ -100,33 +100,11 @@ export const handlers = [
   http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID, () => HttpResponse.json(mockAdditionalQuestionsAnswerData)),
 
   /** POST */
-  http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () =>
-    HttpResponse.json({
-      id: 42,
-      created_at: '2025-02-17T08:29:10.617091',
-      updated_at: '2025-02-17T08:29:10.617091',
-      original_filename: 'Screenshot 2025-02-10 at 08.29.41.png',
-    }),
-  ),
+  http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () => HttpResponse.json({ id: 42 })),
 
-  http.post(ENDPOINTS.MELDING_CONTACT_BY_ID, () =>
-    HttpResponse.json({
-      id: 123,
-      created_at: '2025-02-17T08:29:10.617091',
-      updated_at: '2025-02-17T08:29:10.617091',
-    }),
-  ),
+  http.post(ENDPOINTS.MELDING_CONTACT_BY_ID, () => new HttpResponse()),
 
-  http.post(ENDPOINTS.MELDING_LOCATION_BY_ID, () =>
-    HttpResponse.json({
-      id: 123,
-      created_at: '2025-02-17T08:29:10.617091',
-      updated_at: '2025-02-17T08:29:10.617091',
-      type: 'Feature',
-      geometry: { type: 'Point', coordinates: [52.370216, 4.895168] },
-      properties: {},
-    }),
-  ),
+  http.post(ENDPOINTS.MELDING_LOCATION_BY_ID, () => new HttpResponse()),
 
   /** DELETE */
   http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => new HttpResponse(null)),
