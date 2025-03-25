@@ -10,6 +10,7 @@ import {
 
 import { getSummaryData } from './_utils/getSummaryData'
 import { Summary } from './Summary'
+import { handleApiError } from 'apps/public/src/handleApiError'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('summary')
@@ -28,30 +29,52 @@ export default async () => {
 
   if (!meldingId || !token) return undefined
 
-  const primaryFormId = await getStaticForm().then(
-    (response) => response.data?.find((form) => form.type === 'primary')?.id,
-  )
+  // Primary form
 
-  if (!primaryFormId) return undefined
+  const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
-  const response = await getStaticFormByStaticFormId({ path: { static_form_id: primaryFormId } })
-  const primaryForm = response.data?.components[0]
+  if (staticFormsError) return handleApiError(staticFormsError)
 
-  const melding = await getMeldingByMeldingIdMelder({ path: { melding_id: parseInt(meldingId, 10) }, query: { token } })
+  const primaryFormId = staticFormsData?.find((form) => form.type === 'primary')?.id
 
-  if (!melding.data) return undefined
+  if (!primaryFormId) return 'Primary form id not found'
 
-  const additionalQuestionsAnswers = await getMeldingByMeldingIdAnswers({
+  const { data: primaryFormData, error: primaryFormError } = await getStaticFormByStaticFormId({
+    path: { static_form_id: primaryFormId },
+  })
+
+  if (primaryFormError) return handleApiError(primaryFormError)
+
+  if (!primaryFormData) return 'Primary form data not found'
+
+  const primaryForm = primaryFormData.components[0]
+
+  // Melding
+
+  const { data: meldingData, error: meldingError } = await getMeldingByMeldingIdMelder({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
   })
 
+  if (meldingError) return handleApiError(meldingError)
+
+  if (!meldingData) return 'Melding data not found'
+
+  // Additional questions
+
+  const { data: additionalQuestionsData, error: additionalQuestionsErrors } = await getMeldingByMeldingIdAnswers({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (additionalQuestionsErrors) return handleApiError(additionalQuestionsErrors)
+
   const t = await getTranslations()
 
   const data = getSummaryData({
-    melding: melding.data,
+    melding: meldingData,
     primaryFormLabel: primaryForm?.label ?? '',
-    additionalQuestionsAnswers: additionalQuestionsAnswers.data ?? [],
+    additionalQuestionsAnswers: additionalQuestionsData ?? [],
     location: location ? JSON.parse(location) : undefined,
     locationLabel: t('location.title'),
     contactLabel: t('summary.contact-label'),
