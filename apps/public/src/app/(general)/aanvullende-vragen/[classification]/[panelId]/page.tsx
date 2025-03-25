@@ -1,11 +1,12 @@
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
-import type { FormPanelComponentOutput } from '@meldingen/api-client'
+import type { FormOutput, FormPanelComponentOutput } from '@meldingen/api-client'
 import { getFormClassificationByClassificationId } from '@meldingen/api-client'
 
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
+import { handleApiError } from 'apps/public/src/handleApiError'
 
 // TODO: pagina's die niet bestaan moeten redirect krijgen
 // TODO: pagina's die wel bestaan maar geen token in url param moeten redirect krijgen
@@ -52,13 +53,13 @@ type Params = Promise<{
   panelId: string
 }>
 
-const getNextPanelPath = (classification: number, currentPanelIndex: number, formData: any) => {
+const getNextPanelPath = (classification: number, currentPanelIndex: number, formData: FormOutput) => {
   if (currentPanelIndex === formData.components.length - 1) return '/locatie'
 
   return `/aanvullende-vragen/${classification}/${formData.components[currentPanelIndex + 1].key}`
 }
 
-const getPreviousPanelPath = (classification: number, currentPanelIndex: number, formData: any) => {
+const getPreviousPanelPath = (classification: number, currentPanelIndex: number, formData: FormOutput) => {
   if (currentPanelIndex === 0) return '/'
 
   return `/aanvullende-vragen/${classification}/${formData.components[currentPanelIndex - 1].key}`
@@ -67,7 +68,9 @@ const getPreviousPanelPath = (classification: number, currentPanelIndex: number,
 export default async ({ params }: { params: Params }) => {
   const { classification, panelId } = await params
 
-  const { data } = await getFormClassificationByClassificationId({ path: { classification_id: classification } })
+  const { data, error } = await getFormClassificationByClassificationId({ path: { classification_id: classification } })
+
+  if (error) return handleApiError(error)
 
   if (data?.components[0].type !== 'panel') return redirect('/locatie')
 
