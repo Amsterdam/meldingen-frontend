@@ -91,8 +91,11 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
     if (typeof value === 'string' || value === null) {
       setQuery(value ?? '')
     } else {
+      const coordinates = convertWktPointToCoordinates(value.centroide_ll)
+      if (coordinates) {
+        setCoordinates(coordinates)
+      }
       setAddress(value.weergave_naam)
-      setCoordinates(convertWktPointToCoordinates(value.centroide_ll))
       setQuery(value.weergave_naam)
     }
   }
