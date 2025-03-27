@@ -53,9 +53,9 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
       const result = await Promise.all(
         files.map(async (file) => {
           const { data, error } = await postMeldingByMeldingIdAttachment({
+            body: { file },
             path: { melding_id: meldingId },
             query: { token },
-            body: { file },
           })
 
           if (error || !data?.id) {
@@ -79,8 +79,8 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
     const { error } = await deleteMeldingByMeldingIdAttachmentByAttachmentId({
       path: {
-        melding_id: meldingId,
         attachment_id: attachmentId,
+        melding_id: meldingId,
       },
       query: { token },
     })
