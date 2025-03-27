@@ -15,6 +15,7 @@ import { FileInput, Grid, SubmitButton } from '@meldingen/ui'
 
 import { redirectToNextPage } from './actions'
 import { BackLink } from '../_components/BackLink'
+import { handleApiError } from 'apps/public/src/handleApiError'
 
 import styles from './Attachments.module.css'
 
@@ -51,17 +52,17 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
       const result = await Promise.all(
         files.map(async (file) => {
-          const uploadedFile = await postMeldingByMeldingIdAttachment({
+          const { data, error } = await postMeldingByMeldingIdAttachment({
             path: { melding_id: meldingId },
             query: { token },
             body: { file },
           })
 
-          if (!uploadedFile.data?.id) {
+          if (error || !data?.id) {
             throw new Error('Failed to upload file')
           }
 
-          return { file, id: uploadedFile.data.id }
+          return { file, id: data.id }
         }),
       )
       setUploadedFiles((currentFiles) => [...currentFiles, ...result])
@@ -76,18 +77,20 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
   const removeFile = async (attachmentId: number) => {
     setErrorMessage(undefined)
 
-    try {
-      await deleteMeldingByMeldingIdAttachmentByAttachmentId({
-        path: {
-          melding_id: meldingId,
-          attachment_id: attachmentId,
-        },
-        query: { token },
-      })
-      setUploadedFiles((files) => files.filter((file) => file.id !== attachmentId))
-    } catch (error) {
-      setErrorMessage((error as Error).message)
+    const { error } = await deleteMeldingByMeldingIdAttachmentByAttachmentId({
+      path: {
+        melding_id: meldingId,
+        attachment_id: attachmentId,
+      },
+      query: { token },
+    })
+
+    if (error) {
+      setErrorMessage(handleApiError(error))
+      return
     }
+
+    setUploadedFiles((files) => files.filter((file) => file.id !== attachmentId))
   }
 
   return (
