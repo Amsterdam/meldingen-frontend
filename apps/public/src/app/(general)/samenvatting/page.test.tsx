@@ -79,7 +79,7 @@ describe('Page', () => {
     )
   })
 
-  it('returns undefined if no primary form is found', async () => {
+  it('returns an error message if no primary form is found', async () => {
     server.use(
       http.get(ENDPOINTS.STATIC_FORM, () =>
         HttpResponse.json([
@@ -93,7 +93,7 @@ describe('Page', () => {
 
     const PageComponent = await Page()
 
-    expect(PageComponent).toBeUndefined()
+    expect(PageComponent).toEqual('Primary form id not found')
   })
 
   it('returns undefined when there is no meldingId and token', async () => {

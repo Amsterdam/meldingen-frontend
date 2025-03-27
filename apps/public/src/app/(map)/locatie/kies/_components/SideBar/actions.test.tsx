@@ -79,18 +79,18 @@ describe('writeAddressAndCoordinateToCookie', () => {
 
     const result = await writeAddressAndCoordinateToCookie(null, formData)
 
-    expect(result).toEqual({ message: 'pdok-no-address-found' })
+    expect(result).toEqual({ message: 'errors.pdok-no-address-found' })
   })
 
   it('returns an error message if an error occurs', async () => {
-    server.use(http.get(ENDPOINTS.PDOK_FREE, () => HttpResponse.error()))
+    server.use(http.get(ENDPOINTS.PDOK_FREE, () => new HttpResponse(null, { status: 500 })))
 
     const formData = new FormData()
     formData.set('address', 'Amstel 1, Amsterdam')
 
     const result = await writeAddressAndCoordinateToCookie(null, formData)
 
-    expect(result).toEqual({ message: 'Failed to fetch' })
+    expect(result).toEqual({ message: 'PDOK API error' })
   })
 
   it('returns an error message if no address is provided', async () => {

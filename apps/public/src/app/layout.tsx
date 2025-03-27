@@ -1,3 +1,4 @@
+import { client } from 'libs/api-client/src/client.gen'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getMessages, getTranslations } from 'next-intl/server'
 import type { ReactNode } from 'react'
@@ -15,6 +16,10 @@ export const generateMetadata = async () => {
     description: t('description'),
   }
 }
+
+client.setConfig({
+  baseUrl: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
+})
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {
   const locale = await getLocale()

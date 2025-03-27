@@ -1,9 +1,11 @@
+import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
 
 import { postLocationForm } from './actions'
-import { postMeldingByMeldingIdLocation } from 'apps/public/src/apiClientProxy'
+import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
+import { server } from 'apps/public/src/mocks/node'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
@@ -11,10 +13,6 @@ vi.mock('next/headers', () => ({
 
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
-}))
-
-vi.mock('apps/public/src/apiClientProxy', () => ({
-  postMeldingByMeldingIdLocation: vi.fn(),
 }))
 
 describe('postLocationForm', () => {
@@ -69,24 +67,11 @@ describe('postLocationForm', () => {
 
     await postLocationForm(null, formData)
 
-    expect(postMeldingByMeldingIdLocation).toHaveBeenCalledWith({
-      meldingId: 123,
-      token: 'test-token',
-      requestBody: {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [52.370216, 4.895168],
-        },
-        properties: {},
-      },
-    })
     expect(redirect).toHaveBeenCalledWith('/bijlage')
   })
 
   it('returns an error message if an error occurs', async () => {
-    const errorMessage = 'Test error'
-    ;(postMeldingByMeldingIdLocation as Mock).mockRejectedValue(new Error(errorMessage))
+    server.use(http.post(ENDPOINTS.MELDING_LOCATION_BY_ID, () => new HttpResponse(null, { status: 404 })))
 
     mockCookies.get.mockImplementation((name) => {
       if (name === 'id') {
@@ -103,6 +88,6 @@ describe('postLocationForm', () => {
 
     const result = await postLocationForm(null, formData)
 
-    expect(result).toEqual({ message: errorMessage })
+    expect(result).toEqual({ message: 'An unknown error occurred' })
   })
 })

@@ -37,13 +37,8 @@ describe('convertWktPointToCoordinates', () => {
     })
   })
 
-  it('should throw an error', () => {
-    expect(() => {
-      convertWktPointToCoordinates('POLYGON(4.90225668 52.36150435)')
-    }).toThrow()
-
-    expect(() => {
-      convertWktPointToCoordinates('POINT(4.90225668)')
-    }).toThrow()
+  it('should return undefined on wrong input', () => {
+    expect(convertWktPointToCoordinates('POLYGON(4.90225668 52.36150435)')).toBeUndefined()
+    expect(convertWktPointToCoordinates('POINT(4.90225668)')).toBeUndefined()
   })
 })

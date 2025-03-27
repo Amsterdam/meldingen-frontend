@@ -57,6 +57,9 @@ importers:
       '@eslint/markdown':
         specifier: 6.3.0
         version: 6.3.0
+      '@hey-api/client-fetch':
+        specifier: 0.8.3
+        version: 0.8.3
       '@hey-api/openapi-ts':
         specifier: 0.64.13
         version: 0.64.13(magicast@0.3.5)(typescript@5.8.2)
@@ -757,6 +760,9 @@ packages:
     peerDependencies:
       react: ^18 || ^19 || ^19.0.0-rc
       react-dom: ^18 || ^19 || ^19.0.0-rc
+
+  '@hey-api/client-fetch@0.8.3':
+    resolution: {integrity: sha512-EBVa8wwUMyBSeQ32PtCz6u5bFQZIMAufvwCT1ZtpjqT3caJQEza4NokbGU50q1ZVrMsM5Ot6GuDNJOF3TMo26Q==}
 
   '@hey-api/json-schema-ref-parser@1.0.3':
     resolution: {integrity: sha512-jgyNFPUReGpdB0ihWv6m+Q3dcawtXx4t6cvi0NS4xxblulcCfEjThP5xVwShFiTRScckIQ/GsuZv20arRTIDkg==}
@@ -5109,6 +5115,8 @@ snapshots:
       '@tanstack/react-virtual': 3.13.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+
+  '@hey-api/client-fetch@0.8.3': {}
 
   '@hey-api/json-schema-ref-parser@1.0.3':
     dependencies:

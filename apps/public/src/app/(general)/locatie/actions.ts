@@ -4,7 +4,9 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
-import { postMeldingByMeldingIdLocation } from 'apps/public/src/apiClientProxy'
+import { postMeldingByMeldingIdLocation } from '@meldingen/api-client'
+
+import { handleApiError } from 'apps/public/src/handleApiError'
 
 export const postLocationForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()
@@ -21,22 +23,17 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
 
   const parsedCoordinates = JSON.parse(coordinates as string)
 
-  try {
-    await postMeldingByMeldingIdLocation({
-      meldingId: parseInt(meldingId, 10),
-      token,
-      requestBody: {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [parsedCoordinates.lat, parsedCoordinates.lng],
-        },
-        properties: {},
-      },
-    })
-  } catch (error) {
-    return { message: (error as Error).message }
-  }
+  const { error } = await postMeldingByMeldingIdLocation({
+    body: {
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [parsedCoordinates.lat, parsedCoordinates.lng] },
+      properties: {},
+    },
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (error) return { message: handleApiError(error) }
 
   return redirect('/bijlage')
 }

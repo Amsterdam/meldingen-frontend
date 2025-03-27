@@ -4,12 +4,12 @@ import { Alert, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-s
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
+import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Grid, SubmitButton } from '@meldingen/ui'
 
 import { postContactForm } from './actions'
 import { BackLink } from '../_components/BackLink'
-import type { StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
 
 const initialState: { message?: string } = {}
 
