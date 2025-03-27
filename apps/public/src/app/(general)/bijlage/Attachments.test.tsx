@@ -74,7 +74,7 @@ describe('Attachments', () => {
   })
 
   it('should throw an error when delete request fails', async () => {
-    server.use(http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => HttpResponse.error()))
+    server.use(http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => new HttpResponse(null, { status: 404 })))
     const user = userEvent.setup()
 
     render(<Attachments {...defaultProps} />)
@@ -94,7 +94,7 @@ describe('Attachments', () => {
     await user.click(deleteButton)
 
     const file1SecondRender = screen.getByText('Screenshot 2025-02-10 at 08.29.41.png')
-    const errorMessage = screen.getByText('Failed to fetch')
+    const errorMessage = screen.getByText('An unknown error occurred')
 
     expect(file1SecondRender).toBeInTheDocument()
     expect(errorMessage).toBeInTheDocument()
