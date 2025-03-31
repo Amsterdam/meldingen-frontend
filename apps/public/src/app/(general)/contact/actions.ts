@@ -3,7 +3,9 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { postMeldingByMeldingIdContact } from 'apps/public/src/apiClientProxy'
+import { postMeldingByMeldingIdContact } from '@meldingen/api-client'
+
+import { handleApiError } from 'apps/public/src/handleApiError'
 
 export const postContactForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()
@@ -17,18 +19,16 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
   const phone = formData.get('phone')
 
   if (email || phone) {
-    try {
-      await postMeldingByMeldingIdContact({
-        meldingId: parseInt(meldingId, 10),
-        requestBody: {
-          ...(email && { email: email as string }),
-          ...(phone && { phone: phone as string }),
-        },
-        token,
-      })
-    } catch (error) {
-      return { message: (error as Error).message }
-    }
+    const { error } = await postMeldingByMeldingIdContact({
+      body: {
+        ...(email && { email: email as string }),
+        ...(phone && { phone: phone as string }),
+      },
+      path: { melding_id: parseInt(meldingId, 10) },
+      query: { token },
+    })
+
+    if (error) return { message: handleApiError(error) }
   }
 
   return redirect('/samenvatting')

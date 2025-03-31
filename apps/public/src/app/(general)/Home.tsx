@@ -4,11 +4,11 @@ import { Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
+import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { FormRenderer } from '@meldingen/form-renderer'
 import { Grid } from '@meldingen/ui'
 
 import { postPrimaryForm } from './actions'
-import type { StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
 
 const initialState: { message?: string } = {}
 

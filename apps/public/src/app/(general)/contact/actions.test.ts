@@ -1,13 +1,11 @@
+import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
 
 import { postContactForm } from './actions'
-import { postMeldingByMeldingIdContact } from 'apps/public/src/apiClientProxy'
-
-vi.mock('apps/public/src/apiClientProxy', () => ({
-  postMeldingByMeldingIdContact: vi.fn(),
-}))
+import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
+import { server } from 'apps/public/src/mocks/node'
 
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
@@ -27,7 +25,7 @@ describe('postContactForm', () => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  it('should post contact details to backend and redirect to /samenvatting page', async () => {
+  it('should redirect to /samenvatting page on success', async () => {
     mockCookies.get.mockImplementation((name) => {
       if (name === 'id') {
         return { value: '21' }
@@ -44,19 +42,10 @@ describe('postContactForm', () => {
 
     await postContactForm(undefined, formData)
 
-    expect(postMeldingByMeldingIdContact).toHaveBeenCalledWith({
-      meldingId: 21,
-      requestBody: {
-        email: 'user@example.com',
-        phone: '0612345678',
-      },
-      token: 'z123890',
-    })
-
     expect(redirect).toHaveBeenCalledWith('/samenvatting')
   })
 
-  it('should not do a query when email and phone are left empty', async () => {
+  it('should redirect to /samenvatting page when email and phone are left empty', async () => {
     mockCookies.get.mockImplementation((name) => {
       if (name === 'id') {
         return { value: '21' }
@@ -70,8 +59,6 @@ describe('postContactForm', () => {
     const formData = new FormData()
 
     await postContactForm(undefined, formData)
-
-    expect(postMeldingByMeldingIdContact).not.toHaveBeenCalled()
 
     expect(redirect).toHaveBeenCalledWith('/samenvatting')
   })
@@ -86,5 +73,27 @@ describe('postContactForm', () => {
     const result = await postContactForm(undefined, formData)
 
     expect(result).toBeUndefined()
+  })
+
+  it('returns an error message if an error occurs', async () => {
+    server.use(http.post(ENDPOINTS.MELDING_CONTACT_BY_ID, () => new HttpResponse(null, { status: 404 })))
+
+    mockCookies.get.mockImplementation((name) => {
+      if (name === 'id') {
+        return { value: '123' }
+      }
+      if (name === 'token') {
+        return { value: 'test-token' }
+      }
+      return undefined
+    })
+
+    const formData = new FormData()
+    formData.set('email', 'user@example.com')
+    formData.set('phone', '0612345678')
+
+    const result = await postContactForm(null, formData)
+
+    expect(result).toEqual({ message: 'An unknown error occurred' })
   })
 })

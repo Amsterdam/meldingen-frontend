@@ -5,16 +5,17 @@ import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 
+import {
+  deleteMeldingByMeldingIdAttachmentByAttachmentId,
+  postMeldingByMeldingIdAttachment,
+} from '@meldingen/api-client'
+import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { FileInput, Grid, SubmitButton } from '@meldingen/ui'
 
 import { redirectToNextPage } from './actions'
 import { BackLink } from '../_components/BackLink'
-import {
-  deleteMeldingByMeldingIdAttachmentByAttachmentId,
-  postMeldingByMeldingIdAttachment,
-} from 'apps/public/src/apiClientProxy'
-import type { ApiError, StaticFormTextAreaComponentOutput } from 'apps/public/src/apiClientProxy'
+import { handleApiError } from 'apps/public/src/handleApiError'
 
 import styles from './Attachments.module.css'
 
@@ -51,18 +52,22 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
       const result = await Promise.all(
         files.map(async (file) => {
-          const uploadedFile = await postMeldingByMeldingIdAttachment({
-            formData: { file },
-            meldingId,
-            token,
+          const { data, error } = await postMeldingByMeldingIdAttachment({
+            body: { file },
+            path: { melding_id: meldingId },
+            query: { token },
           })
 
-          return { file, id: uploadedFile.id }
+          if (error || !data?.id) {
+            throw new Error('Failed to upload file')
+          }
+
+          return { file, id: data.id }
         }),
       )
       setUploadedFiles((currentFiles) => [...currentFiles, ...result])
     } catch (error) {
-      setErrorMessage((error as ApiError).message)
+      setErrorMessage((error as Error).message)
     }
     // A file input in a form by default sends the files to the Next backend on submit.
     // We do not want to do this since we're sending them directly from the client.
@@ -72,16 +77,20 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
   const removeFile = async (attachmentId: number) => {
     setErrorMessage(undefined)
 
-    try {
-      await deleteMeldingByMeldingIdAttachmentByAttachmentId({
-        meldingId,
-        attachmentId,
-        token,
-      })
-      setUploadedFiles((files) => files.filter((file) => file.id !== attachmentId))
-    } catch (error) {
-      setErrorMessage((error as ApiError).message)
+    const { error } = await deleteMeldingByMeldingIdAttachmentByAttachmentId({
+      path: {
+        attachment_id: attachmentId,
+        melding_id: meldingId,
+      },
+      query: { token },
+    })
+
+    if (error) {
+      setErrorMessage(handleApiError(error))
+      return
     }
+
+    setUploadedFiles((files) => files.filter((file) => file.id !== attachmentId))
   }
 
   return (
