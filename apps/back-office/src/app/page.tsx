@@ -2,7 +2,7 @@ import { client } from 'libs/api-client/src/client.gen'
 import type { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
 
-import { authOptions } from './authentication/authOptions'
+import { authOptions } from './_authentication/authOptions'
 import { Overview } from './Overview'
 
 export const metadata: Metadata = {
