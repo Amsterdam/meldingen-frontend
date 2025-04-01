@@ -3,12 +3,10 @@ import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 import type { ReactNode } from 'react'
 
-import { authOptions } from './authentication/authOptions'
-import { NextAuthProvider } from './providers'
+import { authOptions } from './_authentication/authOptions'
 
 import '@amsterdam/design-system-tokens/dist/index.css'
 import '@amsterdam/design-system-assets/font/index.css'
-
 import '@amsterdam/design-system-css/dist/index.css'
 
 import './global.css'
@@ -26,9 +24,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
 
   return (
     <html lang="nl">
-      <NextAuthProvider>
-        <body>{children}</body>
-      </NextAuthProvider>
+      <body>{children}</body>
     </html>
   )
 }
