@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 import type { ReactNode } from 'react'
 
-import { authOptions } from './authentication/authOptions'
+import { authOptions } from './_authentication/authOptions'
 
 import '@amsterdam/design-system-tokens/dist/index.css'
 import '@amsterdam/design-system-assets/font/index.css'
