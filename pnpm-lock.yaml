@@ -21,8 +21,8 @@ importers:
         specifier: 0.14.1
         version: 0.14.1(@amsterdam/design-system-css@0.14.1(@amsterdam/design-system-assets@0.3.0)(@amsterdam/design-system-tokens@0.14.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@amsterdam/design-system-react-icons':
-        specifier: 0.1.13
-        version: 0.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 0.1.14
+        version: 0.1.14(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@amsterdam/design-system-tokens':
         specifier: 0.14.0
         version: 0.14.0
@@ -259,6 +259,12 @@ packages:
     peerDependencies:
       react: 16 - 18
       react-dom: 16 - 18
+
+  '@amsterdam/design-system-react-icons@0.1.14':
+    resolution: {integrity: sha512-0W4N15pPYrjxmhf3KtiDPtWBJyF/tHh/+994n51A2ex+XQxcUvTqCSJ4OwfyTNmBfrwhNt9zwSlJDhtm7tnWQg==}
+    peerDependencies:
+      react: 16 - 19
+      react-dom: 16 - 19
 
   '@amsterdam/design-system-react@0.14.1':
     resolution: {integrity: sha512-lQoU67Xc1oU3AK24c+rGYE9VMuh46euXQBUWFa52kTje3WmYgDObiaoPdme/+vWrcLeVWukuFGJi+hiUELjc0g==}
@@ -4582,6 +4588,11 @@ snapshots:
       '@amsterdam/design-system-tokens': 0.14.0
 
   '@amsterdam/design-system-react-icons@0.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
+  '@amsterdam/design-system-react-icons@0.1.14(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
