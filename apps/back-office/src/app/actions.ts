@@ -1,6 +1,6 @@
 'use server'
 
-import { getMelding } from '@meldingen/api-client'
+import { getMelding } from '../apiClientProxy'
 
 export const test = async (formData: FormData) => {
   const data = formData.get('melding') // Get the value of the input field
