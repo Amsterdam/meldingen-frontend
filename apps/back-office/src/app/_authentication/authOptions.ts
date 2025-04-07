@@ -55,6 +55,13 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
+    redirect: async ({ url, baseUrl }) => {
+      // Use callback url
+      if (url.startsWith('/')) return `${baseUrl}${url}`
+      else if (new URL(url).origin === baseUrl) return url
+
+      return baseUrl
+    },
     jwt: async ({ account, token, user }) => {
       if (account && user) {
         // account is only available the first time this callback is called on a new session (after the user signs in)
