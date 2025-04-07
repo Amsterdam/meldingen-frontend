@@ -1,10 +1,5 @@
-import { client } from 'libs/api-client/src/client.gen'
-import { getServerSession } from 'next-auth'
-
-import { getMeldingByMeldingId, MeldingOutput } from '@meldingen/api-client'
-
 import { Detail } from './Detail'
-import { authOptions } from '../../_authentication/authOptions'
+import { getMeldingByMeldingId, MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
@@ -48,15 +43,6 @@ const formatMeldingData = (data: MeldingOutput) => {
 
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
-
-  const session = await getServerSession(authOptions)
-
-  if (!session?.accessToken) return undefined
-
-  client.setConfig({
-    auth: () => session.accessToken,
-    baseUrl: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
-  })
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
