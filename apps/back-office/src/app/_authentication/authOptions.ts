@@ -30,17 +30,13 @@ const refreshAccessToken = async (token: JWT) => {
       throw refreshedTokens
     }
 
-    console.log('refresh access token')
-
     return {
       ...token,
       accessToken: refreshedTokens.access_token,
-      // accessTokenExpiresAt: Date.now() + refreshedTokens.expires_in * 1000,
-      accessTokenExpiresAt: Date.now() + 1000, // TEMP: set to 1 second for testing purposes
+      accessTokenExpiresAt: Date.now() + refreshedTokens.expires_in * 1000,
       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
-      // refreshTokenExpiresAt:
-      //   refreshedTokens.refresh_expires_in && Date.now() + refreshedTokens.refresh_expires_in * 1000,
-      refreshTokenExpiresAt: Date.now() + 3000, // TEMP: set to 3 seconds for testing purposes
+      refreshTokenExpiresAt:
+        refreshedTokens.refresh_expires_in && Date.now() + refreshedTokens.refresh_expires_in * 1000,
     }
   } catch {
     return {
@@ -65,12 +61,10 @@ export const authOptions: AuthOptions = {
         return {
           accessToken: account.access_token,
           // Access token expiry date in milliseconds
-          // accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
-          accessTokenExpiresAt: Date.now() + 1000, // TEMP: set to 1 second for testing purposes
+          accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
           refreshToken: account.refresh_token,
           // Refresh token expiry date in milliseconds
-          // refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
-          refreshTokenExpiresAt: Date.now() + 3000, // TEMP: set to 3 seconds for testing purposes
+          refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
           user,
         }
       }

@@ -4,11 +4,8 @@ import { getServerSession } from 'next-auth'
 
 import { authOptions } from './app/_authentication/authOptions'
 
-// Dit werkt
 client.setConfig({
   auth: async () => {
-    console.log('------ nu wordt gecheckt of tokens ok zijn')
-
     const session = await getServerSession(authOptions)
 
     if (!session || !session.accessToken || session.error) {

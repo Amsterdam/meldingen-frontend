@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 
-import { getMelding } from '../apiClientProxy'
 import { Overview } from './Overview'
 
 export const metadata: Metadata = {
@@ -8,7 +7,5 @@ export const metadata: Metadata = {
 }
 
 export default async () => {
-  const { data } = await getMelding()
-
-  return <Overview data={data} />
+  return <Overview />
 }
