@@ -77,6 +77,13 @@ export const authOptions: AuthOptions = {
       // Access token has expired, try to update it
       return refreshAccessToken(token)
     },
+    redirect: async ({ url, baseUrl }) => {
+      // Use callback url
+      if (url.startsWith('/')) return `${baseUrl}${url}`
+      else if (new URL(url).origin === baseUrl) return url
+
+      return baseUrl
+    },
     session: async ({ session, token }) => {
       // Send properties to the client, like an access_token and user id from a provider.
       session.accessToken = token.accessToken
