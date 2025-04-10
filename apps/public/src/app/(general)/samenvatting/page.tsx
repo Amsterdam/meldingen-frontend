@@ -3,6 +3,8 @@ import { getTranslations } from 'next-intl/server'
 
 import {
   getMeldingByMeldingIdAnswers,
+  getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
+  getMeldingByMeldingIdAttachments,
   getMeldingByMeldingIdMelder,
   getStaticForm,
   getStaticFormByStaticFormId,
@@ -68,6 +70,34 @@ export default async () => {
   })
 
   if (additionalQuestionsErrors) return handleApiError(additionalQuestionsErrors)
+
+  const { data: attachmentsData, error: attachmentsError } = await getMeldingByMeldingIdAttachments({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (attachmentsError) return handleApiError(attachmentsError)
+
+  if (!attachmentsData) return 'Attachments data not found'
+
+  const attachments = await Promise.all(
+    attachmentsData?.map(async (attachmentDetails) => {
+      const { data: attachmentData, error: attachmentError } =
+        await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
+          path: { melding_id: parseInt(meldingId, 10), attachment_id: attachmentDetails.id },
+
+          query: { token, type: 'thumbnail' },
+        })
+
+      if (attachmentError) return handleApiError(attachmentError)
+
+      if (!attachmentData) return 'Attachment data not found'
+
+      return data
+    }) || [],
+  )
+
+  console.log('--- attachments:', attachments)
 
   const t = await getTranslations()
 
