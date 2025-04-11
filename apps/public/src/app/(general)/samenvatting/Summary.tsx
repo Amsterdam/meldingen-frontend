@@ -1,16 +1,17 @@
 'use client'
 
-import { Grid, Heading, Paragraph } from '@amsterdam/design-system-react'
+import { FileList, Grid, Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useActionState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import { SubmitButton, SummaryList } from '@meldingen/ui'
 
 import { postSummaryForm } from './actions'
-import { GenericSummaryData } from './getSummaryData'
+import { AttachmentSummary, GenericSummaryData } from './getSummaryData'
 import { BackLink } from '../_components/BackLink'
 
 type Props = {
+  attachments: AttachmentSummary
   additionalQuestionsAnswers: GenericSummaryData[]
   contact?: GenericSummaryData
   location: GenericSummaryData
@@ -19,8 +20,46 @@ type Props = {
 
 const initialState: { message?: string } = {}
 
-export const Summary = ({ melding, additionalQuestionsAnswers, location, contact }: Props) => {
+const convertStreamToFile = async (attachment: ReadableStream, originalFileName: string) => {
+  // // TODO: set variable mimeType
+  const mimeType = 'image/jpeg'
+
+  const reader = attachment.getReader()
+  const chunks = []
+
+  while (true) {
+    const { done, value } = await reader.read()
+    if (done) break
+    chunks.push(value)
+  }
+
+  const blob = new Blob(chunks, { type: mimeType })
+
+  const file = new File([blob], originalFileName, { type: mimeType })
+
+  return file
+}
+
+export const Summary = ({ attachments, melding, additionalQuestionsAnswers, location, contact }: Props) => {
   const [formState, formAction] = useActionState(postSummaryForm, initialState)
+  const [fileList, setFileList] = useState<File[]>([])
+
+  useEffect(() => {
+    // TODO: change name
+    const transformStreamsToFiles = async () => {
+      if (attachments) {
+        const fileList = await Promise.all(
+          attachments.map(async (attachment) => {
+            return await convertStreamToFile(attachment.file, attachment.meta.original_filename)
+          }),
+        )
+
+        setFileList(fileList)
+      }
+    }
+
+    transformStreamsToFiles()
+  }, [attachments])
 
   const t = useTranslations('summary')
 
@@ -67,6 +106,14 @@ export const Summary = ({ melding, additionalQuestionsAnswers, location, contact
               ))}
             </SummaryList.Item>
           }
+
+          {fileList.length > 0 && (
+            <FileList>
+              {fileList.map((file) => (
+                <FileList.Item key={file.name} file={file} />
+              ))}
+            </FileList>
+          )}
 
           {contact && (
             <SummaryList.Item key={contact.key}>

@@ -1,5 +1,8 @@
 import {
+  AttachmentOutput,
   getMeldingByMeldingIdAnswers,
+  getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
+  getMeldingByMeldingIdAttachments,
   getMeldingByMeldingIdMelder,
   getStaticForm,
   getStaticFormByStaticFormId,
@@ -24,6 +27,8 @@ type Location = {
   name: string
   coordinates: Coordinates
 }
+
+export type AttachmentSummary = { file: ReadableStream; meta: AttachmentOutput }[]
 
 export const getMeldingSummary = async (meldingId: string, token: string): Promise<MeldingDataResult> => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
@@ -81,6 +86,36 @@ export const getAdditionalQuestionsSummary = async (
       description: [answer.text],
     })) || []
   )
+}
+
+export const getAttachments = async (meldingId: string, token: string): Promise<AttachmentSummary> => {
+  const { data: attachmentsData, error: attachmentsError } = await getMeldingByMeldingIdAttachments({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+  // TODO: use a library to add mimeType to the attachmentDetails
+  if (attachmentsError) throw new Error(handleApiError(attachmentsError))
+
+  if (!attachmentsData) throw new Error('Attachments data not found')
+
+  const attachments = await Promise.all(
+    attachmentsData?.map(async (attachmentDetails) => {
+      const { data: attachmentData, error: attachmentError } =
+        await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
+          path: { melding_id: parseInt(meldingId, 10), attachment_id: attachmentDetails.id },
+
+          query: { token, type: 'thumbnail' },
+        })
+
+      if (attachmentError) throw new Error(handleApiError(attachmentError))
+
+      if (!attachmentData) throw new Error('Attachment data not found')
+
+      return { file: attachmentData as ReadableStream, meta: attachmentDetails }
+    }) || [],
+  )
+
+  return attachments
 }
 
 export const getLocationSummary = (label: string, location?: string): GenericSummaryData => {
