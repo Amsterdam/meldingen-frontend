@@ -1,8 +1,13 @@
+import { cookies } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
 
-import { getSummaryData } from './getSummaryData'
+import {
+  getAdditionalQuestionsSummary,
+  getContactSummary,
+  getLocationSummary,
+  getMeldingSummary,
+} from './getSummaryData'
 import { Summary } from './Summary'
-import type { Props as SummaryProps } from './Summary'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('summary')
@@ -13,13 +18,27 @@ export const generateMetadata = async () => {
 }
 
 export default async () => {
-  const { data, error } = await getSummaryData()
+  const cookieStore = await cookies()
+  const meldingId = cookieStore.get('id')?.value
+  const token = cookieStore.get('token')?.value
+  const location = cookieStore.get('location')?.value
 
-  if (error.length > 0) {
-    return error.forEach((error) => {
-      throw new Error(error)
-    })
-  }
+  const t = await getTranslations()
 
-  return <Summary {...(data as SummaryProps)} />
+  if (!meldingId || !token) return { data: {}, error: ['Could not retrieve meldingId or token'] }
+
+  const { data: meldingBodySummary, meldingData } = await getMeldingSummary(meldingId, token)
+  const additionalQuestionsAnswers = await getAdditionalQuestionsSummary(meldingId, token)
+
+  const locationSummary = getLocationSummary(t('location.title'), location)
+  const contactSummary = getContactSummary(t('summary.contact-label'), meldingData?.email, meldingData?.phone)
+
+  return (
+    <Summary
+      additionalQuestionsAnswers={additionalQuestionsAnswers}
+      contact={contactSummary}
+      location={locationSummary}
+      melding={meldingBodySummary}
+    />
+  )
 }

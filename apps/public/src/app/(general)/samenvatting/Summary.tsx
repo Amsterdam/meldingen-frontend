@@ -10,11 +10,11 @@ import { postSummaryForm } from './actions'
 import { GenericSummaryData } from './getSummaryData'
 import { BackLink } from '../_components/BackLink'
 
-export type Props = {
-  melding: GenericSummaryData
+type Props = {
   additionalQuestionsAnswers: GenericSummaryData[]
-  location: GenericSummaryData
   contact?: GenericSummaryData
+  location: GenericSummaryData
+  melding: GenericSummaryData
 }
 
 const initialState: { message?: string } = {}
