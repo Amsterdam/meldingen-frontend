@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 export default async () => {
-  const { data, error } = await getMelding({ query: { limit: 10 } })
+  const { data, error } = await getMelding({ query: { limit: 10, sort: '["created_at","DESC"]' } })
 
   if (error || !data) return handleApiError(error)
 
