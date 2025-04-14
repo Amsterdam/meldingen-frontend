@@ -47,7 +47,6 @@ export const Summary = ({ attachments, melding, additionalQuestionsAnswers, loca
   const [fileList, setFileList] = useState<File[]>([])
 
   useEffect(() => {
-    // TODO: change name
     const transformStreamsToFiles = async () => {
       if (attachments.data.length > 0) {
         const fileList = await Promise.all(
