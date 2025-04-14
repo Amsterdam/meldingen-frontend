@@ -6,8 +6,8 @@ import { useActionState, useEffect, useState } from 'react'
 
 import { SubmitButton, SummaryList } from '@meldingen/ui'
 
+import { AttachmentsSummary, GenericSummaryData } from './_utils/getSummaryData'
 import { postSummaryForm } from './actions'
-import { AttachmentsSummary, GenericSummaryData } from './getSummaryData'
 import { BackLink } from '../_components/BackLink'
 
 import styles from './Summary.module.css'
@@ -49,7 +49,7 @@ export const Summary = ({ attachments, melding, additionalQuestionsAnswers, loca
   useEffect(() => {
     // TODO: change name
     const transformStreamsToFiles = async () => {
-      if (attachments.data) {
+      if (attachments.data.length > 0) {
         const fileList = await Promise.all(
           attachments.data.map(async (attachment) => {
             return await convertStreamToFile(attachment.file, attachment.meta.original_filename)

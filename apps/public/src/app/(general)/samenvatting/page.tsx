@@ -7,7 +7,7 @@ import {
   getContactSummary,
   getLocationSummary,
   getMeldingSummary,
-} from './getSummaryData'
+} from './_utils/getSummaryData'
 import { Summary } from './Summary'
 
 export const generateMetadata = async () => {
