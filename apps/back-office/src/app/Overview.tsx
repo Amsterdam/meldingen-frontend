@@ -1,6 +1,7 @@
 'use client'
 
-import { Table } from '@amsterdam/design-system-react'
+import { Link, Table } from '@amsterdam/design-system-react'
+import NextLink from 'next/link'
 
 import { Grid } from '@meldingen/ui'
 
@@ -15,8 +16,6 @@ const HEADERS = [
 
 const getValue = (melding: MeldingOutput, key: string) => {
   switch (key) {
-    case 'id':
-      return melding.id
     case 'created_at':
       return melding.created_at
     case 'classification':
@@ -43,9 +42,18 @@ export const Overview = ({ data }: { data: MeldingOutput[] }) => {
           <Table.Body>
             {data.map((melding) => (
               <Table.Row key={melding.id}>
-                {HEADERS.map((header) => (
-                  <Table.Cell key={header.key}>{getValue(melding, header.key)}</Table.Cell>
-                ))}
+                {HEADERS.map((header) => {
+                  if (header.key === 'id') {
+                    return (
+                      <Table.Cell key={header.key}>
+                        <NextLink href={`/melding/${melding.id}`} legacyBehavior passHref>
+                          <Link variant="inline">{melding.id}</Link>
+                        </NextLink>
+                      </Table.Cell>
+                    )
+                  }
+                  return <Table.Cell key={header.key}>{getValue(melding, header.key)}</Table.Cell>
+                })}
               </Table.Row>
             ))}
           </Table.Body>
