@@ -7,11 +7,13 @@ import { useActionState, useEffect, useState } from 'react'
 import { SubmitButton, SummaryList } from '@meldingen/ui'
 
 import { postSummaryForm } from './actions'
-import { AttachmentSummary, GenericSummaryData } from './getSummaryData'
+import { AttachmentsSummary, GenericSummaryData } from './getSummaryData'
 import { BackLink } from '../_components/BackLink'
 
+import styles from './Summary.module.css'
+
 type Props = {
-  attachments: AttachmentSummary
+  attachments: AttachmentsSummary
   additionalQuestionsAnswers: GenericSummaryData[]
   contact?: GenericSummaryData
   location: GenericSummaryData
@@ -21,7 +23,7 @@ type Props = {
 const initialState: { message?: string } = {}
 
 const convertStreamToFile = async (attachment: ReadableStream, originalFileName: string) => {
-  // // TODO: set variable mimeType
+  // // TODO: set variable mimeType from reponse header
   const mimeType = 'image/jpeg'
 
   const reader = attachment.getReader()
@@ -47,9 +49,9 @@ export const Summary = ({ attachments, melding, additionalQuestionsAnswers, loca
   useEffect(() => {
     // TODO: change name
     const transformStreamsToFiles = async () => {
-      if (attachments) {
+      if (attachments.data) {
         const fileList = await Promise.all(
-          attachments.map(async (attachment) => {
+          attachments.data.map(async (attachment) => {
             return await convertStreamToFile(attachment.file, attachment.meta.original_filename)
           }),
         )
@@ -108,11 +110,14 @@ export const Summary = ({ attachments, melding, additionalQuestionsAnswers, loca
           }
 
           {fileList.length > 0 && (
-            <FileList>
-              {fileList.map((file) => (
-                <FileList.Item key={file.name} file={file} />
-              ))}
-            </FileList>
+            <SummaryList.Item key={attachments.key} className={styles.fileListItemAttachments}>
+              <SummaryList.Term>{attachments.term}</SummaryList.Term>
+              <FileList>
+                {fileList.map((file) => (
+                  <FileList.Item key={file.name} file={file} />
+                ))}
+              </FileList>
+            </SummaryList.Item>
           )}
 
           {contact && (

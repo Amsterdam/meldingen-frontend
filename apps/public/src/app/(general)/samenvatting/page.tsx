@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server'
 
 import {
   getAdditionalQuestionsSummary,
-  getAttachments,
+  getAttachmentsSummary,
   getContactSummary,
   getLocationSummary,
   getMeldingSummary,
@@ -31,15 +31,14 @@ export default async () => {
   const { data: meldingBodySummary, meldingData } = await getMeldingSummary(meldingId, token)
   const additionalQuestionsAnswers = await getAdditionalQuestionsSummary(meldingId, token)
 
+  const attachmentsSummary = await getAttachmentsSummary(t('summary.attachments-label'), meldingId, token)
   const locationSummary = getLocationSummary(t('location.title'), location)
   const contactSummary = getContactSummary(t('summary.contact-label'), meldingData?.email, meldingData?.phone)
-
-  const attachments = await getAttachments(meldingId, token)
 
   return (
     <Summary
       additionalQuestionsAnswers={additionalQuestionsAnswers}
-      attachments={attachments}
+      attachments={attachmentsSummary}
       contact={contactSummary}
       location={locationSummary}
       melding={meldingBodySummary}

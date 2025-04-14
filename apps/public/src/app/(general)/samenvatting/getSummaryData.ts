@@ -28,7 +28,11 @@ type Location = {
   coordinates: Coordinates
 }
 
-export type AttachmentSummary = { file: ReadableStream; meta: AttachmentOutput }[]
+export type AttachmentsSummary = {
+  key: string
+  term: string
+  data: { file: ReadableStream; meta: AttachmentOutput }[]
+}
 
 export const getMeldingSummary = async (meldingId: string, token: string): Promise<MeldingDataResult> => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
@@ -88,7 +92,11 @@ export const getAdditionalQuestionsSummary = async (
   )
 }
 
-export const getAttachments = async (meldingId: string, token: string): Promise<AttachmentSummary> => {
+export const getAttachmentsSummary = async (
+  label: string,
+  meldingId: string,
+  token: string,
+): Promise<AttachmentsSummary> => {
   const { data: attachmentsData, error: attachmentsError } = await getMeldingByMeldingIdAttachments({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
@@ -115,7 +123,7 @@ export const getAttachments = async (meldingId: string, token: string): Promise<
     }) || [],
   )
 
-  return attachments
+  return { key: 'attachments', term: label, data: attachments }
 }
 
 export const getLocationSummary = (label: string, location?: string): GenericSummaryData => {
