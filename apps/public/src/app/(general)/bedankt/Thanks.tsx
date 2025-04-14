@@ -17,8 +17,10 @@ export const Thanks = ({ meldingId }: Props) => {
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <Heading className="ams-mb--xs">{t('title')}</Heading>
-        <MarkdownToHtml className="ams-mb--xs">{t('description', { meldingId })}</MarkdownToHtml>
+        <Heading className="ams-mb-xs" level={1}>
+          {t('title')}
+        </Heading>
+        <MarkdownToHtml className="ams-mb-xs">{t('description', { meldingId })}</MarkdownToHtml>
         <NextLink href="/" legacyBehavior passHref>
           <Link href="dummy-href">{t('link')}</Link>
         </NextLink>

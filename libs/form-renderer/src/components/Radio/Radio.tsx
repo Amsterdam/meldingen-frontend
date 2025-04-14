@@ -26,7 +26,7 @@ export const Radio = ({ description, id, label, validate, values }: Props) => (
         {description}
       </MarkdownToHtml>
     )}
-    <Column gap="extra-small">
+    <Column gap="x-small">
       {values.map(({ label: radioLabel, value }) => (
         <ADSRadio key={value} aria-required={validate?.required ? 'true' : undefined} name={id} value={value}>
           {radioLabel}

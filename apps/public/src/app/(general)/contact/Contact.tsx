@@ -26,23 +26,23 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <BackLink href="/bijlage" className="ams-mb--xs">
+        <BackLink href="/bijlage" className="ams-mb-xs">
           {t('back-link')}
         </BackLink>
-        <Heading level={1} className="ams-mb--sm">
+        <Heading level={1} className="ams-mb-s">
           {t('step.title')}
         </Heading>
-        <Heading level={2} size="level-4" className="ams-mb--xs">
+        <Heading level={2} size="level-4" className="ams-mb-xs">
           {t('title')}
         </Heading>
-        <MarkdownToHtml className="ams-mb--sm">{t('description')}</MarkdownToHtml>
+        <MarkdownToHtml className="ams-mb-s">{t('description')}</MarkdownToHtml>
         <form action={formAction}>
           {formState?.message && (
-            <Alert severity="error" heading="Let op" className="ams-mb--sm">
+            <Alert headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
               <Paragraph>{formState?.message}</Paragraph>
             </Alert>
           )}
-          <Label htmlFor="email-input" optional className="ams-mb--sm">
+          <Label htmlFor="email-input" optional className="ams-mb-s">
             {emailLabel}
           </Label>
           {emailDescription && (
@@ -58,9 +58,9 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
             autoComplete="email"
             autoCorrect="off"
             spellCheck="false"
-            className="ams-mb--sm"
+            className="ams-mb-m"
           />
-          <Label htmlFor="tel-input" optional className="ams-mb--sm">
+          <Label htmlFor="tel-input" optional className="ams-mb-s">
             {telLabel}
           </Label>
           {telDescription && (
@@ -71,7 +71,7 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
           <TextInput
             aria-describedby={telDescription ? 'tel-input-description' : undefined}
             autoComplete="tel"
-            className="ams-mb--sm"
+            className="ams-mb-m"
             id="tel-input"
             name="phone"
             type="tel"
