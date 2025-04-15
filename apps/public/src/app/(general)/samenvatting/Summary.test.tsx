@@ -13,33 +13,21 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
+const image1 = new Blob(['uploaded-file-1'], { type: 'image/webp' })
+
 const mockData = {
   attachments: {
     key: 'attachments',
     term: "Foto's",
-    data: [],
-    // TODO: Add test case for attachments
-
-    // data: [
-    //   {
-    //     file: {} as ReadableStream,
-    //     meta: {
-    //       id: 23,
-    //       created_at: '2025-04-14T12:40:12.265257',
-    //       updated_at: '2025-04-14T12:40:13.043884',
-    //       original_filename: 'IMG_1432.JPG',
-    //     },
-    //   },
-    //   {
-    //     file: {} as ReadableStream,
-    //     meta: {
-    //       id: 22,
-    //       created_at: '2025-04-14T12:40:12.267651',
-    //       updated_at: '2025-04-14T12:40:12.957373',
-    //       original_filename: 'IMG_0815.jpg',
-    //     },
-    //   },
-    // ],
+    data: [
+      {
+        file: image1,
+        meta: {
+          contentType: 'image/webp',
+          originalFilename: 'IMG_1432.JPG',
+        },
+      },
+    ],
   },
   additionalQuestionsAnswers: [
     {
@@ -71,9 +59,13 @@ const mockData = {
 }
 
 describe('Summary', () => {
+  beforeAll(() => {
+    global.URL.createObjectURL = vi.fn(() => 'blob:http://localhost/uploaded-file-1')
+  })
+
   it('renders the Summary component with data', () => {
     render(<Summary {...mockData} />)
-
+    screen.debug()
     const terms = screen.getAllByRole('term')
     const definitions = screen.getAllByRole('definition')
 
@@ -81,12 +73,14 @@ describe('Summary', () => {
     expect(terms[1]).toHaveTextContent('Text Field 1')
     expect(terms[2]).toHaveTextContent('Text Area 2')
     expect(terms[3]).toHaveTextContent('Waar staat de container?')
-    expect(terms[4]).toHaveTextContent('Wat zijn uw contactgegevens?')
+    expect(terms[4]).toHaveTextContent("Foto's")
+    expect(terms[5]).toHaveTextContent('Wat zijn uw contactgegevens?')
 
     expect(definitions[0]).toHaveTextContent('Er ligt heel veel afval op straat.')
     expect(definitions[1]).toHaveTextContent('Antwoord vraag 1')
     expect(definitions[2]).toHaveTextContent('Antwoord vraag 2')
     expect(definitions[3]).toHaveTextContent('Nieuwmarkt 247, 1011MB Amsterdam')
+    expect(screen.getByText('IMG_1432.JPG')).toBeInTheDocument()
     expect(definitions[4]).toHaveTextContent('test@test.com')
     expect(definitions[5]).toHaveTextContent('+31612345678')
 

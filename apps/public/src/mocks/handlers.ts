@@ -110,7 +110,9 @@ export const handlers = [
     ])
   }),
 
-  http.get(ENDPOINTS.MELDING_ATTACHMENT_BY_ID_DOWNLOAD, () => HttpResponse.json([{} as ReadableStream])),
+  http.get(ENDPOINTS.MELDING_ATTACHMENT_BY_ID_DOWNLOAD, () =>
+    HttpResponse.json([new Blob(['uploaded-file'], { type: 'image/webp' })]),
+  ),
 
   /** POST */
   http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () => HttpResponse.json({ id: 42 })),
