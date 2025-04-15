@@ -30,9 +30,6 @@ describe('getMeldingSummary', () => {
       },
     })
   })
-  // it('should throw an error when getStaticForm fails', () => {})
-  // it('should throw an error when getStaticFormById fails', () => {})
-  // it('should throw an error when getMeldingByMeldingIdMelder fails', () => {})
 })
 
 describe('getAdditionalQuestionsSummary', () => {
@@ -44,7 +41,6 @@ describe('getAdditionalQuestionsSummary', () => {
       { key: '36', term: 'Text Field', description: ['q2'] },
     ])
   })
-  // it('should throw an error when getMeldingByMeldingIdAnswers fails', () => {})
 })
 
 describe('getLocationSummary', () => {
