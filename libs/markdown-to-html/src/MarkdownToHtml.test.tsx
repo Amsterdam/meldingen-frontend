@@ -43,7 +43,7 @@ describe('MarkdownToHtml', () => {
     const heading = screen.getByRole('heading', { level: 2 })
 
     expect(heading).toBeInTheDocument()
-    expect(heading).toHaveClass('ams-heading ams-heading--level-3')
+    expect(heading).toHaveClass('ams-heading ams-heading--3')
   })
 
   it('renders a heading level 3', () => {
@@ -52,7 +52,7 @@ describe('MarkdownToHtml', () => {
     const heading = screen.getByRole('heading', { level: 3 })
 
     expect(heading).toBeInTheDocument()
-    expect(heading).toHaveClass('ams-heading ams-heading--level-4')
+    expect(heading).toHaveClass('ams-heading ams-heading--4')
   })
 
   it('renders a heading level 4', () => {
@@ -61,7 +61,7 @@ describe('MarkdownToHtml', () => {
     const heading = screen.getByRole('heading', { level: 4 })
 
     expect(heading).toBeInTheDocument()
-    expect(heading).toHaveClass('ams-heading ams-heading--level-5')
+    expect(heading).toHaveClass('ams-heading ams-heading--5')
   })
 
   it('renders an ordered list', () => {

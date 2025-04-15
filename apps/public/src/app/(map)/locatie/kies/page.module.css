@@ -13,8 +13,8 @@
 .assetList {
   display: none;
   grid-row-start: 2;
-  padding-block-end: var(--ams-space-md);
-  padding-inline: var(--ams-space-md);
+  padding-block-end: var(--ams-space-m);
+  padding-inline: var(--ams-space-m);
 
   @media screen and (min-width: 68rem) {
     display: block;
@@ -44,8 +44,8 @@
 
 .submitbutton {
   bottom: 0;
-  margin-block: var(--ams-space-md);
-  margin-inline: var(--ams-space-md);
+  margin-block: var(--ams-space-m);
+  margin-inline: var(--ams-space-m);
   position: absolute;
 
   @media screen and (min-width: 68rem) {

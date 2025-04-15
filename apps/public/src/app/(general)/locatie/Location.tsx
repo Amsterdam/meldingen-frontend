@@ -29,20 +29,22 @@ export const Location = ({ prevPage, locationData }: Props) => {
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <BackLink href={prevPage} className="ams-mb--xs">
+        <BackLink href={prevPage} className="ams-mb-xs">
           {t('back-link')}
         </BackLink>
-        <Heading className="ams-mb--sm">{t('step.title')}</Heading>
+        <Heading className="ams-mb-s" level={1}>
+          {t('step.title')}
+        </Heading>
 
         {formState?.message && <Paragraph>{formState.message}</Paragraph>}
 
         <Heading level={2} size="level-4">
           {t('title')}
         </Heading>
-        <Paragraph className="ams-mb--xs">{locationData?.name ?? t('description')}</Paragraph>
+        <Paragraph className="ams-mb-xs">{locationData?.name ?? t('description')}</Paragraph>
 
         <NextLink href="/locatie/kies" legacyBehavior passHref>
-          <Link variant="standalone" href="dummy-href" className="ams-mb--md">
+          <Link variant="standalone" href="dummy-href" className="ams-mb-m">
             {locationData?.name ? t('link.with-location') : t('link.without-location')}
           </Link>
         </NextLink>

@@ -67,19 +67,21 @@ export const Summary = ({ attachments, melding, additionalQuestionsAnswers, loca
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <BackLink href="/contact" className="ams-mb--xs">
+        <BackLink href="/contact" className="ams-mb-xs">
           {t('back-link')}
         </BackLink>
-        <Heading className="ams-mb--sm">{t('step.title')}</Heading>
+        <Heading className="ams-mb-s" level={1}>
+          {t('step.title')}
+        </Heading>
 
-        <Heading level={2} size="level-4" className="ams-mb--xs">
+        <Heading level={2} size="level-4" className="ams-mb-xs">
           {t('title')}
         </Heading>
-        <Paragraph className="ams-mb--sm">{t('description')}</Paragraph>
+        <Paragraph className="ams-mb-s">{t('description')}</Paragraph>
 
         {formState?.message && <Paragraph>{formState.message}</Paragraph>}
 
-        <SummaryList className="ams-mb--sm">
+        <SummaryList className="ams-mb-m">
           {
             <SummaryList.Item key={melding.key}>
               <SummaryList.Term>{melding.term}</SummaryList.Term>
