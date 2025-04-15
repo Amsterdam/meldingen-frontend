@@ -51,7 +51,7 @@ export const Overview = ({ data, meldingCount, page }: Props) => {
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
         <Heading level={1} className="ams-mb-m">{`Meldingen (${meldingCount})`}</Heading>
-        <Table className="ams-mb-m">
+        <Table className="ams-mb-l">
           <Table.Header>
             <Table.Row>
               {HEADERS.map((header) => (
