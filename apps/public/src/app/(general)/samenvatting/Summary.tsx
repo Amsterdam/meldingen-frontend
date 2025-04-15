@@ -29,7 +29,7 @@ export const Summary = ({ attachments, melding, additionalQuestionsAnswers, loca
   useEffect(() => {
     if (attachments.data.length > 0) {
       const fileList = attachments.data.map((attachment) => {
-        return new File([attachment.file], attachment.meta.original_filename, { type: attachment.meta.contentType })
+        return new File([attachment.file], attachment.meta.originalFilename, { type: attachment.meta.contentType })
       })
 
       setFileList(fileList)

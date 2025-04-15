@@ -57,10 +57,8 @@ describe('Page', () => {
             {
               file: [{}],
               meta: {
-                id: 42,
-                created_at: '2025-04-14T18:54:13.496644',
-                updated_at: '2025-04-14T18:54:14.116304',
-                original_filename: 'IMG_0815.jpg',
+                originalFilename: 'IMG_0815.jpg',
+                contentType: 'application/json',
               },
             },
           ],

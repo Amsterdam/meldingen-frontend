@@ -1,5 +1,4 @@
 import {
-  AttachmentOutput,
   getMeldingByMeldingIdAnswers,
   getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
   getMeldingByMeldingIdAttachments,
@@ -31,7 +30,10 @@ type Location = {
 export type AttachmentsSummary = {
   key: string
   term: string
-  data: { file: Blob; meta: AttachmentOutput & { contentType: string } }[]
+  data: {
+    file: Blob
+    meta: { originalFilename: string; contentType: string }
+  }[]
 }
 
 export const getMeldingSummary = async (meldingId: string, token: string): Promise<MeldingDataResult> => {
@@ -101,7 +103,7 @@ export const getAttachmentsSummary = async (
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
   })
-  // TODO: use a library to add mimeType to the attachmentDetails
+
   if (attachmentsError) throw new Error(handleApiError(attachmentsError))
 
   if (!attachmentsData) throw new Error('Attachments data not found')
@@ -125,7 +127,7 @@ export const getAttachmentsSummary = async (
 
       return {
         file: attachmentData as Blob,
-        meta: { ...attachmentDetails, contentType },
+        meta: { originalFilename: attachmentDetails.original_filename, contentType },
       }
     }) || [],
   )
