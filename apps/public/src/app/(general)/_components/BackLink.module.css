@@ -1,6 +1,6 @@
 .link {
   display: inline-flex;
-  gap: var(--ams-space-xs);
+  gap: var(--ams-space-s);
   text-decoration-line: none;
   width: fit-content;
 }

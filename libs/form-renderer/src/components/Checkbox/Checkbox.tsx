@@ -25,7 +25,7 @@ export const Checkbox = ({ description, id, label, validate, values }: Props) =>
         {description}
       </MarkdownToHtml>
     )}
-    <Column gap="extra-small">
+    <Column gap="x-small">
       {values.map(({ label: checkboxLabel, value }) => (
         <ADSCheckbox
           key={value}

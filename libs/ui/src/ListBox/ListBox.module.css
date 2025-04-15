@@ -1,25 +1,25 @@
 .list {
-  background-color: var(--ams-color-primary-white);
-  color: var(--ams-color-primary-black);
-  font-family: var(--ams-text-font-family);
-  font-size: var(--ams-text-level-5-font-size);
-  font-weight: var(--ams-text-font-weight-normal);
-  line-height: var(--ams-text-level-5-line-height);
+  background-color: var(--ams-color-background);
+  color: var(--ams-color-text);
+  font-family: var(--ams-typography-font-family);
+  font-size: var(--ams-typography-body-text-font-size);
+  font-weight: var(--ams-typography-body-text-font-weight);
+  line-height: var(--ams-typography-body-text-line-height);
   list-style-type: none;
-  margin-block: 0 var(--ams-space-grid-md);
+  margin-block: 0 var(--ams-space-m);
   padding-inline: 0;
   width: 100%;
 }
 
 .option {
   box-shadow:
-    inset var(--ams-border-width-sm) 0 0 0 var(--ams-color-primary-black) /* Left border */,
-    inset calc(var(--ams-border-width-sm) * -1) 0 0 0 var(--ams-color-primary-black) /* Right border */,
-    inset 0 calc(var(--ams-border-width-sm) * -1) 0 0 var(--ams-color-primary-black); /* Bottom border */
+    inset var(--ams-border-width-s) 0 0 0 var(--ams-color-interactive-secondary) /* Left border */,
+    inset calc(var(--ams-border-width-s) * -1) 0 0 0 var(--ams-color-interactive-secondary) /* Right border */,
+    inset 0 calc(var(--ams-border-width-s) * -1) 0 0 var(--ams-color-interactive-secondary); /* Bottom border */
 
   cursor: pointer;
-  padding-block: var(--ams-space-sm);
-  padding-inline: var(--ams-space-md);
+  padding-block: var(--ams-space-s);
+  padding-inline: var(--ams-space-m);
 }
 
 .option[aria-disabled] {
@@ -27,10 +27,10 @@
 }
 
 .option[data-active] {
-  background-color: var(--ams-color-neutral-grey1);
+  background-color: #e8e8e8;
   box-shadow:
-    inset var(--ams-border-width-md) 0 0 0 var(--ams-color-primary-black) /* Left border */,
-    inset calc(var(--ams-border-width-md) * -1) 0 0 0 var(--ams-color-primary-black) /* Right border */,
-    inset 0 var(--ams-border-width-sm) 0 0 var(--ams-color-primary-black) /* Top border */,
-    inset 0 calc(var(--ams-border-width-md) * -1) 0 0 var(--ams-color-primary-black); /* Bottom border */
+    inset var(--ams-border-width-m) 0 0 0 var(--ams-color-interactive-secondary) /* Left border */,
+    inset calc(var(--ams-border-width-m) * -1) 0 0 0 var(--ams-color-interactive-secondary) /* Right border */,
+    inset 0 var(--ams-border-width-s) 0 0 var(--ams-color-interactive-secondary) /* Top border */,
+    inset 0 calc(var(--ams-border-width-m) * -1) 0 0 var(--ams-color-interactive-secondary); /* Bottom border */
 }

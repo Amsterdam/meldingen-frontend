@@ -34,10 +34,10 @@
   },
   "dependencies": {
     "@amsterdam/design-system-assets": "0.3.0",
-    "@amsterdam/design-system-css": "0.14.1",
-    "@amsterdam/design-system-react": "0.14.1",
+    "@amsterdam/design-system-css": "0.15.0",
+    "@amsterdam/design-system-react": "0.15.0",
     "@amsterdam/design-system-react-icons": "0.1.14",
-    "@amsterdam/design-system-tokens": "0.14.0",
+    "@amsterdam/design-system-tokens": "0.15.0",
     "@formio/react": "6.0.1",
     "formiojs": "4.21.6",
     "next-intl": "4.0.2",
