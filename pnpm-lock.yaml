@@ -59,10 +59,10 @@ importers:
         version: 6.3.0
       '@hey-api/client-fetch':
         specifier: 0.10.0
-        version: 0.10.0(@hey-api/openapi-ts@0.66.3(magicast@0.3.5)(typescript@5.8.3))
+        version: 0.10.0(@hey-api/openapi-ts@0.66.4(magicast@0.3.5)(typescript@5.8.3))
       '@hey-api/openapi-ts':
-        specifier: 0.66.3
-        version: 0.66.3(magicast@0.3.5)(typescript@5.8.3)
+        specifier: 0.66.4
+        version: 0.66.4(magicast@0.3.5)(typescript@5.8.3)
       '@next/eslint-plugin-next':
         specifier: 15.2.4
         version: 15.2.4
@@ -805,8 +805,8 @@ packages:
     resolution: {integrity: sha512-IaJ4yFgU5r63KZyeySHRKSM1bavFIda8KdwCFi5BxQCIklltzEByBksNOPms+yHXpWWfR+OopIusVZV8roycYg==}
     engines: {node: '>= 16'}
 
-  '@hey-api/openapi-ts@0.66.3':
-    resolution: {integrity: sha512-kws5hZo/M5WuapSYVvA7Nr+/4bCCjzDEzdjxUqWH8VV28MG7nob+TwZRgqaus7POZmJ2+zc2oCzHhdlvOTYVLA==}
+  '@hey-api/openapi-ts@0.66.4':
+    resolution: {integrity: sha512-3W0/mb/eBCr4lP58yzeOda3d/wWR+b0MH3GrhN9652FAKMmy872mlUSr6SmJgj832PgxVZ9K7iX/JNegSk/OOQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=22.10.0}
     hasBin: true
     peerDependencies:
@@ -2146,8 +2146,8 @@ packages:
   dompurify@3.2.5:
     resolution: {integrity: sha512-mLPd29uoRe9HpvwP2TxClGQBzGXeEC/we/q+bFlmPPmj2p2Ugl3r6ATu/UU1v77DXNcehiBg9zsr1dREyA/dJQ==}
 
-  dotenv@16.4.7:
-    resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
+  dotenv@16.5.0:
+    resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
     engines: {node: '>=12'}
 
   downloadjs@1.4.7:
@@ -5214,9 +5214,9 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@hey-api/client-fetch@0.10.0(@hey-api/openapi-ts@0.66.3(magicast@0.3.5)(typescript@5.8.3))':
+  '@hey-api/client-fetch@0.10.0(@hey-api/openapi-ts@0.66.4(magicast@0.3.5)(typescript@5.8.3))':
     dependencies:
-      '@hey-api/openapi-ts': 0.66.3(magicast@0.3.5)(typescript@5.8.3)
+      '@hey-api/openapi-ts': 0.66.4(magicast@0.3.5)(typescript@5.8.3)
 
   '@hey-api/json-schema-ref-parser@1.0.4':
     dependencies:
@@ -5224,7 +5224,7 @@ snapshots:
       '@types/json-schema': 7.0.15
       js-yaml: 4.1.0
 
-  '@hey-api/openapi-ts@0.66.3(magicast@0.3.5)(typescript@5.8.3)':
+  '@hey-api/openapi-ts@0.66.4(magicast@0.3.5)(typescript@5.8.3)':
     dependencies:
       '@hey-api/json-schema-ref-parser': 1.0.4
       c12: 2.0.1(magicast@0.3.5)
@@ -6193,7 +6193,7 @@ snapshots:
       chokidar: 4.0.3
       confbox: 0.1.8
       defu: 6.1.4
-      dotenv: 16.4.7
+      dotenv: 16.5.0
       giget: 1.2.5
       jiti: 2.4.2
       mlly: 1.7.4
@@ -6534,7 +6534,7 @@ snapshots:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
-  dotenv@16.4.7: {}
+  dotenv@16.5.0: {}
 
   downloadjs@1.4.7: {}
 
