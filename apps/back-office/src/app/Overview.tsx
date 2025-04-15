@@ -9,6 +9,8 @@ import { Grid } from '@meldingen/ui'
 import { PAGE_SIZE } from './constants'
 import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
+import styles from './Overview.module.css'
+
 const HEADERS = [
   { key: 'id', label: 'Id' },
   { key: 'created_at', label: 'Datum' },
@@ -76,6 +78,7 @@ export const Overview = ({ data, meldingCount, page }: Props) => {
           </Table.Body>
         </Table>
         <Pagination
+          className={styles.pagination}
           linkComponent={LinkComponent}
           linkTemplate={(page) => (page === 1 ? '/' : `/?pagina=${page}`)}
           page={page}
