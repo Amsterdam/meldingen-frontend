@@ -47,7 +47,7 @@ export const Overview = ({ data, meldingCount, page }: Props) => {
 
   return (
     <Grid paddingBottom="large" paddingTop="medium">
-      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 8 }} start={{ narrow: 1, medium: 1, wide: 3 }}>
+      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
         <Table className="ams-mb-m">
           <Table.Header>
             <Table.Row>
