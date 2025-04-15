@@ -1,6 +1,6 @@
 'use client'
 
-import { Link, Pagination, Table } from '@amsterdam/design-system-react'
+import { Heading, Link, Pagination, Table } from '@amsterdam/design-system-react'
 import NextLink from 'next/link'
 import { AnchorHTMLAttributes } from 'react'
 
@@ -50,6 +50,7 @@ export const Overview = ({ data, meldingCount, page }: Props) => {
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
+        <Heading level={1} className="ams-mb-m">{`Meldingen (${meldingCount})`}</Heading>
         <Table className="ams-mb-m">
           <Table.Header>
             <Table.Row>
