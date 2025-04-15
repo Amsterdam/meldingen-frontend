@@ -5,4 +5,4 @@ created with the Public application.
 
 ## Getting started
 
-Run `npm run dev:back-office` in the root directory to start the Back Office app.
+Run `npm run dev:bo` in the root directory to start the Back Office app.
