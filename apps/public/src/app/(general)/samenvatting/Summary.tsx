@@ -22,44 +22,18 @@ type Props = {
 
 const initialState: { message?: string } = {}
 
-const convertStreamToFile = async (attachment: ReadableStream, originalFileName: string) => {
-  // // TODO: set variable mimeType from reponse header
-  const mimeType = 'image/jpeg'
-
-  const reader = attachment.getReader()
-  const chunks = []
-
-  while (true) {
-    const { done, value } = await reader.read()
-    if (done) break
-    chunks.push(value)
-  }
-
-  const blob = new Blob(chunks, { type: mimeType })
-
-  const file = new File([blob], originalFileName, { type: mimeType })
-
-  return file
-}
-
 export const Summary = ({ attachments, melding, additionalQuestionsAnswers, location, contact }: Props) => {
   const [formState, formAction] = useActionState(postSummaryForm, initialState)
   const [fileList, setFileList] = useState<File[]>([])
 
   useEffect(() => {
-    const transformStreamsToFiles = async () => {
-      if (attachments.data.length > 0) {
-        const fileList = await Promise.all(
-          attachments.data.map(async (attachment) => {
-            return await convertStreamToFile(attachment.file, attachment.meta.original_filename)
-          }),
-        )
+    if (attachments.data.length > 0) {
+      const fileList = attachments.data.map((attachment) => {
+        return new File([attachment.file], attachment.meta.original_filename, { type: attachment.meta.contentType })
+      })
 
-        setFileList(fileList)
-      }
+      setFileList(fileList)
     }
-
-    transformStreamsToFiles()
   }, [attachments])
 
   const t = useTranslations('summary')

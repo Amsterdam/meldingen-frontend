@@ -31,7 +31,7 @@ type Location = {
 export type AttachmentsSummary = {
   key: string
   term: string
-  data: { file: ReadableStream; meta: AttachmentOutput }[]
+  data: { file: Blob; meta: AttachmentOutput & { contentType: string } }[]
 }
 
 export const getMeldingSummary = async (meldingId: string, token: string): Promise<MeldingDataResult> => {
@@ -108,18 +108,25 @@ export const getAttachmentsSummary = async (
 
   const attachments = await Promise.all(
     attachmentsData?.map(async (attachmentDetails) => {
-      const { data: attachmentData, error: attachmentError } =
-        await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
-          path: { melding_id: parseInt(meldingId, 10), attachment_id: attachmentDetails.id },
+      const {
+        data: attachmentData,
+        error: attachmentError,
+        response,
+      } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
+        path: { melding_id: parseInt(meldingId, 10), attachment_id: attachmentDetails.id },
 
-          query: { token, type: 'thumbnail' },
-        })
+        query: { token, type: 'thumbnail' },
+      })
+      const contentType = response.headers.get('content-type')
 
-      if (attachmentError) throw new Error(handleApiError(attachmentError))
+      if (attachmentError || !contentType) throw new Error(handleApiError(attachmentError))
 
       if (!attachmentData) throw new Error('Attachment data not found')
 
-      return { file: attachmentData as ReadableStream, meta: attachmentDetails }
+      return {
+        file: attachmentData as Blob,
+        meta: { ...attachmentDetails, contentType },
+      }
     }) || [],
   )
 
