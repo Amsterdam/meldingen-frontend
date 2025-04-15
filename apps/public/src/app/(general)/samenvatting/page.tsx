@@ -29,14 +29,14 @@ export default async () => {
   if (!meldingId || !token) throw new Error('Could not retrieve meldingId or token')
 
   const { data: meldingBodySummary, meldingData } = await getMeldingSummary(meldingId, token)
-  const additionalQuestionsAnswers = await getAdditionalQuestionsSummary(meldingId, token)
+  const additionalQuestionsAnswersSummary = await getAdditionalQuestionsSummary(meldingId, token)
   const attachmentsSummary = await getAttachmentsSummary(t('summary.attachments-label'), meldingId, token)
   const locationSummary = getLocationSummary(t('location.title'), location)
   const contactSummary = getContactSummary(t('summary.contact-label'), meldingData?.email, meldingData?.phone)
 
   return (
     <Summary
-      additionalQuestionsAnswers={additionalQuestionsAnswers}
+      additionalQuestionsAnswers={additionalQuestionsAnswersSummary}
       attachments={attachmentsSummary}
       contact={contactSummary}
       location={locationSummary}

@@ -78,15 +78,15 @@ export const getAdditionalQuestionsSummary = async (
   meldingId: string,
   token: string,
 ): Promise<GenericSummaryData[]> => {
-  const { data: additionalQuestionsData, error: additionalQuestionsErrors } = await getMeldingByMeldingIdAnswers({
+  const { data, error } = await getMeldingByMeldingIdAnswers({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
   })
 
-  if (additionalQuestionsErrors) throw new Error(handleApiError(additionalQuestionsErrors))
+  if (error) throw new Error(handleApiError(error))
 
   return (
-    additionalQuestionsData?.map((answer) => ({
+    data?.map((answer) => ({
       key: `${answer.question.id}`,
       term: answer.question.text,
       description: [answer.text],

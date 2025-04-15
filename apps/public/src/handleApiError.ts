@@ -1,17 +1,9 @@
 // Our API client doesn't strongly type errors, so we need to check if the error is a simple error or an array of errors.
-const isSimpleApiError = (
-  error: unknown,
-): error is {
-  detail: string
-} => typeof error === 'object' && error !== null && 'detail' in error && typeof error.detail === 'string'
+const isSimpleApiError = (error: unknown): error is { detail: string } =>
+  typeof error === 'object' && error !== null && 'detail' in error && typeof error.detail === 'string'
 
-const isApiErrorArray = (
-  error: unknown,
-): error is {
-  detail: {
-    msg: string
-  }[]
-} => typeof error === 'object' && error !== null && 'detail' in error && Array.isArray(error.detail)
+const isApiErrorArray = (error: unknown): error is { detail: { msg: string }[] } =>
+  typeof error === 'object' && error !== null && 'detail' in error && Array.isArray(error.detail)
 
 export const handleApiError = (error: unknown) => {
   if (isSimpleApiError(error)) return error.detail
