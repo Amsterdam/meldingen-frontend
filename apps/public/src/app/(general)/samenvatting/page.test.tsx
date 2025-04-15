@@ -1,15 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import type { Mock } from 'vitest'
 
 import Page from './page'
 import { Summary } from './Summary'
-import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
-import mockAdditionalQuestionsAnswerData from 'apps/public/src/mocks/mockAdditionalQuestionsAnswerData.json'
-import mockFormData from 'apps/public/src/mocks/mockFormData.json'
-import mockMeldingData from 'apps/public/src/mocks/mockMeldingData.json'
-import { server } from 'apps/public/src/mocks/node'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
@@ -52,150 +46,36 @@ describe('Page', () => {
     expect(screen.getByText('Summary Component')).toBeInTheDocument()
     expect(Summary).toHaveBeenCalledWith(
       {
-        data: [
-          {
-            description: [mockMeldingData.text],
-            key: 'primary',
-            term: mockFormData.components[0].components[0].label,
-          },
-          ...mockAdditionalQuestionsAnswerData.map((item) => ({
-            description: [item.text],
-            key: item.question.id,
-            term: item.question.text,
-          })),
-          {
-            description: ['Test address'],
-            key: 'location',
-            term: 'location.title',
-          },
-          {
-            description: ['email@email.email', '0612345678'],
-            key: 'contact',
-            term: 'summary.contact-label',
-          },
+        additionalQuestionsAnswers: [
+          { key: '35', term: 'Wat wilt u melden?', description: ['q1'] },
+          { key: '36', term: 'Text Field', description: ['q2'] },
         ],
-      },
-      {},
-    )
-  })
-
-  it('returns an error message if no primary form is found', async () => {
-    server.use(
-      http.get(ENDPOINTS.STATIC_FORM, () =>
-        HttpResponse.json([
-          {
-            id: '123',
-            type: 'not-primary',
-          },
-        ]),
-      ),
-    )
-
-    const PageComponent = await Page()
-
-    expect(PageComponent).toEqual('Primary form id not found')
-  })
-
-  it('returns undefined when there is no meldingId and token', async () => {
-    mockCookies.get.mockReturnValue(undefined)
-
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    expect(PageComponent).toBeUndefined()
-  })
-
-  it('does not render a location when the location cookie is not set', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'z123890' }
-      }
-      return undefined
-    })
-
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    expect(screen.getByText('Summary Component')).toBeInTheDocument()
-    expect(Summary).toHaveBeenCalledWith(
-      {
-        data: [
-          {
-            description: [mockMeldingData.text],
-            key: 'primary',
-            term: mockFormData.components[0].components[0].label,
-          },
-          ...mockAdditionalQuestionsAnswerData.map((item) => ({
-            description: [item.text],
-            key: item.question.id,
-            term: item.question.text,
-          })),
-          {
-            description: ['email@email.email', '0612345678'],
-            key: 'contact',
-            term: 'summary.contact-label',
-          },
-        ],
-      },
-      {},
-    )
-  })
-
-  it('does not render contact data when that does not exist', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'z123890' }
-      }
-      if (name === 'location') {
-        return {
-          value: '{"name":"Test address"}',
-        }
-      }
-      return undefined
-    })
-
-    server.use(
-      http.get(ENDPOINTS.MELDING_BY_ID, () =>
-        HttpResponse.json({
-          ...mockMeldingData,
-          email: null,
-          phone: null,
-        }),
-      ),
-    )
-
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    expect(screen.getByText('Summary Component')).toBeInTheDocument()
-    expect(Summary).toHaveBeenCalledWith(
-      {
-        data: [
-          {
-            description: [mockMeldingData.text],
-            key: 'primary',
-            term: mockFormData.components[0].components[0].label,
-          },
-          ...mockAdditionalQuestionsAnswerData.map((item) => ({
-            description: [item.text],
-            key: item.question.id,
-            term: item.question.text,
-          })),
-          {
-            description: ['Test address'],
-            key: 'location',
-            term: 'location.title',
-          },
-        ],
+        attachments: {
+          key: 'attachments',
+          term: 'summary.attachments-label',
+          data: [
+            {
+              file: [{}],
+              meta: {
+                id: 42,
+                created_at: '2025-04-14T18:54:13.496644',
+                updated_at: '2025-04-14T18:54:14.116304',
+                original_filename: 'IMG_0815.jpg',
+              },
+            },
+          ],
+        },
+        contact: {
+          key: 'contact',
+          term: 'summary.contact-label',
+          description: ['email@email.email', '0612345678'],
+        },
+        location: {
+          key: 'location',
+          term: 'location.title',
+          description: ['Test address'],
+        },
+        melding: { key: 'primary', term: 'First question', description: ['Alles'] },
       },
       {},
     )

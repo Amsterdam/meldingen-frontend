@@ -99,6 +99,19 @@ export const handlers = [
 
   http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID, () => HttpResponse.json(mockAdditionalQuestionsAnswerData)),
 
+  http.get(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () => {
+    return HttpResponse.json([
+      {
+        id: 42,
+        created_at: '2025-04-14T18:54:13.496644',
+        updated_at: '2025-04-14T18:54:14.116304',
+        original_filename: 'IMG_0815.jpg',
+      },
+    ])
+  }),
+
+  http.get(ENDPOINTS.MELDING_ATTACHMENT_BY_ID_DOWNLOAD, () => HttpResponse.json([{} as ReadableStream])),
+
   /** POST */
   http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () => HttpResponse.json({ id: 42 })),
 
