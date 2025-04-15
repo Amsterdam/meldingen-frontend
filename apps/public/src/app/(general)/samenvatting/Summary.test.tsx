@@ -13,15 +13,13 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-const image1 = new Blob(['uploaded-file-1'], { type: 'image/webp' })
-
 const mockData = {
   attachments: {
     key: 'attachments',
     term: "Foto's",
     data: [
       {
-        file: image1,
+        file: new Blob(['uploaded-file-1'], { type: 'image/webp' }),
         meta: {
           contentType: 'image/webp',
           originalFilename: 'IMG_1432.JPG',
