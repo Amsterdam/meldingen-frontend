@@ -6,7 +6,6 @@ import { AnchorHTMLAttributes } from 'react'
 
 import { Grid } from '@meldingen/ui'
 
-import { PAGE_SIZE } from './constants'
 import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
 import styles from './Overview.module.css'
@@ -35,6 +34,7 @@ type Props = {
   data: MeldingOutput[]
   meldingCount: number
   page?: number
+  totalPages: number
 }
 
 const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
@@ -44,9 +44,7 @@ const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
   </NextLink>
 )
 
-export const Overview = ({ data, meldingCount, page }: Props) => {
-  const totalPages = Math.ceil(meldingCount / PAGE_SIZE)
-
+export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
