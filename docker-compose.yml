@@ -1,5 +1,6 @@
 services:
   admin:
+    image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-signalen/meldingen-frontend-admin}:${VERSION:-latest}
     build:
       context: .
       target: admin_meldingen
@@ -13,6 +14,7 @@ services:
     networks:
       - meldingen_network
   public:
+    image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-signalen/meldingen-frontend}:${VERSION:-latest}
     build:
       context: .
       target: public_meldingen
