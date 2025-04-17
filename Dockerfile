@@ -39,6 +39,7 @@ RUN set -eux; \
     chown -R nginx:nginx /var/run/nginx.pid
 
 COPY --from=build /app/apps/admin/dist ./
+COPY ./default.conf /etc/nginx/conf.d/default.conf
 
 USER nginx
 
