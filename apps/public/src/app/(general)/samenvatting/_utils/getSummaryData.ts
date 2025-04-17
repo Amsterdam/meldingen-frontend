@@ -5,7 +5,6 @@ import {
   getMeldingByMeldingIdMelder,
   getStaticForm,
   getStaticFormByStaticFormId,
-  MeldingOutput,
 } from '@meldingen/api-client'
 
 import { handleApiError } from 'apps/public/src/handleApiError'
@@ -15,11 +14,6 @@ export type GenericSummaryData = {
   key: string
   term: string
   description: string[]
-}
-
-type MeldingDataResult = {
-  data: GenericSummaryData
-  meldingData: MeldingOutput
 }
 
 type Location = {
@@ -36,7 +30,20 @@ export type AttachmentsSummary = {
   }[]
 }
 
-export const getMeldingSummary = async (meldingId: string, token: string): Promise<MeldingDataResult> => {
+export const getMeldingData = async (meldingId: string, token: string) => {
+  const { data: meldingData, error: meldingError } = await getMeldingByMeldingIdMelder({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (meldingError) throw new Error(handleApiError(meldingError))
+
+  if (!meldingData) throw new Error('Melding data not found')
+
+  return meldingData
+}
+
+export const getPrimaryFormSummary = async (description: string): Promise<GenericSummaryData> => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
   if (staticFormsError) throw new Error(handleApiError(staticFormsError))
@@ -55,22 +62,10 @@ export const getMeldingSummary = async (meldingId: string, token: string): Promi
 
   const primaryForm = primaryFormData.components[0]
 
-  const { data: meldingData, error: meldingError } = await getMeldingByMeldingIdMelder({
-    path: { melding_id: parseInt(meldingId, 10) },
-    query: { token },
-  })
-
-  if (meldingError) throw new Error(handleApiError(meldingError))
-
-  if (!meldingData) throw new Error('Melding data not found')
-
   return {
-    data: {
-      key: 'primary',
-      term: primaryForm.label,
-      description: [meldingData.text],
-    },
-    meldingData,
+    key: 'primary',
+    term: primaryForm.label,
+    description: [description],
   }
 }
 

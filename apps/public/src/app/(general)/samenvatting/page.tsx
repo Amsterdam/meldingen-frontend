@@ -6,7 +6,8 @@ import {
   getAttachmentsSummary,
   getContactSummary,
   getLocationSummary,
-  getMeldingSummary,
+  getMeldingData,
+  getPrimaryFormSummary,
 } from './_utils/getSummaryData'
 import { Summary } from './Summary'
 
@@ -28,7 +29,9 @@ export default async () => {
 
   if (!meldingId || !token) throw new Error('Could not retrieve meldingId or token')
 
-  const { data: meldingBodySummary, meldingData } = await getMeldingSummary(meldingId, token)
+  const meldingData = await getMeldingData(meldingId, token)
+
+  const primaryFormSummary = await getPrimaryFormSummary(meldingData.text)
   const additionalQuestionsAnswersSummary = await getAdditionalQuestionsSummary(meldingId, token)
   const attachmentsSummary = await getAttachmentsSummary(t('summary.attachments-label'), meldingId, token)
   const locationSummary = getLocationSummary(t('location.title'), location)
@@ -40,7 +43,7 @@ export default async () => {
       attachments={attachmentsSummary}
       contact={contactSummary}
       location={locationSummary}
-      melding={meldingBodySummary}
+      melding={primaryFormSummary}
     />
   )
 }
