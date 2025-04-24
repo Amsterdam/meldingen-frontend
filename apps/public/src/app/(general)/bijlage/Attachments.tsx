@@ -14,7 +14,7 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { FileInput, Grid, SubmitButton } from '@meldingen/ui'
 
 import { redirectToNextPage } from './actions'
-import { BackLink } from '../_components/BackLink'
+// import { BackLink } from '../_components/BackLink'
 import { handleApiError } from 'apps/public/src/handleApiError'
 
 import styles from './Attachments.module.css'
@@ -96,7 +96,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <BackLink href="/locatie">{t('back-link')}</BackLink>
+        {/* <BackLink href="/locatie">{t('back-link')}</BackLink> */}
         <Heading className="ams-mb-s" level={1}>
           {t('step.title')}
         </Heading>

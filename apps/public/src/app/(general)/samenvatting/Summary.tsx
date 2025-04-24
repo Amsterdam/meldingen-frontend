@@ -7,7 +7,7 @@ import { useActionState } from 'react'
 import { SubmitButton, SummaryList } from '@meldingen/ui'
 
 import { postSummaryForm } from './actions'
-import { BackLink } from '../_components/BackLink'
+// import { BackLink } from '../_components/BackLink'
 
 type Props = {
   data: {
@@ -27,9 +27,9 @@ export const Summary = ({ data }: Props) => {
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <BackLink href="/contact" className="ams-mb-xs">
+        {/* <BackLink href="/contact" className="ams-mb-xs">
           {t('back-link')}
-        </BackLink>
+        </BackLink> */}
         <Heading className="ams-mb-s" level={1}>
           {t('step.title')}
         </Heading>

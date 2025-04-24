@@ -8,7 +8,7 @@ import { useActionState } from 'react'
 import { Grid, SubmitButton } from '@meldingen/ui'
 
 import { postLocationForm } from './actions'
-import { BackLink } from '../_components/BackLink'
+// import { BackLink } from '../_components/BackLink'
 import type { Coordinates } from 'apps/public/src/types'
 
 const initialState: { message?: string } = {}
@@ -21,7 +21,7 @@ type Props = {
   }
 }
 
-export const Location = ({ prevPage, locationData }: Props) => {
+export const Location = ({ locationData }: Props) => {
   const [formState, formAction] = useActionState(postLocationForm, initialState)
 
   const t = useTranslations('location')
@@ -29,9 +29,9 @@ export const Location = ({ prevPage, locationData }: Props) => {
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <BackLink href={prevPage} className="ams-mb-xs">
+        {/* <BackLink href={prevPage} className="ams-mb-xs">
           {t('back-link')}
-        </BackLink>
+        </BackLink> */}
         <Heading className="ams-mb-s" level={1}>
           {t('step.title')}
         </Heading>
