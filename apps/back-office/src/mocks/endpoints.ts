@@ -1,1 +1,3 @@
-export const ENDPOINTS = {}
+export const ENDPOINTS = {
+  MELDING: '/melding/',
+}

@@ -5,7 +5,7 @@ import { melding } from '../mocks/data'
 
 describe('Overview', () => {
   it('should render correctly', () => {
-    render(<Overview data={[melding]} />)
+    render(<Overview data={[melding]} meldingCount={10} totalPages={1} />)
 
     const idHeader = screen.getByRole('columnheader', { name: 'Id' })
     const firstId = screen.getByRole('cell', { name: '123' })
