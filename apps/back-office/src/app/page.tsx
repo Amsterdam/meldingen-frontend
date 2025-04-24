@@ -10,14 +10,14 @@ export const metadata: Metadata = {
 }
 
 type Props = {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  searchParams: Promise<{ pagina?: string }>
 }
 
 const PAGE_SIZE = 10
 
 export default async ({ searchParams }: Props) => {
   const pageString = (await searchParams).pagina
-  const page = Array.isArray(pageString) || !pageString ? undefined : parseInt(pageString, 10)
+  const page = !pageString ? undefined : parseInt(pageString, 10)
 
   if (page !== undefined && isNaN(page)) {
     redirect('/')
