@@ -29,9 +29,14 @@ export default async () => {
   if (!meldingId || !token) throw new Error('Could not retrieve meldingId or token')
 
   const meldingData = await getMeldingData(meldingId, token)
+  if (typeof meldingData === 'string') return meldingData
+
+  const additionalQuestionsAnswersSummary = await getAdditionalQuestionsSummary(meldingId, token)
+  if (typeof additionalQuestionsAnswersSummary === 'string') return additionalQuestionsAnswersSummary
 
   const primaryFormSummary = await getPrimaryFormSummary(meldingData.text)
-  const additionalQuestionsAnswersSummary = await getAdditionalQuestionsSummary(meldingId, token)
+  if (typeof primaryFormSummary === 'string') return primaryFormSummary
+
   const locationSummary = getLocationSummary(t('location.title'), location)
   const contactSummary = getContactSummary(t('summary.contact-label'), meldingData?.email, meldingData?.phone)
 

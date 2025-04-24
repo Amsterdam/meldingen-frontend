@@ -34,29 +34,29 @@ export const getMeldingData = async (meldingId: string, token: string) => {
     query: { token },
   })
 
-  if (meldingError) throw new Error(handleApiError(meldingError))
+  if (meldingError) return handleApiError(meldingError)
 
-  if (!meldingData) throw new Error('Melding data not found')
+  if (!meldingData) return 'Melding data not found'
 
   return meldingData
 }
 
-export const getPrimaryFormSummary = async (description: string): Promise<GenericSummaryData> => {
+export const getPrimaryFormSummary = async (description: string): Promise<GenericSummaryData | string> => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
-  if (staticFormsError) throw new Error(handleApiError(staticFormsError))
+  if (staticFormsError) return handleApiError(staticFormsError)
 
   const primaryFormId = staticFormsData?.find((form) => form.type === 'primary')?.id
 
-  if (!primaryFormId) throw new Error('Primary form id not found')
+  if (!primaryFormId) return 'Primary form id not found'
 
   const { data: primaryFormData, error: primaryFormError } = await getStaticFormByStaticFormId({
     path: { static_form_id: primaryFormId },
   })
 
-  if (primaryFormError) throw new Error(handleApiError(primaryFormError))
+  if (primaryFormError) return handleApiError(primaryFormError)
 
-  if (!primaryFormData) throw new Error('Primary form data not found')
+  if (!primaryFormData) return 'Primary form data not found'
 
   const primaryForm = primaryFormData.components[0]
 
@@ -70,13 +70,13 @@ export const getPrimaryFormSummary = async (description: string): Promise<Generi
 export const getAdditionalQuestionsSummary = async (
   meldingId: string,
   token: string,
-): Promise<GenericSummaryData[]> => {
+): Promise<GenericSummaryData[] | string> => {
   const { data, error } = await getMeldingByMeldingIdAnswers({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
   })
 
-  if (error) throw new Error(handleApiError(error))
+  if (error) return handleApiError(error)
 
   return (
     data?.map((answer) => ({
