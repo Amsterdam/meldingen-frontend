@@ -19,15 +19,6 @@ type Location = {
   coordinates: Coordinates
 }
 
-export type AttachmentsSummary = {
-  key: string
-  term: string
-  data: {
-    file: Blob
-    meta: { originalFilename: string; contentType: string }
-  }[]
-}
-
 export const getMeldingData = async (meldingId: string, token: string) => {
   const { data: meldingData, error: meldingError } = await getMeldingByMeldingIdMelder({
     path: { melding_id: parseInt(meldingId, 10) },
