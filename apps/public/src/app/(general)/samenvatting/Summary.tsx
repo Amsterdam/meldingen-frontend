@@ -6,9 +6,14 @@ import { useActionState } from 'react'
 
 import { SubmitButton, SummaryList } from '@meldingen/ui'
 
-import { GenericSummaryData } from './_utils/getSummaryData'
 import { postSummaryForm } from './actions'
 import { BackLink } from '../_components/BackLink'
+
+type GenericSummaryData = {
+  key: string
+  term: string
+  description: string[]
+}
 
 type Props = {
   additionalQuestionsAnswers: GenericSummaryData[]

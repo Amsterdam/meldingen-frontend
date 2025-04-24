@@ -8,12 +8,6 @@ import {
 import { handleApiError } from 'apps/public/src/handleApiError'
 import type { Coordinates } from 'apps/public/src/types'
 
-export type GenericSummaryData = {
-  key: string
-  term: string
-  description: string[]
-}
-
 type Location = {
   name: string
   coordinates: Coordinates
@@ -32,7 +26,7 @@ export const getMeldingData = async (meldingId: string, token: string) => {
   return meldingData
 }
 
-export const getPrimaryFormSummary = async (description: string): Promise<GenericSummaryData | string> => {
+export const getPrimaryFormSummary = async (description: string) => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
   if (staticFormsError) return handleApiError(staticFormsError)
@@ -58,10 +52,7 @@ export const getPrimaryFormSummary = async (description: string): Promise<Generi
   }
 }
 
-export const getAdditionalQuestionsSummary = async (
-  meldingId: string,
-  token: string,
-): Promise<GenericSummaryData[] | string> => {
+export const getAdditionalQuestionsSummary = async (meldingId: string, token: string) => {
   const { data, error } = await getMeldingByMeldingIdAnswers({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
@@ -78,7 +69,7 @@ export const getAdditionalQuestionsSummary = async (
   )
 }
 
-export const getLocationSummary = (label: string, location?: string): GenericSummaryData => {
+export const getLocationSummary = (label: string, location?: string) => {
   const locationParsed: Location = location ? JSON.parse(location) : undefined
 
   return {
@@ -88,11 +79,7 @@ export const getLocationSummary = (label: string, location?: string): GenericSum
   }
 }
 
-export const getContactSummary = (
-  label: string,
-  email?: string | null,
-  phone?: string | null,
-): GenericSummaryData | undefined => {
+export const getContactSummary = (label: string, email?: string | null, phone?: string | null) => {
   if (!email && !phone) return undefined
 
   return {
