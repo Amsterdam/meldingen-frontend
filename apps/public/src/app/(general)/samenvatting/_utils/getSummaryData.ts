@@ -1,7 +1,5 @@
 import {
   getMeldingByMeldingIdAnswers,
-  getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
-  getMeldingByMeldingIdAttachments,
   getMeldingByMeldingIdMelder,
   getStaticForm,
   getStaticFormByStaticFormId,
@@ -87,47 +85,6 @@ export const getAdditionalQuestionsSummary = async (
       description: [answer.text],
     })) || []
   )
-}
-
-export const getAttachmentsSummary = async (
-  label: string,
-  meldingId: string,
-  token: string,
-): Promise<AttachmentsSummary> => {
-  const { data: attachmentsData, error: attachmentsError } = await getMeldingByMeldingIdAttachments({
-    path: { melding_id: parseInt(meldingId, 10) },
-    query: { token },
-  })
-
-  if (attachmentsError) throw new Error(handleApiError(attachmentsError))
-
-  if (!attachmentsData) throw new Error('Attachments data not found')
-
-  const attachments = await Promise.all(
-    attachmentsData?.map(async (attachmentDetails) => {
-      const {
-        data: attachmentData,
-        error: attachmentError,
-        response,
-      } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
-        path: { melding_id: parseInt(meldingId, 10), attachment_id: attachmentDetails.id },
-
-        query: { token, type: 'thumbnail' },
-      })
-      const contentType = response.headers.get('content-type')
-
-      if (attachmentError || !contentType) throw new Error(handleApiError(attachmentError))
-
-      if (!attachmentData) throw new Error('Attachment data not found')
-
-      return {
-        file: attachmentData as Blob,
-        meta: { originalFilename: attachmentDetails.original_filename, contentType },
-      }
-    }) || [],
-  )
-
-  return { key: 'attachments', term: label, data: attachments }
 }
 
 export const getLocationSummary = (label: string, location?: string): GenericSummaryData => {

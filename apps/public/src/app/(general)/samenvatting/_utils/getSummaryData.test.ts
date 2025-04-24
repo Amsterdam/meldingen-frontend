@@ -2,32 +2,45 @@ import {
   getAdditionalQuestionsSummary,
   getContactSummary,
   getLocationSummary,
-  getMeldingSummary,
+  getMeldingData,
+  getPrimaryFormSummary,
 } from './getSummaryData'
 
 const mockMeldingId = '88'
 const mockToken = 'test-token'
 
-describe('getMeldingSummary', () => {
+describe('getMeldingData', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
   it('should return correct melding summary', async () => {
-    const result = await getMeldingSummary(mockMeldingId, mockToken)
+    const result = await getMeldingData(mockMeldingId, mockToken)
 
     expect(result).toEqual({
-      data: { key: 'primary', term: 'First question', description: ['Alles'] },
-      meldingData: {
-        id: 123,
-        created_at: '2025-02-18T10:34:29.103642',
-        updated_at: '2025-02-18T10:34:40.730569',
-        text: 'Alles',
-        state: 'questions_answered',
-        classification: null,
-        geo_location: null,
-        email: 'email@email.email',
-        phone: '0612345678',
-      },
+      id: 123,
+      created_at: '2025-02-18T10:34:29.103642',
+      updated_at: '2025-02-18T10:34:40.730569',
+      text: 'Alles',
+      state: 'questions_answered',
+      classification: null,
+      geo_location: null,
+      email: 'email@email.email',
+      phone: '0612345678',
+    })
+  })
+})
+
+describe('getPrimaryFormSummary', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+  it('should return correct melding summary', async () => {
+    const result = await getPrimaryFormSummary('Er ligt hier veel afval op straat.')
+
+    expect(result).toEqual({
+      key: 'primary',
+      term: 'First question',
+      description: ['Er ligt hier veel afval op straat.'],
     })
   })
 })

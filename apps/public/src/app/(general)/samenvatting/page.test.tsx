@@ -50,19 +50,6 @@ describe('Page', () => {
           { key: '35', term: 'Wat wilt u melden?', description: ['q1'] },
           { key: '36', term: 'Text Field', description: ['q2'] },
         ],
-        attachments: {
-          key: 'attachments',
-          term: 'summary.attachments-label',
-          data: [
-            {
-              file: [{}],
-              meta: {
-                originalFilename: 'IMG_0815.jpg',
-                contentType: 'application/json',
-              },
-            },
-          ],
-        },
         contact: {
           key: 'contact',
           term: 'summary.contact-label',
