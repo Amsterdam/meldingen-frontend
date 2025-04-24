@@ -14,7 +14,7 @@ vi.mock('react', async (importOriginal) => {
 })
 
 const mockData = {
-  additionalQuestionsAnswers: [
+  additionalQuestions: [
     {
       key: '1',
       term: 'Text Field 1',

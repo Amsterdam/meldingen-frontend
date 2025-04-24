@@ -4,7 +4,7 @@ import {
   getLocationSummary,
   getMeldingData,
   getPrimaryFormSummary,
-} from './getSummaryData'
+} from './utils'
 
 const mockMeldingId = '88'
 const mockToken = 'test-token'
@@ -68,6 +68,15 @@ describe('getLocationSummary', () => {
       key: 'location',
       term: 'Waar staat de container?',
       description: ['Nieuwmarkt 23, 1011JS Amsterdam'],
+    })
+  })
+  it('should return error message when location cookie could not be parsed', () => {
+    const result = getLocationSummary('Waar staat de container?')
+
+    expect(result).toEqual({
+      key: 'location',
+      term: 'Waar staat de container?',
+      description: ['Er konden geen locatiegegevens worden gevonden.'],
     })
   })
 })

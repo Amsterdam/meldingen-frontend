@@ -16,7 +16,7 @@ type GenericSummaryData = {
 }
 
 type Props = {
-  additionalQuestionsAnswers: GenericSummaryData[]
+  additionalQuestions: GenericSummaryData[]
   contact?: GenericSummaryData
   location: GenericSummaryData
   melding: GenericSummaryData
@@ -24,7 +24,7 @@ type Props = {
 
 const initialState: { message?: string } = {}
 
-export const Summary = ({ melding, additionalQuestionsAnswers, location, contact }: Props) => {
+export const Summary = ({ melding, additionalQuestions, location, contact }: Props) => {
   const [formState, formAction] = useActionState(postSummaryForm, initialState)
 
   const t = useTranslations('summary')
@@ -47,17 +47,15 @@ export const Summary = ({ melding, additionalQuestionsAnswers, location, contact
         {formState?.message && <Paragraph>{formState.message}</Paragraph>}
 
         <SummaryList className="ams-mb-m">
-          {
-            <SummaryList.Item key={melding.key}>
-              <SummaryList.Term>{melding.term}</SummaryList.Term>
-              {melding.description.map((item) => (
-                <SummaryList.Description key={item}>{item}</SummaryList.Description>
-              ))}
-            </SummaryList.Item>
-          }
+          <SummaryList.Item key={melding.key}>
+            <SummaryList.Term>{melding.term}</SummaryList.Term>
+            {melding.description.map((item) => (
+              <SummaryList.Description key={item}>{item}</SummaryList.Description>
+            ))}
+          </SummaryList.Item>
 
-          {additionalQuestionsAnswers.length > 0 &&
-            additionalQuestionsAnswers.map(({ key, term, description }) => (
+          {additionalQuestions.length > 0 &&
+            additionalQuestions.map(({ key, term, description }) => (
               <SummaryList.Item key={key}>
                 <SummaryList.Term>{term}</SummaryList.Term>
                 {description.map((item) => (
@@ -66,14 +64,12 @@ export const Summary = ({ melding, additionalQuestionsAnswers, location, contact
               </SummaryList.Item>
             ))}
 
-          {
-            <SummaryList.Item key={location.key}>
-              <SummaryList.Term>{location.term}</SummaryList.Term>
-              {location.description.map((item) => (
-                <SummaryList.Description key={item}>{item}</SummaryList.Description>
-              ))}
-            </SummaryList.Item>
-          }
+          <SummaryList.Item key={location.key}>
+            <SummaryList.Term>{location.term}</SummaryList.Term>
+            {location.description.map((item) => (
+              <SummaryList.Description key={item}>{item}</SummaryList.Description>
+            ))}
+          </SummaryList.Item>
 
           {contact && (
             <SummaryList.Item key={contact.key}>

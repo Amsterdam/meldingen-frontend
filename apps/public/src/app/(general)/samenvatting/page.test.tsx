@@ -46,7 +46,7 @@ describe('Page', () => {
     expect(screen.getByText('Summary Component')).toBeInTheDocument()
     expect(Summary).toHaveBeenCalledWith(
       {
-        additionalQuestionsAnswers: [
+        additionalQuestions: [
           { key: '35', term: 'Wat wilt u melden?', description: ['q1'] },
           { key: '36', term: 'Text Field', description: ['q2'] },
         ],

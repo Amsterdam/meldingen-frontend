@@ -6,12 +6,6 @@ import {
 } from '@meldingen/api-client'
 
 import { handleApiError } from 'apps/public/src/handleApiError'
-import type { Coordinates } from 'apps/public/src/types'
-
-type Location = {
-  name: string
-  coordinates: Coordinates
-}
 
 export const getMeldingData = async (meldingId: string, token: string) => {
   const { data: meldingData, error: meldingError } = await getMeldingByMeldingIdMelder({
@@ -70,12 +64,12 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
 }
 
 export const getLocationSummary = (label: string, location?: string) => {
-  const locationParsed: Location = location ? JSON.parse(location) : undefined
+  const locationParsed = location ? JSON.parse(location).name : 'Er konden geen locatiegegevens worden gevonden.'
 
   return {
     key: 'location',
     term: label,
-    description: [locationParsed.name].filter((item) => item !== undefined), // Filter out undefined items,
+    description: [locationParsed],
   }
 }
 
