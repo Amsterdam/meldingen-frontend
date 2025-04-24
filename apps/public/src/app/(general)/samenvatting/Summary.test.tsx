@@ -36,7 +36,7 @@ const mockData = {
     term: 'Waar staat de container?',
     description: ['Nieuwmarkt 247, 1011MB Amsterdam'],
   },
-  melding: {
+  primaryForm: {
     key: 'primary',
     term: 'Wat wilt u melden?',
     description: ['Er ligt heel veel afval op straat.'],

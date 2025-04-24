@@ -19,12 +19,12 @@ type Props = {
   additionalQuestions: GenericSummaryData[]
   contact?: GenericSummaryData
   location: GenericSummaryData
-  melding: GenericSummaryData
+  primaryForm: GenericSummaryData
 }
 
 const initialState: { message?: string } = {}
 
-export const Summary = ({ melding, additionalQuestions, location, contact }: Props) => {
+export const Summary = ({ primaryForm, additionalQuestions, location, contact }: Props) => {
   const [formState, formAction] = useActionState(postSummaryForm, initialState)
 
   const t = useTranslations('summary')
@@ -47,9 +47,9 @@ export const Summary = ({ melding, additionalQuestions, location, contact }: Pro
         {formState?.message && <Paragraph>{formState.message}</Paragraph>}
 
         <SummaryList className="ams-mb-m">
-          <SummaryList.Item key={melding.key}>
-            <SummaryList.Term>{melding.term}</SummaryList.Term>
-            {melding.description.map((item) => (
+          <SummaryList.Item key={primaryForm.key}>
+            <SummaryList.Term>{primaryForm.term}</SummaryList.Term>
+            {primaryForm.description.map((item) => (
               <SummaryList.Description key={item}>{item}</SummaryList.Description>
             ))}
           </SummaryList.Item>

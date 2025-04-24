@@ -41,6 +41,11 @@ export default async () => {
   const contact = getContactSummary(t('summary.contact-label'), meldingData?.email, meldingData?.phone)
 
   return (
-    <Summary additionalQuestions={additionalQuestions} contact={contact} location={location} melding={primaryForm} />
+    <Summary
+      additionalQuestions={additionalQuestions}
+      contact={contact}
+      location={location}
+      primaryForm={primaryForm}
+    />
   )
 }

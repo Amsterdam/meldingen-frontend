@@ -60,7 +60,7 @@ describe('Page', () => {
           term: 'location.title',
           description: ['Test address'],
         },
-        melding: { key: 'primary', term: 'First question', description: ['Alles'] },
+        primaryForm: { key: 'primary', term: 'First question', description: ['Alles'] },
       },
       {},
     )
