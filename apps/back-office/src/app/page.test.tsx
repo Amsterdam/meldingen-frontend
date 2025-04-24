@@ -33,8 +33,8 @@ describe('Page', () => {
     vi.clearAllMocks()
   })
 
-  it('renders the Overview component with correct props', async () => {
-    const searchParams = Promise.resolve({ pagina: '1' })
+  it('renders the Overview component without a "pagina" search param', async () => {
+    const searchParams = Promise.resolve({})
 
     const result = await Page({ searchParams })
 
@@ -44,7 +44,25 @@ describe('Page', () => {
       {
         data: meldingen,
         meldingCount: 40,
-        page: 1,
+        page: undefined,
+        totalPages: 4,
+      },
+      {},
+    )
+  })
+
+  it('renders the Overview component with a "pagina" search param', async () => {
+    const searchParams = Promise.resolve({ pagina: '2' })
+
+    const result = await Page({ searchParams })
+
+    render(result)
+
+    expect(Overview).toHaveBeenCalledWith(
+      {
+        data: meldingen,
+        meldingCount: 40,
+        page: 2,
         totalPages: 4,
       },
       {},
