@@ -7,7 +7,7 @@ import { putMeldingByMeldingIdAddAttachments } from '@meldingen/api-client'
 
 import { handleApiError } from 'apps/public/src/handleApiError'
 
-export const redirectToNextPage = async () => {
+export const postAttachmentsForm = async () => {
   const cookieStore = await cookies()
 
   const meldingId = cookieStore.get('id')?.value

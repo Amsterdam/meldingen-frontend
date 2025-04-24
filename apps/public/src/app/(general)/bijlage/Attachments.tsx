@@ -1,8 +1,8 @@
 'use client'
 
-import { ErrorMessage, Field, FileList, Heading, Label } from '@amsterdam/design-system-react'
+import { ErrorMessage, Field, FileList, Heading, Label, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useRef, useState } from 'react'
+import { useActionState, useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 
 import {
@@ -13,7 +13,7 @@ import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { FileInput, Grid, SubmitButton } from '@meldingen/ui'
 
-import { redirectToNextPage } from './actions'
+import { postAttachmentsForm } from './actions'
 // import { BackLink } from '../_components/BackLink'
 import { handleApiError } from 'apps/public/src/handleApiError'
 
@@ -29,10 +29,13 @@ type Props = {
 
 export type UploadedFiles = { file: File; id: number }
 
+const initialState: { message?: string } = {}
+
 export const Attachments = ({ formData, meldingId, token }: Props) => {
   const formRef = useRef<HTMLFormElement>(null)
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
+  const [formState, formAction] = useActionState(postAttachmentsForm, initialState)
 
   const t = useTranslations('attachments')
 
@@ -100,7 +103,10 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
         <Heading className="ams-mb-s" level={1}>
           {t('step.title')}
         </Heading>
-        <form ref={formRef} action={redirectToNextPage}>
+
+        {formState?.message && <Paragraph>{formState.message}</Paragraph>}
+
+        <form ref={formRef} action={formAction}>
           <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
             <Label htmlFor="file-upload" optional>
               {label}
