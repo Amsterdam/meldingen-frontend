@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation'
 import { postMeldingByMeldingIdQuestionByQuestionId, putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
+import { handleApiError } from 'apps/public/src/handleApiError'
 
 type ArgsType = {
   isLastPanel: boolean
@@ -65,12 +66,14 @@ export const postForm = async (
     return { message: erroredResults.map(({ error }) => error.detail[0].msg).join(', ') }
   }
 
-  // Let BE know the last panel has successfully been submitted
+  // Set melding state to 'questions_answered'
   if (isLastPanel) {
-    putMeldingByMeldingIdAnswerQuestions({
+    const { error } = await putMeldingByMeldingIdAnswerQuestions({
       path: { melding_id: parseInt(meldingId, 10) },
       query: { token },
     })
+
+    if (error) return { message: handleApiError(error) }
   }
 
   return redirect(nextPanelPath)

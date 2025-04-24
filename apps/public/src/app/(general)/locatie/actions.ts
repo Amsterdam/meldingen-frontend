@@ -4,12 +4,13 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
-import { postMeldingByMeldingIdLocation } from '@meldingen/api-client'
+import { postMeldingByMeldingIdLocation, putMeldingByMeldingIdSubmitLocation } from '@meldingen/api-client'
 
 import { handleApiError } from 'apps/public/src/handleApiError'
 
 export const postLocationForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()
+
   const meldingId = cookieStore.get('id')?.value
   const token = cookieStore.get('token')?.value
 
@@ -33,7 +34,13 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
     query: { token },
   })
 
-  if (error) return { message: handleApiError(error) }
+  // Set melding state to ???
+  const { error: stateError } = await putMeldingByMeldingIdSubmitLocation({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (error || stateError) return { message: handleApiError(error || stateError) }
 
   return redirect('/bijlage')
 }

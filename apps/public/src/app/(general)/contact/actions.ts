@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { postMeldingByMeldingIdContact } from '@meldingen/api-client'
+import { postMeldingByMeldingIdContact, putMeldingByMeldingIdAddContactInfo } from '@meldingen/api-client'
 
 import { handleApiError } from 'apps/public/src/handleApiError'
 
@@ -30,6 +30,14 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
 
     if (error) return { message: handleApiError(error) }
   }
+
+  // Set melding state to ???
+  const { error } = await putMeldingByMeldingIdAddContactInfo({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (error) return { message: handleApiError(error) }
 
   return redirect('/samenvatting')
 }
