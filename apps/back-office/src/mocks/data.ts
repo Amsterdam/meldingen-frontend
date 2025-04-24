@@ -1,3 +1,5 @@
+export const meldingen = [{ id: 1 }, { id: 2 }, { id: 3 }]
+
 export const melding = {
   id: 123,
   created_at: '2025-02-18T10:34:29.103642',
