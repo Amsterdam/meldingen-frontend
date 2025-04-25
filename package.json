@@ -78,7 +78,7 @@
     "prettier": "3.5.3",
     "stylelint": "16.18.0",
     "stylelint-config-css-modules": "4.4.0",
-    "stylelint-config-standard": "37.0.0",
+    "stylelint-config-standard": "38.0.0",
     "stylelint-order": "6.0.4",
     "stylelint-value-no-unknown-custom-properties": "6.0.1",
     "tsc-files": "1.1.4",
