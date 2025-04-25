@@ -97,9 +97,11 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
         <BackLink href="/locatie">{t('back-link')}</BackLink>
-        <Heading className="ams-mb--sm">{t('step.title')}</Heading>
+        <Heading className="ams-mb-s" level={1}>
+          {t('step.title')}
+        </Heading>
         <form ref={formRef} action={redirectToNextPage}>
-          <Field invalid={Boolean(errorMessage)} className="ams-mb--sm">
+          <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
             <Label htmlFor="file-upload" optional>
               {label}
             </Label>

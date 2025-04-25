@@ -1,16 +1,16 @@
 .wrapper {
-  font-size: var(--ams-text-level-5-font-size);
-  line-height: var(--ams-text-level-5-line-height);
+  font-size: var(--ams-typography-body-text-font-size);
+  line-height: var(--ams-typography-body-text-line-height);
   outline-offset: var(--ams-focus-outline-offset);
   position: relative;
   width: 100%;
 
   @media screen and (min-width: 36rem) {
-    border: var(--ams-border-width-sm) dashed var(--ams-color-neutral-grey3);
+    border: var(--ams-border-width-s) dashed var(--ams-color-interactive-secondary);
     box-sizing: border-box;
     outline-offset: calc(var(--ams-focus-outline-offset) * 2); /* Increase outline offset to account for border width */
-    padding-block: var(--ams-space-md);
-    padding-inline: var(--ams-space-md);
+    padding-block: var(--ams-space-m);
+    padding-inline: var(--ams-space-m);
   }
 }
 
@@ -68,6 +68,6 @@
 
   @media screen and (min-width: 36rem) {
     display: inline;
-    padding-inline: var(--ams-space-md);
+    padding-inline: var(--ams-space-m);
   }
 }

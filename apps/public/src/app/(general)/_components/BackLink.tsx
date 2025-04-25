@@ -12,7 +12,7 @@ export const BackLink = ({
   className,
   href,
   ...restProps
-}: AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }) => (
+}: Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & { href: string }) => (
   <NextLink href={href} legacyBehavior passHref>
     <Link {...restProps} className={`${styles.link} ${className ?? ''}`} href="dummy-href">
       <Icon svg={ChevronLeftIcon} size="level-5" />
