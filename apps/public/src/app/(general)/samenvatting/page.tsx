@@ -29,23 +29,23 @@ export default async () => {
   if (!meldingId || !token) return 'Could not retrieve meldingId or token'
 
   const meldingData = await getMeldingData(meldingId, token)
-  if (typeof meldingData === 'string') return meldingData
+  if ('error' in meldingData) return meldingData.error
+
+  const primaryForm = await getPrimaryFormSummary(meldingData.data.text)
+  if ('error' in primaryForm) return primaryForm.error
 
   const additionalQuestions = await getAdditionalQuestionsSummary(meldingId, token)
-  if (typeof additionalQuestions === 'string') return additionalQuestions
-
-  const primaryForm = await getPrimaryFormSummary(meldingData.text)
-  if (typeof primaryForm === 'string') return primaryForm
+  if ('error' in additionalQuestions) return additionalQuestions.error
 
   const location = getLocationSummary(t('location.title'), locationCookie)
-  const contact = getContactSummary(t('summary.contact-label'), meldingData?.email, meldingData?.phone)
+  const contact = getContactSummary(t('summary.contact-label'), meldingData.data.email, meldingData.data.phone)
 
   return (
     <Summary
-      additionalQuestions={additionalQuestions}
+      additionalQuestions={additionalQuestions.data}
       contact={contact}
       location={location}
-      primaryForm={primaryForm}
+      primaryForm={primaryForm.data}
     />
   )
 }

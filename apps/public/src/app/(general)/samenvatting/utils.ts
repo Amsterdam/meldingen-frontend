@@ -8,41 +8,39 @@ import {
 import { handleApiError } from 'apps/public/src/handleApiError'
 
 export const getMeldingData = async (meldingId: string, token: string) => {
-  const { data: meldingData, error: meldingError } = await getMeldingByMeldingIdMelder({
+  const { data, error } = await getMeldingByMeldingIdMelder({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
   })
 
-  if (meldingError) return handleApiError(meldingError)
+  if (error) return { error: handleApiError(error) }
 
-  if (!meldingData) return 'Melding data not found'
+  if (!data) return { error: 'Melding data not found' }
 
-  return meldingData
+  return { data }
 }
 
 export const getPrimaryFormSummary = async (description: string) => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
-  if (staticFormsError) return handleApiError(staticFormsError)
+  if (staticFormsError) return { error: handleApiError(staticFormsError) }
 
   const primaryFormId = staticFormsData?.find((form) => form.type === 'primary')?.id
 
-  if (!primaryFormId) return 'Primary form id not found'
+  if (!primaryFormId) return { error: 'Primary form id not found' }
 
   const { data: primaryFormData, error: primaryFormError } = await getStaticFormByStaticFormId({
     path: { static_form_id: primaryFormId },
   })
 
-  if (primaryFormError) return handleApiError(primaryFormError)
+  if (primaryFormError) return { error: handleApiError(primaryFormError) }
 
-  if (!primaryFormData) return 'Primary form data not found'
+  if (!primaryFormData) return { error: 'Primary form data not found' }
 
   const primaryForm = primaryFormData.components[0]
 
   return {
-    key: 'primary',
-    term: primaryForm.label,
-    description: [description],
+    data: { key: 'primary', term: primaryForm.label, description: [description] },
   }
 }
 
@@ -52,15 +50,16 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
     query: { token },
   })
 
-  if (error) return handleApiError(error)
+  if (error) return { error: handleApiError(error) }
 
-  return (
-    data?.map((answer) => ({
-      key: `${answer.question.id}`,
-      term: answer.question.text,
-      description: [answer.text],
-    })) || []
-  )
+  return {
+    data:
+      data?.map((answer) => ({
+        key: `${answer.question.id}`,
+        term: answer.question.text,
+        description: [answer.text],
+      })) || [],
+  }
 }
 
 export const getLocationSummary = (label: string, location?: string) => {
