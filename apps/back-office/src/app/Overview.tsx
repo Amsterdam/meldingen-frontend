@@ -1,11 +1,14 @@
 'use client'
 
-import { Link, Table } from '@amsterdam/design-system-react'
+import { Heading, Link, Pagination, Table } from '@amsterdam/design-system-react'
 import NextLink from 'next/link'
+import { AnchorHTMLAttributes } from 'react'
 
 import { Grid } from '@meldingen/ui'
 
 import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
+
+import styles from './Overview.module.css'
 
 const HEADERS = [
   { key: 'id', label: 'Id' },
@@ -27,11 +30,26 @@ const getValue = (melding: MeldingOutput, key: string) => {
   }
 }
 
-export const Overview = ({ data }: { data: MeldingOutput[] }) => {
+type Props = {
+  data: MeldingOutput[]
+  meldingCount: number
+  page?: number
+  totalPages: number
+}
+
+const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
+  <NextLink href={props.href ? props.href : ''} legacyBehavior passHref>
+    {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
+    <a {...props} />
+  </NextLink>
+)
+
+export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
   return (
     <Grid paddingBottom="large" paddingTop="medium">
-      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 9 }} start={{ narrow: 1, medium: 1, wide: 3 }}>
-        <Table>
+      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
+        <Heading level={1} className="ams-mb-m">{`Meldingen (${meldingCount})`}</Heading>
+        <Table className="ams-mb-l">
           <Table.Header>
             <Table.Row>
               {HEADERS.map((header) => (
@@ -58,6 +76,13 @@ export const Overview = ({ data }: { data: MeldingOutput[] }) => {
             ))}
           </Table.Body>
         </Table>
+        <Pagination
+          className={styles.pagination}
+          linkComponent={LinkComponent}
+          linkTemplate={(page) => (page === 1 ? '/' : `/?pagina=${page}`)}
+          page={page}
+          totalPages={totalPages}
+        />
       </Grid.Cell>
     </Grid>
   )
