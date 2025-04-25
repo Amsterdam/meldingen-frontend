@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 
 import {
   getAdditionalQuestionsSummary,
+  getAttachmentsSummary,
   getContactSummary,
   getLocationSummary,
   getMeldingData,
@@ -111,6 +112,52 @@ describe('getAdditionalQuestionsSummary', () => {
   })
 })
 
+describe('getAttachmentSummary', () => {
+  it('should return correct attachment summary', async () => {
+    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
+
+    expect(result).toEqual({
+      data: {
+        key: 'attachments',
+        term: "Foto's",
+        data: [
+          {
+            file: [{}],
+            meta: {
+              contentType: 'application/json',
+              originalFilename: 'IMG_0815.jpg',
+            },
+          },
+        ],
+      },
+    })
+  })
+
+  it('should return an error when getMeldingByMeldingIdAttachments returns an error', async () => {
+    server.use(
+      http.get(ENDPOINTS.MELDING_ATTACHMENTS_BY_ID, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500, headers: { 'Content-Range': '0/40' } }),
+      ),
+    )
+
+    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
+
+    expect(result).toEqual({ error: 'Error message' })
+  })
+
+  it('should return an error when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns an error', async () => {
+    server.use(
+      http.get(ENDPOINTS.MELDING_ATTACHMENT_BY_ID_DOWNLOAD, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500, headers: { 'Content-Range': '0/40' } }),
+      ),
+    )
+
+    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
+
+    expect(result).toEqual({ error: 'Error message' })
+  })
+})
+
 describe('getLocationSummary', () => {
   it('should return correct location summary', () => {
     const mockLocation = JSON.stringify({
@@ -125,6 +172,7 @@ describe('getLocationSummary', () => {
       description: ['Nieuwmarkt 23, 1011JS Amsterdam'],
     })
   })
+
   it('should return error message when location cookie could not be parsed', () => {
     const result = getLocationSummary('Waar staat de container?')
 
@@ -146,6 +194,7 @@ describe('getContactSummary', () => {
       description: ['test@test.com', '+31612345678'],
     })
   })
+
   it('should return undefined when contact details are not filled in', () => {
     const result = getContactSummary('Wat zijn uw contactgegevens?')
 

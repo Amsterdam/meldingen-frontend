@@ -1,13 +1,15 @@
 'use client'
 
-import { Grid, Heading, Paragraph } from '@amsterdam/design-system-react'
+import { FileList, Grid, Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useActionState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import { SubmitButton, SummaryList } from '@meldingen/ui'
 
 import { postSummaryForm } from './actions'
 import { BackLink } from '../_components/BackLink'
+
+import styles from './Summary.module.css'
 
 type GenericSummaryData = {
   key: string
@@ -17,6 +19,17 @@ type GenericSummaryData = {
 
 type Props = {
   additionalQuestions: GenericSummaryData[]
+  attachments: {
+    key: string
+    term: string
+    data: {
+      file: Blob
+      meta: {
+        originalFilename: string
+        contentType: string
+      }
+    }[]
+  }
   contact?: GenericSummaryData
   location: GenericSummaryData
   primaryForm: GenericSummaryData
@@ -24,8 +37,19 @@ type Props = {
 
 const initialState: { message?: string } = {}
 
-export const Summary = ({ primaryForm, additionalQuestions, location, contact }: Props) => {
+export const Summary = ({ attachments, primaryForm, additionalQuestions, location, contact }: Props) => {
   const [formState, formAction] = useActionState(postSummaryForm, initialState)
+  const [fileList, setFileList] = useState<File[]>([])
+
+  useEffect(() => {
+    if (attachments.data.length > 0) {
+      const fileList = attachments.data.map((attachment) => {
+        return new File([attachment.file], attachment.meta.originalFilename, { type: attachment.meta.contentType })
+      })
+
+      setFileList(fileList)
+    }
+  }, [attachments])
 
   const t = useTranslations('summary')
 
@@ -70,6 +94,17 @@ export const Summary = ({ primaryForm, additionalQuestions, location, contact }:
               <SummaryList.Description key={item}>{item}</SummaryList.Description>
             ))}
           </SummaryList.Item>
+
+          {fileList.length > 0 && (
+            <SummaryList.Item key={attachments.key} className={styles.fileListItemAttachments}>
+              <SummaryList.Term>{attachments.term}</SummaryList.Term>
+              <FileList>
+                {fileList.map((file) => (
+                  <FileList.Item key={file.name} file={file} />
+                ))}
+              </FileList>
+            </SummaryList.Item>
+          )}
 
           {contact && (
             <SummaryList.Item key={contact.key}>
