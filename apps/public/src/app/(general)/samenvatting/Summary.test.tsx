@@ -13,7 +13,7 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-const mockData = {
+const defaultProps = {
   additionalQuestions: [
     {
       key: '1',
@@ -49,7 +49,7 @@ describe('Summary', () => {
   })
 
   it('renders the Summary component with data', () => {
-    render(<Summary {...mockData} />)
+    render(<Summary {...defaultProps} />)
     screen.debug()
     const terms = screen.getAllByRole('term')
     const definitions = screen.getAllByRole('definition')
@@ -73,7 +73,7 @@ describe('Summary', () => {
   it('renders the Summary component with an error message', () => {
     ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
 
-    render(<Summary {...mockData} />)
+    render(<Summary {...defaultProps} />)
 
     expect(screen.queryByText('Test error message')).toBeInTheDocument()
   })
