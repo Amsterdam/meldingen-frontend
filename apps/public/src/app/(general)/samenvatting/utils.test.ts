@@ -178,8 +178,16 @@ describe('getAttachmentSummary', () => {
   })
 
   it('should return an error message when getMeldingByMeldingIdAttachments returns no data', async () => {
+    server.use(http.get(ENDPOINTS.MELDING_ATTACHMENTS_BY_ID, () => new HttpResponse()))
+
+    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
+
+    expect(result).toEqual({ error: 'Attachments data not found' })
+  })
+
+  it('should return an error message when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns an error', async () => {
     server.use(
-      http.get(ENDPOINTS.MELDING_ATTACHMENTS_BY_ID, () =>
+      http.get(ENDPOINTS.MELDING_ATTACHMENT_BY_ID_DOWNLOAD, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
