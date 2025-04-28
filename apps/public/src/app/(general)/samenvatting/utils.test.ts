@@ -29,6 +29,14 @@ describe('getMeldingData', () => {
 
     expect(result).toEqual({ error: 'Error message' })
   })
+
+  it('should return an error message when melding data is not found', async () => {
+    server.use(http.get(ENDPOINTS.MELDING_BY_ID, () => new HttpResponse()))
+
+    const result = await getMeldingData(mockMeldingId, mockToken)
+
+    expect(result).toEqual({ error: 'Melding data not found' })
+  })
 })
 
 describe('getPrimaryFormSummary', () => {
@@ -52,6 +60,31 @@ describe('getPrimaryFormSummary', () => {
     expect(result).toEqual({ error: 'Error message' })
   })
 
+  it('should return an error message when getStaticForm does not return data', async () => {
+    server.use(http.get(ENDPOINTS.STATIC_FORM, () => new HttpResponse()))
+
+    const result = await getPrimaryFormSummary('')
+
+    expect(result).toEqual({ error: 'Static forms data not found' })
+  })
+
+  it('should return an error message when primary form id is not found', async () => {
+    server.use(
+      http.get(ENDPOINTS.STATIC_FORM, () =>
+        HttpResponse.json([
+          {
+            id: '123',
+            type: 'not-primary',
+          },
+        ]),
+      ),
+    )
+
+    const result = await getPrimaryFormSummary('')
+
+    expect(result).toEqual({ error: 'Primary form id not found' })
+  })
+
   it('should return an error message when getStaticFormByStaticFormId returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.STATIC_FORM_BY_STATIC_FORM_ID, () =>
@@ -63,10 +96,18 @@ describe('getPrimaryFormSummary', () => {
 
     expect(result).toEqual({ error: 'Error message' })
   })
+
+  it('should return an error message when getStaticFormByStaticFormId does not return data', async () => {
+    server.use(http.get(ENDPOINTS.STATIC_FORM_BY_STATIC_FORM_ID, () => new HttpResponse()))
+
+    const result = await getPrimaryFormSummary('')
+
+    expect(result).toEqual({ error: 'Primary form data not found' })
+  })
 })
 
 describe('getAdditionalQuestionsSummary', () => {
-  it('should return correct addtional questions summary', async () => {
+  it('should return correct additional questions summary', async () => {
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
 
     const additionalQuestions = mockAdditionalQuestionsAnswerData.map((item) => ({
@@ -85,6 +126,14 @@ describe('getAdditionalQuestionsSummary', () => {
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
 
     expect(result).toEqual({ error: 'Error message' })
+  })
+
+  it('should return an empty array when additional questions data is not found', async () => {
+    server.use(http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID, () => new HttpResponse()))
+
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
+
+    expect(result).toEqual({ data: [] })
   })
 })
 

@@ -25,6 +25,8 @@ export const getPrimaryFormSummary = async (description: string) => {
 
   if (staticFormsError) return { error: handleApiError(staticFormsError) }
 
+  if (!staticFormsData) return { error: 'Static forms data not found' }
+
   const primaryFormId = staticFormsData?.find((form) => form.type === 'primary')?.id
 
   if (!primaryFormId) return { error: 'Primary form id not found' }
