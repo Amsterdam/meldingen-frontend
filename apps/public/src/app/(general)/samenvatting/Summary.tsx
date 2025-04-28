@@ -9,17 +9,22 @@ import { SubmitButton, SummaryList } from '@meldingen/ui'
 import { postSummaryForm } from './actions'
 import { BackLink } from '../_components/BackLink'
 
+type GenericSummaryData = {
+  key: string
+  term: string
+  description: string[]
+}
+
 type Props = {
-  data: {
-    key: string
-    term: string
-    description: string[]
-  }[]
+  additionalQuestions: GenericSummaryData[]
+  contact?: GenericSummaryData
+  location: GenericSummaryData
+  primaryForm: GenericSummaryData
 }
 
 const initialState: { message?: string } = {}
 
-export const Summary = ({ data }: Props) => {
+export const Summary = ({ primaryForm, additionalQuestions, location, contact }: Props) => {
   const [formState, formAction] = useActionState(postSummaryForm, initialState)
 
   const t = useTranslations('summary')
@@ -42,15 +47,40 @@ export const Summary = ({ data }: Props) => {
         {formState?.message && <Paragraph>{formState.message}</Paragraph>}
 
         <SummaryList className="ams-mb-m">
-          {data.map(({ key, term, description }) => (
-            <SummaryList.Item key={key}>
-              <SummaryList.Term>{term}</SummaryList.Term>
-              {description.map((item) => (
+          <SummaryList.Item key={primaryForm.key}>
+            <SummaryList.Term>{primaryForm.term}</SummaryList.Term>
+            {primaryForm.description.map((item) => (
+              <SummaryList.Description key={item}>{item}</SummaryList.Description>
+            ))}
+          </SummaryList.Item>
+
+          {additionalQuestions.length > 0 &&
+            additionalQuestions.map(({ key, term, description }) => (
+              <SummaryList.Item key={key}>
+                <SummaryList.Term>{term}</SummaryList.Term>
+                {description.map((item) => (
+                  <SummaryList.Description key={item}>{item}</SummaryList.Description>
+                ))}
+              </SummaryList.Item>
+            ))}
+
+          <SummaryList.Item key={location.key}>
+            <SummaryList.Term>{location.term}</SummaryList.Term>
+            {location.description.map((item) => (
+              <SummaryList.Description key={item}>{item}</SummaryList.Description>
+            ))}
+          </SummaryList.Item>
+
+          {contact && (
+            <SummaryList.Item key={contact.key}>
+              <SummaryList.Term>{contact.term}</SummaryList.Term>
+              {contact.description.map((item) => (
                 <SummaryList.Description key={item}>{item}</SummaryList.Description>
               ))}
             </SummaryList.Item>
-          ))}
+          )}
         </SummaryList>
+
         <form action={formAction}>
           <SubmitButton>{t('submit-button')}</SubmitButton>
         </form>

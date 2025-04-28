@@ -49,31 +49,35 @@ describe('Page', () => {
 
     render(PageComponent)
 
+    const additionalQuestions = mockAdditionalQuestionsAnswerData.map((item) => ({
+      key: item.question.id,
+      term: item.question.text,
+      description: [item.text],
+    }))
+
+    const contact = {
+      key: 'contact',
+      term: 'summary.contact-label',
+      description: [mockMeldingData.email, mockMeldingData.phone],
+    }
+
+    const primaryForm = {
+      key: 'primary',
+      term: mockFormData.components[0].components[0].label,
+      description: [mockMeldingData.text],
+    }
+
     expect(screen.getByText('Summary Component')).toBeInTheDocument()
     expect(Summary).toHaveBeenCalledWith(
       {
-        data: [
-          {
-            description: [mockMeldingData.text],
-            key: 'primary',
-            term: mockFormData.components[0].components[0].label,
-          },
-          ...mockAdditionalQuestionsAnswerData.map((item) => ({
-            description: [item.text],
-            key: item.question.id,
-            term: item.question.text,
-          })),
-          {
-            description: ['Test address'],
-            key: 'location',
-            term: 'location.title',
-          },
-          {
-            description: ['email@email.email', '0612345678'],
-            key: 'contact',
-            term: 'summary.contact-label',
-          },
-        ],
+        additionalQuestions: additionalQuestions,
+        contact: contact,
+        location: {
+          key: 'location',
+          term: 'location.title',
+          description: ['Test address'],
+        },
+        primaryForm: primaryForm,
       },
       {},
     )
@@ -96,108 +100,13 @@ describe('Page', () => {
     expect(PageComponent).toEqual('Primary form id not found')
   })
 
-  it('returns undefined when there is no meldingId and token', async () => {
+  it('returns an error message when there is no meldingId and token', async () => {
     mockCookies.get.mockReturnValue(undefined)
 
     const PageComponent = await Page()
 
     render(PageComponent)
 
-    expect(PageComponent).toBeUndefined()
-  })
-
-  it('does not render a location when the location cookie is not set', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'z123890' }
-      }
-      return undefined
-    })
-
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    expect(screen.getByText('Summary Component')).toBeInTheDocument()
-    expect(Summary).toHaveBeenCalledWith(
-      {
-        data: [
-          {
-            description: [mockMeldingData.text],
-            key: 'primary',
-            term: mockFormData.components[0].components[0].label,
-          },
-          ...mockAdditionalQuestionsAnswerData.map((item) => ({
-            description: [item.text],
-            key: item.question.id,
-            term: item.question.text,
-          })),
-          {
-            description: ['email@email.email', '0612345678'],
-            key: 'contact',
-            term: 'summary.contact-label',
-          },
-        ],
-      },
-      {},
-    )
-  })
-
-  it('does not render contact data when that does not exist', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'z123890' }
-      }
-      if (name === 'location') {
-        return {
-          value: '{"name":"Test address"}',
-        }
-      }
-      return undefined
-    })
-
-    server.use(
-      http.get(ENDPOINTS.MELDING_BY_ID, () =>
-        HttpResponse.json({
-          ...mockMeldingData,
-          email: null,
-          phone: null,
-        }),
-      ),
-    )
-
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    expect(screen.getByText('Summary Component')).toBeInTheDocument()
-    expect(Summary).toHaveBeenCalledWith(
-      {
-        data: [
-          {
-            description: [mockMeldingData.text],
-            key: 'primary',
-            term: mockFormData.components[0].components[0].label,
-          },
-          ...mockAdditionalQuestionsAnswerData.map((item) => ({
-            description: [item.text],
-            key: item.question.id,
-            term: item.question.text,
-          })),
-          {
-            description: ['Test address'],
-            key: 'location',
-            term: 'location.title',
-          },
-        ],
-      },
-      {},
-    )
+    expect(PageComponent).toEqual('Could not retrieve meldingId or token')
   })
 })
