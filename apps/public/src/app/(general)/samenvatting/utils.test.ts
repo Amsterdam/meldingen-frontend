@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 
 import {
   getAdditionalQuestionsSummary,
+  getAttachmentsSummary,
   getContactSummary,
   getLocationSummary,
   getMeldingData,
@@ -9,8 +10,14 @@ import {
 } from './utils'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
 import mockAdditionalQuestionsAnswerData from 'apps/public/src/mocks/mockAdditionalQuestionsAnswerData.json'
+import mockAttachmentsData from 'apps/public/src/mocks/mockAttachmentsData.json'
 import mockMeldingData from 'apps/public/src/mocks/mockMeldingData.json'
 import { server } from 'apps/public/src/mocks/node'
+
+import { Blob } from 'buffer'
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+;(global as any).Blob = Blob
 
 const mockMeldingId = '88'
 const mockToken = 'test-token'
@@ -134,6 +141,60 @@ describe('getAdditionalQuestionsSummary', () => {
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
 
     expect(result).toEqual({ data: [] })
+  })
+})
+
+describe('getAttachmentSummary', () => {
+  it('should return correct attachment summary', async () => {
+    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
+
+    expect(result).toMatchObject({
+      data: {
+        key: 'attachments',
+        term: "Foto's",
+        data: [
+          {
+            file: expect.any(Blob),
+            meta: {
+              contentType: 'image/webp',
+              originalFilename: mockAttachmentsData.original_filename,
+            },
+          },
+        ],
+      },
+    })
+  })
+
+  it('should return an error message when getMeldingByMeldingIdAttachments returns an error', async () => {
+    server.use(
+      http.get(ENDPOINTS.MELDING_ATTACHMENTS_BY_ID, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
+
+    expect(result).toEqual({ error: 'Error message' })
+  })
+
+  it('should return an error message when getMeldingByMeldingIdAttachments returns no data', async () => {
+    server.use(
+      http.get(ENDPOINTS.MELDING_ATTACHMENTS_BY_ID, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
+
+    expect(result).toEqual({ error: 'Error message' })
+  })
+
+  it('should return an error message when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns an error', async () => {
+    server.use(http.get(ENDPOINTS.MELDING_ATTACHMENT_BY_ID_DOWNLOAD, () => new HttpResponse()))
+
+    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
+
+    expect(result).toEqual({ error: 'Attachment data not found' })
   })
 })
 

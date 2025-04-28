@@ -99,6 +99,24 @@ export const handlers = [
 
   http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID, () => HttpResponse.json(mockAdditionalQuestionsAnswerData)),
 
+  http.get(ENDPOINTS.MELDING_ATTACHMENTS_BY_ID, () => {
+    return HttpResponse.json([
+      {
+        id: 42,
+        created_at: '2025-04-14T18:54:13.496644',
+        updated_at: '2025-04-14T18:54:14.116304',
+        original_filename: 'IMG_0815.jpg',
+      },
+    ])
+  }),
+
+  http.get(ENDPOINTS.MELDING_ATTACHMENT_BY_ID_DOWNLOAD, () =>
+    HttpResponse.json(new Blob(['mock content'], { type: 'image/webp' }), {
+      status: 200,
+      headers: { 'content-type': 'image/webp' },
+    }),
+  ),
+
   /** POST */
   http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () => HttpResponse.json({ id: 42 })),
 
@@ -109,3 +127,5 @@ export const handlers = [
   /** DELETE */
   http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => new HttpResponse(null)),
 ]
+
+// export const mockAttachment = new Blob({ size: 4, type: 'image/webp' })

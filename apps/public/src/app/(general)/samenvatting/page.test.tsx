@@ -7,9 +7,15 @@ import Page from './page'
 import { Summary } from './Summary'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
 import mockAdditionalQuestionsAnswerData from 'apps/public/src/mocks/mockAdditionalQuestionsAnswerData.json'
+import mockAttachmentsData from 'apps/public/src/mocks/mockAttachmentsData.json'
 import mockFormData from 'apps/public/src/mocks/mockFormData.json'
 import mockMeldingData from 'apps/public/src/mocks/mockMeldingData.json'
 import { server } from 'apps/public/src/mocks/node'
+
+import { Blob } from 'buffer'
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+;(global as any).Blob = Blob
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
@@ -55,6 +61,20 @@ describe('Page', () => {
       description: [item.text],
     }))
 
+    const attachments = {
+      data: [
+        expect.objectContaining({
+          file: expect.any(Blob),
+          meta: {
+            contentType: 'image/webp',
+            originalFilename: mockAttachmentsData.original_filename,
+          },
+        }),
+      ],
+      key: 'attachments',
+      term: 'attachments.step.title',
+    }
+
     const contact = {
       key: 'contact',
       term: 'summary.contact-label',
@@ -68,9 +88,11 @@ describe('Page', () => {
     }
 
     expect(screen.getByText('Summary Component')).toBeInTheDocument()
+
     expect(Summary).toHaveBeenCalledWith(
       {
         additionalQuestions: additionalQuestions,
+        attachments,
         contact: contact,
         location: {
           key: 'location',
