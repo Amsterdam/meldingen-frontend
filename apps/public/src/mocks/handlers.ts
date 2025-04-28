@@ -106,6 +106,17 @@ export const handlers = [
 
   http.post(ENDPOINTS.MELDING_LOCATION_BY_ID, () => new HttpResponse()),
 
+  /** PUT */
+  http.put(ENDPOINTS.MELDING_BY_ID_ADD_ATTACHMENTS, () => new HttpResponse()),
+
+  http.put(ENDPOINTS.MELDING_BY_ID_ADD_CONTACT_INFO, () => new HttpResponse()),
+
+  http.put(ENDPOINTS.MELDING_BY_ID_ANSWER_QUESTIONS, () => new HttpResponse()),
+
+  http.put(ENDPOINTS.MELDING_BY_ID_SUBMIT_LOCATION, () => new HttpResponse()),
+
+  http.put(ENDPOINTS.MELDING_BY_ID_SUBMIT, () => new HttpResponse()),
+
   /** DELETE */
-  http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => new HttpResponse(null)),
+  http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => new HttpResponse()),
 ]

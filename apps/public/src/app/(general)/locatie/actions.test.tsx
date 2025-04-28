@@ -70,7 +70,7 @@ describe('postLocationForm', () => {
     expect(redirect).toHaveBeenCalledWith('/bijlage')
   })
 
-  it('returns an error message if an error occurs', async () => {
+  it('returns an error message if postMeldingByMeldingIdLocation returns an error', async () => {
     server.use(http.post(ENDPOINTS.MELDING_LOCATION_BY_ID, () => new HttpResponse(null, { status: 404 })))
 
     mockCookies.get.mockImplementation((name) => {
@@ -89,5 +89,30 @@ describe('postLocationForm', () => {
     const result = await postLocationForm(null, formData)
 
     expect(result).toEqual({ message: 'An unknown error occurred' })
+  })
+
+  it('returns an error message if an error occurs when changing melding state', async () => {
+    server.use(
+      http.put(ENDPOINTS.MELDING_BY_ID_SUBMIT_LOCATION, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    mockCookies.get.mockImplementation((name) => {
+      if (name === 'id') {
+        return { value: '123' }
+      }
+      if (name === 'token') {
+        return { value: 'test-token' }
+      }
+      return undefined
+    })
+
+    const formData = new FormData()
+    formData.set('coordinates', '{"lat":52.370216,"lng":4.895168}')
+
+    const result = await postLocationForm(null, formData)
+
+    expect(result).toEqual({ message: 'Error message' })
   })
 })

@@ -15,7 +15,7 @@ export const postSummaryForm = async () => {
 
   if (!meldingId || !token) return undefined
 
-  // Set melding state to ???
+  // Set melding state to 'submitted'
   const { error } = await putMeldingByMeldingIdSubmit({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },

@@ -96,4 +96,27 @@ describe('postContactForm', () => {
 
     expect(result).toEqual({ message: 'An unknown error occurred' })
   })
+
+  it('returns an error message if an error occurs when changing melding state', async () => {
+    server.use(
+      http.put(ENDPOINTS.MELDING_BY_ID_ADD_CONTACT_INFO, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    mockCookies.get.mockImplementation((name) => {
+      if (name === 'id') {
+        return { value: '123' }
+      }
+      if (name === 'token') {
+        return { value: 'test-token' }
+      }
+      return undefined
+    })
+
+    const formData = new FormData()
+    const result = await postContactForm(null, formData)
+
+    expect(result).toEqual({ message: 'Error message' })
+  })
 })
