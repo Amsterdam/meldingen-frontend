@@ -7,7 +7,6 @@ import Page from './page'
 import { Summary } from './Summary'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
 import mockAdditionalQuestionsAnswerData from 'apps/public/src/mocks/mockAdditionalQuestionsAnswerData.json'
-import mockAttachmentsData from 'apps/public/src/mocks/mockAttachmentsData.json'
 import mockFormData from 'apps/public/src/mocks/mockFormData.json'
 import mockMeldingData from 'apps/public/src/mocks/mockMeldingData.json'
 import { server } from 'apps/public/src/mocks/node'
@@ -67,7 +66,7 @@ describe('Page', () => {
           file: expect.any(Blob),
           meta: {
             contentType: 'image/webp',
-            originalFilename: mockAttachmentsData.original_filename,
+            originalFilename: 'IMG_0815.jpg',
           },
         }),
       ],

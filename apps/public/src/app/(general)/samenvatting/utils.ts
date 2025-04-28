@@ -90,10 +90,8 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
 
       if (error) {
         downloadError = handleApiError(error)
-        return
       } else if (!data) {
         downloadError = 'Attachment data not found'
-        return
       }
 
       return {
