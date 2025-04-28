@@ -34,7 +34,7 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
     query: { token },
   })
 
-  // Set melding state to ???
+  // Set melding state to 'location_submitted'
   const { error: stateError } = await putMeldingByMeldingIdSubmitLocation({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },

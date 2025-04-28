@@ -31,7 +31,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
     if (error) return { message: handleApiError(error) }
   }
 
-  // Set melding state to ???
+  // Set melding state to 'contact_info_added'
   const { error } = await putMeldingByMeldingIdAddContactInfo({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
