@@ -1,16 +1,14 @@
 import { cookies } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
 
-import {
-  getMeldingByMeldingIdAnswers,
-  getMeldingByMeldingIdMelder,
-  getStaticForm,
-  getStaticFormByStaticFormId,
-} from '@meldingen/api-client'
-
-import { getSummaryData } from './_utils/getSummaryData'
 import { Summary } from './Summary'
-import { handleApiError } from 'apps/public/src/handleApiError'
+import {
+  getAdditionalQuestionsSummary,
+  getContactSummary,
+  getLocationSummary,
+  getMeldingData,
+  getPrimaryFormSummary,
+} from './utils'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('summary')
@@ -21,64 +19,33 @@ export const generateMetadata = async () => {
 }
 
 export default async () => {
-  // Get session variables from cookies
   const cookieStore = await cookies()
   const meldingId = cookieStore.get('id')?.value
   const token = cookieStore.get('token')?.value
-  const location = cookieStore.get('location')?.value
-
-  if (!meldingId || !token) return undefined
-
-  // Primary form
-
-  const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
-
-  if (staticFormsError) return handleApiError(staticFormsError)
-
-  const primaryFormId = staticFormsData?.find((form) => form.type === 'primary')?.id
-
-  if (!primaryFormId) return 'Primary form id not found'
-
-  const { data: primaryFormData, error: primaryFormError } = await getStaticFormByStaticFormId({
-    path: { static_form_id: primaryFormId },
-  })
-
-  if (primaryFormError) return handleApiError(primaryFormError)
-
-  if (!primaryFormData) return 'Primary form data not found'
-
-  const primaryForm = primaryFormData.components[0]
-
-  // Melding
-
-  const { data: meldingData, error: meldingError } = await getMeldingByMeldingIdMelder({
-    path: { melding_id: parseInt(meldingId, 10) },
-    query: { token },
-  })
-
-  if (meldingError) return handleApiError(meldingError)
-
-  if (!meldingData) return 'Melding data not found'
-
-  // Additional questions
-
-  const { data: additionalQuestionsData, error: additionalQuestionsErrors } = await getMeldingByMeldingIdAnswers({
-    path: { melding_id: parseInt(meldingId, 10) },
-    query: { token },
-  })
-
-  if (additionalQuestionsErrors) return handleApiError(additionalQuestionsErrors)
+  const locationCookie = cookieStore.get('location')?.value
 
   const t = await getTranslations()
 
-  const data = getSummaryData({
-    melding: meldingData,
-    primaryFormLabel: primaryForm?.label ?? '',
-    additionalQuestionsAnswers: additionalQuestionsData ?? [],
-    location: location ? JSON.parse(location) : undefined,
-    locationLabel: t('location.title'),
-    contactLabel: t('summary.contact-label'),
-  })
+  if (!meldingId || !token) return 'Could not retrieve meldingId or token'
 
-  return <Summary data={data} />
+  const meldingData = await getMeldingData(meldingId, token)
+  if ('error' in meldingData) return meldingData.error
+
+  const primaryForm = await getPrimaryFormSummary(meldingData.data.text)
+  if ('error' in primaryForm) return primaryForm.error
+
+  const additionalQuestions = await getAdditionalQuestionsSummary(meldingId, token)
+  if ('error' in additionalQuestions) return additionalQuestions.error
+
+  const location = getLocationSummary(t('location.title'), locationCookie)
+  const contact = getContactSummary(t('summary.contact-label'), meldingData.data.email, meldingData.data.phone)
+
+  return (
+    <Summary
+      additionalQuestions={additionalQuestions.data}
+      contact={contact}
+      location={location}
+      primaryForm={primaryForm.data}
+    />
+  )
 }

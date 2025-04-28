@@ -10,7 +10,7 @@ export const ENDPOINTS = {
   MELDING_BY_ID_SUBMIT: 'http://localhost:8000/melding/:id/submit',
   MELDING_ANSWERS_BY_ID: 'http://localhost:8000/melding/:id/answers',
   MELDING_ATTACHMENT_BY_ID: 'http://localhost:8000/melding/:id/attachment',
-  MELDING_ATTACHMENT_DELETE_BY_ID: 'http://localhost:8000/melding/:id/attachment/:meldingId',
+  MELDING_ATTACHMENT_DELETE_BY_ID: 'http://localhost:8000/melding/:id/attachment/:attachmentId',
   MELDING_CONTACT_BY_ID: 'http://localhost:8000/melding/:id/contact',
   MELDING_LOCATION_BY_ID: 'http://localhost:8000/melding/:id/location',
   STATIC_FORM: 'http://localhost:8000/static-form',
