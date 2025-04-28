@@ -50,7 +50,7 @@ describe('Summary', () => {
 
   it('renders the Summary component with data', () => {
     render(<Summary {...defaultProps} />)
-    screen.debug()
+
     const terms = screen.getAllByRole('term')
     const definitions = screen.getAllByRole('definition')
 
