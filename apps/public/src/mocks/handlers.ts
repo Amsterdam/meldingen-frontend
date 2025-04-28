@@ -127,5 +127,3 @@ export const handlers = [
   /** DELETE */
   http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => new HttpResponse(null)),
 ]
-
-// export const mockAttachment = new Blob({ size: 4, type: 'image/webp' })
