@@ -71,7 +71,11 @@ describe('postLocationForm', () => {
   })
 
   it('returns an error message if postMeldingByMeldingIdLocation returns an error', async () => {
-    server.use(http.post(ENDPOINTS.MELDING_LOCATION_BY_ID, () => new HttpResponse(null, { status: 404 })))
+    server.use(
+      http.post(ENDPOINTS.MELDING_LOCATION_BY_ID, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 404 }),
+      ),
+    )
 
     mockCookies.get.mockImplementation((name) => {
       if (name === 'id') {
@@ -88,7 +92,7 @@ describe('postLocationForm', () => {
 
     const result = await postLocationForm(null, formData)
 
-    expect(result).toEqual({ message: 'An unknown error occurred' })
+    expect(result).toEqual({ message: 'Error message' })
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
