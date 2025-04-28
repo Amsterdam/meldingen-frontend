@@ -1,12 +1,15 @@
 import { render, screen } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import type { Mock } from 'vitest'
 
 import Page from './page'
 import { Summary } from './Summary'
+import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
 import mockAdditionalQuestionsAnswerData from 'apps/public/src/mocks/mockAdditionalQuestionsAnswerData.json'
 import mockFormData from 'apps/public/src/mocks/mockFormData.json'
 import mockMeldingData from 'apps/public/src/mocks/mockMeldingData.json'
+import { server } from 'apps/public/src/mocks/node'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
@@ -78,5 +81,32 @@ describe('Page', () => {
       },
       {},
     )
+  })
+
+  it('returns an error message if no primary form is found', async () => {
+    server.use(
+      http.get(ENDPOINTS.STATIC_FORM, () =>
+        HttpResponse.json([
+          {
+            id: '123',
+            type: 'not-primary',
+          },
+        ]),
+      ),
+    )
+
+    const PageComponent = await Page()
+
+    expect(PageComponent).toEqual('Primary form id not found')
+  })
+
+  it('returns an error message when there is no meldingId and token', async () => {
+    mockCookies.get.mockReturnValue(undefined)
+
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    expect(PageComponent).toEqual('Could not retrieve meldingId or token')
   })
 })
