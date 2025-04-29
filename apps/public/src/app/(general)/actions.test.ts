@@ -34,6 +34,7 @@ describe('postPrimaryForm', () => {
     const result = await postPrimaryForm(null, formData)
 
     expect(result).toEqual({ message: 'Error message' })
+    expect(redirect).not.toHaveBeenCalled()
   })
 
   it('redirects to /locatie when there are no additional questions', async () => {
@@ -58,5 +59,6 @@ describe('postPrimaryForm', () => {
     const result = await postPrimaryForm(null, formData)
 
     expect(result).toEqual({ message: 'Error message' })
+    expect(redirect).not.toHaveBeenCalled()
   })
 })
