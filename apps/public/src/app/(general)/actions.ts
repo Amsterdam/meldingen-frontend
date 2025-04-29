@@ -33,9 +33,11 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
       path: { classification_id: classification },
     })
 
+    const hasAdditionalQuestions = Boolean(data?.components[0])
+
     // If there are no additional questions for a classification,
     // set the melding state to 'questions_answered' and redirect to /locatie.
-    if (!data?.components[0]) {
+    if (!hasAdditionalQuestions) {
       const { error } = await putMeldingByMeldingIdAnswerQuestions({
         path: { melding_id: id },
         query: { token },
