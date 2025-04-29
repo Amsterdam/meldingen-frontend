@@ -8,6 +8,8 @@ import mockMeldingData from './mockMeldingData.json'
 
 export const handlers = [
   /** GET */
+  http.get(ENDPOINTS.FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => new HttpResponse()),
+
   http.get(ENDPOINTS.PDOK_FREE, () =>
     HttpResponse.json({
       response: {
@@ -100,6 +102,8 @@ export const handlers = [
   http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID, () => HttpResponse.json(mockAdditionalQuestionsAnswerData)),
 
   /** POST */
+  http.post(ENDPOINTS.MELDING, () => HttpResponse.json({ id: 123, token: 'test-token', classification: 'Test' })),
+
   http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () => HttpResponse.json({ id: 42 })),
 
   http.post(ENDPOINTS.MELDING_CONTACT_BY_ID, () => new HttpResponse()),

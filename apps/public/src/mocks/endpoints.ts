@@ -1,7 +1,9 @@
 export const ENDPOINTS = {
+  FORM_CLASSIFICATION_BY_CLASSIFICATION_ID: 'http://localhost:8000/form/classification/:classification_id',
   PDOK_FREE: 'https://api.pdok.nl/bzk/locatieserver/search/v3_1/free',
   PDOK_REVERSE: 'https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse',
   PDOK_SUGGEST: 'https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest',
+  MELDING: 'http://localhost:8000/melding',
   MELDING_BY_ID: 'http://localhost:8000/melding/:id/melder',
   MELDING_BY_ID_ADD_ATTACHMENTS: 'http://localhost:8000/melding/:id/add_attachments',
   MELDING_BY_ID_ADD_CONTACT_INFO: 'http://localhost:8000/melding/:id/add_contact_info',
