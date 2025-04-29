@@ -17,7 +17,6 @@ vi.mock('next/navigation', () => ({
 
 describe('postPrimaryForm', () => {
   const mockCookies = {
-    get: vi.fn(),
     set: vi.fn(),
   }
 
