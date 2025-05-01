@@ -16,17 +16,27 @@ vi.mock('next/navigation', () => ({
 }))
 
 describe('postLocationForm', () => {
-  const mockCookies = {
-    get: vi.fn(),
-  }
-
   beforeEach(() => {
+    // Default mock for cookies
+    ;(cookies as Mock).mockReturnValue({
+      get: (name: string) => {
+        if (name === 'id') {
+          return { value: '123' }
+        }
+        if (name === 'token') {
+          return { value: 'test-token' }
+        }
+        return undefined
+      },
+    })
     vi.clearAllMocks()
-    ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
   it('returns undefined when id or token is missing', async () => {
-    mockCookies.get.mockReturnValue(undefined)
+    // Override cookies mock for this specific test
+    ;(cookies as Mock).mockReturnValue({
+      get: () => undefined,
+    })
 
     const formData = new FormData()
     const result = await postLocationForm(null, formData)
@@ -35,16 +45,6 @@ describe('postLocationForm', () => {
   })
 
   it('returns an error when coordinates are missing', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'test-token' }
-      }
-      return undefined
-    })
-
     const formData = new FormData()
     const result = await postLocationForm(null, formData)
 
@@ -52,16 +52,6 @@ describe('postLocationForm', () => {
   })
 
   it('posts the location and redirects to /bijlage', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'test-token' }
-      }
-      return undefined
-    })
-
     const formData = new FormData()
     formData.set('coordinates', '{"lat":52.370216,"lng":4.895168}')
 
@@ -77,16 +67,6 @@ describe('postLocationForm', () => {
       ),
     )
 
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'test-token' }
-      }
-      return undefined
-    })
-
     const formData = new FormData()
     formData.set('coordinates', '{"lat":52.370216,"lng":4.895168}')
 
@@ -101,16 +81,6 @@ describe('postLocationForm', () => {
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
-
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'test-token' }
-      }
-      return undefined
-    })
 
     const formData = new FormData()
     formData.set('coordinates', '{"lat":52.370216,"lng":4.895168}')
