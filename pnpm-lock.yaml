@@ -59,10 +59,10 @@ importers:
         version: 6.4.0
       '@hey-api/client-fetch':
         specifier: 0.10.0
-        version: 0.10.0(@hey-api/openapi-ts@0.66.6(magicast@0.3.5)(typescript@5.8.3))
+        version: 0.10.0(@hey-api/openapi-ts@0.66.7(magicast@0.3.5)(typescript@5.8.3))
       '@hey-api/openapi-ts':
-        specifier: 0.66.6
-        version: 0.66.6(magicast@0.3.5)(typescript@5.8.3)
+        specifier: 0.66.7
+        version: 0.66.7(magicast@0.3.5)(typescript@5.8.3)
       '@next/eslint-plugin-next':
         specifier: 15.3.1
         version: 15.3.1
@@ -145,8 +145,8 @@ importers:
         specifier: 38.0.0
         version: 38.0.0(stylelint@16.19.1(typescript@5.8.3))
       stylelint-order:
-        specifier: 6.0.4
-        version: 6.0.4(stylelint@16.19.1(typescript@5.8.3))
+        specifier: 7.0.0
+        version: 7.0.0(stylelint@16.19.1(typescript@5.8.3))
       stylelint-value-no-unknown-custom-properties:
         specifier: 6.0.1
         version: 6.0.1(stylelint@16.19.1(typescript@5.8.3))
@@ -780,8 +780,8 @@ packages:
     resolution: {integrity: sha512-bWUV9ICwvU5I3YKVZqWIUXFC2SIXznUi/u+LqurJx6ILiyImfZD5+g/lj3w4EiyXxmjqyaxptzUz/1IgK3vVtw==}
     engines: {node: '>= 16'}
 
-  '@hey-api/openapi-ts@0.66.6':
-    resolution: {integrity: sha512-EmZHVqfHuGNoyBDPcL+3vGHLb/qEbjIix3dnQ/CzfZQ+xm4vnOecpR7JaaaR9u2W8Ldeyqnk7NwmEqOBgkgG4Q==}
+  '@hey-api/openapi-ts@0.66.7':
+    resolution: {integrity: sha512-BQMrbiNTWPHwZQ2wMnFdKXVMR47P77hc8fuUseQmmXsXG3Rvt2qstXtlQPmbEds/RO5iTL+JKqdcbhPSWuu/og==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=22.10.0}
     hasBin: true
     peerDependencies:
@@ -3554,8 +3554,8 @@ packages:
     resolution: {integrity: sha512-8sLjZwK0R+JlxlYcTuVnyT2v+htpdrjDOKuMcOVdYjt52Lh8hWRYpxBPoKx/Zg+bcjc3wx6fmQevMmUztS/ccA==}
     engines: {node: '>=4'}
 
-  postcss-sorting@8.0.2:
-    resolution: {integrity: sha512-M9dkSrmU00t/jK7rF6BZSZauA5MAaBW4i5EnJXspMwt4iqTh/L9j6fgMnbElEOfyRyfLfVbIHj/R52zHzAPe1Q==}
+  postcss-sorting@9.1.0:
+    resolution: {integrity: sha512-Mn8KJ45HNNG6JBpBizXcyf6LqY/qyqetGcou/nprDnFwBFBLGj0j/sNKV2lj2KMOVOwdXu14aEzqJv8CIV6e8g==}
     peerDependencies:
       postcss: ^8.4.20
 
@@ -4078,10 +4078,11 @@ packages:
     peerDependencies:
       stylelint: ^16.18.0
 
-  stylelint-order@6.0.4:
-    resolution: {integrity: sha512-0UuKo4+s1hgQ/uAxlYU4h0o0HS4NiQDud0NAUNI0aa8FJdmYHA5ZZTFHiV5FpmE3071e9pZx5j0QpVJW5zOCUA==}
+  stylelint-order@7.0.0:
+    resolution: {integrity: sha512-rSWxx0KscYfxU02wEskKXES9lkRzuuONMMNkZ7SUc6uiF3tDKm7e+sE0Ax/SBlG4TUf1sp1R6f3/SlsPGmzthg==}
+    engines: {node: '>=20.19.0'}
     peerDependencies:
-      stylelint: ^14.0.0 || ^15.0.0 || ^16.0.1
+      stylelint: ^16.18.0
 
   stylelint-scss@6.11.1:
     resolution: {integrity: sha512-e4rYo0UY+BIMtGeGanghrvHTjcryxgZbyFxUedp8dLFqC4P70aawNdYjRrQxbnKhu3BNr4+lt5e/53tcKXiwFA==}
@@ -5175,9 +5176,9 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       use-sync-external-store: 1.5.0(react@18.3.1)
 
-  '@hey-api/client-fetch@0.10.0(@hey-api/openapi-ts@0.66.6(magicast@0.3.5)(typescript@5.8.3))':
+  '@hey-api/client-fetch@0.10.0(@hey-api/openapi-ts@0.66.7(magicast@0.3.5)(typescript@5.8.3))':
     dependencies:
-      '@hey-api/openapi-ts': 0.66.6(magicast@0.3.5)(typescript@5.8.3)
+      '@hey-api/openapi-ts': 0.66.7(magicast@0.3.5)(typescript@5.8.3)
 
   '@hey-api/json-schema-ref-parser@1.0.5':
     dependencies:
@@ -5186,7 +5187,7 @@ snapshots:
       js-yaml: 4.1.0
       lodash: 4.17.21
 
-  '@hey-api/openapi-ts@0.66.6(magicast@0.3.5)(typescript@5.8.3)':
+  '@hey-api/openapi-ts@0.66.7(magicast@0.3.5)(typescript@5.8.3)':
     dependencies:
       '@hey-api/json-schema-ref-parser': 1.0.5
       c12: 2.0.1(magicast@0.3.5)
@@ -8357,7 +8358,7 @@ snapshots:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss-sorting@8.0.2(postcss@8.5.3):
+  postcss-sorting@9.1.0(postcss@8.5.3):
     dependencies:
       postcss: 8.5.3
 
@@ -9028,10 +9029,10 @@ snapshots:
       stylelint: 16.19.1(typescript@5.8.3)
       stylelint-config-recommended: 16.0.0(stylelint@16.19.1(typescript@5.8.3))
 
-  stylelint-order@6.0.4(stylelint@16.19.1(typescript@5.8.3)):
+  stylelint-order@7.0.0(stylelint@16.19.1(typescript@5.8.3)):
     dependencies:
       postcss: 8.5.3
-      postcss-sorting: 8.0.2(postcss@8.5.3)
+      postcss-sorting: 9.1.0(postcss@8.5.3)
       stylelint: 16.19.1(typescript@5.8.3)
 
   stylelint-scss@6.11.1(stylelint@16.19.1(typescript@5.8.3)):

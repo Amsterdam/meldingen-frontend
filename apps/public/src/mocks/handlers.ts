@@ -99,7 +99,7 @@ export const handlers = [
 
   http.get(ENDPOINTS.MELDING_BY_ID, () => HttpResponse.json(mockMeldingData)),
 
-  http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID, () => HttpResponse.json(mockAdditionalQuestionsAnswerData)),
+  http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID_MELDER, () => HttpResponse.json(mockAdditionalQuestionsAnswerData)),
 
   /** POST */
   http.post(ENDPOINTS.MELDING, () => HttpResponse.json({ id: 123, token: 'test-token', classification: 'Test' })),
