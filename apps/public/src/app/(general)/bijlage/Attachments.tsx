@@ -99,7 +99,6 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        {/* <BackLink href="/locatie">{t('back-link')}</BackLink> */}
         <Heading className="ams-mb-s" level={1}>
           {t('step.title')}
         </Heading>

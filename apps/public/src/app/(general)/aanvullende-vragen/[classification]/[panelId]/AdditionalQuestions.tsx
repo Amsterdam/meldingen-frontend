@@ -26,9 +26,6 @@ export const AdditionalQuestions = ({ action, formData }: Props) => {
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
         {formState?.message && <Paragraph>{formState.message}</Paragraph>}
-        {/* <BackLink href={previousPanelPath} className="ams-mb-xs">
-          {t('back-link')}
-        </BackLink> */}
         <Heading level={1}>{t('step.title')}</Heading>
         <FormRenderer formData={formData} action={formAction} submitButtonText={t('submit-button')} />
       </Grid.Cell>

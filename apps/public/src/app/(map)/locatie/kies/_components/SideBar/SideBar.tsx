@@ -53,7 +53,6 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
 
   return (
     <div className={styles.container}>
-      {/* <BackLink href="/locatie">{t('back-link')}</BackLink> */}
       <div className={styles.intro}>
         <Heading level={1} size="level-4">
           {t('title')}
