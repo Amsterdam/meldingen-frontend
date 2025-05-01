@@ -7,7 +7,6 @@ import { useActionState } from 'react'
 import { SubmitButton, SummaryList } from '@meldingen/ui'
 
 import { postSummaryForm } from './actions'
-// import { BackLink } from '../_components/BackLink'
 
 type GenericSummaryData = {
   key: string

@@ -8,7 +8,6 @@ import { useActionState } from 'react'
 import { Grid, SubmitButton } from '@meldingen/ui'
 
 import { postLocationForm } from './actions'
-// import { BackLink } from '../_components/BackLink'
 import type { Coordinates } from 'apps/public/src/types'
 
 const initialState: { message?: string } = {}

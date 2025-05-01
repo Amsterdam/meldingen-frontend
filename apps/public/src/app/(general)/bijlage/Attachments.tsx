@@ -14,7 +14,6 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { FileInput, Grid, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
-// import { BackLink } from '../_components/BackLink'
 import { handleApiError } from 'apps/public/src/handleApiError'
 
 import styles from './Attachments.module.css'

@@ -9,7 +9,6 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Grid, SubmitButton } from '@meldingen/ui'
 
 import { postContactForm } from './actions'
-// import { BackLink } from '../_components/BackLink'
 
 const initialState: { message?: string } = {}
 

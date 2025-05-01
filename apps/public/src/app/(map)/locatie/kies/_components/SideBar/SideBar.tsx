@@ -5,7 +5,6 @@ import { useActionState, useEffect, useState } from 'react'
 import { writeAddressAndCoordinateToCookie } from './actions'
 import { getAddressFromCoordinates } from '../../_utils'
 import { Combobox } from '../Combobox/Combobox'
-// import { BackLink } from 'apps/public/src/app/(general)/_components/BackLink'
 import type { Coordinates } from 'apps/public/src/types'
 
 import styles from './SideBar.module.css'
