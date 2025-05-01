@@ -10,8 +10,6 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
 }
 
 const formatMeldingData = (data: MeldingOutput) => {
-  if (!data) return []
-
   return [
     {
       key: 'melding_id',
@@ -50,5 +48,5 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
     return 'An error occurred'
   }
 
-  return <Detail meldingData={formatMeldingData(data)} />
+  return <Detail meldingData={formatMeldingData(data)} meldingId={data.id} meldingState={data.state} />
 }
