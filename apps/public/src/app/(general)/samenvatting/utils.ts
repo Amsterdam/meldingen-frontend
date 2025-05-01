@@ -1,5 +1,5 @@
 import {
-  getMeldingByMeldingIdAnswers,
+  getMeldingByMeldingIdAnswersMelder,
   getMeldingByMeldingIdMelder,
   getStaticForm,
   getStaticFormByStaticFormId,
@@ -47,7 +47,7 @@ export const getPrimaryFormSummary = async (description: string) => {
 }
 
 export const getAdditionalQuestionsSummary = async (meldingId: string, token: string) => {
-  const { data, error } = await getMeldingByMeldingIdAnswers({
+  const { data, error } = await getMeldingByMeldingIdAnswersMelder({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
   })
