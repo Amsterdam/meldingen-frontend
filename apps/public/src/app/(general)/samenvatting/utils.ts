@@ -1,5 +1,5 @@
 import {
-  getMeldingByMeldingIdAnswers,
+  getMeldingByMeldingIdAnswersMelder,
   getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
   getMeldingByMeldingIdAttachments,
   getMeldingByMeldingIdMelder,
@@ -49,7 +49,7 @@ export const getPrimaryFormSummary = async (description: string) => {
 }
 
 export const getAdditionalQuestionsSummary = async (meldingId: string, token: string) => {
-  const { data, error } = await getMeldingByMeldingIdAnswers({
+  const { data, error } = await getMeldingByMeldingIdAnswersMelder({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
   })
@@ -69,7 +69,7 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
 export const getAttachmentsSummary = async (label: string, meldingId: string, token: string) => {
   const { data, error } = await getMeldingByMeldingIdAttachments({
     path: { melding_id: parseInt(meldingId, 10) },
-    query: { token },
+    // query: { token },
   })
 
   if (error) return { error: handleApiError(error) }

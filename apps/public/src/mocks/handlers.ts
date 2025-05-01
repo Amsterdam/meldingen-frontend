@@ -97,7 +97,7 @@ export const handlers = [
 
   http.get(ENDPOINTS.MELDING_BY_ID, () => HttpResponse.json(mockMeldingData)),
 
-  http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID, () => HttpResponse.json(mockAdditionalQuestionsAnswerData)),
+  http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID_MELDER, () => HttpResponse.json(mockAdditionalQuestionsAnswerData)),
 
   http.get(ENDPOINTS.MELDING_ATTACHMENTS_BY_ID, () => {
     return HttpResponse.json([

@@ -430,6 +430,7 @@ export type MeldingCreateOutput = {
     id: number;
     created_at: string;
     updated_at: string;
+    public_id: string;
     text: string;
     state: string;
     classification?: number | null;
@@ -447,6 +448,7 @@ export type MeldingOutput = {
     id: number;
     created_at: string;
     updated_at: string;
+    public_id: string;
     text: string;
     state: string;
     classification?: number | null;
@@ -953,6 +955,7 @@ export type GetMeldingData = {
     body?: never;
     path?: never;
     query?: {
+        in_area?: string | null;
         limit?: number;
         offset?: number | null;
         sort?: string;
@@ -1548,12 +1551,7 @@ export type GetMeldingByMeldingIdAttachmentsData = {
          */
         melding_id: number;
     };
-    query: {
-        /**
-         * The token of the melding.
-         */
-        token: string;
-    };
+    query?: never;
     url: '/melding/{melding_id}/attachments';
 };
 
@@ -1582,6 +1580,49 @@ export type GetMeldingByMeldingIdAttachmentsResponses = {
 };
 
 export type GetMeldingByMeldingIdAttachmentsResponse = GetMeldingByMeldingIdAttachmentsResponses[keyof GetMeldingByMeldingIdAttachmentsResponses];
+
+export type GetMeldingByMeldingIdAttachmentsMelderData = {
+    body?: never;
+    path: {
+        /**
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query: {
+        /**
+         * The token of the melding.
+         */
+        token: string;
+    };
+    url: '/melding/{melding_id}/attachments/melder';
+};
+
+export type GetMeldingByMeldingIdAttachmentsMelderErrors = {
+    /**
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetMeldingByMeldingIdAttachmentsMelderError = GetMeldingByMeldingIdAttachmentsMelderErrors[keyof GetMeldingByMeldingIdAttachmentsMelderErrors];
+
+export type GetMeldingByMeldingIdAttachmentsMelderResponses = {
+    /**
+     * Successful Response
+     */
+    200: Array<AttachmentOutput>;
+};
+
+export type GetMeldingByMeldingIdAttachmentsMelderResponse = GetMeldingByMeldingIdAttachmentsMelderResponses[keyof GetMeldingByMeldingIdAttachmentsMelderResponses];
 
 export type DeleteMeldingByMeldingIdAttachmentByAttachmentIdData = {
     body?: never;
@@ -1759,7 +1800,7 @@ export type PutMeldingByMeldingIdAddContactInfoResponses = {
 
 export type PutMeldingByMeldingIdAddContactInfoResponse = PutMeldingByMeldingIdAddContactInfoResponses[keyof PutMeldingByMeldingIdAddContactInfoResponses];
 
-export type GetMeldingByMeldingIdAnswersData = {
+export type GetMeldingByMeldingIdAnswersMelderData = {
     body?: never;
     path: {
         /**
@@ -1773,6 +1814,44 @@ export type GetMeldingByMeldingIdAnswersData = {
          */
         token: string;
     };
+    url: '/melding/{melding_id}/answers/melder';
+};
+
+export type GetMeldingByMeldingIdAnswersMelderErrors = {
+    /**
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetMeldingByMeldingIdAnswersMelderError = GetMeldingByMeldingIdAnswersMelderErrors[keyof GetMeldingByMeldingIdAnswersMelderErrors];
+
+export type GetMeldingByMeldingIdAnswersMelderResponses = {
+    /**
+     * Successful Response
+     */
+    200: Array<AnswerQuestionOutput>;
+};
+
+export type GetMeldingByMeldingIdAnswersMelderResponse = GetMeldingByMeldingIdAnswersMelderResponses[keyof GetMeldingByMeldingIdAnswersMelderResponses];
+
+export type GetMeldingByMeldingIdAnswersData = {
+    body?: never;
+    path: {
+        /**
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: never;
     url: '/melding/{melding_id}/answers';
 };
 

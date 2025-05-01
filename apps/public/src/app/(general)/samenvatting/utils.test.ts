@@ -127,7 +127,9 @@ describe('getAdditionalQuestionsSummary', () => {
 
   it('should return an error message when error is returned', async () => {
     server.use(
-      http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })),
+      http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID_MELDER, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
     )
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
 
@@ -135,7 +137,7 @@ describe('getAdditionalQuestionsSummary', () => {
   })
 
   it('should return an empty array when additional questions data is not found', async () => {
-    server.use(http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID, () => new HttpResponse()))
+    server.use(http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID_MELDER, () => new HttpResponse()))
 
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
 

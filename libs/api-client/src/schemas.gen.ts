@@ -2369,6 +2369,7 @@ export const GeoJson_InputSchema = {
         properties: {
             anyOf: [
                 {
+                    additionalProperties: true,
                     type: 'object'
                 },
                 {
@@ -2472,6 +2473,7 @@ export const GeoJson_OutputSchema = {
         properties: {
             anyOf: [
                 {
+                    additionalProperties: true,
                     type: 'object'
                 },
                 {
@@ -3500,6 +3502,10 @@ export const MeldingCreateOutputSchema = {
             format: 'date-time',
             title: 'Updated At'
         },
+        public_id: {
+            type: 'string',
+            title: 'Public Id'
+        },
         text: {
             type: 'string',
             title: 'Text'
@@ -3559,7 +3565,7 @@ export const MeldingCreateOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'text', 'state', 'token'],
+    required: ['id', 'created_at', 'updated_at', 'public_id', 'text', 'state', 'token'],
     title: 'MeldingCreateOutput'
 } as const;
 
@@ -3591,6 +3597,10 @@ export const MeldingOutputSchema = {
             type: 'string',
             format: 'date-time',
             title: 'Updated At'
+        },
+        public_id: {
+            type: 'string',
+            title: 'Public Id'
         },
         text: {
             type: 'string',
@@ -3647,7 +3657,7 @@ export const MeldingOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'text', 'state'],
+    required: ['id', 'created_at', 'updated_at', 'public_id', 'text', 'state'],
     title: 'MeldingOutput'
 } as const;
 
