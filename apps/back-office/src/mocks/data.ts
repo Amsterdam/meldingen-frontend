@@ -10,4 +10,5 @@ export const melding = {
   geo_location: null,
   email: 'email@email.email',
   phone: '0612345678',
+  public_id: 'ABC',
 }
