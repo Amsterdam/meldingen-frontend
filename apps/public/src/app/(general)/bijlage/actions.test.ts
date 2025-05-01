@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
 
-import { postAttachmentsForm } from './actions'
+import { submitAttachmentsForm } from './actions'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
 import { server } from 'apps/public/src/mocks/node'
 
@@ -15,7 +15,7 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
-describe('postAttachmentsForm', () => {
+describe('submitAttachmentsForm', () => {
   const mockCookies = {
     get: vi.fn(),
   }
@@ -28,7 +28,7 @@ describe('postAttachmentsForm', () => {
   it('returns undefined when id or token is missing', async () => {
     mockCookies.get.mockReturnValue(undefined)
 
-    const result = await postAttachmentsForm()
+    const result = await submitAttachmentsForm()
 
     expect(result).toBeUndefined()
   })
@@ -50,7 +50,7 @@ describe('postAttachmentsForm', () => {
       return undefined
     })
 
-    const result = await postAttachmentsForm()
+    const result = await submitAttachmentsForm()
 
     expect(result).toEqual({ message: 'Error message' })
   })
@@ -66,7 +66,7 @@ describe('postAttachmentsForm', () => {
       return undefined
     })
 
-    await postAttachmentsForm()
+    await submitAttachmentsForm()
 
     expect(redirect).toHaveBeenCalledWith('/contact')
   })

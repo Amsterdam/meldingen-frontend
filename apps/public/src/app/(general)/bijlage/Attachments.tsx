@@ -13,7 +13,7 @@ import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { FileInput, Grid, SubmitButton } from '@meldingen/ui'
 
-import { postAttachmentsForm } from './actions'
+import { submitAttachmentsForm } from './actions'
 // import { BackLink } from '../_components/BackLink'
 import { handleApiError } from 'apps/public/src/handleApiError'
 
@@ -35,7 +35,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
   const formRef = useRef<HTMLFormElement>(null)
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
-  const [formState, formAction] = useActionState(postAttachmentsForm, initialState)
+  const [formState, formAction] = useActionState(submitAttachmentsForm, initialState)
 
   const t = useTranslations('attachments')
 
