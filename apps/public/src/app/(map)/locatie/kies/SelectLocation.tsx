@@ -3,7 +3,7 @@
 import { Button } from '@amsterdam/design-system-react'
 import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { AssetList } from './_components/AssetList/AssetList'
 import { SideBar } from './_components/SideBar/SideBar'
@@ -21,7 +21,11 @@ export const SelectLocation = () => {
   const [showAssetList, setShowAssetList] = useState(false)
 
   const t = useTranslations('select-location')
-  const mediaQuery = window.matchMedia('((min-width: 68rem)')
+
+  useEffect(() => {
+    const mediaQuery = window && window.matchMedia('((min-width: 68rem)')
+    mediaQuery.addEventListener('change', hideMobileAssetListView)
+  }, [])
 
   const hideMobileAssetListView = (e: MediaQueryListEvent) => {
     if (e.matches) {
@@ -33,8 +37,6 @@ export const SelectLocation = () => {
   const handleAssetListToggle = () => {
     setShowAssetList((prevState) => !prevState)
   }
-
-  mediaQuery.addEventListener('change', hideMobileAssetListView)
 
   return (
     <div className={styles.grid}>
