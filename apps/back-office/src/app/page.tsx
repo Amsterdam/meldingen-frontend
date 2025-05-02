@@ -1,12 +1,16 @@
-import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 import { Overview } from './Overview'
 import { handleApiError } from '../handleApiError'
 import { getMelding } from 'apps/back-office/src/apiClientProxy'
 
-export const metadata: Metadata = {
-  title: 'Overzicht meldingen openbare ruimte - Gemeente Amsterdam',
+export const generateMetadata = async () => {
+  const t = await getTranslations('overview')
+
+  return {
+    title: t('metadata.title'),
+  }
 }
 
 type Props = {
