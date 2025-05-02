@@ -3,7 +3,11 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { getFormClassificationByClassificationId, postMelding } from '@meldingen/api-client'
+import {
+  getFormClassificationByClassificationId,
+  postMelding,
+  putMeldingByMeldingIdAnswerQuestions,
+} from '@meldingen/api-client'
 
 import { handleApiError } from '../../handleApiError'
 
@@ -29,10 +33,21 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
       path: { classification_id: classification },
     })
 
-    // If there are no additional questions for a classification, redirect to /locatie.
-    if (handleApiError(error) === 'Not Found') return redirect(nextPage)
+    const hasAdditionalQuestions = Boolean(data?.components[0])
 
-    // Return other errors to the user
+    // If there are no additional questions for a classification,
+    // set the melding state to 'questions_answered' and redirect to /locatie.
+    if (!hasAdditionalQuestions) {
+      const { error } = await putMeldingByMeldingIdAnswerQuestions({
+        path: { melding_id: id },
+        query: { token },
+      })
+
+      if (error) return { message: handleApiError(error) }
+
+      return redirect(nextPage)
+    }
+
     if (error) return { message: handleApiError(error) }
 
     const nextFormFirstKey = data?.components[0].key

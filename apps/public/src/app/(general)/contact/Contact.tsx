@@ -9,7 +9,6 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Grid, SubmitButton } from '@meldingen/ui'
 
 import { postContactForm } from './actions'
-import { BackLink } from '../_components/BackLink'
 
 const initialState: { message?: string } = {}
 
@@ -26,9 +25,6 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <BackLink href="/bijlage" className="ams-mb-xs">
-          {t('back-link')}
-        </BackLink>
         <Heading level={1} className="ams-mb-s">
           {t('step.title')}
         </Heading>
