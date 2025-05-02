@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@amsterdam/design-system-react'
+import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
@@ -22,17 +23,14 @@ export const SelectLocation = () => {
 
   const t = useTranslations('select-location')
 
-  useEffect(() => {
-    const mediaQuery = window && window.matchMedia('((min-width: 68rem)')
-    mediaQuery.addEventListener('change', hideMobileAssetListView)
-  }, [])
+  const isWideWindow = useIsAfterBreakpoint('wide')
 
-  const hideMobileAssetListView = (e: MediaQueryListEvent) => {
-    if (e.matches) {
-      // Hide mobile asset list view when resizing to larger screens
+  useEffect(() => {
+    // Hide mobile asset list view when resizing to larger screens
+    if (isWideWindow) {
       setShowAssetList(false)
     }
-  }
+  }, [isWideWindow])
 
   const handleAssetListToggle = () => {
     setShowAssetList((prevState) => !prevState)
