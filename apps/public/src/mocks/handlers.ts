@@ -101,7 +101,7 @@ export const handlers = [
 
   http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID_MELDER, () => HttpResponse.json(mockAdditionalQuestionsAnswerData)),
 
-  http.get(ENDPOINTS.MELDING_ATTACHMENTS_BY_ID, () => {
+  http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENTS_MELDER, () => {
     return HttpResponse.json([
       {
         id: 42,
@@ -112,7 +112,7 @@ export const handlers = [
     ])
   }),
 
-  http.get(ENDPOINTS.MELDING_ATTACHMENT_BY_ID_DOWNLOAD, () =>
+  http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
     HttpResponse.json(new Blob(['mock content'], { type: 'image/webp' }), {
       status: 200,
       headers: { 'content-type': 'image/webp' },
