@@ -7,8 +7,8 @@
       "title": "Overzicht meldingen openbare ruimte - Gemeente Amsterdam"
     },
     "heading": "Meldingen {meldingCount}",
-    "column": {
-      "id": "Id",
+    "column-header": {
+      "id": "Meldnummer",
       "date": "Datum",
       "classification": "Categorie",
       "status": "Status"
@@ -19,7 +19,7 @@
       "title": "Melding {meldingId} - Gemeente Amsterdam"
     },
     "subheading": {
-      "melding-id": "Melding ID",
+      "melding-id": "Meldnummer",
       "created-at": "Gemeld op",
       "classification": "Categorie",
       "status": "Status",

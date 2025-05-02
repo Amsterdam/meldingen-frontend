@@ -42,10 +42,10 @@ export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
   const t = useTranslations('overview')
 
   const HEADERS = [
-    { key: 'id', label: t('column.id') },
-    { key: 'created_at', label: t('column.date') },
-    { key: 'classification', label: t('column.classification') },
-    { key: 'state', label: t('column.status') },
+    { key: 'id', label: t('column-header.id') },
+    { key: 'created_at', label: t('column-header.date') },
+    { key: 'classification', label: t('column-header.classification') },
+    { key: 'state', label: t('column-header.status') },
   ]
 
   return (
