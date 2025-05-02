@@ -12,9 +12,10 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const formatMeldingData = (data: MeldingOutput, t: any) => {
+const formatMeldingData = async (data: MeldingOutput) => {
   if (!data) return []
+
+  const t = await getTranslations('detail')
 
   return [
     {
@@ -46,7 +47,6 @@ const formatMeldingData = (data: MeldingOutput, t: any) => {
 }
 
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
-  const t = await getTranslations('detail')
   const { meldingId } = await params
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
@@ -55,5 +55,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
     return 'An error occurred'
   }
 
-  return <Detail meldingData={formatMeldingData(data, t)} />
+  const formattedData = await formatMeldingData(data)
+
+  return <Detail meldingData={formattedData} />
 }
