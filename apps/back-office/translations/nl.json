@@ -13,5 +13,20 @@
       "classification": "Categorie",
       "status": "Status"
     }
+  },
+  "detail": {
+    "metadata": {
+      "title": "Melding {meldingId} - Gemeente Amsterdam"
+    },
+    "subheading": {
+      "melding-id": "Melding ID",
+      "created-at": "Gemeld op",
+      "classification": "Categorie",
+      "status": "Status",
+      "location": "Location"
+    },
+    "errors": {
+      "melding-not-found": "An error occurred"
+    }
   }
 }

@@ -1,47 +1,52 @@
+import { getTranslations } from 'next-intl/server'
+
 import { Detail } from './Detail'
 import { getMeldingByMeldingId, MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
+  const t = await getTranslations('detail')
 
   return {
-    title: `Melding ${meldingId} - Gemeente Amsterdam`,
+    description: t('metadata.title', { meldingId }),
   }
 }
 
-const formatMeldingData = (data: MeldingOutput) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const formatMeldingData = (data: MeldingOutput, t: any) => {
   if (!data) return []
 
   return [
     {
       key: 'melding_id',
-      label: 'Melding ID',
+      label: t('subheading.melding-id'),
       value: String(data.id),
     },
     {
       key: 'created_at',
-      label: 'Gemeld op',
+      label: t('subheading.created-at'),
       value: String(data.created_at),
     },
     {
       key: 'classification',
-      label: 'Categorie',
+      label: t('subheading.classification'),
       value: String(data.classification),
     },
     {
       key: 'state',
-      label: 'Status',
+      label: t('subheading.status'),
       value: String(data.state),
     },
     {
       key: 'geo_location',
-      label: 'Locatie',
+      label: t('subheading.location'),
       value: String(data.geo_location),
     },
   ]
 }
 
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
+  const t = await getTranslations('detail')
   const { meldingId } = await params
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
@@ -50,5 +55,5 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
     return 'An error occurred'
   }
 
-  return <Detail meldingData={formatMeldingData(data)} />
+  return <Detail meldingData={formatMeldingData(data, t)} />
 }
