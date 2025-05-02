@@ -21,15 +21,25 @@ export const SelectLocation = () => {
   const [showAssetList, setShowAssetList] = useState(false)
 
   const t = useTranslations('select-location')
+  const mediaQuery = window.matchMedia('((min-width: 68rem)')
+
+  const hideMobileAssetListView = (e: MediaQueryListEvent) => {
+    if (e.matches) {
+      // Hide mobile asset list view when resizing to larger screens
+      setShowAssetList(false)
+    }
+  }
 
   const handleAssetListToggle = () => {
     setShowAssetList((prevState) => !prevState)
   }
 
+  mediaQuery.addEventListener('change', hideMobileAssetListView)
+
   return (
     <div className={styles.grid}>
       <SideBar coordinates={coordinates} setCoordinates={setCoordinates} />
-      <div className={`${styles.assetList} ${showAssetList && styles.showAssetList}`}>
+      <div className={`${styles.assetList} ${showAssetList ? styles.showAssetList : ''}`}>
         <AssetList />
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
           {t('submit-button.desktop')}
