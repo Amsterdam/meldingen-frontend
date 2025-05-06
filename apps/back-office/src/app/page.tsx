@@ -18,6 +18,7 @@ type Props = {
 }
 
 const PAGE_SIZE = 10
+const SORT = '["created_at","DESC"]'
 
 export default async ({ searchParams }: Props) => {
   const pageString = (await searchParams).pagina
@@ -28,7 +29,7 @@ export default async ({ searchParams }: Props) => {
   }
 
   const { data, error, response } = await getMelding({
-    query: { limit: PAGE_SIZE, offset: page ? (page - 1) * PAGE_SIZE : 0, sort: '["created_at","DESC"]' },
+    query: { limit: PAGE_SIZE, offset: page ? (page - 1) * PAGE_SIZE : 0, sort: SORT },
   })
 
   const meldingCountString = response.headers.get('Content-Range')?.split('/')[1]
