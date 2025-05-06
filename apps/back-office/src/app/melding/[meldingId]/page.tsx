@@ -15,33 +15,35 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
 const formatMeldingData = async (data: MeldingOutput) => {
   if (!data) return []
 
-  const t = await getTranslations('detail')
+  const { id, created_at, classification, state, geo_location } = data
+
+  const t = await getTranslations('detail.term')
 
   return [
     {
       key: 'melding_id',
-      label: t('subheading.melding-id'),
-      value: String(data.id),
+      term: t('melding_id'),
+      description: String(id),
     },
     {
       key: 'created_at',
-      label: t('subheading.created-at'),
-      value: String(data.created_at),
+      term: t('created_at'),
+      description: String(created_at),
     },
     {
       key: 'classification',
-      label: t('subheading.classification'),
-      value: String(data.classification),
+      term: t('classification'),
+      description: String(classification),
     },
     {
       key: 'state',
-      label: t('subheading.status'),
-      value: String(data.state),
+      term: t('state'),
+      description: String(state),
     },
     {
       key: 'geo_location',
-      label: t('subheading.location'),
-      value: String(data.geo_location),
+      term: t('geo_location'),
+      description: String(geo_location),
     },
   ]
 }

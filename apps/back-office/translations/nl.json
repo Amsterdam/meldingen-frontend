@@ -18,12 +18,12 @@
     "metadata": {
       "title": "Melding {meldingId} - Gemeente Amsterdam"
     },
-    "subheading": {
-      "melding-id": "Meldnummer",
-      "created-at": "Gemeld op",
+    "term": {
+      "melding_id": "Meldnummer",
+      "created_at": "Gemeld op",
       "classification": "Categorie",
-      "status": "Status",
-      "location": "Location"
+      "state": "Status",
+      "geo_location": "Location"
     },
     "errors": {
       "melding-not-found": "An error occurred"
