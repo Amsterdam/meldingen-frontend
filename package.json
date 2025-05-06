@@ -40,7 +40,6 @@
     "@amsterdam/design-system-tokens": "0.15.0",
     "@formio/react": "6.0.1",
     "formiojs": "4.21.6",
-    "next-intl": "4.1.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tslib": "2.8.1"
