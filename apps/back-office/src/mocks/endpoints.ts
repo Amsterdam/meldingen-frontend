@@ -1,3 +1,5 @@
 export const ENDPOINTS = {
-  MELDING: '/melding/',
+  GET_MELDING: '/melding/',
+  PUT_MELDING_BY_MELDING_ID_PROCESS: '/melding/:id/process',
+  PUT_MELDING_BY_MELDING_ID_COMPLETE: '/melding/:id/complete',
 }

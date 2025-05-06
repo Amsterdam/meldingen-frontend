@@ -86,11 +86,7 @@ describe('Page', () => {
   })
 
   it('shows a message on API error', async () => {
-    server.use(
-      http.get(ENDPOINTS.MELDING, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500, headers: { 'Content-Range': '0/40' } }),
-      ),
-    )
+    server.use(http.get(ENDPOINTS.GET_MELDING, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })))
 
     const searchParams = Promise.resolve({ pagina: '1' })
 
