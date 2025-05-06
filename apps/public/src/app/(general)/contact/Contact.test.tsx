@@ -3,6 +3,7 @@ import { useActionState } from 'react'
 import type { Mock } from 'vitest'
 
 import { Contact } from './Contact'
+import { contact as contactFormData } from 'apps/public/src/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -12,34 +13,9 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-const mockFormData = [
-  {
-    type: 'textarea',
-    label: 'Wat is uw e-mailadres?',
-    description: 'Test 1',
-    key: 'email',
-    input: true,
-    inputType: 'text',
-    maxCharCount: 0,
-    position: 0,
-    autoExpand: false,
-  },
-  {
-    type: 'textarea',
-    label: 'Wat is uw telefoonnummer?',
-    description: 'Test 2',
-    key: 'tel',
-    input: true,
-    inputType: 'text',
-    maxCharCount: 0,
-    position: 1,
-    autoExpand: false,
-  },
-]
-
 describe('Contact', () => {
   it('should render page and form', async () => {
-    render(<Contact formData={mockFormData} />)
+    render(<Contact formData={contactFormData} />)
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
     const telInput = screen.getByRole('textbox', { name: 'Wat is uw telefoonnummer? (niet verplicht)' })
@@ -53,13 +29,13 @@ describe('Contact', () => {
   it('should render an error message', () => {
     ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
 
-    render(<Contact formData={mockFormData} />)
+    render(<Contact formData={contactFormData} />)
 
     expect(screen.queryByText('Test error message')).toBeInTheDocument()
   })
 
   it('should render descriptions that are connected to the e-mail and tel inputs', () => {
-    render(<Contact formData={mockFormData} />)
+    render(<Contact formData={contactFormData} />)
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
     const telInput = screen.getByRole('textbox', { name: 'Wat is uw telefoonnummer? (niet verplicht)' })
@@ -69,18 +45,18 @@ describe('Contact', () => {
   })
 
   it('should not render descriptions when they are not provided', () => {
-    const mockFormDataWithoutDescriptions = [
+    const contactFormDataWithoutDescriptions = [
       {
-        ...mockFormData[0],
+        ...contactFormData[0],
         description: '',
       },
       {
-        ...mockFormData[1],
+        ...contactFormData[1],
         description: '',
       },
     ]
 
-    render(<Contact formData={mockFormDataWithoutDescriptions} />)
+    render(<Contact formData={contactFormDataWithoutDescriptions} />)
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
     const telInput = screen.getByRole('textbox', { name: 'Wat is uw telefoonnummer? (niet verplicht)' })

@@ -3,8 +3,8 @@ import { http, HttpResponse } from 'msw'
 
 import { Home } from './Home'
 import Page from './page'
+import { textAreaComponent } from 'apps/public/src/mocks/data'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
-import mockFormData from 'apps/public/src/mocks/mockFormData.json'
 import { server } from 'apps/public/src/mocks/node'
 
 vi.mock('./Home', () => ({
@@ -18,12 +18,12 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(screen.getByText('Home Component')).toBeInTheDocument()
-    expect(Home).toHaveBeenCalledWith({ formData: mockFormData.components[0].components }, {})
+    expect(Home).toHaveBeenCalledWith({ formData: [textAreaComponent] }, {})
   })
 
   it('throws an error if no primary form is found', async () => {
     server.use(
-      http.get(ENDPOINTS.STATIC_FORM, () =>
+      http.get(ENDPOINTS.GET_STATIC_FORM, () =>
         HttpResponse.json([
           {
             id: '123',

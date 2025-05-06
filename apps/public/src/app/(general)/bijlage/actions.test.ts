@@ -35,7 +35,7 @@ describe('submitAttachmentsForm', () => {
 
   it('returns an error message if an error occurs when changing melding state', async () => {
     server.use(
-      http.put(ENDPOINTS.MELDING_BY_ID_ADD_ATTACHMENTS, () =>
+      http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_ATTACHMENTS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )

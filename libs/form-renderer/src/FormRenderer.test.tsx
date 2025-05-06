@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react'
 
 import { FormRenderer } from './FormRenderer'
-import mockFormData from './mocks/mockFormData.json'
+import { form } from './mocks/data'
 
 const defaultProps = {
   action: vi.fn(),
-  formData: mockFormData.components[0].components,
+  formData: form.components[0].components,
   submitButtonText: 'Volgende vraag',
 }
 
@@ -21,7 +21,7 @@ describe('FormRenderer', () => {
   it('renders a TextInput', () => {
     render(<FormRenderer {...defaultProps} />)
 
-    const textInput = screen.getByRole('textbox', { name: mockFormData.components[0].components[0].label })
+    const textInput = screen.getByRole('textbox', { name: form.components[0].components[0].label })
 
     expect(textInput).toBeInTheDocument()
   })
@@ -29,7 +29,7 @@ describe('FormRenderer', () => {
   it('renders a TextArea', () => {
     render(<FormRenderer {...defaultProps} />)
 
-    const textArea = screen.getByRole('textbox', { name: mockFormData.components[0].components[1].label })
+    const textArea = screen.getByRole('textbox', { name: form.components[0].components[1].label })
 
     expect(textArea).toBeInTheDocument()
   })
@@ -37,7 +37,7 @@ describe('FormRenderer', () => {
   it('renders a Checkbox group', () => {
     render(<FormRenderer {...defaultProps} />)
 
-    const checkboxGroup = screen.getByRole('group', { name: mockFormData.components[0].components[2].label })
+    const checkboxGroup = screen.getByRole('group', { name: form.components[0].components[2].label })
 
     expect(checkboxGroup).toBeInTheDocument()
   })
@@ -45,7 +45,7 @@ describe('FormRenderer', () => {
   it('renders a Select', () => {
     render(<FormRenderer {...defaultProps} />)
 
-    const select = screen.getByRole('combobox', { name: mockFormData.components[0].components[3].label })
+    const select = screen.getByRole('combobox', { name: form.components[0].components[3].label })
 
     expect(select).toBeInTheDocument()
   })
@@ -53,7 +53,7 @@ describe('FormRenderer', () => {
   it('renders a Radio group', () => {
     render(<FormRenderer {...defaultProps} />)
 
-    const radioGroup = screen.getByRole('radiogroup', { name: mockFormData.components[0].components[4].label })
+    const radioGroup = screen.getByRole('radiogroup', { name: form.components[0].components[4].label })
 
     expect(radioGroup).toBeInTheDocument()
   })
@@ -63,7 +63,7 @@ describe('FormRenderer', () => {
       ...defaultProps,
       formData: [
         {
-          ...mockFormData.components[0].components[0],
+          ...form.components[0].components[0],
           type: 'unsupported',
         },
       ],
