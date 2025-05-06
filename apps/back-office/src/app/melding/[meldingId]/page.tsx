@@ -8,7 +8,7 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
   const t = await getTranslations('detail')
 
   return {
-    description: t('metadata.title', { meldingId }),
+    title: t('metadata.title', { meldingId }),
   }
 }
 
