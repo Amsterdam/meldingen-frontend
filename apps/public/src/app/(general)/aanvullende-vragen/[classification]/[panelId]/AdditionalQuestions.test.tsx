@@ -3,7 +3,7 @@ import { useActionState } from 'react'
 import type { Mock } from 'vitest'
 
 import { AdditionalQuestions } from './AdditionalQuestions'
-import { form } from 'apps/public/src/mocks/data'
+import { textAreaComponent } from 'apps/public/src/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -15,7 +15,7 @@ vi.mock('react', async (importOriginal) => {
 
 const defaultProps = {
   action: vi.fn(),
-  formData: form.components[0].components,
+  formData: [textAreaComponent],
   previousPanelPath: '/prev',
 }
 
