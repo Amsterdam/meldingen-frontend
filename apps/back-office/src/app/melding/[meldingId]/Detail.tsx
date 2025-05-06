@@ -1,19 +1,9 @@
 'use client'
 
-import { DescriptionList, Field, Grid, Label, Select } from '@amsterdam/design-system-react'
-import { ChangeEvent, Fragment } from 'react'
+import { DescriptionList, Field, Grid, Label, Paragraph, Select } from '@amsterdam/design-system-react'
+import { ChangeEvent, Fragment, startTransition, useActionState } from 'react'
 
-import { changeStateToComplete, changeStateToProcess } from './actions'
-
-const getDefaultValue = (meldingState: string) => {
-  if (meldingState === 'processing') {
-    return 'process'
-  }
-  if (meldingState === 'completed') {
-    return 'complete'
-  }
-  return undefined
-}
+import { changeMeldingState } from './actions'
 
 type Props = {
   meldingData: { key: string; term: string; description: string }[]
@@ -21,15 +11,21 @@ type Props = {
   meldingState: string
 }
 
+const initialState: { message?: string } = {}
+
 export const Detail = ({ meldingData, meldingId, meldingState }: Props) => {
+  const [changeStateError, changeStateAction] = useActionState(changeMeldingState, initialState)
+
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target
 
-    if (value === 'process') {
-      changeStateToProcess(meldingId)
-    }
-    if (value === 'complete') {
-      changeStateToComplete(meldingId)
+    if (value === 'processing' || value === 'completed') {
+      startTransition(() => {
+        changeStateAction({
+          id: meldingId,
+          state: value,
+        })
+      })
     }
   }
 
@@ -44,13 +40,14 @@ export const Detail = ({ meldingData, meldingId, meldingState }: Props) => {
             </Fragment>
           ))}
         </DescriptionList>
+        {changeStateError?.message && <Paragraph>{changeStateError.message}</Paragraph>}
         <form>
           <Field>
-            <Label htmlFor="status">Status</Label>
-            <Select defaultValue={getDefaultValue(meldingState)} id="status" name="status" onChange={handleChange}>
+            <Label htmlFor="state">Status</Label>
+            <Select defaultValue={meldingState || undefined} id="state" name="state" onChange={handleChange}>
               <Select.Option value="">Kies een status</Select.Option>
-              <Select.Option value="process">In behandeling</Select.Option>
-              <Select.Option value="complete">Afgehandeld</Select.Option>
+              <Select.Option value="processing">In behandeling</Select.Option>
+              <Select.Option value="completed">Afgehandeld</Select.Option>
             </Select>
           </Field>
         </form>

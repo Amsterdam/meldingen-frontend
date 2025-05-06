@@ -3,17 +3,22 @@
 import { putMeldingByMeldingIdComplete, putMeldingByMeldingIdProcess } from 'apps/back-office/src/apiClientProxy'
 import { handleApiError } from 'apps/back-office/src/handleApiError'
 
-export const changeStateToProcess = async (melding_id: number) => {
-  const { error } = await putMeldingByMeldingIdProcess({
-    path: { melding_id },
-  })
+type MeldingState = 'processing' | 'completed'
 
-  if (error) return { message: handleApiError(error) }
+const stateToFunctionMap = {
+  processing: putMeldingByMeldingIdProcess,
+  completed: putMeldingByMeldingIdComplete,
 }
 
-export const changeStateToComplete = async (melding_id: number) => {
-  const { error } = await putMeldingByMeldingIdComplete({
-    path: { melding_id },
+export const changeMeldingState = async (_: unknown, { id, state }: { id: number; state: MeldingState }) => {
+  const updateStateFn = stateToFunctionMap[state]
+
+  if (!updateStateFn) {
+    return { message: 'Invalid state' }
+  }
+
+  const { error } = await updateStateFn({
+    path: { melding_id: id },
   })
 
   if (error) return { message: handleApiError(error) }
