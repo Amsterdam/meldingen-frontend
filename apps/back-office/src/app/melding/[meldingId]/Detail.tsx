@@ -14,6 +14,8 @@ type Props = {
 
 const initialState: { message?: string } = {}
 
+const isValidMeldingState = (state: string) => state === 'processing' || state === 'completed'
+
 export const Detail = ({ meldingData, meldingId, meldingState }: Props) => {
   const [changeStateError, changeStateAction] = useActionState(changeMeldingState, initialState)
 
@@ -22,7 +24,7 @@ export const Detail = ({ meldingData, meldingId, meldingState }: Props) => {
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target
 
-    if (value === 'processing' || value === 'completed') {
+    if (isValidMeldingState(value)) {
       startTransition(() => {
         changeStateAction({
           id: meldingId,
@@ -47,7 +49,12 @@ export const Detail = ({ meldingData, meldingId, meldingState }: Props) => {
         <form>
           <Field>
             <Label htmlFor="state">{t('label')}</Label>
-            <Select defaultValue={meldingState || undefined} id="state" name="state" onChange={handleChange}>
+            <Select
+              defaultValue={isValidMeldingState(meldingState) ? meldingState : undefined}
+              id="state"
+              name="state"
+              onChange={handleChange}
+            >
               <Select.Option value="">{t('options.default')}</Select.Option>
               <Select.Option value="processing">{t('options.processing')}</Select.Option>
               <Select.Option value="completed">{t('options.completed')}</Select.Option>
