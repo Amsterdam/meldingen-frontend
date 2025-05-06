@@ -53,8 +53,10 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
+  const t = await getTranslations('detail.errors')
+
   if (error || !data) {
-    return 'An error occurred'
+    return t('melding-not-found')
   }
 
   const formattedData = await formatMeldingData(data)
