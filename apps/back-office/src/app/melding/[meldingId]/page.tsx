@@ -1,42 +1,47 @@
+import { getTranslations } from 'next-intl/server'
+
 import { Detail } from './Detail'
 import { getMeldingByMeldingId, MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
+  const t = await getTranslations('detail')
 
   return {
-    title: `Melding ${meldingId} - Gemeente Amsterdam`,
+    title: t('metadata.title', { meldingId }),
   }
 }
 
-const formatMeldingData = (data: MeldingOutput) => {
-  if (!data) return []
+const formatMeldingData = async (data: MeldingOutput) => {
+  const { id, created_at, classification, state, geo_location } = data
+
+  const t = await getTranslations('detail.term')
 
   return [
     {
       key: 'melding_id',
-      label: 'Melding ID',
-      value: String(data.id),
+      term: t('melding_id'),
+      description: String(id),
     },
     {
       key: 'created_at',
-      label: 'Gemeld op',
-      value: String(data.created_at),
+      term: t('created_at'),
+      description: String(created_at),
     },
     {
       key: 'classification',
-      label: 'Categorie',
-      value: String(data.classification),
+      term: t('classification'),
+      description: String(classification),
     },
     {
       key: 'state',
-      label: 'Status',
-      value: String(data.state),
+      term: t('state'),
+      description: String(state),
     },
     {
       key: 'geo_location',
-      label: 'Locatie',
-      value: String(data.geo_location),
+      term: t('geo_location'),
+      description: String(geo_location),
     },
   ]
 }
@@ -46,9 +51,13 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
+  const t = await getTranslations('detail.errors')
+
   if (error || !data) {
-    return 'An error occurred'
+    return t('melding-not-found')
   }
 
-  return <Detail meldingData={formatMeldingData(data)} />
+  const formattedData = await formatMeldingData(data)
+
+  return <Detail meldingData={formattedData} />
 }
