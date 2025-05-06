@@ -101,6 +101,24 @@ export const handlers = [
 
   http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID_MELDER, () => HttpResponse.json(mockAdditionalQuestionsAnswerData)),
 
+  http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENTS_MELDER, () => {
+    return HttpResponse.json([
+      {
+        id: 42,
+        created_at: '2025-04-14T18:54:13.496644',
+        updated_at: '2025-04-14T18:54:14.116304',
+        original_filename: 'IMG_0815.jpg',
+      },
+    ])
+  }),
+
+  http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
+    HttpResponse.json(new Blob(['mock content'], { type: 'image/webp' }), {
+      status: 200,
+      headers: { 'content-type': 'image/webp' },
+    }),
+  ),
+
   /** POST */
   http.post(ENDPOINTS.MELDING, () => HttpResponse.json({ id: 123, token: 'test-token', classification: 'Test' })),
 

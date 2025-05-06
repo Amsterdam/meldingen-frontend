@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server'
 import { Summary } from './Summary'
 import {
   getAdditionalQuestionsSummary,
+  getAttachmentsSummary,
   getContactSummary,
   getLocationSummary,
   getMeldingData,
@@ -34,6 +35,9 @@ export default async () => {
   const primaryForm = await getPrimaryFormSummary(meldingData.data.text)
   if ('error' in primaryForm) return primaryForm.error
 
+  const attachments = await getAttachmentsSummary(t('attachments.step.title'), meldingId, token)
+  if ('error' in attachments) return attachments.error
+
   const additionalQuestions = await getAdditionalQuestionsSummary(meldingId, token)
   if ('error' in additionalQuestions) return additionalQuestions.error
 
@@ -42,6 +46,7 @@ export default async () => {
 
   return (
     <Summary
+      attachments={attachments.data}
       additionalQuestions={additionalQuestions.data}
       contact={contact}
       location={location}
