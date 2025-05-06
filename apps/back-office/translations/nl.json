@@ -25,6 +25,17 @@
       "state": "Status",
       "geo_location": "Location"
     },
+    "state": {
+      "label": "Status",
+      "options": {
+        "default": "Kies een status",
+        "processing": "In behandeling",
+        "completed": "Afgehandeld"
+      },
+      "errors": {
+        "invalid-state": "Ongeldige status"
+      }
+    },
     "errors": {
       "melding-not-found": "An error occurred"
     }

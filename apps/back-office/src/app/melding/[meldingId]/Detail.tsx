@@ -1,6 +1,7 @@
 'use client'
 
 import { DescriptionList, Field, Grid, Label, Paragraph, Select } from '@amsterdam/design-system-react'
+import { useTranslations } from 'next-intl'
 import { ChangeEvent, Fragment, startTransition, useActionState } from 'react'
 
 import { changeMeldingState } from './actions'
@@ -15,6 +16,8 @@ const initialState: { message?: string } = {}
 
 export const Detail = ({ meldingData, meldingId, meldingState }: Props) => {
   const [changeStateError, changeStateAction] = useActionState(changeMeldingState, initialState)
+
+  const t = useTranslations('detail.state')
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target
@@ -43,11 +46,11 @@ export const Detail = ({ meldingData, meldingId, meldingState }: Props) => {
         {changeStateError?.message && <Paragraph>{changeStateError.message}</Paragraph>}
         <form>
           <Field>
-            <Label htmlFor="state">Status</Label>
+            <Label htmlFor="state">{t('label')}</Label>
             <Select defaultValue={meldingState || undefined} id="state" name="state" onChange={handleChange}>
-              <Select.Option value="">Kies een status</Select.Option>
-              <Select.Option value="processing">In behandeling</Select.Option>
-              <Select.Option value="completed">Afgehandeld</Select.Option>
+              <Select.Option value="">{t('options.default')}</Select.Option>
+              <Select.Option value="processing">{t('options.processing')}</Select.Option>
+              <Select.Option value="completed">{t('options.completed')}</Select.Option>
             </Select>
           </Field>
         </form>
