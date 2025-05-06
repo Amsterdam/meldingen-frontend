@@ -6,12 +6,12 @@
     "metadata": {
       "title": "Overzicht meldingen openbare ruimte - Gemeente Amsterdam"
     },
-    "heading": "Meldingen {meldingCount}",
-    "column-header": {
+    "title": "Meldingen ({meldingCount})",
+    "table-header": {
       "id": "Meldnummer",
-      "date": "Datum",
+      "created_at": "Datum",
       "classification": "Categorie",
-      "status": "Status"
+      "state": "Status"
     }
   },
   "detail": {

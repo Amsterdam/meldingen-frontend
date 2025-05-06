@@ -42,17 +42,17 @@ export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
   const t = useTranslations('overview')
 
   const HEADERS = [
-    { key: 'id', label: t('column-header.id') },
-    { key: 'created_at', label: t('column-header.date') },
-    { key: 'classification', label: t('column-header.classification') },
-    { key: 'state', label: t('column-header.status') },
+    { key: 'id', label: t('table-header.id') },
+    { key: 'created_at', label: t('table-header.created_at') },
+    { key: 'classification', label: t('table-header.classification') },
+    { key: 'state', label: t('table-header.state') },
   ]
 
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
         <Heading level={1} className="ams-mb-m">
-          {t('heading', { meldingCount })}
+          {t('title', { meldingCount })}
         </Heading>
         <Table className="ams-mb-l">
           <Table.Header>
