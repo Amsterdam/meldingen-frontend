@@ -9,7 +9,7 @@ import { server } from './src/mocks/node'
 // We mock useTranslations and getTranslations to return a function (the 't' function in our code)
 // that just returns the key
 vi.mock('next-intl', async () => {
-  const actual = (await vi.importActual('next-intl')) as any
+  const actual = await vi.importActual('next-intl')
 
   return {
     ...actual,
