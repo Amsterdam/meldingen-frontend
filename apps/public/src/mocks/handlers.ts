@@ -8,7 +8,7 @@ import mockMeldingData from './mockMeldingData.json'
 
 export const handlers = [
   /** GET */
-  http.get(ENDPOINTS.FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => new HttpResponse()),
+  http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => new HttpResponse()),
 
   http.get(ENDPOINTS.PDOK_FREE, () =>
     HttpResponse.json({
@@ -67,7 +67,7 @@ export const handlers = [
     }),
   ),
 
-  http.get(ENDPOINTS.STATIC_FORM, () =>
+  http.get(ENDPOINTS.GET_STATIC_FORM, () =>
     HttpResponse.json([
       {
         id: '1',
@@ -84,7 +84,7 @@ export const handlers = [
     ]),
   ),
 
-  http.get(ENDPOINTS.STATIC_FORM_BY_STATIC_FORM_ID, ({ params }) => {
+  http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, ({ params }) => {
     if (params.staticFormId === '1') {
       return HttpResponse.json(mockFormData.components[0])
     }
@@ -97,30 +97,32 @@ export const handlers = [
     return undefined
   }),
 
-  http.get(ENDPOINTS.MELDING_BY_ID, () => HttpResponse.json(mockMeldingData)),
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(mockMeldingData)),
 
-  http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID_MELDER, () => HttpResponse.json(mockAdditionalQuestionsAnswerData)),
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+    HttpResponse.json(mockAdditionalQuestionsAnswerData),
+  ),
 
   /** POST */
-  http.post(ENDPOINTS.MELDING, () => HttpResponse.json({ id: 123, token: 'test-token', classification: 'Test' })),
+  http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json({ id: 123, token: 'test-token', classification: 'Test' })),
 
-  http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () => HttpResponse.json({ id: 42 })),
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () => HttpResponse.json({ id: 42 })),
 
-  http.post(ENDPOINTS.MELDING_CONTACT_BY_ID, () => new HttpResponse()),
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () => new HttpResponse()),
 
-  http.post(ENDPOINTS.MELDING_LOCATION_BY_ID, () => new HttpResponse()),
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_LOCATION, () => new HttpResponse()),
 
   /** PUT */
-  http.put(ENDPOINTS.MELDING_BY_ID_ADD_ATTACHMENTS, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_ATTACHMENTS, () => new HttpResponse()),
 
-  http.put(ENDPOINTS.MELDING_BY_ID_ADD_CONTACT_INFO, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_CONTACT_INFO, () => new HttpResponse()),
 
-  http.put(ENDPOINTS.MELDING_BY_ID_ANSWER_QUESTIONS, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ANSWER_QUESTIONS, () => new HttpResponse()),
 
-  http.put(ENDPOINTS.MELDING_BY_ID_SUBMIT_LOCATION, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_LOCATION, () => new HttpResponse()),
 
-  http.put(ENDPOINTS.MELDING_BY_ID_SUBMIT, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT, () => new HttpResponse()),
 
   /** DELETE */
-  http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => new HttpResponse()),
+  http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID, () => new HttpResponse()),
 ]

@@ -23,7 +23,7 @@ describe('Page', () => {
 
   it('throws an error if no primary form is found', async () => {
     server.use(
-      http.get(ENDPOINTS.STATIC_FORM, () =>
+      http.get(ENDPOINTS.GET_STATIC_FORM, () =>
         HttpResponse.json([
           {
             id: '123',

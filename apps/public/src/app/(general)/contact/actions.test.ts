@@ -66,7 +66,7 @@ describe('postContactForm', () => {
   })
 
   it('returns an error message if an error occurs', async () => {
-    server.use(http.post(ENDPOINTS.MELDING_CONTACT_BY_ID, () => new HttpResponse(null, { status: 404 })))
+    server.use(http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () => new HttpResponse(null, { status: 404 })))
 
     const formData = new FormData()
     formData.set('email', 'user@example.com')
@@ -79,7 +79,7 @@ describe('postContactForm', () => {
 
   it('returns an error message if an error occurs when changing melding state', async () => {
     server.use(
-      http.put(ENDPOINTS.MELDING_BY_ID_ADD_CONTACT_INFO, () =>
+      http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_CONTACT_INFO, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
