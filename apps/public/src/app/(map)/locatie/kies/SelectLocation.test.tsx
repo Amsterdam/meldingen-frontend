@@ -26,6 +26,7 @@ describe('SelectLocation', () => {
       }),
     })
   })
+
   it('should render', () => {
     const { container } = render(<SelectLocation />)
 
