@@ -14,16 +14,16 @@
     "type-check": "tsc --project ./tsconfig.json --noEmit"
   },
   "dependencies": {
-    "keycloak-js": "26.1.5",
-    "ra-data-simple-rest": "5.7.4",
-    "ra-i18n-polyglot": "5.7.4",
+    "keycloak-js": "26.2.0",
+    "ra-data-simple-rest": "5.8.0",
+    "ra-i18n-polyglot": "5.8.0",
     "ra-keycloak": "2.0.0",
-    "react-admin": "5.7.4",
-    "react-hook-form": "7.56.1",
+    "react-admin": "5.8.0",
+    "react-hook-form": "7.56.2",
     "uber-json-schema-filter": "2.0.5",
-    "vite": "6.3.3"
+    "vite": "6.3.5"
   },
   "devDependencies": {
-    "ra-core": "5.7.4"
+    "ra-core": "5.8.0"
   }
 }
