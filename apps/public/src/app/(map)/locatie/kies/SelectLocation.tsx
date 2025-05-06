@@ -1,9 +1,10 @@
 'use client'
 
 import { Button } from '@amsterdam/design-system-react'
+import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { AssetList } from './_components/AssetList/AssetList'
 import { SideBar } from './_components/SideBar/SideBar'
@@ -22,6 +23,15 @@ export const SelectLocation = () => {
 
   const t = useTranslations('select-location')
 
+  const isWideWindow = useIsAfterBreakpoint('wide')
+
+  useEffect(() => {
+    // Hide mobile asset list view when resizing to larger screens
+    if (isWideWindow) {
+      setShowAssetList(false)
+    }
+  }, [isWideWindow])
+
   const handleAssetListToggle = () => {
     setShowAssetList((prevState) => !prevState)
   }
@@ -29,7 +39,7 @@ export const SelectLocation = () => {
   return (
     <div className={styles.grid}>
       <SideBar coordinates={coordinates} setCoordinates={setCoordinates} />
-      <div className={`${styles.assetList} ${showAssetList && styles.showAssetList}`}>
+      <div className={`${styles.assetList} ${showAssetList ? styles.showAssetList : ''}`}>
         <AssetList />
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
           {t('submit-button.desktop')}
