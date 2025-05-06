@@ -8,6 +8,8 @@ import mockMeldingData from './mockMeldingData.json'
 
 export const handlers = [
   /** GET */
+  http.get(ENDPOINTS.FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => new HttpResponse()),
+
   http.get(ENDPOINTS.PDOK_FREE, () =>
     HttpResponse.json({
       response: {
@@ -100,12 +102,25 @@ export const handlers = [
   http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID_MELDER, () => HttpResponse.json(mockAdditionalQuestionsAnswerData)),
 
   /** POST */
+  http.post(ENDPOINTS.MELDING, () => HttpResponse.json({ id: 123, token: 'test-token', classification: 'Test' })),
+
   http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () => HttpResponse.json({ id: 42 })),
 
   http.post(ENDPOINTS.MELDING_CONTACT_BY_ID, () => new HttpResponse()),
 
   http.post(ENDPOINTS.MELDING_LOCATION_BY_ID, () => new HttpResponse()),
 
+  /** PUT */
+  http.put(ENDPOINTS.MELDING_BY_ID_ADD_ATTACHMENTS, () => new HttpResponse()),
+
+  http.put(ENDPOINTS.MELDING_BY_ID_ADD_CONTACT_INFO, () => new HttpResponse()),
+
+  http.put(ENDPOINTS.MELDING_BY_ID_ANSWER_QUESTIONS, () => new HttpResponse()),
+
+  http.put(ENDPOINTS.MELDING_BY_ID_SUBMIT_LOCATION, () => new HttpResponse()),
+
+  http.put(ENDPOINTS.MELDING_BY_ID_SUBMIT, () => new HttpResponse()),
+
   /** DELETE */
-  http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => new HttpResponse(null)),
+  http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => new HttpResponse()),
 ]

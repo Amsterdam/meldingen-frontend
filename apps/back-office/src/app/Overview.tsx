@@ -2,6 +2,7 @@
 
 import { Heading, Link, Pagination, Table } from '@amsterdam/design-system-react'
 import NextLink from 'next/link'
+import { useTranslations } from 'next-intl'
 import { AnchorHTMLAttributes } from 'react'
 
 import { Grid } from '@meldingen/ui'
@@ -9,13 +10,6 @@ import { Grid } from '@meldingen/ui'
 import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
 import styles from './Overview.module.css'
-
-const HEADERS = [
-  { key: 'id', label: 'Id' },
-  { key: 'created_at', label: 'Datum' },
-  { key: 'classification', label: 'Categorie' },
-  { key: 'state', label: 'Status' },
-]
 
 const getValue = (melding: MeldingOutput, key: string) => {
   switch (key) {
@@ -45,14 +39,25 @@ const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
 )
 
 export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
+  const t = useTranslations('overview')
+
+  const headers = [
+    { key: 'id', label: t('column-header.id') },
+    { key: 'created_at', label: t('column-header.created_at') },
+    { key: 'classification', label: t('column-header.classification') },
+    { key: 'state', label: t('column-header.state') },
+  ]
+
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
-        <Heading level={1} className="ams-mb-m">{`Meldingen (${meldingCount})`}</Heading>
+        <Heading level={1} className="ams-mb-m">
+          {t('title', { meldingCount })}
+        </Heading>
         <Table className="ams-mb-l">
           <Table.Header>
             <Table.Row>
-              {HEADERS.map((header) => (
+              {headers.map((header) => (
                 <Table.HeaderCell key={header.key}>{header.label}</Table.HeaderCell>
               ))}
             </Table.Row>
@@ -60,7 +65,7 @@ export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
           <Table.Body>
             {data.map((melding) => (
               <Table.Row key={melding.id}>
-                {HEADERS.map((header) => {
+                {headers.map((header) => {
                   if (header.key === 'id') {
                     return (
                       <Table.Cell key={header.key}>

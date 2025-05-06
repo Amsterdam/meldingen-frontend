@@ -1,4 +1,5 @@
-import type { Metadata } from 'next'
+import { NextIntlClientProvider } from 'next-intl'
+import { getLocale, getTranslations } from 'next-intl/server'
 import type { PropsWithChildren } from 'react'
 
 import '@amsterdam/design-system-tokens/dist/index.css'
@@ -8,14 +9,24 @@ import '@amsterdam/design-system-css/dist/index.css'
 
 import './global.css'
 
-export const metadata: Metadata = {
-  description: 'Beheer van meldingen over de openbare ruimte',
+export const generateMetadata = async () => {
+  const t = await getTranslations('metadata')
+
+  return {
+    description: t('description'),
+  }
 }
 
-const RootLayout = async ({ children }: PropsWithChildren) => (
-  <html lang="nl">
-    <body>{children}</body>
-  </html>
-)
+const RootLayout = async ({ children }: PropsWithChildren) => {
+  const locale = await getLocale()
+
+  return (
+    <html lang={locale}>
+      <NextIntlClientProvider>
+        <body>{children}</body>
+      </NextIntlClientProvider>
+    </html>
+  )
+}
 
 export default RootLayout

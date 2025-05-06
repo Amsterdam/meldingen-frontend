@@ -1,6 +1,6 @@
 import { client } from 'libs/api-client/src/client.gen'
 import { NextIntlClientProvider } from 'next-intl'
-import { getLocale, getMessages, getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 import type { ReactNode } from 'react'
 
 import '@amsterdam/design-system-tokens/dist/index.css'
@@ -24,11 +24,9 @@ client.setConfig({
 const RootLayout = async ({ children }: { children: ReactNode }) => {
   const locale = await getLocale()
 
-  const messages = await getMessages()
-
   return (
     <html lang={locale}>
-      <NextIntlClientProvider messages={messages}>
+      <NextIntlClientProvider>
         <body>{children}</body>
       </NextIntlClientProvider>
     </html>

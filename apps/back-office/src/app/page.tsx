@@ -1,12 +1,16 @@
-import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 import { Overview } from './Overview'
 import { handleApiError } from '../handleApiError'
 import { getMelding } from 'apps/back-office/src/apiClientProxy'
 
-export const metadata: Metadata = {
-  title: 'Overzicht meldingen openbare ruimte - Gemeente Amsterdam',
+export const generateMetadata = async () => {
+  const t = await getTranslations('overview')
+
+  return {
+    title: t('metadata.title'),
+  }
 }
 
 type Props = {
@@ -14,6 +18,7 @@ type Props = {
 }
 
 const PAGE_SIZE = 10
+const SORT = '["created_at","DESC"]'
 
 export default async ({ searchParams }: Props) => {
   const pageString = (await searchParams).pagina
@@ -24,7 +29,7 @@ export default async ({ searchParams }: Props) => {
   }
 
   const { data, error, response } = await getMelding({
-    query: { limit: PAGE_SIZE, offset: page ? (page - 1) * PAGE_SIZE : 0, sort: '["created_at","DESC"]' },
+    query: { limit: PAGE_SIZE, offset: page ? (page - 1) * PAGE_SIZE : 0, sort: SORT },
   })
 
   const meldingCountString = response.headers.get('Content-Range')?.split('/')[1]

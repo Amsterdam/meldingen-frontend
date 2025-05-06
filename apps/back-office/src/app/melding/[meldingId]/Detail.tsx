@@ -16,7 +16,7 @@ const getDefaultValue = (meldingState: string) => {
 }
 
 type Props = {
-  meldingData: { key: string; label: string; value: string }[]
+  meldingData: { key: string; term: string; description: string }[]
   meldingId: number
   meldingState: string
 }
@@ -37,10 +37,10 @@ export const Detail = ({ meldingData, meldingId, meldingState }: Props) => {
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
         <DescriptionList className="ams-mb-l">
-          {meldingData.map((item) => (
-            <Fragment key={item.key}>
-              <DescriptionList.Term>{item.label}</DescriptionList.Term>
-              <DescriptionList.Description>{item.value}</DescriptionList.Description>
+          {meldingData.map(({ key, term, description }) => (
+            <Fragment key={key}>
+              <DescriptionList.Term>{term}</DescriptionList.Term>
+              <DescriptionList.Description>{description}</DescriptionList.Description>
             </Fragment>
           ))}
         </DescriptionList>

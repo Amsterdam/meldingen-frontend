@@ -16,17 +16,27 @@ vi.mock('next/navigation', () => ({
 }))
 
 describe('postLocationForm', () => {
-  const mockCookies = {
-    get: vi.fn(),
-  }
-
   beforeEach(() => {
+    // Default mock for cookies
+    ;(cookies as Mock).mockReturnValue({
+      get: (name: string) => {
+        if (name === 'id') {
+          return { value: '123' }
+        }
+        if (name === 'token') {
+          return { value: 'test-token' }
+        }
+        return undefined
+      },
+    })
     vi.clearAllMocks()
-    ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
   it('returns undefined when id or token is missing', async () => {
-    mockCookies.get.mockReturnValue(undefined)
+    // Override cookies mock for this specific test
+    ;(cookies as Mock).mockReturnValue({
+      get: () => undefined,
+    })
 
     const formData = new FormData()
     const result = await postLocationForm(null, formData)
@@ -35,16 +45,6 @@ describe('postLocationForm', () => {
   })
 
   it('returns an error when coordinates are missing', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'test-token' }
-      }
-      return undefined
-    })
-
     const formData = new FormData()
     const result = await postLocationForm(null, formData)
 
@@ -52,16 +52,6 @@ describe('postLocationForm', () => {
   })
 
   it('posts the location and redirects to /bijlage', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'test-token' }
-      }
-      return undefined
-    })
-
     const formData = new FormData()
     formData.set('coordinates', '{"lat":52.370216,"lng":4.895168}')
 
@@ -70,24 +60,33 @@ describe('postLocationForm', () => {
     expect(redirect).toHaveBeenCalledWith('/bijlage')
   })
 
-  it('returns an error message if an error occurs', async () => {
-    server.use(http.post(ENDPOINTS.MELDING_LOCATION_BY_ID, () => new HttpResponse(null, { status: 404 })))
-
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'test-token' }
-      }
-      return undefined
-    })
+  it('returns an error message if postMeldingByMeldingIdLocation returns an error', async () => {
+    server.use(
+      http.post(ENDPOINTS.MELDING_LOCATION_BY_ID, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 404 }),
+      ),
+    )
 
     const formData = new FormData()
     formData.set('coordinates', '{"lat":52.370216,"lng":4.895168}')
 
     const result = await postLocationForm(null, formData)
 
-    expect(result).toEqual({ message: 'An unknown error occurred' })
+    expect(result).toEqual({ message: 'Error message' })
+  })
+
+  it('returns an error message if an error occurs when changing melding state', async () => {
+    server.use(
+      http.put(ENDPOINTS.MELDING_BY_ID_SUBMIT_LOCATION, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    const formData = new FormData()
+    formData.set('coordinates', '{"lat":52.370216,"lng":4.895168}')
+
+    const result = await postLocationForm(null, formData)
+
+    expect(result).toEqual({ message: 'Error message' })
   })
 })
