@@ -3,14 +3,14 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 
 import { Attachments } from './Attachments'
+import { textAreaComponent } from 'apps/public/src/mocks/data'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
-import mockFormData from 'apps/public/src/mocks/mockFormData.json'
 import { server } from 'apps/public/src/mocks/node'
 
 const defaultProps = {
   meldingId: 1,
   token: 'mock-token',
-  formData: mockFormData.components[0].components,
+  formData: [textAreaComponent],
 }
 
 vi.mock('react', async (importOriginal) => {

@@ -7,9 +7,9 @@ import {
   getMeldingData,
   getPrimaryFormSummary,
 } from './utils'
+import { melding } from 'apps/public/src/mocks/data'
+import { additionalQuestions } from 'apps/public/src/mocks/data'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
-import mockAdditionalQuestionsAnswerData from 'apps/public/src/mocks/mockAdditionalQuestionsAnswerData.json'
-import mockMeldingData from 'apps/public/src/mocks/mockMeldingData.json'
 import { server } from 'apps/public/src/mocks/node'
 
 const mockMeldingId = '88'
@@ -19,7 +19,7 @@ describe('getMeldingData', () => {
   it('should return correct melding summary', async () => {
     const result = await getMeldingData(mockMeldingId, mockToken)
 
-    expect(result).toEqual({ data: mockMeldingData })
+    expect(result).toEqual({ data: melding })
   })
 
   it('should return an error message when error is returned', async () => {
@@ -116,13 +116,13 @@ describe('getAdditionalQuestionsSummary', () => {
   it('should return correct additional questions summary', async () => {
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
 
-    const additionalQuestions = mockAdditionalQuestionsAnswerData.map((item) => ({
+    const additionalQuestionsSummary = additionalQuestions.map((item) => ({
       key: item.question.id,
       term: item.question.text,
       description: [item.text],
     }))
 
-    expect(result).toEqual({ data: additionalQuestions })
+    expect(result).toEqual({ data: additionalQuestionsSummary })
   })
 
   it('should return an error message when error is returned', async () => {
