@@ -41,7 +41,7 @@ const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
 export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
   const t = useTranslations('overview')
 
-  const HEADERS = [
+  const headers = [
     { key: 'id', label: t('table-header.id') },
     { key: 'created_at', label: t('table-header.created_at') },
     { key: 'classification', label: t('table-header.classification') },
@@ -57,7 +57,7 @@ export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
         <Table className="ams-mb-l">
           <Table.Header>
             <Table.Row>
-              {HEADERS.map((header) => (
+              {headers.map((header) => (
                 <Table.HeaderCell key={header.key}>{header.label}</Table.HeaderCell>
               ))}
             </Table.Row>
@@ -65,7 +65,7 @@ export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
           <Table.Body>
             {data.map((melding) => (
               <Table.Row key={melding.id}>
-                {HEADERS.map((header) => {
+                {headers.map((header) => {
                   if (header.key === 'id') {
                     return (
                       <Table.Cell key={header.key}>
