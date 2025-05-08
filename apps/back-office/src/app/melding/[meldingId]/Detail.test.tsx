@@ -1,16 +1,6 @@
 import { render, screen } from '@testing-library/react'
-import { vi } from 'vitest'
 
 import { Detail } from './Detail'
-
-vi.mock('react', async (importOriginal) => {
-  const actual = await importOriginal()
-  return {
-    ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
-    startTransition: vi.fn((callback) => callback()),
-  }
-})
 
 const defaultProps = {
   meldingData: [

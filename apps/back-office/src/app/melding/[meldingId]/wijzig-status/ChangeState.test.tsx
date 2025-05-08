@@ -51,7 +51,7 @@ describe('ChangeState', () => {
     expect(select).toHaveValue('')
   })
 
-  it('displays an error message when the action return an error', () => {
+  it('displays an error message when the action returns an error', () => {
     ;(useActionState as Mock).mockReturnValue([{ message: 'Error message' }, vi.fn()])
 
     render(<ChangeState {...defaultProps} />)
