@@ -1,10 +1,9 @@
 'use client'
 
-import { DescriptionList, Field, Grid, Label, Paragraph, Select } from '@amsterdam/design-system-react'
+import { DescriptionList, Grid, Link } from '@amsterdam/design-system-react'
+import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
-import { ChangeEvent, Fragment, startTransition, useActionState } from 'react'
-
-import { changeMeldingState } from './actions'
+import { Fragment } from 'react'
 
 type Props = {
   meldingData: { key: string; term: string; description: string }[]
@@ -12,27 +11,8 @@ type Props = {
   meldingState: string
 }
 
-const initialState: { message?: string } = {}
-
-const isValidMeldingState = (state: string) => state === 'processing' || state === 'completed'
-
 export const Detail = ({ meldingData, meldingId, meldingState }: Props) => {
-  const [changeStateError, changeStateAction] = useActionState(changeMeldingState, initialState)
-
   const t = useTranslations('detail.state')
-
-  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.target
-
-    if (isValidMeldingState(value)) {
-      startTransition(() => {
-        changeStateAction({
-          id: meldingId,
-          state: value,
-        })
-      })
-    }
-  }
 
   return (
     <Grid paddingBottom="large" paddingTop="medium">
@@ -45,22 +25,15 @@ export const Detail = ({ meldingData, meldingId, meldingState }: Props) => {
             </Fragment>
           ))}
         </DescriptionList>
-        {changeStateError?.message && <Paragraph>{changeStateError.message}</Paragraph>}
-        <form>
-          <Field>
-            <Label htmlFor="state">{t('label')}</Label>
-            <Select
-              defaultValue={isValidMeldingState(meldingState) ? meldingState : undefined}
-              id="state"
-              name="state"
-              onChange={handleChange}
-            >
-              <Select.Option value="">{t('options.default')}</Select.Option>
-              <Select.Option value="processing">{t('options.processing')}</Select.Option>
-              <Select.Option value="completed">{t('options.completed')}</Select.Option>
-            </Select>
-          </Field>
-        </form>
+        <DescriptionList className="ams-mb-l">
+          <DescriptionList.Term>{t('term')}</DescriptionList.Term>
+          <DescriptionList.Description>{meldingState}</DescriptionList.Description>
+          <DescriptionList.Description>
+            <NextLink href={`/melding/${meldingId}/wijzig-status`} passHref legacyBehavior>
+              <Link>{t('link')}</Link>
+            </NextLink>
+          </DescriptionList.Description>
+        </DescriptionList>
       </Grid.Cell>
     </Grid>
   )
