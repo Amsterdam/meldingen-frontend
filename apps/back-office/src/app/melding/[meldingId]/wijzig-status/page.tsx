@@ -11,7 +11,11 @@ export const generateMetadata = async () => {
   }
 }
 
-export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
+type Params = {
+  params: Promise<{ meldingId: number }>
+}
+
+export default async ({ params }: Params) => {
   const { meldingId } = await params
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })

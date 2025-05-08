@@ -12,14 +12,21 @@ const stateToFunctionMap = {
   completed: putMeldingByMeldingIdComplete,
 }
 
-export const postChangeStateForm = async ({ meldingId }: { meldingId: number }, _: unknown, formData: FormData) => {
+const extractStateFromFormData = (formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)
+  return formDataObj.state
+}
 
-  const { state } = formDataObj
+const isValidState = (state: string | File) => {
+  return typeof state === 'string' && isValidMeldingState(state)
+}
+
+export const postChangeStateForm = async ({ meldingId }: { meldingId: number }, _: unknown, formData: FormData) => {
+  const state = extractStateFromFormData(formData)
 
   const t = await getTranslations('change-state.errors')
 
-  if (typeof state !== 'string' || !isValidMeldingState(state)) {
+  if (!isValidState(state)) {
     return { message: t('invalid-state') }
   }
 

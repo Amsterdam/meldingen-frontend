@@ -10,11 +10,15 @@ import { postChangeStateForm } from './actions'
 import { isValidMeldingState } from './utils'
 import { BackLink } from '../_components/BackLink'
 
+type Props = {
+  meldingId: number
+  meldingState: string
+}
+
 const initialState: { message?: string } = {}
 
-export const ChangeState = ({ meldingId, meldingState }: { meldingId: number; meldingState: string }) => {
+export const ChangeState = ({ meldingId, meldingState }: Props) => {
   const postChangeStateFormWithMeldingId = postChangeStateForm.bind(null, { meldingId })
-
   const [formState, formAction] = useActionState(postChangeStateFormWithMeldingId, initialState)
 
   const t = useTranslations('change-state')

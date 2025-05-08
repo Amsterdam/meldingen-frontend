@@ -5,8 +5,14 @@ import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
 import { Fragment } from 'react'
 
+type MeldingData = {
+  key: string
+  term: string
+  description: string
+}
+
 type Props = {
-  meldingData: { key: string; term: string; description: string }[]
+  meldingData: MeldingData[]
   meldingId: number
   meldingState: string
 }
