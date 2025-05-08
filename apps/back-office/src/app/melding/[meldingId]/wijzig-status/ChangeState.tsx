@@ -8,6 +8,7 @@ import { SubmitButton } from '@meldingen/ui'
 
 import { postChangeStateForm } from './actions'
 import { isValidMeldingState } from './utils'
+import { BackLink } from '../_components/BackLink'
 
 const initialState: { message?: string } = {}
 
@@ -21,12 +22,15 @@ export const ChangeState = ({ meldingId, meldingState }: { meldingId: number; me
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <Heading className="ams-mb-m" level={1}>
+        <BackLink className="ams-mb-s" href={`/melding/${meldingId}`}>
+          {t('back-link')}
+        </BackLink>
+        <Heading className="ams-mb-l" level={1}>
           {t('title', { meldingId })}
         </Heading>
         {formState?.message && <Paragraph>{formState.message}</Paragraph>}
         <form action={formAction}>
-          <Field className="ams-mb-m">
+          <Field className="ams-mb-l">
             <Label htmlFor="state">{t('label')}</Label>
             <Select defaultValue={isValidMeldingState(meldingState) ? meldingState : undefined} id="state" name="state">
               <Select.Option value="">{t('options.default')}</Select.Option>
