@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 import { vi } from 'vitest'
 
 import { Overview } from './Overview'
-import Page from './page'
+import Page, { generateMetadata } from './page'
 import { meldingen } from '../mocks/data'
 import { ENDPOINTS } from '../mocks/endpoints'
 import { server } from '../mocks/node'
@@ -26,6 +26,14 @@ vi.mock('next-auth', () => ({
 // So we set a mock base URL directly in the test.
 client.setConfig({
   baseUrl: 'http://localhost:3000',
+})
+
+describe('generateMetadata', () => {
+  it('returns the correct metadata title', async () => {
+    const metadata = await generateMetadata()
+
+    expect(metadata).toEqual({ title: 'metadata.title' })
+  })
 })
 
 describe('Page', () => {
@@ -86,11 +94,7 @@ describe('Page', () => {
   })
 
   it('shows a message on API error', async () => {
-    server.use(
-      http.get(ENDPOINTS.MELDING, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500, headers: { 'Content-Range': '0/40' } }),
-      ),
-    )
+    server.use(http.get(ENDPOINTS.GET_MELDING, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })))
 
     const searchParams = Promise.resolve({ pagina: '1' })
 

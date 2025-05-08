@@ -25,7 +25,29 @@
       "state": "Status",
       "geo_location": "Location"
     },
+    "state": {
+      "term": "Status",
+      "link": "Wijzig status"
+    },
     "errors": {
+      "melding-not-found": "An error occurred"
+    }
+  },
+  "change-state": {
+    "metadata": {
+      "title": "Wijzig status - Gemeente Amsterdam"
+    },
+    "back-link": "Meldingdetails",
+    "title": "Wijzig status melding {meldingId}",
+    "label": "Wijzig status",
+    "options": {
+      "default": "Kies een status",
+      "processing": "In behandeling",
+      "completed": "Afgehandeld"
+    },
+    "submit-button": "Wijzig status",
+    "errors": {
+      "invalid-state": "Ongeldige status",
       "melding-not-found": "An error occurred"
     }
   }
