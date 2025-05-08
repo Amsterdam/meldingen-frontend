@@ -31,5 +31,5 @@ export const postChangeStateForm = async ({ meldingId }: { meldingId: number }, 
 
   if (error) return { message: handleApiError(error) }
 
-  redirect(`/melding/${meldingId}`)
+  return redirect(`/melding/${meldingId}`)
 }

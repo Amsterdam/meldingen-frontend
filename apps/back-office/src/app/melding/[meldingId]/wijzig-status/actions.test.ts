@@ -1,7 +1,8 @@
 import { client } from 'libs/api-client/src/client.gen'
 import { http, HttpResponse } from 'msw'
+import { redirect } from 'next/navigation'
 
-import { changeMeldingState } from './actions'
+import { postChangeStateForm } from './actions'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
 
@@ -19,23 +20,15 @@ client.setConfig({
   baseUrl: 'http://localhost:3000',
 })
 
-describe('changeMeldingState', () => {
+describe('postChangeStateForm', () => {
   it('returns an error message for an invalid state', async () => {
-    const result = await changeMeldingState(null, { id: 123, state: 'invalid' as never })
+    const formData = new FormData()
+    formData.append('state', 'invalid')
+
+    const result = await postChangeStateForm({ meldingId: 123 }, null, formData)
 
     expect(result).toEqual({ message: 'invalid-state' })
-  })
-
-  it('does not return an error when calling with "processing" state', async () => {
-    const result = await changeMeldingState(null, { id: 123, state: 'processing' })
-
-    expect(result).toBeUndefined()
-  })
-
-  it('does not return an error when calling with "processing" state', async () => {
-    const result = await changeMeldingState(null, { id: 123, state: 'completed' })
-
-    expect(result).toBeUndefined()
+    expect(redirect).not.toHaveBeenCalledWith('/melding/123')
   })
 
   it('returns an error message for API errors', async () => {
@@ -45,8 +38,30 @@ describe('changeMeldingState', () => {
       ),
     )
 
-    const result = await changeMeldingState(null, { id: 123, state: 'processing' })
+    const formData = new FormData()
+    formData.append('state', 'processing')
+
+    const result = await postChangeStateForm({ meldingId: 123 }, null, formData)
 
     expect(result).toEqual({ message: 'Error message' })
+    expect(redirect).not.toHaveBeenCalledWith('/melding/123')
+  })
+
+  it('redirects on success when calling with "processing" state', async () => {
+    const formData = new FormData()
+    formData.append('state', 'processing')
+
+    await postChangeStateForm({ meldingId: 123 }, null, formData)
+
+    expect(redirect).toHaveBeenCalledWith('/melding/123')
+  })
+
+  it('redirects on success when calling with "completed" state', async () => {
+    const formData = new FormData()
+    formData.append('state', 'completed')
+
+    await postChangeStateForm({ meldingId: 123 }, null, formData)
+
+    expect(redirect).toHaveBeenCalledWith('/melding/123')
   })
 })
