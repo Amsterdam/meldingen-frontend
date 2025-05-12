@@ -1,17 +1,25 @@
 'use client'
 
-import { DescriptionList, Grid, Heading } from '@amsterdam/design-system-react'
+import { DescriptionList, Grid, Heading, Link } from '@amsterdam/design-system-react'
+import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
 import { Fragment } from 'react'
 
 import { BackLink } from './_components/BackLink'
 
-type Props = {
-  meldingData: { key: string; term: string; description: string }[]
-  meldingId: string
+type MeldingData = {
+  key: string
+  term: string
+  description: string
 }
 
-export const Detail = ({ meldingData, meldingId }: Props) => {
+type Props = {
+  meldingData: MeldingData[]
+  meldingId: number
+  meldingState: string
+}
+
+export const Detail = ({ meldingData, meldingId, meldingState }: Props) => {
   const t = useTranslations('detail')
 
   return (
@@ -23,13 +31,22 @@ export const Detail = ({ meldingData, meldingId }: Props) => {
         <Heading level={1} className="ams-mb-m">
           {t('title', { meldingId })}
         </Heading>
-        <DescriptionList>
+        <DescriptionList className="ams-mb-l">
           {meldingData.map(({ key, term, description }) => (
             <Fragment key={key}>
               <DescriptionList.Term>{term}</DescriptionList.Term>
               <DescriptionList.Description>{description}</DescriptionList.Description>
             </Fragment>
           ))}
+        </DescriptionList>
+        <DescriptionList className="ams-mb-l">
+          <DescriptionList.Term>{t('state.term')}</DescriptionList.Term>
+          <DescriptionList.Description>{meldingState}</DescriptionList.Description>
+          <DescriptionList.Description>
+            <NextLink href={`/melding/${meldingId}/wijzig-status`} passHref legacyBehavior>
+              <Link>{t('state.link')}</Link>
+            </NextLink>
+          </DescriptionList.Description>
         </DescriptionList>
       </Grid.Cell>
     </Grid>
