@@ -14,7 +14,7 @@ import styles from './Overview.module.css'
 const getValue = (melding: MeldingOutput, key: string) => {
   switch (key) {
     case 'created_at':
-      return melding.created_at
+      return new Date(melding.created_at).toLocaleDateString('nl-NL')
     case 'classification':
       return melding.classification
     case 'state':
