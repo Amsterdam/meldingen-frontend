@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "description": "Beheer van meldingen over de openbare ruimte"
+  },
+  "overview": {
+    "metadata": {
+      "title": "Overzicht meldingen openbare ruimte - Gemeente Amsterdam"
+    },
+    "title": "Meldingen ({meldingCount})",
+    "column-header": {
+      "id": "Meldnummer",
+      "created_at": "Datum",
+      "classification": "Categorie",
+      "state": "Status"
+    }
+  },
+  "detail": {
+    "metadata": {
+      "title": "Melding {meldingId} - Gemeente Amsterdam"
+    },
+    "term": {
+      "melding_id": "Meldnummer",
+      "created_at": "Gemeld op",
+      "classification": "Categorie",
+      "state": "Status",
+      "geo_location": "Location"
+    },
+    "errors": {
+      "melding-not-found": "An error occurred"
+    }
+  }
+}
