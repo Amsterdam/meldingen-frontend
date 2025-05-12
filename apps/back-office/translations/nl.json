@@ -25,6 +25,8 @@
       "state": "Status",
       "geo_location": "Location"
     },
+    "title": "Melding {meldingId}",
+    "back-link": "Overzicht meldingen",
     "errors": {
       "melding-not-found": "An error occurred"
     }
