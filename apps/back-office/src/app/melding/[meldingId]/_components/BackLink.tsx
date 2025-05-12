@@ -11,15 +11,11 @@ type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & {
   href: string
 }
 
-export const BackLink = ({ children, className = '', href, ...restProps }: Props) => {
-  const combinedClassName = `${styles.link} ${className}`.trim()
-
-  return (
-    <NextLink href={href} legacyBehavior passHref>
-      <Link {...restProps} className={combinedClassName}>
-        <Icon svg={ChevronLeftIcon} size="level-5" />
-        {children}
-      </Link>
-    </NextLink>
-  )
-}
+export const BackLink = ({ children, className = '', href, ...restProps }: Props) => (
+  <NextLink href={href} legacyBehavior passHref>
+    <Link {...restProps} className={`${styles.link} ${className ?? ''}`}>
+      <Icon svg={ChevronLeftIcon} size="level-5" />
+      {children}
+    </Link>
+  </NextLink>
+)
