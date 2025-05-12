@@ -11,7 +11,21 @@ import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
 import styles from './Overview.module.css'
 
-const getValue = (melding: MeldingOutput, key: string) => {
+type Props = {
+  data: MeldingOutput[]
+  meldingCount: number
+  page?: number
+  totalPages: number
+}
+
+const HEADERS = [
+  { key: 'id', labelKey: 'column-header.id' },
+  { key: 'created_at', labelKey: 'column-header.created_at' },
+  { key: 'classification', labelKey: 'column-header.classification' },
+  { key: 'state', labelKey: 'column-header.state' },
+]
+
+const formatValue = (melding: MeldingOutput, key: string) => {
   switch (key) {
     case 'created_at':
       return new Date(melding.created_at).toLocaleDateString('nl-NL')
@@ -24,29 +38,36 @@ const getValue = (melding: MeldingOutput, key: string) => {
   }
 }
 
-type Props = {
-  data: MeldingOutput[]
-  meldingCount: number
-  page?: number
-  totalPages: number
-}
-
 const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
-  <NextLink href={props.href ? props.href : ''} legacyBehavior passHref>
+  <NextLink href={props.href || ''} legacyBehavior passHref>
     {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
     <a {...props} />
   </NextLink>
 )
 
+const renderTableHeaders = (headers: typeof HEADERS, t: (key: string) => string) =>
+  headers.map(({ key, labelKey }) => <Table.HeaderCell key={key}>{t(labelKey)}</Table.HeaderCell>)
+
+const renderTableRows = (data: MeldingOutput[], headers: typeof HEADERS) =>
+  data.map((melding) => (
+    <Table.Row key={melding.id}>
+      {headers.map(({ key }) => {
+        if (key === 'id') {
+          return (
+            <Table.Cell key={key}>
+              <NextLink href={`/melding/${melding.id}`} legacyBehavior passHref>
+                <Link variant="inline">{melding.id}</Link>
+              </NextLink>
+            </Table.Cell>
+          )
+        }
+        return <Table.Cell key={key}>{formatValue(melding, key)}</Table.Cell>
+      })}
+    </Table.Row>
+  ))
+
 export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
   const t = useTranslations('overview')
-
-  const headers = [
-    { key: 'id', label: t('column-header.id') },
-    { key: 'created_at', label: t('column-header.created_at') },
-    { key: 'classification', label: t('column-header.classification') },
-    { key: 'state', label: t('column-header.state') },
-  ]
 
   return (
     <Grid paddingBottom="large" paddingTop="medium">
@@ -56,30 +77,9 @@ export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
         </Heading>
         <Table className="ams-mb-l">
           <Table.Header>
-            <Table.Row>
-              {headers.map((header) => (
-                <Table.HeaderCell key={header.key}>{header.label}</Table.HeaderCell>
-              ))}
-            </Table.Row>
+            <Table.Row>{renderTableHeaders(HEADERS, t)}</Table.Row>
           </Table.Header>
-          <Table.Body>
-            {data.map((melding) => (
-              <Table.Row key={melding.id}>
-                {headers.map((header) => {
-                  if (header.key === 'id') {
-                    return (
-                      <Table.Cell key={header.key}>
-                        <NextLink href={`/melding/${melding.id}`} legacyBehavior passHref>
-                          <Link variant="inline">{melding.id}</Link>
-                        </NextLink>
-                      </Table.Cell>
-                    )
-                  }
-                  return <Table.Cell key={header.key}>{getValue(melding, header.key)}</Table.Cell>
-                })}
-              </Table.Row>
-            ))}
-          </Table.Body>
+          <Table.Body>{renderTableRows(data, HEADERS)}</Table.Body>
         </Table>
         <Pagination
           className={styles.pagination}
