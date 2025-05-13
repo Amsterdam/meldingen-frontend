@@ -173,7 +173,7 @@ describe('getAttachmentSummary', () => {
     expect(result).toEqual({ error: 'Error message' })
   })
 
-  it('should return an error message when getMeldingByMeldingIdAttachments returns no data', async () => {
+  it('should return an error message when getMeldingByMeldingIdAttachmentsMelder returns no data', async () => {
     server.use(http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENTS_MELDER, () => new HttpResponse()))
 
     const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
