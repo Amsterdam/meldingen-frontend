@@ -1,12 +1,14 @@
 'use client'
 
-import { Grid, Heading, Paragraph } from '@amsterdam/design-system-react'
+import { FileList, Grid, Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
 import { SubmitButton, SummaryList } from '@meldingen/ui'
 
 import { postSummaryForm } from './actions'
+
+import styles from './Summary.module.css'
 
 type GenericSummaryData = {
   key: string
@@ -16,6 +18,15 @@ type GenericSummaryData = {
 
 type Props = {
   additionalQuestions: GenericSummaryData[]
+  attachments: {
+    key: string
+    term: string
+    files: {
+      blob: Blob
+      fileName: string
+      contentType: string
+    }[]
+  }
   contact?: GenericSummaryData
   location: GenericSummaryData
   primaryForm: GenericSummaryData
@@ -23,7 +34,7 @@ type Props = {
 
 const initialState: { message?: string } = {}
 
-export const Summary = ({ primaryForm, additionalQuestions, location, contact }: Props) => {
+export const Summary = ({ attachments, primaryForm, additionalQuestions, location, contact }: Props) => {
   const [formState, formAction] = useActionState(postSummaryForm, initialState)
 
   const t = useTranslations('summary')
@@ -66,6 +77,19 @@ export const Summary = ({ primaryForm, additionalQuestions, location, contact }:
               <SummaryList.Description key={item}>{item}</SummaryList.Description>
             ))}
           </SummaryList.Item>
+
+          {attachments.files.length > 0 && (
+            <SummaryList.Item key={attachments.key}>
+              <SummaryList.Term>{attachments.term}</SummaryList.Term>
+              <SummaryList.Description key={attachments.key}>
+                <FileList className={styles.fileListAttachments}>
+                  {attachments.files.map(({ fileName, blob, contentType }) => (
+                    <FileList.Item key={fileName} file={new File([blob], fileName, { type: contentType })} />
+                  ))}
+                </FileList>
+              </SummaryList.Description>
+            </SummaryList.Item>
+          )}
 
           {contact && (
             <SummaryList.Item key={contact.key}>
