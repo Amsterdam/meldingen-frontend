@@ -34,7 +34,13 @@ type Props = {
 
 const initialState: { message?: string } = {}
 
-export const Summary = ({ attachments, primaryForm, additionalQuestions, location, contact }: Props) => {
+export const Summary = ({
+  attachments: { key, term, files },
+  primaryForm,
+  additionalQuestions,
+  location,
+  contact,
+}: Props) => {
   const [formState, formAction] = useActionState(postSummaryForm, initialState)
 
   const t = useTranslations('summary')
@@ -78,12 +84,12 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
             ))}
           </SummaryList.Item>
 
-          {attachments.files.length > 0 && (
-            <SummaryList.Item key={attachments.key}>
-              <SummaryList.Term>{attachments.term}</SummaryList.Term>
-              <SummaryList.Description key={attachments.key}>
+          {files.length > 0 && (
+            <SummaryList.Item key={key}>
+              <SummaryList.Term>{term}</SummaryList.Term>
+              <SummaryList.Description key={key}>
                 <FileList className={styles.fileListAttachments}>
-                  {attachments.files.map((file) => (
+                  {files.map((file) => (
                     <FileList.Item
                       key={file.fileName}
                       file={new File([file.blob], file.fileName, { type: file.contentType })}
