@@ -79,9 +79,9 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
   let downloadError: string | undefined
 
   const attachments = await Promise.all(
-    data.map(async (attachmentDetails) => {
+    data.map(async ({ id, original_filename }) => {
       const { data, error, response } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
-        path: { melding_id: parseInt(meldingId, 10), attachment_id: attachmentDetails.id },
+        path: { melding_id: parseInt(meldingId, 10), attachment_id: id },
 
         query: { token, type: 'thumbnail' },
       })
@@ -89,14 +89,16 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
       const contentType = response.headers.get('content-type')
 
       if (error) {
-        downloadError = handleApiError(error)
-      } else if (!data) {
-        downloadError = 'Attachment data not found'
+        return (downloadError = handleApiError(error))
+      }
+      if (!data) {
+        return (downloadError = 'Attachment data not found')
       }
 
+      // Returning blob instead of File since the File api is not available on the server
       return {
         blob: data as Blob,
-        fileName: attachmentDetails.original_filename,
+        fileName: original_filename,
         contentType: contentType!,
       }
     }) || [],

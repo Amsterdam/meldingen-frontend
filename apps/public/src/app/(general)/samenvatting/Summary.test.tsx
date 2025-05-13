@@ -76,9 +76,9 @@ describe('Summary', () => {
     expect(definitions[1]).toHaveTextContent('Antwoord vraag 1')
     expect(definitions[2]).toHaveTextContent('Antwoord vraag 2')
     expect(definitions[3]).toHaveTextContent('Nieuwmarkt 247, 1011MB Amsterdam')
-    expect(screen.getByText('IMG_0815.jpg')).toBeInTheDocument()
-    expect(definitions[4]).toHaveTextContent('test@test.com')
-    expect(definitions[5]).toHaveTextContent('+31612345678')
+    expect(definitions[4]).toHaveTextContent('IMG_0815.jpg')
+    expect(definitions[5]).toHaveTextContent('test@test.com')
+    expect(definitions[6]).toHaveTextContent('+31612345678')
 
     expect(screen.getByRole('button', { name: 'submit-button' }))
   })
