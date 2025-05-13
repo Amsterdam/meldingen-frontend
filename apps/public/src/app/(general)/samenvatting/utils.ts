@@ -89,10 +89,10 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
       const contentType = response.headers.get('content-type')
 
       if (error) {
-        return (downloadError = handleApiError(error))
+        downloadError = handleApiError(error)
       }
-      if (!data) {
-        return (downloadError = 'Attachment data not found')
+      if (!error && !data) {
+        downloadError = 'Attachment data not found'
       }
 
       // Returning blob instead of File since the File api is not available on the server
