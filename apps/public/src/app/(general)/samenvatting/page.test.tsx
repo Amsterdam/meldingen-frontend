@@ -61,13 +61,11 @@ describe('Page', () => {
     }))
 
     const attachments = {
-      data: [
+      files: [
         expect.objectContaining({
-          file: expect.any(Blob),
-          meta: {
-            contentType: 'image/webp',
-            originalFilename: 'IMG_0815.jpg',
-          },
+          blob: expect.any(Blob),
+          contentType: 'image/webp',
+          fileName: 'IMG_0815.jpg',
         }),
       ],
       key: 'attachments',

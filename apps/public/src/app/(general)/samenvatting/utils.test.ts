@@ -153,13 +153,11 @@ describe('getAttachmentSummary', () => {
       data: {
         key: 'attachments',
         term: "Foto's",
-        data: [
+        files: [
           {
-            file: expect.any(Blob),
-            meta: {
-              contentType: 'image/webp',
-              originalFilename: 'IMG_0815.jpg',
-            },
+            blob: expect.any(Blob),
+            contentType: 'image/webp',
+            fileName: 'IMG_0815.jpg',
           },
         ],
       },

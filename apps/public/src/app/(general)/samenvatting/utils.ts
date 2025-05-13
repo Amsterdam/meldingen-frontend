@@ -95,15 +95,16 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
       }
 
       return {
-        file: data as Blob,
-        meta: { originalFilename: attachmentDetails.original_filename, contentType: contentType! },
+        blob: data as Blob,
+        fileName: attachmentDetails.original_filename,
+        contentType: contentType!,
       }
     }) || [],
   )
 
   if (downloadError) return { error: downloadError }
 
-  return { data: { key: 'attachments', term: label, data: attachments } }
+  return { data: { key: 'attachments', term: label, files: attachments } }
 }
 
 export const getLocationSummary = (label: string, location?: string) => {

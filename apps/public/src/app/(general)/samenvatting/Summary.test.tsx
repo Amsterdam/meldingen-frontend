@@ -27,13 +27,11 @@ const defaultProps = {
     },
   ],
   attachments: {
-    data: [
+    files: [
       {
-        file: { size: 4326, type: 'image/webp' } as Blob,
-        meta: {
-          contentType: 'image/webp',
-          originalFilename: 'IMG_0815.jpg',
-        },
+        blob: { size: 4326, type: 'image/webp' } as Blob,
+        contentType: 'image/webp',
+        fileName: 'IMG_0815.jpg',
       },
     ],
     key: 'attachments',

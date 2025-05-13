@@ -21,12 +21,10 @@ type Props = {
   attachments: {
     key: string
     term: string
-    data: {
-      file: Blob
-      meta: {
-        originalFilename: string
-        contentType: string
-      }
+    files: {
+      blob: Blob
+      fileName: string
+      contentType: string
     }[]
   }
   contact?: GenericSummaryData
@@ -80,15 +78,12 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
             ))}
           </SummaryList.Item>
 
-          {attachments.data.length > 0 && (
+          {attachments.files.length > 0 && (
             <SummaryList.Item key={attachments.key}>
               <SummaryList.Term>{attachments.term}</SummaryList.Term>
               <FileList className={styles.fileListAttachments}>
-                {attachments.data.map((file, index) => (
-                  <FileList.Item
-                    key={index}
-                    file={new File([file.file], file.meta.originalFilename, { type: file.meta.contentType })}
-                  />
+                {attachments.files.map((file, index) => (
+                  <FileList.Item key={index} file={new File([file.blob], file.fileName, { type: file.contentType })} />
                 ))}
               </FileList>
             </SummaryList.Item>
