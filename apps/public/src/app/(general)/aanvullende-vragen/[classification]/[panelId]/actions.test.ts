@@ -25,22 +25,19 @@ describe('postForm', () => {
     ],
   }
 
-  beforeEach(() => {
-    vi.clearAllMocks()
-    // Default mock for cookies
+  const mockCookies = (id?: string, token?: string) => {
     ;(cookies as Mock).mockReturnValue({
       get: (name: string) => {
-        if (name === 'id') {
-          return { value: '123' }
-        }
-        if (name === 'token') {
-          return { value: 'test-token' }
-        }
+        if (name === 'id') return { value: id }
+        if (name === 'token') return { value: token }
         return undefined
       },
       set: vi.fn(),
     })
-    vi.clearAllMocks()
+  }
+
+  beforeEach(() => {
+    mockCookies('123', 'test-token') // Default mock for cookies
   })
 
   it('returns undefined when id or token is missing', async () => {
