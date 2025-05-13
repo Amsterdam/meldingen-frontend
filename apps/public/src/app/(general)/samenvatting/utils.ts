@@ -95,7 +95,7 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
         downloadError = 'Attachment data not found'
       }
 
-      // Returning blob instead of File since the File api is not available on the server
+      // Returning blob instead of File since the File api is not available in Node.js
       return {
         blob: data as Blob,
         fileName: original_filename,
