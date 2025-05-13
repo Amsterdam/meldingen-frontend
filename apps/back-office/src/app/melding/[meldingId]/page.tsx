@@ -26,7 +26,7 @@ const formatMeldingData = async (data: MeldingOutput) => {
     {
       key: 'created_at',
       term: t('created_at'),
-      description: String(created_at),
+      description: new Date(created_at).toLocaleDateString('nl-NL'),
     },
     {
       key: 'classification',
