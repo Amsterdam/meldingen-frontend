@@ -19,6 +19,8 @@ describe('formatMeldingData', () => {
       classification: 1,
       state: 'Test state',
       geo_location: null,
+      email: 'email@email.email',
+      phone: '0612345678',
     }
 
     const formattedData = await formatMeldingData(data)
@@ -30,6 +32,8 @@ describe('formatMeldingData', () => {
       { key: 'classification', term: 'classification', description: '1' },
       { key: 'state', term: 'state', description: 'Test state' },
       { key: 'geo_location', term: 'geo_location', description: 'null' },
+      { key: 'email', term: 'email', description: 'email@email.email' },
+      { key: 'phone', term: 'phone', description: '0612345678' },
     ])
   })
 })
