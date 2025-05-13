@@ -1,4 +1,27 @@
-import { formatMeldingData, generateMetadata } from './page'
+import { render } from '@testing-library/react'
+import { client } from 'libs/api-client/src/client.gen'
+
+import { Detail } from './Detail'
+import Page, { generateMetadata } from './page'
+import { melding } from 'apps/back-office/src/mocks/data'
+
+vi.mock('./Detail', () => ({
+  Detail: vi.fn(() => <div>Detail Component</div>),
+}))
+
+vi.mock('next-auth', () => ({
+  getServerSession: vi.fn(() => Promise.resolve({})),
+}))
+
+vi.mock('next/navigation', () => ({
+  redirect: vi.fn(),
+}))
+
+// Vitest doesn't seem to pick up env vars in this app, for some reason.
+// So we set a mock base URL directly in the test.
+client.setConfig({
+  baseUrl: 'http://localhost:3000',
+})
 
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
@@ -8,31 +31,31 @@ describe('generateMetadata', () => {
   })
 })
 
-describe('formatMeldingData', () => {
-  it('formats the melding data correctly', async () => {
-    const data = {
-      id: 123,
-      public_id: 'AB123',
-      text: 'Test melding',
-      created_at: '2023-10-01T00:00:00Z',
-      updated_at: '2023-10-01T00:00:00Z',
-      classification: 1,
-      state: 'Test state',
-      geo_location: null,
-      email: 'email@email.email',
-      phone: '0612345678',
-    }
+describe('Page', () => {
+  it('calls the Detail component with the correct data', async () => {
+    const params = Promise.resolve({ meldingId: 123 })
+    const result = await Page({ params })
 
-    const formattedData = await formatMeldingData(data)
+    render(result)
 
-    expect(formattedData).toEqual([
-      { key: 'text', term: 'text', description: 'Test melding' },
-      { key: 'created_at', term: 'created_at', description: '1-10-2023' },
-      { key: 'classification', term: 'classification', description: '1' },
-      { key: 'state', term: 'state', description: 'Test state' },
-      { key: 'geo_location', term: 'geo_location', description: 'null' },
-      { key: 'email', term: 'email', description: 'email@email.email' },
-      { key: 'phone', term: 'phone', description: '0612345678' },
-    ])
+    const { text, created_at, classification, state, email, phone } = melding
+
+    const meldingData = [
+      { key: 'text', term: 'text', description: text },
+      { key: 'created_at', term: 'created_at', description: new Date(created_at).toLocaleDateString('nl-NL') },
+      { key: 'classification', term: 'classification', description: String(classification) },
+      { key: 'state', term: 'state', description: state },
+      { key: 'email', term: 'email', description: email },
+      { key: 'phone', term: 'phone', description: phone },
+    ]
+
+    expect(Detail).toHaveBeenCalledWith(
+      {
+        meldingData: meldingData,
+        meldingId: 123,
+        meldingState: state,
+      },
+      {},
+    )
   })
 })
