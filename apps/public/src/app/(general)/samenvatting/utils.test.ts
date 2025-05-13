@@ -161,7 +161,7 @@ describe('getAttachmentSummary', () => {
     })
   })
 
-  it('should return an error message when getMeldingByMeldingIdAttachments returns an error', async () => {
+  it('should return an error message when getMeldingByMeldingIdAttachmentsMelder returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENTS_MELDER, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
