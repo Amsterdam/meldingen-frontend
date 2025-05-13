@@ -26,7 +26,6 @@ describe('formatMeldingData', () => {
     const formattedData = await formatMeldingData(data)
 
     expect(formattedData).toEqual([
-      { key: 'melding_id', term: 'melding_id', description: '123' },
       { key: 'text', term: 'text', description: 'Test melding' },
       { key: 'created_at', term: 'created_at', description: '1-10-2023' },
       { key: 'classification', term: 'classification', description: '1' },

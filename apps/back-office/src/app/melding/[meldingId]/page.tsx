@@ -13,16 +13,11 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
 }
 
 export const formatMeldingData = async (data: MeldingOutput) => {
-  const { id, text, created_at, classification, state, geo_location, email, phone } = data
+  const { text, created_at, classification, state, geo_location, email, phone } = data
 
   const t = await getTranslations('detail.term')
 
   return [
-    {
-      key: 'melding_id',
-      term: t('melding_id'),
-      description: String(id),
-    },
     {
       key: 'text',
       term: t('text'),

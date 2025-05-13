@@ -19,7 +19,6 @@
       "title": "Melding {meldingId} - Gemeente Amsterdam"
     },
     "term": {
-      "melding_id": "Meldnummer",
       "text": "Meldtekst",
       "created_at": "Gemeld op",
       "classification": "Categorie",
