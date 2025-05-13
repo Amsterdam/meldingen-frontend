@@ -13,9 +13,6 @@ import { server } from 'apps/public/src/mocks/node'
 
 import { Blob } from 'buffer'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-;(global as any).Blob = Blob
-
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
 }))

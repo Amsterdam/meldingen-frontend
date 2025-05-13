@@ -15,9 +15,6 @@ import { server } from 'apps/public/src/mocks/node'
 
 import { Blob } from 'buffer'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-;(global as any).Blob = Blob
-
 const mockMeldingId = '88'
 const mockToken = 'test-token'
 
