@@ -81,9 +81,9 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
           </SummaryList.Item>
 
           {attachments.data.length > 0 && (
-            <SummaryList.Item key={attachments.key} className={styles.fileListItemAttachments}>
+            <SummaryList.Item key={attachments.key}>
               <SummaryList.Term>{attachments.term}</SummaryList.Term>
-              <FileList>
+              <FileList className={styles.fileListAttachments}>
                 {attachments.data.map((file, index) => (
                   <FileList.Item
                     key={index}
