@@ -1,5 +1,7 @@
 import {
   getMeldingByMeldingIdAnswersMelder,
+  getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
+  getMeldingByMeldingIdAttachmentsMelder,
   getMeldingByMeldingIdMelder,
   getStaticForm,
   getStaticFormByStaticFormId,
@@ -62,6 +64,49 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
         description: [answer.text],
       })) || [],
   }
+}
+
+export const getAttachmentsSummary = async (label: string, meldingId: string, token: string) => {
+  const { data, error } = await getMeldingByMeldingIdAttachmentsMelder({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (error) return { error: handleApiError(error) }
+
+  if (!data) return { error: 'Attachments data not found' }
+
+  let downloadError: string | undefined
+
+  const attachments = await Promise.all(
+    data.map(async ({ id, original_filename }) => {
+      const { data, error, response } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
+        path: { melding_id: parseInt(meldingId, 10), attachment_id: id },
+
+        query: { token, type: 'thumbnail' },
+      })
+
+      const contentType = response.headers.get('content-type')
+
+      if (error) {
+        downloadError = handleApiError(error)
+      }
+      if (!error && !data) {
+        downloadError = 'Attachment data not found'
+      }
+
+      // Returning blob instead of File since the File api is not available in Node.js
+      return {
+        blob: data as Blob,
+        fileName: original_filename,
+        contentType: contentType!,
+      }
+    }) || [],
+  )
+
+  if (downloadError) return { error: downloadError }
+
+  return { data: { key: 'attachments', term: label, files: attachments } }
 }
 
 export const getLocationSummary = (label: string, location?: string) => {

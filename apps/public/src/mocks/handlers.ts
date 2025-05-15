@@ -51,6 +51,21 @@ export const handlers = [
   http.get(ENDPOINTS.PDOK_REVERSE, () => HttpResponse.json(PDOKReverse)),
   http.get(ENDPOINTS.PDOK_SUGGEST, () => HttpResponse.json(PDOKSuggest)),
 
+  http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENTS_MELDER, () => {
+    return HttpResponse.json([
+      {
+        id: 42,
+        original_filename: 'IMG_0815.jpg',
+      },
+    ])
+  }),
+
+  http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
+    HttpResponse.json(new Blob(['mock content'], { type: 'image/webp' }), {
+      headers: { 'content-type': 'image/webp' },
+    }),
+  ),
+
   /** POST */
   http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json({ id: 123, token: 'test-token', classification: 'Test' })),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () => HttpResponse.json({ id: 42 })),

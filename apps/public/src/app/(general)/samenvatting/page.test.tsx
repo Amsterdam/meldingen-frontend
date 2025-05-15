@@ -9,6 +9,8 @@ import { additionalQuestions, melding, textAreaComponent } from 'apps/public/src
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
 import { server } from 'apps/public/src/mocks/node'
 
+import { Blob } from 'buffer'
+
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
 }))
@@ -53,6 +55,18 @@ describe('Page', () => {
       description: [item.text],
     }))
 
+    const attachments = {
+      files: [
+        expect.objectContaining({
+          blob: expect.any(Blob),
+          contentType: 'image/webp',
+          fileName: 'IMG_0815.jpg',
+        }),
+      ],
+      key: 'attachments',
+      term: 'attachments.step.title',
+    }
+
     const contact = {
       key: 'contact',
       term: 'summary.contact-label',
@@ -66,9 +80,11 @@ describe('Page', () => {
     }
 
     expect(screen.getByText('Summary Component')).toBeInTheDocument()
+
     expect(Summary).toHaveBeenCalledWith(
       {
         additionalQuestions: additionalQuestionsSummary,
+        attachments,
         contact: contact,
         location: {
           key: 'location',

@@ -26,7 +26,7 @@ const formatMeldingData = async (data: MeldingOutput) => {
     {
       key: 'created_at',
       term: t('created_at'),
-      description: String(created_at),
+      description: new Date(created_at).toLocaleDateString('nl-NL'),
     },
     {
       key: 'classification',
@@ -59,5 +59,5 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const formattedData = await formatMeldingData(data)
 
-  return <Detail meldingData={formattedData} />
+  return <Detail meldingData={formattedData} meldingId={data.id} meldingState={data.state} />
 }

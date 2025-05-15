@@ -28,4 +28,9 @@ export const ENDPOINTS = {
   // Static form
   GET_STATIC_FORM: 'http://localhost:8000/static-form',
   GET_STATIC_FORM_BY_STATIC_FORM_ID: 'http://localhost:8000/static-form/:staticFormId',
+
+  MELDING_BY_ID_ATTACHMENTS_MELDER: 'http://localhost:8000/melding/:id/attachments/melder',
+  MELDING_BY_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD:
+    'http://localhost:8000/melding/:id/attachment/:attachmentId/download',
+  POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID: 'http://localhost:8000/melding/:melding_id/question/:question_id',
 }

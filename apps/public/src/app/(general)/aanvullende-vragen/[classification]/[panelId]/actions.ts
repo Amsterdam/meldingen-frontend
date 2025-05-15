@@ -63,7 +63,7 @@ export const postForm = async (
   const erroredResults = results.filter((result) => result?.error)
 
   if (erroredResults.length > 0) {
-    return { message: erroredResults.map(({ error }) => error.detail[0].msg).join(', ') }
+    return { message: erroredResults.map(({ error }) => handleApiError(error)).join(', ') }
   }
 
   // Set melding state to 'questions_answered'
