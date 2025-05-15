@@ -12,22 +12,45 @@ import {
 } from 'apps/public/src/mocks/data'
 
 export const handlers = [
-  /** GET */
+  // Form
   http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => new HttpResponse()),
+
+  // Melding
+  http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID, () => new HttpResponse()),
+
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () => HttpResponse.json(additionalQuestions)),
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
+    HttpResponse.json(new Blob(['mock content'], { type: 'image/webp' }), {
+      headers: { 'content-type': 'image/webp' },
+    }),
+  ),
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () =>
+    HttpResponse.json([{ id: 42, original_filename: 'IMG_0815.jpg' }]),
+  ),
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)),
+
+  http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json({ id: 123, token: 'test-token', classification: 'Test' })),
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () => HttpResponse.json({ id: 42 })),
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () => new HttpResponse()),
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_LOCATION, () => new HttpResponse()),
+
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_ATTACHMENTS, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_CONTACT_INFO, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ANSWER_QUESTIONS, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_LOCATION, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT, () => new HttpResponse()),
+
+  // PDOK
+  http.get(ENDPOINTS.PDOK_FREE, () => HttpResponse.json(PDOKFree)),
+  http.get(ENDPOINTS.PDOK_REVERSE, () => HttpResponse.json(PDOKReverse)),
+  http.get(ENDPOINTS.PDOK_SUGGEST, () => HttpResponse.json(PDOKSuggest)),
+
+  // Static form
   http.get(ENDPOINTS.GET_STATIC_FORM, () =>
     HttpResponse.json([
-      {
-        id: '1',
-        type: 'primary',
-      },
-      {
-        id: '2',
-        type: 'attachments',
-      },
-      {
-        id: '3',
-        type: 'contact',
-      },
+      { id: '1', type: 'primary' },
+      { id: '2', type: 'attachments' },
+      { id: '3', type: 'contact' },
     ]),
   ),
   http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, ({ params }) => {
@@ -45,33 +68,4 @@ export const handlers = [
     }
     return undefined
   }),
-  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () => HttpResponse.json(additionalQuestions)),
-  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
-    HttpResponse.json(new Blob(['mock content'], { type: 'image/webp' }), {
-      headers: { 'content-type': 'image/webp' },
-    }),
-  ),
-  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () =>
-    HttpResponse.json([{ id: 42, original_filename: 'IMG_0815.jpg' }]),
-  ),
-  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)),
-  http.get(ENDPOINTS.PDOK_FREE, () => HttpResponse.json(PDOKFree)),
-  http.get(ENDPOINTS.PDOK_REVERSE, () => HttpResponse.json(PDOKReverse)),
-  http.get(ENDPOINTS.PDOK_SUGGEST, () => HttpResponse.json(PDOKSuggest)),
-
-  /** POST */
-  http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json({ id: 123, token: 'test-token', classification: 'Test' })),
-  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () => HttpResponse.json({ id: 42 })),
-  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () => new HttpResponse()),
-  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_LOCATION, () => new HttpResponse()),
-
-  /** PUT */
-  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_ATTACHMENTS, () => new HttpResponse()),
-  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_CONTACT_INFO, () => new HttpResponse()),
-  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ANSWER_QUESTIONS, () => new HttpResponse()),
-  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_LOCATION, () => new HttpResponse()),
-  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT, () => new HttpResponse()),
-
-  /** DELETE */
-  http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID, () => new HttpResponse()),
 ]
