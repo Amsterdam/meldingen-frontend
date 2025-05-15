@@ -14,12 +14,13 @@ type MeldingData = {
 }
 
 type Props = {
+  additionalQuestions: MeldingData[]
   meldingData: MeldingData[]
   meldingId: number
   meldingState: string
 }
 
-export const Detail = ({ meldingData, meldingId, meldingState }: Props) => {
+export const Detail = ({ additionalQuestions, meldingData, meldingId, meldingState }: Props) => {
   const t = useTranslations('detail')
 
   return (
@@ -33,6 +34,14 @@ export const Detail = ({ meldingData, meldingId, meldingState }: Props) => {
         </Heading>
         <DescriptionList className="ams-mb-l">
           {meldingData.map(({ key, term, description }) => (
+            <Fragment key={key}>
+              <DescriptionList.Term>{term}</DescriptionList.Term>
+              <DescriptionList.Description>{description}</DescriptionList.Description>
+            </Fragment>
+          ))}
+        </DescriptionList>
+        <DescriptionList className="ams-mb-l">
+          {additionalQuestions.map(({ key, term, description }) => (
             <Fragment key={key}>
               <DescriptionList.Term>{term}</DescriptionList.Term>
               <DescriptionList.Description>{description}</DescriptionList.Description>

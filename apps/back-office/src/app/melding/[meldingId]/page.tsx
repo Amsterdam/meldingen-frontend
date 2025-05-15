@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { Detail } from './Detail'
+import { getAdditionalQuestions } from './utils'
 import { getMeldingByMeldingId, MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
@@ -59,5 +60,15 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const formattedData = await formatMeldingData(data)
 
-  return <Detail meldingData={formattedData} meldingId={data.id} meldingState={data.state} />
+  const additionalQuestions = await getAdditionalQuestions(meldingId)
+  if ('error' in additionalQuestions) return additionalQuestions.error
+
+  return (
+    <Detail
+      additionalQuestions={additionalQuestions.data}
+      meldingData={formattedData}
+      meldingId={data.id}
+      meldingState={data.state}
+    />
+  )
 }
