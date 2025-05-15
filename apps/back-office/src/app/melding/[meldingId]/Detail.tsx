@@ -15,12 +15,19 @@ type MeldingData = {
 
 type Props = {
   additionalQuestionsWithMeldingText: MeldingData[]
+  contact?: MeldingData[]
   meldingData: MeldingData[]
   meldingId: number
   meldingState: string
 }
 
-export const Detail = ({ additionalQuestionsWithMeldingText, meldingData, meldingId, meldingState }: Props) => {
+export const Detail = ({
+  additionalQuestionsWithMeldingText,
+  contact,
+  meldingData,
+  meldingId,
+  meldingState,
+}: Props) => {
   const t = useTranslations('detail')
 
   return (
@@ -58,6 +65,17 @@ export const Detail = ({ additionalQuestionsWithMeldingText, meldingData, meldin
             </NextLink>
           </DescriptionList.Description>
         </DescriptionList>
+
+        {contact && (
+          <DescriptionList className="ams-mb-l">
+            {contact.map(({ key, term, description }) => (
+              <Fragment key={key}>
+                <DescriptionList.Term>{term}</DescriptionList.Term>
+                <DescriptionList.Description>{description}</DescriptionList.Description>
+              </Fragment>
+            ))}
+          </DescriptionList>
+        )}
       </Grid.Cell>
     </Grid>
   )

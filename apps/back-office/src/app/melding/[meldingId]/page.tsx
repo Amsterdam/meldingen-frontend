@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { Detail } from './Detail'
-import { getAdditionalQuestions } from './utils'
+import { getAdditionalQuestions, getContactData } from './utils'
 import { getMeldingByMeldingId, MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
@@ -14,7 +14,7 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
 }
 
 const formatMeldingData = async (data: MeldingOutput) => {
-  const { created_at, classification, state, email, phone } = data
+  const { created_at, classification, state } = data
 
   const t = await getTranslations('detail.term')
 
@@ -34,17 +34,7 @@ const formatMeldingData = async (data: MeldingOutput) => {
       term: t('state'),
       description: state,
     },
-    email && {
-      key: 'email',
-      term: t('email'),
-      description: email,
-    },
-    phone && {
-      key: 'phone',
-      term: t('phone'),
-      description: phone,
-    },
-  ].filter((item) => item !== null && item !== undefined && item !== '')
+  ]
 }
 
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
@@ -72,9 +62,12 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
     ...additionalQuestions.data,
   ]
 
+  const contact = getContactData(data, t)
+
   return (
     <Detail
       additionalQuestionsWithMeldingText={additionalQuestionsWithMeldingText}
+      contact={contact}
       meldingData={formattedData}
       meldingId={data.id}
       meldingState={data.state}

@@ -44,8 +44,6 @@ describe('Page', () => {
       { key: 'created_at', term: 'created_at', description: new Date(created_at).toLocaleDateString('nl-NL') },
       { key: 'classification', term: 'classification', description: String(classification) },
       { key: 'state', term: 'state', description: state },
-      { key: 'email', term: 'email', description: email },
-      { key: 'phone', term: 'phone', description: phone },
     ]
 
     const additionalQuestionsWithMeldingText = [
@@ -66,9 +64,15 @@ describe('Page', () => {
       },
     ]
 
+    const contact = [
+      { key: 'email', term: 'term.email', description: email },
+      { key: 'phone', term: 'term.phone', description: phone },
+    ]
+
     expect(Detail).toHaveBeenCalledWith(
       {
         additionalQuestionsWithMeldingText: additionalQuestionsWithMeldingText,
+        contact: contact,
         meldingData: meldingData,
         meldingId: 123,
         meldingState: state,
