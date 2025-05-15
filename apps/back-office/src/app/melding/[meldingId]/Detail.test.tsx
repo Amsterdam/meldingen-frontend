@@ -15,6 +15,8 @@ describe('Detail', () => {
   it('renders the component with melding data', () => {
     render(<Detail {...defaultProps} />)
 
+    expect(screen.getByText('back-link')).toBeInTheDocument()
+    expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('Term 1')).toBeInTheDocument()
     expect(screen.getByText('Description 1')).toBeInTheDocument()
     expect(screen.getByText('Term 2')).toBeInTheDocument()
@@ -24,10 +26,10 @@ describe('Detail', () => {
   it('renders the state data', () => {
     render(<Detail {...defaultProps} />)
 
-    expect(screen.getByText('term')).toBeInTheDocument()
+    expect(screen.getByText('state.term')).toBeInTheDocument()
     expect(screen.getByText('processing')).toBeInTheDocument()
 
-    const link = screen.getByRole('link', { name: 'link' })
+    const link = screen.getByRole('link', { name: 'state.link' })
 
     expect(link).toBeInTheDocument()
   })

@@ -62,7 +62,7 @@ describe('postLocationForm', () => {
 
   it('returns an error message if postMeldingByMeldingIdLocation returns an error', async () => {
     server.use(
-      http.post(ENDPOINTS.MELDING_LOCATION_BY_ID, () =>
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_LOCATION, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 404 }),
       ),
     )
@@ -77,7 +77,7 @@ describe('postLocationForm', () => {
 
   it('returns an error message if an error occurs when changing melding state', async () => {
     server.use(
-      http.put(ENDPOINTS.MELDING_BY_ID_SUBMIT_LOCATION, () =>
+      http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_LOCATION, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )

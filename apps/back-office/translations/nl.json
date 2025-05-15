@@ -18,6 +18,8 @@
     "metadata": {
       "title": "Melding {meldingId} - Gemeente Amsterdam"
     },
+    "back-link": "Overzicht meldingen",
+    "title": "Melding {meldingId}",
     "term": {
       "text": "Meldtekst",
       "created_at": "Gemeld op",

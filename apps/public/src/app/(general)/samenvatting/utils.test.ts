@@ -2,15 +2,18 @@ import { http, HttpResponse } from 'msw'
 
 import {
   getAdditionalQuestionsSummary,
+  getAttachmentsSummary,
   getContactSummary,
   getLocationSummary,
   getMeldingData,
   getPrimaryFormSummary,
 } from './utils'
+import { melding } from 'apps/public/src/mocks/data'
+import { additionalQuestions } from 'apps/public/src/mocks/data'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
-import mockAdditionalQuestionsAnswerData from 'apps/public/src/mocks/mockAdditionalQuestionsAnswerData.json'
-import mockMeldingData from 'apps/public/src/mocks/mockMeldingData.json'
 import { server } from 'apps/public/src/mocks/node'
+
+import { Blob } from 'buffer'
 
 const mockMeldingId = '88'
 const mockToken = 'test-token'
@@ -19,11 +22,15 @@ describe('getMeldingData', () => {
   it('should return correct melding summary', async () => {
     const result = await getMeldingData(mockMeldingId, mockToken)
 
-    expect(result).toEqual({ data: mockMeldingData })
+    expect(result).toEqual({ data: melding })
   })
 
   it('should return an error message when error is returned', async () => {
-    server.use(http.get(ENDPOINTS.MELDING_BY_ID, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })))
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
 
     const result = await getMeldingData(mockMeldingId, mockToken)
 
@@ -31,7 +38,7 @@ describe('getMeldingData', () => {
   })
 
   it('should return an error message when melding data is not found', async () => {
-    server.use(http.get(ENDPOINTS.MELDING_BY_ID, () => new HttpResponse()))
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => new HttpResponse()))
 
     const result = await getMeldingData(mockMeldingId, mockToken)
 
@@ -53,7 +60,9 @@ describe('getPrimaryFormSummary', () => {
   })
 
   it('should return an error message when getStaticForm returns an error', async () => {
-    server.use(http.get(ENDPOINTS.STATIC_FORM, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })))
+    server.use(
+      http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })),
+    )
 
     const result = await getPrimaryFormSummary('')
 
@@ -61,7 +70,7 @@ describe('getPrimaryFormSummary', () => {
   })
 
   it('should return an error message when getStaticForm does not return data', async () => {
-    server.use(http.get(ENDPOINTS.STATIC_FORM, () => new HttpResponse()))
+    server.use(http.get(ENDPOINTS.GET_STATIC_FORM, () => new HttpResponse()))
 
     const result = await getPrimaryFormSummary('')
 
@@ -70,7 +79,7 @@ describe('getPrimaryFormSummary', () => {
 
   it('should return an error message when primary form id is not found', async () => {
     server.use(
-      http.get(ENDPOINTS.STATIC_FORM, () =>
+      http.get(ENDPOINTS.GET_STATIC_FORM, () =>
         HttpResponse.json([
           {
             id: '123',
@@ -87,7 +96,7 @@ describe('getPrimaryFormSummary', () => {
 
   it('should return an error message when getStaticFormByStaticFormId returns an error', async () => {
     server.use(
-      http.get(ENDPOINTS.STATIC_FORM_BY_STATIC_FORM_ID, () =>
+      http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
@@ -98,7 +107,7 @@ describe('getPrimaryFormSummary', () => {
   })
 
   it('should return an error message when getStaticFormByStaticFormId does not return data', async () => {
-    server.use(http.get(ENDPOINTS.STATIC_FORM_BY_STATIC_FORM_ID, () => new HttpResponse()))
+    server.use(http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => new HttpResponse()))
 
     const result = await getPrimaryFormSummary('')
 
@@ -110,18 +119,18 @@ describe('getAdditionalQuestionsSummary', () => {
   it('should return correct additional questions summary', async () => {
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
 
-    const additionalQuestions = mockAdditionalQuestionsAnswerData.map((item) => ({
-      key: item.question.id,
+    const additionalQuestionsSummary = additionalQuestions.map((item) => ({
+      key: item.question.id.toString(),
       term: item.question.text,
       description: [item.text],
     }))
 
-    expect(result).toEqual({ data: additionalQuestions })
+    expect(result).toEqual({ data: additionalQuestionsSummary })
   })
 
   it('should return an error message when error is returned', async () => {
     server.use(
-      http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID_MELDER, () =>
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
@@ -131,11 +140,73 @@ describe('getAdditionalQuestionsSummary', () => {
   })
 
   it('should return an empty array when additional questions data is not found', async () => {
-    server.use(http.get(ENDPOINTS.MELDING_ANSWERS_BY_ID_MELDER, () => new HttpResponse()))
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () => new HttpResponse()))
 
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
 
     expect(result).toEqual({ data: [] })
+  })
+})
+
+describe('getAttachmentSummary', () => {
+  it('should return correct attachment summary', async () => {
+    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
+
+    expect(result).toMatchObject({
+      data: {
+        key: 'attachments',
+        term: "Foto's",
+        files: [
+          {
+            blob: expect.any(Blob),
+            contentType: 'image/webp',
+            fileName: 'IMG_0815.jpg',
+          },
+        ],
+      },
+    })
+  })
+
+  it('should return an error message when getMeldingByMeldingIdAttachmentsMelder returns an error', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
+
+    expect(result).toEqual({ error: 'Error message' })
+  })
+
+  it('should return an error message when getMeldingByMeldingIdAttachmentsMelder returns no data', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () => new HttpResponse()))
+
+    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
+
+    expect(result).toEqual({ error: 'Attachments data not found' })
+  })
+
+  it('should return an error message when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns an error', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
+
+    expect(result).toEqual({ error: 'Error message' })
+  })
+
+  it('should return an error message when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns no data', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () => new HttpResponse()),
+    )
+
+    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
+
+    expect(result).toEqual({ error: 'Attachment data not found' })
   })
 })
 
