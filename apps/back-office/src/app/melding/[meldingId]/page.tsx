@@ -14,16 +14,11 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
 }
 
 const formatMeldingData = async (data: MeldingOutput) => {
-  const { text, created_at, classification, state, email, phone } = data
+  const { created_at, classification, state, email, phone } = data
 
   const t = await getTranslations('detail.term')
 
   return [
-    {
-      key: 'text',
-      term: t('text'),
-      description: text,
-    },
     {
       key: 'created_at',
       term: t('created_at'),
@@ -57,10 +52,10 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
-  const t = await getTranslations('detail.errors')
+  const t = await getTranslations('detail')
 
   if (error || !data) {
-    return t('melding-not-found')
+    return t('errors.melding-not-found')
   }
 
   const formattedData = await formatMeldingData(data)
@@ -68,9 +63,18 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   const additionalQuestions = await getAdditionalQuestions(meldingId)
   if ('error' in additionalQuestions) return additionalQuestions.error
 
+  const additionalQuestionsWithMeldingText = [
+    {
+      key: 'text',
+      term: t('term.text'),
+      description: data.text,
+    },
+    ...additionalQuestions.data,
+  ]
+
   return (
     <Detail
-      additionalQuestions={additionalQuestions.data}
+      additionalQuestionsWithMeldingText={additionalQuestionsWithMeldingText}
       meldingData={formattedData}
       meldingId={data.id}
       meldingState={data.state}
