@@ -21,11 +21,12 @@
     "back-link": "Overzicht meldingen",
     "title": "Melding {meldingId}",
     "term": {
-      "melding_id": "Meldnummer",
+      "text": "Meldtekst",
       "created_at": "Gemeld op",
       "classification": "Categorie",
       "state": "Status",
-      "geo_location": "Location"
+      "email": "E-mail melder",
+      "phone": "Telefoon melder"
     },
     "state": {
       "term": "Status",
