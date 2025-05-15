@@ -3,7 +3,7 @@ import { client } from 'libs/api-client/src/client.gen'
 
 import { Detail } from './Detail'
 import Page, { generateMetadata } from './page'
-import { melding } from 'apps/back-office/src/mocks/data'
+import { additionalQuestions, melding } from 'apps/back-office/src/mocks/data'
 
 vi.mock('./Detail', () => ({
   Detail: vi.fn(() => <div>Detail Component</div>),
@@ -38,10 +38,9 @@ describe('Page', () => {
 
     render(result)
 
-    const { text, created_at, classification, state, email, phone } = melding
+    const { created_at, classification, state, email, phone } = melding
 
     const meldingData = [
-      { key: 'text', term: 'text', description: text },
       { key: 'created_at', term: 'created_at', description: new Date(created_at).toLocaleDateString('nl-NL') },
       { key: 'classification', term: 'classification', description: String(classification) },
       { key: 'state', term: 'state', description: state },
@@ -49,8 +48,27 @@ describe('Page', () => {
       { key: 'phone', term: 'phone', description: phone },
     ]
 
+    const additionalQuestionsWithMeldingText = [
+      {
+        description: melding.text,
+        key: 'text',
+        term: 'term.text',
+      },
+      {
+        description: additionalQuestions[0].text,
+        key: additionalQuestions[0].question.id.toString(),
+        term: additionalQuestions[0].question.text,
+      },
+      {
+        description: additionalQuestions[1].text,
+        key: additionalQuestions[1].question.id.toString(),
+        term: additionalQuestions[1].question.text,
+      },
+    ]
+
     expect(Detail).toHaveBeenCalledWith(
       {
+        additionalQuestionsWithMeldingText: additionalQuestionsWithMeldingText,
         meldingData: meldingData,
         meldingId: 123,
         meldingState: state,
