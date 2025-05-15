@@ -120,7 +120,7 @@ describe('getAdditionalQuestionsSummary', () => {
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
 
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
-      key: item.question.id,
+      key: item.question.id.toString(),
       term: item.question.text,
       description: [item.text],
     }))

@@ -1,5 +1,7 @@
+import { AnswerQuestionOutput, FormOutput, FormTextAreaComponentOutput, MeldingOutput } from '@meldingen/api-client'
+
 // Form
-export const textAreaComponent = {
+export const textAreaComponent: FormTextAreaComponentOutput = {
   label: 'First question',
   description: '',
   key: 'textArea1',
@@ -9,10 +11,9 @@ export const textAreaComponent = {
   maxCharCount: 0,
   position: 1,
   question: 1,
-  values: null,
 }
 
-export const form = {
+export const form: FormOutput = {
   title: 'Wizard form mock',
   display: 'wizard',
   created_at: '2024-07-16T13:13:30.968809',
@@ -21,6 +22,7 @@ export const form = {
   classification: 1,
   components: [
     {
+      title: 'First page',
       label: 'Page 1',
       key: 'page1',
       type: 'panel',
@@ -29,6 +31,7 @@ export const form = {
       components: [textAreaComponent],
     },
     {
+      title: 'Second page',
       label: 'Page 2',
       key: 'page2',
       type: 'panel',
@@ -45,24 +48,24 @@ export const form = {
           maxCharCount: 0,
           position: 1,
           question: 2,
-          values: null,
+          values: undefined,
         },
       ],
     },
   ],
 }
 
-export const contact = [
+export const contact: FormTextAreaComponentOutput[] = [
   {
     type: 'textarea',
     label: 'Wat is uw e-mailadres?',
     description: 'Test 1',
     key: 'email',
     input: true,
-    inputType: 'text',
     maxCharCount: 0,
     position: 0,
     autoExpand: false,
+    question: 1,
   },
   {
     type: 'textarea',
@@ -70,10 +73,10 @@ export const contact = [
     description: 'Test 2',
     key: 'tel',
     input: true,
-    inputType: 'text',
     maxCharCount: 0,
     position: 1,
     autoExpand: false,
+    question: 2,
   },
 ]
 
@@ -130,7 +133,8 @@ export const PDOKSuggest = {
 }
 
 // Melding
-export const melding = {
+export const melding: MeldingOutput = {
+  public_id: 'AB123',
   id: 123,
   created_at: '2025-02-18T10:34:29.103642',
   updated_at: '2025-02-18T10:34:40.730569',
@@ -142,14 +146,14 @@ export const melding = {
   phone: '0612345678',
 }
 
-export const additionalQuestions = [
+export const additionalQuestions: AnswerQuestionOutput[] = [
   {
     id: 123,
     created_at: '2025-02-18T10:34:32.181638',
     updated_at: '2025-02-18T10:34:32.181638',
     text: 'q1',
     question: {
-      id: '35',
+      id: 35,
       created_at: '2025-02-17T11:06:22.137002',
       updated_at: '2025-02-17T11:06:22.137002',
       text: 'Wat wilt u melden?',
@@ -161,7 +165,7 @@ export const additionalQuestions = [
     updated_at: '2025-02-18T10:34:32.187573',
     text: 'q2',
     question: {
-      id: '36',
+      id: 36,
       created_at: '2025-02-17T11:06:22.137002',
       updated_at: '2025-02-17T11:06:22.137002',
       text: 'Text Field',

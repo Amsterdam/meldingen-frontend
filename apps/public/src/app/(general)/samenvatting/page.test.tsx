@@ -50,7 +50,7 @@ describe('Page', () => {
     render(PageComponent)
 
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
-      key: item.question.id,
+      key: item.question.id.toString(),
       term: item.question.text,
       description: [item.text],
     }))
