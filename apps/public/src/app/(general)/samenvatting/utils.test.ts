@@ -169,7 +169,7 @@ describe('getAttachmentSummary', () => {
 
   it('should return an error message when getMeldingByMeldingIdAttachmentsMelder returns an error', async () => {
     server.use(
-      http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENTS_MELDER, () =>
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
@@ -180,7 +180,7 @@ describe('getAttachmentSummary', () => {
   })
 
   it('should return an error message when getMeldingByMeldingIdAttachmentsMelder returns no data', async () => {
-    server.use(http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENTS_MELDER, () => new HttpResponse()))
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () => new HttpResponse()))
 
     const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
 
@@ -189,7 +189,7 @@ describe('getAttachmentSummary', () => {
 
   it('should return an error message when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns an error', async () => {
     server.use(
-      http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
@@ -200,7 +200,9 @@ describe('getAttachmentSummary', () => {
   })
 
   it('should return an error message when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns no data', async () => {
-    server.use(http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () => new HttpResponse()))
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () => new HttpResponse()),
+    )
 
     const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
 

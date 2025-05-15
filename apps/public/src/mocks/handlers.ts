@@ -51,7 +51,7 @@ export const handlers = [
   http.get(ENDPOINTS.PDOK_REVERSE, () => HttpResponse.json(PDOKReverse)),
   http.get(ENDPOINTS.PDOK_SUGGEST, () => HttpResponse.json(PDOKSuggest)),
 
-  http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENTS_MELDER, () => {
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () => {
     return HttpResponse.json([
       {
         id: 42,
@@ -60,7 +60,7 @@ export const handlers = [
     ])
   }),
 
-  http.get(ENDPOINTS.MELDING_BY_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
     HttpResponse.json(new Blob(['mock content'], { type: 'image/webp' }), {
       headers: { 'content-type': 'image/webp' },
     }),
