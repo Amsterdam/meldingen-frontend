@@ -19,7 +19,7 @@ type Props = {
 }
 
 const HEADERS = [
-  { key: 'id', labelKey: 'column-header.id' },
+  { key: 'public_id', labelKey: 'column-header.public_id' },
   { key: 'created_at', labelKey: 'column-header.created_at' },
   { key: 'classification', labelKey: 'column-header.classification' },
   { key: 'state', labelKey: 'column-header.state' },
@@ -50,13 +50,13 @@ const renderTableHeaders = (headers: typeof HEADERS, t: (key: string) => string)
 
 const renderTableRows = (data: MeldingOutput[], headers: typeof HEADERS) =>
   data.map((melding) => (
-    <Table.Row key={melding.id}>
+    <Table.Row key={melding.public_id}>
       {headers.map(({ key }) => {
-        if (key === 'id') {
+        if (key === 'public_id') {
           return (
             <Table.Cell key={key}>
               <NextLink href={`/melding/${melding.id}`} legacyBehavior passHref>
-                <Link variant="inline">{melding.id}</Link>
+                <Link variant="inline">{melding.public_id}</Link>
               </NextLink>
             </Table.Cell>
           )
