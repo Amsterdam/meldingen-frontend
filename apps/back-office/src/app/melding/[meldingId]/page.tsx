@@ -64,5 +64,5 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const formattedData = await formatMeldingData(data)
 
-  return <Detail meldingData={formattedData} meldingId={data.id} meldingState={data.state} />
+  return <Detail meldingData={formattedData} meldingId={data.id} publicId={data.public_id} meldingState={data.state} />
 }
