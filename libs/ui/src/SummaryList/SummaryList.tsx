@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { forwardRef } from 'react'
 import type { ForwardedRef, HTMLAttributes, PropsWithChildren } from 'react'
 
@@ -11,7 +12,7 @@ export type SummaryListProps = PropsWithChildren<HTMLAttributes<HTMLDListElement
 
 const SummaryListRoot = forwardRef(
   ({ children, className, ...restProps }: SummaryListProps, ref: ForwardedRef<HTMLDListElement>) => (
-    <dl {...restProps} className={`${styles.list} ${className ?? ''}`} ref={ref}>
+    <dl {...restProps} className={clsx(styles.list, className)} ref={ref}>
       {children}
     </dl>
   ),
