@@ -2,6 +2,7 @@
 
 import { Button } from '@amsterdam/design-system-react'
 import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
+import clsx from 'clsx'
 import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
@@ -39,7 +40,7 @@ export const SelectLocation = () => {
   return (
     <div className={styles.grid}>
       <SideBar coordinates={coordinates} setCoordinates={setCoordinates} />
-      <div className={`${styles.assetList} ${showAssetList ? styles.showAssetList : ''}`}>
+      <div className={clsx(styles.assetList, showAssetList && styles.showAssetList)}>
         <AssetList />
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
           {t('submit-button.desktop')}
