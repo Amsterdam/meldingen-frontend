@@ -1,9 +1,12 @@
 import { render } from '@testing-library/react'
 import { client } from 'libs/api-client/src/client.gen'
+import { http, HttpResponse } from 'msw'
 
 import { Detail } from './Detail'
 import Page, { generateMetadata } from './page'
 import { additionalQuestions, melding } from 'apps/back-office/src/mocks/data'
+import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
+import { server } from 'apps/back-office/src/mocks/node'
 
 vi.mock('./Detail', () => ({
   Detail: vi.fn(() => <div>Detail Component</div>),
@@ -32,6 +35,32 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
+  it('returns an error message when melding is not found', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 500 })))
+
+    const params = Promise.resolve({ meldingId: 123 })
+    const result = await Page({ params })
+
+    const { getByText } = render(result)
+
+    expect(getByText('errors.melding-not-found')).toBeInTheDocument()
+  })
+
+  it('returns an error message when additional questions are not found', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    const params = Promise.resolve({ meldingId: 123 })
+    const result = await Page({ params })
+
+    const { getByText } = render(result)
+
+    expect(getByText('Error message')).toBeInTheDocument()
+  })
+
   it('calls the Detail component with the correct data', async () => {
     const params = Promise.resolve({ meldingId: 123 })
     const result = await Page({ params })
