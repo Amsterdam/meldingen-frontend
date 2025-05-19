@@ -1,4 +1,5 @@
 import { Column, Heading, Link, OrderedList, Paragraph, UnorderedList } from '@amsterdam/design-system-react'
+import clsx from 'clsx'
 import { Children, isValidElement } from 'react'
 import type { PropsWithChildren } from 'react'
 import ReactMarkdown from 'react-markdown'
@@ -73,7 +74,7 @@ export const MarkdownToHtml = ({
   id?: string
   type?: 'description' | 'rich-text'
 }) => (
-  <Column className={className ?? ''} id={id}>
+  <Column className={clsx(className)} id={id}>
     <ReactMarkdown
       allowedElements={type === 'description' ? descriptionAllowedElements : richTextAllowedElements}
       components={type === 'description' ? descriptionMarkdownToHtmlMap : richTextMarkdownToHtmlMap}

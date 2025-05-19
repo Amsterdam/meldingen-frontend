@@ -43,5 +43,15 @@ describe('SelectLocation', () => {
     expect(sideBar).toBeInTheDocument()
     expect(addressCombobox).toBeInTheDocument()
     expect(toggleButton).toBeInTheDocument()
+    expect(container.querySelector)
+  })
+
+  it('renders correct default classname', () => {
+    const { container } = render(<SelectLocation />)
+
+    const gridElement = container.querySelector('div')
+    const assetList = gridElement?.querySelector(':scope > div:nth-of-type(2)')
+
+    expect(assetList).toHaveClass(/assetList/)
   })
 })
