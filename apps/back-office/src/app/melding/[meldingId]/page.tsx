@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { Detail } from './Detail'
-import { getAdditionalQuestions, getContactData, getMeldingData } from './utils'
+import { getAdditionalQuestionsData, getContactData, getMeldingData } from './utils'
 import { getMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
 
 type Params = { params: Promise<{ meldingId: number }> }
@@ -23,7 +23,7 @@ export default async ({ params }: Params) => {
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
   if (error || !data) return t('errors.melding-not-found')
 
-  const additionalQuestions = await getAdditionalQuestions(meldingId)
+  const additionalQuestions = await getAdditionalQuestionsData(meldingId)
   if ('error' in additionalQuestions) return additionalQuestions.error
 
   const additionalQuestionsWithMeldingText = [

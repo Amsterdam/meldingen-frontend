@@ -1,7 +1,7 @@
 import { getMeldingByMeldingIdAnswers, MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 import { handleApiError } from 'apps/back-office/src/handleApiError'
 
-export const getAdditionalQuestions = async (meldingId: number) => {
+export const getAdditionalQuestionsData = async (meldingId: number) => {
   const { data, error } = await getMeldingByMeldingIdAnswers({
     path: { melding_id: meldingId },
   })
@@ -11,7 +11,7 @@ export const getAdditionalQuestions = async (meldingId: number) => {
   return {
     data:
       data?.map((answer) => ({
-        key: `${answer.question.id}`,
+        key: String(answer.question.id),
         term: answer.question.text,
         description: answer.text,
       })) || [],

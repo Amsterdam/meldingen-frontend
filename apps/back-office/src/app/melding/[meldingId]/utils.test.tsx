@@ -1,7 +1,7 @@
 import { client } from 'libs/api-client/src/client.gen'
 import { http, HttpResponse } from 'msw'
 
-import { getAdditionalQuestions, getContactData, getMeldingData } from './utils'
+import { getAdditionalQuestionsData, getContactData, getMeldingData } from './utils'
 import { melding } from 'apps/back-office/src/mocks/data'
 import { additionalQuestions } from 'apps/back-office/src/mocks/data'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
@@ -23,17 +23,17 @@ client.setConfig({
   baseUrl: 'http://localhost:3000',
 })
 
-describe('getAdditionalQuestions', () => {
+describe('getAdditionalQuestionsData', () => {
   it('should return correct additional questions data', async () => {
-    const result = await getAdditionalQuestions(mockMeldingId)
+    const result = await getAdditionalQuestionsData(mockMeldingId)
 
-    const additionalQuestionsSummary = additionalQuestions.map((item) => ({
+    const additionalQuestionsData = additionalQuestions.map((item) => ({
       key: item.question.id.toString(),
       term: item.question.text,
       description: item.text,
     }))
 
-    expect(result).toEqual({ data: additionalQuestionsSummary })
+    expect(result).toEqual({ data: additionalQuestionsData })
   })
 
   it('should return an error message when error is returned', async () => {
@@ -42,7 +42,7 @@ describe('getAdditionalQuestions', () => {
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
-    const result = await getAdditionalQuestions(mockMeldingId)
+    const result = await getAdditionalQuestionsData(mockMeldingId)
 
     expect(result).toEqual({ error: 'Error message' })
   })
@@ -50,7 +50,7 @@ describe('getAdditionalQuestions', () => {
   it('should return an empty array when additional questions data is not found', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () => new HttpResponse()))
 
-    const result = await getAdditionalQuestions(mockMeldingId)
+    const result = await getAdditionalQuestionsData(mockMeldingId)
 
     expect(result).toEqual({ data: [] })
   })
