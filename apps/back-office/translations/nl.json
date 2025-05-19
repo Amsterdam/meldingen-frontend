@@ -20,17 +20,18 @@
     },
     "back-link": "Overzicht meldingen",
     "title": "Melding {meldingId}",
-    "term": {
-      "text": "Meldtekst",
-      "created_at": "Gemeld op",
-      "classification": "Categorie",
-      "state": "Status",
+    "melding-text": "Meldtekst",
+    "contact": {
       "email": "E-mail melder",
       "phone": "Telefoon melder"
     },
-    "state": {
-      "term": "Status",
-      "link": "Wijzig status"
+    "melding-data": {
+      "created_at": "Gemeld op",
+      "classification": "Categorie",
+      "state": {
+        "term": "Status",
+        "link": "Wijzig status"
+      }
     },
     "errors": {
       "melding-not-found": "An error occurred"

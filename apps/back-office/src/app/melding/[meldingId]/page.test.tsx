@@ -44,7 +44,7 @@ describe('Page', () => {
       {
         description: melding.text,
         key: 'text',
-        term: 'term.text',
+        term: 'melding-text',
       },
       {
         description: additionalQuestions[0].text,
@@ -59,20 +59,24 @@ describe('Page', () => {
     ]
 
     const contact = [
-      { key: 'email', term: 'term.email', description: email },
-      { key: 'phone', term: 'term.phone', description: phone },
+      { key: 'email', term: 'contact.email', description: email },
+      { key: 'phone', term: 'contact.phone', description: phone },
     ]
 
     const metadata = [
-      { key: 'created_at', term: 'term.created_at', description: new Date(created_at).toLocaleDateString('nl-NL') },
-      { key: 'classification', term: 'term.classification', description: String(classification) },
+      {
+        key: 'created_at',
+        term: 'melding-data.created_at',
+        description: new Date(created_at).toLocaleDateString('nl-NL'),
+      },
+      { key: 'classification', term: 'melding-data.classification', description: String(classification) },
       {
         key: 'state',
-        term: 'term.state',
+        term: 'melding-data.state.term',
         description: state,
         link: {
           href: `/melding/${id}/wijzig-status`,
-          label: 'state.link',
+          label: 'melding-data.state.link',
         },
       },
     ]

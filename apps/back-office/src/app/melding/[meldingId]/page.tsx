@@ -29,7 +29,7 @@ export default async ({ params }: Params) => {
   const additionalQuestionsWithMeldingText = [
     {
       key: 'text',
-      term: t('term.text'),
+      term: t('melding-text'),
       description: data.text,
     },
     ...additionalQuestions.data,

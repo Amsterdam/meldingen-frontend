@@ -28,7 +28,7 @@ export const getContactData = (data: MeldingOutput, t: (key: string) => string) 
   if (email) {
     items.push({
       key: 'email',
-      term: t('term.email'),
+      term: t('contact.email'),
       description: email,
     })
   }
@@ -36,7 +36,7 @@ export const getContactData = (data: MeldingOutput, t: (key: string) => string) 
   if (phone) {
     items.push({
       key: 'phone',
-      term: t('term.phone'),
+      term: t('contact.phone'),
       description: phone,
     })
   }
@@ -50,21 +50,21 @@ export const getMetadata = (data: MeldingOutput, t: (key: string) => string) => 
   return [
     {
       key: 'created_at',
-      term: t('term.created_at'),
+      term: t('melding-data.created_at'),
       description: new Date(created_at).toLocaleDateString('nl-NL'),
     },
     {
       key: 'classification',
-      term: t('term.classification'),
+      term: t('melding-data.classification'),
       description: String(classification),
     },
     {
       key: 'state',
-      term: t('term.state'),
+      term: t('melding-data.state.term'),
       description: state,
       link: {
         href: `/melding/${id}/wijzig-status`,
-        label: t('state.link'),
+        label: t('melding-data.state.link'),
       },
     },
   ]
