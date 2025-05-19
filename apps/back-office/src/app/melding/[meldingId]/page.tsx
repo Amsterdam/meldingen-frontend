@@ -13,20 +13,20 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
 }
 
 const formatMeldingData = async (data: MeldingOutput) => {
-  const { id, created_at, classification, state, geo_location } = data
+  const { text, created_at, classification, state, email, phone } = data
 
   const t = await getTranslations('detail.term')
 
   return [
     {
-      key: 'melding_id',
-      term: t('melding_id'),
-      description: String(id),
+      key: 'text',
+      term: t('text'),
+      description: text,
     },
     {
       key: 'created_at',
       term: t('created_at'),
-      description: String(created_at),
+      description: new Date(created_at).toLocaleDateString('nl-NL'),
     },
     {
       key: 'classification',
@@ -36,14 +36,19 @@ const formatMeldingData = async (data: MeldingOutput) => {
     {
       key: 'state',
       term: t('state'),
-      description: String(state),
+      description: state,
     },
-    {
-      key: 'geo_location',
-      term: t('geo_location'),
-      description: String(geo_location),
+    email && {
+      key: 'email',
+      term: t('email'),
+      description: email,
     },
-  ]
+    phone && {
+      key: 'phone',
+      term: t('phone'),
+      description: phone,
+    },
+  ].filter((item) => item !== null && item !== undefined && item !== '')
 }
 
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
@@ -59,5 +64,5 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const formattedData = await formatMeldingData(data)
 
-  return <Detail meldingData={formattedData} />
+  return <Detail meldingData={formattedData} meldingId={data.id} meldingState={data.state} />
 }

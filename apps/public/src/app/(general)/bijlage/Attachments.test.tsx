@@ -3,14 +3,14 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 
 import { Attachments } from './Attachments'
+import { textAreaComponent } from 'apps/public/src/mocks/data'
 import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
-import mockFormData from 'apps/public/src/mocks/mockFormData.json'
 import { server } from 'apps/public/src/mocks/node'
 
 const defaultProps = {
   meldingId: 1,
   token: 'mock-token',
-  formData: mockFormData.components[0].components,
+  formData: [textAreaComponent],
 }
 
 vi.mock('react', async (importOriginal) => {
@@ -82,7 +82,12 @@ describe('Attachments', () => {
   })
 
   it('should throw an error when delete request fails', async () => {
-    server.use(http.delete(ENDPOINTS.MELDING_ATTACHMENT_DELETE_BY_ID, () => new HttpResponse(null, { status: 404 })))
+    server.use(
+      http.delete(
+        ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID,
+        () => new HttpResponse(null, { status: 404 }),
+      ),
+    )
     const user = userEvent.setup()
 
     render(<Attachments {...defaultProps} />)
@@ -109,7 +114,7 @@ describe('Attachments', () => {
   })
 
   it('should show an error when post fails', async () => {
-    server.use(http.post(ENDPOINTS.MELDING_ATTACHMENT_BY_ID, () => HttpResponse.error()))
+    server.use(http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () => HttpResponse.error()))
 
     const user = userEvent.setup()
 

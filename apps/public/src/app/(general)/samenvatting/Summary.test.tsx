@@ -26,6 +26,17 @@ const defaultProps = {
       description: ['Antwoord vraag 2'],
     },
   ],
+  attachments: {
+    files: [
+      {
+        blob: { size: 4326, type: 'image/webp' } as Blob,
+        contentType: 'image/webp',
+        fileName: 'IMG_0815.jpg',
+      },
+    ],
+    key: 'attachments',
+    term: 'attachments.step.title',
+  },
   contact: {
     key: 'contact',
     term: 'Wat zijn uw contactgegevens?',
@@ -58,14 +69,16 @@ describe('Summary', () => {
     expect(terms[1]).toHaveTextContent('Text Field 1')
     expect(terms[2]).toHaveTextContent('Text Area 2')
     expect(terms[3]).toHaveTextContent('Waar staat de container?')
-    expect(terms[4]).toHaveTextContent('Wat zijn uw contactgegevens?')
+    expect(terms[4]).toHaveTextContent('attachments.step.title')
+    expect(terms[5]).toHaveTextContent('Wat zijn uw contactgegevens?')
 
     expect(definitions[0]).toHaveTextContent('Er ligt heel veel afval op straat.')
     expect(definitions[1]).toHaveTextContent('Antwoord vraag 1')
     expect(definitions[2]).toHaveTextContent('Antwoord vraag 2')
     expect(definitions[3]).toHaveTextContent('Nieuwmarkt 247, 1011MB Amsterdam')
-    expect(definitions[4]).toHaveTextContent('test@test.com')
-    expect(definitions[5]).toHaveTextContent('+31612345678')
+    expect(definitions[4]).toHaveTextContent('IMG_0815.jpg')
+    expect(definitions[5]).toHaveTextContent('test@test.com')
+    expect(definitions[6]).toHaveTextContent('+31612345678')
 
     expect(screen.getByRole('button', { name: 'submit-button' }))
   })
