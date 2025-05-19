@@ -35,7 +35,7 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  it('returns an error message when melding is not found', async () => {
+  it('returns an error message when getMeldingByMeldingId return an error or no data', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 500 })))
 
     const params = Promise.resolve({ meldingId: 123 })
@@ -46,7 +46,7 @@ describe('Page', () => {
     expect(getByText('errors.melding-not-found')).toBeInTheDocument()
   })
 
-  it('returns an error message when additional questions are not found', async () => {
+  it('returns an error message when getMeldingByMeldingIdAnswers returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
