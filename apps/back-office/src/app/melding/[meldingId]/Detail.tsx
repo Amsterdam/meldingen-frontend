@@ -7,22 +7,22 @@ import { Fragment } from 'react'
 
 import { BackLink } from './_components/BackLink'
 
-type MeldingData = {
+type DescriptionListItem = {
   key: string
   term: string
   description: string
 }
 
-type MetadataItem = MeldingData & { link?: { href: string; label: string } }
+type MeldingDataItem = DescriptionListItem & { link?: { href: string; label: string } }
 
 type Props = {
-  additionalQuestionsWithMeldingText: MeldingData[]
-  contact?: MeldingData[]
+  additionalQuestionsWithMeldingText: DescriptionListItem[]
+  contact?: DescriptionListItem[]
+  meldingData: MeldingDataItem[]
   meldingId: number
-  metadata: MetadataItem[]
 }
 
-export const Detail = ({ additionalQuestionsWithMeldingText, contact, meldingId, metadata }: Props) => {
+export const Detail = ({ additionalQuestionsWithMeldingText, contact, meldingData, meldingId }: Props) => {
   const t = useTranslations('detail')
 
   return (
@@ -43,7 +43,7 @@ export const Detail = ({ additionalQuestionsWithMeldingText, contact, meldingId,
           ))}
         </DescriptionList>
         <DescriptionList className="ams-mb-l">
-          {metadata.map(({ key, term, description, link }) => (
+          {meldingData.map(({ key, term, description, link }) => (
             <Fragment key={key}>
               <DescriptionList.Term>{term}</DescriptionList.Term>
               <DescriptionList.Description>{description}</DescriptionList.Description>

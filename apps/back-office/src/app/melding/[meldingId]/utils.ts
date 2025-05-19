@@ -44,7 +44,7 @@ export const getContactData = (data: MeldingOutput, t: (key: string) => string) 
   return items
 }
 
-export const getMetadata = (data: MeldingOutput, t: (key: string) => string) => {
+export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) => {
   const { id, created_at, classification, state } = data
 
   return [

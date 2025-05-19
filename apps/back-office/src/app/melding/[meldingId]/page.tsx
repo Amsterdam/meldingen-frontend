@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { Detail } from './Detail'
-import { getAdditionalQuestions, getContactData, getMetadata } from './utils'
+import { getAdditionalQuestions, getContactData, getMeldingData } from './utils'
 import { getMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
 
 type Params = { params: Promise<{ meldingId: number }> }
@@ -36,14 +36,14 @@ export default async ({ params }: Params) => {
   ]
 
   const contact = getContactData(data, t)
-  const metadata = getMetadata(data, t)
+  const meldingData = getMeldingData(data, t)
 
   return (
     <Detail
       additionalQuestionsWithMeldingText={additionalQuestionsWithMeldingText}
       contact={contact}
       meldingId={data.id}
-      metadata={metadata}
+      meldingData={meldingData}
     />
   )
 }

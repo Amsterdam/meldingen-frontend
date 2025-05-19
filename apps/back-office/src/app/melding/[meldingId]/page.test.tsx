@@ -63,7 +63,7 @@ describe('Page', () => {
       { key: 'phone', term: 'contact.phone', description: phone },
     ]
 
-    const metadata = [
+    const meldingData = [
       {
         key: 'created_at',
         term: 'melding-data.created_at',
@@ -86,7 +86,7 @@ describe('Page', () => {
         additionalQuestionsWithMeldingText: additionalQuestionsWithMeldingText,
         contact: contact,
         meldingId: 123,
-        metadata: metadata,
+        meldingData: meldingData,
       },
       {},
     )

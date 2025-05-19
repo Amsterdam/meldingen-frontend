@@ -9,9 +9,7 @@ const defaultProps = {
     { key: '2', term: 'Term 2', description: 'Description 2' },
     { key: '3', term: 'Term 3', description: 'Description 3' },
   ],
-
-  meldingId: 123,
-  metadata: [
+  meldingData: [
     { key: 'created_at', term: 'Created at', description: '2023-10-01' },
     { key: 'classification', term: 'Classification', description: 'Test classification' },
     {
@@ -21,6 +19,7 @@ const defaultProps = {
       link: { href: '/melding/123/wijzig-status', label: 'Change state' },
     },
   ],
+  meldingId: 123,
 }
 
 describe('Detail', () => {
@@ -59,9 +58,13 @@ describe('Detail', () => {
     expect(screen.getByText('1234567890')).toBeInTheDocument()
   })
 
-  it('renders the state data', () => {
+  it('renders the melding data', () => {
     render(<Detail {...defaultProps} />)
 
+    expect(screen.getByText('Created at')).toBeInTheDocument()
+    expect(screen.getByText('2023-10-01')).toBeInTheDocument()
+    expect(screen.getByText('Classification')).toBeInTheDocument()
+    expect(screen.getByText('Test classification')).toBeInTheDocument()
     expect(screen.getByText('State')).toBeInTheDocument()
     expect(screen.getByText('processing')).toBeInTheDocument()
 
