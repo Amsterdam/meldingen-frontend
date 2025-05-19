@@ -16,18 +16,11 @@ type MeldingData = {
 type Props = {
   additionalQuestionsWithMeldingText: MeldingData[]
   contact?: MeldingData[]
-  meldingData: MeldingData[]
   meldingId: number
-  meldingState: string
+  metadata: ((MeldingData & { link?: undefined }) | (MeldingData & { link: { href: string; label: string } }))[]
 }
 
-export const Detail = ({
-  additionalQuestionsWithMeldingText,
-  contact,
-  meldingData,
-  meldingId,
-  meldingState,
-}: Props) => {
+export const Detail = ({ additionalQuestionsWithMeldingText, contact, meldingId, metadata }: Props) => {
   const t = useTranslations('detail')
 
   return (
@@ -47,25 +40,21 @@ export const Detail = ({
             </Fragment>
           ))}
         </DescriptionList>
-
         <DescriptionList className="ams-mb-l">
-          {meldingData.map(({ key, term, description }) => (
+          {metadata.map(({ key, term, description, link }) => (
             <Fragment key={key}>
               <DescriptionList.Term>{term}</DescriptionList.Term>
               <DescriptionList.Description>{description}</DescriptionList.Description>
+              {link && (
+                <DescriptionList.Description>
+                  <NextLink href={link.href} passHref legacyBehavior>
+                    <Link>{link.label}</Link>
+                  </NextLink>
+                </DescriptionList.Description>
+              )}
             </Fragment>
           ))}
         </DescriptionList>
-        <DescriptionList className="ams-mb-l">
-          <DescriptionList.Term>{t('state.term')}</DescriptionList.Term>
-          <DescriptionList.Description>{meldingState}</DescriptionList.Description>
-          <DescriptionList.Description>
-            <NextLink href={`/melding/${meldingId}/wijzig-status`} passHref legacyBehavior>
-              <Link>{t('state.link')}</Link>
-            </NextLink>
-          </DescriptionList.Description>
-        </DescriptionList>
-
         {contact && (
           <DescriptionList className="ams-mb-l">
             {contact.map(({ key, term, description }) => (

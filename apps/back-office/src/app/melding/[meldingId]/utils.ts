@@ -36,3 +36,29 @@ export const getContactData = (data: MeldingOutput, t: (key: string) => string) 
     },
   ].filter((item) => item !== null && item !== undefined && item !== '')
 }
+
+export const getMetadata = (data: MeldingOutput, t: (key: string) => string) => {
+  const { id, created_at, classification, state } = data
+
+  return [
+    {
+      key: 'created_at',
+      term: t('term.created_at'),
+      description: new Date(created_at).toLocaleDateString('nl-NL'),
+    },
+    {
+      key: 'classification',
+      term: t('term.classification'),
+      description: String(classification),
+    },
+    {
+      key: 'state',
+      term: t('term.state'),
+      description: state,
+      link: {
+        href: `/melding/${id}/wijzig-status`,
+        label: t('state.link'),
+      },
+    },
+  ]
+}

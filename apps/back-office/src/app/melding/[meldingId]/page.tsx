@@ -1,8 +1,8 @@
 import { getTranslations } from 'next-intl/server'
 
 import { Detail } from './Detail'
-import { getAdditionalQuestions, getContactData } from './utils'
-import { getMeldingByMeldingId, MeldingOutput } from 'apps/back-office/src/apiClientProxy'
+import { getAdditionalQuestions, getContactData, getMetadata } from './utils'
+import { getMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
@@ -11,30 +11,6 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
   return {
     title: t('metadata.title', { meldingId }),
   }
-}
-
-const formatMeldingData = async (data: MeldingOutput) => {
-  const { created_at, classification, state } = data
-
-  const t = await getTranslations('detail.term')
-
-  return [
-    {
-      key: 'created_at',
-      term: t('created_at'),
-      description: new Date(created_at).toLocaleDateString('nl-NL'),
-    },
-    {
-      key: 'classification',
-      term: t('classification'),
-      description: String(classification),
-    },
-    {
-      key: 'state',
-      term: t('state'),
-      description: state,
-    },
-  ]
 }
 
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
@@ -47,8 +23,6 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   if (error || !data) {
     return t('errors.melding-not-found')
   }
-
-  const formattedData = await formatMeldingData(data)
 
   const additionalQuestions = await getAdditionalQuestions(meldingId)
   if ('error' in additionalQuestions) return additionalQuestions.error
@@ -64,13 +38,14 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const contact = getContactData(data, t)
 
+  const metadata = getMetadata(data, t)
+
   return (
     <Detail
       additionalQuestionsWithMeldingText={additionalQuestionsWithMeldingText}
       contact={contact}
-      meldingData={formattedData}
       meldingId={data.id}
-      meldingState={data.state}
+      metadata={metadata}
     />
   )
 }
