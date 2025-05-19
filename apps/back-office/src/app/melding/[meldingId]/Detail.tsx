@@ -13,11 +13,13 @@ type MeldingData = {
   description: string
 }
 
+type MetadataItem = MeldingData & { link?: { href: string; label: string } }
+
 type Props = {
   additionalQuestionsWithMeldingText: MeldingData[]
   contact?: MeldingData[]
   meldingId: number
-  metadata: ((MeldingData & { link?: undefined }) | (MeldingData & { link: { href: string; label: string } }))[]
+  metadata: MetadataItem[]
 }
 
 export const Detail = ({ additionalQuestionsWithMeldingText, contact, meldingId, metadata }: Props) => {

@@ -23,18 +23,25 @@ export const getContactData = (data: MeldingOutput, t: (key: string) => string) 
 
   if (!email && !phone) return undefined
 
-  return [
-    email && {
+  const items = []
+
+  if (email) {
+    items.push({
       key: 'email',
       term: t('term.email'),
       description: email,
-    },
-    phone && {
+    })
+  }
+
+  if (phone) {
+    items.push({
       key: 'phone',
       term: t('term.phone'),
       description: phone,
-    },
-  ].filter((item) => item !== null && item !== undefined && item !== '')
+    })
+  }
+
+  return items
 }
 
 export const getMetadata = (data: MeldingOutput, t: (key: string) => string) => {

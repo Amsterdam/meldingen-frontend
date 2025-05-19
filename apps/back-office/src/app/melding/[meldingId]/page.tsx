@@ -4,7 +4,9 @@ import { Detail } from './Detail'
 import { getAdditionalQuestions, getContactData, getMetadata } from './utils'
 import { getMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
 
-export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
+type Params = { params: Promise<{ meldingId: number }> }
+
+export const generateMetadata = async ({ params }: Params) => {
   const { meldingId } = await params
   const t = await getTranslations('detail')
 
@@ -13,16 +15,13 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
   }
 }
 
-export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
+export default async ({ params }: Params) => {
   const { meldingId } = await params
-
-  const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
   const t = await getTranslations('detail')
 
-  if (error || !data) {
-    return t('errors.melding-not-found')
-  }
+  const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
+  if (error || !data) return t('errors.melding-not-found')
 
   const additionalQuestions = await getAdditionalQuestions(meldingId)
   if ('error' in additionalQuestions) return additionalQuestions.error
@@ -37,7 +36,6 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   ]
 
   const contact = getContactData(data, t)
-
   const metadata = getMetadata(data, t)
 
   return (
