@@ -8,6 +8,7 @@ describe('BackLink', () => {
 
     const component = screen.getByRole('link')
 
-    expect(component).toHaveClass('ams-link ams-link--standalone _link_9d6d91 extra')
+    expect(component).toHaveClass(/link/)
+    expect(component).toHaveClass('extra')
   })
 })

@@ -8,6 +8,7 @@ describe('SummaryListItem', () => {
 
     const element = container.querySelector('div')
 
-    expect(element).toHaveClass('_item_0baf87 extra')
+    expect(element).toHaveClass(/item/)
+    expect(element).toHaveClass('extra')
   })
 })

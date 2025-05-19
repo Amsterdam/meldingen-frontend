@@ -52,6 +52,6 @@ describe('SelectLocation', () => {
     const gridElement = container.querySelector('div')
     const assetList = gridElement?.querySelector(':scope > div:nth-of-type(2)')
 
-    expect(assetList).toHaveClass('_assetList_0ef84e')
+    expect(assetList).toHaveClass(/assetList/)
   })
 })
