@@ -38,13 +38,7 @@ describe('Page', () => {
 
     render(result)
 
-    const { created_at, classification, state, email, phone } = melding
-
-    const meldingData = [
-      { key: 'created_at', term: 'created_at', description: new Date(created_at).toLocaleDateString('nl-NL') },
-      { key: 'classification', term: 'classification', description: String(classification) },
-      { key: 'state', term: 'state', description: state },
-    ]
+    const { id, created_at, classification, state, email, phone } = melding
 
     const additionalQuestionsWithMeldingText = [
       {
@@ -69,13 +63,26 @@ describe('Page', () => {
       { key: 'phone', term: 'term.phone', description: phone },
     ]
 
+    const metadata = [
+      { key: 'created_at', term: 'term.created_at', description: new Date(created_at).toLocaleDateString('nl-NL') },
+      { key: 'classification', term: 'term.classification', description: String(classification) },
+      {
+        key: 'state',
+        term: 'term.state',
+        description: state,
+        link: {
+          href: `/melding/${id}/wijzig-status`,
+          label: 'state.link',
+        },
+      },
+    ]
+
     expect(Detail).toHaveBeenCalledWith(
       {
         additionalQuestionsWithMeldingText: additionalQuestionsWithMeldingText,
         contact: contact,
-        meldingData: meldingData,
         meldingId: 123,
-        meldingState: state,
+        metadata: metadata,
       },
       {},
     )
