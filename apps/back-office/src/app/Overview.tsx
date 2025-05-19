@@ -30,7 +30,7 @@ const formatValue = (melding: MeldingOutput, key: string) => {
     case 'created_at':
       return new Date(melding.created_at).toLocaleDateString('nl-NL')
     case 'classification':
-      return melding.classification
+      return melding.classification?.name
     case 'state':
       return melding.state
     default:

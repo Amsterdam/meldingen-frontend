@@ -49,26 +49,28 @@ export const generateMetadata = async () => {
 }
 
 type Params = Promise<{
-  classification: number
+  classificationId: number
   panelId: string
 }>
 
-const getNextPanelPath = (classification: number, currentPanelIndex: number, formData: FormOutput) => {
+const getNextPanelPath = (classificationId: number, currentPanelIndex: number, formData: FormOutput) => {
   if (currentPanelIndex === formData.components.length - 1) return '/locatie'
 
-  return `/aanvullende-vragen/${classification}/${formData.components[currentPanelIndex + 1].key}`
+  return `/aanvullende-vragen/${classificationId}/${formData.components[currentPanelIndex + 1].key}`
 }
 
-const getPreviousPanelPath = (classification: number, currentPanelIndex: number, formData: FormOutput) => {
+const getPreviousPanelPath = (classificationId: number, currentPanelIndex: number, formData: FormOutput) => {
   if (currentPanelIndex === 0) return '/'
 
-  return `/aanvullende-vragen/${classification}/${formData.components[currentPanelIndex - 1].key}`
+  return `/aanvullende-vragen/${classificationId}/${formData.components[currentPanelIndex - 1].key}`
 }
 
 export default async ({ params }: { params: Params }) => {
-  const { classification, panelId } = await params
+  const { classificationId, panelId } = await params
 
-  const { data, error } = await getFormClassificationByClassificationId({ path: { classification_id: classification } })
+  const { data, error } = await getFormClassificationByClassificationId({
+    path: { classification_id: classificationId },
+  })
 
   if (error) return handleApiError(error)
 
@@ -89,10 +91,10 @@ export default async ({ params }: { params: Params }) => {
   const isLastPanel = currentPanelIndex === data.components.length - 1
 
   // Pass last panel path to the action
-  const lastPanelPath = `/aanvullende-vragen/${classification}/${data.components[data.components.length - 1].key}`
+  const lastPanelPath = `/aanvullende-vragen/${classificationId}/${data.components[data.components.length - 1].key}`
 
   // Pass next panel path to the action
-  const nextPanelPath = getNextPanelPath(classification, currentPanelIndex, data)
+  const nextPanelPath = getNextPanelPath(classificationId, currentPanelIndex, data)
 
   const extraArgs = {
     isLastPanel,
@@ -104,7 +106,7 @@ export default async ({ params }: { params: Params }) => {
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)
 
   // Pass previous panel path to the Aanvullende vragen component
-  const previousPanelPath = getPreviousPanelPath(classification, currentPanelIndex, data)
+  const previousPanelPath = getPreviousPanelPath(classificationId, currentPanelIndex, data)
 
   return (
     <AdditionalQuestions

@@ -30,7 +30,7 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   if (classification) {
     // Get entire form, in order to redirect to its first panel
     const { data, error } = await getFormClassificationByClassificationId({
-      path: { classification_id: classification },
+      path: { classification_id: classification.id },
     })
 
     const hasAdditionalQuestions = Boolean(data?.components[0])
@@ -52,7 +52,7 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
 
     const nextFormFirstKey = data?.components[0].key
 
-    nextPage = `/aanvullende-vragen/${classification}/${nextFormFirstKey}`
+    nextPage = `/aanvullende-vragen/${classification.id}/${nextFormFirstKey}`
   }
 
   return redirect(nextPage)
