@@ -8,10 +8,10 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Grid } from '@meldingen/ui'
 
 type Props = {
-  meldingId: string
+  publicId: string
 }
 
-export const Thanks = ({ meldingId }: Props) => {
+export const Thanks = ({ publicId }: Props) => {
   const t = useTranslations('thanks')
 
   return (
@@ -20,7 +20,7 @@ export const Thanks = ({ meldingId }: Props) => {
         <Heading className="ams-mb-m" level={1}>
           {t('title')}
         </Heading>
-        <MarkdownToHtml className="ams-mb-m">{t('description', { meldingId })}</MarkdownToHtml>
+        <MarkdownToHtml className="ams-mb-m">{t('description', { publicId })}</MarkdownToHtml>
         <NextLink href="/" legacyBehavior passHref>
           <Link href="dummy-href">{t('link')}</Link>
         </NextLink>

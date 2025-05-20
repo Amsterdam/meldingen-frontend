@@ -25,7 +25,7 @@ export const postSummaryForm = async () => {
     return { message: handleApiError(error) }
 
     // Delete location, token and lastPanelpath cookies
-  ;['location', 'token', 'lastPanelPath'].forEach((cookie) => {
+  ;['location', 'token', 'lastPanelPath', 'id'].forEach((cookie) => {
     cookieStore.delete(cookie)
   })
 

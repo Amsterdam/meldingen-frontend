@@ -57,7 +57,7 @@ describe('postSummaryForm', () => {
     expect(result).toEqual({ message: 'Error message' })
   })
 
-  it('deletes location, token, and lastPanelPath cookies and redirects to /bedankt', async () => {
+  it('deletes location, token, lastPanelPath and id cookies and redirects to /bedankt', async () => {
     mockCookies.get.mockImplementation((name) => {
       if (name === 'id') {
         return { value: '123' }
@@ -73,6 +73,7 @@ describe('postSummaryForm', () => {
     expect(mockCookies.delete).toHaveBeenCalledWith('location')
     expect(mockCookies.delete).toHaveBeenCalledWith('token')
     expect(mockCookies.delete).toHaveBeenCalledWith('lastPanelPath')
+    expect(mockCookies.delete).toHaveBeenCalledWith('id')
     expect(redirect).toHaveBeenCalledWith('/bedankt')
   })
 })
