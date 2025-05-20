@@ -403,6 +403,12 @@ export type Log = {
     log: number | number | string | boolean | Array<number | number | string | boolean>;
 };
 
+export type MailPreviewInput = {
+    title: string;
+    preview_text: string;
+    body_text: string;
+};
+
 export type MapInput = {
     map: [
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterInput | MapInput,
@@ -433,8 +439,13 @@ export type MeldingCreateOutput = {
     public_id: string;
     text: string;
     state: string;
-    classification?: number | null;
+    classification?: SimpleClassificationOutput | null;
     geo_location?: GeoJsonOutput | null;
+    street?: string | null;
+    house_number?: number | null;
+    house_number_addition?: string | null;
+    postal_code?: string | null;
+    city?: string | null;
     email?: string | null;
     phone?: string | null;
     token: string;
@@ -451,8 +462,13 @@ export type MeldingOutput = {
     public_id: string;
     text: string;
     state: string;
-    classification?: number | null;
+    classification?: SimpleClassificationOutput | null;
     geo_location?: GeoJsonOutput | null;
+    street?: string | null;
+    house_number?: number | null;
+    house_number_addition?: string | null;
+    postal_code?: string | null;
+    city?: string | null;
     email?: string | null;
     phone?: string | null;
 };
@@ -583,6 +599,13 @@ export type ReduceOutput = {
         Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var,
         unknown
     ];
+};
+
+export type SimpleClassificationOutput = {
+    id: number;
+    created_at: string;
+    updated_at: string;
+    name: string;
 };
 
 export type SimpleFormOutput = {
@@ -767,6 +790,49 @@ export type Var = {
     ] | number | number | Array<null> | null;
 };
 
+export type GetAttachmentByIdData = {
+    body?: never;
+    path: {
+        /**
+         * The id of the attachment.
+         */
+        id: number;
+    };
+    query?: {
+        /**
+         * The type of the attachment to download.
+         */
+        type?: AttachmentTypes;
+    };
+    url: '/attachment/{id}';
+};
+
+export type GetAttachmentByIdErrors = {
+    /**
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetAttachmentByIdError = GetAttachmentByIdErrors[keyof GetAttachmentByIdErrors];
+
+export type GetAttachmentByIdResponses = {
+    /**
+     * The binary image data
+     */
+    200: Blob | File;
+};
+
+export type GetAttachmentByIdResponse = GetAttachmentByIdResponses[keyof GetAttachmentByIdResponses];
+
 export type GetClassificationData = {
     body?: never;
     path?: never;
@@ -950,6 +1016,35 @@ export type PatchClassificationByClassificationIdResponses = {
 };
 
 export type PatchClassificationByClassificationIdResponse = PatchClassificationByClassificationIdResponses[keyof PatchClassificationByClassificationIdResponses];
+
+export type PostMailPreviewData = {
+    body: MailPreviewInput;
+    path?: never;
+    query?: never;
+    url: '/mail/preview';
+};
+
+export type PostMailPreviewErrors = {
+    /**
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type PostMailPreviewError = PostMailPreviewErrors[keyof PostMailPreviewErrors];
+
+export type PostMailPreviewResponses = {
+    /**
+     * Successful Response
+     */
+    200: string;
+};
+
+export type PostMailPreviewResponse = PostMailPreviewResponses[keyof PostMailPreviewResponses];
 
 export type GetMeldingData = {
     body?: never;
@@ -1538,10 +1633,12 @@ export type GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadError = GetMeld
 
 export type GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponses = {
     /**
-     * Successful Response
+     * The binary image data
      */
-    200: unknown;
+    200: Blob | File;
 };
+
+export type GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponse = GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponses[keyof GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponses];
 
 export type GetMeldingByMeldingIdAttachmentsData = {
     body?: never;

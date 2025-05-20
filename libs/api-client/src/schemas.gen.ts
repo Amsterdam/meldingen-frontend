@@ -3131,6 +3131,26 @@ export const LogSchema = {
     title: 'Log'
 } as const;
 
+export const MailPreviewInputSchema = {
+    properties: {
+        title: {
+            type: 'string',
+            title: 'Title'
+        },
+        preview_text: {
+            type: 'string',
+            title: 'Preview Text'
+        },
+        body_text: {
+            type: 'string',
+            title: 'Body Text'
+        }
+    },
+    type: 'object',
+    required: ['title', 'preview_text', 'body_text'],
+    title: 'MailPreviewInput'
+} as const;
+
 export const Map_InputSchema = {
     properties: {
         map: {
@@ -3517,13 +3537,12 @@ export const MeldingCreateOutputSchema = {
         classification: {
             anyOf: [
                 {
-                    type: 'integer'
+                    '$ref': '#/components/schemas/SimpleClassificationOutput'
                 },
                 {
                     type: 'null'
                 }
-            ],
-            title: 'Classification'
+            ]
         },
         geo_location: {
             anyOf: [
@@ -3534,6 +3553,61 @@ export const MeldingCreateOutputSchema = {
                     type: 'null'
                 }
             ]
+        },
+        street: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Street'
+        },
+        house_number: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'House Number'
+        },
+        house_number_addition: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'House Number Addition'
+        },
+        postal_code: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Postal Code'
+        },
+        city: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'City'
         },
         email: {
             anyOf: [
@@ -3613,13 +3687,12 @@ export const MeldingOutputSchema = {
         classification: {
             anyOf: [
                 {
-                    type: 'integer'
+                    '$ref': '#/components/schemas/SimpleClassificationOutput'
                 },
                 {
                     type: 'null'
                 }
-            ],
-            title: 'Classification'
+            ]
         },
         geo_location: {
             anyOf: [
@@ -3630,6 +3703,61 @@ export const MeldingOutputSchema = {
                     type: 'null'
                 }
             ]
+        },
+        street: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Street'
+        },
+        house_number: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'House Number'
+        },
+        house_number_addition: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'House Number Addition'
+        },
+        postal_code: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Postal Code'
+        },
+        city: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'City'
         },
         email: {
             anyOf: [
@@ -4971,6 +5099,32 @@ export const Reduce_OutputSchema = {
     type: 'object',
     required: ['reduce'],
     title: 'Reduce'
+} as const;
+
+export const SimpleClassificationOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
+        },
+        name: {
+            type: 'string',
+            title: 'Name'
+        }
+    },
+    type: 'object',
+    required: ['id', 'created_at', 'updated_at', 'name'],
+    title: 'SimpleClassificationOutput'
 } as const;
 
 export const SimpleFormOutputSchema = {
