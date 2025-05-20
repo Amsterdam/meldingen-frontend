@@ -101,6 +101,14 @@ describe('MarkdownToHtml', () => {
     expect(paragraph).toHaveClass('ams-paragraph')
   })
 
+  it('renders an extra class name', () => {
+    const { container } = render(<MarkdownToHtml className="extra">This is a paragraph.</MarkdownToHtml>)
+
+    const element = container.querySelector('div')
+
+    expect(element).toHaveClass('ams-column extra')
+  })
+
   it('does not render disallowed elements', () => {
     render(
       <MarkdownToHtml>

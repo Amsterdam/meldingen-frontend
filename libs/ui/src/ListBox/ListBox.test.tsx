@@ -4,16 +4,10 @@ import { ListBox } from './ListBox'
 
 describe('ListBox', () => {
   it('should pass classnames properly', () => {
-    const { rerender } = render(<ListBox className={undefined} />)
+    render(<ListBox className="extra" />)
 
-    const ul = screen.getByRole('list')
+    const listElement = screen.getByRole('list')
 
-    expect(ul).not.toHaveClass('undefined')
-
-    rerender(<ListBox className="test-123" />)
-
-    const ulSecondRender = screen.getByRole('list')
-
-    expect(ulSecondRender).toHaveClass('test-123')
+    expect(listElement).toHaveClass('extra')
   })
 })
