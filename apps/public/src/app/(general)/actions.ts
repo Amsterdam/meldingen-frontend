@@ -20,11 +20,12 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
 
   if (error) return { message: handleApiError(error) }
 
-  const { classification, id, token } = data
+  const { classification, id, token, public_id } = data
 
   // Set session variables in cookies
   const cookieStore = await cookies()
   cookieStore.set('id', id.toString())
+  cookieStore.set('public_id', public_id.toString())
   cookieStore.set('token', token)
 
   if (classification) {
