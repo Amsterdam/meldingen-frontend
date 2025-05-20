@@ -3,12 +3,13 @@ import { getTranslations } from 'next-intl/server'
 import { Detail } from './Detail'
 import { getMeldingByMeldingId, MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
-export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
-  const { meldingId } = await params
+export const generateMetadata = async ({ searchParams }: { searchParams: Promise<{ id: string }> }) => {
+  const { id } = await searchParams
+
   const t = await getTranslations('detail')
 
   return {
-    title: t('metadata.title', { meldingId }),
+    title: t('metadata.title', { publicId: id }),
   }
 }
 

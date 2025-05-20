@@ -55,7 +55,7 @@ const renderTableRows = (data: MeldingOutput[], headers: typeof HEADERS) =>
         if (key === 'public_id') {
           return (
             <Table.Cell key={key}>
-              <NextLink href={`/melding/${melding.id}`} legacyBehavior passHref>
+              <NextLink href={`/melding/${melding.id}?id=${melding.public_id}`} legacyBehavior passHref>
                 <Link variant="inline">{melding.public_id}</Link>
               </NextLink>
             </Table.Cell>

@@ -16,7 +16,7 @@
   },
   "detail": {
     "metadata": {
-      "title": "Melding {meldingId} - Gemeente Amsterdam"
+      "title": "Melding {publicId} - Gemeente Amsterdam"
     },
     "back-link": "Overzicht meldingen",
     "title": "Melding {publicId}",
