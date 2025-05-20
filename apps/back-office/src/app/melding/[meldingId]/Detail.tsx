@@ -7,20 +7,22 @@ import { Fragment } from 'react'
 
 import { BackLink } from './_components/BackLink'
 
-type MeldingData = {
+type DescriptionListItem = {
   key: string
   term: string
   description: string
 }
 
+type MeldingDataItem = DescriptionListItem & { link?: { href: string; label: string } }
+
 type Props = {
-  meldingData: MeldingData[]
+  additionalQuestionsWithMeldingText: DescriptionListItem[]
+  contact?: DescriptionListItem[]
+  meldingData: MeldingDataItem[]
   publicId: string
-  meldingId: number
-  meldingState: string
 }
 
-export const Detail = ({ meldingData, publicId, meldingId, meldingState }: Props) => {
+export const Detail = ({ additionalQuestionsWithMeldingText, contact, meldingData, publicId }: Props) => {
   const t = useTranslations('detail')
 
   return (
@@ -33,7 +35,7 @@ export const Detail = ({ meldingData, publicId, meldingId, meldingState }: Props
           {t('title', { publicId })}
         </Heading>
         <DescriptionList className="ams-mb-l">
-          {meldingData.map(({ key, term, description }) => (
+          {additionalQuestionsWithMeldingText.map(({ key, term, description }) => (
             <Fragment key={key}>
               <DescriptionList.Term>{term}</DescriptionList.Term>
               <DescriptionList.Description>{description}</DescriptionList.Description>
@@ -41,14 +43,30 @@ export const Detail = ({ meldingData, publicId, meldingId, meldingState }: Props
           ))}
         </DescriptionList>
         <DescriptionList className="ams-mb-l">
-          <DescriptionList.Term>{t('state.term')}</DescriptionList.Term>
-          <DescriptionList.Description>{meldingState}</DescriptionList.Description>
-          <DescriptionList.Description>
-            <NextLink href={`/melding/${meldingId}/wijzig-status`} passHref legacyBehavior>
-              <Link>{t('state.link')}</Link>
-            </NextLink>
-          </DescriptionList.Description>
+          {meldingData.map(({ key, term, description, link }) => (
+            <Fragment key={key}>
+              <DescriptionList.Term>{term}</DescriptionList.Term>
+              <DescriptionList.Description>{description}</DescriptionList.Description>
+              {link && (
+                <DescriptionList.Description>
+                  <NextLink href={link.href} passHref legacyBehavior>
+                    <Link>{link.label}</Link>
+                  </NextLink>
+                </DescriptionList.Description>
+              )}
+            </Fragment>
+          ))}
         </DescriptionList>
+        {contact && (
+          <DescriptionList className="ams-mb-l">
+            {contact.map(({ key, term, description }) => (
+              <Fragment key={key}>
+                <DescriptionList.Term>{term}</DescriptionList.Term>
+                <DescriptionList.Description>{description}</DescriptionList.Description>
+              </Fragment>
+            ))}
+          </DescriptionList>
+        )}
       </Grid.Cell>
     </Grid>
   )

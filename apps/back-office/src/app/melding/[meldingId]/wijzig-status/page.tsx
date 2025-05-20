@@ -26,5 +26,5 @@ export default async ({ params }: Params) => {
     return t('melding-not-found')
   }
 
-  return <ChangeState meldingId={meldingId} meldingState={data.state} />
+  return <ChangeState meldingId={meldingId} meldingState={data.state} publicId={data.public_id} />
 }

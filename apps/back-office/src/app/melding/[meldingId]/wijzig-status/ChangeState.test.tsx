@@ -15,6 +15,7 @@ vi.mock('react', async (importOriginal) => {
 const defaultProps = {
   meldingId: 123,
   meldingState: 'processing',
+  publicId: 'ABC',
 }
 
 describe('ChangeState', () => {

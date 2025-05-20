@@ -1,7 +1,8 @@
 import { getTranslations } from 'next-intl/server'
 
 import { Detail } from './Detail'
-import { getMeldingByMeldingId, MeldingOutput } from 'apps/back-office/src/apiClientProxy'
+import { getAdditionalQuestionsData, getContactData, getMeldingData } from './utils'
+import { getMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async ({ searchParams }: { searchParams: Promise<{ id: string }> }) => {
   const { id } = await searchParams
@@ -13,57 +14,35 @@ export const generateMetadata = async ({ searchParams }: { searchParams: Promise
   }
 }
 
-const formatMeldingData = async (data: MeldingOutput) => {
-  const { text, created_at, classification, state, email, phone } = data
-
-  const t = await getTranslations('detail.term')
-
-  return [
-    {
-      key: 'text',
-      term: t('text'),
-      description: text,
-    },
-    {
-      key: 'created_at',
-      term: t('created_at'),
-      description: new Date(created_at).toLocaleDateString('nl-NL'),
-    },
-    {
-      key: 'classification',
-      term: t('classification'),
-      description: String(classification),
-    },
-    {
-      key: 'state',
-      term: t('state'),
-      description: state,
-    },
-    email && {
-      key: 'email',
-      term: t('email'),
-      description: email,
-    },
-    phone && {
-      key: 'phone',
-      term: t('phone'),
-      description: phone,
-    },
-  ].filter((item) => item !== null && item !== undefined && item !== '')
-}
-
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
 
+  const t = await getTranslations('detail')
+
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
+  if (error || !data) return t('errors.melding-not-found')
 
-  const t = await getTranslations('detail.errors')
+  const additionalQuestions = await getAdditionalQuestionsData(meldingId)
+  if ('error' in additionalQuestions) return additionalQuestions.error
 
-  if (error || !data) {
-    return t('melding-not-found')
-  }
+  const additionalQuestionsWithMeldingText = [
+    {
+      key: 'text',
+      term: t('melding-text'),
+      description: data.text,
+    },
+    ...additionalQuestions.data,
+  ]
 
-  const formattedData = await formatMeldingData(data)
+  const contact = getContactData(data, t)
+  const meldingData = getMeldingData(data, t)
 
-  return <Detail meldingData={formattedData} meldingId={data.id} publicId={data.public_id} meldingState={data.state} />
+  return (
+    <Detail
+      additionalQuestionsWithMeldingText={additionalQuestionsWithMeldingText}
+      contact={contact}
+      meldingData={meldingData}
+      publicId={data.public_id}
+    />
+  )
 }

@@ -13,11 +13,12 @@ import { BackLink } from '../_components/BackLink'
 type Props = {
   meldingId: number
   meldingState: string
+  publicId: string
 }
 
 const initialState: { message?: string } = {}
 
-export const ChangeState = ({ meldingId, meldingState }: Props) => {
+export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
   const postChangeStateFormWithMeldingId = postChangeStateForm.bind(null, { meldingId })
   const [formState, formAction] = useActionState(postChangeStateFormWithMeldingId, initialState)
 
@@ -30,7 +31,7 @@ export const ChangeState = ({ meldingId, meldingState }: Props) => {
           {t('back-link')}
         </BackLink>
         <Heading className="ams-mb-l" level={1}>
-          {t('title', { meldingId })}
+          {t('title', { publicId })}
         </Heading>
         {formState?.message && <Paragraph>{formState.message}</Paragraph>}
         <form action={formAction}>

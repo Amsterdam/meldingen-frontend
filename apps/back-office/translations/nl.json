@@ -12,7 +12,8 @@
       "created_at": "Datum",
       "classification": "Categorie",
       "state": "Status"
-    }
+    },
+    "no-classification": "Geen categorie"
   },
   "detail": {
     "metadata": {
@@ -20,21 +21,23 @@
     },
     "back-link": "Overzicht meldingen",
     "title": "Melding {publicId}",
-    "term": {
-      "text": "Meldtekst",
-      "created_at": "Gemeld op",
-      "classification": "Categorie",
-      "state": "Status",
+    "melding-text": "Meldtekst",
+    "contact": {
       "email": "E-mail melder",
       "phone": "Telefoon melder"
     },
-    "state": {
-      "term": "Status",
-      "link": "Wijzig status"
+    "melding-data": {
+      "created_at": "Gemeld op",
+      "classification": "Categorie",
+      "state": {
+        "term": "Status",
+        "link": "Wijzig status"
+      }
     },
     "errors": {
       "melding-not-found": "An error occurred"
-    }
+    },
+    "no-classification": "Geen categorie"
   },
   "change-state": {
     "metadata": {
