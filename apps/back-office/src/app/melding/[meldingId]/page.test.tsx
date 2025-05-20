@@ -98,7 +98,11 @@ describe('Page', () => {
         term: 'melding-data.created_at',
         description: new Date(created_at).toLocaleDateString('nl-NL'),
       },
-      { key: 'classification', term: 'melding-data.classification', description: String(classification) },
+      {
+        key: 'classification',
+        term: 'melding-data.classification',
+        description: classification ? classification.name : 'No classification',
+      },
       {
         key: 'state',
         term: 'melding-data.state.term',

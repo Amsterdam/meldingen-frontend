@@ -91,7 +91,7 @@ describe('getMeldingData', () => {
   it('should return correct melding summary', () => {
     const result = getMeldingData(melding, (key: string) => key)
 
-    const { id, created_at, classification, state } = melding
+    const { id, classification, created_at, state } = melding
 
     expect(result).toEqual([
       {
@@ -100,7 +100,7 @@ describe('getMeldingData', () => {
         term: 'melding-data.created_at',
       },
       {
-        description: String(classification),
+        description: classification ? classification.name : 'No classification',
         key: 'classification',
         term: 'melding-data.classification',
       },
@@ -109,6 +109,37 @@ describe('getMeldingData', () => {
         key: 'state',
         link: {
           href: `/melding/${id}/wijzig-status`,
+          label: 'melding-data.state.link',
+        },
+        term: 'melding-data.state.term',
+      },
+    ])
+  })
+
+  it('should return correct melding summary when classification is null', () => {
+    const meldingDataWithoutClassification = {
+      ...melding,
+      classification: null,
+    }
+
+    const result = getMeldingData(meldingDataWithoutClassification, (key: string) => key)
+
+    expect(result).toEqual([
+      {
+        description: new Date(melding.created_at).toLocaleDateString('nl-NL'),
+        key: 'created_at',
+        term: 'melding-data.created_at',
+      },
+      {
+        description: 'No classification',
+        key: 'classification',
+        term: 'melding-data.classification',
+      },
+      {
+        description: melding.state,
+        key: 'state',
+        link: {
+          href: `/melding/${melding.id}/wijzig-status`,
           label: 'melding-data.state.link',
         },
         term: 'melding-data.state.term',

@@ -56,7 +56,7 @@ export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) 
     {
       key: 'classification',
       term: t('melding-data.classification'),
-      description: String(classification),
+      description: classification ? classification.name : 'No classification',
     },
     {
       key: 'state',
