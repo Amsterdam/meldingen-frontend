@@ -28,7 +28,7 @@ client.setConfig({
 
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
-    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: 123 }) })
+    const metadata = await generateMetadata({ searchParams: Promise.resolve({ id: 'AA123B' }) })
 
     expect(metadata).toEqual({ title: 'metadata.title' })
   })
@@ -67,7 +67,7 @@ describe('Page', () => {
 
     render(result)
 
-    const { id, created_at, classification, state, email, phone } = melding
+    const { id, created_at, classification, state, email, phone, public_id } = melding
 
     const additionalQuestionsWithMeldingText = [
       {
@@ -116,6 +116,7 @@ describe('Page', () => {
         contact: contact,
         meldingId: 123,
         meldingData: meldingData,
+        publicId: public_id,
       },
       {},
     )

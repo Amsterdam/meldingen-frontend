@@ -19,10 +19,10 @@ type Props = {
   additionalQuestionsWithMeldingText: DescriptionListItem[]
   contact?: DescriptionListItem[]
   meldingData: MeldingDataItem[]
-  meldingId: number
+  publicId: string
 }
 
-export const Detail = ({ additionalQuestionsWithMeldingText, contact, meldingData, meldingId }: Props) => {
+export const Detail = ({ additionalQuestionsWithMeldingText, contact, meldingData, publicId }: Props) => {
   const t = useTranslations('detail')
 
   return (
@@ -32,7 +32,7 @@ export const Detail = ({ additionalQuestionsWithMeldingText, contact, meldingDat
           {t('back-link')}
         </BackLink>
         <Heading level={1} className="ams-mb-m">
-          {t('title', { meldingId })}
+          {t('title', { publicId })}
         </Heading>
         <DescriptionList className="ams-mb-l">
           {additionalQuestionsWithMeldingText.map(({ key, term, description }) => (

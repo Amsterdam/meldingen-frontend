@@ -4,18 +4,17 @@ import { Detail } from './Detail'
 import { getAdditionalQuestionsData, getContactData, getMeldingData } from './utils'
 import { getMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
 
-type Params = { params: Promise<{ meldingId: number }> }
+export const generateMetadata = async ({ searchParams }: { searchParams: Promise<{ id: string }> }) => {
+  const { id } = await searchParams
 
-export const generateMetadata = async ({ params }: Params) => {
-  const { meldingId } = await params
   const t = await getTranslations('detail')
 
   return {
-    title: t('metadata.title', { meldingId }),
+    title: t('metadata.title', { publicId: id }),
   }
 }
 
-export default async ({ params }: Params) => {
+export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
 
   const t = await getTranslations('detail')
@@ -42,8 +41,8 @@ export default async ({ params }: Params) => {
     <Detail
       additionalQuestionsWithMeldingText={additionalQuestionsWithMeldingText}
       contact={contact}
-      meldingId={data.id}
       meldingData={meldingData}
+      publicId={data.public_id}
     />
   )
 }

@@ -20,6 +20,7 @@ const defaultProps = {
     },
   ],
   meldingId: 123,
+  publicId: 'B100AA',
 }
 
 describe('Detail', () => {

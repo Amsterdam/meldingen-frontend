@@ -8,7 +8,7 @@
     },
     "title": "Meldingen ({meldingCount})",
     "column-header": {
-      "id": "Meldnummer",
+      "public_id": "Meldnummer",
       "created_at": "Datum",
       "classification": "Categorie",
       "state": "Status"
@@ -16,10 +16,10 @@
   },
   "detail": {
     "metadata": {
-      "title": "Melding {meldingId} - Gemeente Amsterdam"
+      "title": "Melding {publicId} - Gemeente Amsterdam"
     },
     "back-link": "Overzicht meldingen",
-    "title": "Melding {meldingId}",
+    "title": "Melding {publicId}",
     "melding-text": "Meldtekst",
     "contact": {
       "email": "E-mail melder",
@@ -42,7 +42,7 @@
       "title": "Wijzig status - Gemeente Amsterdam"
     },
     "back-link": "Meldingdetails",
-    "title": "Wijzig status melding {meldingId}",
+    "title": "Wijzig status melding {publicId}",
     "label": "Wijzig status",
     "options": {
       "default": "Kies een status",
