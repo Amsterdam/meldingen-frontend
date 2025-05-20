@@ -30,15 +30,6 @@ describe('Location', () => {
     expect(heading).toBeInTheDocument()
   })
 
-  it.skip('renders the correct backlink', () => {
-    render(<Location {...defaultProps} />)
-
-    const backLink = screen.getByRole('link', { name: 'back-link' })
-
-    expect(backLink).toBeInTheDocument()
-    expect(backLink).toHaveAttribute('href', '/previous')
-  })
-
   it('does not render an error message when there is none', () => {
     render(<Location {...defaultProps} />)
 
