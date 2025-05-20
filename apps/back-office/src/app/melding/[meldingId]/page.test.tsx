@@ -114,7 +114,6 @@ describe('Page', () => {
       {
         additionalQuestionsWithMeldingText: additionalQuestionsWithMeldingText,
         contact: contact,
-        meldingId: 123,
         meldingData: meldingData,
         publicId: public_id,
       },
