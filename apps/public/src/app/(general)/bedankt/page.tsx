@@ -14,9 +14,9 @@ export const generateMetadata = async () => {
 export default async () => {
   const cookieStore = await cookies()
 
-  const meldingId = cookieStore.get('id')?.value
+  const publicId = cookieStore.get('public_id')?.value
 
-  if (!meldingId) return undefined
+  if (!publicId) return undefined
 
-  return <Thanks meldingId={meldingId} />
+  return <Thanks publicId={publicId} />
 }
