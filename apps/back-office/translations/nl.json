@@ -12,7 +12,8 @@
       "created_at": "Datum",
       "classification": "Categorie",
       "state": "Status"
-    }
+    },
+    "no-classification": "Geen categorie"
   },
   "detail": {
     "metadata": {
@@ -35,7 +36,8 @@
     },
     "errors": {
       "melding-not-found": "An error occurred"
-    }
+    },
+    "no-classification": "Geen categorie"
   },
   "change-state": {
     "metadata": {

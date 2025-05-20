@@ -100,7 +100,7 @@ describe('getMeldingData', () => {
         term: 'melding-data.created_at',
       },
       {
-        description: classification ? classification.name : 'No classification',
+        description: classification!.name,
         key: 'classification',
         term: 'melding-data.classification',
       },
@@ -131,7 +131,7 @@ describe('getMeldingData', () => {
         term: 'melding-data.created_at',
       },
       {
-        description: 'No classification',
+        description: 'no-classification',
         key: 'classification',
         term: 'melding-data.classification',
       },

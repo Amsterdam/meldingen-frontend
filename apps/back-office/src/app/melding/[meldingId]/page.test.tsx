@@ -101,7 +101,7 @@ describe('Page', () => {
       {
         key: 'classification',
         term: 'melding-data.classification',
-        description: classification ? classification.name : 'No classification',
+        description: classification!.name,
       },
       {
         key: 'state',

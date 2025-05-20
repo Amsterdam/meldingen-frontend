@@ -25,12 +25,12 @@ const HEADERS = [
   { key: 'state', labelKey: 'column-header.state' },
 ]
 
-const formatValue = (melding: MeldingOutput, key: string) => {
+const formatValue = (melding: MeldingOutput, key: string, t: (key: string) => string) => {
   switch (key) {
     case 'created_at':
       return new Date(melding.created_at).toLocaleDateString('nl-NL')
     case 'classification':
-      return melding.classification?.name
+      return melding.classification ? melding.classification.name : t('no-classification')
     case 'state':
       return melding.state
     default:
@@ -48,7 +48,7 @@ const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
 const renderTableHeaders = (headers: typeof HEADERS, t: (key: string) => string) =>
   headers.map(({ key, labelKey }) => <Table.HeaderCell key={key}>{t(labelKey)}</Table.HeaderCell>)
 
-const renderTableRows = (data: MeldingOutput[], headers: typeof HEADERS) =>
+const renderTableRows = (data: MeldingOutput[], headers: typeof HEADERS, t: (key: string) => string) =>
   data.map((melding) => (
     <Table.Row key={melding.public_id}>
       {headers.map(({ key }) => {
@@ -61,7 +61,7 @@ const renderTableRows = (data: MeldingOutput[], headers: typeof HEADERS) =>
             </Table.Cell>
           )
         }
-        return <Table.Cell key={key}>{formatValue(melding, key)}</Table.Cell>
+        return <Table.Cell key={key}>{formatValue(melding, key, t)}</Table.Cell>
       })}
     </Table.Row>
   ))
@@ -79,7 +79,7 @@ export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
           <Table.Header>
             <Table.Row>{renderTableHeaders(HEADERS, t)}</Table.Row>
           </Table.Header>
-          <Table.Body>{renderTableRows(data, HEADERS)}</Table.Body>
+          <Table.Body>{renderTableRows(data, HEADERS, t)}</Table.Body>
         </Table>
         <Pagination
           className={styles.pagination}
