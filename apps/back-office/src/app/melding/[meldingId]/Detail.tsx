@@ -1,9 +1,10 @@
 'use client'
 
-import { DescriptionList, Grid, Heading, Link } from '@amsterdam/design-system-react'
 import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
 import { Fragment } from 'react'
+
+import { DescriptionList, Grid, Heading, Link } from '@meldingen/ui'
 
 import { BackLink } from './_components/BackLink'
 

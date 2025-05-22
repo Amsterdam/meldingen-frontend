@@ -1,6 +1,14 @@
 export * from './FileInput'
 export * from './Footer'
-export * from './Grid'
+
+export { DescriptionList } from '@amsterdam/design-system-react/dist/DescriptionList'
+export { Grid } from '@amsterdam/design-system-react/dist/Grid'
+export { Heading } from '@amsterdam/design-system-react/dist/Heading'
+export { Icon } from '@amsterdam/design-system-react/dist/Icon'
+export { Link } from '@amsterdam/design-system-react/dist/Link'
+export { Table } from '@amsterdam/design-system-react/dist/Table'
+export { Pagination } from '@amsterdam/design-system-react/dist/Pagination'
+
 export * from './Header'
 export * from './ListBox'
 export * from './Screen'
