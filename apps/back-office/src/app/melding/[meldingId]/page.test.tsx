@@ -1,5 +1,4 @@
 import { render } from '@testing-library/react'
-import { client } from 'libs/api-client/src/client.gen'
 import { http, HttpResponse } from 'msw'
 
 import { Detail } from './Detail'
@@ -19,12 +18,6 @@ vi.mock('next-auth', () => ({
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
-
-// Vitest doesn't seem to pick up env vars in this app, for some reason.
-// So we set a mock base URL directly in the test.
-client.setConfig({
-  baseUrl: 'http://localhost:3000',
-})
 
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
