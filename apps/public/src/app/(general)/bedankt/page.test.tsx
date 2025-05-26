@@ -39,8 +39,15 @@ describe('Page', () => {
   })
 
   it('renders Thanks page', async () => {
-    mockCookies.get.mockReturnValueOnce({ value: '1234' })
-    mockCookies.get.mockReturnValueOnce({ value: '2025-05-26T11:56:34.081Z' })
+    mockCookies.get.mockImplementation((name) => {
+      if (name === 'public_id') {
+        return { value: '1234' }
+      }
+      if (name === 'created_at') {
+        return { value: '2025-05-26T11:56:34.081Z' }
+      }
+      return undefined
+    })
 
     const PageComponent = await Page()
 
