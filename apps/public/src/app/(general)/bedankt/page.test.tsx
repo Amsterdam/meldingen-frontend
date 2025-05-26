@@ -27,10 +27,6 @@ describe('Page', () => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  afterEach(() => {
-    vi.clearAllMocks()
-  })
-
   it('returns undefined when there is no publicId or createdAt', async () => {
     mockCookies.get.mockReturnValue(undefined)
 
