@@ -23,13 +23,25 @@ describe('Page', () => {
     get: vi.fn(),
   }
 
+  beforeAll(() => {
+    const mockDate = new Date('2025-05-26T11:56:34.081Z')
+    global.Date = class extends Date {
+      constructor() {
+        super()
+        return mockDate
+      }
+    } as unknown as DateConstructor
+  })
+
+  afterAll(() => {
+    global.Date = Date
+  })
+
   beforeEach(() => {
-    vi.useFakeTimers()
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
   afterEach(() => {
-    vi.useRealTimers()
     vi.clearAllMocks()
   })
 
