@@ -4,7 +4,7 @@ import { Thanks } from './Thanks'
 
 describe('Thanks', () => {
   it('should render', () => {
-    render(<Thanks publicId="B100AA" />)
+    render(<Thanks publicId="B100AA" date="1-1-1234" time="00:17" />)
 
     const heading = screen.getByRole('heading', { name: 'title' })
     const paragraph = screen.getByText('description')
