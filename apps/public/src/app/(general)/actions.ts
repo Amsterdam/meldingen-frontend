@@ -25,8 +25,8 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   // Set session variables in cookies
   const cookieStore = await cookies()
   cookieStore.set('id', id.toString())
-  cookieStore.set('created_at', created_at.toString())
-  cookieStore.set('public_id', public_id.toString())
+  cookieStore.set('created_at', created_at)
+  cookieStore.set('public_id', public_id)
   cookieStore.set('token', token)
 
   if (classification) {
