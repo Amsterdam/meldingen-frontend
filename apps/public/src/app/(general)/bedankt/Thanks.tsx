@@ -9,9 +9,11 @@ import { Grid } from '@meldingen/ui'
 
 type Props = {
   publicId: string
+  date: string
+  time: string
 }
 
-export const Thanks = ({ publicId }: Props) => {
+export const Thanks = ({ date, publicId, time }: Props) => {
   const t = useTranslations('thanks')
 
   return (
@@ -20,7 +22,7 @@ export const Thanks = ({ publicId }: Props) => {
         <Heading className="ams-mb-m" level={1}>
           {t('title')}
         </Heading>
-        <MarkdownToHtml className="ams-mb-m">{t('description', { publicId })}</MarkdownToHtml>
+        <MarkdownToHtml className="ams-mb-m">{t('description', { publicId, date, time })}</MarkdownToHtml>
         <NextLink href="/" legacyBehavior passHref>
           <Link href="dummy-href">{t('link')}</Link>
         </NextLink>

@@ -32,6 +32,7 @@ export const handlers = [
   http.post(ENDPOINTS.POST_MELDING, () =>
     HttpResponse.json({
       id: 123,
+      created_at: '2025-05-26T11:56:34.081Z',
       public_id: 'B100AA',
       token: 'test-token',
       classification: { id: 2, name: 'Test classification' },

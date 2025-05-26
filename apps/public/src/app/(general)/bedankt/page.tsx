@@ -15,8 +15,12 @@ export default async () => {
   const cookieStore = await cookies()
 
   const publicId = cookieStore.get('public_id')?.value
+  const createdAt = cookieStore.get('created_at')?.value
 
-  if (!publicId) return undefined
+  if (!publicId || !createdAt) return undefined
 
-  return <Thanks publicId={publicId} />
+  const date = new Date(createdAt).toLocaleDateString('nl-NL')
+  const time = new Date(createdAt).toLocaleTimeString('nl-NL', { timeStyle: 'short' })
+
+  return <Thanks publicId={publicId} date={date} time={time} />
 }
