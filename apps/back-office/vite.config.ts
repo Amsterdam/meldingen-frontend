@@ -9,8 +9,11 @@ export default defineConfig({
       enabled: true,
       include: ['src/**/*.{js,jsx,ts,tsx}'],
     },
-    globals: true,
+    env: {
+      NEXT_PUBLIC_BACKEND_BASE_URL: 'http://localhost:3000',
+    },
     environment: 'jsdom',
+    globals: true,
     include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     setupFiles: ['./vitest.setup.ts'],
     watch: false,
