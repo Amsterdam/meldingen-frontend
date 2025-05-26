@@ -24,8 +24,13 @@ describe('Page', () => {
   }
 
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.useFakeTimers()
     ;(cookies as Mock).mockReturnValue(mockCookies)
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.clearAllMocks()
   })
 
   it('returns undefined when there is no publicId or createdAt', async () => {
