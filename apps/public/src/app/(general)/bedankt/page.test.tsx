@@ -28,7 +28,7 @@ describe('Page', () => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  it('returns undefined when there is no meldingId or createdAt', async () => {
+  it('returns undefined when there is no publicId or createdAt', async () => {
     mockCookies.get.mockReturnValue(undefined)
 
     const PageComponent = await Page()
