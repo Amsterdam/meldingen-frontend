@@ -5,14 +5,6 @@ import { postChangeStateForm } from './actions'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
 
-vi.mock('next-auth', () => ({
-  getServerSession: vi.fn(() => Promise.resolve({})),
-}))
-
-vi.mock('next/navigation', () => ({
-  redirect: vi.fn(),
-}))
-
 describe('postChangeStateForm', () => {
   it('returns an error message for an invalid state', async () => {
     const formData = new FormData()

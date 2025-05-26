@@ -11,14 +11,6 @@ vi.mock('./Detail', () => ({
   Detail: vi.fn(() => <div>Detail Component</div>),
 }))
 
-vi.mock('next-auth', () => ({
-  getServerSession: vi.fn(() => Promise.resolve({})),
-}))
-
-vi.mock('next/navigation', () => ({
-  redirect: vi.fn(),
-}))
-
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
     const metadata = await generateMetadata({ searchParams: Promise.resolve({ id: 'AA123B' }) })

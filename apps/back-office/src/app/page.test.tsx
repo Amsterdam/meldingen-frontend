@@ -13,14 +13,6 @@ vi.mock('./Overview', () => ({
   Overview: vi.fn(() => <div>Overview Component</div>),
 }))
 
-vi.mock('next/navigation', () => ({
-  redirect: vi.fn(),
-}))
-
-vi.mock('next-auth', () => ({
-  getServerSession: vi.fn(() => Promise.resolve({})),
-}))
-
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
     const metadata = await generateMetadata()
