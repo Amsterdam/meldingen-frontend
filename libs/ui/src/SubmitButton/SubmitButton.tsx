@@ -1,7 +1,5 @@
-'use client'
-
-import type { ButtonProps } from '@amsterdam/design-system-react'
-import { Button } from '@amsterdam/design-system-react'
+import type { ButtonProps } from '@amsterdam/design-system-react/dist/Button'
+import { Button } from '@amsterdam/design-system-react/dist/Button'
 
 import styles from './SubmitButton.module.css'
 

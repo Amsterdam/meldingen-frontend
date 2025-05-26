@@ -1,10 +1,9 @@
-'use client'
-
-import { Icon, Link } from '@amsterdam/design-system-react'
 import { ChevronLeftIcon } from '@amsterdam/design-system-react-icons'
 import clsx from 'clsx'
 import NextLink from 'next/link'
 import type { AnchorHTMLAttributes } from 'react'
+
+import { Icon, Link } from '@meldingen/ui'
 
 import styles from './BackLink.module.css'
 
