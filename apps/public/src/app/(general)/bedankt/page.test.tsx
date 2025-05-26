@@ -23,21 +23,6 @@ describe('Page', () => {
     get: vi.fn(),
   }
 
-  beforeAll(() => {
-    // Remove Z from timestamp to avoid timezone problems
-    const mockDate = new Date('2025-05-26T11:56:34.081')
-    global.Date = class extends Date {
-      constructor() {
-        super()
-        return mockDate
-      }
-    } as unknown as DateConstructor
-  })
-
-  afterAll(() => {
-    global.Date = Date
-  })
-
   beforeEach(() => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
