@@ -24,7 +24,8 @@ describe('Page', () => {
   }
 
   beforeAll(() => {
-    const mockDate = new Date('2025-05-26T11:56:34.081Z')
+    // Remove Z from timestamp to avoid timezone problems
+    const mockDate = new Date('2025-05-26T11:56:34.081')
     global.Date = class extends Date {
       constructor() {
         super()
@@ -72,6 +73,6 @@ describe('Page', () => {
 
     expect(redirect).not.toHaveBeenCalledWith('/')
     expect(screen.getByText('Thanks Component')).toBeInTheDocument()
-    expect(Thanks).toHaveBeenCalledWith({ publicId: '1234', date: '26-5-2025', time: '13:56' }, {})
+    expect(Thanks).toHaveBeenCalledWith({ publicId: '1234', date: '26-5-2025', time: '11:56' }, {})
   })
 })
