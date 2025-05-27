@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 
 import { AssetList } from './_components/AssetList/AssetList'
 import { SideBar } from './_components/SideBar/SideBar'
-import type { Coordinates } from 'apps/public/src/types'
+import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './page.module.css'
 

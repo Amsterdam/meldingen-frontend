@@ -3,7 +3,7 @@ import { useActionState } from 'react'
 import type { Mock } from 'vitest'
 
 import { Contact } from './Contact'
-import { contact as contactFormData } from 'apps/public/src/mocks/data'
+import { contact as contactFormData } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()

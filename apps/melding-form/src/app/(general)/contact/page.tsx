@@ -3,8 +3,8 @@ import { getTranslations } from 'next-intl/server'
 import { getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
 
 import { Contact } from './Contact'
-import { handleApiError } from 'apps/public/src/handleApiError'
-import { isTypeTextAreaComponent } from 'apps/public/src/typeguards'
+import { handleApiError } from 'apps/melding-form/src/handleApiError'
+import { isTypeTextAreaComponent } from 'apps/melding-form/src/typeguards'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.

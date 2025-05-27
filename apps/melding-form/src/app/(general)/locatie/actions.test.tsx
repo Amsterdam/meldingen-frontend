@@ -4,8 +4,8 @@ import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
 
 import { postLocationForm } from './actions'
-import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
-import { server } from 'apps/public/src/mocks/node'
+import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
+import { server } from 'apps/melding-form/src/mocks/node'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),

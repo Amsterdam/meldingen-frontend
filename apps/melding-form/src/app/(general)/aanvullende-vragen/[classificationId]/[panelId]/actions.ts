@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 import { postMeldingByMeldingIdQuestionByQuestionId, putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
-import { handleApiError } from 'apps/public/src/handleApiError'
+import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 type ArgsType = {
   isLastPanel: boolean

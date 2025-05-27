@@ -6,7 +6,7 @@ import { getFormClassificationByClassificationId } from '@meldingen/api-client'
 
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
-import { handleApiError } from 'apps/public/src/handleApiError'
+import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 export const dynamic = 'force-dynamic'
 

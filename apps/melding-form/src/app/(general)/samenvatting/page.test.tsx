@@ -5,9 +5,9 @@ import type { Mock } from 'vitest'
 
 import Page from './page'
 import { Summary } from './Summary'
-import { additionalQuestions, melding, textAreaComponent } from 'apps/public/src/mocks/data'
-import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
-import { server } from 'apps/public/src/mocks/node'
+import { additionalQuestions, melding, textAreaComponent } from 'apps/melding-form/src/mocks/data'
+import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
+import { server } from 'apps/melding-form/src/mocks/node'
 
 import { Blob } from 'buffer'
 

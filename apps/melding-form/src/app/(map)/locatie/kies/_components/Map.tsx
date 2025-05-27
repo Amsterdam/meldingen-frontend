@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css'
 
 import { ControlsOverlay } from './ControlsOverlay/ControlsOverlay'
 import { marker } from './Marker/Marker'
-import type { Coordinates } from 'apps/public/src/types'
+import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
 

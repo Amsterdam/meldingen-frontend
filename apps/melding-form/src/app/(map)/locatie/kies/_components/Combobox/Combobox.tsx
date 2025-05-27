@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react'
 import { ListBox } from '@meldingen/ui'
 
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
-import type { Coordinates } from 'apps/public/src/types'
+import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Combobox.module.css'
 

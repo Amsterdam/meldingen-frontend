@@ -8,7 +8,7 @@ import { useActionState } from 'react'
 import { Grid, SubmitButton } from '@meldingen/ui'
 
 import { postLocationForm } from './actions'
-import type { Coordinates } from 'apps/public/src/types'
+import type { Coordinates } from 'apps/melding-form/src/types'
 
 const initialState: { message?: string } = {}
 

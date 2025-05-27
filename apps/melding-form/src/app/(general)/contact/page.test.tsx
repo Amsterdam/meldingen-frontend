@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
 import Page from './page'
-import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
-import { server } from 'apps/public/src/mocks/node'
+import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
+import { server } from 'apps/melding-form/src/mocks/node'
 
 vi.mock('./Contact', () => ({
   Contact: vi.fn(() => <div>Contact Component</div>),

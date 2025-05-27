@@ -14,7 +14,7 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { FileInput, Grid, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
-import { handleApiError } from 'apps/public/src/handleApiError'
+import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 import styles from './Attachments.module.css'
 

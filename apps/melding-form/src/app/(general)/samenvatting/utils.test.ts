@@ -8,10 +8,10 @@ import {
   getMeldingData,
   getPrimaryFormSummary,
 } from './utils'
-import { melding } from 'apps/public/src/mocks/data'
-import { additionalQuestions } from 'apps/public/src/mocks/data'
-import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
-import { server } from 'apps/public/src/mocks/node'
+import { melding } from 'apps/melding-form/src/mocks/data'
+import { additionalQuestions } from 'apps/melding-form/src/mocks/data'
+import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
+import { server } from 'apps/melding-form/src/mocks/node'
 
 import { Blob } from 'buffer'
 

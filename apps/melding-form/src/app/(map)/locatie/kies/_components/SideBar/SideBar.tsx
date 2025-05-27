@@ -5,7 +5,7 @@ import { useActionState, useEffect, useState } from 'react'
 import { writeAddressAndCoordinateToCookie } from './actions'
 import { getAddressFromCoordinates } from '../../_utils'
 import { Combobox } from '../Combobox/Combobox'
-import type { Coordinates } from 'apps/public/src/types'
+import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './SideBar.module.css'
 

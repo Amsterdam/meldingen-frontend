@@ -9,7 +9,7 @@ import {
   PDOKFree,
   PDOKReverse,
   PDOKSuggest,
-} from 'apps/public/src/mocks/data'
+} from 'apps/melding-form/src/mocks/data'
 
 export const handlers = [
   // Form

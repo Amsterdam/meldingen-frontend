@@ -7,7 +7,7 @@ import {
   getStaticFormByStaticFormId,
 } from '@meldingen/api-client'
 
-import { handleApiError } from 'apps/public/src/handleApiError'
+import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 export const getMeldingData = async (meldingId: string, token: string) => {
   const { data, error } = await getMeldingByMeldingIdMelder({

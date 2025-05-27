@@ -3,7 +3,7 @@ import { useActionState } from 'react'
 import type { Mock } from 'vitest'
 
 import { AdditionalQuestions } from './AdditionalQuestions'
-import { textAreaComponent } from 'apps/public/src/mocks/data'
+import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()

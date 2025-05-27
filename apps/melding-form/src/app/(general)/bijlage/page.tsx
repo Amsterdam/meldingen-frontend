@@ -4,8 +4,8 @@ import { getTranslations } from 'next-intl/server'
 import { getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
 
 import { Attachments } from './Attachments'
-import { handleApiError } from 'apps/public/src/handleApiError'
-import { isTypeTextAreaComponent } from 'apps/public/src/typeguards'
+import { handleApiError } from 'apps/melding-form/src/handleApiError'
+import { isTypeTextAreaComponent } from 'apps/melding-form/src/typeguards'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('attachments')

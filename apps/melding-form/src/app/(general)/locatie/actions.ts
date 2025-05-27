@@ -6,7 +6,7 @@ import { getTranslations } from 'next-intl/server'
 
 import { postMeldingByMeldingIdLocation, putMeldingByMeldingIdSubmitLocation } from '@meldingen/api-client'
 
-import { handleApiError } from 'apps/public/src/handleApiError'
+import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 export const postLocationForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()

@@ -3,9 +3,9 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 
 import { Attachments } from './Attachments'
-import { textAreaComponent } from 'apps/public/src/mocks/data'
-import { ENDPOINTS } from 'apps/public/src/mocks/endpoints'
-import { server } from 'apps/public/src/mocks/node'
+import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
+import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
+import { server } from 'apps/melding-form/src/mocks/node'
 
 const defaultProps = {
   meldingId: 1,

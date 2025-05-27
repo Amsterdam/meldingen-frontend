@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { postMeldingByMeldingIdContact, putMeldingByMeldingIdAddContactInfo } from '@meldingen/api-client'
 
-import { handleApiError } from 'apps/public/src/handleApiError'
+import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 export const postContactForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()

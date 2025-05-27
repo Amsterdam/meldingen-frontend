@@ -3,7 +3,7 @@ import { useActionState } from 'react'
 import type { Mock } from 'vitest'
 
 import { Home } from './Home'
-import { textAreaComponent } from 'apps/public/src/mocks/data'
+import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
 
 const mockQuestionText = /What is it about?/ // This is a regex to account for the label text being dynamic
 
