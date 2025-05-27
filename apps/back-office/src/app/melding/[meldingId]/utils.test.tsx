@@ -1,4 +1,3 @@
-import { client } from 'libs/api-client/src/client.gen'
 import { http, HttpResponse } from 'msw'
 
 import { getAdditionalQuestionsData, getContactData, getMeldingData } from './utils'
@@ -8,20 +7,6 @@ import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
 
 const mockMeldingId = 88
-
-vi.mock('next-auth', () => ({
-  getServerSession: vi.fn(() => Promise.resolve({})),
-}))
-
-vi.mock('next/navigation', () => ({
-  redirect: vi.fn(),
-}))
-
-// Vitest doesn't seem to pick up env vars in this app, for some reason.
-// So we set a mock base URL directly in the test.
-client.setConfig({
-  baseUrl: 'http://localhost:3000',
-})
 
 describe('getAdditionalQuestionsData', () => {
   it('should return correct additional questions data', async () => {

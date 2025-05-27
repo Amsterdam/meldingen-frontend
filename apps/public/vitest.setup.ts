@@ -28,3 +28,6 @@ vi.mock('next-intl/server', async () => ({
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
+
+// Mock timezone in vitest so dates will be the same across environments
+process.env.TZ = 'UTC'

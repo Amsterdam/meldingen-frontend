@@ -25,6 +25,16 @@ vi.mock('next-intl/server', async () => ({
   getTranslations: () => (key: string) => key,
 }))
 
+// We use getServerSession and redirect in our authentication setup, which is used in most of our server components.
+// Therefore, we globally mock them in the vitest setup file.
+vi.mock('next-auth', () => ({
+  getServerSession: vi.fn(() => Promise.resolve({})),
+}))
+
+vi.mock('next/navigation', () => ({
+  redirect: vi.fn(),
+}))
+
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
