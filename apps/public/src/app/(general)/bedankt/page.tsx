@@ -14,9 +14,13 @@ export const generateMetadata = async () => {
 export default async () => {
   const cookieStore = await cookies()
 
-  const meldingId = cookieStore.get('id')?.value
+  const publicId = cookieStore.get('public_id')?.value
+  const createdAt = cookieStore.get('created_at')?.value
 
-  if (!meldingId) return undefined
+  if (!publicId || !createdAt) return undefined
 
-  return <Thanks meldingId={meldingId} />
+  const date = new Date(createdAt).toLocaleDateString('nl-NL')
+  const time = new Date(createdAt).toLocaleTimeString('nl-NL', { timeStyle: 'short' })
+
+  return <Thanks publicId={publicId} date={date} time={time} />
 }

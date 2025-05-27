@@ -30,7 +30,13 @@ export const handlers = [
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)),
 
   http.post(ENDPOINTS.POST_MELDING, () =>
-    HttpResponse.json({ id: 123, token: 'test-token', classification: { id: 2, name: 'Test classification' } }),
+    HttpResponse.json({
+      id: 123,
+      created_at: '2025-05-26T11:56:34.081Z',
+      public_id: 'B100AA',
+      token: 'test-token',
+      classification: { id: 2, name: 'Test classification' },
+    }),
   ),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () => HttpResponse.json({ id: 42 })),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () => new HttpResponse()),

@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
 
 import Page from './page'
+import { Thanks } from './Thanks'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
@@ -23,11 +24,10 @@ describe('Page', () => {
   }
 
   beforeEach(() => {
-    vi.clearAllMocks()
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  it('returns undefined when there is no meldingId', async () => {
+  it('returns undefined when there is no publicId or createdAt', async () => {
     mockCookies.get.mockReturnValue(undefined)
 
     const PageComponent = await Page()
@@ -38,7 +38,15 @@ describe('Page', () => {
   })
 
   it('renders Thanks page', async () => {
-    mockCookies.get.mockReturnValue({ value: '1234' })
+    mockCookies.get.mockImplementation((name) => {
+      if (name === 'public_id') {
+        return { value: '1234' }
+      }
+      if (name === 'created_at') {
+        return { value: '2025-05-26T11:56:34.081Z' }
+      }
+      return undefined
+    })
 
     const PageComponent = await Page()
 
@@ -46,5 +54,6 @@ describe('Page', () => {
 
     expect(redirect).not.toHaveBeenCalledWith('/')
     expect(screen.getByText('Thanks Component')).toBeInTheDocument()
+    expect(Thanks).toHaveBeenCalledWith({ publicId: '1234', date: '26-5-2025', time: '11:56' }, {})
   })
 })

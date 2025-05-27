@@ -61,4 +61,16 @@ describe('postPrimaryForm', () => {
     expect(result).toEqual({ message: 'Error message' })
     expect(redirect).not.toHaveBeenCalled()
   })
+
+  it('should set correct cookies', async () => {
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+
+    await postPrimaryForm(null, formData)
+
+    expect(mockCookies.set).toHaveBeenCalledWith('id', '123')
+    expect(mockCookies.set).toHaveBeenCalledWith('created_at', '2025-05-26T11:56:34.081Z')
+    expect(mockCookies.set).toHaveBeenCalledWith('public_id', 'B100AA')
+    expect(mockCookies.set).toHaveBeenCalledWith('token', 'test-token')
+  })
 })
