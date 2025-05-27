@@ -58,8 +58,8 @@ importers:
         specifier: 6.4.0
         version: 6.4.0
       '@hey-api/client-fetch':
-        specifier: 0.10.0
-        version: 0.10.0(@hey-api/openapi-ts@0.67.6(magicast@0.3.5)(typescript@5.8.3))
+        specifier: 0.10.2
+        version: 0.10.2(@hey-api/openapi-ts@0.67.6(magicast@0.3.5)(typescript@5.8.3))
       '@hey-api/openapi-ts':
         specifier: 0.67.6
         version: 0.67.6(magicast@0.3.5)(typescript@5.8.3)
@@ -789,8 +789,8 @@ packages:
       react: ^18 || ^19 || ^19.0.0-rc
       react-dom: ^18 || ^19 || ^19.0.0-rc
 
-  '@hey-api/client-fetch@0.10.0':
-    resolution: {integrity: sha512-C7vzj4t52qPiHCqjn1l8cRTI2p4pZCd7ViLtJDTHr5ZwI4sWOYC1tmv6bd529qqY6HFFbhGCz4TAZSwKAMJncg==}
+  '@hey-api/client-fetch@0.10.2':
+    resolution: {integrity: sha512-AGiFYDx+y8VT1wlQ3EbzzZtfU8EfV+hLLRTtr8Y/tjYZaxIECwJagVZf24YzNbtEBXONFV50bwcU1wLVGXe1ow==}
     peerDependencies:
       '@hey-api/openapi-ts': < 2
 
@@ -5194,7 +5194,7 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       use-sync-external-store: 1.5.0(react@18.3.1)
 
-  '@hey-api/client-fetch@0.10.0(@hey-api/openapi-ts@0.67.6(magicast@0.3.5)(typescript@5.8.3))':
+  '@hey-api/client-fetch@0.10.2(@hey-api/openapi-ts@0.67.6(magicast@0.3.5)(typescript@5.8.3))':
     dependencies:
       '@hey-api/openapi-ts': 0.67.6(magicast@0.3.5)(typescript@5.8.3)
 
