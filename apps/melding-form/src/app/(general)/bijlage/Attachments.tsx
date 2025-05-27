@@ -11,7 +11,7 @@ import {
 } from '@meldingen/api-client'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { FileInput, Grid, SubmitButton } from '@meldingen/ui'
+import { FileInput, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
@@ -96,57 +96,51 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
   }
 
   return (
-    <Grid paddingBottom="large" paddingTop="medium">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <Heading className="ams-mb-s" level={1}>
-          {t('step.title')}
-        </Heading>
+    <>
+      <Heading className="ams-mb-s" level={1}>
+        {t('step.title')}
+      </Heading>
 
-        {formState?.message && <Paragraph>{formState.message}</Paragraph>}
+      {formState?.message && <Paragraph>{formState.message}</Paragraph>}
 
-        <form ref={formRef} action={formAction}>
-          <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
-            <Label htmlFor="file-upload" optional>
-              {label}
-            </Label>
-            {description && (
-              <MarkdownToHtml id="file-upload-description" type="description">
-                {description}
-              </MarkdownToHtml>
-            )}
+      <form ref={formRef} action={formAction}>
+        <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
+          <Label htmlFor="file-upload" optional>
+            {label}
+          </Label>
+          {description && (
+            <MarkdownToHtml id="file-upload-description" type="description">
+              {description}
+            </MarkdownToHtml>
+          )}
 
-            {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
+          {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
 
-            <FileInput
-              accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
-              aria-describedby={
-                description || errorMessage
-                  ? `${description ? 'file-upload-description' : ''} ${errorMessage ? 'error-message' : ''}`
-                  : undefined
-              }
-              buttonText={t('file-input.button')}
-              dropAreaText={t('file-input.drop-area')}
-              id="file-upload"
-              name="file"
-              multiple
-              onChange={handleChange}
-            />
+          <FileInput
+            accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
+            aria-describedby={
+              description || errorMessage
+                ? `${description ? 'file-upload-description' : ''} ${errorMessage ? 'error-message' : ''}`
+                : undefined
+            }
+            buttonText={t('file-input.button')}
+            dropAreaText={t('file-input.drop-area')}
+            id="file-upload"
+            name="file"
+            multiple
+            onChange={handleChange}
+          />
 
-            {uploadedFiles.length > 0 && (
-              <FileList className={styles.fileList}>
-                {uploadedFiles.map((attachment) => (
-                  <FileList.Item
-                    key={attachment.id}
-                    file={attachment.file}
-                    onDelete={() => removeFile(attachment.id)}
-                  />
-                ))}
-              </FileList>
-            )}
-          </Field>
-          <SubmitButton>{t('submit-button')}</SubmitButton>
-        </form>
-      </Grid.Cell>
-    </Grid>
+          {uploadedFiles.length > 0 && (
+            <FileList className={styles.fileList}>
+              {uploadedFiles.map((attachment) => (
+                <FileList.Item key={attachment.id} file={attachment.file} onDelete={() => removeFile(attachment.id)} />
+              ))}
+            </FileList>
+          )}
+        </Field>
+        <SubmitButton>{t('submit-button')}</SubmitButton>
+      </form>
+    </>
   )
 }
