@@ -1,0 +1,26 @@
+{
+  "name": "melding-form",
+  "version": "0.1.0",
+  "description": "Front-end for the publicly available part of the Meldingen application",
+  "author": "Gemeente Amsterdam",
+  "license": "EUPL-1.2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "type-check": "tsc --incremental false"
+  },
+  "dependencies": {
+    "@headlessui/react": "2.2.4",
+    "leaflet": "1.9.4",
+    "next": "15.3.2",
+    "next-intl": "4.1.0"
+  },
+  "devDependencies": {
+    "@types/leaflet": "1.9.18"
+  }
+}

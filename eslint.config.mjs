@@ -135,14 +135,14 @@ export default tseslint.config(
 
   // Next.js apps
   {
-    files: ['apps/public/**/*', 'apps/back-office/**/*'],
+    files: ['apps/melding-form/**/*', 'apps/back-office/**/*'],
     plugins: {
       '@next/next': pluginNext,
     },
     rules: {
       ...pluginNext.configs.recommended.rules,
       ...pluginNext.configs['core-web-vitals'].rules,
-      '@next/next/no-html-link-for-pages': ['error', ['apps/public/src', 'apps/back-office/src']],
+      '@next/next/no-html-link-for-pages': ['error', ['apps/melding-form/src', 'apps/back-office/src']],
     },
   },
   {
