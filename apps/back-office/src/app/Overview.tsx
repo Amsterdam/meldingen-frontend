@@ -1,11 +1,8 @@
-'use client'
-
-import { Heading, Link, Pagination, Table } from '@amsterdam/design-system-react'
 import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
 import { AnchorHTMLAttributes } from 'react'
 
-import { Grid } from '@meldingen/ui'
+import { Grid, Heading, Link, Pagination, Table } from '@meldingen/ui'
 
 import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
