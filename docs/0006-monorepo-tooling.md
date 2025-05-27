@@ -1,6 +1,6 @@
 # Monorepo tooling
 
-The 3 Meldingen front-ends (Public, Back Office, Admin) are stored in a single repo.
+The 3 Meldingen front-ends (Melding Form, Back Office, Admin) are stored in a single repo.
 This is called a monorepo. You can find these front-ends in the `/apps` directory.
 
 The front-ends make use of both external and internal libraries.

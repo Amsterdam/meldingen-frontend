@@ -1,6 +1,6 @@
-# Public
+# Melding Form
 
-The Public application allows the general public to create nuisance reports.
+The Melding Form application allows the general public to create nuisance reports.
 
 This is the general flow of the app:
 
@@ -14,4 +14,4 @@ graph LR
 
 ## Getting started
 
-Run `npm run dev:public` in the root directory to start the Public app.
+Run `npm run dev:mf` in the root directory to start the Melding Form app.

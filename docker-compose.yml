@@ -13,11 +13,11 @@ services:
       - '3001:3001'
     networks:
       - meldingen_network
-  public:
+  melding-form:
     image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-signalen/meldingen-frontend}:${VERSION:-latest}
     build:
       context: .
-      target: public_meldingen
+      target: melding_form_meldingen
       args:
         NEXT_BACKEND_BASE_URL: http://meldingen:8000
     ports:

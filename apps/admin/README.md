@@ -1,6 +1,6 @@
 # Admin
 
-The Admin application allows admins to manage the Public and Back Office apps.
+The Admin application allows admins to manage the Melding Form and Back Office apps.
 
 It allows an admin to...
 

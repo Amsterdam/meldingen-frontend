@@ -7,7 +7,7 @@ Our applications are built using [React](https://react.dev/) as the frontend lib
 React is the standard UI library for the City of Amsterdam, making it easier to find developers and maintain the project.
 Also, the [Amsterdam Design System](https://github.com/amsterdam/design-system) provides React components that we can utilize.
 
-The Public and Back Office applications use React with [Next.js](https://nextjs.org/) as the frontend framework,
+The Melding Form and Back Office applications use React with [Next.js](https://nextjs.org/) as the frontend framework,
 handling routing, data fetching, caching, and server-side rendering.
 
 The Admin application is based on [React-admin](https://marmelab.com/react-admin/) and
