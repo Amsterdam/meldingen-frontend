@@ -8,6 +8,12 @@ export default defineConfig({
     coverage: {
       enabled: true,
       include: ['src/**/*.{js,jsx,ts,tsx}'],
+      thresholds: {
+        branches: 92.04,
+        functions: 69.69,
+        lines: 83.72,
+        statements: 83.72,
+      },
     },
     env: {
       NEXT_PUBLIC_BACKEND_BASE_URL: 'http://localhost:3000',
