@@ -29,7 +29,6 @@ describe('postContactForm', () => {
         return undefined
       },
     })
-    vi.clearAllMocks()
   })
 
   it('should redirect to /samenvatting page on success', async () => {

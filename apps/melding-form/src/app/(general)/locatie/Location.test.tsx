@@ -18,7 +18,6 @@ const defaultProps = {
 
 describe('Location', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
     ;(useActionState as Mock).mockReturnValue([{}, vi.fn()])
   })
 

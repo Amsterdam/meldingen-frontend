@@ -21,7 +21,6 @@ describe('submitAttachmentsForm', () => {
   }
 
   beforeEach(() => {
-    vi.clearAllMocks()
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
