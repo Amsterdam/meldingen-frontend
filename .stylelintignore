@@ -1,9 +1,12 @@
 # Ignore 3rd party files
+
 node_modules
 vendor
 
 # Ignore generated files
+
 build
 coverage
 dist
 tmp
+apps/melding-form/src/app/(map)/locatie/kies/\_components/Map.module.css

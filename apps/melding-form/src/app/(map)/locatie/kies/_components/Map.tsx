@@ -52,6 +52,31 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
       ],
     })
 
+    // Track last input type to be able to remove crosshair
+    let lastInputWasKeyboard = false
+    document.addEventListener('keydown', () => {
+      lastInputWasKeyboard = true
+    })
+    document.addEventListener('mousedown', () => {
+      lastInputWasKeyboard = false
+    })
+
+    const crosshair = document.getElementById('crosshair')!
+
+    // Set crosshair to be able to set a marker with a keyboard
+    map.on('focus', () => {
+      if (lastInputWasKeyboard) {
+        crosshair.style.display = 'block'
+      } else {
+        crosshair.style.display = 'none'
+      }
+    })
+
+    // Hide crosshair when map loses focus
+    map.on('blur', () => {
+      crosshair.style.display = 'none'
+    })
+
     // Remove Leaflet link from the map
     map.attributionControl.setPrefix(false)
 
@@ -59,13 +84,33 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
     createdMapInstance.current = true
     setMapInstance(map)
 
+    mapRef.current?.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'Enter') {
+        const center = map.getCenter()
+
+        return setCoordinates({
+          lat: center.lat,
+          lng: center.lng,
+        })
+      }
+    })
+
     map.on('click', (e) => {
+      // Hide crosshair when clicking with mouse
+      crosshair.style.display = 'none'
+
       setCoordinates({ lat: e.latlng.lat, lng: e.latlng.lng })
     })
 
     // On component unmount, destroy the map and all related events
     return () => {
       if (mapInstance) mapInstance.remove()
+      document.removeEventListener('keydown', () => {
+        lastInputWasKeyboard = true
+      })
+      document.removeEventListener('mousedown', () => {
+        lastInputWasKeyboard = false
+      })
     }
   }, [mapInstance, setCoordinates])
 
@@ -77,6 +122,11 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
 
       // Create marker layer and add to map
       const newMarker = L.marker(L.latLng([coordinates.lat, coordinates.lng]), { icon: marker }).addTo(mapInstance)
+
+      const icon = newMarker.getElement()
+      if (icon) {
+        icon.removeAttribute('tabindex')
+      }
 
       // Store marker layer in ref
       markerRef.current = newMarker
@@ -91,6 +141,7 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
   return (
     <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>
       <div className={styles.map} ref={mapRef} />
+      <div className={styles.crosshair} id="crosshair"></div>
       <ControlsOverlay mapInstance={mapInstance} setCoordinates={setCoordinates} />
     </div>
   )
