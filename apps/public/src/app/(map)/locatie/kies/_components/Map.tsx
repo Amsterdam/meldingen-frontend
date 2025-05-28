@@ -123,6 +123,11 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
       // Create marker layer and add to map
       const newMarker = L.marker(L.latLng([coordinates.lat, coordinates.lng]), { icon: marker }).addTo(mapInstance)
 
+      const icon = newMarker.getElement()
+      if (icon) {
+        icon.removeAttribute('tabindex')
+      }
+
       // Store marker layer in ref
       markerRef.current = newMarker
 
