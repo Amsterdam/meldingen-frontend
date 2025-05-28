@@ -3,8 +3,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
 
-import Page from './page'
-import { Thanks } from './Thanks'
+import Page, { generateMetadata } from './page'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
@@ -14,9 +13,13 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
-vi.mock('./Thanks', () => ({
-  Thanks: vi.fn(() => <div>Thanks Component</div>),
-}))
+describe('generateMetadata', () => {
+  it('returns the correct metadata title', async () => {
+    const metadata = await generateMetadata()
+
+    expect(metadata).toEqual({ title: 'metadata.title' })
+  })
+})
 
 describe('Page', () => {
   const mockCookies = {
@@ -37,7 +40,7 @@ describe('Page', () => {
     expect(PageComponent).toBeUndefined()
   })
 
-  it('renders Thanks page', async () => {
+  it('renders page', async () => {
     mockCookies.get.mockImplementation((name) => {
       if (name === 'public_id') {
         return { value: '1234' }
@@ -52,8 +55,13 @@ describe('Page', () => {
 
     render(PageComponent)
 
+    const heading = screen.getByRole('heading', { name: 'title' })
+    const paragraph = screen.getByText('description')
+    const link = screen.getByRole('link', { name: 'link' })
+
     expect(redirect).not.toHaveBeenCalledWith('/')
-    expect(screen.getByText('Thanks Component')).toBeInTheDocument()
-    expect(Thanks).toHaveBeenCalledWith({ publicId: '1234', date: '26-5-2025', time: '11:56' }, {})
+    expect(heading).toBeInTheDocument()
+    expect(paragraph).toBeInTheDocument()
+    expect(link).toBeInTheDocument()
   })
 })

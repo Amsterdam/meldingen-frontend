@@ -1,8 +1,9 @@
-import { Column, Heading, Link, OrderedList, Paragraph, UnorderedList } from '@amsterdam/design-system-react'
 import clsx from 'clsx'
 import { Children, isValidElement } from 'react'
 import type { PropsWithChildren } from 'react'
 import ReactMarkdown from 'react-markdown'
+
+import { Column, Heading, Link, OrderedList, Paragraph, UnorderedList } from '@meldingen/ui'
 
 const richTextMarkdownToHtmlMap = {
   a: ({ children, href }: PropsWithChildren<{ href?: string }>) => {
