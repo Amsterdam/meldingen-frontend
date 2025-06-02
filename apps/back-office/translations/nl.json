@@ -12,7 +12,8 @@
       "created_at": "Datum",
       "classification": "Categorie",
       "state": "Status",
-      "address": "Adres"
+      "address": "Adres",
+      "postal_code": "Postcode"
     },
     "no-classification": "Geen categorie"
   },

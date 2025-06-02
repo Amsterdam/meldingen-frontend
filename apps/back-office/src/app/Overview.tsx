@@ -21,6 +21,7 @@ const HEADERS = [
   { key: 'classification', labelKey: 'column-header.classification' },
   { key: 'state', labelKey: 'column-header.state' },
   { key: 'address', labelKey: 'column-header.address' },
+  { key: 'postal_code', labelKey: 'column-header.postal_code' },
 ]
 
 const formatValue = (melding: MeldingOutput & { address: string | null }, key: string, t: (key: string) => string) => {
@@ -32,7 +33,9 @@ const formatValue = (melding: MeldingOutput & { address: string | null }, key: s
     case 'state':
       return melding.state
     case 'address':
-      return melding?.address ? melding.address : ''
+      return melding.address || ''
+    case 'postal_code':
+      return melding.postal_code || ''
     default:
       return null
   }
