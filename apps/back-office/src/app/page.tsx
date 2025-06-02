@@ -3,7 +3,8 @@ import { getTranslations } from 'next-intl/server'
 
 import { Overview } from './Overview'
 import { handleApiError } from '../handleApiError'
-import { getMelding, MeldingOutput } from 'apps/back-office/src/apiClientProxy'
+import { formatNLAddress } from './utils'
+import { getMelding } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('overview')
@@ -19,16 +20,6 @@ type Props = {
 
 const PAGE_SIZE = 10
 const SORT = '["created_at","DESC"]'
-
-type FormatNLAddressArgs = Pick<MeldingOutput, 'street' | 'house_number' | 'house_number_addition'>
-
-const formatNLAddress = ({ street, house_number, house_number_addition }: FormatNLAddressArgs) => {
-  if (!street || !house_number) {
-    return null
-  }
-
-  return `${street} ${house_number}${house_number_addition ? `${house_number_addition}` : ''}`
-}
 
 export default async ({ searchParams }: Props) => {
   const pageString = (await searchParams).pagina

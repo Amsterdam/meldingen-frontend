@@ -5,6 +5,7 @@ import { vi } from 'vitest'
 
 import { Overview } from './Overview'
 import Page, { generateMetadata } from './page'
+import { formatNLAddress } from './utils'
 import { meldingen } from '../mocks/data'
 import { ENDPOINTS } from '../mocks/endpoints'
 import { server } from '../mocks/node'
@@ -33,9 +34,14 @@ describe('Page', () => {
 
     render(result)
 
+    const dataWithAddresses = meldingen.map((melding) => ({
+      ...melding,
+      address: formatNLAddress(melding),
+    }))
+
     expect(Overview).toHaveBeenCalledWith(
       {
-        data: meldingen,
+        data: dataWithAddresses,
         meldingCount: 40,
         page: undefined,
         totalPages: 4,
@@ -51,9 +57,14 @@ describe('Page', () => {
 
     render(result)
 
+    const dataWithAddresses = meldingen.map((melding) => ({
+      ...melding,
+      address: formatNLAddress(melding),
+    }))
+
     expect(Overview).toHaveBeenCalledWith(
       {
-        data: meldingen,
+        data: dataWithAddresses,
         meldingCount: 40,
         page: 2,
         totalPages: 4,
