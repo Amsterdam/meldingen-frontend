@@ -56,6 +56,7 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
 
     // Set crosshair to show where the marker is set with a keyboard
     map.on('keydown', ({ originalEvent }) => {
+      // Show crosshair when map is controlled using arrow keys
       if (
         originalEvent.key === 'ArrowUp' ||
         originalEvent.key === 'ArrowDown' ||
