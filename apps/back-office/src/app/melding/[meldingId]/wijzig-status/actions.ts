@@ -16,20 +16,6 @@ const isValidState = (state: string | File) => {
   return typeof state === 'string' && isValidMeldingState(state)
 }
 
-const updateMeldingState = async (state: string, meldingId: number, t: (key: string) => string) => {
-  if (state === 'processing') {
-    return await putMeldingByMeldingIdProcess({ path: { melding_id: meldingId } })
-  }
-  if (state === 'completed') {
-    return await putMeldingByMeldingIdComplete({
-      path: { melding_id: meldingId },
-      body: { mail_body: 'lalala' },
-    })
-  }
-  // Should never reach here if type guard works
-  return { error: { detail: t('invalid-state') } }
-}
-
 export const postChangeStateForm = async ({ meldingId }: { meldingId: number }, _: unknown, formData: FormData) => {
   const state = extractStateFromFormData(formData)
 
@@ -39,10 +25,19 @@ export const postChangeStateForm = async ({ meldingId }: { meldingId: number }, 
     return { message: t('invalid-state') }
   }
 
-  const { error } = await updateMeldingState(state, meldingId, t)
+  if (state === 'processing') {
+    const { error } = await putMeldingByMeldingIdProcess({ path: { melding_id: meldingId } })
 
-  if (error) {
-    return { message: handleApiError(error) }
+    if (error) return { message: handleApiError(error) }
+  }
+
+  if (state === 'completed') {
+    const { error } = await putMeldingByMeldingIdComplete({
+      path: { melding_id: meldingId },
+      body: { mail_body: 'lalala' },
+    })
+
+    if (error) return { message: handleApiError(error) }
   }
 
   return redirect(`/melding/${meldingId}`)
