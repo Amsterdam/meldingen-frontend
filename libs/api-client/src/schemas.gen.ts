@@ -629,12 +629,10 @@ export const AnswerOutputSchema = {
         },
         created_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Created At'
         },
         updated_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Updated At'
         }
     },
@@ -651,12 +649,10 @@ export const AnswerQuestionOutputSchema = {
         },
         created_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Created At'
         },
         updated_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Updated At'
         },
         text: {
@@ -680,12 +676,10 @@ export const AttachmentOutputSchema = {
         },
         created_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Created At'
         },
         updated_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Updated At'
         },
         original_filename: {
@@ -788,12 +782,10 @@ export const ClassificationOutputSchema = {
         },
         created_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Created At'
         },
         updated_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Updated At'
         },
         name: {
@@ -815,6 +807,18 @@ export const ClassificationOutputSchema = {
     type: 'object',
     required: ['id', 'created_at', 'updated_at', 'name'],
     title: 'ClassificationOutput'
+} as const;
+
+export const CompleteMeldingInputSchema = {
+    properties: {
+        mail_body: {
+            type: 'string',
+            title: 'Mail Body'
+        }
+    },
+    type: 'object',
+    required: ['mail_body'],
+    title: 'CompleteMeldingInput'
 } as const;
 
 export const DivideSchema = {
@@ -1654,12 +1658,10 @@ export const FormOutputSchema = {
         },
         created_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Created At'
         },
         updated_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Updated At'
         },
         title: {
@@ -3514,12 +3516,10 @@ export const MeldingCreateOutputSchema = {
         },
         created_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Created At'
         },
         updated_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Updated At'
         },
         public_id: {
@@ -3664,12 +3664,10 @@ export const MeldingOutputSchema = {
         },
         created_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Created At'
         },
         updated_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Updated At'
         },
         public_id: {
@@ -4779,12 +4777,10 @@ export const QuestionOutputSchema = {
         },
         created_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Created At'
         },
         updated_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Updated At'
         },
         text: {
@@ -5109,12 +5105,10 @@ export const SimpleClassificationOutputSchema = {
         },
         created_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Created At'
         },
         updated_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Updated At'
         },
         name: {
@@ -5135,12 +5129,10 @@ export const SimpleFormOutputSchema = {
         },
         created_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Created At'
         },
         updated_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Updated At'
         },
         title: {
@@ -5176,12 +5168,10 @@ export const SimpleStaticFormOutputSchema = {
         },
         created_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Created At'
         },
         updated_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Updated At'
         },
         title: {
@@ -5609,12 +5599,10 @@ export const StaticFormOutputSchema = {
         },
         created_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Created At'
         },
         updated_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Updated At'
         },
         title: {
@@ -6087,12 +6075,10 @@ export const UserOutputSchema = {
         },
         created_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Created At'
         },
         updated_at: {
             type: 'string',
-            format: 'date-time',
             title: 'Updated At'
         },
         email: {
