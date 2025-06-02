@@ -13,7 +13,7 @@
 }
 
 .crosshair {
-  display: block; /* Hidden by default */
+  display: none; /* Hidden by default */
   height: 1.25rem;
   left: 50%;
   margin-block: -0.625rem;
