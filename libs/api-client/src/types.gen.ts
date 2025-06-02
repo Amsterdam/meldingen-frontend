@@ -77,6 +77,10 @@ export type ClassificationOutput = {
     form?: number | null;
 };
 
+export type CompleteMeldingInput = {
+    mail_body: string;
+};
+
 export type Divide = {
     '/': [
         number | number | string,
@@ -1450,7 +1454,7 @@ export type PutMeldingByMeldingIdProcessResponses = {
 export type PutMeldingByMeldingIdProcessResponse = PutMeldingByMeldingIdProcessResponses[keyof PutMeldingByMeldingIdProcessResponses];
 
 export type PutMeldingByMeldingIdCompleteData = {
-    body?: never;
+    body?: CompleteMeldingInput | null;
     path: {
         /**
          * The id of the melding.

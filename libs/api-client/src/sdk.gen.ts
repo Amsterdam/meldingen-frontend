@@ -280,7 +280,11 @@ export const putMeldingByMeldingIdComplete = <ThrowOnError extends boolean = fal
             }
         ],
         url: '/melding/{melding_id}/complete',
-        ...options
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options?.headers
+        }
     });
 };
 
