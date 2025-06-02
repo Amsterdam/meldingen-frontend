@@ -9,7 +9,7 @@ import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 import styles from './Overview.module.css'
 
 type Props = {
-  data: MeldingOutput[]
+  data: (MeldingOutput & { address: string | null })[]
   meldingCount: number
   page?: number
   totalPages: number
@@ -20,9 +20,10 @@ const HEADERS = [
   { key: 'created_at', labelKey: 'column-header.created_at' },
   { key: 'classification', labelKey: 'column-header.classification' },
   { key: 'state', labelKey: 'column-header.state' },
+  { key: 'address', labelKey: 'column-header.address' },
 ]
 
-const formatValue = (melding: MeldingOutput, key: string, t: (key: string) => string) => {
+const formatValue = (melding: MeldingOutput & { address: string | null }, key: string, t: (key: string) => string) => {
   switch (key) {
     case 'created_at':
       return new Date(melding.created_at).toLocaleDateString('nl-NL')
@@ -30,6 +31,8 @@ const formatValue = (melding: MeldingOutput, key: string, t: (key: string) => st
       return melding.classification ? melding.classification.name : t('no-classification')
     case 'state':
       return melding.state
+    case 'address':
+      return melding?.address ? melding.address : ''
     default:
       return null
   }
@@ -45,7 +48,7 @@ const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
 const renderTableHeaders = (headers: typeof HEADERS, t: (key: string) => string) =>
   headers.map(({ key, labelKey }) => <Table.HeaderCell key={key}>{t(labelKey)}</Table.HeaderCell>)
 
-const renderTableRows = (data: MeldingOutput[], headers: typeof HEADERS, t: (key: string) => string) =>
+const renderTableRows = (data: Props['data'], headers: typeof HEADERS, t: (key: string) => string) =>
   data.map((melding) => (
     <Table.Row key={melding.public_id}>
       {headers.map(({ key }) => {

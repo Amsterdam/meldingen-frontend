@@ -11,7 +11,8 @@
       "public_id": "Meldnummer",
       "created_at": "Datum",
       "classification": "Categorie",
-      "state": "Status"
+      "state": "Status",
+      "address": "Adres"
     },
     "no-classification": "Geen categorie"
   },
