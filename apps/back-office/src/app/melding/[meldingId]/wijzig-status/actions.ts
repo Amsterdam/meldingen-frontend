@@ -34,7 +34,7 @@ export const postChangeStateForm = async ({ meldingId }: { meldingId: number }, 
   if (state === 'completed') {
     const { error } = await putMeldingByMeldingIdComplete({
       path: { melding_id: meldingId },
-      body: { mail_body: 'lalala' },
+      body: { mail_body: 'Dit is de body van de melding afgehandeld email.' },
     })
 
     if (error) return { message: handleApiError(error) }
