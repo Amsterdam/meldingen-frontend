@@ -65,6 +65,7 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
       ) {
         crosshair.style.display = 'block'
       }
+      // Add marker on spacebar or Enter key press
       if (originalEvent.key === ' ' || originalEvent.key === 'Enter') {
         const center = map.getCenter()
 
