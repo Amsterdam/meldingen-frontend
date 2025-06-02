@@ -54,7 +54,6 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
 
     const crosshair = document.getElementById('crosshair')!
 
-    // Set crosshair to show where the marker is set with a keyboard
     map.on('keydown', ({ originalEvent }) => {
       // Show crosshair when map is controlled using arrow keys
       if (
@@ -76,13 +75,8 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
       }
     })
 
-    // Hide crosshair when map loses focus
-    map.on('blur', () => {
-      crosshair.style.display = 'none'
-    })
-
-    // Hide crosshair when using mouse
-    map.on('mousemove', () => {
+    // Hide crosshair on following events
+    map.on('blur mousemove dragstart', () => {
       crosshair.style.display = 'none'
     })
 
