@@ -25,7 +25,9 @@ const HEADERS = [
   { key: 'postal_code', labelKey: 'column-header.postal_code' },
 ]
 
-export const formatValue = (melding: MeldingOutput & { address?: string }, key: string, t: (key: string) => string) => {
+type MeldingWithAddress = MeldingOutput & { address?: string }
+
+export const formatValue = (melding: MeldingWithAddress, key: string, t: (key: string) => string) => {
   switch (key) {
     case 'created_at':
       return new Date(melding.created_at).toLocaleDateString('nl-NL')
@@ -51,8 +53,6 @@ export const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) =>
 
 const renderTableHeaders = (headers: typeof HEADERS, t: (key: string) => string) =>
   headers.map(({ key, labelKey }) => <Table.HeaderCell key={key}>{t(labelKey)}</Table.HeaderCell>)
-
-type MeldingWithAddress = MeldingOutput & { address?: string }
 
 const renderTableRows = (meldingen: MeldingWithAddress[], headers: typeof HEADERS, t: (key: string) => string) =>
   meldingen.map((melding) => (
