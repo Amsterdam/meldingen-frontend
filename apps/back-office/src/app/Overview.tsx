@@ -25,7 +25,7 @@ const HEADERS = [
   { key: 'postal_code', labelKey: 'column-header.postal_code' },
 ]
 
-const formatValue = (melding: MeldingOutput & { address?: string }, key: string, t: (key: string) => string) => {
+export const formatValue = (melding: MeldingOutput & { address?: string }, key: string, t: (key: string) => string) => {
   switch (key) {
     case 'created_at':
       return new Date(melding.created_at).toLocaleDateString('nl-NL')
@@ -38,11 +38,11 @@ const formatValue = (melding: MeldingOutput & { address?: string }, key: string,
     case 'postal_code':
       return melding.postal_code || ''
     default:
-      return null
+      return undefined
   }
 }
 
-const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
+export const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
   <NextLink href={props.href || ''} legacyBehavior passHref>
     {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
     <a {...props} />
