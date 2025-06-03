@@ -1,3 +1,4 @@
+import { getFullNLAddress } from '../../utils'
 import { getMeldingByMeldingIdAnswers, MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 import { handleApiError } from 'apps/back-office/src/handleApiError'
 
@@ -66,6 +67,21 @@ export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) 
         href: `/melding/${id}/wijzig-status`,
         label: t('melding-data.state.link'),
       },
+    },
+  ]
+}
+
+export const getLocationData = (data: MeldingOutput) => {
+  //, t: (key: string) => string
+  const address = getFullNLAddress(data)
+
+  if (!address) return undefined
+
+  return [
+    {
+      key: 'address',
+      term: 'Adres',
+      description: address,
     },
   ]
 }

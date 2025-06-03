@@ -4,12 +4,13 @@ import { AnchorHTMLAttributes } from 'react'
 
 import { Grid, Heading, Link, Pagination, Table } from '@meldingen/ui'
 
+import { getShortNLAddress } from './utils'
 import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
 import styles from './Overview.module.css'
 
 type Props = {
-  data: (MeldingOutput & { address: string | null })[]
+  data: MeldingOutput[]
   meldingCount: number
   page?: number
   totalPages: number
@@ -24,7 +25,7 @@ const HEADERS = [
   { key: 'postal_code', labelKey: 'column-header.postal_code' },
 ]
 
-const formatValue = (melding: MeldingOutput & { address: string | null }, key: string, t: (key: string) => string) => {
+const formatValue = (melding: MeldingOutput & { address?: string }, key: string, t: (key: string) => string) => {
   switch (key) {
     case 'created_at':
       return new Date(melding.created_at).toLocaleDateString('nl-NL')
@@ -51,7 +52,9 @@ const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
 const renderTableHeaders = (headers: typeof HEADERS, t: (key: string) => string) =>
   headers.map(({ key, labelKey }) => <Table.HeaderCell key={key}>{t(labelKey)}</Table.HeaderCell>)
 
-const renderTableRows = (data: Props['data'], headers: typeof HEADERS, t: (key: string) => string) =>
+type DataWithAddress = MeldingOutput & { address?: string }
+
+const renderTableRows = (data: DataWithAddress[], headers: typeof HEADERS, t: (key: string) => string) =>
   data.map((melding) => (
     <Table.Row key={melding.public_id}>
       {headers.map(({ key }) => {
@@ -72,6 +75,11 @@ const renderTableRows = (data: Props['data'], headers: typeof HEADERS, t: (key: 
 export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
   const t = useTranslations('overview')
 
+  const dataWithAddresses = data.map((melding) => ({
+    ...melding,
+    address: getShortNLAddress(melding),
+  }))
+
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
@@ -82,7 +90,7 @@ export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
           <Table.Header>
             <Table.Row>{renderTableHeaders(HEADERS, t)}</Table.Row>
           </Table.Header>
-          <Table.Body>{renderTableRows(data, HEADERS, t)}</Table.Body>
+          <Table.Body>{renderTableRows(dataWithAddresses, HEADERS, t)}</Table.Body>
         </Table>
         <Pagination
           className={styles.pagination}

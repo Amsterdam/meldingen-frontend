@@ -3,7 +3,6 @@ import { getTranslations } from 'next-intl/server'
 
 import { Overview } from './Overview'
 import { handleApiError } from '../handleApiError'
-import { formatNLAddress } from './utils'
 import { getMelding } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async () => {
@@ -45,10 +44,5 @@ export default async ({ searchParams }: Props) => {
     redirect('/')
   }
 
-  const dataWithAddresses = data.map((melding) => ({
-    ...melding,
-    address: formatNLAddress(melding),
-  }))
-
-  return <Overview data={dataWithAddresses} meldingCount={meldingCount} page={page} totalPages={totalPages} />
+  return <Overview data={data} meldingCount={meldingCount} page={page} totalPages={totalPages} />
 }

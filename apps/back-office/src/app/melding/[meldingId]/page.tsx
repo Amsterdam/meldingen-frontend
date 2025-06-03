@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { Detail } from './Detail'
-import { getAdditionalQuestionsData, getContactData, getMeldingData } from './utils'
+import { getAdditionalQuestionsData, getContactData, getLocationData, getMeldingData } from './utils'
 import { getMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async ({ searchParams }: { searchParams: Promise<{ id: string }> }) => {
@@ -35,12 +35,14 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   ]
 
   const contact = getContactData(data, t)
+  const location = getLocationData(data)
   const meldingData = getMeldingData(data, t)
 
   return (
     <Detail
       additionalQuestionsWithMeldingText={additionalQuestionsWithMeldingText}
       contact={contact}
+      location={location}
       meldingData={meldingData}
       publicId={data.public_id}
     />

@@ -1,11 +1,29 @@
 import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
-type FormatNLAddressArgs = Pick<MeldingOutput, 'street' | 'house_number' | 'house_number_addition'>
+type ShortAddressInput = Pick<MeldingOutput, 'street' | 'house_number' | 'house_number_addition'>
+type FullAddressInput = Pick<
+  MeldingOutput,
+  'street' | 'house_number' | 'house_number_addition' | 'postal_code' | 'city'
+>
 
-export const formatNLAddress = ({ street, house_number, house_number_addition }: FormatNLAddressArgs) => {
-  if (!street || !house_number) {
-    return null
-  }
+export const getShortNLAddress = ({ street, house_number, house_number_addition }: ShortAddressInput) => {
+  if (!street || !house_number) return undefined
 
-  return `${street} ${house_number}${house_number_addition ? `${house_number_addition}` : ''}`
+  const addition = house_number_addition ? house_number_addition : ''
+
+  return `${street} ${house_number}${addition}`
+}
+
+export const getFullNLAddress = ({
+  street,
+  house_number,
+  house_number_addition,
+  postal_code,
+  city,
+}: FullAddressInput) => {
+  const shortAddress = getShortNLAddress({ street, house_number, house_number_addition })
+
+  if (!shortAddress || !postal_code || !city) return null
+
+  return `${shortAddress}, ${postal_code} ${city}`
 }
