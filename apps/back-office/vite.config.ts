@@ -5,6 +5,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   plugins: [tsconfigPaths(), react()],
   test: {
+    clearMocks: true,
     coverage: {
       enabled: true,
       include: ['src/**/*.{js,jsx,ts,tsx}'],
@@ -15,7 +16,6 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    mockReset: true,
     setupFiles: ['./vitest.setup.ts'],
     watch: false,
   },

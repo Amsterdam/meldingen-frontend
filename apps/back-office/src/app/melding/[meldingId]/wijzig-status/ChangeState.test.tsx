@@ -19,10 +19,6 @@ const defaultProps = {
 }
 
 describe('ChangeState', () => {
-  beforeEach(() => {
-    ;(useActionState as Mock).mockReturnValue([{}, vi.fn()])
-  })
-
   it('renders the select field with the correct options', () => {
     render(<ChangeState {...defaultProps} />)
 
