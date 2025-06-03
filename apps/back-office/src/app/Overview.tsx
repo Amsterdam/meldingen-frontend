@@ -62,7 +62,7 @@ const renderTableRows = (meldingen: MeldingWithAddress[], headers: typeof HEADER
           return (
             <Table.Cell key={key}>
               <NextLink href={`/melding/${melding.id}?id=${melding.public_id}`} legacyBehavior passHref>
-                <Link variant="inline">{melding.public_id}</Link>
+                <Link>{melding.public_id}</Link>
               </NextLink>
             </Table.Cell>
           )
@@ -81,7 +81,7 @@ export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props)
   }))
 
   return (
-    <Grid paddingBottom="large" paddingTop="medium">
+    <Grid paddingBottom="2x-large" paddingTop="x-large">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
         <Heading level={1} className="ams-mb-m">
           {t('title', { meldingenCount })}

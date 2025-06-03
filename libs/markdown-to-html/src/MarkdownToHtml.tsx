@@ -10,7 +10,7 @@ const richTextMarkdownToHtmlMap = {
     const isExternal = href?.startsWith('http')
 
     return (
-      <Link {...(href ? { href } : {})} rel={isExternal ? 'external' : undefined} variant="inline">
+      <Link {...(href ? { href } : {})} rel={isExternal ? 'external' : undefined}>
         {children}
       </Link>
     )

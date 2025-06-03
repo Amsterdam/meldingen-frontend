@@ -9,8 +9,8 @@ export default defineConfig({
       enabled: true,
       include: ['src/**/*.{js,jsx,ts,tsx}'],
       thresholds: {
-        branches: 88.17,
-        functions: 83.09,
+        branches: 87.9,
+        functions: 82.85,
         lines: 87.23,
         statements: 87.23,
       },

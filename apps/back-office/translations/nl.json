@@ -6,7 +6,7 @@
     "metadata": {
       "title": "Overzicht meldingen openbare ruimte - Gemeente Amsterdam"
     },
-    "title": "Meldingen ({meldingCount})",
+    "title": "Meldingen ({meldingenCount})",
     "column-header": {
       "public_id": "Meldnummer",
       "created_at": "Datum",

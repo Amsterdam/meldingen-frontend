@@ -1,5 +1,5 @@
 import { Button, Paragraph } from '@amsterdam/design-system-react'
-import { EnlargeIcon, MinimiseIcon } from '@amsterdam/design-system-react-icons'
+import { MinusIcon, PlusIcon } from '@amsterdam/design-system-react-icons'
 import type L from 'leaflet'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
@@ -62,10 +62,10 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
         )}
       </div>
       <div className={styles.overlayBottomRight}>
-        <Button variant="secondary" iconOnly icon={EnlargeIcon} onClick={handleZoomIn}>
+        <Button variant="secondary" iconOnly icon={PlusIcon} onClick={handleZoomIn}>
           {t('zoom-in')}
         </Button>
-        <Button variant="secondary" iconOnly icon={MinimiseIcon} onClick={handleZoomOut}>
+        <Button variant="secondary" iconOnly icon={MinusIcon} onClick={handleZoomOut}>
           {t('zoom-out')}
         </Button>
       </div>

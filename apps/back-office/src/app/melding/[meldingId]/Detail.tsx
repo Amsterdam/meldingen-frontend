@@ -26,7 +26,7 @@ export const Detail = ({ additionalQuestionsWithMeldingText, contact, location, 
   const t = useTranslations('detail')
 
   return (
-    <Grid paddingBottom="large" paddingTop="medium">
+    <Grid paddingBottom="2x-large" paddingTop="x-large">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
         <BackLink className="ams-mb-s" href={`/`}>
           {t('back-link')}

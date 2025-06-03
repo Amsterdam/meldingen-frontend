@@ -33,11 +33,11 @@
     "update-minor": "npm-check-updates --target minor --upgrade && pnpm install"
   },
   "dependencies": {
-    "@amsterdam/design-system-assets": "0.3.0",
-    "@amsterdam/design-system-css": "0.15.0",
-    "@amsterdam/design-system-react": "0.15.0",
-    "@amsterdam/design-system-react-icons": "0.1.14",
-    "@amsterdam/design-system-tokens": "0.15.0",
+    "@amsterdam/design-system-assets": "1.0.0",
+    "@amsterdam/design-system-css": "1.0.0",
+    "@amsterdam/design-system-react": "1.0.0",
+    "@amsterdam/design-system-react-icons": "1.0.0",
+    "@amsterdam/design-system-tokens": "1.0.0",
     "@formio/react": "6.0.1",
     "clsx": "2.1.1",
     "formiojs": "4.21.6",
