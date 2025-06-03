@@ -23,7 +23,7 @@ export const getFullNLAddress = ({
 }: FullAddressInput) => {
   const shortAddress = getShortNLAddress({ street, house_number, house_number_addition })
 
-  if (!shortAddress || !postal_code || !city) return null
+  if (!shortAddress || !postal_code || !city) return undefined
 
   return `${shortAddress}, ${postal_code} ${city}`
 }
