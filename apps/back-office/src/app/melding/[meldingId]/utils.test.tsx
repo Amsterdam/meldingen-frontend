@@ -73,6 +73,31 @@ describe('getContactData', () => {
   })
 })
 
+describe('getLocationData', () => {
+  it('should return correct location data', () => {
+    const result = getLocationData(melding, (key: string) => key)
+
+    expect(result).toEqual([
+      {
+        key: 'address',
+        term: 'location.address',
+        description: getFullNLAddress(melding),
+      },
+    ])
+  })
+
+  it('should return undefined when not all location data exists', () => {
+    const meldingDataWithoutPostalCode = {
+      ...melding,
+      postal_code: null,
+    }
+
+    const result = getLocationData(meldingDataWithoutPostalCode, (key: string) => key)
+
+    expect(result).toEqual(undefined)
+  })
+})
+
 describe('getMeldingData', () => {
   it('should return correct melding summary', () => {
     const result = getMeldingData(melding, (key: string) => key)
@@ -131,30 +156,5 @@ describe('getMeldingData', () => {
         term: 'melding-data.state.term',
       },
     ])
-  })
-})
-
-describe('getLocationData', () => {
-  it('should return correct location data', () => {
-    const result = getLocationData(melding, (key: string) => key)
-
-    expect(result).toEqual([
-      {
-        key: 'address',
-        term: 'location.address',
-        description: getFullNLAddress(melding),
-      },
-    ])
-  })
-
-  it('should return undefined when not all location data exists', () => {
-    const meldingDataWithoutPostalCode = {
-      ...melding,
-      postal_code: null,
-    }
-
-    const result = getLocationData(meldingDataWithoutPostalCode, (key: string) => key)
-
-    expect(result).toEqual(undefined)
   })
 })

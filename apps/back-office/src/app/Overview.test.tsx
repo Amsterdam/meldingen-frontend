@@ -65,7 +65,7 @@ describe('formatValue', () => {
     expect(result).toBe(melding.postal_code)
   })
 
-  it('returns empty string if postal_code is missing', () => {
+  it('returns empty string if postal code is missing', () => {
     const meldingWithoutPostalCode = { ...melding, postal_code: undefined }
     const result = formatValue(meldingWithoutPostalCode, 'postal_code', t)
 
