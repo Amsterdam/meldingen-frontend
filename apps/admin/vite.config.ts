@@ -10,6 +10,12 @@ export default defineConfig({
   test: {
     coverage: {
       enabled: true,
+      thresholds: {
+        branches: 85.71,
+        functions: 40,
+        lines: 88.79,
+        statements: 88.79,
+      },
     },
     globals: true,
     environment: 'jsdom',
