@@ -48,7 +48,7 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
       <Heading level={2} size="level-4" className="ams-mb-s">
         {t('title')}
       </Heading>
-      <Paragraph className="ams-mb-l">{t('description')}</Paragraph>
+      <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
 
       {formState?.message && <Paragraph>{formState.message}</Paragraph>}
 
