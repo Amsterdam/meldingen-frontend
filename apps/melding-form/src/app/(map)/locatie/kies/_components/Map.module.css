@@ -11,3 +11,38 @@
 .hideMap {
   display: none;
 }
+
+.crosshair {
+  display: none; /* Hidden by default */
+  height: 1.25rem;
+  left: 50%;
+  margin-block: -0.625rem;
+  margin-inline: -0.625rem;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  width: 1.25rem;
+}
+
+.crosshair::before,
+.crosshair::after {
+  background: red;
+  content: '';
+  position: absolute;
+}
+
+.crosshair::before {
+  height: 0.125rem;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.crosshair::after {
+  height: 100%;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 0.125rem;
+}
