@@ -28,6 +28,9 @@
       "email": "E-mail melder",
       "phone": "Telefoon melder"
     },
+    "location": {
+      "address": "Adres"
+    },
     "melding-data": {
       "created_at": "Gemeld op",
       "classification": "Categorie",

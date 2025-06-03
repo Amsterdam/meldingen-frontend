@@ -35,7 +35,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   ]
 
   const contact = getContactData(data, t)
-  const location = getLocationData(data)
+  const location = getLocationData(data, t)
   const meldingData = getMeldingData(data, t)
 
   return (
