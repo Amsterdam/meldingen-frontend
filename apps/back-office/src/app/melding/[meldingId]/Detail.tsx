@@ -17,11 +17,12 @@ type MeldingDataItem = DescriptionListItem & { link?: { href: string; label: str
 type Props = {
   additionalQuestionsWithMeldingText: DescriptionListItem[]
   contact?: DescriptionListItem[]
+  location?: DescriptionListItem[]
   meldingData: MeldingDataItem[]
   publicId: string
 }
 
-export const Detail = ({ additionalQuestionsWithMeldingText, contact, meldingData, publicId }: Props) => {
+export const Detail = ({ additionalQuestionsWithMeldingText, contact, location, meldingData, publicId }: Props) => {
   const t = useTranslations('detail')
 
   return (
@@ -41,6 +42,16 @@ export const Detail = ({ additionalQuestionsWithMeldingText, contact, meldingDat
             </Fragment>
           ))}
         </DescriptionList>
+        {location && (
+          <DescriptionList className="ams-mb-l">
+            {location.map(({ key, term, description }) => (
+              <Fragment key={key}>
+                <DescriptionList.Term>{term}</DescriptionList.Term>
+                <DescriptionList.Description>{description}</DescriptionList.Description>
+              </Fragment>
+            ))}
+          </DescriptionList>
+        )}
         <DescriptionList className="ams-mb-l">
           {meldingData.map(({ key, term, description, link }) => (
             <Fragment key={key}>
