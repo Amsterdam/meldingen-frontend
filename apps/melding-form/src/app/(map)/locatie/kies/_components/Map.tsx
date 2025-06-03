@@ -52,6 +52,34 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
       ],
     })
 
+    const crosshair = document.getElementById('crosshair')!
+
+    map.on('keydown', ({ originalEvent }) => {
+      // Show crosshair when map is controlled using arrow keys
+      if (
+        originalEvent.key === 'ArrowUp' ||
+        originalEvent.key === 'ArrowDown' ||
+        originalEvent.key === 'ArrowLeft' ||
+        originalEvent.key === 'ArrowRight'
+      ) {
+        crosshair.style.display = 'block'
+      }
+      // Add marker on spacebar or Enter key press
+      if (originalEvent.key === ' ' || originalEvent.key === 'Enter') {
+        const center = map.getCenter()
+
+        return setCoordinates({
+          lat: center.lat,
+          lng: center.lng,
+        })
+      }
+    })
+
+    // Hide crosshair on following events
+    map.on('blur mousemove dragstart', () => {
+      crosshair.style.display = 'none'
+    })
+
     // Remove Leaflet link from the map
     map.attributionControl.setPrefix(false)
 
@@ -76,7 +104,9 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
       markerRef.current?.remove()
 
       // Create marker layer and add to map
-      const newMarker = L.marker(L.latLng([coordinates.lat, coordinates.lng]), { icon: marker }).addTo(mapInstance)
+      const newMarker = L.marker(L.latLng([coordinates.lat, coordinates.lng]), { icon: marker, keyboard: false }).addTo(
+        mapInstance,
+      )
 
       // Store marker layer in ref
       markerRef.current = newMarker
@@ -91,6 +121,7 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
   return (
     <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>
       <div className={styles.map} ref={mapRef} />
+      <div className={styles.crosshair} id="crosshair"></div>
       <ControlsOverlay mapInstance={mapInstance} setCoordinates={setCoordinates} />
     </div>
   )
