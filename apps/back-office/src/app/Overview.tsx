@@ -4,13 +4,14 @@ import { AnchorHTMLAttributes } from 'react'
 
 import { Grid, Heading, Link, Pagination, Table } from '@meldingen/ui'
 
+import { getShortNLAddress } from './utils'
 import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
 import styles from './Overview.module.css'
 
 type Props = {
-  data: MeldingOutput[]
-  meldingCount: number
+  meldingen: MeldingOutput[]
+  meldingenCount: number
   page?: number
   totalPages: number
 }
@@ -20,9 +21,13 @@ const HEADERS = [
   { key: 'created_at', labelKey: 'column-header.created_at' },
   { key: 'classification', labelKey: 'column-header.classification' },
   { key: 'state', labelKey: 'column-header.state' },
+  { key: 'address', labelKey: 'column-header.address' },
+  { key: 'postal_code', labelKey: 'column-header.postal_code' },
 ]
 
-const formatValue = (melding: MeldingOutput, key: string, t: (key: string) => string) => {
+type MeldingWithAddress = MeldingOutput & { address?: string }
+
+export const formatValue = (melding: MeldingWithAddress, key: string, t: (key: string) => string) => {
   switch (key) {
     case 'created_at':
       return new Date(melding.created_at).toLocaleDateString('nl-NL')
@@ -30,12 +35,16 @@ const formatValue = (melding: MeldingOutput, key: string, t: (key: string) => st
       return melding.classification ? melding.classification.name : t('no-classification')
     case 'state':
       return melding.state
+    case 'address':
+      return melding.address || ''
+    case 'postal_code':
+      return melding.postal_code || ''
     default:
-      return null
+      return undefined
   }
 }
 
-const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
+export const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
   <NextLink href={props.href || ''} legacyBehavior passHref>
     {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
     <a {...props} />
@@ -45,8 +54,8 @@ const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
 const renderTableHeaders = (headers: typeof HEADERS, t: (key: string) => string) =>
   headers.map(({ key, labelKey }) => <Table.HeaderCell key={key}>{t(labelKey)}</Table.HeaderCell>)
 
-const renderTableRows = (data: MeldingOutput[], headers: typeof HEADERS, t: (key: string) => string) =>
-  data.map((melding) => (
+const renderTableRows = (meldingen: MeldingWithAddress[], headers: typeof HEADERS, t: (key: string) => string) =>
+  meldingen.map((melding) => (
     <Table.Row key={melding.public_id}>
       {headers.map(({ key }) => {
         if (key === 'public_id') {
@@ -63,20 +72,25 @@ const renderTableRows = (data: MeldingOutput[], headers: typeof HEADERS, t: (key
     </Table.Row>
   ))
 
-export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
+export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props) => {
   const t = useTranslations('overview')
+
+  const meldingenWithAddress = meldingen.map((melding) => ({
+    ...melding,
+    address: getShortNLAddress(melding),
+  }))
 
   return (
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
         <Heading level={1} className="ams-mb-m">
-          {t('title', { meldingCount })}
+          {t('title', { meldingenCount })}
         </Heading>
         <Table className="ams-mb-l">
           <Table.Header>
             <Table.Row>{renderTableHeaders(HEADERS, t)}</Table.Row>
           </Table.Header>
-          <Table.Body>{renderTableRows(data, HEADERS, t)}</Table.Body>
+          <Table.Body>{renderTableRows(meldingenWithAddress, HEADERS, t)}</Table.Body>
         </Table>
         <Pagination
           className={styles.pagination}

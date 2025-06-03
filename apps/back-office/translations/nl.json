@@ -11,7 +11,9 @@
       "public_id": "Meldnummer",
       "created_at": "Datum",
       "classification": "Categorie",
-      "state": "Status"
+      "state": "Status",
+      "address": "Adres",
+      "postal_code": "Postcode"
     },
     "no-classification": "Geen categorie"
   },
@@ -25,6 +27,9 @@
     "contact": {
       "email": "E-mail melder",
       "phone": "Telefoon melder"
+    },
+    "location": {
+      "address": "Adres"
     },
     "melding-data": {
       "created_at": "Gemeld op",
