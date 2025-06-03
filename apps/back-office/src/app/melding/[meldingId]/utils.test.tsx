@@ -146,4 +146,15 @@ describe('getLocationData', () => {
       },
     ])
   })
+
+  it('should return undefined when not all location data exists', () => {
+    const meldingDataWithoutPostalCode = {
+      ...melding,
+      postal_code: null,
+    }
+
+    const result = getLocationData(meldingDataWithoutPostalCode, (key: string) => key)
+
+    expect(result).toEqual(undefined)
+  })
 })
