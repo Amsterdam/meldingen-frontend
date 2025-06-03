@@ -22,10 +22,6 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
   it('renders the Overview component without a "pagina" search param', async () => {
     const searchParams = Promise.resolve({})
 
