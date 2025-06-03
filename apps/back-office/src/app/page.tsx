@@ -32,17 +32,17 @@ export default async ({ searchParams }: Props) => {
     query: { limit: PAGE_SIZE, offset: page ? (page - 1) * PAGE_SIZE : 0, sort: SORT },
   })
 
-  const meldingCountString = response.headers.get('Content-Range')?.split('/')[1]
+  const meldingenCountString = response.headers.get('Content-Range')?.split('/')[1]
 
-  if (error || !data || !meldingCountString) return handleApiError(error)
+  if (error || !data || !meldingenCountString) return handleApiError(error)
 
-  const meldingCount = parseInt(meldingCountString, 10)
+  const meldingenCount = parseInt(meldingenCountString, 10)
 
-  const totalPages = Math.ceil(meldingCount / PAGE_SIZE)
+  const totalPages = Math.ceil(meldingenCount / PAGE_SIZE)
 
   if (page && page > totalPages) {
     redirect('/')
   }
 
-  return <Overview data={data} meldingCount={meldingCount} page={page} totalPages={totalPages} />
+  return <Overview meldingen={data} meldingenCount={meldingenCount} page={page} totalPages={totalPages} />
 }

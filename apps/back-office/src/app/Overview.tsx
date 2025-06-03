@@ -10,8 +10,8 @@ import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 import styles from './Overview.module.css'
 
 type Props = {
-  data: MeldingOutput[]
-  meldingCount: number
+  meldingen: MeldingOutput[]
+  meldingenCount: number
   page?: number
   totalPages: number
 }
@@ -52,10 +52,10 @@ export const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) =>
 const renderTableHeaders = (headers: typeof HEADERS, t: (key: string) => string) =>
   headers.map(({ key, labelKey }) => <Table.HeaderCell key={key}>{t(labelKey)}</Table.HeaderCell>)
 
-type DataWithAddress = MeldingOutput & { address?: string }
+type MeldingWithAddress = MeldingOutput & { address?: string }
 
-const renderTableRows = (data: DataWithAddress[], headers: typeof HEADERS, t: (key: string) => string) =>
-  data.map((melding) => (
+const renderTableRows = (meldingen: MeldingWithAddress[], headers: typeof HEADERS, t: (key: string) => string) =>
+  meldingen.map((melding) => (
     <Table.Row key={melding.public_id}>
       {headers.map(({ key }) => {
         if (key === 'public_id') {
@@ -72,10 +72,10 @@ const renderTableRows = (data: DataWithAddress[], headers: typeof HEADERS, t: (k
     </Table.Row>
   ))
 
-export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
+export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props) => {
   const t = useTranslations('overview')
 
-  const dataWithAddresses = data.map((melding) => ({
+  const meldingenWithAddress = meldingen.map((melding) => ({
     ...melding,
     address: getShortNLAddress(melding),
   }))
@@ -84,13 +84,13 @@ export const Overview = ({ data, meldingCount, page, totalPages }: Props) => {
     <Grid paddingBottom="large" paddingTop="medium">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
         <Heading level={1} className="ams-mb-m">
-          {t('title', { meldingCount })}
+          {t('title', { meldingenCount })}
         </Heading>
         <Table className="ams-mb-l">
           <Table.Header>
             <Table.Row>{renderTableHeaders(HEADERS, t)}</Table.Row>
           </Table.Header>
-          <Table.Body>{renderTableRows(dataWithAddresses, HEADERS, t)}</Table.Body>
+          <Table.Body>{renderTableRows(meldingenWithAddress, HEADERS, t)}</Table.Body>
         </Table>
         <Pagination
           className={styles.pagination}
