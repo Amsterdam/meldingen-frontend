@@ -1,6 +1,7 @@
 import { http, HttpResponse } from 'msw'
 
-import { getAdditionalQuestionsData, getContactData, getMeldingData } from './utils'
+import { getAdditionalQuestionsData, getContactData, getLocationData, getMeldingData } from './utils'
+import { getFullNLAddress } from '../../utils'
 import { melding } from 'apps/back-office/src/mocks/data'
 import { additionalQuestions } from 'apps/back-office/src/mocks/data'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
@@ -128,6 +129,20 @@ describe('getMeldingData', () => {
           label: 'melding-data.state.link',
         },
         term: 'melding-data.state.term',
+      },
+    ])
+  })
+})
+
+describe('getLocationData', () => {
+  it('should return correct location data', () => {
+    const result = getLocationData(melding, (key: string) => key)
+
+    expect(result).toEqual([
+      {
+        key: 'address',
+        term: 'location.address',
+        description: getFullNLAddress(melding),
       },
     ])
   })
