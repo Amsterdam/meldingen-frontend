@@ -61,5 +61,16 @@
       "invalid-state": "Ongeldige status",
       "melding-not-found": "An error occurred"
     }
+  },
+  "generic": {
+    "melding-state": {
+      "processing": "In behandeling",
+      "completed": "Afgehandeld",
+      "submitted": "Gemeld",
+      "questions_answered": "Aanvullende vragen beantwoord",
+      "new": "Melding beschrijving toegevoegd",
+      "classified": "Melding geclassificeerd",
+      "contact_info_added": "Contactgegevens ingevuld"
+    }
   }
 }
