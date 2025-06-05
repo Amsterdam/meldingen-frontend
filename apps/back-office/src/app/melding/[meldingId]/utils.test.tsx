@@ -1,6 +1,7 @@
 import { http, HttpResponse } from 'msw'
 
-import { getAdditionalQuestionsData, getContactData, getMeldingData } from './utils'
+import { getAdditionalQuestionsData, getContactData, getLocationData, getMeldingData } from './utils'
+import { getFullNLAddress } from '../../utils'
 import { melding } from 'apps/back-office/src/mocks/data'
 import { additionalQuestions } from 'apps/back-office/src/mocks/data'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
@@ -67,6 +68,31 @@ describe('getContactData', () => {
     }
 
     const result = getContactData(meldingDataWithoutContact, (key: string) => key)
+
+    expect(result).toEqual(undefined)
+  })
+})
+
+describe('getLocationData', () => {
+  it('should return correct location data', () => {
+    const result = getLocationData(melding, (key: string) => key)
+
+    expect(result).toEqual([
+      {
+        key: 'address',
+        term: 'location.address',
+        description: getFullNLAddress(melding),
+      },
+    ])
+  })
+
+  it('should return undefined when not all location data exists', () => {
+    const meldingDataWithoutPostalCode = {
+      ...melding,
+      postal_code: null,
+    }
+
+    const result = getLocationData(meldingDataWithoutPostalCode, (key: string) => key)
 
     expect(result).toEqual(undefined)
   })

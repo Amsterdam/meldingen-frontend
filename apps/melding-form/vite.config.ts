@@ -9,6 +9,12 @@ export default defineConfig({
     coverage: {
       enabled: true,
       include: ['src/**/*.{js,jsx,ts,tsx}'],
+      thresholds: {
+        branches: 87.9,
+        functions: 82.8,
+        lines: 87.2,
+        statements: 87.2,
+      },
     },
     globals: true,
     environment: 'jsdom',

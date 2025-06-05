@@ -8,6 +8,12 @@ export default defineConfig({
       enabled: true,
       include: ['src/**/*.{js,jsx,ts,tsx}'],
       exclude: ['src/index.ts'],
+      thresholds: {
+        branches: 91.3,
+        functions: 90,
+        lines: 100,
+        statements: 100,
+      },
     },
     globals: true,
     environment: 'jsdom',

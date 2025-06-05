@@ -1,21 +1,15 @@
-import { ChevronLeftIcon } from '@amsterdam/design-system-react-icons'
-import clsx from 'clsx'
+import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons'
 import NextLink from 'next/link'
 import type { AnchorHTMLAttributes } from 'react'
 
-import { Icon, Link } from '@meldingen/ui'
-
-import styles from './BackLink.module.css'
+import { StandaloneLink } from '@meldingen/ui'
 
 type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & {
   href: string
 }
 
-export const BackLink = ({ children, className, href, ...restProps }: Props) => (
+export const BackLink = ({ href, ...restProps }: Props) => (
   <NextLink href={href} legacyBehavior passHref>
-    <Link {...restProps} className={clsx(styles.link, className)}>
-      <Icon svg={ChevronLeftIcon} size="level-5" />
-      {children}
-    </Link>
+    <StandaloneLink {...restProps} icon={ChevronBackwardIcon} />
   </NextLink>
 )

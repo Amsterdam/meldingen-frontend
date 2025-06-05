@@ -1,17 +1,17 @@
 import { ReactNode } from 'react'
 
-import { Footer, Grid, Header, Screen } from '@meldingen/ui'
+import { Footer, Grid, Header, Page } from '@meldingen/ui'
 
 const GeneralLayout = ({ children }: { children: ReactNode }) => (
-  <Screen maxWidth="wide">
+  <Page>
     <Header />
-    <Grid paddingBottom="large" paddingTop="medium">
+    <Grid paddingBottom="2x-large" paddingTop="x-large">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
         <main>{children}</main>
       </Grid.Cell>
     </Grid>
     <Footer />
-  </Screen>
+  </Page>
 )
 
 export default GeneralLayout
