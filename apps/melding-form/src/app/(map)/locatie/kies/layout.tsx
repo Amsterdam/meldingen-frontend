@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react'
 
-import { Screen } from '@meldingen/ui'
+import { Page } from '@meldingen/ui'
+
+import styles from './layout.module.css'
 
 const MapLayout = ({ children }: { children: ReactNode }) => (
-  <Screen maxWidth="x-wide">
+  <Page className={styles.page}>
     <main>{children}</main>
-  </Screen>
+  </Page>
 )
 
 export default MapLayout

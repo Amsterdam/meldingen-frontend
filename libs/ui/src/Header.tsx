@@ -1,5 +1,5 @@
 'use client'
 
-import { Header as ADSHeader } from '@amsterdam/design-system-react'
+import { PageHeader } from '@amsterdam/design-system-react'
 
-export const Header = () => <ADSHeader brandName="Melding openbare ruimte" />
+export const Header = () => <PageHeader brandName="Melding openbare ruimte" />

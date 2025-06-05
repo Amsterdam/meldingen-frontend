@@ -1,5 +1,5 @@
 import { Icon } from '@amsterdam/design-system-react'
-import { ApiIcon } from '@amsterdam/design-system-react-icons'
+import { PowerPlugWithSocketIcon } from '@amsterdam/design-system-react-icons'
 import { useState } from 'react'
 import type { AutocompleteInputProps, RaRecord } from 'react-admin'
 import { AutocompleteInput, Confirm, ReferenceInput, useRecordContext } from 'react-admin'
@@ -15,7 +15,7 @@ const OptionRenderer = () => {
   return (
     <span className={styles.autoCompleteOption}>
       <span>{record.name}</span>
-      {record.form && <Icon size="level-5" svg={ApiIcon} className={styles.autoCompleteOptionIcon} />}
+      {record.form && <Icon svg={PowerPlugWithSocketIcon} className={styles.autoCompleteOptionIcon} />}
     </span>
   )
 }
