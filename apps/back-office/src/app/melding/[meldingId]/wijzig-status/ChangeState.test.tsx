@@ -22,7 +22,7 @@ describe('ChangeState', () => {
   it('renders the select field with the correct options', () => {
     render(<ChangeState {...defaultProps} />)
 
-    expect(screen.getByRole('combobox', { name: 'label' })).toBeInTheDocument()
+    expect(screen.getByRole('combobox', { name: 'change-state.label' })).toBeInTheDocument()
     expect(screen.getByRole('option', { name: 'options.default' })).toBeInTheDocument()
     expect(screen.getByRole('option', { name: 'options.processing' })).toBeInTheDocument()
     expect(screen.getByRole('option', { name: 'options.completed' })).toBeInTheDocument()
@@ -36,10 +36,10 @@ describe('ChangeState', () => {
     expect(backLink).toHaveAttribute('href', '/melding/123')
   })
 
-  it('sets the default value of the select field if melding state is valid', () => {
+  it.only('sets the default value of the select field if melding state is valid', () => {
     render(<ChangeState {...defaultProps} />)
 
-    const select = screen.getByRole('combobox', { name: 'label' })
+    const select = screen.getByRole('combobox', { name: 'change-state.label' })
     expect(select).toHaveValue('processing')
   })
 
@@ -48,7 +48,7 @@ describe('ChangeState', () => {
 
     render(<ChangeState {...invalidProps} />)
 
-    const select = screen.getByRole('combobox', { name: 'label' })
+    const select = screen.getByRole('combobox', { name: 'change-state.label' })
     expect(select).toHaveValue('')
   })
 

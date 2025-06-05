@@ -50,12 +50,12 @@ describe('getContactData', () => {
       {
         description: melding.email,
         key: 'email',
-        term: 'contact.email',
+        term: 'detail.contact.email',
       },
       {
         description: melding.phone,
         key: 'phone',
-        term: 'contact.phone',
+        term: 'detail.contact.phone',
       },
     ])
   })
@@ -102,27 +102,27 @@ describe('getMeldingData', () => {
   it('should return correct melding summary', () => {
     const result = getMeldingData(melding, (key: string) => key)
 
-    const { id, classification, created_at, state } = melding
+    const { id, classification, created_at } = melding
 
     expect(result).toEqual([
       {
         description: new Date(created_at).toLocaleDateString('nl-NL'),
         key: 'created_at',
-        term: 'melding-data.created_at',
+        term: 'detail.melding-data.created_at',
       },
       {
         description: classification!.name,
         key: 'classification',
-        term: 'melding-data.classification',
+        term: 'detail.melding-data.classification',
       },
       {
-        description: state,
+        description: 'generic.melding-state.questions_answered',
         key: 'state',
         link: {
           href: `/melding/${id}/wijzig-status`,
-          label: 'melding-data.state.link',
+          label: 'detail.melding-data.state.link',
         },
-        term: 'melding-data.state.term',
+        term: 'detail.melding-data.state.term',
       },
     ])
   })
@@ -139,21 +139,21 @@ describe('getMeldingData', () => {
       {
         description: new Date(melding.created_at).toLocaleDateString('nl-NL'),
         key: 'created_at',
-        term: 'melding-data.created_at',
+        term: 'detail.melding-data.created_at',
       },
       {
         description: 'no-classification',
         key: 'classification',
-        term: 'melding-data.classification',
+        term: 'detail.melding-data.classification',
       },
       {
-        description: melding.state,
+        description: 'generic.melding-state.questions_answered',
         key: 'state',
         link: {
           href: `/melding/${melding.id}/wijzig-status`,
-          label: 'melding-data.state.link',
+          label: 'detail.melding-data.state.link',
         },
-        term: 'melding-data.state.term',
+        term: 'detail.melding-data.state.term',
       },
     ])
   })
