@@ -127,7 +127,7 @@ describe('getMeldingData', () => {
     ])
   })
 
-  it.only('should return correct melding summary when classification is null', () => {
+  it('should return correct melding summary when classification is null', () => {
     const meldingDataWithoutClassification = {
       ...melding,
       classification: null,
