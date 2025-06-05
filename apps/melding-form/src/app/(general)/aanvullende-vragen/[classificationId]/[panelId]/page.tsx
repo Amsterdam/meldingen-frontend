@@ -6,7 +6,6 @@ import { getFormClassificationByClassificationId } from '@meldingen/api-client'
 
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
-import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 export const dynamic = 'force-dynamic'
 
@@ -42,7 +41,7 @@ export default async ({ params }: { params: Params }) => {
     path: { classification_id: classificationId },
   })
 
-  if (error) return handleApiError(error)
+  if (error) throw new Error('Failed to fetch form by classification.')
 
   if (data?.components[0].type !== 'panel') return redirect('/locatie')
 
