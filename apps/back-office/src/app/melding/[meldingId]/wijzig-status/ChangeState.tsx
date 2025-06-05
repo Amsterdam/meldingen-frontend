@@ -38,7 +38,7 @@ export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
           <Field className="ams-mb-l">
             <Label htmlFor="state">{t('change-state.label')}</Label>
             <Select defaultValue={isValidMeldingState(meldingState) ? meldingState : undefined} id="state" name="state">
-              <Select.Option value="hoi">{t('change-state.options.default')}</Select.Option>
+              <Select.Option value="">{t('change-state.options.default')}</Select.Option>
               <Select.Option value="processing">{t('generic.melding-state.processing')}</Select.Option>
               <Select.Option value="completed">{t('generic.melding-state.completed')}</Select.Option>
             </Select>

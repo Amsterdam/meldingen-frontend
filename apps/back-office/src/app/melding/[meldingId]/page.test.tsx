@@ -82,7 +82,7 @@ describe('Page', () => {
       {
         description: getFullNLAddress(melding),
         key: 'address',
-        term: 'location.address',
+        term: 'detail.location.address',
       },
     ]
 

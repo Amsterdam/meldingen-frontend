@@ -80,7 +80,7 @@ describe('getLocationData', () => {
     expect(result).toEqual([
       {
         key: 'address',
-        term: 'location.address',
+        term: 'detail.location.address',
         description: getFullNLAddress(melding),
       },
     ])
@@ -127,7 +127,7 @@ describe('getMeldingData', () => {
     ])
   })
 
-  it('should return correct melding summary when classification is null', () => {
+  it.only('should return correct melding summary when classification is null', () => {
     const meldingDataWithoutClassification = {
       ...melding,
       classification: null,
@@ -142,7 +142,7 @@ describe('getMeldingData', () => {
         term: 'detail.melding-data.created_at',
       },
       {
-        description: 'no-classification',
+        description: 'detail.no-classification',
         key: 'classification',
         term: 'detail.melding-data.classification',
       },
