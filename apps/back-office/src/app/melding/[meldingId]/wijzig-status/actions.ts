@@ -7,11 +7,6 @@ import { isValidMeldingState } from './utils'
 import { putMeldingByMeldingIdComplete, putMeldingByMeldingIdProcess } from 'apps/back-office/src/apiClientProxy'
 import { handleApiError } from 'apps/back-office/src/handleApiError'
 
-const stateToFunctionMap = {
-  processing: putMeldingByMeldingIdProcess,
-  completed: putMeldingByMeldingIdComplete,
-}
-
 const extractStateFromFormData = (formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)
   return formDataObj.state
@@ -30,13 +25,20 @@ export const postChangeStateForm = async ({ meldingId }: { meldingId: number }, 
     return { message: t('invalid-state') }
   }
 
-  const updateStateFn = stateToFunctionMap[state]
+  if (state === 'processing') {
+    const { error } = await putMeldingByMeldingIdProcess({ path: { melding_id: meldingId } })
 
-  const { error } = await updateStateFn({
-    path: { melding_id: meldingId },
-  })
+    if (error) return { message: handleApiError(error) }
+  }
 
-  if (error) return { message: handleApiError(error) }
+  if (state === 'completed') {
+    const { error } = await putMeldingByMeldingIdComplete({
+      path: { melding_id: meldingId },
+      body: { mail_body: 'Dit is de body van de melding afgehandeld email.' },
+    })
+
+    if (error) return { message: handleApiError(error) }
+  }
 
   return redirect(`/melding/${meldingId}`)
 }

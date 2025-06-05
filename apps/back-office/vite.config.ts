@@ -5,6 +5,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   plugins: [tsconfigPaths(), react()],
   test: {
+    clearMocks: true,
     coverage: {
       enabled: true,
       include: ['src/**/*.{js,jsx,ts,tsx}'],

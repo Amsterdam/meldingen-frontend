@@ -16,7 +16,7 @@ describe('postChangeStateForm', () => {
     expect(redirect).not.toHaveBeenCalledWith('/melding/123')
   })
 
-  it('returns an error message for API errors', async () => {
+  it('returns an error message when putMeldingByMeldingIdProcess returns an error', async () => {
     server.use(
       http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_PROCESS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -25,6 +25,22 @@ describe('postChangeStateForm', () => {
 
     const formData = new FormData()
     formData.append('state', 'processing')
+
+    const result = await postChangeStateForm({ meldingId: 123 }, null, formData)
+
+    expect(result).toEqual({ message: 'Error message' })
+    expect(redirect).not.toHaveBeenCalledWith('/melding/123')
+  })
+
+  it('returns an error message when putMeldingByMeldingIdComplete returns an error', async () => {
+    server.use(
+      http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_COMPLETE, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    const formData = new FormData()
+    formData.append('state', 'completed')
 
     const result = await postChangeStateForm({ meldingId: 123 }, null, formData)
 
