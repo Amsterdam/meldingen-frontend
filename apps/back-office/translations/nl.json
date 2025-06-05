@@ -52,9 +52,7 @@
     "title": "Wijzig status melding {publicId}",
     "label": "Wijzig status",
     "options": {
-      "default": "Kies een status",
-      "processing": "In behandeling",
-      "completed": "Afgehandeld"
+      "default": "Kies een status"
     },
     "submit-button": "Wijzig status",
     "errors": {
