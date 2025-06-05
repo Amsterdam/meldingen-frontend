@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
 import { Detail } from './Detail'
+import { getFullNLAddress } from '../../utils'
+import { melding } from 'apps/back-office/src/mocks/data'
 
 const defaultProps = {
   additionalQuestionsWithMeldingText: [
@@ -57,6 +59,18 @@ describe('Detail', () => {
     expect(screen.getByText('email@email.email')).toBeInTheDocument()
     expect(screen.getByText('Phone')).toBeInTheDocument()
     expect(screen.getByText('1234567890')).toBeInTheDocument()
+  })
+
+  it('renders the location data', () => {
+    render(
+      <Detail
+        {...defaultProps}
+        location={[{ key: 'address', term: 'location.address', description: getFullNLAddress(melding)! }]}
+      />,
+    )
+
+    expect(screen.getByText('location.address')).toBeInTheDocument()
+    expect(screen.getByText(getFullNLAddress(melding)!)).toBeInTheDocument()
   })
 
   it('renders the melding data', () => {

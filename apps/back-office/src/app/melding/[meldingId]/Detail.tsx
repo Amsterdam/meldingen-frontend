@@ -17,15 +17,16 @@ type MeldingDataItem = DescriptionListItem & { link?: { href: string; label: str
 type Props = {
   additionalQuestionsWithMeldingText: DescriptionListItem[]
   contact?: DescriptionListItem[]
+  location?: DescriptionListItem[]
   meldingData: MeldingDataItem[]
   publicId: string
 }
 
-export const Detail = ({ additionalQuestionsWithMeldingText, contact, meldingData, publicId }: Props) => {
+export const Detail = ({ additionalQuestionsWithMeldingText, contact, location, meldingData, publicId }: Props) => {
   const t = useTranslations('detail')
 
   return (
-    <Grid paddingBottom="large" paddingTop="medium">
+    <Grid paddingBottom="2x-large" paddingTop="x-large">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
         <BackLink className="ams-mb-s" href={`/`}>
           {t('back-link')}
@@ -41,6 +42,16 @@ export const Detail = ({ additionalQuestionsWithMeldingText, contact, meldingDat
             </Fragment>
           ))}
         </DescriptionList>
+        {location && (
+          <DescriptionList className="ams-mb-l">
+            {location.map(({ key, term, description }) => (
+              <Fragment key={key}>
+                <DescriptionList.Term>{term}</DescriptionList.Term>
+                <DescriptionList.Description>{description}</DescriptionList.Description>
+              </Fragment>
+            ))}
+          </DescriptionList>
+        )}
         <DescriptionList className="ams-mb-l">
           {meldingData.map(({ key, term, description, link }) => (
             <Fragment key={key}>

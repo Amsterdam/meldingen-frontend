@@ -21,7 +21,6 @@ describe('postPrimaryForm', () => {
   }
 
   beforeEach(() => {
-    vi.clearAllMocks()
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 

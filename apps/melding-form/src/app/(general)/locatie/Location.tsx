@@ -1,6 +1,6 @@
 'use client'
 
-import { Heading, Link, Paragraph } from '@amsterdam/design-system-react'
+import { Heading, Paragraph, StandaloneLink } from '@amsterdam/design-system-react'
 import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
@@ -39,9 +39,9 @@ export const Location = ({ locationData }: Props) => {
       <Paragraph className="ams-mb-xs">{locationData?.name ?? t('description')}</Paragraph>
 
       <NextLink href="/locatie/kies" legacyBehavior passHref>
-        <Link variant="standalone" href="dummy-href" className="ams-mb-m">
+        <StandaloneLink className="ams-mb-m">
           {locationData?.name ? t('link.with-location') : t('link.without-location')}
-        </Link>
+        </StandaloneLink>
       </NextLink>
 
       <form action={formAction}>

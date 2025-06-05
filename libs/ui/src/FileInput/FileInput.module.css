@@ -45,7 +45,8 @@
 }
 
 .button {
-  box-shadow: var(--ams-button-secondary-box-shadow);
+  border-style: var(--ams-button-border-style);
+  border-width: var(--ams-button-border-width);
   color: var(--ams-button-secondary-color);
   padding-block: var(--ams-button-padding-block);
   padding-inline: var(--ams-button-padding-inline);

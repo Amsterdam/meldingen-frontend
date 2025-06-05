@@ -3,6 +3,7 @@ import { http, HttpResponse } from 'msw'
 
 import { Detail } from './Detail'
 import Page, { generateMetadata } from './page'
+import { getFullNLAddress } from '../../utils'
 import { additionalQuestions, melding } from 'apps/back-office/src/mocks/data'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
@@ -77,6 +78,14 @@ describe('Page', () => {
       { key: 'phone', term: 'contact.phone', description: phone },
     ]
 
+    const location = [
+      {
+        description: getFullNLAddress(melding),
+        key: 'address',
+        term: 'location.address',
+      },
+    ]
+
     const meldingData = [
       {
         key: 'created_at',
@@ -103,6 +112,7 @@ describe('Page', () => {
       {
         additionalQuestionsWithMeldingText: additionalQuestionsWithMeldingText,
         contact: contact,
+        location: location,
         meldingData: meldingData,
         publicId: public_id,
       },

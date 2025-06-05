@@ -31,8 +31,8 @@ describe('Page', () => {
 
     expect(Overview).toHaveBeenCalledWith(
       {
-        data: meldingen,
-        meldingCount: 40,
+        meldingen: meldingen,
+        meldingenCount: 40,
         page: undefined,
         totalPages: 4,
       },
@@ -49,8 +49,8 @@ describe('Page', () => {
 
     expect(Overview).toHaveBeenCalledWith(
       {
-        data: meldingen,
-        meldingCount: 40,
+        meldingen: meldingen,
+        meldingenCount: 40,
         page: 2,
         totalPages: 4,
       },

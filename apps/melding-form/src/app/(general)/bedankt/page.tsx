@@ -3,7 +3,7 @@ import NextLink from 'next/link'
 import { getTranslations } from 'next-intl/server'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Heading, Link } from '@meldingen/ui'
+import { Heading, StandaloneLink } from '@meldingen/ui'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('thanks')
@@ -33,7 +33,7 @@ export default async () => {
       </Heading>
       <MarkdownToHtml className="ams-mb-m">{t('description', { publicId, date, time })}</MarkdownToHtml>
       <NextLink href="/" legacyBehavior passHref>
-        <Link href="dummy-href">{t('link')}</Link>
+        <StandaloneLink href="dummy-href">{t('link')}</StandaloneLink>
       </NextLink>
     </>
   )

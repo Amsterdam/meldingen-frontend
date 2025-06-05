@@ -10,7 +10,7 @@ describe('MarkdownToHtml', () => {
 
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', 'http://example.com')
-    expect(link).toHaveClass('ams-link ams-link--inline')
+    expect(link).toHaveClass('ams-link')
   })
 
   it('renders an external link', () => {
