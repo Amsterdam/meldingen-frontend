@@ -29,7 +29,6 @@ describe('postLocationForm', () => {
         return undefined
       },
     })
-    vi.clearAllMocks()
   })
 
   it('returns undefined when id or token is missing', async () => {
