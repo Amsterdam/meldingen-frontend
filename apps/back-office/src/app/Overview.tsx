@@ -32,9 +32,9 @@ export const formatValue = (melding: MeldingWithAddress, key: string, t: (key: s
     case 'created_at':
       return new Date(melding.created_at).toLocaleDateString('nl-NL')
     case 'classification':
-      return melding.classification ? melding.classification.name : t('no-classification')
+      return melding.classification ? melding.classification.name : t('overview.no-classification')
     case 'state':
-      return melding.state
+      return t(`generic.melding-state.${melding.state}`)
     case 'address':
       return melding.address || ''
     case 'postal_code':
@@ -52,7 +52,7 @@ export const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) =>
 )
 
 const renderTableHeaders = (headers: typeof HEADERS, t: (key: string) => string) =>
-  headers.map(({ key, labelKey }) => <Table.HeaderCell key={key}>{t(labelKey)}</Table.HeaderCell>)
+  headers.map(({ key, labelKey }) => <Table.HeaderCell key={key}>{t(`overview.${labelKey}`)}</Table.HeaderCell>)
 
 const renderTableRows = (meldingen: MeldingWithAddress[], headers: typeof HEADERS, t: (key: string) => string) =>
   meldingen.map((melding) => (
@@ -73,7 +73,7 @@ const renderTableRows = (meldingen: MeldingWithAddress[], headers: typeof HEADER
   ))
 
 export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props) => {
-  const t = useTranslations('overview')
+  const t = useTranslations()
 
   const meldingenWithAddress = meldingen.map((melding) => ({
     ...melding,
@@ -84,7 +84,7 @@ export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props)
     <Grid paddingBottom="2x-large" paddingTop="x-large">
       <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
         <Heading level={1} className="ams-mb-m">
-          {t('title', { meldingenCount })}
+          {t('overview.title', { meldingenCount })}
         </Heading>
         <Table className="ams-mb-l">
           <Table.Header>
