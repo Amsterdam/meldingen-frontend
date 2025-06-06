@@ -26,7 +26,8 @@
     "melding-text": "Meldtekst",
     "contact": {
       "email": "E-mail melder",
-      "phone": "Telefoon melder"
+      "phone": "Telefoon melder",
+      "no-data": "Niet ingevuld"
     },
     "location": {
       "address": "Adres"
