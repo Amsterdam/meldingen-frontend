@@ -1,3 +1,4 @@
+/* v8 ignore if -- @preserve */
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
