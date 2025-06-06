@@ -60,7 +60,7 @@ describe('getContactData', () => {
     ])
   })
 
-  it('should return undefined when contact data does not exist', () => {
+  it('should return a fallback label when contact data does not exist', () => {
     const meldingDataWithoutContact = {
       ...melding,
       email: null,
@@ -69,7 +69,18 @@ describe('getContactData', () => {
 
     const result = getContactData(meldingDataWithoutContact, (key: string) => key)
 
-    expect(result).toEqual(undefined)
+    expect(result).toEqual([
+      {
+        description: 'detail.contact.no-data',
+        key: 'email',
+        term: 'detail.contact.email',
+      },
+      {
+        description: 'detail.contact.no-data',
+        key: 'phone',
+        term: 'detail.contact.phone',
+      },
+    ])
   })
 })
 

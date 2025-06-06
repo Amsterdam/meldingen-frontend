@@ -22,27 +22,18 @@ export const getAdditionalQuestionsData = async (meldingId: number) => {
 export const getContactData = (data: MeldingOutput, t: (key: string) => string) => {
   const { email, phone } = data
 
-  if (!email && !phone) return undefined
-
-  const items = []
-
-  if (email) {
-    items.push({
+  return [
+    {
       key: 'email',
       term: t('detail.contact.email'),
-      description: email,
-    })
-  }
-
-  if (phone) {
-    items.push({
+      description: email ?? t('detail.contact.no-data'),
+    },
+    {
       key: 'phone',
       term: t('detail.contact.phone'),
-      description: phone,
-    })
-  }
-
-  return items
+      description: phone ?? t('detail.contact.no-data'),
+    },
+  ]
 }
 
 export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) => {
