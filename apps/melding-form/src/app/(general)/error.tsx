@@ -10,13 +10,13 @@ export default function Error({ error }: { error: Error & { digest?: string } })
   }, [error])
 
   return (
-    <div>
+    <>
       <Heading level={1} className="ams-mb-l">
         Er is iets mis gegaan
       </Heading>
       <Paragraph className="ams-mb-m" size="large">
         De pagina die u probeert te bezoeken heeft een storing.
       </Paragraph>
-    </div>
+    </>
   )
 }
