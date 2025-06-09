@@ -58,8 +58,8 @@ importers:
         specifier: 6.4.0
         version: 6.4.0
       '@hey-api/client-fetch':
-        specifier: 0.11.0
-        version: 0.11.0(@hey-api/openapi-ts@0.69.2(magicast@0.3.5)(typescript@5.8.3))
+        specifier: 0.12.0
+        version: 0.12.0(@hey-api/openapi-ts@0.69.2(magicast@0.3.5)(typescript@5.8.3))
       '@hey-api/openapi-ts':
         specifier: 0.69.2
         version: 0.69.2(magicast@0.3.5)(typescript@5.8.3)
@@ -369,6 +369,10 @@ packages:
 
   '@babel/runtime@7.27.4':
     resolution: {integrity: sha512-t3yaEOuGu9NlIZ+hIeGbBjFtZT7j2cb2tg0fuaJKeGotchRjjLfrBA9Kwf8quhpP1EUuxModQg04q/mBwyg8uA==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/runtime@7.27.6':
+    resolution: {integrity: sha512-vbavdySgbTTrmFE+EsiqUTzlOr5bzlnJtUv9PynGCAKvfQqjIXbvFdumPM/GxMDfyuGMJaJAU6TO4zc1Jf1i8Q==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.27.2':
@@ -804,8 +808,8 @@ packages:
       react: ^18 || ^19 || ^19.0.0-rc
       react-dom: ^18 || ^19 || ^19.0.0-rc
 
-  '@hey-api/client-fetch@0.11.0':
-    resolution: {integrity: sha512-Wafgv5BMCVjdYPgE60CL8NSC6Fi3j3PZYES8Qg23xO+9JNrjN5PguOIHQS2FMKaZ8jMtpa3S4I3ni0XBh/VeSg==}
+  '@hey-api/client-fetch@0.12.0':
+    resolution: {integrity: sha512-/iZ6dhs39N0kjzCa9tlNeLNufVUd8zzv/wI1ewQt5AEHaVuDnAxvuQT+fRIPYkfIWKR3gVZKRp5mcCo29voYzQ==}
     peerDependencies:
       '@hey-api/openapi-ts': < 2
 
@@ -2006,8 +2010,8 @@ packages:
   core-js@3.41.0:
     resolution: {integrity: sha512-SJ4/EHwS36QMJd6h/Rg+GyR4A5xE0FSI3eZ+iBVpfqf1x0eTSg1smWLHrA+2jQThZSh97fmSgFSU8B61nxosxA==}
 
-  core-js@3.42.0:
-    resolution: {integrity: sha512-Sz4PP4ZA+Rq4II21qkNqOEDTDrCvcANId3xpIgB34NDkWc3UduWj2dqEtN9yZIq8Dk3HyPI33x9sqqU5C8sr0g==}
+  core-js@3.43.0:
+    resolution: {integrity: sha512-N6wEbTTZSYOY2rYAn85CuvWWkCK6QweMn7/4Nr3w+gDBeBhk/x4EJeY6FPo4QzDoJZxVTv8U7CMvgWk6pOHHqA==}
 
   cosmiconfig@7.1.0:
     resolution: {integrity: sha512-AdmX6xUzdNASswsFtmwSt7Vj8po9IuqXm0UXz7QKPuEUmPB4XyjGfaAr2PSuELMwkRMVH1EpIkX5bTZGRB3eCA==}
@@ -4790,6 +4794,8 @@ snapshots:
 
   '@babel/runtime@7.27.4': {}
 
+  '@babel/runtime@7.27.6': {}
+
   '@babel/template@7.27.2':
     dependencies:
       '@babel/code-frame': 7.27.1
@@ -5194,7 +5200,7 @@ snapshots:
     dependencies:
       '@types/json-logic-js': 2.0.8
       browser-cookies: 1.2.0
-      core-js: 3.42.0
+      core-js: 3.43.0
       dayjs: 1.11.13
       dompurify: 3.2.6
       eventemitter3: 5.0.1
@@ -5220,7 +5226,7 @@ snapshots:
       browser-cookies: 1.2.0
       browser-md5-file: 1.1.1
       compare-versions: 6.1.1
-      core-js: 3.42.0
+      core-js: 3.43.0
       dialog-polyfill: 0.5.6
       dom-autoscroller: 2.3.4
       dompurify: 3.2.6
@@ -5275,7 +5281,7 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       use-sync-external-store: 1.5.0(react@18.3.1)
 
-  '@hey-api/client-fetch@0.11.0(@hey-api/openapi-ts@0.69.2(magicast@0.3.5)(typescript@5.8.3))':
+  '@hey-api/client-fetch@0.12.0(@hey-api/openapi-ts@0.69.2(magicast@0.3.5)(typescript@5.8.3))':
     dependencies:
       '@hey-api/openapi-ts': 0.69.2(magicast@0.3.5)(typescript@5.8.3)
 
@@ -5753,7 +5759,7 @@ snapshots:
   '@testing-library/dom@10.4.0':
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/runtime': 7.27.4
+      '@babel/runtime': 7.27.6
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       chalk: 4.1.2
@@ -6459,7 +6465,7 @@ snapshots:
 
   core-js@3.41.0: {}
 
-  core-js@3.42.0: {}
+  core-js@3.43.0: {}
 
   cosmiconfig@7.1.0:
     dependencies:
