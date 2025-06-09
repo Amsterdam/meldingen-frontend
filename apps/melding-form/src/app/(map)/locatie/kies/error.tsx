@@ -13,6 +13,7 @@ export default function Error({ error }: { error: Error & { digest?: string } })
 
   return (
     <Page>
+      <title>Er is iets mis gegaan - Gemeente Amsterdam</title>
       <Header />
       <Grid paddingBottom="2x-large" paddingTop="x-large">
         <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>

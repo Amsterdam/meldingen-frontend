@@ -11,6 +11,7 @@ export default function Error({ error }: { error: Error & { digest?: string } })
 
   return (
     <>
+      <title>Er is iets mis gegaan - Gemeente Amsterdam</title>
       <Heading level={1} className="ams-mb-l">
         Er is iets mis gegaan
       </Heading>
