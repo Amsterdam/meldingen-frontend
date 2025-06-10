@@ -61,15 +61,17 @@
       "melding-not-found": "An error occurred"
     }
   },
-  "generic": {
-    "melding-state": {
+  "shared": {
+    "state": {
       "processing": "In behandeling",
       "completed": "Afgehandeld",
       "submitted": "Gemeld",
       "questions_answered": "Aanvullende vragen beantwoord",
       "new": "Melding beschrijving toegevoegd",
       "classified": "Melding geclassificeerd",
-      "contact_info_added": "Contactgegevens ingevuld"
+      "contact_info_added": "Contactgegevens ingevuld",
+      "location_submitted": "Locatie toegevoegd",
+      "attachments_added": "Bijlagen toegevoegd"
     }
   }
 }

@@ -34,7 +34,7 @@ export const formatValue = (melding: MeldingWithAddress, key: string, t: (key: s
     case 'classification':
       return melding.classification ? melding.classification.name : t('overview.no-classification')
     case 'state':
-      return t(`generic.melding-state.${melding.state}`)
+      return t(`shared.state.${melding.state}`)
     case 'address':
       return melding.address || ''
     case 'postal_code':

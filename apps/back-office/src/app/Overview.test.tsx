@@ -40,7 +40,7 @@ describe('formatValue', () => {
   it('returns the melding state', () => {
     const result = formatValue(melding, 'state', t)
 
-    expect(result).toBe('generic.melding-state.questions_answered')
+    expect(result).toBe('shared.state.questions_answered')
   })
 
   it('returns an address if present', () => {

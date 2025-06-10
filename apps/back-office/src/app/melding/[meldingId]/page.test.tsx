@@ -100,7 +100,7 @@ describe('Page', () => {
       {
         key: 'state',
         term: 'detail.melding-data.state.term',
-        description: 'generic.melding-state.questions_answered',
+        description: 'shared.state.questions_answered',
         link: {
           href: `/melding/${id}/wijzig-status`,
           label: 'detail.melding-data.state.link',

@@ -127,7 +127,7 @@ describe('getMeldingData', () => {
         term: 'detail.melding-data.classification',
       },
       {
-        description: 'generic.melding-state.questions_answered',
+        description: 'shared.state.questions_answered',
         key: 'state',
         link: {
           href: `/melding/${id}/wijzig-status`,
@@ -158,7 +158,7 @@ describe('getMeldingData', () => {
         term: 'detail.melding-data.classification',
       },
       {
-        description: 'generic.melding-state.questions_answered',
+        description: 'shared.state.questions_answered',
         key: 'state',
         link: {
           href: `/melding/${melding.id}/wijzig-status`,

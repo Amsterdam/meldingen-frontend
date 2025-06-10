@@ -24,8 +24,8 @@ describe('ChangeState', () => {
 
     expect(screen.getByRole('combobox', { name: 'change-state.label' })).toBeInTheDocument()
     expect(screen.getByRole('option', { name: 'change-state.options.default' })).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'generic.melding-state.processing' })).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'generic.melding-state.completed' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'shared.state.processing' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'shared.state.completed' })).toBeInTheDocument()
   })
 
   it('renders the back link', () => {
