@@ -21,13 +21,12 @@ export const generateMetadata = async () => {
 
 export default async () => {
   const cookieStore = await cookies()
-  const meldingId = cookieStore.get('id')?.value
-  const token = cookieStore.get('token')?.value
+  // We redirect from this page in the middleware when the necessary cookies do not exist, therefore we use the non-null assertion operator.
+  const meldingId = cookieStore.get('id')!.value
+  const token = cookieStore.get('token')!.value
   const locationCookie = cookieStore.get('location')?.value
 
   const t = await getTranslations()
-
-  if (!meldingId || !token) return 'Could not retrieve meldingId or token'
 
   const meldingData = await getMeldingData(meldingId, token)
   if ('error' in meldingData) return meldingData.error

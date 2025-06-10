@@ -16,10 +16,9 @@ export const generateMetadata = async () => {
 
 export default async () => {
   const cookieStore = await cookies()
-  const meldingId = cookieStore.get('id')?.value
-  const token = cookieStore.get('token')?.value
-
-  if (!meldingId || !token) return undefined
+  // We redirect from this page in the middleware when the necessary cookies do not exist, therefore we use the non-null assertion operator.
+  const meldingId = cookieStore.get('id')!.value
+  const token = cookieStore.get('token')!.value
 
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
