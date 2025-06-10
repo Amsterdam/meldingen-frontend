@@ -15,7 +15,6 @@ updates:
         exclude-patterns:
           - '@hey-api/client-fetch'
           - '@hey-api/openapi-ts'
-          - '@amsterdam/design-system-*'
         update-types:
           - 'patch'
           - 'minor'
