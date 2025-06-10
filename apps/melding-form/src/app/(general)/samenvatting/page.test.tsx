@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import type { Mock } from 'vitest'
 
-import Page from './page'
+import Page, { generateMetadata } from './page'
 import { Summary } from './Summary'
 import { additionalQuestions, melding, textAreaComponent } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
@@ -18,6 +18,14 @@ vi.mock('next/headers', () => ({
 vi.mock('./Summary', () => ({
   Summary: vi.fn(() => <div>Summary Component</div>),
 }))
+
+describe('generateMetadata', () => {
+  it('returns the correct metadata title', async () => {
+    const metadata = await generateMetadata()
+
+    expect(metadata).toEqual({ title: 'metadata.title' })
+  })
+})
 
 describe('Page', () => {
   const mockCookies = {

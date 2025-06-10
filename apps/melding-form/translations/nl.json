@@ -94,8 +94,6 @@
     },
     "submit-button": "Volgende vraag",
     "errors": {
-      "form-id-not-found": "Attachments form id not found",
-      "form-label-not-found": "Attachments form label not found",
       "too-many-files": "U kunt maximaal {maxFiles} bestanden uploaden."
     }
   },
@@ -110,11 +108,7 @@
     },
     "title": "Mogen we u bellen voor vragen? En op de hoogte houden via e-mail?",
     "description": "Vaak hebben we nog een vraag. Daarmee kunnen we het probleem sneller of beter oplossen. Of we willen iets uitleggen. Wij willen u dan graag even bellen. Of anders e-mailen wij u.\n\nWij gebruiken uw telefoonnummer en e-mailadres alléén voor deze melding.",
-    "submit-button": "Volgende vraag",
-    "errors": {
-      "form-id-not-found": "Contact form id not found",
-      "form-labels-not-found": "Contact form labels not found"
-    }
+    "submit-button": "Volgende vraag"
   },
   "summary": {
     "metadata": {
