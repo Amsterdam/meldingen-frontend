@@ -40,10 +40,9 @@ export default async () => {
 
   // A attachments form is always an array with 1 text area component, but TypeScript doesn't know that
   // We use a type guard here to make sure we're always working with the right type
-  const filteredAttachmentsForm = attachmentsForm?.filter(isTypeTextAreaComponent)
+  const filteredAttachmentsForm = attachmentsForm.filter(isTypeTextAreaComponent)
 
-  if (!filteredAttachmentsForm || !filteredAttachmentsForm[0].label)
-    throw new Error('Attachments form label not found.')
+  if (!filteredAttachmentsForm[0].label) throw new Error('Attachments form label not found.')
 
   return <Attachments formData={filteredAttachmentsForm} meldingId={parseInt(meldingId, 10)} token={token} />
 }
