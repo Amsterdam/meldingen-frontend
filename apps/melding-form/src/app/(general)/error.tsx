@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 export default function Error({ error }: { error: Error & { digest?: string } }) {
   useEffect(() => {
     // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
     console.error(error)
   }, [error])
 
