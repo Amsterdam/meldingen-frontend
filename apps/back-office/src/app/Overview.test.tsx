@@ -7,7 +7,7 @@ describe('Overview', () => {
   it('should render correctly', () => {
     render(<Overview meldingen={[melding]} meldingenCount={10} totalPages={1} />)
 
-    const idHeader = screen.getByRole('columnheader', { name: 'column-header.public_id' })
+    const idHeader = screen.getByRole('columnheader', { name: 'overview.column-header.public_id' })
     const firstId = screen.getByRole('cell', { name: 'ABC' })
 
     expect(idHeader).toBeInTheDocument()
@@ -34,13 +34,13 @@ describe('formatValue', () => {
     const meldingWithoutClassification = { ...melding, classification: undefined }
     const result = formatValue(meldingWithoutClassification, 'classification', t)
 
-    expect(result).toBe('no-classification')
+    expect(result).toBe('overview.no-classification')
   })
 
   it('returns the melding state', () => {
     const result = formatValue(melding, 'state', t)
 
-    expect(result).toBe(melding.state)
+    expect(result).toBe('shared.state.questions_answered')
   })
 
   it('returns an address if present', () => {

@@ -17,7 +17,7 @@ export const generateMetadata = async ({ searchParams }: { searchParams: Promise
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
 
-  const t = await getTranslations('detail')
+  const t = await getTranslations()
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
   if (error || !data) return t('errors.melding-not-found')
@@ -28,7 +28,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   const additionalQuestionsWithMeldingText = [
     {
       key: 'text',
-      term: t('melding-text'),
+      term: t('detail.melding-text'),
       description: data.text,
     },
     ...additionalQuestions.data,
