@@ -25,13 +25,13 @@ export const getContactData = (data: MeldingOutput, t: (key: string) => string) 
   return [
     {
       key: 'email',
-      term: t('contact.email'),
-      description: email ?? t('contact.no-data'),
+      term: t('detail.contact.email'),
+      description: email ?? t('detail.contact.no-data'),
     },
     {
       key: 'phone',
-      term: t('contact.phone'),
-      description: phone ?? t('contact.no-data'),
+      term: t('detail.contact.phone'),
+      description: phone ?? t('detail.contact.no-data'),
     },
   ]
 }
@@ -42,21 +42,21 @@ export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) 
   return [
     {
       key: 'created_at',
-      term: t('melding-data.created_at'),
+      term: t('detail.melding-data.created_at'),
       description: new Date(created_at).toLocaleDateString('nl-NL'),
     },
     {
       key: 'classification',
-      term: t('melding-data.classification'),
-      description: classification ? classification.name : t('no-classification'),
+      term: t('detail.melding-data.classification'),
+      description: classification ? classification.name : t('detail.no-classification'),
     },
     {
       key: 'state',
-      term: t('melding-data.state.term'),
-      description: state,
+      term: t('detail.melding-data.state.term'),
+      description: t(`shared.state.${state}`),
       link: {
         href: `/melding/${id}/wijzig-status`,
-        label: t('melding-data.state.link'),
+        label: t('detail.melding-data.state.link'),
       },
     },
   ]
@@ -70,7 +70,7 @@ export const getLocationData = (data: MeldingOutput, t: (key: string) => string)
   return [
     {
       key: 'address',
-      term: t('location.address'),
+      term: t('detail.location.address'),
       description: address,
     },
   ]
