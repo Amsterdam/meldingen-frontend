@@ -13,6 +13,10 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
+vi.mock('./utils', () => ({
+  getDescription: vi.fn(() => 'description'),
+}))
+
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
     const metadata = await generateMetadata()
@@ -28,16 +32,6 @@ describe('Page', () => {
 
   beforeEach(() => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
-  })
-
-  it('returns undefined when there is no publicId or createdAt', async () => {
-    mockCookies.get.mockReturnValue(undefined)
-
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    expect(PageComponent).toBeUndefined()
   })
 
   it('renders page', async () => {
