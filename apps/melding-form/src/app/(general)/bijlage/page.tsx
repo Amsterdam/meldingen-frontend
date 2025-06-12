@@ -16,10 +16,9 @@ export const generateMetadata = async () => {
 
 export default async () => {
   const cookieStore = await cookies()
-  const meldingId = cookieStore.get('id')?.value
-  const token = cookieStore.get('token')?.value
-
-  if (!meldingId || !token) return undefined
+  // We check for the existence of these cookies in our middleware, so non-null assertion is safe here.
+  const meldingId = cookieStore.get('id')!.value
+  const token = cookieStore.get('token')!.value
 
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 

@@ -47,19 +47,6 @@ describe('Page', () => {
     expect(screen.getByText('Attachments Component')).toBeInTheDocument()
   })
 
-  it('should render undefined when there is no meldingId or token', async () => {
-    // Override cookies mock for this specific test
-    ;(cookies as Mock).mockReturnValue({
-      get: () => undefined,
-    })
-
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    expect(PageComponent).toBeUndefined()
-  })
-
   it('throws an error if list of static forms cannot be fetched', async () => {
     server.use(http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json(null, { status: 500 })))
 
