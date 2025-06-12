@@ -13,7 +13,7 @@ vi.mock('next/server', async () => {
   }
 })
 
-const createMockRequest = (cookies: Record<string, string>, url = 'http://localhost/test'): NextRequest =>
+const createMockRequest = (cookies: Record<string, string>, url = 'http://localhost/'): NextRequest =>
   ({
     cookies: {
       get: (key: string) => (cookies[key] ? { value: cookies[key] } : undefined),
@@ -22,13 +22,10 @@ const createMockRequest = (cookies: Record<string, string>, url = 'http://localh
   }) as NextRequest
 
 describe('middleware', () => {
-  afterEach(() => {
-    vi.clearAllMocks()
-  })
-
   it('redirects to / if token is missing', () => {
     const request = createMockRequest({ id: '123' })
     const result = middleware(request)
+
     expect(NextResponse.redirect).toHaveBeenCalledWith(new URL('/', request.url))
     expect(result).toEqual({ type: 'redirect', url: 'http://localhost/' })
   })
@@ -36,6 +33,7 @@ describe('middleware', () => {
   it('redirects to / if id is missing', () => {
     const request = createMockRequest({ token: 'abc' })
     const result = middleware(request)
+
     expect(NextResponse.redirect).toHaveBeenCalledWith(new URL('/', request.url))
     expect(result).toEqual({ type: 'redirect', url: 'http://localhost/' })
   })
@@ -43,6 +41,7 @@ describe('middleware', () => {
   it('calls NextResponse.next if both token and id are present', () => {
     const request = createMockRequest({ token: 'abc', id: '123' })
     const result = middleware(request)
+
     expect(NextResponse.next).toHaveBeenCalled()
     expect(result).toEqual({ type: 'next' })
   })
