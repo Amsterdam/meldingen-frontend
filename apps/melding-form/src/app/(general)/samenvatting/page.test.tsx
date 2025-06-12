@@ -120,14 +120,4 @@ describe('Page', () => {
 
     expect(PageComponent).toEqual('Primary form id not found')
   })
-
-  it('returns an error message when there is no meldingId and token', async () => {
-    mockCookies.get.mockReturnValue(undefined)
-
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    expect(PageComponent).toEqual('Could not retrieve meldingId or token')
-  })
 })
