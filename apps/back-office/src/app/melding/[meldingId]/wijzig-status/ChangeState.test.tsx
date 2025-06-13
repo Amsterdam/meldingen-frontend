@@ -22,16 +22,16 @@ describe('ChangeState', () => {
   it('renders the select field with the correct options', () => {
     render(<ChangeState {...defaultProps} />)
 
-    expect(screen.getByRole('combobox', { name: 'label' })).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'options.default' })).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'options.processing' })).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'options.completed' })).toBeInTheDocument()
+    expect(screen.getByRole('combobox', { name: 'change-state.label' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'change-state.options.default' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'shared.state.processing' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'shared.state.completed' })).toBeInTheDocument()
   })
 
   it('renders the back link', () => {
     render(<ChangeState {...defaultProps} />)
 
-    const backLink = screen.getByRole('link', { name: 'back-link' })
+    const backLink = screen.getByRole('link', { name: 'change-state.back-link' })
     expect(backLink).toBeInTheDocument()
     expect(backLink).toHaveAttribute('href', '/melding/123')
   })
@@ -39,7 +39,7 @@ describe('ChangeState', () => {
   it('sets the default value of the select field if melding state is valid', () => {
     render(<ChangeState {...defaultProps} />)
 
-    const select = screen.getByRole('combobox', { name: 'label' })
+    const select = screen.getByRole('combobox', { name: 'change-state.label' })
     expect(select).toHaveValue('processing')
   })
 
@@ -48,7 +48,7 @@ describe('ChangeState', () => {
 
     render(<ChangeState {...invalidProps} />)
 
-    const select = screen.getByRole('combobox', { name: 'label' })
+    const select = screen.getByRole('combobox', { name: 'change-state.label' })
     expect(select).toHaveValue('')
   })
 
