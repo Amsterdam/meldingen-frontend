@@ -1,6 +1,6 @@
 'use client'
 
-import { ErrorMessage, Field, FileList, Heading, Label, Paragraph } from '@amsterdam/design-system-react'
+import { Alert, ErrorMessage, Field, FileList, Heading, Label, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState, useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
@@ -101,7 +101,11 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
         {t('step.title')}
       </Heading>
 
-      {formState?.message && <Paragraph>{formState.message}</Paragraph>}
+      {formState?.message && (
+        <Alert headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
+          <Paragraph>{formState.message}</Paragraph>
+        </Alert>
+      )}
 
       <form ref={formRef} action={formAction}>
         <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
