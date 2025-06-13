@@ -5,7 +5,8 @@ import { getTranslations } from 'next-intl/server'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Heading, StandaloneLink } from '@meldingen/ui'
 
-import { getDescription } from './utils'
+// The "description" translation also accepts undefined values for conditional rendering
+type TWithUndefined = (key: string, values?: Record<string, string | number | Date | undefined>) => string
 
 export const generateMetadata = async () => {
   const t = await getTranslations('thanks')
@@ -16,14 +17,17 @@ export const generateMetadata = async () => {
 }
 
 export default async () => {
-  const t = await getTranslations('thanks')
+  const t = (await getTranslations('thanks')) as TWithUndefined
 
   const cookieStore = await cookies()
 
   const publicId = cookieStore.get('public_id')?.value
   const createdAt = cookieStore.get('created_at')?.value
 
-  let description = getDescription(t, publicId, createdAt)
+  const date = createdAt ? new Date(createdAt).toLocaleDateString('nl-NL') : undefined
+  const time = createdAt ? new Date(createdAt).toLocaleTimeString('nl-NL', { timeStyle: 'short' }) : undefined
+
+  const description = t('description', { publicId, date, time })
 
   return (
     <>
