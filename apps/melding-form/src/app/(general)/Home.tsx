@@ -1,6 +1,6 @@
 'use client'
 
-import { Paragraph } from '@amsterdam/design-system-react'
+import { Alert } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
@@ -18,7 +18,11 @@ export const Home = ({ formData }: { formData: StaticFormTextAreaComponentOutput
 
   return (
     <>
-      {formState?.message && <Paragraph>{formState.message}</Paragraph>}
+      {formState?.message && (
+        <Alert severity="error" heading="Api Error" headingLevel={2}>
+          {formState.message}
+        </Alert>
+      )}
       <FormRenderer action={formAction} formData={formData} submitButtonText={t('submit-button')} />
     </>
   )
