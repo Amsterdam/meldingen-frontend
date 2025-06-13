@@ -19,7 +19,7 @@ export const Home = ({ formData }: { formData: StaticFormTextAreaComponentOutput
   return (
     <>
       {formState?.message && (
-        <Alert headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
+        <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
           <Paragraph>{formState.message}</Paragraph>
         </Alert>
       )}

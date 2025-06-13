@@ -36,7 +36,7 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
 
       <form action={formAction}>
         {formState?.message && (
-          <Alert headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
+          <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
             <Paragraph>{formState.message}</Paragraph>
           </Alert>
         )}

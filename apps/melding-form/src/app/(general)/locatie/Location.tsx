@@ -32,7 +32,7 @@ export const Location = ({ locationData }: Props) => {
       </Heading>
 
       {formState?.message && (
-        <Alert headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
+        <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
           <Paragraph>{formState.message}</Paragraph>
         </Alert>
       )}
