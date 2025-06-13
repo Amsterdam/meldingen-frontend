@@ -1,6 +1,6 @@
 'use client'
 
-import { Paragraph } from '@amsterdam/design-system-react'
+import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
@@ -18,7 +18,11 @@ export const Home = ({ formData }: { formData: StaticFormTextAreaComponentOutput
 
   return (
     <>
-      {formState?.message && <Paragraph>{formState.message}</Paragraph>}
+      {formState?.message && (
+        <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
+          <Paragraph>{formState.message}</Paragraph>
+        </Alert>
+      )}
       <FormRenderer action={formAction} formData={formData} submitButtonText={t('submit-button')} />
     </>
   )
