@@ -129,7 +129,7 @@
       "title": "Bedankt - Gemeente Amsterdam"
     },
     "title": "Bedankt",
-    "description": "Wij hebben uw melding ontvangen {date, select, undefined {} other { op {date} om {time}}}. {publicId, select, undefined {} other { Uw meldnummer is {publicId}.}} U ontvangt een e-mail met alle gegevens van uw melding.",
+    "description": "Wij hebben uw melding ontvangen{date, select, undefined {} other { op {date} om {time}}}.{publicId, select, undefined {} other { Uw meldnummer is {publicId}.}} U ontvangt een e-mail met alle gegevens van uw melding.",
     "link": "Doe een melding"
   }
 }
