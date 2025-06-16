@@ -14,7 +14,7 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
   const meldingId = cookieStore.get('id')?.value
   const token = cookieStore.get('token')?.value
 
-  if (!meldingId || !token) return undefined
+  if (!meldingId || !token) redirect('/cookie-storing')
 
   const coordinates = formData.get('coordinates')
 
