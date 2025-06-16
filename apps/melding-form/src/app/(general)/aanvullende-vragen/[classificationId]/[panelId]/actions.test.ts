@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
 
 import { postForm } from './actions'
@@ -40,16 +41,16 @@ describe('postForm', () => {
     mockCookies('123', 'test-token') // Default mock for cookies
   })
 
-  it('returns undefined when id or token is missing', async () => {
+  it('redirects to /cookie-storing when id or token is missing', async () => {
     // Override cookies mock for this specific test
     ;(cookies as Mock).mockReturnValue({
       get: () => undefined,
     })
 
     const formData = new FormData()
-    const result = await postForm(defaultArgs, null, formData)
+    await postForm(defaultArgs, null, formData)
 
-    expect(result).toBeUndefined()
+    expect(redirect).toHaveBeenCalledWith('/cookie-storing')
   })
 
   it('sets lastPanelPath in cookies', async () => {
