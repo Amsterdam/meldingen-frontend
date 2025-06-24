@@ -8,6 +8,8 @@ RUN corepack enable
 COPY . /app
 WORKDIR /app
 
+# TODO reset to PROD
+ENV NODE_ENV=development
 
 #################################################
 ##                   BUILD                      #
@@ -60,8 +62,7 @@ WORKDIR /app
 ARG NEXT_BACKEND_BASE_URL
 ENV NEXT_BACKEND_BASE_URL=$NEXT_BACKEND_BASE_URL
 
-# TODO reset to PROD
-ENV NODE_ENV=development
+
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED=1
 

@@ -8,6 +8,6 @@ const isApiErrorArray = (error: unknown): error is { detail: { msg: string }[] }
 export const handleApiError = (error: unknown) => {
   if (isSimpleApiError(error)) return error.detail
   if (isApiErrorArray(error)) return error.detail.map((e) => e.msg).join(', ')
-
+  console.log(error)
   return 'An unknown error occurred'
 }
