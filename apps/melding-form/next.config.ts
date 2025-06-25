@@ -3,12 +3,12 @@ import createNextIntlPlugin from 'next-intl/plugin'
 const nextConfig: {
   output: string
   logging: { fetches: { fullUrl: boolean } }
-  experimental: { allowDevelopmentBuild: boolean }
+  // experimental: { allowDevelopmentBuild: boolean }
 } = {
   output: 'standalone',
-  experimental: {
-    allowDevelopmentBuild: true,
-  },
+  // experimental: {
+  //   allowDevelopmentBuild: true,
+  // },
   logging: {
     fetches: {
       fullUrl: true,
