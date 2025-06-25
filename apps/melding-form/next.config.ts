@@ -1,19 +1,8 @@
+import type { NextConfig } from 'next'
 import createNextIntlPlugin from 'next-intl/plugin'
 
-const nextConfig: {
-  output: string
-  logging: { fetches: { fullUrl: boolean } }
-  // experimental: { allowDevelopmentBuild: boolean }
-} = {
+const nextConfig: NextConfig = {
   output: 'standalone',
-  // experimental: {
-  //   allowDevelopmentBuild: true,
-  // },
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
 }
 
 const withNextIntl = createNextIntlPlugin()
