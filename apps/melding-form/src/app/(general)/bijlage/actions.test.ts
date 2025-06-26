@@ -24,12 +24,12 @@ describe('submitAttachmentsForm', () => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  it('returns undefined when id or token is missing', async () => {
+  it('redirects to /cookie-storing when id or token is missing', async () => {
     mockCookies.get.mockReturnValue(undefined)
 
-    const result = await submitAttachmentsForm()
+    await submitAttachmentsForm()
 
-    expect(result).toBeUndefined()
+    expect(redirect).toHaveBeenCalledWith('/cookie-storing')
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {

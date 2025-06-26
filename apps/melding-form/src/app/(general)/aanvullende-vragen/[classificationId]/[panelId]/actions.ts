@@ -25,7 +25,7 @@ export const postForm = async (
   const meldingId = cookieStore.get('id')?.value
   const token = cookieStore.get('token')?.value
 
-  if (!meldingId || !token) return undefined
+  if (!meldingId || !token) return redirect('/cookie-storing')
 
   // Set last panel path in cookies
   cookieStore.set('lastPanelPath', lastPanelPath)
