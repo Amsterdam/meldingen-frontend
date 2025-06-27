@@ -1,3 +1,5 @@
+import { ChangeEvent } from 'react'
+
 import type {
   FormCheckboxComponentOutput,
   FormRadioComponentOutput,
@@ -9,28 +11,71 @@ import { SubmitButton } from '@meldingen/ui'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 
+// TODO: create union type of this and refactor function
 type Component = FormCheckboxComponentOutput &
   FormRadioComponentOutput &
   FormSelectComponentOutput &
   FormTextAreaComponentOutput &
-  FormTextFieldInputComponentOutput
+  FormTextFieldInputComponentOutput & {
+    defaultValue: string
+  }
 
-const getComponent = ({ key, data, description, label, maxCharCount, type, values, validate }: Component) => {
+type AllFormInputs = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+
+const getComponent = (
+  { key, data, description, label, maxCharCount, type, values, validate, defaultValue }: Component,
+  onChange: (event: ChangeEvent<AllFormInputs>) => void,
+) => {
   switch (type) {
     case 'radio':
-      return <Radio key={key} id={key} description={description} label={label} values={values} validate={validate} />
+      return (
+        <Radio
+          defaultValue={defaultValue}
+          description={description}
+          id={key}
+          key={key}
+          label={label}
+          onChange={onChange}
+          validate={validate}
+          values={values}
+        />
+      )
     case 'select':
-      return <Select key={key} id={key} description={description} label={label} data={data} validate={validate} />
+      return (
+        <Select
+          data={data}
+          defaultValue={defaultValue}
+          description={description}
+          id={key}
+          key={key}
+          label={label}
+          onChange={onChange}
+          validate={validate}
+        />
+      )
     case 'selectboxes':
-      return <Checkbox key={key} id={key} description={description} label={label} values={values} validate={validate} />
+      return (
+        <Checkbox
+          defaultValue={defaultValue}
+          description={description}
+          id={key}
+          key={key}
+          label={label}
+          onChange={onChange}
+          validate={validate}
+          values={values}
+        />
+      )
     case 'textarea':
       return (
         <TextArea
-          key={key}
-          id={key}
+          defaultValue={defaultValue}
           description={description}
+          id={key}
+          key={key}
           label={label}
           maxCharCount={maxCharCount}
+          onChange={onChange}
           validate={validate}
         />
       )
@@ -48,13 +93,16 @@ type Props = {
   formData: any[]
   action: (formData: FormData) => void
   submitButtonText: string
+  onChange: (event: ChangeEvent<AllFormInputs>) => void
 }
 
-export const FormRenderer = ({ formData, action, submitButtonText }: Props) => (
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  <form className="ams-gap-m" action={action}>
-    {formData.map((component) => getComponent(component))}
-    <SubmitButton>{submitButtonText}</SubmitButton>
-  </form>
-)
+export const FormRenderer = ({ formData, action, submitButtonText, onChange }: Props) => {
+  return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    <form className="ams-gap-m" action={action}>
+      {formData.map((component) => getComponent(component, onChange))}
+      <SubmitButton>{submitButtonText}</SubmitButton>
+    </form>
+  )
+}
