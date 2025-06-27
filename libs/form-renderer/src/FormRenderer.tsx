@@ -80,7 +80,17 @@ const getComponent = (
         />
       )
     case 'textfield':
-      return <TextInput key={key} id={key} description={description} label={label} validate={validate} />
+      return (
+        <TextInput
+          defaultValue={defaultValue}
+          key={key}
+          id={key}
+          description={description}
+          label={label}
+          onChange={onChange}
+          validate={validate}
+        />
+      )
     default:
       // TODO: error handling can probably be improved
       console.error(`Type ${type} is unknown, please add it to FormRenderer.`)
