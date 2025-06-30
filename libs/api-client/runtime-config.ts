@@ -7,6 +7,6 @@ export const createClientConfig: CreateClientConfig = (config) => {
     ...config,
     baseUrl: isServer
       ? process.env.NEXT_BACKEND_BASE_URL
-      : process.env.NEXT_PUBLIC_BACKEND_BASE_URL || "http://localhost:8000"
+      : process.env.NEXT_PUBLIC_BACKEND_BASE_URL || "http://localhost:8000" // Fallback for automated tests
   };
 };
