@@ -2,7 +2,7 @@
 
 import { Alert, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useActionState } from 'react'
+import { ChangeEvent, useActionState, useEffect, useState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
@@ -12,8 +12,14 @@ import { postContactForm } from './actions'
 
 const initialState: { message?: string } = {}
 
+type ContactData = {
+  email?: string
+  phone?: string
+}
+
 export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOutput[] }) => {
   const [formState, formAction] = useActionState(postContactForm, initialState)
+  const [contactData, setContactData] = useState<ContactData>()
 
   const t = useTranslations('contact')
 
@@ -21,6 +27,20 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
   const emailDescription = formData[0].description
   const telLabel = formData[1].label
   const telDescription = formData[1].description
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    localStorage.setItem(`${event.target.name}`, JSON.stringify(event.target.value))
+  }
+
+  useEffect(() => {
+    const localEmail = localStorage.getItem(`email`)
+    const localPhone = localStorage.getItem(`phone`)
+
+    setContactData({
+      email: localEmail ? JSON.parse(localEmail) : undefined,
+      phone: localPhone ? JSON.parse(localPhone) : undefined,
+    })
+  }, [])
 
   return (
     <>
@@ -54,6 +74,8 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
           autoCorrect="off"
           spellCheck="false"
           className="ams-mb-m"
+          onChange={handleChange}
+          defaultValue={contactData?.email}
         />
         <Label htmlFor="tel-input" optional className="ams-mb-s">
           {telLabel}
@@ -70,6 +92,8 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
           id="tel-input"
           name="phone"
           type="tel"
+          onChange={handleChange}
+          defaultValue={contactData?.phone}
         />
         <SubmitButton>{t('submit-button')}</SubmitButton>
       </form>
