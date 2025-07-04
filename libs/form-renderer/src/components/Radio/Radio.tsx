@@ -13,7 +13,7 @@ type Props = {
     value: string
   }[]
   onChange: (value: string, name: string) => void
-  defaultValue: string
+  defaultValue?: string
 }
 
 export const Radio = ({ description, id, label, validate, values, onChange, defaultValue }: Props) => {

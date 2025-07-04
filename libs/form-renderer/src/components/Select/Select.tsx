@@ -14,7 +14,7 @@ type Props = {
   id: string
   label: string
   validate?: { required: boolean } | null
-  defaultValue: string
+  defaultValue?: string
   onChange: (value: string, name: string) => void
 }
 
@@ -24,9 +24,7 @@ export const Select = ({ description, id, label, validate, data, defaultValue, o
   const [selected, setSelected] = useState(defaultValue)
 
   useEffect(() => {
-    if (defaultValue) {
-      setSelected(defaultValue)
-    }
+    if (defaultValue) setSelected(defaultValue)
   }, [defaultValue])
 
   const handleChange = (event: ChangeEvent<AllFormInputs>) => {

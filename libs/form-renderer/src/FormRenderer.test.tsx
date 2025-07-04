@@ -7,6 +7,7 @@ const defaultProps = {
   action: vi.fn(),
   formData: form.components[0].components,
   submitButtonText: 'Volgende vraag',
+  onChange: vi.fn(),
 }
 
 describe('FormRenderer', () => {

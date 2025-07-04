@@ -7,6 +7,7 @@ const defaultProps = {
   label: 'Test label',
   validate: { required: true },
   values: [{ label: 'Test value', value: 'test-value' }],
+  onChange: vi.fn(),
 }
 
 describe('Checkbox Component', () => {

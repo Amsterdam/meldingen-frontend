@@ -7,6 +7,7 @@ const defaultProps = {
   label: 'Test label',
   validate: { required: true },
   values: [{ label: 'Test value', value: 'test-value', position: 1 }],
+  onChange: vi.fn(),
 }
 
 describe('Radio Component', () => {

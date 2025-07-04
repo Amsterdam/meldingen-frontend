@@ -7,6 +7,7 @@ const defaultProps = {
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
+  onChange: vi.fn(),
 }
 
 describe('Select Component', () => {
