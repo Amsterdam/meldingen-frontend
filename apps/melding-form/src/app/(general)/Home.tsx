@@ -2,14 +2,12 @@
 
 import { Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { ChangeEvent, useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { FormRenderer } from '@meldingen/form-renderer'
 
 import { postPrimaryForm } from './actions'
-
-type AllFormInputs = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 
 const initialState: { message?: string } = {}
 
@@ -19,10 +17,8 @@ export const Home = ({ formData }: { formData: StaticFormTextAreaComponentOutput
 
   const t = useTranslations('homepage')
 
-  const onChange = (event: ChangeEvent<AllFormInputs>) => {
-    if (event.target.value) {
-      localStorage.setItem(`${event.target.id}`, JSON.stringify(event.target.value))
-    }
+  const handleChange = (value: string | string[], name: string) => {
+    localStorage.setItem(`${name}`, JSON.stringify(value))
   }
 
   useEffect(() => {
@@ -46,7 +42,7 @@ export const Home = ({ formData }: { formData: StaticFormTextAreaComponentOutput
         action={formAction}
         formData={prefilledFormData}
         submitButtonText={t('submit-button')}
-        onChange={onChange}
+        onChange={handleChange}
       />
     </>
   )

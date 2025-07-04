@@ -2,7 +2,7 @@
 
 import { Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { ChangeEvent, useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import { FormRenderer } from '@meldingen/form-renderer'
 
@@ -13,8 +13,6 @@ type Props = {
   previousPanelPath: string
 }
 
-type AllFormInputs = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-
 const initialState: { message?: string } = {}
 
 export const AdditionalQuestions = ({ action, formData }: Props) => {
@@ -24,10 +22,8 @@ export const AdditionalQuestions = ({ action, formData }: Props) => {
 
   const [prefilledFormData, setPrefilledData] = useState(formData)
 
-  const onChange = (event: ChangeEvent<AllFormInputs>) => {
-    if (event.target.value) {
-      localStorage.setItem(`${event.target.name}`, JSON.stringify(event.target.value))
-    }
+  const handleChange = (value: string | string[], name: string) => {
+    localStorage.setItem(`${name}`, JSON.stringify(value))
   }
 
   useEffect(() => {
@@ -52,7 +48,7 @@ export const AdditionalQuestions = ({ action, formData }: Props) => {
         formData={prefilledFormData}
         action={formAction}
         submitButtonText={t('submit-button')}
-        onChange={onChange}
+        onChange={handleChange}
       />
     </>
   )

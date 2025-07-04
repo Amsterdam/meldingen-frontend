@@ -9,7 +9,7 @@ type Props = {
   id: string
   label: string
   maxCharCount?: number | null
-  onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void
+  onChange: (value: string, name: string) => void
   validate?: { required: boolean } | null
 }
 
@@ -21,7 +21,7 @@ export const TextArea = ({ description, id, label, maxCharCount, validate, onCha
     if (typeof maxCharCount === 'number' && ref.current) {
       setCharCount(ref.current?.value.length)
     }
-    onChange(event)
+    onChange(event.target.value, event.target.name)
   }
 
   return (

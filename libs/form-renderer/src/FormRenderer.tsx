@@ -1,5 +1,3 @@
-import { ChangeEvent } from 'react'
-
 import type {
   FormCheckboxComponentOutput,
   FormRadioComponentOutput,
@@ -17,20 +15,18 @@ type Component = FormCheckboxComponentOutput &
   FormSelectComponentOutput &
   FormTextAreaComponentOutput &
   FormTextFieldInputComponentOutput & {
-    defaultValue: string
+    defaultValue: string | string[]
   }
-
-type AllFormInputs = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 
 const getComponent = (
   { key, data, description, label, maxCharCount, type, values, validate, defaultValue }: Component,
-  onChange: (event: ChangeEvent<AllFormInputs>) => void,
+  onChange: (value: string | string[], name: string) => void,
 ) => {
   switch (type) {
     case 'radio':
       return (
         <Radio
-          defaultValue={defaultValue}
+          defaultValue={defaultValue as string}
           description={description}
           id={key}
           key={key}
@@ -44,7 +40,7 @@ const getComponent = (
       return (
         <Select
           data={data}
-          defaultValue={defaultValue}
+          defaultValue={defaultValue as string}
           description={description}
           id={key}
           key={key}
@@ -56,7 +52,7 @@ const getComponent = (
     case 'selectboxes':
       return (
         <Checkbox
-          defaultValue={defaultValue}
+          defaultValue={defaultValue as string[]}
           description={description}
           id={key}
           key={key}
@@ -69,7 +65,7 @@ const getComponent = (
     case 'textarea':
       return (
         <TextArea
-          defaultValue={defaultValue}
+          defaultValue={defaultValue as string}
           description={description}
           id={key}
           key={key}
@@ -82,7 +78,7 @@ const getComponent = (
     case 'textfield':
       return (
         <TextInput
-          defaultValue={defaultValue}
+          defaultValue={defaultValue as string}
           key={key}
           id={key}
           description={description}
@@ -103,7 +99,7 @@ type Props = {
   formData: any[]
   action: (formData: FormData) => void
   submitButtonText: string
-  onChange: (event: ChangeEvent<AllFormInputs>) => void
+  onChange: (value: string | string[], name: string) => void
 }
 
 export const FormRenderer = ({ formData, action, submitButtonText, onChange }: Props) => {

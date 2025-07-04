@@ -14,12 +14,7 @@ type Props = {
     label: string
     value: string
   }[]
-  onChange: (values: {
-    target: {
-      value: string[]
-      name: string
-    }
-  }) => void
+  onChange: (value: string[], name: string) => void
   defaultValue: string[]
 }
 
@@ -34,12 +29,7 @@ export const Checkbox = ({ description, id, label, validate, values, onChange, d
     const updated = event.target.checked ? [...checkedValues, value] : checkedValues.filter((v) => v !== value)
 
     setCheckedValues(updated)
-    onChange({
-      target: {
-        value: updated,
-        name: id,
-      },
-    })
+    onChange(updated, id)
   }
 
   return (

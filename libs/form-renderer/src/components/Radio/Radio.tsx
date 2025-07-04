@@ -12,32 +12,22 @@ type Props = {
     label: string
     value: string
   }[]
-  onChange: (values: {
-    target: {
-      value: string[]
-      name: string
-    }
-  }) => void
-  defaultValue: string[]
+  onChange: (value: string, name: string) => void
+  defaultValue: string
 }
 
 export const Radio = ({ description, id, label, validate, values, onChange, defaultValue }: Props) => {
-  const [checkedValues, setCheckedValues] = useState<string[]>([])
+  const [checkedValue, setCheckedValue] = useState<string | undefined>()
 
   useEffect(() => {
-    if (defaultValue) setCheckedValues(defaultValue)
+    if (defaultValue) setCheckedValue(defaultValue)
   }, [defaultValue])
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>, value: string) => {
-    const updated = event.target.checked ? [value] : checkedValues.filter((v) => v !== value)
+    const updated = event.target.checked ? value : ''
 
-    setCheckedValues(updated)
-    onChange({
-      target: {
-        value: updated,
-        name: id,
-      },
-    })
+    setCheckedValue(updated)
+    onChange(updated, id)
   }
 
   return (
@@ -60,7 +50,7 @@ export const Radio = ({ description, id, label, validate, values, onChange, defa
             aria-required={validate?.required ? 'true' : undefined}
             name={id}
             value={value}
-            checked={checkedValues.includes(value)}
+            checked={value === checkedValue}
             onChange={(e) => handleChange(e, value)}
           >
             {radioLabel}
