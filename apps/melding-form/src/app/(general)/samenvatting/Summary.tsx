@@ -37,6 +37,9 @@ const initialState: { message?: string } = {}
 export const Summary = ({ attachments, primaryForm, additionalQuestions, location, contact }: Props) => {
   const [formState, formAction] = useActionState(postSummaryForm, initialState)
 
+  // Delete all data in localStorage
+  localStorage.clear()
+
   const t = useTranslations('summary')
 
   return (

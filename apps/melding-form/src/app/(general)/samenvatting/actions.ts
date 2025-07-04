@@ -29,8 +29,5 @@ export const postSummaryForm = async () => {
     cookieStore.delete(cookie)
   })
 
-  // Delete all data in localStorage
-  localStorage.clear()
-
   return redirect('/bedankt')
 }
