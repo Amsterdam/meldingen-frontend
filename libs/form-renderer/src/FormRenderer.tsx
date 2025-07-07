@@ -1,43 +1,15 @@
-import type {
-  FormCheckboxComponentOutput,
-  FormRadioComponentOutput,
-  FormSelectComponentOutput,
-  FormTextAreaComponentOutput,
-  FormTextFieldInputComponentOutput,
-} from '@meldingen/api-client'
 import { SubmitButton } from '@meldingen/ui'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
-
-type FormCheckboxComponent = FormCheckboxComponentOutput & { defaultValue: string[] }
-type FormRadioComponent = FormRadioComponentOutput & { defaultValue: string }
-type FormSelectComponent = FormSelectComponentOutput & { defaultValue: string }
-type FormTextAreaComponent = FormTextAreaComponentOutput & { defaultValue: string }
-type FormTextFieldInputComponent = FormTextFieldInputComponentOutput & { defaultValue: string }
-
-type Component =
-  | FormCheckboxComponent
-  | FormRadioComponent
-  | FormSelectComponent
-  | FormTextAreaComponent
-  | FormTextFieldInputComponent
-
-const isRadio = (component: Component): component is FormRadioComponent => component.type === 'radio'
-
-const isSelect = (component: Component): component is FormSelectComponent => component.type === 'select'
-
-const isSelectboxes = (component: Component): component is FormCheckboxComponent => component.type === 'selectboxes'
-
-const isTextarea = (component: Component): component is FormTextAreaComponent => component.type === 'textarea'
-
-const isTextfield = (component: Component): component is FormTextFieldInputComponent => component.type === 'textfield'
+import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
+import type { Component } from './utils'
 
 const getComponent = (component: Component, onChange: (value: string | string[], name: string) => void) => {
   if (isRadio(component)) {
     const { defaultValue, description, key, label, validate, values } = component
     return (
       <Radio
-        defaultValue={defaultValue as string}
+        defaultValue={defaultValue}
         description={description}
         id={key}
         key={key}
@@ -53,7 +25,7 @@ const getComponent = (component: Component, onChange: (value: string | string[],
     return (
       <Select
         data={data}
-        defaultValue={defaultValue as string}
+        defaultValue={defaultValue}
         description={description}
         id={key}
         key={key}
@@ -67,7 +39,7 @@ const getComponent = (component: Component, onChange: (value: string | string[],
     const { defaultValue, description, key, label, validate, values } = component
     return (
       <Checkbox
-        defaultValue={defaultValue as string[]}
+        defaultValue={defaultValue}
         description={description}
         id={key}
         key={key}
@@ -82,7 +54,7 @@ const getComponent = (component: Component, onChange: (value: string | string[],
     const { defaultValue, description, key, label, validate, maxCharCount } = component
     return (
       <TextArea
-        defaultValue={defaultValue as string}
+        defaultValue={defaultValue}
         description={description}
         id={key}
         key={key}
@@ -98,7 +70,7 @@ const getComponent = (component: Component, onChange: (value: string | string[],
     const { defaultValue, description, key, label, validate } = component
     return (
       <TextInput
-        defaultValue={defaultValue as string}
+        defaultValue={defaultValue}
         key={key}
         id={key}
         description={description}

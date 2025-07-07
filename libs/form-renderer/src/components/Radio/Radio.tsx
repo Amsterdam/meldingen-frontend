@@ -17,7 +17,7 @@ type Props = {
 }
 
 export const Radio = ({ description, id, label, validate, values, onChange, defaultValue }: Props) => {
-  const [checkedValue, setCheckedValue] = useState<string | undefined>()
+  const [checkedValue, setCheckedValue] = useState<string>('')
 
   useEffect(() => {
     if (defaultValue) setCheckedValue(defaultValue)

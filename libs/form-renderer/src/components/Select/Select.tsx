@@ -21,7 +21,7 @@ type Props = {
 type AllFormInputs = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 
 export const Select = ({ description, id, label, validate, data, defaultValue, onChange }: Props) => {
-  const [selected, setSelected] = useState(defaultValue)
+  const [selected, setSelected] = useState('')
 
   useEffect(() => {
     if (defaultValue) setSelected(defaultValue)
