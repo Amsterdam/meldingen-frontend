@@ -13,13 +13,13 @@ import { postContactForm } from './actions'
 const initialState: { message?: string } = {}
 
 type ContactData = {
-  email?: string
-  phone?: string
+  email: string
+  phone: string
 }
 
 export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOutput[] }) => {
   const [formState, formAction] = useActionState(postContactForm, initialState)
-  const [contactData, setContactData] = useState<ContactData>()
+  const [contactData, setContactData] = useState<ContactData>({ email: '', phone: '' })
 
   const t = useTranslations('contact')
 
@@ -37,8 +37,8 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
     const localPhone = localStorage.getItem(`phone`)
 
     setContactData({
-      email: localEmail ? JSON.parse(localEmail) : undefined,
-      phone: localPhone ? JSON.parse(localPhone) : undefined,
+      email: localEmail ? JSON.parse(localEmail) : '',
+      phone: localPhone ? JSON.parse(localPhone) : '',
     })
   }, [])
 
@@ -75,7 +75,7 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
           spellCheck="false"
           className="ams-mb-m"
           onChange={handleChange}
-          defaultValue={contactData?.email}
+          defaultValue={contactData.email}
         />
         <Label htmlFor="tel-input" optional className="ams-mb-s">
           {telLabel}
@@ -93,7 +93,7 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
           name="phone"
           type="tel"
           onChange={handleChange}
-          defaultValue={contactData?.phone}
+          defaultValue={contactData.phone}
         />
         <SubmitButton>{t('submit-button')}</SubmitButton>
       </form>

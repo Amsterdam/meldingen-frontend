@@ -17,10 +17,9 @@ const initialState: { message?: string } = {}
 
 export const AdditionalQuestions = ({ action, formData }: Props) => {
   const [formState, formAction] = useActionState(action, initialState)
+  const [prefilledFormData, setPrefilledData] = useState(formData)
 
   const t = useTranslations('additional-questions')
-
-  const [prefilledFormData, setPrefilledData] = useState(formData)
 
   const handleChange = (value: string | string[], name: string) => {
     localStorage.setItem(`${name}`, JSON.stringify(value))
