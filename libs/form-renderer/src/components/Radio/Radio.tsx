@@ -23,11 +23,9 @@ export const Radio = ({ description, id, label, validate, values, onChange, defa
     if (defaultValue) setCheckedValue(defaultValue)
   }, [defaultValue])
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>, value: string) => {
-    const updated = event.target.checked ? value : ''
-
-    setCheckedValue(updated)
-    onChange(updated, id)
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCheckedValue(event.target.value)
+    onChange(event.target.value, id)
   }
 
   return (
@@ -51,7 +49,7 @@ export const Radio = ({ description, id, label, validate, values, onChange, defa
             name={id}
             value={value}
             checked={value === checkedValue}
-            onChange={(e) => handleChange(e, value)}
+            onChange={handleChange}
           >
             {radioLabel}
           </ADSRadio>
