@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { Select } from './Select'
 
@@ -52,5 +53,16 @@ describe('Select Component', () => {
     const select = screen.getByRole('combobox', { name: `${defaultProps.label} (niet verplicht)` })
 
     expect(select).toBeInTheDocument()
+  })
+
+  it('it call onChange with correct arguments', async () => {
+    render(<Select {...defaultProps} />)
+
+    const select = screen.getByRole('combobox', { name: defaultProps.label })
+
+    await userEvent.selectOptions(select, 'test-value')
+
+    expect(defaultProps.onChange).toHaveBeenCalledWith('test-value', 'test-id')
+    expect(select).toHaveValue('test-value')
   })
 })
