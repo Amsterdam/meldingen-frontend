@@ -97,15 +97,15 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
   return (
     <>
-      <Heading className="ams-mb-s" level={1}>
-        {t('step.title')}
-      </Heading>
-
       {formState?.message && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
           <Paragraph>{formState.message}</Paragraph>
         </Alert>
       )}
+
+      <Heading className="ams-mb-s" level={1}>
+        {t('step.title')}
+      </Heading>
 
       <form ref={formRef} action={formAction}>
         <Field invalid={Boolean(errorMessage)} className="ams-mb-m">

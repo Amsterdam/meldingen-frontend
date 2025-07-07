@@ -27,15 +27,15 @@ export const Location = ({ locationData }: Props) => {
 
   return (
     <>
-      <Heading className="ams-mb-s" level={1}>
-        {t('step.title')}
-      </Heading>
-
       {formState?.message && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
           <Paragraph>{formState.message}</Paragraph>
         </Alert>
       )}
+
+      <Heading className="ams-mb-s" level={1}>
+        {t('step.title')}
+      </Heading>
 
       <Heading level={2} size="level-4">
         {t('title')}

@@ -24,6 +24,12 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
 
   return (
     <>
+      {formState?.message && (
+        <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
+          <Paragraph>{formState.message}</Paragraph>
+        </Alert>
+      )}
+
       <Heading level={1} className="ams-mb-s">
         {t('step.title')}
       </Heading>
@@ -35,12 +41,6 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
       <MarkdownToHtml className="ams-mb-s">{t('description')}</MarkdownToHtml>
 
       <form action={formAction}>
-        {formState?.message && (
-          <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-            <Paragraph>{formState.message}</Paragraph>
-          </Alert>
-        )}
-
         <Label htmlFor="email-input" optional className="ams-mb-s">
           {emailLabel}
         </Label>
