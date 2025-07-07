@@ -9,89 +9,109 @@ import { SubmitButton } from '@meldingen/ui'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 
-// TODO: create union type of this and refactor function
-type Component = FormCheckboxComponentOutput &
-  FormRadioComponentOutput &
-  FormSelectComponentOutput &
-  FormTextAreaComponentOutput &
-  FormTextFieldInputComponentOutput & {
-    defaultValue: string | string[]
+type FormCheckboxComponent = FormCheckboxComponentOutput & { defaultValue: string[] }
+type FormRadioComponent = FormRadioComponentOutput & { defaultValue: string }
+type FormSelectComponent = FormSelectComponentOutput & { defaultValue: string }
+type FormTextAreaComponent = FormTextAreaComponentOutput & { defaultValue: string }
+type FormTextFieldInputComponent = FormTextFieldInputComponentOutput & { defaultValue: string }
+
+type Component =
+  | FormCheckboxComponent
+  | FormRadioComponent
+  | FormSelectComponent
+  | FormTextAreaComponent
+  | FormTextFieldInputComponent
+
+const isRadio = (component: Component): component is FormRadioComponent => component.type === 'radio'
+
+const isSelect = (component: Component): component is FormSelectComponent => component.type === 'select'
+
+const isSelectboxes = (component: Component): component is FormCheckboxComponent => component.type === 'selectboxes'
+
+const isTextarea = (component: Component): component is FormTextAreaComponent => component.type === 'textarea'
+
+const isTextfield = (component: Component): component is FormTextFieldInputComponent => component.type === 'textfield'
+
+const getComponent = (component: Component, onChange: (value: string | string[], name: string) => void) => {
+  if (isRadio(component)) {
+    const { defaultValue, description, key, label, validate, values } = component
+    return (
+      <Radio
+        defaultValue={defaultValue as string}
+        description={description}
+        id={key}
+        key={key}
+        label={label}
+        onChange={onChange}
+        validate={validate}
+        values={values}
+      />
+    )
+  }
+  if (isSelect(component)) {
+    const { defaultValue, description, key, label, validate, data } = component
+    return (
+      <Select
+        data={data}
+        defaultValue={defaultValue as string}
+        description={description}
+        id={key}
+        key={key}
+        label={label}
+        onChange={onChange}
+        validate={validate}
+      />
+    )
+  }
+  if (isSelectboxes(component)) {
+    const { defaultValue, description, key, label, validate, values } = component
+    return (
+      <Checkbox
+        defaultValue={defaultValue as string[]}
+        description={description}
+        id={key}
+        key={key}
+        label={label}
+        onChange={onChange}
+        validate={validate}
+        values={values}
+      />
+    )
+  }
+  if (isTextarea(component)) {
+    const { defaultValue, description, key, label, validate, maxCharCount } = component
+    return (
+      <TextArea
+        defaultValue={defaultValue as string}
+        description={description}
+        id={key}
+        key={key}
+        label={label}
+        maxCharCount={maxCharCount}
+        onChange={onChange}
+        validate={validate}
+      />
+    )
   }
 
-const getComponent = (
-  { key, data, description, label, maxCharCount, type, values, validate, defaultValue }: Component,
-  onChange: (value: string | string[], name: string) => void,
-) => {
-  switch (type) {
-    case 'radio':
-      return (
-        <Radio
-          defaultValue={defaultValue as string}
-          description={description}
-          id={key}
-          key={key}
-          label={label}
-          onChange={onChange}
-          validate={validate}
-          values={values}
-        />
-      )
-    case 'select':
-      return (
-        <Select
-          data={data}
-          defaultValue={defaultValue as string}
-          description={description}
-          id={key}
-          key={key}
-          label={label}
-          onChange={onChange}
-          validate={validate}
-        />
-      )
-    case 'selectboxes':
-      return (
-        <Checkbox
-          defaultValue={defaultValue as string[]}
-          description={description}
-          id={key}
-          key={key}
-          label={label}
-          onChange={onChange}
-          validate={validate}
-          values={values}
-        />
-      )
-    case 'textarea':
-      return (
-        <TextArea
-          defaultValue={defaultValue as string}
-          description={description}
-          id={key}
-          key={key}
-          label={label}
-          maxCharCount={maxCharCount}
-          onChange={onChange}
-          validate={validate}
-        />
-      )
-    case 'textfield':
-      return (
-        <TextInput
-          defaultValue={defaultValue as string}
-          key={key}
-          id={key}
-          description={description}
-          label={label}
-          onChange={onChange}
-          validate={validate}
-        />
-      )
-    default:
-      // TODO: error handling can probably be improved
-      console.error(`Type ${type} is unknown, please add it to FormRenderer.`)
-      return undefined
+  if (isTextfield(component)) {
+    const { defaultValue, description, key, label, validate } = component
+    return (
+      <TextInput
+        defaultValue={defaultValue as string}
+        key={key}
+        id={key}
+        description={description}
+        label={label}
+        onChange={onChange}
+        validate={validate}
+      />
+    )
   }
+
+  // @ts-expect-error component type is unknown
+  console.error(`Type ${component.type} is unknown, please add it to FormRenderer.`)
+  return undefined
 }
 
 // TODO: fix formData type
