@@ -67,4 +67,14 @@ describe('TextArea Component', () => {
 
     expect(textArea).toBeInTheDocument()
   })
+
+  it('should call onChange with correct arguments', async () => {
+    render(<TextArea {...defaultProps} />)
+
+    const textArea = screen.getByRole('textbox', { name: defaultProps.label })
+
+    await userEvent.type(textArea, 'foo')
+
+    expect(defaultProps.onChange).toHaveBeenCalledWith('f', 'test-id')
+  })
 })
