@@ -4,7 +4,12 @@ import userEvent from '@testing-library/user-event'
 import { Select } from './Select'
 
 const defaultProps = {
-  data: { values: [{ label: 'Test value', value: 'test-value', position: 1 }] },
+  data: {
+    values: [
+      { label: 'Test value', value: 'test-value', position: 1 },
+      { label: 'Test value 2', value: 'test-value-2', position: 2 },
+    ],
+  },
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
@@ -55,7 +60,7 @@ describe('Select Component', () => {
     expect(select).toBeInTheDocument()
   })
 
-  it('it call onChange with correct arguments', async () => {
+  it('it calls onChange with correct arguments', async () => {
     render(<Select {...defaultProps} />)
 
     const select = screen.getByRole('combobox', { name: defaultProps.label })
@@ -64,5 +69,13 @@ describe('Select Component', () => {
 
     expect(defaultProps.onChange).toHaveBeenCalledWith('test-value', 'test-id')
     expect(select).toHaveValue('test-value')
+  })
+
+  it('sets the default value', () => {
+    render(<Select {...defaultProps} defaultValue="test-value-2" />)
+
+    const select = screen.getByRole('combobox', { name: defaultProps.label })
+
+    expect(select).toHaveValue('test-value-2')
   })
 })

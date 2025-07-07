@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { Checkbox } from './Checkbox'
 
@@ -6,7 +7,10 @@ const defaultProps = {
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
-  values: [{ label: 'Test value', value: 'test-value' }],
+  values: [
+    { label: 'Test value', value: 'test-value' },
+    { label: 'Test value 2', value: 'test-value-2', position: 2 },
+  ],
   onChange: vi.fn(),
 }
 
@@ -53,5 +57,27 @@ describe('Checkbox Component', () => {
     const checkboxItem = screen.getByRole('checkbox', { name: defaultProps.values[0].label })
 
     expect(checkboxItem).toBeRequired()
+  })
+
+  it('it calls onChange with correct arguments', async () => {
+    render(<Checkbox {...defaultProps} />)
+
+    const checkboxOption = screen.getByLabelText('Test value')
+
+    await userEvent.click(checkboxOption)
+
+    expect(checkboxOption).toBeChecked()
+  })
+
+  it('sets the default value', async () => {
+    render(<Checkbox {...defaultProps} defaultValue={['test-value-2']} />)
+
+    const checkboxOption = screen.getByLabelText('Test value 2')
+
+    expect(checkboxOption).toBeChecked()
+
+    await userEvent.click(checkboxOption)
+
+    expect(checkboxOption).not.toBeChecked()
   })
 })

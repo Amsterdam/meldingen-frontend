@@ -66,7 +66,7 @@ describe('Radio Component', () => {
     expect(radioItem).toBeRequired()
   })
 
-  it('it call onChange with correct arguments', async () => {
+  it('it calls onChange with correct arguments', async () => {
     render(<Radio {...defaultProps} />)
 
     const radioOption = screen.getByLabelText('Test value')
@@ -76,7 +76,7 @@ describe('Radio Component', () => {
     expect(defaultProps.onChange).toHaveBeenCalledWith('test-value', 'test-id')
   })
 
-  it('Sets default value', () => {
+  it('sets the default value', () => {
     render(<Radio {...defaultProps} defaultValue="test-value-2" />)
 
     const radioOption = screen.getByLabelText('Test value 2')
