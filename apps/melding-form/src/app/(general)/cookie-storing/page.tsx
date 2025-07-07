@@ -16,7 +16,7 @@ export default async () => (
       De pagina die u probeert te bezoeken heeft een storing. De cookies die nodig zijn om het formulier af te maken
       missen.
     </Paragraph>
-    <NextLink href="/locatie/kies" legacyBehavior passHref>
+    <NextLink href="/" legacyBehavior passHref>
       <StandaloneLink className="ams-mb-m">Probeer de melding opnieuw te maken.</StandaloneLink>
     </NextLink>
   </>
