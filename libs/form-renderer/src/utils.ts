@@ -6,11 +6,11 @@ import type {
   FormTextFieldInputComponentOutput,
 } from '@meldingen/api-client'
 
-type FormCheckboxComponent = FormCheckboxComponentOutput & { defaultValue: string[] }
-type FormRadioComponent = FormRadioComponentOutput & { defaultValue: string }
-type FormSelectComponent = FormSelectComponentOutput & { defaultValue: string }
-type FormTextAreaComponent = FormTextAreaComponentOutput & { defaultValue: string }
-type FormTextFieldInputComponent = FormTextFieldInputComponentOutput & { defaultValue: string }
+type FormCheckboxComponent = FormCheckboxComponentOutput & { defaultValue?: string[] }
+type FormRadioComponent = FormRadioComponentOutput & { defaultValue?: string }
+type FormSelectComponent = FormSelectComponentOutput & { defaultValue?: string }
+type FormTextAreaComponent = FormTextAreaComponentOutput & { defaultValue?: string }
+type FormTextFieldInputComponent = FormTextFieldInputComponentOutput & { defaultValue?: string }
 
 export type Component =
   | FormCheckboxComponent
