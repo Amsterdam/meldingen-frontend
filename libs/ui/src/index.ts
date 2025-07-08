@@ -1,4 +1,3 @@
-export { Alert } from '@amsterdam/design-system-react/dist/Alert'
 export { Column } from '@amsterdam/design-system-react/dist/Column'
 export { DescriptionList } from '@amsterdam/design-system-react/dist/DescriptionList'
 export { Grid } from '@amsterdam/design-system-react/dist/Grid'
