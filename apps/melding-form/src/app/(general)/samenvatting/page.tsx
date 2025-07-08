@@ -21,7 +21,7 @@ export const generateMetadata = async () => {
 
 export default async () => {
   const cookieStore = await cookies()
-  // We redirect from this page in the middleware when the necessary cookies do not exist, therefore we use the non-null assertion operator.
+  // We check for the existence of these cookies in our middleware, so non-null assertion is safe here.
   const meldingId = cookieStore.get('id')!.value
   const token = cookieStore.get('token')!.value
   const locationCookie = cookieStore.get('location')?.value
