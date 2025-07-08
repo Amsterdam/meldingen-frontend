@@ -1,11 +1,14 @@
-'use client'
-
-import { Heading, Paragraph, StandaloneLink } from '@amsterdam/design-system-react'
+import { Metadata } from 'next'
 import NextLink from 'next/link'
+
+import { Heading, Paragraph, StandaloneLink } from '@meldingen/ui'
+
+export const metadata: Metadata = {
+  title: 'Er is iets mis gegaan - Gemeente Amsterdam',
+}
 
 export default async () => (
   <>
-    <title>Er is iets mis gegaan - Gemeente Amsterdam</title>
     <Heading level={1} className="ams-mb-l">
       Er is iets mis gegaan
     </Heading>
@@ -13,7 +16,7 @@ export default async () => (
       De pagina die u probeert te bezoeken heeft een storing. De cookies die nodig zijn om het formulier af te maken
       missen.
     </Paragraph>
-    <NextLink href="/locatie/kies" legacyBehavior passHref>
+    <NextLink href="/" legacyBehavior passHref>
       <StandaloneLink className="ams-mb-m">Probeer de melding opnieuw te maken.</StandaloneLink>
     </NextLink>
   </>
