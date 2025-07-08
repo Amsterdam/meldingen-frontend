@@ -1,23 +1,4 @@
-import type { Component } from '../utils'
-
-type Form = {
-  id: number
-  title: string
-  display: 'wizard' | string
-  created_at: string
-  updated_at: string
-  classification: number
-  components: PanelComponent[]
-}
-
-type PanelComponent = {
-  label: string
-  key: string
-  type: 'panel'
-  input: false
-  position: number
-  components: Component[]
-}
+import type { Form } from '../types'
 
 export const form: Form = {
   id: 5,

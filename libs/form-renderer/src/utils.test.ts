@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
 import { form } from './mocks/data'
-import { type Component, isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils' // Adjust path if needed
+import type { Component } from './types'
+import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
 
 describe('type guards', () => {
   it('isRadio should return true for type "radio"', () => {

@@ -18,8 +18,6 @@ type Props = {
   onChange: (value: string, name: string) => void
 }
 
-type AllFormInputs = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-
 export const Select = ({ description, id, label, validate, data, defaultValue, onChange }: Props) => {
   const [selected, setSelected] = useState('')
 
@@ -27,7 +25,7 @@ export const Select = ({ description, id, label, validate, data, defaultValue, o
     if (defaultValue) setSelected(defaultValue)
   }, [defaultValue])
 
-  const handleChange = (event: ChangeEvent<AllFormInputs>) => {
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelected(event.target.value)
     onChange(event.target.value, event.target.name)
   }

@@ -1,23 +1,11 @@
 import type {
-  FormCheckboxComponentOutput,
-  FormRadioComponentOutput,
-  FormSelectComponentOutput,
-  FormTextAreaComponentOutput,
-  FormTextFieldInputComponentOutput,
-} from '@meldingen/api-client'
-
-type FormCheckboxComponent = FormCheckboxComponentOutput & { defaultValue?: string[] }
-type FormRadioComponent = FormRadioComponentOutput & { defaultValue?: string }
-type FormSelectComponent = FormSelectComponentOutput & { defaultValue?: string }
-type FormTextAreaComponent = FormTextAreaComponentOutput & { defaultValue?: string }
-type FormTextFieldInputComponent = FormTextFieldInputComponentOutput & { defaultValue?: string }
-
-export type Component =
-  | FormCheckboxComponent
-  | FormRadioComponent
-  | FormSelectComponent
-  | FormTextAreaComponent
-  | FormTextFieldInputComponent
+  Component,
+  FormCheckboxComponent,
+  FormRadioComponent,
+  FormSelectComponent,
+  FormTextAreaComponent,
+  FormTextFieldInputComponent,
+} from './types'
 
 export const isRadio = (component: Component): component is FormRadioComponent => component.type === 'radio'
 

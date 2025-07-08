@@ -1,8 +1,8 @@
 import { SubmitButton } from '@meldingen/ui'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
+import type { Component } from './types'
 import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
-import type { Component } from './utils'
 
 const getComponent = (component: Component, onChange: (value: string | string[], name: string) => void) => {
   if (isRadio(component)) {
@@ -81,14 +81,13 @@ const getComponent = (component: Component, onChange: (value: string | string[],
     )
   }
 
-  // @ts-expect-error component type is unknown
+  // eslint-disable-next-line no-console
   console.error(`Type ${component.type} is unknown, please add it to FormRenderer.`)
   return undefined
 }
 
-// TODO: fix formData type
 type Props = {
-  formData: any[]
+  formData: Component[]
   action: (formData: FormData) => void
   submitButtonText: string
   onChange: (value: string | string[], name: string) => void
