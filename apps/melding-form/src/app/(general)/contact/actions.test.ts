@@ -49,7 +49,7 @@ describe('postContactForm', () => {
     expect(redirect).toHaveBeenCalledWith('/samenvatting')
   })
 
-  it('should return undefined when there is no meldingId or token', async () => {
+  it('should redirect to /cookie-storing when there is no meldingId or token', async () => {
     // Override cookies mock for this specific test
     ;(cookies as Mock).mockReturnValue({
       get: () => undefined,
@@ -59,9 +59,9 @@ describe('postContactForm', () => {
     formData.set('email', 'user@example.com')
     formData.set('phone', '0612345678')
 
-    const result = await postContactForm(undefined, formData)
+    await postContactForm(undefined, formData)
 
-    expect(result).toBeUndefined()
+    expect(redirect).toHaveBeenCalledWith('/cookie-storing')
   })
 
   it('returns an error message if an error occurs', async () => {

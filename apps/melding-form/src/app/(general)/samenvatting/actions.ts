@@ -13,7 +13,7 @@ export const postSummaryForm = async () => {
   const meldingId = cookieStore.get('id')?.value
   const token = cookieStore.get('token')?.value
 
-  if (!meldingId || !token) return undefined
+  if (!meldingId || !token) return redirect('/cookie-storing')
 
   // Set melding state to 'submitted'
   const { error } = await putMeldingByMeldingIdSubmit({

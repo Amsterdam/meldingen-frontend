@@ -1,6 +1,6 @@
 'use client'
 
-import { Heading, Paragraph } from '@amsterdam/design-system-react'
+import { Alert, Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useState } from 'react'
 
@@ -41,7 +41,11 @@ export const AdditionalQuestions = ({ action, formData }: Props) => {
 
   return (
     <>
-      {formState?.message && <Paragraph>{formState.message}</Paragraph>}
+      {formState?.message && (
+        <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
+          <Paragraph>{formState.message}</Paragraph>
+        </Alert>
+      )}
       <Heading level={1}>{t('step.title')}</Heading>
       <FormRenderer
         formData={prefilledFormData}
