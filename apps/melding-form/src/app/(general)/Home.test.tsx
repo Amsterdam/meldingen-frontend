@@ -52,7 +52,7 @@ describe('Page', () => {
   })
 
   it('should handle onChange and set value in localStorage', async () => {
-    const store: Record<string, string> = { textArea1: '' }
+    const store: Record<string, string> = {}
 
     global.localStorage = {
       getItem: vi.fn((key: string) => JSON.stringify(store[key]) ?? null),
