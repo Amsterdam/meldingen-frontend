@@ -1,5 +1,5 @@
 import { Field, Label, Select as ADSSelect } from '@amsterdam/design-system-react'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
@@ -19,14 +19,7 @@ type Props = {
 }
 
 export const Select = ({ description, id, label, validate, data, defaultValue, onChange }: Props) => {
-  const [selected, setSelected] = useState('')
-
-  useEffect(() => {
-    if (defaultValue) setSelected(defaultValue)
-  }, [defaultValue])
-
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelected(event.target.value)
     onChange(event.target.value, event.target.name)
   }
 
@@ -41,12 +34,13 @@ export const Select = ({ description, id, label, validate, data, defaultValue, o
         </MarkdownToHtml>
       )}
       <ADSSelect
+        key={defaultValue}
         aria-describedby={description ? `${id}-description` : undefined}
         aria-required={validate?.required ? 'true' : undefined}
         id={id}
         name={id}
         onChange={handleChange}
-        value={selected}
+        defaultValue={defaultValue}
       >
         {data.values.map(({ label: optionLabel, value }) => (
           <ADSSelect.Option key={value} value={value}>

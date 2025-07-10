@@ -39,7 +39,7 @@ const getComponent = (component: Component, onChange: (value: string | string[],
     const { defaultValue, description, key, label, validate, values } = component
     return (
       <Checkbox
-        defaultValue={defaultValue}
+        defaultValues={defaultValue}
         description={description}
         id={key}
         key={key}

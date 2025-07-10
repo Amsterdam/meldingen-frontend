@@ -1,5 +1,5 @@
 import { Column, FieldSet, Radio as ADSRadio } from '@amsterdam/design-system-react'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
@@ -17,14 +17,7 @@ type Props = {
 }
 
 export const Radio = ({ description, id, label, validate, values, onChange, defaultValue }: Props) => {
-  const [checkedValue, setCheckedValue] = useState<string>('')
-
-  useEffect(() => {
-    if (defaultValue) setCheckedValue(defaultValue)
-  }, [defaultValue])
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCheckedValue(event.target.value)
     onChange(event.target.value, id)
   }
 
@@ -44,11 +37,11 @@ export const Radio = ({ description, id, label, validate, values, onChange, defa
       <Column gap="x-small">
         {values.map(({ label: radioLabel, value }) => (
           <ADSRadio
-            key={value}
+            key={`${value}-${defaultValue ?? ''}`}
             aria-required={validate?.required ? 'true' : undefined}
             name={id}
             value={value}
-            checked={value === checkedValue}
+            defaultChecked={value === defaultValue}
             onChange={handleChange}
           >
             {radioLabel}

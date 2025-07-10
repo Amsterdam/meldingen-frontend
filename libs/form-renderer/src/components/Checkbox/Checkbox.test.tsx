@@ -70,7 +70,7 @@ describe('Checkbox Component', () => {
   })
 
   it('sets the default value', async () => {
-    render(<Checkbox {...defaultProps} defaultValue={['test-value-2']} />)
+    render(<Checkbox {...defaultProps} defaultValues={['test-value-2']} />)
 
     const checkboxOption = screen.getByLabelText('Test value 2')
 

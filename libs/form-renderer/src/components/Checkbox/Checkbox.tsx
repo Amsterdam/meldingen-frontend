@@ -1,5 +1,3 @@
-'use client'
-
 import { Checkbox as ADSCheckbox, Column, FieldSet } from '@amsterdam/design-system-react'
 import { ChangeEvent, useEffect, useState } from 'react'
 
@@ -15,15 +13,15 @@ type Props = {
     value: string
   }[]
   onChange: (value: string[], name: string) => void
-  defaultValue?: string[]
+  defaultValues?: string[]
 }
 
-export const Checkbox = ({ description, id, label, validate, values, onChange, defaultValue }: Props) => {
+export const Checkbox = ({ description, id, label, validate, values, onChange, defaultValues }: Props) => {
   const [checkedValues, setCheckedValues] = useState<string[]>([])
 
   useEffect(() => {
-    if (defaultValue) setCheckedValues(defaultValue)
-  }, [defaultValue])
+    if (defaultValues) setCheckedValues(defaultValues)
+  }, [defaultValues])
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>, value: string) => {
     const updated = event.target.checked ? [...checkedValues, value] : checkedValues.filter((v) => v !== value)
