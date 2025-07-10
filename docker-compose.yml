@@ -19,7 +19,7 @@ services:
       context: .
       target: melding_form_meldingen
       args:
-        NEXT_BACKEND_BASE_URL: http://meldingen:8000
+        NEXT_INTERNAL_BACKEND_BASE_URL: http://meldingen:8000
     ports:
       - '3000:3000'
     networks:
