@@ -7,5 +7,9 @@ export default defineConfig({
     lint: 'eslint',
     path: './libs/api-client/src',
   },
-  plugins: ['@hey-api/client-fetch', '@hey-api/schemas', { name: '@hey-api/sdk', operationId: false }],
+  plugins: [
+    { name: '@hey-api/client-next', runtimeConfigPath: './libs/api-client/runtime-config.ts' },
+    '@hey-api/schemas',
+    { name: '@hey-api/sdk', operationId: false },
+  ],
 })
