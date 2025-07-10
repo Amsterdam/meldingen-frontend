@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import 'leaflet/dist/leaflet.css'
 
 import { ControlsOverlay } from './ControlsOverlay/ControlsOverlay'
+import { Crosshair } from './Crosshair/Crosshair'
 import { marker } from './Marker/Marker'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
@@ -121,7 +122,7 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
   return (
     <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>
       <div className={styles.map} ref={mapRef} />
-      <div className={styles.crosshair} id="crosshair"></div>
+      <Crosshair id="crosshair" />
       <ControlsOverlay mapInstance={mapInstance} setCoordinates={setCoordinates} />
     </div>
   )
