@@ -1,6 +1,6 @@
 'use client'
 
-import { FileList, Heading, Paragraph } from '@amsterdam/design-system-react'
+import { Alert, FileList, Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
@@ -41,6 +41,12 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
 
   return (
     <>
+      {formState?.message && (
+        <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
+          <Paragraph>{formState.message}</Paragraph>
+        </Alert>
+      )}
+
       <Heading className="ams-mb-s" level={1}>
         {t('step.title')}
       </Heading>
@@ -49,8 +55,6 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
         {t('title')}
       </Heading>
       <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
-
-      {formState?.message && <Paragraph>{formState.message}</Paragraph>}
 
       <SummaryList className="ams-mb-m">
         <SummaryList.Item key={primaryForm.key}>

@@ -24,27 +24,33 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
 
   return (
     <>
+      {formState?.message && (
+        <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
+          <Paragraph>{formState.message}</Paragraph>
+        </Alert>
+      )}
+
       <Heading level={1} className="ams-mb-s">
         {t('step.title')}
       </Heading>
+
       <Heading level={2} size="level-4" className="ams-mb-xs">
         {t('title')}
       </Heading>
+
       <MarkdownToHtml className="ams-mb-s">{t('description')}</MarkdownToHtml>
+
       <form action={formAction}>
-        {formState?.message && (
-          <Alert headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-            <Paragraph>{formState?.message}</Paragraph>
-          </Alert>
-        )}
         <Label htmlFor="email-input" optional className="ams-mb-s">
           {emailLabel}
         </Label>
+
         {emailDescription && (
           <MarkdownToHtml id="email-input-description" type="description">
             {emailDescription}
           </MarkdownToHtml>
         )}
+
         <TextInput
           aria-describedby={emailDescription ? 'email-input-description' : undefined}
           name="email"
@@ -55,14 +61,17 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
           spellCheck="false"
           className="ams-mb-m"
         />
+
         <Label htmlFor="tel-input" optional className="ams-mb-s">
           {telLabel}
         </Label>
+
         {telDescription && (
           <MarkdownToHtml id="tel-input-description" type="description">
             {telDescription}
           </MarkdownToHtml>
         )}
+
         <TextInput
           aria-describedby={telDescription ? 'tel-input-description' : undefined}
           autoComplete="tel"

@@ -26,12 +26,12 @@ describe('postSummaryForm', () => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  it('returns undefined if meldingId or token is missing', async () => {
+  it('should redirect to /cookie-storing if meldingId or token is missing', async () => {
     mockCookies.get.mockReturnValue(undefined)
 
-    const result = await postSummaryForm()
+    await postSummaryForm()
 
-    expect(result).toBeUndefined()
+    expect(redirect).toHaveBeenCalledWith('/cookie-storing')
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
