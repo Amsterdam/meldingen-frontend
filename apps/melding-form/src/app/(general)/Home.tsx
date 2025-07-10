@@ -18,7 +18,7 @@ export const Home = ({ formData }: { formData: StaticFormTextAreaComponentOutput
   const t = useTranslations('homepage')
 
   const handleChange = (value: string | string[], name: string) => {
-    localStorage.setItem(`${name}`, JSON.stringify(value))
+    localStorage.setItem(name, JSON.stringify(value))
   }
 
   useEffect(() => {
