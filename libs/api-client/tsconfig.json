@@ -4,6 +4,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
+    "lib": ["esnext", "dom", "dom.iterable"],
     "resolveJsonModule": true,
     "strict": true,
   }
