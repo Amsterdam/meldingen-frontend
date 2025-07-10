@@ -37,7 +37,7 @@ describe('Page', () => {
     expect(screen.queryByText('Test error message')).toBeInTheDocument()
   })
 
-  it('should fetch defaultValues from localStorage', async () => {
+  it('should fetch defaultValues from localStorage', () => {
     const store: Record<string, string> = { textArea1: 'Test input textarea' }
 
     global.localStorage = {
