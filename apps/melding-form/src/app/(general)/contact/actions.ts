@@ -13,7 +13,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
   const meldingId = cookieStore.get('id')?.value
   const token = cookieStore.get('token')?.value
 
-  if (!meldingId || !token) return undefined
+  if (!meldingId || !token) return redirect('/cookie-storing')
 
   const email = formData.get('email')
   const phone = formData.get('phone')

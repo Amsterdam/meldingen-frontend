@@ -31,16 +31,16 @@ describe('postLocationForm', () => {
     })
   })
 
-  it('returns undefined when id or token is missing', async () => {
+  it('redirects to /cookie-storing when id or token is missing', async () => {
     // Override cookies mock for this specific test
     ;(cookies as Mock).mockReturnValue({
       get: () => undefined,
     })
 
     const formData = new FormData()
-    const result = await postLocationForm(null, formData)
+    await postLocationForm(null, formData)
 
-    expect(result).toBeUndefined()
+    expect(redirect).toHaveBeenCalledWith('/cookie-storing')
   })
 
   it('returns an error when coordinates are missing', async () => {
