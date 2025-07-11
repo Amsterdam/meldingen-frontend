@@ -1,13 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { TextArea } from './TextArea'
+import { type Props, TextArea } from './TextArea'
 
-const defaultProps = {
+const defaultProps: Props = {
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
-  onChange: vi.fn(),
 }
 
 describe('TextArea Component', () => {
@@ -66,15 +65,5 @@ describe('TextArea Component', () => {
     const textArea = screen.getByRole('textbox', { name: `${defaultProps.label} (niet verplicht)` })
 
     expect(textArea).toBeInTheDocument()
-  })
-
-  it('should call onChange with correct arguments', async () => {
-    render(<TextArea {...defaultProps} />)
-
-    const textArea = screen.getByRole('textbox', { name: defaultProps.label })
-
-    await userEvent.type(textArea, 'foo')
-
-    expect(defaultProps.onChange).toHaveBeenCalledWith('f', 'test-id')
   })
 })

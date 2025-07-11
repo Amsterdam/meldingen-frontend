@@ -2,7 +2,7 @@ import { Field, Label, TextInput as ADSTextInput } from '@amsterdam/design-syste
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
-type Props = {
+export type Props = {
   description?: string
   id: string
   label: string

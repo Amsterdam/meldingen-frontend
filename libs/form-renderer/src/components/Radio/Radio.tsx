@@ -2,7 +2,7 @@ import { Column, FieldSet, Radio as ADSRadio } from '@amsterdam/design-system-re
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
-type Props = {
+export type Props = {
   description?: string
   id: string
   label: string

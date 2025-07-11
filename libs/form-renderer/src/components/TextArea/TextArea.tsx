@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
-type Props = {
+export type Props = {
   defaultValue?: string
   description?: string
   id: string

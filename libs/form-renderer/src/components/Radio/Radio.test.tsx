@@ -1,17 +1,15 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
-import { Radio } from './Radio'
+import { type Props, Radio } from './Radio'
 
-const defaultProps = {
+const defaultProps: Props = {
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
   values: [
-    { label: 'Test value', value: 'test-value', position: 1 },
-    { label: 'Test value 2', value: 'test-value-2', position: 2 },
+    { label: 'Test value', value: 'test-value' },
+    { label: 'Test value 2', value: 'test-value-2' },
   ],
-  onChange: vi.fn(),
 }
 
 describe('Radio Component', () => {
@@ -64,16 +62,6 @@ describe('Radio Component', () => {
     const radioItem = screen.getByRole('radio', { name: defaultProps.values[0].label })
 
     expect(radioItem).toBeRequired()
-  })
-
-  it('it calls onChange with correct arguments', async () => {
-    render(<Radio {...defaultProps} />)
-
-    const radioOption = screen.getByLabelText('Test value')
-
-    await userEvent.click(radioOption)
-
-    expect(defaultProps.onChange).toHaveBeenCalledWith('test-value', 'test-id')
   })
 
   it('sets the default value', () => {

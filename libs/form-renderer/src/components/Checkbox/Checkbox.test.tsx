@@ -1,17 +1,16 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { Checkbox } from './Checkbox'
+import { Checkbox, type Props } from './Checkbox'
 
-const defaultProps = {
+const defaultProps: Props = {
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
   values: [
     { label: 'Test value', value: 'test-value' },
-    { label: 'Test value 2', value: 'test-value-2', position: 2 },
+    { label: 'Test value 2', value: 'test-value-2' },
   ],
-  onChange: vi.fn(),
 }
 
 describe('Checkbox Component', () => {

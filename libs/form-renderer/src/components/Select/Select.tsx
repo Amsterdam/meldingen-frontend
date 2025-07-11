@@ -2,7 +2,7 @@ import { Field, Label, Select as ADSSelect } from '@amsterdam/design-system-reac
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
-type Props = {
+export type Props = {
   data: {
     values: {
       label: string

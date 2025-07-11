@@ -1,19 +1,17 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
-import { Select } from './Select'
+import { type Props, Select } from './Select'
 
-const defaultProps = {
+const defaultProps: Props = {
   data: {
     values: [
-      { label: 'Test value', value: 'test-value', position: 1 },
-      { label: 'Test value 2', value: 'test-value-2', position: 2 },
+      { label: 'Test value', value: 'test-value' },
+      { label: 'Test value 2', value: 'test-value-2' },
     ],
   },
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
-  onChange: vi.fn(),
 }
 
 describe('Select Component', () => {
@@ -58,17 +56,6 @@ describe('Select Component', () => {
     const select = screen.getByRole('combobox', { name: `${defaultProps.label} (niet verplicht)` })
 
     expect(select).toBeInTheDocument()
-  })
-
-  it('it calls onChange with correct arguments', async () => {
-    render(<Select {...defaultProps} />)
-
-    const select = screen.getByRole('combobox', { name: defaultProps.label })
-
-    await userEvent.selectOptions(select, 'test-value')
-
-    expect(defaultProps.onChange).toHaveBeenCalledWith('test-value', 'test-id')
-    expect(select).toHaveValue('test-value')
   })
 
   it('sets the default value', () => {

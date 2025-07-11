@@ -1,13 +1,11 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
-import { TextInput } from './TextInput'
+import { type Props, TextInput } from './TextInput'
 
-const defaultProps = {
+const defaultProps: Props = {
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
-  onChange: vi.fn(),
 }
 
 describe('TextInput Component', () => {
@@ -44,15 +42,5 @@ describe('TextInput Component', () => {
     const textInput = screen.getByRole('textbox', { name: `${defaultProps.label} (niet verplicht)` })
 
     expect(textInput).toBeInTheDocument()
-  })
-
-  it('should call onChange with correct arguments', async () => {
-    render(<TextInput {...defaultProps} />)
-
-    const textInput = screen.getByRole('textbox', { name: defaultProps.label })
-
-    await userEvent.type(textInput, 'foo')
-
-    expect(defaultProps.onChange).toHaveBeenCalledWith('f', 'test-id')
   })
 })

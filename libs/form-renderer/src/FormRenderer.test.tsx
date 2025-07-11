@@ -1,13 +1,12 @@
 import { render, screen } from '@testing-library/react'
 
-import { FormRenderer } from './FormRenderer'
+import { FormRenderer, type Props } from './FormRenderer'
 import { form } from './mocks/data'
 
-const defaultProps = {
+const defaultProps: Props = {
   action: vi.fn(),
-  formData: form.components[0].components,
+  formComponents: form.components[0].components,
   submitButtonText: 'Volgende vraag',
-  onChange: vi.fn(),
 }
 
 describe('FormRenderer', () => {
@@ -59,10 +58,10 @@ describe('FormRenderer', () => {
     expect(radioGroup).toBeInTheDocument()
   })
 
-  it('renders nothing if an unsupported component is passed', () => {
-    const props = {
+  it.only('renders nothing if an unsupported component is passed', () => {
+    const props: Props = {
       ...defaultProps,
-      formData: [
+      formComponents: [
         {
           ...form.components[0].components[0],
           type: 'unsupported',

@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
-type Props = {
+export type Props = {
   description?: string
   id: string
   label: string

@@ -81,19 +81,18 @@ const getComponent = (component: Component) => {
   return undefined
 }
 
-type Props = {
+export type Props = {
   formComponents: Component[]
   action: (formData: FormData) => void
   submitButtonText: string
-  onChange?: (value: string | string[], name: string) => void
 }
 
-export const FormRenderer = ({ formComponents, action, submitButtonText, onChange }: Props) => {
+export const FormRenderer = ({ formComponents, action, submitButtonText }: Props) => {
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     <form className="ams-gap-m" action={action}>
-      {formComponents.length > 0 && formComponents.map((component) => getComponent(component, onChange))}
+      {formComponents.length > 0 && formComponents.map((component) => getComponent(component))}
       <SubmitButton>{submitButtonText}</SubmitButton>
     </form>
   )
