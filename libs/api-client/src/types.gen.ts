@@ -894,7 +894,10 @@ export type GreaterThan = {
     /**
      * >
      */
-    '>': Array<number | number | string | Var>;
+    '>': [
+        number | number | string | Var,
+        number | number | string
+    ];
 };
 
 /**
@@ -904,7 +907,10 @@ export type GreaterThanOrEqual = {
     /**
      * >=
      */
-    '>=': Array<number | number | string | Var>;
+    '>=': [
+        number | number | string | Var,
+        number | number | string
+    ];
 };
 
 /**
@@ -1198,11 +1204,6 @@ export type MeldingOutput = {
      */
     phone?: string | null;
 };
-
-/**
- * MeldingStates
- */
-export type MeldingStates = 'new' | 'classified' | 'questions_answered' | 'attachments_added' | 'location_submitted' | 'contact_info_added' | 'submitted' | 'processing' | 'completed';
 
 /**
  * Merge
@@ -2241,10 +2242,6 @@ export type GetMeldingData = {
          * In Area
          */
         in_area?: string | null;
-        /**
-         * State
-         */
-        state?: MeldingStates | null;
         /**
          * The limit
          */

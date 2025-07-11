@@ -2510,23 +2510,40 @@ export const GeoJson_OutputSchema = {
 export const GreaterThanSchema = {
     properties: {
         '>': {
-            items: {
-                anyOf: [
-                    {
-                        type: 'integer'
-                    },
-                    {
-                        type: 'number'
-                    },
-                    {
-                        type: 'string'
-                    },
-                    {
-                        '$ref': '#/components/schemas/Var'
-                    }
-                ]
-            },
+            prefixItems: [
+                {
+                    anyOf: [
+                        {
+                            type: 'integer'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'string'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Var'
+                        }
+                    ]
+                },
+                {
+                    anyOf: [
+                        {
+                            type: 'integer'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'string'
+                        }
+                    ]
+                }
+            ],
             type: 'array',
+            maxItems: 2,
+            minItems: 2,
             title: '>'
         }
     },
@@ -2538,23 +2555,40 @@ export const GreaterThanSchema = {
 export const GreaterThanOrEqualSchema = {
     properties: {
         '>=': {
-            items: {
-                anyOf: [
-                    {
-                        type: 'integer'
-                    },
-                    {
-                        type: 'number'
-                    },
-                    {
-                        type: 'string'
-                    },
-                    {
-                        '$ref': '#/components/schemas/Var'
-                    }
-                ]
-            },
+            prefixItems: [
+                {
+                    anyOf: [
+                        {
+                            type: 'integer'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'string'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Var'
+                        }
+                    ]
+                },
+                {
+                    anyOf: [
+                        {
+                            type: 'integer'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'string'
+                        }
+                    ]
+                }
+            ],
             type: 'array',
+            maxItems: 2,
+            minItems: 2,
             title: '>='
         }
     },
@@ -3751,12 +3785,6 @@ export const MeldingOutputSchema = {
     type: 'object',
     required: ['id', 'created_at', 'updated_at', 'public_id', 'text', 'state'],
     title: 'MeldingOutput'
-} as const;
-
-export const MeldingStatesSchema = {
-    type: 'string',
-    enum: ['new', 'classified', 'questions_answered', 'attachments_added', 'location_submitted', 'contact_info_added', 'submitted', 'processing', 'completed'],
-    title: 'MeldingStates'
 } as const;
 
 export const MergeSchema = {
