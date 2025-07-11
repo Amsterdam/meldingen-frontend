@@ -12,11 +12,10 @@ type Props = {
     label: string
     value: string
   }[]
-  onChange: (value: string[], name: string) => void
   defaultValues?: string[]
 }
 
-export const Checkbox = ({ description, id, label, validate, values, onChange, defaultValues }: Props) => {
+export const Checkbox = ({ description, id, label, validate, values, defaultValues }: Props) => {
   const [checkedValues, setCheckedValues] = useState<string[]>([])
 
   useEffect(() => {
@@ -27,7 +26,6 @@ export const Checkbox = ({ description, id, label, validate, values, onChange, d
     const updated = event.target.checked ? [...checkedValues, value] : checkedValues.filter((v) => v !== value)
 
     setCheckedValues(updated)
-    onChange(updated, id)
   }
 
   return (

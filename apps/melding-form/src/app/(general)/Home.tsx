@@ -9,44 +9,41 @@ import { FormRenderer } from '@meldingen/form-renderer'
 
 import { postPrimaryForm } from './actions'
 
-const initialState: { message?: string } = {}
+const initialState: { message?: string; formData?: FormData } = {}
 
-export const Home = ({ formData }: { formData: StaticFormTextAreaComponentOutput[] }) => {
-  const [formState, formAction] = useActionState(postPrimaryForm, initialState)
-  const [prefilledFormData, setPrefilledData] = useState(formData)
+export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
+  const [{ formData, message }, formAction] = useActionState(postPrimaryForm, initialState)
+  const [prefilledFormComponents, setPrefilledFormComponents] = useState(formComponents)
 
   const t = useTranslations('homepage')
 
-  const handleChange = (value: string | string[], name: string) => {
-    localStorage.setItem(name, JSON.stringify(value))
-  }
-
   useEffect(() => {
-    const prefilledFormData = formData.map((component) => {
-      const localStorageData = localStorage.getItem(component.key)
+    if (formData) {
+      const prefilledFormComponents = formComponents.map((component) => {
+        const formValue = formData.get(component.key)
 
-      if (localStorageData) {
-        return { ...component, defaultValue: JSON.parse(localStorageData) }
-      }
+        if (formValue) {
+          return { ...component, defaultValue: formValue }
+        }
 
-      return component
-    })
+        return component
+      })
 
-    return setPrefilledData(prefilledFormData)
-  }, [])
+      return setPrefilledFormComponents(prefilledFormComponents)
+    }
+  }, [formData])
 
   return (
     <>
-      {formState?.message && (
+      {message && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{formState.message}</Paragraph>
+          <Paragraph>{message}</Paragraph>
         </Alert>
       )}
       <FormRenderer
         action={formAction}
-        formData={prefilledFormData}
+        formComponents={prefilledFormComponents}
         submitButtonText={t('submit-button')}
-        onChange={handleChange}
       />
     </>
   )

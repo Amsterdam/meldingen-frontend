@@ -8,10 +8,9 @@ type Props = {
   label: string
   validate?: { required: boolean } | null
   defaultValue?: string
-  onChange: (value: string, name: string) => void
 }
 
-export const TextInput = ({ defaultValue, description, id, label, onChange, validate }: Props) => (
+export const TextInput = ({ defaultValue, description, id, label, validate }: Props) => (
   <Field key={id}>
     <Label htmlFor={id} optional={!validate?.required}>
       {label}
@@ -27,7 +26,6 @@ export const TextInput = ({ defaultValue, description, id, label, onChange, vali
       defaultValue={defaultValue}
       id={id}
       name={id}
-      onChange={(event) => onChange(event.target.value, event.target.name)}
     />
   </Field>
 )

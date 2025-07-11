@@ -4,54 +4,51 @@ import { Alert, Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useState } from 'react'
 
-import { FormRenderer } from '@meldingen/form-renderer'
+import { type Component, FormRenderer } from '@meldingen/form-renderer'
 
 // TODO: fix types
 type Props = {
   action: any
-  formData: any[]
+  formComponents: Component[]
   previousPanelPath: string
 }
 
-const initialState: { message?: string } = {}
+const initialState: { message?: string; formData?: FormData } = {}
 
-export const AdditionalQuestions = ({ action, formData }: Props) => {
-  const [formState, formAction] = useActionState(action, initialState)
-  const [prefilledFormData, setPrefilledData] = useState(formData)
+export const AdditionalQuestions = ({ action, formComponents }: Props) => {
+  const [{ formData, message }, formAction] = useActionState(action, initialState)
+  const [prefilledFormComponents, setPrefilledFormComponents] = useState(formComponents)
 
   const t = useTranslations('additional-questions')
 
-  const handleChange = (value: string | string[], name: string) => {
-    localStorage.setItem(`${name}`, JSON.stringify(value))
-  }
-
   useEffect(() => {
-    const prefilledFormData = formData.map((component) => {
-      const localStorageData = localStorage.getItem(component.key)
+    if (formData) {
+      const prefilledFormComponents = formComponents.map((component) => {
+        const formValue = formData.get(component.key)
 
-      if (localStorageData) {
-        return { ...component, defaultValue: JSON.parse(localStorageData) }
-      }
+        if (typeof formValue === 'string') {
+          return { ...component, defaultValue: formValue }
+        }
 
-      return component
-    })
+        return component
+      })
 
-    return setPrefilledData(prefilledFormData)
-  }, [])
+      return setPrefilledFormComponents(prefilledFormComponents)
+    }
+  }, [formData])
 
   return (
     <>
-      {formState?.message && (
+      {message && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{formState.message}</Paragraph>
+          <Paragraph>{message}</Paragraph>
         </Alert>
       )}
       <Heading level={1}>{t('step.title')}</Heading>
       <FormRenderer
-        formData={prefilledFormData}
+        formComponents={prefilledFormComponents}
         action={formAction}
         submitButtonText={t('submit-button')}
-        onChange={handleChange}
       />
     </>
   )

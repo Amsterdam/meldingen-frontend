@@ -4,7 +4,7 @@ import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 import type { Component } from './types'
 import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
 
-const getComponent = (component: Component, onChange: (value: string | string[], name: string) => void) => {
+const getComponent = (component: Component) => {
   if (isRadio(component)) {
     const { defaultValue, description, key, label, validate, values } = component
     return (
@@ -14,7 +14,6 @@ const getComponent = (component: Component, onChange: (value: string | string[],
         id={key}
         key={key}
         label={label}
-        onChange={onChange}
         validate={validate}
         values={values}
       />
@@ -30,7 +29,6 @@ const getComponent = (component: Component, onChange: (value: string | string[],
         id={key}
         key={key}
         label={label}
-        onChange={onChange}
         validate={validate}
       />
     )
@@ -44,7 +42,6 @@ const getComponent = (component: Component, onChange: (value: string | string[],
         id={key}
         key={key}
         label={label}
-        onChange={onChange}
         validate={validate}
         values={values}
       />
@@ -60,7 +57,6 @@ const getComponent = (component: Component, onChange: (value: string | string[],
         key={key}
         label={label}
         maxCharCount={maxCharCount}
-        onChange={onChange}
         validate={validate}
       />
     )
@@ -75,7 +71,6 @@ const getComponent = (component: Component, onChange: (value: string | string[],
         id={key}
         description={description}
         label={label}
-        onChange={onChange}
         validate={validate}
       />
     )
@@ -87,18 +82,18 @@ const getComponent = (component: Component, onChange: (value: string | string[],
 }
 
 type Props = {
-  formData: Component[]
+  formComponents: Component[]
   action: (formData: FormData) => void
   submitButtonText: string
-  onChange: (value: string | string[], name: string) => void
+  onChange?: (value: string | string[], name: string) => void
 }
 
-export const FormRenderer = ({ formData, action, submitButtonText, onChange }: Props) => {
+export const FormRenderer = ({ formComponents, action, submitButtonText, onChange }: Props) => {
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     <form className="ams-gap-m" action={action}>
-      {formData.map((component) => getComponent(component, onChange))}
+      {formComponents.length > 0 && formComponents.map((component) => getComponent(component, onChange))}
       <SubmitButton>{submitButtonText}</SubmitButton>
     </form>
   )
