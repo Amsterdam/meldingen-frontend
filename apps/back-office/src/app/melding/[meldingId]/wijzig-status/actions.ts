@@ -22,13 +22,13 @@ export const postChangeStateForm = async ({ meldingId }: { meldingId: number }, 
   const t = await getTranslations('change-state.errors')
 
   if (!isValidState(state)) {
-    return { message: t('invalid-state') }
+    return { errorMessage: t('invalid-state') }
   }
 
   if (state === 'processing') {
     const { error } = await putMeldingByMeldingIdProcess({ path: { melding_id: meldingId } })
 
-    if (error) return { message: handleApiError(error) }
+    if (error) return { errorMessage: handleApiError(error) }
   }
 
   if (state === 'completed') {
@@ -37,7 +37,7 @@ export const postChangeStateForm = async ({ meldingId }: { meldingId: number }, 
       body: { mail_body: 'Dit is de body van de melding afgehandeld email.' },
     })
 
-    if (error) return { message: handleApiError(error) }
+    if (error) return { errorMessage: handleApiError(error) }
   }
 
   return redirect(`/melding/${meldingId}`)

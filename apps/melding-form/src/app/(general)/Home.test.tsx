@@ -13,26 +13,31 @@ const mockTextAreaComponent = {
 }
 
 vi.mock('react', async (importOriginal) => {
+  const formData = new FormData()
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{ formData, message: '' }, vi.fn()]),
   }
 })
 
 describe('Page', () => {
   it('should render a form', () => {
-    render(<Home formData={[mockTextAreaComponent]} />)
+    render(<Home formComponents={[mockTextAreaComponent]} />)
 
     expect(screen.queryByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'submit-button' })).toBeInTheDocument()
   })
 
-  it('should render an error message', () => {
-    ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
+  it('should render an error message and keep input data', () => {
+    const formData = new FormData()
 
-    render(<Home formData={[mockTextAreaComponent]} />)
+    formData.append('textArea1', 'Er staan blowende jongeren')
+    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message', formData }, vi.fn()])
+
+    render(<Home formComponents={[mockTextAreaComponent]} />)
 
     expect(screen.queryByText('Test error message')).toBeInTheDocument()
+    expect(screen.queryByText('Er staan blowende jongeren')).toBeInTheDocument()
   })
 })

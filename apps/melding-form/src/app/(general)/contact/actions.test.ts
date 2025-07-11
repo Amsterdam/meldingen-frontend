@@ -73,7 +73,7 @@ describe('postContactForm', () => {
 
     const result = await postContactForm(null, formData)
 
-    expect(result).toEqual({ message: 'An unknown error occurred' })
+    expect(result).toEqual({ errorMessage: 'An unknown error occurred', formData })
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
@@ -86,6 +86,6 @@ describe('postContactForm', () => {
     const formData = new FormData()
     const result = await postContactForm(null, formData)
 
-    expect(result).toEqual({ message: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'Error message', formData })
   })
 })

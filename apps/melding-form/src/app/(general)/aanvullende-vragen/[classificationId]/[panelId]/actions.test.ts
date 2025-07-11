@@ -73,7 +73,7 @@ describe('postForm', () => {
 
     const result = await postForm(defaultArgs, null, formData)
 
-    expect(result).toEqual({ message: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'Error message', formData })
   })
 
   it('returns a concatenated error message if multiple errors occur when posting multiple answers', async () => {
@@ -89,7 +89,7 @@ describe('postForm', () => {
 
     const result = await postForm(defaultArgs, null, formData)
 
-    expect(result).toEqual({ message: 'Error message, Error message' })
+    expect(result).toEqual({ errorMessage: 'Error message, Error message', formData })
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
@@ -103,6 +103,6 @@ describe('postForm', () => {
 
     const result = await postForm(defaultArgs, null, formData)
 
-    expect(result).toEqual({ message: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'Error message', formData })
   })
 })

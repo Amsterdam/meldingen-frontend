@@ -39,5 +39,5 @@ export default async () => {
 
   if (!filteredContactForm[0].label || !filteredContactForm[1].label) throw new Error('Contact form labels not found.')
 
-  return <Contact formData={filteredContactForm} />
+  return <Contact formComponents={filteredContactForm} />
 }

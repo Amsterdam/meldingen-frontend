@@ -38,7 +38,7 @@ describe('Location', () => {
   })
 
   it('renders an error message when there is one', () => {
-    ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message' }, vi.fn()])
 
     render(<Location {...defaultProps} />)
     const errorMessage = screen.getByText('Test error message')

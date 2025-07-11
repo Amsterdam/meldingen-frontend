@@ -80,7 +80,7 @@ export default async ({ params }: { params: Params }) => {
   return (
     <AdditionalQuestions
       action={postFormWithExtraArgs}
-      formData={panelQuestions}
+      formComponents={panelQuestions}
       previousPanelPath={previousPanelPath}
     />
   )

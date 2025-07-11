@@ -16,11 +16,11 @@ type Props = {
   publicId: string
 }
 
-const initialState: { message?: string } = {}
+const initialState: { errorMessage?: string } = {}
 
 export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
   const postChangeStateFormWithMeldingId = postChangeStateForm.bind(null, { meldingId })
-  const [formState, formAction] = useActionState(postChangeStateFormWithMeldingId, initialState)
+  const [{ errorMessage }, formAction] = useActionState(postChangeStateFormWithMeldingId, initialState)
 
   const t = useTranslations()
 
@@ -33,7 +33,7 @@ export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
         <Heading className="ams-mb-l" level={1}>
           {t('change-state.title', { publicId })}
         </Heading>
-        {formState?.message && <Paragraph>{formState.message}</Paragraph>}
+        {errorMessage && <Paragraph>{errorMessage}</Paragraph>}
         <form action={formAction}>
           <Field className="ams-mb-l">
             <Label htmlFor="state">{t('change-state.label')}</Label>

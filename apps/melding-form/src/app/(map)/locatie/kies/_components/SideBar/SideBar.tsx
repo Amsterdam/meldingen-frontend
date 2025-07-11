@@ -14,10 +14,10 @@ type Props = {
   setCoordinates: (coordinates: Coordinates) => void
 }
 
-const initialState: { message?: string } = {}
+const initialState: { errorMessage?: string } = {}
 
 export const SideBar = ({ coordinates, setCoordinates }: Props) => {
-  const [formState, formAction] = useActionState(writeAddressAndCoordinateToCookie, initialState)
+  const [{ errorMessage }, formAction] = useActionState(writeAddressAndCoordinateToCookie, initialState)
 
   const [address, setAddress] = useState<string>()
 
@@ -63,7 +63,7 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
           address={address}
           setAddress={setAddress}
           setCoordinates={setCoordinates}
-          errorMessage={formState?.message}
+          errorMessage={errorMessage}
         />
         <input type="hidden" name="coordinates" defaultValue={address ? JSON.stringify(coordinates) : undefined} />
       </form>

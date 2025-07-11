@@ -1,4 +1,6 @@
-export const form = {
+import type { Form } from '../types'
+
+export const form: Form = {
   id: 5,
   title: 'Nieuwe',
   display: 'wizard',

@@ -2,7 +2,7 @@
 
 import { Alert, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useActionState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
@@ -10,23 +10,41 @@ import { SubmitButton } from '@meldingen/ui'
 
 import { postContactForm } from './actions'
 
-const initialState: { message?: string } = {}
+const initialState: { errorMessage?: string; formData?: FormData } = {}
 
-export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOutput[] }) => {
-  const [formState, formAction] = useActionState(postContactForm, initialState)
+type ContactData = {
+  email: string
+  phone: string
+}
+
+export const Contact = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
+  const [{ formData, errorMessage }, formAction] = useActionState(postContactForm, initialState)
+  const [contactData, setContactData] = useState<ContactData>({ email: '', phone: '' })
 
   const t = useTranslations('contact')
 
-  const emailLabel = formData[0].label
-  const emailDescription = formData[0].description
-  const telLabel = formData[1].label
-  const telDescription = formData[1].description
+  const emailLabel = formComponents[0].label
+  const emailDescription = formComponents[0].description
+  const telLabel = formComponents[1].label
+  const telDescription = formComponents[1].description
+
+  useEffect(() => {
+    if (formData) {
+      const localEmail = formData.get(`email`)
+      const localPhone = formData.get(`phone`)
+
+      setContactData({
+        email: (localEmail as string) ?? '',
+        phone: (localPhone as string) ?? '',
+      })
+    }
+  }, [formData])
 
   return (
     <>
-      {formState?.message && (
+      {errorMessage && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{formState.message}</Paragraph>
+          <Paragraph>{errorMessage}</Paragraph>
         </Alert>
       )}
 
@@ -60,6 +78,7 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
           autoCorrect="off"
           spellCheck="false"
           className="ams-mb-m"
+          defaultValue={contactData.email}
         />
 
         <Label htmlFor="tel-input" optional className="ams-mb-s">
@@ -79,6 +98,7 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
           id="tel-input"
           name="phone"
           type="tel"
+          defaultValue={contactData.phone}
         />
         <SubmitButton>{t('submit-button')}</SubmitButton>
       </form>

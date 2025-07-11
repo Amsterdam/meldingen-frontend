@@ -37,5 +37,5 @@ export default async () => {
   // We use a type guard here to make sure we're always working with the right type
   const filteredPrimaryForm = data.components.filter(isTypeTextAreaComponent)
 
-  return <Home formData={filteredPrimaryForm} />
+  return <Home formComponents={filteredPrimaryForm} />
 }

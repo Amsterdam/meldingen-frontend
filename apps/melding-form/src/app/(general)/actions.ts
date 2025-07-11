@@ -18,7 +18,7 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
 
   const { data, error } = await postMelding({ body: { text: formDataObj.primary.toString() } })
 
-  if (error) return { message: handleApiError(error) }
+  if (error) return { errorMessage: handleApiError(error), formData }
 
   const { classification, created_at, id, token, public_id } = data
 
@@ -45,12 +45,12 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
         query: { token },
       })
 
-      if (error) return { message: handleApiError(error) }
+      if (error) return { errorMessage: handleApiError(error), formData }
 
       return redirect(nextPage)
     }
 
-    if (error) return { message: handleApiError(error) }
+    if (error) return { errorMessage: handleApiError(error), formData }
 
     const nextFormFirstKey = data?.components[0].key
 

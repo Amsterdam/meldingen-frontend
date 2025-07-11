@@ -3,7 +3,8 @@ import { useRef, useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
-type Props = {
+export type Props = {
+  defaultValue?: string
   description?: string
   id: string
   label: string
@@ -11,7 +12,7 @@ type Props = {
   validate?: { required: boolean } | null
 }
 
-export const TextArea = ({ description, id, label, maxCharCount, validate }: Props) => {
+export const TextArea = ({ description, id, label, maxCharCount, validate, defaultValue }: Props) => {
   const ref = useRef<HTMLTextAreaElement>(null)
   const [charCount, setCharCount] = useState(0)
 
@@ -39,6 +40,7 @@ export const TextArea = ({ description, id, label, maxCharCount, validate }: Pro
         onChange={typeof maxCharCount === 'number' ? handleChange : undefined}
         ref={ref}
         rows={4}
+        defaultValue={defaultValue}
       />
       {maxCharCount && <CharacterCount length={charCount} maxLength={maxCharCount} />}
     </Field>

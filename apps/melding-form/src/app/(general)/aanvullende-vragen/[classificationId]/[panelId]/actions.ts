@@ -63,7 +63,10 @@ export const postForm = async (
   const erroredResults = results.filter((result) => result?.error)
 
   if (erroredResults.length > 0) {
-    return { message: erroredResults.map(({ error }) => handleApiError(error)).join(', ') }
+    return {
+      errorMessage: erroredResults.map(({ error }) => handleApiError(error)).join(', '),
+      formData,
+    }
   }
 
   // Set melding state to 'questions_answered'
@@ -73,7 +76,7 @@ export const postForm = async (
       query: { token },
     })
 
-    if (error) return { message: handleApiError(error) }
+    if (error) return { errorMessage: handleApiError(error), formData }
   }
 
   return redirect(nextPanelPath)

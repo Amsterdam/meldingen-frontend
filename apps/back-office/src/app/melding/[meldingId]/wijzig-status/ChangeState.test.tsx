@@ -53,7 +53,7 @@ describe('ChangeState', () => {
   })
 
   it('displays an error message when the action returns an error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ message: 'Error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Error message' }, vi.fn()])
 
     render(<ChangeState {...defaultProps} />)
 
