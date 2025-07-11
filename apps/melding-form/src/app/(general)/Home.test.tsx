@@ -57,7 +57,7 @@ describe('Page', () => {
     expect(screen.queryByRole('button', { name: 'submit-button' })).toBeInTheDocument()
   })
 
-  it.only('should render an error message', () => {
+  it('should render an error message', () => {
     ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
 
     render(<Home formComponents={[mockTextAreaComponent]} />)
