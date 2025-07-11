@@ -58,7 +58,7 @@ describe('FormRenderer', () => {
     expect(radioGroup).toBeInTheDocument()
   })
 
-  it.only('renders nothing if an unsupported component is passed', () => {
+  it('renders nothing if an unsupported component is passed', () => {
     const props: Props = {
       ...defaultProps,
       formComponents: [
