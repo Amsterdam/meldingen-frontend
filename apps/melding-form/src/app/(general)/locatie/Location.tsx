@@ -10,7 +10,7 @@ import { SubmitButton } from '@meldingen/ui'
 import { postLocationForm } from './actions'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
-const initialState: { message?: string } = {}
+const initialState: { errorMessage?: string } = {}
 
 type Props = {
   prevPage: string
@@ -21,15 +21,15 @@ type Props = {
 }
 
 export const Location = ({ locationData }: Props) => {
-  const [formState, formAction] = useActionState(postLocationForm, initialState)
+  const [{ errorMessage }, formAction] = useActionState(postLocationForm, initialState)
 
   const t = useTranslations('location')
 
   return (
     <>
-      {formState?.message && (
+      {errorMessage && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{formState.message}</Paragraph>
+          <Paragraph>{errorMessage}</Paragraph>
         </Alert>
       )}
 

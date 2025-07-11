@@ -9,10 +9,10 @@ import { FormRenderer } from '@meldingen/form-renderer'
 
 import { postPrimaryForm } from './actions'
 
-const initialState: { message?: string; formData?: FormData } = {}
+const initialState: { errorMessage?: string; formData?: FormData } = {}
 
 export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
-  const [{ formData, message }, formAction] = useActionState(postPrimaryForm, initialState)
+  const [{ formData, errorMessage }, formAction] = useActionState(postPrimaryForm, initialState)
   const [prefilledFormComponents, setPrefilledFormComponents] = useState(formComponents)
 
   const t = useTranslations('homepage')
@@ -35,9 +35,9 @@ export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaCom
 
   return (
     <>
-      {message && (
+      {errorMessage && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{message}</Paragraph>
+          <Paragraph>{errorMessage}</Paragraph>
         </Alert>
       )}
       <FormRenderer

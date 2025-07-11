@@ -14,7 +14,7 @@ type Props = {
   setCoordinates: (coordinates: Coordinates) => void
 }
 
-const initialState: { message?: string } = {}
+const initialState: { errorMessage: string } = {}
 
 export const SideBar = ({ coordinates, setCoordinates }: Props) => {
   const [formState, formAction] = useActionState(writeAddressAndCoordinateToCookie, initialState)

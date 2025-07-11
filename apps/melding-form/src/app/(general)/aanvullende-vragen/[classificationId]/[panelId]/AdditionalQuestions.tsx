@@ -13,10 +13,10 @@ export type Props = {
   previousPanelPath: string
 }
 
-const initialState: { message?: string; formData?: FormData } = {}
+const initialState: { errorMessage?: string; formData?: FormData } = {}
 
 export const AdditionalQuestions = ({ action, formComponents }: Props) => {
-  const [{ formData, message }, formAction] = useActionState(action, initialState)
+  const [{ formData, errorMessage }, formAction] = useActionState(action, initialState)
   const [prefilledFormComponents, setPrefilledFormComponents] = useState(formComponents)
 
   const t = useTranslations('additional-questions')
@@ -39,9 +39,9 @@ export const AdditionalQuestions = ({ action, formComponents }: Props) => {
 
   return (
     <>
-      {message && (
+      {errorMessage && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{message}</Paragraph>
+          <Paragraph>{errorMessage}</Paragraph>
         </Alert>
       )}
       <Heading level={1}>{t('step.title')}</Heading>

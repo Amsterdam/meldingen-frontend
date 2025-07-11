@@ -16,7 +16,7 @@ type Props = {
   publicId: string
 }
 
-const initialState: { message?: string } = {}
+const initialState: { errorMessage: string } = {}
 
 export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
   const postChangeStateFormWithMeldingId = postChangeStateForm.bind(null, { meldingId })

@@ -20,7 +20,7 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
 
   const t = await getTranslations('location')
 
-  if (!coordinates) return { message: t('errors.no-location') }
+  if (!coordinates) return { errorMessage: t('errors.no-location') }
 
   const parsedCoordinates = JSON.parse(coordinates as string)
 
@@ -34,7 +34,7 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
     query: { token },
   })
 
-  if (error) return { message: handleApiError(error) }
+  if (error) return { errorMessage: handleApiError(error) }
 
   // Set melding state to 'location_submitted'
   const { error: stateError } = await putMeldingByMeldingIdSubmitLocation({
@@ -42,7 +42,7 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
     query: { token },
   })
 
-  if (stateError) return { message: handleApiError(stateError) }
+  if (stateError) return { errorMessage: handleApiError(stateError) }
 
   return redirect('/bijlage')
 }

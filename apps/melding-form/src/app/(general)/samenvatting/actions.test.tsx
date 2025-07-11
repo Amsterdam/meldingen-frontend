@@ -53,7 +53,7 @@ describe('postSummaryForm', () => {
 
     const result = await postSummaryForm()
 
-    expect(result).toEqual({ message: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'Error message' })
   })
 
   it('deletes location, token, lastPanelPath and id cookies and redirects to /bedankt', async () => {

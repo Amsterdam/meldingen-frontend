@@ -64,7 +64,7 @@ export const postForm = async (
 
   if (erroredResults.length > 0) {
     return {
-      message: erroredResults.map(({ error }) => handleApiError(error)).join(', '),
+      errorMessage: erroredResults.map(({ error }) => handleApiError(error)).join(', '),
       formData,
     }
   }
@@ -76,7 +76,7 @@ export const postForm = async (
       query: { token },
     })
 
-    if (error) return { message: handleApiError(error), formData }
+    if (error) return { errorMessage: handleApiError(error), formData }
   }
 
   return redirect(nextPanelPath)

@@ -10,7 +10,7 @@ import { SubmitButton } from '@meldingen/ui'
 
 import { postContactForm } from './actions'
 
-const initialState: { message?: string; formData?: FormData } = {}
+const initialState: { errorMessage?: string; formData?: FormData } = {}
 
 type ContactData = {
   email: string
@@ -18,7 +18,7 @@ type ContactData = {
 }
 
 export const Contact = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
-  const [{ formData, message }, formAction] = useActionState(postContactForm, initialState)
+  const [{ formData, errorMessage }, formAction] = useActionState(postContactForm, initialState)
   const [contactData, setContactData] = useState<ContactData>({ email: '', phone: '' })
 
   const t = useTranslations('contact')
@@ -42,9 +42,9 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
 
   return (
     <>
-      {message && (
+      {errorMessage && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{message}</Paragraph>
+          <Paragraph>{errorMessage}</Paragraph>
         </Alert>
       )}
 

@@ -27,7 +27,7 @@ describe('Contact', () => {
   })
 
   it('should render an error message', () => {
-    ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message' }, vi.fn()])
 
     render(<Contact formComponents={contactFormData} />)
 

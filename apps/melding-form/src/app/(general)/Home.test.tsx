@@ -13,34 +13,7 @@ const mockTextAreaComponent = {
 }
 
 vi.mock('react', async (importOriginal) => {
-  class MockFormData {
-    private data: Record<string, string | File> = {}
-
-    append(key: string, value: string | File) {
-      this.data[key] = value
-    }
-
-    set(key: string, value: string | File) {
-      this.data[key] = value
-    }
-
-    get(key: string): string | File | null {
-      return this.data[key] ?? null
-    }
-
-    has(key: string): boolean {
-      return key in this.data
-    }
-
-    delete(key: string) {
-      delete this.data[key]
-    }
-
-    entries(): [string, string | File][] {
-      return Object.entries(this.data)
-    }
-  }
-  const formData = new MockFormData()
+  const formData = new FormData()
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
@@ -60,7 +33,7 @@ describe('Page', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Er staan blowende jongeren')
-    ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message', formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message', formData }, vi.fn()])
 
     render(<Home formComponents={[mockTextAreaComponent]} />)
 

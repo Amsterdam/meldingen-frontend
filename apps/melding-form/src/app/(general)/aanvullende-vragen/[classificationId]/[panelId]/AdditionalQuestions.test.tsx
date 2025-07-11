@@ -40,7 +40,7 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Er staan blowende jongeren')
-    ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message', formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message', formData }, vi.fn()])
 
     render(<AdditionalQuestions {...defaultProps} />)
 

@@ -32,10 +32,10 @@ type Props = {
   primaryForm: GenericSummaryData
 }
 
-const initialState: { message?: string } = {}
+const initialState: { errorMessage?: string } = {}
 
 export const Summary = ({ attachments, primaryForm, additionalQuestions, location, contact }: Props) => {
-  const [formState, formAction] = useActionState(postSummaryForm, initialState)
+  const [{ errorMessage }, formAction] = useActionState(postSummaryForm, initialState)
 
   // Delete all data in localStorage
   localStorage.clear()
@@ -44,9 +44,9 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
 
   return (
     <>
-      {formState?.message && (
+      {errorMessage && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{formState.message}</Paragraph>
+          <Paragraph>{errorMessage}</Paragraph>
         </Alert>
       )}
 
