@@ -28,7 +28,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
       query: { token },
     })
 
-    if (error) return { message: handleApiError(error) }
+    if (error) return { message: handleApiError(error), formData }
   }
 
   // Set melding state to 'contact_info_added'
@@ -37,7 +37,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
     query: { token },
   })
 
-  if (error) return { message: handleApiError(error) }
+  if (error) return { message: handleApiError(error), formData }
 
   return redirect('/samenvatting')
 }

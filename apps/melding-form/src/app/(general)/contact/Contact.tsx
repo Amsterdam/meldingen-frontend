@@ -2,7 +2,7 @@
 
 import { Alert, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { ChangeEvent, useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
@@ -10,43 +10,41 @@ import { SubmitButton } from '@meldingen/ui'
 
 import { postContactForm } from './actions'
 
-const initialState: { message?: string } = {}
+const initialState: { message?: string; formData?: FormData } = {}
 
 type ContactData = {
   email: string
   phone: string
 }
 
-export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOutput[] }) => {
-  const [formState, formAction] = useActionState(postContactForm, initialState)
+export const Contact = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
+  const [{ formData, message }, formAction] = useActionState(postContactForm, initialState)
   const [contactData, setContactData] = useState<ContactData>({ email: '', phone: '' })
 
   const t = useTranslations('contact')
 
-  const emailLabel = formData[0].label
-  const emailDescription = formData[0].description
-  const telLabel = formData[1].label
-  const telDescription = formData[1].description
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    localStorage.setItem(`${event.target.name}`, JSON.stringify(event.target.value))
-  }
+  const emailLabel = formComponents[0].label
+  const emailDescription = formComponents[0].description
+  const telLabel = formComponents[1].label
+  const telDescription = formComponents[1].description
 
   useEffect(() => {
-    const localEmail = localStorage.getItem(`email`)
-    const localPhone = localStorage.getItem(`phone`)
+    if (formData) {
+      const localEmail = formData.get(`email`)
+      const localPhone = formData.get(`phone`)
 
-    setContactData({
-      email: localEmail ? JSON.parse(localEmail) : '',
-      phone: localPhone ? JSON.parse(localPhone) : '',
-    })
-  }, [])
+      setContactData({
+        email: (localEmail as string) ?? '',
+        phone: (localPhone as string) ?? '',
+      })
+    }
+  }, [formData])
 
   return (
     <>
-      {formState?.message && (
+      {message && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{formState.message}</Paragraph>
+          <Paragraph>{message}</Paragraph>
         </Alert>
       )}
 
@@ -80,7 +78,6 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
           autoCorrect="off"
           spellCheck="false"
           className="ams-mb-m"
-          onChange={handleChange}
           defaultValue={contactData.email}
         />
 
@@ -101,7 +98,6 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
           id="tel-input"
           name="phone"
           type="tel"
-          onChange={handleChange}
           defaultValue={contactData.phone}
         />
         <SubmitButton>{t('submit-button')}</SubmitButton>
