@@ -57,9 +57,6 @@ const defaultProps = {
 describe('Summary', () => {
   beforeAll(() => {
     global.URL.createObjectURL = vi.fn(() => 'blob:http://localhost/uploaded-file-1')
-    global.localStorage = {
-      clear: vi.fn(),
-    } as unknown as Storage
   })
 
   it('renders the Summary component with data', () => {
@@ -92,11 +89,5 @@ describe('Summary', () => {
     render(<Summary {...defaultProps} />)
 
     expect(screen.queryByText('Test error message')).toBeInTheDocument()
-  })
-
-  it('should clear localStorage', () => {
-    render(<Summary {...defaultProps} />)
-
-    expect(global.localStorage.clear).toHaveBeenCalled()
   })
 })

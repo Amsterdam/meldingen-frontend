@@ -37,9 +37,6 @@ const initialState: { errorMessage?: string } = {}
 export const Summary = ({ attachments, primaryForm, additionalQuestions, location, contact }: Props) => {
   const [{ errorMessage }, formAction] = useActionState(postSummaryForm, initialState)
 
-  // Delete all data in localStorage
-  localStorage.clear()
-
   const t = useTranslations('summary')
 
   return (

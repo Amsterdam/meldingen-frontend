@@ -78,7 +78,7 @@ describe('writeAddressAndCoordinateToCookie', () => {
 
     const result = await writeAddressAndCoordinateToCookie(null, formData)
 
-    expect(result).toEqual({ message: 'errors.pdok-no-address-found' })
+    expect(result).toEqual({ errorMessage: 'errors.pdok-no-address-found' })
   })
 
   it('returns an error message if an error occurs', async () => {
@@ -89,7 +89,7 @@ describe('writeAddressAndCoordinateToCookie', () => {
 
     const result = await writeAddressAndCoordinateToCookie(null, formData)
 
-    expect(result).toEqual({ message: 'PDOK API error' })
+    expect(result).toEqual({ errorMessage: 'PDOK API error' })
   })
 
   it('returns an error message if no address is provided', async () => {
@@ -97,6 +97,6 @@ describe('writeAddressAndCoordinateToCookie', () => {
 
     const result = await writeAddressAndCoordinateToCookie(null, formData)
 
-    expect(result).toEqual({ message: 'errors.no-location' })
+    expect(result).toEqual({ errorMessage: 'errors.no-location' })
   })
 })
