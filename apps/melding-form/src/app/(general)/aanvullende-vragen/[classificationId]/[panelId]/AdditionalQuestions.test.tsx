@@ -36,11 +36,15 @@ describe('AdditionalQuestions', () => {
     expect(question).toBeInTheDocument()
   })
 
-  it('should render an error message', () => {
-    ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
+  it('should render an error message and keep input data', () => {
+    const formData = new FormData()
+
+    formData.append('textArea1', 'Er staan blowende jongeren')
+    ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message', formData }, vi.fn()])
 
     render(<AdditionalQuestions {...defaultProps} />)
 
     expect(screen.queryByText('Test error message')).toBeInTheDocument()
+    expect(screen.queryByText('Er staan blowende jongeren')).toBeInTheDocument()
   })
 })
