@@ -7,7 +7,7 @@ import { useActionState, useEffect, useState } from 'react'
 import { type Component, FormRenderer } from '@meldingen/form-renderer'
 
 // TODO: fix types
-type Props = {
+export type Props = {
   action: any
   formComponents: Component[]
   previousPanelPath: string

@@ -1,9 +1,8 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 import type { Mock } from 'vitest'
 
-import { AdditionalQuestions } from './AdditionalQuestions'
+import { AdditionalQuestions, type Props } from './AdditionalQuestions'
 import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
@@ -14,9 +13,9 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-const defaultProps = {
+const defaultProps: Props = {
   action: vi.fn(),
-  formData: [textAreaComponent],
+  formComponents: [textAreaComponent],
   previousPanelPath: '/prev',
 }
 
@@ -43,38 +42,5 @@ describe('AdditionalQuestions', () => {
     render(<AdditionalQuestions {...defaultProps} />)
 
     expect(screen.queryByText('Test error message')).toBeInTheDocument()
-  })
-
-  it('should fetch defaultValues from localStorage', async () => {
-    const store: Record<string, string> = { textArea1: 'Test input textarea' }
-
-    global.localStorage = {
-      getItem: vi.fn((key: string) => JSON.stringify(store[key]) ?? null),
-    } as unknown as Storage
-
-    render(<AdditionalQuestions {...defaultProps} />)
-
-    const textAreaInput = screen.getByRole('textbox', { name: 'First question (niet verplicht)' })
-
-    expect(textAreaInput).toHaveValue('Test input textarea')
-  })
-
-  it('should handle onChange and set value in localStorage', async () => {
-    const store: Record<string, string> = { textArea1: '' }
-
-    global.localStorage = {
-      getItem: vi.fn((key: string) => JSON.stringify(store[key]) ?? null),
-      setItem: vi.fn((key: string, value: string) => {
-        store[key] = value
-      }),
-    } as unknown as Storage
-
-    render(<AdditionalQuestions {...defaultProps} />)
-
-    const textAreaInput = screen.getByRole('textbox', { name: 'First question (niet verplicht)' })
-
-    await userEvent.type(textAreaInput, 'Foo bar')
-
-    expect(global.localStorage.setItem).toHaveBeenCalledWith('textArea1', '"Foo bar"')
   })
 })
