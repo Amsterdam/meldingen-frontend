@@ -21,6 +21,6 @@
     "next-intl": "4.3.4"
   },
   "devDependencies": {
-    "@types/leaflet": "1.9.19"
+    "@types/leaflet": "1.9.20"
   }
 }
