@@ -20,12 +20,12 @@ const defaultProps = {
 }
 
 describe('AdditionalQuestions', () => {
-  it('renders a heading', () => {
+  it('renders the form header', () => {
     render(<AdditionalQuestions {...defaultProps} />)
 
-    const heading = screen.getByRole('heading', { name: 'step.title' })
+    const header = screen.getByRole('banner', { name: 'title' })
 
-    expect(heading).toBeInTheDocument()
+    expect(header).toBeInTheDocument()
   })
 
   it('renders form data', () => {
