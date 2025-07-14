@@ -1,5 +1,5 @@
 import { Checkbox as ADSCheckbox, Column, FieldSet } from '@amsterdam/design-system-react'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
@@ -12,15 +12,10 @@ export type Props = {
     label: string
     value: string
   }[]
-  defaultValues?: string[]
 }
 
-export const Checkbox = ({ description, id, label, validate, values, defaultValues }: Props) => {
+export const Checkbox = ({ description, id, label, validate, values }: Props) => {
   const [checkedValues, setCheckedValues] = useState<string[]>([])
-
-  useEffect(() => {
-    if (defaultValues) setCheckedValues(defaultValues)
-  }, [defaultValues])
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>, value: string) => {
     const updated = event.target.checked ? [...checkedValues, value] : checkedValues.filter((v) => v !== value)
@@ -47,7 +42,6 @@ export const Checkbox = ({ description, id, label, validate, values, defaultValu
             aria-required={validate?.required ? 'true' : undefined}
             name={`checkbox___${id}___${value}`}
             id={`${id}___${value}`}
-            value={value}
             checked={checkedValues.includes(value)}
             onChange={(e) => handleChange(e, value)}
           >

@@ -34,18 +34,8 @@ const getComponent = (component: Component) => {
     )
   }
   if (isSelectboxes(component)) {
-    const { defaultValue, description, key, label, validate, values } = component
-    return (
-      <Checkbox
-        defaultValues={defaultValue}
-        description={description}
-        id={key}
-        key={key}
-        label={label}
-        validate={validate}
-        values={values}
-      />
-    )
+    const { description, key, label, validate, values } = component
+    return <Checkbox description={description} id={key} key={key} label={label} validate={validate} values={values} />
   }
   if (isTextarea(component)) {
     const { defaultValue, description, key, label, validate, maxCharCount } = component
@@ -92,7 +82,7 @@ export const FormRenderer = ({ formComponents, action, submitButtonText }: Props
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     <form className="ams-gap-m" action={action}>
-      {formComponents.length > 0 && formComponents.map((component) => getComponent(component))}
+      {formComponents.map((component) => getComponent(component))}
       <SubmitButton>{submitButtonText}</SubmitButton>
     </form>
   )
