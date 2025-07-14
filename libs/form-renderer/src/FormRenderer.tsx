@@ -34,8 +34,18 @@ const getComponent = (component: Component) => {
     )
   }
   if (isSelectboxes(component)) {
-    const { description, key, label, validate, values } = component
-    return <Checkbox description={description} id={key} key={key} label={label} validate={validate} values={values} />
+    const { defaultValues, description, key, label, validate, values } = component
+    return (
+      <Checkbox
+        defaultValues={defaultValues}
+        description={description}
+        id={key}
+        key={key}
+        label={label}
+        validate={validate}
+        values={values}
+      />
+    )
   }
   if (isTextarea(component)) {
     const { defaultValue, description, key, label, validate, maxCharCount } = component

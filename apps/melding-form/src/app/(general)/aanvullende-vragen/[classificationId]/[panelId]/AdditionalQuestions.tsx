@@ -4,7 +4,8 @@ import { Alert, Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
-import { type Component, FormRenderer } from '@meldingen/form-renderer'
+import { FormRenderer, isSelectboxes } from '@meldingen/form-renderer'
+import type { Component } from '@meldingen/form-renderer'
 
 // TODO: fix types
 export type Props = {
@@ -21,6 +22,15 @@ export const AdditionalQuestions = ({ action, formComponents }: Props) => {
   const t = useTranslations('additional-questions')
 
   const prefilledFormComponents = formComponents.map((component) => {
+    if (isSelectboxes(component)) {
+      const defaultValues = component.values.map(({ value }) => {
+        const checked = formData?.get(`checkbox___${component.key}___${value}`) === 'on'
+        return checked ? value : undefined
+      })
+
+      return { ...component, defaultValues: defaultValues }
+    }
+
     const formValue = formData?.get(component.key)
 
     if (typeof formValue === 'string') {
