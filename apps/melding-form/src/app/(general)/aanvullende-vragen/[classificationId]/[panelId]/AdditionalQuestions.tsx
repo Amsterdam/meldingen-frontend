@@ -1,10 +1,12 @@
 'use client'
 
-import { Alert, Heading, Paragraph } from '@amsterdam/design-system-react'
+import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
 import { FormRenderer } from '@meldingen/form-renderer'
+
+import { FormHeader } from '../../../_components/FormHeader/FormHeader'
 
 // TODO: fix types
 type Props = {
@@ -27,7 +29,7 @@ export const AdditionalQuestions = ({ action, formData }: Props) => {
           <Paragraph>{formState.message}</Paragraph>
         </Alert>
       )}
-      <Heading level={1}>{t('step.title')}</Heading>
+      <FormHeader title={t('title')} step={t('step')} />
       <FormRenderer formData={formData} action={formAction} submitButtonText={t('submit-button')} />
     </>
   )

@@ -4,7 +4,7 @@
   },
   "homepage": {
     "metadata": {
-      "title": "Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam"
+      "title": "Stap 1 van 4: Beschrijf uw melding - Gemeente Amsterdam"
     },
     "title": "Melding openbare ruimte",
     "step": "Stap 1 van 4: Beschrijf uw melding",
@@ -12,25 +12,21 @@
   },
   "additional-questions": {
     "metadata": {
-      "title": "Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam"
+      "title": "Stap 1 van 4: Beschrijf uw melding - Gemeente Amsterdam"
     },
     "back-link": "Vorige vraag",
-    "step": {
-      "title": "Beschrijf uw melding",
-      "description": "Stap 1 van 4"
-    },
+    "title": "Melding openbare ruimte",
+    "step": "Stap 1 van 4: Beschrijf uw melding",
     "submit-button": "Volgende vraag"
   },
   "location": {
     "metadata": {
-      "title": "Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam"
+      "title": "Stap 1 van 4: Beschrijf uw melding - Gemeente Amsterdam"
     },
     "back-link": "Vorige vraag",
-    "step": {
-      "title": "Beschrijf uw melding",
-      "description": "Stap 1 van 4"
-    },
-    "title": "Waar staat de container?",
+    "title": "Melding openbare ruimte",
+    "step": "Stap 1 van 4: Beschrijf uw melding",
+    "question": "Waar staat de container?",
     "description": "In het volgende scherm kunt u op de kaart een adres of container opzoeken.",
     "link": {
       "without-location": "Selecteer de locatie",
@@ -43,7 +39,7 @@
   },
   "select-location": {
     "metadata": {
-      "title": "Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam"
+      "title": "Stap 1 van 4: Beschrijf uw melding - Gemeente Amsterdam"
     },
     "back-link": "Vorige vraag",
     "title": "Selecteer de locatie",
@@ -79,13 +75,11 @@
   },
   "attachments": {
     "metadata": {
-      "title": "Stap 2 van 4 - Foto’s - Gemeente Amsterdam"
+      "title": "Stap 2 van 4: Foto’s - Gemeente Amsterdam"
     },
     "back-link": "Vorige vraag",
-    "step": {
-      "title": "Foto’s",
-      "description": "Stap 2 van 4"
-    },
+    "title": "Melding openbare ruimte",
+    "step": "Stap 2 van 4: Foto’s",
     "file-input": {
       "button": "Selecteer bestanden",
       "drop-area": "Of sleep de bestanden in dit vak."
@@ -97,29 +91,27 @@
   },
   "contact": {
     "metadata": {
-      "title": "Stap 3 van 4 - Gegevens - Gemeente Amsterdam"
+      "title": "Stap 3 van 4: Uw gegevens - Gemeente Amsterdam"
     },
     "back-link": "Vorige vraag",
-    "step": {
-      "title": "Gegevens",
-      "description": "Stap 3 van 4"
-    },
-    "title": "Mogen we u bellen voor vragen? En op de hoogte houden via e-mail?",
+    "title": "Melding openbare ruimte",
+    "step": "Stap 3 van 4: Uw gegevens",
+    "question": "Mogen we u bellen voor vragen? En op de hoogte houden via e-mail?",
     "description": "Vaak hebben we nog een vraag. Daarmee kunnen we het probleem sneller of beter oplossen. Of we willen iets uitleggen. Wij willen u dan graag even bellen. Of anders e-mailen wij u.\n\nWij gebruiken uw telefoonnummer en e-mailadres alléén voor deze melding.",
     "submit-button": "Volgende vraag"
   },
   "summary": {
     "metadata": {
-      "title": "Stap 4 van 4 - Samenvatting - Gemeente Amsterdam"
+      "title": "Stap 4 van 4: Samenvatting - Gemeente Amsterdam"
     },
     "back-link": "Vorige vraag",
-    "step": {
-      "title": "Samenvatting",
-      "description": "Stap 4 van 4"
-    },
-    "title": "Versturen",
+    "title": "Melding openbare ruimte",
+    "step": "Stap 4 van 4: Samenvatting",
+    "main-title": "Versturen",
     "description": "Controleer uw gegevens en verstuur uw melding.",
-    "contact-label": "Wat zijn uw contactgegevens?",
+    "location-label": "Waar is het?",
+    "attachments-label": "Foto’s",
+    "contact-label": "Contactgegevens",
     "submit-button": "Verstuur melding"
   },
   "thanks": {

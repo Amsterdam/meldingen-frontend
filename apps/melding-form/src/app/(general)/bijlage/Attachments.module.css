@@ -1,3 +1,9 @@
+.h1 {
+  font-size: var(--ams-label-font-size);
+  margin-block: 0;
+  text-wrap: var(--ams-label-text-wrap);
+}
+
 .fileList {
   width: 100%;
 }

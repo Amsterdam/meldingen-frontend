@@ -1,6 +1,6 @@
 'use client'
 
-import { Alert, ErrorMessage, Field, FileList, Heading, Label, Paragraph } from '@amsterdam/design-system-react'
+import { Alert, ErrorMessage, Field, FileList, Label, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState, useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
@@ -14,6 +14,7 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { FileInput, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
+import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 import styles from './Attachments.module.css'
@@ -103,15 +104,15 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
         </Alert>
       )}
 
-      <Heading className="ams-mb-s" level={1}>
-        {t('step.title')}
-      </Heading>
+      <FormHeader title={t('title')} step={t('step')} />
 
       <form ref={formRef} action={formAction}>
         <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
-          <Label htmlFor="file-upload" optional>
-            {label}
-          </Label>
+          <h1 className={styles.h1}>
+            <Label htmlFor="file-upload" optional>
+              {label}
+            </Label>
+          </h1>
           {description && (
             <MarkdownToHtml id="file-upload-description" type="description">
               {description}
