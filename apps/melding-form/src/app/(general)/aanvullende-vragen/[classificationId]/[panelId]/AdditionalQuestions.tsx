@@ -2,7 +2,7 @@
 
 import { Alert, Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState } from 'react'
 
 import { type Component, FormRenderer } from '@meldingen/form-renderer'
 
@@ -17,25 +17,18 @@ const initialState: { errorMessage?: string; formData?: FormData } = {}
 
 export const AdditionalQuestions = ({ action, formComponents }: Props) => {
   const [{ formData, errorMessage }, formAction] = useActionState(action, initialState)
-  const [prefilledFormComponents, setPrefilledFormComponents] = useState(formComponents)
 
   const t = useTranslations('additional-questions')
 
-  useEffect(() => {
-    if (formData) {
-      const prefilledFormComponents = formComponents.map((component) => {
-        const formValue = formData.get(component.key)
+  const prefilledFormComponents = formComponents.map((component) => {
+    const formValue = formData?.get(component.key)
 
-        if (typeof formValue === 'string') {
-          return { ...component, defaultValue: formValue }
-        }
-
-        return component
-      })
-
-      return setPrefilledFormComponents(prefilledFormComponents)
+    if (typeof formValue === 'string') {
+      return { ...component, defaultValue: formValue }
     }
-  }, [formData])
+
+    return component
+  })
 
   return (
     <>

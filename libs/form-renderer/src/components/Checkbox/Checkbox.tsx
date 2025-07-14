@@ -42,7 +42,7 @@ export const Checkbox = ({ description, id, label, validate, values }: Props) =>
             aria-required={validate?.required ? 'true' : undefined}
             name={`checkbox___${id}___${value}`}
             id={`${id}___${value}`}
-            checked={checkedValues.includes(value)}
+            defaultChecked={checkedValues.includes(value)}
             onChange={(e) => handleChange(e, value)}
           >
             {checkboxLabel}

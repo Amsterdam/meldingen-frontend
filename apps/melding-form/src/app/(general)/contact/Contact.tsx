@@ -2,7 +2,7 @@
 
 import { Alert, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
@@ -12,14 +12,8 @@ import { postContactForm } from './actions'
 
 const initialState: { errorMessage?: string; formData?: FormData } = {}
 
-type ContactData = {
-  email: string
-  phone: string
-}
-
 export const Contact = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
   const [{ formData, errorMessage }, formAction] = useActionState(postContactForm, initialState)
-  const [contactData, setContactData] = useState<ContactData>({ email: '', phone: '' })
 
   const t = useTranslations('contact')
 
@@ -28,17 +22,17 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   const telLabel = formComponents[1].label
   const telDescription = formComponents[1].description
 
-  useEffect(() => {
-    if (formData) {
-      const localEmail = formData.get(`email`)
-      const localPhone = formData.get(`phone`)
+  const getPrefilledFormData = () => {
+    const localEmail = formData?.get(`email`)
+    const localPhone = formData?.get(`phone`)
 
-      setContactData({
-        email: (localEmail as string) ?? '',
-        phone: (localPhone as string) ?? '',
-      })
+    return {
+      email: (localEmail as string) ?? '',
+      phone: (localPhone as string) ?? '',
     }
-  }, [formData])
+  }
+
+  const { email, phone } = getPrefilledFormData()
 
   return (
     <>
@@ -78,7 +72,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
           autoCorrect="off"
           spellCheck="false"
           className="ams-mb-m"
-          defaultValue={contactData.email}
+          defaultValue={email}
         />
 
         <Label htmlFor="tel-input" optional className="ams-mb-s">
@@ -98,7 +92,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
           id="tel-input"
           name="phone"
           type="tel"
-          defaultValue={contactData.phone}
+          defaultValue={phone}
         />
         <SubmitButton>{t('submit-button')}</SubmitButton>
       </form>

@@ -2,7 +2,7 @@
 
 import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { FormRenderer } from '@meldingen/form-renderer'
@@ -13,25 +13,18 @@ const initialState: { errorMessage?: string; formData?: FormData } = {}
 
 export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
   const [{ formData, errorMessage }, formAction] = useActionState(postPrimaryForm, initialState)
-  const [prefilledFormComponents, setPrefilledFormComponents] = useState(formComponents)
 
   const t = useTranslations('homepage')
 
-  useEffect(() => {
-    if (formData) {
-      const prefilledFormComponents = formComponents.map((component) => {
-        const formValue = formData.get(component.key)
+  const prefilledFormComponents = formComponents.map((component) => {
+    const formValue = formData?.get(component.key)
 
-        if (formValue) {
-          return { ...component, defaultValue: formValue }
-        }
-
-        return component
-      })
-
-      return setPrefilledFormComponents(prefilledFormComponents)
+    if (typeof formValue === 'string') {
+      return { ...component, defaultValue: formValue }
     }
-  }, [formData])
+
+    return component
+  })
 
   return (
     <>
