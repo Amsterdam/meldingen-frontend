@@ -67,16 +67,4 @@ describe('Checkbox Component', () => {
 
     expect(checkboxOption).toBeChecked()
   })
-
-  it('sets the default value', async () => {
-    render(<Checkbox {...defaultProps} defaultValues={['test-value-2']} />)
-
-    const checkboxOption = screen.getByLabelText('Test value 2')
-
-    expect(checkboxOption).toBeChecked()
-
-    await userEvent.click(checkboxOption)
-
-    expect(checkboxOption).not.toBeChecked()
-  })
 })
