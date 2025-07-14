@@ -66,5 +66,9 @@ describe('Checkbox Component', () => {
     await userEvent.click(checkboxOption)
 
     expect(checkboxOption).toBeChecked()
+
+    await userEvent.click(checkboxOption)
+
+    expect(checkboxOption).not.toBeChecked()
   })
 })
