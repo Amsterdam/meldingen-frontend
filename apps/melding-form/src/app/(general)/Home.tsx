@@ -1,6 +1,6 @@
 'use client'
 
-import { Alert, Paragraph } from '@amsterdam/design-system-react'
+import { Alert, Column, Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
@@ -23,6 +23,12 @@ export const Home = ({ formData }: { formData: StaticFormTextAreaComponentOutput
           <Paragraph>{formState.message}</Paragraph>
         </Alert>
       )}
+      <Column aria-labelledby="primary-form-header" as="section" className="ams-mb-m" gap="x-small">
+        <Heading aria-hidden id="primary-form-header" level={2} size="level-5">
+          {t('title')}
+        </Heading>
+        <Paragraph>{t('step')}</Paragraph>
+      </Column>
       <FormRenderer action={formAction} formData={formData} submitButtonText={t('submit-button')} />
     </>
   )

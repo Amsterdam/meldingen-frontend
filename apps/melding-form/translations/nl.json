@@ -6,10 +6,8 @@
     "metadata": {
       "title": "Stap 1 van 4 - Beschrijf uw melding - Gemeente Amsterdam"
     },
-    "step": {
-      "title": "Beschrijf uw melding",
-      "description": "Stap 1 van 4"
-    },
+    "title": "Melding openbare ruimte",
+    "step": "Stap 1 van 4: Beschrijf uw melding",
     "submit-button": "Volgende vraag"
   },
   "additional-questions": {
