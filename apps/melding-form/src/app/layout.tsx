@@ -20,7 +20,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
   const locale = await getLocale()
 
   return (
-    <html lang={locale}>
+    <html dir="ltr" lang={locale}>
       <NextIntlClientProvider>
         <body>{children}</body>
       </NextIntlClientProvider>
