@@ -4,7 +4,7 @@ import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 import type { Component } from './types'
 import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
 
-const getComponent = (component: Component) => {
+const getComponent = (component: Component, hasOneFormComponent: boolean) => {
   if (isRadio(component)) {
     const { defaultValue, description, key, label, validate, values } = component
     return (
@@ -53,6 +53,7 @@ const getComponent = (component: Component) => {
       <TextArea
         defaultValue={defaultValue}
         description={description}
+        hasHeading={hasOneFormComponent}
         id={key}
         key={key}
         label={label}
@@ -67,9 +68,10 @@ const getComponent = (component: Component) => {
     return (
       <TextInput
         defaultValue={defaultValue}
-        key={key}
-        id={key}
         description={description}
+        hasHeading={hasOneFormComponent}
+        id={key}
+        key={key}
         label={label}
         validate={validate}
       />
@@ -88,11 +90,12 @@ export type Props = {
 }
 
 export const FormRenderer = ({ formComponents, action, submitButtonText }: Props) => {
+  const hasOneFormComponent = formComponents.length === 1
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     <form className="ams-gap-m" action={action}>
-      {formComponents.map((component) => getComponent(component))}
+      {formComponents.map((component) => getComponent(component, hasOneFormComponent))}
       <SubmitButton>{submitButtonText}</SubmitButton>
     </form>
   )
