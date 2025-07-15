@@ -11,23 +11,23 @@ import { SubmitButton } from '@meldingen/ui'
 import { postContactForm } from './actions'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
 
-const initialState: { message?: string } = {}
+const initialState: { errorMessage?: string; formData?: FormData } = {}
 
-export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOutput[] }) => {
-  const [formState, formAction] = useActionState(postContactForm, initialState)
+export const Contact = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
+  const [{ formData, errorMessage }, formAction] = useActionState(postContactForm, initialState)
 
   const t = useTranslations('contact')
 
-  const emailLabel = formData[0].label
-  const emailDescription = formData[0].description
-  const telLabel = formData[1].label
-  const telDescription = formData[1].description
+  const emailLabel = formComponents[0].label
+  const emailDescription = formComponents[0].description
+  const telLabel = formComponents[1].label
+  const telDescription = formComponents[1].description
 
   return (
     <>
-      {formState?.message && (
+      {errorMessage && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{formState.message}</Paragraph>
+          <Paragraph>{errorMessage}</Paragraph>
         </Alert>
       )}
 
@@ -56,6 +56,7 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
             autoComplete="email"
             autoCorrect="off"
             className="ams-mb-m"
+            defaultValue={formData?.get(`email`) as string}
             id="email-input"
             name="email"
             spellCheck="false"
@@ -79,6 +80,7 @@ export const Contact = ({ formData }: { formData: StaticFormTextAreaComponentOut
             aria-describedby={telDescription ? 'tel-input-description' : undefined}
             autoComplete="tel"
             className="ams-mb-m"
+            defaultValue={formData?.get(`phone`) as string}
             id="tel-input"
             name="phone"
             size={15}

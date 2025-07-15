@@ -2,7 +2,7 @@ import { Checkbox as ADSCheckbox, Column, FieldSet } from '@amsterdam/design-sys
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
-type Props = {
+export type Props = {
   description?: string
   id: string
   label: string
@@ -11,9 +11,10 @@ type Props = {
     label: string
     value: string
   }[]
+  defaultValues?: string[]
 }
 
-export const Checkbox = ({ description, id, label, validate, values }: Props) => (
+export const Checkbox = ({ defaultValues, description, id, label, validate, values }: Props) => (
   <FieldSet
     aria-labelledby={`${id}-fieldset ${id}-description`}
     id={`${id}-fieldset`}
@@ -30,6 +31,7 @@ export const Checkbox = ({ description, id, label, validate, values }: Props) =>
         <ADSCheckbox
           key={value}
           aria-required={validate?.required ? 'true' : undefined}
+          defaultChecked={defaultValues?.includes(value)}
           name={`checkbox___${id}___${value}`}
           value={value}
         >

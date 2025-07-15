@@ -14,23 +14,23 @@ export const writeAddressAndCoordinateToCookie = async (_: unknown, formData: Fo
 
   const t = await getTranslations('select-location')
 
-  if (!address) return { message: t('errors.no-location') }
+  if (!address) return { errorMessage: t('errors.no-location') }
 
   let PDOKLocation = null
 
   if (!coordinates) {
     const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`)
 
-    if (!res.ok) return { message: 'PDOK API error' }
+    if (!res.ok) return { errorMessage: 'PDOK API error' }
 
     PDOKLocation = await res.json()
 
-    if (!PDOKLocation.response.docs.length) return { message: t('errors.pdok-no-address-found') }
+    if (!PDOKLocation.response.docs.length) return { errorMessage: t('errors.pdok-no-address-found') }
   }
 
   const PDOKCoordinates = PDOKLocation && convertWktPointToCoordinates(PDOKLocation.response.docs[0].centroide_ll)
 
-  if (!coordinates && !PDOKCoordinates) return { message: 'No coordinates found' }
+  if (!coordinates && !PDOKCoordinates) return { errorMessage: 'No coordinates found' }
 
   const location = {
     name: coordinates ? address : PDOKLocation.response.docs[0].weergavenaam,

@@ -15,7 +15,7 @@ vi.mock('react', async (importOriginal) => {
 
 describe('Contact', () => {
   it('should render page and form', async () => {
-    render(<Contact formData={contactFormData} />)
+    render(<Contact formComponents={contactFormData} />)
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
     const telInput = screen.getByRole('textbox', { name: 'Wat is uw telefoonnummer? (niet verplicht)' })
@@ -27,15 +27,15 @@ describe('Contact', () => {
   })
 
   it('should render an error message', () => {
-    ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message' }, vi.fn()])
 
-    render(<Contact formData={contactFormData} />)
+    render(<Contact formComponents={contactFormData} />)
 
     expect(screen.queryByText('Test error message')).toBeInTheDocument()
   })
 
   it('should render descriptions that are connected to the e-mail and tel inputs', () => {
-    render(<Contact formData={contactFormData} />)
+    render(<Contact formComponents={contactFormData} />)
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
     const telInput = screen.getByRole('textbox', { name: 'Wat is uw telefoonnummer? (niet verplicht)' })
@@ -56,7 +56,7 @@ describe('Contact', () => {
       },
     ]
 
-    render(<Contact formData={contactFormDataWithoutDescriptions} />)
+    render(<Contact formComponents={contactFormDataWithoutDescriptions} />)
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
     const telInput = screen.getByRole('textbox', { name: 'Wat is uw telefoonnummer? (niet verplicht)' })

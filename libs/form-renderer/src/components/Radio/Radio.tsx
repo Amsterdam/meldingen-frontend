@@ -2,7 +2,7 @@ import { Column, FieldSet, Radio as ADSRadio } from '@amsterdam/design-system-re
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
-type Props = {
+export type Props = {
   description?: string
   id: string
   label: string
@@ -11,9 +11,10 @@ type Props = {
     label: string
     value: string
   }[]
+  defaultValue?: string
 }
 
-export const Radio = ({ description, id, label, validate, values }: Props) => (
+export const Radio = ({ description, id, label, validate, values, defaultValue }: Props) => (
   <FieldSet
     aria-describedby={description ? `${id}-description` : undefined}
     aria-required={validate?.required ? 'true' : undefined}
@@ -28,7 +29,13 @@ export const Radio = ({ description, id, label, validate, values }: Props) => (
     )}
     <Column gap="x-small">
       {values.map(({ label: radioLabel, value }) => (
-        <ADSRadio key={value} aria-required={validate?.required ? 'true' : undefined} name={id} value={value}>
+        <ADSRadio
+          key={value}
+          aria-required={validate?.required ? 'true' : undefined}
+          name={id}
+          value={value}
+          defaultChecked={value === defaultValue}
+        >
           {radioLabel}
         </ADSRadio>
       ))}

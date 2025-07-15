@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
-import { TextInput } from './TextInput'
+import { type Props, TextInput } from './TextInput'
 
-const defaultProps = {
+const defaultProps: Props = {
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },

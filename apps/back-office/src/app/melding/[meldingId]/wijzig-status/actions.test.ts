@@ -12,7 +12,7 @@ describe('postChangeStateForm', () => {
 
     const result = await postChangeStateForm({ meldingId: 123 }, null, formData)
 
-    expect(result).toEqual({ message: 'invalid-state' })
+    expect(result).toEqual({ errorMessage: 'invalid-state' })
     expect(redirect).not.toHaveBeenCalledWith('/melding/123')
   })
 
@@ -28,7 +28,7 @@ describe('postChangeStateForm', () => {
 
     const result = await postChangeStateForm({ meldingId: 123 }, null, formData)
 
-    expect(result).toEqual({ message: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'Error message' })
     expect(redirect).not.toHaveBeenCalledWith('/melding/123')
   })
 
@@ -44,7 +44,7 @@ describe('postChangeStateForm', () => {
 
     const result = await postChangeStateForm({ meldingId: 123 }, null, formData)
 
-    expect(result).toEqual({ message: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'Error message' })
     expect(redirect).not.toHaveBeenCalledWith('/melding/123')
   })
 

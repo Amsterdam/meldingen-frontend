@@ -2,14 +2,15 @@ import { Field, Label, TextInput as ADSTextInput } from '@amsterdam/design-syste
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
-type Props = {
+export type Props = {
   description?: string
   id: string
   label: string
   validate?: { required: boolean } | null
+  defaultValue?: string
 }
 
-export const TextInput = ({ description, id, label, validate }: Props) => (
+export const TextInput = ({ defaultValue, description, id, label, validate }: Props) => (
   <Field key={id}>
     <Label htmlFor={id} optional={!validate?.required}>
       {label}
@@ -22,6 +23,7 @@ export const TextInput = ({ description, id, label, validate }: Props) => (
     <ADSTextInput
       aria-describedby={description ? `${id}-description` : undefined}
       aria-required={validate?.required ? 'true' : undefined}
+      defaultValue={defaultValue}
       id={id}
       name={id}
     />

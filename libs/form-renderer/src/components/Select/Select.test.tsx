@@ -1,9 +1,14 @@
 import { render, screen } from '@testing-library/react'
 
-import { Select } from './Select'
+import { type Props, Select } from './Select'
 
-const defaultProps = {
-  data: { values: [{ label: 'Test value', value: 'test-value', position: 1 }] },
+const defaultProps: Props = {
+  data: {
+    values: [
+      { label: 'Test value', value: 'test-value' },
+      { label: 'Test value 2', value: 'test-value-2' },
+    ],
+  },
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
@@ -51,5 +56,13 @@ describe('Select Component', () => {
     const select = screen.getByRole('combobox', { name: `${defaultProps.label} (niet verplicht)` })
 
     expect(select).toBeInTheDocument()
+  })
+
+  it('sets the default value', () => {
+    render(<Select {...defaultProps} defaultValue="test-value-2" />)
+
+    const select = screen.getByRole('combobox', { name: defaultProps.label })
+
+    expect(select).toHaveValue('test-value-2')
   })
 })
