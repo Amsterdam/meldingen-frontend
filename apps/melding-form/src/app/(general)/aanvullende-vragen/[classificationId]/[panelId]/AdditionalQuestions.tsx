@@ -23,10 +23,7 @@ export const AdditionalQuestions = ({ action, formComponents }: Props) => {
 
   const prefilledFormComponents = formComponents.map((component) => {
     if (isSelectboxes(component)) {
-      const defaultValues = component.values.map(({ value }) => {
-        const checked = formData?.get(`checkbox___${component.key}___${value}`) === 'on'
-        return checked ? value : undefined
-      })
+      const defaultValues = component.values.map(({ value }) => formData?.get(`checkbox___${component.key}___${value}`))
 
       return { ...component, defaultValues: defaultValues }
     }

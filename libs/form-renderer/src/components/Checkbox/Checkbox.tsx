@@ -32,8 +32,8 @@ export const Checkbox = ({ defaultValues, description, id, label, validate, valu
           key={value}
           aria-required={validate?.required ? 'true' : undefined}
           defaultChecked={defaultValues?.includes(value)}
-          id={`${id}___${value}`}
           name={`checkbox___${id}___${value}`}
+          value={value}
         >
           {checkboxLabel}
         </ADSCheckbox>

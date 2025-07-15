@@ -10,7 +10,7 @@ describe('mergeCheckboxAnswers', () => {
 
     const result = mergeCheckboxAnswers(answers)
     expect(result).toEqual({
-      checkboxQuestionId: 'value1, value2',
+      checkboxQuestionId: 'answer 1, answer 2',
       nonCheckboxQuestion: 'answer 3',
     })
   })
@@ -38,7 +38,7 @@ describe('mergeCheckboxAnswers', () => {
 
     const result = mergeCheckboxAnswers(answers)
     expect(result).toEqual({
-      checkboxQuestionId: 'value1, value2',
+      checkboxQuestionId: 'answer 1, answer 3',
       nonCheckboxQuestion1: 'answer 2',
       nonCheckboxQuestion2: 'answer 4',
     })
