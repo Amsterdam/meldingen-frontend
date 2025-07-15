@@ -47,7 +47,7 @@ describe('postLocationForm', () => {
     const formData = new FormData()
     const result = await postLocationForm(null, formData)
 
-    expect(result).toEqual({ message: 'errors.no-location' })
+    expect(result).toEqual({ errorMessage: 'errors.no-location' })
   })
 
   it('posts the location and redirects to /bijlage', async () => {
@@ -71,7 +71,7 @@ describe('postLocationForm', () => {
 
     const result = await postLocationForm(null, formData)
 
-    expect(result).toEqual({ message: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'Error message' })
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
@@ -86,6 +86,6 @@ describe('postLocationForm', () => {
 
     const result = await postLocationForm(null, formData)
 
-    expect(result).toEqual({ message: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'Error message' })
   })
 })

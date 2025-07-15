@@ -84,7 +84,7 @@ describe('Summary', () => {
   })
 
   it('renders the Summary component with an error message', () => {
-    ;(useActionState as Mock).mockReturnValue([{ message: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message' }, vi.fn()])
 
     render(<Summary {...defaultProps} />)
 

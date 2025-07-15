@@ -26,7 +26,7 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(screen.getByText('Home Component')).toBeInTheDocument()
-    expect(Home).toHaveBeenCalledWith({ formData: [textAreaComponent] }, {})
+    expect(Home).toHaveBeenCalledWith({ formComponents: [textAreaComponent] }, {})
   })
 
   it('throws an error if list of static forms cannot be fetched', async () => {

@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { TextArea } from './TextArea'
+import { type Props, TextArea } from './TextArea'
 
-const defaultProps = {
+const defaultProps: Props = {
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },

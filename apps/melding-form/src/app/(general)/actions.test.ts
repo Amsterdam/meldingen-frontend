@@ -32,7 +32,7 @@ describe('postPrimaryForm', () => {
 
     const result = await postPrimaryForm(null, formData)
 
-    expect(result).toEqual({ message: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'Error message', formData })
     expect(redirect).not.toHaveBeenCalled()
   })
 
@@ -57,7 +57,7 @@ describe('postPrimaryForm', () => {
 
     const result = await postPrimaryForm(null, formData)
 
-    expect(result).toEqual({ message: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'Error message', formData })
     expect(redirect).not.toHaveBeenCalled()
   })
 

@@ -9,21 +9,35 @@ import { FormRenderer } from '@meldingen/form-renderer'
 
 import { postPrimaryForm } from './actions'
 
-const initialState: { message?: string } = {}
+const initialState: { errorMessage?: string; formData?: FormData } = {}
 
-export const Home = ({ formData }: { formData: StaticFormTextAreaComponentOutput[] }) => {
-  const [formState, formAction] = useActionState(postPrimaryForm, initialState)
+export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
+  const [{ formData, errorMessage }, formAction] = useActionState(postPrimaryForm, initialState)
 
   const t = useTranslations('homepage')
 
+  const prefilledFormComponents = formComponents.map((component) => {
+    const formValue = formData?.get(component.key)
+
+    if (typeof formValue === 'string') {
+      return { ...component, defaultValue: formValue }
+    }
+
+    return component
+  })
+
   return (
     <>
-      {formState?.message && (
+      {errorMessage && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{formState.message}</Paragraph>
+          <Paragraph>{errorMessage}</Paragraph>
         </Alert>
       )}
-      <FormRenderer action={formAction} formData={formData} submitButtonText={t('submit-button')} />
+      <FormRenderer
+        action={formAction}
+        formComponents={prefilledFormComponents}
+        submitButtonText={t('submit-button')}
+      />
     </>
   )
 }

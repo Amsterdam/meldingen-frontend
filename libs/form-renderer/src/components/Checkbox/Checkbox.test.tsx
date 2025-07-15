@@ -1,12 +1,15 @@
 import { render, screen } from '@testing-library/react'
 
-import { Checkbox } from './Checkbox'
+import { Checkbox, type Props } from './Checkbox'
 
-const defaultProps = {
+const defaultProps: Props = {
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
-  values: [{ label: 'Test value', value: 'test-value' }],
+  values: [
+    { label: 'Test value', value: 'test-value' },
+    { label: 'Test value 2', value: 'test-value-2' },
+  ],
 }
 
 describe('Checkbox Component', () => {
@@ -52,5 +55,15 @@ describe('Checkbox Component', () => {
     const checkboxItem = screen.getByRole('checkbox', { name: defaultProps.values[0].label })
 
     expect(checkboxItem).toBeRequired()
+  })
+
+  it('sets the default values', () => {
+    render(<Checkbox {...defaultProps} defaultValues={['test-value', 'test-value-2']} />)
+
+    const checkboxItem1 = screen.getByRole('checkbox', { name: defaultProps.values[0].label })
+    const checkboxItem2 = screen.getByRole('checkbox', { name: defaultProps.values[1].label })
+
+    expect(checkboxItem1).toBeChecked()
+    expect(checkboxItem2).toBeChecked()
   })
 })

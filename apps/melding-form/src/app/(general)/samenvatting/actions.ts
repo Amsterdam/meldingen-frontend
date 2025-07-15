@@ -22,7 +22,7 @@ export const postSummaryForm = async () => {
   })
 
   if (error)
-    return { message: handleApiError(error) }
+    return { errorMessage: handleApiError(error) }
 
     // Delete location, token, lastPanelpath and id cookies
   ;['location', 'token', 'lastPanelPath', 'id'].forEach((cookie) => {

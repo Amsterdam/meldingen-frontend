@@ -1,12 +1,15 @@
 import { render, screen } from '@testing-library/react'
 
-import { Radio } from './Radio'
+import { type Props, Radio } from './Radio'
 
-const defaultProps = {
+const defaultProps: Props = {
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
-  values: [{ label: 'Test value', value: 'test-value', position: 1 }],
+  values: [
+    { label: 'Test value', value: 'test-value' },
+    { label: 'Test value 2', value: 'test-value-2' },
+  ],
 }
 
 describe('Radio Component', () => {
@@ -59,5 +62,13 @@ describe('Radio Component', () => {
     const radioItem = screen.getByRole('radio', { name: defaultProps.values[0].label })
 
     expect(radioItem).toBeRequired()
+  })
+
+  it('sets the default value', () => {
+    render(<Radio {...defaultProps} defaultValue="test-value-2" />)
+
+    const radioOption = screen.getByLabelText('Test value 2')
+
+    expect(radioOption).toBeChecked()
   })
 })

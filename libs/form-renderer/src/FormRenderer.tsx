@@ -1,60 +1,99 @@
-import type {
-  FormCheckboxComponentOutput,
-  FormRadioComponentOutput,
-  FormSelectComponentOutput,
-  FormTextAreaComponentOutput,
-  FormTextFieldInputComponentOutput,
-} from '@meldingen/api-client'
 import { SubmitButton } from '@meldingen/ui'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
+import type { Component } from './types'
+import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
 
-type Component = FormCheckboxComponentOutput &
-  FormRadioComponentOutput &
-  FormSelectComponentOutput &
-  FormTextAreaComponentOutput &
-  FormTextFieldInputComponentOutput
-
-const getComponent = ({ key, data, description, label, maxCharCount, type, values, validate }: Component) => {
-  switch (type) {
-    case 'radio':
-      return <Radio key={key} id={key} description={description} label={label} values={values} validate={validate} />
-    case 'select':
-      return <Select key={key} id={key} description={description} label={label} data={data} validate={validate} />
-    case 'selectboxes':
-      return <Checkbox key={key} id={key} description={description} label={label} values={values} validate={validate} />
-    case 'textarea':
-      return (
-        <TextArea
-          key={key}
-          id={key}
-          description={description}
-          label={label}
-          maxCharCount={maxCharCount}
-          validate={validate}
-        />
-      )
-    case 'textfield':
-      return <TextInput key={key} id={key} description={description} label={label} validate={validate} />
-    default:
-      // TODO: error handling can probably be improved
-      console.error(`Type ${type} is unknown, please add it to FormRenderer.`)
-      return undefined
+const getComponent = (component: Component) => {
+  if (isRadio(component)) {
+    const { defaultValue, description, key, label, validate, values } = component
+    return (
+      <Radio
+        defaultValue={defaultValue}
+        description={description}
+        id={key}
+        key={key}
+        label={label}
+        validate={validate}
+        values={values}
+      />
+    )
   }
+  if (isSelect(component)) {
+    const { defaultValue, description, key, label, validate, data } = component
+    return (
+      <Select
+        data={data}
+        defaultValue={defaultValue}
+        description={description}
+        id={key}
+        key={key}
+        label={label}
+        validate={validate}
+      />
+    )
+  }
+  if (isSelectboxes(component)) {
+    const { defaultValues, description, key, label, validate, values } = component
+    return (
+      <Checkbox
+        defaultValues={defaultValues}
+        description={description}
+        id={key}
+        key={key}
+        label={label}
+        validate={validate}
+        values={values}
+      />
+    )
+  }
+  if (isTextarea(component)) {
+    const { defaultValue, description, key, label, validate, maxCharCount } = component
+    return (
+      <TextArea
+        defaultValue={defaultValue}
+        description={description}
+        id={key}
+        key={key}
+        label={label}
+        maxCharCount={maxCharCount}
+        validate={validate}
+      />
+    )
+  }
+
+  if (isTextfield(component)) {
+    const { defaultValue, description, key, label, validate } = component
+    return (
+      <TextInput
+        defaultValue={defaultValue}
+        key={key}
+        id={key}
+        description={description}
+        label={label}
+        validate={validate}
+      />
+    )
+  }
+
+  // eslint-disable-next-line no-console
+  console.error(`Type ${component.type} is unknown, please add it to FormRenderer.`)
+  return undefined
 }
 
-// TODO: fix formData type
-type Props = {
-  formData: any[]
+export type Props = {
+  formComponents: Component[]
   action: (formData: FormData) => void
   submitButtonText: string
 }
 
-export const FormRenderer = ({ formData, action, submitButtonText }: Props) => (
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  <form className="ams-gap-m" action={action}>
-    {formData.map((component) => getComponent(component))}
-    <SubmitButton>{submitButtonText}</SubmitButton>
-  </form>
-)
+export const FormRenderer = ({ formComponents, action, submitButtonText }: Props) => {
+  return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    <form className="ams-gap-m" action={action}>
+      {formComponents.map((component) => getComponent(component))}
+      <SubmitButton>{submitButtonText}</SubmitButton>
+    </form>
+  )
+}
