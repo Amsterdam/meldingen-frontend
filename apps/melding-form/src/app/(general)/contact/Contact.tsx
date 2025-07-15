@@ -22,18 +22,6 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   const telLabel = formComponents[1].label
   const telDescription = formComponents[1].description
 
-  const getPrefilledFormData = () => {
-    const localEmail = formData?.get(`email`)
-    const localPhone = formData?.get(`phone`)
-
-    return {
-      email: (localEmail as string) ?? '',
-      phone: (localPhone as string) ?? '',
-    }
-  }
-
-  const { email, phone } = getPrefilledFormData()
-
   return (
     <>
       {errorMessage && (
@@ -72,7 +60,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
           autoCorrect="off"
           spellCheck="false"
           className="ams-mb-m"
-          defaultValue={email}
+          defaultValue={formData?.get(`email`) as string}
         />
 
         <Label htmlFor="tel-input" optional className="ams-mb-s">
@@ -92,7 +80,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
           id="tel-input"
           name="phone"
           type="tel"
-          defaultValue={phone}
+          defaultValue={formData?.get(`phone`) as string}
         />
         <SubmitButton>{t('submit-button')}</SubmitButton>
       </form>
