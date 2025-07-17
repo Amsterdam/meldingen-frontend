@@ -24,9 +24,9 @@ describe('Location', () => {
   it('renders', () => {
     render(<Location {...defaultProps} />)
 
-    const heading = screen.getByRole('heading', { name: 'step.title' })
+    const header = screen.getByRole('banner', { name: 'title' })
 
-    expect(heading).toBeInTheDocument()
+    expect(header).toBeInTheDocument()
   })
 
   it('does not render an error message when there is none', () => {

@@ -16,14 +16,28 @@ vi.mock('react', async (importOriginal) => {
 const defaultProps: Props = {
   action: vi.fn(),
   formComponents: [textAreaComponent],
+  panelLabel: 'Test title',
   previousPanelPath: '/prev',
 }
 
 describe('AdditionalQuestions', () => {
-  it('renders a heading', () => {
+  it('renders the form header', () => {
     render(<AdditionalQuestions {...defaultProps} />)
 
-    const heading = screen.getByRole('heading', { name: 'step.title' })
+    const header = screen.getByRole('banner', { name: 'title' })
+
+    expect(header).toBeInTheDocument()
+  })
+
+  it('renders a heading if there is more than one question', () => {
+    const props = {
+      ...defaultProps,
+      formComponents: [textAreaComponent, { ...textAreaComponent, id: 'textArea2', label: 'Second question' }],
+    }
+
+    render(<AdditionalQuestions {...props} />)
+
+    const heading = screen.getByRole('heading', { name: 'Test title' })
 
     expect(heading).toBeInTheDocument()
   })

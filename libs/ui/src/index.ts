@@ -12,6 +12,7 @@ export { StandaloneLink } from '@amsterdam/design-system-react/dist/StandaloneLi
 export { Table } from '@amsterdam/design-system-react/dist/Table'
 export { UnorderedList } from '@amsterdam/design-system-react/dist/UnorderedList'
 
+export * from './FieldSet'
 export * from './FileInput'
 export * from './Footer'
 export * from './Header'

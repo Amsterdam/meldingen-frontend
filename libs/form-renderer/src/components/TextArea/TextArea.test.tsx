@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { type Props, TextArea } from './TextArea'
 
 const defaultProps: Props = {
+  hasHeading: true,
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
@@ -65,5 +66,21 @@ describe('TextArea Component', () => {
     const textArea = screen.getByRole('textbox', { name: `${defaultProps.label} (niet verplicht)` })
 
     expect(textArea).toBeInTheDocument()
+  })
+
+  it('renders a heading if hasHeading is true', () => {
+    render(<TextArea {...defaultProps} />)
+
+    const heading = screen.getByRole('heading', { name: defaultProps.label })
+
+    expect(heading).toBeInTheDocument()
+  })
+
+  it('does not render a heading if hasHeading is false', () => {
+    render(<TextArea {...defaultProps} hasHeading={false} />)
+
+    const heading = screen.queryByRole('heading')
+
+    expect(heading).not.toBeInTheDocument()
   })
 })

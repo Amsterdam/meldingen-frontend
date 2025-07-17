@@ -3,16 +3,19 @@ import { useRef, useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
+import styles from './TextArea.module.css'
+
 export type Props = {
   defaultValue?: string
   description?: string
+  hasHeading: boolean
   id: string
   label: string
   maxCharCount?: number | null
   validate?: { required: boolean } | null
 }
 
-export const TextArea = ({ description, id, label, maxCharCount, validate, defaultValue }: Props) => {
+export const TextArea = ({ defaultValue, description, hasHeading, id, label, maxCharCount, validate }: Props) => {
   const ref = useRef<HTMLTextAreaElement>(null)
   const [charCount, setCharCount] = useState(0)
 
@@ -22,11 +25,15 @@ export const TextArea = ({ description, id, label, maxCharCount, validate, defau
     }
   }
 
+  const labelComponent = (
+    <Label htmlFor={id} optional={!validate?.required}>
+      {label}
+    </Label>
+  )
+
   return (
     <Field key={id}>
-      <Label htmlFor={id} optional={!validate?.required}>
-        {label}
-      </Label>
+      {hasHeading ? <h1 className={styles.h1}>{labelComponent}</h1> : labelComponent}
       {description && (
         <MarkdownToHtml id={`${id}-description`} type="description">
           {description}

@@ -7,6 +7,7 @@ import { useActionState } from 'react'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { FormRenderer } from '@meldingen/form-renderer'
 
+import { FormHeader } from './_components/FormHeader/FormHeader'
 import { postPrimaryForm } from './actions'
 
 const initialState: { errorMessage?: string; formData?: FormData } = {}
@@ -33,6 +34,7 @@ export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaCom
           <Paragraph>{errorMessage}</Paragraph>
         </Alert>
       )}
+      <FormHeader title={t('title')} step={t('step')} />
       <FormRenderer
         action={formAction}
         formComponents={prefilledFormComponents}

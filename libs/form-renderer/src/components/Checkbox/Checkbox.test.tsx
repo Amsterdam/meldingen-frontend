@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { Checkbox, type Props } from './Checkbox'
 
 const defaultProps: Props = {
+  hasHeading: true,
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },

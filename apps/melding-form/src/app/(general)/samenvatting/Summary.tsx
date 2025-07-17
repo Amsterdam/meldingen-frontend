@@ -7,6 +7,7 @@ import { useActionState } from 'react'
 import { SubmitButton, SummaryList } from '@meldingen/ui'
 
 import { postSummaryForm } from './actions'
+import { FormHeader } from '../_components/FormHeader/FormHeader'
 
 import styles from './Summary.module.css'
 
@@ -47,12 +48,10 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
         </Alert>
       )}
 
-      <Heading className="ams-mb-s" level={1}>
-        {t('step.title')}
-      </Heading>
+      <FormHeader title={t('title')} step={t('step')} />
 
-      <Heading level={2} size="level-4" className="ams-mb-s">
-        {t('title')}
+      <Heading level={1} size="level-4" className="ams-mb-s">
+        {t('main-title')}
       </Heading>
       <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
 

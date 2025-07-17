@@ -34,13 +34,13 @@ export default async () => {
   const primaryForm = await getPrimaryFormSummary(meldingData.data.text)
   if ('error' in primaryForm) return primaryForm.error
 
-  const attachments = await getAttachmentsSummary(t('attachments.step.title'), meldingId, token)
+  const attachments = await getAttachmentsSummary(t('summary.attachments-label'), meldingId, token)
   if ('error' in attachments) return attachments.error
 
   const additionalQuestions = await getAdditionalQuestionsSummary(meldingId, token)
   if ('error' in additionalQuestions) return additionalQuestions.error
 
-  const location = getLocationSummary(t('location.title'), locationCookie)
+  const location = getLocationSummary(t('summary.location-label'), locationCookie)
   const contact = getContactSummary(t('summary.contact-label'), meldingData.data.email, meldingData.data.phone)
 
   return (

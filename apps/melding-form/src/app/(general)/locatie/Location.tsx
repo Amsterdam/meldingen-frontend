@@ -8,6 +8,7 @@ import { useActionState } from 'react'
 import { SubmitButton } from '@meldingen/ui'
 
 import { postLocationForm } from './actions'
+import { FormHeader } from '../_components/FormHeader/FormHeader'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 const initialState: { errorMessage?: string } = {}
@@ -33,15 +34,12 @@ export const Location = ({ locationData }: Props) => {
         </Alert>
       )}
 
-      <Heading className="ams-mb-s" level={1}>
-        {t('step.title')}
-      </Heading>
+      <FormHeader title={t('title')} step={t('step')} />
 
-      <Heading level={2} size="level-4">
-        {t('title')}
+      <Heading className="ams-mb-s" level={1} size="level-4">
+        {t('question')}
       </Heading>
-      <Paragraph className="ams-mb-xs">{locationData?.name ?? t('description')}</Paragraph>
-
+      <Paragraph className="ams-mb-s">{locationData?.name ?? t('description')}</Paragraph>
       <NextLink href="/locatie/kies" legacyBehavior passHref>
         <StandaloneLink className="ams-mb-m">
           {locationData?.name ? t('link.with-location') : t('link.without-location')}

@@ -9,6 +9,7 @@ const defaultProps: Props = {
       { label: 'Test value 2', value: 'test-value-2' },
     ],
   },
+  hasHeading: true,
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
@@ -64,5 +65,21 @@ describe('Select Component', () => {
     const select = screen.getByRole('combobox', { name: defaultProps.label })
 
     expect(select).toHaveValue('test-value-2')
+  })
+
+  it('renders a heading if hasHeading is true', () => {
+    render(<Select {...defaultProps} />)
+
+    const heading = screen.getByRole('heading', { name: defaultProps.label })
+
+    expect(heading).toBeInTheDocument()
+  })
+
+  it('does not render a heading if hasHeading is false', () => {
+    render(<Select {...defaultProps} hasHeading={false} />)
+
+    const heading = screen.queryByRole('heading')
+
+    expect(heading).not.toBeInTheDocument()
   })
 })
