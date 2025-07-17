@@ -1,6 +1,7 @@
 'use client'
 
-import { Heading, Paragraph } from '@amsterdam/design-system-react'
+import { Button, Heading, Paragraph } from '@amsterdam/design-system-react'
+import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 
 export default function Error({ error }: { error: Error & { digest?: string } }) {
@@ -10,15 +11,18 @@ export default function Error({ error }: { error: Error & { digest?: string } })
     console.error(error)
   }, [error])
 
+  const t = useTranslations('error')
+
   return (
     <>
-      <title>Er is iets mis gegaan - Gemeente Amsterdam</title>
-      <Heading level={1} className="ams-mb-l">
-        Er is iets mis gegaan
+      <title>{t('metadata.title')}</title>
+      <Heading className="ams-mb-m" level={1} size="level-2">
+        {t('title')}
       </Heading>
-      <Paragraph className="ams-mb-m" size="large">
-        De pagina die u probeert te bezoeken heeft een storing.
-      </Paragraph>
+      <Button className="ams-mb-m" onClick={() => window.location.reload()}>
+        {t('button')}
+      </Button>
+      <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
     </>
   )
 }
