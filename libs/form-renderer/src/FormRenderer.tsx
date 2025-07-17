@@ -11,6 +11,7 @@ const getComponent = (component: Component, hasOneFormComponent: boolean) => {
       <Radio
         defaultValue={defaultValue}
         description={description}
+        hasHeading={hasOneFormComponent}
         id={key}
         key={key}
         label={label}
@@ -26,6 +27,7 @@ const getComponent = (component: Component, hasOneFormComponent: boolean) => {
         data={data}
         defaultValue={defaultValue}
         description={description}
+        hasHeading={hasOneFormComponent}
         id={key}
         key={key}
         label={label}
@@ -39,6 +41,7 @@ const getComponent = (component: Component, hasOneFormComponent: boolean) => {
       <Checkbox
         defaultValues={defaultValues}
         description={description}
+        hasHeading={hasOneFormComponent}
         id={key}
         key={key}
         label={label}
