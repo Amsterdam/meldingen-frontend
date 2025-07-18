@@ -17,7 +17,7 @@ export const renderWFSLayer = (mapInstance: L.Map | null) => {
   let assetLayer: L.GeoJSON | null
   const classification = Cookies.get('classification')
 
-  if (!classificationsWithAssets.includes(classification)) return
+  if (!classification || !classificationsWithAssets.includes(classification)) return
 
   mapInstance?.on('moveend', () => {
     const zoom = mapInstance.getZoom()
