@@ -1,11 +1,11 @@
 import L from 'leaflet'
 import { useEffect, useRef, useState } from 'react'
-
 import 'leaflet/dist/leaflet.css'
 
 import { ControlsOverlay } from './ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './Crosshair/Crosshair'
 import { marker } from './Marker/Marker'
+import { useWFSLayer } from './useWFSLayer'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
@@ -15,6 +15,8 @@ type Props = {
   showAssetList?: boolean
   setCoordinates: (coordinates: Coordinates) => void
 }
+
+const ASSET_ZOOM_THRESHOLD = 16
 
 export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
@@ -90,6 +92,13 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
 
     map.on('click', (e) => {
       setCoordinates({ lat: e.latlng.lat, lng: e.latlng.lng })
+    })
+
+    map.on('moveend', () => {
+      const zoom = map.getZoom()
+      if (map && zoom >= ASSET_ZOOM_THRESHOLD) {
+        useWFSLayer(map)
+      }
     })
 
     // On component unmount, destroy the map and all related events
