@@ -22,15 +22,15 @@ export const renderWFSLayer = (mapInstance: L.Map | null) => {
   mapInstance?.on('moveend', () => {
     const zoom = mapInstance.getZoom()
 
-    // Has correct ZoomLevel for Assets
+    // Has correct zoom level for assets
     if (zoom >= ASSET_ZOOM_THRESHOLD) {
-      renderAssetLayer(mapInstance)
+      fetchAndRenderAssets(mapInstance)
     } else if (zoom < ASSET_ZOOM_THRESHOLD && assetLayer) {
       assetLayer.remove()
     }
   })
 
-  const renderAssetLayer = async (mapInstance: L.Map) => {
+  const fetchAndRenderAssets = async (mapInstance: L.Map) => {
     const lowerCorner = mapInstance.getBounds().getSouthWest()
     const upperCorner = mapInstance.getBounds().getNorthEast()
 
@@ -73,7 +73,6 @@ export const renderWFSLayer = (mapInstance: L.Map | null) => {
       assetLayer.addTo(mapInstance)
     }
 
-    // TODO: determine what we want to do with this error
     if (error) throw new Error(handleApiError(error))
   }
 }
