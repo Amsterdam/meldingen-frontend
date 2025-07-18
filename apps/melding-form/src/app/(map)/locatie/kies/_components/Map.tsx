@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import { ControlsOverlay } from './ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './Crosshair/Crosshair'
 import { marker } from './Marker/Marker'
-import { useWFSLayer } from './useWFSLayer'
+import { renderWFSLayer } from './renderWFSLayer'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
@@ -16,15 +16,14 @@ type Props = {
   setCoordinates: (coordinates: Coordinates) => void
 }
 
-const ASSET_ZOOM_THRESHOLD = 16
-
 export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
-
   const markerRef = useRef<L.Marker | null>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
+
+  renderWFSLayer(mapInstance)
 
   // This could be a useState but as we don't expect this to fire more than once, use ref as it is mutable and won't trigger any further re-render
   const createdMapInstance = useRef(false)
@@ -92,13 +91,6 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
 
     map.on('click', (e) => {
       setCoordinates({ lat: e.latlng.lat, lng: e.latlng.lng })
-    })
-
-    map.on('moveend', () => {
-      const zoom = map.getZoom()
-      if (map && zoom >= ASSET_ZOOM_THRESHOLD) {
-        useWFSLayer(map)
-      }
     })
 
     // On component unmount, destroy the map and all related events
