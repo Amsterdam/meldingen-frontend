@@ -30,6 +30,7 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   cookieStore.set('token', token)
 
   if (classification) {
+    cookieStore.set('classification', classification.name)
     // Get entire form, in order to redirect to its first panel
     const { data, error } = await getFormClassificationByClassificationId({
       path: { classification_id: classification.id },

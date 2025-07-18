@@ -108,6 +108,78 @@ export type AnswerQuestionOutput = {
 };
 
 /**
+ * AssetTypeInput
+ */
+export type AssetTypeInput = {
+    /**
+     * Name
+     */
+    name: string;
+    /**
+     * Class Name
+     */
+    class_name: string;
+    /**
+     * Arguments
+     */
+    arguments: {
+        [key: string]: unknown;
+    };
+};
+
+/**
+ * AssetTypeOutput
+ */
+export type AssetTypeOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Name
+     */
+    name: string;
+    /**
+     * Class Name
+     */
+    class_name: string;
+    /**
+     * Arguments
+     */
+    arguments: {
+        [key: string]: unknown;
+    };
+};
+
+/**
+ * AssetTypeUpdateInput
+ */
+export type AssetTypeUpdateInput = {
+    /**
+     * Name
+     */
+    name?: string | null;
+    /**
+     * Class Name
+     */
+    class_name?: string | null;
+    /**
+     * Arguments
+     */
+    arguments?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+/**
  * AttachmentOutput
  */
 export type AttachmentOutput = {
@@ -162,13 +234,17 @@ export type Cat = {
 };
 
 /**
- * ClassificationInput
+ * ClassificationCreateInput
  */
-export type ClassificationInput = {
+export type ClassificationCreateInput = {
     /**
      * Name
      */
     name: string;
+    /**
+     * Asset Type
+     */
+    asset_type?: number | null;
 };
 
 /**
@@ -195,6 +271,24 @@ export type ClassificationOutput = {
      * Form
      */
     form?: number | null;
+    /**
+     * Asset Type
+     */
+    asset_type?: number | null;
+};
+
+/**
+ * ClassificationUpdateInput
+ */
+export type ClassificationUpdateInput = {
+    /**
+     * Name
+     */
+    name?: string | null;
+    /**
+     * Asset Type
+     */
+    asset_type?: number | null;
 };
 
 /**
@@ -231,6 +325,92 @@ export type Equals = {
         unknown,
         unknown
     ];
+};
+
+/**
+ * Feature
+ * Feature Model
+ */
+export type Feature = {
+    /**
+     * Bbox
+     */
+    bbox?: [
+        number,
+        number,
+        number,
+        number
+    ] | [
+        number,
+        number,
+        number,
+        number,
+        number,
+        number
+    ] | null;
+    /**
+     * Type
+     */
+    type: 'Feature';
+    /**
+     * Geometry
+     */
+    geometry: (({
+        type: 'Point';
+    } & Point) | ({
+        type: 'MultiPoint';
+    } & MultiPoint) | ({
+        type: 'LineString';
+    } & LineString) | ({
+        type: 'MultiLineString';
+    } & MultiLineString) | ({
+        type: 'Polygon';
+    } & Polygon) | ({
+        type: 'MultiPolygon';
+    } & MultiPolygon) | ({
+        type: 'GeometryCollection';
+    } & GeometryCollection)) | null;
+    /**
+     * Properties
+     */
+    properties: {
+        [key: string]: unknown;
+    } | BaseModel | null;
+    /**
+     * Id
+     */
+    id?: number | string | null;
+};
+
+/**
+ * FeatureCollection
+ * FeatureCollection Model
+ */
+export type FeatureCollection = {
+    /**
+     * Bbox
+     */
+    bbox?: [
+        number,
+        number,
+        number,
+        number
+    ] | [
+        number,
+        number,
+        number,
+        number,
+        number,
+        number
+    ] | null;
+    /**
+     * Type
+     */
+    type: 'FeatureCollection';
+    /**
+     * Features
+     */
+    features: Array<Feature>;
 };
 
 /**
@@ -888,6 +1068,51 @@ export type GeoJsonOutput = {
 };
 
 /**
+ * GeometryCollection
+ * GeometryCollection Model
+ */
+export type GeometryCollection = {
+    /**
+     * Bbox
+     */
+    bbox?: [
+        number,
+        number,
+        number,
+        number
+    ] | [
+        number,
+        number,
+        number,
+        number,
+        number,
+        number
+    ] | null;
+    /**
+     * Type
+     */
+    type: 'GeometryCollection';
+    /**
+     * Geometries
+     */
+    geometries: Array<({
+        type: 'Point';
+    } & Point) | ({
+        type: 'MultiPoint';
+    } & MultiPoint) | ({
+        type: 'LineString';
+    } & LineString) | ({
+        type: 'MultiLineString';
+    } & MultiLineString) | ({
+        type: 'Polygon';
+    } & Polygon) | ({
+        type: 'MultiPolygon';
+    } & MultiPolygon) | ({
+        type: 'GeometryCollection';
+    } & GeometryCollection)>;
+};
+
+/**
  * GreaterThan
  */
 export type GreaterThan = {
@@ -994,6 +1219,37 @@ export type LessThanOrEqual = {
 };
 
 /**
+ * LineString
+ * LineString Model
+ */
+export type LineString = {
+    /**
+     * Bbox
+     */
+    bbox?: [
+        number,
+        number,
+        number,
+        number
+    ] | [
+        number,
+        number,
+        number,
+        number,
+        number,
+        number
+    ] | null;
+    /**
+     * Type
+     */
+    type: 'LineString';
+    /**
+     * Coordinates
+     */
+    coordinates: Array<Position2D | Position3D>;
+};
+
+/**
  * Log
  */
 export type Log = {
@@ -1055,6 +1311,20 @@ export type Max = {
      * Max
      */
     max: Array<number | number>;
+};
+
+/**
+ * MeldingAssetInput
+ */
+export type MeldingAssetInput = {
+    /**
+     * External Id
+     */
+    external_id: string;
+    /**
+     * Asset Type Id
+     */
+    asset_type_id: number;
 };
 
 /**
@@ -1206,6 +1476,11 @@ export type MeldingOutput = {
 };
 
 /**
+ * MeldingStates
+ */
+export type MeldingStates = 'new' | 'classified' | 'questions_answered' | 'attachments_added' | 'location_submitted' | 'contact_info_added' | 'submitted' | 'processing' | 'completed';
+
+/**
  * Merge
  */
 export type Merge = {
@@ -1259,6 +1534,99 @@ export type Modulo = {
         number | number | string | Var,
         number | number | string
     ];
+};
+
+/**
+ * MultiLineString
+ * MultiLineString Model
+ */
+export type MultiLineString = {
+    /**
+     * Bbox
+     */
+    bbox?: [
+        number,
+        number,
+        number,
+        number
+    ] | [
+        number,
+        number,
+        number,
+        number,
+        number,
+        number
+    ] | null;
+    /**
+     * Type
+     */
+    type: 'MultiLineString';
+    /**
+     * Coordinates
+     */
+    coordinates: Array<Array<Position2D | Position3D>>;
+};
+
+/**
+ * MultiPoint
+ * MultiPoint Model
+ */
+export type MultiPoint = {
+    /**
+     * Bbox
+     */
+    bbox?: [
+        number,
+        number,
+        number,
+        number
+    ] | [
+        number,
+        number,
+        number,
+        number,
+        number,
+        number
+    ] | null;
+    /**
+     * Type
+     */
+    type: 'MultiPoint';
+    /**
+     * Coordinates
+     */
+    coordinates: Array<Position2D | Position3D>;
+};
+
+/**
+ * MultiPolygon
+ * MultiPolygon Model
+ */
+export type MultiPolygon = {
+    /**
+     * Bbox
+     */
+    bbox?: [
+        number,
+        number,
+        number,
+        number
+    ] | [
+        number,
+        number,
+        number,
+        number,
+        number,
+        number
+    ] | null;
+    /**
+     * Type
+     */
+    type: 'MultiPolygon';
+    /**
+     * Coordinates
+     */
+    coordinates: Array<Array<Array<Position2D | Position3D>>>;
 };
 
 /**
@@ -1385,6 +1753,37 @@ export type Point = {
      * Coordinates
      */
     coordinates: Position2D | Position3D;
+};
+
+/**
+ * Polygon
+ * Polygon Model
+ */
+export type Polygon = {
+    /**
+     * Bbox
+     */
+    bbox?: [
+        number,
+        number,
+        number,
+        number
+    ] | [
+        number,
+        number,
+        number,
+        number,
+        number,
+        number
+    ] | null;
+    /**
+     * Type
+     */
+    type: 'Polygon';
+    /**
+     * Coordinates
+     */
+    coordinates: Array<Array<Position2D | Position3D>>;
 };
 
 export type Position2D = [
@@ -2052,7 +2451,7 @@ export type GetClassificationResponses = {
 export type GetClassificationResponse = GetClassificationResponses[keyof GetClassificationResponses];
 
 export type PostClassificationData = {
-    body: ClassificationInput;
+    body: ClassificationCreateInput;
     path?: never;
     query?: never;
     url: '/classification/';
@@ -2063,6 +2462,10 @@ export type PostClassificationErrors = {
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
     401: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
     /**
      * Conflict, a uniqueness error occurred
      */
@@ -2163,7 +2566,7 @@ export type GetClassificationByClassificationIdResponses = {
 export type GetClassificationByClassificationIdResponse = GetClassificationByClassificationIdResponses[keyof GetClassificationByClassificationIdResponses];
 
 export type PatchClassificationByClassificationIdData = {
-    body: ClassificationInput;
+    body: ClassificationUpdateInput;
     path: {
         /**
          * Classification Id
@@ -2242,6 +2645,10 @@ export type GetMeldingData = {
          * In Area
          */
         in_area?: string | null;
+        /**
+         * State
+         */
+        state?: MeldingStates | null;
         /**
          * The limit
          */
@@ -3224,6 +3631,51 @@ export type GetMeldingByMeldingIdAnswersResponses = {
 
 export type GetMeldingByMeldingIdAnswersResponse = GetMeldingByMeldingIdAnswersResponses[keyof GetMeldingByMeldingIdAnswersResponses];
 
+export type PostMeldingByMeldingIdAssetData = {
+    body: MeldingAssetInput;
+    path: {
+        /**
+         * Melding Id
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query: {
+        /**
+         * Token
+         * The token of the melding.
+         */
+        token: string;
+    };
+    url: '/melding/{melding_id}/asset';
+};
+
+export type PostMeldingByMeldingIdAssetErrors = {
+    /**
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type PostMeldingByMeldingIdAssetError = PostMeldingByMeldingIdAssetErrors[keyof PostMeldingByMeldingIdAssetErrors];
+
+export type PostMeldingByMeldingIdAssetResponses = {
+    /**
+     * Successful Response
+     */
+    200: MeldingOutput;
+};
+
+export type PostMeldingByMeldingIdAssetResponse = PostMeldingByMeldingIdAssetResponses[keyof PostMeldingByMeldingIdAssetResponses];
+
 export type GetUserData = {
     body?: never;
     path?: never;
@@ -3769,6 +4221,275 @@ export type GetStaticFormResponses = {
 };
 
 export type GetStaticFormResponse = GetStaticFormResponses[keyof GetStaticFormResponses];
+
+export type GetAssetTypeData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * The limit
+         */
+        limit?: number;
+        /**
+         * The offset of the page
+         */
+        offset?: number | null;
+        /**
+         * Sort
+         */
+        sort?: string;
+    };
+    url: '/asset-type/';
+};
+
+export type GetAssetTypeErrors = {
+    /**
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetAssetTypeError = GetAssetTypeErrors[keyof GetAssetTypeErrors];
+
+export type GetAssetTypeResponses = {
+    /**
+     * Response Asset Type List Asset Type  Get
+     * Successful Response
+     */
+    200: Array<AssetTypeOutput>;
+};
+
+export type GetAssetTypeResponse = GetAssetTypeResponses[keyof GetAssetTypeResponses];
+
+export type PostAssetTypeData = {
+    body: AssetTypeInput;
+    path?: never;
+    query?: never;
+    url: '/asset-type/';
+};
+
+export type PostAssetTypeErrors = {
+    /**
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: unknown;
+    /**
+     * Conflict, a uniqueness error occurred
+     */
+    409: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type PostAssetTypeError = PostAssetTypeErrors[keyof PostAssetTypeErrors];
+
+export type PostAssetTypeResponses = {
+    /**
+     * Successful Response
+     */
+    201: AssetTypeOutput;
+};
+
+export type PostAssetTypeResponse = PostAssetTypeResponses[keyof PostAssetTypeResponses];
+
+export type DeleteAssetTypeByAssetTypeIdData = {
+    body?: never;
+    path: {
+        /**
+         * Asset Type Id
+         * The asset type id.
+         */
+        asset_type_id: number;
+    };
+    query?: never;
+    url: '/asset-type/{asset_type_id}';
+};
+
+export type DeleteAssetTypeByAssetTypeIdErrors = {
+    /**
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type DeleteAssetTypeByAssetTypeIdError = DeleteAssetTypeByAssetTypeIdErrors[keyof DeleteAssetTypeByAssetTypeIdErrors];
+
+export type DeleteAssetTypeByAssetTypeIdResponses = {
+    /**
+     * Successful Response
+     */
+    204: void;
+};
+
+export type DeleteAssetTypeByAssetTypeIdResponse = DeleteAssetTypeByAssetTypeIdResponses[keyof DeleteAssetTypeByAssetTypeIdResponses];
+
+export type GetAssetTypeByAssetTypeIdData = {
+    body?: never;
+    path: {
+        /**
+         * Asset Type Id
+         * The asset type id.
+         */
+        asset_type_id: number;
+    };
+    query?: never;
+    url: '/asset-type/{asset_type_id}';
+};
+
+export type GetAssetTypeByAssetTypeIdErrors = {
+    /**
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetAssetTypeByAssetTypeIdError = GetAssetTypeByAssetTypeIdErrors[keyof GetAssetTypeByAssetTypeIdErrors];
+
+export type GetAssetTypeByAssetTypeIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: AssetTypeOutput;
+};
+
+export type GetAssetTypeByAssetTypeIdResponse = GetAssetTypeByAssetTypeIdResponses[keyof GetAssetTypeByAssetTypeIdResponses];
+
+export type PatchAssetTypeByAssetTypeIdData = {
+    body: AssetTypeUpdateInput;
+    path: {
+        /**
+         * Asset Type Id
+         * The asset type id.
+         */
+        asset_type_id: number;
+    };
+    query?: never;
+    url: '/asset-type/{asset_type_id}';
+};
+
+export type PatchAssetTypeByAssetTypeIdErrors = {
+    /**
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Conflict, a uniqueness error occurred
+     */
+    409: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type PatchAssetTypeByAssetTypeIdError = PatchAssetTypeByAssetTypeIdErrors[keyof PatchAssetTypeByAssetTypeIdErrors];
+
+export type PatchAssetTypeByAssetTypeIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: AssetTypeOutput;
+};
+
+export type PatchAssetTypeByAssetTypeIdResponse = PatchAssetTypeByAssetTypeIdResponses[keyof PatchAssetTypeByAssetTypeIdResponses];
+
+export type GetWfsByNameData = {
+    body?: never;
+    path: {
+        /**
+         * Name
+         * The name of the asset type.
+         */
+        name: string;
+    };
+    query?: {
+        /**
+         * Type Names
+         */
+        type_names?: string;
+        /**
+         * Count
+         */
+        count?: number;
+        /**
+         * Srs Name
+         */
+        srs_name?: string;
+        /**
+         * Output Format
+         */
+        output_format?: 'application/json';
+        /**
+         * Service
+         */
+        service?: 'WFS';
+        /**
+         * Version
+         */
+        version?: string;
+        /**
+         * Request
+         */
+        request?: 'GetFeature';
+        /**
+         * Filter
+         */
+        filter?: string | null;
+    };
+    url: '/wfs/{name}';
+};
+
+export type GetWfsByNameErrors = {
+    /**
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetWfsByNameError = GetWfsByNameErrors[keyof GetWfsByNameErrors];
+
+export type GetWfsByNameResponses = {
+    /**
+     * Successful Response
+     */
+    200: FeatureCollection;
+};
+
+export type GetWfsByNameResponse = GetWfsByNameResponses[keyof GetWfsByNameResponses];
 
 export type ClientOptions = {
     baseUrl: 'http://localhost:8000' | (string & {});
