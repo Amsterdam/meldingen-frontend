@@ -1,12 +1,20 @@
 import { render, screen } from '@testing-library/react'
 
-import NotFound from './not-found'
+import NotFound, { generateMetadata } from './not-found'
+
+describe('generateMetadata', () => {
+  it('returns the correct metadata title', async () => {
+    const metadata = await generateMetadata()
+
+    expect(metadata).toEqual({ title: 'metadata.title' })
+  })
+})
 
 describe('NotFound component', () => {
   it('renders the page title', async () => {
-    const NotFoundComponent = await NotFound()
+    const NotFoundPage = await NotFound()
 
-    render(NotFoundComponent)
+    render(NotFoundPage)
 
     const title = screen.getByRole('heading', { level: 1, name: 'title' })
 
@@ -14,9 +22,9 @@ describe('NotFound component', () => {
   })
 
   it('renders the description', async () => {
-    const NotFoundComponent = await NotFound()
+    const NotFoundPage = await NotFound()
 
-    render(NotFoundComponent)
+    render(NotFoundPage)
 
     const firstParagraph = screen.queryAllByRole('paragraph')[0]
 
@@ -24,9 +32,9 @@ describe('NotFound component', () => {
   })
 
   it('renders the link', async () => {
-    const NotFoundComponent = await NotFound()
+    const NotFoundPage = await NotFound()
 
-    render(NotFoundComponent)
+    render(NotFoundPage)
 
     const link = screen.getByRole('link', { name: 'link' })
 
