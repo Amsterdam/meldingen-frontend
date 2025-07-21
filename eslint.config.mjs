@@ -146,7 +146,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['**/error.tsx', '**/page.tsx', '**/layout.tsx'],
+    files: ['**/error.tsx', '**/page.tsx', '**/layout.tsx', '**/not-found.tsx'],
     rules: {
       'import/no-default-export': 'off',
     },
