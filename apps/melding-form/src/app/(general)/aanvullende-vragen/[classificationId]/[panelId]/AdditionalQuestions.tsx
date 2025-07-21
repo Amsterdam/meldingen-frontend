@@ -1,6 +1,6 @@
 'use client'
 
-import { Alert, Heading, Paragraph } from '@amsterdam/design-system-react'
+import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
@@ -40,8 +40,6 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
     return component
   })
 
-  const hasMoreThanOneFormComponent = formComponents.length > 1
-
   return (
     <>
       {errorMessage && (
@@ -50,18 +48,10 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
         </Alert>
       )}
       <FormHeader title={t('title')} step={t('step')} />
-      {/*
-       * If the page has only one form component, the label or legend of that component is enclosed in an h1 tag in the FormRenderer.
-       * If the page has more than one form component, the h1 is rendered here.
-       * */}
-      {hasMoreThanOneFormComponent && (
-        <Heading level={1} size="level-4" className="ams-mb-m">
-          {panelLabel}
-        </Heading>
-      )}
       <FormRenderer
         formComponents={prefilledFormComponents}
         action={formAction}
+        panelLabel={panelLabel}
         submitButtonText={t('submit-button')}
       />
     </>

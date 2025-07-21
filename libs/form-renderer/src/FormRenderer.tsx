@@ -1,4 +1,4 @@
-import { SubmitButton } from '@meldingen/ui'
+import { Heading, SubmitButton } from '@meldingen/ui'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 import type { Component } from './types'
@@ -87,19 +87,31 @@ const getComponent = (component: Component, hasOneFormComponent: boolean) => {
 }
 
 export type Props = {
-  formComponents: Component[]
   action: (formData: FormData) => void
+  formComponents: Component[]
+  panelLabel?: string
   submitButtonText: string
 }
 
-export const FormRenderer = ({ formComponents, action, submitButtonText }: Props) => {
+export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonText }: Props) => {
   const hasOneFormComponent = formComponents.length === 1
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    <form className="ams-gap-m" action={action}>
-      {formComponents.map((component) => getComponent(component, hasOneFormComponent))}
-      <SubmitButton>{submitButtonText}</SubmitButton>
-    </form>
+    <>
+      {/*
+       * If the page has only one form component, an h1 gets added to the label or legend of that component.
+       * If the page has more than one form component, the h1 is rendered here.
+       */}
+      {!hasOneFormComponent && panelLabel && (
+        <Heading level={1} size="level-4" className="ams-mb-m">
+          {panelLabel}
+        </Heading>
+      )}
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-ignore */}
+      <form className="ams-gap-m" action={action}>
+        {formComponents.map((component) => getComponent(component, hasOneFormComponent))}
+        <SubmitButton>{submitButtonText}</SubmitButton>
+      </form>
+    </>
   )
 }
