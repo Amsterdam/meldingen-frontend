@@ -5,82 +5,22 @@ import type { Component } from './types'
 import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
 
 const getComponent = (component: Component, hasOneFormComponent: boolean) => {
+  const { key } = component
   if (isRadio(component)) {
-    const { defaultValue, description, key, label, validate, values } = component
-    return (
-      <Radio
-        defaultValue={defaultValue}
-        description={description}
-        hasHeading={hasOneFormComponent}
-        id={key}
-        key={key}
-        label={label}
-        validate={validate}
-        values={values}
-      />
-    )
+    return <Radio {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
   if (isSelect(component)) {
-    const { defaultValue, description, key, label, validate, data } = component
-    return (
-      <Select
-        data={data}
-        defaultValue={defaultValue}
-        description={description}
-        hasHeading={hasOneFormComponent}
-        id={key}
-        key={key}
-        label={label}
-        validate={validate}
-      />
-    )
+    return <Select {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
   if (isSelectboxes(component)) {
-    const { defaultValues, description, key, label, validate, values } = component
-    return (
-      <Checkbox
-        defaultValues={defaultValues}
-        description={description}
-        hasHeading={hasOneFormComponent}
-        id={key}
-        key={key}
-        label={label}
-        validate={validate}
-        values={values}
-      />
-    )
+    return <Checkbox {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
   if (isTextarea(component)) {
-    const { defaultValue, description, key, label, validate, maxCharCount } = component
-    return (
-      <TextArea
-        defaultValue={defaultValue}
-        description={description}
-        hasHeading={hasOneFormComponent}
-        id={key}
-        key={key}
-        label={label}
-        maxCharCount={maxCharCount}
-        validate={validate}
-      />
-    )
+    return <TextArea {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
-
   if (isTextfield(component)) {
-    const { defaultValue, description, key, label, validate } = component
-    return (
-      <TextInput
-        defaultValue={defaultValue}
-        description={description}
-        hasHeading={hasOneFormComponent}
-        id={key}
-        key={key}
-        label={label}
-        validate={validate}
-      />
-    )
+    return <TextInput {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
-
   // eslint-disable-next-line no-console
   console.error(`Type ${component.type} is unknown, please add it to FormRenderer.`)
   return undefined
