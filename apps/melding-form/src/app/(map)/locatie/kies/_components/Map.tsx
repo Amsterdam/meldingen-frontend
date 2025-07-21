@@ -11,19 +11,20 @@ import type { Coordinates } from 'apps/melding-form/src/types'
 import styles from './Map.module.css'
 
 type Props = {
+  classification?: string
   coordinates?: Coordinates
   showAssetList?: boolean
   setCoordinates: (coordinates: Coordinates) => void
 }
 
-export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
+export const Map = ({ classification, coordinates, showAssetList, setCoordinates }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const markerRef = useRef<L.Marker | null>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
 
-  useWFSLayer(mapInstance)
+  useWFSLayer(mapInstance, classification)
 
   // This could be a useState but as we don't expect this to fire more than once, use ref as it is mutable and won't trigger any further re-render
   const createdMapInstance = useRef(false)

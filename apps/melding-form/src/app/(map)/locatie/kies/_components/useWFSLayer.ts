@@ -1,7 +1,6 @@
 'use client'
 
 import { GeoJsonObject } from 'geojson'
-import Cookies from 'js-cookie'
 import L from 'leaflet'
 import { useEffect } from 'react'
 
@@ -14,9 +13,8 @@ const classificationsWithAssets = ['container']
 
 const ASSET_ZOOM_THRESHOLD = 16
 
-export const useWFSLayer = (mapInstance: L.Map | null) => {
+export const useWFSLayer = (mapInstance: L.Map | null, classification?: string) => {
   let assetLayer: L.GeoJSON | null
-  const classification = Cookies.get('classification')
 
   if (!classification || !classificationsWithAssets.includes(classification)) return
 

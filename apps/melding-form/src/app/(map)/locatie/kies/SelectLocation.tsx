@@ -18,7 +18,11 @@ const Map = dynamic(() => import('./_components/Map').then((module) => module.Ma
   ssr: false,
 })
 
-export const SelectLocation = () => {
+type Props = {
+  classification?: string
+}
+
+export const SelectLocation = ({ classification }: Props) => {
   const [coordinates, setCoordinates] = useState<Coordinates>()
   const [showAssetList, setShowAssetList] = useState(false)
 
@@ -47,7 +51,12 @@ export const SelectLocation = () => {
         </Button>
       </div>
       <div className={styles.map}>
-        <Map coordinates={coordinates} setCoordinates={setCoordinates} showAssetList={showAssetList} />
+        <Map
+          classification={classification}
+          coordinates={coordinates}
+          setCoordinates={setCoordinates}
+          showAssetList={showAssetList}
+        />
         <Button form="address" type="submit" className={styles.submitbutton}>
           {t('submit-button.mobile')}
         </Button>
