@@ -6,10 +6,19 @@ import { form } from './mocks/data'
 const defaultProps: Props = {
   action: vi.fn(),
   formComponents: form.components[0].components,
+  panelLabel: form.components[0].label,
   submitButtonText: 'Volgende vraag',
 }
 
 describe('FormRenderer', () => {
+  it('renders a heading if there is more than one form component', () => {
+    render(<FormRenderer {...defaultProps} />)
+
+    const heading = screen.getByRole('heading', { name: form.components[0].label })
+
+    expect(heading).toBeInTheDocument()
+  })
+
   it('renders a form', () => {
     const { container } = render(<FormRenderer {...defaultProps} />)
 
