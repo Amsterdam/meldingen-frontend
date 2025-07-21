@@ -9,17 +9,25 @@ describe('Error component', () => {
   it('renders the error title', () => {
     render(<Page error={error} />)
 
-    const title = screen.getByRole('heading', { level: 1, name: 'Er is iets mis gegaan' })
+    const title = screen.getByRole('heading', { level: 1, name: 'title' })
 
     expect(title).toBeInTheDocument()
+  })
+
+  it('renders the reload button', () => {
+    render(<Page error={error} />)
+
+    const button = screen.getByRole('button', { name: 'button' })
+
+    expect(button).toBeInTheDocument()
   })
 
   it('renders the error paragraph', () => {
     render(<Page error={error} />)
 
-    const firstParagraph = screen.queryAllByRole('paragraph')[0]
+    const paragraph = screen.getByRole('paragraph')
 
-    expect(firstParagraph).toHaveTextContent('De pagina die u probeert te bezoeken heeft een storing.')
+    expect(paragraph).toHaveTextContent('description')
   })
 
   it('logs the error to the console', () => {
