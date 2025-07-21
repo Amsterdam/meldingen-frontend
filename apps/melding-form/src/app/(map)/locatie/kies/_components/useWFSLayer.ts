@@ -3,6 +3,7 @@
 import { GeoJsonObject } from 'geojson'
 import Cookies from 'js-cookie'
 import L from 'leaflet'
+import { useEffect } from 'react'
 
 import { getWfsByName } from '@meldingen/api-client'
 
@@ -13,22 +14,11 @@ const classificationsWithAssets = ['container']
 
 const ASSET_ZOOM_THRESHOLD = 16
 
-export const renderWFSLayer = (mapInstance: L.Map | null) => {
+export const useWFSLayer = (mapInstance: L.Map | null) => {
   let assetLayer: L.GeoJSON | null
   const classification = Cookies.get('classification')
 
   if (!classification || !classificationsWithAssets.includes(classification)) return
-
-  mapInstance?.on('moveend', () => {
-    const zoom = mapInstance.getZoom()
-
-    // Has correct zoom level for assets
-    if (zoom >= ASSET_ZOOM_THRESHOLD) {
-      fetchAndRenderAssets(mapInstance)
-    } else if (zoom < ASSET_ZOOM_THRESHOLD && assetLayer) {
-      assetLayer.remove()
-    }
-  })
 
   const fetchAndRenderAssets = async (mapInstance: L.Map) => {
     const lowerCorner = mapInstance.getBounds().getSouthWest()
@@ -75,4 +65,24 @@ export const renderWFSLayer = (mapInstance: L.Map | null) => {
 
     if (error) throw new Error(handleApiError(error))
   }
+
+  const onMoveEnd = () => {
+    if (!mapInstance) return
+    const zoom = mapInstance.getZoom()
+
+    // Has correct zoom level for assets
+    if (zoom >= ASSET_ZOOM_THRESHOLD) {
+      fetchAndRenderAssets(mapInstance)
+    } else if (zoom < ASSET_ZOOM_THRESHOLD && assetLayer) {
+      assetLayer.remove()
+    }
+  }
+
+  useEffect(() => {
+    mapInstance?.on('moveend', onMoveEnd)
+
+    return () => {
+      mapInstance?.off('moveend', onMoveEnd)
+    }
+  }, [mapInstance])
 }

@@ -1,6 +1,7 @@
+import { renderHook } from '@testing-library/react'
 import Cookies from 'js-cookie'
 
-import { renderWFSLayer } from './renderWFSLayer'
+import { useWFSLayer } from './useWFSLayer'
 
 vi.mock('js-cookie', () => ({
   default: {
@@ -37,7 +38,7 @@ describe('renderWFSLayer', () => {
   it('should return early when classification is missing', () => {
     ;(Cookies.get as any).mockReturnValue(undefined)
 
-    renderWFSLayer(mockMap)
+    renderHook(() => useWFSLayer(mockMap))
 
     expect(mockMap.on).not.toBeCalled()
   })
@@ -45,7 +46,7 @@ describe('renderWFSLayer', () => {
   it('should return undefined when classification does not have assets', () => {
     ;(Cookies.get as any).mockReturnValue('no-asset-classification')
 
-    renderWFSLayer(mockMap)
+    renderHook(() => useWFSLayer(mockMap))
 
     expect(mockMap.on).not.toBeCalled()
   })
