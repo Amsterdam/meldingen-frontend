@@ -25,9 +25,9 @@ describe('Error component', () => {
   it('renders the error paragraph', () => {
     render(<Page error={error} />)
 
-    const paragraph = screen.getByRole('paragraph')
+    const firstParagraph = screen.queryAllByRole('paragraph')[0]
 
-    expect(paragraph).toHaveTextContent('description')
+    expect(firstParagraph).toHaveTextContent('description')
   })
 
   it('logs the error to the console', () => {

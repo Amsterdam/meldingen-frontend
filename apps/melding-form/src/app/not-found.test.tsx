@@ -10,7 +10,7 @@ describe('generateMetadata', () => {
   })
 })
 
-describe('NotFound component', () => {
+describe('NotFound page', () => {
   it('renders the page title', async () => {
     const NotFoundPage = await NotFound()
 
