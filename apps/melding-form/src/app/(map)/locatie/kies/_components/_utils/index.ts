@@ -1,0 +1,1 @@
+export { updateWfsLayer } from './updateWfsLayer'

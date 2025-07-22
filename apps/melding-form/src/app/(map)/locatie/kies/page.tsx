@@ -29,7 +29,7 @@ export default async () => {
     query: { token },
   })
 
-  if (error) return { errorMessage: handleApiError(error) }
+  if (error) throw new Error(handleApiError(error))
 
   return <SelectLocation classification={data?.classification?.name} />
 }

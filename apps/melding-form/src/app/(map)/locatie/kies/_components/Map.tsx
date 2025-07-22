@@ -2,10 +2,10 @@ import L from 'leaflet'
 import { useEffect, useRef, useState } from 'react'
 import 'leaflet/dist/leaflet.css'
 
+import { updateWfsLayer } from './_utils/updateWfsLayer'
 import { ControlsOverlay } from './ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './Crosshair/Crosshair'
 import { marker } from './Marker/Marker'
-import { useWFSLayer } from './useWFSLayer'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
@@ -20,11 +20,18 @@ type Props = {
 export const Map = ({ classification, coordinates, showAssetList, setCoordinates }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const markerRef = useRef<L.Marker | null>(null)
+  const assetLayerRef = useRef<L.Layer | null>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
 
-  useWFSLayer(mapInstance, classification)
+  useEffect(() => {
+    mapInstance?.on('moveend', () => updateWfsLayer(mapInstance, assetLayerRef, classification))
+
+    return () => {
+      mapInstance?.off('moveend', () => updateWfsLayer(mapInstance, assetLayerRef, classification))
+    }
+  }, [mapInstance])
 
   // This could be a useState but as we don't expect this to fire more than once, use ref as it is mutable and won't trigger any further re-render
   const createdMapInstance = useRef(false)
