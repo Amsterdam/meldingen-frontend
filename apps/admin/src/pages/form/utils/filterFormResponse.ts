@@ -1,3 +1,4 @@
+import type { FormType } from '@formio/react'
 import {
   FormCheckboxComponentInputSchema,
   FormComponentInputValidateSchema,
@@ -47,10 +48,10 @@ const getFilteredValidateObject = (validateObj: Record<string, string>) => {
   return validate
 }
 
-export const filterFormResponse = (obj: Record<string, unknown[]>): FormInput => {
+export const filterFormResponse = (obj: FormType): FormInput => {
   // This function is used to filter an additional questions form, which is always
   // a wizard with panels containing questions. Therefore the form has a fixed depth of two levels.
-  const firstLevelComponents = obj.components.map((firstLevelComponent: any) => {
+  const firstLevelComponents = obj.components.map((firstLevelComponent) => {
     const secondLevelComponents = firstLevelComponent.components.map((secondLevelComponent: any) => ({
       ...filterBySchemaPerType(secondLevelComponent),
       validate: getFilteredValidateObject(secondLevelComponent.validate),
