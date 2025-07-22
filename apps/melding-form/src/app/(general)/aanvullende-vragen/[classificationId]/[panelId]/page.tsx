@@ -49,6 +49,7 @@ export default async ({ params }: { params: Params }) => {
   const currentPanelIndex = data.components.findIndex((component) => component.key === panelId)
   const panel = data.components[currentPanelIndex] as FormPanelComponentOutput
   const panelQuestions = panel.components
+  const panelLabel = panel.label
 
   // Pass question ids to the action
   const questionIds = panelQuestions.map((question) => ({
@@ -82,6 +83,7 @@ export default async ({ params }: { params: Params }) => {
       action={postFormWithExtraArgs}
       formComponents={panelQuestions}
       previousPanelPath={previousPanelPath}
+      panelLabel={panelLabel}
     />
   )
 }

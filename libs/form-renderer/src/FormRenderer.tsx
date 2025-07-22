@@ -1,99 +1,57 @@
-import { SubmitButton } from '@meldingen/ui'
+import { Heading, SubmitButton } from '@meldingen/ui'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 import type { Component } from './types'
 import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
 
-const getComponent = (component: Component) => {
+const getComponent = (component: Component, hasOneFormComponent: boolean) => {
+  const { key } = component
   if (isRadio(component)) {
-    const { defaultValue, description, key, label, validate, values } = component
-    return (
-      <Radio
-        defaultValue={defaultValue}
-        description={description}
-        id={key}
-        key={key}
-        label={label}
-        validate={validate}
-        values={values}
-      />
-    )
+    return <Radio {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
   if (isSelect(component)) {
-    const { defaultValue, description, key, label, validate, data } = component
-    return (
-      <Select
-        data={data}
-        defaultValue={defaultValue}
-        description={description}
-        id={key}
-        key={key}
-        label={label}
-        validate={validate}
-      />
-    )
+    return <Select {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
   if (isSelectboxes(component)) {
-    const { defaultValues, description, key, label, validate, values } = component
-    return (
-      <Checkbox
-        defaultValues={defaultValues}
-        description={description}
-        id={key}
-        key={key}
-        label={label}
-        validate={validate}
-        values={values}
-      />
-    )
+    return <Checkbox {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
   if (isTextarea(component)) {
-    const { defaultValue, description, key, label, validate, maxCharCount } = component
-    return (
-      <TextArea
-        defaultValue={defaultValue}
-        description={description}
-        id={key}
-        key={key}
-        label={label}
-        maxCharCount={maxCharCount}
-        validate={validate}
-      />
-    )
+    return <TextArea {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
-
   if (isTextfield(component)) {
-    const { defaultValue, description, key, label, validate } = component
-    return (
-      <TextInput
-        defaultValue={defaultValue}
-        key={key}
-        id={key}
-        description={description}
-        label={label}
-        validate={validate}
-      />
-    )
+    return <TextInput {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
-
   // eslint-disable-next-line no-console
   console.error(`Type ${component.type} is unknown, please add it to FormRenderer.`)
   return undefined
 }
 
 export type Props = {
-  formComponents: Component[]
   action: (formData: FormData) => void
+  formComponents: Component[]
+  panelLabel?: string
   submitButtonText: string
 }
 
-export const FormRenderer = ({ formComponents, action, submitButtonText }: Props) => {
+export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonText }: Props) => {
+  const hasOneFormComponent = formComponents.length === 1
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    <form className="ams-gap-m" action={action}>
-      {formComponents.map((component) => getComponent(component))}
-      <SubmitButton>{submitButtonText}</SubmitButton>
-    </form>
+    <>
+      {/*
+       * If the page has only one form component, an h1 gets added to the label or legend of that component.
+       * If the page has more than one form component, the h1 is rendered here.
+       */}
+      {!hasOneFormComponent && panelLabel && (
+        <Heading level={1} size="level-4" className="ams-mb-m">
+          {panelLabel}
+        </Heading>
+      )}
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-ignore */}
+      <form className="ams-gap-m" action={action}>
+        {formComponents.map((component) => getComponent(component, hasOneFormComponent))}
+        <SubmitButton>{submitButtonText}</SubmitButton>
+      </form>
+    </>
   )
 }

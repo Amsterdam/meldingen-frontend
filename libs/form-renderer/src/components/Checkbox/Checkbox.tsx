@@ -1,9 +1,11 @@
-import { Checkbox as ADSCheckbox, Column, FieldSet } from '@amsterdam/design-system-react'
+import { Checkbox as ADSCheckbox, Column } from '@amsterdam/design-system-react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
+import { FieldSet } from '@meldingen/ui'
 
 export type Props = {
   description?: string
+  hasHeading: boolean
   id: string
   label: string
   validate?: { required: boolean } | null
@@ -14,12 +16,13 @@ export type Props = {
   defaultValues?: string[]
 }
 
-export const Checkbox = ({ defaultValues, description, id, label, validate, values }: Props) => (
+export const Checkbox = ({ defaultValues, description, hasHeading, id, label, validate, values }: Props) => (
   <FieldSet
     aria-labelledby={`${id}-fieldset ${id}-description`}
     id={`${id}-fieldset`}
     legend={label}
     optional={!validate?.required}
+    hasHeading={hasHeading}
   >
     {description && (
       <MarkdownToHtml id={`${id}-description`} type="description">

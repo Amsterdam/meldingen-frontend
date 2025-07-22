@@ -2,30 +2,38 @@ import { Field, Label, TextInput as ADSTextInput } from '@amsterdam/design-syste
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
+import styles from './TextInput.module.css'
+
 export type Props = {
+  defaultValue?: string
   description?: string
+  hasHeading: boolean
   id: string
   label: string
   validate?: { required: boolean } | null
-  defaultValue?: string
 }
 
-export const TextInput = ({ defaultValue, description, id, label, validate }: Props) => (
-  <Field key={id}>
+export const TextInput = ({ defaultValue, description, hasHeading, id, label, validate }: Props) => {
+  const labelComponent = (
     <Label htmlFor={id} optional={!validate?.required}>
       {label}
     </Label>
-    {description && (
-      <MarkdownToHtml id={`${id}-description`} type="description">
-        {description}
-      </MarkdownToHtml>
-    )}
-    <ADSTextInput
-      aria-describedby={description ? `${id}-description` : undefined}
-      aria-required={validate?.required ? 'true' : undefined}
-      defaultValue={defaultValue}
-      id={id}
-      name={id}
-    />
-  </Field>
-)
+  )
+  return (
+    <Field key={id}>
+      {hasHeading ? <h1 className={styles.h1}>{labelComponent}</h1> : labelComponent}
+      {description && (
+        <MarkdownToHtml id={`${id}-description`} type="description">
+          {description}
+        </MarkdownToHtml>
+      )}
+      <ADSTextInput
+        aria-describedby={description ? `${id}-description` : undefined}
+        aria-required={validate?.required ? 'true' : undefined}
+        defaultValue={defaultValue}
+        id={id}
+        name={id}
+      />
+    </Field>
+  )
+}

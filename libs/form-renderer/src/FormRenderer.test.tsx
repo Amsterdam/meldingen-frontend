@@ -6,10 +6,19 @@ import { form } from './mocks/data'
 const defaultProps: Props = {
   action: vi.fn(),
   formComponents: form.components[0].components,
+  panelLabel: form.components[0].label,
   submitButtonText: 'Volgende vraag',
 }
 
 describe('FormRenderer', () => {
+  it('renders a heading if there is more than one form component', () => {
+    render(<FormRenderer {...defaultProps} />)
+
+    const heading = screen.getByRole('heading', { name: form.components[0].label })
+
+    expect(heading).toBeInTheDocument()
+  })
+
   it('renders a form', () => {
     const { container } = render(<FormRenderer {...defaultProps} />)
 
@@ -82,5 +91,70 @@ describe('FormRenderer', () => {
     const submitButton = screen.getByRole('button', { name: 'Volgende vraag' })
 
     expect(submitButton).toBeInTheDocument()
+  })
+
+  it('renders a TextInput with a heading if there is only 1 TextInput', () => {
+    const props: Props = {
+      ...defaultProps,
+      formComponents: [form.components[0].components[0]],
+    }
+
+    render(<FormRenderer {...props} />)
+
+    const heading = screen.getByRole('heading', { name: form.components[0].components[0].label })
+
+    expect(heading).toBeInTheDocument()
+  })
+
+  it('renders a TextArea with a heading if there is only 1 TextArea', () => {
+    const props: Props = {
+      ...defaultProps,
+      formComponents: [form.components[0].components[1]],
+    }
+
+    render(<FormRenderer {...props} />)
+
+    const heading = screen.getByRole('heading', { name: form.components[0].components[1].label })
+
+    expect(heading).toBeInTheDocument()
+  })
+
+  it('renders a Checkbox group with a heading if there is only 1 Checkbox group', () => {
+    const props: Props = {
+      ...defaultProps,
+      formComponents: [form.components[0].components[2]],
+    }
+
+    render(<FormRenderer {...props} />)
+
+    const heading = screen.getByRole('heading', { name: form.components[0].components[2].label })
+
+    expect(heading).toBeInTheDocument()
+  })
+
+  it('renders a Select with a heading if there is only 1 Select', () => {
+    const props: Props = {
+      ...defaultProps,
+      formComponents: [form.components[0].components[3]],
+    }
+
+    render(<FormRenderer {...props} />)
+
+    const heading = screen.getByRole('heading', { name: form.components[0].components[3].label })
+
+    expect(heading).toBeInTheDocument()
+  })
+
+  it('renders a Radio group  with a heading if there is only 1 Radio group', () => {
+    const props: Props = {
+      ...defaultProps,
+      formComponents: [form.components[0].components[4]],
+    }
+
+    render(<FormRenderer {...props} />)
+
+    const heading = screen.getByRole('heading', { name: form.components[0].components[4].label })
+
+    expect(heading).toBeInTheDocument()
   })
 })
