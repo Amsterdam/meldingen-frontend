@@ -9,9 +9,14 @@ import type { Component } from '@meldingen/form-renderer'
 
 import { FormHeader } from '../../../_components/FormHeader/FormHeader'
 
-// TODO: fix types
 export type Props = {
-  action: any
+  action: (
+    _: unknown,
+    formData: FormData,
+  ) => Promise<{
+    errorMessage: string
+    formData: FormData
+  }>
   formComponents: Component[]
   panelLabel: string
   previousPanelPath: string
