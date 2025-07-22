@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
 import { Map } from './Map'
-import { useWFSLayer } from './useWFSLayer'
 
 vi.mock('leaflet', async (importOriginal) => {
   const actual = await importOriginal()
@@ -18,10 +17,6 @@ vi.mock('leaflet', async (importOriginal) => {
   }
 })
 
-vi.mock('./useWFSLayer', () => ({
-  useWFSLayer: vi.fn(),
-}))
-
 describe('Map', () => {
   it('renders the component', () => {
     const { container } = render(<Map setCoordinates={() => {}} />)
@@ -34,11 +29,5 @@ describe('Map', () => {
     const button = screen.getByRole('button', { name: 'current-location-button' })
 
     expect(button).toBeInTheDocument()
-  })
-
-  it('calls the useWFSLayer hook', () => {
-    render(<Map setCoordinates={() => {}} />)
-
-    expect(useWFSLayer).toHaveBeenCalled()
   })
 })
