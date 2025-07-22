@@ -2,10 +2,17 @@
   "name": "form-builder",
   "version": "0.1.0",
   "description": "A plugin to create forms.",
+  "license": "EUPL-1.2",
+  "private": true,
+  "type": "module",
   "scripts": {
     "type-check": "tsc --project ./tsconfig.json --noEmit"
   },
-  "license": "EUPL-1.2",
-  "private": true,
-  "type": "module"
+  "dependencies": {
+    "@formio/js": "5.0.1",
+    "formiojs": "4.21.7"
+  },
+  "devDependencies": {
+    "@formio/react": "6.0.1"
+  }
 }
