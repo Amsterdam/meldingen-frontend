@@ -2,7 +2,7 @@ import { Components } from '@formio/react'
 
 import { editForm } from './editForm'
 
-const FormioTextfield = (Components as any).components.textfield
+const FormioTextfield = Components.components.textfield
 
 export class Textfield extends FormioTextfield {
   get inputInfo() {
