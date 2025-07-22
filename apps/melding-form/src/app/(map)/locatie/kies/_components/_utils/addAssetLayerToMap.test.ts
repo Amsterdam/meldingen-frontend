@@ -4,9 +4,9 @@ import type { MutableRefObject } from 'react'
 import type { Feature } from '@meldingen/api-client'
 
 import { addAssetLayerToMap } from './addAssetLayerToMap'
-import { getFeatureIcon } from '../utils'
+import { getContainerFeatureIcon } from './getContainerFeatureIcon'
 
-vi.mock('../utils', () => ({
+vi.mock('./getContainerFeatureIcon', () => ({
   getFeatureIcon: vi.fn(() => ({ iconUrl: 'dummy.png' })),
 }))
 
@@ -58,6 +58,6 @@ describe('addAssetLayerToMap', () => {
       } as Feature,
     ]
     addAssetLayerToMap(features, assetLayerRef, mapInstance)
-    expect(getFeatureIcon).toHaveBeenCalledWith(features[0])
+    expect(getContainerFeatureIcon).toHaveBeenCalledWith(features[0])
   })
 })

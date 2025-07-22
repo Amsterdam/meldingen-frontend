@@ -1,4 +1,4 @@
-import { type AssetFeature, ContainerFeatureType, getFeatureIcon } from './utils'
+import { type AssetFeature, ContainerFeatureType, getContainerFeatureIcon } from './getContainerFeatureIcon'
 
 describe('getFeatureIcon', () => {
   const makeFeature = (type: ContainerFeatureType | string): AssetFeature =>
@@ -23,7 +23,7 @@ describe('getFeatureIcon', () => {
     ['UnknownType', '/afval/restafval.svg'], // default fallback
   ])('returns correct icon for type %s', (type, expectedLabel) => {
     const feature = makeFeature(type)
-    const icon = getFeatureIcon(feature)
+    const icon = getContainerFeatureIcon(feature)
 
     expect(icon.options.iconUrl).toBe(expectedLabel)
   })

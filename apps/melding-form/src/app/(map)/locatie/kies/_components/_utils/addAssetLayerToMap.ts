@@ -4,7 +4,7 @@ import { MutableRefObject } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
-import { getFeatureIcon } from './getContainerFeatureIcon'
+import { getContainerFeatureIcon } from './getContainerFeatureIcon'
 
 export const addAssetLayerToMap = (
   features: Feature[],
@@ -15,7 +15,7 @@ export const addAssetLayerToMap = (
 
   assetLayerRef.current = L.geoJSON(features as GeoJsonObject[], {
     pointToLayer: (feature, latlng) => {
-      const featureIcon = getFeatureIcon(feature)
+      const featureIcon = getContainerFeatureIcon(feature)
 
       return new L.Marker(latlng, {
         icon: featureIcon,
