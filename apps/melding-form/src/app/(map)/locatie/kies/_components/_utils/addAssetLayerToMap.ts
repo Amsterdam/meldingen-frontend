@@ -4,7 +4,7 @@ import { MutableRefObject } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
-import { getFeatureIcon } from '../utils'
+import { getFeatureIcon } from './getContainerFeatureIcon'
 
 export const addAssetLayerToMap = (
   features: Feature[],
