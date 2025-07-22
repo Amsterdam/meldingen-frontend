@@ -48,7 +48,7 @@ describe('buildWfsLayer', () => {
     await expect(fn).rejects.toThrow('Handled: Something went wrong')
   })
 
-  it('does not call addAssetLayerToMap if no features', async () => {
+  it('does not call addAssetLayerToMap when there are no features', async () => {
     server.use(http.get(ENDPOINTS.GET_WFS_BY_NAME, () => HttpResponse.json({ features: [] })))
 
     await buildWfsLayer(mapInstance, 'container', assetLayerRef)
