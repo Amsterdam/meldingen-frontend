@@ -1,5 +1,4 @@
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
 import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
@@ -20,7 +19,7 @@ export default async () => {
   const meldingId = cookieStore.get('id')?.value
   const token = cookieStore.get('token')?.value
 
-  if (!meldingId || !token) return redirect('/cookie-storing')
+  if (!meldingId || !token) throw new Error('Primary form id or token not found.')
 
   const { data, error } = await getMeldingByMeldingIdMelder({
     path: {

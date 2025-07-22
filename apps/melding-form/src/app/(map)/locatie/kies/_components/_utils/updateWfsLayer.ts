@@ -12,7 +12,7 @@ export const updateWfsLayer = (
   assetLayerRef: MutableRefObject<L.Layer | null>,
   classification?: string,
 ) => {
-  if (!mapInstance || !classification || !classificationsWithAssets.includes(classification)) return
+  if (!classification || !classificationsWithAssets.includes(classification)) return
 
   const zoom = mapInstance.getZoom()
 

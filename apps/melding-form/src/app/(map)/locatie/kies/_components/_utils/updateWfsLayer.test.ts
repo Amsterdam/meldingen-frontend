@@ -19,12 +19,6 @@ describe('updateWfsLayer', () => {
     vi.clearAllMocks()
   })
 
-  it('returns undefined if mapInstance is falsy', () => {
-    updateWfsLayer(null as any, assetLayerRef, 'container')
-
-    expect(buildWfsLayer).not.toHaveBeenCalled()
-  })
-
   it('returns undefined if classification is falsy', () => {
     updateWfsLayer(mapInstance, assetLayerRef, undefined)
 
