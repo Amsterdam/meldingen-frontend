@@ -1,22 +1,25 @@
 'use client'
 
-import { Alert, Heading, Paragraph } from '@amsterdam/design-system-react'
+import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
 import { FormRenderer, isSelectboxes } from '@meldingen/form-renderer'
 import type { Component } from '@meldingen/form-renderer'
 
+import { FormHeader } from '../../../_components/FormHeader/FormHeader'
+
 // TODO: fix types
 export type Props = {
   action: any
   formComponents: Component[]
+  panelLabel: string
   previousPanelPath: string
 }
 
 const initialState: { errorMessage?: string; formData?: FormData } = {}
 
-export const AdditionalQuestions = ({ action, formComponents }: Props) => {
+export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Props) => {
   const [{ formData, errorMessage }, formAction] = useActionState(action, initialState)
 
   const t = useTranslations('additional-questions')
@@ -44,10 +47,11 @@ export const AdditionalQuestions = ({ action, formComponents }: Props) => {
           <Paragraph>{errorMessage}</Paragraph>
         </Alert>
       )}
-      <Heading level={1}>{t('step.title')}</Heading>
+      <FormHeader title={t('title')} step={t('step')} />
       <FormRenderer
         formComponents={prefilledFormComponents}
         action={formAction}
+        panelLabel={panelLabel}
         submitButtonText={t('submit-button')}
       />
     </>

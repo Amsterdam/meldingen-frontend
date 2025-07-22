@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { type Props, Radio } from './Radio'
 
 const defaultProps: Props = {
+  hasHeading: true,
   id: 'test-id',
   label: 'Test label',
   validate: { required: true },
