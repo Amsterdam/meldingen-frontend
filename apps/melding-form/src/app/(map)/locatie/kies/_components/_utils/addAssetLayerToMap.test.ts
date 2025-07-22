@@ -7,7 +7,7 @@ import { addAssetLayerToMap } from './addAssetLayerToMap'
 import { getContainerFeatureIcon } from './getContainerFeatureIcon'
 
 vi.mock('./getContainerFeatureIcon', () => ({
-  getFeatureIcon: vi.fn(() => ({ iconUrl: 'dummy.png' })),
+  getContainerFeatureIcon: vi.fn(() => ({ iconUrl: 'dummy.png' })),
 }))
 
 describe('addAssetLayerToMap', () => {
