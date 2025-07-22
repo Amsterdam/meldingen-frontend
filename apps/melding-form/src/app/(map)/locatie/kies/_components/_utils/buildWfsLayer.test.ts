@@ -5,7 +5,6 @@ import { addAssetLayerToMap } from './addAssetLayerToMap'
 import { buildWfsLayer } from './buildWfsLayer'
 import { getWfsFilter } from './getWfsFilter'
 import { containerAsset } from '../../../../../../mocks/data'
-import { handleApiError } from 'apps/melding-form/src/handleApiError'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
