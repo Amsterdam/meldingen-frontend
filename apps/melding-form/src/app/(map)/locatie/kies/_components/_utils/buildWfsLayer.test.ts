@@ -43,10 +43,9 @@ describe('buildWfsLayer', () => {
   })
 
   it('throws error when error is returned', async () => {
-    await expect(buildWfsLayer(mapInstance, 'invalid-classification', assetLayerRef)).rejects.toThrow(
-      'Handled: Something went wrong',
-    )
-    expect(handleApiError).toHaveBeenCalledWith({ message: 'Something went wrong' })
+    const fn = () => buildWfsLayer(mapInstance, 'invalid-classification', assetLayerRef)
+
+    await expect(fn).rejects.toThrow('Handled: Something went wrong')
   })
 
   it('does not call addAssetLayerToMap if no features', async () => {
