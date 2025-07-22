@@ -13,19 +13,16 @@ vi.mock('./getContainerFeatureIcon', () => ({
 describe('addAssetLayerToMap', () => {
   let mapInstance: L.Map
   let assetLayerRef: MutableRefObject<L.Layer | null>
-  let container: HTMLDivElement
 
   beforeEach(() => {
-    container = document.createElement('div')
-    document.body.appendChild(container)
+    // Create a dummy map instance
+    const container = document.createElement('div')
     mapInstance = L.map(container)
     assetLayerRef = { current: null }
-    vi.clearAllMocks()
   })
 
   afterEach(() => {
     mapInstance.remove()
-    document.body.removeChild(container)
   })
 
   it('should remove the previous asset layer if it exists', () => {
