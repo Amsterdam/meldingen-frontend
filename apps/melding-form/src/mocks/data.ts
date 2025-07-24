@@ -1,4 +1,10 @@
-import { AnswerQuestionOutput, FormOutput, FormTextAreaComponentOutput, MeldingOutput } from '@meldingen/api-client'
+import {
+  AnswerQuestionOutput,
+  Feature,
+  FormOutput,
+  FormTextAreaComponentOutput,
+  MeldingOutput,
+} from '@meldingen/api-client'
 
 // Form
 export const textAreaComponent: FormTextAreaComponentOutput = {
@@ -140,7 +146,12 @@ export const melding: MeldingOutput = {
   updated_at: '2025-02-18T10:34:40.730569',
   text: 'Alles',
   state: 'questions_answered',
-  classification: null,
+  classification: {
+    id: 2,
+    created_at: '2025-07-15T09:43:46Z',
+    updated_at: '2025-07-15T09:43:46Z',
+    name: 'container',
+  },
   geo_location: null,
   email: 'email@email.email',
   phone: '0612345678',
@@ -172,3 +183,15 @@ export const additionalQuestions: AnswerQuestionOutput[] = [
     },
   },
 ]
+
+export const containerAsset: Feature = {
+  geometry: {
+    coordinates: [4.9, 52.3],
+    type: 'Point',
+  },
+  properties: {
+    id: 1,
+    name: 'Test Feature',
+  },
+  type: 'Feature',
+}

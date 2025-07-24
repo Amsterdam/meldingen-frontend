@@ -1,25 +1,26 @@
 import L from 'leaflet'
 import { useEffect, useRef, useState } from 'react'
-
 import 'leaflet/dist/leaflet.css'
 
-import { ControlsOverlay } from './ControlsOverlay/ControlsOverlay'
-import { Crosshair } from './Crosshair/Crosshair'
-import { marker } from './Marker/Marker'
+import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
+import { Crosshair } from './components/Crosshair/Crosshair'
+import { defaultIcon } from './markerIcons'
+import { updateAssetLayer } from './utils/updateAssetLayer'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
 
 type Props = {
+  classification?: string
   coordinates?: Coordinates
   showAssetList?: boolean
   setCoordinates: (coordinates: Coordinates) => void
 }
 
-export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
+export const Map = ({ classification, coordinates, showAssetList, setCoordinates }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
-
   const markerRef = useRef<L.Marker | null>(null)
+  const assetLayerRef = useRef<L.Layer | null>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
@@ -105,9 +106,10 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
       markerRef.current?.remove()
 
       // Create marker layer and add to map
-      const newMarker = L.marker(L.latLng([coordinates.lat, coordinates.lng]), { icon: marker, keyboard: false }).addTo(
-        mapInstance,
-      )
+      const newMarker = L.marker(L.latLng([coordinates.lat, coordinates.lng]), {
+        icon: defaultIcon,
+        keyboard: false,
+      }).addTo(mapInstance)
 
       // Store marker layer in ref
       markerRef.current = newMarker
@@ -118,6 +120,11 @@ export const Map = ({ coordinates, showAssetList, setCoordinates }: Props) => {
       mapInstance.flyTo([coordinates.lat, coordinates.lng], currentZoom < flyToMinZoom ? flyToMinZoom : currentZoom)
     }
   }, [mapInstance, coordinates])
+
+  // This useEffect prevents the WFS layer from being fetched twice
+  useEffect(() => {
+    mapInstance?.on('moveend', () => updateAssetLayer(mapInstance, assetLayerRef, classification))
+  }, [mapInstance])
 
   return (
     <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>
