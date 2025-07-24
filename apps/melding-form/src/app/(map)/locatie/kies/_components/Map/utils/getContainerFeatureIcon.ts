@@ -8,7 +8,7 @@ import {
   plasticAfvalIcon,
   restAfvalIcon,
   textielAfvalIcon,
-} from './map-markers'
+} from '../markerIcons'
 
 export enum ContainerFeatureType {
   Papier = 'Papier',

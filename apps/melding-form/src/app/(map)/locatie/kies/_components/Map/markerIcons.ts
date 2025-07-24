@@ -1,5 +1,11 @@
 import L from 'leaflet'
 
+export const defaultIcon = L.icon({
+  iconUrl: '/icon-select-marker.svg',
+  iconSize: [30, 40],
+  iconAnchor: [15, 40],
+})
+
 export const gftAfvalIcon = L.icon({
   iconUrl: '/afval/gft.svg',
   iconSize: [44, 44],

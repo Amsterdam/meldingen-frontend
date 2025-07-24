@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css'
 
 import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './components/Crosshair/Crosshair'
-import { marker } from './components/Marker/Marker'
+import { defaultIcon } from './markerIcons'
 import { updateWfsLayer } from './utils/updateWfsLayer'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
@@ -114,9 +114,10 @@ export const Map = ({ classification, coordinates, showAssetList, setCoordinates
       markerRef.current?.remove()
 
       // Create marker layer and add to map
-      const newMarker = L.marker(L.latLng([coordinates.lat, coordinates.lng]), { icon: marker, keyboard: false }).addTo(
-        mapInstance,
-      )
+      const newMarker = L.marker(L.latLng([coordinates.lat, coordinates.lng]), {
+        icon: defaultIcon,
+        keyboard: false,
+      }).addTo(mapInstance)
 
       // Store marker layer in ref
       markerRef.current = newMarker
