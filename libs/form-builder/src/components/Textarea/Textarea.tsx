@@ -1,5 +1,3 @@
-/* eslint react/no-is-mounted: off */
-
 import { Components } from '@formio/js'
 
 import { editForm } from './editForm'
