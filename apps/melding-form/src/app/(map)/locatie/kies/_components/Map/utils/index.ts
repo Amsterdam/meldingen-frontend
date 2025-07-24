@@ -1,1 +1,1 @@
-export { updateWfsLayer } from './updateWfsLayer'
+export { updateAssetLayer } from './updateAssetLayer'

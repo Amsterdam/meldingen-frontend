@@ -13,7 +13,7 @@ import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './page.module.css'
 
-const Map = dynamic(() => import('./_components/Map').then((module) => module.Map), {
+const Map = dynamic(() => import('./_components/Map/Map').then((module) => module.Map), {
   loading: () => <p>Loading...</p>, // TODO: improve loading state
   ssr: false,
 })

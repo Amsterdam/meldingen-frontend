@@ -2,9 +2,9 @@ import L from 'leaflet'
 import { http, HttpResponse } from 'msw'
 
 import { addAssetLayerToMap } from './addAssetLayerToMap'
-import { buildWfsLayer } from './buildWfsLayer'
+import { fetchAndAddAssetLayerToMap } from './fetchAndAddAssetLayerToMap'
 import { getWfsFilter } from './getWfsFilter'
-import { containerAsset } from '../../../../../../mocks/data'
+import { containerAsset } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
@@ -20,7 +20,7 @@ vi.mock('apps/melding-form/src/handleApiError', () => ({
   handleApiError: vi.fn((e) => `Handled: ${e.message}`),
 }))
 
-describe('buildWfsLayer', () => {
+describe('fetchAndAddAssetLayerToMap', () => {
   let mapInstance: L.Map
   let assetLayerRef: { current: L.Layer | null }
 
@@ -36,13 +36,13 @@ describe('buildWfsLayer', () => {
   })
 
   it('calls addAssetLayerToMap when features are returned', async () => {
-    await buildWfsLayer(mapInstance, 'container', assetLayerRef)
+    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef)
 
     expect(addAssetLayerToMap).toHaveBeenCalledWith([containerAsset], assetLayerRef, mapInstance)
   })
 
   it('throws error when error is returned', async () => {
-    const fn = () => buildWfsLayer(mapInstance, 'invalid-classification', assetLayerRef)
+    const fn = () => fetchAndAddAssetLayerToMap(mapInstance, 'invalid-classification', assetLayerRef)
 
     await expect(fn).rejects.toThrow('Handled: Something went wrong')
   })
@@ -50,13 +50,13 @@ describe('buildWfsLayer', () => {
   it('does not call addAssetLayerToMap when there are no features', async () => {
     server.use(http.get(ENDPOINTS.GET_WFS_BY_NAME, () => HttpResponse.json({ features: [] })))
 
-    await buildWfsLayer(mapInstance, 'container', assetLayerRef)
+    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef)
 
     expect(addAssetLayerToMap).not.toHaveBeenCalled()
   })
 
   it('calls getWfsFilter with mapInstance', async () => {
-    await buildWfsLayer(mapInstance, 'container', assetLayerRef)
+    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef)
 
     expect(getWfsFilter).toHaveBeenCalledWith(mapInstance)
   })

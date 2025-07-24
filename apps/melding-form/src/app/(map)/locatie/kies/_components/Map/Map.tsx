@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './components/Crosshair/Crosshair'
 import { defaultIcon } from './markerIcons'
-import { updateWfsLayer } from './utils/updateWfsLayer'
+import { updateAssetLayer } from './utils/updateAssetLayer'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
@@ -26,10 +26,10 @@ export const Map = ({ classification, coordinates, showAssetList, setCoordinates
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
 
   useEffect(() => {
-    mapInstance?.on('moveend', () => updateWfsLayer(mapInstance, assetLayerRef, classification))
+    mapInstance?.on('moveend', () => updateAssetLayer(mapInstance, assetLayerRef, classification))
 
     return () => {
-      mapInstance?.off('moveend', () => updateWfsLayer(mapInstance, assetLayerRef, classification))
+      mapInstance?.off('moveend', () => updateAssetLayer(mapInstance, assetLayerRef, classification))
     }
   }, [mapInstance])
 

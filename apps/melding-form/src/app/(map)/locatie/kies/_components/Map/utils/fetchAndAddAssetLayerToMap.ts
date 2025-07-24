@@ -7,7 +7,7 @@ import { addAssetLayerToMap } from './addAssetLayerToMap'
 import { getWfsFilter } from './getWfsFilter'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
-export const buildWfsLayer = async (
+export const fetchAndAddAssetLayerToMap = async (
   mapInstance: L.Map,
   classification: string,
   assetLayerRef: MutableRefObject<L.Layer | null>,
