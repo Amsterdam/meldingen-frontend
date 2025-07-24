@@ -1,5 +1,3 @@
-import type { FormType } from '@formio/react'
-import { useEffect, useState } from 'react'
 import { TextInput } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
 
@@ -8,19 +6,11 @@ import { FormBuilder } from '@meldingen/form-builder'
 import styles from './BuilderInput.module.css'
 
 export const BuilderInput = () => {
-  const [formValue, setFormValue] = useState<FormType['components']>()
-
   const { getValues, setValue } = useFormContext()
 
-  // This is undefined on first render, but it rerenders a couple of times.
-  // That is why the useEffect is necessary.
-  const formValueOnRender = getValues('components')
+  const data = getValues('components')
 
-  useEffect(() => {
-    setFormValue(formValueOnRender)
-  }, [formValueOnRender])
-
-  const onChange = (schema: FormType) => {
+  const onChange = (schema: { components: unknown[] }) => {
     setValue('components', schema?.components)
   }
 
@@ -34,7 +24,7 @@ export const BuilderInput = () => {
         hidden
       />
       <div className={styles.builder}>
-        <FormBuilder data={formValue} onChange={onChange} />
+        <FormBuilder data={data} onChange={onChange} />
       </div>
     </>
   )

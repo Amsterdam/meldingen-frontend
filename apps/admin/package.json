@@ -24,6 +24,7 @@
     "vite": "6.3.5"
   },
   "devDependencies": {
+    "@formio/react": "6.0.2",
     "ra-core": "5.9.1"
   }
 }

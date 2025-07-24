@@ -1,8 +1,8 @@
-import { Components } from '@formio/react'
+import { Components } from '@formio/js'
 
 import { editForm } from './editForm'
 
-const FormioSelectBoxes = (Components as any).components.selectboxes
+const FormioSelectBoxes = Components.components.selectboxes
 
 export class SelectBoxes extends FormioSelectBoxes {
   static editForm = editForm
