@@ -10,9 +10,7 @@ export const BuilderInput = () => {
 
   const data = getValues('components')
 
-  type OnChange = (schema: { components: unknown[] }) => void
-
-  const onChange: OnChange = (schema) => {
+  const onChange = (schema: { components: unknown[] }) => {
     setValue('components', schema?.components)
   }
 
