@@ -21,6 +21,7 @@
     "next-intl": "4.3.4"
   },
   "devDependencies": {
+    "@types/geojson": "7946.0.16",
     "@types/leaflet": "1.9.19"
   }
 }

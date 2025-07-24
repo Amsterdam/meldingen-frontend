@@ -13,12 +13,16 @@ import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './page.module.css'
 
-const Map = dynamic(() => import('./_components/Map').then((module) => module.Map), {
+const Map = dynamic(() => import('./_components/Map/Map').then((module) => module.Map), {
   loading: () => <p>Loading...</p>, // TODO: improve loading state
   ssr: false,
 })
 
-export const SelectLocation = () => {
+type Props = {
+  classification?: string
+}
+
+export const SelectLocation = ({ classification }: Props) => {
   const [coordinates, setCoordinates] = useState<Coordinates>()
   const [showAssetList, setShowAssetList] = useState(false)
 
@@ -47,7 +51,12 @@ export const SelectLocation = () => {
         </Button>
       </div>
       <div className={styles.map}>
-        <Map coordinates={coordinates} setCoordinates={setCoordinates} showAssetList={showAssetList} />
+        <Map
+          classification={classification}
+          coordinates={coordinates}
+          setCoordinates={setCoordinates}
+          showAssetList={showAssetList}
+        />
         <Button form="address" type="submit" className={styles.submitbutton}>
           {t('submit-button.mobile')}
         </Button>
