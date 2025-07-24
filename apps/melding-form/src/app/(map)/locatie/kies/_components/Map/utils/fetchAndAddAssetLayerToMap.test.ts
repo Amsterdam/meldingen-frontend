@@ -24,15 +24,15 @@ describe('fetchAndAddAssetLayerToMap', () => {
   let mapInstance: L.Map
   let assetLayerRef: { current: L.Layer | null }
 
-  afterEach(() => {
-    vi.clearAllMocks()
-  })
-
   beforeEach(() => {
     // Create a dummy map instance
     const container = document.createElement('div')
     mapInstance = L.map(container)
     assetLayerRef = { current: null }
+  })
+
+  afterEach(() => {
+    mapInstance.remove()
   })
 
   it('calls addAssetLayerToMap when features are returned', async () => {

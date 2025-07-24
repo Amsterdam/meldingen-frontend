@@ -16,7 +16,6 @@ describe('updateAssetLayer', () => {
     mapInstance = {
       getZoom: vi.fn(),
     }
-    vi.clearAllMocks()
   })
 
   it('returns undefined if classification is falsy', () => {
