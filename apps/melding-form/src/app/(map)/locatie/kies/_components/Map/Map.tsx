@@ -25,14 +25,6 @@ export const Map = ({ classification, coordinates, showAssetList, setCoordinates
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
 
-  useEffect(() => {
-    mapInstance?.on('moveend', () => updateAssetLayer(mapInstance, assetLayerRef, classification))
-
-    return () => {
-      mapInstance?.off('moveend', () => updateAssetLayer(mapInstance, assetLayerRef, classification))
-    }
-  }, [mapInstance])
-
   // This could be a useState but as we don't expect this to fire more than once, use ref as it is mutable and won't trigger any further re-render
   const createdMapInstance = useRef(false)
 
@@ -128,6 +120,11 @@ export const Map = ({ classification, coordinates, showAssetList, setCoordinates
       mapInstance.flyTo([coordinates.lat, coordinates.lng], currentZoom < flyToMinZoom ? flyToMinZoom : currentZoom)
     }
   }, [mapInstance, coordinates])
+
+  // This useEffect prevents the WFS layer from being fetched twice
+  useEffect(() => {
+    mapInstance?.on('moveend', () => updateAssetLayer(mapInstance, assetLayerRef, classification))
+  }, [mapInstance])
 
   return (
     <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>
