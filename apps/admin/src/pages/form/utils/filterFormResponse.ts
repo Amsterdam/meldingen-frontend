@@ -1,3 +1,4 @@
+import type { Components, FormType } from '@formio/react'
 import {
   FormCheckboxComponentInputSchema,
   FormComponentInputValidateSchema,
@@ -12,7 +13,7 @@ import filter from 'uber-json-schema-filter'
 
 import type { FormInput } from '@meldingen/api-client'
 
-const filterBySchemaPerType = (obj: any) => {
+const filterBySchemaPerType = (obj: Record<string, unknown>) => {
   switch (obj.type) {
     case 'panel':
       return filter(FormPanelComponentInputSchema, obj)
@@ -36,7 +37,7 @@ const filterBySchemaPerType = (obj: any) => {
   }
 }
 
-const getFilteredValidateObject = (validateObj: any) => {
+const getFilteredValidateObject = (validateObj: Record<string, string>) => {
   const validate = filter(FormComponentInputValidateSchema, validateObj)
 
   // Explicitly remove the 'json' key if its value is an empty string, the API doesn't accept that
@@ -47,14 +48,16 @@ const getFilteredValidateObject = (validateObj: any) => {
   return validate
 }
 
-export const filterFormResponse = (obj: any): FormInput => {
+export const filterFormResponse = (obj: FormType): FormInput => {
   // This function is used to filter an additional questions form, which is always
   // a wizard with panels containing questions. Therefore the form has a fixed depth of two levels.
-  const firstLevelComponents = obj.components.map((firstLevelComponent: any) => {
-    const secondLevelComponents = firstLevelComponent.components.map((secondLevelComponent: any) => ({
-      ...filterBySchemaPerType(secondLevelComponent),
-      validate: getFilteredValidateObject(secondLevelComponent.validate),
-    }))
+  const firstLevelComponents: Components = obj.components.map((firstLevelComponent) => {
+    const secondLevelComponents: Components = firstLevelComponent.components.map(
+      (secondLevelComponent: Record<string, Record<string, string>>) => ({
+        ...filterBySchemaPerType(secondLevelComponent),
+        validate: getFilteredValidateObject(secondLevelComponent.validate),
+      }),
+    )
 
     const filteredObject = {
       ...filterBySchemaPerType(firstLevelComponent),
