@@ -184,6 +184,9 @@ importers:
         specifier: 6.3.5
         version: 6.3.5(@types/node@24.0.10)(jiti@2.4.2)(yaml@2.8.0)
     devDependencies:
+      '@formio/react':
+        specifier: 6.0.2
+        version: 6.0.2(@formio/core@2.5.0)(@formio/js@5.0.1(@popperjs/core@2.11.8))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ra-core:
         specifier: 5.9.1
         version: 5.9.1(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.60.0(react@18.3.1))(react-router-dom@7.6.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router@7.6.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
@@ -232,10 +235,6 @@ importers:
       formiojs:
         specifier: 4.21.7
         version: 4.21.7
-    devDependencies:
-      '@formio/react':
-        specifier: 6.0.1
-        version: 6.0.1(@formio/core@2.5.0)(@formio/js@5.0.1(@popperjs/core@2.11.8))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   libs/form-renderer: {}
 
@@ -925,11 +924,11 @@ packages:
   '@formio/js@5.0.1':
     resolution: {integrity: sha512-MVAT9lseEYmdiivVuQRvWxwXpp402YYpStrTkMqi8nvCA/AmFb9Ld5nsFUqQsfzf4jzY5NgefFmoFlSMfTk0Kg==}
 
-  '@formio/react@6.0.1':
-    resolution: {integrity: sha512-4orV40cyO7yEnRKc8wtQpwQBMjbrx+3tjsxN8T7ml9Z2NkrVit4vC/qTh+JokGRBUHGN+JZEW5OxJGL8nRaxbQ==}
+  '@formio/react@6.0.2':
+    resolution: {integrity: sha512-tnOMnM34XCsmuLCILaq5Xw0UWMEue4YcQlsTRa2nfxdNRxFMbb8CWNvfho1uUzSaB/tsRHyHhGmrCnnoGeSOqg==}
     peerDependencies:
-      '@formio/core': 2.3.2
-      '@formio/js': 5.0.1
+      '@formio/core': ^2.3.2
+      '@formio/js': ^5.0.1
       react: ^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0
       react-dom: ^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0
 
@@ -5656,7 +5655,7 @@ snapshots:
       - '@popperjs/core'
       - encoding
 
-  '@formio/react@6.0.1(@formio/core@2.5.0)(@formio/js@5.0.1(@popperjs/core@2.11.8))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@formio/react@6.0.2(@formio/core@2.5.0)(@formio/js@5.0.1(@popperjs/core@2.11.8))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@formio/core': 2.5.0
       '@formio/js': 5.0.1(@popperjs/core@2.11.8)

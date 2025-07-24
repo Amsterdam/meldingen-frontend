@@ -11,8 +11,5 @@
   "dependencies": {
     "@formio/js": "5.0.1",
     "formiojs": "4.21.7"
-  },
-  "devDependencies": {
-    "@formio/react": "6.0.1"
   }
 }

@@ -1,4 +1,3 @@
-import type { FormType } from '@formio/react'
 import { TextInput } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
 
@@ -11,7 +10,9 @@ export const BuilderInput = () => {
 
   const data = getValues('components')
 
-  const onChange = (schema: FormType) => {
+  type OnChange = (schema: { components: unknown[] }) => void
+
+  const onChange: OnChange = (schema) => {
     setValue('components', schema?.components)
   }
 

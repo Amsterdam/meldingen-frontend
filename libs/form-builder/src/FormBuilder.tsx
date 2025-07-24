@@ -1,8 +1,9 @@
-import { FormBuilder as FormioFormBuilder } from '@formio/js'
-import type { FormBuilderProps, FormType } from '@formio/react'
+import { Components, FormBuilder as FormioFormBuilder } from '@formio/js'
+import type { FormBuilder as FormBuilderProps } from '@formio/js'
 import type { ComponentSchema } from 'formiojs'
 import { useEffect, useRef } from 'react'
 
+import { Radio, Select, SelectBoxes, Textarea, Textfield } from './components'
 import nl from './translations/nl.json'
 import 'formiojs/dist/formio.builder.min.css'
 
@@ -35,14 +36,20 @@ const options: ExtendedFormBuilderOptions = {
 
 type Props = {
   data?: ComponentSchema[]
-  onChange: (schema: FormType) => void
+  onChange: (schema: { components: unknown[] }) => void
 }
-
-// https://github.com/ronaldtech051/React-First-Project/blob/main/src/components/FormBuilder.jsx
 
 export const FormBuilder = ({ data, onChange }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
   const builderInstance = useRef<FormioFormBuilder | null>(null)
+
+  Components.setComponents({
+    radio: Radio,
+    select: Select,
+    selectboxes: SelectBoxes,
+    textarea: Textarea,
+    textfield: Textfield,
+  })
 
   useEffect(() => {
     if (!ref.current) return
