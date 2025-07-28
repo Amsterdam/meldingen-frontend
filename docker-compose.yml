@@ -24,6 +24,20 @@ services:
       - '3000:3000'
     networks:
       - meldingen_network
+  back-office:
+    image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-signalen/meldingen-frontend-back-office}:${VERSION:-latest}
+    build:
+      context: .
+      target: back_office
+      args:
+        NEXT_INTERNAL_BACKEND_BASE_URL: http://meldingen:8000
+        CLIENT_ID: meldingen
+        CLIENT_SECRET: ""
+        AUTH_ISSUER: http://localhost:8002/realms/meldingen
+    ports:
+      - '3002:3002'
+    networks:
+      - meldingen_network
 networks:
   meldingen_network:
     external: true
