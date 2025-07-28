@@ -1,11 +1,14 @@
-import { Column, Radio as ADSRadio } from '@amsterdam/design-system-react'
+import { Column, ErrorMessage, Radio as ADSRadio } from '@amsterdam/design-system-react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { FieldSet } from '@meldingen/ui'
 
+import { getAriaDescribedBy } from '../../utils'
+
 export type Props = {
   description?: string
   hasHeading: boolean
+  errorMessage?: string
   id: string
   label: string
   validate?: { required: boolean } | null
@@ -16,10 +19,11 @@ export type Props = {
   defaultValue?: string
 }
 
-export const Radio = ({ description, hasHeading, id, label, validate, values, defaultValue }: Props) => (
+export const Radio = ({ description, errorMessage, hasHeading, id, label, validate, values, defaultValue }: Props) => (
   <FieldSet
-    aria-describedby={description ? `${id}-description` : undefined}
+    aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
     aria-required={validate?.required ? 'true' : undefined}
+    invalid={Boolean(errorMessage)}
     legend={label}
     optional={!validate?.required}
     hasHeading={hasHeading}
@@ -30,6 +34,7 @@ export const Radio = ({ description, hasHeading, id, label, validate, values, de
         {description}
       </MarkdownToHtml>
     )}
+    {errorMessage && <ErrorMessage id={`${id}-error`}>{errorMessage}</ErrorMessage>}
     <Column gap="x-small">
       {values.map(({ label: radioLabel, value }) => (
         <ADSRadio

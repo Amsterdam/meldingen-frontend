@@ -51,11 +51,14 @@ export default async ({ params }: { params: Params }) => {
   const panelQuestions = panel.components
   const panelLabel = panel.label
 
-  // Pass question ids to the action
-  const questionIds = panelQuestions.map((question) => ({
-    key: question.key,
-    id: question.question,
+  // Pass question keys and ids to the action
+  const questionKeysAndIds = panelQuestions.map(({ key, question }) => ({
+    id: question,
+    key: key,
   }))
+
+  // Pass required questions keys to the action
+  const requiredQuestionKeys = panelQuestions.filter((question) => question.validate?.required).map(({ key }) => key)
 
   // Pass isLastPanel to the action
   const isLastPanel = currentPanelIndex === data.components.length - 1
@@ -70,7 +73,8 @@ export default async ({ params }: { params: Params }) => {
     isLastPanel,
     lastPanelPath,
     nextPanelPath,
-    questionIds,
+    questionKeysAndIds,
+    requiredQuestionKeys,
   }
 
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)

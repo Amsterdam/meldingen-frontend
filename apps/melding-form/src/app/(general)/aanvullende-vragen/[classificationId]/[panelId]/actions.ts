@@ -12,11 +12,12 @@ type ArgsType = {
   isLastPanel: boolean
   lastPanelPath: string
   nextPanelPath: string
-  questionIds: { key: string; id: number }[]
+  questionKeysAndIds: { key: string; id: number }[]
+  requiredQuestionKeys: string[]
 }
 
 export const postForm = async (
-  { isLastPanel, lastPanelPath, nextPanelPath, questionIds }: ArgsType,
+  { isLastPanel, lastPanelPath, nextPanelPath, questionKeysAndIds, requiredQuestionKeys }: ArgsType,
   _: unknown,
   formData: FormData,
 ) => {
@@ -37,13 +38,31 @@ export const postForm = async (
   const entries = Object.entries(formDataObj)
   const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(entries))
 
+  // if entries do not contain a key that is in requiredQuestionKeys,
+  // or if the value is an empty string, return a validation error for that key
+  const missingRequiredKeys = requiredQuestionKeys.filter(
+    (requiredKey) =>
+      !entriesWithMergedCheckboxes.some(([key]) => key === requiredKey) ||
+      !entriesWithMergedCheckboxes.find(([key, value]) => key === requiredKey && value),
+  )
+
+  if (missingRequiredKeys.length > 0) {
+    return {
+      validationErrors: missingRequiredKeys.map((key) => ({
+        key,
+        message: 'Vraag is verplicht en moet worden beantwoord.',
+      })),
+      formData,
+    }
+  }
+
   const promiseArray = entriesWithMergedCheckboxes.map(([key, value]) => {
     if (value instanceof File) return undefined
 
     // Filter out empty answers
     if (value.length === 0) return undefined
 
-    const questionId = questionIds.find((component) => component.key === key)?.id
+    const questionId = questionKeysAndIds.find((component) => component.key === key)?.id
 
     if (!questionId) return undefined
 
@@ -76,6 +95,7 @@ export const postForm = async (
       query: { token },
     })
 
+    // TODO: deze error moet vervangen worden door een generieke error
     if (error) return { errorMessage: handleApiError(error), formData }
   }
 

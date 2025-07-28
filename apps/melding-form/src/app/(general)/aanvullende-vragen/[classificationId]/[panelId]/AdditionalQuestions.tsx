@@ -1,6 +1,6 @@
 'use client'
 
-import { Alert, Paragraph } from '@amsterdam/design-system-react'
+import { Alert, InvalidFormAlert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
@@ -17,12 +17,18 @@ export type Props = {
   previousPanelPath: string
 }
 
-const initialState: { errorMessage?: string; formData?: FormData } = {}
+export type ValidationError = {
+  key: string
+  message: string
+}
+
+const initialState: { errorMessage?: string; formData?: FormData; validationErrors?: ValidationError[] } = {}
 
 export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Props) => {
-  const [{ formData, errorMessage }, formAction] = useActionState(action, initialState)
+  const [{ formData, errorMessage, validationErrors }, formAction] = useActionState(action, initialState)
 
   const t = useTranslations('additional-questions')
+  const tShared = useTranslations('shared')
 
   const prefilledFormComponents = formComponents.map((component) => {
     if (isSelectboxes(component)) {
@@ -48,11 +54,25 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
         </Alert>
       )}
       <FormHeader title={t('title')} step={t('step')} />
+      {validationErrors && (
+        <InvalidFormAlert
+          className="ams-mb-m"
+          headingLevel={2}
+          errors={validationErrors.map((validationError) => {
+            return {
+              id: `#${validationError.key}`,
+              label: validationError.message,
+            }
+          })}
+          heading={tShared('invalid-form-alert-title')}
+        />
+      )}
       <FormRenderer
         formComponents={prefilledFormComponents}
         action={formAction}
         panelLabel={panelLabel}
         submitButtonText={t('submit-button')}
+        validationErrors={validationErrors}
       />
     </>
   )
