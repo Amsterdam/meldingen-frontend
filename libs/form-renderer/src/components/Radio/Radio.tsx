@@ -36,13 +36,15 @@ export const Radio = ({ description, errorMessage, hasHeading, id, label, valida
     )}
     {errorMessage && <ErrorMessage id={`${id}-error`}>{errorMessage}</ErrorMessage>}
     <Column gap="x-small">
-      {values.map(({ label: radioLabel, value }) => (
+      {values.map(({ label: radioLabel, value }, index) => (
         <ADSRadio
           key={value}
           aria-required={validate?.required ? 'true' : undefined}
+          defaultChecked={value === defaultValue}
+          id={index === 0 ? id : undefined} // Use component id for first radio, to be able to link to it in the Invalid Form Alert
+          invalid={Boolean(errorMessage)}
           name={id}
           value={value}
-          defaultChecked={value === defaultValue}
         >
           {radioLabel}
         </ADSRadio>

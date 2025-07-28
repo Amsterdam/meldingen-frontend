@@ -49,11 +49,12 @@ export const Checkbox = ({
       )}
       {errorMessage && <ErrorMessage id={`${id}-error`}>{errorMessage}</ErrorMessage>}
       <Column gap="x-small">
-        {values.map(({ label: checkboxLabel, value }) => (
+        {values.map(({ label: checkboxLabel, value }, index) => (
           <ADSCheckbox
             key={value}
             aria-required={validate?.required ? 'true' : undefined}
             defaultChecked={defaultValues?.includes(value)}
+            id={index === 0 ? id : undefined} // Use component id for first checkbox, to be able to link to it in the Invalid Form Alert
             invalid={Boolean(errorMessage)}
             name={`checkbox___${id}___${value}`}
             value={value}
