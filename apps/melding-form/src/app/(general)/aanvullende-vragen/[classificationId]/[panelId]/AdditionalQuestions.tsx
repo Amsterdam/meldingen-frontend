@@ -9,32 +9,12 @@ import type { Component } from '@meldingen/form-renderer'
 
 import { FormHeader } from '../../../_components/FormHeader/FormHeader'
 
-// TODO: fix types
-export type Props = {
-  action: any
-  formComponents: Component[]
-  panelLabel: string
-  previousPanelPath: string
-}
-
-export type ValidationError = {
-  key: string
-  message: string
-}
-
-const initialState: { errorMessage?: string; formData?: FormData; validationErrors?: ValidationError[] } = {}
-
-export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Props) => {
-  const [{ formData, errorMessage, validationErrors }, formAction] = useActionState(action, initialState)
-
-  const t = useTranslations('additional-questions')
-  const tShared = useTranslations('shared')
-
-  const prefilledFormComponents = formComponents.map((component) => {
+const getPrefilledFormComponents = (components: Component[], formData?: FormData): Component[] =>
+  components.map((component) => {
     if (isSelectboxes(component)) {
       const defaultValues = component.values.map(({ value }) => formData?.get(`checkbox___${component.key}___${value}`))
 
-      return { ...component, defaultValues: defaultValues }
+      return { ...component, defaultValues }
     }
 
     const formValue = formData?.get(component.key)
@@ -45,6 +25,35 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
 
     return component
   })
+
+export type ValidationError = {
+  key: string
+  message: string
+}
+
+const mapValidationErrors = (errors?: ValidationError[]) =>
+  errors?.map((validationError) => ({
+    id: `#${validationError.key}`,
+    label: validationError.message,
+  })) || []
+
+// TODO: fix types
+export type Props = {
+  action: any
+  formComponents: Component[]
+  panelLabel: string
+  previousPanelPath: string
+}
+
+const initialState: { errorMessage?: string; formData?: FormData; validationErrors?: ValidationError[] } = {}
+
+export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Props) => {
+  const [{ formData, errorMessage, validationErrors }, formAction] = useActionState(action, initialState)
+
+  const t = useTranslations('additional-questions')
+  const tShared = useTranslations('shared')
+
+  const prefilledFormComponents = getPrefilledFormComponents(formComponents, formData)
 
   return (
     <>
@@ -58,12 +67,7 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
         <InvalidFormAlert
           className="ams-mb-m"
           headingLevel={2}
-          errors={validationErrors.map((validationError) => {
-            return {
-              id: `#${validationError.key}`,
-              label: validationError.message,
-            }
-          })}
+          errors={mapValidationErrors(validationErrors)}
           heading={tShared('invalid-form-alert-title')}
         />
       )}
