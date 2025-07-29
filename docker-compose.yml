@@ -26,14 +26,17 @@ services:
       - meldingen_network
   back-office:
     image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-signalen/meldingen-frontend-back-office}:${VERSION:-latest}
+    environment:
+      ISSUER_URL: http://localhost:8002/realms/meldingen
+      AUTH_URL: http://localhost:8002/realms/meldingen/protocol/openid-connect/auth
+      JWKS_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/certs
+      TOKEN_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/token
+      USERINFO_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/userinfo
     build:
       context: .
       target: back_office
       args:
         NEXT_INTERNAL_BACKEND_BASE_URL: http://meldingen:8000
-        CLIENT_ID: meldingen
-        CLIENT_SECRET: ""
-        AUTH_ISSUER: http://localhost:8002/realms/meldingen
     ports:
       - '3002:3002'
     networks:

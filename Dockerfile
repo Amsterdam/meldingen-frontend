@@ -20,9 +20,6 @@ ARG VITE_KEYCLOAK_REALM
 ARG VITE_KEYCLOAK_CLIENT_ID
 ARG VITE_BACKEND_BASE_URL
 
-ARG CLIENT_ID
-ARG AUTH_ISSUER
-
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm build
 
@@ -90,7 +87,7 @@ CMD ["node", "apps/melding-form/server.js"]
 
 
 ################################################
-#                 MELDING FORM                 #
+#                 BACK-OFFICE                  #
 ################################################
 # Sourced from https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 FROM base AS back_office
