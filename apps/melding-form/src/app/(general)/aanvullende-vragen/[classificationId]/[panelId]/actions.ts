@@ -58,7 +58,12 @@ const buildAnswerPromises = (
         question_id: questionId,
       },
       query: { token },
-    }).catch((error) => error)
+    }).then((results) => {
+      return {
+        key: key,
+        value: results,
+      }
+    })
   })
 
 export const postForm = async (
@@ -97,12 +102,25 @@ export const postForm = async (
   const promiseArray = buildAnswerPromises(entriesWithMergedCheckboxes, questionKeysAndIds, meldingId, token)
   const results = await Promise.all(promiseArray)
 
-  // Return a string of all error messages and do not redirect if one of the requests failed
-  const erroredResults = results.filter((result) => result?.error)
+  // Return validation errors if there are any
+  const resultsWithValidationError = results.filter((result) => result?.value.response.status === 422)
+
+  if (resultsWithValidationError.length > 0) {
+    return {
+      validationErrors: resultsWithValidationError.map((result) => ({
+        key: result?.key,
+        message: handleApiError(result?.value.error),
+      })),
+      formData,
+    }
+  }
+
+  // Return a string of all error messages if there are any
+  const erroredResults = results.filter((result) => result?.value.error)
 
   if (erroredResults.length > 0) {
     return {
-      errorMessage: erroredResults.map(({ error }) => handleApiError(error)).join(', '),
+      errorMessage: erroredResults.map((result) => handleApiError(result?.value.error)).join(', '),
       formData,
     }
   }
