@@ -34,7 +34,7 @@ services:
       USERINFO_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/userinfo
     build:
       context: .
-      target: back_office
+      target: back_office_meldingen
       args:
         NEXT_INTERNAL_BACKEND_BASE_URL: http://meldingen:8000
     ports:
