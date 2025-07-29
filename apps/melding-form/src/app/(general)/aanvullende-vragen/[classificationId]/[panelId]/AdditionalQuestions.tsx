@@ -71,9 +71,8 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
   useEffect(() => {
     if (validationErrors) {
       const errorCount = validationErrors.length
-      const isSingle = errorCount === 1
 
-      setDocumentTitle(`(${errorCount} ${isSingle ? 'invoerfout' : 'invoerfouten'}) ${t('metadata.title')}`)
+      setDocumentTitle(`${tShared('error-count-label', { count: errorCount })} ${t('metadata.title')}`)
     }
   }, [validationErrors])
 
