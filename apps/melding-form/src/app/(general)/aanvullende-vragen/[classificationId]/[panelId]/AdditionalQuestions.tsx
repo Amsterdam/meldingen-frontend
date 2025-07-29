@@ -32,11 +32,11 @@ export type ValidationError = {
   message: string
 }
 
-const mapValidationErrors = (errors?: ValidationError[]) =>
-  errors?.map((validationError) => ({
+const mapValidationErrors = (errors: ValidationError[]) =>
+  errors.map((validationError) => ({
     id: `#${validationError.key}`,
     label: validationError.message,
-  })) || []
+  }))
 
 // TODO: fix types
 export type Props = {
