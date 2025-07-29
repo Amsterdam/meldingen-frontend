@@ -1,11 +1,12 @@
 'use client'
 
-import { Alert, InvalidFormAlert, Paragraph } from '@amsterdam/design-system-react'
+import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useActionState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 
 import { FormRenderer, isSelectboxes } from '@meldingen/form-renderer'
 import type { Component } from '@meldingen/form-renderer'
+import { InvalidFormAlert } from '@meldingen/ui'
 
 import { FormHeader } from '../../../_components/FormHeader/FormHeader'
 
@@ -48,6 +49,8 @@ export type Props = {
 const initialState: { errorMessage?: string; formData?: FormData; validationErrors?: ValidationError[] } = {}
 
 export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Props) => {
+  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
+
   const [{ formData, errorMessage, validationErrors }, formAction] = useActionState(action, initialState)
 
   const t = useTranslations('additional-questions')
@@ -55,8 +58,28 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
 
   const prefilledFormComponents = getPrefilledFormComponents(formComponents, formData)
 
+  // Set focus on InvalidFormAlert when there are validation errors
+  useEffect(() => {
+    if (invalidFormAlertRef.current && validationErrors) {
+      invalidFormAlertRef.current.focus()
+    }
+  }, [validationErrors])
+
+  // Update document title when there are validation errors
+  const [documentTitle, setDocumentTitle] = useState(t('metadata.title'))
+
+  useEffect(() => {
+    if (validationErrors) {
+      const errorCount = validationErrors.length
+      const isSingle = errorCount === 1
+
+      setDocumentTitle(`(${errorCount} ${isSingle ? 'invoerfout' : 'invoerfouten'}) ${t('metadata.title')}`)
+    }
+  }, [validationErrors])
+
   return (
     <>
+      <title>{documentTitle}</title>
       {errorMessage && (
         <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
           <Paragraph>{errorMessage}</Paragraph>
@@ -66,9 +89,10 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"
-          headingLevel={2}
           errors={mapValidationErrors(validationErrors)}
           heading={tShared('invalid-form-alert-title')}
+          headingLevel={2}
+          ref={invalidFormAlertRef}
         />
       )}
       <FormRenderer

@@ -1,0 +1,3 @@
+.alert {
+  outline-offset: var(--ams-invalid-form-alert-outline-offset);
+}

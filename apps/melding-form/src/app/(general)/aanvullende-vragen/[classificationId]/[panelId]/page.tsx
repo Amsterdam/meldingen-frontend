@@ -1,5 +1,4 @@
 import { redirect } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
 
 import type { FormOutput, FormPanelComponentOutput } from '@meldingen/api-client'
 import { getFormClassificationByClassificationId } from '@meldingen/api-client'
@@ -8,14 +7,6 @@ import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 
 export const dynamic = 'force-dynamic'
-
-export const generateMetadata = async () => {
-  const t = await getTranslations('additional-questions')
-
-  return {
-    title: t('metadata.title'),
-  }
-}
 
 type Params = Promise<{
   classificationId: number
