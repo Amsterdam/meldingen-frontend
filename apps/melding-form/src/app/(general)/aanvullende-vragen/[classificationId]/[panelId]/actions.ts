@@ -114,7 +114,6 @@ export const postForm = async (
       query: { token },
     })
 
-    // TODO: deze error moet vervangen worden door een generieke error
     if (error) return { errorMessage: handleApiError(error), formData }
   }
 
