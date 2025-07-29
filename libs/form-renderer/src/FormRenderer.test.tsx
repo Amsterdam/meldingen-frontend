@@ -10,6 +10,14 @@ const defaultProps: Props = {
   submitButtonText: 'Volgende vraag',
 }
 
+const components = [
+  { index: 0, name: 'TextInput', role: 'textbox' },
+  { index: 1, name: 'TextArea', role: 'textbox' },
+  { index: 2, name: 'CheckboxGroup', role: 'group' },
+  { index: 3, name: 'Select', role: 'combobox' },
+  { index: 4, name: 'RadioGroup', role: 'radiogroup' },
+]
+
 describe('FormRenderer', () => {
   it('renders a heading if there is more than one form component', () => {
     render(<FormRenderer {...defaultProps} />)
@@ -27,44 +35,14 @@ describe('FormRenderer', () => {
     expect(form).toBeInTheDocument()
   })
 
-  it('renders a TextInput', () => {
-    render(<FormRenderer {...defaultProps} />)
+  components.map(({ name, index, role }) => {
+    it(`renders a ${name}`, () => {
+      render(<FormRenderer {...defaultProps} />)
 
-    const textInput = screen.getByRole('textbox', { name: form.components[0].components[0].label })
+      const component = screen.getByRole(role, { name: form.components[0].components[index].label })
 
-    expect(textInput).toBeInTheDocument()
-  })
-
-  it('renders a TextArea', () => {
-    render(<FormRenderer {...defaultProps} />)
-
-    const textArea = screen.getByRole('textbox', { name: form.components[0].components[1].label })
-
-    expect(textArea).toBeInTheDocument()
-  })
-
-  it('renders a Checkbox group', () => {
-    render(<FormRenderer {...defaultProps} />)
-
-    const checkboxGroup = screen.getByRole('group', { name: form.components[0].components[2].label })
-
-    expect(checkboxGroup).toBeInTheDocument()
-  })
-
-  it('renders a Select', () => {
-    render(<FormRenderer {...defaultProps} />)
-
-    const select = screen.getByRole('combobox', { name: form.components[0].components[3].label })
-
-    expect(select).toBeInTheDocument()
-  })
-
-  it('renders a Radio group', () => {
-    render(<FormRenderer {...defaultProps} />)
-
-    const radioGroup = screen.getByRole('radiogroup', { name: form.components[0].components[4].label })
-
-    expect(radioGroup).toBeInTheDocument()
+      expect(component).toBeInTheDocument()
+    })
   })
 
   it('renders nothing if an unsupported component is passed', () => {
@@ -93,68 +71,54 @@ describe('FormRenderer', () => {
     expect(submitButton).toBeInTheDocument()
   })
 
-  it('renders a TextInput with a heading if there is only 1 TextInput', () => {
-    const props: Props = {
-      ...defaultProps,
-      formComponents: [form.components[0].components[0]],
-    }
+  components.map(({ name, index }) => {
+    it(`renders a ${name} with a heading if there is only 1 ${name}`, () => {
+      const props: Props = {
+        ...defaultProps,
+        formComponents: [form.components[0].components[index]],
+      }
 
-    render(<FormRenderer {...props} />)
+      render(<FormRenderer {...props} />)
 
-    const heading = screen.getByRole('heading', { name: form.components[0].components[0].label })
+      const heading = screen.getByRole('heading', { name: form.components[0].components[index].label })
 
-    expect(heading).toBeInTheDocument()
+      expect(heading).toBeInTheDocument()
+    })
   })
 
-  it('renders a TextArea with a heading if there is only 1 TextArea', () => {
-    const props: Props = {
-      ...defaultProps,
-      formComponents: [form.components[0].components[1]],
+  components.map(({ name, index, role }) => {
+    if (name !== 'CheckboxGroup') {
+      it(`renders a ${name} with an error when there is one`, () => {
+        render(
+          <FormRenderer
+            {...defaultProps}
+            validationErrors={[{ key: form.components[0].components[index].key, message: 'Test error message' }]}
+          />,
+        )
+
+        const components = screen.getByRole(role, {
+          name: form.components[0].components[index].label,
+          description: 'Invoerfout: Test error message',
+        })
+
+        expect(components).toBeInTheDocument()
+      })
+    } else {
+      // Because of an NVDA bug, we need to add the description and error to the label
+      it(`renders a CheckboxGroup with an error when there is one`, () => {
+        render(
+          <FormRenderer
+            {...defaultProps}
+            validationErrors={[{ key: form.components[0].components[index].key, message: 'Test error message' }]}
+          />,
+        )
+
+        const components = screen.getByRole(role, {
+          name: `${form.components[0].components[index].label} Invoerfout: Test error message`,
+        })
+
+        expect(components).toBeInTheDocument()
+      })
     }
-
-    render(<FormRenderer {...props} />)
-
-    const heading = screen.getByRole('heading', { name: form.components[0].components[1].label })
-
-    expect(heading).toBeInTheDocument()
-  })
-
-  it('renders a Checkbox group with a heading if there is only 1 Checkbox group', () => {
-    const props: Props = {
-      ...defaultProps,
-      formComponents: [form.components[0].components[2]],
-    }
-
-    render(<FormRenderer {...props} />)
-
-    const heading = screen.getByRole('heading', { name: form.components[0].components[2].label })
-
-    expect(heading).toBeInTheDocument()
-  })
-
-  it('renders a Select with a heading if there is only 1 Select', () => {
-    const props: Props = {
-      ...defaultProps,
-      formComponents: [form.components[0].components[3]],
-    }
-
-    render(<FormRenderer {...props} />)
-
-    const heading = screen.getByRole('heading', { name: form.components[0].components[3].label })
-
-    expect(heading).toBeInTheDocument()
-  })
-
-  it('renders a Radio group  with a heading if there is only 1 Radio group', () => {
-    const props: Props = {
-      ...defaultProps,
-      formComponents: [form.components[0].components[4]],
-    }
-
-    render(<FormRenderer {...props} />)
-
-    const heading = screen.getByRole('heading', { name: form.components[0].components[4].label })
-
-    expect(heading).toBeInTheDocument()
   })
 })

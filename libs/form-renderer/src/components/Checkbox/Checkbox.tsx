@@ -33,8 +33,8 @@ export const Checkbox = ({
 
   return (
     <FieldSet
-      // The description and the error ids are added to the FieldSet's label, because of an NVDA bug.
-      // See https://designsystem.amsterdam/?path=/docs/components-forms-field-set--docs#checkbox-group
+      // Because of an NVDA bug, we need to add the description and error to the label (https://github.com/nvaccess/nvda/issues/12718)
+      // For more information, see https://designsystem.amsterdam/?path=/docs/components-forms-field-set--docs#checkbox-group
       aria-labelledby={`${id}-fieldset${ariaDescribedBy ? ` ${ariaDescribedBy}` : ''}`}
       id={`${id}-fieldset`}
       invalid={Boolean(errorMessage)}

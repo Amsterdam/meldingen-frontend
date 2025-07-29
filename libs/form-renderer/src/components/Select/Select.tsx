@@ -2,6 +2,8 @@ import { ErrorMessage, Field, Label, Select as ADSSelect } from '@amsterdam/desi
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
+import { getAriaDescribedBy } from '../../utils'
+
 import styles from './Select.module.css'
 
 export type Props = {
@@ -38,7 +40,7 @@ export const Select = ({ description, errorMessage, hasHeading, id, label, valid
       {errorMessage && <ErrorMessage id={`${id}-error`}>{errorMessage}</ErrorMessage>}
       <ADSSelect
         key={defaultValue}
-        aria-describedby={description ? `${id}-description` : undefined}
+        aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
         aria-required={validate?.required ? 'true' : undefined}
         id={id}
         invalid={Boolean(errorMessage)}

@@ -60,4 +60,25 @@ describe('TextInput Component', () => {
 
     expect(heading).not.toBeInTheDocument()
   })
+
+  it('renders an error message when there is one', () => {
+    render(<TextInput {...defaultProps} errorMessage="Test error message" />)
+
+    const textInputWithErrorMessage = screen.getByRole('textbox', {
+      name: defaultProps.label,
+      description: 'Invoerfout: Test error message',
+    })
+
+    expect(textInputWithErrorMessage).toBeInTheDocument()
+  })
+
+  it('marks the Field and input as invalid when there is an error message', () => {
+    const { container } = render(<TextInput {...defaultProps} errorMessage="Test error message" />)
+
+    const field = container.firstChild
+    expect(field).toHaveClass('ams-field--invalid')
+
+    const input = screen.getByRole('textbox', { name: defaultProps.label })
+    expect(input).toHaveAttribute('aria-invalid', 'true')
+  })
 })
