@@ -1,6 +1,7 @@
 import {
   AnswerQuestionOutput,
   Feature,
+  FormCheckboxComponentOutput,
   FormOutput,
   FormTextAreaComponentOutput,
   MeldingOutput,
@@ -17,6 +18,32 @@ export const textAreaComponent: FormTextAreaComponentOutput = {
   maxCharCount: 0,
   position: 1,
   question: 1,
+}
+
+export const checkboxComponent: FormCheckboxComponentOutput = {
+  label: 'Select Boxes 1',
+  description: '',
+  key: 'selectBoxes',
+  type: 'selectboxes',
+  input: true,
+  position: 1,
+  validate: {
+    json: null,
+    required: true,
+  },
+  values: [
+    {
+      label: 'One',
+      value: 'one',
+      position: 1,
+    },
+    {
+      label: 'Two',
+      value: 'two',
+      position: 2,
+    },
+  ],
+  question: 2,
 }
 
 export const form: FormOutput = {

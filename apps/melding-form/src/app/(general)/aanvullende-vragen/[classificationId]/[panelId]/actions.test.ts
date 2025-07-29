@@ -20,10 +20,11 @@ describe('postForm', () => {
     isLastPanel: true,
     lastPanelPath: '/test',
     nextPanelPath: '/',
-    questionIds: [
+    questionKeysAndIds: [
       { key: 'key1', id: 1 },
       { key: 'key2', id: 2 },
     ],
+    requiredQuestionKeys: [],
   }
 
   const mockCookies = (id?: string, token?: string) => {
@@ -59,6 +60,18 @@ describe('postForm', () => {
 
     const cookieInstance = await cookies()
     expect(cookieInstance.set).toHaveBeenCalledWith('lastPanelPath', '/test')
+  })
+
+  it('returns validation errors for missing required questions', async () => {
+    const formData = new FormData()
+    formData.append('key1', 'value1') // key2 is missing
+
+    const result = await postForm({ ...defaultArgs, requiredQuestionKeys: ['key1', 'key2'] }, null, formData)
+
+    expect(result).toEqual({
+      validationErrors: [{ key: 'key2', message: 'Vraag is verplicht en moet worden beantwoord.' }],
+      formData,
+    })
   })
 
   it('returns an error message if an error occurs when posting a single answer', async () => {
