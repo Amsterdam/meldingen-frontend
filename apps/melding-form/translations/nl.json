@@ -137,5 +137,9 @@
     "title": "Er is iets misgegaan",
     "description": "U kunt ook bellen met telefoonnummer 14 020. Maandag tot en met vrijdag van 08.00 tot 18.00 uur.",
     "button": "Probeer het opnieuw"
+  },
+  "shared": {
+    "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
+    "error-count-label": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})"
   }
 }

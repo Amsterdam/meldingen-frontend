@@ -1,21 +1,13 @@
 import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
-import Page, { generateMetadata } from './page'
+import Page from './page'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
-
-describe('generateMetadata', () => {
-  it('returns the correct metadata title', async () => {
-    const metadata = await generateMetadata()
-
-    expect(metadata).toEqual({ title: 'metadata.title' })
-  })
-})
 
 describe('Page', () => {
   it('throws an error if form cannot be fetched by classification', async () => {
