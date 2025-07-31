@@ -87,7 +87,23 @@ describe('FormRenderer', () => {
   })
 
   components.map(({ name, index, role }) => {
-    if (name !== 'CheckboxGroup') {
+    if (name === 'CheckboxGroup') {
+      // Because of an NVDA bug, we need to add the description and error to the label of a Checkbox group
+      it(`renders a CheckboxGroup with an error when there is one`, () => {
+        render(
+          <FormRenderer
+            {...defaultProps}
+            validationErrors={[{ key: form.components[0].components[index].key, message: 'Test error message' }]}
+          />,
+        )
+
+        const components = screen.getByRole(role, {
+          name: `${form.components[0].components[index].label} Invoerfout: Test error message`,
+        })
+
+        expect(components).toBeInTheDocument()
+      })
+    } else {
       it(`renders a ${name} with an error when there is one`, () => {
         render(
           <FormRenderer
@@ -99,22 +115,6 @@ describe('FormRenderer', () => {
         const components = screen.getByRole(role, {
           name: form.components[0].components[index].label,
           description: 'Invoerfout: Test error message',
-        })
-
-        expect(components).toBeInTheDocument()
-      })
-    } else {
-      // Because of an NVDA bug, we need to add the description and error to the label
-      it(`renders a CheckboxGroup with an error when there is one`, () => {
-        render(
-          <FormRenderer
-            {...defaultProps}
-            validationErrors={[{ key: form.components[0].components[index].key, message: 'Test error message' }]}
-          />,
-        )
-
-        const components = screen.getByRole(role, {
-          name: `${form.components[0].components[index].label} Invoerfout: Test error message`,
         })
 
         expect(components).toBeInTheDocument()
