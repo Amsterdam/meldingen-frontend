@@ -5,6 +5,9 @@ import { forwardRef, useImperativeHandle, useRef } from 'react'
 
 import styles from './InvalidFormAlert.module.css'
 
+// TODO: Copied this from Amsterdam Design System, because their built in focus on render and change page title does not work well.
+// Replace with ADS component when they've fixed that.
+
 export const InvalidFormAlert = forwardRef(
   (
     {
