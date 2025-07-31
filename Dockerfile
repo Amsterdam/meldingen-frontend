@@ -14,17 +14,6 @@ WORKDIR /app
 #################################################
 FROM base AS build
 
-# Set args for the Admin application. These are inlined at build time.
-#ARG VITE_KEYCLOAK_BASE_URL
-#ARG VITE_KEYCLOAK_REALM
-#ARG VITE_KEYCLOAK_CLIENT_ID
-#ARG VITE_BACKEND_BASE_URL
-#
-#ENV VITE_KEYCLOAK_BASE_URL=$VITE_KEYCLOAK_BASE_URL
-#ENV VITE_KEYCLOAK_REALM=$VITE_KEYCLOAK_REALM
-#ENV VITE_KEYCLOAK_CLIENT_ID=$VITE_KEYCLOAK_CLIENT_ID
-#ENV VITE_BACKEND_BASE_UR=$VITE_BACKEND_BASE_URL
-
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm build
 

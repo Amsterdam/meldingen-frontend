@@ -4,11 +4,6 @@ services:
     build:
       context: .
       target: admin_meldingen
-#      args:
-#        VITE_KEYCLOAK_BASE_URL: ${VITE_KEYCLOAK_BASE_URL:-http://localhost:8002} # TODO add fallback
-#        VITE_KEYCLOAK_REALM: ${VITE_KEYCLOAK_REALM:-meldingen}
-#        VITE_KEYCLOAK_CLIENT_ID: ${VITE_KEYCLOAK_CLIENT_ID:-meldingen}
-#        VITE_BACKEND_BASE_URL: ${VITE_BACKEND_BASE_URL:-http://localhost:8000}
     ports:
       - '3001:3001'
     networks:
