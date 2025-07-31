@@ -84,7 +84,6 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
           <Paragraph>{errorMessage}</Paragraph>
         </Alert>
       )}
-      <FormHeader title={t('title')} step={t('step')} />
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"
@@ -94,6 +93,7 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
           ref={invalidFormAlertRef}
         />
       )}
+      <FormHeader title={t('title')} step={t('step')} />
       <FormRenderer
         formComponents={prefilledFormComponents}
         action={formAction}
