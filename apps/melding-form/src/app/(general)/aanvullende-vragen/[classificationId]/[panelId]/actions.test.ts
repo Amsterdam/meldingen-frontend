@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
 
 import { postForm } from './actions'
+import { buildAnswerPromises } from './actions'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
@@ -14,6 +15,35 @@ vi.mock('next/headers', () => ({
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
+
+describe('buildAnswerPromises', () => {
+  it('returns an array with undefined when the answer is an empty string', () => {
+    const emptyEntry: [string, string] = ['key1', '']
+    const questionKeysAndIds = [{ key: 'key1', id: 1 }]
+
+    const result = buildAnswerPromises([emptyEntry], questionKeysAndIds, '123', 'test-token')
+
+    expect(result).toEqual([undefined])
+  })
+
+  it('returns an array with undefined when the answer is a file', () => {
+    const fileEntry: [string, File] = ['key1', new File([''], 'filename.txt')]
+    const questionKeysAndIds = [{ key: 'key1', id: 1 }]
+
+    const result = buildAnswerPromises([fileEntry], questionKeysAndIds, '123', 'test-token')
+
+    expect(result).toEqual([undefined])
+  })
+
+  it('returns an array with undefined when questionKeysAndIds does not contain the entry key', () => {
+    const entry: [string, string] = ['key1', 'test']
+    const questionKeysAndIds = [{ key: 'key2', id: 1 }]
+
+    const result = buildAnswerPromises([entry], questionKeysAndIds, '123', 'test-token')
+
+    expect(result).toEqual([undefined])
+  })
+})
 
 describe('postForm', () => {
   const defaultArgs = {
@@ -70,6 +100,24 @@ describe('postForm', () => {
 
     expect(result).toEqual({
       validationErrors: [{ key: 'key2', message: 'Vraag is verplicht en moet worden beantwoord.' }],
+      formData,
+    })
+  })
+
+  it('returns validation errors for other invalid answers', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>
+        HttpResponse.json({ detail: 'Validation error' }, { status: 422 }),
+      ),
+    )
+
+    const formData = new FormData()
+    formData.append('key1', 'value1')
+
+    const result = await postForm(defaultArgs, null, formData)
+
+    expect(result).toEqual({
+      validationErrors: [{ key: 'key1', message: 'Validation error' }],
       formData,
     })
   })

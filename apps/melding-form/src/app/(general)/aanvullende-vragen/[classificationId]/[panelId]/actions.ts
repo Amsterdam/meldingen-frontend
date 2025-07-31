@@ -35,7 +35,7 @@ const mapValidationErrors = (keys: string[]) =>
     message: 'Vraag is verplicht en moet worden beantwoord.',
   }))
 
-const buildAnswerPromises = (
+export const buildAnswerPromises = (
   entries: [string, string | File][],
   questionKeysAndIds: { key: string; id: number }[],
   meldingId: string,
