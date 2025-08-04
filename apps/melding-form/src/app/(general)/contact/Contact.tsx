@@ -1,6 +1,7 @@
 'use client'
 
 import { Alert, Field, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-system-react'
+import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
@@ -39,7 +40,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
 
       <MarkdownToHtml className="ams-mb-m">{t('description')}</MarkdownToHtml>
 
-      <form action={formAction}>
+      <Form action={formAction} noValidate>
         <Field>
           <Label htmlFor="email-input" optional>
             {emailLabel}
@@ -89,7 +90,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
         </Field>
 
         <SubmitButton>{t('submit-button')}</SubmitButton>
-      </form>
+      </Form>
     </>
   )
 }

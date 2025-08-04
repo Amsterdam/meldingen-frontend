@@ -78,7 +78,7 @@ export const postForm = async (
   if (resultsWithValidationError.length > 0) {
     return {
       validationErrors: resultsWithValidationError.map((result) => ({
-        key: result?.key,
+        key: result?.key || 'fallback-key',
         message: handleApiError(result?.value.error),
       })),
       formData,

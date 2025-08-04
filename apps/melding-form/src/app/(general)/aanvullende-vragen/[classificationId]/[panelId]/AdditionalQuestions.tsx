@@ -38,15 +38,20 @@ const mapValidationErrors = (errors: ValidationError[]) =>
     label: validationError.message,
   }))
 
-// TODO: fix types
+type FormState = {
+  errorMessage?: string
+  formData?: FormData
+  validationErrors?: ValidationError[]
+}
+
 export type Props = {
-  action: any
+  action: (_: unknown, formData: FormData) => Promise<FormState>
   formComponents: Component[]
   panelLabel: string
   previousPanelPath: string
 }
 
-const initialState: { errorMessage?: string; formData?: FormData; validationErrors?: ValidationError[] } = {}
+const initialState: FormState = {}
 
 export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)

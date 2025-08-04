@@ -236,7 +236,11 @@ importers:
         specifier: 4.21.7
         version: 4.21.7
 
-  libs/form-renderer: {}
+  libs/form-renderer:
+    dependencies:
+      next:
+        specifier: 15.4.3
+        version: 15.4.3(@babel/core@7.28.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   libs/markdown-to-html:
     dependencies:
