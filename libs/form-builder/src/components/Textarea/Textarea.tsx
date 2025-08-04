@@ -4,7 +4,7 @@ import { Components } from '@formio/react'
 
 import { editForm } from './editForm'
 
-const FormioTextarea = (Components as any).components.textarea
+const FormioTextarea = Components.components.textarea
 
 export class Textarea extends FormioTextarea {
   get inputInfo() {

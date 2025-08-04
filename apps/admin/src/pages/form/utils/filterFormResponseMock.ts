@@ -1,3 +1,5 @@
+import type { FormType } from '@formio/react'
+
 const mockPanels = [
   {
     title: 'Page 1',
@@ -1093,7 +1095,7 @@ const mockRadios = [
   },
 ]
 
-export const mockData = {
+export const mockData: FormType & { id: number; classification: string | null } = {
   display: 'wizard',
   title: 'Test title',
   id: 2,

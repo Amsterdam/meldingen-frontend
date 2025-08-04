@@ -4,6 +4,7 @@ import type { DataProvider, fetchUtils } from 'react-admin'
 type HttpClient = (
   url: string,
   options?: fetchUtils.Options,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ) => Promise<{ status: number; headers: Headers; body: string; json: any }>
 
 export const dataProvider = (apiUrl: string, httpClient: HttpClient): DataProvider => ({
