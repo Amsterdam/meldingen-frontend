@@ -167,6 +167,9 @@ export const All_InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -321,6 +324,9 @@ export const All_OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -460,6 +466,9 @@ export const And_InputSchema = {
                     },
                     {
                         '$ref': '#/components/schemas/Var'
+                    },
+                    {
+                        '$ref': '#/components/schemas/Length'
                     }
                 ]
             },
@@ -596,6 +605,9 @@ export const And_OutputSchema = {
                     },
                     {
                         '$ref': '#/components/schemas/Var'
+                    },
+                    {
+                        '$ref': '#/components/schemas/Length'
                     }
                 ]
             },
@@ -634,10 +646,14 @@ export const AnswerOutputSchema = {
         updated_at: {
             type: 'string',
             title: 'Updated At'
+        },
+        text: {
+            type: 'string',
+            title: 'Text'
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at'],
+    required: ['id', 'created_at', 'updated_at', 'text'],
     title: 'AnswerOutput'
 } as const;
 
@@ -1380,6 +1396,9 @@ export const Filter_InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -1534,6 +1553,9 @@ export const Filter_OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -1764,6 +1786,9 @@ export const FormComponentInputValidateSchema = {
                     '$ref': '#/components/schemas/Var'
                 },
                 {
+                    '$ref': '#/components/schemas/Length'
+                },
+                {
                     type: 'null'
                 }
             ],
@@ -1884,6 +1909,9 @@ export const FormComponentOutputValidateSchema = {
                 },
                 {
                     '$ref': '#/components/schemas/Var'
+                },
+                {
+                    '$ref': '#/components/schemas/Length'
                 },
                 {
                     type: 'null'
@@ -3204,6 +3232,9 @@ export const In_InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 },
@@ -3352,6 +3383,9 @@ export const In_OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 },
@@ -3385,6 +3419,45 @@ export const In_OutputSchema = {
     type: 'object',
     required: ['in'],
     title: 'In'
+} as const;
+
+export const LengthSchema = {
+    properties: {
+        length: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    prefixItems: [
+                        {
+                            anyOf: [
+                                {
+                                    type: 'string'
+                                },
+                                {
+                                    '$ref': '#/components/schemas/Var'
+                                },
+                                {
+                                    '$ref': '#/components/schemas/If'
+                                },
+                                {
+                                    '$ref': '#/components/schemas/Substr'
+                                }
+                            ]
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 1,
+                    minItems: 1
+                }
+            ],
+            title: 'Length'
+        }
+    },
+    type: 'object',
+    required: ['length'],
+    title: 'Length'
 } as const;
 
 export const LessThanSchema = {
@@ -3837,6 +3910,9 @@ export const Map_InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -3988,6 +4064,9 @@ export const Map_OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -4903,6 +4982,9 @@ export const None__InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -5057,6 +5139,9 @@ export const None__OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -5329,6 +5414,9 @@ export const Or_InputSchema = {
                     },
                     {
                         '$ref': '#/components/schemas/Var'
+                    },
+                    {
+                        '$ref': '#/components/schemas/Length'
                     }
                 ]
             },
@@ -5465,6 +5553,9 @@ export const Or_OutputSchema = {
                     },
                     {
                         '$ref': '#/components/schemas/Var'
+                    },
+                    {
+                        '$ref': '#/components/schemas/Length'
                     }
                 ]
             },
@@ -5834,6 +5925,9 @@ export const Reduce_InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 },
@@ -5986,6 +6080,9 @@ export const Reduce_OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 },
@@ -6236,6 +6333,9 @@ export const Some_InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -6390,6 +6490,9 @@ export const Some_OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
