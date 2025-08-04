@@ -32,6 +32,7 @@ const nl: TranslationMessages = {
       remove: 'Verwijderen',
       save: 'Opslaan',
       search: 'Zoeken',
+      search_columns: 'Zoeken in kolommen',
       select_all: 'Alles selecteren',
       select_all_button: 'Alles selecteren',
       select_columns: 'Kolommen',
