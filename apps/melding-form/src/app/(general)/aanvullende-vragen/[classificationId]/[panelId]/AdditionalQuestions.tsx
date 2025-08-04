@@ -2,13 +2,15 @@
 
 import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useRef, useState } from 'react'
+import { useActionState, useRef } from 'react'
 
 import { FormRenderer, isSelectboxes } from '@meldingen/form-renderer'
 import type { Component } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
 import { FormHeader } from '../../../_components/FormHeader/FormHeader'
+import { useSetFocusOnInvalidFormAlert } from '../../../_utils/useSetFocusOnInvalidFormAlert'
+import { useUpdateDocumentTitleOnError } from '../../../_utils/useUpdateDocumentTitleOnError'
 import { FormState, ValidationError } from 'apps/melding-form/src/types'
 
 const getPrefilledFormComponents = (components: Component[], formData?: FormData): Component[] =>
@@ -54,22 +56,10 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
   const prefilledFormComponents = getPrefilledFormComponents(formComponents, formData)
 
   // Set focus on InvalidFormAlert when there are validation errors
-  useEffect(() => {
-    if (invalidFormAlertRef.current && validationErrors) {
-      invalidFormAlertRef.current.focus()
-    }
-  }, [validationErrors])
+  useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
 
   // Update document title when there are validation errors
-  const [documentTitle, setDocumentTitle] = useState(t('metadata.title'))
-
-  useEffect(() => {
-    if (validationErrors) {
-      const errorCount = validationErrors.length
-
-      setDocumentTitle(`${tShared('error-count-label', { count: errorCount })} ${t('metadata.title')}`)
-    }
-  }, [validationErrors])
+  const documentTitle = useUpdateDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
 
   return (
     <>

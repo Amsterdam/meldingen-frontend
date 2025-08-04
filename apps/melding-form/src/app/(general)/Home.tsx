@@ -2,7 +2,7 @@
 
 import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useRef, useState } from 'react'
+import { useActionState, useRef } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { FormRenderer } from '@meldingen/form-renderer'
@@ -11,6 +11,8 @@ import { InvalidFormAlert } from '@meldingen/ui'
 import { FormHeader } from './_components/FormHeader/FormHeader'
 import { postPrimaryForm } from './actions'
 import { FormState } from '../../types'
+import { useSetFocusOnInvalidFormAlert } from './_utils/useSetFocusOnInvalidFormAlert'
+import { useUpdateDocumentTitleOnError } from './_utils/useUpdateDocumentTitleOnError'
 
 const initialState: FormState = {}
 
@@ -33,22 +35,10 @@ export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaCom
   })
 
   // Set focus on InvalidFormAlert when there are validation errors
-  useEffect(() => {
-    if (invalidFormAlertRef.current && validationErrors) {
-      invalidFormAlertRef.current.focus()
-    }
-  }, [validationErrors])
+  useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
 
   // Update document title when there are validation errors
-  const [documentTitle, setDocumentTitle] = useState(t('metadata.title'))
-
-  useEffect(() => {
-    if (validationErrors) {
-      const errorCount = validationErrors.length
-
-      setDocumentTitle(`${tShared('error-count-label', { count: errorCount })} ${t('metadata.title')}`)
-    }
-  }, [validationErrors])
+  const documentTitle = useUpdateDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
 
   return (
     <>
