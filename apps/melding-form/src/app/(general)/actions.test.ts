@@ -42,7 +42,24 @@ describe('postPrimaryForm', () => {
     const result = await postPrimaryForm(null, formData)
 
     expect(result).toEqual({
+      formData,
       validationErrors: [{ key: 'primary', message: 'Vraag is verplicht en moet worden beantwoord.' }],
+    })
+  })
+
+  it('returns validation errors for other invalid answers', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json({ detail: 'Validation error' }, { status: 422 })),
+    )
+
+    const formData = new FormData()
+    formData.append('primary', 'value1')
+
+    const result = await postPrimaryForm(null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'primary', message: 'Validation error' }],
     })
   })
 
