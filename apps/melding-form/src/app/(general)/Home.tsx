@@ -65,6 +65,7 @@ export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaCom
         action={formAction}
         formComponents={prefilledFormComponents}
         submitButtonText={t('submit-button')}
+        validationErrors={validationErrors}
       />
     </>
   )
