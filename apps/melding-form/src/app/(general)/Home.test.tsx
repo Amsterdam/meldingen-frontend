@@ -22,13 +22,6 @@ vi.mock('react', async (importOriginal) => {
 })
 
 describe('Page', () => {
-  it('should render a form', () => {
-    render(<Home formComponents={[mockTextAreaComponent]} />)
-
-    expect(screen.queryByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'submit-button' })).toBeInTheDocument()
-  })
-
   it('should render an error message and keep input data', () => {
     const formData = new FormData()
 
@@ -39,5 +32,26 @@ describe('Page', () => {
 
     expect(screen.queryByText('Test error message')).toBeInTheDocument()
     expect(screen.queryByText('Er staan blowende jongeren')).toBeInTheDocument()
+  })
+
+  it('renders an Invalid Form Alert when there are validation errors', () => {
+    ;(useActionState as Mock).mockReturnValue([
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      vi.fn(),
+    ])
+
+    render(<Home formComponents={[mockTextAreaComponent]} />)
+
+    const link = screen.getByRole('link', { name: 'Test error message' })
+
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '#key1')
+  })
+
+  it('should render a form', () => {
+    render(<Home formComponents={[mockTextAreaComponent]} />)
+
+    expect(screen.queryByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'submit-button' })).toBeInTheDocument()
   })
 })

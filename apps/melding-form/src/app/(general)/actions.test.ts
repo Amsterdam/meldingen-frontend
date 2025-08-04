@@ -36,6 +36,16 @@ describe('postPrimaryForm', () => {
     expect(redirect).not.toHaveBeenCalled()
   })
 
+  it('returns a validation error when primary question is not answered', async () => {
+    const formData = new FormData()
+
+    const result = await postPrimaryForm(null, formData)
+
+    expect(result).toEqual({
+      validationErrors: [{ key: 'primary', message: 'Vraag is verplicht en moet worden beantwoord.' }],
+    })
+  })
+
   it('redirects to /locatie when there are no additional questions', async () => {
     const formData = new FormData()
     formData.set('primary', 'Test')
