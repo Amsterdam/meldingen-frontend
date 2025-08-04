@@ -1,6 +1,7 @@
 'use client'
 
 import { Alert, FileList, Heading, Paragraph } from '@amsterdam/design-system-react'
+import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
@@ -103,9 +104,9 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
         )}
       </SummaryList>
 
-      <form action={formAction}>
+      <Form action={formAction} noValidate>
         <SubmitButton>{t('submit-button')}</SubmitButton>
-      </form>
+      </Form>
     </>
   )
 }

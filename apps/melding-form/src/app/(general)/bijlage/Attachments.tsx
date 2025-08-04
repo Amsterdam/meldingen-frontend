@@ -1,6 +1,7 @@
 'use client'
 
 import { Alert, ErrorMessage, Field, FileList, Label, Paragraph } from '@amsterdam/design-system-react'
+import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState, useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
@@ -106,7 +107,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
       <FormHeader title={t('title')} step={t('step')} />
 
-      <form ref={formRef} action={formAction}>
+      <Form action={formAction} noValidate ref={formRef}>
         <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
           <h1 className={styles.h1}>
             <Label htmlFor="file-upload" optional>
@@ -145,7 +146,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
           )}
         </Field>
         <SubmitButton>{t('submit-button')}</SubmitButton>
-      </form>
+      </Form>
     </>
   )
 }

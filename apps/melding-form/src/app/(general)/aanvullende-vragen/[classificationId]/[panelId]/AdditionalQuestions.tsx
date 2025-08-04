@@ -38,9 +38,11 @@ const mapValidationErrors = (errors: ValidationError[]) =>
     label: validationError.message,
   }))
 
-// TODO: fix types
 export type Props = {
-  action: any
+  action: (
+    _: unknown,
+    formData: FormData,
+  ) => Promise<{ errorMessage?: string; formData?: FormData; validationErrors?: ValidationError[] }>
   formComponents: Component[]
   panelLabel: string
   previousPanelPath: string

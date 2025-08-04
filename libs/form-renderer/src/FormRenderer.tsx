@@ -1,3 +1,5 @@
+import Form from 'next/form'
+
 import { Heading, SubmitButton } from '@meldingen/ui'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
@@ -50,15 +52,13 @@ export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonT
           {panelLabel}
         </Heading>
       )}
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/* @ts-ignore */}
-      <form className="ams-gap-m" action={action}>
+      <Form action={action} className="ams-gap-m" noValidate>
         {formComponents.map((component) => {
           const errorMessage = validationErrors?.find((error) => error.key === component.key)?.message
           return getComponent(component, hasOneFormComponent, errorMessage)
         })}
         <SubmitButton>{submitButtonText}</SubmitButton>
-      </form>
+      </Form>
     </>
   )
 }

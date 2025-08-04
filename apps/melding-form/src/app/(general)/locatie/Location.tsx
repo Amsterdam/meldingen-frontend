@@ -1,6 +1,7 @@
 'use client'
 
 import { Alert, Heading, Paragraph, StandaloneLink } from '@amsterdam/design-system-react'
+import Form from 'next/form'
 import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
@@ -46,14 +47,14 @@ export const Location = ({ locationData }: Props) => {
         </StandaloneLink>
       </NextLink>
 
-      <form action={formAction}>
+      <Form action={formAction} noValidate>
         <input
           type="hidden"
           name="coordinates"
           value={locationData?.coordinates ? JSON.stringify(locationData?.coordinates) : undefined}
         />
         <SubmitButton>{t('submit-button')}</SubmitButton>
-      </form>
+      </Form>
     </>
   )
 }
