@@ -1262,7 +1262,7 @@ export type LineString = {
     /**
      * Coordinates
      */
-    coordinates: Array<Position2D | Position3D>;
+    coordinates: Array<Position2d | Position3d>;
 };
 
 /**
@@ -1580,7 +1580,7 @@ export type MultiLineString = {
     /**
      * Coordinates
      */
-    coordinates: Array<Array<Position2D | Position3D>>;
+    coordinates: Array<Array<Position2d | Position3d>>;
 };
 
 /**
@@ -1611,7 +1611,7 @@ export type MultiPoint = {
     /**
      * Coordinates
      */
-    coordinates: Array<Position2D | Position3D>;
+    coordinates: Array<Position2d | Position3d>;
 };
 
 /**
@@ -1642,7 +1642,7 @@ export type MultiPolygon = {
     /**
      * Coordinates
      */
-    coordinates: Array<Array<Array<Position2D | Position3D>>>;
+    coordinates: Array<Array<Array<Position2d | Position3d>>>;
 };
 
 /**
@@ -1768,7 +1768,7 @@ export type Point = {
     /**
      * Coordinates
      */
-    coordinates: Position2D | Position3D;
+    coordinates: Position2d | Position3d;
 };
 
 /**
@@ -1799,15 +1799,15 @@ export type Polygon = {
     /**
      * Coordinates
      */
-    coordinates: Array<Array<Position2D | Position3D>>;
+    coordinates: Array<Array<Position2d | Position3d>>;
 };
 
-export type Position2D = [
+export type Position2d = [
     number,
     number
 ];
 
-export type Position3D = [
+export type Position3d = [
     number,
     number,
     number
