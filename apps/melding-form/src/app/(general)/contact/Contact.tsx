@@ -12,8 +12,8 @@ import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
 
 import { postContactForm } from './actions'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
+import { useGetDocumentTitleOnError } from '../_utils/useGetDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
-import { useUpdateDocumentTitleOnError } from '../_utils/useUpdateDocumentTitleOnError'
 import { FormState } from 'apps/melding-form/src/types'
 
 const initialState: FormState = {}
@@ -35,7 +35,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
 
   // Update document title when there are validation errors
-  const documentTitle = useUpdateDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
+  const documentTitle = useGetDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
 
   const emailErrorMessage = validationErrors?.find((error) => error.key === 'email-input')?.message
   const telErrorMessage = validationErrors?.find((error) => error.key === 'tel-input')?.message

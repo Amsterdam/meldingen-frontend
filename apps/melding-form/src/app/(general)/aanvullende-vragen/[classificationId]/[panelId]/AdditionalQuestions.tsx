@@ -9,8 +9,8 @@ import type { Component } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
 import { FormHeader } from '../../../_components/FormHeader/FormHeader'
+import { useGetDocumentTitleOnError } from '../../../_utils/useGetDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../../../_utils/useSetFocusOnInvalidFormAlert'
-import { useUpdateDocumentTitleOnError } from '../../../_utils/useUpdateDocumentTitleOnError'
 import { FormState, ValidationError } from 'apps/melding-form/src/types'
 
 const getPrefilledFormComponents = (components: Component[], formData?: FormData): Component[] =>
@@ -59,7 +59,7 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
   useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
 
   // Update document title when there are validation errors
-  const documentTitle = useUpdateDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
+  const documentTitle = useGetDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
 
   return (
     <>

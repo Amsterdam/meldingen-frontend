@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { ValidationError } from 'apps/melding-form/src/types'
 
-export const useUpdateDocumentTitleOnError = (
+export const useGetDocumentTitleOnError = (
   originalDocTitle: string,
   t: (key: string, { count }: { count: number }) => string,
   validationErrors?: ValidationError[],
