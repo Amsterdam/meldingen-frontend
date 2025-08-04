@@ -12,7 +12,7 @@ const refreshAccessToken = async (token: JWT) => {
     if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
       throw new Error('Refresh token expired')
 
-    const response = await fetch(`${process.env.AUTH_ISSUER}/protocol/openid-connect/token`, {
+    const response = await fetch(process.env.TOKEN_URL, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
         client_id: process.env.CLIENT_ID,
@@ -49,9 +49,19 @@ const refreshAccessToken = async (token: JWT) => {
 export const authOptions: AuthOptions = {
   providers: [
     KeycloakProvider({
+      wellKnown: undefined,
       clientId: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      issuer: process.env.AUTH_ISSUER,
+      issuer: process.env.ISSUER_URL,
+      authorization: {
+        params: {
+          scope: 'openid email profile',
+        },
+        url: process.env.AUTH_URL,
+      },
+      jwks_endpoint: process.env.JWKS_URL,
+      token: process.env.TOKEN_URL,
+      userinfo: process.env.USERINFO_URL,
     }),
   ],
   callbacks: {
