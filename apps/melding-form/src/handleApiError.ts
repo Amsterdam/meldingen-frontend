@@ -2,7 +2,7 @@
 const isSimpleApiError = (error: unknown): error is { detail: string } =>
   typeof error === 'object' && error !== null && 'detail' in error && typeof error.detail === 'string'
 
-const isApiErrorArray = (error: unknown): error is { detail: { msg: string }[] } =>
+export const isApiErrorArray = (error: unknown): error is { detail: { loc: string[]; msg: string }[] } =>
   typeof error === 'object' && error !== null && 'detail' in error && Array.isArray(error.detail)
 
 export const handleApiError = (error: unknown) => {

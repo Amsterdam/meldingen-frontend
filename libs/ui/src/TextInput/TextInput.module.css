@@ -1,4 +1,4 @@
-.input:invalid {
+.input:invalid:not([aria-invalid='true']) {
   border-color: inherit;
 
   &:hover {
