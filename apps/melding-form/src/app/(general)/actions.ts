@@ -16,6 +16,18 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
 
   let nextPage = '/locatie'
 
+  // Return validation error if primary question is not answered
+  if (!formDataObj.primary) {
+    return {
+      validationErrors: [
+        {
+          key: 'primary',
+          message: 'Vraag is verplicht en moet worden beantwoord.',
+        },
+      ],
+    }
+  }
+
   const { data, error } = await postMelding({ body: { text: formDataObj.primary.toString() } })
 
   if (error) return { errorMessage: handleApiError(error), formData }

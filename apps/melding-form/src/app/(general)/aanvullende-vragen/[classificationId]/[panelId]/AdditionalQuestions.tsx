@@ -9,6 +9,7 @@ import type { Component } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
 import { FormHeader } from '../../../_components/FormHeader/FormHeader'
+import { FormState, ValidationError } from 'apps/melding-form/src/types'
 
 const getPrefilledFormComponents = (components: Component[], formData?: FormData): Component[] =>
   components.map((component) => {
@@ -27,22 +28,11 @@ const getPrefilledFormComponents = (components: Component[], formData?: FormData
     return component
   })
 
-export type ValidationError = {
-  key: string
-  message: string
-}
-
 const mapValidationErrors = (errors: ValidationError[]) =>
   errors.map((validationError) => ({
     id: `#${validationError.key}`,
     label: validationError.message,
   }))
-
-type FormState = {
-  errorMessage?: string
-  formData?: FormData
-  validationErrors?: ValidationError[]
-}
 
 export type Props = {
   action: (_: unknown, formData: FormData) => Promise<FormState>
