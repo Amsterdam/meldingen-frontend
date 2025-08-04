@@ -19,7 +19,7 @@ export type AllInput = {
      */
     all: [
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterInput | MapInput,
-        boolean | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var
+        boolean | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length
     ];
 };
 
@@ -32,7 +32,7 @@ export type AllOutput = {
      */
     all: [
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterOutput | MapOutput,
-        boolean | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var
+        boolean | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length
     ];
 };
 
@@ -43,7 +43,7 @@ export type AndInput = {
     /**
      * And
      */
-    and: Array<boolean | number | number | string | Array<null> | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var>;
+    and: Array<boolean | number | number | string | Array<null> | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length>;
 };
 
 /**
@@ -53,7 +53,7 @@ export type AndOutput = {
     /**
      * And
      */
-    and: Array<boolean | number | number | string | Array<null> | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var>;
+    and: Array<boolean | number | number | string | Array<null> | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length>;
 };
 
 /**
@@ -82,6 +82,10 @@ export type AnswerOutput = {
      * Updated At
      */
     updated_at: string;
+    /**
+     * Text
+     */
+    text: string;
 };
 
 /**
@@ -422,7 +426,7 @@ export type FilterInput = {
      */
     filter: [
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterInput | MapInput,
-        boolean | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var
+        boolean | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length
     ];
 };
 
@@ -435,7 +439,7 @@ export type FilterOutput = {
      */
     filter: [
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterOutput | MapOutput,
-        boolean | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var
+        boolean | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length
     ];
 };
 
@@ -513,7 +517,7 @@ export type FormComponentInputValidate = {
     /**
      * Json
      */
-    json?: Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | null;
+    json?: Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length | null;
     /**
      * Required
      */
@@ -527,7 +531,7 @@ export type FormComponentOutputValidate = {
     /**
      * Json
      */
-    json?: Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | null;
+    json?: Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length | null;
     /**
      * Required
      */
@@ -1166,7 +1170,7 @@ export type InInput = {
      * In
      */
     in: [
-        number | string | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var,
+        number | string | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length,
         Array<number | string> | string
     ];
 };
@@ -1179,8 +1183,20 @@ export type InOutput = {
      * In
      */
     in: [
-        number | string | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var,
+        number | string | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length,
         Array<number | string> | string
+    ];
+};
+
+/**
+ * Length
+ */
+export type Length = {
+    /**
+     * Length
+     */
+    length: string | [
+        string | Var | If | Substr
     ];
 };
 
@@ -1286,7 +1302,7 @@ export type MapInput = {
      */
     map: [
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterInput | MapInput,
-        Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var
+        Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length
     ];
 };
 
@@ -1299,7 +1315,7 @@ export type MapOutput = {
      */
     map: [
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterOutput | MapOutput,
-        Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var
+        Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length
     ];
 };
 
@@ -1648,7 +1664,7 @@ export type NoneInput = {
      */
     none: [
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterInput | MapInput,
-        boolean | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var
+        boolean | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length
     ];
 };
 
@@ -1661,7 +1677,7 @@ export type NoneOutput = {
      */
     none: [
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterOutput | MapOutput,
-        boolean | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var
+        boolean | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length
     ];
 };
 
@@ -1711,7 +1727,7 @@ export type OrInput = {
     /**
      * Or
      */
-    or: Array<boolean | number | number | string | Array<null> | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var>;
+    or: Array<boolean | number | number | string | Array<null> | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length>;
 };
 
 /**
@@ -1721,7 +1737,7 @@ export type OrOutput = {
     /**
      * Or
      */
-    or: Array<boolean | number | number | string | Array<null> | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var>;
+    or: Array<boolean | number | number | string | Array<null> | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length>;
 };
 
 /**
@@ -1828,7 +1844,7 @@ export type ReduceInput = {
      */
     reduce: [
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterInput | MapInput,
-        Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var,
+        Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length,
         unknown
     ];
 };
@@ -1842,7 +1858,7 @@ export type ReduceOutput = {
      */
     reduce: [
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterOutput | MapOutput,
-        Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var,
+        Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length,
         unknown
     ];
 };
@@ -1938,7 +1954,7 @@ export type SomeInput = {
      */
     some: [
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterInput | MapInput,
-        boolean | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var
+        boolean | Add | AllInput | AndInput | Cat | Divide | Equals | FilterInput | GreaterThan | GreaterThanOrEqual | If | InInput | LessThan | LessThanOrEqual | Log | MapInput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneInput | Not | NotEquals | NotNot | OrInput | ReduceInput | SomeInput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length
     ];
 };
 
@@ -1951,7 +1967,7 @@ export type SomeOutput = {
      */
     some: [
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterOutput | MapOutput,
-        boolean | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var
+        boolean | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length
     ];
 };
 
@@ -3166,6 +3182,60 @@ export type PostMeldingByMeldingIdQuestionByQuestionIdResponses = {
 };
 
 export type PostMeldingByMeldingIdQuestionByQuestionIdResponse = PostMeldingByMeldingIdQuestionByQuestionIdResponses[keyof PostMeldingByMeldingIdQuestionByQuestionIdResponses];
+
+export type PatchMeldingByMeldingIdAnswerByAnswerIdData = {
+    body: AnswerInput;
+    path: {
+        /**
+         * Melding Id
+         * The id of the melding.
+         */
+        melding_id: number;
+        /**
+         * Answer Id
+         * The id of the answer.
+         */
+        answer_id: number;
+    };
+    query: {
+        /**
+         * Token
+         * The token of the melding.
+         */
+        token: string;
+    };
+    url: '/melding/{melding_id}/answer/{answer_id}';
+};
+
+export type PatchMeldingByMeldingIdAnswerByAnswerIdErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type PatchMeldingByMeldingIdAnswerByAnswerIdError = PatchMeldingByMeldingIdAnswerByAnswerIdErrors[keyof PatchMeldingByMeldingIdAnswerByAnswerIdErrors];
+
+export type PatchMeldingByMeldingIdAnswerByAnswerIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: AnswerOutput;
+};
+
+export type PatchMeldingByMeldingIdAnswerByAnswerIdResponse = PatchMeldingByMeldingIdAnswerByAnswerIdResponses[keyof PatchMeldingByMeldingIdAnswerByAnswerIdResponses];
 
 export type PostMeldingByMeldingIdAttachmentData = {
     body: BodyMeldingAttachmentMeldingMeldingIdAttachmentPost;
