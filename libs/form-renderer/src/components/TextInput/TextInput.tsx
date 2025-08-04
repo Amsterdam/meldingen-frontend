@@ -1,6 +1,7 @@
-import { ErrorMessage, Field, Label, TextInput as ADSTextInput } from '@amsterdam/design-system-react'
+import { ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
+import { TextInput as ADSTextInput } from '@meldingen/ui'
 
 import { getAriaDescribedBy } from '../../utils'
 

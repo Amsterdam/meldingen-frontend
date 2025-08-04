@@ -1,13 +1,13 @@
 'use client'
 
-import { Alert, Field, Heading, Label, Paragraph, TextInput } from '@amsterdam/design-system-react'
+import { Alert, Field, Heading, Label, Paragraph } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { SubmitButton } from '@meldingen/ui'
+import { SubmitButton, TextInput } from '@meldingen/ui'
 
 import { postContactForm } from './actions'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
@@ -57,7 +57,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
             autoComplete="email"
             autoCorrect="off"
             className="ams-mb-m"
-            defaultValue={formData?.get(`email`) as string}
+            defaultValue={formData?.get('email') as string}
             id="email-input"
             name="email"
             spellCheck="false"
@@ -81,7 +81,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
             aria-describedby={telDescription ? 'tel-input-description' : undefined}
             autoComplete="tel"
             className="ams-mb-m"
-            defaultValue={formData?.get(`phone`) as string}
+            defaultValue={formData?.get('phone') as string}
             id="tel-input"
             name="phone"
             size={15}
