@@ -64,6 +64,43 @@ describe('postContactForm', () => {
     expect(redirect).toHaveBeenCalledWith('/cookie-storing')
   })
 
+  it('returns a validation error if email is invalid', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () =>
+        HttpResponse.json({ detail: [{ loc: 'email', msg: 'Email validation error' }] }, { status: 422 }),
+      ),
+    )
+
+    const formData = new FormData()
+    formData.set('email', 'invalid-email')
+    formData.set('phone', '0612345678')
+
+    const result = await postContactForm(undefined, formData)
+    expect(result).toEqual({
+      validationErrors: [{ key: 'email-input', message: 'Email validation error' }],
+      formData,
+    })
+  })
+
+  it('returns a validation error if phone is invalid', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () =>
+        HttpResponse.json({ detail: [{ loc: 'phone', msg: 'Phone validation error' }] }, { status: 422 }),
+      ),
+    )
+
+    const formData = new FormData()
+    formData.set('email', 'email@example.com')
+    formData.set('phone', 'invalid-phone')
+
+    const result = await postContactForm(undefined, formData)
+
+    expect(result).toEqual({
+      validationErrors: [{ key: 'tel-input', message: 'Phone validation error' }],
+      formData,
+    })
+  })
+
   it('returns an error message if an error occurs', async () => {
     server.use(http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () => new HttpResponse(null, { status: 404 })))
 
