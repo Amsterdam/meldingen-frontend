@@ -11,7 +11,7 @@ import { InvalidFormAlert } from '@meldingen/ui'
 import { FormHeader } from './_components/FormHeader/FormHeader'
 import { postPrimaryForm } from './actions'
 import { FormState } from '../../types'
-import { useGetDocumentTitleOnError } from './_utils/useGetDocumentTitleOnError'
+import { getDocumentTitleOnError } from './_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from './_utils/useSetFocusOnInvalidFormAlert'
 
 const initialState: FormState = {}
@@ -38,7 +38,7 @@ export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaCom
   useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
 
   // Update document title when there are validation errors
-  const documentTitle = useGetDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
+  const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
 
   return (
     <>
