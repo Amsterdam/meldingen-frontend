@@ -36,6 +36,33 @@ describe('postPrimaryForm', () => {
     expect(redirect).not.toHaveBeenCalled()
   })
 
+  it('returns a validation error when primary question is not answered', async () => {
+    const formData = new FormData()
+
+    const result = await postPrimaryForm(null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'primary', message: 'Vraag is verplicht en moet worden beantwoord.' }],
+    })
+  })
+
+  it('returns validation errors for other invalid answers', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json({ detail: 'Validation error' }, { status: 422 })),
+    )
+
+    const formData = new FormData()
+    formData.append('primary', 'value1')
+
+    const result = await postPrimaryForm(null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'primary', message: 'Validation error' }],
+    })
+  })
+
   it('redirects to /locatie when there are no additional questions', async () => {
     const formData = new FormData()
     formData.set('primary', 'Test')

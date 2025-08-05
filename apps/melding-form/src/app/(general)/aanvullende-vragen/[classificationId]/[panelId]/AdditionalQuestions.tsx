@@ -2,13 +2,16 @@
 
 import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useRef, useState } from 'react'
+import { useActionState, useRef } from 'react'
 
 import { FormRenderer, isSelectboxes } from '@meldingen/form-renderer'
 import type { Component } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
 import { FormHeader } from '../../../_components/FormHeader/FormHeader'
+import { getDocumentTitleOnError } from '../../../_utils/getDocumentTitleOnError'
+import { useSetFocusOnInvalidFormAlert } from '../../../_utils/useSetFocusOnInvalidFormAlert'
+import { FormState, ValidationError } from 'apps/melding-form/src/types'
 
 const getPrefilledFormComponents = (components: Component[], formData?: FormData): Component[] =>
   components.map((component) => {
@@ -27,22 +30,11 @@ const getPrefilledFormComponents = (components: Component[], formData?: FormData
     return component
   })
 
-export type ValidationError = {
-  key: string
-  message: string
-}
-
 const mapValidationErrors = (errors: ValidationError[]) =>
   errors.map((validationError) => ({
     id: `#${validationError.key}`,
     label: validationError.message,
   }))
-
-type FormState = {
-  errorMessage?: string
-  formData?: FormData
-  validationErrors?: ValidationError[]
-}
 
 export type Props = {
   action: (_: unknown, formData: FormData) => Promise<FormState>
@@ -64,22 +56,10 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
   const prefilledFormComponents = getPrefilledFormComponents(formComponents, formData)
 
   // Set focus on InvalidFormAlert when there are validation errors
-  useEffect(() => {
-    if (invalidFormAlertRef.current && validationErrors) {
-      invalidFormAlertRef.current.focus()
-    }
-  }, [validationErrors])
+  useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
 
   // Update document title when there are validation errors
-  const [documentTitle, setDocumentTitle] = useState(t('metadata.title'))
-
-  useEffect(() => {
-    if (validationErrors) {
-      const errorCount = validationErrors.length
-
-      setDocumentTitle(`${tShared('error-count-label', { count: errorCount })} ${t('metadata.title')}`)
-    }
-  }, [validationErrors])
+  const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
 
   return (
     <>
