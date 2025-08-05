@@ -3,7 +3,7 @@ import createNextIntlPlugin from 'next-intl/plugin'
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  basePath: '/beheer',
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH,
 }
 
 const withNextIntl = createNextIntlPlugin()
