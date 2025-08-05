@@ -75,7 +75,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
               {emailDescription}
             </MarkdownToHtml>
           )}
-          {emailErrorMessage && <ErrorMessage id={'email-input-error'}>{emailErrorMessage}</ErrorMessage>}
+          {emailErrorMessage && <ErrorMessage id="email-input-error">{emailErrorMessage}</ErrorMessage>}
           <TextInput
             aria-describedby={getAriaDescribedBy('email-input', emailDescription, emailErrorMessage)}
             autoComplete="email"
@@ -98,7 +98,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
               {telDescription}
             </MarkdownToHtml>
           )}
-          {telErrorMessage && <ErrorMessage id={'tel-input-error'}>{telErrorMessage}</ErrorMessage>}
+          {telErrorMessage && <ErrorMessage id="tel-input-error">{telErrorMessage}</ErrorMessage>}
           <TextInput
             aria-describedby={getAriaDescribedBy('tel-input', telDescription, telErrorMessage)}
             autoComplete="tel"
