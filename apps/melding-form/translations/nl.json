@@ -139,7 +139,9 @@
     "button": "Probeer het opnieuw"
   },
   "shared": {
+    "error-count-label": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",
     "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
-    "error-count-label": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})"
+    "system-error-alert-title": "Er is iets misgegaan",
+    "system-error-alert-description": "Probeer opnieuw naar de volgende vraag te gaan."
   }
 }
