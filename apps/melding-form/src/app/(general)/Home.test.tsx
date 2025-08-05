@@ -22,7 +22,7 @@ vi.mock('react', async (importOriginal) => {
 })
 
 describe('Page', () => {
-  it('should render an error message and keep input data', () => {
+  it('renders an error message and keeps input data', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Er staan blowende jongeren')
@@ -48,7 +48,7 @@ describe('Page', () => {
     expect(link).toHaveAttribute('href', '#key1')
   })
 
-  it('should render a form', () => {
+  it('renders a form', () => {
     render(<Home formComponents={[mockTextAreaComponent]} />)
 
     expect(screen.queryByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
