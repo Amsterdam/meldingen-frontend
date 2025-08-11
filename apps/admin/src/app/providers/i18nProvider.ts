@@ -229,6 +229,8 @@ const nl: TranslationMessages = {
         'components[0].description': 'Beschrijving',
         'components[1].label': 'Label',
         'components[1].description': 'Beschrijving',
+        'components[0].maxCharCount': 'Maximaal aantal tekens',
+        'components[0].validate.json.if[2]': 'Foutmelding teveel tekens',
       },
     },
   },
