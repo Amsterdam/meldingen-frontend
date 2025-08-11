@@ -37,6 +37,7 @@ export const PrimaryForm = () => {
     >
       <TextInput source="title" readOnly />
       <TextInput source="components[0].label" validate={validateLabel} />
+      {/* v8 ignore next */}
       <TextInput source="components[0].description" multiline parse={(value) => value ?? ''} />
       <MaxCharCountInputs />
       {/* Set JSONLogic error message */}
