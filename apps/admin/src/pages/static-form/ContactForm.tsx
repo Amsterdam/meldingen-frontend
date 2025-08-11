@@ -16,12 +16,22 @@ export const ContactForm = () => {
         <strong>E-mail</strong>
       </span>
       <TextInput source="components[0].label" validate={validateLabel} />
-      <TextInput source="components[0].description" multiline parse={(value) => value ?? ''} />
+      <TextInput
+        source="components[0].description"
+        multiline
+        /* v8 ignore next */
+        parse={(value) => value ?? ''}
+      />
       <span>
         <strong>Telefoonnummer</strong>
       </span>
       <TextInput source="components[1].label" validate={validateLabel} />
-      <TextInput source="components[1].description" multiline parse={(value) => value ?? ''} />
+      <TextInput
+        source="components[1].description"
+        multiline
+        /* v8 ignore next */
+        parse={(value) => value ?? ''}
+      />
     </SimpleForm>
   )
 }
