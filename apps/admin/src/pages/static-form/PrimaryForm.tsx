@@ -7,7 +7,7 @@ const MaxCharCountInputs = () => {
   const onChange = () => {
     const data = getValues('components[0].maxCharCount')
 
-    setValue('components[0].validate.json.if[0]["<"][1]', data)
+    setValue('components[0].validate.json.if[0]["<="][1]', data)
   }
 
   return (
@@ -19,7 +19,7 @@ const MaxCharCountInputs = () => {
         parse={(value) => parseInt(value, 10)}
       />
       {/* Hidden input to set max length in JSONLogic using maxCharCount field */}
-      <TextInput source="components[0].validate.json.if[0]['<'][1]" hidden />
+      <TextInput source="components[0].validate.json.if[0]['<='][1]" hidden />
     </>
   )
 }
