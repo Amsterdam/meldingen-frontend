@@ -3,7 +3,7 @@
 import { Alert, ErrorMessage, Field, FileList, Label, Paragraph } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
-import { useActionState, useRef, useState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 
 import {
@@ -17,6 +17,7 @@ import { FileInput, SubmitButton } from '@meldingen/ui'
 import { submitAttachmentsForm } from './actions'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
+import { FormState } from 'apps/melding-form/src/types'
 
 import styles from './Attachments.module.css'
 
@@ -30,15 +31,16 @@ type Props = {
 
 export type UploadedFiles = { file: File; id: number }
 
-const initialState: { message?: string } = {}
+const initialState: Pick<FormState, 'systemError'> = {}
 
 export const Attachments = ({ formData, meldingId, token }: Props) => {
   const formRef = useRef<HTMLFormElement>(null)
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
-  const [formState, formAction] = useActionState(submitAttachmentsForm, initialState)
+  const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
 
   const t = useTranslations('attachments')
+  const tShared = useTranslations('shared')
 
   const { label, description } = formData[0]
 
@@ -97,11 +99,25 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
     setUploadedFiles((files) => files.filter((file) => file.id !== attachmentId))
   }
 
+  useEffect(() => {
+    if (systemError) {
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(systemError)
+    }
+  }, [systemError])
+
   return (
     <>
-      {formState?.message && (
-        <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{formState.message}</Paragraph>
+      {systemError && (
+        <Alert
+          role="alert"
+          headingLevel={2}
+          severity="error"
+          heading={tShared('system-error-alert-title')}
+          className="ams-mb-xl"
+        >
+          <Paragraph>{tShared('system-error-alert-description')}</Paragraph>
         </Alert>
       )}
 
