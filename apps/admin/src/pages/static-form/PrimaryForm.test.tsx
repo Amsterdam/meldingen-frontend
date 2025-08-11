@@ -29,7 +29,6 @@ describe('PrimaryForm', () => {
       name: 'resources.undefined.fields.components[0].maxCharCount',
     })
     const maxCharCountErrorMessage = screen.getByText('resources.undefined.fields.components[0].validate.json.if[2]')
-
     const submitButton = screen.getByRole('button', { name: 'ra.action.save' })
 
     expect(label).toBeInTheDocument()
