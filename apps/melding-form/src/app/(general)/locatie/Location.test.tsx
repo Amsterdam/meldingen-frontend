@@ -32,18 +32,19 @@ describe('Location', () => {
   it('does not render an error message when there is none', () => {
     render(<Location {...defaultProps} />)
 
-    const errorMessage = screen.queryByText('Test error message')
+    const alert = screen.queryByRole('alert')
 
-    expect(errorMessage).not.toBeInTheDocument()
+    expect(alert).not.toBeInTheDocument()
   })
 
-  it('renders an error message when there is one', () => {
-    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message' }, vi.fn()])
+  it('show a system error when there is one', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
 
     render(<Location {...defaultProps} />)
-    const errorMessage = screen.getByText('Test error message')
 
-    expect(errorMessage).toBeInTheDocument()
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveTextContent('system-error-alert-title')
   })
 
   it('renders the default text when there is no location data', () => {

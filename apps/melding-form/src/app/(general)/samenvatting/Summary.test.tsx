@@ -84,10 +84,12 @@ describe('Summary', () => {
   })
 
   it('renders the Summary component with an error message', () => {
-    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
 
     render(<Summary {...defaultProps} />)
 
-    expect(screen.queryByText('Test error message')).toBeInTheDocument()
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveTextContent('system-error-alert-title')
   })
 })

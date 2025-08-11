@@ -26,12 +26,17 @@ describe('Page', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Er staan blowende jongeren')
-    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message', formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message', formData }, vi.fn()])
 
     render(<Home formComponents={[mockTextAreaComponent]} />)
 
-    expect(screen.queryByText('Test error message')).toBeInTheDocument()
-    expect(screen.queryByText('Er staan blowende jongeren')).toBeInTheDocument()
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveTextContent('system-error-alert-title')
+
+    const input = screen.getByRole('textbox')
+
+    expect(input).toHaveValue('Er staan blowende jongeren')
   })
 
   it('renders an Invalid Form Alert when there are validation errors', () => {

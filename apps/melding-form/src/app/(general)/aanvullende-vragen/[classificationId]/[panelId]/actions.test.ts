@@ -95,7 +95,7 @@ describe('postForm', () => {
   it('returns an error message if an error occurs when posting a single answer', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+        HttpResponse.json('Error message', { status: 500 }),
       ),
     )
 
@@ -104,13 +104,13 @@ describe('postForm', () => {
 
     const result = await postForm(defaultArgs, null, formData)
 
-    expect(result).toEqual({ errorMessage: 'Error message', formData })
+    expect(result).toEqual({ formData, systemError: ['Error message'] })
   })
 
-  it('returns a concatenated error message if multiple errors occur when posting multiple answers', async () => {
+  it('returns a merged error message if multiple errors occur when posting multiple answers', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+        HttpResponse.json('Error message', { status: 500 }),
       ),
     )
 
@@ -120,13 +120,13 @@ describe('postForm', () => {
 
     const result = await postForm(defaultArgs, null, formData)
 
-    expect(result).toEqual({ errorMessage: 'Error message, Error message', formData })
+    expect(result).toEqual({ systemError: ['Error message', 'Error message'], formData })
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
     server.use(
       http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ANSWER_QUESTIONS, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+        HttpResponse.json('Error message', { status: 500 }),
       ),
     )
 
@@ -134,6 +134,6 @@ describe('postForm', () => {
 
     const result = await postForm(defaultArgs, null, formData)
 
-    expect(result).toEqual({ errorMessage: 'Error message', formData })
+    expect(result).toEqual({ systemError: 'Error message', formData })
   })
 })

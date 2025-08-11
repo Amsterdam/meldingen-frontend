@@ -27,7 +27,7 @@ export const getPrimaryFormSummary = async (description: string) => {
 
   const primaryFormId = staticFormsData?.find((form) => form.type === 'primary')?.id
 
-  if (!primaryFormId) throw new Error('Primary form id not found')
+  if (!primaryFormId) throw new Error('Primary form id not found.')
 
   const { data: primaryFormData, error: primaryFormError } = await getStaticFormByStaticFormId({
     path: { static_form_id: primaryFormId },

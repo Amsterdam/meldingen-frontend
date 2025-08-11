@@ -18,13 +18,13 @@ describe('Contact', () => {
     const formData = new FormData()
 
     formData.append('email', 'test@example.com')
-    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message', formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
 
     render(<Contact formComponents={contactFormData} />)
 
     const alert = screen.getByRole('alert')
 
-    expect(alert).toHaveTextContent('Test error message')
+    expect(alert).toHaveTextContent('system-error-alert-title')
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
 

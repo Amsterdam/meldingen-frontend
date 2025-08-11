@@ -116,8 +116,6 @@ describe('Page', () => {
       ),
     )
 
-    const PageComponent = await Page()
-
-    expect(PageComponent).toEqual('Primary form id not found')
+    await expect(Page()).rejects.toThrowError('Primary form id not found')
   })
 })
