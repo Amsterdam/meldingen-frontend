@@ -3,12 +3,13 @@
 import { Alert, FileList, Heading, Paragraph } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
-import { useActionState } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import { SubmitButton, SummaryList } from '@meldingen/ui'
 
 import { postSummaryForm } from './actions'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
+import { FormState } from 'apps/melding-form/src/types'
 
 import styles from './Summary.module.css'
 
@@ -34,18 +35,33 @@ type Props = {
   primaryForm: GenericSummaryData
 }
 
-const initialState: { errorMessage?: string } = {}
+const initialState: Pick<FormState, 'systemError'> = {}
 
 export const Summary = ({ attachments, primaryForm, additionalQuestions, location, contact }: Props) => {
-  const [{ errorMessage }, formAction] = useActionState(postSummaryForm, initialState)
+  const [{ systemError }, formAction] = useActionState(postSummaryForm, initialState)
 
   const t = useTranslations('summary')
+  const tShared = useTranslations('shared')
+
+  useEffect(() => {
+    if (systemError) {
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(systemError)
+    }
+  }, [systemError])
 
   return (
     <>
-      {errorMessage && (
-        <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{errorMessage}</Paragraph>
+      {systemError && (
+        <Alert
+          role="alert"
+          headingLevel={2}
+          severity="error"
+          heading={tShared('system-error-alert-title')}
+          className="ams-mb-xl"
+        >
+          <Paragraph>{tShared('system-error-alert-description')}</Paragraph>
         </Alert>
       )}
 
