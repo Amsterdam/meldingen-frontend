@@ -125,6 +125,6 @@ describe('postContactForm', () => {
     const formData = new FormData()
     const result = await postContactForm(null, formData)
 
-    expect(result).toEqual({ systemError: 'Error message', formData })
+    expect(result).toEqual({ formData, systemError: 'Error message' })
   })
 })
