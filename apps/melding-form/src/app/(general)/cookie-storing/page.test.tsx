@@ -8,11 +8,9 @@ describe('Page', () => {
 
     render(PageComponent)
 
-    const heading = screen.getByRole('heading', { name: 'Er is iets mis gegaan' })
-    const paragraph = screen.getByText(
-      'De pagina die u probeert te bezoeken heeft een storing. De cookies die nodig zijn om het formulier af te maken missen.',
-    )
-    const link = screen.getByRole('link', { name: 'Probeer de melding opnieuw te maken.' })
+    const heading = screen.getByRole('heading', { name: 'title' })
+    const paragraph = screen.getByText('description')
+    const link = screen.getByRole('link', { name: 'link' })
 
     expect(heading).toBeInTheDocument()
     expect(paragraph).toBeInTheDocument()

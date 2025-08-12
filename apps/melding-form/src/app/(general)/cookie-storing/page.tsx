@@ -1,23 +1,30 @@
-import { Metadata } from 'next'
 import NextLink from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 import { Heading, Paragraph, StandaloneLink } from '@meldingen/ui'
 
-export const metadata: Metadata = {
-  title: 'Er is iets mis gegaan - Gemeente Amsterdam',
+export const generateMetadata = async () => {
+  const t = await getTranslations('cookies-storing')
+
+  return {
+    title: t('metadata.title'),
+  }
 }
 
-export default async () => (
-  <>
-    <Heading level={1} className="ams-mb-l">
-      Er is iets mis gegaan
-    </Heading>
-    <Paragraph className="ams-mb-m" size="large">
-      De pagina die u probeert te bezoeken heeft een storing. De cookies die nodig zijn om het formulier af te maken
-      missen.
-    </Paragraph>
-    <NextLink href="/" legacyBehavior passHref>
-      <StandaloneLink className="ams-mb-m">Probeer de melding opnieuw te maken.</StandaloneLink>
-    </NextLink>
-  </>
-)
+export default async () => {
+  const t = await getTranslations('cookies-storing')
+
+  return (
+    <>
+      <Heading level={1} className="ams-mb-l">
+        {t('title')}
+      </Heading>
+      <Paragraph className="ams-mb-m" size="large">
+        {t('description')}
+      </Paragraph>
+      <NextLink href="/" legacyBehavior passHref>
+        <StandaloneLink className="ams-mb-m">{t('link')}</StandaloneLink>
+      </NextLink>
+    </>
+  )
+}

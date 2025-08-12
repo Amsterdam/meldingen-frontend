@@ -122,6 +122,14 @@
     "description": "Bedankt voor uw melding.\n\nWij hebben uw melding ontvangen{date, select, undefined {} other { op {date} om {time}}}.{publicId, select, undefined {} other { Uw meldnummer is {publicId}.}} U ontvangt een e-mail met alle gegevens van uw melding.\n\n## Wat doen we met uw melding?\n\nMeldingen pakken we binnen 3 werkdagen op.\n\n## Vragen of meer informatie?\n\nNeem dan contact met ons op via [14 020](tel:14020). Vermeld hierbij alstublieft uw meldnummer. Meer informatie kunt u eventueel ook vinden op [www.amsterdam.nl](https://www.amsterdam.nl/).\n\n## Wilt u nog een andere melding doen?",
     "link": "Doe een melding"
   },
+  "cookies-storing": {
+    "metadata": {
+      "title": "Er is iets mis gegaan - Gemeente Amsterdam"
+    },
+    "title": "Er is iets mis gegaan",
+    "description": "De pagina die u probeert te bezoeken heeft een storing. De cookies die nodig zijn om het formulier af te maken missen.",
+    "link": "Probeer de melding opnieuw te maken."
+  },
   "not-found": {
     "metadata": {
       "title": "Pagina niet gevonden - Gemeente Amsterdam"
