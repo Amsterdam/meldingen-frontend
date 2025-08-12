@@ -212,22 +212,22 @@ describe('getLocationSummary', () => {
       name: 'Nieuwmarkt 23, 1011JS Amsterdam',
       coordinates: { lat: 52.372314346390816, lng: 4.900889396667481 },
     })
-    const result = getLocationSummary('Waar staat de container?', mockLocation)
+    const result = getLocationSummary((key) => key, mockLocation)
 
     expect(result).toEqual({
       key: 'location',
-      term: 'Waar staat de container?',
+      term: 'location-label',
       description: ['Nieuwmarkt 23, 1011JS Amsterdam'],
     })
   })
 
   it('should return error message when location cookie could not be parsed', () => {
-    const result = getLocationSummary('Waar staat de container?')
+    const result = getLocationSummary((key) => key)
 
     expect(result).toEqual({
       key: 'location',
-      term: 'Waar staat de container?',
-      description: ['Er konden geen locatiegegevens worden gevonden.'],
+      term: 'location-label',
+      description: ['errors.no-location'],
     })
   })
 })

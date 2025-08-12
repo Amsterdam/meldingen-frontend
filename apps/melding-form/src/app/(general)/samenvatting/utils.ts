@@ -95,12 +95,12 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
   return { data: { key: 'attachments', term: label, files: attachments } }
 }
 
-export const getLocationSummary = (label: string, location?: string) => {
-  const locationParsed = location ? JSON.parse(location).name : 'Er konden geen locatiegegevens worden gevonden.'
+export const getLocationSummary = (t: (key: string) => string, location?: string) => {
+  const locationParsed = location ? JSON.parse(location).name : t('errors.no-location')
 
   return {
     key: 'location',
-    term: label,
+    term: t('location-label'),
     description: [locationParsed],
   }
 }

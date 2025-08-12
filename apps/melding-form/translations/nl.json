@@ -112,7 +112,10 @@
     "location-label": "Waar is het?",
     "attachments-label": "Foto’s",
     "contact-label": "Contactgegevens",
-    "submit-button": "Verstuur melding"
+    "submit-button": "Verstuur melding",
+    "errors": {
+      "no-location": "Er konden geen locatiegegevens worden gevonden."
+    }
   },
   "thanks": {
     "metadata": {

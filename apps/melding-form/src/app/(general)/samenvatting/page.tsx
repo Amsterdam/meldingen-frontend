@@ -26,14 +26,14 @@ export default async () => {
   const token = cookieStore.get('token')!.value
   const locationCookie = cookieStore.get('location')?.value
 
-  const t = await getTranslations()
+  const t = await getTranslations('summary')
 
   const meldingData = await getMeldingData(meldingId, token)
   const primaryForm = await getPrimaryFormSummary(meldingData.data.text)
-  const attachments = await getAttachmentsSummary(t('summary.attachments-label'), meldingId, token)
+  const attachments = await getAttachmentsSummary(t('attachments-label'), meldingId, token)
   const additionalQuestions = await getAdditionalQuestionsSummary(meldingId, token)
-  const location = getLocationSummary(t('summary.location-label'), locationCookie)
-  const contact = getContactSummary(t('summary.contact-label'), meldingData.data.email, meldingData.data.phone)
+  const location = getLocationSummary(t, locationCookie)
+  const contact = getContactSummary(t('contact-label'), meldingData.data.email, meldingData.data.phone)
 
   return (
     <Summary

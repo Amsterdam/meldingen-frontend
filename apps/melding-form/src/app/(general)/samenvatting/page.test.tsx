@@ -71,12 +71,12 @@ describe('Page', () => {
         }),
       ],
       key: 'attachments',
-      term: 'summary.attachments-label',
+      term: 'attachments-label',
     }
 
     const contact = {
       key: 'contact',
-      term: 'summary.contact-label',
+      term: 'contact-label',
       description: [melding.email, melding.phone],
     }
 
@@ -95,7 +95,7 @@ describe('Page', () => {
         contact: contact,
         location: {
           key: 'location',
-          term: 'summary.location-label',
+          term: 'location-label',
           description: ['Test address'],
         },
         primaryForm: primaryForm,
