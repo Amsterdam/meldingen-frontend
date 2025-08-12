@@ -1,6 +1,6 @@
 'use client'
 
-import { Alert, FileList, Heading, Paragraph } from '@amsterdam/design-system-react'
+import { FileList, Heading, Paragraph } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect } from 'react'
@@ -9,6 +9,7 @@ import { SubmitButton, SummaryList } from '@meldingen/ui'
 
 import { postSummaryForm } from './actions'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
+import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { FormState } from 'apps/melding-form/src/types'
 
 import styles from './Summary.module.css'
@@ -41,7 +42,6 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
   const [{ systemError }, formAction] = useActionState(postSummaryForm, initialState)
 
   const t = useTranslations('summary')
-  const tShared = useTranslations('shared')
 
   useEffect(() => {
     if (systemError) {
@@ -53,25 +53,12 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
 
   return (
     <>
-      {systemError && (
-        <Alert
-          role="alert"
-          headingLevel={2}
-          severity="error"
-          heading={tShared('system-error-alert-title')}
-          className="ams-mb-xl"
-        >
-          <Paragraph>{tShared('system-error-alert-description')}</Paragraph>
-        </Alert>
-      )}
-
+      {systemError && <SystemErrorAlert />}
       <FormHeader title={t('title')} step={t('step')} />
-
       <Heading level={1} size="level-4" className="ams-mb-s">
         {t('main-title')}
       </Heading>
       <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
-
       <SummaryList className="ams-mb-m">
         <SummaryList.Item key={primaryForm.key}>
           <SummaryList.Term>{primaryForm.term}</SummaryList.Term>

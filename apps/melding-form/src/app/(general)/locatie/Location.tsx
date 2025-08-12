@@ -1,6 +1,6 @@
 'use client'
 
-import { Alert, Heading, Paragraph, StandaloneLink } from '@amsterdam/design-system-react'
+import { Heading, Paragraph, StandaloneLink } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
@@ -10,6 +10,7 @@ import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
 import { postLocationForm } from './actions'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
+import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
 import type { Coordinates, FormState } from 'apps/melding-form/src/types'
@@ -49,17 +50,7 @@ export const Location = ({ locationData }: Props) => {
   return (
     <>
       <title>{documentTitle}</title>
-      {systemError && (
-        <Alert
-          role="alert"
-          headingLevel={2}
-          severity="error"
-          heading={tShared('system-error-alert-title')}
-          className="ams-mb-xl"
-        >
-          <Paragraph>{tShared('system-error-alert-description')}</Paragraph>
-        </Alert>
-      )}
+      {systemError && <SystemErrorAlert />}
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"

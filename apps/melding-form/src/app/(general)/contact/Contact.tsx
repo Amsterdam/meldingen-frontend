@@ -1,6 +1,6 @@
 'use client'
 
-import { Alert, ErrorMessage, Field, Heading, Label, Paragraph } from '@amsterdam/design-system-react'
+import { ErrorMessage, Field, Heading, Label } from '@amsterdam/design-system-react'
 import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
@@ -12,6 +12,7 @@ import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
 
 import { postContactForm } from './actions'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
+import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
 import { FormState } from 'apps/melding-form/src/types'
@@ -51,17 +52,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   return (
     <>
       <title>{documentTitle}</title>
-      {systemError && (
-        <Alert
-          role="alert"
-          headingLevel={2}
-          severity="error"
-          heading={tShared('system-error-alert-title')}
-          className="ams-mb-xl"
-        >
-          <Paragraph>{tShared('system-error-alert-description')}</Paragraph>
-        </Alert>
-      )}
+      {systemError && <SystemErrorAlert />}
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"

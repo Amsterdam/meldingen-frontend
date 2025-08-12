@@ -1,6 +1,6 @@
 'use client'
 
-import { Alert, ErrorMessage, Field, FileList, Label, Paragraph } from '@amsterdam/design-system-react'
+import { ErrorMessage, Field, FileList, Label } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useRef, useState } from 'react'
@@ -16,6 +16,7 @@ import { FileInput, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
+import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 import { FormState } from 'apps/melding-form/src/types'
 
@@ -40,7 +41,6 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
   const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
 
   const t = useTranslations('attachments')
-  const tShared = useTranslations('shared')
 
   const { label, description } = formData[0]
 
@@ -109,20 +109,8 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
   return (
     <>
-      {systemError && (
-        <Alert
-          role="alert"
-          headingLevel={2}
-          severity="error"
-          heading={tShared('system-error-alert-title')}
-          className="ams-mb-xl"
-        >
-          <Paragraph>{tShared('system-error-alert-description')}</Paragraph>
-        </Alert>
-      )}
-
+      {systemError && <SystemErrorAlert />}
       <FormHeader title={t('title')} step={t('step')} />
-
       <Form action={formAction} noValidate ref={formRef}>
         <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
           <h1 className={styles.h1}>

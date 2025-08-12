@@ -1,6 +1,5 @@
 'use client'
 
-import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useRef } from 'react'
 
@@ -9,6 +8,7 @@ import type { Component } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
 import { FormHeader } from '../../../_components/FormHeader/FormHeader'
+import { SystemErrorAlert } from '../../../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../../../_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../../../_utils/useSetFocusOnInvalidFormAlert'
 import { FormState, ValidationError } from 'apps/melding-form/src/types'
@@ -72,17 +72,7 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
   return (
     <>
       <title>{documentTitle}</title>
-      {systemError && (
-        <Alert
-          role="alert"
-          headingLevel={2}
-          severity="error"
-          heading={tShared('system-error-alert-title')}
-          className="ams-mb-xl"
-        >
-          <Paragraph>{tShared('system-error-alert-description')}</Paragraph>
-        </Alert>
-      )}
+      {systemError && <SystemErrorAlert />}
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"
