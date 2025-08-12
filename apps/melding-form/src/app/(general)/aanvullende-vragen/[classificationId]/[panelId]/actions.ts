@@ -76,7 +76,7 @@ export const postForm = async (
     const { response, error } = result.value
 
     // JSONLogic validation errors do not have a type.
-    // This differs from email and phone validation (see Contact), which returns type="value_error"
+    // This differs from email and phone validation errors (see Contact), which have type="value_error"
     const hasValidationErrors =
       response.status === 422 && isApiErrorArray(error) && error?.detail?.some((error) => !error.type)
 

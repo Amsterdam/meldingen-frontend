@@ -28,7 +28,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
       query: { token },
     })
 
-    // Email and phone validation returns type="value_error"
+    // Email and phone validation errors have type="value_error"
     // This differs from JSONLogic validation errors, which do not have a type
     const hasValidationErrors =
       response.status === 422 && isApiErrorArray(error) && error?.detail?.some((error) => error.type === 'value_error')
