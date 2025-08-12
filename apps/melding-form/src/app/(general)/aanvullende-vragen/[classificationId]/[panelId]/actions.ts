@@ -7,7 +7,7 @@ import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
-import { handleApiError } from 'apps/melding-form/src/handleApiError'
+import { handleApiError, isApiErrorArray } from 'apps/melding-form/src/handleApiError'
 
 type ArgsType = {
   isLastPanel: boolean
@@ -29,12 +29,6 @@ const getMissingRequiredKeys = (requiredKeys: string[], entries: [string, unknow
     // If value is an empty string (or otherwise falsy), add it to missingRequiredKeys
     return !value
   })
-
-const mapValidationErrors = (keys: string[]) =>
-  keys.map((key) => ({
-    key,
-    message: 'Vraag is verplicht en moet worden beantwoord.',
-  }))
 
 export const postForm = async (
   { isLastPanel, lastPanelPath, nextPanelPath, questionKeysAndIds, requiredQuestionKeys }: ArgsType,
@@ -64,7 +58,10 @@ export const postForm = async (
   if (missingRequiredKeys.length > 0) {
     return {
       formData,
-      validationErrors: mapValidationErrors(missingRequiredKeys),
+      validationErrors: missingRequiredKeys.map((key) => ({
+        key,
+        message: 'Vraag is verplicht en moet worden beantwoord.',
+      })),
     }
   }
 
@@ -73,7 +70,18 @@ export const postForm = async (
   const results = await Promise.all(promiseArray)
 
   // Return validation errors if there are any
-  const resultsWithValidationError = results.filter((result) => result?.value.response.status === 422)
+  const resultsWithValidationError = results.filter((result) => {
+    if (!result?.value) return false
+
+    const { response, error } = result.value
+
+    // JSONLogic validation errors do not have a type.
+    // This differs from email and phone validation (see Contact), which returns type="value_error"
+    const hasValidationErrors =
+      response.status === 422 && isApiErrorArray(error) && error?.detail?.some((error) => !error.type)
+
+    return hasValidationErrors
+  })
 
   if (resultsWithValidationError.length > 0) {
     return {

@@ -29,22 +29,24 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
     }
   }
 
-  const result = await postMelding({ body: { text: formDataObj.primary.toString() } })
+  const { data, error, response } = await postMelding({ body: { text: formDataObj.primary.toString() } })
+
+  // JSONLogic validation errors do not have a type.
+  // This differs from email and phone validation (see Contact), which returns type="value_error"
+  const hasValidationErrors = response.status === 422 && error?.detail?.some((error) => !error.type)
 
   // Return other validation errors if there are any
-  if (result.response.status === 422) {
+  if (hasValidationErrors) {
     return {
       formData,
       validationErrors: [
         {
           key: 'primary',
-          message: handleApiError(result.error),
+          message: handleApiError(error),
         },
       ],
     }
   }
-
-  const { data, error } = result
 
   if (error) return { formData, systemError: error }
 
