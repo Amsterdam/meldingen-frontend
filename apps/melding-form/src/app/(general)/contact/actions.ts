@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { postMeldingByMeldingIdContact, putMeldingByMeldingIdAddContactInfo } from '@meldingen/api-client'
 
-import { handleApiError, isApiErrorArray } from 'apps/melding-form/src/handleApiError'
+import { isApiErrorArray } from 'apps/melding-form/src/handleApiError'
 
 export const postContactForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()
@@ -44,7 +44,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
 
     const { error } = result
 
-    if (error) return { errorMessage: handleApiError(error), formData }
+    if (error) return { formData, systemError: error }
   }
 
   // Set melding state to 'contact_info_added'
@@ -53,7 +53,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
     query: { token },
   })
 
-  if (error) return { errorMessage: handleApiError(error), formData }
+  if (error) return { formData, systemError: error }
 
   return redirect('/samenvatting')
 }

@@ -43,11 +43,11 @@ describe('postLocationForm', () => {
     expect(redirect).toHaveBeenCalledWith('/cookie-storing')
   })
 
-  it('returns an error when coordinates are missing', async () => {
+  it('returns a validation error when coordinates are missing', async () => {
     const formData = new FormData()
     const result = await postLocationForm(null, formData)
 
-    expect(result).toEqual({ errorMessage: 'errors.no-location' })
+    expect(result).toEqual({ validationErrors: [{ key: 'location-link', message: 'errors.no-location' }] })
   })
 
   it('posts the location and redirects to /bijlage', async () => {
@@ -62,7 +62,7 @@ describe('postLocationForm', () => {
   it('returns an error message if postMeldingByMeldingIdLocation returns an error', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_LOCATION, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 404 }),
+        HttpResponse.json('Error message', { status: 404 }),
       ),
     )
 
@@ -71,13 +71,13 @@ describe('postLocationForm', () => {
 
     const result = await postLocationForm(null, formData)
 
-    expect(result).toEqual({ errorMessage: 'Error message' })
+    expect(result).toEqual({ systemError: 'Error message' })
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
     server.use(
       http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_LOCATION, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+        HttpResponse.json('Error message', { status: 500 }),
       ),
     )
 
@@ -86,6 +86,6 @@ describe('postLocationForm', () => {
 
     const result = await postLocationForm(null, formData)
 
-    expect(result).toEqual({ errorMessage: 'Error message' })
+    expect(result).toEqual({ systemError: 'Error message' })
   })
 })

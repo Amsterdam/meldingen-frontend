@@ -1,14 +1,14 @@
 'use client'
 
-import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useActionState, useRef } from 'react'
+import { useActionState, useEffect, useRef } from 'react'
 
 import { FormRenderer, isSelectboxes } from '@meldingen/form-renderer'
 import type { Component } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
 import { FormHeader } from '../../../_components/FormHeader/FormHeader'
+import { SystemErrorAlert } from '../../../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../../../_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../../../_utils/useSetFocusOnInvalidFormAlert'
 import { FormState, ValidationError } from 'apps/melding-form/src/types'
@@ -48,7 +48,7 @@ const initialState: FormState = {}
 export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ formData, errorMessage, validationErrors }, formAction] = useActionState(action, initialState)
+  const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
 
   const t = useTranslations('additional-questions')
   const tShared = useTranslations('shared')
@@ -61,14 +61,18 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
   // Update document title when there are validation errors
   const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
 
+  useEffect(() => {
+    if (systemError) {
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(systemError)
+    }
+  }, [systemError])
+
   return (
     <>
       <title>{documentTitle}</title>
-      {errorMessage && (
-        <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{errorMessage}</Paragraph>
-        </Alert>
-      )}
+      {systemError && <SystemErrorAlert />}
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"

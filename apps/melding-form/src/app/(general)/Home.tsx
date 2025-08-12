@@ -1,8 +1,7 @@
 'use client'
 
-import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { useActionState, useRef } from 'react'
+import { useActionState, useEffect, useRef } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { FormRenderer } from '@meldingen/form-renderer'
@@ -11,6 +10,7 @@ import { InvalidFormAlert } from '@meldingen/ui'
 import { FormHeader } from './_components/FormHeader/FormHeader'
 import { postPrimaryForm } from './actions'
 import { FormState } from '../../types'
+import { SystemErrorAlert } from './_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from './_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from './_utils/useSetFocusOnInvalidFormAlert'
 
@@ -19,7 +19,7 @@ const initialState: FormState = {}
 export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ formData, errorMessage, validationErrors }, formAction] = useActionState(postPrimaryForm, initialState)
+  const [{ formData, systemError, validationErrors }, formAction] = useActionState(postPrimaryForm, initialState)
 
   const t = useTranslations('homepage')
   const tShared = useTranslations('shared')
@@ -40,14 +40,18 @@ export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaCom
   // Update document title when there are validation errors
   const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
 
+  useEffect(() => {
+    if (systemError) {
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(systemError)
+    }
+  }, [systemError])
+
   return (
     <>
       <title>{documentTitle}</title>
-      {errorMessage && (
-        <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{errorMessage}</Paragraph>
-        </Alert>
-      )}
+      {systemError && <SystemErrorAlert />}
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"

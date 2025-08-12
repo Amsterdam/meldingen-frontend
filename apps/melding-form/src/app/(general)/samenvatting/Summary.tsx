@@ -1,14 +1,16 @@
 'use client'
 
-import { Alert, FileList, Heading, Paragraph } from '@amsterdam/design-system-react'
+import { FileList, Heading, Paragraph } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
-import { useActionState } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import { SubmitButton, SummaryList } from '@meldingen/ui'
 
 import { postSummaryForm } from './actions'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
+import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
+import { FormState } from 'apps/melding-form/src/types'
 
 import styles from './Summary.module.css'
 
@@ -34,28 +36,29 @@ type Props = {
   primaryForm: GenericSummaryData
 }
 
-const initialState: { errorMessage?: string } = {}
+const initialState: Pick<FormState, 'systemError'> = {}
 
 export const Summary = ({ attachments, primaryForm, additionalQuestions, location, contact }: Props) => {
-  const [{ errorMessage }, formAction] = useActionState(postSummaryForm, initialState)
+  const [{ systemError }, formAction] = useActionState(postSummaryForm, initialState)
 
   const t = useTranslations('summary')
 
+  useEffect(() => {
+    if (systemError) {
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(systemError)
+    }
+  }, [systemError])
+
   return (
     <>
-      {errorMessage && (
-        <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{errorMessage}</Paragraph>
-        </Alert>
-      )}
-
+      {systemError && <SystemErrorAlert />}
       <FormHeader title={t('title')} step={t('step')} />
-
       <Heading level={1} size="level-4" className="ams-mb-s">
         {t('main-title')}
       </Heading>
       <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
-
       <SummaryList className="ams-mb-m">
         <SummaryList.Item key={primaryForm.key}>
           <SummaryList.Term>{primaryForm.term}</SummaryList.Term>

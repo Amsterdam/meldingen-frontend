@@ -25,13 +25,13 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Er staan blowende jongeren')
-    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message', formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
 
     render(<AdditionalQuestions {...defaultProps} />)
 
     const alert = screen.getByRole('alert')
 
-    expect(alert).toHaveTextContent('Test error message')
+    expect(alert).toHaveTextContent('system-error-alert-title')
 
     const input = screen.getByRole('textbox')
 
@@ -42,13 +42,13 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('checkbox___selectBoxes___one', 'one')
-    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message', formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
 
     render(<AdditionalQuestions {...defaultProps} formComponents={[checkboxComponent]} />)
 
     const alert = screen.getByRole('alert')
 
-    expect(alert).toHaveTextContent('Test error message')
+    expect(alert).toHaveTextContent('system-error-alert-title')
 
     const checkbox = screen.getByRole('checkbox', { name: 'One' })
 

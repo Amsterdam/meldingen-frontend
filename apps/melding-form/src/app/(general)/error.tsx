@@ -22,7 +22,7 @@ export default function Error({ error }: { error: Error & { digest?: string } })
       <Button className="ams-mb-m" onClick={() => window.location.reload()}>
         {t('button')}
       </Button>
-      <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
+      <Paragraph>{t('description')}</Paragraph>
     </>
   )
 }

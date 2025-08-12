@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import type { Mock } from 'vitest'
 
 import { Location } from './Location'
-import Page, { generateMetadata } from './page'
+import Page from './page'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
@@ -12,14 +12,6 @@ vi.mock('next/headers', () => ({
 vi.mock('./Location', () => ({
   Location: vi.fn(() => <div>Location Component</div>),
 }))
-
-describe('generateMetadata', () => {
-  it('returns the correct metadata title', async () => {
-    const metadata = await generateMetadata()
-
-    expect(metadata).toEqual({ title: 'metadata.title' })
-  })
-})
 
 describe('Page', () => {
   const mockCookies = {

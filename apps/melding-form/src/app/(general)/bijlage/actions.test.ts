@@ -35,7 +35,7 @@ describe('submitAttachmentsForm', () => {
   it('returns an error message if an error occurs when changing melding state', async () => {
     server.use(
       http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_ATTACHMENTS, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+        HttpResponse.json('Error message', { status: 500 }),
       ),
     )
 
@@ -51,7 +51,7 @@ describe('submitAttachmentsForm', () => {
 
     const result = await submitAttachmentsForm()
 
-    expect(result).toEqual({ message: 'Error message' })
+    expect(result).toEqual({ systemError: 'Error message' })
   })
 
   it('redirects to /contact page on success', async () => {

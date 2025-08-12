@@ -25,14 +25,14 @@ describe('postPrimaryForm', () => {
   })
 
   it('returns an error message when postMelding returns an error', async () => {
-    server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json({ detail: 'Error message' }, { status: 404 })))
+    server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json('Error message', { status: 404 })))
 
     const formData = new FormData()
     formData.set('primary', 'Test')
 
     const result = await postPrimaryForm(null, formData)
 
-    expect(result).toEqual({ errorMessage: 'Error message', formData })
+    expect(result).toEqual({ formData, systemError: 'Error message' })
     expect(redirect).not.toHaveBeenCalled()
   })
 
@@ -75,7 +75,7 @@ describe('postPrimaryForm', () => {
   it('returns an error message if an error occurs when changing melding state', async () => {
     server.use(
       http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ANSWER_QUESTIONS, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 404 }),
+        HttpResponse.json('Error message', { status: 404 }),
       ),
     )
 
@@ -84,7 +84,7 @@ describe('postPrimaryForm', () => {
 
     const result = await postPrimaryForm(null, formData)
 
-    expect(result).toEqual({ errorMessage: 'Error message', formData })
+    expect(result).toEqual({ formData, systemError: 'Error message' })
     expect(redirect).not.toHaveBeenCalled()
   })
 

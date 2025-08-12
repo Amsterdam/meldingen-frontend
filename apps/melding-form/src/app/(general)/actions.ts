@@ -46,7 +46,7 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
 
   const { data, error } = result
 
-  if (error) return { errorMessage: handleApiError(error), formData }
+  if (error) return { formData, systemError: error }
 
   const { classification, created_at, id, token, public_id } = data
 
@@ -73,12 +73,12 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
         query: { token },
       })
 
-      if (error) return { errorMessage: handleApiError(error), formData }
+      if (error) return { formData, systemError: error }
 
       return redirect(nextPage)
     }
 
-    if (error) return { errorMessage: handleApiError(error), formData }
+    if (error) return { formData, systemError: error }
 
     const nextFormFirstKey = data?.components[0].key
 

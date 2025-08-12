@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
+import { useActionState } from 'react'
+import { Mock } from 'vitest'
 
 import { Attachments } from './Attachments'
 import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
@@ -152,5 +154,15 @@ describe('Attachments', () => {
     expect(screen.queryByText('example2.png')).not.toBeInTheDocument()
     expect(screen.queryByText('example3.png')).not.toBeInTheDocument()
     expect(screen.queryByText('example4.png')).not.toBeInTheDocument()
+  })
+
+  it('renders a system error Alert when there is one', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+
+    render(<Attachments {...defaultProps} />)
+
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveTextContent('system-error-alert-title')
   })
 })

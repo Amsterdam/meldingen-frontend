@@ -63,8 +63,8 @@ export const postForm = async (
 
   if (missingRequiredKeys.length > 0) {
     return {
-      validationErrors: mapValidationErrors(missingRequiredKeys),
       formData,
+      validationErrors: mapValidationErrors(missingRequiredKeys),
     }
   }
 
@@ -77,21 +77,23 @@ export const postForm = async (
 
   if (resultsWithValidationError.length > 0) {
     return {
+      formData,
       validationErrors: resultsWithValidationError.map((result) => ({
         key: result?.key || 'fallback-key',
         message: handleApiError(result?.value.error),
       })),
-      formData,
     }
   }
 
-  // Return a string of all error messages if there are any
+  // Return an array of all errors if there are any
   const erroredResults = results.filter((result) => result?.value.error)
 
   if (erroredResults.length > 0) {
+    const errors = erroredResults.map((result) => result?.value.error)
+
     return {
-      errorMessage: erroredResults.map((result) => handleApiError(result?.value.error)).join(', '),
       formData,
+      systemError: errors,
     }
   }
 
@@ -102,7 +104,7 @@ export const postForm = async (
       query: { token },
     })
 
-    if (error) return { errorMessage: handleApiError(error), formData }
+    if (error) return { formData, systemError: error }
   }
 
   return redirect(nextPanelPath)

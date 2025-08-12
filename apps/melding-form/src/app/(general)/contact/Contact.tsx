@@ -1,10 +1,10 @@
 'use client'
 
-import { Alert, ErrorMessage, Field, Heading, Label, Paragraph } from '@amsterdam/design-system-react'
+import { ErrorMessage, Field, Heading, Label } from '@amsterdam/design-system-react'
 import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
-import { useActionState, useRef } from 'react'
+import { useActionState, useEffect, useRef } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
@@ -12,6 +12,7 @@ import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
 
 import { postContactForm } from './actions'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
+import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
 import { FormState } from 'apps/melding-form/src/types'
@@ -21,7 +22,7 @@ const initialState: FormState = {}
 export const Contact = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ formData, errorMessage, validationErrors }, formAction] = useActionState(postContactForm, initialState)
+  const [{ formData, systemError, validationErrors }, formAction] = useActionState(postContactForm, initialState)
 
   const t = useTranslations('contact')
   const tShared = useTranslations('shared')
@@ -40,14 +41,18 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   const emailErrorMessage = validationErrors?.find((error) => error.key === 'email-input')?.message
   const telErrorMessage = validationErrors?.find((error) => error.key === 'tel-input')?.message
 
+  useEffect(() => {
+    if (systemError) {
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(systemError)
+    }
+  }, [systemError])
+
   return (
     <>
       <title>{documentTitle}</title>
-      {errorMessage && (
-        <Alert role="alert" headingLevel={2} severity="error" heading="Let op" className="ams-mb-s">
-          <Paragraph>{errorMessage}</Paragraph>
-        </Alert>
-      )}
+      {systemError && <SystemErrorAlert />}
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"
