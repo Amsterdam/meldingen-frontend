@@ -17,7 +17,7 @@ type ArgsType = {
   requiredQuestionKeys: string[]
 }
 
-const getMissingRequiredKeys = (requiredKeys: string[], entries: [string, unknown][]) =>
+const getMissingKeysRequiredAnswers = (requiredKeys: string[], entries: [string, unknown][]) =>
   requiredKeys.filter((requiredKey) => {
     const entry = entries.find(([key]) => key === requiredKey)
 
@@ -59,7 +59,7 @@ export const postForm = async (
   const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(entries))
 
   // Check if all required questions are answered
-  const missingRequiredKeys = getMissingRequiredKeys(requiredQuestionKeys, entriesWithMergedCheckboxes)
+  const missingRequiredKeys = getMissingKeysRequiredAnswers(requiredQuestionKeys, entriesWithMergedCheckboxes)
 
   if (missingRequiredKeys.length > 0) {
     return {
