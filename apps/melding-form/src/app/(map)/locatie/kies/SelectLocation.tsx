@@ -69,13 +69,15 @@ export const SelectLocation = ({ classification }: Props) => {
           >
             {t('submit-button.mobile')}
           </Button>
-          <Button
-            variant="secondary"
-            onClick={handleAssetListToggle}
-            className={clsx(styles.toggleButton, showAssetList && styles.removeAbsolutePosition)}
-          >
-            {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
-          </Button>
+          {assetList.length > 0 && (
+            <Button
+              variant="secondary"
+              onClick={handleAssetListToggle}
+              className={clsx(styles.toggleButton, showAssetList && styles.removeAbsolutePosition)}
+            >
+              {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
+            </Button>
+          )}
         </div>
       </div>
     </div>

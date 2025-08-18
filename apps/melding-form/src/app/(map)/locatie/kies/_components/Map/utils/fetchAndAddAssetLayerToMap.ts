@@ -23,7 +23,7 @@ export const fetchAndAddAssetLayerToMap = async (
   if (data?.features && data.features.length > 0) {
     addAssetLayerToMap(data.features, assetLayerRef, mapInstance)
     setAssets(data.features)
-  }
+  } else setAssets([])
 
   if (error) throw new Error(handleApiError(error))
 }
