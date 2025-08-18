@@ -66,5 +66,5 @@
 }
 
 .removeAbsolutePosition {
-  position: inherit;
+  position: unset;
 }
