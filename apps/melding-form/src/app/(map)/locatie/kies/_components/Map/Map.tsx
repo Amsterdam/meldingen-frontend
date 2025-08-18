@@ -2,6 +2,8 @@ import L from 'leaflet'
 import { useEffect, useRef, useState } from 'react'
 import 'leaflet/dist/leaflet.css'
 
+import { Feature } from '@meldingen/api-client'
+
 import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './components/Crosshair/Crosshair'
 import { defaultIcon } from './markerIcons'
@@ -15,9 +17,10 @@ type Props = {
   coordinates?: Coordinates
   showAssetList?: boolean
   setCoordinates: (coordinates: Coordinates) => void
+  setAssets: (assets: Feature[]) => void
 }
 
-export const Map = ({ classification, coordinates, showAssetList, setCoordinates }: Props) => {
+export const Map = ({ classification, coordinates, showAssetList, setCoordinates, setAssets }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const markerRef = useRef<L.Marker | null>(null)
   const assetLayerRef = useRef<L.Layer | null>(null)
@@ -123,7 +126,7 @@ export const Map = ({ classification, coordinates, showAssetList, setCoordinates
 
   // This useEffect prevents the WFS layer from being fetched twice
   useEffect(() => {
-    mapInstance?.on('moveend', () => updateAssetLayer(mapInstance, assetLayerRef, classification))
+    mapInstance?.on('moveend', () => updateAssetLayer(mapInstance, assetLayerRef, setAssets, classification))
   }, [mapInstance])
 
   return (

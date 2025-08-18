@@ -7,6 +7,8 @@ import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
+import { Feature } from '@meldingen/api-client'
+
 import { AssetList } from './_components/AssetList/AssetList'
 import { SideBar } from './_components/SideBar/SideBar'
 import type { Coordinates } from 'apps/melding-form/src/types'
@@ -25,6 +27,7 @@ type Props = {
 export const SelectLocation = ({ classification }: Props) => {
   const [coordinates, setCoordinates] = useState<Coordinates>()
   const [showAssetList, setShowAssetList] = useState(false)
+  const [assetList, setAssetList] = useState<Feature[]>([])
 
   const t = useTranslations('select-location')
 
@@ -45,7 +48,7 @@ export const SelectLocation = ({ classification }: Props) => {
     <div className={styles.grid}>
       <SideBar coordinates={coordinates} setCoordinates={setCoordinates} />
       <div className={clsx(styles.assetList, showAssetList && styles.showAssetList)}>
-        <AssetList />
+        <AssetList assetList={assetList} />
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
           {t('submit-button.desktop')}
         </Button>
@@ -56,13 +59,24 @@ export const SelectLocation = ({ classification }: Props) => {
           coordinates={coordinates}
           setCoordinates={setCoordinates}
           showAssetList={showAssetList}
+          setAssets={setAssetList}
         />
-        <Button form="address" type="submit" className={styles.submitbutton}>
-          {t('submit-button.mobile')}
-        </Button>
-        <Button variant="secondary" onClick={handleAssetListToggle} className={styles.toggleButton}>
-          {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
-        </Button>
+        <div className={styles.buttonWrapper}>
+          <Button
+            form="address"
+            type="submit"
+            className={clsx(styles.submitbutton, showAssetList && styles.removeAbsolutePosition)}
+          >
+            {t('submit-button.mobile')}
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={handleAssetListToggle}
+            className={clsx(styles.toggleButton, showAssetList && styles.removeAbsolutePosition)}
+          >
+            {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
+          </Button>
+        </div>
       </div>
     </div>
   )
