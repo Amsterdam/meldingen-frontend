@@ -12,7 +12,7 @@ const ASSET_ZOOM_THRESHOLD = 16
 export const updateAssetLayer = (
   mapInstance: L.Map,
   assetLayerRef: MutableRefObject<L.Layer | null>,
-  setAssets: (assets: Feature[]) => void,
+  setAssetList: (assets: Feature[]) => void,
   classification?: string,
 ) => {
   if (!classification || !classificationsWithAssets.includes(classification)) return
@@ -21,9 +21,9 @@ export const updateAssetLayer = (
 
   // Has correct zoom level for assets
   if (zoom >= ASSET_ZOOM_THRESHOLD) {
-    fetchAndAddAssetLayerToMap(mapInstance, classification, assetLayerRef, setAssets)
+    fetchAndAddAssetLayerToMap(mapInstance, classification, assetLayerRef, setAssetList)
   } else if (zoom < ASSET_ZOOM_THRESHOLD && assetLayerRef.current) {
-    setAssets([])
+    setAssetList([])
     assetLayerRef.current.remove()
   }
 }

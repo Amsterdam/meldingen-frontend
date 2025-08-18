@@ -17,10 +17,10 @@ type Props = {
   coordinates?: Coordinates
   showAssetList?: boolean
   setCoordinates: (coordinates: Coordinates) => void
-  setAssets: (assets: Feature[]) => void
+  setAssetList: (assets: Feature[]) => void
 }
 
-export const Map = ({ classification, coordinates, showAssetList, setCoordinates, setAssets }: Props) => {
+export const Map = ({ classification, coordinates, showAssetList, setCoordinates, setAssetList }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const markerRef = useRef<L.Marker | null>(null)
   const assetLayerRef = useRef<L.Layer | null>(null)
@@ -126,7 +126,7 @@ export const Map = ({ classification, coordinates, showAssetList, setCoordinates
 
   // This useEffect prevents the WFS layer from being fetched twice
   useEffect(() => {
-    mapInstance?.on('moveend', () => updateAssetLayer(mapInstance, assetLayerRef, setAssets, classification))
+    mapInstance?.on('moveend', () => updateAssetLayer(mapInstance, assetLayerRef, setAssetList, classification))
   }, [mapInstance])
 
   return (

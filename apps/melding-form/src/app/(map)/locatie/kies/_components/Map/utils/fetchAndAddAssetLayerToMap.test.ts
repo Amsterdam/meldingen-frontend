@@ -36,13 +36,13 @@ describe('fetchAndAddAssetLayerToMap', () => {
   })
 
   it('calls addAssetLayerToMap when features are returned', async () => {
-    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef)
+    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef, vi.fn())
 
     expect(addAssetLayerToMap).toHaveBeenCalledWith([containerAsset], assetLayerRef, mapInstance)
   })
 
   it('throws error when error is returned', async () => {
-    const fn = () => fetchAndAddAssetLayerToMap(mapInstance, 'invalid-classification', assetLayerRef)
+    const fn = () => fetchAndAddAssetLayerToMap(mapInstance, 'invalid-classification', assetLayerRef, vi.fn())
 
     await expect(fn).rejects.toThrow('Handled: Something went wrong')
   })
@@ -50,13 +50,13 @@ describe('fetchAndAddAssetLayerToMap', () => {
   it('does not call addAssetLayerToMap when there are no features', async () => {
     server.use(http.get(ENDPOINTS.GET_WFS_BY_NAME, () => HttpResponse.json({ features: [] })))
 
-    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef)
+    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef, vi.fn())
 
     expect(addAssetLayerToMap).not.toHaveBeenCalled()
   })
 
   it('calls getWfsFilter with mapInstance', async () => {
-    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef)
+    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef, vi.fn())
 
     expect(getWfsFilter).toHaveBeenCalledWith(mapInstance)
   })

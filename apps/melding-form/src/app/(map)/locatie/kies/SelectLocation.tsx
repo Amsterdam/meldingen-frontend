@@ -59,7 +59,7 @@ export const SelectLocation = ({ classification }: Props) => {
           coordinates={coordinates}
           setCoordinates={setCoordinates}
           showAssetList={showAssetList}
-          setAssets={setAssetList}
+          setAssetList={setAssetList}
         />
         <div className={styles.buttonWrapper}>
           <Button

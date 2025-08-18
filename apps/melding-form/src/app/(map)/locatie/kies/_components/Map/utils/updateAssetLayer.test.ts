@@ -1,3 +1,5 @@
+import { Feature } from '@meldingen/api-client'
+
 import { fetchAndAddAssetLayerToMap } from './fetchAndAddAssetLayerToMap'
 import { updateAssetLayer } from './updateAssetLayer'
 
@@ -11,21 +13,24 @@ describe('updateAssetLayer', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let assetLayerRef: { current: any }
 
+  let mockSetAssetList: (assets: Feature[]) => void
+
   beforeEach(() => {
     assetLayerRef = { current: null }
     mapInstance = {
       getZoom: vi.fn(),
     }
+    mockSetAssetList = vi.fn()
   })
 
   it('returns undefined if classification is falsy', () => {
-    updateAssetLayer(mapInstance, assetLayerRef, undefined)
+    updateAssetLayer(mapInstance, assetLayerRef, mockSetAssetList, undefined)
 
     expect(fetchAndAddAssetLayerToMap).not.toHaveBeenCalled()
   })
 
   it('returns undefined if classification is not in classificationsWithAssets', () => {
-    updateAssetLayer(mapInstance, assetLayerRef, 'not-an-asset')
+    updateAssetLayer(mapInstance, assetLayerRef, mockSetAssetList, 'not-an-asset')
 
     expect(fetchAndAddAssetLayerToMap).not.toHaveBeenCalled()
   })
@@ -33,24 +38,24 @@ describe('updateAssetLayer', () => {
   it('calls fetchAndAddAssetLayerToMap if zoom >= threshold and classification matches', () => {
     mapInstance.getZoom.mockReturnValue(16)
 
-    updateAssetLayer(mapInstance, assetLayerRef, 'container')
+    updateAssetLayer(mapInstance, assetLayerRef, mockSetAssetList, 'container')
 
-    expect(fetchAndAddAssetLayerToMap).toHaveBeenCalledWith(mapInstance, 'container', assetLayerRef)
+    expect(fetchAndAddAssetLayerToMap).toHaveBeenCalledWith(mapInstance, 'container', assetLayerRef, mockSetAssetList)
   })
 
   it('calls fetchAndAddAssetLayerToMap if zoom > threshold and classification matches', () => {
     mapInstance.getZoom.mockReturnValue(17)
 
-    updateAssetLayer(mapInstance, assetLayerRef, 'container')
+    updateAssetLayer(mapInstance, assetLayerRef, mockSetAssetList, 'container')
 
-    expect(fetchAndAddAssetLayerToMap).toHaveBeenCalledWith(mapInstance, 'container', assetLayerRef)
+    expect(fetchAndAddAssetLayerToMap).toHaveBeenCalledWith(mapInstance, 'container', assetLayerRef, mockSetAssetList)
   })
 
   it('removes assetLayer if zoom < threshold and assetLayerRef.current exists', () => {
     mapInstance.getZoom.mockReturnValue(15)
     assetLayerRef.current = { remove: vi.fn() }
 
-    updateAssetLayer(mapInstance, assetLayerRef, 'container')
+    updateAssetLayer(mapInstance, assetLayerRef, mockSetAssetList, 'container')
 
     expect(assetLayerRef.current.remove).toHaveBeenCalled()
     expect(fetchAndAddAssetLayerToMap).not.toHaveBeenCalled()
@@ -60,7 +65,7 @@ describe('updateAssetLayer', () => {
     mapInstance.getZoom.mockReturnValue(15)
     assetLayerRef.current = null
 
-    updateAssetLayer(mapInstance, assetLayerRef, 'container')
+    updateAssetLayer(mapInstance, assetLayerRef, mockSetAssetList, 'container')
 
     expect(fetchAndAddAssetLayerToMap).not.toHaveBeenCalled()
   })

@@ -11,7 +11,7 @@ export const fetchAndAddAssetLayerToMap = async (
   mapInstance: L.Map,
   classification: string,
   assetLayerRef: MutableRefObject<L.Layer | null>,
-  setAssets: (assets: Feature[]) => void,
+  setAssetList: (assets: Feature[]) => void,
 ) => {
   const filter = getWfsFilter(mapInstance)
 
@@ -22,8 +22,8 @@ export const fetchAndAddAssetLayerToMap = async (
 
   if (data?.features && data.features.length > 0) {
     addAssetLayerToMap(data.features, assetLayerRef, mapInstance)
-    setAssets(data.features)
-  } else setAssets([])
+    setAssetList(data.features)
+  } else setAssetList([])
 
   if (error) throw new Error(handleApiError(error))
 }
