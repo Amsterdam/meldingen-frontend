@@ -1,6 +1,14 @@
 import { render, screen } from '@testing-library/react'
 
-import Page from './page'
+import Page, { generateMetadata } from './page'
+
+describe('generateMetadata', () => {
+  it('returns the correct metadata title', async () => {
+    const metadata = await generateMetadata()
+
+    expect(metadata).toEqual({ title: 'metadata.title' })
+  })
+})
 
 describe('Page', () => {
   it('renders page', async () => {
