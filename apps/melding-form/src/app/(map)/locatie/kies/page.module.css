@@ -14,15 +14,12 @@
   display: none;
   flex-direction: column;
   grid-row-start: 2;
-  overflow: hidden;
   overflow-y: auto;
   padding-block-end: var(--ams-space-m);
   padding-inline: var(--ams-space-m);
 
   @media screen and (min-width: 68rem) {
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
   }
 }
 
