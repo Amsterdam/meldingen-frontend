@@ -15,15 +15,15 @@
   },
   "dependencies": {
     "keycloak-js": "26.2.0",
-    "ra-data-simple-rest": "5.10.0",
-    "ra-i18n-polyglot": "5.10.0",
+    "ra-data-simple-rest": "5.10.1",
+    "ra-i18n-polyglot": "5.10.1",
     "ra-keycloak": "2.0.0",
-    "react-admin": "5.10.0",
-    "react-hook-form": "7.61.1",
+    "react-admin": "5.10.1",
+    "react-hook-form": "7.62.0",
     "uber-json-schema-filter": "2.0.5",
-    "vite": "7.0.6"
+    "vite": "7.1.2"
   },
   "devDependencies": {
-    "ra-core": "5.10.0"
+    "ra-core": "5.10.1"
   }
 }

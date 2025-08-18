@@ -15,7 +15,7 @@
     "type-check": "tsc --incremental false"
   },
   "dependencies": {
-    "next": "15.4.3",
+    "next": "15.4.6",
     "next-auth": "4.24.11",
     "next-intl": "4.3.4"
   }

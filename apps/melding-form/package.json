@@ -15,9 +15,9 @@
     "type-check": "tsc --incremental false"
   },
   "dependencies": {
-    "@headlessui/react": "2.2.5",
+    "@headlessui/react": "2.2.7",
     "leaflet": "1.9.4",
-    "next": "15.4.3",
+    "next": "15.4.6",
     "next-intl": "4.3.4"
   },
   "devDependencies": {
