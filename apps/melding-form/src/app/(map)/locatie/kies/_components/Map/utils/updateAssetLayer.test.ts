@@ -51,12 +51,13 @@ describe('updateAssetLayer', () => {
     expect(fetchAndAddAssetLayerToMap).toHaveBeenCalledWith(mapInstance, 'container', assetLayerRef, mockSetAssetList)
   })
 
-  it('removes assetLayer if zoom < threshold and assetLayerRef.current exists', () => {
+  it('removes assetLayer and resets AssetList if zoom < threshold and assetLayerRef.current exists', () => {
     mapInstance.getZoom.mockReturnValue(15)
     assetLayerRef.current = { remove: vi.fn() }
 
     updateAssetLayer(mapInstance, assetLayerRef, mockSetAssetList, 'container')
 
+    expect(mockSetAssetList).toHaveBeenCalledWith([])
     expect(assetLayerRef.current.remove).toHaveBeenCalled()
     expect(fetchAndAddAssetLayerToMap).not.toHaveBeenCalled()
   })

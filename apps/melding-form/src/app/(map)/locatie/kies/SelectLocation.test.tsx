@@ -38,9 +38,11 @@ describe('SelectLocation', () => {
 
     const sideBar = screen.getByRole('heading', { name: 'title' })
     const addressCombobox = screen.getByRole('combobox', { name: 'label' })
+    const toggleButton = screen.queryByRole('button', { name: 'toggle-button.list' })
 
     expect(sideBar).toBeInTheDocument()
     expect(addressCombobox).toBeInTheDocument()
+    expect(toggleButton).not.toBeInTheDocument()
     expect(container.querySelector)
   })
 

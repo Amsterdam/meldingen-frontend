@@ -1,6 +1,8 @@
 import L from 'leaflet'
 import { http, HttpResponse } from 'msw'
 
+import { Feature } from '@meldingen/api-client'
+
 import { addAssetLayerToMap } from './addAssetLayerToMap'
 import { fetchAndAddAssetLayerToMap } from './fetchAndAddAssetLayerToMap'
 import { getWfsFilter } from './getWfsFilter'
@@ -23,40 +25,44 @@ vi.mock('apps/melding-form/src/handleApiError', () => ({
 describe('fetchAndAddAssetLayerToMap', () => {
   let mapInstance: L.Map
   let assetLayerRef: { current: L.Layer | null }
+  let mockSetAssetList: (assets: Feature[]) => void
 
   beforeEach(() => {
     // Create a dummy map instance
     const container = document.createElement('div')
     mapInstance = L.map(container)
     assetLayerRef = { current: null }
+    mockSetAssetList = vi.fn()
   })
 
   afterEach(() => {
     mapInstance.remove()
   })
 
-  it('calls addAssetLayerToMap when features are returned', async () => {
-    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef, vi.fn())
+  it('calls addAssetLayerToMap and mockSetAssetLayer when features are returned', async () => {
+    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef, mockSetAssetList)
 
     expect(addAssetLayerToMap).toHaveBeenCalledWith([containerAsset], assetLayerRef, mapInstance)
+    expect(mockSetAssetList).toHaveBeenCalledWith([containerAsset])
   })
 
   it('throws error when error is returned', async () => {
-    const fn = () => fetchAndAddAssetLayerToMap(mapInstance, 'invalid-classification', assetLayerRef, vi.fn())
+    const fn = () => fetchAndAddAssetLayerToMap(mapInstance, 'invalid-classification', assetLayerRef, mockSetAssetList)
 
     await expect(fn).rejects.toThrow('Handled: Something went wrong')
   })
 
-  it('does not call addAssetLayerToMap when there are no features', async () => {
+  it('does not call addAssetLayerToMap and reset mockSetAssetLayer when there are no features', async () => {
     server.use(http.get(ENDPOINTS.GET_WFS_BY_NAME, () => HttpResponse.json({ features: [] })))
 
-    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef, vi.fn())
+    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef, mockSetAssetList)
 
+    expect(mockSetAssetList).toHaveBeenCalledWith([])
     expect(addAssetLayerToMap).not.toHaveBeenCalled()
   })
 
   it('calls getWfsFilter with mapInstance', async () => {
-    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef, vi.fn())
+    await fetchAndAddAssetLayerToMap(mapInstance, 'container', assetLayerRef, mockSetAssetList)
 
     expect(getWfsFilter).toHaveBeenCalledWith(mapInstance)
   })
