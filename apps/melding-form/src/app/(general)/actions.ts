@@ -84,5 +84,5 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
     return redirect(`/aanvullende-vragen/${classification.id}/${nextFormFirstKey}`)
   }
 
-  return redirect('locatie')
+  return redirect('/locatie')
 }
