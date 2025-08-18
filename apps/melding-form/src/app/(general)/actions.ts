@@ -10,6 +10,7 @@ import {
 } from '@meldingen/api-client'
 
 import { handleApiError } from '../../handleApiError'
+import { hasValidationErrors } from './_utils/hasValidationErrors'
 
 export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)
@@ -31,12 +32,8 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
 
   const { data, error, response } = await postMelding({ body: { text: formDataObj.primary.toString() } })
 
-  // JSONLogic validation errors do not have a type.
-  // This differs from email and phone validation errors (see Contact), which have type="value_error"
-  const hasValidationErrors = response.status === 422 && error?.detail?.some((error) => !error.type)
-
   // Return other validation errors if there are any
-  if (hasValidationErrors) {
+  if (hasValidationErrors(response, error)) {
     return {
       formData,
       validationErrors: [

@@ -50,7 +50,10 @@ describe('postPrimaryForm', () => {
   it('returns validation errors for other invalid answers', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING, () =>
-        HttpResponse.json({ detail: [{ loc: ['primary'], msg: 'Validation error' }] }, { status: 422 }),
+        HttpResponse.json(
+          { detail: [{ loc: ['primary'], msg: 'Validation error', type: 'value_error' }] },
+          { status: 422 },
+        ),
       ),
     )
 

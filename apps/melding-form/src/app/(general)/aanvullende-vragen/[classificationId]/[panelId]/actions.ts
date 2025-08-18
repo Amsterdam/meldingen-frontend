@@ -7,7 +7,8 @@ import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
-import { handleApiError, isApiErrorArray } from 'apps/melding-form/src/handleApiError'
+import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
+import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 type ArgsType = {
   isLastPanel: boolean
@@ -73,14 +74,7 @@ export const postForm = async (
   const resultsWithValidationError = results.filter((result) => {
     if (!result?.value) return false
 
-    const { response, error } = result.value
-
-    // JSONLogic validation errors do not have a type.
-    // This differs from email and phone validation errors (see Contact), which have type="value_error"
-    const hasValidationErrors =
-      response.status === 422 && isApiErrorArray(error) && error?.detail?.some((error) => !error.type)
-
-    return hasValidationErrors
+    return hasValidationErrors(result.value.response, result.value.error)
   })
 
   if (resultsWithValidationError.length > 0) {
