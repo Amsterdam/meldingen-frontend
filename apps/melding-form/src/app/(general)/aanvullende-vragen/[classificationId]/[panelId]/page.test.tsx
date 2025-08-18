@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
+import { Mock } from 'vitest'
 
 import * as actionsModule from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
@@ -98,9 +99,10 @@ describe('Page', () => {
       capturedAction({}, undefined, new FormData())
     }
 
-    // Assert the arguments passed to the original spy
     expect(actionsModule.postForm).toHaveBeenCalled()
-    const [extraArgs] = (actionsModule.postForm as any).mock.calls[0]
+
+    const [extraArgs] = (actionsModule.postForm as Mock).mock.calls[0]
+
     expect(extraArgs).toMatchObject({
       isLastPanel: true,
       lastPanelPath: '/aanvullende-vragen/1/panel-2',
@@ -134,9 +136,10 @@ describe('Page', () => {
       capturedAction({}, undefined, new FormData())
     }
 
-    // Assert the arguments passed to the original spy
     expect(actionsModule.postForm).toHaveBeenCalled()
-    const [extraArgs] = (actionsModule.postForm as any).mock.calls[0]
+
+    const [extraArgs] = (actionsModule.postForm as Mock).mock.calls[0]
+
     expect(extraArgs).toMatchObject({
       isLastPanel: false,
       lastPanelPath: '/aanvullende-vragen/1/panel-2',
