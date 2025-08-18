@@ -216,9 +216,23 @@ export const containerAsset: Feature = {
     coordinates: [4.9, 52.3],
     type: 'Point',
   },
+  id: 'container.1',
   properties: {
-    id: 1,
     name: 'Test Feature',
+    id_nummer: 'Container-001',
+  },
+  type: 'Feature',
+}
+
+export const containerAsset2: Feature = {
+  geometry: {
+    coordinates: [4.9, 52.3],
+    type: 'Point',
+  },
+  id: 'container.2',
+  properties: {
+    name: 'Test Feature',
+    id_nummer: 'Container-002',
   },
   type: 'Feature',
 }
