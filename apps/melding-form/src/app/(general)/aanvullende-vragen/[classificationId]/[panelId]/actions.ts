@@ -7,6 +7,7 @@ import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
+import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 type ArgsType = {
@@ -29,12 +30,6 @@ const getUnansweredRequiredQuestionKeys = (requiredKeys: string[], entries: [str
     // If value is an empty string (or otherwise falsy), add it to missingRequiredKeys
     return !value
   })
-
-const mapValidationErrors = (keys: string[]) =>
-  keys.map((key) => ({
-    key,
-    message: 'Vraag is verplicht en moet worden beantwoord.',
-  }))
 
 export const postForm = async (
   { isLastPanel, lastPanelPath, nextPanelPath, questionKeysAndIds, requiredQuestionKeys }: ArgsType,
@@ -64,7 +59,10 @@ export const postForm = async (
   if (missingRequiredKeys.length > 0) {
     return {
       formData,
-      validationErrors: mapValidationErrors(missingRequiredKeys),
+      validationErrors: missingRequiredKeys.map((key) => ({
+        key,
+        message: 'Vraag is verplicht en moet worden beantwoord.',
+      })),
     }
   }
 
@@ -73,7 +71,11 @@ export const postForm = async (
   const results = await Promise.all(promiseArray)
 
   // Return validation errors if there are any
-  const resultsWithValidationError = results.filter((result) => result?.value.response.status === 422)
+  const resultsWithValidationError = results.filter((result) => {
+    if (!result?.value) return false
+
+    return hasValidationErrors(result.value.response, result.value.error)
+  })
 
   if (resultsWithValidationError.length > 0) {
     return {

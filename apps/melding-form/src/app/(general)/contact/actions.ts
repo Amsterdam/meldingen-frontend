@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { postMeldingByMeldingIdContact, putMeldingByMeldingIdAddContactInfo } from '@meldingen/api-client'
 
+import { hasValidationErrors } from '../_utils/hasValidationErrors'
 import { isApiErrorArray } from 'apps/melding-form/src/handleApiError'
 
 export const postContactForm = async (_: unknown, formData: FormData) => {
@@ -19,7 +20,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
   const phone = formData.get('phone')
 
   if (email || phone) {
-    const result = await postMeldingByMeldingIdContact({
+    const { response, error } = await postMeldingByMeldingIdContact({
       body: {
         ...(email && { email: email as string }),
         ...(phone && { phone: phone as string }),
@@ -29,9 +30,9 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
     })
 
     // Return validation errors if there are any
-    if (result.response.status === 422 && isApiErrorArray(result.error)) {
-      const emailError = result.error?.detail.find((error) => error.loc.includes('email'))
-      const phoneError = result.error?.detail.find((error) => error.loc.includes('phone'))
+    if (hasValidationErrors(response, error) && isApiErrorArray(error)) {
+      const emailError = error?.detail.find((error) => error.loc.includes('email'))
+      const phoneError = error?.detail.find((error) => error.loc.includes('phone'))
 
       return {
         formData,
@@ -41,8 +42,6 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
         ],
       }
     }
-
-    const { error } = result
 
     if (error) return { formData, systemError: error }
   }

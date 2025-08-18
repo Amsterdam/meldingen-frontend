@@ -67,7 +67,10 @@ describe('postContactForm', () => {
   it('returns a validation error if email is invalid', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () =>
-        HttpResponse.json({ detail: [{ loc: 'email', msg: 'Email validation error' }] }, { status: 422 }),
+        HttpResponse.json(
+          { detail: [{ loc: 'email', msg: 'Email validation error', type: 'value_error' }] },
+          { status: 422 },
+        ),
       ),
     )
 
@@ -85,7 +88,10 @@ describe('postContactForm', () => {
   it('returns a validation error if phone is invalid', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () =>
-        HttpResponse.json({ detail: [{ loc: 'phone', msg: 'Phone validation error' }] }, { status: 422 }),
+        HttpResponse.json(
+          { detail: [{ loc: 'phone', msg: 'Phone validation error', type: 'value_error' }] },
+          { status: 422 },
+        ),
       ),
     )
 
