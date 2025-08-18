@@ -49,7 +49,12 @@ describe('postPrimaryForm', () => {
 
   it('returns validation errors for other invalid answers', async () => {
     server.use(
-      http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json({ detail: 'Validation error' }, { status: 422 })),
+      http.post(ENDPOINTS.POST_MELDING, () =>
+        HttpResponse.json(
+          { detail: [{ loc: ['primary'], msg: 'Validation error', type: 'value_error' }] },
+          { status: 422 },
+        ),
+      ),
     )
 
     const formData = new FormData()

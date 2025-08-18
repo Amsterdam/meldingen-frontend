@@ -10,6 +10,7 @@ import {
 } from '@meldingen/api-client'
 
 import { handleApiError } from '../../handleApiError'
+import { hasValidationErrors } from './_utils/hasValidationErrors'
 
 export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)
@@ -29,22 +30,20 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
     }
   }
 
-  const result = await postMelding({ body: { text: formDataObj.primary.toString() } })
+  const { data, error, response } = await postMelding({ body: { text: formDataObj.primary.toString() } })
 
   // Return other validation errors if there are any
-  if (result.response.status === 422) {
+  if (hasValidationErrors(response, error)) {
     return {
       formData,
       validationErrors: [
         {
           key: 'primary',
-          message: handleApiError(result.error),
+          message: handleApiError(error),
         },
       ],
     }
   }
-
-  const { data, error } = result
 
   if (error) return { formData, systemError: error }
 

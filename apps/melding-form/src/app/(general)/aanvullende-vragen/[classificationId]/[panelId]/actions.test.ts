@@ -77,7 +77,10 @@ describe('postForm', () => {
   it('returns validation errors for other invalid answers', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>
-        HttpResponse.json({ detail: 'Validation error' }, { status: 422 }),
+        HttpResponse.json(
+          { detail: [{ loc: ['key1'], msg: 'Validation error', type: 'value_error' }] },
+          { status: 422 },
+        ),
       ),
     )
 
