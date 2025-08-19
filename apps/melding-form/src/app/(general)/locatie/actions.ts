@@ -6,8 +6,6 @@ import { getTranslations } from 'next-intl/server'
 
 import { postMeldingByMeldingIdLocation, putMeldingByMeldingIdSubmitLocation } from '@meldingen/api-client'
 
-import { handleApiError } from 'apps/melding-form/src/handleApiError'
-
 export const postLocationForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()
 
@@ -20,7 +18,17 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
 
   const t = await getTranslations('location')
 
-  if (!coordinates) return { errorMessage: t('errors.no-location') }
+  // Return validation error if coordinates are not supplied
+  if (!coordinates) {
+    return {
+      validationErrors: [
+        {
+          key: 'location-link',
+          message: t('errors.no-location'),
+        },
+      ],
+    }
+  }
 
   const parsedCoordinates = JSON.parse(coordinates as string)
 
@@ -34,7 +42,7 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
     query: { token },
   })
 
-  if (error) return { errorMessage: handleApiError(error) }
+  if (error) return { systemError: error }
 
   // Set melding state to 'location_submitted'
   const { error: stateError } = await putMeldingByMeldingIdSubmitLocation({
@@ -42,7 +50,7 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
     query: { token },
   })
 
-  if (stateError) return { errorMessage: handleApiError(stateError) }
+  if (stateError) return { systemError: stateError }
 
   return redirect('/bijlage')
 }

@@ -1,8 +1,8 @@
-import { Components } from '@formio/react'
+import { Components } from '@formio/js'
 
 import { editForm } from './editForm'
 
-const FormioRadio = (Components as any).components.radio
+const FormioRadio = Components.components.radio
 
 export class Radio extends FormioRadio {
   static editForm = editForm

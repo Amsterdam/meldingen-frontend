@@ -1,4 +1,5 @@
 import { Heading, Paragraph } from '@amsterdam/design-system-react'
+import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useState } from 'react'
 
@@ -58,7 +59,7 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
         </Heading>
         <Paragraph size="small">{t('description')}</Paragraph>
       </div>
-      <form action={formAction} id="address">
+      <Form action={formAction} id="address" noValidate>
         <Combobox
           address={address}
           setAddress={setAddress}
@@ -66,7 +67,7 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
           errorMessage={errorMessage}
         />
         <input type="hidden" name="coordinates" defaultValue={address ? JSON.stringify(coordinates) : undefined} />
-      </form>
+      </Form>
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { useActionState } from 'react'
 import type { Mock } from 'vitest'
 
 import { AdditionalQuestions, type Props } from './AdditionalQuestions'
-import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
+import { checkboxComponent, textAreaComponent } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -21,6 +21,40 @@ const defaultProps: Props = {
 }
 
 describe('AdditionalQuestions', () => {
+  it('renders an Alert and keeps input data when there is an error message', () => {
+    const formData = new FormData()
+
+    formData.append('textArea1', 'Er staan blowende jongeren')
+    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
+
+    render(<AdditionalQuestions {...defaultProps} />)
+
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveTextContent('system-error-alert-title')
+
+    const input = screen.getByRole('textbox')
+
+    expect(input).toHaveValue('Er staan blowende jongeren')
+  })
+
+  it('keeps input data on error for checkboxes', () => {
+    const formData = new FormData()
+
+    formData.append('checkbox___selectBoxes___one', 'one')
+    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
+
+    render(<AdditionalQuestions {...defaultProps} formComponents={[checkboxComponent]} />)
+
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveTextContent('system-error-alert-title')
+
+    const checkbox = screen.getByRole('checkbox', { name: 'One' })
+
+    expect(checkbox).toBeChecked()
+  })
+
   it('renders the form header', () => {
     render(<AdditionalQuestions {...defaultProps} />)
 
@@ -29,23 +63,25 @@ describe('AdditionalQuestions', () => {
     expect(header).toBeInTheDocument()
   })
 
+  it('renders an Invalid Form Alert when there are validation errors', () => {
+    ;(useActionState as Mock).mockReturnValue([
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      vi.fn(),
+    ])
+
+    render(<AdditionalQuestions {...defaultProps} />)
+
+    const link = screen.getByRole('link', { name: 'Test error message' })
+
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '#key1')
+  })
+
   it('renders form data', () => {
     render(<AdditionalQuestions {...defaultProps} />)
 
     const question = screen.getByRole('textbox', { name: /First question/ })
 
     expect(question).toBeInTheDocument()
-  })
-
-  it('should render an error message and keep input data', () => {
-    const formData = new FormData()
-
-    formData.append('textArea1', 'Er staan blowende jongeren')
-    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message', formData }, vi.fn()])
-
-    render(<AdditionalQuestions {...defaultProps} />)
-
-    expect(screen.queryByText('Test error message')).toBeInTheDocument()
-    expect(screen.queryByText('Er staan blowende jongeren')).toBeInTheDocument()
   })
 })

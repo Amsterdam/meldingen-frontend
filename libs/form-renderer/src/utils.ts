@@ -18,3 +18,17 @@ export const isTextarea = (component: Component): component is FormTextAreaCompo
 
 export const isTextfield = (component: Component): component is FormTextFieldInputComponent =>
   component.type === 'textfield'
+
+export const getAriaDescribedBy = (id: string, description?: string, errorMessage?: string) => {
+  const ariaDescribedBy = []
+
+  if (description) {
+    ariaDescribedBy.push(`${id}-description`)
+  }
+
+  if (errorMessage) {
+    ariaDescribedBy.push(`${id}-error`)
+  }
+
+  return ariaDescribedBy.length > 0 ? ariaDescribedBy.join(' ') : undefined
+}

@@ -4,7 +4,6 @@ import { getTranslations } from 'next-intl/server'
 import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 
 import { SelectLocation } from './SelectLocation'
-import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('select-location')
@@ -27,7 +26,7 @@ export default async () => {
     query: { token },
   })
 
-  if (error) throw new Error(handleApiError(error))
+  if (error) throw new Error('Failed to fetch melding data.')
 
   return <SelectLocation classification={data?.classification?.name} />
 }

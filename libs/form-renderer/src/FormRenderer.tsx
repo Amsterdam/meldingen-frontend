@@ -1,25 +1,27 @@
+import Form from 'next/form'
+
 import { Heading, SubmitButton } from '@meldingen/ui'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 import type { Component } from './types'
 import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
 
-const getComponent = (component: Component, hasOneFormComponent: boolean) => {
+const getComponent = (component: Component, hasOneFormComponent: boolean, errorMessage?: string) => {
   const { key } = component
   if (isRadio(component)) {
-    return <Radio {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
+    return <Radio {...component} hasHeading={hasOneFormComponent} id={key} key={key} errorMessage={errorMessage} />
   }
   if (isSelect(component)) {
-    return <Select {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
+    return <Select {...component} hasHeading={hasOneFormComponent} id={key} key={key} errorMessage={errorMessage} />
   }
   if (isSelectboxes(component)) {
-    return <Checkbox {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
+    return <Checkbox {...component} hasHeading={hasOneFormComponent} id={key} key={key} errorMessage={errorMessage} />
   }
   if (isTextarea(component)) {
-    return <TextArea {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
+    return <TextArea {...component} hasHeading={hasOneFormComponent} id={key} key={key} errorMessage={errorMessage} />
   }
   if (isTextfield(component)) {
-    return <TextInput {...component} hasHeading={hasOneFormComponent} id={key} key={key} />
+    return <TextInput {...component} hasHeading={hasOneFormComponent} id={key} key={key} errorMessage={errorMessage} />
   }
   // eslint-disable-next-line no-console
   console.error(`Type ${component.type} is unknown, please add it to FormRenderer.`)
@@ -31,9 +33,13 @@ export type Props = {
   formComponents: Component[]
   panelLabel?: string
   submitButtonText: string
+  validationErrors?: {
+    key: string
+    message: string
+  }[]
 }
 
-export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonText }: Props) => {
+export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonText, validationErrors }: Props) => {
   const hasOneFormComponent = formComponents.length === 1
   return (
     <>
@@ -46,12 +52,13 @@ export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonT
           {panelLabel}
         </Heading>
       )}
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/* @ts-ignore */}
-      <form className="ams-gap-m" action={action}>
-        {formComponents.map((component) => getComponent(component, hasOneFormComponent))}
+      <Form action={action} className="ams-gap-m" noValidate>
+        {formComponents.map((component) => {
+          const errorMessage = validationErrors?.find((error) => error.key === component.key)?.message
+          return getComponent(component, hasOneFormComponent, errorMessage)
+        })}
         <SubmitButton>{submitButtonText}</SubmitButton>
-      </form>
+      </Form>
     </>
   )
 }

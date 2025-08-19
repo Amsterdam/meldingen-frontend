@@ -23,8 +23,7 @@ describe('Checkbox Component', () => {
   })
 
   it('adds the description to the label', () => {
-    // Because of an NVDA bug, we need to add the description to the label (https://github.com/nvaccess/nvda/issues/12718)
-    // For more information, see https://designsystem.amsterdam/?path=/docs/components-forms-field-set--docs#checkbox-group
+    // Because of an NVDA bug, we need to add the description and error to the label
     render(<Checkbox {...defaultProps} description="Test description" />)
 
     const checkboxWithDescriptionAddedToLabel = screen.getByRole('group', {
@@ -66,5 +65,27 @@ describe('Checkbox Component', () => {
 
     expect(checkboxItem1).toBeChecked()
     expect(checkboxItem2).toBeChecked()
+  })
+
+  it('renders an error message when there is one', () => {
+    render(<Checkbox {...defaultProps} errorMessage="Test error message" />)
+
+    const checkboxWithErrorAddedToLabel = screen.getByRole('group', {
+      name: `${defaultProps.label} Invoerfout: Test error message`,
+    })
+
+    expect(checkboxWithErrorAddedToLabel).toBeInTheDocument()
+  })
+
+  it('marks the FieldSet and Checkboxes as invalid when there is an error message', () => {
+    render(<Checkbox {...defaultProps} errorMessage="Test error message" />)
+
+    const fieldSet = screen.getByRole('group')
+    expect(fieldSet).toHaveClass('ams-field-set--invalid')
+
+    const inputs = screen.getAllByRole('checkbox')
+    inputs.forEach((input) => {
+      expect(input).toHaveAttribute('aria-invalid', 'true')
+    })
   })
 })

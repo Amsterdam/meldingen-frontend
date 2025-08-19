@@ -3,20 +3,36 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { postMeldingByMeldingIdQuestionByQuestionId, putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
+import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
+import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
+import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 type ArgsType = {
   isLastPanel: boolean
   lastPanelPath: string
   nextPanelPath: string
-  questionIds: { key: string; id: number }[]
+  questionKeysAndIds: { key: string; id: number }[]
+  requiredQuestionKeys: string[]
 }
 
+const getUnansweredRequiredQuestionKeys = (requiredKeys: string[], entries: [string, unknown][]) =>
+  requiredKeys.filter((requiredKey) => {
+    const entry = entries.find(([key]) => key === requiredKey)
+
+    // If entries do not contain a key that is in requiredKeys, add it to missingRequiredKeys
+    if (!entry) return true
+
+    const value = entry[1]
+
+    // If value is an empty string (or otherwise falsy), add it to missingRequiredKeys
+    return !value
+  })
+
 export const postForm = async (
-  { isLastPanel, lastPanelPath, nextPanelPath, questionIds }: ArgsType,
+  { isLastPanel, lastPanelPath, nextPanelPath, questionKeysAndIds, requiredQuestionKeys }: ArgsType,
   _: unknown,
   formData: FormData,
 ) => {
@@ -37,35 +53,49 @@ export const postForm = async (
   const entries = Object.entries(formDataObj)
   const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(entries))
 
-  const promiseArray = entriesWithMergedCheckboxes.map(([key, value]) => {
-    if (value instanceof File) return undefined
+  // Check if all required questions are answered
+  const missingRequiredKeys = getUnansweredRequiredQuestionKeys(requiredQuestionKeys, entriesWithMergedCheckboxes)
 
-    // Filter out empty answers
-    if (value.length === 0) return undefined
+  if (missingRequiredKeys.length > 0) {
+    return {
+      formData,
+      validationErrors: missingRequiredKeys.map((key) => ({
+        key,
+        message: 'Vraag is verplicht en moet worden beantwoord.',
+      })),
+    }
+  }
 
-    const questionId = questionIds.find((component) => component.key === key)?.id
-
-    if (!questionId) return undefined
-
-    return postMeldingByMeldingIdQuestionByQuestionId({
-      body: { text: value },
-      path: {
-        melding_id: parseInt(meldingId, 10),
-        question_id: questionId,
-      },
-      query: { token },
-    }).catch((error) => error)
-  })
-
+  // Build promise array
+  const promiseArray = buildAnswerPromises(entriesWithMergedCheckboxes, questionKeysAndIds, meldingId, token)
   const results = await Promise.all(promiseArray)
 
-  // Return a string of all error messages and do not redirect if one of the requests failed
-  const erroredResults = results.filter((result) => result?.error)
+  // Return validation errors if there are any
+  const resultsWithValidationError = results.filter((result) => {
+    if (!result?.value) return false
+
+    return hasValidationErrors(result.value.response, result.value.error)
+  })
+
+  if (resultsWithValidationError.length > 0) {
+    return {
+      formData,
+      validationErrors: resultsWithValidationError.map((result) => ({
+        key: result?.key || 'fallback-key',
+        message: handleApiError(result?.value.error),
+      })),
+    }
+  }
+
+  // Return an array of all errors if there are any
+  const erroredResults = results.filter((result) => result?.value.error)
 
   if (erroredResults.length > 0) {
+    const errors = erroredResults.map((result) => result?.value.error)
+
     return {
-      errorMessage: erroredResults.map(({ error }) => handleApiError(error)).join(', '),
       formData,
+      systemError: errors,
     }
   }
 
@@ -76,7 +106,7 @@ export const postForm = async (
       query: { token },
     })
 
-    if (error) return { errorMessage: handleApiError(error), formData }
+    if (error) return { formData, systemError: error }
   }
 
   return redirect(nextPanelPath)

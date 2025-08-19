@@ -1,5 +1,3 @@
-import { getTranslations } from 'next-intl/server'
-
 import { getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
 
 import { Contact } from './Contact'
@@ -8,14 +6,6 @@ import { isTypeTextAreaComponent } from 'apps/melding-form/src/typeguards'
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.
 export const dynamic = 'force-dynamic'
-
-export const generateMetadata = async () => {
-  const t = await getTranslations('contact')
-
-  return {
-    title: t('metadata.title'),
-  }
-}
 
 export default async () => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()

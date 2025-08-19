@@ -5,8 +5,6 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdSubmit } from '@meldingen/api-client'
 
-import { handleApiError } from 'apps/melding-form/src/handleApiError'
-
 export const postSummaryForm = async () => {
   const cookieStore = await cookies()
 
@@ -22,7 +20,7 @@ export const postSummaryForm = async () => {
   })
 
   if (error)
-    return { errorMessage: handleApiError(error) }
+    return { systemError: error }
 
     // Delete location, token, lastPanelpath and id cookies
   ;['location', 'token', 'lastPanelPath', 'id'].forEach((cookie) => {

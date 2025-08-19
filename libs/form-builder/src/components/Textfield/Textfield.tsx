@@ -1,18 +1,9 @@
-import { Components } from '@formio/react'
+import { Components } from '@formio/js'
 
 import { editForm } from './editForm'
 
-const FormioTextfield = (Components as any).components.textfield
+const FormioTextfield = Components.components.textfield
 
 export class Textfield extends FormioTextfield {
-  get inputInfo() {
-    const inputInfo = super.inputInfo
-
-    inputInfo.attr.class = 'ams-text-input'
-    inputInfo.attr.dir = 'auto'
-
-    return inputInfo
-  }
-
   static editForm = editForm
 }
