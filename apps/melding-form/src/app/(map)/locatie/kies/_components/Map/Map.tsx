@@ -7,10 +7,15 @@ import { Feature } from '@meldingen/api-client'
 import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './components/Crosshair/Crosshair'
 import { defaultIcon } from './markerIcons'
-import { updateAssetLayer } from './utils/updateAssetLayer'
+import { addAssetLayerToMap } from './utils/addAssetLayerToMap'
+import { fetchAssets } from './utils/fetchAssets'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
+
+const classificationsWithAssets = ['container']
+
+const ASSET_ZOOM_THRESHOLD = 16
 
 type Props = {
   classification?: string
@@ -126,7 +131,26 @@ export const Map = ({ classification, coordinates, showAssetList, setCoordinates
 
   // This useEffect prevents the WFS layer from being fetched twice
   useEffect(() => {
-    mapInstance?.on('moveend', () => updateAssetLayer(mapInstance, assetLayerRef, setAssetList, classification))
+    mapInstance?.on('moveend', async () => {
+      if (!classification || !classificationsWithAssets.includes(classification)) return
+
+      const zoom = mapInstance.getZoom()
+
+      // Has correct zoom level for assets
+      if (zoom >= ASSET_ZOOM_THRESHOLD) {
+        const assets = await fetchAssets(mapInstance, classification)
+
+        if (assets?.features && assets.features.length > 0) {
+          addAssetLayerToMap(assets.features, assetLayerRef, mapInstance)
+          setAssetList(assets.features)
+        } else setAssetList([])
+      }
+
+      if (zoom < ASSET_ZOOM_THRESHOLD && assetLayerRef.current) {
+        assetLayerRef.current.remove()
+        setAssetList([])
+      }
+    })
   }, [mapInstance])
 
   return (
