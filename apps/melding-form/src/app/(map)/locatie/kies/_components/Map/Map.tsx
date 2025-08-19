@@ -6,16 +6,11 @@ import { Feature } from '@meldingen/api-client'
 
 import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './components/Crosshair/Crosshair'
+import { useAssetLayer } from './hooks/useAssetLayer'
 import { defaultIcon } from './markerIcons'
-import { addAssetLayerToMap } from './utils/addAssetLayerToMap'
-import { fetchAssets } from './utils/fetchAssets'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
-
-const classificationsWithAssets = ['container']
-
-const ASSET_ZOOM_THRESHOLD = 16
 
 type Props = {
   classification?: string
@@ -28,13 +23,14 @@ type Props = {
 export const Map = ({ classification, coordinates, showAssetList, setCoordinates, setAssetList }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const markerRef = useRef<L.Marker | null>(null)
-  const assetLayerRef = useRef<L.Layer | null>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
 
   // This could be a useState but as we don't expect this to fire more than once, use ref as it is mutable and won't trigger any further re-render
   const createdMapInstance = useRef(false)
+
+  useAssetLayer({ mapInstance, classification, setAssetList })
 
   useEffect(() => {
     // Ensure that the target DOM element exists and that the map doesn't already exist (to prevent duplicate renders in StrictMode)
@@ -128,30 +124,6 @@ export const Map = ({ classification, coordinates, showAssetList, setCoordinates
       mapInstance.flyTo([coordinates.lat, coordinates.lng], currentZoom < flyToMinZoom ? flyToMinZoom : currentZoom)
     }
   }, [mapInstance, coordinates])
-
-  // This useEffect prevents the WFS layer from being fetched twice
-  useEffect(() => {
-    mapInstance?.on('moveend', async () => {
-      if (!classification || !classificationsWithAssets.includes(classification)) return
-
-      const zoom = mapInstance.getZoom()
-
-      // Has correct zoom level for assets
-      if (zoom >= ASSET_ZOOM_THRESHOLD) {
-        const assets = await fetchAssets(mapInstance, classification)
-
-        if (assets?.features && assets.features.length > 0) {
-          addAssetLayerToMap(assets.features, assetLayerRef, mapInstance)
-          setAssetList(assets.features)
-        } else setAssetList([])
-      }
-
-      if (zoom < ASSET_ZOOM_THRESHOLD && assetLayerRef.current) {
-        assetLayerRef.current.remove()
-        setAssetList([])
-      }
-    })
-  }, [mapInstance])
 
   return (
     <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>
