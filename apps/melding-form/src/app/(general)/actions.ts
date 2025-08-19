@@ -15,8 +15,6 @@ import { hasValidationErrors } from './_utils/hasValidationErrors'
 export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)
 
-  let nextPage = '/locatie'
-
   // Return validation error if primary question is not answered
   if (!formDataObj.primary) {
     return {
@@ -62,6 +60,10 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
       path: { classification_id: classification.id },
     })
 
+    if (error && handleApiError(error) !== 'Not Found') {
+      return { formData, systemError: error }
+    }
+
     const hasAdditionalQuestions = Boolean(data?.components[0])
 
     // If there are no additional questions for a classification,
@@ -74,15 +76,13 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
 
       if (error) return { formData, systemError: error }
 
-      return redirect(nextPage)
+      return redirect('/locatie')
     }
-
-    if (error) return { formData, systemError: error }
 
     const nextFormFirstKey = data?.components[0].key
 
-    nextPage = `/aanvullende-vragen/${classification.id}/${nextFormFirstKey}`
+    return redirect(`/aanvullende-vragen/${classification.id}/${nextFormFirstKey}`)
   }
 
-  return redirect(nextPage)
+  return redirect('/locatie')
 }
