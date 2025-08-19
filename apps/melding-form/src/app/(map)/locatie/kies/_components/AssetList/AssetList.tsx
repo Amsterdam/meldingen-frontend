@@ -13,7 +13,7 @@ export const AssetList = ({ assetList }: Props) => {
     <div className={clsx(styles.container, 'ams-mb-m')}>
       <ul>
         {assetList.map((asset) => {
-          // @ts-expect-error id_nummer always exist on asset properties
+          // @ts-expect-error id_nummer always exists on asset properties
           const idNummer = asset.properties.id_nummer as string
           return (
             <li key={asset.id} className={styles.item}>
