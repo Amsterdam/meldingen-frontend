@@ -1,4 +1,4 @@
-import type { FormType } from '@formio/react'
+import { AdditionalQuestionsForm } from '../../types'
 
 const mockPanels = [
   {
@@ -1095,7 +1095,7 @@ const mockRadios = [
   },
 ]
 
-export const mockData: FormType & { id: number; classification: string | null } = {
+export const mockData: AdditionalQuestionsForm & { id: number; classification: string | null } = {
   display: 'wizard',
   title: 'Test title',
   id: 2,
@@ -1104,10 +1104,12 @@ export const mockData: FormType & { id: number; classification: string | null } 
     {
       ...mockPanels[0],
       components: [mockTextFields[0], mockTextAreas[0], mockSelectBoxes[0], mockSelects[0], mockRadios[0]],
+      path: 'page1',
     },
     {
       ...mockPanels[1],
       components: [mockTextFields[1], mockTextAreas[1], mockSelectBoxes[1], mockSelects[1], mockRadios[1]],
+      path: 'page2',
     },
   ],
 }

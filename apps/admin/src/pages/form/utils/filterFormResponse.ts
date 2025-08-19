@@ -1,4 +1,4 @@
-import type { Components, FormType } from '@formio/react'
+import type { BaseComponent, Component } from '@formio/core'
 import {
   FormCheckboxComponentInputSchema,
   FormComponentInputValidateSchema,
@@ -13,7 +13,9 @@ import filter from 'uber-json-schema-filter'
 
 import type { FormInput } from '@meldingen/api-client'
 
-const filterBySchemaPerType = (obj: Record<string, unknown>) => {
+import type { AdditionalQuestionsForm } from '../../types'
+
+const filterBySchemaPerType = (obj: Component) => {
   switch (obj.type) {
     case 'panel':
       return filter(FormPanelComponentInputSchema, obj)
@@ -37,7 +39,7 @@ const filterBySchemaPerType = (obj: Record<string, unknown>) => {
   }
 }
 
-const getFilteredValidateObject = (validateObj: Record<string, string>) => {
+const getFilteredValidateObject = (validateObj: BaseComponent['validate']) => {
   const validate = filter(FormComponentInputValidateSchema, validateObj)
 
   // Explicitly remove the 'json' key if its value is an empty string, the API doesn't accept that
@@ -48,16 +50,14 @@ const getFilteredValidateObject = (validateObj: Record<string, string>) => {
   return validate
 }
 
-export const filterFormResponse = (obj: FormType): FormInput => {
+export const filterFormResponse = (obj: AdditionalQuestionsForm): FormInput => {
   // This function is used to filter an additional questions form, which is always
   // a wizard with panels containing questions. Therefore the form has a fixed depth of two levels.
-  const firstLevelComponents: Components = obj.components.map((firstLevelComponent) => {
-    const secondLevelComponents: Components = firstLevelComponent.components.map(
-      (secondLevelComponent: Record<string, Record<string, string>>) => ({
-        ...filterBySchemaPerType(secondLevelComponent),
-        validate: getFilteredValidateObject(secondLevelComponent.validate),
-      }),
-    )
+  const firstLevelComponents = obj.components.map((firstLevelComponent) => {
+    const secondLevelComponents = firstLevelComponent.components.map((secondLevelComponent) => ({
+      ...filterBySchemaPerType(secondLevelComponent),
+      validate: getFilteredValidateObject(secondLevelComponent.validate),
+    }))
 
     const filteredObject = {
       ...filterBySchemaPerType(firstLevelComponent),
