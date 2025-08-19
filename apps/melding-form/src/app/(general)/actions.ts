@@ -10,15 +10,42 @@ import {
 } from '@meldingen/api-client'
 
 import { handleApiError } from '../../handleApiError'
+import { hasValidationErrors } from './_utils/hasValidationErrors'
 
 export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)
 
   let nextPage = '/locatie'
 
-  const { data, error } = await postMelding({ body: { text: formDataObj.primary.toString() } })
+  // Return validation error if primary question is not answered
+  if (!formDataObj.primary) {
+    return {
+      formData,
+      validationErrors: [
+        {
+          key: 'primary',
+          message: 'Vraag is verplicht en moet worden beantwoord.',
+        },
+      ],
+    }
+  }
 
-  if (error) return { errorMessage: handleApiError(error), formData }
+  const { data, error, response } = await postMelding({ body: { text: formDataObj.primary.toString() } })
+
+  // Return other validation errors if there are any
+  if (hasValidationErrors(response, error)) {
+    return {
+      formData,
+      validationErrors: [
+        {
+          key: 'primary',
+          message: handleApiError(error),
+        },
+      ],
+    }
+  }
+
+  if (error) return { formData, systemError: error }
 
   const { classification, created_at, id, token, public_id } = data
 
@@ -45,12 +72,12 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
         query: { token },
       })
 
-      if (error) return { errorMessage: handleApiError(error), formData }
+      if (error) return { formData, systemError: error }
 
       return redirect(nextPage)
     }
 
-    if (error) return { errorMessage: handleApiError(error), formData }
+    if (error) return { formData, systemError: error }
 
     const nextFormFirstKey = data?.components[0].key
 

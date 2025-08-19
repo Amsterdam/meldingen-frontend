@@ -32,18 +32,33 @@ describe('Location', () => {
   it('does not render an error message when there is none', () => {
     render(<Location {...defaultProps} />)
 
-    const errorMessage = screen.queryByText('Test error message')
+    const alert = screen.queryByRole('alert')
 
-    expect(errorMessage).not.toBeInTheDocument()
+    expect(alert).not.toBeInTheDocument()
   })
 
-  it('renders an error message when there is one', () => {
-    ;(useActionState as Mock).mockReturnValue([{ errorMessage: 'Test error message' }, vi.fn()])
+  it('renders a system error Alert when there is one', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
 
     render(<Location {...defaultProps} />)
-    const errorMessage = screen.getByText('Test error message')
 
-    expect(errorMessage).toBeInTheDocument()
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveTextContent('system-error-alert-title')
+  })
+
+  it('renders an Invalid Form Alert when there are validation errors', () => {
+    ;(useActionState as Mock).mockReturnValue([
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      vi.fn(),
+    ])
+
+    render(<Location {...defaultProps} />)
+
+    const link = screen.getByRole('link', { name: 'Test error message' })
+
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '#key1')
   })
 
   it('renders the default text when there is no location data', () => {
@@ -54,12 +69,31 @@ describe('Location', () => {
     expect(paragraph).toBeInTheDocument()
   })
 
+  it('has a hidden input without a value when there is no location data', () => {
+    render(<Location {...defaultProps} />)
+
+    const input = document.querySelector('input[type="hidden"]')
+
+    expect(input).toHaveAttribute('name', 'coordinates')
+    expect(input).not.toHaveValue()
+  })
+
   it('renders the location data name when it is provided', () => {
     render(<Location {...defaultProps} locationData={{ name: 'Test location' }} />)
 
     const paragraph = screen.getByText('Test location')
 
     expect(paragraph).toBeInTheDocument()
+  })
+
+  it('has a hidden input with coordinates when location data is provided', () => {
+    const locationData = { name: 'Test location', coordinates: { lat: 52.3702, lng: 4.8952 } }
+    render(<Location {...defaultProps} locationData={locationData} />)
+
+    const input = document.querySelector('input[type="hidden"]')
+
+    expect(input).toHaveAttribute('name', 'coordinates')
+    expect(input).toHaveValue(JSON.stringify(locationData.coordinates))
   })
 
   it('renders a link with the default text when there is no location data', () => {

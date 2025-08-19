@@ -76,4 +76,20 @@ export const handlers = [
     }
     return undefined
   }),
+
+  // Wfs Layer
+  http.get(ENDPOINTS.GET_WFS_BY_NAME, ({ params }) => {
+    if (params.name === 'container') {
+      return HttpResponse.json({
+        features: [
+          {
+            type: 'Feature',
+            geometry: { type: 'Point', coordinates: [4.9, 52.3] },
+            properties: { id: 1, name: 'Test Feature' },
+          },
+        ],
+      })
+    }
+    return HttpResponse.json({ message: 'Something went wrong' }, { status: 500 })
+  }),
 ]

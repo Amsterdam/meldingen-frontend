@@ -167,6 +167,9 @@ export const All_InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -321,6 +324,9 @@ export const All_OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -460,6 +466,9 @@ export const And_InputSchema = {
                     },
                     {
                         '$ref': '#/components/schemas/Var'
+                    },
+                    {
+                        '$ref': '#/components/schemas/Length'
                     }
                 ]
             },
@@ -596,6 +605,9 @@ export const And_OutputSchema = {
                     },
                     {
                         '$ref': '#/components/schemas/Var'
+                    },
+                    {
+                        '$ref': '#/components/schemas/Length'
                     }
                 ]
             },
@@ -634,10 +646,14 @@ export const AnswerOutputSchema = {
         updated_at: {
             type: 'string',
             title: 'Updated At'
+        },
+        text: {
+            type: 'string',
+            title: 'Text'
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at'],
+    required: ['id', 'created_at', 'updated_at', 'text'],
     title: 'AnswerOutput'
 } as const;
 
@@ -666,6 +682,101 @@ export const AnswerQuestionOutputSchema = {
     type: 'object',
     required: ['id', 'created_at', 'updated_at', 'text', 'question'],
     title: 'AnswerQuestionOutput'
+} as const;
+
+export const AssetTypeInputSchema = {
+    properties: {
+        name: {
+            type: 'string',
+            title: 'Name'
+        },
+        class_name: {
+            type: 'string',
+            title: 'Class Name'
+        },
+        arguments: {
+            additionalProperties: true,
+            type: 'object',
+            title: 'Arguments'
+        }
+    },
+    type: 'object',
+    required: ['name', 'class_name', 'arguments'],
+    title: 'AssetTypeInput'
+} as const;
+
+export const AssetTypeOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        name: {
+            type: 'string',
+            title: 'Name'
+        },
+        class_name: {
+            type: 'string',
+            title: 'Class Name'
+        },
+        arguments: {
+            additionalProperties: true,
+            type: 'object',
+            title: 'Arguments'
+        }
+    },
+    type: 'object',
+    required: ['id', 'created_at', 'updated_at', 'name', 'class_name', 'arguments'],
+    title: 'AssetTypeOutput'
+} as const;
+
+export const AssetTypeUpdateInputSchema = {
+    properties: {
+        name: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Name'
+        },
+        class_name: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Class Name'
+        },
+        arguments: {
+            anyOf: [
+                {
+                    additionalProperties: true,
+                    type: 'object'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Arguments'
+        }
+    },
+    type: 'object',
+    title: 'AssetTypeUpdateInput'
 } as const;
 
 export const AttachmentOutputSchema = {
@@ -761,17 +872,28 @@ export const CatSchema = {
     title: 'Cat'
 } as const;
 
-export const ClassificationInputSchema = {
+export const ClassificationCreateInputSchema = {
     properties: {
         name: {
             type: 'string',
             minLength: 1,
             title: 'Name'
+        },
+        asset_type: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Asset Type'
         }
     },
     type: 'object',
     required: ['name'],
-    title: 'ClassificationInput'
+    title: 'ClassificationCreateInput'
 } as const;
 
 export const ClassificationOutputSchema = {
@@ -802,11 +924,52 @@ export const ClassificationOutputSchema = {
                 }
             ],
             title: 'Form'
+        },
+        asset_type: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Asset Type'
         }
     },
     type: 'object',
     required: ['id', 'created_at', 'updated_at', 'name'],
     title: 'ClassificationOutput'
+} as const;
+
+export const ClassificationUpdateInputSchema = {
+    properties: {
+        name: {
+            anyOf: [
+                {
+                    type: 'string',
+                    minLength: 1
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Name'
+        },
+        asset_type: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Asset Type'
+        }
+    },
+    type: 'object',
+    title: 'ClassificationUpdateInput'
 } as const;
 
 export const CompleteMeldingInputSchema = {
@@ -879,6 +1042,219 @@ export const EqualsSchema = {
     type: 'object',
     required: ['=='],
     title: 'Equals'
+} as const;
+
+export const FeatureSchema = {
+    properties: {
+        bbox: {
+            anyOf: [
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 4,
+                    minItems: 4
+                },
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 6,
+                    minItems: 6
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Bbox'
+        },
+        type: {
+            type: 'string',
+            const: 'Feature',
+            title: 'Type'
+        },
+        geometry: {
+            anyOf: [
+                {
+                    oneOf: [
+                        {
+                            '$ref': '#/components/schemas/Point'
+                        },
+                        {
+                            '$ref': '#/components/schemas/MultiPoint'
+                        },
+                        {
+                            '$ref': '#/components/schemas/LineString'
+                        },
+                        {
+                            '$ref': '#/components/schemas/MultiLineString'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Polygon'
+                        },
+                        {
+                            '$ref': '#/components/schemas/MultiPolygon'
+                        },
+                        {
+                            '$ref': '#/components/schemas/GeometryCollection'
+                        }
+                    ],
+                    discriminator: {
+                        propertyName: 'type',
+                        mapping: {
+                            GeometryCollection: '#/components/schemas/GeometryCollection',
+                            LineString: '#/components/schemas/LineString',
+                            MultiLineString: '#/components/schemas/MultiLineString',
+                            MultiPoint: '#/components/schemas/MultiPoint',
+                            MultiPolygon: '#/components/schemas/MultiPolygon',
+                            Point: '#/components/schemas/Point',
+                            Polygon: '#/components/schemas/Polygon'
+                        }
+                    }
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Geometry'
+        },
+        properties: {
+            anyOf: [
+                {
+                    additionalProperties: true,
+                    type: 'object'
+                },
+                {
+                    '$ref': '#/components/schemas/BaseModel'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Properties'
+        },
+        id: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Id'
+        }
+    },
+    type: 'object',
+    required: ['type', 'geometry', 'properties'],
+    title: 'Feature',
+    description: 'Feature Model'
+} as const;
+
+export const FeatureCollectionSchema = {
+    properties: {
+        bbox: {
+            anyOf: [
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 4,
+                    minItems: 4
+                },
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 6,
+                    minItems: 6
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Bbox'
+        },
+        type: {
+            type: 'string',
+            const: 'FeatureCollection',
+            title: 'Type'
+        },
+        features: {
+            items: {
+                '$ref': '#/components/schemas/Feature'
+            },
+            type: 'array',
+            title: 'Features'
+        }
+    },
+    type: 'object',
+    required: ['type', 'features'],
+    title: 'FeatureCollection',
+    description: 'FeatureCollection Model'
 } as const;
 
 export const Filter_InputSchema = {
@@ -1020,6 +1396,9 @@ export const Filter_InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -1174,6 +1553,9 @@ export const Filter_OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -1404,6 +1786,9 @@ export const FormComponentInputValidateSchema = {
                     '$ref': '#/components/schemas/Var'
                 },
                 {
+                    '$ref': '#/components/schemas/Length'
+                },
+                {
                     type: 'null'
                 }
             ],
@@ -1524,6 +1909,9 @@ export const FormComponentOutputValidateSchema = {
                 },
                 {
                     '$ref': '#/components/schemas/Var'
+                },
+                {
+                    '$ref': '#/components/schemas/Length'
                 },
                 {
                     type: 'null'
@@ -2507,6 +2895,113 @@ export const GeoJson_OutputSchema = {
     title: 'GeoJson'
 } as const;
 
+export const GeometryCollectionSchema = {
+    properties: {
+        bbox: {
+            anyOf: [
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 4,
+                    minItems: 4
+                },
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 6,
+                    minItems: 6
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Bbox'
+        },
+        type: {
+            type: 'string',
+            const: 'GeometryCollection',
+            title: 'Type'
+        },
+        geometries: {
+            items: {
+                oneOf: [
+                    {
+                        '$ref': '#/components/schemas/Point'
+                    },
+                    {
+                        '$ref': '#/components/schemas/MultiPoint'
+                    },
+                    {
+                        '$ref': '#/components/schemas/LineString'
+                    },
+                    {
+                        '$ref': '#/components/schemas/MultiLineString'
+                    },
+                    {
+                        '$ref': '#/components/schemas/Polygon'
+                    },
+                    {
+                        '$ref': '#/components/schemas/MultiPolygon'
+                    },
+                    {
+                        '$ref': '#/components/schemas/GeometryCollection'
+                    }
+                ],
+                discriminator: {
+                    propertyName: 'type',
+                    mapping: {
+                        GeometryCollection: '#/components/schemas/GeometryCollection',
+                        LineString: '#/components/schemas/LineString',
+                        MultiLineString: '#/components/schemas/MultiLineString',
+                        MultiPoint: '#/components/schemas/MultiPoint',
+                        MultiPolygon: '#/components/schemas/MultiPolygon',
+                        Point: '#/components/schemas/Point',
+                        Polygon: '#/components/schemas/Polygon'
+                    }
+                }
+            },
+            type: 'array',
+            title: 'Geometries'
+        }
+    },
+    type: 'object',
+    required: ['type', 'geometries'],
+    title: 'GeometryCollection',
+    description: 'GeometryCollection Model'
+} as const;
+
 export const GreaterThanSchema = {
     properties: {
         '>': {
@@ -2737,6 +3232,9 @@ export const In_InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 },
@@ -2885,6 +3383,9 @@ export const In_OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 },
@@ -2918,6 +3419,45 @@ export const In_OutputSchema = {
     type: 'object',
     required: ['in'],
     title: 'In'
+} as const;
+
+export const LengthSchema = {
+    properties: {
+        length: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    prefixItems: [
+                        {
+                            anyOf: [
+                                {
+                                    type: 'string'
+                                },
+                                {
+                                    '$ref': '#/components/schemas/Var'
+                                },
+                                {
+                                    '$ref': '#/components/schemas/If'
+                                },
+                                {
+                                    '$ref': '#/components/schemas/Substr'
+                                }
+                            ]
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 1,
+                    minItems: 1
+                }
+            ],
+            title: 'Length'
+        }
+    },
+    type: 'object',
+    required: ['length'],
+    title: 'Length'
 } as const;
 
 export const LessThanSchema = {
@@ -3087,6 +3627,87 @@ export const LessThanOrEqualSchema = {
     type: 'object',
     required: ['<='],
     title: 'LessThanOrEqual'
+} as const;
+
+export const LineStringSchema = {
+    properties: {
+        bbox: {
+            anyOf: [
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 4,
+                    minItems: 4
+                },
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 6,
+                    minItems: 6
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Bbox'
+        },
+        type: {
+            type: 'string',
+            const: 'LineString',
+            title: 'Type'
+        },
+        coordinates: {
+            items: {
+                anyOf: [
+                    {
+                        '$ref': '#/components/schemas/Position2D'
+                    },
+                    {
+                        '$ref': '#/components/schemas/Position3D'
+                    }
+                ]
+            },
+            type: 'array',
+            minItems: 2,
+            title: 'Coordinates'
+        }
+    },
+    type: 'object',
+    required: ['type', 'coordinates'],
+    title: 'LineString',
+    description: 'LineString Model'
 } as const;
 
 export const LogSchema = {
@@ -3289,6 +3910,9 @@ export const Map_InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -3440,6 +4064,9 @@ export const Map_OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -3475,6 +4102,22 @@ export const MaxSchema = {
     type: 'object',
     required: ['max'],
     title: 'Max'
+} as const;
+
+export const MeldingAssetInputSchema = {
+    properties: {
+        external_id: {
+            type: 'string',
+            title: 'External Id'
+        },
+        asset_type_id: {
+            type: 'integer',
+            title: 'Asset Type Id'
+        }
+    },
+    type: 'object',
+    required: ['external_id', 'asset_type_id'],
+    title: 'MeldingAssetInput'
 } as const;
 
 export const MeldingContactInputSchema = {
@@ -3787,6 +4430,12 @@ export const MeldingOutputSchema = {
     title: 'MeldingOutput'
 } as const;
 
+export const MeldingStatesSchema = {
+    type: 'string',
+    enum: ['new', 'classified', 'questions_answered', 'attachments_added', 'location_submitted', 'contact_info_added', 'submitted', 'processing', 'completed'],
+    title: 'MeldingStates'
+} as const;
+
 export const MergeSchema = {
     properties: {
         merge: {
@@ -3913,6 +4562,257 @@ export const ModuloSchema = {
     type: 'object',
     required: ['%'],
     title: 'Modulo'
+} as const;
+
+export const MultiLineStringSchema = {
+    properties: {
+        bbox: {
+            anyOf: [
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 4,
+                    minItems: 4
+                },
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 6,
+                    minItems: 6
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Bbox'
+        },
+        type: {
+            type: 'string',
+            const: 'MultiLineString',
+            title: 'Type'
+        },
+        coordinates: {
+            items: {
+                items: {
+                    anyOf: [
+                        {
+                            '$ref': '#/components/schemas/Position2D'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Position3D'
+                        }
+                    ]
+                },
+                type: 'array',
+                minItems: 2
+            },
+            type: 'array',
+            title: 'Coordinates'
+        }
+    },
+    type: 'object',
+    required: ['type', 'coordinates'],
+    title: 'MultiLineString',
+    description: 'MultiLineString Model'
+} as const;
+
+export const MultiPointSchema = {
+    properties: {
+        bbox: {
+            anyOf: [
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 4,
+                    minItems: 4
+                },
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 6,
+                    minItems: 6
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Bbox'
+        },
+        type: {
+            type: 'string',
+            const: 'MultiPoint',
+            title: 'Type'
+        },
+        coordinates: {
+            items: {
+                anyOf: [
+                    {
+                        '$ref': '#/components/schemas/Position2D'
+                    },
+                    {
+                        '$ref': '#/components/schemas/Position3D'
+                    }
+                ]
+            },
+            type: 'array',
+            title: 'Coordinates'
+        }
+    },
+    type: 'object',
+    required: ['type', 'coordinates'],
+    title: 'MultiPoint',
+    description: 'MultiPoint Model'
+} as const;
+
+export const MultiPolygonSchema = {
+    properties: {
+        bbox: {
+            anyOf: [
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 4,
+                    minItems: 4
+                },
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 6,
+                    minItems: 6
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Bbox'
+        },
+        type: {
+            type: 'string',
+            const: 'MultiPolygon',
+            title: 'Type'
+        },
+        coordinates: {
+            items: {
+                items: {
+                    items: {
+                        anyOf: [
+                            {
+                                '$ref': '#/components/schemas/Position2D'
+                            },
+                            {
+                                '$ref': '#/components/schemas/Position3D'
+                            }
+                        ]
+                    },
+                    type: 'array',
+                    minItems: 4
+                },
+                type: 'array'
+            },
+            type: 'array',
+            title: 'Coordinates'
+        }
+    },
+    type: 'object',
+    required: ['type', 'coordinates'],
+    title: 'MultiPolygon',
+    description: 'MultiPolygon Model'
 } as const;
 
 export const MultiplySchema = {
@@ -4082,6 +4982,9 @@ export const None__InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -4236,6 +5139,9 @@ export const None__OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -4508,6 +5414,9 @@ export const Or_InputSchema = {
                     },
                     {
                         '$ref': '#/components/schemas/Var'
+                    },
+                    {
+                        '$ref': '#/components/schemas/Length'
                     }
                 ]
             },
@@ -4644,6 +5553,9 @@ export const Or_OutputSchema = {
                     },
                     {
                         '$ref': '#/components/schemas/Var'
+                    },
+                    {
+                        '$ref': '#/components/schemas/Length'
                     }
                 ]
             },
@@ -4731,6 +5643,90 @@ export const PointSchema = {
     required: ['type', 'coordinates'],
     title: 'Point',
     description: 'Point Model'
+} as const;
+
+export const PolygonSchema = {
+    properties: {
+        bbox: {
+            anyOf: [
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 4,
+                    minItems: 4
+                },
+                {
+                    prefixItems: [
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        },
+                        {
+                            type: 'number'
+                        }
+                    ],
+                    type: 'array',
+                    maxItems: 6,
+                    minItems: 6
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Bbox'
+        },
+        type: {
+            type: 'string',
+            const: 'Polygon',
+            title: 'Type'
+        },
+        coordinates: {
+            items: {
+                items: {
+                    anyOf: [
+                        {
+                            '$ref': '#/components/schemas/Position2D'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Position3D'
+                        }
+                    ]
+                },
+                type: 'array',
+                minItems: 4
+            },
+            type: 'array',
+            title: 'Coordinates'
+        }
+    },
+    type: 'object',
+    required: ['type', 'coordinates'],
+    title: 'Polygon',
+    description: 'Polygon Model'
 } as const;
 
 export const Position2DSchema = {
@@ -4929,6 +5925,9 @@ export const Reduce_InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 },
@@ -5081,6 +6080,9 @@ export const Reduce_OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 },
@@ -5331,6 +6333,9 @@ export const Some_InputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -5485,6 +6490,9 @@ export const Some_OutputSchema = {
                         },
                         {
                             '$ref': '#/components/schemas/Var'
+                        },
+                        {
+                            '$ref': '#/components/schemas/Length'
                         }
                     ]
                 }

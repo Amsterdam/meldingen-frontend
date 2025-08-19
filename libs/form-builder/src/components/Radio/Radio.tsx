@@ -1,4 +1,4 @@
-import { Components } from '@formio/react'
+import { Components } from '@formio/js'
 
 import { editForm } from './editForm'
 

@@ -5,7 +5,8 @@ import { redirect } from 'next/navigation'
 
 import { postMeldingByMeldingIdContact, putMeldingByMeldingIdAddContactInfo } from '@meldingen/api-client'
 
-import { handleApiError } from 'apps/melding-form/src/handleApiError'
+import { hasValidationErrors } from '../_utils/hasValidationErrors'
+import { isApiErrorArray } from 'apps/melding-form/src/handleApiError'
 
 export const postContactForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()
@@ -19,7 +20,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
   const phone = formData.get('phone')
 
   if (email || phone) {
-    const { error } = await postMeldingByMeldingIdContact({
+    const { response, error } = await postMeldingByMeldingIdContact({
       body: {
         ...(email && { email: email as string }),
         ...(phone && { phone: phone as string }),
@@ -28,7 +29,21 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
       query: { token },
     })
 
-    if (error) return { errorMessage: handleApiError(error), formData }
+    // Return validation errors if there are any
+    if (hasValidationErrors(response, error) && isApiErrorArray(error)) {
+      const emailError = error?.detail.find((error) => error.loc.includes('email'))
+      const phoneError = error?.detail.find((error) => error.loc.includes('phone'))
+
+      return {
+        formData,
+        validationErrors: [
+          ...(emailError ? [{ key: 'email-input', message: emailError.msg }] : []),
+          ...(phoneError ? [{ key: 'tel-input', message: phoneError.msg }] : []),
+        ],
+      }
+    }
+
+    if (error) return { formData, systemError: error }
   }
 
   // Set melding state to 'contact_info_added'
@@ -37,7 +52,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
     query: { token },
   })
 
-  if (error) return { errorMessage: handleApiError(error), formData }
+  if (error) return { formData, systemError: error }
 
   return redirect('/samenvatting')
 }

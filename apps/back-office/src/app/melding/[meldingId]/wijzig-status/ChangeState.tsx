@@ -1,6 +1,7 @@
 'use client'
 
 import { Field, Grid, Heading, Label, Paragraph, Select } from '@amsterdam/design-system-react'
+import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
@@ -34,7 +35,7 @@ export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
           {t('change-state.title', { publicId })}
         </Heading>
         {errorMessage && <Paragraph>{errorMessage}</Paragraph>}
-        <form action={formAction}>
+        <Form action={formAction} noValidate>
           <Field className="ams-mb-l">
             <Label htmlFor="state">{t('change-state.label')}</Label>
             <Select defaultValue={isValidMeldingState(meldingState) ? meldingState : undefined} id="state" name="state">
@@ -44,7 +45,7 @@ export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
             </Select>
           </Field>
           <SubmitButton>{t('change-state.submit-button')}</SubmitButton>
-        </form>
+        </Form>
       </Grid.Cell>
     </Grid>
   )

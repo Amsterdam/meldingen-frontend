@@ -3,8 +3,18 @@ import { FormTextAreaComponentInputSchema } from 'libs/api-client/src/schemas.ge
 import { Edit, minLength, required, SaveButton, SimpleForm, TextInput, Toolbar, useEditContext } from 'react-admin'
 import filter from 'uber-json-schema-filter'
 
+import { ContactForm } from './ContactForm'
+import { PrimaryForm } from './PrimaryForm'
+
 const Form = () => {
   const { record } = useEditContext()
+
+  if (record.type === 'primary') {
+    return <PrimaryForm />
+  }
+  if (record.type === 'contact') {
+    return <ContactForm />
+  }
 
   const validateLabel = [required(), minLength(3)]
 
@@ -17,24 +27,8 @@ const Form = () => {
       }
     >
       <TextInput source="title" readOnly />
-
-      {record.type === 'contact' && (
-        <span>
-          <strong>E-mail</strong>
-        </span>
-      )}
       <TextInput source="components[0].label" validate={validateLabel} />
       <TextInput source="components[0].description" multiline parse={(value) => value ?? ''} />
-
-      {record.type === 'contact' && (
-        <>
-          <span>
-            <strong>Telefoonnummer</strong>
-          </span>
-          <TextInput source="components[1].label" validate={validateLabel} />
-          <TextInput source="components[1].description" multiline parse={(value) => value ?? ''} />
-        </>
-      )}
     </SimpleForm>
   )
 }

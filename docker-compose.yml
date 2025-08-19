@@ -4,11 +4,6 @@ services:
     build:
       context: .
       target: admin_meldingen
-      args:
-        VITE_KEYCLOAK_BASE_URL: http://localhost:8002
-        VITE_KEYCLOAK_REALM: meldingen
-        VITE_KEYCLOAK_CLIENT_ID: meldingen
-        VITE_BACKEND_BASE_URL: http://localhost:8000
     ports:
       - '3001:3001'
     networks:
@@ -22,6 +17,23 @@ services:
         NEXT_INTERNAL_BACKEND_BASE_URL: http://meldingen:8000
     ports:
       - '3000:3000'
+    networks:
+      - meldingen_network
+  back-office:
+    image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-signalen/meldingen-frontend-back-office}:${VERSION:-latest}
+    environment:
+      ISSUER_URL: http://localhost:8002/realms/meldingen
+      AUTH_URL: http://localhost:8002/realms/meldingen/protocol/openid-connect/auth
+      JWKS_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/certs
+      TOKEN_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/token
+      USERINFO_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/userinfo
+    build:
+      context: .
+      target: back_office_meldingen
+      args:
+        NEXT_INTERNAL_BACKEND_BASE_URL: http://meldingen:8000
+    ports:
+      - '3002:3002'
     networks:
       - meldingen_network
 networks:
