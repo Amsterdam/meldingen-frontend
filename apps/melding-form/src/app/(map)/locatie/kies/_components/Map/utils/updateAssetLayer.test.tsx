@@ -1,96 +1,65 @@
-import { act, renderHook, waitFor } from '@testing-library/react'
 import L from 'leaflet'
+import { MutableRefObject } from 'react'
 import { Mock } from 'vitest'
 
 import { addAssetLayerToMap } from './addAssetLayerToMap'
 import { fetchAssets } from './fetchAssets'
-import { useAssetLayer } from './updateAssetLayer'
+import { updateAssetLayer } from './updateAssetLayer'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
-const mapRef = { current: document.createElement('div') }
+vi.mock('./fetchAssets', () => ({
+  fetchAssets: vi.fn(() => ({ features: containerAssets })),
+}))
 
-const map = new L.Map(mapRef.current, {
-  center: L.latLng([52.370216, 4.895168]),
-  zoom: 14,
-  layers: [
-    L.tileLayer('https://{s}.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
-      attribution: '',
-      subdomains: ['t1', 't2', 't3', 't4'],
-    }),
-  ],
-  zoomControl: false,
-  maxZoom: 18,
-  minZoom: 11,
-  maxBounds: [
-    [52.25168, 4.64034],
-    [52.50536, 5.10737],
-  ],
-})
-
-vi.mock('../utils/addAssetLayerToMap', () => ({
+vi.mock('./addAssetLayerToMap', () => ({
   addAssetLayerToMap: vi.fn(),
 }))
 
-vi.mock('../utils/fetchAssets', () => ({
-  fetchAssets: vi.fn(),
-}))
+const INITIAL_ZOOM = 16
 
-const mockSetAssetList = vi.fn()
+const mapInstanceMock = {
+  getZoom: vi.fn().mockImplementation(() => INITIAL_ZOOM),
+  getSize: vi.fn(() => ({ x: 800, y: 600 })),
+} as unknown as L.Map
 
-describe.skip('useAssetLayer', () => {
-  it('should not fetch assets if classification is not provided', () => {
-    renderHook(() => useAssetLayer({ mapInstance: map, classification: undefined, setAssetList: mockSetAssetList }))
+const mockDefaultValues = {
+  assetLayerRef: { current: null } as MutableRefObject<L.Layer | null>,
+  classification: 'container',
+  mapInstance: mapInstanceMock,
+  setAssetList: vi.fn(),
+}
 
+describe('updateAssetLayer', () => {
+  it('should early return when classification does not have assets or has display none', async () => {
+    const result = await updateAssetLayer({ ...mockDefaultValues, classification: 'other' })
+
+    expect(result).toBeUndefined()
+    expect(mockDefaultValues.setAssetList).not.toHaveBeenCalled()
     expect(addAssetLayerToMap).not.toHaveBeenCalled()
-    expect(fetchAssets).not.toHaveBeenCalled()
   })
 
-  it('should not fetch assets if classification does not require assets', () => {
-    renderHook(() => useAssetLayer({ mapInstance: map, classification: 'other', setAssetList: mockSetAssetList }))
+  it('should fetch assets when zoom treshold is met and call addAssetLayerToMap and setAssetList when there are features ', async () => {
+    await updateAssetLayer(mockDefaultValues)
 
-    expect(addAssetLayerToMap).not.toHaveBeenCalled()
-    expect(fetchAssets).not.toHaveBeenCalled()
+    expect(fetchAssets).toHaveBeenCalledWith(mapInstanceMock, mockDefaultValues.classification)
+    expect(mockDefaultValues.setAssetList).toHaveBeenCalledWith(containerAssets)
+    expect(addAssetLayerToMap).toHaveBeenCalledWith(containerAssets, mockDefaultValues.assetLayerRef, mapInstanceMock)
   })
 
-  it('should fetch assets when zoom level is above threshold and set assets', async () => {
-    const classification = 'container'
-    const ASSET_ZOOM_THRESHOLD = 16
+  it('should reset assetList when there are no features', async () => {
+    ;(fetchAssets as Mock).mockResolvedValueOnce({ features: [] })
+    await updateAssetLayer(mockDefaultValues)
 
-    ;(fetchAssets as Mock).mockResolvedValue({ features: containerAssets })
-
-    renderHook(() => useAssetLayer({ mapInstance: map, classification, setAssetList: mockSetAssetList }))
-
-    act(() => {
-      map.setZoom(ASSET_ZOOM_THRESHOLD)
-      map.fire('moveend')
-    })
-
-    expect(fetchAssets).toHaveBeenCalledWith(map, classification)
-
-    await waitFor(() => {
-      expect(addAssetLayerToMap).toHaveBeenCalled()
-      expect(mockSetAssetList).toHaveBeenCalledWith(containerAssets)
-    })
+    expect(mockDefaultValues.setAssetList).toHaveBeenCalledWith([])
   })
 
-  it('should reset assetList when there are no assets', async () => {
-    const classification = 'container'
-    const ASSET_ZOOM_THRESHOLD = 16
+  it('should reset assetList and remove layer when zoom threshold is not met', async () => {
+    mockDefaultValues.mapInstance.getZoom = vi.fn().mockReturnValue(INITIAL_ZOOM - 1)
+    const mockAssetLayerRef = { current: { remove: vi.fn() } } as unknown as MutableRefObject<L.Layer | null>
 
-    ;(fetchAssets as Mock).mockResolvedValue({ features: [] })
+    await updateAssetLayer({ ...mockDefaultValues, assetLayerRef: mockAssetLayerRef })
 
-    renderHook(() => useAssetLayer({ mapInstance: map, classification, setAssetList: mockSetAssetList }))
-
-    act(() => {
-      map.setZoom(ASSET_ZOOM_THRESHOLD)
-      map.fire('moveend')
-    })
-
-    expect(fetchAssets).toHaveBeenCalledWith(map, classification)
-
-    await waitFor(() => {
-      expect(addAssetLayerToMap).not.toHaveBeenCalled()
-      expect(mockSetAssetList).toHaveBeenCalledWith([])
-    })
+    expect(mockDefaultValues.setAssetList).toHaveBeenCalledWith([])
+    expect(mockAssetLayerRef.current?.remove).toHaveBeenCalled()
   })
 })
