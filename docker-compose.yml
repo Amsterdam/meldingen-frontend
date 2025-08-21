@@ -13,8 +13,8 @@ services:
     build:
       context: .
       target: melding_form_meldingen
-      args:
-        NEXT_INTERNAL_BACKEND_BASE_URL: http://meldingen:8000
+    environment:
+      NEXT_INTERNAL_BACKEND_BASE_URL: http://meldingen:8000
     ports:
       - '3000:3000'
     networks:
@@ -27,11 +27,10 @@ services:
       JWKS_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/certs
       TOKEN_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/token
       USERINFO_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/userinfo
+      NEXT_INTERNAL_BACKEND_BASE_URL: http://meldingen:8000
     build:
       context: .
       target: back_office_meldingen
-      args:
-        NEXT_INTERNAL_BACKEND_BASE_URL: http://meldingen:8000
     ports:
       - '3002:3002'
     networks:

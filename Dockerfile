@@ -51,8 +51,8 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Set the backend URL to a runtime environment variable
-ARG NEXT_INTERNAL_BACKEND_BASE_URL
-ENV NEXT_INTERNAL_BACKEND_BASE_URL=$NEXT_INTERNAL_BACKEND_BASE_URL
+#ARG NEXT_INTERNAL_BACKEND_BASE_URL
+#ENV NEXT_INTERNAL_BACKEND_BASE_URL=$NEXT_INTERNAL_BACKEND_BASE_URL
 
 ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
