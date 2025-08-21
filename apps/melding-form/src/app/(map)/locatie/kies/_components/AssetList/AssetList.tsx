@@ -9,6 +9,10 @@ type Props = {
 }
 
 export const AssetList = ({ assetList }: Props) => {
+  if (!assetList || assetList.length === 0) {
+    return
+  }
+
   return (
     <div className={clsx(styles.container, 'ams-mb-m')}>
       <ul>

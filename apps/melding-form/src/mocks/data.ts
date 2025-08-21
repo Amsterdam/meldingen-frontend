@@ -211,28 +211,29 @@ export const additionalQuestions: AnswerQuestionOutput[] = [
   },
 ]
 
-export const containerAsset: Feature = {
-  geometry: {
-    coordinates: [4.9, 52.3],
-    type: 'Point',
+export const containerAssets: Feature[] = [
+  {
+    geometry: {
+      coordinates: [4.9, 52.3],
+      type: 'Point',
+    },
+    id: 'container.1',
+    properties: {
+      name: 'Test Feature',
+      id_nummer: 'Container-001',
+    },
+    type: 'Feature',
   },
-  id: 'container.1',
-  properties: {
-    name: 'Test Feature',
-    id_nummer: 'Container-001',
+  {
+    geometry: {
+      coordinates: [4.9, 52.3],
+      type: 'Point',
+    },
+    id: 'container.2',
+    properties: {
+      name: 'Test Feature',
+      id_nummer: 'Container-002',
+    },
+    type: 'Feature',
   },
-  type: 'Feature',
-}
-
-export const containerAsset2: Feature = {
-  geometry: {
-    coordinates: [4.9, 52.3],
-    type: 'Point',
-  },
-  id: 'container.2',
-  properties: {
-    name: 'Test Feature',
-    id_nummer: 'Container-002',
-  },
-  type: 'Feature',
-}
+]

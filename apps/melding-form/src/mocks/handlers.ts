@@ -4,7 +4,7 @@ import { ENDPOINTS } from './endpoints'
 import {
   additionalQuestions,
   contact,
-  containerAsset,
+  containerAssets,
   form,
   melding,
   PDOKFree,
@@ -82,7 +82,7 @@ export const handlers = [
   http.get(ENDPOINTS.GET_WFS_BY_NAME, ({ params }) => {
     if (params.name === 'container') {
       return HttpResponse.json({
-        features: [containerAsset],
+        features: containerAssets,
       })
     }
     return HttpResponse.json({ message: 'Something went wrong' }, { status: 500 })

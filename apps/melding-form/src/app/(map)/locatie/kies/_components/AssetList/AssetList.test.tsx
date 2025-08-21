@@ -2,24 +2,22 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
 import { AssetList } from './AssetList'
-import { containerAsset2, containerAsset } from 'apps/melding-form/src/mocks/data'
-
-const mockAssetList = [containerAsset, containerAsset2]
+import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 describe('AssetList', () => {
   it('renders a list of assets', () => {
-    render(<AssetList assetList={mockAssetList} />)
+    render(<AssetList assetList={containerAssets} />)
 
     expect(screen.getByText('Container-001')).toBeInTheDocument()
     expect(screen.getByText('Container-002')).toBeInTheDocument()
   })
 
   it('renders correct number of list items', () => {
-    render(<AssetList assetList={mockAssetList} />)
+    render(<AssetList assetList={containerAssets} />)
 
     const items = screen.getAllByRole('listitem')
 
-    expect(items).toHaveLength(mockAssetList.length)
+    expect(items).toHaveLength(containerAssets.length)
   })
 
   it('renders nothing when assetList is empty', () => {

@@ -1,7 +1,7 @@
 import L from 'leaflet'
 
 import { fetchAssets } from './fetchAssets'
-import { containerAsset } from 'apps/melding-form/src/mocks/data'
+import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('./getWfsFilter', () => ({
   getWfsFilter: vi.fn(() => 'mock-filter'),
@@ -26,7 +26,7 @@ describe('fetchAssets', () => {
   it('should fetch assets with correct filter', async () => {
     const result = await fetchAssets(mapInstance, 'container')
 
-    expect(result).toEqual({ features: [containerAsset] })
+    expect(result).toEqual({ features: containerAssets })
   })
 
   it('should throw an error if the API call fails', async () => {
