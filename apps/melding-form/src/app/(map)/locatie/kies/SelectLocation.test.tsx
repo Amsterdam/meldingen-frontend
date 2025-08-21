@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 
 import { SelectLocation } from './SelectLocation'
+import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -9,6 +10,13 @@ vi.mock('react', async (importOriginal) => {
     useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
   }
 })
+
+vi.mock('./_components/Map/Map', () => ({
+  Map: vi.fn(({ setAssetList }) => {
+    setAssetList?.(containerAssets) // call it immediately
+    return <div data-testid="mock-map">Map</div>
+  }),
+}))
 
 describe('SelectLocation', () => {
   beforeAll(() => {
@@ -53,5 +61,19 @@ describe('SelectLocation', () => {
     const assetList = gridElement?.querySelector(':scope > div:nth-of-type(2)')
 
     expect(assetList).toHaveClass(/assetList/)
+  })
+
+  it('should render the button', async () => {
+    render(<SelectLocation />)
+
+    const button = screen.getByRole('button', { name: 'submit-button.mobile' })
+
+    await waitFor(() => {
+      expect(button).toBeInTheDocument()
+    })
+
+    const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
+
+    expect(toggleButton).toBeInTheDocument()
   })
 })

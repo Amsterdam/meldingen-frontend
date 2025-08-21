@@ -21,7 +21,11 @@ export const useAssetLayer = ({ mapInstance, classification, setAssetList }: Pro
   // This useEffect prevents the WFS layer from being fetched twice
   useEffect(() => {
     mapInstance?.on('moveend', async () => {
-      if (!classification || !classificationsWithAssets.includes(classification)) return
+      // Don't fetch assets when map is hidden with display: none
+      const size = mapInstance.getSize()
+      const hasDisplayNone = size.x === 0 && size.y === 0
+
+      if (!classification || !classificationsWithAssets.includes(classification) || hasDisplayNone) return
 
       const zoom = mapInstance.getZoom()
 

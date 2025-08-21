@@ -1,5 +1,5 @@
 import L from 'leaflet'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import 'leaflet/dist/leaflet.css'
 
 import { Feature } from '@meldingen/api-client'
@@ -15,17 +15,24 @@ import styles from './Map.module.css'
 type Props = {
   classification?: string
   coordinates?: Coordinates
-  showAssetList?: boolean
-  setCoordinates: (coordinates: Coordinates) => void
+  mapInstance: L.Map | null
   setAssetList: (assets: Feature[]) => void
+  setCoordinates: (coordinates: Coordinates) => void
+  setMapInstance: (map: L.Map) => void
+  showAssetList?: boolean
 }
 
-export const Map = ({ classification, coordinates, showAssetList, setCoordinates, setAssetList }: Props) => {
+export const Map = ({
+  classification,
+  coordinates,
+  mapInstance,
+  setAssetList,
+  setCoordinates,
+  setMapInstance,
+  showAssetList,
+}: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const markerRef = useRef<L.Marker | null>(null)
-
-  // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
-  const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
 
   // This could be a useState but as we don't expect this to fire more than once, use ref as it is mutable and won't trigger any further re-render
   const createdMapInstance = useRef(false)

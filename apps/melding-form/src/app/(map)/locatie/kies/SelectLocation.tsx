@@ -1,8 +1,8 @@
 'use client'
-
 import { Button } from '@amsterdam/design-system-react'
 import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import clsx from 'clsx'
+import L from 'leaflet'
 import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
@@ -13,7 +13,7 @@ import { AssetList } from './_components/AssetList/AssetList'
 import { SideBar } from './_components/SideBar/SideBar'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
-import styles from './page.module.css'
+import styles from './SelectLocation.module.css'
 
 const Map = dynamic(() => import('./_components/Map/Map').then((module) => module.Map), {
   loading: () => <p>Loading...</p>, // TODO: improve loading state
@@ -28,6 +28,7 @@ export const SelectLocation = ({ classification }: Props) => {
   const [coordinates, setCoordinates] = useState<Coordinates>()
   const [showAssetList, setShowAssetList] = useState(false)
   const [assetList, setAssetList] = useState<Feature[]>([])
+  const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
 
   const t = useTranslations('select-location')
 
@@ -42,6 +43,11 @@ export const SelectLocation = ({ classification }: Props) => {
 
   const handleAssetListToggle = () => {
     setShowAssetList((prevState) => !prevState)
+
+    // Force map to resize after toggling asset list visibility
+    setTimeout(() => {
+      mapInstance?.invalidateSize()
+    }, 0)
   }
 
   return (
@@ -57,9 +63,11 @@ export const SelectLocation = ({ classification }: Props) => {
         <Map
           classification={classification}
           coordinates={coordinates}
-          setCoordinates={setCoordinates}
-          showAssetList={showAssetList}
+          mapInstance={mapInstance}
           setAssetList={setAssetList}
+          setCoordinates={setCoordinates}
+          setMapInstance={setMapInstance}
+          showAssetList={showAssetList}
         />
         <div className={styles.buttonWrapper}>
           <Button
