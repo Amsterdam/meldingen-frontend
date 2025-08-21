@@ -18,6 +18,10 @@ vi.mock('./_components/Map/Map', () => ({
   }),
 }))
 
+vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
+  default: vi.fn().mockReturnValue(true),
+}))
+
 describe('SelectLocation', () => {
   beforeAll(() => {
     Object.defineProperty(window, 'matchMedia', {
