@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { SelectLocation } from './SelectLocation'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
@@ -67,7 +68,7 @@ describe('SelectLocation', () => {
     expect(assetList).toHaveClass(/assetList/)
   })
 
-  it('should render the button', async () => {
+  it('should render the submit button and toggle button', async () => {
     render(<SelectLocation />)
 
     const button = screen.getByRole('button', { name: 'submit-button.mobile' })
@@ -79,5 +80,25 @@ describe('SelectLocation', () => {
     const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
 
     expect(toggleButton).toBeInTheDocument()
+  })
+
+  it('should handle toggle button correctly', async () => {
+    render(<SelectLocation />)
+
+    const button = screen.getByRole('button', { name: 'submit-button.mobile' })
+
+    await waitFor(() => {
+      expect(button).toBeInTheDocument()
+    })
+
+    const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
+
+    expect(toggleButton).toBeInTheDocument()
+
+    await userEvent.click(toggleButton)
+
+    const toggleButtonMap = screen.getByRole('button', { name: 'toggle-button.map' })
+
+    expect(toggleButtonMap).toBeInTheDocument()
   })
 })
