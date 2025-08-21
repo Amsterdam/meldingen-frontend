@@ -6,7 +6,7 @@ import { Feature } from '@meldingen/api-client'
 
 import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './components/Crosshair/Crosshair'
-import { useAssetLayer } from './hooks/useAssetLayer'
+import { updateAssetLayer } from './hooks/useAssetLayer'
 import { defaultIcon } from './markerIcons'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
@@ -33,11 +33,10 @@ export const Map = ({
 }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const markerRef = useRef<L.Marker | null>(null)
+  const assetLayerRef = useRef<L.Layer | null>(null)
 
   // This could be a useState but as we don't expect this to fire more than once, use ref as it is mutable and won't trigger any further re-render
   const createdMapInstance = useRef(false)
-
-  useAssetLayer({ mapInstance, classification, setAssetList })
 
   useEffect(() => {
     // Ensure that the target DOM element exists and that the map doesn't already exist (to prevent duplicate renders in StrictMode)
@@ -131,6 +130,15 @@ export const Map = ({
       mapInstance.flyTo([coordinates.lat, coordinates.lng], currentZoom < flyToMinZoom ? flyToMinZoom : currentZoom)
     }
   }, [mapInstance, coordinates])
+
+  // This useEffect prevents the WFS layer from being fetched twice
+  useEffect(() => {
+    if (!mapInstance || !classification) return
+
+    mapInstance.on('moveend', async () => {
+      updateAssetLayer({ mapInstance, classification, setAssetList, assetLayerRef })
+    })
+  }, [mapInstance])
 
   return (
     <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>

@@ -2,9 +2,9 @@ import { act, renderHook, waitFor } from '@testing-library/react'
 import L from 'leaflet'
 import { Mock } from 'vitest'
 
-import { useAssetLayer } from './useAssetLayer'
-import { addAssetLayerToMap } from '../utils/addAssetLayerToMap'
-import { fetchAssets } from '../utils/fetchAssets'
+import { addAssetLayerToMap } from './addAssetLayerToMap'
+import { fetchAssets } from './fetchAssets'
+import { useAssetLayer } from './updateAssetLayer'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 const mapRef = { current: document.createElement('div') }
