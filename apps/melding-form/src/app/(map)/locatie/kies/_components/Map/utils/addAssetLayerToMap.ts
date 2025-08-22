@@ -5,21 +5,57 @@ import { MutableRefObject } from 'react'
 import type { Feature } from '@meldingen/api-client'
 
 import { getContainerFeatureIcon } from './getContainerFeatureIcon'
+import { selectedAssetIcon } from '../markerIcons'
+import { Coordinates } from 'apps/melding-form/src/types'
 
-export const addAssetLayerToMap = (
-  features: Feature[],
-  assetLayerRef: MutableRefObject<L.Layer | null>,
-  mapInstance: L.Map,
-) => {
+type Props = {
+  assetLayerRef: MutableRefObject<L.Layer | null>
+  assetList: Feature[]
+  mapInstance: L.Map
+  AssetMarkersRef: MutableRefObject<Record<string, L.Marker>>
+  selectedAsset: Feature | null
+  setCoordinates: (coordinates?: Coordinates) => void
+  setSelectedAsset: (asset: Feature | null) => void
+}
+
+export const addAssetLayerToMap = ({
+  assetLayerRef,
+  assetList,
+  mapInstance,
+  AssetMarkersRef,
+  selectedAsset,
+  setCoordinates,
+  setSelectedAsset,
+}: Props) => {
   assetLayerRef.current?.remove()
 
-  assetLayerRef.current = L.geoJSON(features as GeoJsonObject[], {
+  assetLayerRef.current = L.geoJSON(assetList as GeoJsonObject[], {
     pointToLayer: (feature, latlng) => {
-      const featureIcon = getContainerFeatureIcon(feature)
+      const isSelected = selectedAsset?.id === feature.id
 
-      return new L.Marker(latlng, {
-        icon: featureIcon,
+      const marker = new L.Marker(latlng, {
+        icon: isSelected ? selectedAssetIcon : getContainerFeatureIcon(feature),
       })
+
+      if (feature.id !== undefined) {
+        AssetMarkersRef.current[feature.id] = marker
+      }
+
+      marker.on('click', () => {
+        setSelectedAsset(feature as Feature)
+
+        setCoordinates({
+          lat: latlng.lat,
+          lng: latlng.lng,
+        })
+
+        if (isSelected) {
+          setCoordinates(undefined)
+          setSelectedAsset(null)
+        }
+      })
+
+      return marker
     },
   })
 
