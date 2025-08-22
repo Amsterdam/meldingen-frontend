@@ -7,7 +7,7 @@ import { Feature } from '@meldingen/api-client'
 import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './components/Crosshair/Crosshair'
 import { defaultIcon } from './markerIcons'
-import { useAssetLayer } from './utils/updateAssetLayer'
+import { useAssetLayer } from './utils/useAssetLayer'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
