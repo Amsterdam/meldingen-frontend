@@ -4,8 +4,7 @@ import { Mock } from 'vitest'
 
 import { addAssetLayerToMap } from './addAssetLayerToMap'
 import { fetchAssets } from './fetchAssets'
-import { updateAssetLayer } from './updateAssetLayer'
-import { ASSET_ZOOM_THRESHOLD } from './updateAssetLayer'
+import { ASSET_ZOOM_THRESHOLD, updateAssetLayer } from './updateAssetLayer'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('./fetchAssets', () => ({
