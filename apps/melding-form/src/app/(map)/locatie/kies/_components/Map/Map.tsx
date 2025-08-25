@@ -103,8 +103,6 @@ export const Map = ({
     setMapInstance(map)
 
     map.on('click', (e) => {
-      L.DomEvent.stopPropagation(e)
-
       setCoordinates({ lat: e.latlng.lat, lng: e.latlng.lng })
       setSelectedAsset(null)
     })
