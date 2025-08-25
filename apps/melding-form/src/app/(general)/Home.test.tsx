@@ -28,7 +28,7 @@ describe('Page', () => {
     formData.append('textArea1', 'Er staan blowende jongeren')
     ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message', formData }, vi.fn()])
 
-    render(<Home formComponents={[mockTextAreaComponent]} />)
+    render(<Home action={vi.fn()} formComponents={[mockTextAreaComponent]} />)
 
     const alert = screen.getByRole('alert')
 
@@ -45,7 +45,7 @@ describe('Page', () => {
       vi.fn(),
     ])
 
-    render(<Home formComponents={[mockTextAreaComponent]} />)
+    render(<Home action={vi.fn()} formComponents={[mockTextAreaComponent]} />)
 
     const link = screen.getByRole('link', { name: 'Test error message' })
 
@@ -54,7 +54,7 @@ describe('Page', () => {
   })
 
   it('renders a form', () => {
-    render(<Home formComponents={[mockTextAreaComponent]} />)
+    render(<Home action={vi.fn()} formComponents={[mockTextAreaComponent]} />)
 
     expect(screen.queryByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'submit-button' })).toBeInTheDocument()
