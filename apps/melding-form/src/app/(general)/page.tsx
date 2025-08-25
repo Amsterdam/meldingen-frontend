@@ -2,6 +2,7 @@ import { cookies } from 'next/headers'
 
 import { getStaticForm, getStaticFormByStaticFormId, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
+import { postPrimaryForm } from './actions'
 import { Home } from './Home'
 import { isTypeTextAreaComponent } from '../../typeguards'
 import { getMeldingData } from './samenvatting/utils'
@@ -53,5 +54,7 @@ export default async () => {
   const formComponents =
     meldingId && token ? await getPrefilledPrimaryForm(meldingId, token, filteredPrimaryForm) : filteredPrimaryForm
 
-  return <Home formComponents={formComponents} id={meldingId} token={token} />
+  const action = postPrimaryForm.bind(null, { existingId: meldingId, existingToken: token })
+
+  return <Home action={action} formComponents={formComponents} />
 }

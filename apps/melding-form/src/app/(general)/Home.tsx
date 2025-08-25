@@ -7,9 +7,8 @@ import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { FormRenderer } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
+import type { FormState } from '../../types'
 import { FormHeader } from './_components/FormHeader/FormHeader'
-import { postPrimaryForm } from './actions'
-import { FormState } from '../../types'
 import { SystemErrorAlert } from './_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from './_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from './_utils/useSetFocusOnInvalidFormAlert'
@@ -18,19 +17,13 @@ const initialState: FormState = {}
 
 type Props = {
   formComponents: StaticFormTextAreaComponentOutput[]
-  id?: string
-  token?: string
+  action: (_: unknown, formData: FormData) => Promise<FormState>
 }
 
-export const Home = ({ formComponents, id, token }: Props) => {
+export const Home = ({ formComponents, action }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const postPrimaryFormWithIsExistingMelding = postPrimaryForm.bind(null, { existingId: id, existingToken: token })
-
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(
-    postPrimaryFormWithIsExistingMelding,
-    initialState,
-  )
+  const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
 
   const t = useTranslations('homepage')
   const tShared = useTranslations('shared')
