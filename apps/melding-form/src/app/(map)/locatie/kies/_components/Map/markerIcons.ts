@@ -41,3 +41,9 @@ export const textielAfvalIcon = L.icon({
   iconSize: [44, 44],
   iconAnchor: [22, 44],
 })
+
+export const selectedAssetIcon = L.icon({
+  iconUrl: '/asset-selected-marker.svg',
+  iconSize: [44, 44],
+  iconAnchor: [22, 44],
+})

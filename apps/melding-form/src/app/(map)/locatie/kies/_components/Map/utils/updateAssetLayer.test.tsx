@@ -4,7 +4,7 @@ import { Mock } from 'vitest'
 
 import { addAssetLayerToMap } from './addAssetLayerToMap'
 import { fetchAssets } from './fetchAssets'
-import { updateAssetLayer } from './updateAssetLayer'
+import { updateAssetLayer } from './useAssetLayer'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('./fetchAssets', () => ({
