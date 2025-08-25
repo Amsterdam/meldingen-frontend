@@ -12,17 +12,19 @@
 
 .assetList {
   display: none;
+  flex-direction: column;
   grid-row-start: 2;
+  overflow-y: auto;
   padding-block-end: var(--ams-space-m);
   padding-inline: var(--ams-space-m);
 
   @media screen and (min-width: 68rem) {
-    display: block;
+    display: flex;
   }
 }
 
 .showAssetList {
-  display: block;
+  display: flex;
 }
 
 .hideButtonMobile {
@@ -30,11 +32,11 @@
 
   @media screen and (min-width: 68rem) {
     display: block;
+    width: fit-content;
   }
 }
 
 .map {
-  min-height: 16rem;
   position: relative;
 
   @media screen and (min-width: 68rem) {
@@ -56,4 +58,13 @@
 .toggleButton {
   composes: submitbutton;
   right: 0;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.removeAbsolutePosition {
+  position: unset;
 }
