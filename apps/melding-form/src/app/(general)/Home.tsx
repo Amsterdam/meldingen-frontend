@@ -16,10 +16,21 @@ import { useSetFocusOnInvalidFormAlert } from './_utils/useSetFocusOnInvalidForm
 
 const initialState: FormState = {}
 
-export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
+type Props = {
+  formComponents: StaticFormTextAreaComponentOutput[]
+  id?: string
+  token?: string
+}
+
+export const Home = ({ formComponents, id, token }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(postPrimaryForm, initialState)
+  const postPrimaryFormWithIsExistingMelding = postPrimaryForm.bind(null, { existingId: id, existingToken: token })
+
+  const [{ formData, systemError, validationErrors }, formAction] = useActionState(
+    postPrimaryFormWithIsExistingMelding,
+    initialState,
+  )
 
   const t = useTranslations('homepage')
   const tShared = useTranslations('shared')

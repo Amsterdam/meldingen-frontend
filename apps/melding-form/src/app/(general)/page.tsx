@@ -1,11 +1,29 @@
-import { getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
+import { cookies } from 'next/headers'
+
+import { getStaticForm, getStaticFormByStaticFormId, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { Home } from './Home'
 import { isTypeTextAreaComponent } from '../../typeguards'
+import { getMeldingData } from './samenvatting/utils'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.
 export const dynamic = 'force-dynamic'
+
+const getPrefilledPrimaryForm = async (
+  meldingId: string,
+  token: string,
+  formComponents: StaticFormTextAreaComponentOutput[],
+) => {
+  const { data } = await getMeldingData(meldingId, token) // TODO: move getmeldingdata higher up
+
+  return formComponents.map((component) => {
+    return {
+      ...component,
+      defaultValue: data.text,
+    }
+  })
+}
 
 export default async () => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
@@ -27,5 +45,13 @@ export default async () => {
   // We use a type guard here to make sure we're always working with the right type
   const filteredPrimaryForm = data.components.filter(isTypeTextAreaComponent)
 
-  return <Home formComponents={filteredPrimaryForm} />
+  const cookieStore = await cookies()
+
+  const meldingId = cookieStore.get('id')?.value
+  const token = cookieStore.get('token')?.value
+
+  const formComponents =
+    meldingId && token ? await getPrefilledPrimaryForm(meldingId, token, filteredPrimaryForm) : filteredPrimaryForm
+
+  return <Home formComponents={formComponents} id={meldingId} token={token} />
 }
