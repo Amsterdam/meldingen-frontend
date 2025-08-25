@@ -7,7 +7,7 @@ import { addAssetLayerToMap } from './addAssetLayerToMap'
 import { fetchAssets } from './fetchAssets'
 
 const classificationsWithAssets = ['container']
-const ASSET_ZOOM_THRESHOLD = 16
+export const ASSET_ZOOM_THRESHOLD = 16
 
 type Props = {
   assetLayerRef: MutableRefObject<L.Layer | null>
@@ -19,9 +19,9 @@ type Props = {
 export const updateAssetLayer = async ({ mapInstance, classification, setAssetList, assetLayerRef }: Props) => {
   // Don't fetch assets when map is hidden with display: none
   const size = mapInstance.getSize()
-  const hasDisplayNone = size.x === 0 && size.y === 0
+  const mapIsHidden = size.x === 0 && size.y === 0
 
-  if (!classificationsWithAssets.includes(classification) || hasDisplayNone) return
+  if (!classificationsWithAssets.includes(classification) || mapIsHidden) return
 
   const zoom = mapInstance.getZoom()
 

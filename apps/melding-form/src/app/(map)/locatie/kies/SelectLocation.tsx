@@ -44,7 +44,8 @@ export const SelectLocation = ({ classification }: Props) => {
   const handleAssetListToggle = () => {
     setShowAssetList((prevState) => !prevState)
 
-    // Force map to resize after toggling asset list visibility
+    // Leaflet has to know it should recalculate dimensions of the map
+    // when the asset list is shown/hidden as this changes the size of the map container
     setTimeout(() => {
       mapInstance?.invalidateSize()
     }, 0)

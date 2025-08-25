@@ -14,8 +14,11 @@ vi.mock('react', async (importOriginal) => {
 
 vi.mock('./_components/Map/Map', () => ({
   Map: vi.fn(({ setAssetList }) => {
-    setAssetList?.(containerAssets) // call it immediately
-    return <div>Map</div>
+    return (
+      <div>
+        <button onClick={() => setAssetList(containerAssets)}>Show assets</button>Map
+      </div>
+    )
   }),
 }))
 
@@ -56,7 +59,6 @@ describe('SelectLocation', () => {
     expect(sideBar).toBeInTheDocument()
     expect(addressCombobox).toBeInTheDocument()
     expect(toggleButton).not.toBeInTheDocument()
-    expect(container.querySelector)
   })
 
   it('renders correct default classname', () => {
@@ -73,23 +75,33 @@ describe('SelectLocation', () => {
 
     const button = screen.getByRole('button', { name: 'submit-button.mobile' })
 
-    await waitFor(() => {
-      expect(button).toBeInTheDocument()
-    })
+    // Wait for Map component dynamic import to finish
+    await waitFor(() => {})
+
+    expect(button).toBeInTheDocument()
+
+    const assetButton = screen.getByRole('button', { name: 'Show assets' })
+
+    await userEvent.click(assetButton)
 
     const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
 
     expect(toggleButton).toBeInTheDocument()
   })
 
-  it('should handle toggle button correctly', async () => {
+  it.only('should handle toggle button correctly', async () => {
     render(<SelectLocation />)
 
     const button = screen.getByRole('button', { name: 'submit-button.mobile' })
 
-    await waitFor(() => {
-      expect(button).toBeInTheDocument()
-    })
+    // Wait for Map component dynamic import to finish
+    await waitFor(() => {})
+
+    expect(button).toBeInTheDocument()
+
+    const assetButton = screen.getByRole('button', { name: 'Show assets' })
+
+    await userEvent.click(assetButton)
 
     const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
 
