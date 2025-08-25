@@ -18,7 +18,6 @@ vi.mock('./addAssetLayerToMap', () => ({
 
 const mapInstanceMock = {
   getZoom: vi.fn().mockImplementation(() => ASSET_ZOOM_THRESHOLD),
-  getSize: vi.fn(() => ({ x: 800, y: 600 })),
 } as unknown as L.Map
 
 const mockDefaultValues = {
@@ -30,7 +29,6 @@ const mockDefaultValues = {
 
 describe('updateAssetLayer', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
     ;(mapInstanceMock.getSize as Mock) = vi.fn(() => ({ x: 800, y: 600 }))
   })
   it('should early return when classification does not have assets', async () => {
