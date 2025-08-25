@@ -19,6 +19,7 @@ export const addAssetLayerToMap = (
 
       return new L.Marker(latlng, {
         icon: featureIcon,
+        keyboard: false,
       })
     },
   })
