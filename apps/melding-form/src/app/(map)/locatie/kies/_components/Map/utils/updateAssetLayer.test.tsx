@@ -39,7 +39,7 @@ describe('updateAssetLayer', () => {
     expect(addAssetLayerToMap).not.toHaveBeenCalled()
   })
 
-  it('should early return when classification is hidden', async () => {
+  it('returns early when map is hidden (size is 0)', async () => {
     ;(mapInstanceMock.getSize as Mock) = vi.fn(() => ({ x: 0, y: 0 }))
 
     const result = await updateAssetLayer({ ...mockDefaultValues })
