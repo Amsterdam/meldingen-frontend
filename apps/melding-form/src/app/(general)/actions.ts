@@ -29,12 +29,7 @@ export const postPrimaryForm = async (
   if (!formDataObj.primary) {
     return {
       formData,
-      validationErrors: [
-        {
-          key: 'primary',
-          message: 'Vraag is verplicht en moet worden beantwoord.',
-        },
-      ],
+      validationErrors: [{ key: 'primary', message: 'Vraag is verplicht en moet worden beantwoord.' }],
     }
   }
 
@@ -55,12 +50,7 @@ export const postPrimaryForm = async (
   if (hasValidationErrors(response, error)) {
     return {
       formData,
-      validationErrors: [
-        {
-          key: 'primary',
-          message: handleApiError(error),
-        },
-      ],
+      validationErrors: [{ key: 'primary', message: handleApiError(error) }],
     }
   }
 
