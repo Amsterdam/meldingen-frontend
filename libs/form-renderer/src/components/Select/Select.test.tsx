@@ -82,4 +82,25 @@ describe('Select Component', () => {
 
     expect(heading).not.toBeInTheDocument()
   })
+
+  it('renders an error message when there is one', () => {
+    render(<Select {...defaultProps} errorMessage="Test error message" />)
+
+    const selectWithErrorMessage = screen.getByRole('combobox', {
+      name: defaultProps.label,
+      description: 'Invoerfout: Test error message',
+    })
+
+    expect(selectWithErrorMessage).toBeInTheDocument()
+  })
+
+  it('marks the Field and Select as invalid when there is an error message', () => {
+    const { container } = render(<Select {...defaultProps} errorMessage="Test error message" />)
+
+    const field = container.firstChild
+    expect(field).toHaveClass('ams-field--invalid')
+
+    const select = screen.getByRole('combobox', { name: defaultProps.label })
+    expect(select).toHaveAttribute('aria-invalid', 'true')
+  })
 })

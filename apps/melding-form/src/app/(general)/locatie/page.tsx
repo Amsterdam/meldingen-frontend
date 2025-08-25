@@ -1,15 +1,6 @@
 import { cookies } from 'next/headers'
-import { getTranslations } from 'next-intl/server'
 
 import { Location } from './Location'
-
-export const generateMetadata = async () => {
-  const t = await getTranslations('location')
-
-  return {
-    title: t('metadata.title'),
-  }
-}
 
 export default async () => {
   const cookieStore = await cookies()

@@ -1,0 +1,8 @@
+.input:invalid:not([aria-invalid='true']) {
+  border-color: inherit;
+
+  &:hover {
+    border-color: inherit;
+    box-shadow: var(--ams-text-input-hover-box-shadow);
+  }
+}

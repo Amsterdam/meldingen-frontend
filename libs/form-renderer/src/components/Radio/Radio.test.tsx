@@ -72,4 +72,27 @@ describe('Radio Component', () => {
 
     expect(radioOption).toBeChecked()
   })
+
+  it('renders an error message when there is one', () => {
+    render(<Radio {...defaultProps} errorMessage="Test error message" />)
+
+    const radioWithErrorMessage = screen.getByRole('radiogroup', {
+      name: defaultProps.label,
+      description: 'Invoerfout: Test error message',
+    })
+
+    expect(radioWithErrorMessage).toBeInTheDocument()
+  })
+
+  it('marks the FieldSet and Radio buttons as invalid when there is an error message', () => {
+    render(<Radio {...defaultProps} errorMessage="Test error message" />)
+
+    const fieldSet = screen.getByRole('radiogroup')
+    expect(fieldSet).toHaveClass('ams-field-set--invalid')
+
+    const inputs = screen.getAllByRole('radio')
+    inputs.forEach((input) => {
+      expect(input).toHaveAttribute('aria-invalid', 'true')
+    })
+  })
 })

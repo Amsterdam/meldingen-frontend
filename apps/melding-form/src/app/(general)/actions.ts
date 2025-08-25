@@ -10,15 +10,40 @@ import {
 } from '@meldingen/api-client'
 
 import { handleApiError } from '../../handleApiError'
+import { hasValidationErrors } from './_utils/hasValidationErrors'
 
 export const postPrimaryForm = async (_: unknown, formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)
 
-  let nextPage = '/locatie'
+  // Return validation error if primary question is not answered
+  if (!formDataObj.primary) {
+    return {
+      formData,
+      validationErrors: [
+        {
+          key: 'primary',
+          message: 'Vraag is verplicht en moet worden beantwoord.',
+        },
+      ],
+    }
+  }
 
-  const { data, error } = await postMelding({ body: { text: formDataObj.primary.toString() } })
+  const { data, error, response } = await postMelding({ body: { text: formDataObj.primary.toString() } })
 
-  if (error) return { errorMessage: handleApiError(error), formData }
+  // Return other validation errors if there are any
+  if (hasValidationErrors(response, error)) {
+    return {
+      formData,
+      validationErrors: [
+        {
+          key: 'primary',
+          message: handleApiError(error),
+        },
+      ],
+    }
+  }
+
+  if (error) return { formData, systemError: error }
 
   const { classification, created_at, id, token, public_id } = data
 
@@ -35,6 +60,10 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
       path: { classification_id: classification.id },
     })
 
+    if (error && handleApiError(error) !== 'Not Found') {
+      return { formData, systemError: error }
+    }
+
     const hasAdditionalQuestions = Boolean(data?.components[0])
 
     // If there are no additional questions for a classification,
@@ -45,17 +74,15 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
         query: { token },
       })
 
-      if (error) return { errorMessage: handleApiError(error), formData }
+      if (error) return { formData, systemError: error }
 
-      return redirect(nextPage)
+      return redirect('/locatie')
     }
-
-    if (error) return { errorMessage: handleApiError(error), formData }
 
     const nextFormFirstKey = data?.components[0].key
 
-    nextPage = `/aanvullende-vragen/${classification.id}/${nextFormFirstKey}`
+    return redirect(`/aanvullende-vragen/${classification.id}/${nextFormFirstKey}`)
   }
 
-  return redirect(nextPage)
+  return redirect('/locatie')
 }

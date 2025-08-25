@@ -1,5 +1,4 @@
 import { redirect } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
 
 import type { FormOutput, FormPanelComponentOutput } from '@meldingen/api-client'
 import { getFormClassificationByClassificationId } from '@meldingen/api-client'
@@ -8,14 +7,6 @@ import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 
 export const dynamic = 'force-dynamic'
-
-export const generateMetadata = async () => {
-  const t = await getTranslations('additional-questions')
-
-  return {
-    title: t('metadata.title'),
-  }
-}
 
 type Params = Promise<{
   classificationId: number
@@ -51,11 +42,14 @@ export default async ({ params }: { params: Params }) => {
   const panelQuestions = panel.components
   const panelLabel = panel.label
 
-  // Pass question ids to the action
-  const questionIds = panelQuestions.map((question) => ({
-    key: question.key,
-    id: question.question,
+  // Pass question keys and ids to the action
+  const questionKeysAndIds = panelQuestions.map(({ key, question }) => ({
+    id: question,
+    key: key,
   }))
+
+  // Pass required questions keys to the action
+  const requiredQuestionKeys = panelQuestions.filter((question) => question.validate?.required).map(({ key }) => key)
 
   // Pass isLastPanel to the action
   const isLastPanel = currentPanelIndex === data.components.length - 1
@@ -70,7 +64,8 @@ export default async ({ params }: { params: Params }) => {
     isLastPanel,
     lastPanelPath,
     nextPanelPath,
-    questionIds,
+    questionKeysAndIds,
+    requiredQuestionKeys,
   }
 
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)
@@ -82,8 +77,8 @@ export default async ({ params }: { params: Params }) => {
     <AdditionalQuestions
       action={postFormWithExtraArgs}
       formComponents={panelQuestions}
-      previousPanelPath={previousPanelPath}
       panelLabel={panelLabel}
+      previousPanelPath={previousPanelPath}
     />
   )
 }

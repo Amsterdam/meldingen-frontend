@@ -1,4 +1,4 @@
-import { ErrorMessage, Field, Label, TextInput } from '@amsterdam/design-system-react'
+import { ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
 import {
   Combobox as HUICombobox,
   ComboboxInput,
@@ -11,7 +11,7 @@ import {
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
-import { ListBox } from '@meldingen/ui'
+import { ListBox, TextInput } from '@meldingen/ui'
 
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
 import type { Coordinates } from 'apps/melding-form/src/types'

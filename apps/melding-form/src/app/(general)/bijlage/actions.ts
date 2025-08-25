@@ -5,8 +5,6 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAddAttachments } from '@meldingen/api-client'
 
-import { handleApiError } from 'apps/melding-form/src/handleApiError'
-
 export const submitAttachmentsForm = async () => {
   const cookieStore = await cookies()
 
@@ -21,7 +19,7 @@ export const submitAttachmentsForm = async () => {
     query: { token },
   })
 
-  if (error) return { message: handleApiError(error) }
+  if (error) return { systemError: error }
 
   return redirect('/contact')
 }
