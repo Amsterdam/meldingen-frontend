@@ -89,7 +89,7 @@ describe('SelectLocation', () => {
     expect(toggleButton).toBeInTheDocument()
   })
 
-  it.only('should handle toggle button correctly', async () => {
+  it('should handle toggle button correctly', async () => {
     render(<SelectLocation />)
 
     const button = screen.getByRole('button', { name: 'submit-button.mobile' })
