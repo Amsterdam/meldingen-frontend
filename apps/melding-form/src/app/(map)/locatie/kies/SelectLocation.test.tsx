@@ -15,7 +15,7 @@ vi.mock('react', async (importOriginal) => {
 vi.mock('./_components/Map/Map', () => ({
   Map: vi.fn(({ setAssetList }) => {
     setAssetList?.(containerAssets) // call it immediately
-    return <div data-testid="mock-map">Map</div>
+    return <div>Map</div>
   }),
 }))
 
