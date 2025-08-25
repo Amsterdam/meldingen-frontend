@@ -1,6 +1,6 @@
+import { Component as ComponentSchema } from '@formio/core'
 import { Components, FormBuilder as FormioFormBuilder } from '@formio/js'
 import type { FormBuilder as FormBuilderProps } from '@formio/js'
-import type { ComponentSchema } from 'formiojs'
 import { useEffect, useRef } from 'react'
 
 import { Radio, Select, SelectBoxes, Textarea, Textfield } from './components'
