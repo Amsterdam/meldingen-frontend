@@ -1,8 +1,6 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen } from '@testing-library/react'
 
 import { SelectLocation } from './SelectLocation'
-import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -11,16 +9,6 @@ vi.mock('react', async (importOriginal) => {
     useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
   }
 })
-
-vi.mock('./_components/Map/Map', () => ({
-  Map: vi.fn(({ setAssetList }) => {
-    return (
-      <div>
-        <button onClick={() => setAssetList(containerAssets)}>Show assets</button>Map
-      </div>
-    )
-  }),
-}))
 
 vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
   default: vi.fn().mockReturnValue(true),
@@ -48,9 +36,7 @@ describe('SelectLocation', () => {
 
     const outerWrapper = container.querySelector('div')
 
-    waitFor(() => {
-      expect(outerWrapper).toBeInTheDocument()
-    })
+    expect(outerWrapper).toBeInTheDocument()
 
     const sideBar = screen.getByRole('heading', { name: 'title' })
     const addressCombobox = screen.getByRole('combobox', { name: 'label' })
@@ -68,49 +54,5 @@ describe('SelectLocation', () => {
     const assetList = gridElement?.querySelector(':scope > div:nth-of-type(2)')
 
     expect(assetList).toHaveClass(/assetList/)
-  })
-
-  it('should render the submit button and toggle button', async () => {
-    render(<SelectLocation />)
-
-    const button = screen.getByRole('button', { name: 'submit-button.mobile' })
-
-    // Wait for Map component dynamic import to finish
-    await waitFor(() => {})
-
-    expect(button).toBeInTheDocument()
-
-    const assetButton = screen.getByRole('button', { name: 'Show assets' })
-
-    await userEvent.click(assetButton)
-
-    const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
-
-    expect(toggleButton).toBeInTheDocument()
-  })
-
-  it('should handle toggle button correctly', async () => {
-    render(<SelectLocation />)
-
-    const button = screen.getByRole('button', { name: 'submit-button.mobile' })
-
-    // Wait for Map component dynamic import to finish
-    await waitFor(() => {})
-
-    expect(button).toBeInTheDocument()
-
-    const assetButton = screen.getByRole('button', { name: 'Show assets' })
-
-    await userEvent.click(assetButton)
-
-    const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
-
-    expect(toggleButton).toBeInTheDocument()
-
-    await userEvent.click(toggleButton)
-
-    const toggleButtonMap = screen.getByRole('button', { name: 'toggle-button.map' })
-
-    expect(toggleButtonMap).toBeInTheDocument()
   })
 })

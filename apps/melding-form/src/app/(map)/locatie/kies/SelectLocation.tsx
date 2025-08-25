@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { Feature } from '@meldingen/api-client'
 
 import { AssetList } from './_components/AssetList/AssetList'
+import { AssetListToggle } from './_components/AssetListToggle/AssetListToggle'
 import { SideBar } from './_components/SideBar/SideBar'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
@@ -78,15 +79,12 @@ export const SelectLocation = ({ classification }: Props) => {
           >
             {t('submit-button.mobile')}
           </Button>
-          {assetList.length > 0 && (
-            <Button
-              variant="secondary"
-              onClick={handleAssetListToggle}
-              className={clsx(styles.toggleButton, showAssetList && styles.removeAbsolutePosition)}
-            >
-              {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
-            </Button>
-          )}
+          <AssetListToggle
+            assetList={assetList}
+            showAssetList={showAssetList}
+            t={t}
+            handleAssetListToggle={handleAssetListToggle}
+          />
         </div>
       </div>
     </div>
