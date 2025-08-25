@@ -16,7 +16,7 @@ There are a few exceptions, which are detailed below.
   This can be a server error, or a 4XX or 5XX response from the back end.
   In such cases, we display the current page with an [Alert](https://designsystem.amsterdam/?path=/docs/components-feedback-alert--docs) at the top of the `main` container.
 - Form validation is also done by the back end.
-  If a user's responses fail validation, the back end returns an error.
+  If a user’s responses fail validation, the back end returns an error.
   We handle those errors differently from others; refer to [the forms documentation](./0007-forms.md) for further details.
 - If session tokens are missing when executing an action, we redirect to `/cookie-storing`.
   From there, a user can start the form flow again.
@@ -39,5 +39,5 @@ When we do, we will update this section.
 
 ## Back office
 
-We haven't decided on an error handling strategy for this application yet.
+We haven’t decided on an error handling strategy for this application yet.
 When we do, we will update this section.
