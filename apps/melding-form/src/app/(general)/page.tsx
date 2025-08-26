@@ -11,7 +11,7 @@ import { getMeldingData } from './_utils/getMeldingData'
 // We can remove this when the api is deployed.
 export const dynamic = 'force-dynamic'
 
-const getPrefilledPrimaryForm = async (
+const getPrefilledPrimaryFormComponents = async (
   meldingId: string,
   token: string,
   formComponents: StaticFormTextAreaComponentOutput[],
@@ -44,7 +44,7 @@ export default async () => {
 
   // A primary form is always an array with 1 text area component, but TypeScript doesn't know that
   // We use a type guard here to make sure we're always working with the right type
-  const filteredPrimaryForm = data.components.filter(isTypeTextAreaComponent)
+  const primaryFormComponents = data.components.filter(isTypeTextAreaComponent)
 
   const cookieStore = await cookies()
 
@@ -52,7 +52,9 @@ export default async () => {
   const token = cookieStore.get('token')?.value
 
   const formComponents =
-    meldingId && token ? await getPrefilledPrimaryForm(meldingId, token, filteredPrimaryForm) : filteredPrimaryForm
+    meldingId && token
+      ? await getPrefilledPrimaryFormComponents(meldingId, token, primaryFormComponents)
+      : primaryFormComponents
 
   const action = postPrimaryForm.bind(null, { existingId: meldingId, existingToken: token })
 
