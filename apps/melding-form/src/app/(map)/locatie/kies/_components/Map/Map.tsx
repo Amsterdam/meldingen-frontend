@@ -1,6 +1,8 @@
 import L from 'leaflet'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import 'leaflet/dist/leaflet.css'
+
+import { Feature } from '@meldingen/api-client'
 
 import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './components/Crosshair/Crosshair'
@@ -13,17 +15,25 @@ import styles from './Map.module.css'
 type Props = {
   classification?: string
   coordinates?: Coordinates
-  showAssetList?: boolean
+  mapInstance: L.Map | null
+  setAssetList: (assets: Feature[]) => void
   setCoordinates: (coordinates: Coordinates) => void
+  setMapInstance: (map: L.Map) => void
+  showAssetList?: boolean
 }
 
-export const Map = ({ classification, coordinates, showAssetList, setCoordinates }: Props) => {
+export const Map = ({
+  classification,
+  coordinates,
+  mapInstance,
+  setAssetList,
+  setCoordinates,
+  setMapInstance,
+  showAssetList,
+}: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const markerRef = useRef<L.Marker | null>(null)
   const assetLayerRef = useRef<L.Layer | null>(null)
-
-  // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
-  const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
 
   // This could be a useState but as we don't expect this to fire more than once, use ref as it is mutable and won't trigger any further re-render
   const createdMapInstance = useRef(false)
@@ -123,7 +133,11 @@ export const Map = ({ classification, coordinates, showAssetList, setCoordinates
 
   // This useEffect prevents the WFS layer from being fetched twice
   useEffect(() => {
-    mapInstance?.on('moveend', () => updateAssetLayer(mapInstance, assetLayerRef, classification))
+    if (!mapInstance || !classification) return
+
+    mapInstance.on('moveend', async () => {
+      updateAssetLayer({ mapInstance, classification, setAssetList, assetLayerRef })
+    })
   }, [mapInstance])
 
   return (
