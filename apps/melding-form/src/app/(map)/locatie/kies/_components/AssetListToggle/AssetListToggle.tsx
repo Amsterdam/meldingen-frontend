@@ -6,7 +6,7 @@ import { Feature } from '@meldingen/api-client'
 
 import styles from '../../SelectLocation.module.css'
 
-type Props = {
+export type Props = {
   assetList: Feature[]
   handleAssetListToggle: () => void
   showAssetList: boolean
