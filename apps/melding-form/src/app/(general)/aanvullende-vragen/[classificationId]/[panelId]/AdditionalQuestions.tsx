@@ -7,6 +7,7 @@ import { FormRenderer, isSelectboxes } from '@meldingen/form-renderer'
 import type { Component } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
+import { BackLink } from '../../../_components/BackLink/BackLink'
 import { FormHeader } from '../../../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../../../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../../../_utils/getDocumentTitleOnError'
@@ -70,26 +71,31 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
   }, [systemError])
 
   return (
-    <main>
-      <title>{documentTitle}</title>
-      {Boolean(systemError) && <SystemErrorAlert />}
-      {validationErrors && (
-        <InvalidFormAlert
-          className="ams-mb-m"
-          errors={mapValidationErrors(validationErrors)}
-          heading={tShared('invalid-form-alert-title')}
-          headingLevel={2}
-          ref={invalidFormAlertRef}
+    <>
+      <BackLink className="ams-mb-s" href="/">
+        {t('back-link')}
+      </BackLink>
+      <main>
+        <title>{documentTitle}</title>
+        {Boolean(systemError) && <SystemErrorAlert />}
+        {validationErrors && (
+          <InvalidFormAlert
+            className="ams-mb-m"
+            errors={mapValidationErrors(validationErrors)}
+            heading={tShared('invalid-form-alert-title')}
+            headingLevel={2}
+            ref={invalidFormAlertRef}
+          />
+        )}
+        <FormHeader title={t('title')} step={t('step')} />
+        <FormRenderer
+          formComponents={prefilledFormComponents}
+          action={formAction}
+          panelLabel={panelLabel}
+          submitButtonText={t('submit-button')}
+          validationErrors={validationErrors}
         />
-      )}
-      <FormHeader title={t('title')} step={t('step')} />
-      <FormRenderer
-        formComponents={prefilledFormComponents}
-        action={formAction}
-        panelLabel={panelLabel}
-        submitButtonText={t('submit-button')}
-        validationErrors={validationErrors}
-      />
-    </main>
+      </main>
+    </>
   )
 }
