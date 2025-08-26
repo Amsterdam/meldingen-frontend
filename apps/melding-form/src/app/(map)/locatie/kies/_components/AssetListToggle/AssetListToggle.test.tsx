@@ -1,13 +1,19 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import type L from 'leaflet'
 
 import { AssetListToggle, type Props } from './AssetListToggle'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
+const mapInstanceMock = {
+  invalidateSize: vi.fn(),
+} as unknown as L.Map
+
 const defaultProps: Props = {
   assetList: containerAssets,
-  handleAssetListToggle: vi.fn(),
   showAssetList: false,
+  mapInstance: mapInstanceMock,
+  setShowAssetList: vi.fn(),
 }
 
 describe('AssetListToggle', () => {
@@ -29,11 +35,12 @@ describe('AssetListToggle', () => {
     expect(screen.getByRole('button')).toHaveTextContent('toggle-button.map')
   })
 
-  it('calls handleAssetListToggle when button is clicked', async () => {
+  it('calls setShowAssetList and mapInstance.invalidateSize() when button is clicked', async () => {
     render(<AssetListToggle {...defaultProps} />)
 
     await userEvent.click(screen.getByRole('button'))
 
-    expect(defaultProps.handleAssetListToggle).toHaveBeenCalledTimes(1)
+    expect(defaultProps.setShowAssetList).toHaveBeenCalledTimes(1)
+    expect(mapInstanceMock.invalidateSize).toHaveBeenCalledTimes(1)
   })
 })

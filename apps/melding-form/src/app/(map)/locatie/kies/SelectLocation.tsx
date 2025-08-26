@@ -42,16 +42,6 @@ export const SelectLocation = ({ classification }: Props) => {
     }
   }, [isWideWindow])
 
-  const handleAssetListToggle = () => {
-    setShowAssetList((prevState) => !prevState)
-
-    // Leaflet has to know it should recalculate dimensions of the map
-    // when the asset list is shown/hidden as this changes the size of the map container
-    setTimeout(() => {
-      mapInstance?.invalidateSize()
-    }, 0)
-  }
-
   return (
     <div className={styles.grid}>
       <SideBar coordinates={coordinates} setCoordinates={setCoordinates} />
@@ -81,7 +71,8 @@ export const SelectLocation = ({ classification }: Props) => {
           </Button>
           <AssetListToggle
             assetList={assetList}
-            handleAssetListToggle={handleAssetListToggle}
+            mapInstance={mapInstance}
+            setShowAssetList={setShowAssetList}
             showAssetList={showAssetList}
           />
         </div>

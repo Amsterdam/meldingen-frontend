@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { SelectLocation } from './SelectLocation'
-import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -13,9 +12,9 @@ vi.mock('react', async (importOriginal) => {
 })
 
 vi.mock('./_components/AssetListToggle/AssetListToggle', () => ({
-  AssetListToggle: vi.fn(({ handleAssetListToggle }) => (
+  AssetListToggle: vi.fn(({ setShowAssetList }) => (
     <div>
-      <button onClick={() => handleAssetListToggle(containerAssets)}>Toggle</button>
+      <button onClick={() => setShowAssetList(true)}>Toggle</button>
     </div>
   )),
 }))
@@ -55,6 +54,12 @@ describe('SelectLocation', () => {
     expect(sideBar).toBeInTheDocument()
     expect(addressCombobox).toBeInTheDocument()
     expect(toggleButton).not.toBeInTheDocument()
+
+    const gridElementSecondRender = container.querySelector('div')
+    const assetListWrapperClassNameSecondRender =
+      gridElementSecondRender?.querySelector(':scope > div:nth-of-type(2)')?.className
+
+    expect(assetListWrapperClassNameSecondRender).not.toContain('showAssetList')
   })
 
   it('renders correct default classname', () => {
@@ -66,7 +71,7 @@ describe('SelectLocation', () => {
     expect(assetList).toHaveClass(/assetList/)
   })
 
-  it('should reset showAssetList when resizing to wide screen and set correct classname when assetListToggle is clicked', async () => {
+  it('should reset showAssetList when resizing to wide screen and set correct classname when assetList is toggled', async () => {
     vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
       default: vi.fn().mockReturnValue(true),
     }))
