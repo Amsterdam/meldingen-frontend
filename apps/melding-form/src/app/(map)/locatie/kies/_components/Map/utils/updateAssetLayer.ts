@@ -1,25 +1,42 @@
 import L from 'leaflet'
 import { MutableRefObject } from 'react'
 
-import { fetchAndAddAssetLayerToMap } from './fetchAndAddAssetLayerToMap'
+import { Feature } from '@meldingen/api-client'
+
+import { addAssetLayerToMap } from './addAssetLayerToMap'
+import { fetchAssets } from './fetchAssets'
 
 const classificationsWithAssets = ['container']
+export const ASSET_ZOOM_THRESHOLD = 16
 
-const ASSET_ZOOM_THRESHOLD = 16
+type Props = {
+  assetLayerRef: MutableRefObject<L.Layer | null>
+  classification: string
+  mapInstance: L.Map
+  setAssetList: (assets: Feature[]) => void
+}
 
-export const updateAssetLayer = (
-  mapInstance: L.Map,
-  assetLayerRef: MutableRefObject<L.Layer | null>,
-  classification?: string,
-) => {
-  if (!classification || !classificationsWithAssets.includes(classification)) return
+export const updateAssetLayer = async ({ mapInstance, classification, setAssetList, assetLayerRef }: Props) => {
+  // Don't fetch assets when map is hidden with display: none
+  const size = mapInstance.getSize()
+  const mapIsHidden = size.x === 0 && size.y === 0
+
+  if (!classificationsWithAssets.includes(classification) || mapIsHidden) return
 
   const zoom = mapInstance.getZoom()
 
   // Has correct zoom level for assets
   if (zoom >= ASSET_ZOOM_THRESHOLD) {
-    fetchAndAddAssetLayerToMap(mapInstance, classification, assetLayerRef)
-  } else if (zoom < ASSET_ZOOM_THRESHOLD && assetLayerRef.current) {
+    const assets = await fetchAssets(mapInstance, classification)
+
+    if (assets?.features && assets.features.length > 0) {
+      addAssetLayerToMap(assets.features, assetLayerRef, mapInstance)
+      setAssetList(assets.features)
+    } else setAssetList([])
+  }
+
+  if (zoom < ASSET_ZOOM_THRESHOLD && assetLayerRef.current) {
     assetLayerRef.current.remove()
+    setAssetList([])
   }
 }
