@@ -1,5 +1,6 @@
 import { Button } from '@amsterdam/design-system-react'
 import clsx from 'clsx'
+import { useTranslations } from 'next-intl'
 
 import { Feature } from '@meldingen/api-client'
 
@@ -7,12 +8,13 @@ import styles from '../../SelectLocation.module.css'
 
 type Props = {
   assetList: Feature[]
-  showAssetList: boolean
-  t: (key: string) => string
   handleAssetListToggle: () => void
+  showAssetList: boolean
 }
 
-export const AssetListToggle = ({ assetList, showAssetList, t, handleAssetListToggle }: Props) => {
+export const AssetListToggle = ({ assetList, handleAssetListToggle, showAssetList }: Props) => {
+  const t = useTranslations('select-location')
+
   if (assetList.length === 0) return null
 
   return (

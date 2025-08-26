@@ -81,9 +81,8 @@ export const SelectLocation = ({ classification }: Props) => {
           </Button>
           <AssetListToggle
             assetList={assetList}
-            showAssetList={showAssetList}
-            t={t}
             handleAssetListToggle={handleAssetListToggle}
+            showAssetList={showAssetList}
           />
         </div>
       </div>
