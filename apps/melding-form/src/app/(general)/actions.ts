@@ -15,7 +15,7 @@ import {
 import { handleApiError } from '../../handleApiError'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
 
-const isNewMeldingOutput = (data: MeldingCreateOutput | MeldingOutput): data is MeldingCreateOutput =>
+const hasToken = (data: MeldingCreateOutput | MeldingOutput): data is MeldingCreateOutput =>
   typeof data === 'object' && data !== null && 'token' in data && typeof data.token === 'string'
 
 export const postPrimaryForm = async (
@@ -58,7 +58,7 @@ export const postPrimaryForm = async (
   if (!data) return { formData, systemError: new Error('Melding data not found.') }
 
   const { classification, created_at, id, public_id } = data
-  const token = isNewMeldingOutput(data) ? data.token : existingToken
+  const token = hasToken(data) ? data.token : existingToken
 
   // Set session variables in cookies
   const cookieStore = await cookies()
