@@ -230,8 +230,8 @@ importers:
   libs/form-builder:
     dependencies:
       '@formio/js':
-        specifier: 5.2.0
-        version: 5.2.0(@popperjs/core@2.11.8)
+        specifier: 5.0.1
+        version: 5.0.1(@popperjs/core@2.11.8)
       formiojs:
         specifier: 4.21.7
         version: 4.21.7
@@ -774,17 +774,20 @@ packages:
   '@formio/bootstrap3@2.12.4-rc.1':
     resolution: {integrity: sha512-4B5rs+w9tAk5i+wbdw2/NrTxPqnDX7/W19tiTd9lfXnIGQmaj0ecMEVqDmOJg8pIlyU02g3c4ih6JnA/JVmUbA==}
 
-  '@formio/bootstrap@3.1.1':
-    resolution: {integrity: sha512-VXm5P5Ic3q7d5tkWaweIRAaPtBjDoov6Vv28y5aHKbR2Ri8ykMINtQJ70NwPHghW+csZmjmtKDDGDXENQVhIbA==}
+  '@formio/bootstrap@3.0.1':
+    resolution: {integrity: sha512-TAP9Tf/p5l8w8T2NWIA509H9XkzF2OlX6+VRFFz9L2rbVJsYXKUe+DzlkfjIu+8FuqbzlIXpwdydUWiA1qM5vA==}
 
   '@formio/choices.js@10.2.1':
     resolution: {integrity: sha512-NCE5u7jG3XGokJP16MyAbVSUptKu/mpJYAxd4PPIoLiO/l9Do5uoOQ0MgNb9qG9qABJiOX+qNRE8q8RybY/SwQ==}
 
+  '@formio/core@2.3.2':
+    resolution: {integrity: sha512-tkH9MtDR+nZuTuizy+qlnce03C3hnd4Dm/2eFjY7cEUZdpIIh1QQ9j9s4W47Si/QOMkS7trIVxKUjxuKrt8j6Q==}
+
   '@formio/core@2.5.0':
     resolution: {integrity: sha512-UFX0ThWtW6uUaweWUd/CHCbmAW7jSnFKJ9i+9uhVny75SXF2V8vCi/B6eHQpSAash3ZKG9GV1jYMmq2uCJTuVQ==}
 
-  '@formio/js@5.2.0':
-    resolution: {integrity: sha512-tEZfzyKm2RCAZMyVsA4MagDGfi7f2LuSb1aDSgtjIkcLX2oIB4H1AtanxBVMUkdKFRqwWubJb7hzRTNqZUMdLw==}
+  '@formio/js@5.0.1':
+    resolution: {integrity: sha512-MVAT9lseEYmdiivVuQRvWxwXpp402YYpStrTkMqi8nvCA/AmFb9Ld5nsFUqQsfzf4jzY5NgefFmoFlSMfTk0Kg==}
 
   '@formio/semantic@2.6.1':
     resolution: {integrity: sha512-obp1BT5UnzD+uYBbqmnsTfO2hGxI2A2iR/cj3P5JUFLYSBpnr3TS2ShQ7Ee5GCRRtJPu0JnljuJj+YSKLCMuhg==}
@@ -1445,6 +1448,9 @@ packages:
 
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
+
+  '@types/json-logic-js@2.0.8':
+    resolution: {integrity: sha512-WgNsDPuTPKYXl0Jh0IfoCoJoAGGYZt5qzpmjuLSEg7r0cKp/kWtWp0HAsVepyPSPyXiHo6uXp/B/kW/2J1fa2Q==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -5199,13 +5205,30 @@ snapshots:
     dependencies:
       resize-observer-polyfill: 1.5.1
 
-  '@formio/bootstrap@3.1.1': {}
+  '@formio/bootstrap@3.0.1': {}
 
   '@formio/choices.js@10.2.1':
     dependencies:
       deepmerge: 4.3.1
       fuse.js: 6.6.2
       redux: 4.2.1
+
+  '@formio/core@2.3.2':
+    dependencies:
+      '@types/json-logic-js': 2.0.8
+      browser-cookies: 1.2.0
+      core-js: 3.45.1
+      dayjs: 1.11.13
+      dompurify: 3.2.6
+      eventemitter3: 5.0.1
+      fast-json-patch: 3.1.1
+      fetch-ponyfill: 7.1.0
+      inputmask: 5.0.9
+      json-logic-js: 2.0.5
+      lodash: 4.17.21
+      moment: 2.30.1
+    transitivePeerDependencies:
+      - encoding
 
   '@formio/core@2.5.0':
     dependencies:
@@ -5223,11 +5246,11 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@formio/js@5.2.0(@popperjs/core@2.11.8)':
+  '@formio/js@5.0.1(@popperjs/core@2.11.8)':
     dependencies:
-      '@formio/bootstrap': 3.1.1
+      '@formio/bootstrap': 3.0.1
       '@formio/choices.js': 10.2.1
-      '@formio/core': 2.5.0
+      '@formio/core': 2.3.2
       '@formio/text-mask-addons': 3.8.0-formio.4
       '@formio/vanilla-text-mask': 5.1.1-formio.1
       abortcontroller-polyfill: 1.7.8
@@ -5844,6 +5867,8 @@ snapshots:
   '@types/hast@3.0.4':
     dependencies:
       '@types/unist': 3.0.3
+
+  '@types/json-logic-js@2.0.8': {}
 
   '@types/json-schema@7.0.15': {}
 
