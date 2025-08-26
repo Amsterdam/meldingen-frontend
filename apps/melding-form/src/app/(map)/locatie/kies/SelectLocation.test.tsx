@@ -23,74 +23,42 @@ vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () =>
   default: vi.fn().mockReturnValue(false),
 }))
 
-describe('SelectLocation', () => {
-  beforeAll(() => {
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: (query: string) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-        dispatchEvent: vi.fn(),
-      }),
-    })
-  })
+Object.defineProperty(window, 'matchMedia', {
+  value: vi.fn().mockImplementation(() => ({})),
+})
 
+describe('SelectLocation', () => {
   it('should render', () => {
     const { container } = render(<SelectLocation />)
 
-    const outerWrapper = container.querySelector('div')
-
-    expect(outerWrapper).toBeInTheDocument()
-
-    const sideBar = screen.getByRole('heading', { name: 'title' })
-    const addressCombobox = screen.getByRole('combobox', { name: 'label' })
-    const toggleButton = screen.queryByRole('button', { name: 'toggle-button.list' })
+    const sideBar = container.querySelector('[class*="container"]')
+    const assetList = container.querySelector('[class*="assetList"]')
+    const map = container.querySelector('[class*="map"]')
+    const submitButtonMobile = screen.queryByRole('button', { name: 'submit-button.mobile' })
 
     expect(sideBar).toBeInTheDocument()
-    expect(addressCombobox).toBeInTheDocument()
-    expect(toggleButton).not.toBeInTheDocument()
-
-    const gridElementSecondRender = container.querySelector('div')
-    const assetListWrapperClassNameSecondRender =
-      gridElementSecondRender?.querySelector(':scope > div:nth-of-type(2)')?.className
-
-    expect(assetListWrapperClassNameSecondRender).not.toContain('showAssetList')
+    expect(assetList).toBeInTheDocument()
+    expect(map).toBeInTheDocument()
+    expect(submitButtonMobile).toBeInTheDocument()
   })
 
-  it('renders correct default classname', () => {
-    const { container } = render(<SelectLocation />)
-
-    const gridElement = container.querySelector('div')
-    const assetList = gridElement?.querySelector(':scope > div:nth-of-type(2)')
-
-    expect(assetList).toHaveClass(/assetList/)
-  })
-
-  it('should reset showAssetList when resizing to wide screen and set correct classname when assetList is toggled', async () => {
+  it('adds a class name to the asset list container when showAssetList is true', async () => {
     vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
       default: vi.fn().mockReturnValue(true),
     }))
 
     const { container } = render(<SelectLocation />)
 
-    const gridElement = container.querySelector('div')
-    const assetListWrapperClassName = gridElement?.querySelector(':scope > div:nth-of-type(2)')?.className
+    const div = container.querySelector('[class*="showAssetList"]')
 
-    expect(assetListWrapperClassName).not.toContain('showAssetList')
+    expect(div).not.toBeInTheDocument()
 
     const toggleButton = screen.getByRole('button', { name: 'Toggle' })
 
     await userEvent.click(toggleButton)
 
-    const gridElementSecondRender = container.querySelector('div')
-    const assetListWrapperClassNameSecondRender =
-      gridElementSecondRender?.querySelector(':scope > div:nth-of-type(2)')?.className
+    const divWithExtraClass = container.querySelector('[class*="showAssetList"]')
 
-    expect(assetListWrapperClassNameSecondRender).toContain('showAssetList')
+    expect(divWithExtraClass).toBeInTheDocument()
   })
 })
