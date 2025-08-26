@@ -5,7 +5,7 @@ import { getStaticForm, getStaticFormByStaticFormId, StaticFormTextAreaComponent
 import { postPrimaryForm } from './actions'
 import { Home } from './Home'
 import { isTypeTextAreaComponent } from '../../typeguards'
-import { getMeldingData } from './samenvatting/utils'
+import { getMeldingData } from './_utils/getMeldingData'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.
