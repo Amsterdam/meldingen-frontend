@@ -16,11 +16,11 @@ import { useSetFocusOnInvalidFormAlert } from './_utils/useSetFocusOnInvalidForm
 const initialState: FormState = {}
 
 type Props = {
-  formComponents: StaticFormTextAreaComponentOutput[]
   action: (_: unknown, formData: FormData) => Promise<FormState>
+  formComponents: StaticFormTextAreaComponentOutput[]
 }
 
-export const Home = ({ formComponents, action }: Props) => {
+export const Home = ({ action, formComponents }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)

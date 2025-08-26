@@ -12,6 +12,11 @@ const mockTextAreaComponent = {
   label: mockQuestionText.source, // This converts the regex to a string
 }
 
+const defaultProps = {
+  action: vi.fn(),
+  formComponents: [mockTextAreaComponent],
+}
+
 vi.mock('react', async (importOriginal) => {
   const formData = new FormData()
   const actual = await importOriginal()
@@ -28,7 +33,7 @@ describe('Page', () => {
     formData.append('textArea1', 'Er staan blowende jongeren')
     ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message', formData }, vi.fn()])
 
-    render(<Home action={vi.fn()} formComponents={[mockTextAreaComponent]} />)
+    render(<Home {...defaultProps} />)
 
     const alert = screen.getByRole('alert')
 
@@ -45,7 +50,7 @@ describe('Page', () => {
       vi.fn(),
     ])
 
-    render(<Home action={vi.fn()} formComponents={[mockTextAreaComponent]} />)
+    render(<Home {...defaultProps} />)
 
     const link = screen.getByRole('link', { name: 'Test error message' })
 
@@ -54,7 +59,7 @@ describe('Page', () => {
   })
 
   it('renders a form', () => {
-    render(<Home action={vi.fn()} formComponents={[mockTextAreaComponent]} />)
+    render(<Home {...defaultProps} />)
 
     expect(screen.queryByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'submit-button' })).toBeInTheDocument()
