@@ -53,9 +53,9 @@ export const Home = ({ formComponents, action }: Props) => {
   }, [systemError])
 
   return (
-    <>
+    <main>
       <title>{documentTitle}</title>
-      {systemError && <SystemErrorAlert />}
+      {Boolean(systemError) && <SystemErrorAlert />}
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"
@@ -75,6 +75,6 @@ export const Home = ({ formComponents, action }: Props) => {
         submitButtonText={t('submit-button')}
         validationErrors={validationErrors}
       />
-    </>
+    </main>
   )
 }

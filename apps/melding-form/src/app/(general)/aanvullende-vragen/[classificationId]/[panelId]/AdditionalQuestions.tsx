@@ -70,9 +70,9 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
   }, [systemError])
 
   return (
-    <>
+    <main>
       <title>{documentTitle}</title>
-      {systemError && <SystemErrorAlert />}
+      {Boolean(systemError) && <SystemErrorAlert />}
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"
@@ -90,6 +90,6 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
         submitButtonText={t('submit-button')}
         validationErrors={validationErrors}
       />
-    </>
+    </main>
   )
 }

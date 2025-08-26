@@ -48,9 +48,9 @@ export const Location = ({ locationData }: Props) => {
   }, [systemError])
 
   return (
-    <>
+    <main>
       <title>{documentTitle}</title>
-      {systemError && <SystemErrorAlert />}
+      {Boolean(systemError) && <SystemErrorAlert />}
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"
@@ -84,6 +84,6 @@ export const Location = ({ locationData }: Props) => {
         />
         <SubmitButton>{t('submit-button')}</SubmitButton>
       </Form>
-    </>
+    </main>
   )
 }

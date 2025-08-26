@@ -52,8 +52,8 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
   }, [systemError])
 
   return (
-    <>
-      {systemError && <SystemErrorAlert />}
+    <main>
+      {Boolean(systemError) && <SystemErrorAlert />}
       <FormHeader title={t('title')} step={t('step')} />
       <Heading level={1} size="level-4" className="ams-mb-s">
         {t('main-title')}
@@ -110,6 +110,6 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
       <Form action={formAction} noValidate>
         <SubmitButton>{t('submit-button')}</SubmitButton>
       </Form>
-    </>
+    </main>
   )
 }
