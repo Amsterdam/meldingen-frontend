@@ -33,7 +33,7 @@ export const postPrimaryForm = async (
     }
   }
 
-  const result =
+  const { data, error, response } =
     existingId && existingToken
       ? await patchMeldingByMeldingId({
           body: { text: formDataObj.primary.toString() },
@@ -41,10 +41,6 @@ export const postPrimaryForm = async (
           query: { token: existingToken },
         })
       : await postMelding({ body: { text: formDataObj.primary.toString() } })
-
-  const data = result.data as MeldingCreateOutput | MeldingOutput | undefined
-  const error = result.error
-  const response = result.response
 
   // Return other validation errors if there are any
   if (hasValidationErrors(response, error)) {
