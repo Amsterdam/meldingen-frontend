@@ -16,7 +16,7 @@ const getPrefilledPrimaryForm = async (
   token: string,
   formComponents: StaticFormTextAreaComponentOutput[],
 ) => {
-  const { data } = await getMeldingData(meldingId, token) // TODO: move getmeldingdata higher up
+  const { data } = await getMeldingData(meldingId, token)
 
   return formComponents.map((component) => {
     return {
