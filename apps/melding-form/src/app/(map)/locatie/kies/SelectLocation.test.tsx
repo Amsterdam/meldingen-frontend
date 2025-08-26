@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { SelectLocation } from './SelectLocation'
+import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -10,8 +12,16 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
+vi.mock('./_components/AssetListToggle/AssetListToggle', () => ({
+  AssetListToggle: vi.fn(({ handleAssetListToggle }) => (
+    <div>
+      <button onClick={() => handleAssetListToggle(containerAssets)}>Toggle</button>
+    </div>
+  )),
+}))
+
 vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
-  default: vi.fn().mockReturnValue(true),
+  default: vi.fn().mockReturnValue(false),
 }))
 
 describe('SelectLocation', () => {
@@ -54,5 +64,28 @@ describe('SelectLocation', () => {
     const assetList = gridElement?.querySelector(':scope > div:nth-of-type(2)')
 
     expect(assetList).toHaveClass(/assetList/)
+  })
+
+  it('should reset showAssetList when resizing to wide screen and set correct classname when assetListToggle is clicked', async () => {
+    vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
+      default: vi.fn().mockReturnValue(true),
+    }))
+
+    const { container } = render(<SelectLocation />)
+
+    const gridElement = container.querySelector('div')
+    const assetListWrapperClassName = gridElement?.querySelector(':scope > div:nth-of-type(2)')?.className
+
+    expect(assetListWrapperClassName).not.toContain('showAssetList')
+
+    const toggleButton = screen.getByRole('button', { name: 'Toggle' })
+
+    await userEvent.click(toggleButton)
+
+    const gridElementSecondRender = container.querySelector('div')
+    const assetListWrapperClassNameSecondRender =
+      gridElementSecondRender?.querySelector(':scope > div:nth-of-type(2)')?.className
+
+    expect(assetListWrapperClassNameSecondRender).toContain('showAssetList')
   })
 })
