@@ -1,5 +1,7 @@
 import styles from './FileUpload.module.css'
 
+// Based on https://design-system.service.gov.uk/components/file-upload/#using-the-improved-file-upload-component
+
 export const FileUpload = ({
   buttonText = 'Bestanden kiezen',
   dropAreaText = 'Sleep bestanden in dit vak of',
