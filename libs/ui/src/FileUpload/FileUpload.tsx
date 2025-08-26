@@ -13,6 +13,7 @@ export const FileUpload = ({
     // Create a temporary input in order to open the file upload dialog
     const input = document.createElement('input')
     input.type = 'file'
+    input.accept = 'image/jpeg,image/jpg,image/png,android/force-camera-workaround'
     input.multiple = true
     input.onchange = () => {
       onChange(input.files)
