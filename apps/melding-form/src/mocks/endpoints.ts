@@ -12,6 +12,8 @@ export const ENDPOINTS = {
   GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER: 'http://localhost:8000/melding/:id/attachments/melder',
   GET_MELDING_BY_MELDING_ID_MELDER: 'http://localhost:8000/melding/:id/melder',
 
+  PATCH_MELDING_BY_MELDING_ID: 'http://localhost:8000/melding/:id',
+
   POST_MELDING: 'http://localhost:8000/melding',
   POST_MELDING_BY_MELDING_ID_ATTACHMENT: 'http://localhost:8000/melding/:id/attachment',
   POST_MELDING_BY_MELDING_ID_CONTACT: 'http://localhost:8000/melding/:id/contact',

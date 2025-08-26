@@ -69,6 +69,18 @@ describe('postPrimaryForm', () => {
     expect(redirect).not.toHaveBeenCalled()
   })
 
+  it('returns an error when postMelding does not return data', async () => {
+    server.use(http.post(ENDPOINTS.POST_MELDING, () => new HttpResponse()))
+
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+
+    const result = await postPrimaryForm({}, null, formData)
+
+    expect(result).toEqual({ formData, systemError: new Error('Melding data not found.') })
+    expect(redirect).not.toHaveBeenCalled()
+  })
+
   it('should set correct cookies', async () => {
     const formData = new FormData()
     formData.set('primary', 'Test')
@@ -79,6 +91,15 @@ describe('postPrimaryForm', () => {
     expect(mockCookies.set).toHaveBeenCalledWith('created_at', '2025-05-26T11:56:34.081Z')
     expect(mockCookies.set).toHaveBeenCalledWith('public_id', 'B100AA')
     expect(mockCookies.set).toHaveBeenCalledWith('token', 'test-token')
+  })
+
+  it('uses a PATCH request when id and token are passed to postPrimaryForm', async () => {
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+
+    await postPrimaryForm({ existingId: '123', existingToken: 'test-token' }, null, formData)
+
+    expect(mockCookies.set).toHaveBeenCalledWith('public_id', 'PATCH request')
   })
 
   describe('with classification', () => {
