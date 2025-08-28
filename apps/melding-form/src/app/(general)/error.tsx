@@ -14,7 +14,7 @@ export default function Error({ error }: { error: Error & { digest?: string } })
   const t = useTranslations('error')
 
   return (
-    <>
+    <main>
       <title>{t('metadata.title')}</title>
       <Heading className="ams-mb-m" level={1} size="level-2">
         {t('title')}
@@ -23,6 +23,6 @@ export default function Error({ error }: { error: Error & { digest?: string } })
         {t('button')}
       </Button>
       <Paragraph>{t('description')}</Paragraph>
-    </>
+    </main>
   )
 }

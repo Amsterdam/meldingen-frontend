@@ -30,7 +30,7 @@ export default async () => {
   const description = t('description', { publicId, date, time })
 
   return (
-    <>
+    <main>
       <Heading className="ams-mb-m" level={1}>
         {t('title')}
       </Heading>
@@ -38,6 +38,6 @@ export default async () => {
       <NextLink href="/" legacyBehavior passHref>
         <StandaloneLink href="dummy-href">{t('link')}</StandaloneLink>
       </NextLink>
-    </>
+    </main>
   )
 }

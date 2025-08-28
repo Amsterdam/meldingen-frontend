@@ -21,6 +21,15 @@ const defaultProps: Props = {
 }
 
 describe('AdditionalQuestions', () => {
+  it('renders the back link', () => {
+    render(<AdditionalQuestions {...defaultProps} />)
+
+    const link = screen.getByRole('link', { name: 'back-link' })
+
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '/')
+  })
+
   it('renders an Alert and keeps input data when there is an error message', () => {
     const formData = new FormData()
 

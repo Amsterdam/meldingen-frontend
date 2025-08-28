@@ -30,6 +30,16 @@ export const handlers = [
   ),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)),
 
+  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () =>
+    HttpResponse.json({
+      id: 123,
+      created_at: '2025-05-26T11:56:34.081Z',
+      public_id: 'PATCH request',
+      token: 'test-token',
+      classification: { id: 2, name: 'Test classification' },
+    }),
+  ),
+
   http.post(ENDPOINTS.POST_MELDING, () =>
     HttpResponse.json({
       id: 123,
