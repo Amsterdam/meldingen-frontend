@@ -108,8 +108,8 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
   }, [systemError])
 
   return (
-    <>
-      {systemError && <SystemErrorAlert />}
+    <main>
+      {Boolean(systemError) && <SystemErrorAlert />}
       <FormHeader title={t('title')} step={t('step')} />
       <Form action={formAction} noValidate ref={formRef}>
         <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
@@ -151,6 +151,6 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
         </Field>
         <SubmitButton>{t('submit-button')}</SubmitButton>
       </Form>
-    </>
+    </main>
   )
 }

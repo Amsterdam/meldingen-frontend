@@ -1798,6 +1798,17 @@ export const FormComponentInputValidateSchema = {
             type: 'boolean',
             title: 'Required',
             default: false
+        },
+        required_error_message: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Required Error Message'
         }
     },
     type: 'object',
@@ -1922,10 +1933,21 @@ export const FormComponentOutputValidateSchema = {
         required: {
             type: 'boolean',
             title: 'Required'
+        },
+        required_error_message: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Required Error Message'
         }
     },
     type: 'object',
-    required: ['required'],
+    required: ['required', 'required_error_message'],
     title: 'FormComponentOutputValidate'
 } as const;
 
@@ -6506,6 +6528,21 @@ export const Some_OutputSchema = {
     type: 'object',
     required: ['some'],
     title: 'Some'
+} as const;
+
+export const StatesOutputSchema = {
+    properties: {
+        states: {
+            items: {
+                type: 'string'
+            },
+            type: 'array',
+            title: 'States'
+        }
+    },
+    type: 'object',
+    required: ['states'],
+    title: 'StatesOutput'
 } as const;
 
 export const StaticFormCheckboxComponentOutputSchema = {

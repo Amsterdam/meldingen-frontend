@@ -25,6 +25,7 @@ export const form: Form = {
           validate: {
             json: null,
             required: true,
+            required_error_message: 'Dit veld is verplicht',
           },
           question: 79,
         },
@@ -38,6 +39,7 @@ export const form: Form = {
           validate: {
             json: null,
             required: true,
+            required_error_message: 'Dit veld is verplicht',
           },
           autoExpand: false,
           maxCharCount: 100,
@@ -53,6 +55,7 @@ export const form: Form = {
           validate: {
             json: null,
             required: true,
+            required_error_message: 'Dit veld is verplicht',
           },
           values: [
             {
@@ -78,6 +81,7 @@ export const form: Form = {
           validate: {
             json: null,
             required: true,
+            required_error_message: 'Dit veld is verplicht',
           },
           widget: 'html5',
           placeholder: '',
@@ -107,6 +111,7 @@ export const form: Form = {
           validate: {
             json: null,
             required: true,
+            required_error_message: 'Dit veld is verplicht',
           },
           values: [
             {
@@ -141,6 +146,7 @@ export const form: Form = {
           validate: {
             json: null,
             required: false,
+            required_error_message: 'Dit veld is verplicht',
           },
           question: 85,
         },
@@ -154,6 +160,7 @@ export const form: Form = {
           validate: {
             json: null,
             required: false,
+            required_error_message: 'Dit veld is verplicht',
           },
           autoExpand: true,
           maxCharCount: null,
@@ -169,6 +176,7 @@ export const form: Form = {
           validate: {
             json: null,
             required: false,
+            required_error_message: 'Dit veld is verplicht',
           },
           values: [
             {
@@ -194,6 +202,7 @@ export const form: Form = {
           validate: {
             json: null,
             required: false,
+            required_error_message: 'Dit veld is verplicht',
           },
           widget: 'html5',
           placeholder: 'Placeholder',
@@ -223,6 +232,7 @@ export const form: Form = {
           validate: {
             json: null,
             required: false,
+            required_error_message: 'Dit veld is verplicht',
           },
           values: [
             {

@@ -61,7 +61,6 @@ Do this:
     ComponentA.tsx
     ComponentA.test.tsx
     useHookForComponentA.tsx
-    index.ts
   ComponentB.tsx
 ```
 

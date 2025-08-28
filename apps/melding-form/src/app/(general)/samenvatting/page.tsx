@@ -7,9 +7,9 @@ import {
   getAttachmentsSummary,
   getContactSummary,
   getLocationSummary,
-  getMeldingData,
   getPrimaryFormSummary,
 } from './utils'
+import { getMeldingData } from '../_utils/getMeldingData'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('summary')

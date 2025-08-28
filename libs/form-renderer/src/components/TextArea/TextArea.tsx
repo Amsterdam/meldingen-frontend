@@ -29,7 +29,7 @@ export const TextArea = ({
   validate,
 }: Props) => {
   const ref = useRef<HTMLTextAreaElement>(null)
-  const [charCount, setCharCount] = useState(0)
+  const [charCount, setCharCount] = useState(defaultValue?.length || 0)
 
   const handleChange = () => {
     if (ref.current) {
