@@ -35,26 +35,27 @@ export default async () => {
 
   if (!primaryFormId) throw new Error('Primary form id not found.')
 
-  const { data, error } = await getStaticFormByStaticFormId({
+  const { data: primaryForm, error } = await getStaticFormByStaticFormId({
     path: { static_form_id: primaryFormId },
   })
 
   if (error) throw new Error('Failed to fetch primary form data.')
-  if (!data) throw new Error('Primary form data not found.')
+  if (!primaryForm) throw new Error('Primary form data not found.')
 
   // A primary form is always an array with 1 text area component, but TypeScript doesn't know that
   // We use a type guard here to make sure we're always working with the right type
-  const primaryFormComponents = data.components.filter(isTypeTextAreaComponent)
+  const primaryFormComponents = primaryForm.components.filter(isTypeTextAreaComponent)
 
   const cookieStore = await cookies()
 
   const meldingId = cookieStore.get('id')?.value
   const token = cookieStore.get('token')?.value
 
-  const formComponents =
-    meldingId && token
-      ? await getPrefilledPrimaryFormComponents(meldingId, token, primaryFormComponents)
-      : primaryFormComponents
+  const isExistingMelding = meldingId && token
+
+  const formComponents = isExistingMelding
+    ? await getPrefilledPrimaryFormComponents(meldingId, token, primaryFormComponents)
+    : primaryFormComponents
 
   const action = postPrimaryForm.bind(null, { existingId: meldingId, existingToken: token })
 
