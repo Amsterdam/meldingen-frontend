@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react'
 
 import { Radio, Select, SelectBoxes, Textarea, Textfield } from './components'
 import nl from './translations/nl.json'
-import '@formio/js/dist/formio.full.min.css'
+import '@formio/js/dist/formio.builder.min.css'
 
 type ExtendedFormBuilderOptions = FormBuilderProps['options'] & {
   i18n?: {
