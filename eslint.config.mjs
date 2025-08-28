@@ -27,6 +27,7 @@ export default tseslint.config(
       'libs/api-client',
       // Next.js generated files
       '**/.next/',
+      '**/next-env.d.ts',
     ],
   },
   {
