@@ -52,8 +52,8 @@ importers:
         specifier: 7.2.0
         version: 7.2.0
       '@hey-api/openapi-ts':
-        specifier: 0.80.14
-        version: 0.80.14(magicast@0.3.5)(typescript@5.9.2)
+        specifier: 0.81.1
+        version: 0.81.1(magicast@0.3.5)(typescript@5.9.2)
       '@next/eslint-plugin-next':
         specifier: 15.5.0
         version: 15.5.0
@@ -800,8 +800,8 @@ packages:
     resolution: {integrity: sha512-yktiFZoWPtEW8QKS65eqKwA5MTKp88CyiL8q72WynrBs/73SAaxlSWlA2zW/DZlywZ5hX1OYzrCC0wFdvO9c2w==}
     engines: {node: '>= 16'}
 
-  '@hey-api/openapi-ts@0.80.14':
-    resolution: {integrity: sha512-pxcXDR/FKYqRHo+Jj3d09aHUPReNZZfTKtDBVwjI7HNcspmqfGFPSQlAWwQ7ZWCTR218XO3P2kA6FRah3WwqGQ==}
+  '@hey-api/openapi-ts@0.81.1':
+    resolution: {integrity: sha512-DdLEMbfQRMRDd+cOxG91G7Ro7vUUtt/zYlBGiYTahVO/4rn1HHnYl/WHL+to5I7CTX3sVVsVrxHWcJd0Fue7wg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=22.10.0}
     hasBin: true
     peerDependencies:
@@ -5266,7 +5266,7 @@ snapshots:
       js-yaml: 4.1.0
       lodash: 4.17.21
 
-  '@hey-api/openapi-ts@0.80.14(magicast@0.3.5)(typescript@5.9.2)':
+  '@hey-api/openapi-ts@0.81.1(magicast@0.3.5)(typescript@5.9.2)':
     dependencies:
       '@hey-api/json-schema-ref-parser': 1.0.6
       ansi-colors: 4.1.3
