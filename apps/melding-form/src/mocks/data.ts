@@ -30,6 +30,7 @@ export const checkboxComponent: FormCheckboxComponentOutput = {
   validate: {
     json: null,
     required: true,
+    required_error_message: 'Dit veld is verplicht',
   },
   values: [
     {
