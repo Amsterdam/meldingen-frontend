@@ -7,19 +7,23 @@ import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { FormRenderer } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
+import type { FormState } from '../../types'
 import { FormHeader } from './_components/FormHeader/FormHeader'
-import { postPrimaryForm } from './actions'
-import { FormState } from '../../types'
 import { SystemErrorAlert } from './_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from './_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from './_utils/useSetFocusOnInvalidFormAlert'
 
 const initialState: FormState = {}
 
-export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
+type Props = {
+  action: (_: unknown, formData: FormData) => Promise<FormState>
+  formComponents: StaticFormTextAreaComponentOutput[]
+}
+
+export const Home = ({ action, formComponents }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(postPrimaryForm, initialState)
+  const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
 
   const t = useTranslations('homepage')
   const tShared = useTranslations('shared')
@@ -49,9 +53,9 @@ export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaCom
   }, [systemError])
 
   return (
-    <>
+    <main>
       <title>{documentTitle}</title>
-      {systemError && <SystemErrorAlert />}
+      {Boolean(systemError) && <SystemErrorAlert />}
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"
@@ -71,6 +75,6 @@ export const Home = ({ formComponents }: { formComponents: StaticFormTextAreaCom
         submitButtonText={t('submit-button')}
         validationErrors={validationErrors}
       />
-    </>
+    </main>
   )
 }

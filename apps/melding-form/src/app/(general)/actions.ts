@@ -5,6 +5,9 @@ import { redirect } from 'next/navigation'
 
 import {
   getFormClassificationByClassificationId,
+  MeldingCreateOutput,
+  MeldingOutput,
+  patchMeldingByMeldingId,
   postMelding,
   putMeldingByMeldingIdAnswerQuestions,
 } from '@meldingen/api-client'
@@ -12,47 +15,56 @@ import {
 import { handleApiError } from '../../handleApiError'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
 
-export const postPrimaryForm = async (_: unknown, formData: FormData) => {
+const hasToken = (data: MeldingCreateOutput | MeldingOutput): data is MeldingCreateOutput =>
+  typeof data === 'object' && data !== null && 'token' in data && typeof data.token === 'string'
+
+export const postPrimaryForm = async (
+  { existingId, existingToken }: { existingId?: string; existingToken?: string },
+  _: unknown,
+  formData: FormData,
+) => {
   const formDataObj = Object.fromEntries(formData)
 
   // Return validation error if primary question is not answered
   if (!formDataObj.primary) {
     return {
       formData,
-      validationErrors: [
-        {
-          key: 'primary',
-          message: 'Vraag is verplicht en moet worden beantwoord.',
-        },
-      ],
+      validationErrors: [{ key: 'primary', message: 'Vraag is verplicht en moet worden beantwoord.' }],
     }
   }
 
-  const { data, error, response } = await postMelding({ body: { text: formDataObj.primary.toString() } })
+  const isExistingMelding = existingId && existingToken
+
+  const { data, error, response } = isExistingMelding
+    ? await patchMeldingByMeldingId({
+        body: { text: formDataObj.primary.toString() },
+        path: { melding_id: parseInt(existingId, 10) },
+        query: { token: existingToken },
+      })
+    : await postMelding({ body: { text: formDataObj.primary.toString() } })
 
   // Return other validation errors if there are any
   if (hasValidationErrors(response, error)) {
     return {
       formData,
-      validationErrors: [
-        {
-          key: 'primary',
-          message: handleApiError(error),
-        },
-      ],
+      validationErrors: [{ key: 'primary', message: handleApiError(error) }],
     }
   }
 
   if (error) return { formData, systemError: error }
+  if (!data) return { formData, systemError: new Error('Melding data not found.') }
 
-  const { classification, created_at, id, token, public_id } = data
+  const { classification, created_at, id, public_id } = data
+  const token = hasToken(data) ? data.token : existingToken
 
   // Set session variables in cookies
   const cookieStore = await cookies()
   cookieStore.set('id', id.toString())
   cookieStore.set('created_at', created_at)
   cookieStore.set('public_id', public_id)
-  cookieStore.set('token', token)
+  if (token) {
+    cookieStore.set('token', token)
+  }
 
   if (classification) {
     // Get entire form, in order to redirect to its first panel
@@ -68,7 +80,7 @@ export const postPrimaryForm = async (_: unknown, formData: FormData) => {
 
     // If there are no additional questions for a classification,
     // set the melding state to 'questions_answered' and redirect to /locatie.
-    if (!hasAdditionalQuestions) {
+    if (!hasAdditionalQuestions && token) {
       const { error } = await putMeldingByMeldingIdAnswerQuestions({
         path: { melding_id: id },
         query: { token },
