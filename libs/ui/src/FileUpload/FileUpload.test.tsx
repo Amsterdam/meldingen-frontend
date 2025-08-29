@@ -6,7 +6,6 @@ import { FileUpload } from './FileUpload'
 
 class DataTransferItemMock {
   constructor(public file: File) {}
-  // Add methods as needed for your test
 }
 
 class DataTransferItemListMock {
