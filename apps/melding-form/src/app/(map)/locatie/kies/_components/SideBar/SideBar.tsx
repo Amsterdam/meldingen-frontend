@@ -1,7 +1,9 @@
 import { Heading, Paragraph } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useActionState, useEffect, useState } from 'react'
+
+import { Feature } from '@meldingen/api-client'
 
 import { writeAddressAndCoordinateToCookie } from './actions'
 import { getAddressFromCoordinates } from '../../_utils'
@@ -13,11 +15,12 @@ import styles from './SideBar.module.css'
 type Props = {
   coordinates?: Coordinates
   setCoordinates: (coordinates: Coordinates) => void
+  setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
 const initialState: { errorMessage?: string } = {}
 
-export const SideBar = ({ coordinates, setCoordinates }: Props) => {
+export const SideBar = ({ coordinates, setCoordinates, setSelectedAssets }: Props) => {
   const [{ errorMessage }, formAction] = useActionState(writeAddressAndCoordinateToCookie, initialState)
 
   const [address, setAddress] = useState<string>()
@@ -65,6 +68,7 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
           setAddress={setAddress}
           setCoordinates={setCoordinates}
           errorMessage={errorMessage}
+          setSelectedAssets={setSelectedAssets}
         />
         <input type="hidden" name="coordinates" defaultValue={address ? JSON.stringify(coordinates) : undefined} />
       </Form>

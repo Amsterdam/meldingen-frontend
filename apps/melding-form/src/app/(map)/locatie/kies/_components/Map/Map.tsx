@@ -1,28 +1,32 @@
 import L from 'leaflet'
-import { useEffect, useRef } from 'react'
+import { Dispatch, SetStateAction, useEffect, useLayoutEffect, useRef } from 'react'
 import 'leaflet/dist/leaflet.css'
 
 import { Feature } from '@meldingen/api-client'
 
 import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './components/Crosshair/Crosshair'
+import { useAssetLayer } from './hooks/useAssetLayer'
 import { defaultIcon } from './markerIcons'
-import { updateAssetLayer } from './utils/updateAssetLayer'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
 
 type Props = {
+  assetList: Feature[]
   classification?: string
   coordinates?: Coordinates
   mapInstance: L.Map | null
   setAssetList: (assets: Feature[]) => void
-  setCoordinates: (coordinates: Coordinates) => void
+  setCoordinates: (coordinates?: Coordinates) => void
   setMapInstance: (map: L.Map) => void
   showAssetList?: boolean
+  setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
+  selectedAssets: Feature[]
 }
 
 export const Map = ({
+  assetList,
   classification,
   coordinates,
   mapInstance,
@@ -30,13 +34,24 @@ export const Map = ({
   setCoordinates,
   setMapInstance,
   showAssetList,
+  setSelectedAssets,
+  selectedAssets,
 }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
-  const markerRef = useRef<L.Marker | null>(null)
-  const assetLayerRef = useRef<L.Layer | null>(null)
+  const pointerMarkerRef = useRef<L.Marker | null>(null)
 
   // This could be a useState but as we don't expect this to fire more than once, use ref as it is mutable and won't trigger any further re-render
   const createdMapInstance = useRef(false)
+
+  useAssetLayer({
+    assetList,
+    classification,
+    mapInstance,
+    selectedAssets,
+    setAssetList,
+    setCoordinates,
+    setSelectedAssets,
+  })
 
   useEffect(() => {
     // Ensure that the target DOM element exists and that the map doesn't already exist (to prevent duplicate renders in StrictMode)
@@ -101,6 +116,7 @@ export const Map = ({
 
     map.on('click', (e) => {
       setCoordinates({ lat: e.latlng.lat, lng: e.latlng.lng })
+      setSelectedAssets([])
     })
 
     // On component unmount, destroy the map and all related events
@@ -110,10 +126,13 @@ export const Map = ({
   }, [mapInstance, setCoordinates])
 
   // Add marker to map based on coordinates
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (mapInstance && coordinates) {
       // Remove existing marker layer
-      markerRef.current?.remove()
+      pointerMarkerRef.current?.remove()
+
+      // If there are selected assets, do not add a pointer marker
+      if (selectedAssets.length > 0) return
 
       // Create marker layer and add to map
       const newMarker = L.marker(L.latLng([coordinates.lat, coordinates.lng]), {
@@ -122,7 +141,7 @@ export const Map = ({
       }).addTo(mapInstance)
 
       // Store marker layer in ref
-      markerRef.current = newMarker
+      pointerMarkerRef.current = newMarker
 
       // Zoom to the marker location
       const currentZoom = mapInstance.getZoom()
@@ -130,15 +149,6 @@ export const Map = ({
       mapInstance.flyTo([coordinates.lat, coordinates.lng], currentZoom < flyToMinZoom ? flyToMinZoom : currentZoom)
     }
   }, [mapInstance, coordinates])
-
-  // This useEffect prevents the WFS layer from being fetched twice
-  useEffect(() => {
-    if (!mapInstance || !classification) return
-
-    mapInstance.on('moveend', async () => {
-      updateAssetLayer({ mapInstance, classification, setAssetList, assetLayerRef })
-    })
-  }, [mapInstance])
 
   return (
     <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>

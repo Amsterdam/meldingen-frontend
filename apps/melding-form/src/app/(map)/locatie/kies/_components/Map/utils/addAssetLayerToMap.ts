@@ -1,26 +1,68 @@
 import type { GeoJsonObject } from 'geojson'
 import L from 'leaflet'
-import { MutableRefObject } from 'react'
+import { Dispatch, MutableRefObject, SetStateAction } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
 import { getContainerFeatureIcon } from './getContainerFeatureIcon'
+import { selectedAssetsIcon } from '../markerIcons'
+import { Coordinates } from 'apps/melding-form/src/types'
 
-export const addAssetLayerToMap = (
-  features: Feature[],
-  assetLayerRef: MutableRefObject<L.Layer | null>,
-  mapInstance: L.Map,
-) => {
+const MAX_ASSETS = 5
+
+type Props = {
+  assetLayerRef: MutableRefObject<L.Layer | null>
+  assetList: Feature[]
+  mapInstance: L.Map
+  AssetMarkersRef: MutableRefObject<Record<string, L.Marker>>
+  selectedAssets: Feature[]
+  setCoordinates: (coordinates?: Coordinates) => void
+  setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
+}
+
+export const addAssetLayerToMap = ({
+  assetLayerRef,
+  assetList,
+  mapInstance,
+  AssetMarkersRef,
+  selectedAssets,
+  setCoordinates,
+  setSelectedAssets,
+}: Props) => {
   assetLayerRef.current?.remove()
 
-  assetLayerRef.current = L.geoJSON(features as GeoJsonObject[], {
+  assetLayerRef.current = L.geoJSON(assetList as GeoJsonObject[], {
     pointToLayer: (feature, latlng) => {
-      const featureIcon = getContainerFeatureIcon(feature)
+      const isSelected = selectedAssets.some((a) => a.id === feature.id)
 
-      return new L.Marker(latlng, {
-        icon: featureIcon,
+      const marker = new L.Marker(latlng, {
+        icon: isSelected ? selectedAssetsIcon : getContainerFeatureIcon(feature),
         keyboard: false,
       })
+
+      if (feature.id !== undefined) {
+        AssetMarkersRef.current[feature.id] = marker
+      }
+
+      marker.on('click', () => {
+        if (!isSelected) {
+          // TODO: show some kind of message that max assets is reached
+          if (selectedAssets.length >= MAX_ASSETS) return
+
+          setSelectedAssets((selectedList) => [...selectedList, feature as Feature])
+          setCoordinates({
+            lat: latlng.lat,
+            lng: latlng.lng,
+          })
+        }
+
+        if (isSelected) {
+          setSelectedAssets((selectedList) => selectedList.filter((a) => a.id !== feature.id))
+          setCoordinates(undefined)
+        }
+      })
+
+      return marker
     },
   })
 
