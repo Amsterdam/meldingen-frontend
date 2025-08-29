@@ -9,8 +9,9 @@ import {
   Label as HUILabel,
 } from '@headlessui/react'
 import { useTranslations } from 'next-intl'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
+import { Feature } from '@meldingen/api-client'
 import { ListBox, TextInput } from '@meldingen/ui'
 
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
@@ -36,6 +37,7 @@ type Props = {
   errorMessage?: string
   setAddress: (address?: string) => void
   setCoordinates: (coordinates: Coordinates) => void
+  setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
 type PDOKItem = {
@@ -44,7 +46,7 @@ type PDOKItem = {
   centroide_ll: string
 }
 
-export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: Props) => {
+export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, setSelectedAssets }: Props) => {
   const [query, setQuery] = useState('')
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
   const [showListBox, setShowListBox] = useState(false)
@@ -93,6 +95,8 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates }: 
     } else {
       const coordinates = convertWktPointToCoordinates(value.centroide_ll)
       if (coordinates) {
+        // Clear selected assets when selecting a new address
+        setSelectedAssets([])
         setCoordinates(coordinates)
       }
       setAddress(value.weergave_naam)

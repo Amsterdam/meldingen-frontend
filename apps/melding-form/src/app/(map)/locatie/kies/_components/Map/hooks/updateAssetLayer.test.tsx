@@ -2,9 +2,9 @@ import L from 'leaflet'
 import { MutableRefObject } from 'react'
 import { Mock } from 'vitest'
 
-import { addAssetLayerToMap } from './addAssetLayerToMap'
-import { fetchAssets } from './fetchAssets'
-import { ASSET_ZOOM_THRESHOLD, updateAssetLayer } from './updateAssetLayer'
+import { ASSET_ZOOM_THRESHOLD, updateAssetLayer } from './useAssetLayer'
+import { addAssetLayerToMap } from '../utils/addAssetLayerToMap'
+import { fetchAssets } from '../utils/fetchAssets'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('./fetchAssets', () => ({

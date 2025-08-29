@@ -1,12 +1,12 @@
 import L from 'leaflet'
-import { useEffect, useRef } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { addAssetLayerToMap } from './addAssetLayerToMap'
-import { fetchAssets } from './fetchAssets'
-import { getContainerFeatureIcon } from './getContainerFeatureIcon'
-import { selectedAssetIcon } from '../markerIcons'
+import { selectedAssetsIcon } from '../markerIcons'
+import { addAssetLayerToMap } from '../utils/addAssetLayerToMap'
+import { fetchAssets } from '../utils/fetchAssets'
+import { getContainerFeatureIcon } from '../utils/getContainerFeatureIcon'
 import { Coordinates } from 'apps/melding-form/src/types'
 
 const classificationsWithAssets = ['container']
@@ -16,20 +16,20 @@ type Props = {
   assetList: Feature[]
   classification?: string
   mapInstance: L.Map | null
-  selectedAsset: Feature | null
+  selectedAssets: Feature[]
   setAssetList: (assets: Feature[]) => void
   setCoordinates: (coordinates?: Coordinates) => void
-  setSelectedAsset: (asset: Feature | null) => void
+  setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
 export const useAssetLayer = async ({
   assetList,
   classification,
   mapInstance,
-  selectedAsset,
+  selectedAssets,
   setAssetList,
   setCoordinates,
-  setSelectedAsset,
+  setSelectedAssets,
 }: Props) => {
   const assetLayerRef = useRef<L.Layer | null>(null)
   const AssetMarkersRef = useRef<Record<string, L.Marker>>({})
@@ -74,12 +74,12 @@ export const useAssetLayer = async ({
         assetLayerRef,
         mapInstance,
         setCoordinates,
-        selectedAsset,
-        setSelectedAsset,
+        selectedAssets,
+        setSelectedAssets,
         AssetMarkersRef,
       })
     }
-  }, [assetList, selectedAsset])
+  }, [assetList, selectedAssets])
 
   /**
    * Update asset markers on selection change
@@ -88,11 +88,13 @@ export const useAssetLayer = async ({
     if (!mapInstance || Object.keys(AssetMarkersRef.current).length === 0) return
 
     Object.entries(AssetMarkersRef.current).forEach(([id, marker]) => {
-      if (id === selectedAsset?.id) {
-        marker.setIcon(selectedAssetIcon)
+      const isSelected = selectedAssets.some((asset) => asset.id === id)
+
+      if (isSelected) {
+        marker.setIcon(selectedAssetsIcon)
       } else if (marker.feature) {
         marker.setIcon(getContainerFeatureIcon(marker.feature))
       }
     })
-  }, [selectedAsset])
+  }, [selectedAssets])
 }

@@ -30,6 +30,7 @@ export const SelectLocation = ({ classification }: Props) => {
   const [showAssetList, setShowAssetList] = useState(false)
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
+  const [selectedAssets, setSelectedAssets] = useState<Feature[]>([])
 
   const t = useTranslations('select-location')
 
@@ -44,7 +45,7 @@ export const SelectLocation = ({ classification }: Props) => {
 
   return (
     <div className={styles.grid}>
-      <SideBar coordinates={coordinates} setCoordinates={setCoordinates} />
+      <SideBar coordinates={coordinates} setCoordinates={setCoordinates} setSelectedAssets={setSelectedAssets} />
       <div className={clsx(styles.assetList, showAssetList && styles.showAssetList)}>
         <AssetList assetList={assetList} />
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
@@ -61,6 +62,8 @@ export const SelectLocation = ({ classification }: Props) => {
           setMapInstance={setMapInstance}
           showAssetList={showAssetList}
           assetList={assetList}
+          selectedAssets={selectedAssets}
+          setSelectedAssets={setSelectedAssets}
         />
         <div className={styles.buttonWrapper}>
           <Button
