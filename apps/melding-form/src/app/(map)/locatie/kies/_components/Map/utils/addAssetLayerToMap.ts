@@ -10,7 +10,7 @@ import { Coordinates } from 'apps/melding-form/src/types'
 
 const MAX_ASSETS = 5
 
-type Props = {
+export type Props = {
   assetLayerRef: MutableRefObject<L.Layer | null>
   assetList: Feature[]
   mapInstance: L.Map
