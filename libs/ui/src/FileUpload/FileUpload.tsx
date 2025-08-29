@@ -66,7 +66,7 @@ export const FileUpload = ({
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <span>{dropAreaText}</span> <span className={styles.button}>{buttonText}</span>
+      <span className={styles.dropAreaText}>{dropAreaText}</span> <span className={styles.button}>{buttonText}</span>
     </button>
   )
 }
