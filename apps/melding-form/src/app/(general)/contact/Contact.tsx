@@ -50,9 +50,9 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   }, [systemError])
 
   return (
-    <>
+    <main>
       <title>{documentTitle}</title>
-      {systemError && <SystemErrorAlert />}
+      {Boolean(systemError) && <SystemErrorAlert />}
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"
@@ -117,6 +117,6 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
         </Field>
         <SubmitButton>{t('submit-button')}</SubmitButton>
       </Form>
-    </>
+    </main>
   )
 }

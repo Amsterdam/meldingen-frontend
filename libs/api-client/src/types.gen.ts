@@ -522,6 +522,10 @@ export type FormComponentInputValidate = {
      * Required
      */
     required?: boolean;
+    /**
+     * Required Error Message
+     */
+    required_error_message?: string | null;
 };
 
 /**
@@ -536,6 +540,10 @@ export type FormComponentOutputValidate = {
      * Required
      */
     required: boolean;
+    /**
+     * Required Error Message
+     */
+    required_error_message: string | null;
 };
 
 /**
@@ -1969,6 +1977,16 @@ export type SomeOutput = {
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterOutput | MapOutput,
         boolean | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length
     ];
+};
+
+/**
+ * StatesOutput
+ */
+export type StatesOutput = {
+    /**
+     * States
+     */
+    states: Array<string>;
 };
 
 /**
@@ -3745,6 +3763,45 @@ export type PostMeldingByMeldingIdAssetResponses = {
 };
 
 export type PostMeldingByMeldingIdAssetResponse = PostMeldingByMeldingIdAssetResponses[keyof PostMeldingByMeldingIdAssetResponses];
+
+export type GetMeldingByMeldingIdNextPossibleStatesData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/next_possible_states';
+};
+
+export type GetMeldingByMeldingIdNextPossibleStatesErrors = {
+    /**
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetMeldingByMeldingIdNextPossibleStatesError = GetMeldingByMeldingIdNextPossibleStatesErrors[keyof GetMeldingByMeldingIdNextPossibleStatesErrors];
+
+export type GetMeldingByMeldingIdNextPossibleStatesResponses = {
+    /**
+     * Successful Response
+     */
+    200: StatesOutput;
+};
+
+export type GetMeldingByMeldingIdNextPossibleStatesResponse = GetMeldingByMeldingIdNextPossibleStatesResponses[keyof GetMeldingByMeldingIdNextPossibleStatesResponses];
 
 export type GetUserData = {
     body?: never;
