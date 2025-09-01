@@ -1,9 +1,11 @@
 import { renderHook } from '@testing-library/react'
 import L from 'leaflet'
+import { Mock } from 'vitest'
 
-import { ASSET_ZOOM_THRESHOLD, type Props, useAssetLayer } from './useAssetLayer'
+import { type Props, useAssetLayer } from './useAssetLayer'
 import { addAssetLayerToMap } from '../utils/addAssetLayerToMap'
-import { fetchAssets } from '../utils/fetchAssets'
+import { ASSET_ZOOM_THRESHOLD, fetchAssets } from '../utils/fetchAssets'
+import { updateAssetMarkers } from '../utils/updateAssetMarkers'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('../utils/fetchAssets', () => ({
@@ -11,6 +13,10 @@ vi.mock('../utils/fetchAssets', () => ({
 }))
 vi.mock('../utils/addAssetLayerToMap', () => ({
   addAssetLayerToMap: vi.fn(),
+}))
+
+vi.mock('../utils/updateAssetMarkers', () => ({
+  updateAssetMarkers: vi.fn(),
 }))
 
 const mapInstanceMock = {
@@ -29,25 +35,48 @@ const defaultProps: Props = {
 }
 
 describe('useAssetLayer', () => {
-  describe('fetch assets', () => {
-    it('does not fetch assets when mapInstance is null', async () => {
-      renderHook(() => useAssetLayer({ ...defaultProps, mapInstance: null }))
+  it('does not fetch assets or addAssetLayerToMap when mapInstance is null', async () => {
+    renderHook(() => useAssetLayer({ ...defaultProps, mapInstance: null }))
 
-      expect(fetchAssets).not.toHaveBeenCalled()
-    })
+    expect(fetchAssets).not.toHaveBeenCalled()
+    expect(addAssetLayerToMap).not.toHaveBeenCalled()
+  })
 
-    it('does not fetch assets when classification is undefined', async () => {
-      renderHook(() => useAssetLayer({ ...defaultProps, classification: undefined }))
+  it('does not fetch assets when classification is undefined', async () => {
+    renderHook(() => useAssetLayer({ ...defaultProps, classification: undefined }))
 
-      expect(fetchAssets).not.toHaveBeenCalled()
+    expect(fetchAssets).not.toHaveBeenCalled()
+  })
+
+  it('should call fetchAssets on moveend', () => {
+    renderHook(() => useAssetLayer(defaultProps))
+
+    expect(mapInstanceMock.on).toHaveBeenCalledWith('moveend', expect.any(Function))
+
+    const moveendCallback = (mapInstanceMock.on as Mock).mock.calls[0][1]
+    moveendCallback()
+
+    expect(fetchAssets).toHaveBeenCalledWith({
+      mapInstance: mapInstanceMock,
+      classification: 'container',
+      setAssetList: defaultProps.setAssetList,
+      assetLayerRef: expect.any(Object),
     })
   })
 
-  describe('add asset markers to map', () => {
-    it('should call addAssetLayerToMap when there are assets in assetList', async () => {
-      renderHook(() => useAssetLayer({ ...defaultProps, assetList: containerAssets }))
+  it('should call addAssetLayerToMap when there are assets in assetList', async () => {
+    renderHook(() => useAssetLayer({ ...defaultProps, assetList: containerAssets }))
 
-      expect(addAssetLayerToMap).toHaveBeenCalled()
+    expect(addAssetLayerToMap).toHaveBeenCalled()
+  })
+
+  it('should call updateAssetMarkers when selectedAssets are present', async () => {
+    renderHook(() => useAssetLayer({ ...defaultProps, selectedAssets: [containerAssets[0]] }))
+
+    expect(updateAssetMarkers).toHaveBeenCalledWith({
+      mapInstance: mapInstanceMock,
+      AssetMarkersRef: { current: {} },
+      selectedAssets: [containerAssets[0]],
     })
   })
 })

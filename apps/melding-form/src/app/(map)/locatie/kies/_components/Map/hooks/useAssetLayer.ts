@@ -8,9 +8,6 @@ import { fetchAssets } from '../utils/fetchAssets'
 import { updateAssetMarkers } from '../utils/updateAssetMarkers'
 import { Coordinates } from 'apps/melding-form/src/types'
 
-const classificationsWithAssets = ['container']
-export const ASSET_ZOOM_THRESHOLD = 16
-
 export type Props = {
   assetList: Feature[]
   classification?: string
@@ -40,24 +37,7 @@ export const useAssetLayer = async ({
     if (!mapInstance || !classification) return
 
     mapInstance.on('moveend', async () => {
-      // Don't fetch assets when map is hidden with display: none
-      const size = mapInstance.getSize()
-      const mapIsHidden = size.x === 0 && size.y === 0
-
-      if (!classificationsWithAssets.includes(classification) || mapIsHidden) return
-
-      const zoom = mapInstance.getZoom()
-
-      // Has correct zoom level for assets
-      if (zoom >= ASSET_ZOOM_THRESHOLD) {
-        const assets = await fetchAssets(mapInstance, classification)
-        setAssetList(assets?.features || [])
-      }
-
-      if (zoom < ASSET_ZOOM_THRESHOLD && assetLayerRef.current) {
-        assetLayerRef.current.remove()
-        setAssetList([])
-      }
+      fetchAssets({ mapInstance, classification, setAssetList, assetLayerRef })
     })
   }, [mapInstance])
 
