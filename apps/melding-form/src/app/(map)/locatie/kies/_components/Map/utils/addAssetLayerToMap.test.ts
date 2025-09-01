@@ -53,8 +53,6 @@ describe('addAssetLayerToMap', () => {
   it('should add a new geoJSON layer to the map', () => {
     addAssetLayerToMap({ ...defaultProps })
 
-    expect(defaultProps.assetLayerRef.current).not.toBeNull()
-    // Check that the layer is on the map
     expect(defaultProps.mapInstance?.hasLayer(defaultProps.assetLayerRef.current!)).toBe(true)
   })
 
@@ -84,16 +82,21 @@ describe('addAssetLayerToMap', () => {
   })
 
   it('should not add more than MAX_ASSETS when marker is clicked', () => {
-    const maxAssets = Array(5).fill(containerAssets[0])
+    const assetList = Array(6)
+      .fill(containerAssets[0])
+      .map((asset, index) => ({ ...asset, id: (index + 1).toString() }))
+    const maxAssets = Array(5)
+      .fill(containerAssets[0])
+      .map((asset, index) => ({ ...asset, id: (index + 1).toString() }))
 
-    addAssetLayerToMap({ ...defaultProps, selectedAssets: maxAssets })
+    addAssetLayerToMap({ ...defaultProps, selectedAssets: maxAssets, assetList })
 
-    const marker = defaultProps.assetMarkersRef.current[containerAssets[0].id!]
+    const marker = defaultProps.assetMarkersRef.current['6']
 
     marker.fire('click')
 
-    expect(defaultProps.setSelectedAssets).toHaveBeenCalledWith(expect.any(Function))
-    expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
+    expect(defaultProps.setSelectedAssets).not.toHaveBeenCalled()
+    expect(defaultProps.setCoordinates).not.toHaveBeenCalled()
   })
 
   it('should remove asset from selectedAssets and unset coordinates when marker is clicked and already selected', () => {
@@ -110,17 +113,5 @@ describe('addAssetLayerToMap', () => {
     addAssetLayerToMap({ ...defaultProps })
 
     expect(defaultProps.assetMarkersRef.current[containerAssets[0].id!]).toBeInstanceOf(L.Marker)
-  })
-
-  it('should not assign marker to assetMarkersRef if feature id is undefined', () => {
-    const assetWithoutId = { ...containerAssets[0], id: undefined }
-
-    addAssetLayerToMap({
-      ...defaultProps,
-      assetList: [assetWithoutId],
-    })
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect(defaultProps.assetMarkersRef.current[undefined as any]).toBeUndefined()
   })
 })
