@@ -59,9 +59,9 @@ describe('postLocationForm', () => {
     expect(redirect).toHaveBeenCalledWith('/bijlage')
   })
 
-  it('returns an error message if postMeldingByMeldingIdLocation returns an error', async () => {
+  it('returns an error message if patchMeldingByMeldingIdLocation returns an error', async () => {
     server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_LOCATION, () =>
+      http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_LOCATION, () =>
         HttpResponse.json('Error message', { status: 404 }),
       ),
     )
