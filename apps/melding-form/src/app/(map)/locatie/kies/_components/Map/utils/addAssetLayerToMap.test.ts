@@ -31,15 +31,17 @@ describe('addAssetLayerToMap', () => {
     defaultProps.mapInstance?.remove()
   })
 
-  it('should return early if mapInstance is not provided or when there are no assets', () => {
+  it('should return early if mapInstance is not provided', () => {
     const result = addAssetLayerToMap({ ...defaultProps, mapInstance: null })
 
     expect(result).toBeUndefined()
     expect(defaultProps.assetLayerRef.current?.remove).not.toBeCalled()
+  })
 
-    const secondResult = addAssetLayerToMap({ ...defaultProps, assetList: [] })
+  it('should return early when there are no assets', () => {
+    const result = addAssetLayerToMap({ ...defaultProps, assetList: [] })
 
-    expect(secondResult).toBeUndefined()
+    expect(result).toBeUndefined()
     expect(defaultProps.assetLayerRef.current?.remove).not.toBeCalled()
   })
 
