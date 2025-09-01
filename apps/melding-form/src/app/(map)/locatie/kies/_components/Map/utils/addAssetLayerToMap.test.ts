@@ -12,7 +12,7 @@ vi.mock('./getContainerFeatureIcon', () => ({
 const removeMock = vi.fn()
 
 const defaultProps: Props = {
-  assetLayerRef: { current: { remove: removeMock } as unknown as L.Layer } as MutableRefObject<L.Layer | null>,
+  assetLayerRef: {} as MutableRefObject<L.Layer | null>,
   assetList: containerAssets,
   mapInstance: {} as L.Map,
   assetMarkersRef: { current: {} } as MutableRefObject<Record<string, L.Marker>>,
@@ -25,30 +25,29 @@ describe('addAssetLayerToMap', () => {
   beforeEach(() => {
     const container = document.createElement('div')
     defaultProps.mapInstance = L.map(container)
-  })
-
-  afterEach(() => {
-    defaultProps.mapInstance?.remove()
+    defaultProps.assetLayerRef = {
+      current: { remove: removeMock } as unknown as L.Layer,
+    } as MutableRefObject<L.Layer | null>
   })
 
   it('should return early if mapInstance is not provided', () => {
     const result = addAssetLayerToMap({ ...defaultProps, mapInstance: null })
 
     expect(result).toBeUndefined()
-    expect(defaultProps.assetLayerRef.current?.remove).not.toBeCalled()
+    expect(removeMock).not.toBeCalled()
   })
 
   it('should return early when there are no assets', () => {
     const result = addAssetLayerToMap({ ...defaultProps, assetList: [] })
 
     expect(result).toBeUndefined()
-    expect(defaultProps.assetLayerRef.current?.remove).not.toBeCalled()
+    expect(removeMock).not.toBeCalled()
   })
 
   it('should remove the previous asset layer if it exists', () => {
     addAssetLayerToMap({ ...defaultProps })
 
-    expect(removeMock).toHaveBeenCalled()
+    expect(removeMock).toHaveBeenCalledOnce()
   })
 
   it('should add a new geoJSON layer to the map', () => {
