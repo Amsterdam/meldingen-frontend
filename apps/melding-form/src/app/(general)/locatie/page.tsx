@@ -4,13 +4,13 @@ import { Location } from './Location'
 
 export default async () => {
   const cookieStore = await cookies()
-  const prevPage = cookieStore.get('lastPanelPath')
   const locationData = cookieStore.get('location')
+  const prevPage = cookieStore.get('lastPanelPath')
 
   return (
     <Location
-      prevPage={prevPage ? prevPage.value : '/'}
       locationData={locationData && JSON.parse(locationData.value)}
+      prevPage={prevPage ? prevPage.value : '/'}
     />
   )
 }
