@@ -1,6 +1,7 @@
 'use client'
 
-import { FileList, Heading, Paragraph } from '@amsterdam/design-system-react'
+import { Heading, Paragraph } from '@amsterdam/design-system-react'
+import dynamic from 'next/dynamic'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect } from 'react'
@@ -12,15 +13,13 @@ import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { FormState } from 'apps/melding-form/src/types'
 
-import styles from './Summary.module.css'
-
 type GenericSummaryData = {
   key: string
   term: string
   description: string[]
 }
 
-type Props = {
+export type Props = {
   additionalQuestions: GenericSummaryData[]
   attachments: {
     key: string
@@ -35,6 +34,12 @@ type Props = {
   location: GenericSummaryData
   primaryForm: GenericSummaryData
 }
+
+// Dynamically import AttachmentsSummary to avoid SSR issues with File and Blob
+const AttachmentsSummary = dynamic(() => import('./AttachmentsSummary').then((module) => module.AttachmentsSummary), {
+  loading: () => <p>Loading...</p>, // TODO: improve loading state
+  ssr: false,
+})
 
 const initialState: Pick<FormState, 'systemError'> = {}
 
@@ -84,18 +89,7 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
           ))}
         </SummaryList.Item>
 
-        {attachments.files.length > 0 && (
-          <SummaryList.Item key={attachments.key}>
-            <SummaryList.Term>{attachments.term}</SummaryList.Term>
-            <SummaryList.Description key={attachments.key}>
-              <FileList className={styles.fileListAttachments}>
-                {attachments.files.map(({ fileName, blob, contentType }) => (
-                  <FileList.Item key={fileName} file={new File([blob], fileName, { type: contentType })} />
-                ))}
-              </FileList>
-            </SummaryList.Description>
-          </SummaryList.Item>
-        )}
+        <AttachmentsSummary attachments={attachments} />
 
         {contact && (
           <SummaryList.Item key={contact.key}>
