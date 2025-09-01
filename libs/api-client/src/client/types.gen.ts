@@ -82,11 +82,7 @@ export interface RequestOptions<
 export interface ResolvedRequestOptions<
   ThrowOnError extends boolean = boolean,
   Url extends string = string,
-<<<<<<< HEAD
-> extends RequestOptions<ThrowOnError, Url> {
-=======
 > extends RequestOptions<unknown, ThrowOnError, Url> {
->>>>>>> 08c8129ea97ffa231cf36d02247e427f6aab4241
   serializedBody?: string;
 }
 
@@ -159,9 +155,6 @@ type BuildUrlFn = <
   options: Pick<TData, 'url'> & Options<TData>,
 ) => string;
 
-<<<<<<< HEAD
-export type Client = CoreClient<RequestFn, Config, MethodFn, BuildUrlFn> & {
-=======
 export type Client = CoreClient<
   RequestFn,
   Config,
@@ -169,7 +162,6 @@ export type Client = CoreClient<
   BuildUrlFn,
   SseFn
 > & {
->>>>>>> 08c8129ea97ffa231cf36d02247e427f6aab4241
   interceptors: Middleware<Response, unknown, ResolvedRequestOptions>;
 };
 

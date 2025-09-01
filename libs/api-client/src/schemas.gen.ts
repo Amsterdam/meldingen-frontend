@@ -4452,10 +4452,139 @@ export const MeldingOutputSchema = {
     title: 'MeldingOutput'
 } as const;
 
-export const MeldingStatesSchema = {
-    type: 'string',
-    enum: ['new', 'classified', 'questions_answered', 'attachments_added', 'location_submitted', 'contact_info_added', 'submitted', 'processing', 'completed'],
-    title: 'MeldingStates'
+export const MeldingUpdateOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        public_id: {
+            type: 'string',
+            title: 'Public Id'
+        },
+        text: {
+            type: 'string',
+            title: 'Text'
+        },
+        state: {
+            type: 'string',
+            title: 'State'
+        },
+        classification: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/SimpleClassificationOutput'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        geo_location: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/GeoJson-Output'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        street: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Street'
+        },
+        house_number: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'House Number'
+        },
+        house_number_addition: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'House Number Addition'
+        },
+        postal_code: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Postal Code'
+        },
+        city: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'City'
+        },
+        email: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'email'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Email'
+        },
+        phone: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'phone'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Phone'
+        },
+        token: {
+            type: 'string',
+            title: 'Token'
+        }
+    },
+    type: 'object',
+    required: ['id', 'created_at', 'updated_at', 'public_id', 'text', 'state', 'token'],
+    title: 'MeldingUpdateOutput'
 } as const;
 
 export const MergeSchema = {
