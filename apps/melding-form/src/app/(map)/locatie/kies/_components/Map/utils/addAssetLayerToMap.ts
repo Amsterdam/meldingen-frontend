@@ -13,7 +13,7 @@ const MAX_ASSETS = 5
 export type Props = {
   assetLayerRef: MutableRefObject<L.Layer | null>
   assetList: Feature[]
-  mapInstance: L.Map
+  mapInstance?: L.Map | null
   AssetMarkersRef: MutableRefObject<Record<string, L.Marker>>
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
@@ -29,6 +29,8 @@ export const addAssetLayerToMap = ({
   setCoordinates,
   setSelectedAssets,
 }: Props) => {
+  if (!mapInstance || assetList.length === 0) return
+
   assetLayerRef.current?.remove()
 
   assetLayerRef.current = L.geoJSON(assetList as GeoJsonObject[], {

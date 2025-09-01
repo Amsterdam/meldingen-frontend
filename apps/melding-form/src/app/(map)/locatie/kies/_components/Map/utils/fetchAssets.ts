@@ -11,7 +11,7 @@ export const ASSET_ZOOM_THRESHOLD = 16
 
 export type Props = {
   mapInstance: L.Map
-  classification: string
+  classification?: string
   setAssetList: (assets: Feature[]) => void
   assetLayerRef: MutableRefObject<L.Layer | null>
 }
@@ -21,7 +21,7 @@ export const fetchAssets = async ({ mapInstance, classification, setAssetList, a
   const size = mapInstance.getSize()
   const mapIsHidden = size.x === 0 && size.y === 0
 
-  if (!classificationsWithAssets.includes(classification) || mapIsHidden) return
+  if (!classification || !classificationsWithAssets.includes(classification) || mapIsHidden) return
 
   const zoom = mapInstance.getZoom()
 

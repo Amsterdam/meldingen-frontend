@@ -34,9 +34,7 @@ export const useAssetLayer = async ({
    * Fetch assets
    */
   useEffect(() => {
-    if (!mapInstance || !classification) return
-
-    mapInstance.on('moveend', async () => {
+    mapInstance?.on('moveend', async () => {
       fetchAssets({ mapInstance, classification, setAssetList, assetLayerRef })
     })
   }, [mapInstance])
@@ -45,19 +43,15 @@ export const useAssetLayer = async ({
    * Add asset markers to map
    */
   useEffect(() => {
-    if (!mapInstance) return
-
-    if (assetList && assetList.length > 0) {
-      addAssetLayerToMap({
-        assetList,
-        assetLayerRef,
-        mapInstance,
-        setCoordinates,
-        selectedAssets,
-        setSelectedAssets,
-        AssetMarkersRef,
-      })
-    }
+    addAssetLayerToMap({
+      assetList,
+      assetLayerRef,
+      mapInstance,
+      setCoordinates,
+      selectedAssets,
+      setSelectedAssets,
+      AssetMarkersRef,
+    })
   }, [assetList, selectedAssets])
 
   /**

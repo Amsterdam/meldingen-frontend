@@ -27,10 +27,18 @@ const defaultProps: Props = {
 }
 
 describe('fetchAssets', () => {
+  it('shoould return undefined if classification is undefined', async () => {
+    const result = await fetchAssets({ ...defaultProps, classification: undefined })
+
+    expect(result).toBeUndefined()
+    expect(defaultProps.mapInstance.getZoom).not.toHaveBeenCalled()
+  })
+
   it('should not fetch assets if classification has no asset support', async () => {
     const result = await fetchAssets({ ...defaultProps, classification: 'invalid-classification' })
 
     expect(result).toBeUndefined()
+    expect(defaultProps.mapInstance.getZoom).not.toHaveBeenCalled()
   })
 
   it('should not fetch assets if map is hidden', async () => {
@@ -42,6 +50,7 @@ describe('fetchAssets', () => {
     const result = await fetchAssets({ ...defaultProps, mapInstance: hiddenMapInstance })
 
     expect(result).toBeUndefined()
+    expect(defaultProps.mapInstance.getZoom).not.toHaveBeenCalled()
   })
 
   it('should call setAssetList with fetched assets', async () => {

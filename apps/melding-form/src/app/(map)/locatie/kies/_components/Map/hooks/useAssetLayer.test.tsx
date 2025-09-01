@@ -35,19 +35,6 @@ const defaultProps: Props = {
 }
 
 describe('useAssetLayer', () => {
-  it('does not fetch assets or addAssetLayerToMap when mapInstance is null', async () => {
-    renderHook(() => useAssetLayer({ ...defaultProps, mapInstance: null }))
-
-    expect(fetchAssets).not.toHaveBeenCalled()
-    expect(addAssetLayerToMap).not.toHaveBeenCalled()
-  })
-
-  it('does not fetch assets when classification is undefined', async () => {
-    renderHook(() => useAssetLayer({ ...defaultProps, classification: undefined }))
-
-    expect(fetchAssets).not.toHaveBeenCalled()
-  })
-
   it('should call fetchAssets on moveend', () => {
     renderHook(() => useAssetLayer(defaultProps))
 

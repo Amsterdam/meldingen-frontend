@@ -9,8 +9,10 @@ vi.mock('./getContainerFeatureIcon', () => ({
   getContainerFeatureIcon: vi.fn(),
 }))
 
+const removeMock = vi.fn()
+
 const defaultProps: Props = {
-  assetLayerRef: { current: null } as MutableRefObject<L.Layer | null>,
+  assetLayerRef: { current: { remove: removeMock } as unknown as L.Layer } as MutableRefObject<L.Layer | null>,
   assetList: containerAssets,
   mapInstance: {} as L.Map,
   AssetMarkersRef: { current: {} } as MutableRefObject<Record<string, L.Marker>>,
@@ -26,12 +28,22 @@ describe('addAssetLayerToMap', () => {
   })
 
   afterEach(() => {
-    defaultProps.mapInstance.remove()
+    defaultProps.mapInstance?.remove()
+  })
+
+  it('should return early if mapInstance is not provided or when there are no assets', () => {
+    const result = addAssetLayerToMap({ ...defaultProps, mapInstance: null })
+
+    expect(result).toBeUndefined()
+    expect(defaultProps.assetLayerRef.current?.remove).not.toBeCalled()
+
+    const secondResult = addAssetLayerToMap({ ...defaultProps, assetList: [] })
+
+    expect(secondResult).toBeUndefined()
+    expect(defaultProps.assetLayerRef.current?.remove).not.toBeCalled()
   })
 
   it('should remove the previous asset layer if it exists', () => {
-    const removeMock = vi.fn()
-    defaultProps.assetLayerRef.current = { remove: removeMock } as unknown as L.Layer
     addAssetLayerToMap({ ...defaultProps })
 
     expect(removeMock).toHaveBeenCalled()
@@ -42,7 +54,7 @@ describe('addAssetLayerToMap', () => {
 
     expect(defaultProps.assetLayerRef.current).not.toBeNull()
     // Check that the layer is on the map
-    expect(defaultProps.mapInstance.hasLayer(defaultProps.assetLayerRef.current!)).toBe(true)
+    expect(defaultProps.mapInstance?.hasLayer(defaultProps.assetLayerRef.current!)).toBe(true)
   })
 
   it('should call getContainerFeatureIcon for each feature', () => {
