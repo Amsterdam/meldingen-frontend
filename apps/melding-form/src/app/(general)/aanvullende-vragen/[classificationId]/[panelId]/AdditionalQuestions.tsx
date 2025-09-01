@@ -47,7 +47,7 @@ export type Props = {
 
 const initialState: FormState = {}
 
-export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Props) => {
+export const AdditionalQuestions = ({ action, formComponents, panelLabel, previousPanelPath }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
@@ -73,7 +73,7 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel }: Prop
 
   return (
     <>
-      <BackLink className="ams-mb-s" href="/">
+      <BackLink className="ams-mb-s" href={previousPanelPath}>
         {t('back-link')}
       </BackLink>
       <main>
