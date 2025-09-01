@@ -12,7 +12,7 @@ import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './SideBar.module.css'
 
-type Props = {
+export type Props = {
   coordinates?: Coordinates
   setCoordinates: (coordinates: Coordinates) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>

@@ -107,6 +107,7 @@ describe('addAssetLayerToMap', () => {
       assetList: [assetWithoutId],
     })
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect(defaultProps.AssetMarkersRef.current[undefined as any]).toBeUndefined()
   })
 })

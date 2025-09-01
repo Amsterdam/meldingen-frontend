@@ -12,7 +12,7 @@ import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
 
-type Props = {
+export type Props = {
   assetList: Feature[]
   classification?: string
   coordinates?: Coordinates

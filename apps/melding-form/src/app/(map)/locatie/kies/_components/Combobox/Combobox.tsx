@@ -32,7 +32,7 @@ const debounce = (fn: Function, delay = 250) => {
   }
 }
 
-type Props = {
+export type Props = {
   address?: string
   errorMessage?: string
   setAddress: (address?: string) => void
