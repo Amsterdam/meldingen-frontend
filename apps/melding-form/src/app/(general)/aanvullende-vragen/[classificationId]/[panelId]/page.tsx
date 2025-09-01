@@ -88,6 +88,12 @@ export default async ({ params }: { params: Params }) => {
 
   const formComponents = getFormComponents(panelComponents, answers)
 
+  // Pass question and answer ID pairs to the action
+  const questionAndAnswerIdPairs = answers?.map((answer) => ({
+    answerId: answer.id,
+    questionId: answer.question.id,
+  }))
+
   // Pass question keys and ids to the action
   const questionKeysAndIds = panelComponents.map(({ key, question }) => ({
     id: question,
@@ -111,6 +117,7 @@ export default async ({ params }: { params: Params }) => {
     lastPanelPath,
     nextPanelPath,
     questionKeysAndIds,
+    questionAndAnswerIdPairs,
     requiredQuestionKeys,
   }
 
