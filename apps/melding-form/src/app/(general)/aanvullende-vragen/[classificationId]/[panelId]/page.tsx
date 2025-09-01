@@ -48,7 +48,13 @@ const getFormComponents = (
   components.map((component) => {
     const answer = answers?.find((answer) => answer.question.id === component.question)
 
-    // Prefill if answer exists, otherwise return component without defaultValue
+    // Prefill if answer exists, otherwise return component without defaultValue(s)
+    if (component.type === 'selectboxes' && answer) {
+      const defaultValues = answer.text.split(',').map((value) => value.trim())
+
+      return { ...component, defaultValues }
+    }
+
     return answer ? { ...component, defaultValue: answer.text } : { ...component }
   })
 

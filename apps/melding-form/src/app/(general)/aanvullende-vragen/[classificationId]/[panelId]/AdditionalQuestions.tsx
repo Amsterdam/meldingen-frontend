@@ -16,7 +16,8 @@ import { FormState, ValidationError } from 'apps/melding-form/src/types'
 
 const getPrefilledFormComponents = (components: Component[], formData?: FormData): Component[] =>
   components.map((component) => {
-    if (isSelectboxes(component)) {
+    // Prefill checkboxes if no defaultValues are set
+    if (isSelectboxes(component) && !component.defaultValues) {
       const defaultValues = component.values.map(({ value }) => formData?.get(`checkbox___${component.key}___${value}`))
 
       return { ...component, defaultValues }
