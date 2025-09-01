@@ -62,7 +62,7 @@ describe('useAssetLayer', () => {
 
     expect(updateAssetMarkers).toHaveBeenCalledWith({
       mapInstance: mapInstanceMock,
-      AssetMarkersRef: { current: {} },
+      assetMarkersRef: { current: {} },
       selectedAssets: [containerAssets[0]],
     })
   })

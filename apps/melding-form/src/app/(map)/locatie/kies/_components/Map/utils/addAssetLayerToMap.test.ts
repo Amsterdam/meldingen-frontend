@@ -15,7 +15,7 @@ const defaultProps: Props = {
   assetLayerRef: { current: { remove: removeMock } as unknown as L.Layer } as MutableRefObject<L.Layer | null>,
   assetList: containerAssets,
   mapInstance: {} as L.Map,
-  AssetMarkersRef: { current: {} } as MutableRefObject<Record<string, L.Marker>>,
+  assetMarkersRef: { current: {} } as MutableRefObject<Record<string, L.Marker>>,
   selectedAssets: [],
   setSelectedAssets: vi.fn(),
   setCoordinates: vi.fn(),
@@ -72,7 +72,7 @@ describe('addAssetLayerToMap', () => {
   it('should set selectedAssets and coordinates when marker is clicked and not selected', () => {
     addAssetLayerToMap({ ...defaultProps })
 
-    const marker = defaultProps.AssetMarkersRef.current[containerAssets[0].id!]
+    const marker = defaultProps.assetMarkersRef.current[containerAssets[0].id!]
     marker.fire('click')
 
     expect(defaultProps.setSelectedAssets).toHaveBeenCalledWith(expect.any(Function))
@@ -87,7 +87,7 @@ describe('addAssetLayerToMap', () => {
 
     addAssetLayerToMap({ ...defaultProps, selectedAssets: maxAssets })
 
-    const marker = defaultProps.AssetMarkersRef.current[containerAssets[0].id!]
+    const marker = defaultProps.assetMarkersRef.current[containerAssets[0].id!]
 
     marker.fire('click')
 
@@ -98,20 +98,20 @@ describe('addAssetLayerToMap', () => {
   it('should remove asset from selectedAssets and unset coordinates when marker is clicked and already selected', () => {
     addAssetLayerToMap({ ...defaultProps, selectedAssets: [containerAssets[0]] })
 
-    const marker = defaultProps.AssetMarkersRef.current[containerAssets[0].id!]
+    const marker = defaultProps.assetMarkersRef.current[containerAssets[0].id!]
     marker.fire('click')
 
     expect(defaultProps.setSelectedAssets).toHaveBeenCalledWith(expect.any(Function))
     expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
   })
 
-  it('should assign marker to AssetMarkersRef using feature id', () => {
+  it('should assign marker to assetMarkersRef using feature id', () => {
     addAssetLayerToMap({ ...defaultProps })
 
-    expect(defaultProps.AssetMarkersRef.current[containerAssets[0].id!]).toBeInstanceOf(L.Marker)
+    expect(defaultProps.assetMarkersRef.current[containerAssets[0].id!]).toBeInstanceOf(L.Marker)
   })
 
-  it('should not assign marker to AssetMarkersRef if feature id is undefined', () => {
+  it('should not assign marker to assetMarkersRef if feature id is undefined', () => {
     const assetWithoutId = { ...containerAssets[0], id: undefined }
 
     addAssetLayerToMap({
@@ -120,6 +120,6 @@ describe('addAssetLayerToMap', () => {
     })
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect(defaultProps.AssetMarkersRef.current[undefined as any]).toBeUndefined()
+    expect(defaultProps.assetMarkersRef.current[undefined as any]).toBeUndefined()
   })
 })

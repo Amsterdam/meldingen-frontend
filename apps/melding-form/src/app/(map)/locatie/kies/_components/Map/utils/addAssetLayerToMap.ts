@@ -14,7 +14,7 @@ export type Props = {
   assetLayerRef: MutableRefObject<L.Layer | null>
   assetList: Feature[]
   mapInstance?: L.Map | null
-  AssetMarkersRef: MutableRefObject<Record<string, L.Marker>>
+  assetMarkersRef: MutableRefObject<Record<string, L.Marker>>
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
@@ -24,7 +24,7 @@ export const addAssetLayerToMap = ({
   assetLayerRef,
   assetList,
   mapInstance,
-  AssetMarkersRef,
+  assetMarkersRef,
   selectedAssets,
   setCoordinates,
   setSelectedAssets,
@@ -43,7 +43,7 @@ export const addAssetLayerToMap = ({
       })
 
       if (feature.id !== undefined) {
-        AssetMarkersRef.current[feature.id] = marker
+        assetMarkersRef.current[feature.id] = marker
       }
 
       marker.on('click', () => {

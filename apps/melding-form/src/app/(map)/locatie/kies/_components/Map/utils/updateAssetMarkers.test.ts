@@ -16,7 +16,7 @@ vi.mock('../utils/getContainerFeatureIcon', () => ({
 
 const defaultProps: Props = {
   mapInstance: {} as unknown as L.Map,
-  AssetMarkersRef: {
+  assetMarkersRef: {
     current: {
       '1': {
         setIcon: vi.fn(),
@@ -38,8 +38,8 @@ describe('updateAssetMarkers', () => {
     expect(result).toBeUndefined()
   })
 
-  it('should not update markers if AssetMarkersRef is empty', () => {
-    const result = updateAssetMarkers({ ...defaultProps, AssetMarkersRef: { current: {} } })
+  it('should not update markers if assetMarkersRef is empty', () => {
+    const result = updateAssetMarkers({ ...defaultProps, assetMarkersRef: { current: {} } })
 
     expect(result).toBeUndefined()
   })
@@ -47,12 +47,12 @@ describe('updateAssetMarkers', () => {
   it('should set selectedAssetsIcon for selected assets', () => {
     updateAssetMarkers(defaultProps)
 
-    expect(defaultProps.AssetMarkersRef.current['1'].setIcon).toHaveBeenCalledWith(selectedAssetsIcon)
+    expect(defaultProps.assetMarkersRef.current['1'].setIcon).toHaveBeenCalledWith(selectedAssetsIcon)
   })
 
   it('should set container icon for unselected assets', () => {
     updateAssetMarkers(defaultProps)
 
-    expect(defaultProps.AssetMarkersRef.current['2'].setIcon).toHaveBeenCalledWith({ icon: 'container' })
+    expect(defaultProps.assetMarkersRef.current['2'].setIcon).toHaveBeenCalledWith({ icon: 'container' })
   })
 })

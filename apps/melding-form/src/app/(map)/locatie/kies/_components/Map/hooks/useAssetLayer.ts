@@ -28,7 +28,7 @@ export const useAssetLayer = async ({
   setSelectedAssets,
 }: Props) => {
   const assetLayerRef = useRef<L.Layer | null>(null)
-  const AssetMarkersRef = useRef<Record<string, L.Marker>>({})
+  const assetMarkersRef = useRef<Record<string, L.Marker>>({})
 
   /**
    * Fetch assets
@@ -50,7 +50,7 @@ export const useAssetLayer = async ({
       setCoordinates,
       selectedAssets,
       setSelectedAssets,
-      AssetMarkersRef,
+      assetMarkersRef,
     })
   }, [assetList, selectedAssets])
 
@@ -58,6 +58,6 @@ export const useAssetLayer = async ({
    * Update asset markers on selection change
    */
   useEffect(() => {
-    updateAssetMarkers({ mapInstance, AssetMarkersRef, selectedAssets })
+    updateAssetMarkers({ mapInstance, assetMarkersRef, selectedAssets })
   }, [selectedAssets])
 }
