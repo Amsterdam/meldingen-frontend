@@ -27,7 +27,7 @@ describe('AdditionalQuestions', () => {
     const link = screen.getByRole('link', { name: 'back-link' })
 
     expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '/')
+    expect(link).toHaveAttribute('href', '/prev')
   })
 
   it('renders an Alert and keeps input data when there is an error message', () => {

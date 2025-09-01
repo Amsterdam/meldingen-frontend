@@ -5,7 +5,7 @@ describe('buildAnswerPromises', () => {
     const emptyEntry: [string, string] = ['key1', '']
     const questionKeysAndIds = [{ key: 'key1', id: 1 }]
 
-    const result = buildAnswerPromises([emptyEntry], questionKeysAndIds, '123', 'test-token')
+    const result = buildAnswerPromises([emptyEntry], '123', questionKeysAndIds, 'test-token')
 
     expect(result).toEqual([undefined])
   })
@@ -14,7 +14,7 @@ describe('buildAnswerPromises', () => {
     const fileEntry: [string, File] = ['key1', new File([''], 'filename.txt')]
     const questionKeysAndIds = [{ key: 'key1', id: 1 }]
 
-    const result = buildAnswerPromises([fileEntry], questionKeysAndIds, '123', 'test-token')
+    const result = buildAnswerPromises([fileEntry], '123', questionKeysAndIds, 'test-token')
 
     expect(result).toEqual([undefined])
   })
@@ -23,7 +23,7 @@ describe('buildAnswerPromises', () => {
     const entry: [string, string] = ['key1', 'test']
     const questionKeysAndIds = [{ key: 'key2', id: 1 }]
 
-    const result = buildAnswerPromises([entry], questionKeysAndIds, '123', 'test-token')
+    const result = buildAnswerPromises([entry], '123', questionKeysAndIds, 'test-token')
 
     expect(result).toEqual([undefined])
   })
