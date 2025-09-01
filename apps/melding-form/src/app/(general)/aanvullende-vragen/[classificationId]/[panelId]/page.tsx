@@ -1,7 +1,17 @@
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import type { FormOutput, FormPanelComponentOutput } from '@meldingen/api-client'
-import { getFormClassificationByClassificationId } from '@meldingen/api-client'
+import type {
+  AnswerQuestionOutput,
+  FormCheckboxComponentOutput,
+  FormOutput,
+  FormPanelComponentOutput,
+  FormRadioComponentOutput,
+  FormSelectComponentOutput,
+  FormTextAreaComponentOutput,
+  FormTextFieldInputComponentOutput,
+} from '@meldingen/api-client'
+import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
@@ -25,6 +35,23 @@ const getPreviousPanelPath = (classificationId: number, currentPanelIndex: numbe
   return `/aanvullende-vragen/${classificationId}/${formData.components[currentPanelIndex - 1].key}`
 }
 
+const getFormComponents = (
+  components: (
+    | FormCheckboxComponentOutput
+    | FormRadioComponentOutput
+    | FormSelectComponentOutput
+    | FormTextAreaComponentOutput
+    | FormTextFieldInputComponentOutput
+  )[],
+  answers?: AnswerQuestionOutput[],
+) =>
+  components.map((component) => {
+    const answer = answers?.find((answer) => answer.question.id === component.question)
+
+    // Prefill if answer exists, otherwise return component without defaultValue
+    return answer ? { ...component, defaultValue: answer.text } : { ...component }
+  })
+
 export default async ({ params }: { params: Params }) => {
   const { classificationId, panelId } = await params
 
@@ -36,20 +63,33 @@ export default async ({ params }: { params: Params }) => {
 
   if (data?.components[0].type !== 'panel') return redirect('/locatie')
 
-  // Get current panel questions
+  // Get current panel components
   const currentPanelIndex = data.components.findIndex((component) => component.key === panelId)
   const panel = data.components[currentPanelIndex] as FormPanelComponentOutput
-  const panelQuestions = panel.components
+  const panelComponents = panel.components
   const panelLabel = panel.label
 
+  // Check if answers already exist and prefill if so
+  const cookieStore = await cookies()
+  // We check for the existence of these cookies in our middleware, so non-null assertion is safe here.
+  const meldingId = cookieStore.get('id')!.value
+  const token = cookieStore.get('token')!.value
+
+  const { data: answers } = await getMeldingByMeldingIdAnswersMelder({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  const formComponents = getFormComponents(panelComponents, answers)
+
   // Pass question keys and ids to the action
-  const questionKeysAndIds = panelQuestions.map(({ key, question }) => ({
+  const questionKeysAndIds = panelComponents.map(({ key, question }) => ({
     id: question,
     key: key,
   }))
 
   // Pass required questions keys to the action
-  const requiredQuestionKeys = panelQuestions.filter((question) => question.validate?.required).map(({ key }) => key)
+  const requiredQuestionKeys = panelComponents.filter((question) => question.validate?.required).map(({ key }) => key)
 
   // Pass isLastPanel to the action
   const isLastPanel = currentPanelIndex === data.components.length - 1
@@ -76,7 +116,7 @@ export default async ({ params }: { params: Params }) => {
   return (
     <AdditionalQuestions
       action={postFormWithExtraArgs}
-      formComponents={panelQuestions}
+      formComponents={formComponents}
       panelLabel={panelLabel}
       previousPanelPath={previousPanelPath}
     />
