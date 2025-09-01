@@ -3,16 +3,15 @@ import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { selectedAssetsIcon } from '../markerIcons'
 import { addAssetLayerToMap } from '../utils/addAssetLayerToMap'
 import { fetchAssets } from '../utils/fetchAssets'
-import { getContainerFeatureIcon } from '../utils/getContainerFeatureIcon'
+import { updateAssetMarkers } from '../utils/updateAssetMarkers'
 import { Coordinates } from 'apps/melding-form/src/types'
 
 const classificationsWithAssets = ['container']
 export const ASSET_ZOOM_THRESHOLD = 16
 
-type Props = {
+export type Props = {
   assetList: Feature[]
   classification?: string
   mapInstance: L.Map | null
@@ -85,16 +84,6 @@ export const useAssetLayer = async ({
    * Update asset markers on selection change
    */
   useEffect(() => {
-    if (!mapInstance || Object.keys(AssetMarkersRef.current).length === 0) return
-
-    Object.entries(AssetMarkersRef.current).forEach(([id, marker]) => {
-      const isSelected = selectedAssets.some((asset) => asset.id === id)
-
-      if (isSelected) {
-        marker.setIcon(selectedAssetsIcon)
-      } else if (marker.feature) {
-        marker.setIcon(getContainerFeatureIcon(marker.feature))
-      }
-    })
+    updateAssetMarkers({ mapInstance, AssetMarkersRef, selectedAssets })
   }, [selectedAssets])
 }
