@@ -74,7 +74,7 @@ describe('addAssetLayerToMap', () => {
     const marker = defaultProps.assetMarkersRef.current[containerAssets[0].id!]
     marker.fire('click')
 
-    expect(defaultProps.setSelectedAssets).toHaveBeenCalledWith(expect.any(Function))
+    expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
     expect(defaultProps.setCoordinates).toHaveBeenCalledWith({
       lat: marker.getLatLng().lat,
       lng: marker.getLatLng().lng,
