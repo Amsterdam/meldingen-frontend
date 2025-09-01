@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Mock } from 'vitest'
 
@@ -8,6 +9,12 @@ import { AdditionalQuestions } from './AdditionalQuestions'
 import Page from './page'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
+
+vi.mock('next/headers', () => ({
+  cookies: vi.fn().mockReturnValue({
+    get: vi.fn(),
+  }),
+}))
 
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
@@ -24,7 +31,22 @@ vi.mock('./AdditionalQuestions', () => ({
   }),
 }))
 
+const mockIdAndTokenCookies = (id = '123', token = 'test-token') => {
+  ;(cookies as Mock).mockReturnValue({
+    get: (name: string) => {
+      if (name === 'id') return { value: id }
+      if (name === 'token') return { value: token }
+      return undefined
+    },
+    set: vi.fn(),
+  })
+}
+
 describe('Page', () => {
+  beforeEach(() => {
+    mockIdAndTokenCookies()
+  })
+
   it('throws an error if form cannot be fetched by classification', async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(null, { status: 500 })),
