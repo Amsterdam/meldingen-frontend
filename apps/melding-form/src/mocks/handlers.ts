@@ -39,6 +39,7 @@ export const handlers = [
       classification: { id: 2, name: 'Test classification' },
     }),
   ),
+  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_LOCATION, () => new HttpResponse()),
 
   http.post(ENDPOINTS.POST_MELDING, () =>
     HttpResponse.json({
@@ -51,7 +52,6 @@ export const handlers = [
   ),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () => HttpResponse.json({ id: 42 })),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () => new HttpResponse()),
-  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_LOCATION, () => new HttpResponse()),
 
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_ATTACHMENTS, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_CONTACT_INFO, () => new HttpResponse()),

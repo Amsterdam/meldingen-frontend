@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
-import { postMeldingByMeldingIdLocation, putMeldingByMeldingIdSubmitLocation } from '@meldingen/api-client'
+import { patchMeldingByMeldingIdLocation, putMeldingByMeldingIdSubmitLocation } from '@meldingen/api-client'
 
 export const postLocationForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()
@@ -32,7 +32,7 @@ export const postLocationForm = async (_: unknown, formData: FormData) => {
 
   const parsedCoordinates = JSON.parse(coordinates as string)
 
-  const { error } = await postMeldingByMeldingIdLocation({
+  const { error } = await patchMeldingByMeldingIdLocation({
     body: {
       type: 'Feature',
       geometry: { type: 'Point', coordinates: [parsedCoordinates.lat, parsedCoordinates.lng] },
