@@ -30,14 +30,14 @@ describe('addAssetLayerToMap', () => {
     } as MutableRefObject<L.Layer | null>
   })
 
-  it('should return early if mapInstance is not provided', () => {
+  it('returns early when mapInstance is not provided', () => {
     const result = addAssetLayerToMap({ ...defaultProps, mapInstance: null })
 
     expect(result).toBeUndefined()
     expect(removeMock).not.toBeCalled()
   })
 
-  it('should return early when there are no assets', () => {
+  it('returns early when there are no assets', () => {
     const result = addAssetLayerToMap({ ...defaultProps, assetList: [] })
 
     expect(result).toBeUndefined()
