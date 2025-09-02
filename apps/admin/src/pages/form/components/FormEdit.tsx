@@ -6,9 +6,8 @@ import { filterFormResponse } from '../utils/filterFormResponse'
 
 export const FormEdit = () => {
   // The data is filtered here before being passed to the API
-  const transform = (data: AdditionalQuestionsForm) => {
-    filterFormResponse(data)
-  }
+  const transform = (data: AdditionalQuestionsForm) => filterFormResponse(data)
+
   return (
     <Edit transform={transform}>
       <CreateEditForm isEditForm />
