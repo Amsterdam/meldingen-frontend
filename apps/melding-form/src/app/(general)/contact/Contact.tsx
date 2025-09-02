@@ -27,15 +27,12 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   const t = useTranslations('contact')
   const tShared = useTranslations('shared')
 
-  // TODO: formdata get email en tel moet vooral geen file zijn, weet niet zeker of het string is
-  // form data moet winnen van server form components
-
   const emailLabel = formComponents[0].label
   const emailDescription = formComponents[0].description
-  const emailDefaultValue = (formData?.get('email') as string) || formComponents[0].defaultValue
+  const emailDefaultValue = (formData?.get('email') as string | undefined) || formComponents[0].defaultValue
   const telLabel = formComponents[1].label
   const telDescription = formComponents[1].description
-  const telDefaultValue = (formData?.get('tel') as string) || formComponents[1].defaultValue
+  const telDefaultValue = (formData?.get('tel') as string | undefined) || formComponents[1].defaultValue
 
   // Set focus on InvalidFormAlert when there are validation errors
   useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
