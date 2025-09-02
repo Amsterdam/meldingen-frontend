@@ -4,14 +4,13 @@ import { MutableRefObject } from 'react'
 import type { Feature } from '@meldingen/api-client'
 
 import { type Props, updateAssetMarkers } from './updateAssetMarkers'
-import { selectedAssetsIcon } from '../markerIcons'
 
 vi.mock('../markerIcons', () => ({
   selectedAssetsIcon: { icon: 'selected' },
 }))
 
 vi.mock('../utils/getContainerFeatureIcon', () => ({
-  getContainerFeatureIcon: vi.fn(() => ({ icon: 'container' })),
+  getContainerFeatureIcon: vi.fn((_feature, isSelected) => ({ icon: `container${isSelected ? '-selected' : ''}` })),
 }))
 
 const defaultProps: Props = {
@@ -47,7 +46,7 @@ describe('updateAssetMarkers', () => {
   it('sets selectedAssetsIcon for selected assets', () => {
     updateAssetMarkers(defaultProps)
 
-    expect(defaultProps.assetMarkersRef.current['1'].setIcon).toHaveBeenCalledWith(selectedAssetsIcon)
+    expect(defaultProps.assetMarkersRef.current['1'].setIcon).toHaveBeenCalledWith({ icon: 'container-selected' })
   })
 
   it('sets container icon for unselected assets', () => {
