@@ -1,6 +1,6 @@
 import { type AssetFeature, ContainerFeatureType, getContainerFeatureIcon } from './getContainerFeatureIcon'
 
-const makeFeature = (type: ContainerFeatureType | string): AssetFeature =>
+const makeFeature = (type: ContainerFeatureType | string) =>
   ({
     type: 'Feature',
     geometry: {
@@ -41,7 +41,7 @@ describe('containerFeatureIcons', () => {
     const icon = getContainerFeatureIcon(feature, true)
 
     expect(icon.options.iconUrl).toBe(expectedLabel)
-    expect(icon.options.className).toContain('selected-marker-icon-border')
+    expect(icon.options.className).toContain('selectedMarkerIconBorder')
     expect(icon.options.iconSize).toEqual([60, 60])
     expect(icon.options.iconAnchor).toEqual([34, 56])
   })

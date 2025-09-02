@@ -1,5 +1,5 @@
 import L from 'leaflet'
-import { Dispatch, SetStateAction, useEffect, useLayoutEffect, useRef } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 import 'leaflet/dist/leaflet.css'
 
 import { Feature } from '@meldingen/api-client'
@@ -126,7 +126,7 @@ export const Map = ({
   }, [mapInstance, setCoordinates])
 
   // Add marker to map based on coordinates
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (mapInstance && coordinates) {
       // Remove existing marker layer
       pointerMarkerRef.current?.remove()

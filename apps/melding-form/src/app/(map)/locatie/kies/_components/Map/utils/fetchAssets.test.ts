@@ -10,10 +10,6 @@ vi.mock('./getWfsFilter', () => ({
   getWfsFilter: vi.fn(() => 'mock-filter'),
 }))
 
-vi.mock('apps/melding-form/src/handleApiError', () => ({
-  handleApiError: vi.fn((e) => `Handled: ${e.detail}`),
-}))
-
 const mockMapInstance = {
   getSize: vi.fn(() => ({ x: 800, y: 600 })),
   getZoom: vi.fn(() => 16),
