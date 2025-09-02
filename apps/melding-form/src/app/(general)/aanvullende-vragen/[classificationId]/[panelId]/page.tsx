@@ -32,7 +32,7 @@ const getFormComponents = (components: FormOutputWithoutPanelComponents[], answe
       const defaultValues = answer.text.split(',').map((value) => value.trim())
       return { ...component, defaultValues }
     }
-    return answer ? { ...component, defaultValue: answer.text } : { ...component }
+    return answer ? { ...component, defaultValue: answer.text } : component
   })
 
 type Params = Promise<{
