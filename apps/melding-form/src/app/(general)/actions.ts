@@ -5,8 +5,6 @@ import { redirect } from 'next/navigation'
 
 import {
   getFormClassificationByClassificationId,
-  MeldingCreateOutput,
-  MeldingOutput,
   patchMeldingByMeldingId,
   postMelding,
   putMeldingByMeldingIdAnswerQuestions,
@@ -14,9 +12,6 @@ import {
 
 import { handleApiError } from '../../handleApiError'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
-
-const hasToken = (data: MeldingCreateOutput | MeldingOutput): data is MeldingCreateOutput =>
-  typeof data === 'object' && data !== null && 'token' in data && typeof data.token === 'string'
 
 export const postPrimaryForm = async (
   { existingId, existingToken }: { existingId?: string; existingToken?: string },
@@ -54,17 +49,14 @@ export const postPrimaryForm = async (
   if (error) return { formData, systemError: error }
   if (!data) return { formData, systemError: new Error('Melding data not found.') }
 
-  const { classification, created_at, id, public_id } = data
-  const token = hasToken(data) ? data.token : existingToken
+  const { classification, created_at, id, public_id, token } = data
 
   // Set session variables in cookies
   const cookieStore = await cookies()
   cookieStore.set('id', id.toString())
   cookieStore.set('created_at', created_at)
   cookieStore.set('public_id', public_id)
-  if (token) {
-    cookieStore.set('token', token)
-  }
+  cookieStore.set('token', token)
 
   if (classification) {
     // Get entire form, in order to redirect to its first panel
@@ -80,7 +72,7 @@ export const postPrimaryForm = async (
 
     // If there are no additional questions for a classification,
     // set the melding state to 'questions_answered' and redirect to /locatie.
-    if (!hasAdditionalQuestions && token) {
+    if (!hasAdditionalQuestions) {
       const { error } = await putMeldingByMeldingIdAnswerQuestions({
         path: { melding_id: id },
         query: { token },

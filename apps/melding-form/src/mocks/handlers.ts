@@ -47,6 +47,7 @@ export const handlers = [
       text: 'PATCH request',
     }),
   ),
+  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_LOCATION, () => new HttpResponse()),
 
   http.post(ENDPOINTS.POST_MELDING, () =>
     HttpResponse.json({
@@ -59,7 +60,6 @@ export const handlers = [
   ),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () => HttpResponse.json({ id: 42 })),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () => new HttpResponse()),
-  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_LOCATION, () => new HttpResponse()),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>
     HttpResponse.json({
       id: 1,

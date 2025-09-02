@@ -14,11 +14,11 @@ export const ENDPOINTS = {
 
   PATCH_MELDING_BY_MELDING_ID: 'http://localhost:8000/melding/:id',
   PATCH_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID: 'http://localhost:8000/melding/:id/answer/:answerId',
+  PATCH_MELDING_BY_MELDING_ID_LOCATION: 'http://localhost:8000/melding/:id/location',
 
   POST_MELDING: 'http://localhost:8000/melding',
   POST_MELDING_BY_MELDING_ID_ATTACHMENT: 'http://localhost:8000/melding/:id/attachment',
   POST_MELDING_BY_MELDING_ID_CONTACT: 'http://localhost:8000/melding/:id/contact',
-  POST_MELDING_BY_MELDING_ID_LOCATION: 'http://localhost:8000/melding/:id/location',
   POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID: 'http://localhost:8000/melding/:melding_id/question/:question_id',
 
   PUT_MELDING_BY_MELDING_ID_ADD_ATTACHMENTS: 'http://localhost:8000/melding/:id/add_attachments',
