@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
-import { SideBar } from './SideBar'
+import { type Props, SideBar } from './SideBar'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
@@ -13,9 +13,14 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
+const defaultProps: Props = {
+  setCoordinates: vi.fn(),
+  setSelectedAssets: vi.fn(),
+}
+
 describe('SideBar', () => {
   it('should render correctly', () => {
-    render(<SideBar setCoordinates={() => {}} />)
+    render(<SideBar {...defaultProps} />)
 
     const heading = screen.getByRole('heading', { name: 'title' })
     const description = screen.getAllByText('description')
@@ -25,7 +30,7 @@ describe('SideBar', () => {
   })
 
   it('should show an address based on provided coordinates ', async () => {
-    render(<SideBar coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} setCoordinates={() => {}} />)
+    render(<SideBar {...defaultProps} coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
 
     await waitFor(() => {
       expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
@@ -44,7 +49,7 @@ describe('SideBar', () => {
       ),
     )
 
-    render(<SideBar coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} setCoordinates={() => {}} />)
+    render(<SideBar {...defaultProps} coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
 
     await waitFor(() => {
       expect(screen.getByDisplayValue('combo-box.no-address')).toBeInTheDocument()
