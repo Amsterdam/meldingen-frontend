@@ -3,8 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useRef } from 'react'
 
-import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
-import { FormRenderer } from '@meldingen/form-renderer'
+import { FormRenderer, StaticFormTextAreaComponent } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
 import type { FormState } from '../../types'
@@ -17,7 +16,7 @@ const initialState: FormState = {}
 
 type Props = {
   action: (_: unknown, formData: FormData) => Promise<FormState>
-  formComponents: StaticFormTextAreaComponentOutput[]
+  formComponents: StaticFormTextAreaComponent[]
 }
 
 export const Home = ({ action, formComponents: formComponentsFromServer }: Props) => {

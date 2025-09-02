@@ -93,4 +93,39 @@ describe('AdditionalQuestions', () => {
 
     expect(question).toBeInTheDocument()
   })
+
+  it('renders the form data returned by the action instead of the initial defaultValue', () => {
+    const formData = new FormData()
+
+    formData.append('textArea1', 'Form data from action')
+    ;(useActionState as Mock).mockReturnValue([{ formData }, vi.fn()])
+
+    render(
+      <AdditionalQuestions
+        {...defaultProps}
+        formComponents={[{ ...textAreaComponent, defaultValue: 'Default value from server' }]}
+      />,
+    )
+
+    const input = screen.getByRole('textbox')
+
+    expect(input).toHaveValue('Form data from action')
+  })
+
+  it('renders the form data returned by the action instead of the initial defaultValues for checkboxes', () => {
+    const formData = new FormData()
+
+    formData.append('checkbox___selectBoxes___one', 'one')
+    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
+
+    render(
+      <AdditionalQuestions {...defaultProps} formComponents={[{ ...checkboxComponent, defaultValues: ['two'] }]} />,
+    )
+
+    const checkbox1 = screen.getByRole('checkbox', { name: 'One' })
+    const checkbox2 = screen.getByRole('checkbox', { name: 'Two' })
+
+    expect(checkbox1).toBeChecked()
+    expect(checkbox2).not.toBeChecked()
+  })
 })
