@@ -9,11 +9,6 @@ import { AdditionalQuestions } from './AdditionalQuestions'
 
 export const dynamic = 'force-dynamic'
 
-type Params = Promise<{
-  classificationId: number
-  panelId: string
-}>
-
 const getNextPanelPath = (classificationId: number, currentPanelIndex: number, formData: FormOutput) => {
   if (currentPanelIndex === formData.components.length - 1) return '/locatie'
 
@@ -39,6 +34,11 @@ const getFormComponents = (components: FormOutputWithoutPanelComponents[], answe
     }
     return answer ? { ...component, defaultValue: answer.text } : { ...component }
   })
+
+type Params = Promise<{
+  classificationId: number
+  panelId: string
+}>
 
 export default async ({ params }: { params: Params }) => {
   const { classificationId, panelId } = await params
