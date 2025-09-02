@@ -40,6 +40,7 @@ export const buildAnswerPromises = (
 
     const answerId = questionAndAnswerIdPairs?.find((item) => item.questionId === questionId)?.answerId
 
+    // If an answerId exists, it is an existing answer
     if (answerId) {
       return patchAnswer(answerId, meldingId, token, value, key)
     }
