@@ -73,11 +73,11 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel, previo
 
   return (
     <>
+      <title>{documentTitle}</title>
       <BackLink className="ams-mb-s" href={previousPanelPath}>
         {t('back-link')}
       </BackLink>
       <main>
-        <title>{documentTitle}</title>
         {Boolean(systemError) && <SystemErrorAlert />}
         {validationErrors && (
           <InvalidFormAlert

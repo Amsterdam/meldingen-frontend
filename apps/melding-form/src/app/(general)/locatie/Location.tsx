@@ -50,11 +50,11 @@ export const Location = ({ locationData, prevPage }: Props) => {
 
   return (
     <>
+      <title>{documentTitle}</title>
       <BackLink className="ams-mb-s" href={prevPage}>
         {t('back-link')}
       </BackLink>
       <main>
-        <title>{documentTitle}</title>
         {Boolean(systemError) && <SystemErrorAlert />}
         {validationErrors && (
           <InvalidFormAlert
