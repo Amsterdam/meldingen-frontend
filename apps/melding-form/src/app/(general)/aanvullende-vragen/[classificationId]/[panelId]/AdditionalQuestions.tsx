@@ -14,16 +14,15 @@ import { getDocumentTitleOnError } from '../../../_utils/getDocumentTitleOnError
 import { useSetFocusOnInvalidFormAlert } from '../../../_utils/useSetFocusOnInvalidFormAlert'
 import { FormState, ValidationError } from 'apps/melding-form/src/types'
 
-const getPrefilledFormComponents = (components: Component[], formData?: FormData): Component[] =>
+const getPrefilledFormComponents = (components: Component[], formData: FormData): Component[] =>
   components.map((component) => {
-    // Prefill checkboxes if no defaultValues are set
-    if (isSelectboxes(component) && !component.defaultValues) {
-      const defaultValues = component.values.map(({ value }) => formData?.get(`checkbox___${component.key}___${value}`))
+    if (isSelectboxes(component)) {
+      const defaultValues = component.values.map(({ value }) => formData.get(`checkbox___${component.key}___${value}`))
 
       return { ...component, defaultValues }
     }
 
-    const formValue = formData?.get(component.key)
+    const formValue = formData.get(component.key)
 
     if (typeof formValue === 'string') {
       return { ...component, defaultValue: formValue }
@@ -47,7 +46,12 @@ export type Props = {
 
 const initialState: FormState = {}
 
-export const AdditionalQuestions = ({ action, formComponents, panelLabel, previousPanelPath }: Props) => {
+export const AdditionalQuestions = ({
+  action,
+  formComponents: formComponentsFromServer,
+  panelLabel,
+  previousPanelPath,
+}: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
@@ -55,7 +59,14 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel, previo
   const t = useTranslations('additional-questions')
   const tShared = useTranslations('shared')
 
-  const prefilledFormComponents = getPrefilledFormComponents(formComponents, formData)
+  /**
+   * Form components can be prefilled on load on the server, where we fill in existing answers from the backend,
+   * or in case of an error, where we use the form data provided.
+   * If there is form data, it should take priority over the prefilled components from the server.
+   */
+  const formComponents = formData
+    ? getPrefilledFormComponents(formComponentsFromServer, formData)
+    : formComponentsFromServer
 
   // Set focus on InvalidFormAlert when there are validation errors
   useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
@@ -90,7 +101,7 @@ export const AdditionalQuestions = ({ action, formComponents, panelLabel, previo
         )}
         <FormHeader title={t('title')} step={t('step')} />
         <FormRenderer
-          formComponents={prefilledFormComponents}
+          formComponents={formComponents}
           action={formAction}
           panelLabel={panelLabel}
           submitButtonText={t('submit-button')}
