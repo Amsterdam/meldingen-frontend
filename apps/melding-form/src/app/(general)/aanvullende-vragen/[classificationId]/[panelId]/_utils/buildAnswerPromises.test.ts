@@ -27,4 +27,39 @@ describe('buildAnswerPromises', () => {
 
     expect(result).toEqual([undefined])
   })
+
+  it('does a PATCH request when an entry has an answerId (answer already exists)', async () => {
+    const entry: [string, string] = ['key1', 'test']
+    const questionKeysAndIds = [{ key: 'key1', id: 1 }]
+    const questionAndAnswerIdPairs = [{ answerId: 2, questionId: 1 }]
+
+    const result = buildAnswerPromises([entry], '123', questionKeysAndIds, 'test-token', questionAndAnswerIdPairs)
+
+    expect(await result[0]).toMatchObject({
+      key: 'key1',
+      value: {
+        data: expect.objectContaining({
+          id: 1,
+          text: 'PATCH request',
+        }),
+      },
+    })
+  })
+
+  it('does a POST request when an entry does not have an answerId (answer does not already exists)', async () => {
+    const entry: [string, string] = ['key1', 'test']
+    const questionKeysAndIds = [{ key: 'key1', id: 1 }]
+
+    const result = buildAnswerPromises([entry], '123', questionKeysAndIds, 'test-token')
+
+    expect(await result[0]).toMatchObject({
+      key: 'key1',
+      value: {
+        data: expect.objectContaining({
+          id: 1,
+          text: 'POST request',
+        }),
+      },
+    })
+  })
 })
