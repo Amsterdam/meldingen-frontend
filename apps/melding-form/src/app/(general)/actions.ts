@@ -58,6 +58,10 @@ export const postPrimaryForm = async (
   cookieStore.set('public_id', public_id)
   cookieStore.set('token', token)
 
+  // The 'lastPanelPath' cookie might be populated by earlier additional questions.
+  // Override it here in case a reclassification occurs.
+  cookieStore.delete('lastPanelPath')
+
   if (classification) {
     // Get entire form, in order to redirect to its first panel
     const { data, error } = await getFormClassificationByClassificationId({
