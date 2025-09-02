@@ -42,7 +42,7 @@ export const getContainerFeatureIcon = (feature: AssetFeature, isSelected: boole
   if (isSelected) {
     return L.icon({
       ...icon.options,
-      className: styles['selectedMarkerIconBorder'],
+      className: styles.selectedMarkerIconBorder,
       iconSize: [60, 60],
       iconAnchor: [34, 56],
     })
