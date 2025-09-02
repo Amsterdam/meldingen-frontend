@@ -1,16 +1,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import type {
-  AnswerQuestionOutput,
-  FormCheckboxComponentOutput,
-  FormOutput,
-  FormPanelComponentOutput,
-  FormRadioComponentOutput,
-  FormSelectComponentOutput,
-  FormTextAreaComponentOutput,
-  FormTextFieldInputComponentOutput,
-} from '@meldingen/api-client'
+import type { AnswerQuestionOutput, FormOutput, FormPanelComponentOutput } from '@meldingen/api-client'
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
 import { postForm } from './actions'
@@ -35,26 +26,17 @@ const getPreviousPanelPath = (classificationId: number, currentPanelIndex: numbe
   return `/aanvullende-vragen/${classificationId}/${formData.components[currentPanelIndex - 1].key}`
 }
 
-const getFormComponents = (
-  components: (
-    | FormCheckboxComponentOutput
-    | FormRadioComponentOutput
-    | FormSelectComponentOutput
-    | FormTextAreaComponentOutput
-    | FormTextFieldInputComponentOutput
-  )[],
-  answers?: AnswerQuestionOutput[],
-) =>
+type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
+
+const getFormComponents = (components: FormOutputWithoutPanelComponents[], answers?: AnswerQuestionOutput[]) =>
   components.map((component) => {
     const answer = answers?.find((answer) => answer.question.id === component.question)
 
     // Prefill if answer exists, otherwise return component without defaultValue(s)
     if (component.type === 'selectboxes' && answer) {
       const defaultValues = answer.text.split(',').map((value) => value.trim())
-
       return { ...component, defaultValues }
     }
-
     return answer ? { ...component, defaultValue: answer.text } : { ...component }
   })
 

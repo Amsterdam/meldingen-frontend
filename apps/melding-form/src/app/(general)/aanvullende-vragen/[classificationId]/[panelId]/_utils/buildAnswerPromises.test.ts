@@ -46,7 +46,7 @@ describe('buildAnswerPromises', () => {
     })
   })
 
-  it('does a POST request when an entry does not have an answerId (answer does not already exists)', async () => {
+  it('does a POST request when an entry does not have an answerId (answer does not already exist)', async () => {
     const entry: [string, string] = ['key1', 'test']
     const questionKeysAndIds = [{ key: 'key1', id: 1 }]
 
