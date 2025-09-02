@@ -3,19 +3,12 @@ import L from 'leaflet'
 import { Mock } from 'vitest'
 
 import { type Props, useAssetLayer } from './useAssetLayer'
-import { addAssetLayerToMap } from '../utils/addAssetLayerToMap'
-import { ASSET_ZOOM_THRESHOLD, fetchAssets } from '../utils/fetchAssets'
-import { updateAssetMarkers } from '../utils/updateAssetMarkers'
+import { addAssetLayerToMap, ASSET_ZOOM_THRESHOLD, fetchAssets, updateAssetMarkers } from '../_utils'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
-vi.mock('../utils/fetchAssets', () => ({
+vi.mock('../_utils', () => ({
   fetchAssets: vi.fn(() => ({ features: containerAssets })),
-}))
-vi.mock('../utils/addAssetLayerToMap', () => ({
   addAssetLayerToMap: vi.fn(),
-}))
-
-vi.mock('../utils/updateAssetMarkers', () => ({
   updateAssetMarkers: vi.fn(),
 }))
 

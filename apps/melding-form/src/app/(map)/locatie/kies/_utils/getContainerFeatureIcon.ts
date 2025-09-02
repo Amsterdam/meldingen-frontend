@@ -10,7 +10,7 @@ import {
   textielAfvalIcon,
 } from '../markerIcons'
 
-import styles from '../Map.module.css'
+import styles from '../SelectLocation.module.css'
 
 export enum ContainerFeatureType {
   Papier = 'Papier',

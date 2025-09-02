@@ -9,7 +9,7 @@ vi.mock('../markerIcons', () => ({
   selectedAssetsIcon: { icon: 'selected' },
 }))
 
-vi.mock('../utils/getContainerFeatureIcon', () => ({
+vi.mock('./getContainerFeatureIcon', () => ({
   getContainerFeatureIcon: vi.fn((_feature, isSelected) => ({ icon: `container${isSelected ? '-selected' : ''}` })),
 }))
 

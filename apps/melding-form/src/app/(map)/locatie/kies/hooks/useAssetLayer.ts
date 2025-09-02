@@ -3,9 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { addAssetLayerToMap } from '../utils/addAssetLayerToMap'
-import { fetchAssets } from '../utils/fetchAssets'
-import { updateAssetMarkers } from '../utils/updateAssetMarkers'
+import { addAssetLayerToMap, fetchAssets, updateAssetMarkers } from '../_utils'
 import { Coordinates } from 'apps/melding-form/src/types'
 
 export type Props = {

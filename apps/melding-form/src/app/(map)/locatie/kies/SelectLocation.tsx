@@ -12,6 +12,7 @@ import { Feature } from '@meldingen/api-client'
 import { AssetList } from './_components/AssetList/AssetList'
 import { AssetListToggle } from './_components/AssetListToggle/AssetListToggle'
 import { SideBar } from './_components/SideBar/SideBar'
+import { useAssetLayer } from './hooks/useAssetLayer'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './SelectLocation.module.css'
@@ -36,6 +37,16 @@ export const SelectLocation = ({ classification }: Props) => {
 
   const isWideWindow = useIsAfterBreakpoint('wide')
 
+  useAssetLayer({
+    assetList,
+    classification,
+    mapInstance,
+    selectedAssets,
+    setAssetList,
+    setCoordinates,
+    setSelectedAssets,
+  })
+
   useEffect(() => {
     // Hide mobile asset list view when resizing to larger screens
     if (isWideWindow) {
@@ -54,16 +65,13 @@ export const SelectLocation = ({ classification }: Props) => {
       </div>
       <div className={styles.map}>
         <Map
-          classification={classification}
           coordinates={coordinates}
           mapInstance={mapInstance}
-          setAssetList={setAssetList}
+          selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
           setMapInstance={setMapInstance}
-          showAssetList={showAssetList}
-          assetList={assetList}
-          selectedAssets={selectedAssets}
           setSelectedAssets={setSelectedAssets}
+          showAssetList={showAssetList}
         />
         <div className={styles.buttonWrapper}>
           <Button

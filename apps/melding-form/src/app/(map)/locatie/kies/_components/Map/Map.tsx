@@ -4,20 +4,16 @@ import 'leaflet/dist/leaflet.css'
 
 import { Feature } from '@meldingen/api-client'
 
+import { defaultIcon } from '../../markerIcons'
 import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './components/Crosshair/Crosshair'
-import { useAssetLayer } from './hooks/useAssetLayer'
-import { defaultIcon } from './markerIcons'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
 
 export type Props = {
-  assetList: Feature[]
-  classification?: string
   coordinates?: Coordinates
   mapInstance: L.Map | null
-  setAssetList: (assets: Feature[]) => void
   setCoordinates: (coordinates?: Coordinates) => void
   setMapInstance: (map: L.Map) => void
   showAssetList?: boolean
@@ -26,11 +22,8 @@ export type Props = {
 }
 
 export const Map = ({
-  assetList,
-  classification,
   coordinates,
   mapInstance,
-  setAssetList,
   setCoordinates,
   setMapInstance,
   showAssetList,
@@ -42,16 +35,6 @@ export const Map = ({
 
   // This could be a useState but as we don't expect this to fire more than once, use ref as it is mutable and won't trigger any further re-render
   const createdMapInstance = useRef(false)
-
-  useAssetLayer({
-    assetList,
-    classification,
-    mapInstance,
-    selectedAssets,
-    setAssetList,
-    setCoordinates,
-    setSelectedAssets,
-  })
 
   useEffect(() => {
     // Ensure that the target DOM element exists and that the map doesn't already exist (to prevent duplicate renders in StrictMode)

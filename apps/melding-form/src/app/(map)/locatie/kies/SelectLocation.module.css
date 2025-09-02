@@ -68,3 +68,8 @@
 .removeAbsolutePosition {
   position: unset;
 }
+
+.selectedMarkerIconBorder {
+  border: 4px solid var(--ams-color-highlight-green); /* stylelint-disable-line unit-disallowed-list */
+  border-radius: 50%;
+}
