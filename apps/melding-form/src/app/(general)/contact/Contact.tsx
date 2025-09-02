@@ -6,7 +6,7 @@ import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useRef } from 'react'
 
-import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+import type { StaticFormTextAreaComponent } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
 
@@ -19,7 +19,7 @@ import { FormState } from 'apps/melding-form/src/types'
 
 const initialState: FormState = {}
 
-export const Contact = ({ formComponents }: { formComponents: StaticFormTextAreaComponentOutput[] }) => {
+export const Contact = ({ formComponents }: { formComponents: StaticFormTextAreaComponent[] }) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(postContactForm, initialState)
@@ -27,10 +27,15 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   const t = useTranslations('contact')
   const tShared = useTranslations('shared')
 
+  // TODO: formdata get email en tel moet vooral geen file zijn, weet niet zeker of het string is
+  // form data moet winnen van server form components
+
   const emailLabel = formComponents[0].label
   const emailDescription = formComponents[0].description
+  const emailDefaultValue = (formData?.get('email') as string) || formComponents[0].defaultValue
   const telLabel = formComponents[1].label
   const telDescription = formComponents[1].description
+  const telDefaultValue = (formData?.get('tel') as string) || formComponents[1].defaultValue
 
   // Set focus on InvalidFormAlert when there are validation errors
   useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
@@ -85,7 +90,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
             aria-describedby={getAriaDescribedBy('email-input', emailDescription, emailErrorMessage)}
             autoComplete="email"
             autoCorrect="off"
-            defaultValue={formData?.get('email') as string}
+            defaultValue={emailDefaultValue}
             id="email-input"
             invalid={Boolean(emailErrorMessage)}
             name="email"
@@ -107,7 +112,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
           <TextInput
             aria-describedby={getAriaDescribedBy('tel-input', telDescription, telErrorMessage)}
             autoComplete="tel"
-            defaultValue={formData?.get('phone') as string}
+            defaultValue={telDefaultValue}
             id="tel-input"
             invalid={Boolean(telErrorMessage)}
             name="phone"
