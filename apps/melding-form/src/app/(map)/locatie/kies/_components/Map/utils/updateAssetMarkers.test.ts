@@ -32,25 +32,25 @@ const defaultProps: Props = {
 }
 
 describe('updateAssetMarkers', () => {
-  it('should not update markers if mapInstance is null', () => {
+  it('does not update markers if mapInstance is null', () => {
     const result = updateAssetMarkers({ ...defaultProps, mapInstance: null })
 
     expect(result).toBeUndefined()
   })
 
-  it('should not update markers if assetMarkersRef is empty', () => {
+  it('does not update markers if assetMarkersRef is empty', () => {
     const result = updateAssetMarkers({ ...defaultProps, assetMarkersRef: { current: {} } })
 
     expect(result).toBeUndefined()
   })
 
-  it('should set selectedAssetsIcon for selected assets', () => {
+  it('sets selectedAssetsIcon for selected assets', () => {
     updateAssetMarkers(defaultProps)
 
     expect(defaultProps.assetMarkersRef.current['1'].setIcon).toHaveBeenCalledWith(selectedAssetsIcon)
   })
 
-  it('should set container icon for unselected assets', () => {
+  it('sets container icon for unselected assets', () => {
     updateAssetMarkers(defaultProps)
 
     expect(defaultProps.assetMarkersRef.current['2'].setIcon).toHaveBeenCalledWith({ icon: 'container' })

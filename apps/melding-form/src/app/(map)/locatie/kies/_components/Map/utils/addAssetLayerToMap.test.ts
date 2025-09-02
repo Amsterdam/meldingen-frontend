@@ -44,31 +44,31 @@ describe('addAssetLayerToMap', () => {
     expect(removeMock).not.toBeCalled()
   })
 
-  it('should remove the previous asset layer if it exists', () => {
+  it('removes the previous asset layer if it exists', () => {
     addAssetLayerToMap({ ...defaultProps })
 
     expect(removeMock).toHaveBeenCalledOnce()
   })
 
-  it('should add a new geoJSON layer to the map', () => {
+  it('adds a new geoJSON layer to the map', () => {
     addAssetLayerToMap({ ...defaultProps })
 
     expect(defaultProps.mapInstance?.hasLayer(defaultProps.assetLayerRef.current!)).toBe(true)
   })
 
-  it('should call getContainerFeatureIcon for each feature', () => {
+  it('calls getContainerFeatureIcon for each feature', () => {
     addAssetLayerToMap({ ...defaultProps })
 
     expect(getContainerFeatureIcon).toHaveBeenCalledWith(containerAssets[0])
   })
 
-  it('should use defaultIcon for selected feature', () => {
+  it('uses selectedAssetIcon for selected feature', () => {
     addAssetLayerToMap({ ...defaultProps, selectedAssets: [containerAssets[0]] })
 
     expect(getContainerFeatureIcon).not.toHaveBeenCalledWith(containerAssets[0])
   })
 
-  it('should set selectedAssets and coordinates when marker is clicked and not selected', () => {
+  it('sets selectedAssets and coordinates when marker is clicked and not selected', () => {
     addAssetLayerToMap({ ...defaultProps })
 
     const marker = defaultProps.assetMarkersRef.current[containerAssets[0].id!]
@@ -81,7 +81,7 @@ describe('addAssetLayerToMap', () => {
     })
   })
 
-  it('should not add more than MAX_ASSETS when marker is clicked', () => {
+  it('does not add more than MAX_ASSETS when marker is clicked', () => {
     const assetList = Array(6)
       .fill(containerAssets[0])
       .map((asset, index) => ({ ...asset, id: (index + 1).toString() }))
@@ -99,7 +99,7 @@ describe('addAssetLayerToMap', () => {
     expect(defaultProps.setCoordinates).not.toHaveBeenCalled()
   })
 
-  it('should remove asset from selectedAssets and unset coordinates when marker is clicked and already selected', () => {
+  it('removes asset from selectedAssets and unset coordinates when marker is clicked and already selected', () => {
     addAssetLayerToMap({ ...defaultProps, selectedAssets: [containerAssets[0]] })
 
     const marker = defaultProps.assetMarkersRef.current[containerAssets[0].id!]
@@ -109,7 +109,7 @@ describe('addAssetLayerToMap', () => {
     expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
   })
 
-  it('should assign marker to assetMarkersRef using feature id', () => {
+  it('assigns marker to assetMarkersRef using feature id', () => {
     addAssetLayerToMap({ ...defaultProps })
 
     expect(defaultProps.assetMarkersRef.current[containerAssets[0].id!]).toBeInstanceOf(L.Marker)

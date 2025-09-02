@@ -35,7 +35,7 @@ const defaultProps: Props = {
 }
 
 describe('useAssetLayer', () => {
-  it('should call fetchAssets on moveend', () => {
+  it('calls fetchAssets on moveend', () => {
     renderHook(() => useAssetLayer(defaultProps))
 
     expect(mapInstanceMock.on).toHaveBeenCalledWith('moveend', expect.any(Function))
@@ -51,13 +51,13 @@ describe('useAssetLayer', () => {
     })
   })
 
-  it('should call addAssetLayerToMap when there are assets in assetList', async () => {
+  it('calls addAssetLayerToMap when there are assets in assetList', async () => {
     renderHook(() => useAssetLayer({ ...defaultProps, assetList: containerAssets }))
 
     expect(addAssetLayerToMap).toHaveBeenCalled()
   })
 
-  it('should call updateAssetMarkers when selectedAssets are present', async () => {
+  it('calls updateAssetMarkers when selectedAssets are present', async () => {
     renderHook(() => useAssetLayer({ ...defaultProps, selectedAssets: [containerAssets[0]] }))
 
     expect(updateAssetMarkers).toHaveBeenCalledWith({

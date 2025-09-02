@@ -27,21 +27,21 @@ const defaultProps: Props = {
 }
 
 describe('fetchAssets', () => {
-  it('shoould return undefined if classification is undefined', async () => {
+  it('returns undefined if classification is undefined', async () => {
     const result = await fetchAssets({ ...defaultProps, classification: undefined })
 
     expect(result).toBeUndefined()
     expect(defaultProps.mapInstance.getZoom).not.toHaveBeenCalled()
   })
 
-  it('should not fetch assets if classification has no asset support', async () => {
+  it('does not fetch assets if classification has no asset support', async () => {
     const result = await fetchAssets({ ...defaultProps, classification: 'invalid-classification' })
 
     expect(result).toBeUndefined()
     expect(defaultProps.mapInstance.getZoom).not.toHaveBeenCalled()
   })
 
-  it('should not fetch assets if map is hidden', async () => {
+  it('does not fetch assets if map is hidden', async () => {
     const hiddenMapInstance = {
       ...mockMapInstance,
       getSize: vi.fn(() => ({ x: 0, y: 0 })),
@@ -53,13 +53,13 @@ describe('fetchAssets', () => {
     expect(defaultProps.mapInstance.getZoom).not.toHaveBeenCalled()
   })
 
-  it('should call setAssetList with fetched assets', async () => {
+  it('calls setAssetList with fetched assets', async () => {
     await fetchAssets(defaultProps)
 
     expect(defaultProps.setAssetList).toHaveBeenCalledWith(containerAssets)
   })
 
-  it('should throw an error if the API call fails', async () => {
+  it('throws an error if the API call fails', async () => {
     server.use(
       http.get(ENDPOINTS.GET_WFS_BY_NAME, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })),
     )
@@ -67,7 +67,7 @@ describe('fetchAssets', () => {
     await expect(fetchAssets(defaultProps)).rejects.toThrow('Error message')
   })
 
-  it('should call setAssetsList with empty array and remove layer if zoom is below threshold', async () => {
+  it('calls setAssetsList with empty array and remove layer if zoom is below threshold', async () => {
     const lowZoomMapInstance = {
       ...mockMapInstance,
       getZoom: vi.fn(() => 15),
