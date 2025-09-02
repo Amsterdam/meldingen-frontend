@@ -5,7 +5,6 @@ import { Dispatch, MutableRefObject, SetStateAction } from 'react'
 import type { Feature } from '@meldingen/api-client'
 
 import { getContainerFeatureIcon } from './getContainerFeatureIcon'
-import { selectedAssetsIcon } from '../markerIcons'
 import { Coordinates } from 'apps/melding-form/src/types'
 
 const MAX_ASSETS = 5
@@ -38,7 +37,7 @@ export const addAssetLayerToMap = ({
       const isSelected = selectedAssets.some((a) => a.id === feature.id)
 
       const marker = new L.Marker(latlng, {
-        icon: isSelected ? selectedAssetsIcon : getContainerFeatureIcon(feature),
+        icon: getContainerFeatureIcon(feature, isSelected),
         keyboard: false,
       })
 
@@ -48,7 +47,6 @@ export const addAssetLayerToMap = ({
 
       marker.on('click', () => {
         if (!isSelected) {
-          // TODO: show some kind of message that max assets is reached
           if (selectedAssets.length >= MAX_ASSETS) return
 
           setSelectedAssets((selectedList) => [...selectedList, feature as Feature])

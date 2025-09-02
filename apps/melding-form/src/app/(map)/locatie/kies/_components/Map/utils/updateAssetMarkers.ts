@@ -3,8 +3,7 @@ import { MutableRefObject } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { selectedAssetsIcon } from '../markerIcons'
-import { getContainerFeatureIcon } from '../utils/getContainerFeatureIcon'
+import { getContainerFeatureIcon } from './getContainerFeatureIcon'
 
 export type Props = {
   mapInstance: L.Map | null
@@ -18,10 +17,8 @@ export const updateAssetMarkers = ({ mapInstance, assetMarkersRef, selectedAsset
   Object.entries(assetMarkersRef.current).forEach(([id, marker]) => {
     const isSelected = selectedAssets.some((asset) => asset.id === id)
 
-    if (isSelected) {
-      marker.setIcon(selectedAssetsIcon)
-    } else if (marker.feature) {
-      marker.setIcon(getContainerFeatureIcon(marker.feature))
+    if (marker.feature) {
+      marker.setIcon(getContainerFeatureIcon(marker.feature, isSelected))
     }
   })
 }

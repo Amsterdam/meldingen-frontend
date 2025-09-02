@@ -59,13 +59,13 @@ describe('addAssetLayerToMap', () => {
   it('calls getContainerFeatureIcon for each feature', () => {
     addAssetLayerToMap({ ...defaultProps })
 
-    expect(getContainerFeatureIcon).toHaveBeenCalledWith(containerAssets[0])
+    expect(getContainerFeatureIcon).toHaveBeenCalledWith(containerAssets[0], false)
   })
 
   it('uses selectedAssetIcon for selected feature', () => {
     addAssetLayerToMap({ ...defaultProps, selectedAssets: [containerAssets[0]] })
 
-    expect(getContainerFeatureIcon).not.toHaveBeenCalledWith(containerAssets[0])
+    expect(getContainerFeatureIcon).toHaveBeenCalledWith(containerAssets[0], true)
   })
 
   it('sets selectedAssets and coordinates when marker is clicked and not selected', () => {
