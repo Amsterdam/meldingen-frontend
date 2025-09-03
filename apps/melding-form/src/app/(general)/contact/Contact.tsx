@@ -30,18 +30,18 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   const emailLabel = formComponents[0].label
   const emailDescription = formComponents[0].description
   const emailDefaultValue = (formData?.get('email') as string | undefined) || formComponents[0].defaultValue
+  const emailErrorMessage = validationErrors?.find((error) => error.key === 'email-input')?.message
+
   const telLabel = formComponents[1].label
   const telDescription = formComponents[1].description
   const telDefaultValue = (formData?.get('tel') as string | undefined) || formComponents[1].defaultValue
+  const telErrorMessage = validationErrors?.find((error) => error.key === 'tel-input')?.message
 
   // Set focus on InvalidFormAlert when there are validation errors
   useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
 
   // Update document title when there are validation errors
   const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
-
-  const emailErrorMessage = validationErrors?.find((error) => error.key === 'email-input')?.message
-  const telErrorMessage = validationErrors?.find((error) => error.key === 'tel-input')?.message
 
   useEffect(() => {
     if (systemError) {
