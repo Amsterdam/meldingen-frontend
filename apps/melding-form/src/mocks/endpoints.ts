@@ -13,6 +13,7 @@ export const ENDPOINTS = {
   GET_MELDING_BY_MELDING_ID_MELDER: 'http://localhost:8000/melding/:id/melder',
 
   PATCH_MELDING_BY_MELDING_ID: 'http://localhost:8000/melding/:id',
+  PATCH_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID: 'http://localhost:8000/melding/:id/answer/:answerId',
   PATCH_MELDING_BY_MELDING_ID_LOCATION: 'http://localhost:8000/melding/:id/location',
 
   POST_MELDING: 'http://localhost:8000/melding',

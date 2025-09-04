@@ -3,8 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useRef } from 'react'
 
-import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
-import { FormRenderer } from '@meldingen/form-renderer'
+import { FormRenderer, StaticFormTextAreaComponent } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
 import type { FormState } from '../../types'
@@ -17,10 +16,10 @@ const initialState: FormState = {}
 
 type Props = {
   action: (_: unknown, formData: FormData) => Promise<FormState>
-  formComponents: StaticFormTextAreaComponentOutput[]
+  formComponents: StaticFormTextAreaComponent[]
 }
 
-export const Home = ({ action, formComponents }: Props) => {
+export const Home = ({ action, formComponents: formComponentsFromServer }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
@@ -28,15 +27,22 @@ export const Home = ({ action, formComponents }: Props) => {
   const t = useTranslations('homepage')
   const tShared = useTranslations('shared')
 
-  const prefilledFormComponents = formComponents.map((component) => {
-    const formValue = formData?.get(component.key)
+  /**
+   * Form components can be prefilled on load on the server, where we fill in existing answers from the backend,
+   * or in case of an error, where we use the form data provided.
+   * If there is form data, it should take priority over the prefilled components from the server.
+   */
+  const formComponents = formData
+    ? formComponentsFromServer.map((component) => {
+        const formValue = formData.get(component.key)
 
-    if (typeof formValue === 'string') {
-      return { ...component, defaultValue: formValue }
-    }
+        if (typeof formValue === 'string') {
+          return { ...component, defaultValue: formValue }
+        }
 
-    return component
-  })
+        return component
+      })
+    : formComponentsFromServer
 
   // Set focus on InvalidFormAlert when there are validation errors
   useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
@@ -71,7 +77,7 @@ export const Home = ({ action, formComponents }: Props) => {
       <FormHeader title={t('title')} step={t('step')} />
       <FormRenderer
         action={formAction}
-        formComponents={prefilledFormComponents}
+        formComponents={formComponents}
         submitButtonText={t('submit-button')}
         validationErrors={validationErrors}
       />

@@ -16,6 +16,7 @@ type ArgsType = {
   nextPanelPath: string
   questionKeysAndIds: { key: string; id: number }[]
   requiredQuestionKeys: string[]
+  questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
 }
 
 const getUnansweredRequiredQuestionKeys = (requiredKeys: string[], entries: [string, unknown][]) =>
@@ -32,7 +33,14 @@ const getUnansweredRequiredQuestionKeys = (requiredKeys: string[], entries: [str
   })
 
 export const postForm = async (
-  { isLastPanel, lastPanelPath, nextPanelPath, questionKeysAndIds, requiredQuestionKeys }: ArgsType,
+  {
+    isLastPanel,
+    lastPanelPath,
+    nextPanelPath,
+    questionKeysAndIds,
+    questionAndAnswerIdPairs,
+    requiredQuestionKeys,
+  }: ArgsType,
   _: unknown,
   formData: FormData,
 ) => {
@@ -67,7 +75,13 @@ export const postForm = async (
   }
 
   // Build promise array
-  const promiseArray = buildAnswerPromises(entriesWithMergedCheckboxes, questionKeysAndIds, meldingId, token)
+  const promiseArray = buildAnswerPromises(
+    entriesWithMergedCheckboxes,
+    meldingId,
+    questionKeysAndIds,
+    token,
+    questionAndAnswerIdPairs,
+  )
   const results = await Promise.all(promiseArray)
 
   // Return validation errors if there are any
