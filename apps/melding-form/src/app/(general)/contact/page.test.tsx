@@ -1,7 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
+import { cookies } from 'next/headers'
+import { Mock } from 'vitest'
 
+import { Contact } from './Contact'
 import Page from './page'
+import { melding } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
@@ -9,7 +13,28 @@ vi.mock('./Contact', () => ({
   Contact: vi.fn(() => <div>Contact Component</div>),
 }))
 
+vi.mock('next/headers', () => ({
+  cookies: vi.fn().mockReturnValue({
+    get: vi.fn(),
+  }),
+}))
+
+const mockIdAndTokenCookies = (id = '123', token = 'test-token') => {
+  ;(cookies as Mock).mockReturnValue({
+    get: (name: string) => {
+      if (name === 'id') return { value: id }
+      if (name === 'token') return { value: token }
+      return undefined
+    },
+    set: vi.fn(),
+  })
+}
+
 describe('Page', () => {
+  beforeEach(() => {
+    mockIdAndTokenCookies()
+  })
+
   it('renders the Contact component', async () => {
     const PageComponent = await Page()
 
@@ -25,16 +50,7 @@ describe('Page', () => {
   })
 
   it('throws an error if no contact form is found', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_STATIC_FORM, () =>
-        HttpResponse.json([
-          {
-            id: '123',
-            type: 'not-contact',
-          },
-        ]),
-      ),
-    )
+    server.use(http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json([{ id: '123', type: 'not-contact' }])))
 
     await expect(Page()).rejects.toThrowError('Contact form id not found.')
   })
@@ -66,5 +82,42 @@ describe('Page', () => {
     )
 
     await expect(Page()).rejects.toThrowError('Contact form labels not found.')
+  })
+
+  it('prefills the form components with existing answers', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
+        HttpResponse.json({
+          components: [
+            { key: 'email-input', type: 'textarea', label: 'Email' },
+            { key: 'tel-input', type: 'textarea', label: 'Phone' },
+          ],
+        }),
+      ),
+    )
+
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    expect(Contact).toHaveBeenCalledWith(
+      {
+        formComponents: [
+          {
+            defaultValue: melding.email,
+            key: 'email-input',
+            label: 'Email',
+            type: 'textarea',
+          },
+          {
+            defaultValue: melding.phone,
+            key: 'tel-input',
+            label: 'Phone',
+            type: 'textarea',
+          },
+        ],
+      },
+      {},
+    )
   })
 })

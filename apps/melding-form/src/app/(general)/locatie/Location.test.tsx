@@ -29,6 +29,15 @@ describe('Location', () => {
     expect(header).toBeInTheDocument()
   })
 
+  it('renders the back link', () => {
+    render(<Location {...defaultProps} />)
+
+    const link = screen.getByRole('link', { name: 'back-link' })
+
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '/previous')
+  })
+
   it('does not render an error message when there is none', () => {
     render(<Location {...defaultProps} />)
 

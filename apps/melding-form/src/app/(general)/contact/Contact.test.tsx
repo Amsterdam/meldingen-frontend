@@ -64,7 +64,7 @@ describe('Contact', () => {
     expect(header).toBeInTheDocument()
   })
 
-  it('should render page and form', async () => {
+  it('renders page and form', async () => {
     render(<Contact formComponents={contactFormData} />)
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
@@ -76,7 +76,7 @@ describe('Contact', () => {
     expect(submitButton).toBeInTheDocument()
   })
 
-  it('should render descriptions that are connected to the e-mail and tel inputs', () => {
+  it('renders descriptions that are connected to the e-mail and tel inputs', () => {
     render(<Contact formComponents={contactFormData} />)
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
@@ -86,7 +86,7 @@ describe('Contact', () => {
     expect(telInput).toHaveAccessibleDescription('Test 2')
   })
 
-  it('should not render descriptions when they are not provided', () => {
+  it('does not render descriptions when they are not provided', () => {
     const contactFormDataWithoutDescriptions = [
       {
         ...contactFormData[0],
@@ -107,5 +107,53 @@ describe('Contact', () => {
     expect(emailInput).not.toHaveAttribute('aria-describedby', 'email-input-description')
     expect(telInput).not.toHaveAccessibleDescription()
     expect(telInput).not.toHaveAttribute('aria-describedby', 'tel-input-description')
+  })
+
+  it('renders default values in the inputs when provided', () => {
+    const contactFormDataWithDefaultValues = [
+      {
+        ...contactFormData[0],
+        defaultValue: 'test@example.com',
+      },
+      {
+        ...contactFormData[1],
+        defaultValue: '0612345678',
+      },
+    ]
+
+    render(<Contact formComponents={contactFormDataWithDefaultValues} />)
+
+    const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
+    const telInput = screen.getByRole('textbox', { name: 'Wat is uw telefoonnummer? (niet verplicht)' })
+
+    expect(emailInput).toHaveValue('test@example.com')
+    expect(telInput).toHaveValue('0612345678')
+  })
+
+  it('prioritizes form data returned by the action over the initial defaultValue', () => {
+    const formData = new FormData()
+
+    formData.append('email', 'Email data from action')
+    formData.append('tel', 'Tel data from action')
+    ;(useActionState as Mock).mockReturnValue([{ formData }, vi.fn()])
+
+    const contactFormDataWithDefaultValues = [
+      {
+        ...contactFormData[0],
+        defaultValue: 'test@example.com',
+      },
+      {
+        ...contactFormData[1],
+        defaultValue: '0612345678',
+      },
+    ]
+
+    render(<Contact formComponents={contactFormDataWithDefaultValues} />)
+
+    const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
+    const telInput = screen.getByRole('textbox', { name: 'Wat is uw telefoonnummer? (niet verplicht)' })
+
+    expect(emailInput).toHaveValue('Email data from action')
+    expect(telInput).toHaveValue('Tel data from action')
   })
 })
