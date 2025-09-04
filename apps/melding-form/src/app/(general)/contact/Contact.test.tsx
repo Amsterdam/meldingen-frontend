@@ -64,7 +64,7 @@ describe('Contact', () => {
     expect(header).toBeInTheDocument()
   })
 
-  it('should render page and form', async () => {
+  it('renders page and form', async () => {
     render(<Contact formComponents={contactFormData} />)
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
@@ -76,7 +76,7 @@ describe('Contact', () => {
     expect(submitButton).toBeInTheDocument()
   })
 
-  it('should render descriptions that are connected to the e-mail and tel inputs', () => {
+  it('renders descriptions that are connected to the e-mail and tel inputs', () => {
     render(<Contact formComponents={contactFormData} />)
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
@@ -86,7 +86,7 @@ describe('Contact', () => {
     expect(telInput).toHaveAccessibleDescription('Test 2')
   })
 
-  it('should not render descriptions when they are not provided', () => {
+  it('does not render descriptions when they are not provided', () => {
     const contactFormDataWithoutDescriptions = [
       {
         ...contactFormData[0],
@@ -109,7 +109,7 @@ describe('Contact', () => {
     expect(telInput).not.toHaveAttribute('aria-describedby', 'tel-input-description')
   })
 
-  it('should render default values in the inputs when provided', () => {
+  it('renders default values in the inputs when provided', () => {
     const contactFormDataWithDefaultValues = [
       {
         ...contactFormData[0],
@@ -130,7 +130,7 @@ describe('Contact', () => {
     expect(telInput).toHaveValue('0612345678')
   })
 
-  it('should prioritize formData values over default values in the inputs', () => {
+  it('prioritizes formData values over default values in the inputs', () => {
     const formData = new FormData()
 
     formData.append('email', 'Email data from action')
