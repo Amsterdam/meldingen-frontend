@@ -12,6 +12,7 @@ import { Feature } from '@meldingen/api-client'
 import { AssetList } from './_components/AssetList/AssetList'
 import { AssetListToggle } from './_components/AssetListToggle/AssetListToggle'
 import { SideBar } from './_components/SideBar/SideBar'
+import { useAssetLayer } from './hooks/useAssetLayer'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './SelectLocation.module.css'
@@ -30,10 +31,21 @@ export const SelectLocation = ({ classification }: Props) => {
   const [showAssetList, setShowAssetList] = useState(false)
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
+  const [selectedAssets, setSelectedAssets] = useState<Feature[]>([])
 
   const t = useTranslations('select-location')
 
   const isWideWindow = useIsAfterBreakpoint('wide')
+
+  useAssetLayer({
+    assetList,
+    classification,
+    mapInstance,
+    selectedAssets,
+    setAssetList,
+    setCoordinates,
+    setSelectedAssets,
+  })
 
   useEffect(() => {
     // Hide mobile asset list view when resizing to larger screens
@@ -44,7 +56,7 @@ export const SelectLocation = ({ classification }: Props) => {
 
   return (
     <div className={styles.grid}>
-      <SideBar coordinates={coordinates} setCoordinates={setCoordinates} />
+      <SideBar coordinates={coordinates} setCoordinates={setCoordinates} setSelectedAssets={setSelectedAssets} />
       <div className={clsx(styles.assetList, showAssetList && styles.showAssetList)}>
         <AssetList assetList={assetList} />
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
@@ -53,12 +65,12 @@ export const SelectLocation = ({ classification }: Props) => {
       </div>
       <div className={styles.map}>
         <Map
-          classification={classification}
           coordinates={coordinates}
           mapInstance={mapInstance}
-          setAssetList={setAssetList}
+          selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
           setMapInstance={setMapInstance}
+          setSelectedAssets={setSelectedAssets}
           showAssetList={showAssetList}
         />
         <div className={styles.buttonWrapper}>

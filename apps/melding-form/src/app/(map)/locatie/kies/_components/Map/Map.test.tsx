@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { Map } from './Map'
+import { Map, type Props } from './Map'
 
 vi.mock('leaflet', async (importOriginal) => {
   const actual = await importOriginal()
@@ -17,16 +17,22 @@ vi.mock('leaflet', async (importOriginal) => {
   }
 })
 
+const defaultProps: Props = {
+  mapInstance: null,
+  setCoordinates: vi.fn(),
+  setMapInstance: vi.fn(),
+  setSelectedAssets: vi.fn(),
+  selectedAssets: [],
+}
+
 describe('Map', () => {
   it('renders the component', () => {
-    const { container } = render(
-      <Map setCoordinates={() => {}} setAssetList={vi.fn()} mapInstance={null} setMapInstance={vi.fn()} />,
-    )
+    const { container } = render(<Map {...defaultProps} />)
     expect(container.firstChild).toBeInTheDocument()
   })
 
   it('renders the current location button', () => {
-    render(<Map setCoordinates={() => {}} setAssetList={vi.fn()} mapInstance={null} setMapInstance={vi.fn()} />)
+    render(<Map {...defaultProps} />)
 
     const button = screen.getByRole('button', { name: 'current-location-button' })
 
