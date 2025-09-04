@@ -130,7 +130,7 @@ describe('Contact', () => {
     expect(telInput).toHaveValue('0612345678')
   })
 
-  it('prioritizes formData values over default values in the inputs', () => {
+  it('prioritizes form data returned by the action over the initial defaultValue', () => {
     const formData = new FormData()
 
     formData.append('email', 'Email data from action')
