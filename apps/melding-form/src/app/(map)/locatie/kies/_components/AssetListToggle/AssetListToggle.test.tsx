@@ -14,10 +14,11 @@ const defaultProps: Props = {
   showAssetList: false,
   mapInstance: mapInstanceMock,
   setShowAssetList: vi.fn(),
+  selectedAssets: [],
 }
 
 describe('AssetListToggle', () => {
-  it('renders nothing if assetList is empty', () => {
+  it('renders nothing if assetList and selectedAssets are empty', () => {
     const { container } = render(<AssetListToggle {...defaultProps} assetList={[]} />)
 
     expect(container.firstChild).toBeNull()
