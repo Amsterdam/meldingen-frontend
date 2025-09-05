@@ -26,7 +26,7 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
   )
 
   const updateSelectedAsset = (asset: Feature) => {
-    if (selectedAssets.length > 1) {
+    if (selectedAssets.length > 1 && isPoint(selectedAssets[1].geometry)) {
       const previousSelectedAssetCoordinates = selectedAssets[1].geometry.coordinates
       const [y, x] = previousSelectedAssetCoordinates
       setCoordinates({ lat: x, lng: y })
