@@ -6,10 +6,9 @@ import type { Mock } from 'vitest'
 import { postForm } from './actions'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(),
-}))
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
@@ -27,19 +26,8 @@ describe('postForm', () => {
     requiredQuestionKeys: [],
   }
 
-  const mockCookies = (id?: string, token?: string) => {
-    ;(cookies as Mock).mockReturnValue({
-      get: (name: string) => {
-        if (name === 'id') return { value: id }
-        if (name === 'token') return { value: token }
-        return undefined
-      },
-      set: vi.fn(),
-    })
-  }
-
   beforeEach(() => {
-    mockCookies('123', 'test-token') // Default mock for cookies
+    mockIdAndTokenCookies()
   })
 
   it('redirects to /cookie-storing when id or token is missing', async () => {

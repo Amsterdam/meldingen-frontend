@@ -1,19 +1,16 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { cookies } from 'next/headers'
-import type { Mock } from 'vitest'
 
 import Page, { generateMetadata } from './page'
 import { Summary } from './Summary'
 import { additionalQuestions, melding, textAreaComponent } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
+import { mockCookies, mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 import { Blob } from 'buffer'
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(),
-}))
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('./Summary', () => ({
   Summary: vi.fn(() => <div>Summary Component</div>),
@@ -28,28 +25,11 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  const mockCookies = {
-    get: vi.fn(),
-  }
-
-  beforeEach(() => {
-    ;(cookies as Mock).mockReturnValue(mockCookies)
-  })
-
   it('renders the Summary component', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'z123890' }
-      }
-      if (name === 'location') {
-        return {
-          value: '{"name":"Test address"}',
-        }
-      }
-      return undefined
+    mockCookies({
+      id: '123',
+      token: 'test-token',
+      location: JSON.stringify({ name: 'Test address' }),
     })
 
     const PageComponent = await Page()
@@ -105,6 +85,8 @@ describe('Page', () => {
   })
 
   it('returns an error message if no primary form is found', async () => {
+    mockIdAndTokenCookies()
+
     server.use(
       http.get(ENDPOINTS.GET_STATIC_FORM, () =>
         HttpResponse.json([

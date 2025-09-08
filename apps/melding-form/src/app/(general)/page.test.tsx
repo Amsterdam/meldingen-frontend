@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { cookies } from 'next/headers'
 import { Mock } from 'vitest'
 
 import * as actionsModule from './actions'
@@ -9,6 +8,7 @@ import Page from './page'
 import { melding, textAreaComponent } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn().mockReturnValue({
@@ -26,17 +26,6 @@ vi.mock('./Home', () => ({
     return <div>Home Component</div>
   }),
 }))
-
-const mockIdAndTokenCookies = (id = '123', token = 'test-token') => {
-  ;(cookies as Mock).mockReturnValue({
-    get: (name: string) => {
-      if (name === 'id') return { value: id }
-      if (name === 'token') return { value: token }
-      return undefined
-    },
-    set: vi.fn(),
-  })
-}
 
 describe('Page', () => {
   it('renders the Home component with form components', async () => {

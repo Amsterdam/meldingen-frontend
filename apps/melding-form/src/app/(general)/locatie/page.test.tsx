@@ -4,26 +4,19 @@ import type { Mock } from 'vitest'
 
 import { Location } from './Location'
 import Page from './page'
+import { mockCookies } from 'apps/melding-form/src/mocks/utils'
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(),
-}))
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('./Location', () => ({
   Location: vi.fn(() => <div>Location Component</div>),
 }))
 
 describe('Page', () => {
-  const mockCookies = {
-    get: vi.fn(),
-  }
-
-  beforeEach(() => {
-    ;(cookies as Mock).mockReturnValue(mockCookies)
-  })
-
   it('renders Location component with default props when cookies are not set', async () => {
-    mockCookies.get.mockReturnValue(undefined)
+    ;(cookies as Mock).mockReturnValue({
+      get: () => undefined,
+    })
 
     const PageComponent = await Page()
 
@@ -34,15 +27,7 @@ describe('Page', () => {
   })
 
   it('renders Location component with props from cookies', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'lastPanelPath') {
-        return { value: '/previous' }
-      }
-      if (name === 'location') {
-        return { value: JSON.stringify({ lat: 52.370216, lng: 4.895168 }) }
-      }
-      return undefined
-    })
+    mockCookies({ lastPanelPath: '/previous', location: JSON.stringify({ lat: 52.370216, lng: 4.895168 }) })
 
     const PageComponent = await Page()
 

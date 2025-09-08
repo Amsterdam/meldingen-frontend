@@ -1,19 +1,16 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { cookies } from 'next/headers'
-import type { Mock } from 'vitest'
 
 import Page, { generateMetadata } from './page'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('./Attachments', () => ({
   Attachments: vi.fn(() => <div>Attachments Component</div>),
 }))
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(),
-}))
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
@@ -25,18 +22,7 @@ describe('generateMetadata', () => {
 
 describe('Page', () => {
   beforeEach(() => {
-    // Default mock for cookies
-    ;(cookies as Mock).mockReturnValue({
-      get: (name: string) => {
-        if (name === 'id') {
-          return { value: '123' }
-        }
-        if (name === 'token') {
-          return { value: 'test-token' }
-        }
-        return undefined
-      },
-    })
+    mockIdAndTokenCookies()
   })
 
   it('renders the Attachments component', async () => {
