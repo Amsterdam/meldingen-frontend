@@ -1,16 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { cookies } from 'next/headers'
-import type { Mock } from 'vitest'
 
 import Page, { generateMetadata } from './page'
 import { SelectLocation } from './SelectLocation'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(),
-}))
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('./SelectLocation', () => ({
   SelectLocation: vi.fn(() => <div>SelectLocation Component</div>),
@@ -25,19 +22,8 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  const mockCookies = (id?: string, token?: string) => {
-    ;(cookies as Mock).mockReturnValue({
-      get: (name: string) => {
-        if (name === 'id') return { value: id }
-        if (name === 'token') return { value: token }
-        return undefined
-      },
-      set: vi.fn(),
-    })
-  }
-
   beforeEach(() => {
-    mockCookies('123', 'test-token') // Default mock for cookies
+    mockIdAndTokenCookies()
   })
 
   it('renders the SelectLocation component', async () => {

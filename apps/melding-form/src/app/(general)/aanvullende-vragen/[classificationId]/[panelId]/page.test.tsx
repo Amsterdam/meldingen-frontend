@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Mock } from 'vitest'
 
@@ -10,12 +9,9 @@ import Page from './page'
 import { additionalQuestions } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn().mockReturnValue({
-    get: vi.fn(),
-  }),
-}))
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
@@ -31,17 +27,6 @@ vi.mock('./AdditionalQuestions', () => ({
     return <div>AdditionalQuestions Component</div>
   }),
 }))
-
-const mockIdAndTokenCookies = (id = '123', token = 'test-token') => {
-  ;(cookies as Mock).mockReturnValue({
-    get: (name: string) => {
-      if (name === 'id') return { value: id }
-      if (name === 'token') return { value: token }
-      return undefined
-    },
-    set: vi.fn(),
-  })
-}
 
 describe('Page', () => {
   beforeEach(() => {

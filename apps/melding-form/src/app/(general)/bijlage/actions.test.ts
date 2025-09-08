@@ -6,6 +6,7 @@ import type { Mock } from 'vitest'
 import { submitAttachmentsForm } from './actions'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
@@ -16,16 +17,10 @@ vi.mock('next/navigation', () => ({
 }))
 
 describe('submitAttachmentsForm', () => {
-  const mockCookies = {
-    get: vi.fn(),
-  }
-
-  beforeEach(() => {
-    ;(cookies as Mock).mockReturnValue(mockCookies)
-  })
-
   it('redirects to /cookie-storing when id or token is missing', async () => {
-    mockCookies.get.mockReturnValue(undefined)
+    ;(cookies as Mock).mockReturnValue({
+      get: () => undefined,
+    })
 
     await submitAttachmentsForm()
 
@@ -33,21 +28,13 @@ describe('submitAttachmentsForm', () => {
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
+    mockIdAndTokenCookies()
+
     server.use(
       http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_ATTACHMENTS, () =>
         HttpResponse.json('Error message', { status: 500 }),
       ),
     )
-
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'test-token' }
-      }
-      return undefined
-    })
 
     const result = await submitAttachmentsForm()
 
@@ -55,15 +42,7 @@ describe('submitAttachmentsForm', () => {
   })
 
   it('redirects to /contact page on success', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'id') {
-        return { value: '123' }
-      }
-      if (name === 'token') {
-        return { value: 'test-token' }
-      }
-      return undefined
-    })
+    mockIdAndTokenCookies()
 
     await submitAttachmentsForm()
 

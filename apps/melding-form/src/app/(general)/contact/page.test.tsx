@@ -1,34 +1,18 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { cookies } from 'next/headers'
-import { Mock } from 'vitest'
 
 import { Contact } from './Contact'
 import Page from './page'
 import { melding } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('./Contact', () => ({
   Contact: vi.fn(() => <div>Contact Component</div>),
 }))
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn().mockReturnValue({
-    get: vi.fn(),
-  }),
-}))
-
-const mockIdAndTokenCookies = (id = '123', token = 'test-token') => {
-  ;(cookies as Mock).mockReturnValue({
-    get: (name: string) => {
-      if (name === 'id') return { value: id }
-      if (name === 'token') return { value: token }
-      return undefined
-    },
-    set: vi.fn(),
-  })
-}
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 describe('Page', () => {
   beforeEach(() => {
