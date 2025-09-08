@@ -28,12 +28,14 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
   )
 
   const updateSelectedAsset = (asset: Feature) => {
-    if (selectedAssets.length > 1 && isPoint(selectedAssets[1].geometry)) {
-      const previousSelectedAssetCoordinates = selectedAssets[1].geometry.coordinates
-      const [y, x] = previousSelectedAssetCoordinates
-      setCoordinates({ lat: x, lng: y })
-    } else {
+    if (selectedAssets.length <= 1) {
       setCoordinates()
+    } else if (asset.id === selectedAssets[0].id) {
+      // Select the address of the second asset on the list
+      // when the last selected asset (#1 on the list) is deselected
+      // @ts-expect-error this selected asset always exist
+      const [y, x] = selectedAssets[1].geometry.coordinates
+      setCoordinates({ lat: x, lng: y })
     }
 
     setSelectedAssets((assetList) => {
