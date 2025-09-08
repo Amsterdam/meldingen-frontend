@@ -65,7 +65,17 @@ describe('Page', () => {
     expect(screen.queryByRole('button', { name: 'submit-button' })).toBeInTheDocument()
   })
 
-  it('renders the form data returned by the action instead of the initial defaultValue', () => {
+  it('renders a default value in the input when provided', () => {
+    render(
+      <Home {...defaultProps} formComponents={[{ ...textAreaComponent, defaultValue: 'Default value from server' }]} />,
+    )
+
+    const input = screen.getByRole('textbox')
+
+    expect(input).toHaveValue('Default value from server')
+  })
+
+  it('prioritizes form data returned by the action over the initial defaultValue', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Form data from action')
