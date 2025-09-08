@@ -13,12 +13,13 @@ export type Props = {
   mapInstance: L.Map | null
   setShowAssetList: Dispatch<SetStateAction<boolean>>
   showAssetList: boolean
+  selectedAssets: Feature[]
 }
 
-export const AssetListToggle = ({ assetList, mapInstance, setShowAssetList, showAssetList }: Props) => {
+export const AssetListToggle = ({ assetList, mapInstance, setShowAssetList, showAssetList, selectedAssets }: Props) => {
   const t = useTranslations('select-location')
 
-  if (assetList.length === 0) return null
+  if (assetList.length === 0 && selectedAssets.length === 0) return
 
   const toggleListView = () => {
     setShowAssetList((prevState) => !prevState)
