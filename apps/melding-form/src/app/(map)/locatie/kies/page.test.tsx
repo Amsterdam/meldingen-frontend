@@ -5,7 +5,7 @@ import Page, { generateMetadata } from './page'
 import { SelectLocation } from './SelectLocation'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
-import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+import { mockCookies, mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -53,15 +53,10 @@ describe('Page', () => {
   })
 
   it('passes coordinates to SelectLocation when location cookie is present', async () => {
-    ;(cookies as Mock).mockReturnValue({
-      get: (name: string) => {
-        if (name === 'id') return { value: '123' }
-        if (name === 'token') return { value: 'test-token' }
-        if (name === 'location')
-          return { value: JSON.stringify({ name: 'Test Location', coordinates: { lat: 52.370216, lng: 4.895168 } }) }
-        return undefined
-      },
-      set: vi.fn(),
+    mockCookies({
+      id: '123',
+      token: 'test-token',
+      location: JSON.stringify({ name: 'Test Location', coordinates: { lat: 52.370216, lng: 4.895168 } }),
     })
 
     const PageComponent = await Page()
