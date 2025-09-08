@@ -32,7 +32,7 @@ export default async () => {
   return (
     <SelectLocation
       classification={data?.classification?.name}
-      locationData={locationData && JSON.parse(locationData.value)}
+      coordinates={locationData ? JSON.parse(locationData.value).coordinates : undefined}
     />
   )
 }

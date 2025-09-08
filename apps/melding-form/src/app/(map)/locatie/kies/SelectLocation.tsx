@@ -25,14 +25,11 @@ const Map = dynamic(() => import('./_components/Map/Map').then((module) => modul
 
 type Props = {
   classification?: string
-  locationData?: {
-    name: string
-    coordinates?: Coordinates
-  }
+  coordinates?: Coordinates
 }
 
-export const SelectLocation = ({ classification, locationData }: Props) => {
-  const [coordinates, setCoordinates] = useState<Coordinates | undefined>(locationData?.coordinates)
+export const SelectLocation = ({ classification, coordinates: coordinatesFromServer }: Props) => {
+  const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
   const [showAssetList, setShowAssetList] = useState(false)
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)

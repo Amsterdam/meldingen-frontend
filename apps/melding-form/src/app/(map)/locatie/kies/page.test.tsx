@@ -4,6 +4,7 @@ import { cookies } from 'next/headers'
 import type { Mock } from 'vitest'
 
 import Page, { generateMetadata } from './page'
+import { SelectLocation } from './SelectLocation'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
@@ -51,5 +52,40 @@ describe('Page', () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(null, { status: 500 })))
 
     await expect(Page()).rejects.toThrowError('Failed to fetch melding data.')
+  })
+
+  it('does not pass coordinates to SelectLocation when location cookie is absent', async () => {
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        coordinates: undefined,
+      }),
+      {},
+    )
+  })
+
+  it('passes coordinates to SelectLocation when location cookie is present', async () => {
+    ;(cookies as Mock).mockReturnValue({
+      get: (name: string) => {
+        if (name === 'id') return { value: '123' }
+        if (name === 'token') return { value: 'test-token' }
+        if (name === 'location')
+          return { value: JSON.stringify({ name: 'Test Location', coordinates: { lat: 52.370216, lng: 4.895168 } }) }
+        return undefined
+      },
+      set: vi.fn(),
+    })
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        coordinates: { lat: 52.370216, lng: 4.895168 },
+      }),
+      {},
+    )
   })
 })
