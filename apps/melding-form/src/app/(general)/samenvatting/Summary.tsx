@@ -73,7 +73,7 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
             ))}
             <SummaryList.Description>
               <NextLink href="/" legacyBehavior passHref>
-                <Link>Wijzig uw melding</Link>
+                <Link>{t('change-links.primary')}</Link>
               </NextLink>
             </SummaryList.Description>
           </SummaryList.Item>
@@ -95,7 +95,7 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
             ))}
             <SummaryList.Description>
               <NextLink href="/locatie" legacyBehavior passHref>
-                <Link>Wijzig locatie</Link>
+                <Link>{t('change-links.location')}</Link>
               </NextLink>
             </SummaryList.Description>
           </SummaryList.Item>
@@ -121,7 +121,7 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
               ))}
               <SummaryList.Description>
                 <NextLink href="/contact" legacyBehavior passHref>
-                  <Link>Wijzig contactgegevens</Link>
+                  <Link>{t('change-links.contact')}</Link>
                 </NextLink>
               </SummaryList.Description>
             </SummaryList.Item>
