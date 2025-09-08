@@ -59,6 +59,15 @@ describe('Summary', () => {
     global.URL.createObjectURL = vi.fn(() => 'blob:http://localhost/uploaded-file-1')
   })
 
+  it('renders the back link', () => {
+    render(<Summary {...defaultProps} />)
+
+    const link = screen.getByRole('link', { name: 'back-link' })
+
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '/contact')
+  })
+
   it('renders the Summary component with data', () => {
     render(<Summary {...defaultProps} />)
 
