@@ -5,7 +5,7 @@ import { vi } from 'vitest'
 const mockCookies = (keyValuePairs: Record<string, string | undefined>) => {
   ;(cookies as Mock).mockReturnValue({
     get: (name: string) => {
-      if (keyValuePairs[name]) return { value: keyValuePairs[name] }
+      if (keyValuePairs[name] !== undefined) return { value: keyValuePairs[name] }
       return undefined
     },
     set: vi.fn(),
