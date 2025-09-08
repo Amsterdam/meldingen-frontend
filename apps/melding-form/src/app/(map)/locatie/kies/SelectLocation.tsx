@@ -1,4 +1,5 @@
 'use client'
+
 import { Button } from '@amsterdam/design-system-react'
 import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import clsx from 'clsx'
@@ -24,10 +25,11 @@ const Map = dynamic(() => import('./_components/Map/Map').then((module) => modul
 
 type Props = {
   classification?: string
+  coordinates?: Coordinates
 }
 
-export const SelectLocation = ({ classification }: Props) => {
-  const [coordinates, setCoordinates] = useState<Coordinates>()
+export const SelectLocation = ({ classification, coordinates: coordinatesFromServer }: Props) => {
+  const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
   const [showAssetList, setShowAssetList] = useState(false)
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
