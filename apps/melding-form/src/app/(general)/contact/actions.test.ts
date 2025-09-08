@@ -6,29 +6,17 @@ import type { Mock } from 'vitest'
 import { postContactForm } from './actions'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(),
-}))
-
 describe('postContactForm', () => {
   beforeEach(() => {
-    // Default mock for cookies
-    ;(cookies as Mock).mockReturnValue({
-      get: (name: string) => {
-        if (name === 'id') {
-          return { value: '123' }
-        }
-        if (name === 'token') {
-          return { value: 'test-token' }
-        }
-        return undefined
-      },
-    })
+    mockIdAndTokenCookies()
   })
 
   it('should redirect to /samenvatting page on success', async () => {

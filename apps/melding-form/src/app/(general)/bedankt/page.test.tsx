@@ -1,13 +1,10 @@
 import { render, screen } from '@testing-library/react'
-import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import type { Mock } from 'vitest'
 
 import Page, { generateMetadata } from './page'
+import { mockCookies } from 'apps/melding-form/src/mocks/utils'
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(),
-}))
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
@@ -27,24 +24,8 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  const mockCookies = {
-    get: vi.fn(),
-  }
-
-  beforeEach(() => {
-    ;(cookies as Mock).mockReturnValue(mockCookies)
-  })
-
   it('renders page', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'public_id') {
-        return { value: '1234' }
-      }
-      if (name === 'created_at') {
-        return { value: '2025-05-26T11:56:34.081Z' }
-      }
-      return undefined
-    })
+    mockCookies({ public_id: '1234', created_at: '2025-05-26T11:56:34.081Z' })
 
     const PageComponent = await Page()
 
@@ -61,15 +42,7 @@ describe('Page', () => {
   })
 
   it('should render description without publicId', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'public_id') {
-        return { value: undefined }
-      }
-      if (name === 'created_at') {
-        return { value: '2025-05-26T11:56:34.081Z' }
-      }
-      return undefined
-    })
+    mockCookies({ public_id: undefined, created_at: '2025-05-26T11:56:34.081Z' })
 
     const PageComponent = await Page()
 
@@ -81,15 +54,7 @@ describe('Page', () => {
   })
 
   it('should render description without date and time', async () => {
-    mockCookies.get.mockImplementation((name) => {
-      if (name === 'public_id') {
-        return { value: '1234' }
-      }
-      if (name === 'created_at') {
-        return { value: undefined }
-      }
-      return undefined
-    })
+    mockCookies({ public_id: '1234', created_at: undefined })
 
     const PageComponent = await Page()
 
