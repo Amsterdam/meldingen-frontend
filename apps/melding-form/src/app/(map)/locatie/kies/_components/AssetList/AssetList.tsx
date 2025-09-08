@@ -1,10 +1,12 @@
 import { Checkbox } from '@amsterdam/design-system-react'
 import clsx from 'clsx'
+import Image from 'next/image'
 import { Dispatch, SetStateAction } from 'react'
 
 import { Feature, Point } from '@meldingen/api-client'
 
 import { MAX_ASSETS } from '../../_utils/addAssetLayerToMap'
+import { getContainerFeatureIconSVG } from '../../_utils/getContainerFeatureIconSVG'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './AssetList.module.css'
@@ -47,29 +49,43 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
     setSelectedAssets((assetList) => [asset, ...assetList])
   }
 
+  const getCheckboxLabel = (asset: Feature, idNummer: string) => {
+    const icon = getContainerFeatureIconSVG(asset)
+
+    return (
+      <span className={styles.label}>
+        <Image src={icon} alt="Label icon" width={32} height={32} />
+        <span>{idNummer}</span>
+      </span>
+    )
+  }
+
   return (
     <div className={clsx(styles.container, 'ams-mb-m')}>
       {selectedAssets.map((asset) => {
         // @ts-expect-error id_nummer always exists on asset properties
         const idNummer = asset.properties.id_nummer as string
+        const label = getCheckboxLabel(asset, idNummer)
 
         return (
-          <Checkbox key={idNummer} onChange={() => updateSelectedAsset(asset)} checked>
-            {idNummer}
+          <Checkbox key={idNummer} onChange={() => updateSelectedAsset(asset)} checked className={styles.checkbox}>
+            {label}
           </Checkbox>
         )
       })}
       {filteredList.map((asset) => {
         // @ts-expect-error id_nummer always exists on asset properties
         const idNummer = asset.properties.id_nummer as string
+        const label = getCheckboxLabel(asset, idNummer)
 
         return (
           <Checkbox
             key={idNummer}
+            className={styles.checkbox}
             onChange={() => updateUnselectedAsset(asset)}
             disabled={selectedAssets.length === MAX_ASSETS}
           >
-            {idNummer}
+            {label}
           </Checkbox>
         )
       })}

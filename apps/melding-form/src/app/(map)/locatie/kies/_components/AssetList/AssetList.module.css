@@ -1,5 +1,5 @@
 .container {
-  background-color: white;
+  background-color: var(--ams-color-background);
   height: 100%;
   position: relative;
   width: 100%;
@@ -7,4 +7,16 @@
   @media screen and (min-width: 68rem) {
     overflow: auto;
   }
+}
+
+.checkbox {
+  border-top: 1px solid var(--ams-color-separator); /* stylelint-disable-line unit-disallowed-list */
+  padding-block: var(--ams-space-m);
+  padding-inline: var(--ams-space-m);
+}
+
+.label {
+  align-items: center;
+  display: flex;
+  gap: var(--ams-checkbox-gap);
 }
