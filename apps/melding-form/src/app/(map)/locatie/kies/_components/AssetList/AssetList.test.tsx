@@ -92,7 +92,7 @@ describe('AssetList', () => {
     expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
   })
 
-  it('it keeps coordinates when other then top asset is deselected', async () => {
+  it('keeps coordinates when other then top asset is deselected', async () => {
     render(<AssetList {...defaultProps} selectedAssets={containerAssets} />)
 
     const checkbox = screen.getByRole('checkbox', { name: /Container-002/ })
