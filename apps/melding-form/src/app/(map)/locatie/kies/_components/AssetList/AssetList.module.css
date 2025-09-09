@@ -1,6 +1,9 @@
 .container {
   background-color: var(--ams-color-background);
   height: 100%;
+  list-style: none;
+  margin-block: 0;
+  padding-inline-start: 0;
   position: relative;
   width: 100%;
 
@@ -10,7 +13,7 @@
 }
 
 .checkbox {
-  border-top: 1px solid var(--ams-color-separator); /* stylelint-disable-line unit-disallowed-list */
+  border-top: 0.0625rem solid var(--ams-color-separator); /* stylelint-disable-line unit-disallowed-list */
   padding-block: var(--ams-space-m);
   padding-inline: var(--ams-space-m);
 }

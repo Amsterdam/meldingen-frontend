@@ -27,7 +27,7 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
 
   const handleDeselectAsset = (asset: Feature) => {
     if (selectedAssets.length <= 1) {
-      setCoordinates()
+      setCoordinates(undefined)
     } else if (asset.id === selectedAssets[0].id) {
       // Set the address of the second asset on the list
       // when the last selected asset (#1 on the list) is deselected
@@ -49,44 +49,48 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
 
   const getCheckboxLabel = (asset: Feature, idNummer: string) => {
     const icon = getContainerFeatureIconSVG(asset)
+    const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
 
     return (
       <span className={styles.label}>
-        <Image src={icon} alt="Label icon" width={32} height={32} />
+        <Image src={icon} alt={altText} width={32} height={32} />
         <span>{idNummer}</span>
       </span>
     )
   }
 
   return (
-    <div className={clsx(styles.container, 'ams-mb-m')}>
+    <ul className={clsx(styles.container, 'ams-mb-m')}>
       {selectedAssets.map((asset) => {
         // @ts-expect-error id_nummer always exists on asset properties
-        const idNummer = asset.properties.id_nummer as string
-        const label = getCheckboxLabel(asset, idNummer)
+        const publicId = asset.properties.id_nummer as string
+        const label = getCheckboxLabel(asset, publicId)
 
         return (
-          <Checkbox key={idNummer} onChange={() => handleDeselectAsset(asset)} checked className={styles.checkbox}>
-            {label}
-          </Checkbox>
+          <li key={publicId}>
+            <Checkbox onChange={() => handleDeselectAsset(asset)} checked className={styles.checkbox}>
+              {label}
+            </Checkbox>
+          </li>
         )
       })}
       {filteredList.map((asset) => {
         // @ts-expect-error id_nummer always exists on asset properties
-        const idNummer = asset.properties.id_nummer as string
-        const label = getCheckboxLabel(asset, idNummer)
+        const publicId = asset.properties.id_nummer as string
+        const label = getCheckboxLabel(asset, publicId)
 
         return (
-          <Checkbox
-            key={idNummer}
-            className={styles.checkbox}
-            onChange={() => handleSelectAsset(asset)}
-            disabled={selectedAssets.length === MAX_ASSETS}
-          >
-            {label}
-          </Checkbox>
+          <li key={publicId}>
+            <Checkbox
+              className={styles.checkbox}
+              onChange={() => handleSelectAsset(asset)}
+              disabled={selectedAssets.length === MAX_ASSETS}
+            >
+              {label}
+            </Checkbox>
+          </li>
         )
       })}
-    </div>
+    </ul>
   )
 }

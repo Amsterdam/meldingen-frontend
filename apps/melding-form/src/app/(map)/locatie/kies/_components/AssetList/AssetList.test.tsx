@@ -13,6 +13,8 @@ const defaultProps: Props = {
 }
 
 describe('AssetList', () => {
+  const user = userEvent.setup()
+
   it('renders nothing when assetList and selectedAssets are empty', () => {
     const { container } = render(<AssetList {...defaultProps} assetList={[]} />)
 
@@ -57,7 +59,7 @@ describe('AssetList', () => {
 
     expect(checkbox).not.toBeChecked()
 
-    await userEvent.click(checkbox)
+    await user.click(checkbox)
 
     // @ts-expect-error an asset always has coordinates
     const [y, x] = containerAssets[0].geometry.coordinates
@@ -72,9 +74,9 @@ describe('AssetList', () => {
 
     const checkbox = screen.getByRole('checkbox', { name: /Container-001/ })
 
-    await userEvent.click(checkbox)
+    await user.click(checkbox)
 
-    expect(defaultProps.setCoordinates).toHaveBeenCalledWith()
+    expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
     expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
   })
 
@@ -83,7 +85,7 @@ describe('AssetList', () => {
 
     const checkbox = screen.getByRole('checkbox', { name: /Container-001/ })
 
-    await userEvent.click(checkbox)
+    await user.click(checkbox)
 
     // @ts-expect-error an asset always has coordinates
     const [y, x] = containerAssets[1].geometry.coordinates
@@ -97,7 +99,7 @@ describe('AssetList', () => {
 
     const checkbox = screen.getByRole('checkbox', { name: /Container-002/ })
 
-    await userEvent.click(checkbox)
+    await user.click(checkbox)
 
     expect(defaultProps.setCoordinates).not.toHaveBeenCalled()
     expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
