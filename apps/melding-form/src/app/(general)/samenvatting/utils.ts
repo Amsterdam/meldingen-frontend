@@ -1,4 +1,5 @@
 import {
+  getFormClassificationByClassificationId,
   getMeldingByMeldingIdAnswersMelder,
   getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
   getMeldingByMeldingIdAttachmentsMelder,
@@ -30,7 +31,26 @@ export const getPrimaryFormSummary = async (description: string) => {
   }
 }
 
-export const getAdditionalQuestionsSummary = async (meldingId: string, token: string) => {
+const findPageByQuestionId = (data: any, id: number): string | undefined => {
+  for (const panel of data.components) {
+    for (const component of panel.components) {
+      if (component.question === id) {
+        return panel.key
+      }
+    }
+  }
+  return undefined
+}
+
+export const getAdditionalQuestionsSummary = async (meldingId: string, token: string, classificationId?: number) => {
+  if (!classificationId) return { data: [] }
+
+  const { data: formComponents, error: formError } = await getFormClassificationByClassificationId({
+    path: { classification_id: classificationId },
+  })
+
+  if (formError) throw new Error('Failed to fetch form by classification.')
+
   const { data, error } = await getMeldingByMeldingIdAnswersMelder({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
@@ -44,6 +64,7 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
         key: `${answer.question.id}`,
         term: answer.question.text,
         description: [answer.text],
+        link: `/aanvullende-vragen/${classificationId}/${findPageByQuestionId(formComponents, answer.question.id)}`,
       })) || [],
   }
 }

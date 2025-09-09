@@ -29,11 +29,12 @@ export default async () => {
   const t = await getTranslations('summary')
 
   const meldingData = await getMeldingData(meldingId, token)
-  const primaryForm = await getPrimaryFormSummary(meldingData.data.text)
+  const classificationId = meldingData.classification?.id
+  const primaryForm = await getPrimaryFormSummary(meldingData.text)
   const attachments = await getAttachmentsSummary(t('attachments-label'), meldingId, token)
-  const additionalQuestions = await getAdditionalQuestionsSummary(meldingId, token)
+  const additionalQuestions = await getAdditionalQuestionsSummary(meldingId, token, classificationId)
   const location = getLocationSummary(t, locationCookie)
-  const contact = getContactSummary(t('contact-label'), meldingData.data.email, meldingData.data.phone)
+  const contact = getContactSummary(t('contact-label'), meldingData.email, meldingData.phone)
 
   return (
     <Summary

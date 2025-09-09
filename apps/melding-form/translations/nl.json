@@ -115,6 +115,7 @@
     "submit-button": "Verstuur melding",
     "change-links": {
       "primary": "Wijzig uw melding",
+      "additional": "Wijzig antwoord",
       "location": "Wijzig locatie",
       "contact": "Wijzig contactgegevens"
     },

@@ -23,7 +23,12 @@ type GenericSummaryData = {
 }
 
 type Props = {
-  additionalQuestions: GenericSummaryData[]
+  additionalQuestions: {
+    key: string
+    term: string
+    description: string[]
+    link: string
+  }[]
   attachments: {
     key: string
     term: string
@@ -79,12 +84,17 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
           </SummaryList.Item>
 
           {additionalQuestions.length > 0 &&
-            additionalQuestions.map(({ key, term, description }) => (
+            additionalQuestions.map(({ key, term, description, link }) => (
               <SummaryList.Item key={key}>
                 <SummaryList.Term>{term}</SummaryList.Term>
                 {description.map((item) => (
                   <SummaryList.Description key={item}>{item}</SummaryList.Description>
                 ))}
+                <SummaryList.Description>
+                  <NextLink href={link} legacyBehavior passHref scroll={false}>
+                    <Link>{t('change-links.additional')}</Link>
+                  </NextLink>
+                </SummaryList.Description>
               </SummaryList.Item>
             ))}
 
