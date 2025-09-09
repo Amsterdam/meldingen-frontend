@@ -14,9 +14,9 @@ const defaultProps: Props = {
 
 describe('AssetList', () => {
   it('renders nothing when assetList and selectedAssets are empty', () => {
-    render(<AssetList {...defaultProps} assetList={[]} />)
+    const { container } = render(<AssetList {...defaultProps} assetList={[]} />)
 
-    expect(screen.queryAllByRole('checkbox')).toHaveLength(0)
+    expect(container).toBeEmptyDOMElement()
   })
 
   it('renders a list of assets', () => {
