@@ -80,7 +80,7 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
                 <SummaryList.Term>{term}</SummaryList.Term>
                 <SummaryList.Description>{description}</SummaryList.Description>
                 <SummaryList.Description>
-                  <NextLink href={link} legacyBehavior passHref scroll={false}>
+                  <NextLink href={link} legacyBehavior passHref>
                     <Link>{t('change-links.additional')}</Link>
                   </NextLink>
                 </SummaryList.Description>
