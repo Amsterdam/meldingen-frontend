@@ -1,3 +1,4 @@
+import type { AlertProps } from '@amsterdam/design-system-react'
 import { Button, Paragraph } from '@amsterdam/design-system-react'
 import { MinusIcon, PlusIcon } from '@amsterdam/design-system-react-icons'
 import type L from 'leaflet'
@@ -14,8 +15,14 @@ type Props = {
   setCoordinates: (coordinates: Coordinates) => void
 }
 
+type NotificationType = {
+  heading: AlertProps['heading']
+  closeButtonLabel: AlertProps['closeButtonLabel']
+  severity: AlertProps['severity']
+}
+
 export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
-  const [showNotification, setShowNotification] = useState<boolean>(false)
+  const [notification, setNotification] = useState<NotificationType | null>(null)
 
   const t = useTranslations('select-location.controls-overlay')
 
@@ -39,7 +46,12 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
     })
   }
 
-  const onError = () => setShowNotification(true)
+  const onError = () =>
+    setNotification({
+      closeButtonLabel: t('notification.close-button'),
+      heading: t('notification.title'),
+      severity: 'error',
+    })
 
   const handleCurrentLocationButtonClick = () => navigator.geolocation.getCurrentPosition(onSuccess, onError)
 
@@ -49,13 +61,14 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
         <Button variant="secondary" onClick={handleCurrentLocationButtonClick}>
           {t('current-location-button')}
         </Button>
-        {showNotification && (
+        {notification && (
           <Notification
-            heading={t('notification.title')}
-            headingLevel={2}
             closeable
-            closeButtonLabel={t('notification.close-button')}
-            onClose={() => setShowNotification(false)}
+            closeButtonLabel={notification.closeButtonLabel}
+            heading={notification.heading}
+            headingLevel={2}
+            onClose={() => setNotification(null)}
+            severity={notification.severity}
           >
             <Paragraph>{t('notification.description')}</Paragraph>
           </Notification>

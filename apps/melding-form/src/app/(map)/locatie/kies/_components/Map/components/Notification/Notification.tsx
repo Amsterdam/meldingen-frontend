@@ -15,5 +15,5 @@ export const Notification = (props: AlertProps) => {
     }
   }, [ref])
 
-  return <Alert {...props} className={styles.notification} ref={ref} severity="error" tabIndex={-1} />
+  return <Alert {...props} className={styles.notification} ref={ref} tabIndex={-1} />
 }
