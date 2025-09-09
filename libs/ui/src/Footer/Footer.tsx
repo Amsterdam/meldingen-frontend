@@ -15,7 +15,7 @@ export const Footer = () => (
               Contact
             </Heading>
             <Paragraph size="small" color="inverse">
-              Lukt het niet om een melding te doen?!
+              Lukt het niet om een melding te doen?!!!!
             </Paragraph>
             <Paragraph size="small" color="inverse">
               Bel het telefoonnummer{' '}
