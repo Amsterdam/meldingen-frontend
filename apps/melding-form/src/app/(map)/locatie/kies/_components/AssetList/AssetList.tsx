@@ -36,9 +36,7 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
       setCoordinates({ lat: x, lng: y })
     }
 
-    setSelectedAssets((assetList) => {
-      return assetList.filter((a) => a.id !== asset.id)
-    })
+    setSelectedAssets((assetList) => assetList.filter((a) => a.id !== asset.id))
   }
 
   const handleSelectAsset = (asset: Feature) => {
