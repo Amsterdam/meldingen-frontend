@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import { Dispatch, SetStateAction } from 'react'
 
-import { Feature, Point } from '@meldingen/api-client'
+import { Feature } from '@meldingen/api-client'
 
 import { MAX_ASSETS } from '../../_utils/addAssetLayerToMap'
 import { getContainerFeatureIconSVG } from '../../_utils/getContainerFeatureIconSVG'
@@ -18,8 +18,6 @@ export type Props = {
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
-const isPoint = (geometry: Feature['geometry']): geometry is Point => geometry?.type === 'Point'
-
 export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelectedAssets }: Props) => {
   if (assetList.length === 0 && selectedAssets.length === 0) return
 
@@ -27,13 +25,13 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
     (asset) => !selectedAssets.some((selectedAsset) => selectedAsset.id === asset.id),
   )
 
-  const updateSelectedAsset = (asset: Feature) => {
+  const handleDeselectAsset = (asset: Feature) => {
     if (selectedAssets.length <= 1) {
       setCoordinates()
     } else if (asset.id === selectedAssets[0].id) {
-      // Select the address of the second asset on the list
+      // Set the address of the second asset on the list
       // when the last selected asset (#1 on the list) is deselected
-      // @ts-expect-error this selected asset always exist
+      // @ts-expect-error an asset always has coordinates
       const [y, x] = selectedAssets[1].geometry.coordinates
       setCoordinates({ lat: x, lng: y })
     }
@@ -43,11 +41,11 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
     })
   }
 
-  const updateUnselectedAsset = (asset: Feature) => {
-    if (isPoint(asset.geometry)) {
-      const [y, x] = asset.geometry.coordinates
-      setCoordinates({ lat: x, lng: y })
-    }
+  const handleSelectAsset = (asset: Feature) => {
+    // @ts-expect-error an asset always has coordinates
+    const [y, x] = asset.geometry.coordinates
+    setCoordinates({ lat: x, lng: y })
+
     setSelectedAssets((assetList) => [asset, ...assetList])
   }
 
@@ -70,7 +68,7 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
         const label = getCheckboxLabel(asset, idNummer)
 
         return (
-          <Checkbox key={idNummer} onChange={() => updateSelectedAsset(asset)} checked className={styles.checkbox}>
+          <Checkbox key={idNummer} onChange={() => handleDeselectAsset(asset)} checked className={styles.checkbox}>
             {label}
           </Checkbox>
         )
@@ -84,7 +82,7 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
           <Checkbox
             key={idNummer}
             className={styles.checkbox}
-            onChange={() => updateUnselectedAsset(asset)}
+            onChange={() => handleSelectAsset(asset)}
             disabled={selectedAssets.length === MAX_ASSETS}
           >
             {label}
