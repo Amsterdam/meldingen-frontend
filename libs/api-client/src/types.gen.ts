@@ -3944,7 +3944,7 @@ export type PatchMeldingByMeldingIdLocationResponses = {
 
 export type PatchMeldingByMeldingIdLocationResponse = PatchMeldingByMeldingIdLocationResponses[keyof PatchMeldingByMeldingIdLocationResponses];
 
-export type PostMeldingByMeldingIdContactData = {
+export type PatchMeldingByMeldingIdContactData = {
     body: MeldingContactInput;
     path: {
         /**
@@ -3963,7 +3963,7 @@ export type PostMeldingByMeldingIdContactData = {
     url: '/melding/{melding_id}/contact';
 };
 
-export type PostMeldingByMeldingIdContactErrors = {
+export type PatchMeldingByMeldingIdContactErrors = {
     /**
      * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
@@ -3990,16 +3990,16 @@ export type PostMeldingByMeldingIdContactErrors = {
     422: HttpValidationError;
 };
 
-export type PostMeldingByMeldingIdContactError = PostMeldingByMeldingIdContactErrors[keyof PostMeldingByMeldingIdContactErrors];
+export type PatchMeldingByMeldingIdContactError = PatchMeldingByMeldingIdContactErrors[keyof PatchMeldingByMeldingIdContactErrors];
 
-export type PostMeldingByMeldingIdContactResponses = {
+export type PatchMeldingByMeldingIdContactResponses = {
     /**
      * Successful Response
      */
     200: MeldingOutput;
 };
 
-export type PostMeldingByMeldingIdContactResponse = PostMeldingByMeldingIdContactResponses[keyof PostMeldingByMeldingIdContactResponses];
+export type PatchMeldingByMeldingIdContactResponse = PatchMeldingByMeldingIdContactResponses[keyof PatchMeldingByMeldingIdContactResponses];
 
 export type PutMeldingByMeldingIdAddContactInfoData = {
     body?: never;

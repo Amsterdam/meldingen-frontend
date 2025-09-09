@@ -8,6 +8,7 @@ import { Feature } from '@meldingen/api-client'
 import { writeAddressAndCoordinateToCookie } from './actions'
 import { getAddressFromCoordinates } from '../../_utils'
 import { Combobox } from '../Combobox/Combobox'
+import { BackLink } from 'apps/melding-form/src/app/(general)/_components/BackLink/BackLink'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './SideBar.module.css'
@@ -57,6 +58,9 @@ export const SideBar = ({ coordinates, setCoordinates, setSelectedAssets }: Prop
   return (
     <div className={styles.container}>
       <div className={styles.intro}>
+        <BackLink className="ams-mb-s" href="/locatie">
+          {t('back-link')}
+        </BackLink>
         <Heading level={1} size="level-4">
           {t('title')}
         </Heading>
