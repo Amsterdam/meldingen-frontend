@@ -15,6 +15,7 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { FileInput, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
+import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
@@ -108,49 +109,58 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
   }, [systemError])
 
   return (
-    <main>
-      {Boolean(systemError) && <SystemErrorAlert />}
-      <FormHeader title={t('title')} step={t('step')} />
-      <Form action={formAction} noValidate ref={formRef}>
-        <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
-          <h1 className={styles.h1}>
-            <Label htmlFor="file-upload" optional>
-              {label}
-            </Label>
-          </h1>
-          {description && (
-            <MarkdownToHtml id="file-upload-description" type="description">
-              {description}
-            </MarkdownToHtml>
-          )}
+    <>
+      <BackLink className="ams-mb-s" href="/locatie">
+        {t('back-link')}
+      </BackLink>
+      <main>
+        {Boolean(systemError) && <SystemErrorAlert />}
+        <FormHeader title={t('title')} step={t('step')} />
+        <Form action={formAction} noValidate ref={formRef}>
+          <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
+            <h1 className={styles.h1}>
+              <Label htmlFor="file-upload" optional>
+                {label}
+              </Label>
+            </h1>
+            {description && (
+              <MarkdownToHtml id="file-upload-description" type="description">
+                {description}
+              </MarkdownToHtml>
+            )}
 
-          {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
+            {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
 
-          <FileInput
-            accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
-            aria-describedby={
-              description || errorMessage
-                ? `${description ? 'file-upload-description' : ''} ${errorMessage ? 'error-message' : ''}`
-                : undefined
-            }
-            buttonText={t('file-input.button')}
-            dropAreaText={t('file-input.drop-area')}
-            id="file-upload"
-            name="file"
-            multiple
-            onChange={handleChange}
-          />
+            <FileInput
+              accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
+              aria-describedby={
+                description || errorMessage
+                  ? `${description ? 'file-upload-description' : ''} ${errorMessage ? 'error-message' : ''}`
+                  : undefined
+              }
+              buttonText={t('file-input.button')}
+              dropAreaText={t('file-input.drop-area')}
+              id="file-upload"
+              name="file"
+              multiple
+              onChange={handleChange}
+            />
 
-          {uploadedFiles.length > 0 && (
-            <FileList className={styles.fileList}>
-              {uploadedFiles.map((attachment) => (
-                <FileList.Item key={attachment.id} file={attachment.file} onDelete={() => removeFile(attachment.id)} />
-              ))}
-            </FileList>
-          )}
-        </Field>
-        <SubmitButton>{t('submit-button')}</SubmitButton>
-      </Form>
-    </main>
+            {uploadedFiles.length > 0 && (
+              <FileList className={styles.fileList}>
+                {uploadedFiles.map((attachment) => (
+                  <FileList.Item
+                    key={attachment.id}
+                    file={attachment.file}
+                    onDelete={() => removeFile(attachment.id)}
+                  />
+                ))}
+              </FileList>
+            )}
+          </Field>
+          <SubmitButton>{t('submit-button')}</SubmitButton>
+        </Form>
+      </main>
+    </>
   )
 }

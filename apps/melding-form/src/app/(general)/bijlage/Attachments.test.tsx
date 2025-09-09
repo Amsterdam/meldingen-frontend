@@ -31,11 +31,11 @@ describe('Attachments', () => {
   it('should render correctly', () => {
     render(<Attachments {...defaultProps} />)
 
-    // const backLink = screen.getByRole('link', { name: 'back-link' })
+    const backLink = screen.getByRole('link', { name: 'back-link' })
     const header = screen.getByRole('banner', { name: 'title' })
     const fileUpload = screen.getByLabelText(/file-input.button/i)
 
-    // expect(backLink).toBeInTheDocument()
+    expect(backLink).toBeInTheDocument()
     expect(header).toBeInTheDocument()
     expect(fileUpload).toBeInTheDocument()
   })

@@ -15,6 +15,7 @@ export const generateMetadata = async () => {
 
 export default async () => {
   const cookieStore = await cookies()
+  const locationData = cookieStore.get('location')
   // We check for the existence of these cookies in our middleware, so non-null assertion is safe here.
   const meldingId = cookieStore.get('id')!.value
   const token = cookieStore.get('token')!.value
@@ -28,5 +29,10 @@ export default async () => {
 
   if (error) throw new Error('Failed to fetch melding data.')
 
-  return <SelectLocation classification={data?.classification?.name} />
+  return (
+    <SelectLocation
+      classification={data?.classification?.name}
+      coordinates={locationData ? JSON.parse(locationData.value).coordinates : undefined}
+    />
+  )
 }
