@@ -19,26 +19,19 @@ import styles from './Summary.module.css'
 type GenericSummaryData = {
   key: string
   term: string
-  description: string[]
+  description: string
+}
+
+type File = {
+  blob: Blob
+  fileName: string
+  contentType: string
 }
 
 type Props = {
-  additionalQuestions: {
-    key: string
-    term: string
-    description: string[]
-    link: string
-  }[]
-  attachments: {
-    key: string
-    term: string
-    files: {
-      blob: Blob
-      fileName: string
-      contentType: string
-    }[]
-  }
-  contact?: GenericSummaryData
+  additionalQuestions: (GenericSummaryData & { link: string })[]
+  attachments: Omit<GenericSummaryData, 'description'> & { files: File[] }
+  contact?: Omit<GenericSummaryData, 'description'> & { description: string[] }
   location: GenericSummaryData
   primaryForm: GenericSummaryData
 }
@@ -73,9 +66,7 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
         <SummaryList className="ams-mb-m">
           <SummaryList.Item>
             <SummaryList.Term>{primaryForm.term}</SummaryList.Term>
-            {primaryForm.description.map((item) => (
-              <SummaryList.Description key={item}>{item}</SummaryList.Description>
-            ))}
+            <SummaryList.Description>{primaryForm.description}</SummaryList.Description>
             <SummaryList.Description>
               <NextLink href="/" legacyBehavior passHref>
                 <Link>{t('change-links.primary')}</Link>
@@ -87,9 +78,7 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
             additionalQuestions.map(({ key, term, description, link }) => (
               <SummaryList.Item key={key}>
                 <SummaryList.Term>{term}</SummaryList.Term>
-                {description.map((item) => (
-                  <SummaryList.Description key={item}>{item}</SummaryList.Description>
-                ))}
+                <SummaryList.Description>{description}</SummaryList.Description>
                 <SummaryList.Description>
                   <NextLink href={link} legacyBehavior passHref scroll={false}>
                     <Link>{t('change-links.additional')}</Link>
@@ -100,9 +89,7 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
 
           <SummaryList.Item>
             <SummaryList.Term>{location.term}</SummaryList.Term>
-            {location.description.map((item) => (
-              <SummaryList.Description key={item}>{item}</SummaryList.Description>
-            ))}
+            <SummaryList.Description>{location.description}</SummaryList.Description>
             <SummaryList.Description>
               <NextLink href="/locatie" legacyBehavior passHref>
                 <Link>{t('change-links.location')}</Link>

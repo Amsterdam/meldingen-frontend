@@ -25,7 +25,7 @@ describe('getPrimaryFormSummary', () => {
       data: {
         key: 'primary',
         term: 'First question',
-        description: ['Er ligt hier veel afval op straat.'],
+        description: 'Er ligt hier veel afval op straat.',
       },
     })
   })
@@ -103,7 +103,7 @@ describe('getAdditionalQuestionsSummary', () => {
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
       key: item.question.id.toString(),
       term: item.question.text,
-      description: [item.text],
+      description: item.text,
       link: '/aanvullende-vragen/1/page1',
     }))
 
@@ -147,7 +147,7 @@ describe('getAdditionalQuestionsSummary', () => {
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
       key: item.question.id.toString(),
       term: item.question.text,
-      description: [item.text],
+      description: item.text,
       link: '/',
     }))
 
@@ -245,7 +245,7 @@ describe('getLocationSummary', () => {
     expect(result).toEqual({
       key: 'location',
       term: 'location-label',
-      description: ['Nieuwmarkt 23, 1011JS Amsterdam'],
+      description: 'Nieuwmarkt 23, 1011JS Amsterdam',
     })
   })
 
@@ -255,7 +255,7 @@ describe('getLocationSummary', () => {
     expect(result).toEqual({
       key: 'location',
       term: 'location-label',
-      description: ['errors.no-location'],
+      description: 'errors.no-location',
     })
   })
 })

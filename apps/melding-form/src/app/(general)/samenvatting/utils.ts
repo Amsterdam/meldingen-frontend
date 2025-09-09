@@ -28,7 +28,7 @@ export const getPrimaryFormSummary = async (description: string) => {
   const primaryForm = primaryFormData.components[0]
 
   return {
-    data: { key: 'primary', term: primaryForm.label, description: [description] },
+    data: { key: 'primary', term: primaryForm.label, description },
   }
 }
 
@@ -67,7 +67,7 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
         return {
           key: `${answer.question.id}`,
           term: answer.question.text,
-          description: [answer.text],
+          description: answer.text,
           link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}` : '/',
         }
       }) || [],
@@ -114,7 +114,7 @@ export const getLocationSummary = (t: (key: string) => string, location?: string
   return {
     key: 'location',
     term: t('location-label'),
-    description: [locationParsed],
+    description: locationParsed,
   }
 }
 
