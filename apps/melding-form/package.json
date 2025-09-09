@@ -17,8 +17,8 @@
   "dependencies": {
     "@headlessui/react": "2.2.7",
     "leaflet": "1.9.4",
-    "next": "15.5.0",
-    "next-intl": "4.3.5"
+    "next": "15.5.2",
+    "next-intl": "4.3.7"
   },
   "devDependencies": {
     "@types/geojson": "7946.0.16",
