@@ -18,13 +18,13 @@ const defaultProps = {
     {
       key: '1',
       term: 'Text Field 1',
-      description: ['Antwoord vraag 1'],
+      description: 'Antwoord vraag 1',
       link: '/link/to/page',
     },
     {
       key: '2',
       term: 'Text Area 2',
-      description: ['Antwoord vraag 2'],
+      description: 'Antwoord vraag 2',
       link: '/link/to/page',
     },
   ],
@@ -47,12 +47,12 @@ const defaultProps = {
   location: {
     key: 'location',
     term: 'Waar staat de container?',
-    description: ['Nieuwmarkt 247, 1011MB Amsterdam'],
+    description: 'Nieuwmarkt 247, 1011MB Amsterdam',
   },
   primaryForm: {
     key: 'primary',
     term: 'Wat wilt u melden?',
-    description: ['Er ligt heel veel afval op straat.'],
+    description: 'Er ligt heel veel afval op straat.',
   },
 }
 
@@ -98,11 +98,16 @@ describe('Summary', () => {
     render(<Summary {...defaultProps} />)
 
     const primaryChangeLink = screen.getByRole('link', { name: 'change-links.primary' })
+    const additionalChangeLinks = screen.getAllByRole('link', { name: 'change-links.additional' })
     const locationChangeLink = screen.getByRole('link', { name: 'change-links.location' })
     const contactChangeLink = screen.getByRole('link', { name: 'change-links.contact' })
 
     expect(primaryChangeLink).toBeInTheDocument()
     expect(primaryChangeLink).toHaveAttribute('href', '/')
+
+    expect(additionalChangeLinks).toHaveLength(2)
+    expect(additionalChangeLinks[0]).toHaveAttribute('href', '/link/to/page')
+    expect(additionalChangeLinks[1]).toHaveAttribute('href', '/link/to/page')
 
     expect(locationChangeLink).toBeInTheDocument()
     expect(locationChangeLink).toHaveAttribute('href', '/locatie')
