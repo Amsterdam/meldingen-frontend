@@ -15,6 +15,7 @@ import { Blob } from 'buffer'
 
 const mockMeldingId = '88'
 const mockToken = 'test-token'
+const mockClassificationId = 1
 
 describe('getPrimaryFormSummary', () => {
   it('should return correct primary form summary', async () => {
@@ -85,12 +86,25 @@ describe('getPrimaryFormSummary', () => {
 
 describe('getAdditionalQuestionsSummary', () => {
   it('should return correct additional questions summary', async () => {
-    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [
+            {
+              key: 'page1',
+              components: [{ question: 35 }, { question: 36 }],
+            },
+          ],
+        }),
+      ),
+    )
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
 
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
       key: item.question.id.toString(),
       term: item.question.text,
       description: [item.text],
+      link: '/aanvullende-vragen/1/page1',
     }))
 
     expect(result).toEqual({ data: additionalQuestionsSummary })
@@ -102,7 +116,7 @@ describe('getAdditionalQuestionsSummary', () => {
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
-    const testFunction = async () => await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
+    const testFunction = async () => await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
 
     await expect(testFunction).rejects.toThrowError('Failed to fetch additional questions data.')
   })
@@ -110,7 +124,7 @@ describe('getAdditionalQuestionsSummary', () => {
   it('should return an empty array when additional questions data is not found', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () => new HttpResponse()))
 
-    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
 
     expect(result).toEqual({ data: [] })
   })

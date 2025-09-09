@@ -32,7 +32,7 @@ export const getPrimaryFormSummary = async (description: string) => {
   }
 }
 
-const findPageByQuestionId = (panels: FormPanelComponentOutput[], id: number): string | undefined => {
+const findPanelIdByQuestionId = (panels: FormPanelComponentOutput[], id: number) => {
   for (const panel of panels) {
     for (const component of panel.components) {
       if (component.question === id) {
@@ -63,11 +63,12 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
     data:
       data?.map((answer) => {
         const panels = formComponents.components as FormPanelComponentOutput[]
+        const panelId = findPanelIdByQuestionId(panels, answer.question.id)
         return {
           key: `${answer.question.id}`,
           term: answer.question.text,
           description: [answer.text],
-          link: `/aanvullende-vragen/${classificationId}/${findPageByQuestionId(panels, answer.question.id)}`,
+          link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}` : '/',
         }
       }) || [],
   }

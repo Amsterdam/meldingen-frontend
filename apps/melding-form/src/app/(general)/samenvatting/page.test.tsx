@@ -26,6 +26,19 @@ describe('generateMetadata', () => {
 
 describe('Page', () => {
   it('renders the Summary component', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [
+            {
+              key: 'page1',
+              components: [{ question: 35 }, { question: 36 }],
+            },
+          ],
+        }),
+      ),
+    )
+
     mockCookies({
       id: '123',
       token: 'test-token',
@@ -40,6 +53,7 @@ describe('Page', () => {
       key: item.question.id.toString(),
       term: item.question.text,
       description: [item.text],
+      link: '/aanvullende-vragen/2/page1',
     }))
 
     const attachments = {

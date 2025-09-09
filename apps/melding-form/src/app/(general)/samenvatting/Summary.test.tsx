@@ -19,11 +19,13 @@ const defaultProps = {
       key: '1',
       term: 'Text Field 1',
       description: ['Antwoord vraag 1'],
+      link: '/link/to/page',
     },
     {
       key: '2',
       term: 'Text Area 2',
       description: ['Antwoord vraag 2'],
+      link: '/link/to/page',
     },
   ],
   attachments: {
@@ -83,11 +85,11 @@ describe('Summary', () => {
 
     expect(definitions[0]).toHaveTextContent('Er ligt heel veel afval op straat.')
     expect(definitions[2]).toHaveTextContent('Antwoord vraag 1')
-    expect(definitions[3]).toHaveTextContent('Antwoord vraag 2')
-    expect(definitions[4]).toHaveTextContent('Nieuwmarkt 247, 1011MB Amsterdam')
-    expect(definitions[6]).toHaveTextContent('IMG_0815.jpg')
-    expect(definitions[7]).toHaveTextContent('test@test.com')
-    expect(definitions[8]).toHaveTextContent('+31612345678')
+    expect(definitions[4]).toHaveTextContent('Antwoord vraag 2')
+    expect(definitions[6]).toHaveTextContent('Nieuwmarkt 247, 1011MB Amsterdam')
+    expect(definitions[8]).toHaveTextContent('IMG_0815.jpg')
+    expect(definitions[9]).toHaveTextContent('test@test.com')
+    expect(definitions[10]).toHaveTextContent('+31612345678')
 
     expect(screen.getByRole('button', { name: 'submit-button' }))
   })
