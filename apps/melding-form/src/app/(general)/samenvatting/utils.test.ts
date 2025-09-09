@@ -18,7 +18,7 @@ const mockToken = 'test-token'
 const mockClassificationId = 1
 
 describe('getPrimaryFormSummary', () => {
-  it('should return correct primary form summary', async () => {
+  it('returns correct primary form summary', async () => {
     const result = await getPrimaryFormSummary('Er ligt hier veel afval op straat.')
 
     expect(result).toEqual({
@@ -30,7 +30,7 @@ describe('getPrimaryFormSummary', () => {
     })
   })
 
-  it('should return an error message when getStaticForm returns an error', async () => {
+  it('returns an error message when getStaticForm returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json('Error message', { status: 500 })))
 
     const testFunction = async () => await getPrimaryFormSummary('')
@@ -38,7 +38,7 @@ describe('getPrimaryFormSummary', () => {
     await expect(testFunction).rejects.toThrowError('Failed to fetch static forms.')
   })
 
-  it('should return an error message when getStaticForm does not return data', async () => {
+  it('returns an error message when getStaticForm does not return data', async () => {
     server.use(http.get(ENDPOINTS.GET_STATIC_FORM, () => new HttpResponse()))
 
     const testFunction = async () => await getPrimaryFormSummary('')
@@ -46,7 +46,7 @@ describe('getPrimaryFormSummary', () => {
     await expect(testFunction).rejects.toThrowError('Static forms data not found.')
   })
 
-  it('should return an error message when primary form id is not found', async () => {
+  it('returns an error message when primary form id is not found', async () => {
     server.use(
       http.get(ENDPOINTS.GET_STATIC_FORM, () =>
         HttpResponse.json([
@@ -63,7 +63,7 @@ describe('getPrimaryFormSummary', () => {
     await expect(testFunction).rejects.toThrowError('Primary form id not found.')
   })
 
-  it('should return an error message when getStaticFormByStaticFormId returns an error', async () => {
+  it('returns an error message when getStaticFormByStaticFormId returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -75,7 +75,7 @@ describe('getPrimaryFormSummary', () => {
     await expect(testFunction).rejects.toThrowError('Failed to fetch primary form data.')
   })
 
-  it('should return an error message when getStaticFormByStaticFormId does not return data', async () => {
+  it('returns an error message when getStaticFormByStaticFormId does not return data', async () => {
     server.use(http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => new HttpResponse()))
 
     const testFunction = async () => await getPrimaryFormSummary('')
@@ -85,7 +85,7 @@ describe('getPrimaryFormSummary', () => {
 })
 
 describe('getAdditionalQuestionsSummary', () => {
-  it('should return correct additional questions summary', async () => {
+  it('returns correct additional questions summary', async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({
@@ -110,7 +110,7 @@ describe('getAdditionalQuestionsSummary', () => {
     expect(result).toEqual({ data: additionalQuestionsSummary })
   })
 
-  it('should return an error message when error is returned', async () => {
+  it('returns an error message when error is returned', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -121,7 +121,7 @@ describe('getAdditionalQuestionsSummary', () => {
     await expect(testFunction).rejects.toThrowError('Failed to fetch additional questions data.')
   })
 
-  it('should return an empty array when additional questions data is not found', async () => {
+  it('returns an empty array when additional questions data is not found', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () => new HttpResponse()))
 
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
@@ -129,7 +129,7 @@ describe('getAdditionalQuestionsSummary', () => {
     expect(result).toEqual({ data: [] })
   })
 
-  it('should return links to home if panelId is not found', async () => {
+  it('returns links to home if panelId is not found', async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({
@@ -154,13 +154,13 @@ describe('getAdditionalQuestionsSummary', () => {
     expect(result).toEqual({ data: additionalQuestionsSummary })
   })
 
-  it('should return an empty array when classificationId is not provided', async () => {
+  it('returns an empty array when classificationId is not provided', async () => {
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
 
     expect(result).toEqual({ data: [] })
   })
 
-  it('should return an error message when getFormClassificationByClassificationId returns an error', async () => {
+  it('returns an error message when getFormClassificationByClassificationId returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -173,7 +173,7 @@ describe('getAdditionalQuestionsSummary', () => {
 })
 
 describe('getAttachmentSummary', () => {
-  it('should return correct attachment summary', async () => {
+  it('returns correct attachment summary', async () => {
     const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
 
     expect(result).toMatchObject({
@@ -191,7 +191,7 @@ describe('getAttachmentSummary', () => {
     })
   })
 
-  it('should return an error message when getMeldingByMeldingIdAttachmentsMelder returns an error', async () => {
+  it('returns an error message when getMeldingByMeldingIdAttachmentsMelder returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -203,7 +203,7 @@ describe('getAttachmentSummary', () => {
     await expect(testFunction).rejects.toThrowError('Failed to fetch attachments data.')
   })
 
-  it('should return an error message when getMeldingByMeldingIdAttachmentsMelder returns no data', async () => {
+  it('returns an error message when getMeldingByMeldingIdAttachmentsMelder returns no data', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () => new HttpResponse()))
 
     const testFunction = async () => await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
@@ -211,7 +211,7 @@ describe('getAttachmentSummary', () => {
     await expect(testFunction).rejects.toThrowError('Attachments data not found.')
   })
 
-  it('should return an error message when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns an error', async () => {
+  it('returns an error message when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -223,7 +223,7 @@ describe('getAttachmentSummary', () => {
     await expect(testFunction).rejects.toThrowError('Failed to fetch attachment download.')
   })
 
-  it('should return an error message when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns no data', async () => {
+  it('returns an error message when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns no data', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () => new HttpResponse()),
     )
@@ -235,7 +235,7 @@ describe('getAttachmentSummary', () => {
 })
 
 describe('getLocationSummary', () => {
-  it('should return correct location summary', () => {
+  it('returns correct location summary', () => {
     const mockLocation = JSON.stringify({
       name: 'Nieuwmarkt 23, 1011JS Amsterdam',
       coordinates: { lat: 52.372314346390816, lng: 4.900889396667481 },
@@ -249,7 +249,7 @@ describe('getLocationSummary', () => {
     })
   })
 
-  it('should return error message when location cookie could not be parsed', () => {
+  it('returns error message when location cookie could not be parsed', () => {
     const result = getLocationSummary((key) => key)
 
     expect(result).toEqual({
@@ -261,7 +261,7 @@ describe('getLocationSummary', () => {
 })
 
 describe('getContactSummary', () => {
-  it('should return correct contact summary', () => {
+  it('returns correct contact summary', () => {
     const result = getContactSummary('Wat zijn uw contactgegevens?', 'test@test.com', '+31612345678')
 
     expect(result).toEqual({
@@ -271,7 +271,7 @@ describe('getContactSummary', () => {
     })
   })
 
-  it('should return undefined when contact details are not filled in', () => {
+  it('returns undefined when contact details are not filled in', () => {
     const result = getContactSummary('Wat zijn uw contactgegevens?')
 
     expect(result).toEqual(undefined)
