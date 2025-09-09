@@ -7,6 +7,8 @@ import { containerAssets } from 'apps/melding-form/src/mocks/data'
 const defaultProps: Props = {
   assetList: containerAssets,
   selectedAssets: [],
+  setCoordinates: vi.fn(),
+  setSelectedAssets: vi.fn(),
 }
 
 describe('AssetList', () => {
@@ -20,32 +22,30 @@ describe('AssetList', () => {
   it('renders correct number of list items', () => {
     render(<AssetList {...defaultProps} />)
 
-    const items = screen.getAllByRole('listitem')
+    const checkboxes = screen.getAllByRole('checkbox')
 
-    expect(items).toHaveLength(containerAssets.length)
+    expect(checkboxes).toHaveLength(containerAssets.length)
   })
 
   it('renders nothing when assetList and selectedAssets are empty', () => {
     render(<AssetList {...defaultProps} assetList={[]} />)
 
-    expect(screen.queryAllByRole('listitem')).toHaveLength(0)
+    expect(screen.queryAllByRole('checkbox')).toHaveLength(0)
   })
 
   it('renders selected asset on the top of list', () => {
     render(<AssetList {...defaultProps} selectedAssets={[containerAssets[1]]} />)
 
-    const items = screen.getAllByRole('listitem')
+    const checkboxes = screen.getAllByRole('checkbox')
 
-    const span = items[0].querySelector('span')
-
-    expect(span).toHaveTextContent('Container-002')
+    expect(checkboxes[0]).toHaveAccessibleName(/Container-002/)
   })
 
   it('renders no duplicated assets', () => {
     render(<AssetList {...defaultProps} selectedAssets={containerAssets} />)
 
-    const items = screen.getAllByRole('listitem')
+    const checkboxes = screen.getAllByRole('checkbox')
 
-    expect(items).toHaveLength(containerAssets.length)
+    expect(checkboxes).toHaveLength(containerAssets.length)
   })
 })
