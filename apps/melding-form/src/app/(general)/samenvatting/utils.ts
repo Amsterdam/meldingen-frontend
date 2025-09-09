@@ -1,4 +1,5 @@
 import {
+  FormPanelComponentOutput,
   getFormClassificationByClassificationId,
   getMeldingByMeldingIdAnswersMelder,
   getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
@@ -31,8 +32,8 @@ export const getPrimaryFormSummary = async (description: string) => {
   }
 }
 
-const findPageByQuestionId = (data: any, id: number): string | undefined => {
-  for (const panel of data.components) {
+const findPageByQuestionId = (panels: FormPanelComponentOutput[], id: number): string | undefined => {
+  for (const panel of panels) {
     for (const component of panel.components) {
       if (component.question === id) {
         return panel.key
@@ -60,12 +61,15 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
 
   return {
     data:
-      data?.map((answer) => ({
-        key: `${answer.question.id}`,
-        term: answer.question.text,
-        description: [answer.text],
-        link: `/aanvullende-vragen/${classificationId}/${findPageByQuestionId(formComponents, answer.question.id)}`,
-      })) || [],
+      data?.map((answer) => {
+        const panels = formComponents.components as FormPanelComponentOutput[]
+        return {
+          key: `${answer.question.id}`,
+          term: answer.question.text,
+          description: [answer.text],
+          link: `/aanvullende-vragen/${classificationId}/${findPageByQuestionId(panels, answer.question.id)}`,
+        }
+      }) || [],
   }
 }
 
