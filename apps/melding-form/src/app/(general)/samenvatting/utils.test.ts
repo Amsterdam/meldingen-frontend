@@ -128,6 +128,48 @@ describe('getAdditionalQuestionsSummary', () => {
 
     expect(result).toEqual({ data: [] })
   })
+
+  it('should return links to home if panelId is not found', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [
+            {
+              key: 'page1',
+              components: [{ question: 999 }, { question: 998 }],
+            },
+          ],
+        }),
+      ),
+    )
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
+
+    const additionalQuestionsSummary = additionalQuestions.map((item) => ({
+      key: item.question.id.toString(),
+      term: item.question.text,
+      description: [item.text],
+      link: '/',
+    }))
+
+    expect(result).toEqual({ data: additionalQuestionsSummary })
+  })
+
+  it('should return an empty array when classificationId is not provided', async () => {
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
+
+    expect(result).toEqual({ data: [] })
+  })
+
+  it('should return an error message when getFormClassificationByClassificationId returns an error', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+    const testFunction = async () => await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
+
+    await expect(testFunction).rejects.toThrowError('Failed to fetch form by classification.')
+  })
 })
 
 describe('getAttachmentSummary', () => {
