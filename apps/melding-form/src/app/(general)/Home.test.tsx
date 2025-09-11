@@ -64,4 +64,29 @@ describe('Page', () => {
     expect(screen.queryByRole('textbox', { name: mockQuestionText })).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'submit-button' })).toBeInTheDocument()
   })
+
+  it('renders a default value in the input when provided', () => {
+    render(
+      <Home {...defaultProps} formComponents={[{ ...textAreaComponent, defaultValue: 'Default value from server' }]} />,
+    )
+
+    const input = screen.getByRole('textbox')
+
+    expect(input).toHaveValue('Default value from server')
+  })
+
+  it('prioritizes form data returned by the action over the initial defaultValue', () => {
+    const formData = new FormData()
+
+    formData.append('textArea1', 'Form data from action')
+    ;(useActionState as Mock).mockReturnValue([{ formData }, vi.fn()])
+
+    render(
+      <Home {...defaultProps} formComponents={[{ ...textAreaComponent, defaultValue: 'Default value from server' }]} />,
+    )
+
+    const input = screen.getByRole('textbox')
+
+    expect(input).toHaveValue('Form data from action')
+  })
 })

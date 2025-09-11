@@ -1500,9 +1500,68 @@ export type MeldingOutput = {
 };
 
 /**
- * MeldingStates
+ * MeldingUpdateOutput
  */
-export type MeldingStates = 'new' | 'classified' | 'questions_answered' | 'attachments_added' | 'location_submitted' | 'contact_info_added' | 'submitted' | 'processing' | 'completed';
+export type MeldingUpdateOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Public Id
+     */
+    public_id: string;
+    /**
+     * Text
+     */
+    text: string;
+    /**
+     * State
+     */
+    state: string;
+    classification?: SimpleClassificationOutput | null;
+    geo_location?: GeoJsonOutput | null;
+    /**
+     * Street
+     */
+    street?: string | null;
+    /**
+     * House Number
+     */
+    house_number?: number | null;
+    /**
+     * House Number Addition
+     */
+    house_number_addition?: string | null;
+    /**
+     * Postal Code
+     */
+    postal_code?: string | null;
+    /**
+     * City
+     */
+    city?: string | null;
+    /**
+     * Email
+     */
+    email?: string | null;
+    /**
+     * Phone
+     */
+    phone?: string | null;
+    /**
+     * Token
+     */
+    token: string;
+};
 
 /**
  * Merge
@@ -2417,13 +2476,25 @@ export type GetAttachmentByIdData = {
 
 export type GetAttachmentByIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -2463,9 +2534,15 @@ export type GetClassificationData = {
 
 export type GetClassificationErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -2493,17 +2570,35 @@ export type PostClassificationData = {
 
 export type PostClassificationErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Conflict, a uniqueness error occurred
      */
-    409: unknown;
+    409: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -2536,13 +2631,25 @@ export type DeleteClassificationByClassificationIdData = {
 
 export type DeleteClassificationByClassificationIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -2575,13 +2682,25 @@ export type GetClassificationByClassificationIdData = {
 
 export type GetClassificationByClassificationIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -2614,17 +2733,35 @@ export type PatchClassificationByClassificationIdData = {
 
 export type PatchClassificationByClassificationIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Conflict, a uniqueness error occurred
      */
-    409: unknown;
+    409: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -2651,9 +2788,15 @@ export type PostMailPreviewData = {
 
 export type PostMailPreviewErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -2682,7 +2825,7 @@ export type GetMeldingData = {
         /**
          * State
          */
-        state?: MeldingStates | null;
+        state?: string | null;
         /**
          * The limit
          */
@@ -2701,9 +2844,15 @@ export type GetMeldingData = {
 
 export type GetMeldingErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -2762,13 +2911,25 @@ export type GetMeldingByMeldingIdData = {
 
 export type GetMeldingByMeldingIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -2807,13 +2968,25 @@ export type PatchMeldingByMeldingIdData = {
 
 export type PatchMeldingByMeldingIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -2826,7 +2999,7 @@ export type PatchMeldingByMeldingIdResponses = {
     /**
      * Successful Response
      */
-    200: MeldingOutput;
+    200: MeldingUpdateOutput;
 };
 
 export type PatchMeldingByMeldingIdResponse = PatchMeldingByMeldingIdResponses[keyof PatchMeldingByMeldingIdResponses];
@@ -2852,13 +3025,25 @@ export type GetMeldingByMeldingIdMelderData = {
 
 export type GetMeldingByMeldingIdMelderErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -2897,22 +3082,42 @@ export type PutMeldingByMeldingIdAnswerQuestionsData = {
 
 export type PutMeldingByMeldingIdAnswerQuestionsErrors = {
     /**
+     * ResponseWithDetail
      * Transition not allowed from current state
      */
-    400: unknown;
+    400: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Unexpected error
      */
     default: unknown;
 };
+
+export type PutMeldingByMeldingIdAnswerQuestionsError = PutMeldingByMeldingIdAnswerQuestionsErrors[keyof PutMeldingByMeldingIdAnswerQuestionsErrors];
 
 export type PutMeldingByMeldingIdAnswerQuestionsResponses = {
     /**
@@ -2944,22 +3149,42 @@ export type PutMeldingByMeldingIdAddAttachmentsData = {
 
 export type PutMeldingByMeldingIdAddAttachmentsErrors = {
     /**
+     * ResponseWithDetail
      * Transition not allowed from current state
      */
-    400: unknown;
+    400: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Unexpected error
      */
     default: unknown;
 };
+
+export type PutMeldingByMeldingIdAddAttachmentsError = PutMeldingByMeldingIdAddAttachmentsErrors[keyof PutMeldingByMeldingIdAddAttachmentsErrors];
 
 export type PutMeldingByMeldingIdAddAttachmentsResponses = {
     /**
@@ -2991,22 +3216,42 @@ export type PutMeldingByMeldingIdSubmitLocationData = {
 
 export type PutMeldingByMeldingIdSubmitLocationErrors = {
     /**
+     * ResponseWithDetail
      * Transition not allowed from current state
      */
-    400: unknown;
+    400: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Unexpected error
      */
     default: unknown;
 };
+
+export type PutMeldingByMeldingIdSubmitLocationError = PutMeldingByMeldingIdSubmitLocationErrors[keyof PutMeldingByMeldingIdSubmitLocationErrors];
 
 export type PutMeldingByMeldingIdSubmitLocationResponses = {
     /**
@@ -3038,22 +3283,42 @@ export type PutMeldingByMeldingIdSubmitData = {
 
 export type PutMeldingByMeldingIdSubmitErrors = {
     /**
+     * ResponseWithDetail
      * Transition not allowed from current state
      */
-    400: unknown;
+    400: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Unexpected error
      */
     default: unknown;
 };
+
+export type PutMeldingByMeldingIdSubmitError = PutMeldingByMeldingIdSubmitErrors[keyof PutMeldingByMeldingIdSubmitErrors];
 
 export type PutMeldingByMeldingIdSubmitResponses = {
     /**
@@ -3079,22 +3344,42 @@ export type PutMeldingByMeldingIdProcessData = {
 
 export type PutMeldingByMeldingIdProcessErrors = {
     /**
+     * ResponseWithDetail
      * Transition not allowed from current state
      */
-    400: unknown;
+    400: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Unexpected error
      */
     default: unknown;
 };
+
+export type PutMeldingByMeldingIdProcessError = PutMeldingByMeldingIdProcessErrors[keyof PutMeldingByMeldingIdProcessErrors];
 
 export type PutMeldingByMeldingIdProcessResponses = {
     /**
@@ -3123,22 +3408,42 @@ export type PutMeldingByMeldingIdCompleteData = {
 
 export type PutMeldingByMeldingIdCompleteErrors = {
     /**
+     * ResponseWithDetail
      * Transition not allowed from current state
      */
-    400: unknown;
+    400: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Unexpected error
      */
     default: unknown;
 };
+
+export type PutMeldingByMeldingIdCompleteError = PutMeldingByMeldingIdCompleteErrors[keyof PutMeldingByMeldingIdCompleteErrors];
 
 export type PutMeldingByMeldingIdCompleteResponses = {
     /**
@@ -3179,18 +3484,32 @@ export type PostMeldingByMeldingIdQuestionByQuestionIdErrors = {
      */
     400: unknown;
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Unexpected error
      */
     default: unknown;
 };
+
+export type PostMeldingByMeldingIdQuestionByQuestionIdError = PostMeldingByMeldingIdQuestionByQuestionIdErrors[keyof PostMeldingByMeldingIdQuestionByQuestionIdErrors];
 
 export type PostMeldingByMeldingIdQuestionByQuestionIdResponses = {
     /**
@@ -3231,13 +3550,25 @@ export type PatchMeldingByMeldingIdAnswerByAnswerIdErrors = {
      */
     400: unknown;
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -3280,13 +3611,25 @@ export type PostMeldingByMeldingIdAttachmentErrors = {
      */
     400: unknown;
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Uploading attachment that is too large.
      */
@@ -3338,13 +3681,25 @@ export type GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData = {
 
 export type GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -3377,13 +3732,25 @@ export type GetMeldingByMeldingIdAttachmentsData = {
 
 export type GetMeldingByMeldingIdAttachmentsErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -3423,13 +3790,25 @@ export type GetMeldingByMeldingIdAttachmentsMelderData = {
 
 export type GetMeldingByMeldingIdAttachmentsMelderErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -3474,13 +3853,25 @@ export type DeleteMeldingByMeldingIdAttachmentByAttachmentIdData = {
 
 export type DeleteMeldingByMeldingIdAttachmentByAttachmentIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -3496,7 +3887,7 @@ export type DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponses = {
     200: unknown;
 };
 
-export type PostMeldingByMeldingIdLocationData = {
+export type PatchMeldingByMeldingIdLocationData = {
     body: GeoJsonInput;
     path: {
         /**
@@ -3515,33 +3906,45 @@ export type PostMeldingByMeldingIdLocationData = {
     url: '/melding/{melding_id}/location';
 };
 
-export type PostMeldingByMeldingIdLocationErrors = {
+export type PatchMeldingByMeldingIdLocationErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
     422: HttpValidationError;
 };
 
-export type PostMeldingByMeldingIdLocationError = PostMeldingByMeldingIdLocationErrors[keyof PostMeldingByMeldingIdLocationErrors];
+export type PatchMeldingByMeldingIdLocationError = PatchMeldingByMeldingIdLocationErrors[keyof PatchMeldingByMeldingIdLocationErrors];
 
-export type PostMeldingByMeldingIdLocationResponses = {
+export type PatchMeldingByMeldingIdLocationResponses = {
     /**
      * Successful Response
      */
     200: MeldingOutput;
 };
 
-export type PostMeldingByMeldingIdLocationResponse = PostMeldingByMeldingIdLocationResponses[keyof PostMeldingByMeldingIdLocationResponses];
+export type PatchMeldingByMeldingIdLocationResponse = PatchMeldingByMeldingIdLocationResponses[keyof PatchMeldingByMeldingIdLocationResponses];
 
-export type PostMeldingByMeldingIdContactData = {
+export type PatchMeldingByMeldingIdContactData = {
     body: MeldingContactInput;
     path: {
         /**
@@ -3560,31 +3963,43 @@ export type PostMeldingByMeldingIdContactData = {
     url: '/melding/{melding_id}/contact';
 };
 
-export type PostMeldingByMeldingIdContactErrors = {
+export type PatchMeldingByMeldingIdContactErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
     422: HttpValidationError;
 };
 
-export type PostMeldingByMeldingIdContactError = PostMeldingByMeldingIdContactErrors[keyof PostMeldingByMeldingIdContactErrors];
+export type PatchMeldingByMeldingIdContactError = PatchMeldingByMeldingIdContactErrors[keyof PatchMeldingByMeldingIdContactErrors];
 
-export type PostMeldingByMeldingIdContactResponses = {
+export type PatchMeldingByMeldingIdContactResponses = {
     /**
      * Successful Response
      */
     200: MeldingOutput;
 };
 
-export type PostMeldingByMeldingIdContactResponse = PostMeldingByMeldingIdContactResponses[keyof PostMeldingByMeldingIdContactResponses];
+export type PatchMeldingByMeldingIdContactResponse = PatchMeldingByMeldingIdContactResponses[keyof PatchMeldingByMeldingIdContactResponses];
 
 export type PutMeldingByMeldingIdAddContactInfoData = {
     body?: never;
@@ -3607,22 +4022,42 @@ export type PutMeldingByMeldingIdAddContactInfoData = {
 
 export type PutMeldingByMeldingIdAddContactInfoErrors = {
     /**
+     * ResponseWithDetail
      * Transition not allowed from current state
      */
-    400: unknown;
+    400: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Unexpected error
      */
     default: unknown;
 };
+
+export type PutMeldingByMeldingIdAddContactInfoError = PutMeldingByMeldingIdAddContactInfoErrors[keyof PutMeldingByMeldingIdAddContactInfoErrors];
 
 export type PutMeldingByMeldingIdAddContactInfoResponses = {
     /**
@@ -3654,13 +4089,25 @@ export type GetMeldingByMeldingIdAnswersMelderData = {
 
 export type GetMeldingByMeldingIdAnswersMelderErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -3694,13 +4141,25 @@ export type GetMeldingByMeldingIdAnswersData = {
 
 export type GetMeldingByMeldingIdAnswersErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -3740,13 +4199,25 @@ export type PostMeldingByMeldingIdAssetData = {
 
 export type PostMeldingByMeldingIdAssetErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -3779,13 +4250,25 @@ export type GetMeldingByMeldingIdNextPossibleStatesData = {
 
 export type GetMeldingByMeldingIdNextPossibleStatesErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -3825,9 +4308,15 @@ export type GetUserData = {
 
 export type GetUserErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -3855,13 +4344,25 @@ export type PostUserData = {
 
 export type PostUserErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Conflict, a uniqueness error occurred
      */
-    409: unknown;
+    409: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -3898,13 +4399,25 @@ export type DeleteUserByUserIdErrors = {
      */
     400: unknown;
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -3937,13 +4450,25 @@ export type GetUserByUserIdData = {
 
 export type GetUserByUserIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -3976,17 +4501,35 @@ export type PatchUserByUserIdData = {
 
 export type PatchUserByUserIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Conflict, a uniqueness error occurred
      */
-    409: unknown;
+    409: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4026,9 +4569,15 @@ export type GetFormData = {
 
 export type GetFormErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4060,9 +4609,15 @@ export type PostFormErrors = {
      */
     400: unknown;
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4095,13 +4650,25 @@ export type DeleteFormByFormIdData = {
 
 export type DeleteFormByFormIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4134,9 +4701,15 @@ export type GetFormByFormIdData = {
 
 export type GetFormByFormIdErrors = {
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4173,13 +4746,25 @@ export type PutFormByFormIdErrors = {
      */
     400: unknown;
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4212,9 +4797,15 @@ export type GetFormClassificationByClassificationIdData = {
 
 export type GetFormClassificationByClassificationIdErrors = {
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4247,9 +4838,15 @@ export type GetStaticFormByStaticFormIdData = {
 
 export type GetStaticFormByStaticFormIdErrors = {
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4282,13 +4879,25 @@ export type PutStaticFormByStaticFormIdData = {
 
 export type PutStaticFormByStaticFormIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4328,9 +4937,15 @@ export type GetStaticFormData = {
 
 export type GetStaticFormErrors = {
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4371,9 +4986,15 @@ export type GetAssetTypeData = {
 
 export type GetAssetTypeErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4401,13 +5022,25 @@ export type PostAssetTypeData = {
 
 export type PostAssetTypeErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Conflict, a uniqueness error occurred
      */
-    409: unknown;
+    409: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4440,13 +5073,25 @@ export type DeleteAssetTypeByAssetTypeIdData = {
 
 export type DeleteAssetTypeByAssetTypeIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4479,13 +5124,25 @@ export type GetAssetTypeByAssetTypeIdData = {
 
 export type GetAssetTypeByAssetTypeIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4518,17 +5175,35 @@ export type PatchAssetTypeByAssetTypeIdData = {
 
 export type PatchAssetTypeByAssetTypeIdErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Conflict, a uniqueness error occurred
      */
-    409: unknown;
+    409: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */
@@ -4594,13 +5269,25 @@ export type GetWfsByNameData = {
 
 export type GetWfsByNameErrors = {
     /**
+     * ResponseWithDetail
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
      */
-    401: unknown;
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
+     * ResponseWithDetail
      * Not Found
      */
-    404: unknown;
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
     /**
      * Validation Error
      */

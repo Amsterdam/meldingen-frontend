@@ -19,6 +19,7 @@ vi.mock('next/navigation', () => ({
 describe('postPrimaryForm', () => {
   const mockCookies = {
     set: vi.fn(),
+    delete: vi.fn(),
   }
 
   beforeEach(() => {
@@ -91,6 +92,7 @@ describe('postPrimaryForm', () => {
     expect(mockCookies.set).toHaveBeenCalledWith('created_at', '2025-05-26T11:56:34.081Z')
     expect(mockCookies.set).toHaveBeenCalledWith('public_id', 'B100AA')
     expect(mockCookies.set).toHaveBeenCalledWith('token', 'test-token')
+    expect(mockCookies.delete).toHaveBeenCalledWith('lastPanelPath')
   })
 
   it('uses a PATCH request when id and token are passed to postPrimaryForm', async () => {

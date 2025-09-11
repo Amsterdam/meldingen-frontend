@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 
-import { Combobox } from './Combobox'
+import { Combobox, type Props } from './Combobox'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
@@ -12,9 +12,15 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   disconnect: vi.fn(),
 }))
 
+const defaultProps: Props = {
+  setAddress: vi.fn(),
+  setCoordinates: vi.fn(),
+  setSelectedAssets: vi.fn(),
+}
+
 describe('Combobox', () => {
   it('should render the address input', () => {
-    render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
+    render(<Combobox {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -22,7 +28,7 @@ describe('Combobox', () => {
   })
 
   it('should not show the list box initially', () => {
-    render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
+    render(<Combobox {...defaultProps} />)
 
     const listBox = screen.queryByRole('listbox')
 
@@ -32,7 +38,7 @@ describe('Combobox', () => {
   it('should not show the list box on 2 character input', async () => {
     const user = userEvent.setup()
 
-    render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
+    render(<Combobox {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -47,7 +53,7 @@ describe('Combobox', () => {
   it('should show the list box on 3 or more character input', async () => {
     const user = userEvent.setup()
 
-    render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
+    render(<Combobox {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -62,7 +68,7 @@ describe('Combobox', () => {
   it('should show all options returned by the API', async () => {
     const user = userEvent.setup()
 
-    render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
+    render(<Combobox {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -90,7 +96,7 @@ describe('Combobox', () => {
 
     const user = userEvent.setup()
 
-    render(<Combobox setAddress={() => {}} setCoordinates={() => {}} />)
+    render(<Combobox {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 

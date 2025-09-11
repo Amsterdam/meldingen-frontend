@@ -157,6 +157,7 @@ const nl: TranslationMessages = {
       logged_out: 'Uw sessie is beëindigd, maak opnieuw verbinding.',
       not_authorized: 'U heeft geen toegang tot deze bron.',
       application_update_available: 'Een nieuwe versie is beschikbaar.',
+      offline: 'Offline',
     },
     validation: {
       required: 'Verplicht',

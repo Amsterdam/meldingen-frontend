@@ -27,7 +27,7 @@ describe('AdditionalQuestions', () => {
     const link = screen.getByRole('link', { name: 'back-link' })
 
     expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '/')
+    expect(link).toHaveAttribute('href', '/prev')
   })
 
   it('renders an Alert and keeps input data when there is an error message', () => {
@@ -92,5 +92,65 @@ describe('AdditionalQuestions', () => {
     const question = screen.getByRole('textbox', { name: /First question/ })
 
     expect(question).toBeInTheDocument()
+  })
+
+  it('renders a default value in the input when provided', () => {
+    render(
+      <AdditionalQuestions
+        {...defaultProps}
+        formComponents={[{ ...textAreaComponent, defaultValue: 'Default value from server' }]}
+      />,
+    )
+
+    const input = screen.getByRole('textbox')
+
+    expect(input).toHaveValue('Default value from server')
+  })
+
+  it('renders a default value in the input when provided for checkboxes', () => {
+    render(
+      <AdditionalQuestions {...defaultProps} formComponents={[{ ...checkboxComponent, defaultValues: ['two'] }]} />,
+    )
+
+    const checkbox1 = screen.getByRole('checkbox', { name: 'One' })
+    const checkbox2 = screen.getByRole('checkbox', { name: 'Two' })
+
+    expect(checkbox1).not.toBeChecked()
+    expect(checkbox2).toBeChecked()
+  })
+
+  it('prioritizes form data returned by the action over the initial defaultValue', () => {
+    const formData = new FormData()
+
+    formData.append('textArea1', 'Form data from action')
+    ;(useActionState as Mock).mockReturnValue([{ formData }, vi.fn()])
+
+    render(
+      <AdditionalQuestions
+        {...defaultProps}
+        formComponents={[{ ...textAreaComponent, defaultValue: 'Default value from server' }]}
+      />,
+    )
+
+    const input = screen.getByRole('textbox')
+
+    expect(input).toHaveValue('Form data from action')
+  })
+
+  it('prioritizes form data returned by the action over the initial defaultValues for checkboxes', () => {
+    const formData = new FormData()
+
+    formData.append('checkbox___selectBoxes___one', 'one')
+    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
+
+    render(
+      <AdditionalQuestions {...defaultProps} formComponents={[{ ...checkboxComponent, defaultValues: ['two'] }]} />,
+    )
+
+    const checkbox1 = screen.getByRole('checkbox', { name: 'One' })
+    const checkbox2 = screen.getByRole('checkbox', { name: 'Two' })
+
+    expect(checkbox1).toBeChecked()
+    expect(checkbox2).not.toBeChecked()
   })
 })

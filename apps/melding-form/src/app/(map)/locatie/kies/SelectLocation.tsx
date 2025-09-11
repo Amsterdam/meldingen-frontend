@@ -1,4 +1,5 @@
 'use client'
+
 import { Button } from '@amsterdam/design-system-react'
 import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import clsx from 'clsx'
@@ -12,6 +13,7 @@ import { Feature } from '@meldingen/api-client'
 import { AssetList } from './_components/AssetList/AssetList'
 import { AssetListToggle } from './_components/AssetListToggle/AssetListToggle'
 import { SideBar } from './_components/SideBar/SideBar'
+import { useAssetLayer } from './hooks/useAssetLayer'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './SelectLocation.module.css'
@@ -23,17 +25,29 @@ const Map = dynamic(() => import('./_components/Map/Map').then((module) => modul
 
 type Props = {
   classification?: string
+  coordinates?: Coordinates
 }
 
-export const SelectLocation = ({ classification }: Props) => {
-  const [coordinates, setCoordinates] = useState<Coordinates>()
+export const SelectLocation = ({ classification, coordinates: coordinatesFromServer }: Props) => {
+  const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
   const [showAssetList, setShowAssetList] = useState(false)
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
+  const [selectedAssets, setSelectedAssets] = useState<Feature[]>([])
 
   const t = useTranslations('select-location')
 
   const isWideWindow = useIsAfterBreakpoint('wide')
+
+  useAssetLayer({
+    assetList,
+    classification,
+    mapInstance,
+    selectedAssets,
+    setAssetList,
+    setCoordinates,
+    setSelectedAssets,
+  })
 
   useEffect(() => {
     // Hide mobile asset list view when resizing to larger screens
@@ -44,21 +58,21 @@ export const SelectLocation = ({ classification }: Props) => {
 
   return (
     <div className={styles.grid}>
-      <SideBar coordinates={coordinates} setCoordinates={setCoordinates} />
+      <SideBar coordinates={coordinates} setCoordinates={setCoordinates} setSelectedAssets={setSelectedAssets} />
       <div className={clsx(styles.assetList, showAssetList && styles.showAssetList)}>
-        <AssetList assetList={assetList} />
+        <AssetList assetList={assetList} selectedAssets={selectedAssets} />
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
           {t('submit-button.desktop')}
         </Button>
       </div>
       <div className={styles.map}>
         <Map
-          classification={classification}
           coordinates={coordinates}
           mapInstance={mapInstance}
-          setAssetList={setAssetList}
+          selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
           setMapInstance={setMapInstance}
+          setSelectedAssets={setSelectedAssets}
           showAssetList={showAssetList}
         />
         <div className={styles.buttonWrapper}>
@@ -74,6 +88,7 @@ export const SelectLocation = ({ classification }: Props) => {
             mapInstance={mapInstance}
             setShowAssetList={setShowAssetList}
             showAssetList={showAssetList}
+            selectedAssets={selectedAssets}
           />
         </div>
       </div>

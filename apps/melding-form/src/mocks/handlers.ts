@@ -39,6 +39,16 @@ export const handlers = [
       classification: { id: 2, name: 'Test classification' },
     }),
   ),
+  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID, () =>
+    HttpResponse.json({
+      id: 1,
+      created_at: '2025-05-26T11:56:34.081Z',
+      updated_at: '2025-05-26T11:56:34.081Z',
+      text: 'PATCH request',
+    }),
+  ),
+  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_CONTACT, () => new HttpResponse()),
+  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_LOCATION, () => new HttpResponse()),
 
   http.post(ENDPOINTS.POST_MELDING, () =>
     HttpResponse.json({
@@ -50,8 +60,14 @@ export const handlers = [
     }),
   ),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () => HttpResponse.json({ id: 42 })),
-  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () => new HttpResponse()),
-  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_LOCATION, () => new HttpResponse()),
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>
+    HttpResponse.json({
+      id: 1,
+      created_at: '2025-05-26T11:56:34.081Z',
+      updated_at: '2025-05-26T11:56:34.081Z',
+      text: 'POST request',
+    }),
+  ),
 
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_ATTACHMENTS, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_CONTACT_INFO, () => new HttpResponse()),

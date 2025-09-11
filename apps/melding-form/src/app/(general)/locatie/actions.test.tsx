@@ -6,10 +6,9 @@ import type { Mock } from 'vitest'
 import { postLocationForm } from './actions'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(),
-}))
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
@@ -17,18 +16,7 @@ vi.mock('next/navigation', () => ({
 
 describe('postLocationForm', () => {
   beforeEach(() => {
-    // Default mock for cookies
-    ;(cookies as Mock).mockReturnValue({
-      get: (name: string) => {
-        if (name === 'id') {
-          return { value: '123' }
-        }
-        if (name === 'token') {
-          return { value: 'test-token' }
-        }
-        return undefined
-      },
-    })
+    mockIdAndTokenCookies()
   })
 
   it('redirects to /cookie-storing when id or token is missing', async () => {
@@ -59,9 +47,9 @@ describe('postLocationForm', () => {
     expect(redirect).toHaveBeenCalledWith('/bijlage')
   })
 
-  it('returns an error message if postMeldingByMeldingIdLocation returns an error', async () => {
+  it('returns an error message if patchMeldingByMeldingIdLocation returns an error', async () => {
     server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_LOCATION, () =>
+      http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_LOCATION, () =>
         HttpResponse.json('Error message', { status: 404 }),
       ),
     )

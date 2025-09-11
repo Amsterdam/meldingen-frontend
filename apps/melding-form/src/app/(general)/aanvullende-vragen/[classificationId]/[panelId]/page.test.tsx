@@ -6,8 +6,12 @@ import { Mock } from 'vitest'
 import * as actionsModule from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 import Page from './page'
+import { additionalQuestions } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
@@ -25,6 +29,10 @@ vi.mock('./AdditionalQuestions', () => ({
 }))
 
 describe('Page', () => {
+  beforeEach(() => {
+    mockIdAndTokenCookies()
+  })
+
   it('throws an error if form cannot be fetched by classification', async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(null, { status: 500 })),
@@ -75,6 +83,77 @@ describe('Page', () => {
     )
   })
 
+  it('renders the AdditionalQuestions component with prefilled form components', async () => {
+    const formData = {
+      components: [
+        {
+          key: 'panel-1',
+          type: 'panel',
+          label: 'Panel 1',
+          components: [{ key: 'question-1', question: additionalQuestions[0].question.id }],
+        },
+      ],
+    }
+
+    server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
+
+    const PageComponent = await Page({ params: Promise.resolve({ classificationId: 1, panelId: 'panel-1' }) })
+
+    render(PageComponent)
+
+    expect(AdditionalQuestions).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: expect.any(Function),
+        formComponents: [
+          {
+            defaultValue: additionalQuestions[0].text,
+            key: 'question-1',
+            question: additionalQuestions[0].question.id,
+          },
+        ],
+        panelLabel: 'Panel 1',
+        previousPanelPath: '/',
+      }),
+      {},
+    )
+  })
+
+  it('renders the AdditionalQuestions component with prefilled checkbox components', async () => {
+    const formData = {
+      components: [
+        {
+          key: 'panel-1',
+          type: 'panel',
+          label: 'Panel 1',
+          components: [{ key: 'question-1', question: 'q1', type: 'selectboxes' }],
+        },
+      ],
+    }
+
+    server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
+
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+        HttpResponse.json([{ id: 'answer-1', question: { id: 'q1' }, text: 'One, Two' }]),
+      ),
+    )
+
+    const PageComponent = await Page({ params: Promise.resolve({ classificationId: 1, panelId: 'panel-1' }) })
+
+    render(PageComponent)
+
+    expect(screen.getByText('AdditionalQuestions Component')).toBeInTheDocument()
+    expect(AdditionalQuestions).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: expect.any(Function),
+        formComponents: [{ defaultValues: ['One', 'Two'], key: 'question-1', question: 'q1', type: 'selectboxes' }],
+        panelLabel: 'Panel 1',
+        previousPanelPath: '/',
+      }),
+      {},
+    )
+  })
+
   it('passes postForm with the correct bounded args to AdditionalQuestions', async () => {
     const formData = {
       components: [
@@ -108,6 +187,10 @@ describe('Page', () => {
       lastPanelPath: '/aanvullende-vragen/1/panel-2',
       nextPanelPath: '/locatie',
       questionKeysAndIds: [{ key: 'question-2', id: 'q2' }],
+      questionAndAnswerIdPairs: [
+        { answerId: additionalQuestions[0].id, questionId: additionalQuestions[0].question.id },
+        { answerId: additionalQuestions[1].id, questionId: additionalQuestions[1].question.id },
+      ],
       requiredQuestionKeys: ['question-2'],
     })
   })

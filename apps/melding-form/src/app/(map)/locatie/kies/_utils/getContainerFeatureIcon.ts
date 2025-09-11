@@ -10,6 +10,8 @@ import {
   textielAfvalIcon,
 } from '../markerIcons'
 
+import styles from '../SelectLocation.module.css'
+
 export enum ContainerFeatureType {
   Papier = 'Papier',
   Glas = 'Glas',
@@ -32,7 +34,19 @@ const containerIcons: Record<ContainerFeatureType, L.Icon> = {
   [ContainerFeatureType.GFT]: gftAfvalIcon,
 }
 
-export const getContainerFeatureIcon = (feature: AssetFeature): L.Icon => {
+export const getContainerFeatureIcon = (feature: AssetFeature, isSelected: boolean): L.Icon => {
   const containerFeatureType = feature.properties?.fractie_omschrijving as ContainerFeatureType
-  return containerIcons[containerFeatureType] || restAfvalIcon
+
+  const icon = containerIcons[containerFeatureType] || restAfvalIcon
+
+  if (isSelected) {
+    return L.icon({
+      ...icon.options,
+      className: styles.selectedMarkerIconBorder,
+      iconSize: [60, 60],
+      iconAnchor: [34, 56],
+    })
+  }
+
+  return icon
 }

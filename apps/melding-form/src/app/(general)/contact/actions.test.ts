@@ -6,29 +6,17 @@ import type { Mock } from 'vitest'
 import { postContactForm } from './actions'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(),
-}))
-
 describe('postContactForm', () => {
   beforeEach(() => {
-    // Default mock for cookies
-    ;(cookies as Mock).mockReturnValue({
-      get: (name: string) => {
-        if (name === 'id') {
-          return { value: '123' }
-        }
-        if (name === 'token') {
-          return { value: 'test-token' }
-        }
-        return undefined
-      },
-    })
+    mockIdAndTokenCookies()
   })
 
   it('should redirect to /samenvatting page on success', async () => {
@@ -66,7 +54,7 @@ describe('postContactForm', () => {
 
   it('returns a validation error if email is invalid', async () => {
     server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () =>
+      http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_CONTACT, () =>
         HttpResponse.json(
           { detail: [{ loc: 'email', msg: 'Email validation error', type: 'value_error' }] },
           { status: 422 },
@@ -87,7 +75,7 @@ describe('postContactForm', () => {
 
   it('returns a validation error if phone is invalid', async () => {
     server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () =>
+      http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_CONTACT, () =>
         HttpResponse.json(
           { detail: [{ loc: 'phone', msg: 'Phone validation error', type: 'value_error' }] },
           { status: 422 },
@@ -109,7 +97,10 @@ describe('postContactForm', () => {
 
   it('returns an error message if an error occurs', async () => {
     server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_CONTACT, () => new HttpResponse('Error message', { status: 404 })),
+      http.patch(
+        ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_CONTACT,
+        () => new HttpResponse('Error message', { status: 404 }),
+      ),
     )
 
     const formData = new FormData()

@@ -1,23 +1,27 @@
 import { Heading, Paragraph } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useActionState, useEffect, useState } from 'react'
+
+import { Feature } from '@meldingen/api-client'
 
 import { writeAddressAndCoordinateToCookie } from './actions'
 import { getAddressFromCoordinates } from '../../_utils'
 import { Combobox } from '../Combobox/Combobox'
+import { BackLink } from 'apps/melding-form/src/app/(general)/_components/BackLink/BackLink'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './SideBar.module.css'
 
-type Props = {
+export type Props = {
   coordinates?: Coordinates
   setCoordinates: (coordinates: Coordinates) => void
+  setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
 const initialState: { errorMessage?: string } = {}
 
-export const SideBar = ({ coordinates, setCoordinates }: Props) => {
+export const SideBar = ({ coordinates, setCoordinates, setSelectedAssets }: Props) => {
   const [{ errorMessage }, formAction] = useActionState(writeAddressAndCoordinateToCookie, initialState)
 
   const [address, setAddress] = useState<string>()
@@ -54,6 +58,9 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.intro}>
+        <BackLink className="ams-mb-s" href="/locatie">
+          {t('back-link')}
+        </BackLink>
         <Heading level={1} size="level-4">
           {t('title')}
         </Heading>
@@ -65,6 +72,7 @@ export const SideBar = ({ coordinates, setCoordinates }: Props) => {
           setAddress={setAddress}
           setCoordinates={setCoordinates}
           errorMessage={errorMessage}
+          setSelectedAssets={setSelectedAssets}
         />
         <input type="hidden" name="coordinates" defaultValue={address ? JSON.stringify(coordinates) : undefined} />
       </Form>
