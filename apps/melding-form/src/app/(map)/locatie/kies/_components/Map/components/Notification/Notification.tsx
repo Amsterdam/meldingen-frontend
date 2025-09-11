@@ -1,19 +1,13 @@
 import type { AlertProps } from '@amsterdam/design-system-react'
-import { Alert } from '@amsterdam/design-system-react'
-import { useEffect, useRef } from 'react'
+import { Alert, Paragraph } from '@amsterdam/design-system-react'
 
 import styles from './Notification.module.css'
 
-export const Notification = (props: AlertProps) => {
-  const ref = useRef<HTMLDivElement>(null)
-
-  // Set focus on the notification when it is rendered,
-  // to make sure screen readers read the entire message
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.focus()
-    }
-  }, [ref])
-
-  return <Alert {...props} className={styles.notification} ref={ref} tabIndex={-1} />
-}
+export const Notification = ({
+  description,
+  ...restProps
+}: Omit<AlertProps, 'headingLevel'> & { description?: string }) => (
+  <Alert {...restProps} closeable className={styles.notification} headingLevel={2} tabIndex={-1}>
+    {description && <Paragraph>{description}</Paragraph>}
+  </Alert>
+)

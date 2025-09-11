@@ -7,18 +7,27 @@ import { Feature } from '@meldingen/api-client'
 
 import { MAX_ASSETS } from '../../_utils/addAssetLayerToMap'
 import { getContainerFeatureIconSVG } from '../../_utils/getContainerFeatureIconSVG'
-import type { Coordinates } from 'apps/melding-form/src/types'
+import type { Coordinates, NotificationType } from 'apps/melding-form/src/types'
 
 import styles from './AssetList.module.css'
 
 export type Props = {
   assetList: Feature[]
   selectedAssets: Feature[]
+  notification: NotificationType | null
   setCoordinates: (coordinates?: Coordinates) => void
+  setNotification: (notification: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
-export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelectedAssets }: Props) => {
+export const AssetList = ({
+  assetList,
+  notification,
+  selectedAssets,
+  setNotification,
+  setCoordinates,
+  setSelectedAssets,
+}: Props) => {
   if (assetList.length === 0 && selectedAssets.length === 0) return
 
   const filteredList = assetList.filter(
@@ -26,6 +35,10 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
   )
 
   const handleDeselectAsset = (asset: Feature) => {
+    if (notification) {
+      setNotification(null)
+    }
+
     if (selectedAssets.length <= 1) {
       setCoordinates(undefined)
     } else if (asset.id === selectedAssets[0].id) {
@@ -40,6 +53,15 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
   }
 
   const handleSelectAsset = (asset: Feature) => {
+    if (selectedAssets.length >= MAX_ASSETS) {
+      setNotification({
+        closeButtonLabel: 'Sluiten',
+        heading: `U kunt maximaal ${MAX_ASSETS} containers kiezen`,
+        showInAssetList: true,
+      })
+      return
+    }
+
     // @ts-expect-error an asset always has coordinates
     const [y, x] = asset.geometry.coordinates
     setCoordinates({ lat: x, lng: y })
@@ -81,11 +103,7 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
 
         return (
           <li key={publicId}>
-            <Checkbox
-              className={styles.checkbox}
-              onChange={() => handleSelectAsset(asset)}
-              disabled={selectedAssets.length === MAX_ASSETS}
-            >
+            <Checkbox className={styles.checkbox} onChange={() => handleSelectAsset(asset)} checked={false}>
               {label}
             </Checkbox>
           </li>

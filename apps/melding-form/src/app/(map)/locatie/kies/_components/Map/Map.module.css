@@ -12,3 +12,7 @@
 .hideMap {
   display: none;
 }
+
+.notification {
+  max-width: 37.5rem;
+}

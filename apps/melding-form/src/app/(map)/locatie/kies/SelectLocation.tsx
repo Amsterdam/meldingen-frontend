@@ -12,9 +12,10 @@ import { Feature } from '@meldingen/api-client'
 
 import { AssetList } from './_components/AssetList/AssetList'
 import { AssetListToggle } from './_components/AssetListToggle/AssetListToggle'
+import { Notification } from './_components/Map/components/Notification/Notification'
 import { SideBar } from './_components/SideBar/SideBar'
 import { useAssetLayer } from './hooks/useAssetLayer'
-import type { Coordinates } from 'apps/melding-form/src/types'
+import type { Coordinates, NotificationType } from 'apps/melding-form/src/types'
 
 import styles from './SelectLocation.module.css'
 
@@ -34,6 +35,7 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
   const [selectedAssets, setSelectedAssets] = useState<Feature[]>([])
+  const [notification, setNotification] = useState<NotificationType | null>(null)
 
   const t = useTranslations('select-location')
 
@@ -43,9 +45,11 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
     assetList,
     classification,
     mapInstance,
+    notification,
     selectedAssets,
     setAssetList,
     setCoordinates,
+    setNotification,
     setSelectedAssets,
   })
 
@@ -60,11 +64,22 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
     <div className={styles.grid}>
       <SideBar coordinates={coordinates} setCoordinates={setCoordinates} setSelectedAssets={setSelectedAssets} />
       <div className={clsx(styles.assetList, showAssetList && styles.showAssetList)}>
+        {notification && notification.showInAssetList && (
+          <Notification
+            closeButtonLabel={notification.closeButtonLabel}
+            description={notification.description}
+            heading={notification.heading}
+            onClose={() => setNotification(null)}
+            severity={notification.severity}
+          />
+        )}
         <AssetList
           assetList={assetList}
           selectedAssets={selectedAssets}
-          setSelectedAssets={setSelectedAssets}
           setCoordinates={setCoordinates}
+          notification={notification}
+          setNotification={setNotification}
+          setSelectedAssets={setSelectedAssets}
         />
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
           {t('submit-button.desktop')}
@@ -74,9 +89,11 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
         <Map
           coordinates={coordinates}
           mapInstance={mapInstance}
+          notification={notification}
           selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
           setMapInstance={setMapInstance}
+          setNotification={setNotification}
           setSelectedAssets={setSelectedAssets}
           showAssetList={showAssetList}
         />

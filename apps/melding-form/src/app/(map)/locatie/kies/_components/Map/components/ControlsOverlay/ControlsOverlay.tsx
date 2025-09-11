@@ -1,29 +1,21 @@
-import type { AlertProps } from '@amsterdam/design-system-react'
-import { Button, Paragraph } from '@amsterdam/design-system-react'
+import { Alert, Button, Paragraph } from '@amsterdam/design-system-react'
 import { MinusIcon, PlusIcon } from '@amsterdam/design-system-react-icons'
 import type L from 'leaflet'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
 
-import { Notification } from '../Notification/Notification'
-import type { Coordinates } from 'apps/melding-form/src/types'
+import type { Coordinates, NotificationType } from 'apps/melding-form/src/types'
 
 import styles from './ControlsOverlay.module.css'
+import mapStyles from '../../Map.module.css'
 
 type Props = {
   mapInstance: L.Map | null
+  notification: NotificationType | null
   setCoordinates: (coordinates: Coordinates) => void
+  setNotification: (notification: NotificationType | null) => void
 }
 
-type NotificationType = {
-  heading: AlertProps['heading']
-  closeButtonLabel: AlertProps['closeButtonLabel']
-  severity: AlertProps['severity']
-}
-
-export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
-  const [notification, setNotification] = useState<NotificationType | null>(null)
-
+export const ControlsOverlay = ({ mapInstance, notification, setCoordinates, setNotification }: Props) => {
   const t = useTranslations('select-location.controls-overlay')
 
   const handleZoomIn = () => {
@@ -49,6 +41,7 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
   const onError = () =>
     setNotification({
       closeButtonLabel: t('notification.close-button'),
+      description: t('notification.description'),
       heading: t('notification.title'),
       severity: 'error',
     })
@@ -62,7 +55,9 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
           {t('current-location-button')}
         </Button>
         {notification && (
-          <Notification
+          <Alert
+            className={mapStyles.notification}
+            tabIndex={-1}
             closeable
             closeButtonLabel={notification.closeButtonLabel}
             heading={notification.heading}
@@ -70,8 +65,8 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
             onClose={() => setNotification(null)}
             severity={notification.severity}
           >
-            <Paragraph>{t('notification.description')}</Paragraph>
-          </Notification>
+            {notification.description && <Paragraph>{notification.description}</Paragraph>}
+          </Alert>
         )}
       </div>
       <div className={styles.overlayBottomRight}>
