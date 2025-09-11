@@ -14,9 +14,9 @@ export type FormState = {
 }
 
 export type NotificationType = {
-  heading: AlertProps['heading']
   closeButtonLabel: AlertProps['closeButtonLabel']
-  severity?: AlertProps['severity']
   description?: string
+  heading: AlertProps['heading']
+  severity?: AlertProps['severity']
   showInAssetList?: boolean
 }
