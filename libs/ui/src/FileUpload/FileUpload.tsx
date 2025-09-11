@@ -1,57 +1,57 @@
-import { DragEvent } from 'react'
+'use client'
+
+import { clsx } from 'clsx'
+import { ChangeEvent, DragEvent, InputHTMLAttributes, useRef } from 'react'
 
 import styles from './FileUpload.module.css'
 
 // Based on https://design-system.service.gov.uk/components/file-upload/#using-the-improved-file-upload-component
+// and https://github.com/alphagov/govuk-frontend/blob/main/packages/govuk-frontend/src/govuk/components/file-upload/file-upload.mjs
 
-// Some browsers support dataTransfer.files and some support dataTransfer.items
-// For that reason, we handle both here.
-// See also https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop#process_the_drop
-const getFiles = (dataTransfer: DataTransfer): FileList => {
-  // If dataTransfer.files is present and has files, return it directly
-  if (dataTransfer.files && dataTransfer.files.length > 0) {
-    return dataTransfer.files
-  }
+// Checks if the given `DataTransfer` contains files
+const isContainingFiles = (dataTransfer: DataTransfer): boolean => {
+  // Safari sometimes does not provide info about types :'(
+  // In which case best not to assume anything and try to set the files
+  const hasNoTypesInfo = dataTransfer.types.length === 0
 
-  // Otherwise, collect files from items and construct a FileList
-  const dt = new DataTransfer()
-  if (dataTransfer.items) {
-    ;[...dataTransfer.items].forEach((item) => {
-      if (item.kind === 'file') {
-        const file = item.getAsFile()
-        if (file) dt.items.add(file)
-      }
-    })
-  }
+  // When dragging images, there's a mix of mime types + Files
+  // which we can't assign to the native input
+  const isDraggingFiles = dataTransfer.types.some((type) => type === 'Files')
 
-  return dt.files
+  return hasNoTypesInfo || isDraggingFiles
+}
+
+type Props = InputHTMLAttributes<HTMLInputElement> & {
+  buttonText?: string
+  className?: string
+  dropAreaText?: string
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
 export const FileUpload = ({
   buttonText = 'Bestanden kiezen',
+  className,
   dropAreaText = 'Sleep bestanden in dit vak of',
-  onChange,
-}: {
-  buttonText?: string
-  dropAreaText?: string
-  onChange: (files: FileList | null) => void
-}) => {
+  ...restProps
+}: Props) => {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
   const handleClick = () => {
-    // Create a temporary input in order to open the file upload dialog
-    const input = document.createElement('input')
-    input.type = 'file'
-    input.accept = 'image/jpeg,image/jpg,image/png,android/force-camera-workaround'
-    input.multiple = true
-    input.onchange = () => {
-      onChange(input.files)
+    if (fileInputRef.current) {
+      fileInputRef.current.click()
     }
-    input.click()
   }
 
   const handleDrop = (event: DragEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    const files = getFiles(event.dataTransfer)
-    onChange(files)
+
+    if (fileInputRef.current && event.dataTransfer && isContainingFiles(event.dataTransfer)) {
+      fileInputRef.current.files = event.dataTransfer.files
+
+      // Trigger change event of file input
+      const changeEvent = new Event('change', { bubbles: true })
+      fileInputRef.current.dispatchEvent(changeEvent)
+    }
   }
 
   const handleDragOver = (event: DragEvent<HTMLButtonElement>) => {
@@ -59,14 +59,17 @@ export const FileUpload = ({
   }
 
   return (
-    <button
-      className={styles.upload}
-      type="button"
-      onClick={handleClick}
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
-    >
-      <span className={styles.dropAreaText}>{dropAreaText}</span> <span className={styles.button}>{buttonText}</span>
-    </button>
+    <>
+      <button
+        className={clsx(styles.upload, className)}
+        type="button"
+        onClick={handleClick}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
+        <span className={styles.dropAreaText}>{dropAreaText}</span> <span className={styles.button}>{buttonText}</span>
+      </button>
+      <input {...restProps} aria-hidden="true" hidden ref={fileInputRef} tabIndex={-1} type="file" />
+    </>
   )
 }
