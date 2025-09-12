@@ -21,9 +21,11 @@ const defaultProps: Props = {
   assetList: [],
   classification: 'container',
   mapInstance: mapInstanceMock,
+  notification: null,
   selectedAssets: [],
   setAssetList: vi.fn(),
   setCoordinates: vi.fn(),
+  setNotification: vi.fn(),
   setSelectedAssets: vi.fn(),
 }
 

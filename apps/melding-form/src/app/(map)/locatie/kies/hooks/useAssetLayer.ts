@@ -4,15 +4,17 @@ import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 import { Feature } from '@meldingen/api-client'
 
 import { addAssetLayerToMap, fetchAssets, updateAssetMarkers } from '../_utils'
-import { Coordinates } from 'apps/melding-form/src/types'
+import { Coordinates, NotificationType } from 'apps/melding-form/src/types'
 
 export type Props = {
   assetList: Feature[]
   classification?: string
   mapInstance: L.Map | null
+  notification: NotificationType | null
   selectedAssets: Feature[]
   setAssetList: (assets: Feature[]) => void
   setCoordinates: (coordinates?: Coordinates) => void
+  setNotification: (notification: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
@@ -20,9 +22,11 @@ export const useAssetLayer = async ({
   assetList,
   classification,
   mapInstance,
+  notification,
   selectedAssets,
   setAssetList,
   setCoordinates,
+  setNotification,
   setSelectedAssets,
 }: Props) => {
   const assetLayerRef = useRef<L.Layer | null>(null)
@@ -42,15 +46,17 @@ export const useAssetLayer = async ({
    */
   useEffect(() => {
     addAssetLayerToMap({
-      assetList,
       assetLayerRef,
-      mapInstance,
-      setCoordinates,
-      selectedAssets,
-      setSelectedAssets,
+      assetList,
       assetMarkersRef,
+      mapInstance,
+      notification,
+      selectedAssets,
+      setCoordinates,
+      setNotification,
+      setSelectedAssets,
     })
-  }, [assetList, selectedAssets])
+  }, [assetList, selectedAssets, notification])
 
   /**
    * Update asset markers on selection change
