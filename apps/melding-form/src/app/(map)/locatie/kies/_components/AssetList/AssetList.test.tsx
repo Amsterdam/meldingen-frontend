@@ -13,8 +13,6 @@ const defaultProps: Props = {
 }
 
 describe('AssetList', () => {
-  const user = userEvent.setup()
-
   it('renders nothing when assetList and selectedAssets are empty', () => {
     const { container } = render(<AssetList {...defaultProps} assetList={[]} />)
 
@@ -53,6 +51,7 @@ describe('AssetList', () => {
   })
 
   it('sets coordinates and update selected assets when asset in list is clicked', async () => {
+    const user = userEvent.setup()
     render(<AssetList {...defaultProps} />)
 
     const checkbox = screen.getByRole('checkbox', { name: /Container-001/ })
@@ -70,6 +69,7 @@ describe('AssetList', () => {
   })
 
   it('resets coordinates when last selected asset is deselected', async () => {
+    const user = userEvent.setup()
     render(<AssetList {...defaultProps} selectedAssets={[containerAssets[0]]} />)
 
     const checkbox = screen.getByRole('checkbox', { name: /Container-001/ })
@@ -81,6 +81,7 @@ describe('AssetList', () => {
   })
 
   it('sets coordinates of the previous selected asset when top selected asset is deselected', async () => {
+    const user = userEvent.setup()
     render(<AssetList {...defaultProps} selectedAssets={containerAssets} />)
 
     const checkbox = screen.getByRole('checkbox', { name: /Container-001/ })
@@ -95,6 +96,7 @@ describe('AssetList', () => {
   })
 
   it('keeps coordinates when other then top asset is deselected', async () => {
+    const user = userEvent.setup()
     render(<AssetList {...defaultProps} selectedAssets={containerAssets} />)
 
     const checkbox = screen.getByRole('checkbox', { name: /Container-002/ })
