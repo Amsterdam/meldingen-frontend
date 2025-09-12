@@ -13,7 +13,7 @@
 }
 
 .checkbox {
-  border-top: 0.0625rem solid var(--ams-color-separator); /* stylelint-disable-line unit-disallowed-list */
+  border-top: 0.0625rem solid var(--ams-color-separator);
   padding-block: var(--ams-space-m);
   padding-inline: var(--ams-space-m);
 }
