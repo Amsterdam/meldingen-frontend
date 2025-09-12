@@ -9,5 +9,5 @@ export const getMeldingData = async (meldingId: string, token: string) => {
   if (error) throw new Error('Failed to fetch melding data.')
   if (!data) throw new Error('Melding data not found.')
 
-  return { data }
+  return data
 }
