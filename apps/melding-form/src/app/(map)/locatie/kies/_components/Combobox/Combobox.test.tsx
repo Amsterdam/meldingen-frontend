@@ -13,6 +13,7 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
 }))
 
 const defaultProps: Props = {
+  address: '',
   setAddress: vi.fn(),
   setCoordinates: vi.fn(),
   setSelectedAssets: vi.fn(),

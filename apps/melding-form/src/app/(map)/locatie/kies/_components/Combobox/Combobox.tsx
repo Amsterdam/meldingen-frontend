@@ -33,9 +33,9 @@ const debounce = (fn: Function, delay = 250) => {
 }
 
 export type Props = {
-  address?: string
+  address: string
   errorMessage?: string
-  setAddress: (address?: string) => void
+  setAddress: (address: string) => void
   setCoordinates: (coordinates: Coordinates) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
@@ -54,7 +54,7 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
   const t = useTranslations('select-location.combo-box')
 
   useEffect(() => {
-    if (address) setQuery(address)
+    setQuery(address)
   }, [address])
 
   // TODO: do we want to show a loading state?

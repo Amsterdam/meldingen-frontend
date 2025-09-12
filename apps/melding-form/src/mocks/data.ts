@@ -227,7 +227,7 @@ export const containerAssets: Feature[] = [
   },
   {
     geometry: {
-      coordinates: [4.9, 52.3],
+      coordinates: [4.9, 52.4],
       type: 'Point',
     },
     id: 'container.2',

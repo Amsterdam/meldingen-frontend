@@ -7,7 +7,7 @@ import type { Feature } from '@meldingen/api-client'
 import { getContainerFeatureIcon } from './getContainerFeatureIcon'
 import { Coordinates } from 'apps/melding-form/src/types'
 
-const MAX_ASSETS = 5
+export const MAX_ASSETS = 5
 
 export type Props = {
   assetLayerRef: MutableRefObject<L.Layer | null>

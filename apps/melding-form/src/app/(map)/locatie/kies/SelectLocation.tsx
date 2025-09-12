@@ -60,7 +60,12 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
     <div className={styles.grid}>
       <SideBar coordinates={coordinates} setCoordinates={setCoordinates} setSelectedAssets={setSelectedAssets} />
       <div className={clsx(styles.assetList, showAssetList && styles.showAssetList)}>
-        <AssetList assetList={assetList} selectedAssets={selectedAssets} />
+        <AssetList
+          assetList={assetList}
+          selectedAssets={selectedAssets}
+          setSelectedAssets={setSelectedAssets}
+          setCoordinates={setCoordinates}
+        />
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
           {t('submit-button.desktop')}
         </Button>
