@@ -1,8 +1,9 @@
+import { AlertProps } from '@amsterdam/design-system-react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type L from 'leaflet'
 
-import { ControlsOverlay } from './ControlsOverlay'
+import { ControlsOverlay, type Props } from './ControlsOverlay'
 
 const INITIAL_ZOOM = 10
 
@@ -26,8 +27,22 @@ vi.mock('leaflet', async (importOriginal) => {
   }
 })
 
+const defaultProps: Props = {
+  mapInstance: mapInstanceMock,
+  setCoordinates: vi.fn(),
+  notification: null,
+  setNotification: vi.fn(),
+}
+
+const mockNotification = {
+  closeButtonLabel: 'notification.close-button',
+  description: 'notification.description',
+  heading: 'notification.title',
+  severity: 'error' as AlertProps['severity'],
+}
+
 describe('ControlsOverlay', () => {
-  it('displays a notification on geolocation error', async () => {
+  it('sets a notification on geolocation error', async () => {
     const mockGeolocation = {
       getCurrentPosition: vi.fn().mockImplementationOnce((_, error) =>
         error({
@@ -42,17 +57,13 @@ describe('ControlsOverlay', () => {
 
     const user = userEvent.setup()
 
-    render(<ControlsOverlay mapInstance={mapInstanceMock} setCoordinates={() => {}} />)
+    render(<ControlsOverlay {...defaultProps} />)
 
     const button = screen.getByRole('button', { name: 'current-location-button' })
 
     await user.click(button)
 
-    const notification = screen.getByRole('heading', {
-      name: 'notification.title',
-    })
-
-    expect(notification).toBeInTheDocument()
+    expect(defaultProps.setNotification).toHaveBeenCalledWith(mockNotification)
   })
 
   it('closes the notification when the close button is clicked', async () => {
@@ -70,21 +81,13 @@ describe('ControlsOverlay', () => {
 
     const user = userEvent.setup()
 
-    render(<ControlsOverlay mapInstance={mapInstanceMock} setCoordinates={() => {}} />)
-
-    const button = screen.getByRole('button', { name: 'current-location-button' })
-
-    await user.click(button)
+    render(<ControlsOverlay {...defaultProps} notification={mockNotification} />)
 
     const closeButton = screen.getByRole('button', { name: 'notification.close-button' })
 
     await user.click(closeButton)
 
-    const notification = screen.queryByRole('heading', {
-      name: 'notification.title',
-    })
-
-    expect(notification).not.toBeInTheDocument()
+    expect(defaultProps.setNotification).toHaveBeenCalledWith(null)
   })
 
   it('calls setCoordinates with the correct coordinates on geolocation success', async () => {
@@ -104,9 +107,7 @@ describe('ControlsOverlay', () => {
 
     const user = userEvent.setup()
 
-    const mockSetCoordinates = vi.fn()
-
-    render(<ControlsOverlay mapInstance={mapInstanceMock} setCoordinates={mockSetCoordinates} />)
+    render(<ControlsOverlay {...defaultProps} />)
 
     const button = screen.getByRole('button', { name: 'current-location-button' })
 
@@ -114,7 +115,7 @@ describe('ControlsOverlay', () => {
 
     expect(mockGeolocation.getCurrentPosition).toHaveBeenCalled()
 
-    expect(mockSetCoordinates).toHaveBeenCalledWith({
+    expect(defaultProps.setCoordinates).toHaveBeenCalledWith({
       lat: 52.370216,
       lng: 4.895168,
     })
@@ -137,9 +138,7 @@ describe('ControlsOverlay', () => {
 
     const user = userEvent.setup()
 
-    const mockSetCoordinates = vi.fn()
-
-    render(<ControlsOverlay mapInstance={null} setCoordinates={mockSetCoordinates} />)
+    render(<ControlsOverlay {...defaultProps} mapInstance={null} />)
 
     const button = screen.getByRole('button', { name: 'current-location-button' })
 
@@ -147,13 +146,13 @@ describe('ControlsOverlay', () => {
 
     expect(mockGeolocation.getCurrentPosition).toHaveBeenCalled()
 
-    expect(mockSetCoordinates).not.toHaveBeenCalled()
+    expect(defaultProps.setCoordinates).not.toHaveBeenCalled()
   })
 
   it('should zoom in when zoom controls are used', async () => {
     const user = userEvent.setup()
 
-    render(<ControlsOverlay mapInstance={mapInstanceMock} setCoordinates={() => {}} />)
+    render(<ControlsOverlay {...defaultProps} />)
 
     const ZoomInButton = screen.getByRole('button', { name: 'zoom-in' })
 
@@ -165,7 +164,7 @@ describe('ControlsOverlay', () => {
   it('should zoom out when zoom controls are used', async () => {
     const user = userEvent.setup()
 
-    render(<ControlsOverlay mapInstance={mapInstanceMock} setCoordinates={() => {}} />)
+    render(<ControlsOverlay {...defaultProps} />)
 
     const ZoomOutButton = screen.getByRole('button', { name: 'zoom-out' })
 

@@ -8,7 +8,7 @@ import type { Coordinates, NotificationType } from 'apps/melding-form/src/types'
 import styles from './ControlsOverlay.module.css'
 import mapStyles from '../../Map.module.css'
 
-type Props = {
+export type Props = {
   mapInstance: L.Map | null
   notification: NotificationType | null
   setCoordinates: (coordinates: Coordinates) => void

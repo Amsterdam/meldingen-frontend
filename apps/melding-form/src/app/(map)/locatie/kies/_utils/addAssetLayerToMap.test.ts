@@ -19,6 +19,8 @@ const defaultProps: Props = {
   selectedAssets: [],
   setSelectedAssets: vi.fn(),
   setCoordinates: vi.fn(),
+  notification: null,
+  setNotification: vi.fn(),
 }
 
 describe('addAssetLayerToMap', () => {

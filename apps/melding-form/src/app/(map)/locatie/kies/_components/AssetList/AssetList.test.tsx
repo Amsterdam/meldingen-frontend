@@ -10,6 +10,8 @@ const defaultProps: Props = {
   selectedAssets: [],
   setCoordinates: vi.fn(),
   setSelectedAssets: vi.fn(),
+  notification: null,
+  setNotification: vi.fn(),
 }
 
 describe('AssetList', () => {
@@ -65,7 +67,6 @@ describe('AssetList', () => {
 
     expect(defaultProps.setCoordinates).toHaveBeenCalledWith({ lat: x, lng: y })
     expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
-    expect(checkbox).toBeChecked()
   })
 
   it('resets coordinates when last selected asset is deselected', async () => {

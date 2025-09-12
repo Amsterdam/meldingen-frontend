@@ -21,7 +21,7 @@ export type Props = {
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
-export const addAssetLayerToMap = async ({
+export const addAssetLayerToMap = ({
   assetLayerRef,
   assetList,
   assetMarkersRef,
