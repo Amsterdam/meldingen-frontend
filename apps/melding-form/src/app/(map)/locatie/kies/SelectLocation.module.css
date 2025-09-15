@@ -17,6 +17,7 @@
   overflow-y: auto;
   padding-block-end: var(--ams-space-m);
   padding-inline: var(--ams-space-m);
+  row-gap: var(--ams-space-m);
 
   @media screen and (min-width: 68rem) {
     display: flex;
