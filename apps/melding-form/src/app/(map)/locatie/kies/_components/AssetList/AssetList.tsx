@@ -20,8 +20,8 @@ export type Props = {
   setNotification: (notification: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
-  
-  const getCheckboxLabel = (asset: Feature, idNummer: string) => {
+
+const getCheckboxLabel = (asset: Feature, idNummer: string) => {
   const icon = getContainerFeatureIconSVG(asset)
   const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
 
@@ -33,7 +33,6 @@ export type Props = {
   )
 }
 
-
 export const AssetList = ({
   assetList,
   notification,
@@ -43,7 +42,7 @@ export const AssetList = ({
   setSelectedAssets,
 }: Props) => {
   const t = useTranslations('select-location.asset-list')
-  
+
   if (assetList.length === 0 && selectedAssets.length === 0) return
 
   const filteredList = assetList.filter(
