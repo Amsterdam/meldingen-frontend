@@ -16,12 +16,12 @@ const getPrefilledPrimaryFormComponents = async (
   token: string,
   formComponents: StaticFormTextAreaComponentOutput[],
 ) => {
-  const { data } = await getMeldingData(meldingId, token)
+  const { text } = await getMeldingData(meldingId, token)
 
   return formComponents.map((component) => {
     return {
       ...component,
-      defaultValue: data.text,
+      defaultValue: text,
     }
   })
 }

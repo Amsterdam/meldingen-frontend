@@ -18,12 +18,14 @@ const defaultProps = {
     {
       key: '1',
       term: 'Text Field 1',
-      description: ['Antwoord vraag 1'],
+      description: 'Antwoord vraag 1',
+      link: '/link/to/page',
     },
     {
       key: '2',
       term: 'Text Area 2',
-      description: ['Antwoord vraag 2'],
+      description: 'Antwoord vraag 2',
+      link: '/link/to/page',
     },
   ],
   attachments: {
@@ -45,12 +47,12 @@ const defaultProps = {
   location: {
     key: 'location',
     term: 'Waar staat de container?',
-    description: ['Nieuwmarkt 247, 1011MB Amsterdam'],
+    description: 'Nieuwmarkt 247, 1011MB Amsterdam',
   },
   primaryForm: {
     key: 'primary',
     term: 'Wat wilt u melden?',
-    description: ['Er ligt heel veel afval op straat.'],
+    description: 'Er ligt heel veel afval op straat.',
   },
 }
 
@@ -82,14 +84,36 @@ describe('Summary', () => {
     expect(terms[5]).toHaveTextContent('Wat zijn uw contactgegevens?')
 
     expect(definitions[0]).toHaveTextContent('Er ligt heel veel afval op straat.')
-    expect(definitions[1]).toHaveTextContent('Antwoord vraag 1')
-    expect(definitions[2]).toHaveTextContent('Antwoord vraag 2')
-    expect(definitions[3]).toHaveTextContent('Nieuwmarkt 247, 1011MB Amsterdam')
-    expect(definitions[4]).toHaveTextContent('IMG_0815.jpg')
-    expect(definitions[5]).toHaveTextContent('test@test.com')
-    expect(definitions[6]).toHaveTextContent('+31612345678')
+    expect(definitions[2]).toHaveTextContent('Antwoord vraag 1')
+    expect(definitions[4]).toHaveTextContent('Antwoord vraag 2')
+    expect(definitions[6]).toHaveTextContent('Nieuwmarkt 247, 1011MB Amsterdam')
+    expect(definitions[8]).toHaveTextContent('IMG_0815.jpg')
+    expect(definitions[9]).toHaveTextContent('test@test.com')
+    expect(definitions[10]).toHaveTextContent('+31612345678')
 
     expect(screen.getByRole('button', { name: 'submit-button' }))
+  })
+
+  it('renders the change links', () => {
+    render(<Summary {...defaultProps} />)
+
+    const primaryChangeLink = screen.getByRole('link', { name: 'change-links.primary' })
+    const additionalChangeLinks = screen.getAllByRole('link', { name: 'change-links.additional' })
+    const locationChangeLink = screen.getByRole('link', { name: 'change-links.location' })
+    const contactChangeLink = screen.getByRole('link', { name: 'change-links.contact' })
+
+    expect(primaryChangeLink).toBeInTheDocument()
+    expect(primaryChangeLink).toHaveAttribute('href', '/')
+
+    expect(additionalChangeLinks).toHaveLength(2)
+    expect(additionalChangeLinks[0]).toHaveAttribute('href', '/link/to/page')
+    expect(additionalChangeLinks[1]).toHaveAttribute('href', '/link/to/page')
+
+    expect(locationChangeLink).toBeInTheDocument()
+    expect(locationChangeLink).toHaveAttribute('href', '/locatie')
+
+    expect(contactChangeLink).toBeInTheDocument()
+    expect(contactChangeLink).toHaveAttribute('href', '/contact')
   })
 
   it('renders the Summary component with an error message', () => {

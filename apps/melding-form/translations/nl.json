@@ -113,6 +113,12 @@
     "attachments-label": "Foto’s",
     "contact-label": "Contactgegevens",
     "submit-button": "Verstuur melding",
+    "change-links": {
+      "primary": "Wijzig uw melding",
+      "additional": "Wijzig antwoord",
+      "location": "Wijzig locatie",
+      "contact": "Wijzig contactgegevens"
+    },
     "errors": {
       "no-location": "Er konden geen locatiegegevens worden gevonden."
     }
