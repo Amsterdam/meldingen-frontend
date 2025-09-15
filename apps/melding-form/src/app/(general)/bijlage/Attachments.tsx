@@ -137,8 +137,8 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
                   : undefined
               }
               aria-labelledby="file-upload-label file-upload"
-              buttonText={t('file-input.button')}
-              dropAreaText={t('file-input.drop-area')}
+              buttonText={t('file-upload.button')}
+              dropAreaText={t('file-upload.drop-area')}
               id="file-upload"
               multiple
               onChange={handleChange}

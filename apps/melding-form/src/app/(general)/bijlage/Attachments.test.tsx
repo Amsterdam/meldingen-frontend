@@ -34,7 +34,7 @@ describe('Attachments', () => {
     const backLink = screen.getByRole('link', { name: 'back-link' })
     const header = screen.getByRole('banner', { name: 'title' })
     const fileUpload = screen.getByRole('button', {
-      name: 'First question (niet verplicht) file-input.drop-area file-input.button',
+      name: 'First question (niet verplicht) file-upload.drop-area file-upload.button',
     })
 
     expect(backLink).toBeInTheDocument()
