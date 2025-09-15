@@ -13,7 +13,7 @@ export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
 
 export const FileListItem = ({ file, onDelete }: FileListItemProps) => (
   <div className={styles.item}>
-    <dt>{file.name}</dt>
+    <dt className={styles.term}>{file.name}</dt>
     <dd className={styles.noShrink}>thumbnail</dd>
     <dd className={styles.noShrink}>{formatFileSize(file.size)}</dd>
     <dd className={styles.noShrink}>

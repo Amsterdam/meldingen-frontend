@@ -15,7 +15,7 @@
   hyphens: auto;
   justify-content: space-between;
   line-height: var(--ams-typography-body-text-line-height);
-  overflow-wrap: break-word; /* Break overflowing words for browsers that don’t support CSS hyphens. */
+  overflow-wrap: anywhere; /* Break overflowing words for browsers that don’t support CSS hyphens. */
   text-rendering: optimizelegibility;
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -moz-text-size-adjust: none;
@@ -26,6 +26,10 @@
   dd {
     margin-inline-start: 0;
   }
+}
+
+.term {
+  margin-inline-end: auto;
 }
 
 .noShrink {
