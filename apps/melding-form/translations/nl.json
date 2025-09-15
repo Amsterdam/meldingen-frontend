@@ -80,9 +80,10 @@
     "back-link": "Vorige vraag",
     "title": "Melding openbare ruimte",
     "step": "Stap 2 van 4: Foto’s",
-    "file-input": {
-      "button": "Selecteer bestanden",
-      "drop-area": "Of sleep de bestanden in dit vak."
+    "hint-text": "(niet verplicht)",
+    "file-upload": {
+      "button": "Bestanden kiezen",
+      "drop-area": "Sleep bestanden in dit vak of"
     },
     "submit-button": "Volgende vraag",
     "errors": {
