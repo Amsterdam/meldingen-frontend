@@ -44,6 +44,8 @@ describe('FileUpload', () => {
   })
 
   it('calls click on file input when button is clicked', async () => {
+    const user = userEvent.setup()
+
     const onChange = vi.fn()
 
     render(<FileUpload onChange={onChange} />)
@@ -54,7 +56,7 @@ describe('FileUpload', () => {
     // Spy on the input's click method
     const clickSpy = vi.spyOn(input, 'click')
 
-    await userEvent.click(button)
+    await user.click(button)
 
     expect(clickSpy).toHaveBeenCalled()
   })
