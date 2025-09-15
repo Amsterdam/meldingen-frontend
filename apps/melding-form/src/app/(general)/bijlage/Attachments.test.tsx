@@ -47,7 +47,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} />)
 
-    const fileInput = document.querySelector('input') as HTMLInputElement
+    const fileInput = screen.getByLabelText('File input')
 
     const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
     const file2 = new File(['dummy content two'], 'hoi.png', { type: 'image/png' })
@@ -66,7 +66,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} />)
 
-    const fileInput = document.querySelector('input') as HTMLInputElement
+    const fileInput = screen.getByLabelText('File input')
 
     const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
 
@@ -96,7 +96,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} />)
 
-    const fileInput = document.querySelector('input') as HTMLInputElement
+    const fileInput = screen.getByLabelText('File input')
 
     const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
 
@@ -124,7 +124,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} />)
 
-    const fileInput = document.querySelector('input') as HTMLInputElement
+    const fileInput = screen.getByLabelText('File input')
 
     const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
 
@@ -140,7 +140,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} />)
 
-    const fileInput = document.querySelector('input') as HTMLInputElement
+    const fileInput = screen.getByLabelText('File input')
 
     const file = new File(['dummy content'], 'example.png', { type: 'image/png' })
     const file2 = new File(['dummy content two'], 'example2.png', { type: 'image/png' })

@@ -50,7 +50,7 @@ describe('FileUpload', () => {
 
     render(<FileUpload onChange={onChange} />)
 
-    const input = document.querySelector('input') as HTMLInputElement
+    const input = screen.getByLabelText('File input')
     const button = screen.getByRole('button')
 
     // Spy on the input's click method
