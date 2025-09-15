@@ -1,4 +1,5 @@
 import L from 'leaflet'
+import { useTranslations } from 'next-intl'
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 
 import { Feature } from '@meldingen/api-client'
@@ -31,6 +32,7 @@ export const useAssetLayer = async ({
 }: Props) => {
   const assetLayerRef = useRef<L.Layer | null>(null)
   const assetMarkersRef = useRef<Record<string, L.Marker>>({})
+  const t = useTranslations('select-location.asset-list')
 
   /**
    * Fetch assets
@@ -55,6 +57,7 @@ export const useAssetLayer = async ({
       setCoordinates,
       setNotification,
       setSelectedAssets,
+      t,
     })
   }, [assetList, selectedAssets, notification])
 

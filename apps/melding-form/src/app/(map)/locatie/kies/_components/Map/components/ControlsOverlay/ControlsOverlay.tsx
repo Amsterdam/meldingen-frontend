@@ -40,9 +40,9 @@ export const ControlsOverlay = ({ mapInstance, notification, setCoordinates, set
 
   const onError = () =>
     setNotification({
-      closeButtonLabel: t('notification.close-button'),
-      description: t('notification.description'),
-      heading: t('notification.title'),
+      closeButtonLabel: t('my-location-notification.close-button'),
+      description: t('my-location-notification.description'),
+      heading: t('my-location-notification.title'),
       severity: 'error',
     })
 

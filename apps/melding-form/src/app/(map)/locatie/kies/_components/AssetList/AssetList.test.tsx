@@ -3,8 +3,14 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 
 import { AssetList, type Props } from './AssetList'
-import { MAX_ASSETS } from '../../_utils/addAssetLayerToMap'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
+
+vi.mock('next-intl', async () => ({
+  useTranslations: () =>
+    vi.fn().mockImplementation((key) => {
+      return key
+    }),
+}))
 
 const defaultProps: Props = {
   assetList: containerAssets,
@@ -16,8 +22,8 @@ const defaultProps: Props = {
 }
 
 const mockNotification = {
-  closeButtonLabel: 'Sluiten',
-  heading: `U kunt maximaal ${MAX_ASSETS} containers kiezen`,
+  closeButtonLabel: 'max-asset-notification.close-button',
+  heading: `max-asset-notification.title`,
 }
 
 describe('AssetList', () => {

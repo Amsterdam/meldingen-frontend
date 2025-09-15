@@ -14,13 +14,14 @@ const removeMock = vi.fn()
 const defaultProps: Props = {
   assetLayerRef: {} as MutableRefObject<L.Layer | null>,
   assetList: containerAssets,
-  mapInstance: {} as L.Map,
   assetMarkersRef: { current: {} } as MutableRefObject<Record<string, L.Marker>>,
-  selectedAssets: [],
-  setSelectedAssets: vi.fn(),
-  setCoordinates: vi.fn(),
+  mapInstance: {} as L.Map,
   notification: null,
+  selectedAssets: [],
+  setCoordinates: vi.fn(),
   setNotification: vi.fn(),
+  setSelectedAssets: vi.fn(),
+  t: vi.fn(),
 }
 
 const mockNotification = {

@@ -9,6 +9,8 @@ import { Coordinates, NotificationType } from 'apps/melding-form/src/types'
 
 export const MAX_ASSETS = 5
 
+type TranslationFunction = (key: string, values?: Record<string, string | number | Date> | undefined) => string
+
 export type Props = {
   assetLayerRef: MutableRefObject<L.Layer | null>
   assetList: Feature[]
@@ -19,6 +21,7 @@ export type Props = {
   setCoordinates: (coordinates?: Coordinates) => void
   setNotification: (notification: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
+  t: TranslationFunction
 }
 
 export const addAssetLayerToMap = ({
@@ -31,6 +34,7 @@ export const addAssetLayerToMap = ({
   setCoordinates,
   setNotification,
   setSelectedAssets,
+  t,
 }: Props) => {
   if (!mapInstance || assetList.length === 0) return
 
@@ -53,8 +57,8 @@ export const addAssetLayerToMap = ({
         if (!isSelected) {
           if (selectedAssets.length >= MAX_ASSETS) {
             setNotification({
-              closeButtonLabel: 'Sluiten',
-              heading: `U kunt maximaal ${MAX_ASSETS} containers kiezen`,
+              closeButtonLabel: t('max-asset-notification.close-button'),
+              heading: t('max-asset-notification.title', { maxAssets: MAX_ASSETS }),
             })
             return
           }
