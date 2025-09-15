@@ -18,6 +18,18 @@ export type Props = {
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
+const getCheckboxLabel = (asset: Feature, idNummer: string) => {
+  const icon = getContainerFeatureIconSVG(asset)
+  const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
+
+  return (
+    <span className={styles.label}>
+      <Image src={icon} alt={altText} width={32} height={32} />
+      <span>{idNummer}</span>
+    </span>
+  )
+}
+
 export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelectedAssets }: Props) => {
   if (assetList.length === 0 && selectedAssets.length === 0) return
 
@@ -45,18 +57,6 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
     setCoordinates({ lat: x, lng: y })
 
     setSelectedAssets((assetList) => [asset, ...assetList])
-  }
-
-  const getCheckboxLabel = (asset: Feature, idNummer: string) => {
-    const icon = getContainerFeatureIconSVG(asset)
-    const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
-
-    return (
-      <span className={styles.label}>
-        <Image src={icon} alt={altText} width={32} height={32} />
-        <span>{idNummer}</span>
-      </span>
-    )
   }
 
   return (
