@@ -28,9 +28,12 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
 }
 
 export const FileUpload = ({
+  'aria-describedby': ariaDescribedBy,
+  'aria-labelledby': ariaLabelledBy,
   buttonText = 'Bestanden kiezen',
   className,
   dropAreaText = 'Sleep bestanden in dit vak of',
+  id,
   ...restProps
 }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -60,7 +63,10 @@ export const FileUpload = ({
   return (
     <>
       <button
+        aria-describedby={ariaDescribedBy}
+        aria-labelledby={ariaLabelledBy}
         className={clsx(styles.upload, className)}
+        id={id}
         type="button"
         onClick={handleClick}
         onDragOver={handleDragOver}

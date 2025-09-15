@@ -1,6 +1,6 @@
 'use client'
 
-import { ErrorMessage, Field, FileList, Label } from '@amsterdam/design-system-react'
+import { ErrorMessage, Field, FileList } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useRef, useState } from 'react'
@@ -12,7 +12,7 @@ import {
 } from '@meldingen/api-client'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { FileUpload, SubmitButton } from '@meldingen/ui'
+import { FileUpload, Heading, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
 import { BackLink } from '../_components/BackLink/BackLink'
@@ -118,11 +118,9 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
         <FormHeader title={t('title')} step={t('step')} />
         <Form action={formAction} noValidate ref={formRef}>
           <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
-            <h1 className={styles.h1}>
-              <Label htmlFor="file-upload" optional>
-                {label}
-              </Label>
-            </h1>
+            <Heading id="file-upload-label" level={1} size="level-4">
+              {label} <span className={styles.hint}>(niet verplicht)</span>
+            </Heading>
             {description && (
               <MarkdownToHtml id="file-upload-description" type="description">
                 {description}
@@ -138,10 +136,10 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
                   ? `${description ? 'file-upload-description' : ''} ${errorMessage ? 'error-message' : ''}`
                   : undefined
               }
+              aria-labelledby="file-upload-label file-upload"
               buttonText={t('file-input.button')}
               dropAreaText={t('file-input.drop-area')}
               id="file-upload"
-              name="file"
               multiple
               onChange={handleChange}
             />

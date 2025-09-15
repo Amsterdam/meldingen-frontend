@@ -1,9 +1,8 @@
-.h1 {
-  font-size: var(--ams-label-font-size);
-  margin-block: 0;
-  text-wrap: var(--ams-label-text-wrap);
+.hint {
+  display: inline-block;
+  font-weight: var(--ams-hint-font-weight);
 }
 
-.fileList {
+.filelist {
   width: 100%;
 }
