@@ -20,6 +20,19 @@ export type Props = {
   setNotification: (notification: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
+  
+  const getCheckboxLabel = (asset: Feature, idNummer: string) => {
+  const icon = getContainerFeatureIconSVG(asset)
+  const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
+
+  return (
+    <span className={styles.label}>
+      <Image src={icon} alt={altText} width={32} height={32} />
+      <span>{idNummer}</span>
+    </span>
+  )
+}
+
 
 export const AssetList = ({
   assetList,
@@ -30,7 +43,7 @@ export const AssetList = ({
   setSelectedAssets,
 }: Props) => {
   const t = useTranslations('select-location.asset-list')
-
+  
   if (assetList.length === 0 && selectedAssets.length === 0) return
 
   const filteredList = assetList.filter(
@@ -69,18 +82,6 @@ export const AssetList = ({
     setCoordinates({ lat: x, lng: y })
 
     setSelectedAssets((assetList) => [asset, ...assetList])
-  }
-
-  const getCheckboxLabel = (asset: Feature, idNummer: string) => {
-    const icon = getContainerFeatureIconSVG(asset)
-    const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
-
-    return (
-      <span className={styles.label}>
-        <Image src={icon} alt={altText} width={32} height={32} />
-        <span>{idNummer}</span>
-      </span>
-    )
   }
 
   return (
