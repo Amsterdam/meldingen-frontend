@@ -74,7 +74,15 @@ export const FileUpload = ({
       >
         <span className={styles.dropAreaText}>{dropAreaText}</span> <span className={styles.button}>{buttonText}</span>
       </button>
-      <input {...restProps} aria-hidden="true" hidden ref={fileInputRef} tabIndex={-1} type="file" />
+      <input
+        {...restProps}
+        aria-hidden="true"
+        aria-label="File input"
+        hidden
+        ref={fileInputRef}
+        tabIndex={-1}
+        type="file"
+      />
     </>
   )
 }
