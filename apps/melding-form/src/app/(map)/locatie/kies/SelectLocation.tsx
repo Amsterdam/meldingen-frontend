@@ -15,7 +15,8 @@ import { AssetListToggle } from './_components/AssetListToggle/AssetListToggle'
 import { Notification } from './_components/Map/components/Notification/Notification'
 import { SideBar } from './_components/SideBar/SideBar'
 import { useAssetLayer } from './hooks/useAssetLayer'
-import type { Coordinates, NotificationType } from 'apps/melding-form/src/types'
+import { NotificationType } from './types'
+import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './SelectLocation.module.css'
 

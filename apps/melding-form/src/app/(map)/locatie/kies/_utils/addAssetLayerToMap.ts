@@ -5,7 +5,8 @@ import { Dispatch, MutableRefObject, SetStateAction } from 'react'
 import type { Feature } from '@meldingen/api-client'
 
 import { getContainerFeatureIcon } from './getContainerFeatureIcon'
-import { Coordinates, NotificationType } from 'apps/melding-form/src/types'
+import { NotificationType } from '../types'
+import { Coordinates } from 'apps/melding-form/src/types'
 
 export const MAX_ASSETS = 5
 

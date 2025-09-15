@@ -1,12 +1,13 @@
-import { Alert, Button, Paragraph } from '@amsterdam/design-system-react'
+import { Button } from '@amsterdam/design-system-react'
 import { MinusIcon, PlusIcon } from '@amsterdam/design-system-react-icons'
 import type L from 'leaflet'
 import { useTranslations } from 'next-intl'
 
-import type { Coordinates, NotificationType } from 'apps/melding-form/src/types'
+import { NotificationType } from '../../../../types'
+import { Notification } from '../../components/Notification/Notification'
+import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './ControlsOverlay.module.css'
-import mapStyles from '../../Map.module.css'
 
 export type Props = {
   mapInstance: L.Map | null
@@ -40,9 +41,9 @@ export const ControlsOverlay = ({ mapInstance, notification, setCoordinates, set
 
   const onError = () =>
     setNotification({
-      closeButtonLabel: t('my-location-notification.close-button'),
-      description: t('my-location-notification.description'),
-      heading: t('my-location-notification.title'),
+      closeButtonLabel: t('current-location-notification.close-button'),
+      description: t('current-location-notification.description'),
+      heading: t('current-location-notification.title'),
       severity: 'error',
     })
 
@@ -55,18 +56,13 @@ export const ControlsOverlay = ({ mapInstance, notification, setCoordinates, set
           {t('current-location-button')}
         </Button>
         {notification && (
-          <Alert
-            className={mapStyles.notification}
-            tabIndex={-1}
-            closeable
+          <Notification
             closeButtonLabel={notification.closeButtonLabel}
+            description={notification.description}
             heading={notification.heading}
-            headingLevel={2}
             onClose={() => setNotification(null)}
             severity={notification.severity}
-          >
-            {notification.description && <Paragraph>{notification.description}</Paragraph>}
-          </Alert>
+          />
         )}
       </div>
       <div className={styles.overlayBottomRight}>

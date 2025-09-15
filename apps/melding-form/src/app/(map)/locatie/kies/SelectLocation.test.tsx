@@ -49,10 +49,6 @@ Object.defineProperty(window, 'matchMedia', {
   value: vi.fn().mockImplementation(() => ({})),
 })
 
-vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
-  default: vi.fn().mockReturnValue(false),
-}))
-
 describe('SelectLocation', () => {
   beforeEach(() => {
     ;(useIsAfterBreakpoint as Mock).mockReturnValue(false)

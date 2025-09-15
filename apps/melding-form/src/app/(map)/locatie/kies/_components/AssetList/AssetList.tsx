@@ -8,7 +8,8 @@ import { Feature } from '@meldingen/api-client'
 
 import { MAX_ASSETS } from '../../_utils/addAssetLayerToMap'
 import { getContainerFeatureIconSVG } from '../../_utils/getContainerFeatureIconSVG'
-import type { Coordinates, NotificationType } from 'apps/melding-form/src/types'
+import { NotificationType } from '../../types'
+import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './AssetList.module.css'
 

@@ -60,7 +60,7 @@
     },
     "controls-overlay": {
       "current-location-button": "Mijn locatie",
-      "my-location-notification": {
+      "current-location-notification": {
         "title": "Geen toestemming om uw locatie te gebruiken",
         "description": "Dit kunt u wijzigen in de voorkeuren of instellingen van uw browser of systeem.",
         "close-button": "Sluiten"

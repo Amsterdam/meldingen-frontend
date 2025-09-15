@@ -5,13 +5,6 @@ import { describe, expect, it } from 'vitest'
 import { AssetList, type Props } from './AssetList'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
-vi.mock('next-intl', async () => ({
-  useTranslations: () =>
-    vi.fn().mockImplementation((key) => {
-      return key
-    }),
-}))
-
 const defaultProps: Props = {
   assetList: containerAssets,
   selectedAssets: [],

@@ -5,9 +5,10 @@ import 'leaflet/dist/leaflet.css'
 import { Feature } from '@meldingen/api-client'
 
 import { defaultIcon } from '../../markerIcons'
+import { NotificationType } from '../../types'
 import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './components/Crosshair/Crosshair'
-import type { Coordinates, NotificationType } from 'apps/melding-form/src/types'
+import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
 
