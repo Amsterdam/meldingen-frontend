@@ -55,7 +55,6 @@ export const addAssetLayerToMap = ({
             setNotification({
               closeButtonLabel: 'Sluiten',
               heading: `U kunt maximaal ${MAX_ASSETS} containers kiezen`,
-              showInAssetList: true,
             })
             return
           }

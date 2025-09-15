@@ -11,7 +11,6 @@ const mockNotification = {
   description: 'notification.description',
   heading: 'notification.title',
   severity: 'error' as AlertProps['severity'],
-  showInAssetList: true,
 }
 
 vi.mock('react', async (importOriginal) => {

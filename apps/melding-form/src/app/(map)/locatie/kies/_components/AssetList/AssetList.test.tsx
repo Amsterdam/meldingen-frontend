@@ -18,7 +18,6 @@ const defaultProps: Props = {
 const mockNotification = {
   closeButtonLabel: 'Sluiten',
   heading: `U kunt maximaal ${MAX_ASSETS} containers kiezen`,
-  showInAssetList: true,
 }
 
 describe('AssetList', () => {

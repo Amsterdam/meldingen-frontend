@@ -18,5 +18,4 @@ export type NotificationType = {
   description?: string
   heading: AlertProps['heading']
   severity?: AlertProps['severity']
-  showInAssetList?: boolean
 }
