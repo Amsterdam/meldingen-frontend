@@ -35,9 +35,9 @@ const defaultProps: Props = {
 }
 
 const mockNotification = {
-  closeButtonLabel: 'notification.close-button',
-  description: 'notification.description',
-  heading: 'notification.title',
+  closeButtonLabel: 'my-location-notification.close-button',
+  description: 'my-location-notification.description',
+  heading: 'my-location-notification.title',
   severity: 'error' as AlertProps['severity'],
 }
 
@@ -83,7 +83,7 @@ describe('ControlsOverlay', () => {
 
     render(<ControlsOverlay {...defaultProps} notification={mockNotification} />)
 
-    const closeButton = screen.getByRole('button', { name: 'notification.close-button' })
+    const closeButton = screen.getByRole('button', { name: 'my-location-notification.close-button' })
 
     await user.click(closeButton)
 
