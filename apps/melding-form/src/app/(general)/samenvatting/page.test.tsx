@@ -26,6 +26,19 @@ describe('generateMetadata', () => {
 
 describe('Page', () => {
   it('renders the Summary component', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [
+            {
+              key: 'page1',
+              components: [{ question: 35 }, { question: 36 }],
+            },
+          ],
+        }),
+      ),
+    )
+
     mockCookies({
       id: '123',
       token: 'test-token',
@@ -39,7 +52,8 @@ describe('Page', () => {
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
       key: item.question.id.toString(),
       term: item.question.text,
-      description: [item.text],
+      description: item.text,
+      link: '/aanvullende-vragen/2/page1',
     }))
 
     const attachments = {
@@ -63,7 +77,7 @@ describe('Page', () => {
     const primaryForm = {
       key: 'primary',
       term: textAreaComponent.label,
-      description: [melding.text],
+      description: melding.text,
     }
 
     expect(screen.getByText('Summary Component')).toBeInTheDocument()
@@ -76,7 +90,7 @@ describe('Page', () => {
         location: {
           key: 'location',
           term: 'location-label',
-          description: ['Test address'],
+          description: 'Test address',
         },
         primaryForm: primaryForm,
       },

@@ -37,14 +37,14 @@ export default async () => {
   const meldingId = cookieStore.get('id')!.value
   const token = cookieStore.get('token')!.value
 
-  const { data } = await getMeldingData(meldingId, token)
+  const { phone, email } = await getMeldingData(meldingId, token)
 
   const formComponents = contactFormComponents.map((component) => {
-    if (component.key === 'tel-input' && data.phone) {
-      return { ...component, defaultValue: data.phone }
+    if (component.key === 'tel-input' && phone) {
+      return { ...component, defaultValue: phone }
     }
-    if (component.key === 'email-input' && data.email) {
-      return { ...component, defaultValue: data.email }
+    if (component.key === 'email-input' && email) {
+      return { ...component, defaultValue: email }
     }
     return component
   })

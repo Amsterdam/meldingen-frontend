@@ -1,4 +1,6 @@
 import {
+  FormPanelComponentOutput,
+  getFormClassificationByClassificationId,
   getMeldingByMeldingIdAnswersMelder,
   getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
   getMeldingByMeldingIdAttachmentsMelder,
@@ -26,11 +28,30 @@ export const getPrimaryFormSummary = async (description: string) => {
   const primaryForm = primaryFormData.components[0]
 
   return {
-    data: { key: 'primary', term: primaryForm.label, description: [description] },
+    data: { key: 'primary', term: primaryForm.label, description },
   }
 }
 
-export const getAdditionalQuestionsSummary = async (meldingId: string, token: string) => {
+const findPanelIdByQuestionId = (panels: FormPanelComponentOutput[], id: number) => {
+  for (const panel of panels) {
+    for (const component of panel.components) {
+      if (component.question === id) {
+        return panel.key
+      }
+    }
+  }
+  return undefined
+}
+
+export const getAdditionalQuestionsSummary = async (meldingId: string, token: string, classificationId?: number) => {
+  if (!classificationId) return { data: [] }
+
+  const { data: formComponents, error: formError } = await getFormClassificationByClassificationId({
+    path: { classification_id: classificationId },
+  })
+
+  if (formError) throw new Error('Failed to fetch form by classification.')
+
   const { data, error } = await getMeldingByMeldingIdAnswersMelder({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
@@ -40,11 +61,16 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
 
   return {
     data:
-      data?.map((answer) => ({
-        key: `${answer.question.id}`,
-        term: answer.question.text,
-        description: [answer.text],
-      })) || [],
+      data?.map((answer) => {
+        const panels = formComponents.components as FormPanelComponentOutput[]
+        const panelId = findPanelIdByQuestionId(panels, answer.question.id)
+        return {
+          key: `${answer.question.id}`,
+          term: answer.question.text,
+          description: answer.text,
+          link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}` : '/',
+        }
+      }) || [],
   }
 }
 
@@ -88,7 +114,7 @@ export const getLocationSummary = (t: (key: string) => string, location?: string
   return {
     key: 'location',
     term: t('location-label'),
-    description: [locationParsed],
+    description: locationParsed,
   }
 }
 
