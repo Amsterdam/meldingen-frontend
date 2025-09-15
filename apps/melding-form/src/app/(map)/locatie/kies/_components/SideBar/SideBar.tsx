@@ -24,13 +24,15 @@ const initialState: { errorMessage?: string } = {}
 export const SideBar = ({ coordinates, setCoordinates, setSelectedAssets }: Props) => {
   const [{ errorMessage }, formAction] = useActionState(writeAddressAndCoordinateToCookie, initialState)
 
-  const [address, setAddress] = useState<string>()
+  const [address, setAddress] = useState<string>('')
 
   const t = useTranslations('select-location')
 
-  // TODO: this can just be a function, called on setCoordinates I think
   useEffect(() => {
-    if (!coordinates) return
+    if (!coordinates) {
+      setAddress('')
+      return
+    }
 
     const getAddress = async () => {
       try {
