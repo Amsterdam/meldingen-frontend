@@ -33,7 +33,7 @@ describe('Attachments', () => {
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
     const header = screen.getByRole('banner', { name: 'title' })
-    const fileUpload = screen.getByLabelText(/file-input.button/i)
+    const fileUpload = screen.getByRole('button', { name: 'file-input.drop-area file-input.button' })
 
     expect(backLink).toBeInTheDocument()
     expect(header).toBeInTheDocument()
@@ -45,7 +45,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} />)
 
-    const fileInput = screen.getByLabelText(/file-input.button/i) as HTMLInputElement
+    const fileInput = document.querySelector('input') as HTMLInputElement
 
     const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
     const file2 = new File(['dummy content two'], 'hoi.png', { type: 'image/png' })
@@ -64,7 +64,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} />)
 
-    const fileInput = screen.getByLabelText(/file-input.button/i) as HTMLInputElement
+    const fileInput = document.querySelector('input') as HTMLInputElement
 
     const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
 
@@ -94,7 +94,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} />)
 
-    const fileInput = screen.getByLabelText(/file-input.button/i) as HTMLInputElement
+    const fileInput = document.querySelector('input') as HTMLInputElement
 
     const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
 
@@ -122,7 +122,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} />)
 
-    const fileInput = screen.getByLabelText(/file-input.button/i) as HTMLInputElement
+    const fileInput = document.querySelector('input') as HTMLInputElement
 
     const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
 
@@ -138,7 +138,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} />)
 
-    const fileInput = screen.getByLabelText(/file-input.button/i) as HTMLInputElement
+    const fileInput = document.querySelector('input') as HTMLInputElement
 
     const file = new File(['dummy content'], 'example.png', { type: 'image/png' })
     const file2 = new File(['dummy content two'], 'example2.png', { type: 'image/png' })

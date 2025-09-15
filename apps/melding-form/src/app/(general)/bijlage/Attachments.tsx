@@ -12,7 +12,7 @@ import {
 } from '@meldingen/api-client'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { FileInput, SubmitButton } from '@meldingen/ui'
+import { FileUpload, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
 import { BackLink } from '../_components/BackLink/BackLink'
@@ -131,7 +131,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
             {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
 
-            <FileInput
+            <FileUpload
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
               aria-describedby={
                 description || errorMessage

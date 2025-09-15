@@ -1,7 +1,7 @@
 'use client'
 
 import { clsx } from 'clsx'
-import { ChangeEvent, DragEvent, InputHTMLAttributes, useRef } from 'react'
+import { DragEvent, InputHTMLAttributes, useRef } from 'react'
 
 import styles from './FileUpload.module.css'
 
@@ -25,7 +25,6 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
   buttonText?: string
   className?: string
   dropAreaText?: string
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
 export const FileUpload = ({
