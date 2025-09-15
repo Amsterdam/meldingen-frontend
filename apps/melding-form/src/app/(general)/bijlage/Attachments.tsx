@@ -119,7 +119,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
         <Form action={formAction} noValidate ref={formRef}>
           <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
             <Heading id="file-upload-label" level={1} size="level-4">
-              {label} <span className={styles.hint}>(niet verplicht)</span>
+              {label} <span className={styles.hint}>{t('hint-text')}</span>
             </Heading>
             {description && (
               <MarkdownToHtml id="file-upload-description" type="description">
