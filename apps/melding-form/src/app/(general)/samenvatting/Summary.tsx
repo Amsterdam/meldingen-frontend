@@ -2,10 +2,11 @@
 
 import { FileList, Heading, Paragraph } from '@amsterdam/design-system-react'
 import Form from 'next/form'
+import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect } from 'react'
 
-import { SubmitButton, SummaryList } from '@meldingen/ui'
+import { Link, SubmitButton, SummaryList } from '@meldingen/ui'
 
 import { postSummaryForm } from './actions'
 import { BackLink } from '../_components/BackLink/BackLink'
@@ -18,21 +19,19 @@ import styles from './Summary.module.css'
 type GenericSummaryData = {
   key: string
   term: string
-  description: string[]
+  description: string
+}
+
+type File = {
+  blob: Blob
+  fileName: string
+  contentType: string
 }
 
 type Props = {
-  additionalQuestions: GenericSummaryData[]
-  attachments: {
-    key: string
-    term: string
-    files: {
-      blob: Blob
-      fileName: string
-      contentType: string
-    }[]
-  }
-  contact?: GenericSummaryData
+  additionalQuestions: (GenericSummaryData & { link: string })[]
+  attachments: Omit<GenericSummaryData, 'description'> & { files: File[] }
+  contact?: Omit<GenericSummaryData, 'description'> & { description: string[] }
   location: GenericSummaryData
   primaryForm: GenericSummaryData
 }
@@ -65,28 +64,37 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
         </Heading>
         <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
         <SummaryList className="ams-mb-m">
-          <SummaryList.Item key={primaryForm.key}>
+          <SummaryList.Item>
             <SummaryList.Term>{primaryForm.term}</SummaryList.Term>
-            {primaryForm.description.map((item) => (
-              <SummaryList.Description key={item}>{item}</SummaryList.Description>
-            ))}
+            <SummaryList.Description>{primaryForm.description}</SummaryList.Description>
+            <SummaryList.Description>
+              <NextLink href="/" legacyBehavior passHref>
+                <Link>{t('change-links.primary')}</Link>
+              </NextLink>
+            </SummaryList.Description>
           </SummaryList.Item>
 
           {additionalQuestions.length > 0 &&
-            additionalQuestions.map(({ key, term, description }) => (
+            additionalQuestions.map(({ key, term, description, link }) => (
               <SummaryList.Item key={key}>
                 <SummaryList.Term>{term}</SummaryList.Term>
-                {description.map((item) => (
-                  <SummaryList.Description key={item}>{item}</SummaryList.Description>
-                ))}
+                <SummaryList.Description>{description}</SummaryList.Description>
+                <SummaryList.Description>
+                  <NextLink href={link} legacyBehavior passHref>
+                    <Link>{t('change-links.additional')}</Link>
+                  </NextLink>
+                </SummaryList.Description>
               </SummaryList.Item>
             ))}
 
-          <SummaryList.Item key={location.key}>
+          <SummaryList.Item>
             <SummaryList.Term>{location.term}</SummaryList.Term>
-            {location.description.map((item) => (
-              <SummaryList.Description key={item}>{item}</SummaryList.Description>
-            ))}
+            <SummaryList.Description>{location.description}</SummaryList.Description>
+            <SummaryList.Description>
+              <NextLink href="/locatie" legacyBehavior passHref>
+                <Link>{t('change-links.location')}</Link>
+              </NextLink>
+            </SummaryList.Description>
           </SummaryList.Item>
 
           {attachments.files.length > 0 && (
@@ -103,11 +111,16 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
           )}
 
           {contact && (
-            <SummaryList.Item key={contact.key}>
+            <SummaryList.Item>
               <SummaryList.Term>{contact.term}</SummaryList.Term>
               {contact.description.map((item) => (
                 <SummaryList.Description key={item}>{item}</SummaryList.Description>
               ))}
+              <SummaryList.Description>
+                <NextLink href="/contact" legacyBehavior passHref>
+                  <Link>{t('change-links.contact')}</Link>
+                </NextLink>
+              </SummaryList.Description>
             </SummaryList.Item>
           )}
         </SummaryList>

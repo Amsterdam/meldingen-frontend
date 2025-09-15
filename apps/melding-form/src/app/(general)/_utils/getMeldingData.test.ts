@@ -12,7 +12,7 @@ describe('getMeldingData', () => {
   it('should return correct melding summary', async () => {
     const result = await getMeldingData(mockMeldingId, mockToken)
 
-    expect(result).toEqual({ data: melding })
+    expect(result).toEqual(melding)
   })
 
   it('should return an error message when error is returned', async () => {
