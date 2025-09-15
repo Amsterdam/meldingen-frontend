@@ -1,0 +1,33 @@
+.list {
+  margin-block: 0;
+  width: 100%;
+}
+
+.item {
+  align-items: center;
+  color: var(--ams-color-text);
+  column-gap: var(--ams-space-s);
+  display: flex;
+  font-family: var(--ams-typography-font-family);
+  font-size: var(--ams-typography-body-text-font-size);
+  font-weight: var(--ams-typography-body-text-font-weight);
+  hyphenate-limit-chars: var(--ams-typography-hyphenate-limit-chars);
+  hyphens: auto;
+  justify-content: space-between;
+  line-height: var(--ams-typography-body-text-line-height);
+  overflow-wrap: break-word; /* Break overflowing words for browsers that don’t support CSS hyphens. */
+  text-rendering: optimizelegibility;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -moz-text-size-adjust: none;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+
+  dd {
+    margin-inline-start: 0;
+  }
+}
+
+.noShrink {
+  flex-shrink: 0;
+}

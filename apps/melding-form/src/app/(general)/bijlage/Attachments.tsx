@@ -1,6 +1,6 @@
 'use client'
 
-import { ErrorMessage, Field, FileList } from '@amsterdam/design-system-react'
+import { ErrorMessage, Field } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useRef, useState } from 'react'
@@ -12,7 +12,7 @@ import {
 } from '@meldingen/api-client'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { FileUpload, Heading, SubmitButton } from '@meldingen/ui'
+import { FileList, FileUpload, Heading, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
 import { BackLink } from '../_components/BackLink/BackLink'
@@ -145,7 +145,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
             />
 
             {uploadedFiles.length > 0 && (
-              <FileList className={styles.fileList}>
+              <FileList>
                 {uploadedFiles.map((attachment) => (
                   <FileList.Item
                     key={attachment.id}
