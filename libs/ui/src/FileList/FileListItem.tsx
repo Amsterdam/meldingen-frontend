@@ -1,6 +1,8 @@
 import { Badge, BadgeProps } from '@amsterdam/design-system-react/dist/Badge'
 import { Button } from '@amsterdam/design-system-react/dist/Button'
+import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import { ErrorMessage } from '@amsterdam/design-system-react/dist/ErrorMessage'
+import { Image } from '@amsterdam/design-system-react/dist/Image'
 import { clsx } from 'clsx'
 import { HTMLAttributes } from 'react'
 
@@ -44,12 +46,14 @@ export const FileListItem = ({
 
   const hasError = Boolean(errorMessage)
 
+  const isNotNarrowWindow = useIsAfterBreakpoint('medium')
+
   return (
     <div className={styles.container}>
       <div className={clsx(styles.item, hasError && styles.itemWithError)}>
         <dt className={styles.term}>{file.name}</dt>
         <dd className={styles.imageDescription}>
-          <img src={imageUrl} alt="" className={styles.thumbnail} />
+          <Image src={imageUrl} alt="" aspectRatio={isNotNarrowWindow ? '1:1' : '16:9'} />
         </dd>
         <dd className={styles.description}>{formatFileSize(file.size)}</dd>
         {status && (
@@ -58,7 +62,7 @@ export const FileListItem = ({
           </dd>
         )}
         <dd className={styles.description}>
-          <Button variant="tertiary" onClick={handleDelete}>
+          <Button variant="secondary" onClick={handleDelete}>
             {deleteButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
           </Button>
         </dd>
