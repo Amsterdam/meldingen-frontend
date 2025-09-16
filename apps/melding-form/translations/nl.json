@@ -60,7 +60,7 @@
     },
     "controls-overlay": {
       "current-location-button": "Mijn locatie",
-      "notification": {
+      "current-location-notification": {
         "title": "Geen toestemming om uw locatie te gebruiken",
         "description": "Dit kunt u wijzigen in de voorkeuren of instellingen van uw browser of systeem.",
         "close-button": "Sluiten"
@@ -71,6 +71,12 @@
     "errors": {
       "no-location": "Vul een locatie in.",
       "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam."
+    },
+    "asset-list": {
+      "max-asset-notification": {
+        "title": "U kunt maximaal {maxAssets} containers kiezen",
+        "close-button": "Sluiten"
+      }
     }
   },
   "attachments": {

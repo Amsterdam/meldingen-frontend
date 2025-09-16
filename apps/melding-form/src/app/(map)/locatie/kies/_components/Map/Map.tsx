@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import { Feature } from '@meldingen/api-client'
 
 import { defaultIcon } from '../../markerIcons'
+import { NotificationType } from '../../types'
 import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './components/Crosshair/Crosshair'
 import type { Coordinates } from 'apps/melding-form/src/types'
@@ -14,21 +15,25 @@ import styles from './Map.module.css'
 export type Props = {
   coordinates?: Coordinates
   mapInstance: L.Map | null
+  notification: NotificationType | null
+  selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
   setMapInstance: (map: L.Map) => void
-  showAssetList?: boolean
+  setNotification: (notification: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
-  selectedAssets: Feature[]
+  showAssetList?: boolean
 }
 
 export const Map = ({
   coordinates,
   mapInstance,
+  notification,
+  selectedAssets,
   setCoordinates,
   setMapInstance,
-  showAssetList,
+  setNotification,
   setSelectedAssets,
-  selectedAssets,
+  showAssetList,
 }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const pointerMarkerRef = useRef<L.Marker | null>(null)
@@ -137,7 +142,12 @@ export const Map = ({
     <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>
       <div className={styles.map} ref={mapRef} />
       <Crosshair id="crosshair" />
-      <ControlsOverlay mapInstance={mapInstance} setCoordinates={setCoordinates} />
+      <ControlsOverlay
+        mapInstance={mapInstance}
+        notification={notification}
+        setCoordinates={setCoordinates}
+        setNotification={setNotification}
+      />
     </div>
   )
 }

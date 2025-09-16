@@ -1,12 +1,14 @@
 import { Checkbox } from '@amsterdam/design-system-react'
 import clsx from 'clsx'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import { Dispatch, SetStateAction } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
 import { MAX_ASSETS } from '../../_utils/addAssetLayerToMap'
 import { getContainerFeatureIconSVG } from '../../_utils/getContainerFeatureIconSVG'
+import { NotificationType } from '../../types'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './AssetList.module.css'
@@ -14,7 +16,9 @@ import styles from './AssetList.module.css'
 export type Props = {
   assetList: Feature[]
   selectedAssets: Feature[]
+  notification: NotificationType | null
   setCoordinates: (coordinates?: Coordinates) => void
+  setNotification: (notification: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
@@ -30,7 +34,16 @@ const getCheckboxLabel = (asset: Feature, idNummer: string) => {
   )
 }
 
-export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelectedAssets }: Props) => {
+export const AssetList = ({
+  assetList,
+  notification,
+  selectedAssets,
+  setNotification,
+  setCoordinates,
+  setSelectedAssets,
+}: Props) => {
+  const t = useTranslations('select-location.asset-list')
+
   if (assetList.length === 0 && selectedAssets.length === 0) return
 
   const filteredList = assetList.filter(
@@ -38,6 +51,10 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
   )
 
   const handleDeselectAsset = (asset: Feature) => {
+    if (notification) {
+      setNotification(null)
+    }
+
     if (selectedAssets.length <= 1) {
       setCoordinates(undefined)
     } else if (asset.id === selectedAssets[0].id) {
@@ -52,6 +69,14 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
   }
 
   const handleSelectAsset = (asset: Feature) => {
+    if (selectedAssets.length >= MAX_ASSETS) {
+      setNotification({
+        closeButtonLabel: t('max-asset-notification.close-button'),
+        heading: t('max-asset-notification.title', { maxAssets: MAX_ASSETS }),
+      })
+      return
+    }
+
     // @ts-expect-error an asset always has coordinates
     const [y, x] = asset.geometry.coordinates
     setCoordinates({ lat: x, lng: y })
@@ -81,11 +106,7 @@ export const AssetList = ({ assetList, selectedAssets, setCoordinates, setSelect
 
         return (
           <li key={publicId}>
-            <Checkbox
-              className={styles.checkbox}
-              onChange={() => handleSelectAsset(asset)}
-              disabled={selectedAssets.length === MAX_ASSETS}
-            >
+            <Checkbox className={styles.checkbox} onChange={() => handleSelectAsset(asset)} checked={false}>
               {label}
             </Checkbox>
           </li>
