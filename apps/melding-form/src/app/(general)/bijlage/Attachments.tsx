@@ -151,6 +151,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
                     key={attachment.id}
                     file={attachment.file}
                     onDelete={() => removeFile(attachment.id)}
+                    status="success"
                   />
                 ))}
               </FileList>

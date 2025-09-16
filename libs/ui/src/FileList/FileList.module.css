@@ -13,7 +13,6 @@
   font-weight: var(--ams-typography-body-text-font-weight);
   hyphenate-limit-chars: var(--ams-typography-hyphenate-limit-chars);
   hyphens: auto;
-  justify-content: space-between;
   line-height: var(--ams-typography-body-text-line-height);
   overflow-wrap: anywhere; /* Break overflowing words for browsers that don’t support CSS hyphens. */
   text-rendering: optimizelegibility;
@@ -22,16 +21,25 @@
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
-
-  dd {
-    margin-inline-start: 0;
-  }
 }
 
 .term {
   margin-inline-end: auto;
 }
 
-.noShrink {
+.description {
   flex-shrink: 0;
+  margin-inline-start: 0;
+}
+
+.imageDescription {
+  height: var(--ams-space-2xl);
+  order: -1; /* Move image to the front */
+  width: var(--ams-space-2xl);
+}
+
+.thumbnail {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
 }
