@@ -7,12 +7,24 @@ import { formatFileSize } from './formatFileSize'
 import styles from './FileList.module.css'
 
 export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
+  deleteButtonLabel?: string
   file: File
   status?: 'uploading' | 'error' | 'success'
+  statusLabels?: {
+    uploading: string
+    error: string
+    success: string
+  }
   onDelete?: () => void
 }
 
-export const FileListItem = ({ file, onDelete, status }: FileListItemProps) => {
+export const FileListItem = ({
+  file,
+  onDelete,
+  status,
+  statusLabels,
+  deleteButtonLabel = 'Verwijderen',
+}: FileListItemProps) => {
   const imageUrl = URL.createObjectURL(file)
 
   const handleDelete = () => {
@@ -29,12 +41,12 @@ export const FileListItem = ({ file, onDelete, status }: FileListItemProps) => {
       <dd className={styles.description}>{formatFileSize(file.size)}</dd>
       {status && (
         <dd className={styles.description}>
-          <Badge label="Status" />
+          <Badge label={statusLabels?.[status] ?? status} />
         </dd>
       )}
       <dd className={styles.description}>
         <Button variant="tertiary" onClick={handleDelete}>
-          Verwijderen
+          {deleteButtonLabel}
         </Button>
       </dd>
     </div>
