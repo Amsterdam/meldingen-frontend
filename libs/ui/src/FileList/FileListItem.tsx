@@ -48,7 +48,7 @@ export const FileListItem = ({
     <div className={styles.container}>
       <div className={clsx(styles.item, hasError && styles.itemWithError)}>
         <dt className={styles.term}>{file.name}</dt>
-        <dd className={clsx(styles.description, styles.imageDescription)}>
+        <dd className={styles.imageDescription}>
           <img src={imageUrl} alt="" className={styles.thumbnail} />
         </dd>
         <dd className={styles.description}>{formatFileSize(file.size)}</dd>

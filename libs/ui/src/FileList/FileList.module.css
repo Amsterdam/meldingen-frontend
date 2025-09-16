@@ -14,16 +14,16 @@
 .item {
   align-items: center;
   color: var(--ams-color-text);
+  column-gap: var(--ams-space-s);
   display: grid;
   font-family: var(--ams-typography-font-family);
   font-size: var(--ams-typography-body-text-font-size);
   font-weight: var(--ams-typography-body-text-font-weight);
-  gap: var(--ams-space-xs) var(--ams-space-s);
-  grid-template-columns: auto 1fr auto auto auto;
+  grid-template-columns: auto 1fr auto auto;
   hyphenate-limit-chars: var(--ams-typography-hyphenate-limit-chars);
   hyphens: auto;
   line-height: var(--ams-typography-body-text-line-height);
-  overflow-wrap: anywhere; /* Break overflowing words for browsers that don’t support CSS hyphens. */
+  overflow-wrap: break-word; /* Break overflowing words for browsers that don’t support CSS hyphens. */
   padding-block: var(--ams-space-s);
   text-rendering: optimizelegibility;
   /* stylelint-disable-next-line property-no-vendor-prefix */
@@ -39,17 +39,19 @@
 }
 
 .term {
-  margin-inline-end: auto;
+  font-weight: var(--ams-typography-heading-font-weight);
+  grid-column: 2 / -1;
 }
 
 .description {
-  flex-shrink: 0;
   margin-inline-start: 0;
 }
 
 .imageDescription {
+  align-self: start;
+  grid-row: 1 / 3; /* Span two rows */
   height: var(--ams-space-2xl);
-  order: -1; /* Move image to the front */
+  margin-inline-start: 0;
   width: var(--ams-space-2xl);
 }
 
