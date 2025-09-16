@@ -1,7 +1,21 @@
 .list {
+  color: var(--ams-color-text);
+  font-family: var(--ams-typography-font-family);
+  font-size: var(--ams-typography-body-text-font-size);
+  font-weight: var(--ams-typography-body-text-font-weight);
+  hyphenate-limit-chars: var(--ams-typography-hyphenate-limit-chars);
+  hyphens: auto;
+  line-height: var(--ams-typography-body-text-line-height);
   list-style: none;
   margin-block: 0;
+  overflow-wrap: anywhere; /* Break overflowing words for browsers that don’t support CSS hyphens. */
   padding-inline: 0;
+  text-rendering: optimizelegibility;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -moz-text-size-adjust: none;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
   width: 100%;
 }
 
@@ -15,23 +29,9 @@
 
 .container {
   align-items: center;
-  color: var(--ams-color-text);
   display: grid;
-  font-family: var(--ams-typography-font-family);
-  font-size: var(--ams-typography-body-text-font-size);
-  font-weight: var(--ams-typography-body-text-font-weight);
   gap: var(--ams-space-s);
-  hyphenate-limit-chars: var(--ams-typography-hyphenate-limit-chars);
-  hyphens: auto;
-  line-height: var(--ams-typography-body-text-line-height);
-  overflow-wrap: anywhere; /* Break overflowing words for browsers that don’t support CSS hyphens. */
   padding-block: var(--ams-space-s);
-  text-rendering: optimizelegibility;
-  /* stylelint-disable-next-line property-no-vendor-prefix */
-  -moz-text-size-adjust: none;
-  /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-text-size-adjust: none;
-  text-size-adjust: none;
 
   @media screen and (min-width: 36rem) {
     gap: var(--ams-space-xs) var(--ams-space-s);
@@ -45,7 +45,7 @@
   padding-inline-start: var(--ams-field-invalid-padding-inline-start);
 }
 
-.term {
+.name {
   font-weight: var(--ams-typography-heading-font-weight);
 
   @media screen and (min-width: 36rem) {
@@ -53,9 +53,8 @@
   }
 }
 
-.imageDescription {
+.thumbnail {
   grid-row-start: 1;
-  margin-inline-start: 0;
 
   @media screen and (min-width: 36rem) {
     align-self: start;
@@ -65,13 +64,8 @@
   }
 }
 
-.description {
-  margin-inline-start: 0;
-}
-
 .error {
   display: flex; /* Remove phantom whitespace */
-  margin-inline-start: 0;
 
   @media screen and (min-width: 36rem) {
     grid-column: 1 / -1;

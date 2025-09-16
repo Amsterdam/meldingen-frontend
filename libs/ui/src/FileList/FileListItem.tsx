@@ -56,26 +56,18 @@ export const FileListItem = ({
   return (
     <li className={styles.item}>
       <div className={clsx(styles.container, hasError && styles.containerWithError)}>
-        <div className={styles.term}>{file.name}</div>
-        <div className={styles.imageDescription}>
-          <Image src={imageUrl} alt="" aspectRatio={isMediumOrWideWindow ? '1:1' : '16:9'} />
-        </div>
-        <div className={styles.description}>{formatFileSize(file.size)}</div>
+        <div className={styles.name}>{file.name}</div>
+        <Image className={styles.thumbnail} src={imageUrl} alt="" aspectRatio={isMediumOrWideWindow ? '1:1' : '16:9'} />
+        <div>{formatFileSize(file.size)}</div>
         {status && (
-          <div className={styles.description}>
+          <div>
             <Badge label={statusLabels?.[status] ?? status} color={badgeColors[status]} />
           </div>
         )}
-        <div className={styles.description}>
-          <Button variant="secondary" onClick={handleDelete}>
-            {deleteButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
-          </Button>
-        </div>
-        {hasError && (
-          <div className={styles.error}>
-            <ErrorMessage>{errorMessage}</ErrorMessage>
-          </div>
-        )}
+        <Button variant="secondary" onClick={handleDelete}>
+          {deleteButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
+        </Button>
+        {hasError && <ErrorMessage className={styles.error}>{errorMessage}</ErrorMessage>}
       </div>
     </li>
   )
