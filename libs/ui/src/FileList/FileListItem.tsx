@@ -23,7 +23,7 @@ export const FileListItem = ({
   onDelete,
   status,
   statusLabels,
-  deleteButtonLabel = 'Verwijderen',
+  deleteButtonLabel = 'Verwijder',
 }: FileListItemProps) => {
   const imageUrl = URL.createObjectURL(file)
 
@@ -46,7 +46,7 @@ export const FileListItem = ({
       )}
       <dd className={styles.description}>
         <Button variant="tertiary" onClick={handleDelete}>
-          {deleteButtonLabel}
+          {deleteButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
         </Button>
       </dd>
     </div>
