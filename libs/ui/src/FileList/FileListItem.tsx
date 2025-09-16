@@ -45,27 +45,29 @@ export const FileListItem = ({
   const hasError = Boolean(errorMessage)
 
   return (
-    <div className={clsx(styles.item, hasError && styles.itemWithError)}>
-      <dt className={styles.term}>{file.name}</dt>
-      <dd className={clsx(styles.description, styles.imageDescription)}>
-        <img src={imageUrl} alt="" className={styles.thumbnail} />
-      </dd>
-      <dd className={styles.description}>{formatFileSize(file.size)}</dd>
-      {status && (
+    <div className={styles.container}>
+      <div className={clsx(styles.item, hasError && styles.itemWithError)}>
+        <dt className={styles.term}>{file.name}</dt>
+        <dd className={clsx(styles.description, styles.imageDescription)}>
+          <img src={imageUrl} alt="" className={styles.thumbnail} />
+        </dd>
+        <dd className={styles.description}>{formatFileSize(file.size)}</dd>
+        {status && (
+          <dd className={styles.description}>
+            <Badge label={statusLabels?.[status] ?? status} color={badgeColors[status]} />
+          </dd>
+        )}
         <dd className={styles.description}>
-          <Badge label={statusLabels?.[status] ?? status} color={badgeColors[status]} />
+          <Button variant="tertiary" onClick={handleDelete}>
+            {deleteButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
+          </Button>
         </dd>
-      )}
-      <dd className={styles.description}>
-        <Button variant="tertiary" onClick={handleDelete}>
-          {deleteButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
-        </Button>
-      </dd>
-      {hasError && (
-        <dd className={styles.error}>
-          <ErrorMessage>{errorMessage}</ErrorMessage>
-        </dd>
-      )}
+        {hasError && (
+          <dd className={styles.error}>
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+          </dd>
+        )}
+      </div>
     </div>
   )
 }
