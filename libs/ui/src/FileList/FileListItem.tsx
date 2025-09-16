@@ -4,7 +4,7 @@ import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/use
 import { ErrorMessage } from '@amsterdam/design-system-react/dist/ErrorMessage'
 import { Image } from '@amsterdam/design-system-react/dist/Image'
 import { clsx } from 'clsx'
-import { HTMLAttributes } from 'react'
+import { HTMLAttributes, useMemo } from 'react'
 
 import { formatFileSize } from './formatFileSize'
 
@@ -15,6 +15,9 @@ const badgeColors: Record<string, BadgeProps['color']> = {
   error: 'red',
   success: undefined,
 }
+
+// Although a description list (<dl>, <dt> and <dd>) would be more semantically correct than an unordered list (<ul> and <li>),
+// an unordered list with list items is used here because NVDA currently (16-9-2025) reads the number of items in a description list incorrectly.
 
 export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
   deleteButtonLabel?: string
@@ -37,7 +40,9 @@ export const FileListItem = ({
   status,
   statusLabels,
 }: FileListItemProps) => {
-  const imageUrl = URL.createObjectURL(file)
+  // Memoize the creation of an object url from the file,
+  // to prevent it from creating a new one on every render.
+  const imageUrl = useMemo(() => URL.createObjectURL(file), [file])
 
   const handleDelete = () => {
     URL.revokeObjectURL(imageUrl)
@@ -46,32 +51,32 @@ export const FileListItem = ({
 
   const hasError = Boolean(errorMessage)
 
-  const isNotNarrowWindow = useIsAfterBreakpoint('medium')
+  const isMediumOrWideWindow = useIsAfterBreakpoint('medium')
 
   return (
-    <div className={styles.container}>
-      <div className={clsx(styles.item, hasError && styles.itemWithError)}>
-        <dt className={styles.term}>{file.name}</dt>
-        <dd className={styles.imageDescription}>
-          <Image src={imageUrl} alt="" aspectRatio={isNotNarrowWindow ? '1:1' : '16:9'} />
-        </dd>
-        <dd className={styles.description}>{formatFileSize(file.size)}</dd>
+    <li className={styles.item}>
+      <div className={clsx(styles.container, hasError && styles.containerWithError)}>
+        <div className={styles.term}>{file.name}</div>
+        <div className={styles.imageDescription}>
+          <Image src={imageUrl} alt="" aspectRatio={isMediumOrWideWindow ? '1:1' : '16:9'} />
+        </div>
+        <div className={styles.description}>{formatFileSize(file.size)}</div>
         {status && (
-          <dd className={styles.description}>
+          <div className={styles.description}>
             <Badge label={statusLabels?.[status] ?? status} color={badgeColors[status]} />
-          </dd>
+          </div>
         )}
-        <dd className={styles.description}>
+        <div className={styles.description}>
           <Button variant="secondary" onClick={handleDelete}>
             {deleteButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
           </Button>
-        </dd>
+        </div>
         {hasError && (
-          <dd className={styles.error}>
+          <div className={styles.error}>
             <ErrorMessage>{errorMessage}</ErrorMessage>
-          </dd>
+          </div>
         )}
       </div>
-    </div>
+    </li>
   )
 }
