@@ -6,11 +6,12 @@
 .item {
   align-items: center;
   color: var(--ams-color-text);
-  column-gap: var(--ams-space-s);
-  display: flex;
+  display: grid;
   font-family: var(--ams-typography-font-family);
   font-size: var(--ams-typography-body-text-font-size);
   font-weight: var(--ams-typography-body-text-font-weight);
+  gap: var(--ams-space-xs) var(--ams-space-s);
+  grid-template-columns: auto 1fr auto auto auto;
   hyphenate-limit-chars: var(--ams-typography-hyphenate-limit-chars);
   hyphens: auto;
   line-height: var(--ams-typography-body-text-line-height);
@@ -21,6 +22,11 @@
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
+}
+
+.itemWithError {
+  border-inline-start: var(--ams-field-invalid-border-inline-start);
+  padding-inline-start: var(--ams-field-invalid-padding-inline-start);
 }
 
 .term {
@@ -42,4 +48,10 @@
   height: 100%;
   object-fit: cover;
   width: 100%;
+}
+
+.error {
+  display: flex; /* Remove phantom whitespace */
+  grid-column: 1 / -1;
+  margin-inline-start: 0;
 }

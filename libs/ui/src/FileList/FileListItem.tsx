@@ -1,13 +1,22 @@
-import { Badge } from '@amsterdam/design-system-react/dist/Badge'
+import { Badge, BadgeProps } from '@amsterdam/design-system-react/dist/Badge'
 import { Button } from '@amsterdam/design-system-react/dist/Button'
+import { ErrorMessage } from '@amsterdam/design-system-react/dist/ErrorMessage'
+import { clsx } from 'clsx'
 import { HTMLAttributes } from 'react'
 
 import { formatFileSize } from './formatFileSize'
 
 import styles from './FileList.module.css'
 
+const badgeColors: Record<string, BadgeProps['color']> = {
+  uploading: 'orange',
+  error: 'red',
+  success: undefined,
+}
+
 export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
   deleteButtonLabel?: string
+  errorMessage?: string
   file: File
   status?: 'uploading' | 'error' | 'success'
   statusLabels?: {
@@ -19,11 +28,12 @@ export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
 }
 
 export const FileListItem = ({
+  deleteButtonLabel = 'Verwijder',
+  errorMessage,
   file,
   onDelete,
   status,
   statusLabels,
-  deleteButtonLabel = 'Verwijder',
 }: FileListItemProps) => {
   const imageUrl = URL.createObjectURL(file)
 
@@ -32,16 +42,18 @@ export const FileListItem = ({
     onDelete?.()
   }
 
+  const hasError = Boolean(errorMessage)
+
   return (
-    <div className={styles.item}>
+    <div className={clsx(styles.item, hasError && styles.itemWithError)}>
       <dt className={styles.term}>{file.name}</dt>
-      <dd className={`${styles.description} ${styles.imageDescription}`}>
+      <dd className={clsx(styles.description, styles.imageDescription)}>
         <img src={imageUrl} alt="" className={styles.thumbnail} />
       </dd>
       <dd className={styles.description}>{formatFileSize(file.size)}</dd>
       {status && (
         <dd className={styles.description}>
-          <Badge label={statusLabels?.[status] ?? status} />
+          <Badge label={statusLabels?.[status] ?? status} color={badgeColors[status]} />
         </dd>
       )}
       <dd className={styles.description}>
@@ -49,6 +61,11 @@ export const FileListItem = ({
           {deleteButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
         </Button>
       </dd>
+      {hasError && (
+        <dd className={styles.error}>
+          <ErrorMessage>{errorMessage}</ErrorMessage>
+        </dd>
+      )}
     </div>
   )
 }
