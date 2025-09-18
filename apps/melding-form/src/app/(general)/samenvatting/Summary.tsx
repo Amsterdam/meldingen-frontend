@@ -98,9 +98,9 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
           </SummaryList.Item>
 
           {attachments.files.length > 0 && (
-            <SummaryList.Item key={attachments.key}>
+            <SummaryList.Item>
               <SummaryList.Term>{attachments.term}</SummaryList.Term>
-              <SummaryList.Description key={attachments.key}>
+              <SummaryList.Description>
                 <FileList className={styles.fileListAttachments}>
                   {attachments.files.map(({ fileName, blob, contentType }) => (
                     <FileList.Item key={fileName} file={new File([blob], fileName, { type: contentType })} />
