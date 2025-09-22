@@ -23,11 +23,13 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-describe('Attachments', () => {
-  beforeAll(() => {
-    global.URL.createObjectURL = vi.fn(() => 'mocked-url')
-  })
+global.URL.createObjectURL = vi.fn()
 
+vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
+  default: vi.fn(),
+}))
+
+describe('Attachments', () => {
   it('should render correctly', () => {
     render(<Attachments {...defaultProps} />)
 
@@ -54,14 +56,16 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [file, file2])
 
-    const fileName1 = screen.getByText('Screenshot 2025-02-10 at 08.29.41.png')
-    const fileName2 = screen.getByText('hoi.png')
+    const fileName1 = screen.getAllByText('Screenshot 2025-02-10 at 08.29.41.png')[0]
+    const fileName2 = screen.getAllByText('hoi.png')[0]
 
     expect(fileName1).toBeInTheDocument()
     expect(fileName2).toBeInTheDocument()
   })
 
   it('should delete a file with the delete button', async () => {
+    global.URL.revokeObjectURL = vi.fn()
+
     const user = userEvent.setup()
 
     render(<Attachments {...defaultProps} />)
@@ -72,11 +76,11 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [file])
 
-    const fileName1 = screen.getByText('Screenshot 2025-02-10 at 08.29.41.png')
+    const fileName1 = screen.getAllByText('Screenshot 2025-02-10 at 08.29.41.png')[0]
 
     expect(fileName1).toBeInTheDocument()
 
-    const deleteButton = screen.getByRole('button', { name: 'Verwijder' })
+    const deleteButton = screen.getByRole('button', { name: 'Verwijder Screenshot 2025-02-10 at 08.29.41.png' })
 
     await user.click(deleteButton)
 
@@ -102,15 +106,15 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [file])
 
-    const fileName1 = screen.getByText('Screenshot 2025-02-10 at 08.29.41.png')
+    const fileName1 = screen.getAllByText('Screenshot 2025-02-10 at 08.29.41.png')[0]
 
     expect(fileName1).toBeInTheDocument()
 
-    const deleteButton = screen.getByRole('button', { name: 'Verwijder' })
+    const deleteButton = screen.getByRole('button', { name: 'Verwijder Screenshot 2025-02-10 at 08.29.41.png' })
 
     await user.click(deleteButton)
 
-    const file1SecondRender = screen.getByText('Screenshot 2025-02-10 at 08.29.41.png')
+    const file1SecondRender = screen.getAllByText('Screenshot 2025-02-10 at 08.29.41.png')[0]
     const errorMessage = screen.getByText('An unknown error occurred')
 
     expect(file1SecondRender).toBeInTheDocument()
