@@ -37,7 +37,13 @@ export const FileListItem = ({ deleteButtonLabel = 'Verwijder', errorMessage, fi
     <li className={styles.item}>
       <div className={clsx(styles.container, hasError && styles.containerWithError)}>
         <div className={styles.name}>{file.name}</div>
-        <Image className={styles.thumbnail} src={imageUrl} alt="" aspectRatio={isMediumOrWideWindow ? '1:1' : '16:9'} />
+        <Image
+          className={styles.thumbnail}
+          src={imageUrl}
+          alt=""
+          aspectRatio={isMediumOrWideWindow ? '1:1' : '16:9'}
+          width={256} // Fixed width for when CSS does not load. Gets overridden by CSS.
+        />
         <div>{formatFileSize(file.size)}</div>
         <Button variant="secondary" onClick={handleDelete}>
           {deleteButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
