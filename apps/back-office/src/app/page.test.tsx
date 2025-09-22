@@ -36,7 +36,7 @@ describe('Page', () => {
         page: undefined,
         totalPages: 4,
       },
-      {},
+      undefined,
     )
   })
 
@@ -54,7 +54,7 @@ describe('Page', () => {
         page: 2,
         totalPages: 4,
       },
-      {},
+      undefined,
     )
   })
 

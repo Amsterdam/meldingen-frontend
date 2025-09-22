@@ -116,7 +116,7 @@ describe('Page', () => {
         meldingData: meldingData,
         publicId: public_id,
       },
-      {},
+      undefined,
     )
   })
 })
