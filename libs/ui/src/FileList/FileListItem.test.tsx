@@ -7,10 +7,6 @@ import { FileListItem } from './FileListItem'
 
 const file = new File(['sample content'], 'sample.txt', { type: 'text/plain' })
 
-Object.defineProperty(window, 'matchMedia', {
-  value: vi.fn().mockImplementation(() => ({})),
-})
-
 const createObjectURLMock = vi.fn().mockImplementation((file: File) => {
   return file.name
 })
