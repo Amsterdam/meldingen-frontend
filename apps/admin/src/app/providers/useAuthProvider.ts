@@ -19,8 +19,8 @@ const config: KeycloakConfig = {
 }
 
 export const useAuthProvider = () => {
-  const authProvider = useRef<AuthProvider | undefined>()
-  const dataProviderRef = useRef<DataProvider | undefined>()
+  const authProvider = useRef<AuthProvider | undefined>(undefined)
+  const dataProviderRef = useRef<DataProvider | undefined>(undefined)
 
   const keycloakClient = new Keycloak(config)
 

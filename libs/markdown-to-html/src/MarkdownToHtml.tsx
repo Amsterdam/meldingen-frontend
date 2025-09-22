@@ -33,7 +33,7 @@ const richTextMarkdownToHtmlMap = {
   ol: ({ children }: PropsWithChildren) => {
     const replacedChildren = Children.map(children, (child) => {
       if (isValidElement(child) && child.type === 'li') {
-        return <OrderedList.Item {...child.props} />
+        return <OrderedList.Item {...(typeof child.props === 'object' ? child.props : {})} />
       }
 
       return undefined
@@ -45,7 +45,7 @@ const richTextMarkdownToHtmlMap = {
   ul: ({ children }: PropsWithChildren) => {
     const replacedChildren = Children.map(children, (child) => {
       if (isValidElement(child) && child.type === 'li') {
-        return <UnorderedList.Item {...child.props} />
+        return <UnorderedList.Item {...(typeof child.props === 'object' ? child.props : {})} />
       }
 
       return undefined
