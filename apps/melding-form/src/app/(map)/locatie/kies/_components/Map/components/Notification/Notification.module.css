@@ -1,15 +1,3 @@
 .notification {
   max-width: 37.5rem;
-  outline-offset: var(--ams-focus-outline-offset);
-
-  /* In Chromium browsers, the outline overlaps with the border in this component.
-  We're not sure why, but to fix this we double the offset for Chromium browsers here. */
-  @supports (contain: paint) and (not (-moz-appearance: none)) {
-    outline-offset: calc(var(--ams-focus-outline-offset) * 2);
-
-    /* Reset for Safari */
-    @supports (font: -apple-system-body) {
-      outline-offset: var(--ams-focus-outline-offset);
-    }
-  }
 }

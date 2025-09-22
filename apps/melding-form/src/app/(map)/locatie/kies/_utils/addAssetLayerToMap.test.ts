@@ -1,7 +1,7 @@
 import L from 'leaflet'
 import type { MutableRefObject } from 'react'
 
-import { addAssetLayerToMap, type Props } from './addAssetLayerToMap'
+import { addAssetLayerToMap, MAX_ASSETS, type Props } from './addAssetLayerToMap'
 import { getContainerFeatureIcon } from './getContainerFeatureIcon'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
@@ -14,11 +14,19 @@ const removeMock = vi.fn()
 const defaultProps: Props = {
   assetLayerRef: {} as MutableRefObject<L.Layer | null>,
   assetList: containerAssets,
-  mapInstance: {} as L.Map,
   assetMarkersRef: { current: {} } as MutableRefObject<Record<string, L.Marker>>,
+  mapInstance: {} as L.Map,
+  notification: null,
   selectedAssets: [],
-  setSelectedAssets: vi.fn(),
   setCoordinates: vi.fn(),
+  setNotification: vi.fn(),
+  setSelectedAssets: vi.fn(),
+  t: vi.fn(),
+}
+
+const mockNotification = {
+  closeButtonLabel: 'Sluiten',
+  heading: `U kunt maximaal ${MAX_ASSETS} containers kiezen`,
 }
 
 describe('addAssetLayerToMap', () => {
@@ -99,12 +107,13 @@ describe('addAssetLayerToMap', () => {
     expect(defaultProps.setCoordinates).not.toHaveBeenCalled()
   })
 
-  it('removes asset from selectedAssets and unset coordinates when marker is clicked and already selected', () => {
-    addAssetLayerToMap({ ...defaultProps, selectedAssets: [containerAssets[0]] })
+  it('resets notification and coordinates and removes asset from selectedAssets when a selected marker is clicked', () => {
+    addAssetLayerToMap({ ...defaultProps, selectedAssets: [containerAssets[0]], notification: mockNotification })
 
     const marker = defaultProps.assetMarkersRef.current[containerAssets[0].id!]
     marker.fire('click')
 
+    expect(defaultProps.setNotification).toBeCalledWith(null)
     expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
     expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
   })

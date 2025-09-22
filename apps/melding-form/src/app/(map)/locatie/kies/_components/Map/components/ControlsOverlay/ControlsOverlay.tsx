@@ -1,22 +1,22 @@
-import { Button, Paragraph } from '@amsterdam/design-system-react'
+import { Button } from '@amsterdam/design-system-react'
 import { MinusIcon, PlusIcon } from '@amsterdam/design-system-react-icons'
 import type L from 'leaflet'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
 
-import { Notification } from '../Notification/Notification'
+import { NotificationType } from '../../../../types'
+import { Notification } from '../../components/Notification/Notification'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './ControlsOverlay.module.css'
 
-type Props = {
+export type Props = {
   mapInstance: L.Map | null
+  notification: NotificationType | null
   setCoordinates: (coordinates: Coordinates) => void
+  setNotification: (notification: NotificationType | null) => void
 }
 
-export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
-  const [showNotification, setShowNotification] = useState<boolean>(false)
-
+export const ControlsOverlay = ({ mapInstance, notification, setCoordinates, setNotification }: Props) => {
   const t = useTranslations('select-location.controls-overlay')
 
   const handleZoomIn = () => {
@@ -39,7 +39,13 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
     })
   }
 
-  const onError = () => setShowNotification(true)
+  const onError = () =>
+    setNotification({
+      closeButtonLabel: t('current-location-notification.close-button'),
+      description: t('current-location-notification.description'),
+      heading: t('current-location-notification.title'),
+      severity: 'error',
+    })
 
   const handleCurrentLocationButtonClick = () => navigator.geolocation.getCurrentPosition(onSuccess, onError)
 
@@ -49,16 +55,14 @@ export const ControlsOverlay = ({ mapInstance, setCoordinates }: Props) => {
         <Button variant="secondary" onClick={handleCurrentLocationButtonClick}>
           {t('current-location-button')}
         </Button>
-        {showNotification && (
+        {notification && (
           <Notification
-            heading={t('notification.title')}
-            headingLevel={2}
-            closeable
-            closeButtonLabel={t('notification.close-button')}
-            onClose={() => setShowNotification(false)}
-          >
-            <Paragraph>{t('notification.description')}</Paragraph>
-          </Notification>
+            closeButtonLabel={notification.closeButtonLabel}
+            description={notification.description}
+            heading={notification.heading}
+            onClose={() => setNotification(null)}
+            severity={notification.severity}
+          />
         )}
       </div>
       <div className={styles.overlayBottomRight}>

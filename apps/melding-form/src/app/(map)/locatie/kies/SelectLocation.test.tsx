@@ -1,7 +1,15 @@
+import { AlertProps } from '@amsterdam/design-system-react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { SelectLocation } from './SelectLocation'
+
+const mockNotification = {
+  closeButtonLabel: 'notification.close-button',
+  description: 'notification.description',
+  heading: 'notification.title',
+  severity: 'error' as AlertProps['severity'],
+}
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -19,8 +27,16 @@ vi.mock('./_components/AssetListToggle/AssetListToggle', () => ({
   )),
 }))
 
-vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
-  default: vi.fn().mockReturnValue(false),
+vi.mock('./_components/AssetList/AssetList', () => ({
+  AssetList: vi.fn(({ setNotification }) => (
+    <div>
+      <button onClick={() => setNotification(mockNotification)}>SetNotification</button>
+    </div>
+  )),
+}))
+
+vi.mock('./_components/Map/Map', () => ({
+  Map: vi.fn(),
 }))
 
 Object.defineProperty(window, 'matchMedia', {
@@ -44,7 +60,7 @@ describe('SelectLocation', () => {
 
   it('adds a class name to the asset list container when showAssetList is true', async () => {
     vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
-      default: vi.fn().mockReturnValue(true),
+      default: vi.fn().mockReturnValueOnce(true),
     }))
 
     const { container } = render(<SelectLocation />)
@@ -60,5 +76,24 @@ describe('SelectLocation', () => {
     const divWithExtraClass = container.querySelector('[class*="showAssetList"]')
 
     expect(divWithExtraClass).toBeInTheDocument()
+  })
+
+  it('renders the notification when it is set in AssetList and closes on click', async () => {
+    const user = userEvent.setup()
+    render(<SelectLocation />)
+
+    const setNotificationButton = screen.getByRole('button', { name: 'SetNotification' })
+
+    await user.click(setNotificationButton)
+
+    const notificationTitle = screen.getByText('notification.title')
+
+    expect(notificationTitle).toBeInTheDocument()
+
+    const closeButton = screen.getByRole('button', { name: mockNotification.closeButtonLabel })
+
+    await user.click(closeButton)
+
+    expect(screen.queryByText('notification.title')).not.toBeInTheDocument()
   })
 })
