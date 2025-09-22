@@ -4,12 +4,9 @@ import { ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useState } from 'react'
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, Dispatch, SetStateAction } from 'react'
 
-import {
-  deleteMeldingByMeldingIdAttachmentByAttachmentId,
-  postMeldingByMeldingIdAttachment,
-} from '@meldingen/api-client'
+import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Column, FileList, FileUpload, Heading, SubmitButton } from '@meldingen/ui'
@@ -33,10 +30,67 @@ type Props = {
 
 export type UploadedFiles = { file: File; id: number }
 
+type UploadFile = {
+  id: string
+  file: File
+  serverId?: number
+  status: string // 'pending' | 'uploading' | 'success' | 'error'
+  progress: number // 0-100
+  error?: string
+}
+
 const initialState: Pick<FormState, 'systemError'> = {}
 
+const startUpload = (
+  uploadFile: UploadFile,
+  setFiles: Dispatch<SetStateAction<UploadFile[]>>,
+  meldingId: number,
+  token: string,
+) => {
+  const xhr = new XMLHttpRequest()
+  xhr.open('POST', `http://localhost:8000/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`)
+
+  xhr.upload.onprogress = (event) => {
+    if (event.lengthComputable) {
+      setFiles((prev) =>
+        prev.map((file) =>
+          file.id === uploadFile.id ? { ...file, progress: (event.loaded / event.total) * 100 } : file,
+        ),
+      )
+    }
+  }
+
+  xhr.onload = () => {
+    setFiles((prev) =>
+      prev.map((file) =>
+        file.id === uploadFile.id
+          ? {
+              ...file,
+              serverId: JSON.parse(xhr.response).id,
+              status: xhr.status === 200 ? 'success' : 'error',
+              error: xhr.status !== 200 ? 'Upload failed' : undefined,
+            }
+          : file,
+      ),
+    )
+  }
+
+  xhr.onerror = () => {
+    setFiles((prev) =>
+      prev.map((file) => (file.id === uploadFile.id ? { ...file, status: 'error', error: 'Network error' } : file)),
+    )
+  }
+
+  setFiles((prev) => prev.map((file) => (file.id === uploadFile.id ? { ...file, status: 'uploading' } : file)))
+
+  const formData = new FormData()
+  formData.append('file', uploadFile.file)
+  xhr.send(formData)
+}
+
 export const Attachments = ({ formData, meldingId, token }: Props) => {
-  const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([])
+  const [files, setFiles] = useState<UploadFile[]>([])
+
   const [errorMessage, setErrorMessage] = useState<string>()
   const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
 
@@ -44,45 +98,37 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
   const { label, description } = formData[0]
 
-  const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setErrorMessage(undefined)
 
     if (!event.currentTarget.files) return
 
-    const files = Array.from(event.currentTarget.files)
+    const newFiles = Array.from(event.currentTarget.files)
 
-    try {
-      if (files.length + uploadedFiles.length > MAX_FILES) {
-        throw new Error(t('errors.too-many-files', { maxFiles: MAX_FILES }))
-      }
-
-      const result = await Promise.all(
-        files.map(async (file) => {
-          const { data, error } = await postMeldingByMeldingIdAttachment({
-            body: { file },
-            path: { melding_id: meldingId },
-            query: { token },
-          })
-
-          if (error || !data?.id) {
-            throw new Error('Failed to upload file')
-          }
-
-          return { file, id: data.id }
-        }),
-      )
-      setUploadedFiles((currentFiles) => [...currentFiles, ...result])
-    } catch (error) {
-      setErrorMessage((error as Error).message)
+    // TODO: should files.length be the length of successfully uploaded files?
+    if (newFiles.length + files.length > MAX_FILES) {
+      setErrorMessage(t('errors.too-many-files', { maxFiles: MAX_FILES }))
+      return
     }
+
+    const uploadFiles = newFiles.map((file) => ({
+      id: crypto.randomUUID(),
+      file,
+      status: 'pending',
+      progress: 0,
+    }))
+
+    setFiles((prev) => [...prev, ...uploadFiles])
+
+    uploadFiles.forEach((file) => startUpload(file, setFiles, meldingId, token))
   }
 
-  const removeFile = async (attachmentId: number) => {
+  const removeFile = async (serverId: number) => {
     setErrorMessage(undefined)
 
     const { error } = await deleteMeldingByMeldingIdAttachmentByAttachmentId({
       path: {
-        attachment_id: attachmentId,
+        attachment_id: serverId,
         melding_id: meldingId,
       },
       query: { token },
@@ -93,7 +139,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
       return
     }
 
-    setUploadedFiles((files) => files.filter((file) => file.id !== attachmentId))
+    setFiles((files) => files.filter((file) => file.serverId !== serverId))
   }
 
   useEffect(() => {
@@ -127,7 +173,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
           </Column>
 
           <Paragraph aria-live="polite">
-            {t('status', { fileCount: uploadedFiles.length, maxFiles: MAX_FILES })}
+            {t('status', { fileCount: files.filter((file) => file.status === 'success').length, maxFiles: MAX_FILES })}
           </Paragraph>
 
           <FileUpload
@@ -145,10 +191,15 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
             onChange={handleChange}
           />
 
-          {uploadedFiles.length > 0 && (
+          {files.length > 0 && (
             <FileList>
-              {uploadedFiles.map((attachment) => (
-                <FileList.Item key={attachment.id} file={attachment.file} onDelete={() => removeFile(attachment.id)} />
+              {files.map((file) => (
+                <FileList.Item
+                  key={file.id}
+                  file={file.file}
+                  errorMessage={file.status === 'error' ? file.error : undefined}
+                  onDelete={() => file.serverId && removeFile(file.serverId)}
+                />
               ))}
             </FileList>
           )}
