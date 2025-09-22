@@ -101,7 +101,7 @@ describe('Page', () => {
           },
         ],
       },
-      {},
+      undefined,
     )
   })
 })

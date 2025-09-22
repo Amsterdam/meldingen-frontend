@@ -79,7 +79,7 @@ describe('Page', () => {
         panelLabel: 'Panel 2',
         previousPanelPath: '/aanvullende-vragen/1/panel-1',
       }),
-      {},
+      undefined,
     )
   })
 
@@ -114,7 +114,7 @@ describe('Page', () => {
         panelLabel: 'Panel 1',
         previousPanelPath: '/',
       }),
-      {},
+      undefined,
     )
   })
 
@@ -150,7 +150,7 @@ describe('Page', () => {
         panelLabel: 'Panel 1',
         previousPanelPath: '/',
       }),
-      {},
+      undefined,
     )
   })
 
