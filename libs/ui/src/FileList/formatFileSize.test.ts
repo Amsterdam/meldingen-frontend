@@ -24,4 +24,14 @@ describe('formatFileSize', () => {
     expect(formatFileSize(1073741824, 1)).toBe('1 GB')
     expect(formatFileSize(2147483648, 1)).toBe('2 GB')
   })
+
+  it('returns 0 bytes for a file size of 0', () => {
+    expect(formatFileSize(0)).toBe('0 bytes')
+  })
+
+  it('formats with the correct precision', () => {
+    expect(formatFileSize(1234, 2)).toBe('1.2 kB')
+    expect(formatFileSize(1234, 3)).toBe('1.23 kB')
+    expect(formatFileSize(1234, 4)).toBe('1.234 kB')
+  })
 })
