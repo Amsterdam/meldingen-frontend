@@ -48,7 +48,7 @@ describe('Page', () => {
       expect.objectContaining({
         coordinates: undefined,
       }),
-      {},
+      undefined,
     )
   })
 
@@ -66,7 +66,7 @@ describe('Page', () => {
       expect.objectContaining({
         coordinates: { lat: 52.370216, lng: 4.895168 },
       }),
-      {},
+      undefined,
     )
   })
 })

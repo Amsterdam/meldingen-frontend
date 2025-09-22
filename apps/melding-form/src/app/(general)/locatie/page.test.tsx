@@ -23,7 +23,7 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(screen.getByText('Location Component')).toBeInTheDocument()
-    expect(Location).toHaveBeenCalledWith({ prevPage: '/', locationData: undefined }, {})
+    expect(Location).toHaveBeenCalledWith({ prevPage: '/', locationData: undefined }, undefined)
   })
 
   it('renders Location component with props from cookies', async () => {
@@ -36,7 +36,7 @@ describe('Page', () => {
     expect(screen.getByText('Location Component')).toBeInTheDocument()
     expect(Location).toHaveBeenCalledWith(
       { prevPage: '/previous', locationData: { lat: 52.370216, lng: 4.895168 } },
-      {},
+      undefined,
     )
   })
 })
