@@ -13,7 +13,6 @@ updates:
       patch-and-minor-dependencies:
         applies-to: 'version-updates'
         exclude-patterns:
-          - '@hey-api/client-fetch'
           - '@hey-api/openapi-ts'
         update-types:
           - 'patch'
