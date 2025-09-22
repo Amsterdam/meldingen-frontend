@@ -112,6 +112,9 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
         {t.rich('description', { english: (chunks) => <span lang="en">{chunks}</span> })}
       </Description>
       <HUICombobox
+        // Combobox does not rerender when address is set using keyboard on the Map, for some reason.
+        // Setting the address as key makes sure it does.
+        key={address}
         as="div"
         onChange={onChangeHandler}
         onClose={() => fetchAddressList('')}
