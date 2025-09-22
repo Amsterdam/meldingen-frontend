@@ -2,7 +2,3 @@
   display: inline-block;
   font-weight: var(--ams-hint-font-weight);
 }
-
-.fileList {
-  width: 100%;
-}
