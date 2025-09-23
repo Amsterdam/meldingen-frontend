@@ -1,14 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-// import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 import { useActionState } from 'react'
 import { Mock } from 'vitest'
 
 import { Attachments } from './Attachments'
 import * as utils from './utils'
 import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
-// import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-// import { server } from 'apps/melding-form/src/mocks/node'
+import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
+import { server } from 'apps/melding-form/src/mocks/node'
 
 const defaultProps = {
   meldingId: 1,
@@ -25,13 +25,16 @@ vi.mock('react', async (importOriginal) => {
 })
 
 global.URL.createObjectURL = vi.fn()
+global.URL.revokeObjectURL = vi.fn()
 
 vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
   default: vi.fn(),
 }))
 
+const mockFile = new File(['dummy content'], 'example.png', { type: 'image/png' })
+
 describe('Attachments', () => {
-  it('should render correctly', () => {
+  it('renders correctly', () => {
     render(<Attachments {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
@@ -49,19 +52,19 @@ describe('Attachments', () => {
     expect(fileUpload).toBeInTheDocument()
   })
 
-  it('should show file names when a file is uploaded', async () => {
+  it('shows file names when a file is uploaded', async () => {
     const user = userEvent.setup()
 
     render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText('File input')
 
-    const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
+    const file = mockFile
     const file2 = new File(['dummy content two'], 'hoi.png', { type: 'image/png' })
 
     await user.upload(fileInput, [file, file2])
 
-    const fileName1 = screen.getAllByText('Screenshot 2025-02-10 at 08.29.41.png')[0]
+    const fileName1 = screen.getAllByText(mockFile.name)[0]
     const fileName2 = screen.getAllByText('hoi.png')[0]
 
     expect(fileName1).toBeInTheDocument()
@@ -80,7 +83,7 @@ describe('Attachments', () => {
     expect(fileList).not.toBeInTheDocument()
   })
 
-  it('shows error when startUpload sets status to error', async () => {
+  it('shows an error when startUpload sets status to error', async () => {
     const user = userEvent.setup()
 
     const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, uploadFile, setFiles) => {
@@ -93,108 +96,160 @@ describe('Attachments', () => {
 
     const fileInput = screen.getByLabelText('File input')
 
-    const file = new File(['fail'], 'fail.png', { type: 'image/png' })
-
-    await user.upload(fileInput, [file])
+    await user.upload(fileInput, [mockFile])
 
     expect(screen.getByText('Upload failed')).toBeInTheDocument()
 
     spy.mockRestore()
   })
 
-  it('should delete a succesfully uploaded file with the delete button', async () => {
-    global.URL.revokeObjectURL = vi.fn()
-
+  it('deletes a succesfully uploaded file with the delete button', async () => {
     const user = userEvent.setup()
 
-    // const xhrMock: Partial<XMLHttpRequest> = {
-    //   open: vi.fn(),
-    //   send: vi.fn(),
-    //   setRequestHeader: vi.fn(),
-    //   onreadystatechange: vi.fn(),
-    //   readyState: 4,
-    //   status: 200,
-    //   response: 'Hello World!',
-    // }
+    const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
 
-    // const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, uploadFile, setFiles) => {
-    //   setFiles((prev) =>
-    //     prev.map((file) => (file.id === uploadFile.id ? { ...file, xhr: xhrMock, serverId: 123 } : file)),
-    //   )
-    // })
+    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, uploadFile, setFiles) => {
+      setFiles((prev) =>
+        prev.map((file) =>
+          file.id === uploadFile.id ? { ...file, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : file,
+        ),
+      )
+    })
 
     render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText('File input')
 
-    const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
+    await user.upload(fileInput, [mockFile])
 
-    await user.upload(fileInput, [file])
-
-    const fileName1 = screen.getAllByText('Screenshot 2025-02-10 at 08.29.41.png')[0]
+    const fileName1 = screen.getAllByText(mockFile.name)[0]
 
     expect(fileName1).toBeInTheDocument()
 
-    const deleteButton = screen.getByRole('button', { name: 'Verwijder Screenshot 2025-02-10 at 08.29.41.png' })
+    const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFile.name}` })
 
     await user.click(deleteButton)
 
-    const file1SecondRender = screen.queryByText('Screenshot 2025-02-10 at 08.29.41.png')
+    const file1SecondRender = screen.queryByText(mockFile.name)
 
     expect(file1SecondRender).not.toBeInTheDocument()
 
-    // spy.mockRestore()
+    spy.mockRestore()
   })
 
-  // it('should throw an error when delete request fails', async () => {
-  //   server.use(
-  //     http.delete(
-  //       ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID,
-  //       () => new HttpResponse(null, { status: 404 }),
-  //     ),
-  //   )
-  //   const user = userEvent.setup()
+  it('deletes a pending upload and removes it from the file list with the delete button', async () => {
+    const user = userEvent.setup()
 
-  //   render(<Attachments {...defaultProps} />)
+    const abortMock = vi.fn()
 
-  //   const fileInput = screen.getByLabelText('File input')
+    const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.OPENED, abort: abortMock }
 
-  //   const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
+    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, uploadFile, setFiles) => {
+      setFiles((prev) =>
+        prev.map((file) =>
+          file.id === uploadFile.id ? { ...file, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : file,
+        ),
+      )
+    })
 
-  //   await user.upload(fileInput, [file])
+    render(<Attachments {...defaultProps} />)
 
-  //   const fileName1 = screen.getAllByText('Screenshot 2025-02-10 at 08.29.41.png')[0]
+    const fileInput = screen.getByLabelText('File input')
 
-  //   expect(fileName1).toBeInTheDocument()
+    await user.upload(fileInput, [mockFile])
 
-  //   const deleteButton = screen.getByRole('button', { name: 'Verwijder Screenshot 2025-02-10 at 08.29.41.png' })
+    const fileName1 = screen.getAllByText(mockFile.name)[0]
 
-  //   await user.click(deleteButton)
+    expect(fileName1).toBeInTheDocument()
 
-  //   const file1SecondRender = screen.getAllByText('Screenshot 2025-02-10 at 08.29.41.png')[0]
-  //   // const errorMessage = screen.getByText('An unknown error occurred')
+    const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFile.name}` })
 
-  //   expect(file1SecondRender).toBeInTheDocument()
-  //   // expect(errorMessage).toBeInTheDocument()
-  // })
+    await user.click(deleteButton)
 
-  // it.skip('should show an error when post fails', async () => {
-  //   server.use(http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () => HttpResponse.error()))
+    const file1SecondRender = screen.queryByText(mockFile.name)
 
-  //   const user = userEvent.setup()
+    expect(file1SecondRender).not.toBeInTheDocument()
+    expect(abortMock).toHaveBeenCalled()
 
-  //   render(<Attachments {...defaultProps} />)
+    spy.mockRestore()
+  })
 
-  //   const fileInput = screen.getByLabelText('File input')
+  it('removes a failed upload from the file list with the delete button', async () => {
+    const user = userEvent.setup()
 
-  //   const file = new File(['dummy content'], 'Screenshot 2025-02-10 at 08.29.41.png', { type: 'image/png' })
+    const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
 
-  //   await user.upload(fileInput, [file])
+    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, uploadFile, setFiles) => {
+      setFiles((prev) =>
+        prev.map((file) =>
+          file.id === uploadFile.id ? { ...file, xhr: xhrMock as XMLHttpRequest, serverId: undefined } : file,
+        ),
+      )
+    })
 
-  //   const errorMessage = screen.getByText('Failed to fetch')
+    render(<Attachments {...defaultProps} />)
 
-  //   expect(errorMessage).toBeInTheDocument()
-  // })
+    const fileInput = screen.getByLabelText('File input')
+
+    await user.upload(fileInput, [mockFile])
+
+    const fileName1 = screen.getAllByText(mockFile.name)[0]
+
+    expect(fileName1).toBeInTheDocument()
+
+    const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFile.name}` })
+
+    await user.click(deleteButton)
+
+    const file1SecondRender = screen.queryByText(mockFile.name)
+
+    expect(file1SecondRender).not.toBeInTheDocument()
+
+    spy.mockRestore()
+  })
+
+  it('should throw an error when delete request fails', async () => {
+    server.use(
+      http.delete(
+        ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID,
+        () => new HttpResponse(null, { status: 404 }),
+      ),
+    )
+
+    const user = userEvent.setup()
+
+    const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
+
+    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, uploadFile, setFiles) => {
+      setFiles((prev) =>
+        prev.map((file) =>
+          file.id === uploadFile.id ? { ...file, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : file,
+        ),
+      )
+    })
+
+    render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+
+    await user.upload(fileInput, [mockFile])
+
+    const fileName1 = screen.getAllByText(mockFile.name)[0]
+
+    expect(fileName1).toBeInTheDocument()
+
+    const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFile.name}` })
+
+    await user.click(deleteButton)
+
+    const file1SecondRender = screen.getAllByText(mockFile.name)[0]
+    const errorMessage = screen.getByText('An unknown error occurred')
+
+    expect(file1SecondRender).toBeInTheDocument()
+    expect(errorMessage).toBeInTheDocument()
+
+    spy.mockRestore()
+  })
 
   it('should throw an error when attempting to upload too many files', async () => {
     const user = userEvent.setup()

@@ -33,9 +33,9 @@ export const startUpload = (
         file.id === uploadFile.id
           ? {
               ...file,
-              serverId: JSON.parse(xhr.response).id,
+              serverId: xhr.response && JSON.parse(xhr.response)?.id,
               status: xhr.status === 200 ? 'success' : 'error',
-              error: xhr.status !== 200 ? JSON.parse(xhr.response).detail : undefined,
+              error: xhr.status !== 200 ? xhr.response && JSON.parse(xhr.response)?.detail : undefined,
             }
           : file,
       ),
