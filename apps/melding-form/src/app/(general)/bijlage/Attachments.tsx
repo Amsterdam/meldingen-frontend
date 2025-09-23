@@ -1,6 +1,7 @@
 'use client'
 
 import { ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
+import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useRef, useState } from 'react'
@@ -143,7 +144,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
                 {description}
               </MarkdownToHtml>
             )}
-            {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
+            {errorMessage && <ErrorMessage id="file-upload-error-message">{errorMessage}</ErrorMessage>}
           </Column>
 
           <Paragraph aria-live="polite">
@@ -152,11 +153,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
           <FileUpload
             accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
-            aria-describedby={
-              description || errorMessage
-                ? `${description ? 'file-upload-description' : ''} ${errorMessage ? 'error-message' : ''}`
-                : undefined
-            }
+            aria-describedby={getAriaDescribedBy('file-upload', description, errorMessage)}
             aria-labelledby="file-upload-label file-upload"
             buttonText={t('file-upload.button')}
             dropAreaText={t('file-upload.drop-area')}
