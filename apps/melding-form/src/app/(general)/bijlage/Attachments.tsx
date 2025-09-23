@@ -3,7 +3,7 @@
 import { ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react'
 
 import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
@@ -82,9 +82,11 @@ const startUpload = (xhr: XMLHttpRequest, uploadFile: UploadFile, setFiles: Disp
 }
 
 export const Attachments = ({ formData, meldingId, token }: Props) => {
-  const [files, setFiles] = useState<UploadFile[]>([])
+  const inputRef = useRef<HTMLInputElement>(null)
 
+  const [files, setFiles] = useState<UploadFile[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
+
   const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
 
   const t = useTranslations('attachments')
@@ -120,6 +122,11 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
       startUpload(xhr, file, setFiles)
     })
+
+    // Clear the file input after starting the upload, so it is empty for the next selection.
+    if (inputRef.current) {
+      inputRef.current.value = ''
+    }
   }
 
   const handleDelete = async (id: string, xhr: XMLHttpRequest, serverId?: number) => {
@@ -202,6 +209,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
             id="file-upload"
             multiple
             onChange={handleUpload}
+            ref={inputRef}
           />
 
           {files.length > 0 && (
