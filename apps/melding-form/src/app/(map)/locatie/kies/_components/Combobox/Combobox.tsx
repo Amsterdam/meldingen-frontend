@@ -128,21 +128,20 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
         className={styles.combobox}
       >
         <ComboboxInput as={TextInput} autoComplete="off" name="address" onChange={(event) => onInputChange(event)} />
-        {
-          <ComboboxOptions as={ListBox} className={styles.comboboxOptions} modal={false}>
-            {addressList.length > 0 ? (
-              addressList.map((option) => (
+
+        <ComboboxOptions as={ListBox} className={styles.comboboxOptions} modal={false}>
+          {addressList.length > 0
+            ? addressList.map((option) => (
                 <ComboboxOption key={option.id} value={option} as={ListBox.Option}>
                   {option.weergave_naam}
                 </ComboboxOption>
               ))
-            ) : (
-              <ComboboxOption value="" disabled as={ListBox.Option}>
-                {t('no-results')}
-              </ComboboxOption>
-            )}
-          </ComboboxOptions>
-        }
+            : query.length >= 3 && (
+                <ComboboxOption value="" disabled as={ListBox.Option}>
+                  {t('no-results')}
+                </ComboboxOption>
+              )}
+        </ComboboxOptions>
       </HUICombobox>
     </HUIField>
   )
