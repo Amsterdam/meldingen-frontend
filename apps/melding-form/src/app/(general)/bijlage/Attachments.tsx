@@ -61,7 +61,7 @@ const startUpload = (xhr: XMLHttpRequest, uploadFile: UploadFile, setFiles: Disp
               ...file,
               serverId: JSON.parse(xhr.response).id,
               status: xhr.status === 200 ? 'success' : 'error',
-              error: xhr.status !== 200 ? 'Upload failed' : undefined,
+              error: xhr.status !== 200 ? JSON.parse(xhr.response).detail : undefined,
             }
           : file,
       ),
