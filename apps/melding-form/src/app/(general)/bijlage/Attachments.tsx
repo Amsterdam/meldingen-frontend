@@ -31,25 +31,18 @@ type Props = {
 export type UploadedFiles = { file: File; id: number }
 
 type UploadFile = {
-  id: string
+  error?: string
   file: File
+  id: string
+  progress: number // 0-100
   serverId?: number
   status: string // 'pending' | 'uploading' | 'success' | 'error'
-  progress: number // 0-100
-  error?: string
+  xhr: XMLHttpRequest
 }
 
 const initialState: Pick<FormState, 'systemError'> = {}
 
-const startUpload = (
-  uploadFile: UploadFile,
-  setFiles: Dispatch<SetStateAction<UploadFile[]>>,
-  meldingId: number,
-  token: string,
-) => {
-  const xhr = new XMLHttpRequest()
-  xhr.open('POST', `http://localhost:8000/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`)
-
+const startUpload = (xhr: XMLHttpRequest, uploadFile: UploadFile, setFiles: Dispatch<SetStateAction<UploadFile[]>>) => {
   xhr.upload.onprogress = (event) => {
     if (event.lengthComputable) {
       setFiles((prev) =>
@@ -98,7 +91,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
   const { label, description } = formData[0]
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
     setErrorMessage(undefined)
 
     if (!event.currentTarget.files) return
@@ -112,19 +105,39 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
     }
 
     const uploadFiles = newFiles.map((file) => ({
-      id: crypto.randomUUID(),
       file,
-      status: 'pending',
+      id: crypto.randomUUID(),
       progress: 0,
+      status: 'pending',
+      xhr: new XMLHttpRequest(),
     }))
 
     setFiles((prev) => [...prev, ...uploadFiles])
 
-    uploadFiles.forEach((file) => startUpload(file, setFiles, meldingId, token))
+    uploadFiles.forEach((file) => {
+      const xhr = file.xhr
+      xhr.open('POST', `http://localhost:8000/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`)
+
+      startUpload(xhr, file, setFiles)
+    })
   }
 
-  const removeFile = async (serverId: number) => {
+  const handleDelete = async (id: string, xhr: XMLHttpRequest, serverId?: number) => {
     setErrorMessage(undefined)
+
+    // Abort upload if in progress
+    if (xhr.readyState !== XMLHttpRequest.DONE) {
+      xhr.abort()
+      setFiles((files) => files.filter((file) => file.id !== id))
+      return
+    }
+
+    // If the file does not have a server id (because the server returned an error for example)
+    // remove it from the list
+    if (!serverId) {
+      setFiles((files) => files.filter((file) => file.id !== id))
+      return
+    }
 
     const { error } = await deleteMeldingByMeldingIdAttachmentByAttachmentId({
       path: {
@@ -188,17 +201,17 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
             dropAreaText={t('file-upload.drop-area')}
             id="file-upload"
             multiple
-            onChange={handleChange}
+            onChange={handleUpload}
           />
 
           {files.length > 0 && (
             <FileList>
-              {files.map((file) => (
+              {files.map(({ error, file, id, serverId, status, xhr }) => (
                 <FileList.Item
-                  key={file.id}
-                  file={file.file}
-                  errorMessage={file.status === 'error' ? file.error : undefined}
-                  onDelete={() => file.serverId && removeFile(file.serverId)}
+                  key={id}
+                  file={file}
+                  errorMessage={status === 'error' ? error : undefined}
+                  onDelete={() => handleDelete(id, xhr, serverId)}
                 />
               ))}
             </FileList>
