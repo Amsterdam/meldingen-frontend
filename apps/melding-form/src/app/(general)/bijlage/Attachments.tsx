@@ -4,7 +4,7 @@ import { ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useRef, useState } from 'react'
-import type { ChangeEvent, Dispatch, SetStateAction } from 'react'
+import type { ChangeEvent } from 'react'
 
 import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
@@ -12,11 +12,13 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Column, FileList, FileUpload, Heading, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
+import type { UploadFile } from './utils'
+import { startUpload } from './utils'
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
-import { FormState } from 'apps/melding-form/src/types'
+import type { FormState } from 'apps/melding-form/src/types'
 
 import styles from './Attachments.module.css'
 
@@ -28,58 +30,16 @@ type Props = {
   token: string
 }
 
-export type UploadedFiles = { file: File; id: number }
-
-type UploadFile = {
-  error?: string
-  file: File
-  id: string
-  progress: number // 0-100
-  serverId?: number
-  status: 'pending' | 'uploading' | 'success' | 'error'
-  xhr: XMLHttpRequest
-}
-
 const initialState: Pick<FormState, 'systemError'> = {}
 
-const startUpload = (xhr: XMLHttpRequest, uploadFile: UploadFile, setFiles: Dispatch<SetStateAction<UploadFile[]>>) => {
-  xhr.upload.onprogress = (event) => {
-    if (event.lengthComputable) {
-      setFiles((prev) =>
-        prev.map((file) =>
-          file.id === uploadFile.id ? { ...file, progress: (event.loaded / event.total) * 100 } : file,
-        ),
-      )
-    }
-  }
-
-  xhr.onload = () => {
-    setFiles((prev) =>
-      prev.map((file) =>
-        file.id === uploadFile.id
-          ? {
-              ...file,
-              serverId: JSON.parse(xhr.response).id,
-              status: xhr.status === 200 ? 'success' : 'error',
-              error: xhr.status !== 200 ? JSON.parse(xhr.response).detail : undefined,
-            }
-          : file,
-      ),
-    )
-  }
-
-  xhr.onerror = () => {
-    setFiles((prev) =>
-      prev.map((file) => (file.id === uploadFile.id ? { ...file, status: 'error', error: 'Network error' } : file)),
-    )
-  }
-
-  setFiles((prev) => prev.map((file) => (file.id === uploadFile.id ? { ...file, status: 'uploading' } : file)))
-
-  const formData = new FormData()
-  formData.append('file', uploadFile.file)
-  xhr.send(formData)
-}
+const createUploadFiles = (newFiles: File[]): UploadFile[] =>
+  newFiles.map((file) => ({
+    file,
+    id: crypto.randomUUID(),
+    progress: 0,
+    status: 'pending',
+    xhr: new XMLHttpRequest(),
+  }))
 
 export const Attachments = ({ formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -106,13 +66,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
       return
     }
 
-    const uploadFiles: UploadFile[] = newFiles.map((file) => ({
-      file,
-      id: crypto.randomUUID(),
-      progress: 0,
-      status: 'pending',
-      xhr: new XMLHttpRequest(),
-    }))
+    const uploadFiles = createUploadFiles(newFiles)
 
     setFiles((prev) => [...prev, ...uploadFiles])
 
