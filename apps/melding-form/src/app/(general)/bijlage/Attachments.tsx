@@ -36,7 +36,7 @@ type UploadFile = {
   id: string
   progress: number // 0-100
   serverId?: number
-  status: string // 'pending' | 'uploading' | 'success' | 'error'
+  status: 'pending' | 'uploading' | 'success' | 'error'
   xhr: XMLHttpRequest
 }
 
@@ -106,7 +106,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
       return
     }
 
-    const uploadFiles = newFiles.map((file) => ({
+    const uploadFiles: UploadFile[] = newFiles.map((file) => ({
       file,
       id: crypto.randomUUID(),
       progress: 0,
@@ -140,7 +140,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
     }
 
     // If the file does not have a server id (because the server returned an error for example)
-    // remove it from the list
+    // simply remove it from the list
     if (!serverId) {
       setFiles((files) => files.filter((file) => file.id !== id))
       return
