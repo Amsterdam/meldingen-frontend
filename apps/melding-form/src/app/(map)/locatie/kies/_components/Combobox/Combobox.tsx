@@ -49,6 +49,7 @@ type PDOKItem = {
 export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, setSelectedAssets }: Props) => {
   const [query, setQuery] = useState('')
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
+  const [showListBox, setShowListBox] = useState(false)
 
   const t = useTranslations('select-location.combo-box')
 
@@ -76,11 +77,15 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
 
           setAddressList(responseList)
         }
+        setShowListBox(true)
       } catch (error) {
         // TODO: do we want to show a message to the user here?
         // eslint-disable-next-line no-console
         console.error(error)
       }
+    } else {
+      setShowListBox(false)
+      setAddressList([])
     }
   })
 
@@ -129,19 +134,21 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
       >
         <ComboboxInput as={TextInput} autoComplete="off" name="address" onChange={(event) => onInputChange(event)} />
 
-        <ComboboxOptions as={ListBox} className={styles.comboboxOptions} modal={false}>
-          {addressList.length > 0
-            ? addressList.map((option) => (
+        {showListBox && (
+          <ComboboxOptions as={ListBox} className={styles.comboboxOptions} modal={false}>
+            {addressList.length > 0 ? (
+              addressList.map((option) => (
                 <ComboboxOption key={option.id} value={option} as={ListBox.Option}>
                   {option.weergave_naam}
                 </ComboboxOption>
               ))
-            : query.length >= 3 && (
-                <ComboboxOption value="" disabled as={ListBox.Option}>
-                  {t('no-results')}
-                </ComboboxOption>
-              )}
-        </ComboboxOptions>
+            ) : (
+              <ComboboxOption value="" disabled as={ListBox.Option}>
+                {t('no-results')}
+              </ComboboxOption>
+            )}
+          </ComboboxOptions>
+        )}
       </HUICombobox>
     </HUIField>
   )
