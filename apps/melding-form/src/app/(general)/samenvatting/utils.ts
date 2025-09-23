@@ -8,6 +8,8 @@ import {
   getStaticFormByStaticFormId,
 } from '@meldingen/api-client'
 
+import { handleApiError } from 'apps/melding-form/src/handleApiError'
+
 export const getPrimaryFormSummary = async (description: string) => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
@@ -50,7 +52,11 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
     path: { classification_id: classificationId },
   })
 
-  if (formError) throw new Error('Failed to fetch form by classification.')
+  if (formError) {
+    // Not Found error is returned when the classification does not have additional questions
+    if (handleApiError(formError) === 'Not Found') return { data: [] }
+    throw new Error('Failed to fetch form by classification.')
+  }
 
   const { data, error } = await getMeldingByMeldingIdAnswersMelder({
     path: { melding_id: parseInt(meldingId, 10) },

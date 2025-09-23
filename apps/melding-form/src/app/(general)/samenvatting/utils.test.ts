@@ -112,6 +112,18 @@ describe('getAdditionalQuestionsSummary', () => {
 
   it('returns an error message when error is returned', async () => {
     server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [
+            {
+              key: 'page1',
+              components: [{ question: 35 }, { question: 36 }],
+            },
+          ],
+        }),
+      ),
+    )
+    server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
@@ -169,6 +181,17 @@ describe('getAdditionalQuestionsSummary', () => {
     const testFunction = async () => await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
 
     await expect(testFunction).rejects.toThrowError('Failed to fetch form by classification.')
+  })
+
+  it('does not throw an error when the error is Not Found but returns an empty array', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({ detail: 'Not Found' }, { status: 500 }),
+      ),
+    )
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
+
+    expect(result).toEqual({ data: [] })
   })
 })
 
