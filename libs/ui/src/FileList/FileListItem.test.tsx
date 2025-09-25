@@ -17,9 +17,14 @@ vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () =>
   default: vi.fn(),
 }))
 
+const defaultProps = {
+  deleteButtonId: 'test-id',
+  file,
+}
+
 describe('FileListItem', () => {
   it('renders', () => {
-    render(<FileListItem file={file} />)
+    render(<FileListItem {...defaultProps} />)
 
     const component = screen.getByRole('listitem')
 
@@ -27,7 +32,7 @@ describe('FileListItem', () => {
   })
 
   it('renders the file name', () => {
-    render(<FileListItem file={file} />)
+    render(<FileListItem {...defaultProps} />)
 
     const fileName = screen.getAllByText('sample.txt')[0]
 
@@ -35,7 +40,7 @@ describe('FileListItem', () => {
   })
 
   it('renders an image with the correct src', () => {
-    render(<FileListItem file={file} />)
+    render(<FileListItem {...defaultProps} />)
 
     const image = screen.getByRole('presentation')
 
@@ -46,7 +51,7 @@ describe('FileListItem', () => {
   it('adds the correct aspect ratio class to the image with a wide screen width', () => {
     ;(useIsAfterBreakpoint as Mock).mockImplementationOnce(() => true)
 
-    render(<FileListItem file={file} />)
+    render(<FileListItem {...defaultProps} />)
 
     const image = screen.getByRole('presentation')
 
@@ -57,7 +62,7 @@ describe('FileListItem', () => {
   it('adds the correct aspect ratio class to the image with a narrow screen width', () => {
     ;(useIsAfterBreakpoint as Mock).mockImplementationOnce(() => false)
 
-    render(<FileListItem file={file} />)
+    render(<FileListItem {...defaultProps} />)
 
     const image = screen.getByRole('presentation')
 
@@ -73,7 +78,7 @@ describe('FileListItem', () => {
 
     const onDelete = vi.fn()
 
-    render(<FileListItem file={file} onDelete={onDelete} />)
+    render(<FileListItem {...defaultProps} onDelete={onDelete} />)
 
     const deleteButton = screen.getByRole('button', { name: 'Verwijder sample.txt' })
 
@@ -84,7 +89,7 @@ describe('FileListItem', () => {
   })
 
   it('renders an error message when provided', () => {
-    render(<FileListItem file={file} errorMessage="This is an error" />)
+    render(<FileListItem {...defaultProps} errorMessage="This is an error" />)
 
     const errorMessage = screen.getByText('This is an error')
 
@@ -92,10 +97,18 @@ describe('FileListItem', () => {
   })
 
   it('renders a custom delete button label when provided', () => {
-    render(<FileListItem file={file} deleteButtonLabel="Custom Delete" />)
+    render(<FileListItem {...defaultProps} deleteButtonLabel="Custom Delete" />)
 
     const deleteButton = screen.getByRole('button', { name: 'Custom Delete sample.txt' })
 
     expect(deleteButton).toBeInTheDocument()
+  })
+
+  it('adds the provided id to the delete button', () => {
+    render(<FileListItem {...defaultProps} />)
+
+    const deleteButton = screen.getByRole('button', { name: 'Verwijder sample.txt' })
+
+    expect(deleteButton).toHaveAttribute('id', 'test-id')
   })
 })

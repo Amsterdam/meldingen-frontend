@@ -92,6 +92,7 @@
       "button": "Bestanden kiezen",
       "drop-area": "Sleep bestanden in dit vak of"
     },
+    "delete-notification": "{fileName} is verwijderd",
     "submit-button": "Volgende vraag",
     "errors": {
       "too-many-files": "U kunt maximaal {maxFiles} bestanden uploaden."
