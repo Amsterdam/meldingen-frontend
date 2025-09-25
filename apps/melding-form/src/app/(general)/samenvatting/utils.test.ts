@@ -112,18 +112,6 @@ describe('getAdditionalQuestionsSummary', () => {
 
   it('returns an error message when error is returned', async () => {
     server.use(
-      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
-        HttpResponse.json({
-          components: [
-            {
-              key: 'page1',
-              components: [{ question: 35 }, { question: 36 }],
-            },
-          ],
-        }),
-      ),
-    )
-    server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
