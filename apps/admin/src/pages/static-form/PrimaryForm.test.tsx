@@ -6,12 +6,17 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { PrimaryForm } from './PrimaryForm'
 
 describe('PrimaryForm', () => {
-  it('renders all fields and static labels', () => {
+  it('renders all fields and static labels', async () => {
+    const user = userEvent.setup()
+
+    const mockGetValues = vi.fn()
+    const mockSetValue = vi.fn()
+
     const PrimaryFormWithContext = () => {
       const methods = useForm()
 
       return (
-        <FormProvider {...methods}>
+        <FormProvider {...{ ...methods, getValues: mockGetValues, setValue: mockSetValue }}>
           <AdminContext>
             <PrimaryForm />
           </AdminContext>
@@ -30,6 +35,8 @@ describe('PrimaryForm', () => {
     })
     const maxCharCountErrorMessage = screen.getByText('resources.undefined.fields.components[0].validate.json.if[2]')
     const submitButton = screen.getByRole('button', { name: 'ra.action.save' })
+
+    await user.type(maxCharCount, '100')
 
     expect(label).toBeInTheDocument()
     expect(description).toBeInTheDocument()

@@ -4,10 +4,10 @@ import { AdminContext } from 'react-admin'
 import { ContactForm } from './ContactForm'
 
 describe('ContactForm', () => {
-  it('renders all fields and static labels', () => {
+  it('renders all fields and static labels', async () => {
     render(
       <AdminContext>
-        <ContactForm />
+        <ContactForm />,
       </AdminContext>,
     )
 
