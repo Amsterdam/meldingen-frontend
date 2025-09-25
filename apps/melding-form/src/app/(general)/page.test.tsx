@@ -34,7 +34,7 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(screen.getByText('Home Component')).toBeInTheDocument()
-    expect(Home).toHaveBeenCalledWith({ action: expect.any(Function), formComponents: [textAreaComponent] }, {})
+    expect(Home).toHaveBeenCalledWith({ action: expect.any(Function), formComponents: [textAreaComponent] }, undefined)
   })
 
   it('passes postPrimaryForm with the correct bounded args to Home', async () => {
@@ -68,7 +68,7 @@ describe('Page', () => {
 
     expect(Home).toHaveBeenCalledWith(
       { action: expect.any(Function), formComponents: [{ ...textAreaComponent, defaultValue: melding.text }] },
-      {},
+      undefined,
     )
   })
 

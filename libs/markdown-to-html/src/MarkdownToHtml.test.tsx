@@ -128,4 +128,13 @@ describe('MarkdownToHtml', () => {
     expect(separator).not.toBeInTheDocument()
     expect(image).not.toBeInTheDocument()
   })
+
+  it('renders with allowed elements for description', () => {
+    render(<MarkdownToHtml type="description">This is a paragraph.</MarkdownToHtml>)
+
+    const paragraph = screen.getByText('This is a paragraph.')
+
+    expect(paragraph).toBeInTheDocument()
+    expect(paragraph).toHaveClass('ams-paragraph ams-paragraph--small')
+  })
 })

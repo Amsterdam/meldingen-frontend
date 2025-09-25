@@ -94,7 +94,7 @@ describe('Page', () => {
         },
         primaryForm: primaryForm,
       },
-      {},
+      undefined,
     )
   })
 

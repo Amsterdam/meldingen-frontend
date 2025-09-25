@@ -14,6 +14,7 @@ export { UnorderedList } from '@amsterdam/design-system-react/dist/UnorderedList
 
 export { FieldSet } from './FieldSet/FieldSet'
 export { FileUpload } from './FileUpload/FileUpload'
+export { FileList } from './FileList/FileList'
 export { Footer } from './Footer/Footer'
 export { Header } from './Header'
 export { ListBox } from './ListBox/ListBox'

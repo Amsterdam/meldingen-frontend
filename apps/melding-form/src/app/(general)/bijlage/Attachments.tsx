@@ -1,9 +1,9 @@
 'use client'
 
-import { ErrorMessage, Field, FileList } from '@amsterdam/design-system-react'
+import { ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useRef, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 import type { ChangeEvent } from 'react'
 
 import {
@@ -12,7 +12,7 @@ import {
 } from '@meldingen/api-client'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { FileUpload, Heading, SubmitButton } from '@meldingen/ui'
+import { Column, FileList, FileUpload, Heading, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
 import { BackLink } from '../_components/BackLink/BackLink'
@@ -36,7 +36,6 @@ export type UploadedFiles = { file: File; id: number }
 const initialState: Pick<FormState, 'systemError'> = {}
 
 export const Attachments = ({ formData, meldingId, token }: Props) => {
-  const formRef = useRef<HTMLFormElement>(null)
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
   const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
@@ -76,9 +75,6 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
     } catch (error) {
       setErrorMessage((error as Error).message)
     }
-    // A file input in a form by default sends the files to the Next backend on submit.
-    // We do not want to do this since we're sending them directly from the client.
-    formRef.current?.reset()
   }
 
   const removeFile = async (attachmentId: number) => {
@@ -116,8 +112,9 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
       <main>
         {Boolean(systemError) && <SystemErrorAlert />}
         <FormHeader title={t('title')} step={t('step')} />
-        <Form action={formAction} noValidate ref={formRef}>
-          <Field invalid={Boolean(errorMessage)} className="ams-mb-m">
+
+        <Column>
+          <Column gap="small">
             <Heading id="file-upload-label" level={1} size="level-4">
               {label} <span className={styles.hint}>{t('hint-text')}</span>
             </Heading>
@@ -126,38 +123,40 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
                 {description}
               </MarkdownToHtml>
             )}
-
             {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
+          </Column>
 
-            <FileUpload
-              accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
-              aria-describedby={
-                description || errorMessage
-                  ? `${description ? 'file-upload-description' : ''} ${errorMessage ? 'error-message' : ''}`
-                  : undefined
-              }
-              aria-labelledby="file-upload-label file-upload"
-              buttonText={t('file-upload.button')}
-              dropAreaText={t('file-upload.drop-area')}
-              id="file-upload"
-              multiple
-              onChange={handleChange}
-            />
+          <Paragraph aria-live="polite">
+            {t('status', { fileCount: uploadedFiles.length, maxFiles: MAX_FILES })}
+          </Paragraph>
 
-            {uploadedFiles.length > 0 && (
-              <FileList className={styles.fileList}>
-                {uploadedFiles.map((attachment) => (
-                  <FileList.Item
-                    key={attachment.id}
-                    file={attachment.file}
-                    onDelete={() => removeFile(attachment.id)}
-                  />
-                ))}
-              </FileList>
-            )}
-          </Field>
-          <SubmitButton>{t('submit-button')}</SubmitButton>
-        </Form>
+          <FileUpload
+            accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
+            aria-describedby={
+              description || errorMessage
+                ? `${description ? 'file-upload-description' : ''} ${errorMessage ? 'error-message' : ''}`
+                : undefined
+            }
+            aria-labelledby="file-upload-label file-upload"
+            buttonText={t('file-upload.button')}
+            dropAreaText={t('file-upload.drop-area')}
+            id="file-upload"
+            multiple
+            onChange={handleChange}
+          />
+
+          {uploadedFiles.length > 0 && (
+            <FileList>
+              {uploadedFiles.map((attachment) => (
+                <FileList.Item key={attachment.id} file={attachment.file} onDelete={() => removeFile(attachment.id)} />
+              ))}
+            </FileList>
+          )}
+
+          <Form action={formAction}>
+            <SubmitButton>{t('submit-button')}</SubmitButton>
+          </Form>
+        </Column>
       </main>
     </>
   )

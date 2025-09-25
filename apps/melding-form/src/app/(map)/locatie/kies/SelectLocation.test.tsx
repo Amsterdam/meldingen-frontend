@@ -1,6 +1,8 @@
 import { AlertProps } from '@amsterdam/design-system-react'
+import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Mock } from 'vitest'
 
 import { SelectLocation } from './SelectLocation'
 
@@ -39,9 +41,9 @@ vi.mock('./_components/Map/Map', () => ({
   Map: vi.fn(),
 }))
 
-Object.defineProperty(window, 'matchMedia', {
-  value: vi.fn().mockImplementation(() => ({})),
-})
+vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
+  default: vi.fn(),
+}))
 
 describe('SelectLocation', () => {
   it('should render', () => {
@@ -59,9 +61,7 @@ describe('SelectLocation', () => {
   })
 
   it('adds a class name to the asset list container when showAssetList is true', async () => {
-    vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
-      default: vi.fn().mockReturnValueOnce(true),
-    }))
+    ;(useIsAfterBreakpoint as Mock).mockImplementationOnce(() => true)
 
     const { container } = render(<SelectLocation />)
 
