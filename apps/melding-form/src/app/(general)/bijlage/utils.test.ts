@@ -1,25 +1,18 @@
 import { startUpload, UploadFile } from './utils'
 
-const createXhrMock = ({
-  status = 200,
-  response = '{}',
-  upload = {} as XMLHttpRequestUpload,
-  send = vi.fn(),
-} = {}): Partial<XMLHttpRequest> => ({
-  status,
-  response,
-  upload,
-  send,
-  onload: null,
-  onerror: null,
-})
+const xhrMock = {
+  status: 200,
+  response: JSON.stringify({ id: 123 }),
+  upload: {} as XMLHttpRequestUpload,
+  send: vi.fn(),
+} as unknown as XMLHttpRequest
 
 const uploadFile: UploadFile = {
   file: new File(['content'], 'test.txt'),
   id: 'abc',
   progress: 0,
   status: 'pending',
-  xhr: createXhrMock() as XMLHttpRequest,
+  xhr: xhrMock,
 }
 
 const otherFile: UploadFile = {
@@ -30,7 +23,6 @@ const otherFile: UploadFile = {
 describe('startUpload', () => {
   it("sets status to 'success' and updates serverId on 200", () => {
     const setFilesMock = vi.fn()
-    const xhrMock = createXhrMock({ response: JSON.stringify({ id: 123 }) }) as XMLHttpRequest
 
     startUpload(xhrMock, uploadFile, setFilesMock)
 
@@ -48,7 +40,12 @@ describe('startUpload', () => {
 
   it("sets status to 'error' on load with non-200", () => {
     const setFilesMock = vi.fn()
-    const xhrMock = createXhrMock({ status: 500, response: JSON.stringify({ detail: 'Test error' }) }) as XMLHttpRequest
+    const xhrMock = {
+      status: 500,
+      response: JSON.stringify({ detail: 'Test error' }),
+      upload: {} as XMLHttpRequestUpload,
+      send: vi.fn(),
+    } as unknown as XMLHttpRequest
 
     startUpload(xhrMock, uploadFile, setFilesMock)
 
@@ -66,7 +63,6 @@ describe('startUpload', () => {
 
   it('updates progress on upload progress event', () => {
     const setFilesMock = vi.fn()
-    const xhrMock = createXhrMock() as XMLHttpRequest
 
     startUpload(xhrMock, uploadFile, setFilesMock)
 
@@ -87,7 +83,6 @@ describe('startUpload', () => {
 
   it("sets status to 'error' on network error", () => {
     const setFilesMock = vi.fn()
-    const xhrMock = createXhrMock() as XMLHttpRequest
 
     startUpload(xhrMock, uploadFile, setFilesMock)
 
@@ -105,7 +100,6 @@ describe('startUpload', () => {
 
   it('returns the original file object if id does not match on load', () => {
     const setFilesMock = vi.fn()
-    const xhrMock = createXhrMock() as XMLHttpRequest
 
     startUpload(xhrMock, uploadFile, setFilesMock)
 
@@ -120,7 +114,6 @@ describe('startUpload', () => {
 
   it('returns the original file object if id does not match on progress', () => {
     const setFilesMock = vi.fn()
-    const xhrMock = createXhrMock() as XMLHttpRequest
 
     startUpload(xhrMock, uploadFile, setFilesMock)
 
@@ -138,7 +131,6 @@ describe('startUpload', () => {
 
   it('returns the original file object if id does not match on error', () => {
     const setFilesMock = vi.fn()
-    const xhrMock = createXhrMock() as XMLHttpRequest
 
     startUpload(xhrMock, uploadFile, setFilesMock)
 
