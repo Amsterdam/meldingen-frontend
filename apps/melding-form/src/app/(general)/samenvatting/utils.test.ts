@@ -170,6 +170,17 @@ describe('getAdditionalQuestionsSummary', () => {
 
     await expect(testFunction).rejects.toThrowError('Failed to fetch form by classification.')
   })
+
+  it("returns an empty array when the error is 'Not Found'", async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({ detail: 'Not Found' }, { status: 500 }),
+      ),
+    )
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
+
+    expect(result).toEqual({ data: [] })
+  })
 })
 
 describe('getAttachmentSummary', () => {
