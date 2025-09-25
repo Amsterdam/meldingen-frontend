@@ -13,7 +13,7 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Column, FileList, FileUpload, Heading, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
-import type { UploadFile } from './utils'
+import type { FileUpload as FileUploadType } from './utils'
 import { startUpload } from './utils'
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
@@ -33,7 +33,7 @@ type Props = {
 
 const initialState: Pick<FormState, 'systemError'> = {}
 
-const createUploadFiles = (newFiles: File[]): UploadFile[] =>
+const createFileUploads = (newFiles: File[]): FileUploadType[] =>
   newFiles.map((file) => ({
     file,
     id: crypto.randomUUID(),
@@ -45,7 +45,7 @@ const createUploadFiles = (newFiles: File[]): UploadFile[] =>
 export const Attachments = ({ formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const [files, setFiles] = useState<UploadFile[]>([])
+  const [fileUploads, setFileUploads] = useState<FileUploadType[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
 
   const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
@@ -61,21 +61,21 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
     const newFiles = Array.from(event.currentTarget.files)
 
-    // TODO: should files.length be the length of successfully uploaded files?
-    if (newFiles.length + files.length > MAX_FILES) {
+    // TODO: should fileUploads.length be the length of successfully uploaded files?
+    if (newFiles.length + fileUploads.length > MAX_FILES) {
       setErrorMessage(t('errors.too-many-files', { maxFiles: MAX_FILES }))
       return
     }
 
-    const uploadFiles = createUploadFiles(newFiles)
+    const newFileUploads = createFileUploads(newFiles)
 
-    setFiles((prev) => [...prev, ...uploadFiles])
+    setFileUploads((prev) => [...prev, ...newFileUploads])
 
-    uploadFiles.forEach((file) => {
-      const xhr = file.xhr
+    newFileUploads.forEach((upload) => {
+      const xhr = upload.xhr
       xhr.open('POST', `http://localhost:8000/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`)
 
-      startUpload(xhr, file, setFiles)
+      startUpload(xhr, upload, setFileUploads)
     })
 
     // Clear the file input after starting the upload, so it is empty for the next selection.
@@ -90,14 +90,14 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
     // Abort upload if in progress
     if (xhr.readyState !== XMLHttpRequest.DONE) {
       xhr.abort()
-      setFiles((files) => files.filter((file) => file.id !== id))
+      setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.id !== id))
       return
     }
 
-    // If the file does not have a server id (because the server returned an error for example)
+    // If the file upload does not have a server id (because the server returned an error for example)
     // simply remove it from the list
     if (!serverId) {
-      setFiles((files) => files.filter((file) => file.id !== id))
+      setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.id !== id))
       return
     }
 
@@ -114,7 +114,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
       return
     }
 
-    setFiles((files) => files.filter((file) => file.serverId !== serverId))
+    setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.serverId !== serverId))
   }
 
   useEffect(() => {
@@ -148,7 +148,10 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
           </Column>
 
           <Paragraph aria-live="polite">
-            {t('status', { fileCount: files.filter((file) => file.status === 'success').length, maxFiles: MAX_FILES })}
+            {t('status', {
+              fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
+              maxFiles: MAX_FILES,
+            })}
           </Paragraph>
 
           <FileUpload
@@ -163,9 +166,9 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
             ref={inputRef}
           />
 
-          {files.length > 0 && (
+          {fileUploads.length > 0 && (
             <FileList>
-              {files.map(({ error, file, id, serverId, status, xhr }) => (
+              {fileUploads.map(({ error, file, id, serverId, status, xhr }) => (
                 <FileList.Item
                   key={id}
                   file={file}

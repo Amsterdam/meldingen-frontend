@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react'
 
-export type UploadFile = {
+export type FileUpload = {
   error?: string
   file: File
   id: string
@@ -14,43 +14,47 @@ export type UploadFile = {
 // because fetch does not allow you to track the upload progress.
 export const startUpload = (
   xhr: XMLHttpRequest,
-  uploadFile: UploadFile,
-  setFiles: Dispatch<SetStateAction<UploadFile[]>>,
+  fileUpload: FileUpload,
+  setFileUploads: Dispatch<SetStateAction<FileUpload[]>>,
 ) => {
   xhr.upload.onprogress = (event) => {
     if (event.lengthComputable) {
-      setFiles((prev) =>
-        prev.map((file) =>
-          file.id === uploadFile.id ? { ...file, progress: (event.loaded / event.total) * 100 } : file,
+      setFileUploads((prev) =>
+        prev.map((upload) =>
+          upload.id === fileUpload.id ? { ...upload, progress: (event.loaded / event.total) * 100 } : upload,
         ),
       )
     }
   }
 
   xhr.onload = () => {
-    setFiles((prev) =>
-      prev.map((file) =>
-        file.id === uploadFile.id
+    setFileUploads((prev) =>
+      prev.map((upload) =>
+        upload.id === fileUpload.id
           ? {
-              ...file,
+              ...upload,
               serverId: xhr.response && JSON.parse(xhr.response)?.id,
               status: xhr.status === 200 ? 'success' : 'error',
               error: xhr.status !== 200 ? xhr.response && JSON.parse(xhr.response)?.detail : undefined,
             }
-          : file,
+          : upload,
       ),
     )
   }
 
   xhr.onerror = () => {
-    setFiles((prev) =>
-      prev.map((file) => (file.id === uploadFile.id ? { ...file, status: 'error', error: 'Network error' } : file)),
+    setFileUploads((prev) =>
+      prev.map((upload) =>
+        upload.id === fileUpload.id ? { ...upload, status: 'error', error: 'Network error' } : upload,
+      ),
     )
   }
 
-  setFiles((prev) => prev.map((file) => (file.id === uploadFile.id ? { ...file, status: 'uploading' } : file)))
+  setFileUploads((prev) =>
+    prev.map((upload) => (upload.id === fileUpload.id ? { ...upload, status: 'uploading' } : upload)),
+  )
 
   const formData = new FormData()
-  formData.append('file', uploadFile.file)
+  formData.append('file', fileUpload.file)
   xhr.send(formData)
 }

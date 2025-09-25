@@ -86,9 +86,11 @@ describe('Attachments', () => {
   it('shows an error when startUpload sets status to error', async () => {
     const user = userEvent.setup()
 
-    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, uploadFile, setFiles) => {
-      setFiles((prev) =>
-        prev.map((file) => (file.id === uploadFile.id ? { ...file, status: 'error', error: 'Upload failed' } : file)),
+    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+      setFileUploads((prev) =>
+        prev.map((upload) =>
+          upload.id === fileUpload.id ? { ...upload, status: 'error', error: 'Upload failed' } : upload,
+        ),
       )
     })
 
@@ -108,10 +110,10 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
 
-    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, uploadFile, setFiles) => {
-      setFiles((prev) =>
-        prev.map((file) =>
-          file.id === uploadFile.id ? { ...file, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : file,
+    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+      setFileUploads((prev) =>
+        prev.map((upload) =>
+          upload.id === fileUpload.id ? { ...upload, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : upload,
         ),
       )
     })
@@ -144,10 +146,10 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.OPENED, abort: abortMock }
 
-    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, uploadFile, setFiles) => {
-      setFiles((prev) =>
-        prev.map((file) =>
-          file.id === uploadFile.id ? { ...file, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : file,
+    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+      setFileUploads((prev) =>
+        prev.map((upload) =>
+          upload.id === fileUpload.id ? { ...upload, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : upload,
         ),
       )
     })
@@ -179,10 +181,10 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
 
-    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, uploadFile, setFiles) => {
-      setFiles((prev) =>
-        prev.map((file) =>
-          file.id === uploadFile.id ? { ...file, xhr: xhrMock as XMLHttpRequest, serverId: undefined } : file,
+    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+      setFileUploads((prev) =>
+        prev.map((upload) =>
+          upload.id === fileUpload.id ? { ...upload, xhr: xhrMock as XMLHttpRequest, serverId: undefined } : upload,
         ),
       )
     })
@@ -220,10 +222,10 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
 
-    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, uploadFile, setFiles) => {
-      setFiles((prev) =>
-        prev.map((file) =>
-          file.id === uploadFile.id ? { ...file, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : file,
+    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+      setFileUploads((prev) =>
+        prev.map((upload) =>
+          upload.id === fileUpload.id ? { ...upload, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : upload,
         ),
       )
     })
