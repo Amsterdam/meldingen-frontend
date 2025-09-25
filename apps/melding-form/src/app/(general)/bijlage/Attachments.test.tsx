@@ -25,6 +25,8 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
+window.crypto.randomUUID = vi.fn(() => 'test-id') as unknown as typeof window.crypto.randomUUID
+
 global.URL.createObjectURL = vi.fn()
 global.URL.revokeObjectURL = vi.fn()
 
@@ -88,7 +90,7 @@ describe('Attachments', () => {
     expect(fileList).not.toBeInTheDocument()
   })
 
-  it('shows an error when startUpload sets status to error', async () => {
+  it('renders an Invalid Form Alert when an upload has an error', async () => {
     const user = userEvent.setup()
 
     ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
@@ -105,7 +107,58 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [mockFile])
 
-    expect(screen.getByText('Upload failed')).toBeInTheDocument()
+    const link = screen.getByRole('link', { name: 'Upload failed' })
+
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '#test-id')
+  })
+
+  it('renders an empty error message when an upload has an error without a message', async () => {
+    const user = userEvent.setup()
+
+    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+      setFileUploads((prev: FileUpload[]) =>
+        prev.map((upload) => (upload.id === fileUpload.id ? { ...upload, status: 'error' } : upload)),
+      )
+    })
+
+    render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+
+    await user.upload(fileInput, [mockFile])
+
+    const link = screen.getByRole('link', { name: '' })
+
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '#test-id')
+  })
+
+  it('renders an empty aria-live region when no file is deleted', () => {
+    render(<Attachments {...defaultProps} />)
+
+    const liveRegion = document.querySelector('[aria-live="polite"]')
+
+    expect(liveRegion).toBeInTheDocument()
+    expect(liveRegion).toBeEmptyDOMElement()
+  })
+
+  it('renders an aria-live region with a notification when a file is deleted', async () => {
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+
+    await user.upload(fileInput, [mockFile])
+
+    const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFile.name}` })
+
+    await user.click(deleteButton)
+
+    const liveRegion = screen.getByText('delete-notification', { selector: 'div' })
+
+    expect(liveRegion).toBeInTheDocument()
   })
 
   it('deletes a succesfully uploaded file with the delete button', async () => {

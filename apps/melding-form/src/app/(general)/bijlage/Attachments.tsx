@@ -214,7 +214,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
           )}
 
           <div className="ams-visually-hidden" aria-live="polite">
-            {deletedFileName ? t('delete-notification', { fileName: deletedFileName || '' }) : ''}
+            {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
           </div>
 
           <Form action={formAction}>
