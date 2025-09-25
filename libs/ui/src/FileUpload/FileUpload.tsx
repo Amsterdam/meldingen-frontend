@@ -1,7 +1,7 @@
 'use client'
 
 import { clsx } from 'clsx'
-import { DragEvent, InputHTMLAttributes, useRef } from 'react'
+import { DragEvent, ForwardedRef, forwardRef, InputHTMLAttributes, useImperativeHandle, useRef } from 'react'
 
 import styles from './FileUpload.module.css'
 
@@ -27,62 +27,71 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
   dropAreaText?: string
 }
 
-export const FileUpload = ({
-  'aria-describedby': ariaDescribedBy,
-  'aria-labelledby': ariaLabelledBy,
-  buttonText = 'Bestanden kiezen',
-  className,
-  dropAreaText = 'Sleep bestanden in dit vak of',
-  id,
-  ...restProps
-}: Props) => {
-  const fileInputRef = useRef<HTMLInputElement>(null)
+export const FileUpload = forwardRef(
+  (
+    {
+      'aria-describedby': ariaDescribedBy,
+      'aria-labelledby': ariaLabelledBy,
+      buttonText = 'Bestanden kiezen',
+      className,
+      dropAreaText = 'Sleep bestanden in dit vak of',
+      id,
+      ...restProps
+    }: Props,
+    ref: ForwardedRef<HTMLInputElement>,
+  ) => {
+    const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click()
+    // use a passed ref if it's there, otherwise use fileInputRef
+    useImperativeHandle(ref, () => fileInputRef.current as HTMLInputElement)
+
+    const handleClick = () => {
+      if (fileInputRef.current) {
+        fileInputRef.current.click()
+      }
     }
-  }
 
-  const handleDrop = (event: DragEvent<HTMLButtonElement>) => {
-    event.preventDefault()
+    const handleDrop = (event: DragEvent<HTMLButtonElement>) => {
+      event.preventDefault()
 
-    if (fileInputRef.current && event.dataTransfer && isContainingFiles(event.dataTransfer)) {
-      fileInputRef.current.files = event.dataTransfer.files
+      if (fileInputRef.current && event.dataTransfer && isContainingFiles(event.dataTransfer)) {
+        fileInputRef.current.files = event.dataTransfer.files
 
-      // Trigger change event of file input
-      const changeEvent = new Event('change', { bubbles: true })
-      fileInputRef.current.dispatchEvent(changeEvent)
+        // Trigger change event of file input
+        const changeEvent = new Event('change', { bubbles: true })
+        fileInputRef.current.dispatchEvent(changeEvent)
+      }
     }
-  }
 
-  const handleDragOver = (event: DragEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-  }
+    const handleDragOver = (event: DragEvent<HTMLButtonElement>) => {
+      event.preventDefault()
+    }
 
-  return (
-    <>
-      <button
-        aria-describedby={ariaDescribedBy}
-        aria-labelledby={ariaLabelledBy}
-        className={clsx(styles.upload, className)}
-        id={id}
-        type="button"
-        onClick={handleClick}
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-      >
-        <span className={styles.dropAreaText}>{dropAreaText}</span> <span className={styles.button}>{buttonText}</span>
-      </button>
-      <input
-        {...restProps}
-        aria-hidden="true"
-        aria-label="File input"
-        hidden
-        ref={fileInputRef}
-        tabIndex={-1}
-        type="file"
-      />
-    </>
-  )
-}
+    return (
+      <>
+        <button
+          aria-describedby={ariaDescribedBy}
+          aria-labelledby={ariaLabelledBy}
+          className={clsx(styles.upload, className)}
+          id={id}
+          type="button"
+          onClick={handleClick}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
+          <span className={styles.dropAreaText}>{dropAreaText}</span>{' '}
+          <span className={styles.button}>{buttonText}</span>
+        </button>
+        <input
+          {...restProps}
+          aria-hidden="true"
+          aria-label="File input"
+          hidden
+          ref={fileInputRef}
+          tabIndex={-1}
+          type="file"
+        />
+      </>
+    )
+  },
+)
