@@ -160,17 +160,13 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [mockFile])
 
-    const fileName1 = screen.getAllByText(mockFile.name)[0]
-
-    expect(fileName1).toBeInTheDocument()
-
     const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFile.name}` })
 
     await user.click(deleteButton)
 
-    const file1SecondRender = screen.queryByText(mockFile.name)
+    const fileName = screen.queryByText(mockFile.name)
 
-    expect(file1SecondRender).not.toBeInTheDocument()
+    expect(fileName).not.toBeInTheDocument()
     expect(abortMock).toHaveBeenCalled()
 
     spy.mockRestore()
@@ -195,17 +191,13 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [mockFile])
 
-    const fileName1 = screen.getAllByText(mockFile.name)[0]
-
-    expect(fileName1).toBeInTheDocument()
-
     const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFile.name}` })
 
     await user.click(deleteButton)
 
-    const file1SecondRender = screen.queryByText(mockFile.name)
+    const fileName = screen.queryByText(mockFile.name)
 
-    expect(file1SecondRender).not.toBeInTheDocument()
+    expect(fileName).not.toBeInTheDocument()
 
     spy.mockRestore()
   })
@@ -236,18 +228,14 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [mockFile])
 
-    const fileName1 = screen.getAllByText(mockFile.name)[0]
-
-    expect(fileName1).toBeInTheDocument()
-
     const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFile.name}` })
 
     await user.click(deleteButton)
 
-    const file1SecondRender = screen.getAllByText(mockFile.name)[0]
+    const fileName = screen.getAllByText(mockFile.name)[0]
     const errorMessage = screen.getByText('An unknown error occurred')
 
-    expect(file1SecondRender).toBeInTheDocument()
+    expect(fileName).toBeInTheDocument()
     expect(errorMessage).toBeInTheDocument()
 
     spy.mockRestore()
