@@ -1,4 +1,4 @@
-import { startUpload } from './utils'
+import { safeJSONParse, startUpload } from './utils'
 import type { FileUpload } from './utils'
 
 const xhrMock = {
@@ -20,6 +20,20 @@ const otherFileUpload: FileUpload = {
   ...fileUpload,
   id: 'other',
 }
+
+describe('safeJSONParse', () => {
+  it('returns undefined for undefined input', () => {
+    expect(safeJSONParse()).toBeUndefined()
+  })
+
+  it('returns undefined for invalid JSON', () => {
+    expect(safeJSONParse('invalid')).toBeUndefined()
+  })
+
+  it('parses valid JSON', () => {
+    expect(safeJSONParse('{"key":"value"}')).toEqual({ key: 'value' })
+  })
+})
 
 describe('startUpload', () => {
   it("sets status to 'success' and updates serverId on 200", () => {

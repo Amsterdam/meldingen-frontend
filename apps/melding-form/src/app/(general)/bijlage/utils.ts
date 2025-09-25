@@ -1,5 +1,15 @@
 import { Dispatch, SetStateAction } from 'react'
 
+export const safeJSONParse = (jsonString?: string) => {
+  if (!jsonString) return undefined
+
+  try {
+    return JSON.parse(jsonString)
+  } catch {
+    return undefined
+  }
+}
+
 export type FileUpload = {
   error?: string
   file: File
@@ -33,9 +43,9 @@ export const startUpload = (
         upload.id === fileUpload.id
           ? {
               ...upload,
-              serverId: xhr.response && JSON.parse(xhr.response)?.id,
+              serverId: safeJSONParse(xhr.response)?.id,
               status: xhr.status === 200 ? 'success' : 'error',
-              error: xhr.status !== 200 ? xhr.response && JSON.parse(xhr.response)?.detail : undefined,
+              error: xhr.status !== 200 ? safeJSONParse(xhr.response)?.detail : undefined,
             }
           : upload,
       ),
