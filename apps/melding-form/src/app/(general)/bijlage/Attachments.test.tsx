@@ -139,7 +139,7 @@ describe('Attachments', () => {
     spy.mockRestore()
   })
 
-  it('deletes a pending upload and removes it from the file list with the delete button', async () => {
+  it('cancels an in-progress upload and removes it from the file list with the delete button', async () => {
     const user = userEvent.setup()
 
     const abortMock = vi.fn()
