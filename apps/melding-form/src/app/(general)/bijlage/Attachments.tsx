@@ -73,7 +73,10 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
     newFileUploads.forEach((upload) => {
       const xhr = upload.xhr
-      xhr.open('POST', `http://localhost:8000/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`)
+      xhr.open(
+        'POST',
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`,
+      )
 
       startUpload(xhr, upload, setFileUploads)
     })
