@@ -115,6 +115,11 @@ export const Map = ({
 
   // Add marker to map based on coordinates
   useEffect(() => {
+    if (!coordinates) {
+      pointerMarkerRef.current?.remove()
+      return
+    }
+
     if (mapInstance && coordinates) {
       // Remove existing marker layer
       pointerMarkerRef.current?.remove()

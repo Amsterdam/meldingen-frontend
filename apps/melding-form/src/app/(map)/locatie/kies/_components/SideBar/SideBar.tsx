@@ -15,7 +15,7 @@ import styles from './SideBar.module.css'
 
 export type Props = {
   coordinates?: Coordinates
-  setCoordinates: (coordinates: Coordinates) => void
+  setCoordinates: (coordinates?: Coordinates) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
