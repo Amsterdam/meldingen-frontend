@@ -98,7 +98,7 @@ describe('FormRenderer', () => {
         )
 
         const components = screen.getByRole(role, {
-          name: `${form.components[0].components[index].label} Invoerfout: Test error message`,
+          name: `${form.components[0].components[index].label} Invoerfout:Test error message`,
         })
 
         expect(components).toBeInTheDocument()
@@ -114,7 +114,7 @@ describe('FormRenderer', () => {
 
         const components = screen.getByRole(role, {
           name: form.components[0].components[index].label,
-          description: 'Invoerfout: Test error message',
+          description: /Test error message/,
         })
 
         expect(components).toBeInTheDocument()

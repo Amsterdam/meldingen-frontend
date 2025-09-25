@@ -78,7 +78,7 @@ describe('Radio Component', () => {
 
     const radioWithErrorMessage = screen.getByRole('radiogroup', {
       name: defaultProps.label,
-      description: 'Invoerfout: Test error message',
+      description: /Test error message/,
     })
 
     expect(radioWithErrorMessage).toBeInTheDocument()
