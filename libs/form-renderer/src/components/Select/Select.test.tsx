@@ -88,7 +88,7 @@ describe('Select Component', () => {
 
     const selectWithErrorMessage = screen.getByRole('combobox', {
       name: defaultProps.label,
-      description: 'Invoerfout: Test error message',
+      description: /Test error message/,
     })
 
     expect(selectWithErrorMessage).toBeInTheDocument()

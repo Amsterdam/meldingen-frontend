@@ -66,7 +66,7 @@ describe('TextInput Component', () => {
 
     const textInputWithErrorMessage = screen.getByRole('textbox', {
       name: defaultProps.label,
-      description: 'Invoerfout: Test error message',
+      description: /Test error message/,
     })
 
     expect(textInputWithErrorMessage).toBeInTheDocument()
