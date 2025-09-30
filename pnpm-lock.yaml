@@ -121,8 +121,8 @@ importers:
         specifier: 2.11.3
         version: 2.11.3(@types/node@24.5.2)(typescript@5.9.2)
       npm-check-updates:
-        specifier: 18.1.0
-        version: 18.1.0
+        specifier: 19.0.0
+        version: 19.0.0
       prettier:
         specifier: 3.6.2
         version: 3.6.2
@@ -3409,9 +3409,9 @@ packages:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
 
-  npm-check-updates@18.1.0:
-    resolution: {integrity: sha512-1TQ6fO4HxVW4K/TWUPOa1KRbaL0Y9+CgDJeTkrA3c4YFgaW8uoxllCKlm4OM/28C9E9NR3MlkxtcFs0Z1VaCPg==}
-    engines: {node: ^18.18.0 || >=20.0.0, npm: '>=8.12.1'}
+  npm-check-updates@19.0.0:
+    resolution: {integrity: sha512-qcfjZEv6xB+WvW24S8wU1MKISPPiTREraBg62XDo/7zmOLXH3Zj7ti2v/LRfks0qITU8SDZLTWwgIitflvursw==}
+    engines: {node: '>=20.0.0', npm: '>=8.12.1'}
     hasBin: true
 
   nwsapi@2.2.20:
@@ -8235,7 +8235,7 @@ snapshots:
 
   normalize-path@3.0.0: {}
 
-  npm-check-updates@18.1.0: {}
+  npm-check-updates@19.0.0: {}
 
   nwsapi@2.2.20: {}
 
