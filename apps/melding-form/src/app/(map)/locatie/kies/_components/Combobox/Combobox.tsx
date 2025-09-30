@@ -132,12 +132,7 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
         value={query}
         className={styles.combobox}
       >
-        <ComboboxInput
-          as={TextInput}
-          autoComplete="off"
-          name="address"
-          onChange={handleInputChange}
-        />
+        <ComboboxInput as={TextInput} autoComplete="off" name="address" onChange={handleInputChange} />
 
         {showListBox && (
           <ComboboxOptions as={ListBox} className={styles.comboboxOptions} modal={false}>
