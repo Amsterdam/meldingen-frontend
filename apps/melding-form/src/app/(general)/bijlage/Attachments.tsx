@@ -219,11 +219,8 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
             </div>
           </Column>
 
-          <Alert className={styles.noJavaScriptAlert} heading="Let op" headingLevel={2}>
-            <Paragraph>
-              Voor deze functionaliteit is JavaScript vereist. Zet JavaScript aan in uw browserinstellingen of herlaad
-              de pagina.
-            </Paragraph>
+          <Alert className={styles.noJavaScriptAlert} heading={t('no-js-alert-title')} headingLevel={2}>
+            <Paragraph>{t('no-js-alert-description')}</Paragraph>
           </Alert>
 
           <Form action={formAction}>
