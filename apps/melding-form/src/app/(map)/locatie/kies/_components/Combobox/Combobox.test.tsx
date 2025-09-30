@@ -46,7 +46,7 @@ describe('Combobox', () => {
     await user.type(input, 'aa')
 
     await waitFor(() => {
-      const listBox = screen.queryByRole('listbox.option')
+      const listBox = screen.queryByRole('listbox')
       expect(listBox).not.toBeInTheDocument()
     })
   })

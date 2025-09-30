@@ -89,7 +89,7 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
     }
   })
 
-  const onAddressSelect = (value: PDOKItem | string | null) => {
+  const handleAddressSelect = (value: PDOKItem | string | null) => {
     if (typeof value === 'string' || value === null) {
       setQuery(value ?? '')
     } else {
@@ -105,7 +105,7 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
     }
   }
 
-  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === '') {
       setAddressList([])
       setCoordinates(undefined)
@@ -128,11 +128,16 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
         // Setting the address as key makes sure it does.
         key={address}
         as="div"
-        onChange={onAddressSelect}
+        onChange={handleAddressSelect}
         value={query}
         className={styles.combobox}
       >
-        <ComboboxInput as={TextInput} autoComplete="off" name="address" onChange={(event) => onInputChange(event)} />
+        <ComboboxInput
+          as={TextInput}
+          autoComplete="off"
+          name="address"
+          onChange={(event) => handleInputChange(event)}
+        />
 
         {showListBox && (
           <ComboboxOptions as={ListBox} className={styles.comboboxOptions} modal={false}>
