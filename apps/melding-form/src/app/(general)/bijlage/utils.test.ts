@@ -21,6 +21,8 @@ const otherFileUpload: FileUpload = {
   id: 'other',
 }
 
+const setFileUploadsMock = vi.fn()
+
 describe('safeJSONParse', () => {
   it('returns undefined for undefined input', () => {
     expect(safeJSONParse()).toBeUndefined()
@@ -37,8 +39,6 @@ describe('safeJSONParse', () => {
 
 describe('startUpload', () => {
   it("sets status to 'success' and updates serverId on 200", () => {
-    const setFileUploadsMock = vi.fn()
-
     startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     // Simulate onload event
@@ -54,7 +54,6 @@ describe('startUpload', () => {
   })
 
   it("sets status to 'error' on load with non-200", () => {
-    const setFileUploadsMock = vi.fn()
     const xhrMock = {
       status: 500,
       response: JSON.stringify({ detail: 'Test error' }),
@@ -77,8 +76,6 @@ describe('startUpload', () => {
   })
 
   it('updates progress on upload progress event', () => {
-    const setFileUploadsMock = vi.fn()
-
     startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     const event = { lengthComputable: true, loaded: 50, total: 100 } as ProgressEvent<EventTarget>
@@ -97,8 +94,6 @@ describe('startUpload', () => {
   })
 
   it("sets status to 'error' on network error", () => {
-    const setFileUploadsMock = vi.fn()
-
     startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     // Simulate onerror event
@@ -114,8 +109,6 @@ describe('startUpload', () => {
   })
 
   it('returns the original file object if id does not match on load', () => {
-    const setFileUploadsMock = vi.fn()
-
     startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     // Simulate onload event
@@ -128,8 +121,6 @@ describe('startUpload', () => {
   })
 
   it('returns the original file object if id does not match on progress', () => {
-    const setFileUploadsMock = vi.fn()
-
     startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     const event = { lengthComputable: true, loaded: 50, total: 100 } as ProgressEvent<EventTarget>
@@ -145,8 +136,6 @@ describe('startUpload', () => {
   })
 
   it('returns the original file object if id does not match on error', () => {
-    const setFileUploadsMock = vi.fn()
-
     startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     // Simulate onerror event
