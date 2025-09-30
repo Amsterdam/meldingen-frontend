@@ -9,7 +9,7 @@ import {
   Label as HUILabel,
 } from '@headlessui/react'
 import { useTranslations } from 'next-intl'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 import { ListBox, TextInput } from '@meldingen/ui'
@@ -36,7 +36,7 @@ export type Props = {
   address: string
   errorMessage?: string
   setAddress: (address: string) => void
-  setCoordinates: (coordinates: Coordinates) => void
+  setCoordinates: (coordinates?: Coordinates) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
@@ -76,32 +76,44 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
           )
 
           setAddressList(responseList)
-          setShowListBox(true)
         }
+        setShowListBox(true)
       } catch (error) {
         // TODO: do we want to show a message to the user here?
         // eslint-disable-next-line no-console
         console.error(error)
       }
     } else {
-      setAddressList([])
       setShowListBox(false)
+      setAddressList([])
     }
   })
 
-  const onChangeHandler = (value: PDOKItem | string | null) => {
+  const handleAddressSelect = (value: PDOKItem | string | null) => {
     if (typeof value === 'string' || value === null) {
       setQuery(value ?? '')
     } else {
       const coordinates = convertWktPointToCoordinates(value.centroide_ll)
+
       if (coordinates) {
         // Clear selected assets when selecting a new address
         setSelectedAssets([])
         setCoordinates(coordinates)
       }
+
       setAddress(value.weergave_naam)
-      setQuery(value.weergave_naam)
     }
+  }
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value === '') {
+      setAddressList([])
+      setCoordinates(undefined)
+      return
+    }
+
+    setQuery(event.target.value)
+    fetchAddressList(event.target.value)
   }
 
   return (
@@ -116,20 +128,12 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
         // Setting the address as key makes sure it does.
         key={address}
         as="div"
-        onChange={onChangeHandler}
-        onClose={() => fetchAddressList('')}
+        onChange={handleAddressSelect}
         value={query}
         className={styles.combobox}
       >
-        <ComboboxInput
-          as={TextInput}
-          autoComplete="off"
-          name="address"
-          onChange={(event) => {
-            setQuery(event.target.value)
-            fetchAddressList(event.target.value)
-          }}
-        />
+        <ComboboxInput as={TextInput} autoComplete="off" name="address" onChange={handleInputChange} />
+
         {showListBox && (
           <ComboboxOptions as={ListBox} className={styles.comboboxOptions} modal={false}>
             {addressList.length > 0 ? (
