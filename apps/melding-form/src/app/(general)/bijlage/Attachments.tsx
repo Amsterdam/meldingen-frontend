@@ -1,6 +1,6 @@
 'use client'
 
-import { ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
+import { Alert, ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
 import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
@@ -180,42 +180,51 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
             {errorMessage && <ErrorMessage id="file-upload-error-message">{errorMessage}</ErrorMessage>}
           </Column>
 
-          <Paragraph aria-live="assertive">
-            {t('status', {
-              fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
-              maxFiles: MAX_FILES,
-            })}
-          </Paragraph>
+          <Column className={styles.needsJavaScript}>
+            <Paragraph aria-live="assertive">
+              {t('status', {
+                fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
+                maxFiles: MAX_FILES,
+              })}
+            </Paragraph>
 
-          <FileUpload
-            accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
-            aria-describedby={getAriaDescribedBy('file-upload', description, errorMessage)}
-            aria-labelledby="file-upload-label file-upload"
-            buttonText={t('file-upload.button')}
-            dropAreaText={t('file-upload.drop-area')}
-            id="file-upload"
-            multiple
-            onChange={handleUpload}
-            ref={inputRef}
-          />
+            <FileUpload
+              accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
+              aria-describedby={getAriaDescribedBy('file-upload', description, errorMessage)}
+              aria-labelledby="file-upload-label file-upload"
+              buttonText={t('file-upload.button')}
+              dropAreaText={t('file-upload.drop-area')}
+              id="file-upload"
+              multiple
+              onChange={handleUpload}
+              ref={inputRef}
+            />
 
-          {fileUploads.length > 0 && (
-            <FileList>
-              {fileUploads.map(({ error, file, id, serverId, status, xhr }) => (
-                <FileList.Item
-                  key={id}
-                  deleteButtonId={id}
-                  file={file}
-                  errorMessage={status === 'error' ? error : undefined}
-                  onDelete={() => handleDelete(id, xhr, file.name, serverId)}
-                />
-              ))}
-            </FileList>
-          )}
+            {fileUploads.length > 0 && (
+              <FileList>
+                {fileUploads.map(({ error, file, id, serverId, status, xhr }) => (
+                  <FileList.Item
+                    key={id}
+                    deleteButtonId={id}
+                    file={file}
+                    errorMessage={status === 'error' ? error : undefined}
+                    onDelete={() => handleDelete(id, xhr, file.name, serverId)}
+                  />
+                ))}
+              </FileList>
+            )}
 
-          <div className="ams-visually-hidden" aria-live="polite">
-            {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
-          </div>
+            <div className="ams-visually-hidden" aria-live="polite">
+              {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
+            </div>
+          </Column>
+
+          <Alert className={styles.noJavaScriptAlert} heading="Let op" headingLevel={2}>
+            <Paragraph>
+              Voor deze functionaliteit is JavaScript vereist. Zet JavaScript aan in uw browserinstellingen of herlaad
+              de pagina.
+            </Paragraph>
+          </Alert>
 
           <Form action={formAction}>
             <SubmitButton>{t('submit-button')}</SubmitButton>
