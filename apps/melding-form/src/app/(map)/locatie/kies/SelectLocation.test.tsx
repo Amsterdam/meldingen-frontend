@@ -13,12 +13,6 @@ const mockNotification = {
   severity: 'error' as AlertProps['severity'],
 }
 
-global.ResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}))
-
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
