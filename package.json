@@ -48,7 +48,7 @@
     "@eslint/js": "9.36.0",
     "@eslint/json": "0.13.2",
     "@eslint/markdown": "7.3.0",
-    "@hey-api/openapi-ts": "0.82.5",
+    "@hey-api/openapi-ts": "0.84.3",
     "@next/eslint-plugin-next": "15.5.4",
     "@testing-library/jest-dom": "6.8.0",
     "@testing-library/react": "16.3.0",
