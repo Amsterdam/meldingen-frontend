@@ -5,7 +5,8 @@ import { useActionState } from 'react'
 import { Mock } from 'vitest'
 
 import { Attachments } from './Attachments'
-import * as utils from './utils'
+import { startUpload } from './utils'
+import type { FileUpload } from './utils'
 import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
@@ -29,6 +30,10 @@ global.URL.revokeObjectURL = vi.fn()
 
 vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
   default: vi.fn(),
+}))
+
+vi.mock('./utils', () => ({
+  startUpload: vi.fn(),
 }))
 
 const mockFile = new File(['dummy content'], 'example.png', { type: 'image/png' })
@@ -86,8 +91,8 @@ describe('Attachments', () => {
   it('shows an error when startUpload sets status to error', async () => {
     const user = userEvent.setup()
 
-    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
-      setFileUploads((prev) =>
+    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+      setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id ? { ...upload, status: 'error', error: 'Upload failed' } : upload,
         ),
@@ -101,8 +106,6 @@ describe('Attachments', () => {
     await user.upload(fileInput, [mockFile])
 
     expect(screen.getByText('Upload failed')).toBeInTheDocument()
-
-    spy.mockRestore()
   })
 
   it('deletes a succesfully uploaded file with the delete button', async () => {
@@ -110,8 +113,8 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
 
-    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
-      setFileUploads((prev) =>
+    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+      setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id ? { ...upload, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : upload,
         ),
@@ -135,8 +138,6 @@ describe('Attachments', () => {
     const file1SecondRender = screen.queryByText(mockFile.name)
 
     expect(file1SecondRender).not.toBeInTheDocument()
-
-    spy.mockRestore()
   })
 
   it('cancels an in-progress upload and removes it from the file list with the delete button', async () => {
@@ -146,8 +147,8 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.OPENED, abort: abortMock }
 
-    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
-      setFileUploads((prev) =>
+    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+      setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id ? { ...upload, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : upload,
         ),
@@ -168,8 +169,6 @@ describe('Attachments', () => {
 
     expect(fileName).not.toBeInTheDocument()
     expect(abortMock).toHaveBeenCalled()
-
-    spy.mockRestore()
   })
 
   it('removes a failed upload from the file list with the delete button', async () => {
@@ -177,8 +176,8 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
 
-    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
-      setFileUploads((prev) =>
+    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+      setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id ? { ...upload, xhr: xhrMock as XMLHttpRequest, serverId: undefined } : upload,
         ),
@@ -198,8 +197,6 @@ describe('Attachments', () => {
     const fileName = screen.queryByText(mockFile.name)
 
     expect(fileName).not.toBeInTheDocument()
-
-    spy.mockRestore()
   })
 
   it('should throw an error when delete request fails', async () => {
@@ -214,8 +211,8 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
 
-    const spy = vi.spyOn(utils, 'startUpload').mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
-      setFileUploads((prev) =>
+    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+      setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id ? { ...upload, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : upload,
         ),
@@ -237,8 +234,6 @@ describe('Attachments', () => {
 
     expect(fileName).toBeInTheDocument()
     expect(errorMessage).toBeInTheDocument()
-
-    spy.mockRestore()
   })
 
   it('should throw an error when attempting to upload too many files', async () => {
