@@ -136,7 +136,7 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
           as={TextInput}
           autoComplete="off"
           name="address"
-          onChange={(event) => handleInputChange(event)}
+          onChange={handleInputChange}
         />
 
         {showListBox && (
