@@ -10,6 +10,12 @@ describe('getDocumentTitleOnError', () => {
     expect(title).toBe(originalDocTitle)
   })
 
+  it('returns original title when validationErrors is an empty array', () => {
+    const title = getDocumentTitleOnError(originalDocTitle, t, [])
+
+    expect(title).toBe(originalDocTitle)
+  })
+
   it('returns error count label and original title when validationErrors are present', () => {
     const validationErrors = [
       { key: 'a', message: 'Error A' },

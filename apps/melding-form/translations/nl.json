@@ -92,6 +92,9 @@
       "button": "Bestanden kiezen",
       "drop-area": "Sleep bestanden in dit vak of"
     },
+    "delete-notification": "{fileName} is verwijderd",
+    "no-js-alert-title": "JavaScript is niet beschikbaar",
+    "no-js-alert-description": "Wijzig dit in de instellingen van uw browser of herlaad de pagina.",
     "submit-button": "Volgende vraag",
     "errors": {
       "too-many-files": "U kunt maximaal {maxFiles} bestanden uploaden."

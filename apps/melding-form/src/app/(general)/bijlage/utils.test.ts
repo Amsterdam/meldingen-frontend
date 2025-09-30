@@ -75,6 +75,19 @@ describe('startUpload', () => {
     expect(result[0].error).toBe('Test error')
   })
 
+  it('sets status to uploading when upload starts', () => {
+    const setFileUploadsMock = vi.fn()
+
+    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+
+    expect(setFileUploadsMock).toHaveBeenCalled()
+
+    const updater = setFileUploadsMock.mock.calls[0][0]
+    const result = updater([fileUpload])
+
+    expect(result[0].status).toBe('uploading')
+  })
+
   it('updates progress on upload progress event', () => {
     startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
@@ -142,6 +155,17 @@ describe('startUpload', () => {
     xhrMock.onerror?.(new ProgressEvent('error'))
 
     const updater = setFileUploadsMock.mock.calls[1][0]
+    const result = updater([otherFileUpload])
+
+    expect(result[0]).toBe(otherFileUpload)
+  })
+
+  it('returns the original file object if id does not match on upload start', () => {
+    const setFileUploadsMock = vi.fn()
+
+    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+
+    const updater = setFileUploadsMock.mock.calls[0][0]
     const result = updater([otherFileUpload])
 
     expect(result[0]).toBe(otherFileUpload)

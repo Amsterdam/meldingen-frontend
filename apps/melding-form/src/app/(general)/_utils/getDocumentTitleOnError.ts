@@ -5,7 +5,7 @@ export const getDocumentTitleOnError = (
   t: (key: string, { count }: { count: number }) => string,
   validationErrors?: ValidationError[],
 ) => {
-  if (validationErrors) {
+  if (validationErrors && validationErrors.length > 0) {
     const errorCount = validationErrors.length
 
     return `${t('error-count-label', { count: errorCount })} ${originalDocTitle}`
