@@ -1,25 +1,25 @@
 'use client'
 
 import { ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
+import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 
-import {
-  deleteMeldingByMeldingIdAttachmentByAttachmentId,
-  postMeldingByMeldingIdAttachment,
-} from '@meldingen/api-client'
+import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Column, FileList, FileUpload, Heading, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
+import type { FileUpload as FileUploadType } from './utils'
+import { startUpload } from './utils'
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
-import { FormState } from 'apps/melding-form/src/types'
+import type { FormState } from 'apps/melding-form/src/types'
 
 import styles from './Attachments.module.css'
 
@@ -31,58 +31,81 @@ type Props = {
   token: string
 }
 
-export type UploadedFiles = { file: File; id: number }
-
 const initialState: Pick<FormState, 'systemError'> = {}
 
+const createFileUploads = (newFiles: File[]): FileUploadType[] =>
+  newFiles.map((file) => ({
+    file,
+    id: crypto.randomUUID(),
+    progress: 0,
+    status: 'pending',
+    xhr: new XMLHttpRequest(),
+  }))
+
 export const Attachments = ({ formData, meldingId, token }: Props) => {
-  const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([])
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const [fileUploads, setFileUploads] = useState<FileUploadType[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
+
   const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
 
   const t = useTranslations('attachments')
 
   const { label, description } = formData[0]
 
-  const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
     setErrorMessage(undefined)
 
     if (!event.currentTarget.files) return
 
-    const files = Array.from(event.currentTarget.files)
+    const newFiles = Array.from(event.currentTarget.files)
 
-    try {
-      if (files.length + uploadedFiles.length > MAX_FILES) {
-        throw new Error(t('errors.too-many-files', { maxFiles: MAX_FILES }))
-      }
+    if (newFiles.length + fileUploads.length > MAX_FILES) {
+      setErrorMessage(t('errors.too-many-files', { maxFiles: MAX_FILES }))
+      return
+    }
 
-      const result = await Promise.all(
-        files.map(async (file) => {
-          const { data, error } = await postMeldingByMeldingIdAttachment({
-            body: { file },
-            path: { melding_id: meldingId },
-            query: { token },
-          })
+    const newFileUploads = createFileUploads(newFiles)
 
-          if (error || !data?.id) {
-            throw new Error('Failed to upload file')
-          }
+    setFileUploads((prev) => [...prev, ...newFileUploads])
 
-          return { file, id: data.id }
-        }),
+    newFileUploads.forEach((upload) => {
+      const xhr = upload.xhr
+      xhr.open(
+        'POST',
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`,
       )
-      setUploadedFiles((currentFiles) => [...currentFiles, ...result])
-    } catch (error) {
-      setErrorMessage((error as Error).message)
+
+      startUpload(xhr, upload, setFileUploads)
+    })
+
+    // Clear the file input after starting the upload, so it is empty for the next selection.
+    if (inputRef.current) {
+      inputRef.current.value = ''
     }
   }
 
-  const removeFile = async (attachmentId: number) => {
+  const handleDelete = async (id: string, xhr: XMLHttpRequest, serverId?: number) => {
     setErrorMessage(undefined)
+
+    // Abort upload if in progress
+    if (xhr.readyState !== XMLHttpRequest.DONE) {
+      xhr.abort()
+      setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.id !== id))
+      return
+    }
+
+    // If the file upload does not have a server id (because the server returned an error for example)
+    // simply remove it from the list
+    if (!serverId) {
+      setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.id !== id))
+      return
+    }
 
     const { error } = await deleteMeldingByMeldingIdAttachmentByAttachmentId({
       path: {
-        attachment_id: attachmentId,
+        attachment_id: serverId,
         melding_id: meldingId,
       },
       query: { token },
@@ -93,7 +116,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
       return
     }
 
-    setUploadedFiles((files) => files.filter((file) => file.id !== attachmentId))
+    setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.serverId !== serverId))
   }
 
   useEffect(() => {
@@ -123,32 +146,37 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
                 {description}
               </MarkdownToHtml>
             )}
-            {errorMessage && <ErrorMessage id="error-message">{errorMessage}</ErrorMessage>}
+            {errorMessage && <ErrorMessage id="file-upload-error-message">{errorMessage}</ErrorMessage>}
           </Column>
 
           <Paragraph aria-live="polite">
-            {t('status', { fileCount: uploadedFiles.length, maxFiles: MAX_FILES })}
+            {t('status', {
+              fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
+              maxFiles: MAX_FILES,
+            })}
           </Paragraph>
 
           <FileUpload
             accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
-            aria-describedby={
-              description || errorMessage
-                ? `${description ? 'file-upload-description' : ''} ${errorMessage ? 'error-message' : ''}`
-                : undefined
-            }
+            aria-describedby={getAriaDescribedBy('file-upload', description, errorMessage)}
             aria-labelledby="file-upload-label file-upload"
             buttonText={t('file-upload.button')}
             dropAreaText={t('file-upload.drop-area')}
             id="file-upload"
             multiple
-            onChange={handleChange}
+            onChange={handleUpload}
+            ref={inputRef}
           />
 
-          {uploadedFiles.length > 0 && (
+          {fileUploads.length > 0 && (
             <FileList>
-              {uploadedFiles.map((attachment) => (
-                <FileList.Item key={attachment.id} file={attachment.file} onDelete={() => removeFile(attachment.id)} />
+              {fileUploads.map(({ error, file, id, serverId, status, xhr }) => (
+                <FileList.Item
+                  key={id}
+                  file={file}
+                  errorMessage={status === 'error' ? error : undefined}
+                  onDelete={() => handleDelete(id, xhr, serverId)}
+                />
               ))}
             </FileList>
           )}

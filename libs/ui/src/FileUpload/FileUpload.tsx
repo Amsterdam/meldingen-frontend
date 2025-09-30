@@ -1,7 +1,7 @@
 'use client'
 
 import { clsx } from 'clsx'
-import { DragEvent, InputHTMLAttributes, useRef } from 'react'
+import { DragEvent, InputHTMLAttributes, RefObject, useImperativeHandle, useRef } from 'react'
 
 import styles from './FileUpload.module.css'
 
@@ -25,6 +25,7 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
   buttonText?: string
   className?: string
   dropAreaText?: string
+  ref?: RefObject<HTMLInputElement | null>
 }
 
 export const FileUpload = ({
@@ -34,9 +35,13 @@ export const FileUpload = ({
   className,
   dropAreaText = 'Sleep bestanden in dit vak of',
   id,
+  ref,
   ...restProps
 }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // use a passed ref if it's there, otherwise use fileInputRef
+  useImperativeHandle(ref, () => fileInputRef.current as HTMLInputElement)
 
   const handleClick = () => {
     if (fileInputRef.current) {

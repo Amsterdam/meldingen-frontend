@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { createRef } from 'react'
 
 import { FileUpload } from './FileUpload'
 
@@ -59,5 +60,15 @@ describe('FileUpload', () => {
     await user.click(button)
 
     expect(clickSpy).toHaveBeenCalled()
+  })
+
+  it('supports ref in React', () => {
+    const ref = createRef<HTMLInputElement>()
+
+    render(<FileUpload ref={ref} />)
+
+    const input = screen.getByLabelText('File input')
+
+    expect(ref.current).toBe(input)
   })
 })
