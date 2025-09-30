@@ -61,7 +61,6 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
     const newFiles = Array.from(event.currentTarget.files)
 
-    // TODO: should fileUploads.length be the length of successfully uploaded files?
     if (newFiles.length + fileUploads.length > MAX_FILES) {
       setErrorMessage(t('errors.too-many-files', { maxFiles: MAX_FILES }))
       return
