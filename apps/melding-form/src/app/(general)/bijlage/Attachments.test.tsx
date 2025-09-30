@@ -51,12 +51,14 @@ describe('Attachments', () => {
     const fileUpload = screen.getByRole('button', {
       name: 'First question hint-text file-upload.drop-area file-upload.button',
     })
+    const noJSAlertHeading = screen.getByRole('heading', { name: 'no-js-alert-title' })
 
     expect(backLink).toBeInTheDocument()
     expect(header).toBeInTheDocument()
     expect(heading).toBeInTheDocument()
     expect(description).toBeInTheDocument()
     expect(fileUpload).toBeInTheDocument()
+    expect(noJSAlertHeading).toBeInTheDocument()
   })
 
   it('shows file names when a file is uploaded', async () => {
