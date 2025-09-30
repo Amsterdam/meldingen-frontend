@@ -62,7 +62,7 @@ describe('FileUpload', () => {
     expect(clickSpy).toHaveBeenCalled()
   })
 
-  it('supports ForwardRef in React', () => {
+  it('supports ref in React', () => {
     const ref = createRef<HTMLInputElement>()
 
     render(<FileUpload ref={ref} />)

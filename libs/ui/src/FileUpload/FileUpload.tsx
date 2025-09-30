@@ -25,7 +25,7 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
   buttonText?: string
   className?: string
   dropAreaText?: string
-  ref: RefObject<HTMLInputElement | undefined>
+  ref?: RefObject<HTMLInputElement | null>
 }
 
 export const FileUpload = ({
