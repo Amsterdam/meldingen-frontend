@@ -43,7 +43,7 @@ const createFileUploads = (newFiles: File[]): FileUploadType[] =>
   }))
 
 export const Attachments = ({ formData, meldingId, token }: Props) => {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLInputElement>(undefined)
 
   const [fileUploads, setFileUploads] = useState<FileUploadType[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
