@@ -17,12 +17,16 @@ export type Props = {
   coordinates?: Coordinates
   setCoordinates: (coordinates?: Coordinates) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
+  selectedAssets: Feature[]
 }
 
 const initialState: { errorMessage?: string } = {}
 
-export const SideBar = ({ coordinates, setCoordinates, setSelectedAssets }: Props) => {
-  const [{ errorMessage }, formAction] = useActionState(writeAddressAndCoordinateToCookie, initialState)
+export const SideBar = ({ coordinates, setCoordinates, setSelectedAssets, selectedAssets }: Props) => {
+  const extendedWriteAddressAndCoordinateToCookie = writeAddressAndCoordinateToCookie.bind(null, {
+    selectedAssets,
+  })
+  const [{ errorMessage }, formAction] = useActionState(extendedWriteAddressAndCoordinateToCookie, initialState)
 
   const [address, setAddress] = useState<string>('')
 

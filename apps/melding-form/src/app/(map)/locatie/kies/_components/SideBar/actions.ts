@@ -4,11 +4,46 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 
+import { type Feature, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
+
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam'
 
-export const writeAddressAndCoordinateToCookie = async (_: unknown, formData: FormData) => {
+export const writeAddressAndCoordinateToCookie = async (
+  { selectedAssets }: { selectedAssets: Feature[] },
+  _: unknown,
+  formData: FormData,
+) => {
+  const cookieStore = await cookies()
+
+  const meldingId = cookieStore.get('id')?.value
+  const token = cookieStore.get('token')?.value
+
+  if (!meldingId || !token) return redirect('/cookie-storing')
+
+  /** Save Assets */
+
+  if (selectedAssets.length > 0) {
+    selectedAssets.forEach(async (asset) => {
+      const { error } = await postMeldingByMeldingIdAsset({
+        body: {
+          // TODO: get asset_type_id from asset and fix asset.id type
+          external_id: String(asset.id),
+          asset_type_id: 1,
+        },
+        path: { melding_id: parseInt(meldingId, 10) },
+        query: { token },
+      })
+
+      if (error) {
+        // eslint-disable-next-line no-console
+        console.error('Error saving asset:', error)
+      }
+    })
+  }
+
+  /** Save coordinates and address */
   const address = formData.get('address')
   const coordinates = formData.get('coordinates')
 
@@ -37,7 +72,6 @@ export const writeAddressAndCoordinateToCookie = async (_: unknown, formData: Fo
     coordinates: coordinates ? JSON.parse(coordinates as string) : PDOKCoordinates,
   }
 
-  const cookieStore = await cookies()
   cookieStore.set('location', JSON.stringify(location))
 
   return redirect('/locatie')
