@@ -19,9 +19,9 @@
     "ra-i18n-polyglot": "5.11.4",
     "ra-keycloak": "2.0.0",
     "react-admin": "5.11.4",
-    "react-hook-form": "7.63.0",
+    "react-hook-form": "7.64.0",
     "uber-json-schema-filter": "2.0.5",
-    "vite": "7.1.7"
+    "vite": "7.1.9"
   },
   "devDependencies": {
     "@formio/core": "2.5.1",
