@@ -2,3 +2,15 @@
   display: inline-block;
   font-weight: var(--ams-hint-font-weight);
 }
+
+:global(.js-enabled) .noJavaScriptAlert {
+  display: none;
+}
+
+.needsJavaScript {
+  display: none;
+}
+
+:global(.js-enabled) .needsJavaScript {
+  display: flex;
+}

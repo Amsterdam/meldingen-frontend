@@ -1,6 +1,6 @@
 'use client'
 
-import { ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
+import { Alert, ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
 import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
@@ -10,7 +10,7 @@ import type { ChangeEvent } from 'react'
 import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Column, FileList, FileUpload, Heading, SubmitButton } from '@meldingen/ui'
+import { Column, FileList, FileUpload, Heading, InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
 import type { FileUpload as FileUploadType } from './utils'
@@ -18,6 +18,8 @@ import { startUpload } from './utils'
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
+import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
+import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 import type { FormState } from 'apps/melding-form/src/types'
 
@@ -44,13 +46,20 @@ const createFileUploads = (newFiles: File[]): FileUploadType[] =>
 
 export const Attachments = ({ formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
+  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
   const [fileUploads, setFileUploads] = useState<FileUploadType[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
+  const [deletedFileName, setDeletedFileName] = useState<string>()
 
   const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
 
+  const validationErrors = fileUploads
+    .filter((upload) => upload.status === 'error')
+    .map((upload) => ({ key: upload.id, message: upload.error || '' }))
+
   const t = useTranslations('attachments')
+  const tShared = useTranslations('shared')
 
   const { label, description } = formData[0]
 
@@ -86,13 +95,14 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
     }
   }
 
-  const handleDelete = async (id: string, xhr: XMLHttpRequest, serverId?: number) => {
+  const handleDelete = async (id: string, xhr: XMLHttpRequest, fileName: string, serverId?: number) => {
     setErrorMessage(undefined)
 
     // Abort upload if in progress
     if (xhr.readyState !== XMLHttpRequest.DONE) {
       xhr.abort()
       setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.id !== id))
+      setDeletedFileName(fileName)
       return
     }
 
@@ -100,6 +110,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
     // simply remove it from the list
     if (!serverId) {
       setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.id !== id))
+      setDeletedFileName(fileName)
       return
     }
 
@@ -117,7 +128,14 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
     }
 
     setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.serverId !== serverId))
+    setDeletedFileName(fileName)
   }
+
+  // Set focus on InvalidFormAlert when there are validation errors
+  useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
+
+  // Update document title when there are validation errors
+  const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
 
   useEffect(() => {
     if (systemError) {
@@ -129,11 +147,24 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
   return (
     <>
+      <title>{documentTitle}</title>
       <BackLink className="ams-mb-s" href="/locatie">
         {t('back-link')}
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert />}
+        {validationErrors.length > 0 && (
+          <InvalidFormAlert
+            className="ams-mb-m"
+            errors={validationErrors.map((error) => ({
+              id: `#${error.key}`,
+              label: error.message,
+            }))}
+            heading={tShared('invalid-form-alert-title')}
+            headingLevel={2}
+            ref={invalidFormAlertRef}
+          />
+        )}
         <FormHeader title={t('title')} step={t('step')} />
 
         <Column>
@@ -149,37 +180,48 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
             {errorMessage && <ErrorMessage id="file-upload-error-message">{errorMessage}</ErrorMessage>}
           </Column>
 
-          <Paragraph aria-live="polite">
-            {t('status', {
-              fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
-              maxFiles: MAX_FILES,
-            })}
-          </Paragraph>
+          <Column className={styles.needsJavaScript}>
+            <Paragraph aria-live="assertive">
+              {t('status', {
+                fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
+                maxFiles: MAX_FILES,
+              })}
+            </Paragraph>
 
-          <FileUpload
-            accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
-            aria-describedby={getAriaDescribedBy('file-upload', description, errorMessage)}
-            aria-labelledby="file-upload-label file-upload"
-            buttonText={t('file-upload.button')}
-            dropAreaText={t('file-upload.drop-area')}
-            id="file-upload"
-            multiple
-            onChange={handleUpload}
-            ref={inputRef}
-          />
+            <FileUpload
+              accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
+              aria-describedby={getAriaDescribedBy('file-upload', description, errorMessage)}
+              aria-labelledby="file-upload-label file-upload"
+              buttonText={t('file-upload.button')}
+              dropAreaText={t('file-upload.drop-area')}
+              id="file-upload"
+              multiple
+              onChange={handleUpload}
+              ref={inputRef}
+            />
 
-          {fileUploads.length > 0 && (
-            <FileList>
-              {fileUploads.map(({ error, file, id, serverId, status, xhr }) => (
-                <FileList.Item
-                  key={id}
-                  file={file}
-                  errorMessage={status === 'error' ? error : undefined}
-                  onDelete={() => handleDelete(id, xhr, serverId)}
-                />
-              ))}
-            </FileList>
-          )}
+            {fileUploads.length > 0 && (
+              <FileList>
+                {fileUploads.map(({ error, file, id, serverId, status, xhr }) => (
+                  <FileList.Item
+                    key={id}
+                    deleteButtonId={id}
+                    file={file}
+                    errorMessage={status === 'error' ? error : undefined}
+                    onDelete={() => handleDelete(id, xhr, file.name, serverId)}
+                  />
+                ))}
+              </FileList>
+            )}
+
+            <div className="ams-visually-hidden" aria-live="polite">
+              {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
+            </div>
+          </Column>
+
+          <Alert className={styles.noJavaScriptAlert} heading={t('no-js-alert-title')} headingLevel={2}>
+            <Paragraph>{t('no-js-alert-description')}</Paragraph>
+          </Alert>
 
           <Form action={formAction}>
             <SubmitButton>{t('submit-button')}</SubmitButton>

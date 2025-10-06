@@ -13,13 +13,20 @@ import styles from './FileList.module.css'
 // an unordered list with list items is used here because NVDA currently (16-9-2025) reads the number of items in a description list incorrectly.
 
 export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
+  deleteButtonId: string
   deleteButtonLabel?: string
   errorMessage?: string
   file: File
   onDelete?: () => void
 }
 
-export const FileListItem = ({ deleteButtonLabel = 'Verwijder', errorMessage, file, onDelete }: FileListItemProps) => {
+export const FileListItem = ({
+  deleteButtonId,
+  deleteButtonLabel = 'Verwijder',
+  errorMessage,
+  file,
+  onDelete,
+}: FileListItemProps) => {
   // Memoize the creation of an object url from the file,
   // to prevent it from creating a new one on every render.
   const imageUrl = useMemo(() => URL.createObjectURL(file), [file])
@@ -45,7 +52,7 @@ export const FileListItem = ({ deleteButtonLabel = 'Verwijder', errorMessage, fi
           width={256} // Fixed width for when CSS does not load. Gets overridden by CSS.
         />
         <div>{formatFileSize(file.size)}</div>
-        <Button variant="secondary" onClick={handleDelete}>
+        <Button id={deleteButtonId} variant="secondary" onClick={handleDelete}>
           {deleteButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
         </Button>
         {hasError && <ErrorMessage className={styles.error}>{errorMessage}</ErrorMessage>}
