@@ -1,12 +1,14 @@
-import type { GeoJsonObject } from 'geojson'
 import L from 'leaflet'
+import 'leaflet.markercluster'
 import { Dispatch, MutableRefObject, SetStateAction } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
-import { getContainerFeatureIcon } from './getContainerFeatureIcon'
+import { AssetFeature, getContainerFeatureIcon } from './getContainerFeatureIcon'
 import { NotificationType } from '../types'
 import { Coordinates } from 'apps/melding-form/src/types'
+
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 
 export const MAX_ASSETS = 5
 
@@ -41,16 +43,25 @@ export const addAssetLayerToMap = ({
 
   assetLayerRef.current?.remove()
 
-  assetLayerRef.current = L.geoJSON(assetList as GeoJsonObject[], {
-    pointToLayer: (feature, latlng) => {
-      const isSelected = selectedAssets.some((a) => a.id === feature.id)
+  const markerClusterGroup = L.markerClusterGroup() as L.MarkerClusterGroup
 
+  assetList.forEach((feature) => {
+    if (!feature.geometry || feature.geometry.type !== 'Point') return
+
+    const geometry = feature.geometry
+
+    if ('coordinates' in geometry && Array.isArray(geometry.coordinates) && geometry.coordinates.length === 2) {
+      const [lng, lat] = geometry.coordinates
+      const latlng = L.latLng(lat, lng)
+      const isSelected = selectedAssets.some((a) => a.id === feature.id)
+      // getContainerFeatureIcon expects a Feature with geometry, so ensure geometry is not null
       const marker = new L.Marker(latlng, {
-        icon: getContainerFeatureIcon(feature, isSelected),
+        icon: getContainerFeatureIcon(feature as AssetFeature, isSelected),
         keyboard: false,
       })
 
-      if (feature.id !== undefined) {
+      // Only use string keys for assetMarkersRef
+      if (typeof feature.id === 'string' && feature.id) {
         assetMarkersRef.current[feature.id] = marker
       }
 
@@ -63,27 +74,25 @@ export const addAssetLayerToMap = ({
             })
             return
           }
-
           setSelectedAssets((selectedList) => [...selectedList, feature as Feature])
           setCoordinates({
-            lat: latlng.lat,
-            lng: latlng.lng,
+            lat,
+            lng,
           })
         }
-
         if (isSelected) {
           if (notification) {
             setNotification(null)
           }
-
           setSelectedAssets((selectedList) => selectedList.filter((a) => a.id !== feature.id))
           setCoordinates(undefined)
         }
       })
 
-      return marker
-    },
+      markerClusterGroup.addLayer(marker)
+    }
   })
 
-  assetLayerRef.current.addTo(mapInstance)
+  assetLayerRef.current = markerClusterGroup
+  markerClusterGroup.addTo(mapInstance)
 }
