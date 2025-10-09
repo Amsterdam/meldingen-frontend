@@ -49,48 +49,44 @@ export const addAssetLayerToMap = ({
     if (!feature.geometry || feature.geometry.type !== 'Point') return
 
     const geometry = feature.geometry
+    const [lng, lat] = geometry.coordinates
+    const latlng = L.latLng(lat, lng)
+    const isSelected = selectedAssets.some((a) => a.id === feature.id)
 
-    if ('coordinates' in geometry && Array.isArray(geometry.coordinates) && geometry.coordinates.length === 2) {
-      const [lng, lat] = geometry.coordinates
-      const latlng = L.latLng(lat, lng)
-      const isSelected = selectedAssets.some((a) => a.id === feature.id)
-      // getContainerFeatureIcon expects a Feature with geometry, so ensure geometry is not null
-      const marker = new L.Marker(latlng, {
-        icon: getContainerFeatureIcon(feature as AssetFeature, isSelected),
-        keyboard: false,
-      })
+    const marker = new L.Marker(latlng, {
+      icon: getContainerFeatureIcon(feature as AssetFeature, isSelected),
+      keyboard: false,
+    })
 
-      // Only use string keys for assetMarkersRef
-      if (typeof feature.id === 'string' && feature.id) {
-        assetMarkersRef.current[feature.id] = marker
-      }
-
-      marker.on('click', () => {
-        if (!isSelected) {
-          if (selectedAssets.length >= MAX_ASSETS) {
-            setNotification({
-              closeButtonLabel: t('max-asset-notification.close-button'),
-              heading: t('max-asset-notification.title', { maxAssets: MAX_ASSETS }),
-            })
-            return
-          }
-          setSelectedAssets((selectedList) => [...selectedList, feature as Feature])
-          setCoordinates({
-            lat,
-            lng,
-          })
-        }
-        if (isSelected) {
-          if (notification) {
-            setNotification(null)
-          }
-          setSelectedAssets((selectedList) => selectedList.filter((a) => a.id !== feature.id))
-          setCoordinates(undefined)
-        }
-      })
-
-      markerClusterGroup.addLayer(marker)
+    if (typeof feature.id === 'string' && feature.id) {
+      assetMarkersRef.current[feature.id] = marker
     }
+
+    marker.on('click', () => {
+      if (!isSelected) {
+        if (selectedAssets.length >= MAX_ASSETS) {
+          setNotification({
+            closeButtonLabel: t('max-asset-notification.close-button'),
+            heading: t('max-asset-notification.title', { maxAssets: MAX_ASSETS }),
+          })
+          return
+        }
+        setSelectedAssets((selectedList) => [...selectedList, feature as Feature])
+        setCoordinates({
+          lat,
+          lng,
+        })
+      }
+      if (isSelected) {
+        if (notification) {
+          setNotification(null)
+        }
+        setSelectedAssets((selectedList) => selectedList.filter((a) => a.id !== feature.id))
+        setCoordinates(undefined)
+      }
+    })
+
+    markerClusterGroup.addLayer(marker)
   })
 
   assetLayerRef.current = markerClusterGroup
