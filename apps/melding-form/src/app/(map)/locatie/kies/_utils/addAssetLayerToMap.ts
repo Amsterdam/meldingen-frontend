@@ -56,7 +56,6 @@ export const addAssetLayerToMap = ({
       })
     },
     showCoverageOnHover: false,
-    spiderfyDistanceMultiplier: 3,
   }) as L.MarkerClusterGroup
 
   assetList.forEach((feature) => {
