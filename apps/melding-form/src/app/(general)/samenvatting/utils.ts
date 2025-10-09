@@ -6,8 +6,10 @@ import {
   getMeldingByMeldingIdAttachmentsMelder,
   getStaticForm,
   getStaticFormByStaticFormId,
+  MeldingOutput,
 } from '@meldingen/api-client'
 
+import { formatAddressFromMeldingData } from '../_utils/formatAddressFromMeldingData'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 export const getPrimaryFormSummary = async (description: string) => {
@@ -114,13 +116,13 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
   return { data: { key: 'attachments', term: label, files: attachments } }
 }
 
-export const getLocationSummary = (t: (key: string) => string, location?: string) => {
-  const locationParsed = location ? JSON.parse(location).name : t('errors.no-location')
+export const getLocationSummary = (t: (key: string) => string, meldingData: MeldingOutput) => {
+  const address = formatAddressFromMeldingData(meldingData)
 
   return {
     key: 'location',
     term: t('location-label'),
-    description: locationParsed,
+    description: address,
   }
 }
 
