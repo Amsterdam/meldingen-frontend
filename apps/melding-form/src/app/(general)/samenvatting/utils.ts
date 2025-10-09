@@ -117,7 +117,7 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
 }
 
 export const getLocationSummary = (t: (key: string) => string, meldingData: MeldingOutput) => {
-  const address = formatAddressFromMeldingData(meldingData)
+  const address = formatAddressFromMeldingData(meldingData) || t('errors.no-location')
 
   return {
     key: 'location',

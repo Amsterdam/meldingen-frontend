@@ -183,6 +183,11 @@ export const melding: MeldingOutput = {
   geo_location: null,
   email: 'email@email.email',
   phone: '0612345678',
+  street: 'Oudezijds Voorburgwal',
+  house_number: 300,
+  house_number_addition: 'A',
+  postal_code: '1012GL',
+  city: 'Amsterdam',
 }
 
 export const additionalQuestions: AnswerQuestionOutput[] = [

@@ -29,6 +29,7 @@ export default async () => {
 
   const meldingData = await getMeldingData(meldingId, token)
   const { text, email, phone, classification } = meldingData
+
   const primaryForm = await getPrimaryFormSummary(text)
   const attachments = await getAttachmentsSummary(t('attachments-label'), meldingId, token)
   const additionalQuestions = await getAdditionalQuestionsSummary(meldingId, token, classification?.id)
