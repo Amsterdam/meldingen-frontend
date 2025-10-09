@@ -32,8 +32,7 @@ export const Location = ({ address, prevPage }: Props) => {
 
   const [isPending, startTransition] = useTransition()
 
-  const postLocationFormWithLocationData = postLocationForm.bind(null, { address })
-  const [{ systemError, validationErrors }, formAction] = useActionState(postLocationFormWithLocationData, initialState)
+  const [{ systemError, validationErrors }, formAction] = useActionState(postLocationForm, initialState)
 
   const t = useTranslations('location')
   const tShared = useTranslations('shared')
