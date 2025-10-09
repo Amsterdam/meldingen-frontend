@@ -45,10 +45,11 @@ export const addAssetLayerToMap = ({
 
   const markerClusterGroup = L.markerClusterGroup({
     iconCreateFunction: (cluster) => {
-      var markers = cluster.getAllChildMarkers()
+      // Cluster markers should not be keyboard accessible
+      cluster.options.keyboard = false
 
       return L.divIcon({
-        html: markers.length.toString(),
+        html: cluster.getChildCount().toString(),
         className: 'meldingen-cluster',
         iconSize: [70, 70],
         iconAnchor: [35, 35],
