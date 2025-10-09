@@ -9,7 +9,7 @@ import { saveAssetsAndCoordinates } from './actions'
 import { getAddressFromCoordinates } from '../../_utils'
 import { Combobox } from '../Combobox/Combobox'
 import { BackLink } from 'apps/melding-form/src/app/(general)/_components/BackLink/BackLink'
-import type { Coordinates, FormState } from 'apps/melding-form/src/types'
+import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './SideBar.module.css'
 
@@ -20,16 +20,13 @@ export type Props = {
   selectedAssets: Feature[]
 }
 
-const initialState: { errorMessage?: string; systemError?: FormState['systemError'] } = {}
+const initialState: { errorMessage?: string } = {}
 
 export const SideBar = ({ coordinates, setCoordinates, setSelectedAssets, selectedAssets }: Props) => {
   const saveAssetsAndCoordinatesWithSelectedAssets = saveAssetsAndCoordinates.bind(null, {
     selectedAssets,
   })
-  const [{ errorMessage, systemError }, formAction] = useActionState(
-    saveAssetsAndCoordinatesWithSelectedAssets,
-    initialState,
-  )
+  const [{ errorMessage }, formAction] = useActionState(saveAssetsAndCoordinatesWithSelectedAssets, initialState)
 
   const [address, setAddress] = useState<string>('')
 
@@ -63,14 +60,6 @@ export const SideBar = ({ coordinates, setCoordinates, setSelectedAssets, select
     }
     getAddress()
   }, [coordinates, t])
-
-  useEffect(() => {
-    if (systemError) {
-      // TODO: Log the error to an error reporting service
-      // eslint-disable-next-line no-console
-      console.error(systemError)
-    }
-  }, [systemError])
 
   return (
     <div className={styles.container}>

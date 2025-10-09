@@ -13,14 +13,9 @@ import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
-import type { Coordinates, FormState } from 'apps/melding-form/src/types'
+import type { FormState } from 'apps/melding-form/src/types'
 
 const initialState: Pick<FormState, 'systemError' | 'validationErrors'> = {}
-
-export type LocationData = {
-  address: string
-  coordinates: Coordinates | null
-}
 
 type Props = {
   prevPage: string

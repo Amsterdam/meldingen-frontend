@@ -83,7 +83,10 @@ export const saveAssetsAndCoordinates = async (
     query: { token },
   })
 
-  if (error) return { systemError: error }
+  if (error) {
+    // eslint-disable-next-line no-console
+    console.error('Error updating state machine:', error)
+  }
 
   return redirect('/locatie')
 }
