@@ -25,41 +25,15 @@ describe('postLocationForm', () => {
       get: () => undefined,
     })
 
-    const formData = new FormData()
-    await postLocationForm(null, formData)
+    await postLocationForm()
 
     expect(redirect).toHaveBeenCalledWith('/cookie-storing')
   })
 
-  it('returns a validation error when coordinates are missing', async () => {
-    const formData = new FormData()
-    const result = await postLocationForm(null, formData)
+  it('returns a validation error when address are missing', async () => {
+    const result = await postLocationForm()
 
     expect(result).toEqual({ validationErrors: [{ key: 'location-link', message: 'errors.no-location' }] })
-  })
-
-  it('posts the location and redirects to /bijlage', async () => {
-    const formData = new FormData()
-    formData.set('coordinates', '{"lat":52.370216,"lng":4.895168}')
-
-    await postLocationForm(null, formData)
-
-    expect(redirect).toHaveBeenCalledWith('/bijlage')
-  })
-
-  it('returns an error message if patchMeldingByMeldingIdLocation returns an error', async () => {
-    server.use(
-      http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_LOCATION, () =>
-        HttpResponse.json('Error message', { status: 404 }),
-      ),
-    )
-
-    const formData = new FormData()
-    formData.set('coordinates', '{"lat":52.370216,"lng":4.895168}')
-
-    const result = await postLocationForm(null, formData)
-
-    expect(result).toEqual({ systemError: 'Error message' })
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
@@ -68,12 +42,44 @@ describe('postLocationForm', () => {
         HttpResponse.json('Error message', { status: 500 }),
       ),
     )
+    ;(cookies as Mock).mockReturnValue({
+      get: (name: string) => {
+        if (name === 'id') {
+          return { value: '123' }
+        }
+        if (name === 'token') {
+          return { value: 'test-token' }
+        }
+        if (name === 'address') {
+          return { value: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam' }
+        }
+        return undefined
+      },
+    })
 
-    const formData = new FormData()
-    formData.set('coordinates', '{"lat":52.370216,"lng":4.895168}')
-
-    const result = await postLocationForm(null, formData)
+    const result = await postLocationForm()
 
     expect(result).toEqual({ systemError: 'Error message' })
+  })
+
+  it('redirects to /bijlage when the form is submitted successfully', async () => {
+    ;(cookies as Mock).mockReturnValue({
+      get: (name: string) => {
+        if (name === 'id') {
+          return { value: '123' }
+        }
+        if (name === 'token') {
+          return { value: 'test-token' }
+        }
+        if (name === 'address') {
+          return { value: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam' }
+        }
+        return undefined
+      },
+    })
+
+    await postLocationForm()
+
+    expect(redirect).toHaveBeenCalledWith('/bijlage')
   })
 })
