@@ -1,0 +1,11 @@
+.meldingen-cluster {
+  align-items: center;
+  background-image: url('/afval/textiel.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  justify-content: center;
+}
+
+.meldingen-cluster.meldingen-cluster {
+  display: flex;
+}

@@ -8,7 +8,7 @@ import { AssetFeature, getContainerFeatureIcon } from './getContainerFeatureIcon
 import { NotificationType } from '../types'
 import { Coordinates } from 'apps/melding-form/src/types'
 
-import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import './cluster.css'
 
 export const MAX_ASSETS = 5
 
@@ -43,7 +43,19 @@ export const addAssetLayerToMap = ({
 
   assetLayerRef.current?.remove()
 
-  const markerClusterGroup = L.markerClusterGroup() as L.MarkerClusterGroup
+  const markerClusterGroup = L.markerClusterGroup({
+    iconCreateFunction: (cluster) => {
+      var markers = cluster.getAllChildMarkers()
+
+      return L.divIcon({
+        html: markers.length.toString(),
+        className: 'meldingen-cluster',
+        iconSize: [70, 70],
+        iconAnchor: [35, 35],
+      })
+    },
+    showCoverageOnHover: false,
+  }) as L.MarkerClusterGroup
 
   assetList.forEach((feature) => {
     if (!feature.geometry || feature.geometry.type !== 'Point') return
