@@ -9,7 +9,7 @@ import {
   MeldingOutput,
 } from '@meldingen/api-client'
 
-import { formatAddressFromMeldingData } from '../_utils/formatAddressFromMeldingData'
+import { getFullNLAddress } from '../_utils/getFullNLAddress'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 export const getPrimaryFormSummary = async (description: string) => {
@@ -117,7 +117,7 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
 }
 
 export const getLocationSummary = (t: (key: string) => string, meldingData: MeldingOutput) => {
-  const address = formatAddressFromMeldingData(meldingData) || t('errors.no-location')
+  const address = getFullNLAddress(meldingData) || t('errors.no-location')
 
   return {
     key: 'location',
