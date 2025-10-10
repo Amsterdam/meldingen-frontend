@@ -180,7 +180,11 @@ export const melding: MeldingOutput = {
     updated_at: '2025-07-15T09:43:46Z',
     name: 'container',
   },
-  geo_location: null,
+  geo_location: {
+    type: 'Feature',
+    geometry: { type: 'Point', coordinates: [52.370216, 4.895168] },
+    properties: {},
+  },
   email: 'email@email.email',
   phone: '0612345678',
   street: 'Oudezijds Voorburgwal',
