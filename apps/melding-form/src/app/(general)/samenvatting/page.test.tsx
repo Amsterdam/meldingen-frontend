@@ -6,7 +6,7 @@ import { Summary } from './Summary'
 import { additionalQuestions, melding, textAreaComponent } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
-import { mockCookies, mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 import { Blob } from 'buffer'
 
@@ -39,11 +39,7 @@ describe('Page', () => {
       ),
     )
 
-    mockCookies({
-      id: '123',
-      token: 'test-token',
-      location: JSON.stringify({ name: 'Test address' }),
-    })
+    mockIdAndTokenCookies()
 
     const PageComponent = await Page()
 
@@ -90,7 +86,7 @@ describe('Page', () => {
         location: {
           key: 'location',
           term: 'location-label',
-          description: 'Test address',
+          description: 'Oudezijds Voorburgwal 300A, 1012GL Amsterdam',
         },
         primaryForm: primaryForm,
       },
