@@ -25,7 +25,7 @@ type Props = {
 export const Location = ({ address, prevPage }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [isPending, startTransition] = useTransition()
+  const [, startTransition] = useTransition()
 
   const [{ systemError, validationErrors }, formAction] = useActionState(postLocationForm, initialState)
 
@@ -85,9 +85,9 @@ export const Location = ({ address, prevPage }: Props) => {
           </StandaloneLink>
         </NextLink>
 
-        <SubmitButton onClick={handleOnClick} disabled={isPending}>
-          {t('submit-button')}
-        </SubmitButton>
+        <div>
+          <SubmitButton onClick={handleOnClick}>{t('submit-button')}</SubmitButton>
+        </div>
       </main>
     </>
   )
