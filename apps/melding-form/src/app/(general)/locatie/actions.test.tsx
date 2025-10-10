@@ -6,7 +6,7 @@ import type { Mock } from 'vitest'
 import { postLocationForm } from './actions'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
-import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+import { mockCookies, mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -42,20 +42,7 @@ describe('postLocationForm', () => {
         HttpResponse.json('Error message', { status: 500 }),
       ),
     )
-    ;(cookies as Mock).mockReturnValue({
-      get: (name: string) => {
-        if (name === 'id') {
-          return { value: '123' }
-        }
-        if (name === 'token') {
-          return { value: 'test-token' }
-        }
-        if (name === 'address') {
-          return { value: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam' }
-        }
-        return undefined
-      },
-    })
+    mockCookies({ id: '123', token: 'test-token', address: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam' })
 
     const result = await postLocationForm()
 
@@ -63,20 +50,7 @@ describe('postLocationForm', () => {
   })
 
   it('redirects to /bijlage when the form is submitted successfully', async () => {
-    ;(cookies as Mock).mockReturnValue({
-      get: (name: string) => {
-        if (name === 'id') {
-          return { value: '123' }
-        }
-        if (name === 'token') {
-          return { value: 'test-token' }
-        }
-        if (name === 'address') {
-          return { value: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam' }
-        }
-        return undefined
-      },
-    })
+    mockCookies({ id: '123', token: 'test-token', address: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam' })
 
     await postLocationForm()
 
