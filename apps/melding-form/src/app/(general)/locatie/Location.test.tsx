@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 import type { Mock } from 'vitest'
 
@@ -100,5 +101,20 @@ describe('Location', () => {
     const link = screen.getByRole('link', { name: 'link.with-location' })
 
     expect(link).toBeInTheDocument()
+  })
+
+  it('calls formAction when the link is clicked', async () => {
+    const user = userEvent.setup()
+
+    const formAction = vi.fn()
+    ;(useActionState as Mock).mockReturnValue([{}, formAction])
+
+    render(<Location {...defaultProps} />)
+
+    const button = screen.getByRole('button', { name: 'submit-button' })
+
+    await user.click(button)
+
+    expect(formAction).toHaveBeenCalled()
   })
 })

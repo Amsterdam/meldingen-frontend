@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
 import { saveAssetsAndCoordinates } from './actions'
+import { containerAssets } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockCookies } from 'apps/melding-form/src/mocks/utils'
@@ -27,7 +28,7 @@ describe('saveAssetsAndCoordinates', () => {
     formData.set('address', address)
     formData.set('coordinates', coordinates)
 
-    await saveAssetsAndCoordinates({ selectedAssets: [] }, undefined, formData)
+    await saveAssetsAndCoordinates({ selectedAssets: containerAssets }, undefined, formData)
 
     expect(mockSetCookie).toHaveBeenCalledWith('address', address)
     expect(redirect).toHaveBeenCalledWith('/locatie')
