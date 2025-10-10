@@ -1,4 +1,4 @@
-import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
+import { MeldingOutput } from '@meldingen/api-client'
 
 type ShortAddressInput = Pick<MeldingOutput, 'street' | 'house_number' | 'house_number_addition'>
 type FullAddressInput = Pick<
