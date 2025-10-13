@@ -17,7 +17,7 @@ export const postLocationForm = async () => {
 
   const t = await getTranslations('location')
 
-  // Return validation error if coordinates are not supplied
+  // Return validation error if address is not supplied
   if (!address) {
     return {
       validationErrors: [
