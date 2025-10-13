@@ -27,6 +27,18 @@ export type Props = {
   t: TranslationFunction
 }
 
+export const iconCreateFunction = (cluster: L.MarkerCluster) => {
+  // Cluster markers should not be keyboard accessible
+  cluster.options.keyboard = false
+
+  return L.divIcon({
+    html: cluster.getChildCount().toString(),
+    className: 'meldingen-cluster',
+    iconSize: [70, 70],
+    iconAnchor: [35, 35],
+  })
+}
+
 export const addAssetLayerToMap = ({
   assetLayerRef,
   assetList,
@@ -44,17 +56,7 @@ export const addAssetLayerToMap = ({
   assetLayerRef.current?.remove()
 
   const markerClusterGroup = L.markerClusterGroup({
-    iconCreateFunction: (cluster) => {
-      // Cluster markers should not be keyboard accessible
-      cluster.options.keyboard = false
-
-      return L.divIcon({
-        html: cluster.getChildCount().toString(),
-        className: 'meldingen-cluster',
-        iconSize: [70, 70],
-        iconAnchor: [35, 35],
-      })
-    },
+    iconCreateFunction,
     showCoverageOnHover: false,
   }) as L.MarkerClusterGroup
 
