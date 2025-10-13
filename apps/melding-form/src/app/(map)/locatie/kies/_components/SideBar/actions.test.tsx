@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
-import { saveAssetsAndCoordinates } from './actions'
+import { postCoordinatesAndAssets } from './actions'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
@@ -15,7 +15,7 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
-describe('saveAssetsAndCoordinates', () => {
+describe('postCoordinatesAndAssets', () => {
   const mockSetCookie = vi.fn()
 
   mockCookies({ id: '123', token: 'test-token' }, mockSetCookie)
@@ -28,7 +28,7 @@ describe('saveAssetsAndCoordinates', () => {
     formData.set('address', address)
     formData.set('coordinates', coordinates)
 
-    await saveAssetsAndCoordinates({ selectedAssets: containerAssets }, undefined, formData)
+    await postCoordinatesAndAssets({ selectedAssets: containerAssets }, undefined, formData)
 
     expect(mockSetCookie).toHaveBeenCalledWith('address', address)
     expect(redirect).toHaveBeenCalledWith('/locatie')
@@ -40,7 +40,7 @@ describe('saveAssetsAndCoordinates', () => {
     const formData = new FormData()
     formData.set('address', address)
 
-    await saveAssetsAndCoordinates({ selectedAssets: [] }, undefined, formData)
+    await postCoordinatesAndAssets({ selectedAssets: [] }, undefined, formData)
 
     expect(mockSetCookie).toHaveBeenCalledWith('address', address)
     expect(redirect).toHaveBeenCalledWith('/locatie')
@@ -60,7 +60,7 @@ describe('saveAssetsAndCoordinates', () => {
     const formData = new FormData()
     formData.set('address', address)
 
-    const result = await saveAssetsAndCoordinates({ selectedAssets: [] }, undefined, formData)
+    const result = await postCoordinatesAndAssets({ selectedAssets: [] }, undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'errors.pdok-no-address-found' })
   })
@@ -71,7 +71,7 @@ describe('saveAssetsAndCoordinates', () => {
     const formData = new FormData()
     formData.set('address', 'Amstel 1, Amsterdam')
 
-    const result = await saveAssetsAndCoordinates({ selectedAssets: [] }, undefined, formData)
+    const result = await postCoordinatesAndAssets({ selectedAssets: [] }, undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'PDOK API error' })
   })
@@ -79,7 +79,7 @@ describe('saveAssetsAndCoordinates', () => {
   it('returns an error message if no address is provided', async () => {
     const formData = new FormData()
 
-    const result = await saveAssetsAndCoordinates({ selectedAssets: [] }, undefined, formData)
+    const result = await postCoordinatesAndAssets({ selectedAssets: [] }, undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'errors.no-location' })
   })

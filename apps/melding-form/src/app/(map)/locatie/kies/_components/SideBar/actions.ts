@@ -10,7 +10,7 @@ import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoor
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam'
 
-export const saveAssetsAndCoordinates = async (
+export const postCoordinatesAndAssets = async (
   { selectedAssets }: { selectedAssets: Feature[] },
   _: unknown,
   formData: FormData,

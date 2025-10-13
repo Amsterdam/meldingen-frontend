@@ -1,9 +1,10 @@
 'use client'
 
 import { Heading, Paragraph, StandaloneLink } from '@amsterdam/design-system-react'
+import Form from 'next/form'
 import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useRef, useTransition } from 'react'
+import { useActionState, useEffect, useRef } from 'react'
 
 import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
@@ -25,18 +26,10 @@ type Props = {
 export const Location = ({ address, prevPage }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [, startTransition] = useTransition()
-
   const [{ systemError, validationErrors }, formAction] = useActionState(postLocationForm, initialState)
 
   const t = useTranslations('location')
   const tShared = useTranslations('shared')
-
-  const handleOnClick = () => {
-    startTransition(() => {
-      formAction()
-    })
-  }
 
   // Set focus on InvalidFormAlert when there are validation errors
   useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
@@ -85,9 +78,9 @@ export const Location = ({ address, prevPage }: Props) => {
           </StandaloneLink>
         </NextLink>
 
-        <div>
-          <SubmitButton onClick={handleOnClick}>{t('submit-button')}</SubmitButton>
-        </div>
+        <Form action={formAction} noValidate>
+          <SubmitButton>{t('submit-button')}</SubmitButton>
+        </Form>
       </main>
     </>
   )
