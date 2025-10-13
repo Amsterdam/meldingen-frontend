@@ -28,7 +28,7 @@ export default async () => {
   const t = await getTranslations('summary')
 
   const meldingData = await getMeldingData(meldingId, token)
-  const { text, email, phone, classification } = meldingData
+  const { classification, email, phone, text } = meldingData
 
   const primaryForm = await getPrimaryFormSummary(text)
   const attachments = await getAttachmentsSummary(t('attachments-label'), meldingId, token)
