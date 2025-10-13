@@ -30,7 +30,7 @@ describe('postLocationForm', () => {
     expect(redirect).toHaveBeenCalledWith('/cookie-storing')
   })
 
-  it('returns a validation error when address are missing', async () => {
+  it('returns a validation error when address is missing', async () => {
     const result = await postLocationForm()
 
     expect(result).toEqual({ validationErrors: [{ key: 'location-link', message: 'errors.no-location' }] })
