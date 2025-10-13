@@ -73,7 +73,7 @@ export const addAssetLayerToMap = ({
       keyboard: false,
     })
 
-    if (feature.id != null && (typeof feature.id === 'string' || typeof feature.id === 'number')) {
+    if (feature.id !== null && (typeof feature.id === 'string' || typeof feature.id === 'number')) {
       assetMarkersRef.current[feature.id] = marker
     }
 
