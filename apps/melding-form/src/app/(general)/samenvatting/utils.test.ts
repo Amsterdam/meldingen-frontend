@@ -258,7 +258,7 @@ describe('getLocationSummary', () => {
     })
   })
 
-  it('returns error message when location cookie could not be parsed', () => {
+  it('returns error message when melding does not have an address', () => {
     const result = getLocationSummary((key) => key, {} as MeldingOutput)
 
     expect(result).toEqual({
