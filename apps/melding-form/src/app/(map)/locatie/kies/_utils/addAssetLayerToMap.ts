@@ -1,6 +1,6 @@
 import L from 'leaflet'
 import 'leaflet.markercluster'
-import { Dispatch, MutableRefObject, SetStateAction } from 'react'
+import { Dispatch, RefObject, SetStateAction } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
@@ -15,9 +15,9 @@ export const MAX_ASSETS = 5
 type TranslationFunction = (key: string, values?: Record<string, string | number | Date> | undefined) => string
 
 export type Props = {
-  assetLayerRef: MutableRefObject<L.Layer | null>
+  assetLayerRef: RefObject<L.Layer | null>
   assetList: Feature[]
-  assetMarkersRef: MutableRefObject<Record<string, L.Marker>>
+  assetMarkersRef: RefObject<Record<string, L.Marker>>
   mapInstance?: L.Map | null
   notification: NotificationType | null
   selectedAssets: Feature[]
