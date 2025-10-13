@@ -22,7 +22,7 @@ export const postCoordinatesAndAssets = async (
 
   if (!meldingId || !token) return redirect('/cookie-storing')
 
-  const addressInput = formData.get('address')
+  const address = formData.get('address')
   const coordinates = formData.get('coordinates')
   const t = await getTranslations('select-location')
 
@@ -51,10 +51,10 @@ export const postCoordinatesAndAssets = async (
 
   let PDOKLocation = null
 
-  if (!addressInput) return { errorMessage: t('errors.no-location') }
+  if (!address) return { errorMessage: t('errors.no-location') }
 
   if (!coordinates) {
-    const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${addressInput}&${queryParams}`)
+    const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`)
 
     if (!res.ok) return { errorMessage: 'PDOK API error' }
 
@@ -69,9 +69,9 @@ export const postCoordinatesAndAssets = async (
 
   /** Save coordinates and address */
 
-  const address: string = coordinates ? addressInput : PDOKLocation.response.docs[0].weergavenaam
+  const addressCookie: string = coordinates ? address : PDOKLocation.response.docs[0].weergavenaam
 
-  cookieStore.set('address', address)
+  cookieStore.set('address', addressCookie)
 
   const parsedCoordinates = coordinates ? JSON.parse(coordinates as string) : PDOKCoordinates
 
