@@ -79,7 +79,7 @@ describe('Location', () => {
     expect(paragraph).toBeInTheDocument()
   })
 
-  it('renders the location data name when it is provided', () => {
+  it('renders an address when it is provided', () => {
     render(<Location {...defaultProps} address="Oudezijds Voorburgwal 300, 1012GL Amsterdam" />)
 
     const paragraph = screen.getByText('Oudezijds Voorburgwal 300, 1012GL Amsterdam')
