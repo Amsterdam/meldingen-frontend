@@ -27,7 +27,7 @@ export type Props = {
   t: TranslationFunction
 }
 
-export const iconCreateFunction = (cluster: L.MarkerCluster) => {
+export const createClusterIcon = (cluster: L.MarkerCluster) => {
   // Cluster markers should not be keyboard accessible
   cluster.options.keyboard = false
 
@@ -56,7 +56,7 @@ export const addAssetLayerToMap = ({
   assetLayerRef.current?.remove()
 
   const markerClusterGroup = L.markerClusterGroup({
-    iconCreateFunction,
+    iconCreateFunction: createClusterIcon,
     showCoverageOnHover: false,
   }) as L.MarkerClusterGroup
 

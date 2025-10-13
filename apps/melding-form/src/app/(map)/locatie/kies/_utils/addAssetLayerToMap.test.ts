@@ -3,7 +3,7 @@ import type { RefObject } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { addAssetLayerToMap, iconCreateFunction, MAX_ASSETS, type Props } from './addAssetLayerToMap'
+import { addAssetLayerToMap, createClusterIcon, MAX_ASSETS, type Props } from './addAssetLayerToMap'
 import { getContainerFeatureIcon } from './getContainerFeatureIcon'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
@@ -133,7 +133,7 @@ describe('addAssetLayerToMap', () => {
       options: {},
     } as unknown as L.MarkerCluster
 
-    const icon = iconCreateFunction(mockCluster)
+    const icon = createClusterIcon(mockCluster)
 
     expect(mockCluster.options.keyboard).toBe(false)
     expect(icon.options.html).toBe('7')
