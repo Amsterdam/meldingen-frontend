@@ -18,10 +18,10 @@
     "@headlessui/react": "2.2.9",
     "leaflet": "1.9.4",
     "next": "15.5.4",
-    "next-intl": "4.3.9"
+    "next-intl": "4.3.12"
   },
   "devDependencies": {
     "@types/geojson": "7946.0.16",
-    "@types/leaflet": "1.9.20"
+    "@types/leaflet": "1.9.21"
   }
 }
