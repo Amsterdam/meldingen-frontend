@@ -87,10 +87,7 @@ export const addAssetLayerToMap = ({
           return
         }
         setSelectedAssets((selectedList) => [...selectedList, feature as Feature])
-        setCoordinates({
-          lat,
-          lng,
-        })
+        setCoordinates({ lat, lng })
       }
       if (isSelected) {
         if (notification) {
