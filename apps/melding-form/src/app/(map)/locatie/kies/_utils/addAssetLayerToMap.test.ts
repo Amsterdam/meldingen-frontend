@@ -120,6 +120,29 @@ describe('addAssetLayerToMap', () => {
     expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
   })
 
+  it('resets coordinates when last selected asset is deselected by clicking marker', () => {
+    addAssetLayerToMap({ ...defaultProps, selectedAssets: [containerAssets[0]] })
+
+    const marker = defaultProps.assetMarkersRef.current[containerAssets[0].id!]
+    marker.fire('click')
+
+    expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
+    expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
+  })
+
+  it('sets address to second last selected asset when last selected asset is deselected by clicking marker', () => {
+    addAssetLayerToMap({ ...defaultProps, selectedAssets: containerAssets })
+
+    const marker = defaultProps.assetMarkersRef.current[containerAssets[0].id!]
+    marker.fire('click')
+
+    // @ts-expect-error an asset always has coordinates
+    const [y, x] = containerAssets[1].geometry.coordinates
+
+    expect(defaultProps.setCoordinates).toHaveBeenCalledWith({ lat: x, lng: y })
+    expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
+  })
+
   it('assigns marker to assetMarkersRef using feature id', () => {
     addAssetLayerToMap({ ...defaultProps })
 
