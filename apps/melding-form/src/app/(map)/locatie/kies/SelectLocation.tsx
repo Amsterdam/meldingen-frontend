@@ -5,15 +5,15 @@ import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/use
 import clsx from 'clsx'
 import L from 'leaflet'
 import dynamic from 'next/dynamic'
+import Form from 'next/form'
 import { useTranslations } from 'next-intl'
-import { useEffect, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { AssetList } from './_components/AssetList/AssetList'
-import { AssetListToggle } from './_components/AssetListToggle/AssetListToggle'
-import { Notification } from './_components/Map/components/Notification/Notification'
-import { SideBar } from './_components/SideBar/SideBar'
+import { AssetList, AssetListToggle, Combobox, Notification, SideBar } from './_components'
+import { getAddressFromCoordinates } from './_utils'
+import { postCoordinatesAndAssets } from './actions'
 import { useAssetLayer } from './hooks/useAssetLayer'
 import { NotificationType } from './types'
 import type { Coordinates } from 'apps/melding-form/src/types'
@@ -30,16 +30,42 @@ type Props = {
   coordinates?: Coordinates
 }
 
+const initialState: { errorMessage?: string } = {}
+
+const fetchAndSetAddress = async (
+  coordinates: Coordinates,
+  setAddress: (address: string) => void,
+  t: ReturnType<typeof useTranslations>,
+) => {
+  try {
+    const result = await getAddressFromCoordinates({
+      lat: coordinates.lat,
+      lng: coordinates.lng,
+    })
+    if (result) {
+      setAddress(result)
+    } else {
+      setAddress(t('combo-box.no-address'))
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error)
+  }
+}
+
 export const SelectLocation = ({ classification, coordinates: coordinatesFromServer }: Props) => {
-  const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
-  const [showAssetList, setShowAssetList] = useState(false)
+  const [address, setAddress] = useState('')
   const [assetList, setAssetList] = useState<Feature[]>([])
+  const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
-  const [selectedAssets, setSelectedAssets] = useState<Feature[]>([])
   const [notification, setNotification] = useState<NotificationType | null>(null)
+  const [selectedAssets, setSelectedAssets] = useState<Feature[]>([])
+  const [showAssetList, setShowAssetList] = useState(false)
+
+  const postCoordinatesAndAssetsWithSelectedAssets = postCoordinatesAndAssets.bind(null, { selectedAssets })
+  const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssetsWithSelectedAssets, initialState)
 
   const t = useTranslations('select-location')
-
   const isWideWindow = useIsAfterBreakpoint('wide')
 
   useAssetLayer({
@@ -55,20 +81,32 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
   })
 
   useEffect(() => {
-    // Hide mobile asset list view when resizing to larger screens
-    if (isWideWindow) {
-      setShowAssetList(false)
-    }
+    if (isWideWindow) setShowAssetList(false)
   }, [isWideWindow])
+
+  useEffect(() => {
+    if (!coordinates) {
+      setAddress('')
+      return
+    }
+    fetchAndSetAddress(coordinates, setAddress, t)
+  }, [coordinates, t])
 
   return (
     <div className={styles.grid}>
-      <SideBar
-        selectedAssets={selectedAssets}
-        coordinates={coordinates}
-        setCoordinates={setCoordinates}
-        setSelectedAssets={setSelectedAssets}
-      />
+      <SideBar>
+        <Form action={formAction} id="address" noValidate>
+          <Combobox
+            address={address}
+            errorMessage={errorMessage}
+            setAddress={setAddress}
+            setCoordinates={setCoordinates}
+            setSelectedAssets={setSelectedAssets}
+          />
+          <input type="hidden" name="coordinates" defaultValue={address ? JSON.stringify(coordinates) : undefined} />
+        </Form>
+      </SideBar>
+
       <div className={clsx(styles.assetList, showAssetList && styles.showAssetList)}>
         {notification && !isWideWindow && (
           <Notification

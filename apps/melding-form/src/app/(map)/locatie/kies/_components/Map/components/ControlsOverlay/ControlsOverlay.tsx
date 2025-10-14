@@ -4,7 +4,7 @@ import type L from 'leaflet'
 import { useTranslations } from 'next-intl'
 
 import { NotificationType } from '../../../../types'
-import { Notification } from '../../components/Notification/Notification'
+import { Notification } from '../../../Notification/Notification'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './ControlsOverlay.module.css'
