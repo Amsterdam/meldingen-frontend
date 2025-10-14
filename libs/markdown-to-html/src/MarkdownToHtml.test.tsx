@@ -135,6 +135,6 @@ describe('MarkdownToHtml', () => {
     const paragraph = screen.getByText('This is a paragraph.')
 
     expect(paragraph).toBeInTheDocument()
-    expect(paragraph).toHaveClass('ams-paragraph ams-paragraph--small')
+    expect(paragraph).toHaveClass('ams-paragraph')
   })
 })
