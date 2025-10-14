@@ -66,7 +66,7 @@ export const postCoordinatesAndAssets = async (
 
   if (!coordinates && !PDOKCoordinates) return { errorMessage: 'No coordinates found' }
 
-  /** Save coordinates and address */
+  /** Post coordinates and address */
 
   const addressCookie: string = coordinates ? address : PDOKLocation.response.docs[0].weergavenaam
 
