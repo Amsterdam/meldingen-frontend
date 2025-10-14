@@ -23,11 +23,11 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(screen.getByText('Location Component')).toBeInTheDocument()
-    expect(Location).toHaveBeenCalledWith({ prevPage: '/', locationData: undefined }, undefined)
+    expect(Location).toHaveBeenCalledWith({ prevPage: '/', address: undefined }, undefined)
   })
 
   it('renders Location component with props from cookies', async () => {
-    mockCookies({ lastPanelPath: '/previous', location: JSON.stringify({ lat: 52.370216, lng: 4.895168 }) })
+    mockCookies({ lastPanelPath: '/previous', address: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam' })
 
     const PageComponent = await Page()
 
@@ -35,7 +35,7 @@ describe('Page', () => {
 
     expect(screen.getByText('Location Component')).toBeInTheDocument()
     expect(Location).toHaveBeenCalledWith(
-      { prevPage: '/previous', locationData: { lat: 52.370216, lng: 4.895168 } },
+      { prevPage: '/previous', address: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam' },
       undefined,
     )
   })

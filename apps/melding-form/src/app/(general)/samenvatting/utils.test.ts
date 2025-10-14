@@ -1,5 +1,7 @@
 import { http, HttpResponse } from 'msw'
 
+import type { MeldingOutput } from '@meldingen/api-client'
+
 import {
   getAdditionalQuestionsSummary,
   getAttachmentsSummary,
@@ -7,7 +9,7 @@ import {
   getLocationSummary,
   getPrimaryFormSummary,
 } from './utils'
-import { additionalQuestions } from 'apps/melding-form/src/mocks/data'
+import { additionalQuestions, melding } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
@@ -247,21 +249,17 @@ describe('getAttachmentSummary', () => {
 
 describe('getLocationSummary', () => {
   it('returns correct location summary', () => {
-    const mockLocation = JSON.stringify({
-      name: 'Nieuwmarkt 23, 1011JS Amsterdam',
-      coordinates: { lat: 52.372314346390816, lng: 4.900889396667481 },
-    })
-    const result = getLocationSummary((key) => key, mockLocation)
+    const result = getLocationSummary((key) => key, melding)
 
     expect(result).toEqual({
       key: 'location',
       term: 'location-label',
-      description: 'Nieuwmarkt 23, 1011JS Amsterdam',
+      description: 'Oudezijds Voorburgwal 300A, 1012GL Amsterdam',
     })
   })
 
-  it('returns error message when location cookie could not be parsed', () => {
-    const result = getLocationSummary((key) => key)
+  it('returns error message when melding does not have an address', () => {
+    const result = getLocationSummary((key) => key, {} as MeldingOutput)
 
     expect(result).toEqual({
       key: 'location',

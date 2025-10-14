@@ -18,6 +18,7 @@ export const ENDPOINTS = {
   PATCH_MELDING_BY_MELDING_ID_LOCATION: 'http://localhost:8000/melding/:id/location',
 
   POST_MELDING: 'http://localhost:8000/melding',
+  POST_MELDING_BY_MELDING_ID_ASSET: 'http://localhost:8000/melding/:id/asset',
   POST_MELDING_BY_MELDING_ID_ATTACHMENT: 'http://localhost:8000/melding/:id/attachment',
   POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID: 'http://localhost:8000/melding/:melding_id/question/:question_id',
 
