@@ -48,7 +48,7 @@ describe('getFullNLAddress', () => {
     expect(address).toBeUndefined()
   })
 
-  it('returns address without house_number_addition when does not exist', () => {
+  it('returns address without house_number_addition when it does not exist', () => {
     const address = getFullNLAddress({
       street: 'Damrak',
       house_number: 1,
