@@ -27,7 +27,7 @@ export const postCoordinatesAndAssets = async (
   const coordinates = formData.get('coordinates')
   const t = await getTranslations('select-location')
 
-  /** Save Assets */
+  /** Post assets */
 
   if (selectedAssets.length > 0) {
     for (const asset of selectedAssets) {
