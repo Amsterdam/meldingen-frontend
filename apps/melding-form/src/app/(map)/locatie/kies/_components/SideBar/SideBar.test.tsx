@@ -16,6 +16,7 @@ vi.mock('react', async (importOriginal) => {
 const defaultProps: Props = {
   setCoordinates: vi.fn(),
   setSelectedAssets: vi.fn(),
+  selectedAssets: [],
 }
 
 describe('SideBar', () => {

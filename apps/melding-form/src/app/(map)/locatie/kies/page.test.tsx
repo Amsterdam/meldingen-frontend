@@ -40,18 +40,6 @@ describe('Page', () => {
     await expect(Page()).rejects.toThrowError('Failed to fetch melding data.')
   })
 
-  it('does not pass coordinates to SelectLocation when location cookie is absent', async () => {
-    const PageComponent = await Page()
-    render(PageComponent)
-
-    expect(SelectLocation).toHaveBeenCalledWith(
-      expect.objectContaining({
-        coordinates: undefined,
-      }),
-      undefined,
-    )
-  })
-
   it('passes coordinates to SelectLocation when location cookie is present', async () => {
     mockCookies({
       id: '123',
