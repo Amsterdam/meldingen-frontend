@@ -71,7 +71,7 @@ export const Location = ({ locationData, prevPage }: Props) => {
 
         <FormHeader title={t('title')} step={t('step')} />
 
-        <Heading className="ams-mb-s" level={1} size="level-4">
+        <Heading className="ams-mb-s" level={1} size="level-3">
           {t('question')}
         </Heading>
         <Paragraph className="ams-mb-s">{locationData?.name ?? t('description')}</Paragraph>

@@ -68,7 +68,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
         />
       )}
       <FormHeader title={t('title')} step={t('step')} />
-      <Heading level={1} size="level-4" className="ams-mb-m">
+      <Heading level={1} size="level-3" className="ams-mb-m">
         {t('question')}
       </Heading>
       <MarkdownToHtml className="ams-mb-m">{t('description')}</MarkdownToHtml>

@@ -56,7 +56,7 @@ const richTextMarkdownToHtmlMap = {
 }
 
 const descriptionMarkdownToHtmlMap = {
-  p: ({ children }: PropsWithChildren) => <Paragraph size="small">{children}</Paragraph>,
+  p: ({ children }: PropsWithChildren) => <Paragraph>{children}</Paragraph>,
 }
 
 const richTextAllowedElements = ['a', 'br', 'em', 'h2', 'h3', 'h4', 'li', 'ol', 'p', 'strong', 'ul']

@@ -63,10 +63,10 @@ export const SideBar = ({ coordinates, setCoordinates, setSelectedAssets }: Prop
         <BackLink className="ams-mb-s" href="/locatie">
           {t('back-link')}
         </BackLink>
-        <Heading level={1} size="level-4">
+        <Heading level={1} size="level-2">
           {t('title')}
         </Heading>
-        <Paragraph size="small">{t('description')}</Paragraph>
+        <Paragraph>{t('description')}</Paragraph>
       </div>
       <Form action={formAction} id="address" noValidate>
         <Combobox

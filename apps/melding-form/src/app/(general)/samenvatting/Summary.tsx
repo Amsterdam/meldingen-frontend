@@ -59,7 +59,7 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
       <main>
         {Boolean(systemError) && <SystemErrorAlert />}
         <FormHeader title={t('title')} step={t('step')} />
-        <Heading level={1} size="level-4" className="ams-mb-s">
+        <Heading level={1} size="level-3" className="ams-mb-s">
           {t('main-title')}
         </Heading>
         <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
