@@ -49,36 +49,36 @@ vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () =>
 }))
 
 describe('SelectLocation', () => {
-  it('should render', () => {
+  it('renders', () => {
     const { container } = render(<SelectLocation />)
 
-    const sideBar = container.querySelector('[class*="container"]')
-    const assetList = container.querySelector('[class*="assetList"]')
+    const sideBarTop = container.querySelectorAll('[class*="_container"]')[0]
+    const sideBarBottom = container.querySelector('[class*="_hide"]')
     const map = container.querySelector('[class*="map"]')
     const submitButtonMobile = screen.queryByRole('button', { name: 'submit-button.mobile' })
 
-    expect(sideBar).toBeInTheDocument()
-    expect(assetList).toBeInTheDocument()
+    expect(sideBarTop).toBeInTheDocument()
+    expect(sideBarBottom).toBeInTheDocument()
     expect(map).toBeInTheDocument()
     expect(submitButtonMobile).toBeInTheDocument()
   })
 
-  it('adds a class name to the asset list container when showAssetList is true', async () => {
+  it('toggles a class name on SideBarBottom', async () => {
     ;(useIsAfterBreakpoint as Mock).mockImplementationOnce(() => true)
 
     const { container } = render(<SelectLocation />)
 
-    const div = container.querySelector('[class*="showAssetList"]')
+    const SideBarBottom = container.querySelector('[class*="_hide"]')
 
-    expect(div).not.toBeInTheDocument()
+    expect(SideBarBottom).toBeInTheDocument()
 
     const toggleButton = screen.getByRole('button', { name: 'Toggle' })
 
     await userEvent.click(toggleButton)
 
-    const divWithExtraClass = container.querySelector('[class*="showAssetList"]')
+    const SideBarBottomVisible = container.querySelector('[class*="_hide"]')
 
-    expect(divWithExtraClass).toBeInTheDocument()
+    expect(SideBarBottomVisible).toBeInTheDocument()
   })
 
   it('renders the notification when it is set in AssetList and closes on click', async () => {
@@ -100,7 +100,7 @@ describe('SelectLocation', () => {
     expect(screen.queryByText('notification.title')).not.toBeInTheDocument()
   })
 
-  it('should show an address based on provided coordinates ', async () => {
+  it('shows an address based on provided coordinates ', async () => {
     render(<SelectLocation coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
 
     await waitFor(() => {
@@ -108,7 +108,7 @@ describe('SelectLocation', () => {
     })
   })
 
-  it('should show a generic label if no address is found within 30 meters of the coordinates', async () => {
+  it('shows a generic label if no address is found within 30 meters of the coordinates', async () => {
     server.use(
       http.get(ENDPOINTS.PDOK_REVERSE, () =>
         HttpResponse.json({

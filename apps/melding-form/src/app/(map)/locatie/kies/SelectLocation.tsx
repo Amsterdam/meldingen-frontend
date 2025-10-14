@@ -11,7 +11,7 @@ import { useActionState, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { AssetList, AssetListToggle, Combobox, Notification, SideBar } from './_components'
+import { AssetList, AssetListToggle, Combobox, Notification, SideBarBottom, SideBarTop } from './_components'
 import { getAddressFromCoordinates } from './_utils'
 import { postCoordinatesAndAssets } from './actions'
 import { useAssetLayer } from './hooks/useAssetLayer'
@@ -94,7 +94,7 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
 
   return (
     <div className={styles.grid}>
-      <SideBar>
+      <SideBarTop>
         <Form action={formAction} id="address" noValidate>
           <Combobox
             address={address}
@@ -105,9 +105,8 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
           />
           <input type="hidden" name="coordinates" defaultValue={address ? JSON.stringify(coordinates) : undefined} />
         </Form>
-      </SideBar>
-
-      <div className={clsx(styles.assetList, showAssetList && styles.showAssetList)}>
+      </SideBarTop>
+      <SideBarBottom isHidden={!showAssetList}>
         {notification && !isWideWindow && (
           <Notification
             closeButtonLabel={notification.closeButtonLabel}
@@ -128,7 +127,7 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
           {t('submit-button.desktop')}
         </Button>
-      </div>
+      </SideBarBottom>
       <div className={styles.map}>
         <Map
           coordinates={coordinates}

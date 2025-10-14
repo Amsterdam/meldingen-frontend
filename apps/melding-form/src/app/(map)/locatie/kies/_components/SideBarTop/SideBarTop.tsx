@@ -4,9 +4,9 @@ import { PropsWithChildren } from 'react'
 
 import { BackLink } from 'apps/melding-form/src/app/(general)/_components/BackLink/BackLink'
 
-import styles from './SideBar.module.css'
+import styles from './SideBarTop.module.css'
 
-export const SideBar = ({ children }: PropsWithChildren) => {
+export const SideBarTop = ({ children }: PropsWithChildren) => {
   const t = useTranslations('select-location')
 
   return (

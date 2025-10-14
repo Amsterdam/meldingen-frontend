@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react'
 
-import { SideBar } from './SideBar'
+import { SideBarTop } from './SideBarTop'
 
-describe('SideBar', () => {
+describe('SideBarTop', () => {
   it('should render correctly', () => {
-    render(<SideBar />)
+    render(<SideBarTop />)
 
     const BackLink = screen.getByRole('link', { name: 'back-link' })
     const heading = screen.getByRole('heading', { name: 'title' })
