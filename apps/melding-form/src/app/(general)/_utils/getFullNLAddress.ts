@@ -7,7 +7,7 @@ type FullAddressInput = Pick<
 >
 
 /** This is a copy from the util in the backoffice */
-export const getShortNLAddress = ({ street, house_number, house_number_addition }: ShortAddressInput) => {
+const getShortNLAddress = ({ street, house_number, house_number_addition }: ShortAddressInput) => {
   if (!street || !house_number) return undefined
 
   const addition = house_number_addition ? house_number_addition : ''
