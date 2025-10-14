@@ -1,7 +1,9 @@
 import L from 'leaflet'
-import type { MutableRefObject } from 'react'
+import type { RefObject } from 'react'
 
-import { addAssetLayerToMap, MAX_ASSETS, type Props } from './addAssetLayerToMap'
+import { Feature } from '@meldingen/api-client'
+
+import { addAssetLayerToMap, createClusterIcon, MAX_ASSETS, type Props } from './addAssetLayerToMap'
 import { getContainerFeatureIcon } from './getContainerFeatureIcon'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
@@ -12,9 +14,9 @@ vi.mock('./getContainerFeatureIcon', () => ({
 const removeMock = vi.fn()
 
 const defaultProps: Props = {
-  assetLayerRef: {} as MutableRefObject<L.Layer | null>,
+  assetLayerRef: {} as RefObject<L.Layer | null>,
   assetList: containerAssets,
-  assetMarkersRef: { current: {} } as MutableRefObject<Record<string, L.Marker>>,
+  assetMarkersRef: { current: {} } as RefObject<Record<string, L.Marker>>,
   mapInstance: {} as L.Map,
   notification: null,
   selectedAssets: [],
@@ -35,7 +37,7 @@ describe('addAssetLayerToMap', () => {
     defaultProps.mapInstance = L.map(container)
     defaultProps.assetLayerRef = {
       current: { remove: removeMock } as unknown as L.Layer,
-    } as MutableRefObject<L.Layer | null>
+    } as RefObject<L.Layer | null>
   })
 
   it('returns early when mapInstance is not provided', () => {
@@ -145,5 +147,50 @@ describe('addAssetLayerToMap', () => {
     addAssetLayerToMap({ ...defaultProps })
 
     expect(defaultProps.assetMarkersRef.current[containerAssets[0].id!]).toBeInstanceOf(L.Marker)
+  })
+
+  it('creates cluster icons with correct properties and disables keyboard', () => {
+    // Create a mock cluster object
+    const mockCluster = {
+      getChildCount: () => 7,
+      options: {},
+    } as unknown as L.MarkerCluster
+
+    const icon = createClusterIcon(mockCluster)
+
+    expect(mockCluster.options.keyboard).toBe(false)
+    expect(icon.options.html).toBe('7')
+    expect(icon.options.className).toBe('meldingen-cluster')
+    expect(icon.options.iconSize).toEqual([70, 70])
+    expect(icon.options.iconAnchor).toEqual([35, 35])
+  })
+
+  it('skips features without geometry or with non-Point geometry', () => {
+    const assetList = [
+      { ...containerAssets[0], geometry: null },
+      {
+        ...containerAssets[0],
+        geometry: {
+          type: 'LineString',
+          coordinates: [
+            [0, 0],
+            [1, 1],
+          ],
+        },
+      },
+      { ...containerAssets[0], geometry: { type: 'Point', coordinates: [1, 2] } },
+    ] as Feature[]
+
+    const assetMarkersRef = { current: {} } as RefObject<Record<string, L.Marker>>
+
+    addAssetLayerToMap({
+      ...defaultProps,
+      assetList,
+      assetMarkersRef,
+    })
+
+    // Only the Point geometry should result in a marker
+    expect(Object.keys(assetMarkersRef.current)).toHaveLength(1)
+    expect(assetMarkersRef.current[assetList[2].id!]).toBeInstanceOf(L.Marker)
   })
 })
