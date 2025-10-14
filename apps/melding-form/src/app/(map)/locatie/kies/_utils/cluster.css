@@ -1,0 +1,16 @@
+.meldingen-cluster {
+  align-items: center;
+  background-image: url('/afval/cluster.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: var(--ams-typography-font-family);
+  font-size: var(--ams-typography-heading-3-font-size);
+  font-weight: var(--ams-typography-heading-font-weight);
+  justify-content: center;
+  line-height: var(--ams-typography-heading-3-line-height);
+}
+
+/* Increase specificity, to avoid conflicts with native Leaflet styles */
+.meldingen-cluster.meldingen-cluster {
+  display: flex;
+}
