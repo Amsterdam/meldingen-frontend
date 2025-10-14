@@ -3,8 +3,3 @@ body {
   margin-block: 0;
   margin-inline: 0;
 }
-
-/* Temp override for misaligned icons. Can be removed when updating to ADS > 0.15. */
-.ams-icon {
-  align-items: center;
-}
