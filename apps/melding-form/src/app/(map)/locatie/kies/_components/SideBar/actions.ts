@@ -7,6 +7,7 @@ import { getTranslations } from 'next-intl/server'
 import { type Feature, patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
 
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
+import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam'
 
@@ -29,10 +30,9 @@ export const postCoordinatesAndAssets = async (
   /** Save Assets */
 
   if (selectedAssets.length > 0) {
-    selectedAssets.forEach(async (asset) => {
+    for (const asset of selectedAssets) {
       const { error } = await postMeldingByMeldingIdAsset({
         body: {
-          // TODO: get asset_type_id from asset and fix asset.id type
           external_id: String(asset.id),
           asset_type_id: 1,
         },
@@ -41,10 +41,9 @@ export const postCoordinatesAndAssets = async (
       })
 
       if (error) {
-        // eslint-disable-next-line no-console
-        console.error('Error saving asset:', error)
+        return { errorMessage: handleApiError(error) }
       }
-    })
+    }
   }
 
   /** Fallback to fetch address when Javascript is not working in the browser */
@@ -86,8 +85,7 @@ export const postCoordinatesAndAssets = async (
   })
 
   if (error) {
-    // eslint-disable-next-line no-console
-    console.error('Failed updating state machine:', error)
+    return { errorMessage: handleApiError(error) }
   }
 
   return redirect('/locatie')

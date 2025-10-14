@@ -83,4 +83,42 @@ describe('postCoordinatesAndAssets', () => {
 
     expect(result).toEqual({ errorMessage: 'errors.no-location' })
   })
+
+  it('returns an error when postMeldingByMeldingIdAsset fails', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ASSET, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    const address = 'Oudezijds Voorburgwal 300, Amsterdam'
+    const coordinates = '{"lat":52.37065901,"lng":4.89367338}'
+
+    const formData = new FormData()
+    formData.set('address', address)
+    formData.set('coordinates', coordinates)
+
+    const result = await postCoordinatesAndAssets({ selectedAssets: containerAssets }, undefined, formData)
+
+    expect(result).toEqual({ errorMessage: 'Error message' })
+  })
+
+  it('returns an error when patchMeldingByMeldingIdLocation fails', async () => {
+    server.use(
+      http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_LOCATION, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    const address = 'Oudezijds Voorburgwal 300, Amsterdam'
+    const coordinates = '{"lat":52.37065901,"lng":4.89367338}'
+
+    const formData = new FormData()
+    formData.set('address', address)
+    formData.set('coordinates', coordinates)
+
+    const result = await postCoordinatesAndAssets({ selectedAssets: containerAssets }, undefined, formData)
+
+    expect(result).toEqual({ errorMessage: 'Error message' })
+  })
 })
