@@ -24,7 +24,7 @@ export const fetchAndSetAddress = async (
 ) => {
   try {
     const result = await getAddressFromCoordinates({ lat, lng })
-    setAddress(result || t('combo-box.no-address'))
+    setAddress(result || t('no-address'))
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error)

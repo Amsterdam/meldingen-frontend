@@ -140,7 +140,7 @@ describe('AddressAndCoordinatesInputs', () => {
     )
 
     await waitFor(() => {
-      expect(screen.getByDisplayValue('combo-box.no-address')).toBeInTheDocument()
+      expect(screen.getByDisplayValue('no-address')).toBeInTheDocument()
     })
   })
 })

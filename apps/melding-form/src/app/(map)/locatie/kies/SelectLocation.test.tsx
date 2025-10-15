@@ -2,6 +2,7 @@ import { AlertProps } from '@amsterdam/design-system-react'
 import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useEffect } from 'react'
 import { Mock } from 'vitest'
 
 import { SelectLocation } from './SelectLocation'
@@ -12,22 +13,6 @@ const mockNotification = {
   heading: 'notification.title',
   severity: 'error' as AlertProps['severity'],
 }
-
-vi.mock('react', async (importOriginal) => {
-  const actual = await importOriginal()
-  return {
-    ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
-  }
-})
-
-vi.mock('./_components/AssetListToggle/AssetListToggle', () => ({
-  AssetListToggle: vi.fn(({ setShowAssetList }) => (
-    <div>
-      <button onClick={() => setShowAssetList(true)}>Toggle</button>
-    </div>
-  )),
-}))
 
 vi.mock('./_components/AssetList/AssetList', () => ({
   AssetList: vi.fn(({ setNotification }) => (
@@ -43,6 +28,12 @@ vi.mock('./_components/Map/Map', () => ({
 
 vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
   default: vi.fn(),
+}))
+
+let useAssetLayerMock = vi.fn()
+
+vi.mock('./hooks/useAssetLayer', () => ({
+  useAssetLayer: (props: unknown) => useAssetLayerMock(props),
 }))
 
 describe('SelectLocation', () => {
@@ -61,6 +52,12 @@ describe('SelectLocation', () => {
   })
 
   it('toggles a class name on SideBarBottom', async () => {
+    useAssetLayerMock.mockImplementation((props) => {
+      useEffect(() => {
+        props.setAssetList?.([{ id: '1' }])
+      }, [])
+      return { assetList: props.assetList ?? [], setAssetList: props.setAssetList ?? (() => {}) }
+    })
     ;(useIsAfterBreakpoint as Mock).mockImplementationOnce(() => true)
 
     const { container } = render(<SelectLocation />)
@@ -69,7 +66,7 @@ describe('SelectLocation', () => {
 
     expect(SideBarBottom).toBeInTheDocument()
 
-    const toggleButton = screen.getByRole('button', { name: 'Toggle' })
+    const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
 
     await userEvent.click(toggleButton)
 
@@ -95,5 +92,58 @@ describe('SelectLocation', () => {
     await user.click(closeButton)
 
     expect(screen.queryByText('notification.title')).not.toBeInTheDocument()
+  })
+})
+
+describe('Asset list toggle button', () => {
+  it('renders nothing if assetList and selectedAssets are empty', () => {
+    useAssetLayerMock.mockImplementation((props) => {
+      useEffect(() => {
+        props.setAssetList?.([])
+      }, [])
+      return { assetList: props.assetList ?? [], setAssetList: props.setAssetList ?? (() => {}) }
+    })
+
+    render(<SelectLocation />)
+
+    const toggleButton = screen.queryByRole('button', { name: /toggle-button./ })
+
+    expect(toggleButton).not.toBeInTheDocument()
+  })
+
+  it('renders a button with a "list" label when there are assets and the asset list is not shown', () => {
+    useAssetLayerMock.mockImplementation((props) => {
+      useEffect(() => {
+        props.setAssetList?.([{ id: '1' }])
+      }, [])
+      return { assetList: props.assetList ?? [], setAssetList: props.setAssetList ?? (() => {}) }
+    })
+
+    render(<SelectLocation />)
+
+    const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
+
+    expect(toggleButton).toBeInTheDocument()
+  })
+
+  it('renders a button with a "map" label when pressing the toggle button', async () => {
+    const user = userEvent.setup()
+
+    useAssetLayerMock.mockImplementation((props) => {
+      useEffect(() => {
+        props.setAssetList?.([{ id: '1' }])
+      }, [])
+      return { assetList: props.assetList ?? [], setAssetList: props.setAssetList ?? (() => {}) }
+    })
+
+    render(<SelectLocation />)
+
+    const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
+
+    await user.click(toggleButton)
+
+    const toggleButtonMap = screen.getByRole('button', { name: 'toggle-button.map' })
+
+    expect(toggleButtonMap).toBeInTheDocument()
   })
 })

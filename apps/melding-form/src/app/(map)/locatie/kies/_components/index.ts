@@ -1,6 +1,5 @@
 export { AddressAndCoordinatesInputs } from './AddressAndCoordinatesInputs/AddressAndCoordinatesInputs'
 export { AssetList } from './AssetList/AssetList'
-export { AssetListToggle } from './AssetListToggle/AssetListToggle'
 export { Notification } from './Notification/Notification'
 export { SideBarBottom } from './SideBarBottom/SideBarBottom'
 export { SideBarTop } from './SideBarTop/SideBarTop'

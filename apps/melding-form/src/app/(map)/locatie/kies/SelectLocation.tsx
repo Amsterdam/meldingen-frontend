@@ -11,14 +11,7 @@ import { useActionState, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import {
-  AddressAndCoordinatesInputs,
-  AssetList,
-  AssetListToggle,
-  Notification,
-  SideBarBottom,
-  SideBarTop,
-} from './_components'
+import { AddressAndCoordinatesInputs, AssetList, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
 import { useAssetLayer } from './hooks/useAssetLayer'
 import { NotificationType } from './types'
@@ -68,6 +61,8 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
     if (isWideWindow) setShowAssetList(false)
   }, [isWideWindow])
 
+  const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
+
   return (
     <div className={styles.grid}>
       <SideBarTop>
@@ -105,6 +100,7 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
       <div className={styles.map}>
         <Map
           coordinates={coordinates}
+          isHidden={!isWideWindow && showAssetList}
           mapInstance={mapInstance}
           notification={notification}
           selectedAssets={selectedAssets}
@@ -112,7 +108,6 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
           setMapInstance={setMapInstance}
           setNotification={setNotification}
           setSelectedAssets={setSelectedAssets}
-          showAssetList={showAssetList}
         />
         <div className={styles.buttonWrapper}>
           <Button
@@ -122,13 +117,15 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
           >
             {t('submit-button.mobile')}
           </Button>
-          <AssetListToggle
-            assetList={assetList}
-            mapInstance={mapInstance}
-            setShowAssetList={setShowAssetList}
-            showAssetList={showAssetList}
-            selectedAssets={selectedAssets}
-          />
+          {showAssetListToggleButton && (
+            <Button
+              variant="secondary"
+              onClick={() => setShowAssetList((prevState) => !prevState)}
+              className={clsx(styles.toggleButton, showAssetList && styles.removeAbsolutePosition)}
+            >
+              {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
+            </Button>
+          )}
         </div>
       </div>
     </div>

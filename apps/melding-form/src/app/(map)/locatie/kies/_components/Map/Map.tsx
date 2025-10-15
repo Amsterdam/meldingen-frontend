@@ -14,6 +14,7 @@ import styles from './Map.module.css'
 
 export type Props = {
   coordinates?: Coordinates
+  isHidden?: boolean
   mapInstance: L.Map | null
   notification: NotificationType | null
   selectedAssets: Feature[]
@@ -21,11 +22,11 @@ export type Props = {
   setMapInstance: (map: L.Map) => void
   setNotification: (notification: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
-  showAssetList?: boolean
 }
 
 export const Map = ({
   coordinates,
+  isHidden,
   mapInstance,
   notification,
   selectedAssets,
@@ -33,7 +34,6 @@ export const Map = ({
   setMapInstance,
   setNotification,
   setSelectedAssets,
-  showAssetList,
 }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const pointerMarkerRef = useRef<L.Marker | null>(null)
@@ -143,8 +143,16 @@ export const Map = ({
     }
   }, [mapInstance, coordinates])
 
+  useEffect(() => {
+    if (mapInstance) {
+      // Leaflet has to know it should recalculate dimensions of the map
+      // when it is shown/hidden as this changes the size of the map container
+      mapInstance.invalidateSize()
+    }
+  }, [isHidden])
+
   return (
-    <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>
+    <div className={`${styles.container} ${isHidden && styles.hideMap}`}>
       <div className={styles.map} ref={mapRef} />
       <Crosshair id="crosshair" />
       <ControlsOverlay
