@@ -11,7 +11,7 @@ import { useActionState, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { AddressAndCoordinatesInputs, AssetList, Notification, SideBarBottom, SideBarTop } from './_components'
+import { AddressInput, AssetList, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
 import { useAssetLayer } from './hooks/useAssetLayer'
 import { NotificationType } from './types'
@@ -67,11 +67,16 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
     <div className={styles.grid}>
       <SideBarTop>
         <Form action={formAction} id="address" noValidate>
-          <AddressAndCoordinatesInputs
+          <AddressInput
             coordinates={coordinates}
             errorMessage={errorMessage}
             setCoordinates={setCoordinates}
             setSelectedAssets={setSelectedAssets}
+          />
+          <input
+            type="hidden"
+            name="coordinates"
+            defaultValue={coordinates ? JSON.stringify(coordinates) : undefined}
           />
         </Form>
       </SideBarTop>

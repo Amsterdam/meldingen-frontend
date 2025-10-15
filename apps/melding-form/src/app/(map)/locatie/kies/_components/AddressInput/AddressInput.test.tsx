@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 
-import { AddressAndCoordinatesInputs, type Props } from './AddressAndCoordinatesInputs'
+import { AddressInput, type Props } from './AddressInput'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
@@ -17,9 +17,9 @@ const defaultProps: Props = {
   setSelectedAssets: vi.fn(),
 }
 
-describe('AddressAndCoordinatesInputs', () => {
+describe('AddressInput', () => {
   it('should render the address input', () => {
-    render(<AddressAndCoordinatesInputs {...defaultProps} />)
+    render(<AddressInput {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -27,7 +27,7 @@ describe('AddressAndCoordinatesInputs', () => {
   })
 
   it('should not show the list box initially', () => {
-    render(<AddressAndCoordinatesInputs {...defaultProps} />)
+    render(<AddressInput {...defaultProps} />)
 
     const listBox = screen.queryByRole('listbox')
 
@@ -37,7 +37,7 @@ describe('AddressAndCoordinatesInputs', () => {
   it('should not show the list box on 2 character input', async () => {
     const user = userEvent.setup()
 
-    render(<AddressAndCoordinatesInputs {...defaultProps} />)
+    render(<AddressInput {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -52,7 +52,7 @@ describe('AddressAndCoordinatesInputs', () => {
   it('should show the list box on 3 or more character input', async () => {
     const user = userEvent.setup()
 
-    render(<AddressAndCoordinatesInputs {...defaultProps} />)
+    render(<AddressInput {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -67,7 +67,7 @@ describe('AddressAndCoordinatesInputs', () => {
   it('should show all options returned by the API', async () => {
     const user = userEvent.setup()
 
-    render(<AddressAndCoordinatesInputs {...defaultProps} />)
+    render(<AddressInput {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -95,7 +95,7 @@ describe('AddressAndCoordinatesInputs', () => {
 
     const user = userEvent.setup()
 
-    render(<AddressAndCoordinatesInputs {...defaultProps} />)
+    render(<AddressInput {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -108,12 +108,7 @@ describe('AddressAndCoordinatesInputs', () => {
   })
 
   it('shows an address based on provided coordinates ', async () => {
-    render(
-      <AddressAndCoordinatesInputs
-        {...defaultProps}
-        coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }}
-      />,
-    )
+    render(<AddressInput {...defaultProps} coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
 
     await waitFor(() => {
       expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
@@ -132,12 +127,7 @@ describe('AddressAndCoordinatesInputs', () => {
       ),
     )
 
-    render(
-      <AddressAndCoordinatesInputs
-        {...defaultProps}
-        coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }}
-      />,
-    )
+    render(<AddressInput {...defaultProps} coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
 
     await waitFor(() => {
       expect(screen.getByDisplayValue('no-address')).toBeInTheDocument()

@@ -1,4 +1,4 @@
-export { AddressAndCoordinatesInputs } from './AddressAndCoordinatesInputs/AddressAndCoordinatesInputs'
+export { AddressInput } from './AddressInput/AddressInput'
 export { AssetList } from './AssetList/AssetList'
 export { Notification } from './Notification/Notification'
 export { SideBarBottom } from './SideBarBottom/SideBarBottom'
