@@ -1,13 +1,10 @@
 import { AlertProps } from '@amsterdam/design-system-react'
 import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { http, HttpResponse } from 'msw'
 import { Mock } from 'vitest'
 
 import { SelectLocation } from './SelectLocation'
-import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-import { server } from 'apps/melding-form/src/mocks/node'
 
 const mockNotification = {
   closeButtonLabel: 'notification.close-button',
@@ -98,32 +95,5 @@ describe('SelectLocation', () => {
     await user.click(closeButton)
 
     expect(screen.queryByText('notification.title')).not.toBeInTheDocument()
-  })
-
-  it('shows an address based on provided coordinates ', async () => {
-    render(<SelectLocation coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
-
-    await waitFor(() => {
-      expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
-    })
-  })
-
-  it('shows a generic label if no address is found within 30 meters of the coordinates', async () => {
-    server.use(
-      http.get(ENDPOINTS.PDOK_REVERSE, () =>
-        HttpResponse.json({
-          response: {
-            numFound: 0,
-            docs: [],
-          },
-        }),
-      ),
-    )
-
-    render(<SelectLocation coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
-
-    await waitFor(() => {
-      expect(screen.getByDisplayValue('combo-box.no-address')).toBeInTheDocument()
-    })
   })
 })

@@ -11,8 +11,14 @@ import { useActionState, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { AssetList, AssetListToggle, Combobox, Notification, SideBarBottom, SideBarTop } from './_components'
-import { getAddressFromCoordinates } from './_utils'
+import {
+  AddressAndCoordinatesInputs,
+  AssetList,
+  AssetListToggle,
+  Notification,
+  SideBarBottom,
+  SideBarTop,
+} from './_components'
 import { postCoordinatesAndAssets } from './actions'
 import { useAssetLayer } from './hooks/useAssetLayer'
 import { NotificationType } from './types'
@@ -32,29 +38,7 @@ type Props = {
 
 const initialState: { errorMessage?: string } = {}
 
-const fetchAndSetAddress = async (
-  coordinates: Coordinates,
-  setAddress: (address: string) => void,
-  t: ReturnType<typeof useTranslations>,
-) => {
-  try {
-    const result = await getAddressFromCoordinates({
-      lat: coordinates.lat,
-      lng: coordinates.lng,
-    })
-    if (result) {
-      setAddress(result)
-    } else {
-      setAddress(t('combo-box.no-address'))
-    }
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error)
-  }
-}
-
 export const SelectLocation = ({ classification, coordinates: coordinatesFromServer }: Props) => {
-  const [address, setAddress] = useState('')
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
@@ -84,26 +68,16 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
     if (isWideWindow) setShowAssetList(false)
   }, [isWideWindow])
 
-  useEffect(() => {
-    if (!coordinates) {
-      setAddress('')
-      return
-    }
-    fetchAndSetAddress(coordinates, setAddress, t)
-  }, [coordinates, t])
-
   return (
     <div className={styles.grid}>
       <SideBarTop>
         <Form action={formAction} id="address" noValidate>
-          <Combobox
-            address={address}
+          <AddressAndCoordinatesInputs
+            coordinates={coordinates}
             errorMessage={errorMessage}
-            setAddress={setAddress}
             setCoordinates={setCoordinates}
             setSelectedAssets={setSelectedAssets}
           />
-          <input type="hidden" name="coordinates" defaultValue={address ? JSON.stringify(coordinates) : undefined} />
         </Form>
       </SideBarTop>
       <SideBarBottom isHidden={!showAssetList}>
