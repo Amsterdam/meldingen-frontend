@@ -8,10 +8,10 @@ describe('SideBarTop', () => {
 
     const BackLink = screen.getByRole('link', { name: 'back-link' })
     const heading = screen.getByRole('heading', { name: 'title' })
-    const description = screen.getAllByText('description')
+    const description = screen.getByText('description')
 
     expect(BackLink).toBeInTheDocument()
     expect(heading).toBeInTheDocument()
-    expect(description[0]).toBeInTheDocument()
+    expect(description).toBeInTheDocument()
   })
 })
