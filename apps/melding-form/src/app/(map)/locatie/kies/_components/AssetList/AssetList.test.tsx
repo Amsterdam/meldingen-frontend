@@ -10,13 +10,8 @@ const defaultProps: Props = {
   selectedAssets: [],
   setCoordinates: vi.fn(),
   setSelectedAssets: vi.fn(),
-  notification: null,
-  setNotification: vi.fn(),
-}
-
-const mockNotification = {
-  closeButtonLabel: 'max-asset-notification.close-button',
-  heading: `max-asset-notification.title`,
+  notificationType: null,
+  setNotificationType: vi.fn(),
 }
 
 describe('AssetList', () => {
@@ -86,7 +81,7 @@ describe('AssetList', () => {
 
     await user.click(checkboxes[5])
 
-    expect(defaultProps.setNotification).toHaveBeenCalledWith(mockNotification)
+    expect(defaultProps.setNotificationType).toHaveBeenCalledWith('too-many-assets')
   })
 
   it('resets coordinates when last selected asset is deselected', async () => {
@@ -103,7 +98,7 @@ describe('AssetList', () => {
 
   it('resets notification when asset is deselected and notification is present', async () => {
     const user = userEvent.setup()
-    render(<AssetList {...defaultProps} selectedAssets={[containerAssets[0]]} notification={mockNotification} />)
+    render(<AssetList {...defaultProps} selectedAssets={[containerAssets[0]]} notificationType="too-many-assets" />)
 
     const checkbox = screen.getByRole('checkbox', { name: /Container-001/ })
 
@@ -111,7 +106,7 @@ describe('AssetList', () => {
 
     expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
     expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
-    expect(defaultProps.setNotification).toHaveBeenCalledWith(null)
+    expect(defaultProps.setNotificationType).toHaveBeenCalledWith(null)
   })
 
   it('sets coordinates of the previous selected asset when top selected asset is deselected', async () => {

@@ -1,4 +1,3 @@
-import { AlertProps } from '@amsterdam/design-system-react'
 import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,17 +6,10 @@ import { Mock } from 'vitest'
 
 import { SelectLocation } from './SelectLocation'
 
-const mockNotification = {
-  closeButtonLabel: 'notification.close-button',
-  description: 'notification.description',
-  heading: 'notification.title',
-  severity: 'error' as AlertProps['severity'],
-}
-
 vi.mock('./_components/AssetList/AssetList', () => ({
-  AssetList: vi.fn(({ setNotification }) => (
+  AssetList: vi.fn(({ setNotificationType }) => (
     <div>
-      <button onClick={() => setNotification(mockNotification)}>SetNotification</button>
+      <button onClick={() => setNotificationType('too-many-assets')}>SetNotification</button>
     </div>
   )),
 }))
@@ -83,15 +75,15 @@ describe('SelectLocation', () => {
 
     await user.click(setNotificationButton)
 
-    const notificationTitle = screen.getByText('notification.title')
+    const notificationTitle = screen.getByText('too-many-assets.title')
 
     expect(notificationTitle).toBeInTheDocument()
 
-    const closeButton = screen.getByRole('button', { name: mockNotification.closeButtonLabel })
+    const closeButton = screen.getByRole('button', { name: 'too-many-assets.close-button' })
 
     await user.click(closeButton)
 
-    expect(screen.queryByText('notification.title')).not.toBeInTheDocument()
+    expect(screen.queryByText('too-many-assets.title')).not.toBeInTheDocument()
   })
 })
 

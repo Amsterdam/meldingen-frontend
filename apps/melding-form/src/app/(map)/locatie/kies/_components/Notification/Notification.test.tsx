@@ -1,25 +1,20 @@
 import { render, screen } from '@testing-library/react'
 
-import { Notification, type Props } from './Notification'
-
-const defaultProps: Props = {
-  closeButtonLabel: 'Sluiten',
-  heading: 'We mogen je locatie niet gebruiken',
-  onClose: vi.fn(),
-  severity: 'error',
-}
+import { Notification } from './Notification'
 
 describe('Notification component', () => {
-  it('renders without description', () => {
-    render(<Notification {...defaultProps} />)
+  it('renders the too many assets notification', () => {
+    render(<Notification type="too-many-assets" />)
 
-    expect(screen.getByText(defaultProps.heading)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Sluiten' })).toBeInTheDocument()
+    expect(screen.getByText('too-many-assets.title', { exact: false })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'too-many-assets.close-button' })).toBeInTheDocument()
   })
 
-  it('render with description', () => {
-    render(<Notification {...defaultProps} description="Zet locatie aan in de browser" />)
+  it('renders the location service disabled notification', () => {
+    render(<Notification type="location-service-disabled" />)
 
-    expect(screen.getByText('Zet locatie aan in de browser')).toBeInTheDocument()
+    expect(screen.getByText('location-service-disabled.title')).toBeInTheDocument()
+    expect(screen.getByText('location-service-disabled.description')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'location-service-disabled.close-button' })).toBeInTheDocument()
   })
 })
