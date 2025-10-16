@@ -48,7 +48,7 @@ export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonT
        * If the page has more than one form component, the h1 is rendered here.
        */}
       {!hasOneFormComponent && panelLabel && (
-        <Heading level={1} size="level-4" className="ams-mb-m">
+        <Heading level={1} size="level-3" className="ams-mb-m">
           {panelLabel}
         </Heading>
       )}

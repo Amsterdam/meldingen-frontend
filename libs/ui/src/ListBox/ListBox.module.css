@@ -13,9 +13,9 @@
 
 .option {
   box-shadow:
-    inset var(--ams-border-width-s) 0 0 0 var(--ams-color-interactive-secondary) /* Left border */,
-    inset calc(var(--ams-border-width-s) * -1) 0 0 0 var(--ams-color-interactive-secondary) /* Right border */,
-    inset 0 calc(var(--ams-border-width-s) * -1) 0 0 var(--ams-color-interactive-secondary); /* Bottom border */
+    inset var(--ams-border-width-s) 0 0 0 currentcolor /* Left border */,
+    inset calc(var(--ams-border-width-s) * -1) 0 0 0 currentcolor /* Right border */,
+    inset 0 calc(var(--ams-border-width-s) * -1) 0 0 currentcolor; /* Bottom border */
 
   cursor: pointer;
   padding-block: var(--ams-space-s);
@@ -29,8 +29,8 @@
 .option[data-active] {
   background-color: #e8e8e8;
   box-shadow:
-    inset var(--ams-border-width-m) 0 0 0 var(--ams-color-interactive-secondary) /* Left border */,
-    inset calc(var(--ams-border-width-m) * -1) 0 0 0 var(--ams-color-interactive-secondary) /* Right border */,
-    inset 0 var(--ams-border-width-s) 0 0 var(--ams-color-interactive-secondary) /* Top border */,
-    inset 0 calc(var(--ams-border-width-m) * -1) 0 0 var(--ams-color-interactive-secondary); /* Bottom border */
+    inset var(--ams-border-width-m) 0 0 0 currentcolor /* Left border */,
+    inset calc(var(--ams-border-width-m) * -1) 0 0 0 currentcolor /* Right border */,
+    inset 0 var(--ams-border-width-s) 0 0 currentcolor /* Top border */,
+    inset 0 calc(var(--ams-border-width-m) * -1) 0 0 currentcolor; /* Bottom border */
 }
