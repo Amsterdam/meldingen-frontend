@@ -22,7 +22,7 @@ export default function Error({ error }: { error: Error & { digest?: string } })
       <Grid paddingBottom="2x-large" paddingTop="x-large">
         <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
           <main>
-            <Heading className="ams-mb-m" level={1} size="level-2">
+            <Heading className="ams-mb-m" level={1}>
               {t('title')}
             </Heading>
             <Button className="ams-mb-m" onClick={() => window.location.reload()}>

@@ -13,7 +13,7 @@
   text-align: start;
   touch-action: manipulation;
 
-  @media screen and (min-width: 36rem) {
+  @media screen and (min-width: 37.5rem) {
     border-color: var(--ams-file-input-border-color);
     border-style: var(--ams-file-input-border-style);
     border-width: var(--ams-file-input-border-width);
@@ -33,7 +33,7 @@
   text-align: center;
   width: 100%;
 
-  @media screen and (min-width: 36rem) {
+  @media screen and (min-width: 37.5rem) {
     width: auto;
   }
 }
@@ -46,7 +46,7 @@
 .dropAreaText {
   display: none;
 
-  @media screen and (min-width: 36rem) {
+  @media screen and (min-width: 37.5rem) {
     display: inline;
   }
 }

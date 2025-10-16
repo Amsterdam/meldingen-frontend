@@ -169,7 +169,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
         <Column>
           <Column gap="small">
-            <Heading id="file-upload-label" level={1} size="level-4">
+            <Heading id="file-upload-label" level={1} size="level-3">
               {label} <span className={styles.hint}>{t('hint-text')}</span>
             </Heading>
             {description && (

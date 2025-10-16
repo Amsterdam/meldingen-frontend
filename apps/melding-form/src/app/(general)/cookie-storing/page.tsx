@@ -16,7 +16,7 @@ export default async () => {
 
   return (
     <main>
-      <Heading className="ams-mb-m" level={1} size="level-2">
+      <Heading className="ams-mb-m" level={1}>
         {t('title')}
       </Heading>
       <NextLink href="/" legacyBehavior passHref>
