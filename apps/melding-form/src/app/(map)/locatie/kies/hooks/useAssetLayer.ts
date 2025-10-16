@@ -1,22 +1,21 @@
 import L from 'leaflet'
-import { useTranslations } from 'next-intl'
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
 import { addAssetLayerToMap, fetchAssets, updateAssetMarkers } from '../_utils'
-import { NotificationType } from '../types'
+import { NotificationType } from '../SelectLocation'
 import { Coordinates } from 'apps/melding-form/src/types'
 
 export type Props = {
   assetList: Feature[]
   classification?: string
   mapInstance: L.Map | null
-  notification: NotificationType | null
+  notificationType: NotificationType
   selectedAssets: Feature[]
   setAssetList: (assets: Feature[]) => void
   setCoordinates: (coordinates?: Coordinates) => void
-  setNotification: (notification: NotificationType | null) => void
+  setNotificationType: (notificationType: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
@@ -24,16 +23,15 @@ export const useAssetLayer = async ({
   assetList,
   classification,
   mapInstance,
-  notification,
+  notificationType,
   selectedAssets,
   setAssetList,
   setCoordinates,
-  setNotification,
+  setNotificationType,
   setSelectedAssets,
 }: Props) => {
   const assetLayerRef = useRef<L.Layer | null>(null)
   const assetMarkersRef = useRef<Record<string, L.Marker>>({})
-  const t = useTranslations('select-location.asset-list')
 
   /**
    * Fetch assets
@@ -53,14 +51,13 @@ export const useAssetLayer = async ({
       assetList,
       assetMarkersRef,
       mapInstance,
-      notification,
+      notificationType,
       selectedAssets,
       setCoordinates,
-      setNotification,
+      setNotificationType,
       setSelectedAssets,
-      t,
     })
-  }, [assetList, selectedAssets, notification])
+  }, [assetList, selectedAssets, notificationType])
 
   /**
    * Update asset markers on selection change

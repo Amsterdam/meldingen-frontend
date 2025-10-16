@@ -14,7 +14,6 @@ import { Feature } from '@meldingen/api-client'
 import { AddressInput, AssetList, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
 import { useAssetLayer } from './hooks/useAssetLayer'
-import { NotificationType } from './types'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './SelectLocation.module.css'
@@ -29,13 +28,15 @@ type Props = {
   coordinates?: Coordinates
 }
 
+export type NotificationType = 'too-many-assets' | 'location-service-disabled' | null
+
 const initialState: { errorMessage?: string } = {}
 
 export const SelectLocation = ({ classification, coordinates: coordinatesFromServer }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
-  const [notification, setNotification] = useState<NotificationType | null>(null)
+  const [notificationType, setNotificationType] = useState<NotificationType>(null)
   const [selectedAssets, setSelectedAssets] = useState<Feature[]>([])
   const [showAssetList, setShowAssetList] = useState(false)
 
@@ -49,11 +50,11 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
     assetList,
     classification,
     mapInstance,
-    notification,
+    notificationType,
     selectedAssets,
     setAssetList,
     setCoordinates,
-    setNotification,
+    setNotificationType,
     setSelectedAssets,
   })
 
@@ -81,21 +82,15 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
         </Form>
       </SideBarTop>
       <SideBarBottom isHidden={!showAssetList}>
-        {notification && !isWideWindow && (
-          <Notification
-            closeButtonLabel={notification.closeButtonLabel}
-            description={notification.description}
-            heading={notification.heading}
-            onClose={() => setNotification(null)}
-            severity={notification.severity}
-          />
+        {notificationType === 'too-many-assets' && !isWideWindow && (
+          <Notification type={notificationType} onClose={() => setNotificationType(null)} />
         )}
         <AssetList
           assetList={assetList}
           selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
-          notification={notification}
-          setNotification={setNotification}
+          notificationType={notificationType}
+          setNotificationType={setNotificationType}
           setSelectedAssets={setSelectedAssets}
         />
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
@@ -107,13 +102,14 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
           coordinates={coordinates}
           isHidden={!isWideWindow && showAssetList}
           mapInstance={mapInstance}
-          notification={notification}
           selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
           setMapInstance={setMapInstance}
-          setNotification={setNotification}
           setSelectedAssets={setSelectedAssets}
-        />
+          onCurrentLocationError={() => setNotificationType('location-service-disabled')}
+        >
+          {notificationType && <Notification type={notificationType} onClose={() => setNotificationType(null)} />}
+        </Map>
         <div className={styles.buttonWrapper}>
           <Button
             form="address"
