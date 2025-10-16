@@ -70,7 +70,7 @@ describe('Location', () => {
     expect(link).toHaveAttribute('href', '#key1')
   })
 
-  it('renders the default text when there is no location data', () => {
+  it('renders the default text when there is no address', () => {
     render(<Location {...defaultProps} />)
 
     const paragraph = screen.getByText('description')
@@ -78,31 +78,12 @@ describe('Location', () => {
     expect(paragraph).toBeInTheDocument()
   })
 
-  it('has a hidden input without a value when there is no location data', () => {
-    render(<Location {...defaultProps} />)
+  it('renders an address when it is provided', () => {
+    render(<Location {...defaultProps} address="Oudezijds Voorburgwal 300, 1012GL Amsterdam" />)
 
-    const input = document.querySelector('input[type="hidden"]')
-
-    expect(input).toHaveAttribute('name', 'coordinates')
-    expect(input).not.toHaveValue()
-  })
-
-  it('renders the location data name when it is provided', () => {
-    render(<Location {...defaultProps} locationData={{ name: 'Test location' }} />)
-
-    const paragraph = screen.getByText('Test location')
+    const paragraph = screen.getByText('Oudezijds Voorburgwal 300, 1012GL Amsterdam')
 
     expect(paragraph).toBeInTheDocument()
-  })
-
-  it('has a hidden input with coordinates when location data is provided', () => {
-    const locationData = { name: 'Test location', coordinates: { lat: 52.3702, lng: 4.8952 } }
-    render(<Location {...defaultProps} locationData={locationData} />)
-
-    const input = document.querySelector('input[type="hidden"]')
-
-    expect(input).toHaveAttribute('name', 'coordinates')
-    expect(input).toHaveValue(JSON.stringify(locationData.coordinates))
   })
 
   it('renders a link with the default text when there is no location data', () => {
@@ -114,7 +95,7 @@ describe('Location', () => {
   })
 
   it('renders a link with updated text when there is location data', () => {
-    render(<Location {...defaultProps} locationData={{ name: 'Test location' }} />)
+    render(<Location {...defaultProps} address="Oudezijds Voorburgwal 300, 1012GL Amsterdam" />)
 
     const link = screen.getByRole('link', { name: 'link.with-location' })
 

@@ -22,8 +22,8 @@ export const postSummaryForm = async () => {
   if (error)
     return { systemError: error }
 
-    // Delete location, token, lastPanelpath and id cookies
-  ;['location', 'token', 'lastPanelPath', 'id'].forEach((cookie) => {
+    // Delete address, token, lastPanelpath and id cookies
+  ;['address', 'token', 'lastPanelPath', 'id'].forEach((cookie) => {
     cookieStore.delete(cookie)
   })
 

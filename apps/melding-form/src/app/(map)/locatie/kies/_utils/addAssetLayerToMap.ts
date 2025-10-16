@@ -86,7 +86,7 @@ export const addAssetLayerToMap = ({
           })
           return
         }
-        setSelectedAssets((selectedList) => [...selectedList, feature as Feature])
+        setSelectedAssets((selectedList) => [feature, ...selectedList])
         setCoordinates({ lat, lng })
       }
       if (isSelected) {
@@ -94,7 +94,16 @@ export const addAssetLayerToMap = ({
           setNotification(null)
         }
         setSelectedAssets((selectedList) => selectedList.filter((a) => a.id !== feature.id))
-        setCoordinates(undefined)
+
+        if (selectedAssets.length <= 1) {
+          setCoordinates(undefined)
+        } else if (feature.id === selectedAssets[0].id) {
+          // Set the address of the second asset on the list
+          // when the last selected asset (#1 on the list) is deselected
+          // @ts-expect-error an asset always has coordinates
+          const [y, x] = selectedAssets[1].geometry.coordinates
+          setCoordinates({ lat: x, lng: y })
+        }
       }
     })
 

@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useActionState, useEffect, useState } from 'r
 
 import { Feature } from '@meldingen/api-client'
 
-import { writeAddressAndCoordinateToCookie } from './actions'
+import { postCoordinatesAndAssets } from './actions'
 import { getAddressFromCoordinates } from '../../_utils'
 import { Combobox } from '../Combobox/Combobox'
 import { BackLink } from 'apps/melding-form/src/app/(general)/_components/BackLink/BackLink'
@@ -17,12 +17,16 @@ export type Props = {
   coordinates?: Coordinates
   setCoordinates: (coordinates?: Coordinates) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
+  selectedAssets: Feature[]
 }
 
 const initialState: { errorMessage?: string } = {}
 
-export const SideBar = ({ coordinates, setCoordinates, setSelectedAssets }: Props) => {
-  const [{ errorMessage }, formAction] = useActionState(writeAddressAndCoordinateToCookie, initialState)
+export const SideBar = ({ coordinates, setCoordinates, setSelectedAssets, selectedAssets }: Props) => {
+  const postCoordinatesAndAssetsWithSelectedAssets = postCoordinatesAndAssets.bind(null, {
+    selectedAssets,
+  })
+  const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssetsWithSelectedAssets, initialState)
 
   const [address, setAddress] = useState<string>('')
 

@@ -14,19 +14,16 @@ import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
-import type { Coordinates, FormState } from 'apps/melding-form/src/types'
+import type { FormState } from 'apps/melding-form/src/types'
 
 const initialState: Pick<FormState, 'systemError' | 'validationErrors'> = {}
 
 type Props = {
-  locationData?: {
-    name: string
-    coordinates?: Coordinates
-  }
   prevPage: string
+  address?: string
 }
 
-export const Location = ({ locationData, prevPage }: Props) => {
+export const Location = ({ address, prevPage }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ systemError, validationErrors }, formAction] = useActionState(postLocationForm, initialState)
@@ -74,19 +71,14 @@ export const Location = ({ locationData, prevPage }: Props) => {
         <Heading className="ams-mb-s" level={1} size="level-3">
           {t('question')}
         </Heading>
-        <Paragraph className="ams-mb-s">{locationData?.name ?? t('description')}</Paragraph>
+        <Paragraph className="ams-mb-s">{address ?? t('description')}</Paragraph>
         <NextLink href="/locatie/kies" legacyBehavior passHref>
           <StandaloneLink className="ams-mb-m" id="location-link">
-            {locationData?.name ? t('link.with-location') : t('link.without-location')}
+            {address ? t('link.with-location') : t('link.without-location')}
           </StandaloneLink>
         </NextLink>
 
         <Form action={formAction} noValidate>
-          <input
-            type="hidden"
-            name="coordinates"
-            value={locationData?.coordinates ? JSON.stringify(locationData?.coordinates) : undefined}
-          />
           <SubmitButton>{t('submit-button')}</SubmitButton>
         </Form>
       </main>
