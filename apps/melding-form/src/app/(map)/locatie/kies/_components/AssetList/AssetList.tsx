@@ -15,7 +15,6 @@ import styles from './AssetList.module.css'
 export type Props = {
   assetList: Feature[]
   selectedAssets: Feature[]
-  notificationType: NotificationType
   setCoordinates: (coordinates?: Coordinates) => void
   setNotificationType: (notificationType: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
@@ -35,7 +34,6 @@ const getCheckboxLabel = (asset: Feature, idNummer: string) => {
 
 export const AssetList = ({
   assetList,
-  notificationType,
   selectedAssets,
   setNotificationType,
   setCoordinates,
@@ -48,9 +46,7 @@ export const AssetList = ({
   )
 
   const handleDeselectAsset = (asset: Feature) => {
-    if (notificationType) {
-      setNotificationType(null)
-    }
+    setNotificationType(null)
 
     if (selectedAssets.length <= 1) {
       setCoordinates(undefined)

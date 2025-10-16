@@ -50,7 +50,6 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
     assetList,
     classification,
     mapInstance,
-    notificationType,
     selectedAssets,
     setAssetList,
     setCoordinates,
@@ -89,7 +88,6 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
           assetList={assetList}
           selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
-          notificationType={notificationType}
           setNotificationType={setNotificationType}
           setSelectedAssets={setSelectedAssets}
         />

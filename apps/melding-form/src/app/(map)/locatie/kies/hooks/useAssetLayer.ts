@@ -11,7 +11,6 @@ export type Props = {
   assetList: Feature[]
   classification?: string
   mapInstance: L.Map | null
-  notificationType: NotificationType
   selectedAssets: Feature[]
   setAssetList: (assets: Feature[]) => void
   setCoordinates: (coordinates?: Coordinates) => void
@@ -23,7 +22,6 @@ export const useAssetLayer = async ({
   assetList,
   classification,
   mapInstance,
-  notificationType,
   selectedAssets,
   setAssetList,
   setCoordinates,
@@ -51,13 +49,12 @@ export const useAssetLayer = async ({
       assetList,
       assetMarkersRef,
       mapInstance,
-      notificationType,
       selectedAssets,
       setCoordinates,
       setNotificationType,
       setSelectedAssets,
     })
-  }, [assetList, selectedAssets, notificationType])
+  }, [assetList, selectedAssets])
 
   /**
    * Update asset markers on selection change

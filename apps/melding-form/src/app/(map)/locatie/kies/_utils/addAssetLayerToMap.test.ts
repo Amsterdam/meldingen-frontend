@@ -18,7 +18,6 @@ const defaultProps: Props = {
   assetList: containerAssets,
   assetMarkersRef: { current: {} } as RefObject<Record<string, L.Marker>>,
   mapInstance: {} as L.Map,
-  notificationType: null,
   selectedAssets: [],
   setCoordinates: vi.fn(),
   setNotificationType: vi.fn(),
@@ -104,7 +103,7 @@ describe('addAssetLayerToMap', () => {
   })
 
   it('resets notification and coordinates and removes asset from selectedAssets when a selected marker is clicked', () => {
-    addAssetLayerToMap({ ...defaultProps, selectedAssets: [containerAssets[0]], notificationType: 'too-many-assets' })
+    addAssetLayerToMap({ ...defaultProps, selectedAssets: [containerAssets[0]] })
 
     const marker = defaultProps.assetMarkersRef.current[containerAssets[0].id!]
     marker.fire('click')

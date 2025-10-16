@@ -10,7 +10,6 @@ const defaultProps: Props = {
   selectedAssets: [],
   setCoordinates: vi.fn(),
   setSelectedAssets: vi.fn(),
-  notificationType: null,
   setNotificationType: vi.fn(),
 }
 
@@ -96,9 +95,9 @@ describe('AssetList', () => {
     expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
   })
 
-  it('resets notification when asset is deselected and notification is present', async () => {
+  it('resets notification when asset is deselected', async () => {
     const user = userEvent.setup()
-    render(<AssetList {...defaultProps} selectedAssets={[containerAssets[0]]} notificationType="too-many-assets" />)
+    render(<AssetList {...defaultProps} selectedAssets={[containerAssets[0]]} />)
 
     const checkbox = screen.getByRole('checkbox', { name: /Container-001/ })
 

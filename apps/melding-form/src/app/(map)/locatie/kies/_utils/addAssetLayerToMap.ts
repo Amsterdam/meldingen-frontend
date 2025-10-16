@@ -17,7 +17,6 @@ export type Props = {
   assetList: Feature[]
   assetMarkersRef: RefObject<Record<string, L.Marker>>
   mapInstance?: L.Map | null
-  notificationType: NotificationType
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
   setNotificationType: (notificationType: NotificationType | null) => void
@@ -41,7 +40,6 @@ export const addAssetLayerToMap = ({
   assetList,
   assetMarkersRef,
   mapInstance,
-  notificationType,
   selectedAssets,
   setCoordinates,
   setNotificationType,
@@ -83,9 +81,7 @@ export const addAssetLayerToMap = ({
         setCoordinates({ lat, lng })
       }
       if (isSelected) {
-        if (notificationType) {
-          setNotificationType(null)
-        }
+        setNotificationType(null)
         setSelectedAssets((selectedList) => selectedList.filter((a) => a.id !== feature.id))
 
         if (selectedAssets.length <= 1) {
