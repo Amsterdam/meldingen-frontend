@@ -58,6 +58,7 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
   })
 
   useEffect(() => {
+    // Hide mobile asset list view when resizing to larger screens
     if (isWideWindow) setShowAssetList(false)
   }, [isWideWindow])
 
