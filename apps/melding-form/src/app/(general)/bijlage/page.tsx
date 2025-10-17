@@ -1,9 +1,21 @@
 import { cookies } from 'next/headers'
 
-import { getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
+import {
+  getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
+  getMeldingByMeldingIdAttachmentsMelder,
+  getStaticForm,
+  getStaticFormByStaticFormId,
+} from '@meldingen/api-client'
 
 import { Attachments } from './Attachments'
 import { isTypeTextAreaComponent } from 'apps/melding-form/src/typeguards'
+
+export type FileDownloadType = {
+  blob: Blob
+  fileName: string
+  contentType: string
+  serverId: number
+}
 
 export default async () => {
   const cookieStore = await cookies()
@@ -34,5 +46,43 @@ export default async () => {
 
   if (!filteredAttachmentsForm[0].label) throw new Error('Attachments form label not found.')
 
-  return <Attachments formData={filteredAttachmentsForm} meldingId={parseInt(meldingId, 10)} token={token} />
+  const { data: attachmentData, error: attachmentError } = await getMeldingByMeldingIdAttachmentsMelder({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (attachmentError) throw new Error('Failed to fetch attachments data.')
+  if (!attachmentData) throw new Error('Attachments data not found.')
+
+  const attachments = await Promise.all(
+    attachmentData.map(async ({ id, original_filename }): Promise<FileDownloadType> => {
+      const { data, error, response } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
+        path: { melding_id: parseInt(meldingId, 10), attachment_id: id },
+
+        query: { token, type: 'thumbnail' },
+      })
+
+      const contentType = response.headers.get('content-type')!
+
+      if (error) throw new Error('Failed to fetch attachment download.')
+      if (!data) throw new Error('Attachment download data not found.')
+
+      // Returning blob instead of File since the File api is not available in Node.js
+      return {
+        blob: data as Blob,
+        fileName: original_filename,
+        contentType: contentType!,
+        serverId: id,
+      }
+    }) || [],
+  )
+
+  return (
+    <Attachments
+      attachments={attachments}
+      formData={filteredAttachmentsForm}
+      meldingId={parseInt(meldingId, 10)}
+      token={token}
+    />
+  )
 }

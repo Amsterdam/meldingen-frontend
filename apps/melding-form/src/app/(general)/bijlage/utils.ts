@@ -17,7 +17,7 @@ export type FileUpload = {
   progress: number // 0-100
   serverId?: number
   status: 'pending' | 'uploading' | 'success' | 'error'
-  xhr: XMLHttpRequest
+  xhr?: XMLHttpRequest
 }
 
 // We're using XMLHttpRequest instead of fetch here,

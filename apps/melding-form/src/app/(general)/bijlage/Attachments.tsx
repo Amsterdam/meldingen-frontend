@@ -13,6 +13,7 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Column, FileList, FileUpload, Heading, InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
+import type { FileDownloadType } from './page'
 import type { FileUpload as FileUploadType } from './utils'
 import { startUpload } from './utils'
 import { BackLink } from '../_components/BackLink/BackLink'
@@ -31,6 +32,7 @@ type Props = {
   formData: StaticFormTextAreaComponentOutput[]
   meldingId: number
   token: string
+  attachments: FileDownloadType[]
 }
 
 const initialState: Pick<FormState, 'systemError'> = {}
@@ -44,11 +46,22 @@ const createFileUploads = (newFiles: File[]): FileUploadType[] =>
     xhr: new XMLHttpRequest(),
   }))
 
-export const Attachments = ({ formData, meldingId, token }: Props) => {
+const createInitialFileUploads = (attachments: FileDownloadType[]): FileUploadType[] =>
+  attachments.map((attachment) => ({
+    ...attachment,
+    id: crypto.randomUUID(),
+    file: new File([attachment.blob], attachment.fileName, { type: attachment.contentType }),
+    progress: 100,
+    status: 'success',
+  }))
+
+export const Attachments = ({ attachments, formData, meldingId, token }: Props) => {
+  const initialFileUploads = createInitialFileUploads(attachments)
+
   const inputRef = useRef<HTMLInputElement>(null)
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [fileUploads, setFileUploads] = useState<FileUploadType[]>([])
+  const [fileUploads, setFileUploads] = useState<FileUploadType[]>(initialFileUploads)
   const [errorMessage, setErrorMessage] = useState<string>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
 
@@ -81,6 +94,8 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
 
     newFileUploads.forEach((upload) => {
       const xhr = upload.xhr
+      if (xhr === undefined) return
+
       xhr.open(
         'POST',
         `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`,
@@ -95,11 +110,11 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
     }
   }
 
-  const handleDelete = async (id: string, xhr: XMLHttpRequest, fileName: string, serverId?: number) => {
+  const handleDelete = async (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => {
     setErrorMessage(undefined)
 
     // Abort upload if in progress
-    if (xhr.readyState !== XMLHttpRequest.DONE) {
+    if (xhr && xhr.readyState !== XMLHttpRequest.DONE) {
       xhr.abort()
       setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.id !== id))
       setDeletedFileName(fileName)
@@ -208,7 +223,7 @@ export const Attachments = ({ formData, meldingId, token }: Props) => {
                     deleteButtonId={id}
                     file={file}
                     errorMessage={status === 'error' ? error : undefined}
-                    onDelete={() => handleDelete(id, xhr, file.name, serverId)}
+                    onDelete={() => handleDelete(id, file.name, xhr, serverId)}
                   />
                 ))}
               </FileList>
