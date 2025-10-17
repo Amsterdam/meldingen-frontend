@@ -106,6 +106,9 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
                     <FileList.Item key={fileName} file={new File([blob], fileName, { type: contentType })} />
                   ))}
                 </FileList>
+                <NextLink href="/bijlage" legacyBehavior passHref>
+                  <Link>{t('change-links.attachments')}</Link>
+                </NextLink>
               </SummaryList.Description>
             </SummaryList.Item>
           )}
