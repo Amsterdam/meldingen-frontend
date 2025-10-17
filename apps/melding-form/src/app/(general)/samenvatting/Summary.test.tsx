@@ -37,7 +37,7 @@ const defaultProps = {
       },
     ],
     key: 'attachments',
-    term: 'attachments.step.title',
+    term: 'Bijlagen',
   },
   contact: {
     key: 'contact',
@@ -80,7 +80,7 @@ describe('Summary', () => {
     expect(terms[1]).toHaveTextContent('Text Field 1')
     expect(terms[2]).toHaveTextContent('Text Area 2')
     expect(terms[3]).toHaveTextContent('Waar staat de container?')
-    expect(terms[4]).toHaveTextContent('attachments.step.title')
+    expect(terms[4]).toHaveTextContent('Bijlagen')
     expect(terms[5]).toHaveTextContent('Wat zijn uw contactgegevens?')
 
     expect(definitions[0]).toHaveTextContent('Er ligt heel veel afval op straat.')
@@ -88,8 +88,8 @@ describe('Summary', () => {
     expect(definitions[4]).toHaveTextContent('Antwoord vraag 2')
     expect(definitions[6]).toHaveTextContent('Nieuwmarkt 247, 1011MB Amsterdam')
     expect(definitions[8]).toHaveTextContent('IMG_0815.jpg')
-    expect(definitions[9]).toHaveTextContent('test@test.com')
-    expect(definitions[10]).toHaveTextContent('+31612345678')
+    expect(definitions[10]).toHaveTextContent('test@test.com')
+    expect(definitions[11]).toHaveTextContent('+31612345678')
 
     expect(screen.getByRole('button', { name: 'submit-button' }))
   })

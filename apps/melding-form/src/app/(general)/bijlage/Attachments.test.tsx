@@ -15,6 +15,7 @@ const defaultProps = {
   meldingId: 1,
   token: 'mock-token',
   formData: [{ ...textAreaComponent, description: 'Test description' }],
+  attachments: [],
 }
 
 vi.mock('react', async (importOriginal) => {
