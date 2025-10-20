@@ -74,7 +74,7 @@ export default async () => {
         contentType: contentType!,
         serverId: id,
       }
-    }) || [],
+    }),
   )
 
   return (

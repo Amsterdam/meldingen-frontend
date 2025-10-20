@@ -5,6 +5,7 @@ import { useActionState } from 'react'
 import { Mock } from 'vitest'
 
 import { Attachments } from './Attachments'
+import { FileDownloadType } from './page'
 import { startUpload } from './utils'
 import type { FileUpload } from './utils'
 import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
@@ -91,6 +92,24 @@ describe('Attachments', () => {
     const fileList = screen.queryByRole('list')
 
     expect(fileList).not.toBeInTheDocument()
+  })
+
+  it('shows initial uploads when provided', () => {
+    const mockFileName = 'IMG_SERVER_TEST.jpg'
+    const initialUploads: FileDownloadType[] = [
+      {
+        blob: { size: 4326, type: 'image/webp' } as Blob,
+        fileName: mockFileName,
+        contentType: 'image/webp',
+        serverId: 1,
+      },
+    ]
+
+    render(<Attachments {...defaultProps} attachments={initialUploads} />)
+
+    const fileName = screen.getAllByText(mockFileName)[0]
+
+    expect(fileName).toBeInTheDocument()
   })
 
   it('renders an Invalid Form Alert when an upload has an error', async () => {
@@ -192,6 +211,30 @@ describe('Attachments', () => {
     await user.click(deleteButton)
 
     const file1SecondRender = screen.queryByText(mockFile.name)
+
+    expect(file1SecondRender).not.toBeInTheDocument()
+  })
+
+  it('deletes a prefilled attachment succesfully', async () => {
+    const user = userEvent.setup()
+
+    const mockFileName = 'IMG_SERVER_TEST.jpg'
+    const initialUploads: FileDownloadType[] = [
+      {
+        blob: { size: 4326, type: 'image/webp' } as Blob,
+        fileName: mockFileName,
+        contentType: 'image/webp',
+        serverId: 1,
+      },
+    ]
+
+    render(<Attachments {...defaultProps} attachments={initialUploads} />)
+
+    const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFileName}` })
+
+    await user.click(deleteButton)
+
+    const file1SecondRender = screen.queryByText(mockFileName)
 
     expect(file1SecondRender).not.toBeInTheDocument()
   })
