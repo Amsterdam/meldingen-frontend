@@ -100,6 +100,7 @@ describe('Summary', () => {
     const primaryChangeLink = screen.getByRole('link', { name: 'change-links.primary' })
     const additionalChangeLinks = screen.getAllByRole('link', { name: 'change-links.additional' })
     const locationChangeLink = screen.getByRole('link', { name: 'change-links.location' })
+    const attachmentsChangeLink = screen.getByRole('link', { name: 'change-links.attachments' })
     const contactChangeLink = screen.getByRole('link', { name: 'change-links.contact' })
 
     expect(primaryChangeLink).toBeInTheDocument()
@@ -111,6 +112,9 @@ describe('Summary', () => {
 
     expect(locationChangeLink).toBeInTheDocument()
     expect(locationChangeLink).toHaveAttribute('href', '/locatie')
+
+    expect(attachmentsChangeLink).toBeInTheDocument()
+    expect(attachmentsChangeLink).toHaveAttribute('href', '/bijlage')
 
     expect(contactChangeLink).toBeInTheDocument()
     expect(contactChangeLink).toHaveAttribute('href', '/contact')
