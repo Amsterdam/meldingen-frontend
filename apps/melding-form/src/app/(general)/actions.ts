@@ -61,7 +61,7 @@ export const postPrimaryForm = async (
   cookieStore.set(SESSION_COOKIES.TOKEN, token, { maxAge: oneDay })
 
   // The LAST_PANEL_PATH cookie might be populated by earlier additional questions.
-  // Override it here in case a reclassification occurs.
+  // Delete it here in case a reclassification occurs.
   cookieStore.delete(SESSION_COOKIES.LAST_PANEL_PATH)
 
   if (classification) {
