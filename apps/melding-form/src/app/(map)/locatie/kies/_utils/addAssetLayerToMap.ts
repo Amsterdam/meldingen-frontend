@@ -5,26 +5,22 @@ import { Dispatch, RefObject, SetStateAction } from 'react'
 import type { Feature } from '@meldingen/api-client'
 
 import { AssetFeature, getContainerFeatureIcon } from './getContainerFeatureIcon'
-import { NotificationType } from '../types'
+import { NotificationType } from '../SelectLocation'
 import { Coordinates } from 'apps/melding-form/src/types'
 
 import './cluster.css'
 
 export const MAX_ASSETS = 5
 
-type TranslationFunction = (key: string, values?: Record<string, string | number | Date> | undefined) => string
-
 export type Props = {
   assetLayerRef: RefObject<L.Layer | null>
   assetList: Feature[]
   assetMarkersRef: RefObject<Record<string, L.Marker>>
   mapInstance?: L.Map | null
-  notification: NotificationType | null
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
-  setNotification: (notification: NotificationType | null) => void
+  setNotificationType: (notificationType: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
-  t: TranslationFunction
 }
 
 export const createClusterIcon = (cluster: L.MarkerCluster) => {
@@ -44,12 +40,10 @@ export const addAssetLayerToMap = ({
   assetList,
   assetMarkersRef,
   mapInstance,
-  notification,
   selectedAssets,
   setCoordinates,
-  setNotification,
+  setNotificationType,
   setSelectedAssets,
-  t,
 }: Props) => {
   if (!mapInstance || assetList.length === 0) return
 
@@ -80,19 +74,14 @@ export const addAssetLayerToMap = ({
     marker.on('click', () => {
       if (!isSelected) {
         if (selectedAssets.length >= MAX_ASSETS) {
-          setNotification({
-            closeButtonLabel: t('max-asset-notification.close-button'),
-            heading: t('max-asset-notification.title', { maxAssets: MAX_ASSETS }),
-          })
+          setNotificationType('too-many-assets')
           return
         }
         setSelectedAssets((selectedList) => [feature, ...selectedList])
         setCoordinates({ lat, lng })
       }
       if (isSelected) {
-        if (notification) {
-          setNotification(null)
-        }
+        setNotificationType(null)
         setSelectedAssets((selectedList) => selectedList.filter((a) => a.id !== feature.id))
 
         if (selectedAssets.length <= 1) {

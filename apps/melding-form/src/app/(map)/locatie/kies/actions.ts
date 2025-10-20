@@ -6,7 +6,7 @@ import { getTranslations } from 'next-intl/server'
 
 import { type Feature, patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
 
-import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
+import { convertWktPointToCoordinates } from './_utils/convertWktPointToCoordinates'
 import { SESSION_COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 

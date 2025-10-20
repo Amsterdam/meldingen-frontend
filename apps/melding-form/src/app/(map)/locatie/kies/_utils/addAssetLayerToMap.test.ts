@@ -3,7 +3,7 @@ import type { RefObject } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { addAssetLayerToMap, createClusterIcon, MAX_ASSETS, type Props } from './addAssetLayerToMap'
+import { addAssetLayerToMap, createClusterIcon, type Props } from './addAssetLayerToMap'
 import { getContainerFeatureIcon } from './getContainerFeatureIcon'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
@@ -18,17 +18,10 @@ const defaultProps: Props = {
   assetList: containerAssets,
   assetMarkersRef: { current: {} } as RefObject<Record<string, L.Marker>>,
   mapInstance: {} as L.Map,
-  notification: null,
   selectedAssets: [],
   setCoordinates: vi.fn(),
-  setNotification: vi.fn(),
+  setNotificationType: vi.fn(),
   setSelectedAssets: vi.fn(),
-  t: vi.fn(),
-}
-
-const mockNotification = {
-  closeButtonLabel: 'Sluiten',
-  heading: `U kunt maximaal ${MAX_ASSETS} containers kiezen`,
 }
 
 describe('addAssetLayerToMap', () => {
@@ -110,12 +103,12 @@ describe('addAssetLayerToMap', () => {
   })
 
   it('resets notification and coordinates and removes asset from selectedAssets when a selected marker is clicked', () => {
-    addAssetLayerToMap({ ...defaultProps, selectedAssets: [containerAssets[0]], notification: mockNotification })
+    addAssetLayerToMap({ ...defaultProps, selectedAssets: [containerAssets[0]] })
 
     const marker = defaultProps.assetMarkersRef.current[containerAssets[0].id!]
     marker.fire('click')
 
-    expect(defaultProps.setNotification).toBeCalledWith(null)
+    expect(defaultProps.setNotificationType).toBeCalledWith(null)
     expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
     expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
   })
