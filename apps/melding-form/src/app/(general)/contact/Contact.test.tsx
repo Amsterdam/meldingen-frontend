@@ -67,10 +67,12 @@ describe('Contact', () => {
   it('renders page and form', async () => {
     render(<Contact formComponents={contactFormData} />)
 
+    const BackLink = screen.getByRole('link', { name: 'back-link' })
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
     const telInput = screen.getByRole('textbox', { name: 'Wat is uw telefoonnummer? (niet verplicht)' })
     const submitButton = screen.getByRole('button')
 
+    expect(BackLink).toBeInTheDocument()
     expect(emailInput).toBeInTheDocument()
     expect(telInput).toBeInTheDocument()
     expect(submitButton).toBeInTheDocument()
