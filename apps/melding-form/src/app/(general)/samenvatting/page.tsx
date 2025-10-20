@@ -10,6 +10,7 @@ import {
   getPrimaryFormSummary,
 } from './utils'
 import { getMeldingData } from '../_utils/getMeldingData'
+import { SESSION_COOKIES } from 'apps/melding-form/src/constants'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('summary')
@@ -22,8 +23,8 @@ export const generateMetadata = async () => {
 export default async () => {
   const cookieStore = await cookies()
   // We check for the existence of these cookies in our middleware, so non-null assertion is safe here.
-  const meldingId = cookieStore.get('id')!.value
-  const token = cookieStore.get('token')!.value
+  const meldingId = cookieStore.get(SESSION_COOKIES.ID)!.value
+  const token = cookieStore.get(SESSION_COOKIES.TOKEN)!.value
 
   const t = await getTranslations('summary')
 

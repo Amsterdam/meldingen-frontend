@@ -6,13 +6,14 @@ import { redirect } from 'next/navigation'
 import { patchMeldingByMeldingIdContact, putMeldingByMeldingIdAddContactInfo } from '@meldingen/api-client'
 
 import { hasValidationErrors } from '../_utils/hasValidationErrors'
+import { SESSION_COOKIES } from 'apps/melding-form/src/constants'
 import { isApiErrorArray } from 'apps/melding-form/src/handleApiError'
 
 export const postContactForm = async (_: unknown, formData: FormData) => {
   const cookieStore = await cookies()
 
-  const meldingId = cookieStore.get('id')?.value
-  const token = cookieStore.get('token')?.value
+  const meldingId = cookieStore.get(SESSION_COOKIES.ID)?.value
+  const token = cookieStore.get(SESSION_COOKIES.TOKEN)?.value
 
   if (!meldingId || !token) return redirect('/cookie-storing')
 

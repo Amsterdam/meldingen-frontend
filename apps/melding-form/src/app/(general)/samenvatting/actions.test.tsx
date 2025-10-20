@@ -5,6 +5,7 @@ import type { Mock } from 'vitest'
 import { vi } from 'vitest'
 
 import { postSummaryForm } from './actions'
+import { SESSION_COOKIES } from 'apps/melding-form/src/constants'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
@@ -45,10 +46,10 @@ describe('postSummaryForm', () => {
 
     ;(cookies as Mock).mockReturnValue({
       get: (name: string) => {
-        if (name === 'id') {
+        if (name === SESSION_COOKIES.ID) {
           return { value: '123' }
         }
-        if (name === 'token') {
+        if (name === SESSION_COOKIES.TOKEN) {
           return { value: 'test-token' }
         }
         return undefined
@@ -59,9 +60,9 @@ describe('postSummaryForm', () => {
     await postSummaryForm()
 
     expect(deleteMock).toHaveBeenCalledWith('address')
-    expect(deleteMock).toHaveBeenCalledWith('token')
-    expect(deleteMock).toHaveBeenCalledWith('lastPanelPath')
-    expect(deleteMock).toHaveBeenCalledWith('id')
+    expect(deleteMock).toHaveBeenCalledWith(SESSION_COOKIES.TOKEN)
+    expect(deleteMock).toHaveBeenCalledWith(SESSION_COOKIES.LAST_PANEL_PATH)
+    expect(deleteMock).toHaveBeenCalledWith(SESSION_COOKIES.ID)
     expect(redirect).toHaveBeenCalledWith('/bedankt')
   })
 })

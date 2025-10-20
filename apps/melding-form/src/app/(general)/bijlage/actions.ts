@@ -5,11 +5,13 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAddAttachments } from '@meldingen/api-client'
 
+import { SESSION_COOKIES } from 'apps/melding-form/src/constants'
+
 export const submitAttachmentsForm = async () => {
   const cookieStore = await cookies()
 
-  const meldingId = cookieStore.get('id')?.value
-  const token = cookieStore.get('token')?.value
+  const meldingId = cookieStore.get(SESSION_COOKIES.ID)?.value
+  const token = cookieStore.get(SESSION_COOKIES.TOKEN)?.value
 
   if (!meldingId || !token) return redirect('/cookie-storing')
 
