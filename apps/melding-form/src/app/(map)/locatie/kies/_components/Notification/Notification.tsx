@@ -21,9 +21,7 @@ const getTexts = (t: (key: string, options?: { maxAssets: number }) => string) =
   },
 })
 
-export type Props = Omit<AlertProps, 'heading' | 'headingLevel'> & {
-  type: Exclude<NotificationType, null>
-}
+export type Props = Omit<AlertProps, 'heading' | 'headingLevel'> & { type: NotificationType }
 
 export const Notification = ({ type, ...restProps }: Props) => {
   const t = useTranslations('select-location.notifications')

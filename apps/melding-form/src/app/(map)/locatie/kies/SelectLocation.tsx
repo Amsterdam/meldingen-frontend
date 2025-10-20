@@ -28,7 +28,7 @@ type Props = {
   coordinates?: Coordinates
 }
 
-export type NotificationType = 'too-many-assets' | 'location-service-disabled' | null
+export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 
 const initialState: { errorMessage?: string } = {}
 
@@ -36,7 +36,7 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
-  const [notificationType, setNotificationType] = useState<NotificationType>(null)
+  const [notificationType, setNotificationType] = useState<NotificationType | null>(null)
   const [selectedAssets, setSelectedAssets] = useState<Feature[]>([])
   const [showAssetList, setShowAssetList] = useState(false)
 
