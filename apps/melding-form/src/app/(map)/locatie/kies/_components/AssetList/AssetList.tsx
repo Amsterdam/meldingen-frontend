@@ -1,14 +1,13 @@
 import { Checkbox } from '@amsterdam/design-system-react'
 import clsx from 'clsx'
 import Image from 'next/image'
-import { useTranslations } from 'next-intl'
 import { Dispatch, SetStateAction } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
 import { MAX_ASSETS } from '../../_utils/addAssetLayerToMap'
 import { getContainerFeatureIconSVG } from '../../_utils/getContainerFeatureIconSVG'
-import { NotificationType } from '../../types'
+import { NotificationType } from '../../SelectLocation'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './AssetList.module.css'
@@ -16,9 +15,8 @@ import styles from './AssetList.module.css'
 export type Props = {
   assetList: Feature[]
   selectedAssets: Feature[]
-  notification: NotificationType | null
   setCoordinates: (coordinates?: Coordinates) => void
-  setNotification: (notification: NotificationType | null) => void
+  setNotificationType: (notificationType: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
@@ -36,14 +34,11 @@ const getCheckboxLabel = (asset: Feature, idNummer: string) => {
 
 export const AssetList = ({
   assetList,
-  notification,
   selectedAssets,
-  setNotification,
+  setNotificationType,
   setCoordinates,
   setSelectedAssets,
 }: Props) => {
-  const t = useTranslations('select-location.asset-list')
-
   if (assetList.length === 0 && selectedAssets.length === 0) return
 
   const filteredList = assetList.filter(
@@ -51,9 +46,7 @@ export const AssetList = ({
   )
 
   const handleDeselectAsset = (asset: Feature) => {
-    if (notification) {
-      setNotification(null)
-    }
+    setNotificationType(null)
 
     if (selectedAssets.length <= 1) {
       setCoordinates(undefined)
@@ -70,10 +63,7 @@ export const AssetList = ({
 
   const handleSelectAsset = (asset: Feature) => {
     if (selectedAssets.length >= MAX_ASSETS) {
-      setNotification({
-        closeButtonLabel: t('max-asset-notification.close-button'),
-        heading: t('max-asset-notification.title', { maxAssets: MAX_ASSETS }),
-      })
+      setNotificationType('too-many-assets')
       return
     }
 

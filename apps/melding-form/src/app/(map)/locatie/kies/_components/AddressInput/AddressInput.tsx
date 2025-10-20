@@ -1,6 +1,6 @@
 import { ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
 import {
-  Combobox as HUICombobox,
+  Combobox,
   ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
@@ -14,39 +14,22 @@ import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'reac
 import { Feature } from '@meldingen/api-client'
 import { ListBox, TextInput } from '@meldingen/ui'
 
+import { PDOKItem } from './types'
+import { debounce, fetchAddressList, fetchAndSetAddress } from './utils'
 import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
-import styles from './Combobox.module.css'
-
-const pdokQueryParams =
-  'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=7'
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-const debounce = (fn: Function, delay = 250) => {
-  let timer: ReturnType<typeof setTimeout>
-
-  return (...args: unknown[]) => {
-    clearTimeout(timer)
-    timer = setTimeout(() => fn(...args), delay)
-  }
-}
+import styles from './AddressInput.module.css'
 
 export type Props = {
-  address: string
+  coordinates?: Coordinates
   errorMessage?: string
-  setAddress: (address: string) => void
   setCoordinates: (coordinates?: Coordinates) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
-type PDOKItem = {
-  id: string
-  weergave_naam: string
-  centroide_ll: string
-}
-
-export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, setSelectedAssets }: Props) => {
+export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSelectedAssets }: Props) => {
+  const [address, setAddress] = useState('')
   const [query, setQuery] = useState('')
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
   const [showListBox, setShowListBox] = useState(false)
@@ -54,40 +37,16 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
   const t = useTranslations('select-location.combo-box')
 
   useEffect(() => {
+    if (!coordinates) {
+      setAddress('')
+      return
+    }
+    fetchAndSetAddress(coordinates, setAddress, t)
+  }, [coordinates, t])
+
+  useEffect(() => {
     setQuery(address)
   }, [address])
-
-  // TODO: do we want to show a loading state?
-  const fetchAddressList = debounce(async (value: string) => {
-    if (value.length >= 3) {
-      try {
-        const response = await fetch(
-          `https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?${pdokQueryParams}&q=${value}`,
-        )
-        const responseData = await response.json()
-
-        if (response.ok) {
-          const responseList: PDOKItem[] = responseData.response.docs.map(
-            (item: { id: string; weergavenaam: string; centroide_ll: string }): PDOKItem => ({
-              id: item.id,
-              weergave_naam: item.weergavenaam,
-              centroide_ll: item.centroide_ll,
-            }),
-          )
-
-          setAddressList(responseList)
-        }
-        setShowListBox(true)
-      } catch (error) {
-        // TODO: do we want to show a message to the user here?
-        // eslint-disable-next-line no-console
-        console.error(error)
-      }
-    } else {
-      setShowListBox(false)
-      setAddressList([])
-    }
-  })
 
   const handleAddressSelect = (value: PDOKItem | string | null) => {
     if (typeof value === 'string' || value === null) {
@@ -105,15 +64,22 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
     }
   }
 
+  // TODO: do we want to show a loading state?
+  const debouncedFetchAddressList = debounce((value: string) => {
+    fetchAddressList(value, setAddressList, setShowListBox)
+  })
+
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === '') {
+    const value = event.target.value
+
+    if (value === '') {
       setAddressList([])
       setCoordinates(undefined)
       return
     }
 
-    setQuery(event.target.value)
-    fetchAddressList(event.target.value)
+    setQuery(value)
+    debouncedFetchAddressList(value)
   }
 
   return (
@@ -123,7 +89,7 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
       <Description className="ams-visually-hidden">
         {t.rich('description', { english: (chunks) => <span lang="en">{chunks}</span> })}
       </Description>
-      <HUICombobox
+      <Combobox
         // Combobox does not rerender when address is set using keyboard on the Map, for some reason.
         // Setting the address as key makes sure it does.
         key={address}
@@ -133,7 +99,6 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
         className={styles.combobox}
       >
         <ComboboxInput as={TextInput} autoComplete="off" name="address" onChange={handleInputChange} />
-
         {showListBox && (
           <ComboboxOptions as={ListBox} className={styles.comboboxOptions} modal={false}>
             {addressList.length > 0 ? (
@@ -149,7 +114,7 @@ export const Combobox = ({ address, errorMessage, setAddress, setCoordinates, se
             )}
           </ComboboxOptions>
         )}
-      </HUICombobox>
+      </Combobox>
     </HUIField>
   )
 }
