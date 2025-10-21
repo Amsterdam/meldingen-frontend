@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+import { COOKIES } from './constants'
 import { middleware } from './middleware'
 
 vi.mock('next/server', async () => {
@@ -23,7 +24,7 @@ const createMockRequest = (cookies: Record<string, string>, url = 'http://localh
 
 describe('middleware', () => {
   it('redirects to / if token is missing', () => {
-    const request = createMockRequest({ id: '123' })
+    const request = createMockRequest({ [COOKIES.ID]: '123' })
     const result = middleware(request)
 
     expect(NextResponse.redirect).toHaveBeenCalledWith(new URL('/', request.url))
@@ -31,7 +32,7 @@ describe('middleware', () => {
   })
 
   it('redirects to / if id is missing', () => {
-    const request = createMockRequest({ token: 'abc' })
+    const request = createMockRequest({ [COOKIES.TOKEN]: 'abc' })
     const result = middleware(request)
 
     expect(NextResponse.redirect).toHaveBeenCalledWith(new URL('/', request.url))
@@ -39,7 +40,7 @@ describe('middleware', () => {
   })
 
   it('calls NextResponse.next if both token and id are present', () => {
-    const request = createMockRequest({ token: 'abc', id: '123' })
+    const request = createMockRequest({ [COOKIES.TOKEN]: 'abc', [COOKIES.ID]: '123' })
     const result = middleware(request)
 
     expect(NextResponse.next).toHaveBeenCalled()

@@ -48,7 +48,7 @@ describe('postForm', () => {
     await postForm(defaultArgs, null, formData)
 
     const cookieInstance = await cookies()
-    expect(cookieInstance.set).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH, '/test')
+    expect(cookieInstance.set).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH, '/test', { maxAge: 86400 })
   })
 
   it('returns validation errors for missing required questions', async () => {

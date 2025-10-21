@@ -59,7 +59,7 @@ describe('postSummaryForm', () => {
 
     await postSummaryForm()
 
-    expect(deleteMock).toHaveBeenCalledWith('address')
+    expect(deleteMock).toHaveBeenCalledWith(COOKIES.ADDRESS)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.TOKEN)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.ID)
