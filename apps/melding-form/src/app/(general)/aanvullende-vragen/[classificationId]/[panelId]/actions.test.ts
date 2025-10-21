@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
 
 import { postForm } from './actions'
-import { SESSION_COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES } from 'apps/melding-form/src/constants'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
@@ -48,7 +48,7 @@ describe('postForm', () => {
     await postForm(defaultArgs, null, formData)
 
     const cookieInstance = await cookies()
-    expect(cookieInstance.set).toHaveBeenCalledWith(SESSION_COOKIES.LAST_PANEL_PATH, '/test')
+    expect(cookieInstance.set).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH, '/test')
   })
 
   it('returns validation errors for missing required questions', async () => {

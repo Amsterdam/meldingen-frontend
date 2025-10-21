@@ -6,7 +6,7 @@ import { postPrimaryForm } from './actions'
 import { Home } from './Home'
 import { isTypeTextAreaComponent } from '../../typeguards'
 import { getMeldingData } from './_utils/getMeldingData'
-import { SESSION_COOKIES } from '../../constants'
+import { COOKIES } from '../../constants'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.
@@ -49,8 +49,8 @@ export default async () => {
 
   const cookieStore = await cookies()
 
-  const meldingId = cookieStore.get(SESSION_COOKIES.ID)?.value
-  const token = cookieStore.get(SESSION_COOKIES.TOKEN)?.value
+  const meldingId = cookieStore.get(COOKIES.ID)?.value
+  const token = cookieStore.get(COOKIES.TOKEN)?.value
 
   const isExistingMelding = meldingId && token
 

@@ -4,7 +4,7 @@ import { getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-clien
 
 import { Contact } from './Contact'
 import { getMeldingData } from '../_utils/getMeldingData'
-import { SESSION_COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES } from 'apps/melding-form/src/constants'
 import { isTypeTextAreaComponent } from 'apps/melding-form/src/typeguards'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
@@ -35,8 +35,8 @@ export default async () => {
   // Check if answers already exist and prefill if so
   const cookieStore = await cookies()
   // We check for the existence of these cookies in our middleware, so non-null assertion is safe here.
-  const meldingId = cookieStore.get(SESSION_COOKIES.ID)!.value
-  const token = cookieStore.get(SESSION_COOKIES.TOKEN)!.value
+  const meldingId = cookieStore.get(COOKIES.ID)!.value
+  const token = cookieStore.get(COOKIES.TOKEN)!.value
 
   const { phone, email } = await getMeldingData(meldingId, token)
 

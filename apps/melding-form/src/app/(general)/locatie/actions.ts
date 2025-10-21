@@ -6,13 +6,13 @@ import { getTranslations } from 'next-intl/server'
 
 import { putMeldingByMeldingIdSubmitLocation } from '@meldingen/api-client'
 
-import { SESSION_COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES } from 'apps/melding-form/src/constants'
 
 export const postLocationForm = async () => {
   const cookieStore = await cookies()
 
-  const meldingId = cookieStore.get(SESSION_COOKIES.ID)?.value
-  const token = cookieStore.get(SESSION_COOKIES.TOKEN)?.value
+  const meldingId = cookieStore.get(COOKIES.ID)?.value
+  const token = cookieStore.get(COOKIES.TOKEN)?.value
   const address = cookieStore.get('address')?.value
 
   if (!meldingId || !token) return redirect('/cookie-storing')

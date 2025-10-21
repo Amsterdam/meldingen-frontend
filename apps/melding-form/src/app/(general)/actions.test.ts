@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import { Mock, vi } from 'vitest'
 
 import { postPrimaryForm } from './actions'
-import { SESSION_COOKIES } from '../../constants'
+import { COOKIES } from '../../constants'
 import { form } from '../../mocks/data'
 import { ENDPOINTS } from '../../mocks/endpoints'
 import { server } from '../../mocks/node'
@@ -89,13 +89,13 @@ describe('postPrimaryForm', () => {
 
     await postPrimaryForm({}, null, formData)
 
-    expect(mockCookies.set).toHaveBeenCalledWith(SESSION_COOKIES.ID, '123', { maxAge: 86400 })
-    expect(mockCookies.set).toHaveBeenCalledWith(SESSION_COOKIES.CREATED_AT, '2025-05-26T11:56:34.081Z', {
+    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: 86400 })
+    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.CREATED_AT, '2025-05-26T11:56:34.081Z', {
       maxAge: 86400,
     })
-    expect(mockCookies.set).toHaveBeenCalledWith(SESSION_COOKIES.PUBLIC_ID, 'B100AA', { maxAge: 86400 })
-    expect(mockCookies.set).toHaveBeenCalledWith(SESSION_COOKIES.TOKEN, 'test-token', { maxAge: 86400 })
-    expect(mockCookies.delete).toHaveBeenCalledWith(SESSION_COOKIES.LAST_PANEL_PATH)
+    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.PUBLIC_ID, 'B100AA', { maxAge: 86400 })
+    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', { maxAge: 86400 })
+    expect(mockCookies.delete).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
   })
 
   it('uses a PATCH request when id and token are passed to postPrimaryForm', async () => {
@@ -104,7 +104,7 @@ describe('postPrimaryForm', () => {
 
     await postPrimaryForm({ existingId: '123', existingToken: 'test-token' }, null, formData)
 
-    expect(mockCookies.set).toHaveBeenCalledWith(SESSION_COOKIES.PUBLIC_ID, 'PATCH request', { maxAge: 86400 })
+    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.PUBLIC_ID, 'PATCH request', { maxAge: 86400 })
   })
 
   describe('with classification', () => {

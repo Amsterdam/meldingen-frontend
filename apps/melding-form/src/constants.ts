@@ -1,4 +1,4 @@
-export const SESSION_COOKIES = {
+export const COOKIES = {
   ID: 'id',
   CREATED_AT: 'created_at',
   LAST_PANEL_PATH: 'lastPanelPath',

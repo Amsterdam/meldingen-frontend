@@ -6,7 +6,7 @@ import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMe
 
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
-import { SESSION_COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES } from 'apps/melding-form/src/constants'
 
 export const dynamic = 'force-dynamic'
 
@@ -61,8 +61,8 @@ export default async ({ params }: { params: Params }) => {
   // Check if answers already exist and prefill if so
   const cookieStore = await cookies()
   // We check for the existence of these cookies in our middleware, so non-null assertion is safe here.
-  const meldingId = cookieStore.get(SESSION_COOKIES.ID)!.value
-  const token = cookieStore.get(SESSION_COOKIES.TOKEN)!.value
+  const meldingId = cookieStore.get(COOKIES.ID)!.value
+  const token = cookieStore.get(COOKIES.TOKEN)!.value
 
   const { data: answers } = await getMeldingByMeldingIdAnswersMelder({
     path: { melding_id: parseInt(meldingId, 10) },

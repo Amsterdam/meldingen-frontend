@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-import { SESSION_COOKIES } from './constants'
+import { COOKIES } from './constants'
 
 export const middleware = (request: NextRequest) => {
   // Allow Server Actions to pass through without checking cookies
@@ -10,8 +10,8 @@ export const middleware = (request: NextRequest) => {
     return NextResponse.next()
   }
 
-  const token = request.cookies.get(SESSION_COOKIES.TOKEN)
-  const id = request.cookies.get(SESSION_COOKIES.ID)
+  const token = request.cookies.get(COOKIES.TOKEN)
+  const id = request.cookies.get(COOKIES.ID)
 
   if (!token || !id) {
     return NextResponse.redirect(new URL('/', request.url))
