@@ -1,8 +1,8 @@
 export const COOKIES = {
-  ADDRESS: 'address',
-  CREATED_AT: 'created_at',
-  ID: 'id',
-  LAST_PANEL_PATH: 'lastPanelPath',
-  PUBLIC_ID: 'public_id',
-  TOKEN: 'token',
+  ADDRESS: 'meldingen_address',
+  CREATED_AT: 'meldingen_created_at',
+  ID: 'meldingen_id',
+  LAST_PANEL_PATH: 'meldingen_last_panel_path',
+  PUBLIC_ID: 'meldingen_public_id',
+  TOKEN: 'meldingen_token',
 } as const
