@@ -12,6 +12,7 @@ export const ClassificationCreate = () => (
       }
     >
       <TextInput source="name" />
+      <TextInput source="asset_type" />
     </SimpleForm>
   </Create>
 )

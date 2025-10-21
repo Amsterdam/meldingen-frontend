@@ -13,6 +13,7 @@ export const ClassificationEdit = () => (
       }
     >
       <TextInput source="name" />
+      <TextInput source="asset_type" />
       <TextInput source="form" readOnly />
     </SimpleForm>
   </Edit>
