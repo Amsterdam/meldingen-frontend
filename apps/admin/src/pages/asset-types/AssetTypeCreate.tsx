@@ -1,6 +1,15 @@
 import { Create, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
 
-const transform = (data: any) => ({
+type AssetTypeCreateData = {
+  name: string
+  arguments: {
+    additionalProp1: {
+      base_url: string
+    }
+  }
+}
+
+const transform = (data: AssetTypeCreateData) => ({
   ...data,
   // class_name defines the way the assets are fetched.
   // Currently only meldingen.wfs.ProxyWfsProviderFactory class is available.
