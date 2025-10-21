@@ -1,4 +1,3 @@
-import { AlertProps } from '@amsterdam/design-system-react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type L from 'leaflet'
@@ -30,19 +29,11 @@ vi.mock('leaflet', async (importOriginal) => {
 const defaultProps: Props = {
   mapInstance: mapInstanceMock,
   setCoordinates: vi.fn(),
-  notification: null,
-  setNotification: vi.fn(),
-}
-
-const mockNotification = {
-  closeButtonLabel: 'current-location-notification.close-button',
-  description: 'current-location-notification.description',
-  heading: 'current-location-notification.title',
-  severity: 'error' as AlertProps['severity'],
+  onCurrentLocationError: vi.fn(),
 }
 
 describe('ControlsOverlay', () => {
-  it('sets a notification on geolocation error', async () => {
+  it('calls onCurrentLocationError on geolocation error', async () => {
     const mockGeolocation = {
       getCurrentPosition: vi.fn().mockImplementationOnce((_, error) =>
         error({
@@ -57,37 +48,15 @@ describe('ControlsOverlay', () => {
 
     const user = userEvent.setup()
 
-    render(<ControlsOverlay {...defaultProps} />)
+    const mockOnCurrentLocationError = vi.fn()
+
+    render(<ControlsOverlay {...defaultProps} onCurrentLocationError={mockOnCurrentLocationError} />)
 
     const button = screen.getByRole('button', { name: 'current-location-button' })
 
     await user.click(button)
 
-    expect(defaultProps.setNotification).toHaveBeenCalledWith(mockNotification)
-  })
-
-  it('closes the notification when the close button is clicked', async () => {
-    const mockGeolocation = {
-      getCurrentPosition: vi.fn().mockImplementationOnce((_, error) =>
-        error({
-          code: 1,
-          message: 'User denied Geolocation',
-        }),
-      ),
-    }
-
-    // @ts-expect-error: This isn't a problem in tests
-    global.navigator.geolocation = mockGeolocation
-
-    const user = userEvent.setup()
-
-    render(<ControlsOverlay {...defaultProps} notification={mockNotification} />)
-
-    const closeButton = screen.getByRole('button', { name: 'current-location-notification.close-button' })
-
-    await user.click(closeButton)
-
-    expect(defaultProps.setNotification).toHaveBeenCalledWith(null)
+    expect(mockOnCurrentLocationError).toHaveBeenCalled()
   })
 
   it('calls setCoordinates with the correct coordinates on geolocation success', async () => {

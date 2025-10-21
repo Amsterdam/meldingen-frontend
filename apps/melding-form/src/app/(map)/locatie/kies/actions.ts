@@ -6,7 +6,7 @@ import { getTranslations } from 'next-intl/server'
 
 import { type Feature, patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
 
-import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
+import { convertWktPointToCoordinates } from './_utils/convertWktPointToCoordinates'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam'

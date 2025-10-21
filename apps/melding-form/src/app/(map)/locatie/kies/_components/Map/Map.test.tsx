@@ -19,12 +19,11 @@ vi.mock('leaflet', async (importOriginal) => {
 
 const defaultProps: Props = {
   mapInstance: null,
-  notification: null,
   selectedAssets: [],
   setCoordinates: vi.fn(),
   setMapInstance: vi.fn(),
-  setNotification: vi.fn(),
   setSelectedAssets: vi.fn(),
+  onCurrentLocationError: vi.fn(),
 }
 
 describe('Map', () => {
