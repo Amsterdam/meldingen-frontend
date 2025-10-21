@@ -1,5 +1,7 @@
 import { DeleteWithConfirmButton, Edit, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
 
+import { AssetTypeInput } from './AssetTypeInput'
+
 export const ClassificationEdit = () => (
   <Edit>
     <SimpleForm
@@ -13,7 +15,7 @@ export const ClassificationEdit = () => (
       }
     >
       <TextInput source="name" />
-      <TextInput source="asset_type" />
+      <AssetTypeInput />
       <TextInput source="form" readOnly />
     </SimpleForm>
   </Edit>

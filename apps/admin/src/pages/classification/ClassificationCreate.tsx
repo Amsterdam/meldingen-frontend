@@ -1,5 +1,7 @@
 import { Create, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
 
+import { AssetTypeInput } from './AssetTypeInput'
+
 export const ClassificationCreate = () => (
   <Create redirect="list">
     <SimpleForm
@@ -12,7 +14,7 @@ export const ClassificationCreate = () => (
       }
     >
       <TextInput source="name" />
-      <TextInput source="asset_type" />
+      <AssetTypeInput />
     </SimpleForm>
   </Create>
 )
