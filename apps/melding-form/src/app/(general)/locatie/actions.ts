@@ -13,7 +13,7 @@ export const postLocationForm = async () => {
 
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
-  const address = cookieStore.get('address')?.value
+  const address = cookieStore.get(COOKIES.ADDRESS)?.value
 
   if (!meldingId || !token) return redirect('/cookie-storing')
 
