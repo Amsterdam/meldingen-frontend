@@ -53,7 +53,8 @@ export const postForm = async (
   if (!meldingId || !token) return redirect('/cookie-storing')
 
   // Set last panel path in cookies
-  cookieStore.set(COOKIES.LAST_PANEL_PATH, lastPanelPath)
+  const oneDay = 24 * 60 * 60
+  cookieStore.set(COOKIES.LAST_PANEL_PATH, lastPanelPath, { maxAge: oneDay })
 
   // Checkbox answers are stored as separate key-value pairs in the FormData object.
   // This function merges these answers into a single string value per question, using an identifier in the Checkbox component.

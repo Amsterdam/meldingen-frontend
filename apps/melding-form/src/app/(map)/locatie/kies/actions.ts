@@ -71,7 +71,8 @@ export const postCoordinatesAndAssets = async (
 
   const addressCookie: string = coordinates ? address : PDOKLocation.response.docs[0].weergavenaam
 
-  cookieStore.set(COOKIES.ADDRESS, addressCookie)
+  const oneDay = 24 * 60 * 60
+  cookieStore.set(COOKIES.ADDRESS, addressCookie, { maxAge: oneDay })
 
   const parsedCoordinates = coordinates ? JSON.parse(coordinates as string) : PDOKCoordinates
 
