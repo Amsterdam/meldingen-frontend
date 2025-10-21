@@ -1,4 +1,4 @@
-import { Create, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
+import { Create, required, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
 
 type AssetTypeCreateData = {
   name: string
@@ -25,8 +25,8 @@ export const AssetTypeCreate = () => (
         </Toolbar>
       }
     >
-      <TextInput source="name" />
-      <TextInput source="arguments.base_url" />
+      <TextInput source="name" validate={required()} />
+      <TextInput source="arguments.base_url" validate={required()} />
     </SimpleForm>
   </Create>
 )

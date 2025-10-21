@@ -1,4 +1,13 @@
-import { DeleteWithConfirmButton, Edit, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
+import {
+  DeleteWithConfirmButton,
+  Edit,
+  required,
+  SaveButton,
+  SimpleForm,
+  TextInput,
+  Toolbar,
+  ToolbarClasses,
+} from 'react-admin'
 
 export const AssetTypeEdit = () => (
   <Edit>
@@ -12,8 +21,8 @@ export const AssetTypeEdit = () => (
         </Toolbar>
       }
     >
-      <TextInput source="name" />
-      <TextInput source="arguments.base_url" />
+      <TextInput source="name" validate={required()} />
+      <TextInput source="arguments.base_url" validate={required()} />
     </SimpleForm>
   </Edit>
 )
