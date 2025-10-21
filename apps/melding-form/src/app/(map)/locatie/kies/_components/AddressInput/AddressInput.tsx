@@ -37,7 +37,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
 
   const t = useTranslations('select-location.combo-box')
 
-  // Make sure the ComboboxOptions fit on the screen
+  // Make sure the ComboboxOptions do not overflow the viewport
   const { refs, floatingStyles } = useFloating({
     middleware: [
       size({
