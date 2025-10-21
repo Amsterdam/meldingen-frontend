@@ -13,7 +13,7 @@ export const AssetTypeEdit = () => (
       }
     >
       <TextInput source="name" />
-      <TextInput source="arguments.additionalProp1.base_url" />
+      <TextInput source="arguments.base_url" />
     </SimpleForm>
   </Edit>
 )

@@ -3,9 +3,7 @@ import { Create, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } fr
 type AssetTypeCreateData = {
   name: string
   arguments: {
-    additionalProp1: {
-      base_url: string
-    }
+    base_url: string
   }
 }
 
@@ -28,7 +26,7 @@ export const AssetTypeCreate = () => (
       }
     >
       <TextInput source="name" />
-      <TextInput source="arguments.additionalProp1.base_url" />
+      <TextInput source="arguments.base_url" />
     </SimpleForm>
   </Create>
 )

@@ -238,7 +238,7 @@ const nl: TranslationMessages = {
       name: 'Asset types',
       fields: {
         name: 'Naam',
-        'arguments.additionalProp1.base_url': 'WFS url',
+        'arguments.base_url': 'WFS url',
       },
     },
   },
