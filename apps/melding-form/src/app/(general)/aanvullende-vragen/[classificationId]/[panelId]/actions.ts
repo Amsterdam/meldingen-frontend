@@ -8,6 +8,7 @@ import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
+import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 type ArgsType = {
@@ -46,13 +47,14 @@ export const postForm = async (
 ) => {
   // Get session variables from cookies
   const cookieStore = await cookies()
-  const meldingId = cookieStore.get('id')?.value
-  const token = cookieStore.get('token')?.value
+  const meldingId = cookieStore.get(COOKIES.ID)?.value
+  const token = cookieStore.get(COOKIES.TOKEN)?.value
 
   if (!meldingId || !token) return redirect('/cookie-storing')
 
   // Set last panel path in cookies
-  cookieStore.set('lastPanelPath', lastPanelPath)
+  const oneDay = 24 * 60 * 60
+  cookieStore.set(COOKIES.LAST_PANEL_PATH, lastPanelPath, { maxAge: oneDay })
 
   // Checkbox answers are stored as separate key-value pairs in the FormData object.
   // This function merges these answers into a single string value per question, using an identifier in the Checkbox component.

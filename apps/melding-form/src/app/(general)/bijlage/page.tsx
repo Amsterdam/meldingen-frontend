@@ -8,6 +8,7 @@ import {
 } from '@meldingen/api-client'
 
 import { Attachments } from './Attachments'
+import { COOKIES } from 'apps/melding-form/src/constants'
 import { isTypeTextAreaComponent } from 'apps/melding-form/src/typeguards'
 
 export type ExistingFileType = {
@@ -19,8 +20,8 @@ export type ExistingFileType = {
 export default async () => {
   const cookieStore = await cookies()
   // We check for the existence of these cookies in our middleware, so non-null assertion is safe here.
-  const meldingId = cookieStore.get('id')!.value
-  const token = cookieStore.get('token')!.value
+  const meldingId = cookieStore.get(COOKIES.ID)!.value
+  const token = cookieStore.get(COOKIES.TOKEN)!.value
 
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
