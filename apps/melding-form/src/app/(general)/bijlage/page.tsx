@@ -58,7 +58,6 @@ export default async () => {
     attachmentData.map(async ({ id, original_filename }): Promise<FileDownloadType> => {
       const { data, error, response } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
         path: { melding_id: parseInt(meldingId, 10), attachment_id: id },
-
         query: { token, type: 'thumbnail' },
       })
 
