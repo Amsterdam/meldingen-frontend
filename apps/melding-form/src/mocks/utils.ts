@@ -13,7 +13,7 @@ const mockCookies = (keyValuePairs: Record<string, string | undefined>, set: () 
 }
 
 const mockIdAndTokenCookies = (id = '123', token = 'test-token') => {
-  mockCookies({ id, token })
+  mockCookies({ meldingen_id: id, meldingen_token: token })
 }
 
 export { mockCookies, mockIdAndTokenCookies }

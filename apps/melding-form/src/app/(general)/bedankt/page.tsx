@@ -5,6 +5,8 @@ import { getTranslations } from 'next-intl/server'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Heading, StandaloneLink } from '@meldingen/ui'
 
+import { COOKIES } from 'apps/melding-form/src/constants'
+
 // The "description" translation also accepts undefined values for conditional rendering
 type TWithUndefined = (key: string, values?: Record<string, string | number | Date | undefined>) => string
 
@@ -21,8 +23,8 @@ export default async () => {
 
   const cookieStore = await cookies()
 
-  const publicId = cookieStore.get('public_id')?.value
-  const createdAt = cookieStore.get('created_at')?.value
+  const publicId = cookieStore.get(COOKIES.PUBLIC_ID)?.value
+  const createdAt = cookieStore.get(COOKIES.CREATED_AT)?.value
 
   const date = createdAt ? new Date(createdAt).toLocaleDateString('nl-NL') : undefined
   const time = createdAt ? new Date(createdAt).toLocaleTimeString('nl-NL', { timeStyle: 'short' }) : undefined
