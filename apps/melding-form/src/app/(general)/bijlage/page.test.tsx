@@ -8,6 +8,8 @@ import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
+import { Blob } from 'buffer'
+
 vi.mock('./Attachments', () => ({
   Attachments: vi.fn(() => <div>Attachments Component</div>),
 }))
@@ -84,8 +86,27 @@ describe('Page', () => {
 
     expect(Attachments).toHaveBeenCalledWith(
       expect.objectContaining({
-        files: expect.any(Array),
-        formData: expect.any(Array),
+        files: [
+          {
+            blob: expect.any(Blob),
+            fileName: 'IMG_0815.jpg',
+            contentType: 'image/webp',
+            serverId: 42,
+          },
+        ],
+        formData: [
+          {
+            label: 'First question',
+            description: '',
+            key: 'textArea1',
+            type: 'textarea',
+            input: true,
+            autoExpand: false,
+            maxCharCount: 0,
+            position: 1,
+            question: 1,
+          },
+        ],
         meldingId: 123,
         token: 'test-token',
       }),
