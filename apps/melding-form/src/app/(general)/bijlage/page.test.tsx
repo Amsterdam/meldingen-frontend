@@ -84,7 +84,7 @@ describe('Page', () => {
 
     expect(Attachments).toHaveBeenCalledWith(
       expect.objectContaining({
-        attachments: expect.any(Array),
+        files: expect.any(Array),
         formData: expect.any(Array),
         meldingId: 123,
         token: 'test-token',

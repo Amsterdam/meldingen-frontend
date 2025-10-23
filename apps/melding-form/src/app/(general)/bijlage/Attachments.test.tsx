@@ -5,7 +5,7 @@ import { useActionState } from 'react'
 import { Mock } from 'vitest'
 
 import { Attachments } from './Attachments'
-import { FileDownloadType } from './page'
+import { ExistingFileType } from './page'
 import { startUpload } from './utils'
 import type { FileUpload } from './utils'
 import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
@@ -16,7 +16,7 @@ const defaultProps = {
   meldingId: 1,
   token: 'mock-token',
   formData: [{ ...textAreaComponent, description: 'Test description' }],
-  attachments: [],
+  files: [],
 }
 
 vi.mock('react', async (importOriginal) => {
@@ -96,7 +96,7 @@ describe('Attachments', () => {
 
   it('shows initial uploads when provided', () => {
     const mockFileName = 'IMG_SERVER_TEST.jpg'
-    const initialUploads: FileDownloadType[] = [
+    const initialUploads: ExistingFileType[] = [
       {
         blob: { size: 4326, type: 'image/webp' } as Blob,
         fileName: mockFileName,
@@ -105,7 +105,7 @@ describe('Attachments', () => {
       },
     ]
 
-    render(<Attachments {...defaultProps} attachments={initialUploads} />)
+    render(<Attachments {...defaultProps} files={initialUploads} />)
 
     const fileName = screen.getAllByText(mockFileName)[0]
 
@@ -219,7 +219,7 @@ describe('Attachments', () => {
     const user = userEvent.setup()
 
     const mockFileName = 'IMG_SERVER_TEST.jpg'
-    const initialUploads: FileDownloadType[] = [
+    const initialUploads: ExistingFileType[] = [
       {
         blob: { size: 4326, type: 'image/webp' } as Blob,
         fileName: mockFileName,
@@ -228,7 +228,7 @@ describe('Attachments', () => {
       },
     ]
 
-    render(<Attachments {...defaultProps} attachments={initialUploads} />)
+    render(<Attachments {...defaultProps} files={initialUploads} />)
 
     const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFileName}` })
 

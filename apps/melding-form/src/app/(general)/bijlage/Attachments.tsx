@@ -13,7 +13,7 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Column, FileList, FileUpload, Heading, InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
 import { submitAttachmentsForm } from './actions'
-import type { FileDownloadType } from './page'
+import type { ExistingFileType } from './page'
 import type { FileUpload as FileUploadType } from './utils'
 import { startUpload } from './utils'
 import { BackLink } from '../_components/BackLink/BackLink'
@@ -32,7 +32,7 @@ type Props = {
   formData: StaticFormTextAreaComponentOutput[]
   meldingId: number
   token: string
-  attachments: FileDownloadType[]
+  files: ExistingFileType[]
 }
 
 const initialState: Pick<FormState, 'systemError'> = {}
@@ -46,22 +46,22 @@ const createFileUploads = (newFiles: File[]): FileUploadType[] =>
     xhr: new XMLHttpRequest(),
   }))
 
-const createInitialFileUploads = (attachments: FileDownloadType[]): FileUploadType[] =>
-  attachments.map((attachment) => ({
-    ...attachment,
+const mapExistingFilesToUploads = (files: ExistingFileType[]): FileUploadType[] =>
+  files.map((file) => ({
+    ...file,
     id: crypto.randomUUID(),
-    file: new File([attachment.blob], attachment.fileName, { type: attachment.contentType }),
+    file: new File([file.blob], file.fileName, { type: file.contentType }),
     progress: 100,
     status: 'success',
   }))
 
-export const Attachments = ({ attachments, formData, meldingId, token }: Props) => {
-  const initialFileUploads = createInitialFileUploads(attachments)
+export const Attachments = ({ files, formData, meldingId, token }: Props) => {
+  const existingFilesUploads = mapExistingFilesToUploads(files)
 
   const inputRef = useRef<HTMLInputElement>(null)
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [fileUploads, setFileUploads] = useState<FileUploadType[]>(initialFileUploads)
+  const [fileUploads, setFileUploads] = useState<FileUploadType[]>(existingFilesUploads)
   const [errorMessage, setErrorMessage] = useState<string>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
 

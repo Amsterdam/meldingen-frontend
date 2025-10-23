@@ -10,7 +10,7 @@ import {
 import { Attachments } from './Attachments'
 import { isTypeTextAreaComponent } from 'apps/melding-form/src/typeguards'
 
-export type FileDownloadType = {
+export type ExistingFileType = {
   blob: Blob
   fileName: string
   contentType: string
@@ -55,7 +55,7 @@ export default async () => {
   if (!attachmentData) throw new Error('Attachments data not found.')
 
   const attachments = await Promise.all(
-    attachmentData.map(async ({ id, original_filename }): Promise<FileDownloadType> => {
+    attachmentData.map(async ({ id, original_filename }): Promise<ExistingFileType> => {
       const { data, error, response } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
         path: { melding_id: parseInt(meldingId, 10), attachment_id: id },
         query: { token, type: 'thumbnail' },
@@ -78,7 +78,7 @@ export default async () => {
 
   return (
     <Attachments
-      attachments={attachments}
+      files={attachments}
       formData={filteredAttachmentsForm}
       meldingId={parseInt(meldingId, 10)}
       token={token}
