@@ -14,7 +14,7 @@ import { Column, FileList, FileUpload, Heading, InvalidFormAlert, SubmitButton }
 
 import { submitAttachmentsForm } from './actions'
 import type { ExistingFileType } from './page'
-import type { FileUpload as FileUploadType } from './utils'
+import type { ExistingFileUpload, FileUpload as FileUploadType } from './utils'
 import { startUpload } from './utils'
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
@@ -46,7 +46,7 @@ const createFileUploads = (newFiles: File[]): FileUploadType[] =>
     xhr: new XMLHttpRequest(),
   }))
 
-const mapExistingFilesToUploads = (files: ExistingFileType[]): FileUploadType[] =>
+const mapExistingFilesToUploads = (files: ExistingFileType[]): ExistingFileUpload[] =>
   files.map((file) => ({
     ...file,
     id: crypto.randomUUID(),
@@ -61,7 +61,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [fileUploads, setFileUploads] = useState<FileUploadType[]>(existingFilesUploads)
+  const [fileUploads, setFileUploads] = useState<(FileUploadType | ExistingFileUpload)[]>(existingFilesUploads)
   const [errorMessage, setErrorMessage] = useState<string>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
 

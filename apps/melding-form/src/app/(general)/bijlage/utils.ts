@@ -17,6 +17,10 @@ export type FileUpload = {
   progress: number // 0-100
   serverId?: number
   status: 'pending' | 'uploading' | 'success' | 'error'
+  xhr: XMLHttpRequest
+}
+
+export type ExistingFileUpload = Omit<FileUpload, 'xhr'> & {
   xhr?: XMLHttpRequest
 }
 
@@ -25,7 +29,7 @@ export type FileUpload = {
 export const startUpload = (
   xhr: XMLHttpRequest,
   fileUpload: FileUpload,
-  setFileUploads: Dispatch<SetStateAction<FileUpload[]>>,
+  setFileUploads: Dispatch<SetStateAction<(FileUpload | ExistingFileUpload)[]>>,
 ) => {
   xhr.upload.onprogress = (event) => {
     if (event.lengthComputable) {
