@@ -3,6 +3,7 @@ import { http, HttpResponse } from 'msw'
 
 import Page, { generateMetadata } from './page'
 import { SelectLocation } from './SelectLocation'
+import { melding } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
@@ -40,15 +41,13 @@ describe('Page', () => {
     await expect(Page()).rejects.toThrowError('Failed to fetch melding data.')
   })
 
-  it('passes coordinates to SelectLocation when location cookie is present', async () => {
-    mockIdAndTokenCookies()
-
+  it('passes coordinates to SelectLocation when they already exist', async () => {
     const PageComponent = await Page()
     render(PageComponent)
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        coordinates: { lat: 52.370216, lng: 4.895168 },
+        coordinates: melding.geo_location?.geometry,
       }),
       undefined,
     )
