@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
 import { postCoordinatesAndAssets } from './actions'
+import { COOKIES } from 'apps/melding-form/src/constants'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
@@ -18,7 +19,7 @@ vi.mock('next/navigation', () => ({
 describe('postCoordinatesAndAssets', () => {
   const mockSetCookie = vi.fn()
 
-  mockCookies({ id: '123', token: 'test-token' }, mockSetCookie)
+  mockCookies({ [COOKIES.ID]: '123', [COOKIES.TOKEN]: 'test-token' }, mockSetCookie)
 
   it('sets the address in cookies and redirects', async () => {
     const address = 'Oudezijds Voorburgwal 300, Amsterdam'
@@ -30,7 +31,7 @@ describe('postCoordinatesAndAssets', () => {
 
     await postCoordinatesAndAssets({ selectedAssets: containerAssets }, undefined, formData)
 
-    expect(mockSetCookie).toHaveBeenCalledWith('address', address)
+    expect(mockSetCookie).toHaveBeenCalledWith(COOKIES.ADDRESS, address, { maxAge: 86400 })
     expect(redirect).toHaveBeenCalledWith('/locatie')
   })
 
@@ -42,7 +43,7 @@ describe('postCoordinatesAndAssets', () => {
 
     await postCoordinatesAndAssets({ selectedAssets: [] }, undefined, formData)
 
-    expect(mockSetCookie).toHaveBeenCalledWith('address', address)
+    expect(mockSetCookie).toHaveBeenCalledWith(COOKIES.ADDRESS, address, { maxAge: 86400 })
     expect(redirect).toHaveBeenCalledWith('/locatie')
   })
 
