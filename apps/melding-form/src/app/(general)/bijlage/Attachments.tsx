@@ -94,7 +94,6 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
     newFileUploads.forEach((upload) => {
       const xhr = upload.xhr
-      if (xhr === undefined) return
 
       xhr.open(
         'POST',
