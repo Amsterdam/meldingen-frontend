@@ -13,7 +13,6 @@ import { isTypeTextAreaComponent } from 'apps/melding-form/src/typeguards'
 export type ExistingFileType = {
   blob: Blob
   fileName: string
-  contentType: string
   serverId: number
 }
 
@@ -52,25 +51,20 @@ export default async () => {
   })
 
   if (attachmentError) throw new Error('Failed to fetch attachments data.')
-  if (!attachmentData) throw new Error('Attachments data not found.')
 
   const attachments = await Promise.all(
     attachmentData.map(async ({ id, original_filename }): Promise<ExistingFileType> => {
-      const { data, error, response } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
+      const { data, error } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
         path: { melding_id: parseInt(meldingId, 10), attachment_id: id },
         query: { token, type: 'thumbnail' },
       })
 
-      const contentType = response.headers.get('content-type')!
-
       if (error) throw new Error('Failed to fetch attachment download.')
-      if (!data) throw new Error('Attachment download data not found.')
 
       // Returning blob instead of File since the File api is not available in Node.js
       return {
         blob: data as Blob,
         fileName: original_filename,
-        contentType: contentType!,
         serverId: id,
       }
     }),

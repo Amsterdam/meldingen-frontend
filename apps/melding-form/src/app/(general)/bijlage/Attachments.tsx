@@ -50,7 +50,7 @@ const mapExistingFilesToUploads = (files: ExistingFileType[]): ExistingFileUploa
   files.map((file) => ({
     ...file,
     id: crypto.randomUUID(),
-    file: new File([file.blob], file.fileName, { type: file.contentType }),
+    file: new File([file.blob], file.fileName),
     progress: 100,
     status: 'success',
   }))

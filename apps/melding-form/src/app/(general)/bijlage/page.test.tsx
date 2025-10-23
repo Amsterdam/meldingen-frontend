@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { Mock } from 'vitest'
 
 import { Attachments } from './Attachments'
 import Page from './page'
@@ -90,7 +89,6 @@ describe('Page', () => {
           {
             blob: expect.any(Blob),
             fileName: 'IMG_0815.jpg',
-            contentType: 'image/webp',
             serverId: 42,
           },
         ],
@@ -112,10 +110,6 @@ describe('Page', () => {
       }),
       undefined,
     )
-
-    const callArgs = (Attachments as Mock).mock.calls[0][0]
-
-    expect(callArgs.formData).toHaveLength(1)
   })
 
   it('throws an error if attachments data cannot be fetched', async () => {
