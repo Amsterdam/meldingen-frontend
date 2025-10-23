@@ -45,9 +45,11 @@ describe('Page', () => {
     const PageComponent = await Page()
     render(PageComponent)
 
+    const [lat, lng] = melding.geo_location?.geometry?.coordinates || []
+
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        coordinates: melding.geo_location?.geometry,
+        coordinates: { lat, lng },
       }),
       undefined,
     )
