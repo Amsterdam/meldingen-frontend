@@ -3,6 +3,7 @@ import { http, HttpResponse } from 'msw'
 
 import { Attachments } from './Attachments'
 import Page from './page'
+import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
@@ -92,19 +93,7 @@ describe('Page', () => {
             serverId: 42,
           },
         ],
-        formData: [
-          {
-            label: 'First question',
-            description: '',
-            key: 'textArea1',
-            type: 'textarea',
-            input: true,
-            autoExpand: false,
-            maxCharCount: 0,
-            position: 1,
-            question: 1,
-          },
-        ],
+        formData: [textAreaComponent],
         meldingId: 123,
         token: 'test-token',
       }),
