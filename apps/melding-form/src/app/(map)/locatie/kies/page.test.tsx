@@ -3,10 +3,9 @@ import { http, HttpResponse } from 'msw'
 
 import Page, { generateMetadata } from './page'
 import { SelectLocation } from './SelectLocation'
-import { COOKIES } from 'apps/melding-form/src/constants'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
-import { mockCookies, mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -42,10 +41,7 @@ describe('Page', () => {
   })
 
   it('passes coordinates to SelectLocation when location cookie is present', async () => {
-    mockCookies({
-      [COOKIES.ID]: '123',
-      [COOKIES.TOKEN]: 'test-token',
-    })
+    mockIdAndTokenCookies()
 
     const PageComponent = await Page()
     render(PageComponent)
