@@ -100,7 +100,6 @@ describe('Attachments', () => {
       {
         blob: { size: 4326, type: 'image/webp' } as Blob,
         fileName: mockFileName,
-        contentType: 'image/webp',
         serverId: 1,
       },
     ]
@@ -223,7 +222,6 @@ describe('Attachments', () => {
       {
         blob: { size: 4326, type: 'image/webp' } as Blob,
         fileName: mockFileName,
-        contentType: 'image/webp',
         serverId: 1,
       },
     ]
