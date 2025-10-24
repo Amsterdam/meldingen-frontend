@@ -7,7 +7,7 @@ type AssetTypeCreateData = {
   }
 }
 
-const transform = (data: AssetTypeCreateData) => ({
+export const transform = (data: AssetTypeCreateData) => ({
   ...data,
   // class_name defines the way the assets are fetched.
   // Currently only meldingen.wfs.ProxyWfsProviderFactory class is available.
