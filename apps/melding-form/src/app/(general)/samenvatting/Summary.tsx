@@ -107,6 +107,11 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
                   ))}
                 </FileList>
               </SummaryList.Description>
+              <SummaryList.Description>
+                <NextLink href="/bijlage" legacyBehavior passHref>
+                  <Link>{t('change-links.attachments')}</Link>
+                </NextLink>
+              </SummaryList.Description>
             </SummaryList.Item>
           )}
 

@@ -128,6 +128,7 @@
       "primary": "Wijzig uw melding",
       "additional": "Wijzig antwoord",
       "location": "Wijzig locatie",
+      "attachments": "Wijzig foto’s",
       "contact": "Wijzig contactgegevens"
     },
     "errors": {
