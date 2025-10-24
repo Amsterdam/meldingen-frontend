@@ -61,7 +61,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [fileUploads, setFileUploads] = useState<(FileUploadType | ExistingFileUpload)[]>(existingFilesUploads)
+  const [fileUploads, setFileUploads] = useState<(FileUploadType | ExistingFileUpload)[]>(existingFileUploads)
   const [errorMessage, setErrorMessage] = useState<string>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
 
