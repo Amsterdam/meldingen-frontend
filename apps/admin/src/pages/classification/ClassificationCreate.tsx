@@ -1,4 +1,4 @@
-import { Create, ReferenceInput, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
+import { Create, ReferenceInput, required, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
 
 export const ClassificationCreate = () => (
   <Create redirect="list">
@@ -11,7 +11,7 @@ export const ClassificationCreate = () => (
         </Toolbar>
       }
     >
-      <TextInput source="name" />
+      <TextInput source="name" validate={required()} />
       <ReferenceInput reference="asset-type" sort={{ field: 'name', order: 'ASC' }} source="asset_type" />
     </SimpleForm>
   </Create>

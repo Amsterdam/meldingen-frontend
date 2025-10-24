@@ -1,15 +1,27 @@
 import { cookies } from 'next/headers'
 
-import { getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
+import {
+  getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
+  getMeldingByMeldingIdAttachmentsMelder,
+  getStaticForm,
+  getStaticFormByStaticFormId,
+} from '@meldingen/api-client'
 
 import { Attachments } from './Attachments'
+import { COOKIES } from 'apps/melding-form/src/constants'
 import { isTypeTextAreaComponent } from 'apps/melding-form/src/typeguards'
+
+export type ExistingFileType = {
+  blob: Blob
+  fileName: string
+  serverId: number
+}
 
 export default async () => {
   const cookieStore = await cookies()
   // We check for the existence of these cookies in our middleware, so non-null assertion is safe here.
-  const meldingId = cookieStore.get('id')!.value
-  const token = cookieStore.get('token')!.value
+  const meldingId = cookieStore.get(COOKIES.ID)!.value
+  const token = cookieStore.get(COOKIES.TOKEN)!.value
 
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
@@ -34,5 +46,37 @@ export default async () => {
 
   if (!filteredAttachmentsForm[0].label) throw new Error('Attachments form label not found.')
 
-  return <Attachments formData={filteredAttachmentsForm} meldingId={parseInt(meldingId, 10)} token={token} />
+  const { data: attachmentData, error: attachmentError } = await getMeldingByMeldingIdAttachmentsMelder({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (attachmentError) throw new Error('Failed to fetch attachments data.')
+
+  const attachments = await Promise.all(
+    attachmentData.map(async ({ id, original_filename }): Promise<ExistingFileType> => {
+      const { data, error } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
+        path: { melding_id: parseInt(meldingId, 10), attachment_id: id },
+        query: { token, type: 'thumbnail' },
+      })
+
+      if (error) throw new Error('Failed to fetch attachment download.')
+
+      // Returning blob instead of File since the File api is not available in Node.js
+      return {
+        blob: data as Blob,
+        fileName: original_filename,
+        serverId: id,
+      }
+    }),
+  )
+
+  return (
+    <Attachments
+      files={attachments}
+      formData={filteredAttachmentsForm}
+      meldingId={parseInt(meldingId, 10)}
+      token={token}
+    />
+  )
 }

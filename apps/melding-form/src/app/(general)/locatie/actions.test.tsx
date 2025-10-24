@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import type { Mock } from 'vitest'
 
 import { postLocationForm } from './actions'
+import { COOKIES } from 'apps/melding-form/src/constants'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockCookies, mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
@@ -42,7 +43,11 @@ describe('postLocationForm', () => {
         HttpResponse.json('Error message', { status: 500 }),
       ),
     )
-    mockCookies({ id: '123', token: 'test-token', address: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam' })
+    mockCookies({
+      [COOKIES.ID]: '123',
+      [COOKIES.TOKEN]: 'test-token',
+      [COOKIES.ADDRESS]: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam',
+    })
 
     const result = await postLocationForm()
 
@@ -50,7 +55,11 @@ describe('postLocationForm', () => {
   })
 
   it('redirects to /bijlage when the form is submitted successfully', async () => {
-    mockCookies({ id: '123', token: 'test-token', address: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam' })
+    mockCookies({
+      [COOKIES.ID]: '123',
+      [COOKIES.TOKEN]: 'test-token',
+      [COOKIES.ADDRESS]: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam',
+    })
 
     await postLocationForm()
 

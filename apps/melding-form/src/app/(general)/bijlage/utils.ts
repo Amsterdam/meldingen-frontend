@@ -20,12 +20,16 @@ export type FileUpload = {
   xhr: XMLHttpRequest
 }
 
+export type ExistingFileUpload = Omit<FileUpload, 'xhr'> & {
+  xhr?: XMLHttpRequest
+}
+
 // We're using XMLHttpRequest instead of fetch here,
 // because fetch does not allow you to track the upload progress.
 export const startUpload = (
   xhr: XMLHttpRequest,
   fileUpload: FileUpload,
-  setFileUploads: Dispatch<SetStateAction<FileUpload[]>>,
+  setFileUploads: Dispatch<SetStateAction<(FileUpload | ExistingFileUpload)[]>>,
 ) => {
   xhr.upload.onprogress = (event) => {
     if (event.lengthComputable) {
