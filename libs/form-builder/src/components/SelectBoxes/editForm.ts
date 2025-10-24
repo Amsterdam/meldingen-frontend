@@ -96,6 +96,13 @@ export const editForm = () => ({
               input: true,
             },
             {
+              weight: 11,
+              type: 'textfield',
+              label: 'Error handling text',
+              key: 'validate.required_error_message',
+              input: true,
+            },
+            {
               type: 'panel',
               title: 'JSONLogic Validation',
               key: 'json-validation-json',
