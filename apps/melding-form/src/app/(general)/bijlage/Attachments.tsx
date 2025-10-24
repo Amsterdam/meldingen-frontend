@@ -56,7 +56,7 @@ const mapExistingFilesToUploads = (files: ExistingFileType[]): ExistingFileUploa
   }))
 
 export const Attachments = ({ files, formData, meldingId, token }: Props) => {
-  const existingFilesUploads = mapExistingFilesToUploads(files)
+  const existingFileUploads = mapExistingFilesToUploads(files)
 
   const inputRef = useRef<HTMLInputElement>(null)
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
