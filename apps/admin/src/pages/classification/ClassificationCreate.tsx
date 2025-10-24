@@ -1,4 +1,13 @@
-import { Create, ReferenceInput, required, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
+import {
+  Create,
+  ReferenceInput,
+  required,
+  SaveButton,
+  SimpleForm,
+  TextInput,
+  Toolbar,
+  ToolbarClasses,
+} from 'react-admin'
 
 export const ClassificationCreate = () => (
   <Create redirect="list">
