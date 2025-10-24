@@ -2,6 +2,7 @@ import { Admin as ReactAdmin, Resource } from 'react-admin'
 
 import { CustomLayout } from './components'
 import { i18nProvider, useAuthProvider } from './providers'
+import { AssetTypeCreate, AssetTypeEdit, AssetTypeList } from '../pages/asset-types'
 import { ClassificationCreate, ClassificationEdit, ClassificationList } from '../pages/classification'
 import { FormCreate, FormEdit, FormList } from '../pages/form/components'
 import { StaticFormEdit, StaticFormList } from '../pages/static-form'
@@ -27,6 +28,7 @@ export const Admin = () => {
         recordRepresentation="name"
       />
       <Resource name="static-form" list={<StaticFormList />} edit={<StaticFormEdit />} recordRepresentation="name" />
+      <Resource name="asset-type" list={<AssetTypeList />} edit={<AssetTypeEdit />} create={<AssetTypeCreate />} />
     </ReactAdmin>
   )
 }
