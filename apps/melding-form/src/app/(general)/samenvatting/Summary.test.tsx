@@ -37,7 +37,7 @@ const defaultProps = {
       },
     ],
     key: 'attachments',
-    term: "Foto's",
+    term: 'Foto’s',
   },
   contact: {
     key: 'contact',
