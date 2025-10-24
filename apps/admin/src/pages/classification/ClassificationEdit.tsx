@@ -1,4 +1,13 @@
-import { DeleteWithConfirmButton, Edit, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
+import {
+  DeleteWithConfirmButton,
+  Edit,
+  required,
+  SaveButton,
+  SimpleForm,
+  TextInput,
+  Toolbar,
+  ToolbarClasses,
+} from 'react-admin'
 
 export const ClassificationEdit = () => (
   <Edit>
@@ -12,7 +21,7 @@ export const ClassificationEdit = () => (
         </Toolbar>
       }
     >
-      <TextInput source="name" />
+      <TextInput source="name" validate={required()} />
       <TextInput source="form" readOnly />
     </SimpleForm>
   </Edit>
