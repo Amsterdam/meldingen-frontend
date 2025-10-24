@@ -80,7 +80,7 @@ describe('Summary', () => {
     expect(terms[1]).toHaveTextContent('Text Field 1')
     expect(terms[2]).toHaveTextContent('Text Area 2')
     expect(terms[3]).toHaveTextContent('Waar staat de container?')
-    expect(terms[4]).toHaveTextContent("Foto's")
+    expect(terms[4]).toHaveTextContent('Foto’s')
     expect(terms[5]).toHaveTextContent('Wat zijn uw contactgegevens?')
 
     expect(definitions[0]).toHaveTextContent('Er ligt heel veel afval op straat.')
