@@ -1,9 +1,7 @@
-import { Datagrid, List, TextField, TextInput } from 'react-admin'
-
-const assetTypeFilters = [<TextInput label="ra.action.search" source="q" alwaysOn key="search" />]
+import { Datagrid, List, TextField } from 'react-admin'
 
 export const AssetTypeList = () => (
-  <List filters={assetTypeFilters}>
+  <List>
     <Datagrid rowClick="edit">
       <TextField source="name" />
       <TextField source="id" />
