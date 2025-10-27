@@ -4235,6 +4235,66 @@ export type PostMeldingByMeldingIdAssetResponses = {
 
 export type PostMeldingByMeldingIdAssetResponse = PostMeldingByMeldingIdAssetResponses[keyof PostMeldingByMeldingIdAssetResponses];
 
+export type DeleteMeldingByMeldingIdAssetByAssetIdData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         * The id of the melding.
+         */
+        melding_id: number;
+        /**
+         * Asset Id
+         * The id of the asset.
+         */
+        asset_id: number;
+    };
+    query: {
+        /**
+         * Token
+         * The token of the melding.
+         */
+        token: string;
+    };
+    url: '/melding/{melding_id}/asset/{asset_id}';
+};
+
+export type DeleteMeldingByMeldingIdAssetByAssetIdErrors = {
+    /**
+     * ResponseWithDetail
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type DeleteMeldingByMeldingIdAssetByAssetIdError = DeleteMeldingByMeldingIdAssetByAssetIdErrors[keyof DeleteMeldingByMeldingIdAssetByAssetIdErrors];
+
+export type DeleteMeldingByMeldingIdAssetByAssetIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
 export type GetMeldingByMeldingIdNextPossibleStatesData = {
     body?: never;
     path: {
