@@ -1,0 +1,19 @@
+{
+  "name": "map",
+  "version": "0.1.0",
+  "description": "React components that wrap Leaflet",
+  "license": "EUPL-1.2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "type-check": "tsc --project ./tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "leaflet": "1.9.4"
+  },
+  "devDependencies": {
+    "@types/leaflet": "1.9.21"
+  }
+}

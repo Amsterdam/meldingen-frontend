@@ -252,6 +252,16 @@ importers:
         specifier: 15.5.4
         version: 15.5.4(@babel/core@7.28.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
 
+  libs/map:
+    dependencies:
+      leaflet:
+        specifier: 1.9.4
+        version: 1.9.4
+    devDependencies:
+      '@types/leaflet':
+        specifier: 1.9.21
+        version: 1.9.21
+
   libs/markdown-to-html:
     dependencies:
       react-markdown:
