@@ -1,6 +1,6 @@
 import {
-  Create,
-  ReferenceInput,
+  DeleteWithConfirmButton,
+  Edit,
   required,
   SaveButton,
   SimpleForm,
@@ -9,19 +9,20 @@ import {
   ToolbarClasses,
 } from 'react-admin'
 
-export const ClassificationCreate = () => (
-  <Create redirect="list">
+export const AssetTypeEdit = ({ id }: { id?: number }) => (
+  <Edit id={id}>
     <SimpleForm
       toolbar={
         <Toolbar>
           <div className={ToolbarClasses.defaultToolbar}>
             <SaveButton alwaysEnable />
+            <DeleteWithConfirmButton />
           </div>
         </Toolbar>
       }
     >
       <TextInput source="name" validate={required()} />
-      <ReferenceInput reference="asset-type" sort={{ field: 'name', order: 'ASC' }} source="asset_type" />
+      <TextInput source="arguments.base_url" validate={required()} />
     </SimpleForm>
-  </Create>
+  </Edit>
 )
