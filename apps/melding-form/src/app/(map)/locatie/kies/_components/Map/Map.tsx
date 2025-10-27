@@ -1,39 +1,37 @@
 import L from 'leaflet'
-import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
+import { Dispatch, PropsWithChildren, SetStateAction, useEffect, useRef } from 'react'
 import 'leaflet/dist/leaflet.css'
 
 import { Feature } from '@meldingen/api-client'
 
 import { defaultIcon } from '../../markerIcons'
-import { NotificationType } from '../../types'
 import { ControlsOverlay } from './components/ControlsOverlay/ControlsOverlay'
 import { Crosshair } from './components/Crosshair/Crosshair'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './Map.module.css'
 
-export type Props = {
+export type Props = PropsWithChildren & {
   coordinates?: Coordinates
+  isHidden?: boolean
   mapInstance: L.Map | null
-  notification: NotificationType | null
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
   setMapInstance: (map: L.Map) => void
-  setNotification: (notification: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
-  showAssetList?: boolean
+  onCurrentLocationError: () => void
 }
 
 export const Map = ({
+  children,
   coordinates,
+  isHidden,
   mapInstance,
-  notification,
   selectedAssets,
   setCoordinates,
   setMapInstance,
-  setNotification,
   setSelectedAssets,
-  showAssetList,
+  onCurrentLocationError,
 }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const pointerMarkerRef = useRef<L.Marker | null>(null)
@@ -143,16 +141,25 @@ export const Map = ({
     }
   }, [mapInstance, coordinates])
 
+  useEffect(() => {
+    if (mapInstance) {
+      // Leaflet has to know it should recalculate dimensions of the map
+      // when it is shown/hidden as this changes the size of the map container
+      mapInstance.invalidateSize()
+    }
+  }, [isHidden])
+
   return (
-    <div className={`${styles.container} ${showAssetList && styles.hideMap}`}>
+    <div className={`${styles.container} ${isHidden && styles.hideMap}`}>
       <div className={styles.map} ref={mapRef} />
       <Crosshair id="crosshair" />
       <ControlsOverlay
         mapInstance={mapInstance}
-        notification={notification}
         setCoordinates={setCoordinates}
-        setNotification={setNotification}
-      />
+        onCurrentLocationError={onCurrentLocationError}
+      >
+        {children}
+      </ControlsOverlay>
     </div>
   )
 }

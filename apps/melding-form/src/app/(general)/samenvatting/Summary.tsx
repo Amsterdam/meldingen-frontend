@@ -59,7 +59,7 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
       <main>
         {Boolean(systemError) && <SystemErrorAlert />}
         <FormHeader title={t('title')} step={t('step')} />
-        <Heading level={1} size="level-4" className="ams-mb-s">
+        <Heading level={1} size="level-3" className="ams-mb-s">
           {t('main-title')}
         </Heading>
         <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
@@ -106,6 +106,11 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
                     <FileList.Item key={fileName} file={new File([blob], fileName, { type: contentType })} />
                   ))}
                 </FileList>
+              </SummaryList.Description>
+              <SummaryList.Description>
+                <NextLink href="/bijlage" legacyBehavior passHref>
+                  <Link>{t('change-links.attachments')}</Link>
+                </NextLink>
               </SummaryList.Description>
             </SummaryList.Item>
           )}

@@ -33,7 +33,7 @@
   gap: var(--ams-space-s);
   padding-block: var(--ams-space-s);
 
-  @media screen and (min-width: 36rem) {
+  @media screen and (min-width: 37.5rem) {
     gap: var(--ams-space-xs) var(--ams-space-s);
     grid-template-columns: auto 1fr auto auto;
     row-gap: 0;
@@ -48,7 +48,7 @@
 .name {
   font-weight: var(--ams-typography-heading-font-weight);
 
-  @media screen and (min-width: 36rem) {
+  @media screen and (min-width: 37.5rem) {
     grid-column: 2 / -1;
   }
 }
@@ -56,7 +56,7 @@
 .thumbnail {
   grid-row-start: 1;
 
-  @media screen and (min-width: 36rem) {
+  @media screen and (min-width: 37.5rem) {
     align-self: start;
     grid-row: 1 / 3; /* Span two rows */
     height: var(--ams-space-2xl);
@@ -67,7 +67,7 @@
 .error {
   display: flex; /* Remove phantom whitespace */
 
-  @media screen and (min-width: 36rem) {
+  @media screen and (min-width: 37.5rem) {
     grid-column: 1 / -1;
   }
 }

@@ -5,17 +5,15 @@ import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/use
 import clsx from 'clsx'
 import L from 'leaflet'
 import dynamic from 'next/dynamic'
+import Form from 'next/form'
 import { useTranslations } from 'next-intl'
-import { useEffect, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { AssetList } from './_components/AssetList/AssetList'
-import { AssetListToggle } from './_components/AssetListToggle/AssetListToggle'
-import { Notification } from './_components/Map/components/Notification/Notification'
-import { SideBar } from './_components/SideBar/SideBar'
+import { AddressInput, AssetList, Notification, SideBarBottom, SideBarTop } from './_components'
+import { postCoordinatesAndAssets } from './actions'
 import { useAssetLayer } from './hooks/useAssetLayer'
-import { NotificationType } from './types'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './SelectLocation.module.css'
@@ -30,74 +28,87 @@ type Props = {
   coordinates?: Coordinates
 }
 
+export type NotificationType = 'too-many-assets' | 'location-service-disabled'
+
+const initialState: { errorMessage?: string } = {}
+
 export const SelectLocation = ({ classification, coordinates: coordinatesFromServer }: Props) => {
-  const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
-  const [showAssetList, setShowAssetList] = useState(false)
   const [assetList, setAssetList] = useState<Feature[]>([])
+  const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
+  const [notificationType, setNotificationType] = useState<NotificationType | null>(null)
   const [selectedAssets, setSelectedAssets] = useState<Feature[]>([])
-  const [notification, setNotification] = useState<NotificationType | null>(null)
+  const [showAssetList, setShowAssetList] = useState(false)
+
+  const postCoordinatesAndAssetsWithSelectedAssets = postCoordinatesAndAssets.bind(null, { selectedAssets })
+  const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssetsWithSelectedAssets, initialState)
 
   const t = useTranslations('select-location')
-
   const isWideWindow = useIsAfterBreakpoint('wide')
 
   useAssetLayer({
     assetList,
     classification,
     mapInstance,
-    notification,
     selectedAssets,
     setAssetList,
     setCoordinates,
-    setNotification,
+    setNotificationType,
     setSelectedAssets,
   })
 
   useEffect(() => {
     // Hide mobile asset list view when resizing to larger screens
-    if (isWideWindow) {
-      setShowAssetList(false)
-    }
+    if (isWideWindow) setShowAssetList(false)
   }, [isWideWindow])
+
+  const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
 
   return (
     <div className={styles.grid}>
-      <SideBar coordinates={coordinates} setCoordinates={setCoordinates} setSelectedAssets={setSelectedAssets} />
-      <div className={clsx(styles.assetList, showAssetList && styles.showAssetList)}>
-        {notification && !isWideWindow && (
-          <Notification
-            closeButtonLabel={notification.closeButtonLabel}
-            description={notification.description}
-            heading={notification.heading}
-            onClose={() => setNotification(null)}
-            severity={notification.severity}
+      <SideBarTop>
+        <Form action={formAction} id="address" noValidate>
+          <AddressInput
+            coordinates={coordinates}
+            errorMessage={errorMessage}
+            setCoordinates={setCoordinates}
+            setSelectedAssets={setSelectedAssets}
           />
+          <input
+            type="hidden"
+            name="coordinates"
+            defaultValue={coordinates ? JSON.stringify(coordinates) : undefined}
+          />
+        </Form>
+      </SideBarTop>
+      <SideBarBottom isHidden={!showAssetList}>
+        {notificationType === 'too-many-assets' && !isWideWindow && (
+          <Notification type={notificationType} onClose={() => setNotificationType(null)} />
         )}
         <AssetList
           assetList={assetList}
           selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
-          notification={notification}
-          setNotification={setNotification}
+          setNotificationType={setNotificationType}
           setSelectedAssets={setSelectedAssets}
         />
         <Button form="address" type="submit" className={styles.hideButtonMobile}>
           {t('submit-button.desktop')}
         </Button>
-      </div>
+      </SideBarBottom>
       <div className={styles.map}>
         <Map
           coordinates={coordinates}
+          isHidden={!isWideWindow && showAssetList}
           mapInstance={mapInstance}
-          notification={notification}
           selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
           setMapInstance={setMapInstance}
-          setNotification={setNotification}
           setSelectedAssets={setSelectedAssets}
-          showAssetList={showAssetList}
-        />
+          onCurrentLocationError={() => setNotificationType('location-service-disabled')}
+        >
+          {notificationType && <Notification type={notificationType} onClose={() => setNotificationType(null)} />}
+        </Map>
         <div className={styles.buttonWrapper}>
           <Button
             form="address"
@@ -106,13 +117,15 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
           >
             {t('submit-button.mobile')}
           </Button>
-          <AssetListToggle
-            assetList={assetList}
-            mapInstance={mapInstance}
-            setShowAssetList={setShowAssetList}
-            showAssetList={showAssetList}
-            selectedAssets={selectedAssets}
-          />
+          {showAssetListToggleButton && (
+            <Button
+              variant="secondary"
+              onClick={() => setShowAssetList((prevState) => !prevState)}
+              className={clsx(styles.toggleButton, showAssetList && styles.removeAbsolutePosition)}
+            >
+              {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
+            </Button>
+          )}
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 
-import { Combobox, type Props } from './Combobox'
+import { AddressInput, type Props } from './AddressInput'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
@@ -13,15 +13,13 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
 }))
 
 const defaultProps: Props = {
-  address: '',
-  setAddress: vi.fn(),
   setCoordinates: vi.fn(),
   setSelectedAssets: vi.fn(),
 }
 
-describe('Combobox', () => {
+describe('AddressInput', () => {
   it('should render the address input', () => {
-    render(<Combobox {...defaultProps} />)
+    render(<AddressInput {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -29,7 +27,7 @@ describe('Combobox', () => {
   })
 
   it('should not show the list box initially', () => {
-    render(<Combobox {...defaultProps} />)
+    render(<AddressInput {...defaultProps} />)
 
     const listBox = screen.queryByRole('listbox')
 
@@ -39,7 +37,7 @@ describe('Combobox', () => {
   it('should not show the list box on 2 character input', async () => {
     const user = userEvent.setup()
 
-    render(<Combobox {...defaultProps} />)
+    render(<AddressInput {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -54,7 +52,7 @@ describe('Combobox', () => {
   it('should show the list box on 3 or more character input', async () => {
     const user = userEvent.setup()
 
-    render(<Combobox {...defaultProps} />)
+    render(<AddressInput {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -69,7 +67,7 @@ describe('Combobox', () => {
   it('should show all options returned by the API', async () => {
     const user = userEvent.setup()
 
-    render(<Combobox {...defaultProps} />)
+    render(<AddressInput {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -97,7 +95,7 @@ describe('Combobox', () => {
 
     const user = userEvent.setup()
 
-    render(<Combobox {...defaultProps} />)
+    render(<AddressInput {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -106,6 +104,33 @@ describe('Combobox', () => {
     await waitFor(() => {
       const noResults = screen.getByRole('option', { name: 'no-results' })
       expect(noResults).toBeInTheDocument()
+    })
+  })
+
+  it('shows an address based on provided coordinates ', async () => {
+    render(<AddressInput {...defaultProps} coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
+
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
+    })
+  })
+
+  it('shows a generic label if no address is found within 30 meters of the coordinates', async () => {
+    server.use(
+      http.get(ENDPOINTS.PDOK_REVERSE, () =>
+        HttpResponse.json({
+          response: {
+            numFound: 0,
+            docs: [],
+          },
+        }),
+      ),
+    )
+
+    render(<AddressInput {...defaultProps} coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
+
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('no-address')).toBeInTheDocument()
     })
   })
 })

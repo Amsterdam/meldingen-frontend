@@ -10,6 +10,7 @@ import {
   getPrimaryFormSummary,
 } from './utils'
 import { getMeldingData } from '../_utils/getMeldingData'
+import { COOKIES } from 'apps/melding-form/src/constants'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('summary')
@@ -22,17 +23,18 @@ export const generateMetadata = async () => {
 export default async () => {
   const cookieStore = await cookies()
   // We check for the existence of these cookies in our middleware, so non-null assertion is safe here.
-  const meldingId = cookieStore.get('id')!.value
-  const token = cookieStore.get('token')!.value
-  const locationCookie = cookieStore.get('location')?.value
+  const meldingId = cookieStore.get(COOKIES.ID)!.value
+  const token = cookieStore.get(COOKIES.TOKEN)!.value
 
   const t = await getTranslations('summary')
 
-  const { classification, email, phone, text } = await getMeldingData(meldingId, token)
+  const meldingData = await getMeldingData(meldingId, token)
+  const { classification, email, phone, text } = meldingData
+
   const primaryForm = await getPrimaryFormSummary(text)
   const attachments = await getAttachmentsSummary(t('attachments-label'), meldingId, token)
   const additionalQuestions = await getAdditionalQuestionsSummary(meldingId, token, classification?.id)
-  const location = getLocationSummary(t, locationCookie)
+  const location = getLocationSummary(t, meldingData)
   const contact = getContactSummary(t('contact-label'), email, phone)
 
   return (

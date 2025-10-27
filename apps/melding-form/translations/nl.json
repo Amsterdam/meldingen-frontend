@@ -60,11 +60,6 @@
     },
     "controls-overlay": {
       "current-location-button": "Mijn locatie",
-      "current-location-notification": {
-        "title": "Geen toestemming om uw locatie te gebruiken",
-        "description": "Dit kunt u wijzigen in de voorkeuren of instellingen van uw browser of systeem.",
-        "close-button": "Sluiten"
-      },
       "zoom-in": "Inzoomen",
       "zoom-out": "Uitzoomen"
     },
@@ -72,10 +67,15 @@
       "no-location": "Vul een locatie in.",
       "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam."
     },
-    "asset-list": {
-      "max-asset-notification": {
-        "title": "U kunt maximaal {maxAssets} containers kiezen",
-        "close-button": "Sluiten"
+    "notifications": {
+      "too-many-assets": {
+        "close-button": "Sluiten",
+        "title": "U kunt maximaal {maxAssets} containers kiezen"
+      },
+      "location-service-disabled": {
+        "close-button": "Sluiten",
+        "description": "Dit kunt u wijzigen in de voorkeuren of instellingen van uw browser of systeem.",
+        "title": "Geen toestemming om uw locatie te gebruiken"
       }
     }
   },
@@ -128,6 +128,7 @@
       "primary": "Wijzig uw melding",
       "additional": "Wijzig antwoord",
       "location": "Wijzig locatie",
+      "attachments": "Wijzig foto’s",
       "contact": "Wijzig contactgegevens"
     },
     "errors": {

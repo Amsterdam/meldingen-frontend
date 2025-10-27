@@ -5,33 +5,15 @@
   height: 100vh; /* Fallback for browsers that do not support dvh */
   height: 100dvh;
 
-  @media screen and (min-width: 68rem) {
+  @media screen and (min-width: 72.5rem) {
     grid-template-columns: 1fr 2fr;
   }
-}
-
-.assetList {
-  display: none;
-  flex-direction: column;
-  grid-row-start: 2;
-  overflow-y: auto;
-  padding-block-end: var(--ams-space-m);
-  padding-inline: var(--ams-space-m);
-  row-gap: var(--ams-space-m);
-
-  @media screen and (min-width: 68rem) {
-    display: flex;
-  }
-}
-
-.showAssetList {
-  display: flex;
 }
 
 .hideButtonMobile {
   display: none;
 
-  @media screen and (min-width: 68rem) {
+  @media screen and (min-width: 72.5rem) {
     display: block;
     width: fit-content;
   }
@@ -40,7 +22,7 @@
 .map {
   position: relative;
 
-  @media screen and (min-width: 68rem) {
+  @media screen and (min-width: 72.5rem) {
     grid-row: 1 / -1;
   }
 }
@@ -51,7 +33,7 @@
   margin-inline: var(--ams-space-m);
   position: absolute;
 
-  @media screen and (min-width: 68rem) {
+  @media screen and (min-width: 72.5rem) {
     display: none;
   }
 }

@@ -5,11 +5,13 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdSubmit } from '@meldingen/api-client'
 
+import { COOKIES } from 'apps/melding-form/src/constants'
+
 export const postSummaryForm = async () => {
   const cookieStore = await cookies()
 
-  const meldingId = cookieStore.get('id')?.value
-  const token = cookieStore.get('token')?.value
+  const meldingId = cookieStore.get(COOKIES.ID)?.value
+  const token = cookieStore.get(COOKIES.TOKEN)?.value
 
   if (!meldingId || !token) return redirect('/cookie-storing')
 
@@ -22,8 +24,8 @@ export const postSummaryForm = async () => {
   if (error)
     return { systemError: error }
 
-    // Delete location, token, lastPanelpath and id cookies
-  ;['location', 'token', 'lastPanelPath', 'id'].forEach((cookie) => {
+    // Delete ADDRESS, TOKEN, LAST_PANEL_PATH and ID cookies
+  ;[COOKIES.ADDRESS, COOKIES.TOKEN, COOKIES.LAST_PANEL_PATH, COOKIES.ID].forEach((cookie) => {
     cookieStore.delete(cookie)
   })
 
