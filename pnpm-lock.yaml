@@ -257,10 +257,16 @@ importers:
       leaflet:
         specifier: 1.9.4
         version: 1.9.4
+      leaflet.markercluster:
+        specifier: 1.5.3
+        version: 1.5.3(leaflet@1.9.4)
     devDependencies:
       '@types/leaflet':
         specifier: 1.9.21
         version: 1.9.21
+      '@types/leaflet.markercluster':
+        specifier: 1.5.6
+        version: 1.5.6
 
   libs/markdown-to-html:
     dependencies:
