@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { AdminContext, DataProvider, ResourceContextProvider, testDataProvider } from 'react-admin'
+import { AdminContext, ResourceContextProvider, testDataProvider } from 'react-admin'
 
 import { AssetTypeEdit } from './AssetTypeEdit'
 
@@ -10,7 +10,7 @@ describe('AssetTypeEdit', () => {
     })
 
     render(
-      <AdminContext dataProvider={dataProvider as unknown as DataProvider}>
+      <AdminContext dataProvider={dataProvider}>
         <ResourceContextProvider value="asset-type">
           <AssetTypeEdit id={1} />
         </ResourceContextProvider>
