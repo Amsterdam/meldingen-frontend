@@ -27,6 +27,7 @@ const nl: TranslationMessages = {
       open_menu: 'Menu openen',
       open: 'Openen',
       refresh: 'Verversen',
+      reset: 'Resetten',
       remove_all_filters: 'Alle filters verwijderen',
       remove_filter: 'Filter verwijderen',
       remove: 'Verwijderen',
