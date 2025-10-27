@@ -7,15 +7,16 @@ import styles from './Map.module.css'
 
 export type Props = PropsWithChildren & { isHidden?: boolean }
 
+export const MapContext = createContext<Map | null>(null)
+
 export const MapComponent = ({ children, isHidden }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
-  const MapContext = createContext<Map | null>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
   const [mapInstance, setMapInstance] = useState<Map | null>(null)
 
   // This could be a useState but as we don't expect this to fire more than once, use ref as it is mutable and won't trigger any further re-render
-  const createdMapInstance = useRef(false) // TODO: kan dit weg?
+  const createdMapInstance = useRef(false)
 
   useEffect(() => {
     // Ensure that the target DOM element exists and that the map doesn't already exist (to prevent duplicate renders in StrictMode)
