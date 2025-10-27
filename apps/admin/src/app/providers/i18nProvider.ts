@@ -27,6 +27,7 @@ const nl: TranslationMessages = {
       open_menu: 'Menu openen',
       open: 'Openen',
       refresh: 'Verversen',
+      reset: 'Resetten',
       remove_all_filters: 'Alle filters verwijderen',
       remove_filter: 'Filter verwijderen',
       remove: 'Verwijderen',
@@ -232,6 +233,13 @@ const nl: TranslationMessages = {
         'components[1].description': 'Beschrijving',
         'components[0].maxCharCount': 'Maximaal aantal tekens',
         'components[0].validate.json.if[2]': 'Foutmelding teveel tekens',
+      },
+    },
+    'asset-type': {
+      name: 'Asset types',
+      fields: {
+        name: 'Naam',
+        'arguments.base_url': 'WFS url',
       },
     },
   },

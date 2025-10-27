@@ -1,6 +1,6 @@
 import { Datagrid, List, TextField } from 'react-admin'
 
-export const ClassificationList = () => (
+export const AssetTypeList = () => (
   <List>
     <Datagrid rowClick="edit">
       <TextField source="name" />
