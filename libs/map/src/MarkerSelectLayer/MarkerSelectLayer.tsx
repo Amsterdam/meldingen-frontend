@@ -1,4 +1,4 @@
-import L, { divIcon, latLng, Layer, Marker, MarkerCluster, MarkerClusterGroup } from 'leaflet'
+import { divIcon, latLng, Layer, Marker, MarkerCluster, MarkerClusterGroup } from 'leaflet'
 import 'leaflet.markercluster'
 import { useContext, useEffect, useRef } from 'react'
 
@@ -63,10 +63,10 @@ export const MarkerSelectLayer = ({ markers, onMarkersChange }: Props) => {
   useEffect(() => {
     if (!map || markers.length === 0) return
 
-    const markerClusterGroup = L.markerClusterGroup({
+    const markerClusterGroup = new MarkerClusterGroup({
       iconCreateFunction: createClusterIcon,
       showCoverageOnHover: false,
-    }) as MarkerClusterGroup
+    })
 
     markers.forEach((feature) => {
       if (!feature.geometry || feature.geometry.type !== 'Point') return
