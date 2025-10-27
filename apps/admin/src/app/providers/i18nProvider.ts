@@ -235,6 +235,13 @@ const nl: TranslationMessages = {
         'components[0].validate.json.if[2]': 'Foutmelding teveel tekens',
       },
     },
+    'asset-type': {
+      name: 'Asset types',
+      fields: {
+        name: 'Naam',
+        'arguments.base_url': 'WFS url',
+      },
+    },
   },
   ma: {
     dialog: {
