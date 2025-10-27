@@ -9,8 +9,8 @@ import {
   ToolbarClasses,
 } from 'react-admin'
 
-export const AssetTypeEdit = () => (
-  <Edit>
+export const AssetTypeEdit = ({ id }: { id?: number }) => (
+  <Edit id={id}>
     <SimpleForm
       toolbar={
         <Toolbar>
