@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { redirect } from 'next/navigation'
 
 import Page, { generateMetadata } from './page'
+import { COOKIES } from 'apps/melding-form/src/constants'
 import { mockCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
@@ -25,7 +26,7 @@ describe('generateMetadata', () => {
 
 describe('Page', () => {
   it('renders page', async () => {
-    mockCookies({ public_id: '1234', created_at: '2025-05-26T11:56:34.081Z' })
+    mockCookies({ [COOKIES.PUBLIC_ID]: '1234', [COOKIES.CREATED_AT]: '2025-05-26T11:56:34.081Z' })
 
     const PageComponent = await Page()
 
@@ -42,7 +43,7 @@ describe('Page', () => {
   })
 
   it('should render description without publicId', async () => {
-    mockCookies({ public_id: undefined, created_at: '2025-05-26T11:56:34.081Z' })
+    mockCookies({ [COOKIES.PUBLIC_ID]: undefined, [COOKIES.CREATED_AT]: '2025-05-26T11:56:34.081Z' })
 
     const PageComponent = await Page()
 
@@ -54,7 +55,7 @@ describe('Page', () => {
   })
 
   it('should render description without date and time', async () => {
-    mockCookies({ public_id: '1234', created_at: undefined })
+    mockCookies({ [COOKIES.PUBLIC_ID]: '1234', [COOKIES.CREATED_AT]: undefined })
 
     const PageComponent = await Page()
 

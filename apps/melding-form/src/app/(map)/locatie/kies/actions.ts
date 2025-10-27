@@ -7,6 +7,7 @@ import { getTranslations } from 'next-intl/server'
 import { type Feature, patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
 
 import { convertWktPointToCoordinates } from './_utils/convertWktPointToCoordinates'
+import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam'
@@ -18,8 +19,8 @@ export const postCoordinatesAndAssets = async (
 ) => {
   const cookieStore = await cookies()
 
-  const meldingId = cookieStore.get('id')?.value
-  const token = cookieStore.get('token')?.value
+  const meldingId = cookieStore.get(COOKIES.ID)?.value
+  const token = cookieStore.get(COOKIES.TOKEN)?.value
 
   if (!meldingId || !token) return redirect('/cookie-storing')
 
@@ -70,7 +71,8 @@ export const postCoordinatesAndAssets = async (
 
   const addressCookie: string = coordinates ? address : PDOKLocation.response.docs[0].weergavenaam
 
-  cookieStore.set('address', addressCookie)
+  const oneDay = 24 * 60 * 60
+  cookieStore.set(COOKIES.ADDRESS, addressCookie, { maxAge: oneDay })
 
   const parsedCoordinates = coordinates ? JSON.parse(coordinates as string) : PDOKCoordinates
 

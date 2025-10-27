@@ -12,6 +12,7 @@ import {
 
 import { handleApiError } from '../../handleApiError'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
+import { COOKIES } from '../../constants'
 
 export const postPrimaryForm = async (
   { existingId, existingToken }: { existingId?: string; existingToken?: string },
@@ -53,14 +54,15 @@ export const postPrimaryForm = async (
 
   // Set session variables in cookies
   const cookieStore = await cookies()
-  cookieStore.set('id', id.toString())
-  cookieStore.set('created_at', created_at)
-  cookieStore.set('public_id', public_id)
-  cookieStore.set('token', token)
+  const oneDay = 24 * 60 * 60
+  cookieStore.set(COOKIES.ID, id.toString(), { maxAge: oneDay })
+  cookieStore.set(COOKIES.CREATED_AT, created_at, { maxAge: oneDay })
+  cookieStore.set(COOKIES.PUBLIC_ID, public_id, { maxAge: oneDay })
+  cookieStore.set(COOKIES.TOKEN, token, { maxAge: oneDay })
 
-  // The 'lastPanelPath' cookie might be populated by earlier additional questions.
-  // Override it here in case a reclassification occurs.
-  cookieStore.delete('lastPanelPath')
+  // The LAST_PANEL_PATH cookie might be populated by earlier additional questions.
+  // Delete it here in case a reclassification occurs.
+  cookieStore.delete(COOKIES.LAST_PANEL_PATH)
 
   if (classification) {
     // Get entire form, in order to redirect to its first panel
