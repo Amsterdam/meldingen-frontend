@@ -1,4 +1,14 @@
-import { DeleteWithConfirmButton, Edit, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
+import {
+  DeleteWithConfirmButton,
+  Edit,
+  ReferenceInput,
+  required,
+  SaveButton,
+  SimpleForm,
+  TextInput,
+  Toolbar,
+  ToolbarClasses,
+} from 'react-admin'
 
 export const ClassificationEdit = () => (
   <Edit>
@@ -12,7 +22,8 @@ export const ClassificationEdit = () => (
         </Toolbar>
       }
     >
-      <TextInput source="name" />
+      <TextInput source="name" validate={required()} />
+      <ReferenceInput reference="asset-type" sort={{ field: 'name', order: 'ASC' }} source="asset_type" />
       <TextInput source="form" readOnly />
     </SimpleForm>
   </Edit>

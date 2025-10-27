@@ -1,10 +1,14 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
+import { Attachments } from './Attachments'
 import Page from './page'
+import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+
+import { Blob } from 'buffer'
 
 vi.mock('./Attachments', () => ({
   Attachments: vi.fn(() => <div>Attachments Component</div>),
@@ -73,5 +77,45 @@ describe('Page', () => {
     )
 
     await expect(Page()).rejects.toThrowError('Attachments form label not found.')
+  })
+
+  it('fetches attachments data and renders Attachments with the correct props', async () => {
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    expect(Attachments).toHaveBeenCalledWith(
+      expect.objectContaining({
+        files: [
+          {
+            blob: expect.any(Blob),
+            fileName: 'IMG_0815.jpg',
+            serverId: 42,
+          },
+        ],
+        formData: [textAreaComponent],
+        meldingId: 123,
+        token: 'test-token',
+      }),
+      undefined,
+    )
+  })
+
+  it('throws an error if attachments data cannot be fetched', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () => HttpResponse.json(null, { status: 500 })),
+    )
+
+    await expect(Page()).rejects.toThrowError('Failed to fetch attachments data.')
+  })
+
+  it('throws an error if attachments cannot be fetched', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    await expect(Page()).rejects.toThrowError('Failed to fetch attachment download.')
   })
 })

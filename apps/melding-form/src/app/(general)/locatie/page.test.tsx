@@ -4,6 +4,7 @@ import type { Mock } from 'vitest'
 
 import { Location } from './Location'
 import Page from './page'
+import { COOKIES } from 'apps/melding-form/src/constants'
 import { mockCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
@@ -27,7 +28,10 @@ describe('Page', () => {
   })
 
   it('renders Location component with props from cookies', async () => {
-    mockCookies({ lastPanelPath: '/previous', address: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam' })
+    mockCookies({
+      [COOKIES.LAST_PANEL_PATH]: '/previous',
+      [COOKIES.ADDRESS]: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam',
+    })
 
     const PageComponent = await Page()
 
