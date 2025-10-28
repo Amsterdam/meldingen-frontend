@@ -66,7 +66,7 @@ type Props = {
   onMarkersChange: (markers: Feature[]) => void
   onSelectedMarkersChange: (selectedMarkers: Feature[]) => void
   updateSelectedPoint: (point?: Coordinates) => void
-  onMaxAssetsReached: (maxReached: boolean) => void
+  onMaxMarkersReached: (maxReached: boolean) => void
 }
 
 export const MarkerSelectLayer = ({
@@ -75,7 +75,7 @@ export const MarkerSelectLayer = ({
   onMarkersChange,
   onSelectedMarkersChange,
   updateSelectedPoint,
-  onMaxAssetsReached,
+  onMaxMarkersReached,
 }: Props) => {
   const map = useContext(MapContext)
   const markersRef = useRef<Record<string, Marker>>({})
@@ -119,7 +119,7 @@ export const MarkerSelectLayer = ({
 
       marker.on('click', () => {
         if (isSelected) {
-          onMaxAssetsReached(false)
+          onMaxMarkersReached(false)
           onSelectedMarkersChange(selectedMarkers.filter((a) => a.id !== feature.id))
 
           if (selectedMarkers.length <= 1) {
@@ -133,7 +133,7 @@ export const MarkerSelectLayer = ({
           }
         } else {
           if (selectedMarkers.length >= MAX_ASSETS) {
-            onMaxAssetsReached(true)
+            onMaxMarkersReached(true)
             return
           }
           onSelectedMarkersChange([feature, ...selectedMarkers])
