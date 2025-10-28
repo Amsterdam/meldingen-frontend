@@ -14,11 +14,12 @@
 }
 
 .overlayBottomRight {
+  composes: overlay;
+
   /* Hide zoom controls on mobile */
   display: none;
 
   @media screen and (min-width: 72.5rem) {
-    composes: overlay;
     bottom: 0;
     display: flex;
     right: 0;

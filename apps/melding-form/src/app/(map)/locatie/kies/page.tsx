@@ -16,7 +16,7 @@ export const generateMetadata = async () => {
 
 export default async () => {
   const cookieStore = await cookies()
-  // We check for the existence of these cookies in our middleware, so non-null assertion is safe here.
+  // We check for the existence of these cookies in our proxy, so non-null assertion is safe here.
   const meldingId = cookieStore.get(COOKIES.ID)!.value
   const token = cookieStore.get(COOKIES.TOKEN)!.value
 

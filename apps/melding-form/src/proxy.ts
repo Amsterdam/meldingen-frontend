@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 
 import { COOKIES } from './constants'
 
-export const middleware = (request: NextRequest) => {
+export const proxy = (request: NextRequest) => {
   // Allow Server Actions to pass through without checking cookies
   // We check for the existence of these cookies in the Actions themselves
   if (request.method === 'POST') {

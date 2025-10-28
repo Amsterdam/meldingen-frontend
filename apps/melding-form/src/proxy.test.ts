@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { COOKIES } from './constants'
-import { middleware } from './middleware'
+import { proxy } from './proxy'
 
 vi.mock('next/server', async () => {
   const actual = await vi.importActual<typeof import('next/server')>('next/server')
@@ -22,10 +22,10 @@ const createMockRequest = (cookies: Record<string, string>, url = 'http://localh
     url,
   }) as NextRequest
 
-describe('middleware', () => {
+describe('proxy', () => {
   it('redirects to / if token is missing', () => {
     const request = createMockRequest({ [COOKIES.ID]: '123' })
-    const result = middleware(request)
+    const result = proxy(request)
 
     expect(NextResponse.redirect).toHaveBeenCalledWith(new URL('/', request.url))
     expect(result).toEqual({ type: 'redirect', url: 'http://localhost/' })
@@ -33,7 +33,7 @@ describe('middleware', () => {
 
   it('redirects to / if id is missing', () => {
     const request = createMockRequest({ [COOKIES.TOKEN]: 'abc' })
-    const result = middleware(request)
+    const result = proxy(request)
 
     expect(NextResponse.redirect).toHaveBeenCalledWith(new URL('/', request.url))
     expect(result).toEqual({ type: 'redirect', url: 'http://localhost/' })
@@ -41,7 +41,7 @@ describe('middleware', () => {
 
   it('calls NextResponse.next if both token and id are present', () => {
     const request = createMockRequest({ [COOKIES.TOKEN]: 'abc', [COOKIES.ID]: '123' })
-    const result = middleware(request)
+    const result = proxy(request)
 
     expect(NextResponse.next).toHaveBeenCalled()
     expect(result).toEqual({ type: 'next' })
