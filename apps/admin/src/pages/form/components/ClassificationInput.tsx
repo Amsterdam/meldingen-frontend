@@ -9,7 +9,6 @@ import styles from './ClassificationInput.module.css'
 
 const OptionRenderer = () => {
   const record = useRecordContext()
-  console.log('--- ~ record:', record)
 
   if (!record) return undefined
 
