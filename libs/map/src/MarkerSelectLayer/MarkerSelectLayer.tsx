@@ -27,7 +27,7 @@ export const createClusterIcon = (cluster: MarkerCluster) => {
   })
 }
 
-const handleMoveEnd = async (
+const fetchMarkersOnMoveEnd = async (
   classification: Props['classification'],
   map: Map,
   onMarkersChange: Props['onMarkersChange'],
@@ -86,10 +86,10 @@ export const MarkerSelectLayer = ({
 
   useEffect(() => {
     if (!map) return
-    map.on('moveend', () => handleMoveEnd(classification, map, onMarkersChange, markerLayerRef))
+    map.on('moveend', () => fetchMarkersOnMoveEnd(classification, map, onMarkersChange, markerLayerRef))
 
     return () => {
-      map.off('moveend', () => handleMoveEnd(classification, map, onMarkersChange, markerLayerRef))
+      map.off('moveend', () => fetchMarkersOnMoveEnd(classification, map, onMarkersChange, markerLayerRef))
     }
   }, [map])
 
