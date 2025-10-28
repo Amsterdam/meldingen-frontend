@@ -1,6 +1,6 @@
-import { divIcon, latLng, Layer, Marker, MarkerCluster, MarkerClusterGroup } from 'leaflet'
+import { divIcon, latLng, Layer, Map, Marker, MarkerCluster, MarkerClusterGroup } from 'leaflet'
 import 'leaflet.markercluster'
-import { useContext, useEffect, useRef } from 'react'
+import { RefObject, useContext, useEffect, useRef } from 'react'
 
 import { Feature, getWfsByName } from '@meldingen/api-client'
 
@@ -26,6 +26,40 @@ export const createClusterIcon = (cluster: MarkerCluster) => {
   })
 }
 
+const handleMoveEnd = async (
+  map: Map,
+  onMarkersChange: Props['onMarkersChange'],
+  markerLayerRef: RefObject<Layer | null>,
+) => {
+  // Don't fetch assets when map is hidden with display: none
+  const size = map.getSize()
+  const mapIsHidden = size.x === 0 && size.y === 0
+
+  // if (!classification || !classificationsWithAssets.includes(classification) || mapIsHidden) return // TODO
+  if (mapIsHidden) return
+
+  const zoom = map.getZoom()
+
+  // Has correct zoom level for assets
+  if (zoom >= ASSET_ZOOM_THRESHOLD) {
+    const filter = getWfsFilter(map)
+
+    const { data, error } = await getWfsByName({
+      path: { name: 'container' },
+      query: { filter },
+    })
+
+    if (error) throw new Error(`${error}`) // TODO
+
+    onMarkersChange(data?.features || [])
+  }
+
+  if (zoom < ASSET_ZOOM_THRESHOLD && markerLayerRef.current) {
+    markerLayerRef.current.remove()
+    onMarkersChange([])
+  }
+}
+
 type Props = {
   markers: Feature[]
   selectedMarkers: Feature[]
@@ -48,35 +82,12 @@ export const MarkerSelectLayer = ({
   const markerLayerRef = useRef<Layer | null>(null)
 
   useEffect(() => {
-    map?.on('moveend', async () => {
-      // Don't fetch assets when map is hidden with display: none
-      const size = map.getSize()
-      const mapIsHidden = size.x === 0 && size.y === 0
+    if (!map) return
+    map.on('moveend', () => handleMoveEnd(map, onMarkersChange, markerLayerRef))
 
-      // if (!classification || !classificationsWithAssets.includes(classification) || mapIsHidden) return // TODO
-      if (mapIsHidden) return
-
-      const zoom = map.getZoom()
-
-      // Has correct zoom level for assets
-      if (zoom >= ASSET_ZOOM_THRESHOLD) {
-        const filter = getWfsFilter(map)
-
-        const { data, error } = await getWfsByName({
-          path: { name: 'container' },
-          query: { filter },
-        })
-
-        if (error) throw new Error(`${error}`) // TODO
-
-        onMarkersChange(data?.features || [])
-      }
-
-      if (zoom < ASSET_ZOOM_THRESHOLD && markerLayerRef.current) {
-        markerLayerRef.current.remove()
-        onMarkersChange([])
-      }
-    })
+    return () => {
+      map.off('moveend', () => handleMoveEnd(map, onMarkersChange, markerLayerRef))
+    }
   }, [map])
 
   useEffect(() => {
@@ -107,14 +118,6 @@ export const MarkerSelectLayer = ({
       }
 
       marker.on('click', () => {
-        if (!isSelected) {
-          if (selectedMarkers.length >= MAX_ASSETS) {
-            onMaxAssetsReached(true)
-            return
-          }
-          onSelectedMarkersChange([feature, ...selectedMarkers])
-          updateSelectedPoint({ lat, lng })
-        }
         if (isSelected) {
           onMaxAssetsReached(false)
           onSelectedMarkersChange(selectedMarkers.filter((a) => a.id !== feature.id))
@@ -128,6 +131,13 @@ export const MarkerSelectLayer = ({
             const [y, x] = selectedMarkers[1].geometry.coordinates
             updateSelectedPoint({ lat: x, lng: y })
           }
+        } else {
+          if (selectedMarkers.length >= MAX_ASSETS) {
+            onMaxAssetsReached(true)
+            return
+          }
+          onSelectedMarkersChange([feature, ...selectedMarkers])
+          updateSelectedPoint({ lat, lng })
         }
       })
 
@@ -136,6 +146,11 @@ export const MarkerSelectLayer = ({
 
     markerLayerRef.current = markerClusterGroup
     markerClusterGroup.addTo(map)
+
+    return () => {
+      markerClusterGroup.clearLayers()
+      markerLayerRef.current = null
+    }
   }, [map, markers, selectedMarkers])
 
   return undefined
