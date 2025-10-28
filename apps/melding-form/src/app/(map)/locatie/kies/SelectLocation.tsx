@@ -31,7 +31,7 @@ export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 
 const initialState: { errorMessage?: string } = {}
 
-export const SelectLocation = ({ coordinates: coordinatesFromServer }: Props) => {
+export const SelectLocation = ({ classification, coordinates: coordinatesFromServer }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
   const [notificationType, setNotificationType] = useState<NotificationType | null>(null)
@@ -99,6 +99,7 @@ export const SelectLocation = ({ coordinates: coordinatesFromServer }: Props) =>
             }}
           />
           <MarkerSelectLayer
+            classification={classification}
             markers={assetList}
             selectedMarkers={selectedAssets}
             onMarkersChange={setAssetList}

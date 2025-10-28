@@ -11,6 +11,7 @@ import { getWfsFilter } from './utils/getWfsFilter'
 
 import './cluster.css'
 
+const classificationsWithAssets = ['container']
 export const MAX_ASSETS = 5
 export const ASSET_ZOOM_THRESHOLD = 16
 
@@ -27,6 +28,7 @@ export const createClusterIcon = (cluster: MarkerCluster) => {
 }
 
 const handleMoveEnd = async (
+  classification: Props['classification'],
   map: Map,
   onMarkersChange: Props['onMarkersChange'],
   markerLayerRef: RefObject<Layer | null>,
@@ -35,8 +37,7 @@ const handleMoveEnd = async (
   const size = map.getSize()
   const mapIsHidden = size.x === 0 && size.y === 0
 
-  // if (!classification || !classificationsWithAssets.includes(classification) || mapIsHidden) return // TODO
-  if (mapIsHidden) return
+  if (!classification || !classificationsWithAssets.includes(classification) || mapIsHidden) return
 
   const zoom = map.getZoom()
 
@@ -61,6 +62,7 @@ const handleMoveEnd = async (
 }
 
 type Props = {
+  classification?: string
   markers: Feature[]
   selectedMarkers: Feature[]
   onMarkersChange: (markers: Feature[]) => void
@@ -70,6 +72,7 @@ type Props = {
 }
 
 export const MarkerSelectLayer = ({
+  classification,
   markers,
   selectedMarkers,
   onMarkersChange,
@@ -83,10 +86,10 @@ export const MarkerSelectLayer = ({
 
   useEffect(() => {
     if (!map) return
-    map.on('moveend', () => handleMoveEnd(map, onMarkersChange, markerLayerRef))
+    map.on('moveend', () => handleMoveEnd(classification, map, onMarkersChange, markerLayerRef))
 
     return () => {
-      map.off('moveend', () => handleMoveEnd(map, onMarkersChange, markerLayerRef))
+      map.off('moveend', () => handleMoveEnd(classification, map, onMarkersChange, markerLayerRef))
     }
   }, [map])
 
