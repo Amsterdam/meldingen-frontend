@@ -10,7 +10,7 @@ import {
   textielAfvalIcon,
 } from '../../markerIcons'
 
-// import styles from '../SelectLocation.module.css'
+import styles from './getContainerFeatureIcon.module.css'
 
 export enum ContainerFeatureType {
   Papier = 'Papier',
@@ -42,7 +42,7 @@ export const getContainerFeatureIcon = (feature: AssetFeature, isSelected: boole
   if (isSelected) {
     return L.icon({
       ...icon.options,
-      // className: styles.selectedMarkerIconBorder,
+      className: styles.border,
       iconSize: [60, 60],
       iconAnchor: [34, 56],
     })

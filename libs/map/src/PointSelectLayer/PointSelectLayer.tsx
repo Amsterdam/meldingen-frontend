@@ -8,7 +8,7 @@ import { Coordinates } from '../types'
 
 type Props = {
   selectedPoint?: Coordinates
-  onSelectedPointChange: (coordinates: Coordinates) => void
+  onSelectedPointChange: (point: Coordinates) => void
 }
 
 export const PointSelectLayer = ({ selectedPoint, onSelectedPointChange }: Props) => {

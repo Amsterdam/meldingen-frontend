@@ -5,11 +5,13 @@ import { useContext, useEffect, useRef } from 'react'
 import { Feature, getWfsByName } from '@meldingen/api-client'
 
 import { MapContext } from '../Map/Map'
-import { getContainerFeatureIcon } from './utils/getContainerFeatureIcon'
+import { Coordinates } from '../types'
+import { AssetFeature, getContainerFeatureIcon } from './utils/getContainerFeatureIcon'
 import { getWfsFilter } from './utils/getWfsFilter'
 
 import './cluster.css'
 
+export const MAX_ASSETS = 5
 export const ASSET_ZOOM_THRESHOLD = 16
 
 export const createClusterIcon = (cluster: MarkerCluster) => {
@@ -26,12 +28,23 @@ export const createClusterIcon = (cluster: MarkerCluster) => {
 
 type Props = {
   markers: Feature[]
+  selectedMarkers: Feature[]
   onMarkersChange: (markers: Feature[]) => void
+  onSelectedMarkersChange: (selectedMarkers: Feature[]) => void
+  updateSelectedPoint: (point?: Coordinates) => void
+  onMaxAssetsReached: (maxReached: boolean) => void
 }
 
-export const MarkerSelectLayer = ({ markers, onMarkersChange }: Props) => {
+export const MarkerSelectLayer = ({
+  markers,
+  selectedMarkers,
+  onMarkersChange,
+  onSelectedMarkersChange,
+  updateSelectedPoint,
+  onMaxAssetsReached,
+}: Props) => {
   const map = useContext(MapContext)
-  // const markersRef = useRef<Record<string, Marker>>({})
+  const markersRef = useRef<Record<string, Marker>>({})
   const markerLayerRef = useRef<Layer | null>(null)
 
   useEffect(() => {
@@ -40,6 +53,7 @@ export const MarkerSelectLayer = ({ markers, onMarkersChange }: Props) => {
       const size = map.getSize()
       const mapIsHidden = size.x === 0 && size.y === 0
 
+      // if (!classification || !classificationsWithAssets.includes(classification) || mapIsHidden) return // TODO
       if (mapIsHidden) return
 
       const zoom = map.getZoom()
@@ -81,11 +95,40 @@ export const MarkerSelectLayer = ({ markers, onMarkersChange }: Props) => {
       const geometry = feature.geometry
       const [lng, lat] = geometry.coordinates
       const latlng = latLng(lat, lng)
-      // const isSelected = selectedAssets.some((a) => a.id === feature.id)
+      const isSelected = selectedMarkers.some((a) => a.id === feature.id)
 
       const marker = new Marker(latlng, {
-        icon: getContainerFeatureIcon(feature, false),
+        icon: getContainerFeatureIcon(feature as AssetFeature, isSelected),
         keyboard: false,
+      })
+
+      if (feature.id !== null && (typeof feature.id === 'string' || typeof feature.id === 'number')) {
+        markersRef.current[feature.id] = marker
+      }
+
+      marker.on('click', () => {
+        if (!isSelected) {
+          if (selectedMarkers.length >= MAX_ASSETS) {
+            onMaxAssetsReached(true)
+            return
+          }
+          onSelectedMarkersChange([feature, ...selectedMarkers])
+          updateSelectedPoint({ lat, lng })
+        }
+        if (isSelected) {
+          onMaxAssetsReached(false)
+          onSelectedMarkersChange(selectedMarkers.filter((a) => a.id !== feature.id))
+
+          if (selectedMarkers.length <= 1) {
+            updateSelectedPoint(undefined)
+          } else if (feature.id === selectedMarkers[0].id) {
+            // Set the address of the second asset on the list
+            // when the last selected asset (#1 on the list) is deselected
+            // @ts-expect-error an asset always has coordinates
+            const [y, x] = selectedMarkers[1].geometry.coordinates
+            updateSelectedPoint({ lat: x, lng: y })
+          }
+        }
       })
 
       markerClusterGroup.addLayer(marker)
@@ -93,7 +136,7 @@ export const MarkerSelectLayer = ({ markers, onMarkersChange }: Props) => {
 
     markerLayerRef.current = markerClusterGroup
     markerClusterGroup.addTo(map)
-  }, [map, markers])
+  }, [map, markers, selectedMarkers])
 
   return undefined
 }

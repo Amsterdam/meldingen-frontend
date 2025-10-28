@@ -41,7 +41,7 @@ describe('containerFeatureIcons', () => {
     const icon = getContainerFeatureIcon(feature, true)
 
     expect(icon.options.iconUrl).toBe(expectedLabel)
-    expect(icon.options.className).toContain('selectedMarkerIconBorder')
+    expect(icon.options.className).toContain('border')
     expect(icon.options.iconSize).toEqual([60, 60])
     expect(icon.options.iconAnchor).toEqual([34, 56])
   })

@@ -261,6 +261,9 @@ importers:
         specifier: 1.5.3
         version: 1.5.3(leaflet@1.9.4)
     devDependencies:
+      '@types/geojson':
+        specifier: 7946.0.16
+        version: 7946.0.16
       '@types/leaflet':
         specifier: 1.9.21
         version: 1.9.21
