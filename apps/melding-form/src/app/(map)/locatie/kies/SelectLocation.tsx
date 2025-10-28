@@ -91,7 +91,7 @@ export const SelectLocation = ({ coordinates: coordinatesFromServer }: Props) =>
       <div className={styles.map}>
         <Map>
           <PointSelectLayer
-            // If there are selected assets, do not add a pointer marker
+            // If there are selected assets, do not add a point marker
             selectedPoint={selectedAssets.length === 0 ? coordinates : undefined}
             onSelectedPointChange={(coordinates) => {
               setSelectedAssets([])
