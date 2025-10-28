@@ -28,6 +28,8 @@ export default tseslint.config(
       // Next.js generated files
       '**/.next/',
       '**/next-env.d.ts',
+      // GitHub template
+      '**/PULL_REQUEST_TEMPLATE.md',
     ],
   },
   {
