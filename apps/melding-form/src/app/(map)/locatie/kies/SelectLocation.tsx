@@ -92,7 +92,10 @@ export const SelectLocation = ({ coordinates: coordinatesFromServer }: Props) =>
         <Map>
           <PointSelectLayer
             selectedPoint={coordinates}
-            onSelectedPointChange={(coordinates) => !selectedAssets.length && setCoordinates(coordinates)}
+            onSelectedPointChange={(coordinates) => {
+              setSelectedAssets([])
+              setCoordinates(coordinates)
+            }}
           />
           <MarkerSelectLayer
             markers={assetList}
