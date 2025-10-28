@@ -57,7 +57,7 @@ export const editForm = () => ({
             {
               weight: 11,
               type: 'textfield',
-              label: 'Error handling text',
+              label: 'Required error message',
               key: 'validate.required_error_message',
               input: true,
             },
