@@ -89,7 +89,7 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
         </Button>
       </SideBarBottom>
       <div className={styles.map}>
-        <Map>
+        <Map isHidden={showAssetList}>
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             selectedPoint={selectedAssets.length === 0 ? coordinates : undefined}

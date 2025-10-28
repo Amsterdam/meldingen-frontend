@@ -1,3 +1,4 @@
+import { clsx } from 'clsx'
 import { latLng, Map, tileLayer } from 'leaflet'
 import { createContext, PropsWithChildren, useEffect, useRef, useState } from 'react'
 
@@ -65,7 +66,7 @@ export const MapComponent = ({ children, isHidden }: Props) => {
 
   return (
     <MapContext.Provider value={mapInstance}>
-      <div className={`${styles.container} ${isHidden && styles.hideMap}`}>
+      <div className={clsx(styles.container, isHidden && styles.hideMap)}>
         <div className={styles.map} ref={mapRef} />
         {children}
       </div>
