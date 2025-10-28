@@ -32,7 +32,7 @@ type Props = {
 export const MarkerSelectLayer = ({ markers, onMarkersChange }: Props) => {
   const map = useContext(MapContext)
   // const markersRef = useRef<Record<string, Marker>>({})
-  const assetLayerRef = useRef<Layer | null>(null)
+  const markerLayerRef = useRef<Layer | null>(null)
 
   useEffect(() => {
     map?.on('moveend', async () => {
@@ -53,15 +53,22 @@ export const MarkerSelectLayer = ({ markers, onMarkersChange }: Props) => {
           query: { filter },
         })
 
-        if (error) throw new Error(`${error}`)
+        if (error) throw new Error(`${error}`) // TODO
 
         onMarkersChange(data?.features || [])
+      }
+
+      if (zoom < ASSET_ZOOM_THRESHOLD && markerLayerRef.current) {
+        markerLayerRef.current.remove()
+        onMarkersChange([])
       }
     })
   }, [map])
 
   useEffect(() => {
     if (!map || markers.length === 0) return
+
+    markerLayerRef.current?.remove()
 
     const markerClusterGroup = new MarkerClusterGroup({
       iconCreateFunction: createClusterIcon,
@@ -81,14 +88,10 @@ export const MarkerSelectLayer = ({ markers, onMarkersChange }: Props) => {
         keyboard: false,
       })
 
-      // if (feature.id !== null && (typeof feature.id === 'string' || typeof feature.id === 'number')) {
-      //   assetMarkersRef.current[feature.id] = marker
-      // }
-
       markerClusterGroup.addLayer(marker)
     })
 
-    assetLayerRef.current = markerClusterGroup
+    markerLayerRef.current = markerClusterGroup
     markerClusterGroup.addTo(map)
   }, [map, markers])
 
