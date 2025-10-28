@@ -34,6 +34,6 @@ graph TD
 5. [Linting](./0005-linting.md)
 6. [Monorepo tooling](./0006-monorepo-tooling.md)
 7. [Forms](./0007-forms.md)
-8. [Authentication](./0008-authentication.md)
+8. [Session management and authentication](./0008-session-management-and-authentication.md)
 9. [Directory structure](./0009-directory-structure.md)
 10. [Progressive enhancement](./0010-progressive-enhancement.md)
