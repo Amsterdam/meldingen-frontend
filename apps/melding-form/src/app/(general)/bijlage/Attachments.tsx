@@ -203,7 +203,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             </Paragraph>
 
             <FileUpload
-              accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
+              accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp"
               aria-describedby={getAriaDescribedBy('file-upload', description, errorMessage)}
               aria-labelledby="file-upload-label file-upload"
               buttonText={t('file-upload.button')}
