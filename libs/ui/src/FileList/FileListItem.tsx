@@ -19,7 +19,7 @@ export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
 
 export const FileListItem = ({
   deleteButtonId,
-  deleteButtonLabel = 'Verwijder',
+  deleteButtonLabel = 'Verwijder foto',
   errorMessage,
   file,
   onDelete,

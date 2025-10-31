@@ -34,7 +34,7 @@
   padding-block: var(--ams-space-s);
 
   @media screen and (min-width: 37.5rem) {
-    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-columns: auto auto auto;
   }
 }
 
@@ -44,6 +44,11 @@
 }
 
 .deleteButton {
+  font-size: var(--ams-typography-body-text-small-font-size);
+  font-weight: var(--ams-button-font-weight);
+  line-height: var(--ams-typography-body-text-large-line-height);
+  padding-block: 0;
+  padding-inline: var(--ams-space-s);
   width: fit-content;
 }
 
