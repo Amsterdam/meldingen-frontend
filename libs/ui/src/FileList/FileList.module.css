@@ -23,10 +23,6 @@
   padding-block: var(--ams-space-s);
 }
 
-.item:not(:last-child) {
-  border-block-end: var(--ams-border-width-s) solid var(--ams-color-separator);
-}
-
 .container {
   align-items: center;
   display: grid;
@@ -41,6 +37,10 @@
 .containerWithError {
   border-inline-start: var(--ams-field-invalid-border-inline-start);
   padding-inline-start: var(--ams-field-invalid-padding-inline-start);
+}
+
+.attachmentName {
+  font-size: var(--ams-typography-body-text-small-font-size);
 }
 
 .deleteButton {

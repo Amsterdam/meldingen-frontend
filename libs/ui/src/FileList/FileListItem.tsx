@@ -39,7 +39,7 @@ export const FileListItem = ({
     <li className={styles.item}>
       <div className={clsx(styles.container, hasError && styles.containerWithError)}>
         <Image src={imageUrl} alt="" />
-        <div>{file.name}</div>
+        <div className={styles.attachmentName}>{file.name}</div>
         <Button className={styles.deleteButton} id={deleteButtonId} variant="secondary" onClick={handleDelete}>
           {deleteButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
         </Button>
