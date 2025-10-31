@@ -1,11 +1,8 @@
 import { Button } from '@amsterdam/design-system-react/dist/Button'
-import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import { ErrorMessage } from '@amsterdam/design-system-react/dist/ErrorMessage'
 import { Image } from '@amsterdam/design-system-react/dist/Image'
 import { clsx } from 'clsx'
 import { HTMLAttributes, useMemo } from 'react'
-
-import { formatFileSize } from './formatFileSize'
 
 import styles from './FileList.module.css'
 
@@ -38,21 +35,12 @@ export const FileListItem = ({
 
   const hasError = Boolean(errorMessage)
 
-  const isMediumOrWideWindow = useIsAfterBreakpoint('medium')
-
   return (
     <li className={styles.item}>
       <div className={clsx(styles.container, hasError && styles.containerWithError)}>
-        <div className={styles.name}>{file.name}</div>
-        <Image
-          className={styles.thumbnail}
-          src={imageUrl}
-          alt=""
-          aspectRatio={isMediumOrWideWindow ? '1:1' : '16:9'}
-          width={256} // Fixed width for when CSS does not load. Gets overridden by CSS.
-        />
-        <div>{formatFileSize(file.size)}</div>
-        <Button id={deleteButtonId} variant="secondary" onClick={handleDelete}>
+        <Image src={imageUrl} alt="" />
+        <div>{file.name}</div>
+        <Button className={styles.deleteButton} id={deleteButtonId} variant="secondary" onClick={handleDelete}>
           {deleteButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
         </Button>
         {hasError && <ErrorMessage className={styles.error}>{errorMessage}</ErrorMessage>}
