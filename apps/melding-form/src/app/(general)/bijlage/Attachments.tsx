@@ -216,13 +216,15 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
             {fileUploads.length > 0 && (
               <FileList>
-                {fileUploads.map(({ error, file, id, serverId, status, xhr }) => (
+                {fileUploads.map(({ error, file, id, progress, serverId, status, xhr }) => (
                   <FileList.Item
-                    key={id}
                     deleteButtonId={id}
+                    errorMessage={error}
                     file={file}
-                    errorMessage={status === 'error' ? error : undefined}
+                    key={id}
                     onDelete={() => handleDelete(id, file.name, xhr, serverId)}
+                    progress={progress}
+                    status={status}
                   />
                 ))}
               </FileList>

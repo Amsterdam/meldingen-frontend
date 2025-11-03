@@ -39,8 +39,11 @@
   padding-inline-start: var(--ams-field-invalid-padding-inline-start);
 }
 
-.attachmentName {
+.description {
+  display: flex;
+  flex-direction: column;
   font-size: var(--ams-typography-body-text-small-font-size);
+  gap: var(--ams-space-xs);
 }
 
 .deleteButton {
@@ -53,7 +56,9 @@
 }
 
 .error {
+  align-items: center;
   display: flex; /* Remove phantom whitespace */
+  font-size: var(--ams-typography-body-text-small-font-size);
 
   @media screen and (min-width: 37.5rem) {
     grid-column: 1 / -1;

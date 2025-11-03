@@ -11,39 +11,46 @@ import styles from './FileList.module.css'
 
 export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
   deleteButtonId: string
-  deleteButtonLabel?: string
   errorMessage?: string
   file: File
   onDelete?: () => void
+  progress: number
+  status: 'pending' | 'uploading' | 'success' | 'error'
 }
 
-export const FileListItem = ({
-  deleteButtonId,
-  deleteButtonLabel = 'Verwijder foto',
-  errorMessage,
-  file,
-  onDelete,
-}: FileListItemProps) => {
+export const FileListItem = ({ deleteButtonId, errorMessage, file, onDelete, progress, status }: FileListItemProps) => {
   // Memoize the creation of an object url from the file,
   // to prevent it from creating a new one on every render.
   const imageUrl = useMemo(() => URL.createObjectURL(file), [file])
+
+  const actionButtonLabel = status === 'success' || status === 'error' ? 'Verwijderen' : 'Annuleren'
+  const progressPercentage = status === 'success' ? 'geslaagd' : Math.round(progress) + '%'
+
+  const statusMessage =
+    status === 'error' ? (
+      <ErrorMessage icon={false} className={styles.error}>
+        {errorMessage}
+      </ErrorMessage>
+    ) : (
+      <span>{`Upload ${progressPercentage}`}</span>
+    )
 
   const handleDelete = () => {
     URL.revokeObjectURL(imageUrl)
     onDelete?.()
   }
 
-  const hasError = Boolean(errorMessage)
-
   return (
     <li className={styles.item}>
-      <div className={clsx(styles.container, hasError && styles.containerWithError)}>
+      <div className={clsx(styles.container, Boolean(errorMessage) && styles.containerWithError)}>
         <Image src={imageUrl} alt="" />
-        <div className={styles.attachmentName}>{file.name}</div>
+        <div className={styles.description}>
+          <span>{file.name}</span>
+          {statusMessage}
+        </div>
         <Button className={styles.deleteButton} id={deleteButtonId} variant="secondary" onClick={handleDelete}>
-          {deleteButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
+          {actionButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
         </Button>
-        {hasError && <ErrorMessage className={styles.error}>{errorMessage}</ErrorMessage>}
       </div>
     </li>
   )
