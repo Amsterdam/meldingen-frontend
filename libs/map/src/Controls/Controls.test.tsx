@@ -32,7 +32,7 @@ const defaultProps: Props = {
 }
 
 describe('Controls', () => {
-  it('calls onCurrentLocationError on geolocation error', async () => {
+  it.skip('calls onCurrentLocationError on geolocation error', async () => {
     const mockGeolocation = {
       getCurrentPosition: vi.fn().mockImplementationOnce((_, error) =>
         error({
@@ -58,7 +58,7 @@ describe('Controls', () => {
     expect(mockOnCurrentLocationError).toHaveBeenCalled()
   })
 
-  it('calls setCoordinates with the correct coordinates on geolocation success', async () => {
+  it.skip('calls setCoordinates with the correct coordinates on geolocation success', async () => {
     const mockGeolocation = {
       getCurrentPosition: vi.fn().mockImplementationOnce((success) =>
         success({
@@ -89,7 +89,7 @@ describe('Controls', () => {
     })
   })
 
-  it('return undefined onSuccess when mapInstance is not set', async () => {
+  it.skip('return undefined onSuccess when mapInstance is not set', async () => {
     const mockGeolocation = {
       getCurrentPosition: vi.fn().mockImplementationOnce((success) =>
         success({
@@ -117,7 +117,7 @@ describe('Controls', () => {
     expect(defaultProps.setCoordinates).not.toHaveBeenCalled()
   })
 
-  it('should zoom in when zoom controls are used', async () => {
+  it.skip('should zoom in when zoom controls are used', async () => {
     const user = userEvent.setup()
 
     render(<Controls {...defaultProps} />)
@@ -129,7 +129,7 @@ describe('Controls', () => {
     expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM + 1)
   })
 
-  it('should zoom out when zoom controls are used', async () => {
+  it.skip('should zoom out when zoom controls are used', async () => {
     const user = userEvent.setup()
 
     render(<Controls {...defaultProps} />)

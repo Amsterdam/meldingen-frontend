@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 
-import { Crosshair } from '../Map/Crosshair'
+import { Crosshair } from './Crosshair'
 
 describe('Crosshair', () => {
   it('renders a div with the crosshair class', () => {
