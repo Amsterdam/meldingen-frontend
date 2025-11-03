@@ -1,6 +1,8 @@
 import { Button } from '@amsterdam/design-system-react/dist/Button'
 import { ErrorMessage } from '@amsterdam/design-system-react/dist/ErrorMessage'
+import { Icon } from '@amsterdam/design-system-react/dist/Icon'
 import { Image } from '@amsterdam/design-system-react/dist/Image'
+import { WarningIcon } from '@amsterdam/design-system-react-icons'
 import { clsx } from 'clsx'
 import { HTMLAttributes, useMemo } from 'react'
 
@@ -35,6 +37,8 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, onDelete, pro
       <span>{`Upload ${progressPercentage}`}</span>
     )
 
+  const image = status === 'error' ? <Icon svg={WarningIcon} /> : <Image src={imageUrl} alt="" />
+
   const handleDelete = () => {
     URL.revokeObjectURL(imageUrl)
     onDelete?.()
@@ -43,7 +47,7 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, onDelete, pro
   return (
     <li className={styles.item}>
       <div className={clsx(styles.container, Boolean(errorMessage) && styles.containerWithError)}>
-        <Image src={imageUrl} alt="" />
+        {image}
         <div className={styles.description}>
           <span>{file.name}</span>
           {statusMessage}
