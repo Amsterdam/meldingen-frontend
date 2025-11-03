@@ -17,7 +17,7 @@ export type Props = PropsWithChildren & {
   onCurrentLocationError: () => void
 }
 
-const defaultTexts = {
+export const defaultTexts = {
   currentLocation: 'Mijn locatie',
   zoomIn: 'Inzoomen',
   zoomOut: 'Uitzoomen',

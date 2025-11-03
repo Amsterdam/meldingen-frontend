@@ -1,38 +1,25 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type L from 'leaflet'
+import { Map } from 'leaflet'
 
-import { Controls, type Props } from './Controls'
+import { Controls, defaultTexts, type Props } from './Controls'
+import { MapContext } from '../Map/Map'
 
 const INITIAL_ZOOM = 10
 
 const mapInstanceMock = {
   getZoom: vi.fn().mockImplementation(() => INITIAL_ZOOM),
   setZoom: vi.fn(),
-} as unknown as L.Map
-
-vi.mock('leaflet', async (importOriginal) => {
-  const actual = await importOriginal()
-
-  const markerMock = {
-    addTo: vi.fn(),
-  }
-
-  return {
-    default: {
-      ...(typeof actual === 'object' ? actual : {}),
-      marker: vi.fn(() => markerMock),
-    },
-  }
-})
+} as unknown as Map
 
 const defaultProps: Props = {
-  setCoordinates: vi.fn(),
+  texts: defaultTexts,
+  updateSelectedPoint: vi.fn(),
   onCurrentLocationError: vi.fn(),
 }
 
 describe('Controls', () => {
-  it.skip('calls onCurrentLocationError on geolocation error', async () => {
+  it('calls onCurrentLocationError on geolocation error', async () => {
     const mockGeolocation = {
       getCurrentPosition: vi.fn().mockImplementationOnce((_, error) =>
         error({
@@ -51,14 +38,14 @@ describe('Controls', () => {
 
     render(<Controls {...defaultProps} onCurrentLocationError={mockOnCurrentLocationError} />)
 
-    const button = screen.getByRole('button', { name: 'current-location-button' })
+    const button = screen.getByRole('button', { name: defaultTexts.currentLocation })
 
     await user.click(button)
 
     expect(mockOnCurrentLocationError).toHaveBeenCalled()
   })
 
-  it.skip('calls setCoordinates with the correct coordinates on geolocation success', async () => {
+  it('calls updateSelectedPoint with the correct coordinates on geolocation success', async () => {
     const mockGeolocation = {
       getCurrentPosition: vi.fn().mockImplementationOnce((success) =>
         success({
@@ -75,21 +62,27 @@ describe('Controls', () => {
 
     const user = userEvent.setup()
 
-    render(<Controls {...defaultProps} />)
+    const mockUpdateSelectedPoint = vi.fn()
 
-    const button = screen.getByRole('button', { name: 'current-location-button' })
+    render(
+      <MapContext.Provider value={mapInstanceMock}>
+        <Controls {...defaultProps} updateSelectedPoint={mockUpdateSelectedPoint} />
+      </MapContext.Provider>,
+    )
+
+    const button = screen.getByRole('button', { name: defaultTexts.currentLocation })
 
     await user.click(button)
 
     expect(mockGeolocation.getCurrentPosition).toHaveBeenCalled()
 
-    expect(defaultProps.setCoordinates).toHaveBeenCalledWith({
+    expect(mockUpdateSelectedPoint).toHaveBeenCalledWith({
       lat: 52.370216,
       lng: 4.895168,
     })
   })
 
-  it.skip('return undefined onSuccess when mapInstance is not set', async () => {
+  it('does not call updateSelectedPoint when the map instance is not set', async () => {
     const mockGeolocation = {
       getCurrentPosition: vi.fn().mockImplementationOnce((success) =>
         success({
@@ -106,35 +99,49 @@ describe('Controls', () => {
 
     const user = userEvent.setup()
 
-    render(<Controls {...defaultProps} />)
+    const mockUpdateSelectedPoint = vi.fn()
 
-    const button = screen.getByRole('button', { name: 'current-location-button' })
+    render(
+      <MapContext.Provider value={undefined}>
+        <Controls {...defaultProps} updateSelectedPoint={mockUpdateSelectedPoint} />
+      </MapContext.Provider>,
+    )
+
+    const button = screen.getByRole('button', { name: defaultTexts.currentLocation })
 
     await user.click(button)
 
     expect(mockGeolocation.getCurrentPosition).toHaveBeenCalled()
 
-    expect(defaultProps.setCoordinates).not.toHaveBeenCalled()
+    expect(mockUpdateSelectedPoint).not.toHaveBeenCalled()
   })
 
-  it.skip('should zoom in when zoom controls are used', async () => {
+  it('zooms in when zoom in controls are used', async () => {
     const user = userEvent.setup()
 
-    render(<Controls {...defaultProps} />)
+    render(
+      <MapContext.Provider value={mapInstanceMock}>
+        <Controls {...defaultProps} />
+      </MapContext.Provider>,
+    )
 
-    const ZoomInButton = screen.getByRole('button', { name: 'zoom-in' })
+    const ZoomInButton = screen.getByRole('button', { name: 'Inzoomen' })
 
     await user.click(ZoomInButton)
 
     expect(mapInstanceMock.setZoom).toHaveBeenCalledWith(INITIAL_ZOOM + 1)
   })
 
-  it.skip('should zoom out when zoom controls are used', async () => {
+  it('zooms out when zoom out controls are used', async () => {
     const user = userEvent.setup()
 
-    render(<Controls {...defaultProps} />)
+    render(
+      <MapContext.Provider value={mapInstanceMock}>
+        <Controls {...defaultProps} />
+      </MapContext.Provider>,
+    )
 
-    const ZoomOutButton = screen.getByRole('button', { name: 'zoom-out' })
+    const ZoomOutButton = screen.getByRole('button', { name: 'Uitzoomen' })
 
     await user.click(ZoomOutButton)
 
