@@ -5,10 +5,7 @@ Ticket: [SIG-1234](https://gemeente-amsterdam.atlassian.net/browse/SIG-1234)
 Before opening a pull request, please ensure:
 
 - Double-check your branch is based on `main` and targets `main`
-- Code is well-commented, linted and follows project conventions
-
-Requirements when applicable (mark with N/A when not applicable):
-
+- Check requirements when applicable (strikethrough when not applicable):
 - [ ] Acknowledges **team code standards**
 - [ ] Has **unit tests**
 - [ ] Has **error handling**
