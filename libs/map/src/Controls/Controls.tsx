@@ -3,7 +3,7 @@ import { MinusIcon, PlusIcon } from '@amsterdam/design-system-react-icons'
 import { PropsWithChildren, useContext } from 'react'
 
 import { MapContext } from '../Map/Map'
-import type { Coordinates } from 'apps/melding-form/src/types'
+import type { Coordinates } from '../types'
 
 import styles from './Controls.module.css'
 
