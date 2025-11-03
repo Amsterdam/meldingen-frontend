@@ -26,8 +26,8 @@ import type { FormState } from 'apps/melding-form/src/types'
 
 import styles from './Attachments.module.css'
 
-const MAX_SUCCESSFUL_UPLOADS = 1
-const MAX_UPLOAD_ATTEMPTS = 2
+const MAX_SUCCESSFUL_UPLOADS = 3
+const MAX_UPLOAD_ATTEMPTS = 10
 
 type Props = {
   formData: StaticFormTextAreaComponentOutput[]
@@ -38,14 +38,30 @@ type Props = {
 
 const initialState: Pick<FormState, 'systemError'> = {}
 
-const createFileUploads = (newFiles: File[]): FileUploadType[] =>
-  newFiles.map((file) => ({
-    file,
-    id: crypto.randomUUID(),
-    progress: 0,
-    status: 'pending',
-    xhr: new XMLHttpRequest(),
-  }))
+const createFileUploads = (
+  newFiles: File[],
+  currentFiles: (FileUploadType | ExistingFileUpload)[],
+  t: (key: string) => string,
+): FileUploadType[] =>
+  newFiles.map((file) => {
+    if (currentFiles.find((f) => f.file.name === file.name)) {
+      return {
+        file,
+        id: crypto.randomUUID(),
+        progress: 0,
+        status: 'error',
+        error: t('errors.duplicate-upload'),
+      }
+    }
+
+    return {
+      file,
+      id: crypto.randomUUID(),
+      progress: 0,
+      status: 'pending',
+      xhr: new XMLHttpRequest(),
+    }
+  })
 
 const mapExistingFilesToUploads = (files: ExistingFileType[]): ExistingFileUpload[] =>
   files.map((file) => ({
@@ -94,12 +110,14 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
       return
     }
 
-    const newFileUploads = createFileUploads(newFiles)
+    const newFileUploads = createFileUploads(newFiles, fileUploads, t)
 
     setFileUploads((prev) => [...prev, ...newFileUploads])
 
     newFileUploads.forEach((upload) => {
       const xhr = upload.xhr
+
+      if (!xhr) return
 
       xhr.open(
         'POST',

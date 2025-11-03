@@ -17,8 +17,10 @@ export type FileUpload = {
   progress: number // 0-100
   serverId?: number
   status: 'pending' | 'uploading' | 'success' | 'error'
-  xhr: XMLHttpRequest
+  xhr?: XMLHttpRequest
 }
+
+// TODO: Change typing if we stick to this approach of douplicated uploads
 
 export type ExistingFileUpload = Omit<FileUpload, 'xhr'> & {
   xhr?: XMLHttpRequest

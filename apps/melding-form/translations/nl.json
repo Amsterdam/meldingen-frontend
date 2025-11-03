@@ -98,7 +98,8 @@
     "submit-button": "Volgende vraag",
     "errors": {
       "too-many-files": "U kunt maximaal {maxFiles} bestanden uploaden.",
-      "too-many-attempts": "U kunt maximaal {maxAttempts} pogingen doen om bestanded te uploaden. Verwijder bestanden met een error om een nieuwe poging te doen."
+      "too-many-attempts": "U kunt maximaal {maxAttempts} pogingen doen om bestanded te uploaden. Verwijder bestanden met een error om een nieuwe poging te doen.",
+      "duplicate-upload": "Dit bestand is al toegevoegd."
     }
   },
   "contact": {
