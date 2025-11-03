@@ -2,6 +2,27 @@
 // - https://github.com/formio/formio.js/blob/master/src/components/_classes/component/editForm
 // - https://github.com/formio/formio.js/tree/master/src/components/textfield/editForm
 
+const validationExamplesHTML = `
+<p>Validatie voorbeelden:</p>
+<ul>
+<li>Mag maximaal 100 tekens zijn:
+<pre><code>{"if": [
+  { "<=": [{ "length": [{ "var": "text" }]}, 100]},
+  true,
+  "De omschrijving van de melding mag maximaal 100 tekens zijn."
+]}
+</code></pre>
+</li>
+<li>Moet minimaal 3 tekens zijn:
+<pre><code>{"if": [
+  { ">=": [{ "length": [{ "var": "text" }]}, 3]},
+  true,
+  "De omschrijving van de melding moet minimaal 3 tekens zijn."
+]}
+</code></pre>
+</ul>
+`
+
 export const editForm = () => ({
   components: [
     {
@@ -55,6 +76,13 @@ export const editForm = () => ({
               input: true,
             },
             {
+              weight: 11,
+              type: 'textfield',
+              label: 'Required error message',
+              key: 'validate.required_error_message',
+              input: true,
+            },
+            {
               type: 'panel',
               title: 'JSONLogic Validation',
               key: 'json-validation-json',
@@ -63,13 +91,7 @@ export const editForm = () => ({
                 {
                   type: 'htmlelement',
                   tag: 'div',
-                  content: `
-                    <p>Validation examples:</p>
-                    <ul>
-                      <li>Should be 3 characters or more: <code>{">=": [{ "var": "value.length" }, 3]}</code></li>
-                      <li>Should be a 100 characters or less: <code>{"<=": [{ "var": "value.length" }, 100]}</code></li>
-                    </ul>
-                  `,
+                  content: validationExamplesHTML,
                 },
                 {
                   type: 'textarea',
