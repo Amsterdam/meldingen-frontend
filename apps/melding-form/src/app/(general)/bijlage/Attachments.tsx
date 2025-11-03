@@ -26,7 +26,8 @@ import type { FormState } from 'apps/melding-form/src/types'
 
 import styles from './Attachments.module.css'
 
-const MAX_FILES = 3
+const MAX_SUCCESSFUL_UPLOADS = 1
+const MAX_UPLOAD_ATTEMPTS = 2
 
 type Props = {
   formData: StaticFormTextAreaComponentOutput[]
@@ -83,8 +84,13 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
     const newFiles = Array.from(event.currentTarget.files)
 
-    if (newFiles.length + fileUploads.length > MAX_FILES) {
-      setErrorMessage(t('errors.too-many-files', { maxFiles: MAX_FILES }))
+    if (newFiles.length + fileUploads.length > MAX_UPLOAD_ATTEMPTS) {
+      setErrorMessage(t('errors.too-many-attempts', { maxAttempts: MAX_SUCCESSFUL_UPLOADS }))
+      return
+    }
+
+    if (newFiles.length + fileUploads.filter((file) => file.status === 'success').length > MAX_SUCCESSFUL_UPLOADS) {
+      setErrorMessage(t('errors.too-many-files', { maxFiles: MAX_SUCCESSFUL_UPLOADS }))
       return
     }
 
@@ -198,7 +204,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             <Paragraph aria-live="assertive">
               {t('status', {
                 fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
-                maxFiles: MAX_FILES,
+                maxFiles: MAX_SUCCESSFUL_UPLOADS,
               })}
             </Paragraph>
 
