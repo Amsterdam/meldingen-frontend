@@ -61,7 +61,7 @@ const fetchMarkersOnMoveEnd = async (
   }
 }
 
-type Props = {
+export type Props = {
   classification?: string
   markers: Feature[]
   selectedMarkers: Feature[]
