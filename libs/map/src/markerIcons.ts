@@ -31,7 +31,7 @@ export const plasticAfvalIcon = L.icon({
 })
 
 export const restAfvalIcon = L.icon({
-  iconUrl: '/afval/restafval.svg',
+  iconUrl: '/afval/rest.svg',
   iconSize: [44, 44],
   iconAnchor: [22, 44],
 })

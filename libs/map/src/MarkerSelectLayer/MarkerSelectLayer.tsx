@@ -12,8 +12,7 @@ import { getWfsFilter } from './utils/getWfsFilter'
 import './cluster.css'
 
 const classificationsWithAssets = ['container']
-export const MAX_ASSETS = 5
-export const ASSET_ZOOM_THRESHOLD = 16
+export const ZOOM_THRESHOLD = 16
 
 export const createClusterIcon = (cluster: MarkerCluster) => {
   // Cluster markers should not be keyboard accessible
@@ -33,7 +32,7 @@ const fetchMarkersOnMoveEnd = async (
   onMarkersChange: Props['onMarkersChange'],
   markerLayerRef: RefObject<Layer | null>,
 ) => {
-  // Don't fetch assets when map is hidden with display: none
+  // Don't fetch markers when map is hidden with display: none
   const size = map.getSize()
   const mapIsHidden = size.x === 0 && size.y === 0
 
@@ -41,8 +40,8 @@ const fetchMarkersOnMoveEnd = async (
 
   const zoom = map.getZoom()
 
-  // Has correct zoom level for assets
-  if (zoom >= ASSET_ZOOM_THRESHOLD) {
+  // Has correct zoom level for markers
+  if (zoom >= ZOOM_THRESHOLD) {
     const filter = getWfsFilter(map)
 
     const { data, error } = await getWfsByName({
@@ -55,7 +54,7 @@ const fetchMarkersOnMoveEnd = async (
     onMarkersChange(data?.features || [])
   }
 
-  if (zoom < ASSET_ZOOM_THRESHOLD && markerLayerRef.current) {
+  if (zoom < ZOOM_THRESHOLD && markerLayerRef.current) {
     markerLayerRef.current.remove()
     onMarkersChange([])
   }
@@ -64,6 +63,7 @@ const fetchMarkersOnMoveEnd = async (
 export type Props = {
   classification?: string
   markers: Feature[]
+  maxMarkers: number
   selectedMarkers: Feature[]
   onMarkersChange: (markers: Feature[]) => void
   onSelectedMarkersChange: (selectedMarkers: Feature[]) => void
@@ -74,6 +74,7 @@ export type Props = {
 export const MarkerSelectLayer = ({
   classification,
   markers,
+  maxMarkers,
   selectedMarkers,
   onMarkersChange,
   onSelectedMarkersChange,
@@ -135,7 +136,7 @@ export const MarkerSelectLayer = ({
             updateSelectedPoint({ lat: x, lng: y })
           }
         } else {
-          if (selectedMarkers.length >= MAX_ASSETS) {
+          if (selectedMarkers.length >= maxMarkers) {
             onMaxMarkersReached(true)
             return
           }

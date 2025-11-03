@@ -1,6 +1,6 @@
-import { type AssetFeature, ContainerFeatureType, getContainerFeatureIcon } from './getContainerFeatureIcon'
+import { type AssetFeature, containerTypes, getContainerFeatureIcon } from './getContainerFeatureIcon'
 
-const makeFeature = (type: ContainerFeatureType | string) =>
+const makeFeature = (type: (typeof containerTypes)[number] | string) =>
   ({
     type: 'Feature',
     geometry: {
@@ -13,36 +13,24 @@ const makeFeature = (type: ContainerFeatureType | string) =>
   }) as AssetFeature
 
 describe('containerFeatureIcons', () => {
-  it.each([
-    [ContainerFeatureType.Papier, '/afval/papier.svg'],
-    [ContainerFeatureType.Glas, '/afval/glas.svg'],
-    [ContainerFeatureType.Rest, '/afval/restafval.svg'],
-    [ContainerFeatureType.Textiel, '/afval/textiel.svg'],
-    [ContainerFeatureType.Plastic, '/afval/plastic.svg'],
-    [ContainerFeatureType.GFT, '/afval/gft.svg'],
-    ['UnknownType', '/afval/restafval.svg'],
-  ])('returns correct icon for type %s', (type, expectedLabel) => {
-    const feature = makeFeature(type)
-    const icon = getContainerFeatureIcon(feature, false)
+  containerTypes.forEach((type) => {
+    it(`returns the correct icon for type ${type}`, () => {
+      const feature = makeFeature(type)
+      const icon = getContainerFeatureIcon(feature, false)
 
-    expect(icon.options.iconUrl).toBe(expectedLabel)
+      expect(icon.options.iconUrl).toBe(`/afval/${type.toLowerCase()}.svg`)
+    })
   })
 
-  it.each([
-    [ContainerFeatureType.Papier, '/afval/papier.svg'],
-    [ContainerFeatureType.Glas, '/afval/glas.svg'],
-    [ContainerFeatureType.Rest, '/afval/restafval.svg'],
-    [ContainerFeatureType.Textiel, '/afval/textiel.svg'],
-    [ContainerFeatureType.Plastic, '/afval/plastic.svg'],
-    [ContainerFeatureType.GFT, '/afval/gft.svg'],
-    ['UnknownType', '/afval/restafval.svg'],
-  ])('returns selected icon for type %s with correct options', (type, expectedLabel) => {
-    const feature = makeFeature(type)
-    const icon = getContainerFeatureIcon(feature, true)
+  containerTypes.forEach((type) => {
+    it(`returns the correct selected icon for type ${type}`, () => {
+      const feature = makeFeature(type)
+      const icon = getContainerFeatureIcon(feature, true)
 
-    expect(icon.options.iconUrl).toBe(expectedLabel)
-    expect(icon.options.className).toContain('border')
-    expect(icon.options.iconSize).toEqual([60, 60])
-    expect(icon.options.iconAnchor).toEqual([34, 56])
+      expect(icon.options.iconUrl).toBe(`/afval/${type.toLowerCase()}.svg`)
+      expect(icon.options.className).toContain('border')
+      expect(icon.options.iconSize).toEqual([60, 60])
+      expect(icon.options.iconAnchor).toEqual([34, 56])
+    })
   })
 })

@@ -2,7 +2,7 @@ import type { AlertProps } from '@amsterdam/design-system-react'
 import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 
-import { MAX_ASSETS } from '../../_utils/addAssetLayerToMap'
+import { MAX_ASSETS } from '../../SelectLocation'
 import { NotificationType } from '../../SelectLocation'
 
 import styles from './Notification.module.css'

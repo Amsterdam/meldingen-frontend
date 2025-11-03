@@ -27,6 +27,11 @@
   }
 }
 
+.buttonWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
 .submitbutton {
   bottom: 0;
   margin-block: var(--ams-space-m);
@@ -38,21 +43,11 @@
   }
 }
 
-.toggleButton {
-  composes: submitbutton;
-  right: 0;
-}
-
-.buttonWrapper {
-  display: flex;
-  justify-content: space-between;
-}
-
 .removeAbsolutePosition {
   position: unset;
 }
 
-.selectedMarkerIconBorder {
-  border: 4px solid var(--ams-color-highlight-green); /* stylelint-disable-line unit-disallowed-list */
-  border-radius: 50%;
+.toggleButton {
+  composes: submitbutton;
+  right: 0;
 }

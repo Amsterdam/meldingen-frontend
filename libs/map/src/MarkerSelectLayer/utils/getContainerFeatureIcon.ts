@@ -12,30 +12,23 @@ import {
 
 import styles from './getContainerFeatureIcon.module.css'
 
-export enum ContainerFeatureType {
-  Papier = 'Papier',
-  Glas = 'Glas',
-  Rest = 'Rest',
-  Textiel = 'Textiel',
-  Plastic = 'Plastic',
-  GFT = 'Gft',
-}
+export const containerTypes = ['Papier', 'Glas', 'Rest', 'Textiel', 'Plastic', 'Gft'] as const
 
 export type AssetFeature = Feature & {
-  properties: { fractie_omschrijving: ContainerFeatureType & { [name: string]: string | boolean | null } }
+  properties: { fractie_omschrijving: (typeof containerTypes)[number] & { [name: string]: string | boolean | null } }
 }
 
-const containerIcons: Record<ContainerFeatureType, L.Icon> = {
-  [ContainerFeatureType.Papier]: papierAfvalIcon,
-  [ContainerFeatureType.Glas]: glasAfvalIcon,
-  [ContainerFeatureType.Rest]: restAfvalIcon,
-  [ContainerFeatureType.Textiel]: textielAfvalIcon,
-  [ContainerFeatureType.Plastic]: plasticAfvalIcon,
-  [ContainerFeatureType.GFT]: gftAfvalIcon,
+const containerIcons: Record<(typeof containerTypes)[number], L.Icon> = {
+  Papier: papierAfvalIcon,
+  Glas: glasAfvalIcon,
+  Rest: restAfvalIcon,
+  Textiel: textielAfvalIcon,
+  Plastic: plasticAfvalIcon,
+  Gft: gftAfvalIcon,
 }
 
 export const getContainerFeatureIcon = (feature: AssetFeature, isSelected: boolean): L.Icon => {
-  const containerFeatureType = feature.properties?.fractie_omschrijving as ContainerFeatureType
+  const containerFeatureType = feature.properties?.fractie_omschrijving as (typeof containerTypes)[number]
 
   const icon = containerIcons[containerFeatureType] || restAfvalIcon
 

@@ -31,6 +31,8 @@ export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 
 const initialState: { errorMessage?: string } = {}
 
+export const MAX_ASSETS = 5 as const
+
 export const SelectLocation = ({ classification, coordinates: coordinatesFromServer }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
@@ -105,6 +107,7 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
             onMarkersChange={setAssetList}
             onSelectedMarkersChange={setSelectedAssets}
             updateSelectedPoint={setCoordinates}
+            maxMarkers={MAX_ASSETS}
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
           />
           <Controls
