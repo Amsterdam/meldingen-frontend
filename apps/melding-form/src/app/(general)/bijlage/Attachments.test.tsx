@@ -173,7 +173,7 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [mockFile])
 
-    const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFile.name}` })
+    const deleteButton = screen.getByRole('button', { name: `Annuleren ${mockFile.name}` })
 
     await user.click(deleteButton)
 
@@ -205,7 +205,7 @@ describe('Attachments', () => {
 
     expect(fileName1).toBeInTheDocument()
 
-    const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFile.name}` })
+    const deleteButton = screen.getByRole('button', { name: `Annuleren ${mockFile.name}` })
 
     await user.click(deleteButton)
 
@@ -228,7 +228,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} files={initialUploads} />)
 
-    const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFileName}` })
+    const deleteButton = screen.getByRole('button', { name: `Verwijderen ${mockFileName}` })
 
     await user.click(deleteButton)
 
@@ -258,7 +258,7 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [mockFile])
 
-    const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFile.name}` })
+    const deleteButton = screen.getByRole('button', { name: `Annuleren ${mockFile.name}` })
 
     await user.click(deleteButton)
 
@@ -287,7 +287,7 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [mockFile])
 
-    const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFile.name}` })
+    const deleteButton = screen.getByRole('button', { name: `Annuleren ${mockFile.name}` })
 
     await user.click(deleteButton)
 
@@ -322,7 +322,7 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [mockFile])
 
-    const deleteButton = screen.getByRole('button', { name: `Verwijder ${mockFile.name}` })
+    const deleteButton = screen.getByRole('button', { name: `Annuleren ${mockFile.name}` })
 
     await user.click(deleteButton)
 
