@@ -26,6 +26,7 @@
 .container {
   align-items: center;
   display: grid;
+  font-size: var(--ams-typography-body-text-small-font-size);
   gap: var(--ams-space-s);
   padding-block: var(--ams-space-s);
 
@@ -43,11 +44,26 @@
   }
 }
 
+.imageContainer {
+  max-width: 50%;
+
+  @media screen and (min-width: 37.5rem) {
+    max-width: unset;
+  }
+}
+
+.imageContainerWithError {
+  max-width: calc(50% - var(--ams-field-invalid-padding-inline-start));
+
+  @media screen and (min-width: 37.5rem) {
+    max-width: unset;
+  }
+}
+
 .description {
   display: flex;
   flex-direction: column;
   font-size: var(--ams-typography-body-text-small-font-size);
-  gap: var(--ams-space-xs);
 }
 
 .deleteButton {
@@ -60,17 +76,17 @@
 }
 
 .error {
-  align-items: center;
-  display: flex; /* Remove phantom whitespace */
+  color: var(--ams-error-message-color);
   font-size: var(--ams-typography-body-text-small-font-size);
-
-  @media screen and (min-width: 37.5rem) {
-    grid-column: 1 / -1;
-  }
 }
 
 .icon {
   align-self: unset;
   color: var(--ams-color-feedback-error);
   justify-content: center;
+  width: 100%;
+}
+
+.statusMessage {
+  color: var(--ams-color-text-secondary);
 }

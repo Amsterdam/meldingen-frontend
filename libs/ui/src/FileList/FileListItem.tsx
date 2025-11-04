@@ -1,9 +1,8 @@
 import { Button } from '@amsterdam/design-system-react/dist/Button'
-import { ErrorMessage } from '@amsterdam/design-system-react/dist/ErrorMessage'
 import { Icon } from '@amsterdam/design-system-react/dist/Icon'
 import { Image } from '@amsterdam/design-system-react/dist/Image'
 import { WarningIcon } from '@amsterdam/design-system-react-icons'
-import { clsx } from 'clsx'
+import clsx from 'clsx'
 import { HTMLAttributes, useMemo } from 'react'
 
 import styles from './FileList.module.css'
@@ -30,11 +29,9 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, onDelete, pro
 
   const statusMessage =
     status === 'error' ? (
-      <ErrorMessage icon={false} className={styles.error}>
-        {errorMessage}
-      </ErrorMessage>
+      <span className={styles.error}>{errorMessage}</span>
     ) : (
-      <span>{`Upload ${progressPercentage}`}</span>
+      <span className={styles.statusMessage}>{`Upload ${progressPercentage}`}</span>
     )
 
   const image =
@@ -52,7 +49,9 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, onDelete, pro
   return (
     <li className={styles.item}>
       <div className={clsx(styles.container, Boolean(errorMessage) && styles.containerWithError)}>
-        {image}
+        <div className={clsx(styles.imageContainer, Boolean(errorMessage) && styles.imageContainerWithError)}>
+          {image}
+        </div>
         <div className={styles.description}>
           <span>{file.name}</span>
           {statusMessage}
