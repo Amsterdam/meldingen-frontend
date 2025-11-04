@@ -29,7 +29,7 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, onDelete, pro
 
   const statusMessage =
     status === 'error' ? (
-      <span className={styles.error}>{errorMessage}</span>
+      <span className={styles.errorMessage}>{errorMessage}</span>
     ) : (
       <span className={styles.statusMessage}>{`Upload ${progressPercentage}`}</span>
     )
