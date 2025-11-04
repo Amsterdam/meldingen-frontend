@@ -5,6 +5,7 @@ import { useActionState } from 'react'
 import { Mock } from 'vitest'
 
 import { Attachments } from './Attachments'
+import { MAX_UPLOAD_ATTEMPTS } from './Attachments'
 import { ExistingFileType } from './page'
 import { startUpload } from './utils'
 import type { FileUpload } from './utils'
@@ -364,5 +365,39 @@ describe('Attachments', () => {
     const alert = screen.getByRole('alert')
 
     expect(alert).toHaveTextContent('system-error-alert-title')
+  })
+
+  it('marks a file as duplicate when the same file is uploaded twice and renders an error message', async () => {
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+
+    const file = mockFile
+
+    await user.upload(fileInput, [file])
+    await user.upload(fileInput, [file])
+
+    const errorMessage = screen.getAllByText('errors.duplicate-upload')
+
+    expect(errorMessage[0]).toBeInTheDocument()
+  })
+
+  it('shows an error when trying to upload too many files ', async () => {
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+
+    await user.upload(
+      fileInput,
+      Array.from({ length: MAX_UPLOAD_ATTEMPTS + 1 }, () => mockFile),
+    )
+
+    const errorMessage = screen.getByText('errors.too-many-attempts')
+
+    expect(errorMessage).toBeInTheDocument()
   })
 })

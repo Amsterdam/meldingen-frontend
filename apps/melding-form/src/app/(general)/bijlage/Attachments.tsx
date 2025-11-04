@@ -27,7 +27,7 @@ import type { FormState } from 'apps/melding-form/src/types'
 import styles from './Attachments.module.css'
 
 const MAX_SUCCESSFUL_UPLOADS = 3
-const MAX_UPLOAD_ATTEMPTS = 10
+export const MAX_UPLOAD_ATTEMPTS = 10
 
 type Props = {
   formData: StaticFormTextAreaComponentOutput[]
