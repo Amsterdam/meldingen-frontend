@@ -20,18 +20,12 @@ export type FileUpload = {
   xhr?: XMLHttpRequest
 }
 
-// TODO: Change typing if we stick to this approach of douplicated uploads
-
-export type ExistingFileUpload = Omit<FileUpload, 'xhr'> & {
-  xhr?: XMLHttpRequest
-}
-
 // We're using XMLHttpRequest instead of fetch here,
 // because fetch does not allow you to track the upload progress.
 export const startUpload = (
   xhr: XMLHttpRequest,
   fileUpload: FileUpload,
-  setFileUploads: Dispatch<SetStateAction<(FileUpload | ExistingFileUpload)[]>>,
+  setFileUploads: Dispatch<SetStateAction<FileUpload[]>>,
 ) => {
   xhr.upload.onprogress = (event) => {
     if (event.lengthComputable) {
