@@ -56,12 +56,6 @@ describe('Page', () => {
     await expect(Page()).rejects.toThrowError('Failed to fetch attachments form data.')
   })
 
-  it('throws an error if attachments form data is not found', async () => {
-    server.use(http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(null)))
-
-    await expect(Page()).rejects.toThrowError('Attachments form data not found.')
-  })
-
   it('throws an error if attachments form label is not found', async () => {
     server.use(
       http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>

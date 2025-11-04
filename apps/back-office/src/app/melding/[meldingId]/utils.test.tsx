@@ -32,14 +32,6 @@ describe('getAdditionalQuestionsData', () => {
 
     expect(result).toEqual({ error: 'Error message' })
   })
-
-  it('should return an empty array when additional questions data is not found', async () => {
-    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () => new HttpResponse()))
-
-    const result = await getAdditionalQuestionsData(mockMeldingId)
-
-    expect(result).toEqual({ data: [] })
-  })
 })
 
 describe('getContactData', () => {

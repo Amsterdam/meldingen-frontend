@@ -66,17 +66,16 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
   if (error) throw new Error('Failed to fetch additional questions data.')
 
   return {
-    data:
-      data.map((answer) => {
-        const panels = formComponents.components as FormPanelComponentOutput[]
-        const panelId = findPanelIdByQuestionId(panels, answer.question.id)
-        return {
-          key: `${answer.question.id}`,
-          term: answer.question.text,
-          description: answer.text,
-          link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}` : '/',
-        }
-      }) || [],
+    data: data.map((answer) => {
+      const panels = formComponents.components as FormPanelComponentOutput[]
+      const panelId = findPanelIdByQuestionId(panels, answer.question.id)
+      return {
+        key: `${answer.question.id}`,
+        term: answer.question.text,
+        description: answer.text,
+        link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}` : '/',
+      }
+    }),
   }
 }
 
@@ -106,7 +105,7 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
         fileName: original_filename,
         contentType: contentType!,
       }
-    }) || [],
+    }),
   )
 
   return { data: { key: 'attachments', term: label, files: attachments } }

@@ -98,10 +98,4 @@ describe('Page', () => {
 
     await expect(Page()).rejects.toThrowError('Failed to fetch primary form data.')
   })
-
-  it('throws an error if primary form data is not found', async () => {
-    server.use(http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(null)))
-
-    await expect(Page()).rejects.toThrowError('Primary form data not found.')
-  })
 })

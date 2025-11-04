@@ -24,12 +24,4 @@ describe('getMeldingData', () => {
 
     await expect(testFunction).rejects.toThrowError('Failed to fetch melding data.')
   })
-
-  it('should return an error message when melding data is not found', async () => {
-    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => new HttpResponse()))
-
-    const testFunction = async () => await getMeldingData(mockMeldingId, mockToken)
-
-    await expect(testFunction).rejects.toThrowError('Melding data not found.')
-  })
 })

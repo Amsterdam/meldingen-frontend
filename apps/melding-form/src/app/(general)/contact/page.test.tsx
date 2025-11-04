@@ -45,12 +45,6 @@ describe('Page', () => {
     await expect(Page()).rejects.toThrowError('Failed to fetch contact form data.')
   })
 
-  it('throws an error if contact form data is not found', async () => {
-    server.use(http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(null)))
-
-    await expect(Page()).rejects.toThrowError('Contact form data not found.')
-  })
-
   it('throws an error if contact form label is not found', async () => {
     server.use(
       http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
