@@ -34,7 +34,7 @@ export default async ({ searchParams }: Props) => {
 
   const meldingenCountString = response.headers.get('Content-Range')?.split('/')[1]
 
-  if (error || !data || !meldingenCountString) return handleApiError(error)
+  if (error || !meldingenCountString) return handleApiError(error)
 
   const meldingenCount = parseInt(meldingenCountString, 10)
 

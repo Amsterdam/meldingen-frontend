@@ -22,7 +22,7 @@ export default async ({ params }: Params) => {
 
   const t = await getTranslations('change-state.errors')
 
-  if (error || !data) {
+  if (error) {
     return t('melding-not-found')
   }
 

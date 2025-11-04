@@ -32,7 +32,7 @@ export default async () => {
 
   if (staticFormsError) throw new Error('Failed to fetch static forms.')
 
-  const primaryFormId = staticFormsData?.find((form) => form.type === 'primary')?.id
+  const primaryFormId = staticFormsData.find((form) => form.type === 'primary')?.id
 
   if (!primaryFormId) throw new Error('Primary form id not found.')
 
@@ -41,7 +41,6 @@ export default async () => {
   })
 
   if (error) throw new Error('Failed to fetch primary form data.')
-  if (!primaryForm) throw new Error('Primary form data not found.')
 
   // A primary form is always an array with 1 text area component, but TypeScript doesn't know that
   // We use a type guard here to make sure we're always working with the right type

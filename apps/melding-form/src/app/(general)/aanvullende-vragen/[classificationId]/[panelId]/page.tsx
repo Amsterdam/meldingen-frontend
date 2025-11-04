@@ -50,7 +50,7 @@ export default async ({ params }: { params: Params }) => {
 
   if (error) throw new Error('Failed to fetch form by classification.')
 
-  if (data?.components[0].type !== 'panel') return redirect('/locatie')
+  if (data.components[0].type !== 'panel') return redirect('/locatie')
 
   // Get current panel components
   const currentPanelIndex = data.components.findIndex((component) => component.key === panelId)

@@ -16,14 +16,13 @@ export default async () => {
 
   if (staticFormsError) throw new Error('Failed to fetch static forms.')
 
-  const contactFormId = staticFormsData?.find((form) => form.type === 'contact')?.id
+  const contactFormId = staticFormsData.find((form) => form.type === 'contact')?.id
 
   if (!contactFormId) throw new Error('Contact form id not found.')
 
   const { data: contactForm, error } = await getStaticFormByStaticFormId({ path: { static_form_id: contactFormId } })
 
   if (error) throw new Error('Failed to fetch contact form data.')
-  if (!contactForm) throw new Error('Contact form data not found.')
 
   // A contact form is always an array of two text area components, but TypeScript doesn't know that
   // We use a type guard here to make sure we're always working with the right type

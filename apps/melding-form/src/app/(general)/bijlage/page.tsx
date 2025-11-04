@@ -27,7 +27,7 @@ export default async () => {
 
   if (staticFormsError) throw new Error('Failed to fetch static forms.')
 
-  const attachmentsFormId = staticFormsData?.find((form) => form.type === 'attachments')?.id
+  const attachmentsFormId = staticFormsData.find((form) => form.type === 'attachments')?.id
 
   if (!attachmentsFormId) throw new Error('Attachments form id not found.')
 
@@ -36,7 +36,6 @@ export default async () => {
   })
 
   if (error) throw new Error('Failed to fetch attachments form data.')
-  if (!data) throw new Error('Attachments form data not found.')
 
   const attachmentsForm = data.components
 
