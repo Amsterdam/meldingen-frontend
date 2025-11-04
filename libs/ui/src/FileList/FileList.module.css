@@ -30,13 +30,17 @@
   padding-block: var(--ams-space-s);
 
   @media screen and (min-width: 37.5rem) {
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 1fr 3fr 1fr;
   }
 }
 
 .containerWithError {
   border-inline-start: var(--ams-field-invalid-border-inline-start);
   padding-inline-start: var(--ams-field-invalid-padding-inline-start);
+
+  @media screen and (min-width: 37.5rem) {
+    padding-inline-start: 0;
+  }
 }
 
 .description {
@@ -63,4 +67,10 @@
   @media screen and (min-width: 37.5rem) {
     grid-column: 1 / -1;
   }
+}
+
+.icon {
+  align-self: unset;
+  color: var(--ams-color-feedback-error);
+  justify-content: center;
 }

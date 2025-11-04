@@ -37,7 +37,12 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, onDelete, pro
       <span>{`Upload ${progressPercentage}`}</span>
     )
 
-  const image = status === 'error' ? <Icon svg={WarningIcon} /> : <Image src={imageUrl} alt="" />
+  const image =
+    status === 'error' ? (
+      <Icon svg={WarningIcon} size="heading-1" className={styles.icon} />
+    ) : (
+      <Image src={imageUrl} alt="" />
+    )
 
   const handleDelete = () => {
     URL.revokeObjectURL(imageUrl)
