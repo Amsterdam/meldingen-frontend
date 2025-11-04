@@ -66,18 +66,13 @@
   font-size: var(--ams-typography-body-text-small-font-size);
 }
 
-.deleteButton {
-  font-size: var(--ams-typography-body-text-small-font-size);
-  font-weight: var(--ams-button-font-weight);
-  line-height: var(--ams-typography-body-text-large-line-height);
-  padding-block: 0;
-  padding-inline: var(--ams-space-s);
-  width: fit-content;
-}
-
-.error {
+.errorMessage {
   color: var(--ams-error-message-color);
   font-size: var(--ams-typography-body-text-small-font-size);
+}
+
+.statusMessage {
+  color: var(--ams-color-text-secondary);
 }
 
 .icon {
@@ -87,6 +82,11 @@
   width: 100%;
 }
 
-.statusMessage {
-  color: var(--ams-color-text-secondary);
+.deleteButton {
+  font-size: var(--ams-typography-body-text-small-font-size);
+  font-weight: var(--ams-button-font-weight);
+  line-height: var(--ams-typography-body-text-large-line-height);
+  padding-block: 0;
+  padding-inline: var(--ams-space-s);
+  width: fit-content;
 }
