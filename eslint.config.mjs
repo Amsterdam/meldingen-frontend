@@ -28,8 +28,6 @@ export default tseslint.config(
       // Next.js generated files
       '**/.next/',
       '**/next-env.d.ts',
-      // GitHub template
-      '**/PULL_REQUEST_TEMPLATE.md',
     ],
   },
   {
@@ -134,7 +132,10 @@ export default tseslint.config(
   },
 
   // Markdown
-  ...markdown.configs.recommended,
+  {
+    ...markdown.configs.recommended[0],
+    language: 'markdown/gfm',
+  },
 
   // Next.js apps
   {
