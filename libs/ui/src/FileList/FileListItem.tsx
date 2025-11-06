@@ -48,10 +48,8 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, onDelete, pro
 
   return (
     <li className={styles.item}>
-      <div className={clsx(styles.container, Boolean(errorMessage) && styles.containerWithError)}>
-        <div className={clsx(styles.imageContainer, Boolean(errorMessage) && styles.imageContainerWithError)}>
-          {image}
-        </div>
+      <div className={clsx(styles.container, errorMessage && styles.containerWithError)}>
+        <div className={clsx(styles.imageContainer, errorMessage && styles.imageContainerWithError)}>{image}</div>
         <div className={styles.description}>
           <span>{file.name}</span>
           {statusMessage}
