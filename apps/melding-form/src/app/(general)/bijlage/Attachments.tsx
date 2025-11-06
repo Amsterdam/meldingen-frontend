@@ -222,7 +222,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             <Paragraph aria-live="assertive">
               {t('status', {
                 fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
-                maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
+                maxFiles: MAX_SUCCESSFUL_UPLOADS,
               })}
             </Paragraph>
 
