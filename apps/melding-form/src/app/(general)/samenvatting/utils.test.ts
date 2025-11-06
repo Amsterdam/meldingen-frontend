@@ -7,6 +7,7 @@ import {
   getAttachmentsSummary,
   getContactSummary,
   getLocationSummary,
+  getMeldingData,
   getPrimaryFormSummary,
 } from './utils'
 import { additionalQuestions, melding } from 'apps/melding-form/src/mocks/data'
@@ -18,6 +19,24 @@ import { Blob } from 'buffer'
 const mockMeldingId = '88'
 const mockToken = 'test-token'
 const mockClassificationId = 1
+
+describe('getMeldingData', () => {
+  it('should return correct melding summary', async () => {
+    const result = await getMeldingData(mockMeldingId, mockToken)
+
+    expect(result).toEqual(melding)
+  })
+
+  it('should return an error message when error is returned', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json('Error message', { status: 500 })),
+    )
+
+    const testFunction = async () => await getMeldingData(mockMeldingId, mockToken)
+
+    await expect(testFunction).rejects.toThrowError('Failed to fetch melding data.')
+  })
+})
 
 describe('getPrimaryFormSummary', () => {
   it('returns correct primary form summary', async () => {

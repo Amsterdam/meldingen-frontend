@@ -72,6 +72,21 @@ describe('Page', () => {
     )
   })
 
+  it('logs an error to the console when melding data cannot be fetched', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json('Test error', { status: 500 })),
+    )
+
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    expect(consoleSpy).toHaveBeenCalledWith('Test error')
+
+    consoleSpy.mockRestore()
+  })
+
   it('throws an error if list of static forms cannot be fetched', async () => {
     server.use(http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json(null, { status: 500 })))
 

@@ -1,12 +1,16 @@
 import { cookies } from 'next/headers'
 
-import { getStaticForm, getStaticFormByStaticFormId, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+import {
+  getMeldingByMeldingIdMelder,
+  getStaticForm,
+  getStaticFormByStaticFormId,
+  StaticFormTextAreaComponentOutput,
+} from '@meldingen/api-client'
 
 import { postPrimaryForm } from './actions'
 import { Home } from './Home'
-import { isTypeTextAreaComponent } from '../../typeguards'
-import { getMeldingData } from './_utils/getMeldingData'
 import { COOKIES } from '../../constants'
+import { isTypeTextAreaComponent } from '../../typeguards'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.
@@ -17,12 +21,21 @@ const getPrefilledPrimaryFormComponents = async (
   token: string,
   formComponents: StaticFormTextAreaComponentOutput[],
 ) => {
-  const { text } = await getMeldingData(meldingId, token)
+  const { data, error } = await getMeldingByMeldingIdMelder({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (error) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(error)
+  }
 
   return formComponents.map((component) => {
     return {
       ...component,
-      defaultValue: text,
+      defaultValue: data?.text,
     }
   })
 }

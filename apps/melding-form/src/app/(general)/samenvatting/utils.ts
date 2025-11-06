@@ -8,9 +8,21 @@ import {
   getStaticFormByStaticFormId,
   MeldingOutput,
 } from '@meldingen/api-client'
+import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 
 import { getFullNLAddress } from '../_utils/getFullNLAddress'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
+
+export const getMeldingData = async (meldingId: string, token: string) => {
+  const { data, error } = await getMeldingByMeldingIdMelder({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (error) throw new Error('Failed to fetch melding data.')
+
+  return data
+}
 
 export const getPrimaryFormSummary = async (description: string) => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()

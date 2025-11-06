@@ -1,9 +1,8 @@
 import { cookies } from 'next/headers'
 
-import { getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
+import { getMeldingByMeldingIdMelder, getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
 
 import { Contact } from './Contact'
-import { getMeldingData } from '../_utils/getMeldingData'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { isTypeTextAreaComponent } from 'apps/melding-form/src/typeguards'
 
@@ -37,7 +36,18 @@ export default async () => {
   const meldingId = cookieStore.get(COOKIES.ID)!.value
   const token = cookieStore.get(COOKIES.TOKEN)!.value
 
-  const { phone, email } = await getMeldingData(meldingId, token)
+  const { data, error: meldingError } = await getMeldingByMeldingIdMelder({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (meldingError) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(meldingError)
+  }
+
+  const { phone, email } = data || {}
 
   const formComponents = contactFormComponents.map((component) => {
     if (component.key === 'tel-input' && phone) {
