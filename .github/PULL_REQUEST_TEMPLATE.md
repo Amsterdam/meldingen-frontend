@@ -11,5 +11,6 @@ Check requirements when they are met (strikethrough when not applicable):
 - [ ] Has **error handling** and **loading states**
 - [ ] Is **responsive and respects WCAG**
 - [ ] **Documentation** has been updated
+- [ ] **Required PR checks** have passed
 
 Be kind to code reviewers, please try to keep pull requests as small and focused as possible :)
