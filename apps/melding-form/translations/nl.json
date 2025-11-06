@@ -87,7 +87,7 @@
     "title": "Melding openbare ruimte",
     "step": "Stap 2 van 4: Foto’s",
     "hint-text": "(niet verplicht)",
-    "status": "{fileCount} van {maxFiles} bestanden toegevoegd",
+    "status": "{fileCount} van {maxSuccessfulUploads} bestanden toegevoegd",
     "file-upload": {
       "button": "Bestanden kiezen",
       "drop-area": "Sleep bestanden in dit vak of"

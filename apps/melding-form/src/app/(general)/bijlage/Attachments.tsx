@@ -101,7 +101,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     const newFiles = Array.from(event.currentTarget.files)
 
     if (newFiles.length + fileUploads.length > MAX_UPLOAD_ATTEMPTS) {
-      setErrorMessage(t('errors.too-many-attempts', { maxAttempts: MAX_SUCCESSFUL_UPLOADS }))
+      setErrorMessage(t('errors.too-many-attempts', { maxAttempts: MAX_UPLOAD_ATTEMPTS }))
       return
     }
 
@@ -222,7 +222,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             <Paragraph aria-live="assertive">
               {t('status', {
                 fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
-                maxFiles: MAX_SUCCESSFUL_UPLOADS,
+                maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
               })}
             </Paragraph>
 
