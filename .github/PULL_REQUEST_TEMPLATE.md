@@ -6,7 +6,7 @@ Before opening a pull request, please ensure your branch is based on `main` and 
 
 Check requirements when they are met (strikethrough when not applicable):
 
-- [ ] Acknowledges **team code standards** mentioned in /docs
+- [ ] Acknowledges **[team code standards](https://github.com/Amsterdam/meldingen-frontend/tree/main/docs)**
 - [ ] Has **unit tests** with 100% coverage and all test should pass
 - [ ] Has **error handling** and **loading states**
 - [ ] Is **responsive and respects WCAG**
