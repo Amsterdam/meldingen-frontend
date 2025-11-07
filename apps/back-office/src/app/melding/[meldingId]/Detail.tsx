@@ -1,10 +1,14 @@
+import clsx from 'clsx'
 import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
 import { Fragment } from 'react'
 
-import { DescriptionList, Grid, Heading, Link } from '@meldingen/ui'
+import { DescriptionList, Grid, Heading, Link, Paragraph } from '@meldingen/ui'
 
+import { AttachmentImage } from './_components/AttachmentImage'
 import { BackLink } from './_components/BackLink'
+
+import styles from './Detail.module.css'
 
 type DescriptionListItem = {
   key: string
@@ -14,15 +18,29 @@ type DescriptionListItem = {
 
 type MeldingDataItem = DescriptionListItem & { link?: { href: string; label: string } }
 
+type File = {
+  blob: Blob | null
+  fileName: string
+  error?: string
+}
+
 type Props = {
   additionalQuestionsWithMeldingText: DescriptionListItem[]
+  attachments: Omit<DescriptionListItem, 'description'> & { files: File[] }
   contact?: DescriptionListItem[]
   location?: DescriptionListItem[]
   meldingData: MeldingDataItem[]
   publicId: string
 }
 
-export const Detail = ({ additionalQuestionsWithMeldingText, contact, location, meldingData, publicId }: Props) => {
+export const Detail = ({
+  additionalQuestionsWithMeldingText,
+  attachments,
+  contact,
+  location,
+  meldingData,
+  publicId,
+}: Props) => {
   const t = useTranslations('detail')
 
   return (
@@ -76,6 +94,24 @@ export const Detail = ({ additionalQuestionsWithMeldingText, contact, location, 
               </Fragment>
             ))}
           </DescriptionList>
+        )}
+
+        <Heading level={2} className="ams-mb-m">
+          {t('attachments.title')}
+        </Heading>
+        {attachments.files.length > 0 ? (
+          <DescriptionList className={clsx(styles.attachmentsGrid, 'ams-mb-l')}>
+            {attachments.files.map((file) => (
+              <div key={file.fileName}>
+                <DescriptionList.Term>{file.fileName}</DescriptionList.Term>
+                <DescriptionList.Description>
+                  <AttachmentImage blob={file.blob} fileName={file.fileName} />
+                </DescriptionList.Description>
+              </div>
+            ))}
+          </DescriptionList>
+        ) : (
+          <Paragraph>{t('attachments.no-data')}</Paragraph>
         )}
       </Grid.Cell>
     </Grid>

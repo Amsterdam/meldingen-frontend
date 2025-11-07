@@ -18,6 +18,10 @@
     "no-classification": "Geen categorie"
   },
   "detail": {
+    "attachments": {
+      "title": "Bijlagen",
+      "no-data": "Geen bijlagen toegevoegd"
+    },
     "metadata": {
       "title": "Melding {publicId} - Gemeente Amsterdam"
     },

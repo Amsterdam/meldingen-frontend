@@ -1,7 +1,13 @@
 import { getTranslations } from 'next-intl/server'
 
 import { Detail } from './Detail'
-import { getAdditionalQuestionsData, getContactData, getLocationData, getMeldingData } from './utils'
+import {
+  getAdditionalQuestionsData,
+  getAttachmentsData,
+  getContactData,
+  getLocationData,
+  getMeldingData,
+} from './utils'
 import { getMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async ({ searchParams }: { searchParams: Promise<{ id: string }> }) => {
@@ -25,6 +31,9 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   const additionalQuestions = await getAdditionalQuestionsData(meldingId)
   if ('error' in additionalQuestions) return additionalQuestions.error
 
+  const attachments = await getAttachmentsData(meldingId, t)
+  if ('error' in attachments) return attachments.error
+
   const additionalQuestionsWithMeldingText = [
     {
       key: 'text',
@@ -34,9 +43,9 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
     ...additionalQuestions.data,
   ]
 
-  const contact = getContactData(data, t)
-  const location = getLocationData(data, t)
   const meldingData = getMeldingData(data, t)
+  const location = getLocationData(data, t)
+  const contact = getContactData(data, t)
 
   return (
     <Detail
@@ -45,6 +54,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
       location={location}
       meldingData={meldingData}
       publicId={data.public_id}
+      attachments={attachments}
     />
   )
 }

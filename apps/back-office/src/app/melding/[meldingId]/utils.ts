@@ -1,5 +1,10 @@
 import { getFullNLAddress } from '../../utils'
-import { getMeldingByMeldingIdAnswers, MeldingOutput } from 'apps/back-office/src/apiClientProxy'
+import {
+  getAttachmentById,
+  getMeldingByMeldingIdAnswers,
+  getMeldingByMeldingIdAttachments,
+  MeldingOutput,
+} from 'apps/back-office/src/apiClientProxy'
 import { handleApiError } from 'apps/back-office/src/handleApiError'
 
 export const getAdditionalQuestionsData = async (meldingId: number) => {
@@ -74,4 +79,34 @@ export const getLocationData = (data: MeldingOutput, t: (key: string) => string)
       description: address,
     },
   ]
+}
+
+export const getAttachmentsData = async (meldingId: number, t: (key: string) => string) => {
+  const { data, error } = await getMeldingByMeldingIdAttachments({
+    path: { melding_id: meldingId },
+  })
+
+  if (error) return { error: handleApiError(error) }
+
+  const attachments = await Promise.all(
+    data.map(async ({ id, original_filename }) => {
+      const { data, error } = await getAttachmentById({
+        path: { id },
+
+        query: { type: 'thumbnail' },
+      })
+
+      if (error) {
+        return { blob: null, fileName: original_filename, error: handleApiError(error) }
+      }
+
+      // Returning blob instead of File since the File api is not available in Node.js
+      return {
+        blob: data as Blob,
+        fileName: original_filename,
+      }
+    }) || [],
+  )
+
+  return { key: 'attachments', term: t('detail.attachments.title'), files: attachments }
 }
