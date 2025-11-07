@@ -169,3 +169,18 @@ describe('getMeldingData', () => {
     ])
   })
 })
+
+//  it('returns an attachment with error message when getAttachmentById returns an error', async () => {
+//     server.use(
+//       http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, () =>
+//         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+//       ),
+//     )
+
+//     const params = Promise.resolve({ meldingId: 123 })
+//     const result = await Page({ params })
+
+//     const { getByText } = render(result)
+
+//     expect(getByText('Error message')).toBeInTheDocument()
+//   })
