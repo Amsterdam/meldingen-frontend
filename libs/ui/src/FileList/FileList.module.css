@@ -26,7 +26,6 @@
 .container {
   align-items: center;
   display: grid;
-  font-size: var(--ams-typography-body-text-small-font-size);
   gap: var(--ams-space-s);
   padding-block: var(--ams-space-s);
 
@@ -63,12 +62,10 @@
 .description {
   display: flex;
   flex-direction: column;
-  font-size: var(--ams-typography-body-text-small-font-size);
 }
 
 .errorMessage {
   color: var(--ams-error-message-color);
-  font-size: var(--ams-typography-body-text-small-font-size);
 }
 
 .statusMessage {
@@ -83,7 +80,6 @@
 }
 
 .deleteButton {
-  font-size: var(--ams-typography-body-text-small-font-size);
   font-weight: var(--ams-button-font-weight);
   line-height: var(--ams-typography-body-text-large-line-height);
   padding-block: 0;
