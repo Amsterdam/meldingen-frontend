@@ -1,4 +1,4 @@
-import { divIcon, latLng, Layer, Map, Marker, MarkerCluster, MarkerClusterGroup } from 'leaflet'
+import L, { divIcon, latLng, Layer, Map, Marker, MarkerCluster } from 'leaflet'
 import 'leaflet.markercluster'
 import { RefObject, useContext, useEffect, useRef } from 'react'
 
@@ -99,7 +99,7 @@ export const MarkerSelectLayer = ({
 
     markerLayerRef.current?.remove()
 
-    const markerClusterGroup = new MarkerClusterGroup({
+    const markerClusterGroup = L.markerClusterGroup({
       iconCreateFunction: createClusterIcon,
       showCoverageOnHover: false,
     })
