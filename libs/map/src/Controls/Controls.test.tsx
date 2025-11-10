@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Map } from 'leaflet'
 
-import { Controls, defaultTexts, type Props } from './Controls'
+import { Controls, type Props } from './Controls'
 import { MapContext } from '../Map/Map'
 
 const INITIAL_ZOOM = 10
@@ -11,6 +11,12 @@ const mapInstanceMock = {
   getZoom: vi.fn().mockImplementation(() => INITIAL_ZOOM),
   setZoom: vi.fn(),
 } as unknown as Map
+
+const defaultTexts = {
+  currentLocation: 'Mijn locatie',
+  zoomIn: 'Inzoomen',
+  zoomOut: 'Uitzoomen',
+}
 
 const defaultProps: Props = {
   texts: defaultTexts,
