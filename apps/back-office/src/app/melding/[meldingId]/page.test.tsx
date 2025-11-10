@@ -8,6 +8,8 @@ import { additionalQuestions, melding } from 'apps/back-office/src/mocks/data'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
 
+import { Blob } from 'buffer'
+
 vi.mock('./Detail', () => ({
   Detail: vi.fn(() => <div>Detail Component</div>),
 }))
@@ -126,6 +128,7 @@ describe('Page', () => {
     const attachments = {
       files: [
         expect.objectContaining({
+          blob: expect.any(Blob),
           fileName: 'IMG_0815.jpg',
         }),
       ],

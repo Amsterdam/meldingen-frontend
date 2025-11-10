@@ -13,6 +13,8 @@ import { additionalQuestions } from 'apps/back-office/src/mocks/data'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
 
+import { Blob } from 'buffer'
+
 const mockMeldingId = 88
 
 describe('getAdditionalQuestionsData', () => {
@@ -183,7 +185,7 @@ describe('getAttachmentsData', () => {
     expect(result).toMatchObject({
       files: [
         {
-          // TODO: Add blob to matching object
+          blob: expect.any(Blob),
           fileName: 'IMG_0815.jpg',
         },
       ],
