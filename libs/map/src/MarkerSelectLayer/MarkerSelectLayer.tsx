@@ -49,7 +49,8 @@ const fetchMarkersOnMoveEnd = async (
       query: { filter },
     })
 
-    if (error) throw new Error(`${error}`) // TODO
+    // TODO: what do we want to do here? The app is still usable without the assets, so maybe just log the error?
+    if (error) throw new Error(`${error}`)
 
     onMarkersChange(data?.features || [])
   }
