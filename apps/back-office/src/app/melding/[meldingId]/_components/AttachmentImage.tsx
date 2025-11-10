@@ -11,12 +11,13 @@ type Props = {
 export const AttachmentImage = ({ blob, fileName }: Props) => {
   const [url, setUrl] = useState<string | null>(null)
 
+  // This useEffect is necessary to avoid render problems while refreshing the page.
   useEffect(() => {
     if (blob) setUrl(URL.createObjectURL(blob))
 
-    if (!url) return undefined
-
-    return () => URL.revokeObjectURL(url)
+    return () => {
+      if (url) URL.revokeObjectURL(url)
+    }
   }, [])
 
   if (!blob) return <Paragraph>{fileName}</Paragraph>
