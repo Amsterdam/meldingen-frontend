@@ -60,14 +60,13 @@ export const PointSelectLayer = ({ selectedPoint, onSelectedPointChange }: Props
   useEffect(() => {
     if (!map) return
 
+    // Remove previous marker
+    markerRef.current?.remove()
+
     if (!selectedPoint) {
-      markerRef.current?.remove()
       markerRef.current = null
       return
     }
-
-    // Remove previous marker
-    markerRef.current?.remove()
 
     const { lat, lng } = selectedPoint
 
