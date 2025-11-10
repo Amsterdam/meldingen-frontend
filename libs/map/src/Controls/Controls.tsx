@@ -17,13 +17,7 @@ export type Props = PropsWithChildren & {
   onCurrentLocationError: () => void
 }
 
-export const defaultTexts = {
-  currentLocation: 'Mijn locatie',
-  zoomIn: 'Inzoomen',
-  zoomOut: 'Uitzoomen',
-}
-
-export const Controls = ({ children, texts = defaultTexts, updateSelectedPoint, onCurrentLocationError }: Props) => {
+export const Controls = ({ children, texts, updateSelectedPoint, onCurrentLocationError }: Props) => {
   const map = useContext(MapContext)
 
   const handleZoomIn = () => {
