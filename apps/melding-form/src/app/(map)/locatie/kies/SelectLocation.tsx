@@ -31,7 +31,7 @@ export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 
 const initialState: { errorMessage?: string } = {}
 
-export const MAX_ASSETS = 5 as const
+export const MAX_ASSETS = 5
 
 export const SelectLocation = ({ classification, coordinates: coordinatesFromServer }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
