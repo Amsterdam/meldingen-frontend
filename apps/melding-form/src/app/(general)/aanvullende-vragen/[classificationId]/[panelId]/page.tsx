@@ -50,7 +50,7 @@ export default async ({ params }: { params: Params }) => {
 
   if (error) throw new Error('Failed to fetch form by classification.')
 
-  if (data?.components[0].type !== 'panel') return redirect('/locatie')
+  if (data.components[0].type !== 'panel') return redirect('/locatie')
 
   // Get current panel components
   const currentPanelIndex = data.components.findIndex((component) => component.key === panelId)
@@ -64,10 +64,16 @@ export default async ({ params }: { params: Params }) => {
   const meldingId = cookieStore.get(COOKIES.ID)!.value
   const token = cookieStore.get(COOKIES.TOKEN)!.value
 
-  const { data: answers } = await getMeldingByMeldingIdAnswersMelder({
+  const { data: answers, error: answersError } = await getMeldingByMeldingIdAnswersMelder({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
   })
+
+  if (answersError) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(answersError)
+  }
 
   const formComponents = getFormComponents(panelComponents, answers)
 

@@ -10,6 +10,9 @@ There are a few exceptions, which are detailed below.
 - For errors occurring during page load, we show a general error page (`src/app/(general)/error.tsx` and `src/app/(map)/locatie/kies/error.tsx`).
   An error can be a server error, or a 4XX or 5XX response from the back end.
   These error pages are catch-all, so any error not specifically addressed will end up here.
+  An exception to this is the errors that happen when we retrieve answers that were given before.
+  We consider these errors non-blocking, since you can still use the application without prefilled answers.
+  All we do is log the errors.
 - On page load for all pages except the first, we verify if the required session cookies (an `id` and `token`) are present.
   If they are absent, we redirect to the first page.
 - When performing an action, an error may occur.

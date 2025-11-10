@@ -35,10 +35,19 @@ describe('Page', () => {
     expect(screen.getByText('SelectLocation Component')).toBeInTheDocument()
   })
 
-  it('throws an error when melding data cannot be fetched', async () => {
-    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(null, { status: 500 })))
+  it('logs an error to the console when melding data cannot be fetched', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json('Test error', { status: 500 })),
+    )
 
-    await expect(Page()).rejects.toThrowError('Failed to fetch melding data.')
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    expect(consoleSpy).toHaveBeenCalledWith('Test error')
+
+    consoleSpy.mockRestore()
   })
 
   it('passes coordinates to SelectLocation when they already exist', async () => {

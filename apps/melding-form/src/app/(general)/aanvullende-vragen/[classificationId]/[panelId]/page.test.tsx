@@ -28,6 +28,8 @@ vi.mock('./AdditionalQuestions', () => ({
   }),
 }))
 
+const defaultProps = { params: Promise.resolve({ classificationId: 1, panelId: 'panel-1' }) }
+
 describe('Page', () => {
   beforeEach(() => {
     mockIdAndTokenCookies()
@@ -38,9 +40,7 @@ describe('Page', () => {
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(null, { status: 500 })),
     )
 
-    await expect(Page({ params: Promise.resolve({ classificationId: 1, panelId: 'panel-1' }) })).rejects.toThrowError(
-      'Failed to fetch form by classification.',
-    )
+    await expect(Page(defaultProps)).rejects.toThrowError('Failed to fetch form by classification.')
   })
 
   it('redirects to /locatie page if the first component is not a panel', async () => {
@@ -52,7 +52,7 @@ describe('Page', () => {
       ),
     )
 
-    await Page({ params: Promise.resolve({ classificationId: 1, panelId: 'panel-1' }) })
+    await Page(defaultProps)
 
     expect(redirect).toHaveBeenCalledWith('/locatie')
   })
@@ -97,7 +97,7 @@ describe('Page', () => {
 
     server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
 
-    const PageComponent = await Page({ params: Promise.resolve({ classificationId: 1, panelId: 'panel-1' }) })
+    const PageComponent = await Page(defaultProps)
 
     render(PageComponent)
 
@@ -138,7 +138,7 @@ describe('Page', () => {
       ),
     )
 
-    const PageComponent = await Page({ params: Promise.resolve({ classificationId: 1, panelId: 'panel-1' }) })
+    const PageComponent = await Page(defaultProps)
 
     render(PageComponent)
 
@@ -152,6 +152,30 @@ describe('Page', () => {
       }),
       undefined,
     )
+  })
+
+  it('logs an error to the console when the answers for additional questions cannot be fetched', async () => {
+    const formData = {
+      components: [
+        { key: 'panel-1', type: 'panel', label: 'Panel 1', components: [{ key: 'question-1', question: 'q1' }] },
+      ],
+    }
+
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)),
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+        HttpResponse.json('Test error', { status: 500 }),
+      ),
+    )
+
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const PageComponent = await Page(defaultProps)
+
+    render(PageComponent)
+
+    expect(consoleSpy).toHaveBeenCalledWith('Test error')
+
+    consoleSpy.mockRestore()
   })
 
   it('passes postForm with the correct bounded args to AdditionalQuestions', async () => {
@@ -210,7 +234,7 @@ describe('Page', () => {
 
     server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
 
-    const PageComponent = await Page({ params: Promise.resolve({ classificationId: 1, panelId: 'panel-1' }) })
+    const PageComponent = await Page(defaultProps)
 
     render(PageComponent)
 
