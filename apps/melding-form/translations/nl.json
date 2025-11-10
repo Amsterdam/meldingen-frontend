@@ -90,7 +90,11 @@
     "status": "{fileCount} van {maxFiles} bestanden toegevoegd",
     "file-upload": {
       "button": "Bestanden kiezen",
-      "drop-area": "Sleep bestanden in dit vak of"
+      "drop-area": "Sleep bestanden in dit vak of",
+      "action-button-delete": "Verwijderen",
+      "action-button-cancel": "Annuleren",
+      "progress-finished": "Upload geslaagd",
+      "progress-loading": "Upload {percentage}%"
     },
     "delete-notification": "{fileName} is verwijderd",
     "no-js-alert-title": "JavaScript is niet beschikbaar",

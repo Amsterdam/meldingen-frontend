@@ -242,12 +242,15 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
               <FileList>
                 {fileUploads.map(({ error, file, id, progress, serverId, status, xhr }) => (
                   <FileList.Item
+                    actionButtonLabelDelete={t('file-upload.action-button-delete')}
+                    actionButtonLabelCancel={t('file-upload.action-button-delete')}
+                    progressLabelFinished={t('file-upload.progress-finished')}
+                    progressLabelLoading={t('file-upload.progress-loading', { percentage: Math.round(progress) })}
                     deleteButtonId={id}
                     errorMessage={error}
                     file={file}
                     key={id}
                     onDelete={() => handleDelete(id, file.name, xhr, serverId)}
-                    progress={progress}
                     status={status}
                   />
                 ))}
