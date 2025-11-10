@@ -103,4 +103,17 @@ describe('Detail', () => {
     expect(screen.getByText('attachments.title')).toBeInTheDocument()
     expect(screen.getByText('IMG_0815.jpg')).toBeInTheDocument()
   })
+
+  it('renders a no-data message when there are no attachments', () => {
+    const attachments = {
+      files: [],
+      key: 'attachments',
+      term: 'detail.attachments.title',
+    }
+
+    render(<Detail {...defaultProps} attachments={attachments} />)
+
+    expect(screen.getByText('attachments.title')).toBeInTheDocument()
+    expect(screen.getByText('attachments.no-data')).toBeInTheDocument()
+  })
 })
