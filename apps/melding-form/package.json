@@ -19,7 +19,7 @@
     "@headlessui/react": "2.2.9",
     "leaflet": "1.9.4",
     "leaflet.markercluster": "1.5.3",
-    "next": "15.5.4",
+    "next": "16.0.0",
     "next-intl": "4.4.0"
   },
   "devDependencies": {

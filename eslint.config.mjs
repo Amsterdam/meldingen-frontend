@@ -132,7 +132,10 @@ export default tseslint.config(
   },
 
   // Markdown
-  ...markdown.configs.recommended,
+  {
+    ...markdown.configs.recommended[0],
+    language: 'markdown/gfm',
+  },
 
   // Next.js apps
   {
