@@ -105,7 +105,7 @@ export const getAttachmentsData = async (meldingId: number, t: (key: string) => 
         blob: data as Blob,
         fileName: original_filename,
       }
-    }) || [],
+    }),
   )
 
   return { key: 'attachments', term: t('detail.attachments.title'), files: attachments }

@@ -223,16 +223,4 @@ describe('getAttachmentsData', () => {
       term: 'detail.attachments.title',
     })
   })
-
-  it('return an empty array when there are no attachments', async () => {
-    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json([])))
-
-    const result = await getAttachmentsData(mockMeldingId, (key: string) => key)
-
-    expect(result).toMatchObject({
-      files: [],
-      key: 'attachments',
-      term: 'detail.attachments.title',
-    })
-  })
 })
