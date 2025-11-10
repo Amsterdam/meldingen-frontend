@@ -2,7 +2,7 @@ import { Button } from '@amsterdam/design-system-react/dist/Button'
 import { Icon } from '@amsterdam/design-system-react/dist/Icon'
 import { Image } from '@amsterdam/design-system-react/dist/Image'
 import { WarningIcon } from '@amsterdam/design-system-react-icons'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import { HTMLAttributes, useMemo } from 'react'
 
 import styles from './FileList.module.css'
