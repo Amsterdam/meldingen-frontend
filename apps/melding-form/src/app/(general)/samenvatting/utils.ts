@@ -101,13 +101,11 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
 
   const attachments = await Promise.all(
     data.map(async ({ id, original_filename }) => {
-      const { data, error, response } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
+      const { data, error } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
         path: { melding_id: parseInt(meldingId, 10), attachment_id: id },
 
         query: { token, type: 'thumbnail' },
       })
-
-      const contentType = response.headers.get('content-type')
 
       if (error) throw new Error('Failed to fetch attachment download.')
 
@@ -115,12 +113,11 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
       return {
         blob: data as Blob,
         fileName: original_filename,
-        contentType: contentType!,
       }
     }),
   )
 
-  return { data: { key: 'attachments', term: label, files: attachments } }
+  return { key: 'attachments', term: label, files: attachments }
 }
 
 export const getLocationSummary = (t: (key: string) => string, meldingData: MeldingOutput) => {
