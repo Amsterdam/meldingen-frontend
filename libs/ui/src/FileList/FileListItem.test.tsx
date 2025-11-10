@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { FileListItem } from './FileListItem'
+import { FileListItem, type FileListItemProps } from './FileListItem'
 
 const file = new File(['sample content'], 'sample.txt', { type: 'text/plain' })
 
@@ -15,10 +15,13 @@ vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () =>
   default: vi.fn(),
 }))
 
-const defaultProps = {
+const defaultProps: FileListItemProps = {
+  actionButtonLabelCancel: 'Annuleren',
+  actionButtonLabelDelete: 'Verwijderen',
   deleteButtonId: 'test-id',
   file,
-  progress: 100,
+  progressLabelFinished: 'Upload geslaagd',
+  progressLabelLoading: 'Upload 100%',
   status: 'success' as const,
 }
 
@@ -49,14 +52,13 @@ describe('FileListItem', () => {
   })
 
   it('should render correct labels when image is loading', () => {
-    const defaultProps = {
-      deleteButtonId: 'test-id',
-      file,
-      progress: 20,
+    const defaultPropsWithLoading = {
+      ...defaultProps,
+      progressLabelLoading: 'Upload 20%',
       status: 'uploading' as const,
     }
 
-    render(<FileListItem {...defaultProps} />)
+    render(<FileListItem {...defaultPropsWithLoading} />)
 
     const buttonLabel = screen.getByRole('button', { name: 'Annuleren sample.txt' })
     const statusMessage = screen.getByText('Upload 20%')
@@ -66,13 +68,6 @@ describe('FileListItem', () => {
   })
 
   it('should render correct labels when image is successfully uploaded', () => {
-    const defaultProps = {
-      deleteButtonId: 'test-id',
-      file,
-      progress: 100,
-      status: 'success' as const,
-    }
-
     render(<FileListItem {...defaultProps} />)
 
     const buttonLabel = screen.getByRole('button', { name: 'Verwijderen sample.txt' })
@@ -83,15 +78,13 @@ describe('FileListItem', () => {
   })
 
   it('should render correct labels when an error occurs', () => {
-    const defaultProps = {
-      deleteButtonId: 'test-id',
-      file,
-      progress: 0,
+    const defaultPropsWithError = {
+      ...defaultProps,
       status: 'error' as const,
       errorMessage: 'errors.duplicate-upload',
     }
 
-    render(<FileListItem {...defaultProps} />)
+    render(<FileListItem {...defaultPropsWithError} />)
 
     const buttonLabel = screen.getByRole('button', { name: 'Verwijderen sample.txt' })
     const statusMessage = screen.getByText('errors.duplicate-upload')

@@ -11,27 +11,27 @@ import styles from './FileList.module.css'
 // an unordered list with list items is used here because NVDA currently (16-9-2025) reads the number of items in a description list incorrectly.
 
 export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
-  actionButtonLabelDelete: string
   actionButtonLabelCancel: string
-  progressLabelFinished: string
-  progressLabelLoading: string
+  actionButtonLabelDelete: string
   deleteButtonId: string
   errorMessage?: string
   file: File
   onDelete?: () => void
+  progressLabelFinished: string
+  progressLabelLoading: string
   status: 'pending' | 'uploading' | 'success' | 'error'
 }
 
 export const FileListItem = ({
+  actionButtonLabelCancel,
+  actionButtonLabelDelete,
   deleteButtonId,
   errorMessage,
   file,
   onDelete,
-  status,
-  actionButtonLabelDelete,
-  actionButtonLabelCancel,
   progressLabelFinished,
   progressLabelLoading,
+  status,
 }: FileListItemProps) => {
   // Memoize the creation of an object url from the file,
   // to prevent it from creating a new one on every render.

@@ -4,7 +4,7 @@ import { http, HttpResponse } from 'msw'
 import { useActionState } from 'react'
 import { Mock } from 'vitest'
 
-import { Attachments } from './Attachments'
+import { Attachments, type Props } from './Attachments'
 import { MAX_UPLOAD_ATTEMPTS } from './Attachments'
 import { ExistingFileType } from './page'
 import { startUpload } from './utils'
@@ -13,11 +13,11 @@ import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
-const defaultProps = {
+const defaultProps: Props = {
+  files: [],
+  formData: [{ ...textAreaComponent, description: 'Test description' }],
   meldingId: 1,
   token: 'mock-token',
-  formData: [{ ...textAreaComponent, description: 'Test description' }],
-  files: [],
 }
 
 vi.mock('react', async (importOriginal) => {

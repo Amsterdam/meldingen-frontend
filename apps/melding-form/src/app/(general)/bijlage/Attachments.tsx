@@ -29,7 +29,7 @@ import styles from './Attachments.module.css'
 const MAX_SUCCESSFUL_UPLOADS = 3
 export const MAX_UPLOAD_ATTEMPTS = 10
 
-type Props = {
+export type Props = {
   formData: StaticFormTextAreaComponentOutput[]
   meldingId: number
   token: string
@@ -243,7 +243,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
                 {fileUploads.map(({ error, file, id, progress, serverId, status, xhr }) => (
                   <FileList.Item
                     actionButtonLabelDelete={t('file-upload.action-button-delete')}
-                    actionButtonLabelCancel={t('file-upload.action-button-delete')}
+                    actionButtonLabelCancel={t('file-upload.action-button-cancel')}
                     progressLabelFinished={t('file-upload.progress-finished')}
                     progressLabelLoading={t('file-upload.progress-loading', { percentage: Math.round(progress) })}
                     deleteButtonId={id}
