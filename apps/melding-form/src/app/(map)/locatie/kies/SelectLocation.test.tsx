@@ -4,29 +4,30 @@ import userEvent from '@testing-library/user-event'
 import { useEffect } from 'react'
 import { Mock } from 'vitest'
 
+import { AssetList } from './_components'
 import { SelectLocation } from './SelectLocation'
 
 vi.mock('./_components/AssetList/AssetList', () => ({
-  AssetList: vi.fn(({ setNotificationType }) => (
-    <div>
-      <button onClick={() => setNotificationType('too-many-assets')}>SetNotification</button>
-    </div>
-  )),
+  AssetList: vi.fn(),
 }))
 
-vi.mock('./_components/Map/Map', () => ({
+vi.mock('@meldingen/map', () => ({
+  Controls: vi.fn(),
   Map: vi.fn(),
+  MarkerSelectLayer: vi.fn(),
+  PointSelectLayer: vi.fn(),
 }))
 
 vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
   default: vi.fn(),
 }))
 
-let useAssetLayerMock = vi.fn()
-
-vi.mock('./hooks/useAssetLayer', () => ({
-  useAssetLayer: (props: unknown) => useAssetLayerMock(props),
-}))
+const setInternalState = <T,>(setter: (value: T) => void, value: T) => {
+  useEffect(() => {
+    setter(value)
+  }, [])
+  return undefined
+}
 
 describe('SelectLocation', () => {
   it('renders', () => {
@@ -44,12 +45,9 @@ describe('SelectLocation', () => {
   })
 
   it('toggles a class name on SideBarBottom', async () => {
-    useAssetLayerMock.mockImplementation((props) => {
-      useEffect(() => {
-        props.setAssetList?.([{ id: '1' }])
-      }, [])
-      return { assetList: props.assetList ?? [], setAssetList: props.setAssetList ?? (() => {}) }
-    })
+    ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) =>
+      setInternalState(setSelectedAssets, [{ id: '1' }]),
+    )
     ;(useIsAfterBreakpoint as Mock).mockImplementationOnce(() => true)
 
     const { container } = render(<SelectLocation />)
@@ -69,11 +67,12 @@ describe('SelectLocation', () => {
 
   it('renders the notification when it is set in AssetList and closes on click', async () => {
     const user = userEvent.setup()
+
+    ;(AssetList as Mock).mockImplementationOnce(({ setNotificationType }) =>
+      setInternalState(setNotificationType, 'too-many-assets'),
+    )
+
     render(<SelectLocation />)
-
-    const setNotificationButton = screen.getByRole('button', { name: 'SetNotification' })
-
-    await user.click(setNotificationButton)
 
     const notificationTitle = screen.getByText('too-many-assets.title')
 
@@ -89,13 +88,6 @@ describe('SelectLocation', () => {
 
 describe('Asset list toggle button', () => {
   it('renders nothing if assetList and selectedAssets are empty', () => {
-    useAssetLayerMock.mockImplementation((props) => {
-      useEffect(() => {
-        props.setAssetList?.([])
-      }, [])
-      return { assetList: props.assetList ?? [], setAssetList: props.setAssetList ?? (() => {}) }
-    })
-
     render(<SelectLocation />)
 
     const toggleButton = screen.queryByRole('button', { name: /toggle-button./ })
@@ -103,13 +95,10 @@ describe('Asset list toggle button', () => {
     expect(toggleButton).not.toBeInTheDocument()
   })
 
-  it('renders a button with a "list" label when there are assets and the asset list is not shown', () => {
-    useAssetLayerMock.mockImplementation((props) => {
-      useEffect(() => {
-        props.setAssetList?.([{ id: '1' }])
-      }, [])
-      return { assetList: props.assetList ?? [], setAssetList: props.setAssetList ?? (() => {}) }
-    })
+  it('renders a button with a "list" label when there are selected assets and the asset list is not shown', () => {
+    ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) =>
+      setInternalState(setSelectedAssets, [{ id: '1' }]),
+    )
 
     render(<SelectLocation />)
 
@@ -121,12 +110,9 @@ describe('Asset list toggle button', () => {
   it('renders a button with a "map" label when pressing the toggle button', async () => {
     const user = userEvent.setup()
 
-    useAssetLayerMock.mockImplementation((props) => {
-      useEffect(() => {
-        props.setAssetList?.([{ id: '1' }])
-      }, [])
-      return { assetList: props.assetList ?? [], setAssetList: props.setAssetList ?? (() => {}) }
-    })
+    ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) =>
+      setInternalState(setSelectedAssets, [{ id: '1' }]),
+    )
 
     render(<SelectLocation />)
 

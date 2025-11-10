@@ -1,4 +1,4 @@
-import { convertWktPointToCoordinates } from './convertWktPointToCoordinates'
+import { convertWktPointToCoordinates } from './utils'
 
 describe('convertWktPointToCoordinates', () => {
   it('should convert a WKT point to lat lng location with comma or space as separation', () => {

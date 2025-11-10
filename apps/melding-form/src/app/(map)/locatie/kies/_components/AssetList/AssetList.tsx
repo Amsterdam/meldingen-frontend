@@ -5,8 +5,8 @@ import { Dispatch, SetStateAction } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { MAX_ASSETS } from '../../_utils/addAssetLayerToMap'
-import { getContainerFeatureIconSVG } from '../../_utils/getContainerFeatureIconSVG'
+import { getContainerFeatureIconSVG } from './getContainerFeatureIconSVG'
+import { MAX_ASSETS } from '../../SelectLocation'
 import { NotificationType } from '../../SelectLocation'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
