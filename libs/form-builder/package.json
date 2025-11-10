@@ -14,6 +14,6 @@
     "@formio/js": "5.0.2"
   },
   "devDependencies": {
-    "@formio/core": "2.5.1"
+    "@formio/core": "2.5.2"
   }
 }

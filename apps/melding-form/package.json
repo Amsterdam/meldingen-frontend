@@ -18,6 +18,6 @@
     "@floating-ui/react-dom": "2.1.6",
     "@headlessui/react": "2.2.9",
     "next": "16.0.0",
-    "next-intl": "4.4.0"
+    "next-intl": "4.5.0"
   }
 }
