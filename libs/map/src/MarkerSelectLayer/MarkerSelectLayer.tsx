@@ -49,8 +49,11 @@ const fetchMarkersOnMoveEnd = async (
       query: { filter },
     })
 
-    // TODO: what do we want to do here? The app is still usable without the assets, so maybe just log the error?
-    if (error) throw new Error(`${error}`)
+    if (error) {
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(error)
+    }
 
     onMarkersChange(data?.features || [])
   }
