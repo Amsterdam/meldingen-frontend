@@ -1,7 +1,6 @@
 import { useTranslations } from 'next-intl'
 
 import { PDOKItem } from './types'
-import { getAddressFromCoordinates } from '../../_utils'
 import { Coordinates } from 'apps/melding-form/src/types'
 
 const pdokQueryParams =
@@ -16,6 +15,11 @@ export const debounce = (fn: Function, delay = 250) => {
     timer = setTimeout(() => fn(...args), delay)
   }
 }
+
+export const getAddressFromCoordinates = async ({ lat, lng }: Coordinates) =>
+  fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?lat=${lat}&lon=${lng}&rows=1&distance=30`)
+    .then((res) => res.json())
+    .then((result) => result.response.docs[0]?.weergavenaam)
 
 export const fetchAndSetAddress = async (
   { lat, lng }: Coordinates,

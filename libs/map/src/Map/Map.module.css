@@ -4,11 +4,11 @@
   position: relative;
 }
 
+.hideMap {
+  display: none;
+}
+
 .map {
   height: 100%;
   isolation: isolate; /* Prevents Leaflet z-index use from bleeding into our app. */
-}
-
-.hideMap {
-  display: none;
 }
