@@ -1,4 +1,4 @@
-import { getAddressFromCoordinates } from './getAddressFromCoordinates'
+import { getAddressFromCoordinates } from './utils'
 
 describe('getAddressFromCoordinates', () => {
   it('should return correct address', async () => {

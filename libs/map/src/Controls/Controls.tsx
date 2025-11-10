@@ -1,37 +1,40 @@
 import { Button } from '@amsterdam/design-system-react'
 import { MinusIcon, PlusIcon } from '@amsterdam/design-system-react-icons'
-import type L from 'leaflet'
-import { useTranslations } from 'next-intl'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useContext } from 'react'
 
-import type { Coordinates } from 'apps/melding-form/src/types'
+import { MapContext } from '../Map/Map'
+import type { Coordinates } from '../types'
 
-import styles from './ControlsOverlay.module.css'
+import styles from './Controls.module.css'
 
 export type Props = PropsWithChildren & {
-  mapInstance: L.Map | null
-  setCoordinates: (coordinates: Coordinates) => void
+  texts: {
+    currentLocation: string
+    zoomIn: string
+    zoomOut: string
+  }
+  updateSelectedPoint: (point?: Coordinates) => void
   onCurrentLocationError: () => void
 }
 
-export const ControlsOverlay = ({ children, mapInstance, setCoordinates, onCurrentLocationError }: Props) => {
-  const t = useTranslations('select-location.controls-overlay')
+export const Controls = ({ children, texts, updateSelectedPoint, onCurrentLocationError }: Props) => {
+  const map = useContext(MapContext)
 
   const handleZoomIn = () => {
-    mapInstance?.setZoom(mapInstance.getZoom() + 1)
+    map?.setZoom(map.getZoom() + 1)
   }
   const handleZoomOut = () => {
-    mapInstance?.setZoom(mapInstance.getZoom() - 1)
+    map?.setZoom(map.getZoom() - 1)
   }
 
   // eslint-disable-next-line no-undef
   const onSuccess: PositionCallback = ({ coords }) => {
     // TODO: is this correct? What should happen when you click the button without a map instance?
-    if (!mapInstance) return undefined
+    if (!map) return undefined
 
     const { latitude, longitude } = coords
 
-    return setCoordinates({
+    return updateSelectedPoint({
       lat: latitude,
       lng: longitude,
     })
@@ -45,16 +48,16 @@ export const ControlsOverlay = ({ children, mapInstance, setCoordinates, onCurre
     <>
       <div className={styles.overlayTopLeft}>
         <Button variant="secondary" onClick={handleCurrentLocationButtonClick}>
-          {t('current-location-button')}
+          {texts.currentLocation}
         </Button>
         {children}
       </div>
       <div className={styles.overlayBottomRight}>
         <Button variant="secondary" iconOnly icon={PlusIcon} onClick={handleZoomIn}>
-          {t('zoom-in')}
+          {texts.zoomIn}
         </Button>
         <Button variant="secondary" iconOnly icon={MinusIcon} onClick={handleZoomOut}>
-          {t('zoom-out')}
+          {texts.zoomOut}
         </Button>
       </div>
     </>

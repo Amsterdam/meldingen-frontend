@@ -17,7 +17,7 @@ import { ListBox, TextInput } from '@meldingen/ui'
 
 import { PDOKItem } from './types'
 import { debounce, fetchAddressList, fetchAndSetAddress } from './utils'
-import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
+import { convertWktPointToCoordinates } from '../../utils'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './AddressInput.module.css'
