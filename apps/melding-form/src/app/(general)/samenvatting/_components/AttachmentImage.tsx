@@ -14,12 +14,14 @@ export const AttachmentImage = ({ blob, fileName }: Props) => {
   const [url, setUrl] = useState<string | null>(null)
 
   useEffect(() => {
-    setUrl(URL.createObjectURL(blob))
+    const objectUrl = URL.createObjectURL(blob)
+
+    setUrl(objectUrl)
 
     return () => {
-      if (url) URL.revokeObjectURL(url)
+      URL.revokeObjectURL(objectUrl)
     }
-  }, [])
+  }, [blob])
 
   return (
     <>
