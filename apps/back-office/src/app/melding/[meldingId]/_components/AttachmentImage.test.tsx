@@ -32,7 +32,7 @@ describe('AttachmentImage', () => {
     )
   })
 
-  it('renders an an error message whne the blob is missing', async () => {
+  it('renders an an error message when the blob is missing', async () => {
     render(<AttachmentImage blob={null} fileName={'IMG_0815.jpg'} />)
 
     const errorMessage = screen.getByText('IMG_0815.jpg')
