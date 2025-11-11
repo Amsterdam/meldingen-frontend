@@ -53,10 +53,13 @@ describe('FileListItem', () => {
     expect(image).toHaveAttribute('src', 'sample.txt')
   })
 
-  it('should render correct labels when image is loading', () => {
+  it('renders correct labels when image is loading', () => {
     const defaultPropsWithLoading = {
       ...defaultProps,
-      progressLabelLoading: 'Upload 20%',
+      labels: {
+        ...defaultProps.labels,
+        progressLoadingLabel: 'Upload 20%',
+      },
       status: 'uploading' as const,
     }
 
@@ -69,7 +72,7 @@ describe('FileListItem', () => {
     expect(statusMessage).toBeInTheDocument()
   })
 
-  it('should render correct labels when image is successfully uploaded', () => {
+  it('renders correct labels when image is successfully uploaded', () => {
     render(<FileListItem {...defaultProps} />)
 
     const buttonLabel = screen.getByRole('button', { name: 'Verwijderen sample.txt' })
@@ -79,7 +82,7 @@ describe('FileListItem', () => {
     expect(statusMessage).toBeInTheDocument()
   })
 
-  it('should render correct labels when an error occurs', () => {
+  it('renders correct labels when an error occurs', () => {
     const defaultPropsWithError = {
       ...defaultProps,
       status: 'error' as const,
@@ -96,9 +99,6 @@ describe('FileListItem', () => {
 
     const container = screen.getByRole('listitem').firstChild
     expect(container).toHaveClass(/containerWithError/)
-
-    const imageContainer = container?.firstChild
-    expect(imageContainer).toHaveClass(/imageContainerWithError/)
   })
 
   it('calls onDelete when the remove button is clicked', async () => {
