@@ -168,13 +168,25 @@ describe('Attachments', () => {
   it('renders an aria-live region with a notification when a file is deleted', async () => {
     const user = userEvent.setup()
 
+    const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
+
+    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+      setFileUploads((prev: FileUpload[]) =>
+        prev.map((upload) =>
+          upload.id === fileUpload.id
+            ? { ...upload, status: 'success', progress: 100, xhr: xhrMock as XMLHttpRequest, serverId: 123 }
+            : upload,
+        ),
+      )
+    })
+
     render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText('File input')
 
     await user.upload(fileInput, [mockFile])
 
-    const deleteButton = screen.getByRole('button', { name: `Annuleren ${mockFile.name}` })
+    const deleteButton = screen.getByRole('button', { name: `file-upload.action-button-delete ${mockFile.name}` })
 
     await user.click(deleteButton)
 
@@ -191,7 +203,9 @@ describe('Attachments', () => {
     ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
-          upload.id === fileUpload.id ? { ...upload, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : upload,
+          upload.id === fileUpload.id
+            ? { ...upload, status: 'success', progress: 100, xhr: xhrMock as XMLHttpRequest, serverId: 123 }
+            : upload,
         ),
       )
     })
@@ -206,7 +220,7 @@ describe('Attachments', () => {
 
     expect(fileName1).toBeInTheDocument()
 
-    const deleteButton = screen.getByRole('button', { name: `Annuleren ${mockFile.name}` })
+    const deleteButton = screen.getByRole('button', { name: `file-upload.action-button-delete ${mockFile.name}` })
 
     await user.click(deleteButton)
 
@@ -229,7 +243,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} files={initialUploads} />)
 
-    const deleteButton = screen.getByRole('button', { name: `Verwijderen ${mockFileName}` })
+    const deleteButton = screen.getByRole('button', { name: `file-upload.action-button-delete ${mockFileName}` })
 
     await user.click(deleteButton)
 
@@ -238,7 +252,7 @@ describe('Attachments', () => {
     expect(file1SecondRender).not.toBeInTheDocument()
   })
 
-  it('cancels an in-progress upload and removes it from the file list with the delete button', async () => {
+  it('cancels an in-progress upload and removes it from the file list with the cancel button', async () => {
     const user = userEvent.setup()
 
     const abortMock = vi.fn()
@@ -248,7 +262,9 @@ describe('Attachments', () => {
     ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
-          upload.id === fileUpload.id ? { ...upload, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : upload,
+          upload.id === fileUpload.id
+            ? { ...upload, status: 'loading', progress: 20, xhr: xhrMock as XMLHttpRequest, serverId: 123 }
+            : upload,
         ),
       )
     })
@@ -259,7 +275,7 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [mockFile])
 
-    const deleteButton = screen.getByRole('button', { name: `Annuleren ${mockFile.name}` })
+    const deleteButton = screen.getByRole('button', { name: `file-upload.action-button-cancel ${mockFile.name}` })
 
     await user.click(deleteButton)
 
@@ -277,7 +293,9 @@ describe('Attachments', () => {
     ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
-          upload.id === fileUpload.id ? { ...upload, xhr: xhrMock as XMLHttpRequest, serverId: undefined } : upload,
+          upload.id === fileUpload.id
+            ? { ...upload, status: 'error', progress: 0, xhr: xhrMock as XMLHttpRequest, serverId: undefined }
+            : upload,
         ),
       )
     })
@@ -288,7 +306,7 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [mockFile])
 
-    const deleteButton = screen.getByRole('button', { name: `Annuleren ${mockFile.name}` })
+    const deleteButton = screen.getByRole('button', { name: `file-upload.action-button-delete ${mockFile.name}` })
 
     await user.click(deleteButton)
 
@@ -312,7 +330,9 @@ describe('Attachments', () => {
     ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
-          upload.id === fileUpload.id ? { ...upload, xhr: xhrMock as XMLHttpRequest, serverId: 123 } : upload,
+          upload.id === fileUpload.id
+            ? { ...upload, status: 'success', progress: 100, xhr: xhrMock as XMLHttpRequest, serverId: 123 }
+            : upload,
         ),
       )
     })
@@ -323,7 +343,7 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [mockFile])
 
-    const deleteButton = screen.getByRole('button', { name: `Annuleren ${mockFile.name}` })
+    const deleteButton = screen.getByRole('button', { name: `file-upload.action-button-delete ${mockFile.name}` })
 
     await user.click(deleteButton)
 

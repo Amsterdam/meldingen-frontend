@@ -38,30 +38,21 @@ export type Props = {
 
 const initialState: Pick<FormState, 'systemError'> = {}
 
-const createFileUploads = (
-  newFiles: File[],
-  currentFiles: FileUploadType[],
-  t: (key: string) => string,
-): FileUploadType[] =>
-  newFiles.map((file) => {
-    if (currentFiles.find((f) => f.file.name === file.name)) {
-      return {
-        file,
-        id: crypto.randomUUID(),
-        progress: 0,
-        status: 'error',
-        error: t('errors.duplicate-upload'),
-      }
-    }
+const createDuplicatedUploadError = (newFile: File, t: (key: string) => string): FileUploadType => ({
+  error: t('errors.duplicate-upload'),
+  file: newFile,
+  id: crypto.randomUUID(),
+  progress: 0,
+  status: 'error',
+})
 
-    return {
-      file,
-      id: crypto.randomUUID(),
-      progress: 0,
-      status: 'pending',
-      xhr: new XMLHttpRequest(),
-    }
-  })
+const createFileUpload = (newFile: File): FileUploadType => ({
+  file: newFile,
+  id: crypto.randomUUID(),
+  progress: 0,
+  status: 'pending',
+  xhr: new XMLHttpRequest(),
+})
 
 const mapExistingFilesToUploads = (files: ExistingFileType[]): FileUploadType[] =>
   files.map((file) => ({
@@ -110,7 +101,13 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
       return
     }
 
-    const newFileUploads = createFileUploads(newFiles, fileUploads, t)
+    const newFileUploads = newFiles.map((newFile) => {
+      if (fileUploads.find((f) => f.file.name === newFile.name)) {
+        return createDuplicatedUploadError(newFile, t)
+      }
+
+      return createFileUpload(newFile)
+    })
 
     setFileUploads((prev) => [...prev, ...newFileUploads])
 
