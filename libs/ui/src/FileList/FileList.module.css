@@ -44,9 +44,12 @@
 }
 
 .imageContainer {
+  display: block;
   max-inline-size: 50%;
 
   @media screen and (min-width: 37.5rem) {
+    display: flex;
+    justify-content: center;
     max-inline-size: unset;
   }
 }
@@ -65,13 +68,10 @@
 }
 
 .icon {
-  align-self: unset;
   color: var(--ams-color-feedback-error);
-  justify-content: center;
 }
 
 .deleteButton {
-  font-weight: var(--ams-button-font-weight);
   inline-size: fit-content;
   line-height: var(--ams-typography-body-text-large-line-height);
   padding-block: 0;
