@@ -51,11 +51,15 @@ export const FileListItem = ({
   return (
     <li className={styles.item}>
       <div className={clsx(styles.container, errorMessage && styles.containerWithError)}>
-        <div className={clsx(styles.imageContainer, errorMessage && styles.imageContainerWithError)}>
+        <div className={styles.imageContainer}>
           {isError ? (
             <Icon svg={WarningIcon} size="heading-1" className={styles.icon} />
           ) : (
-            <Image src={imageUrl} alt="" />
+            <Image
+              src={imageUrl}
+              alt=""
+              width={256} // Fixed width for when CSS does not load. Gets overridden by CSS.
+            />
           )}
         </div>
         <div className={styles.description}>

@@ -5,6 +5,7 @@
   font-weight: var(--ams-typography-body-text-font-weight);
   hyphenate-limit-chars: var(--ams-typography-hyphenate-limit-chars);
   hyphens: auto;
+  inline-size: 100%;
   line-height: var(--ams-typography-body-text-line-height);
   list-style: none;
   margin-block: 0;
@@ -16,7 +17,6 @@
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
-  width: 100%;
 }
 
 .item {
@@ -44,18 +44,10 @@
 }
 
 .imageContainer {
-  max-width: 50%;
+  max-inline-size: 50%;
 
   @media screen and (min-width: 37.5rem) {
-    max-width: unset;
-  }
-}
-
-.imageContainerWithError {
-  max-width: calc(50% - var(--ams-field-invalid-padding-inline-start));
-
-  @media screen and (min-width: 37.5rem) {
-    max-width: unset;
+    max-inline-size: unset;
   }
 }
 
@@ -76,13 +68,16 @@
   align-self: unset;
   color: var(--ams-color-feedback-error);
   justify-content: center;
-  width: 100%;
 }
 
 .deleteButton {
   font-weight: var(--ams-button-font-weight);
+  inline-size: fit-content;
   line-height: var(--ams-typography-body-text-large-line-height);
   padding-block: 0;
   padding-inline: var(--ams-space-s);
-  width: fit-content;
+
+  @media screen and (min-width: 37.5rem) {
+    justify-self: end;
+  }
 }
