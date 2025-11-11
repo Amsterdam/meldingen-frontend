@@ -211,28 +211,12 @@ importers:
       '@headlessui/react':
         specifier: 2.2.9
         version: 2.2.9(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      leaflet:
-        specifier: 1.9.4
-        version: 1.9.4
-      leaflet.markercluster:
-        specifier: 1.5.3
-        version: 1.5.3(leaflet@1.9.4)
       next:
         specifier: 16.0.0
         version: 16.0.0(@babel/core@7.28.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       next-intl:
         specifier: 4.4.0
         version: 4.4.0(next@16.0.0(@babel/core@7.28.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)(typescript@5.9.3)
-    devDependencies:
-      '@types/geojson':
-        specifier: 7946.0.16
-        version: 7946.0.16
-      '@types/leaflet':
-        specifier: 1.9.21
-        version: 1.9.21
-      '@types/leaflet.markercluster':
-        specifier: 1.5.6
-        version: 1.5.6
 
   libs/api-client: {}
 
@@ -251,6 +235,25 @@ importers:
       next:
         specifier: 15.5.4
         version: 15.5.4(@babel/core@7.28.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+
+  libs/map:
+    dependencies:
+      leaflet:
+        specifier: 1.9.4
+        version: 1.9.4
+      leaflet.markercluster:
+        specifier: 1.5.3
+        version: 1.5.3(leaflet@1.9.4)
+    devDependencies:
+      '@types/geojson':
+        specifier: 7946.0.16
+        version: 7946.0.16
+      '@types/leaflet':
+        specifier: 1.9.21
+        version: 1.9.21
+      '@types/leaflet.markercluster':
+        specifier: 1.5.6
+        version: 1.5.6
 
   libs/markdown-to-html:
     dependencies:

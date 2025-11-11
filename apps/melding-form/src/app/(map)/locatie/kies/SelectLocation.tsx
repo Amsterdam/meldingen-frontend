@@ -3,22 +3,21 @@
 import { Button } from '@amsterdam/design-system-react'
 import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import clsx from 'clsx'
-import L from 'leaflet'
 import dynamic from 'next/dynamic'
 import Form from 'next/form'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
+import { Controls, MarkerSelectLayer, PointSelectLayer } from '@meldingen/map'
 
 import { AddressInput, AssetList, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
-import { useAssetLayer } from './hooks/useAssetLayer'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './SelectLocation.module.css'
 
-const Map = dynamic(() => import('./_components/Map/Map').then((module) => module.Map), {
+const Map = dynamic(() => import('@meldingen/map').then((module) => module.Map), {
   loading: () => <p>Loading...</p>, // TODO: improve loading state
   ssr: false,
 })
@@ -32,10 +31,11 @@ export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 
 const initialState: { errorMessage?: string } = {}
 
+export const MAX_ASSETS = 5
+
 export const SelectLocation = ({ classification, coordinates: coordinatesFromServer }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
-  const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
   const [notificationType, setNotificationType] = useState<NotificationType | null>(null)
   const [selectedAssets, setSelectedAssets] = useState<Feature[]>([])
   const [showAssetList, setShowAssetList] = useState(false)
@@ -45,17 +45,11 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
 
   const t = useTranslations('select-location')
   const isWideWindow = useIsAfterBreakpoint('wide')
-
-  useAssetLayer({
-    assetList,
-    classification,
-    mapInstance,
-    selectedAssets,
-    setAssetList,
-    setCoordinates,
-    setNotificationType,
-    setSelectedAssets,
-  })
+  const controlsTexts = {
+    currentLocation: t('controls-overlay.current-location-button'),
+    zoomIn: t('controls-overlay.zoom-in'),
+    zoomOut: t('controls-overlay.zoom-out'),
+  }
 
   useEffect(() => {
     // Hide mobile asset list view when resizing to larger screens
@@ -97,17 +91,32 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
         </Button>
       </SideBarBottom>
       <div className={styles.map}>
-        <Map
-          coordinates={coordinates}
-          isHidden={!isWideWindow && showAssetList}
-          mapInstance={mapInstance}
-          selectedAssets={selectedAssets}
-          setCoordinates={setCoordinates}
-          setMapInstance={setMapInstance}
-          setSelectedAssets={setSelectedAssets}
-          onCurrentLocationError={() => setNotificationType('location-service-disabled')}
-        >
-          {notificationType && <Notification type={notificationType} onClose={() => setNotificationType(null)} />}
+        <Map isHidden={showAssetList}>
+          <PointSelectLayer
+            // If there are selected assets, do not add a point marker
+            selectedPoint={selectedAssets.length === 0 ? coordinates : undefined}
+            onSelectedPointChange={(coordinates) => {
+              setSelectedAssets([])
+              setCoordinates(coordinates)
+            }}
+          />
+          <MarkerSelectLayer
+            classification={classification}
+            markers={assetList}
+            selectedMarkers={selectedAssets}
+            onMarkersChange={setAssetList}
+            onSelectedMarkersChange={setSelectedAssets}
+            updateSelectedPoint={setCoordinates}
+            maxMarkers={MAX_ASSETS}
+            onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
+          />
+          <Controls
+            texts={controlsTexts}
+            updateSelectedPoint={setCoordinates}
+            onCurrentLocationError={() => setNotificationType('location-service-disabled')}
+          >
+            {notificationType && <Notification type={notificationType} onClose={() => setNotificationType(null)} />}
+          </Controls>
         </Map>
         <div className={styles.buttonWrapper}>
           <Button

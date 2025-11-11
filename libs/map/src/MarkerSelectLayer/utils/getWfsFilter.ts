@@ -1,6 +1,6 @@
-import L from 'leaflet'
+import { Map } from 'leaflet'
 
-export const getWfsFilter = (mapInstance: L.Map) => {
+export const getWfsFilter = (mapInstance: Map) => {
   const lowerCorner = mapInstance.getBounds().getSouthWest()
   const upperCorner = mapInstance.getBounds().getNorthEast()
 
@@ -11,7 +11,7 @@ export const getWfsFilter = (mapInstance: L.Map) => {
           <PropertyName>status</PropertyName>
           <Literal>1</Literal>
         </PropertyIsEqualTo>
-      
+
         <BBOX>
           <gml:Envelope srsName="EPSG:4326">
               <gml:lowerCorner>${lowerCorner.lng} ${lowerCorner.lat}</gml:lowerCorner>

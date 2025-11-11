@@ -7,6 +7,7 @@ import {
   getAttachmentsSummary,
   getContactSummary,
   getLocationSummary,
+  getMeldingData,
   getPrimaryFormSummary,
 } from './utils'
 import { additionalQuestions, melding } from 'apps/melding-form/src/mocks/data'
@@ -18,6 +19,24 @@ import { Blob } from 'buffer'
 const mockMeldingId = '88'
 const mockToken = 'test-token'
 const mockClassificationId = 1
+
+describe('getMeldingData', () => {
+  it('should return correct melding summary', async () => {
+    const result = await getMeldingData(mockMeldingId, mockToken)
+
+    expect(result).toEqual(melding)
+  })
+
+  it('should return an error message when error is returned', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json('Error message', { status: 500 })),
+    )
+
+    const testFunction = async () => await getMeldingData(mockMeldingId, mockToken)
+
+    await expect(testFunction).rejects.toThrowError('Failed to fetch melding data.')
+  })
+})
 
 describe('getPrimaryFormSummary', () => {
   it('returns correct primary form summary', async () => {
@@ -38,14 +57,6 @@ describe('getPrimaryFormSummary', () => {
     const testFunction = async () => await getPrimaryFormSummary('')
 
     await expect(testFunction).rejects.toThrowError('Failed to fetch static forms.')
-  })
-
-  it('returns an error message when getStaticForm does not return data', async () => {
-    server.use(http.get(ENDPOINTS.GET_STATIC_FORM, () => new HttpResponse()))
-
-    const testFunction = async () => await getPrimaryFormSummary('')
-
-    await expect(testFunction).rejects.toThrowError('Static forms data not found.')
   })
 
   it('returns an error message when primary form id is not found', async () => {
@@ -75,14 +86,6 @@ describe('getPrimaryFormSummary', () => {
     const testFunction = async () => await getPrimaryFormSummary('')
 
     await expect(testFunction).rejects.toThrowError('Failed to fetch primary form data.')
-  })
-
-  it('returns an error message when getStaticFormByStaticFormId does not return data', async () => {
-    server.use(http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => new HttpResponse()))
-
-    const testFunction = async () => await getPrimaryFormSummary('')
-
-    await expect(testFunction).rejects.toThrowError('Primary form data not found.')
   })
 })
 
@@ -121,14 +124,6 @@ describe('getAdditionalQuestionsSummary', () => {
     const testFunction = async () => await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
 
     await expect(testFunction).rejects.toThrowError('Failed to fetch additional questions data.')
-  })
-
-  it('returns an empty array when additional questions data is not found', async () => {
-    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () => new HttpResponse()))
-
-    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
-
-    expect(result).toEqual({ data: [] })
   })
 
   it('returns links to home if panelId is not found', async () => {
@@ -216,14 +211,6 @@ describe('getAttachmentSummary', () => {
     await expect(testFunction).rejects.toThrowError('Failed to fetch attachments data.')
   })
 
-  it('returns an error message when getMeldingByMeldingIdAttachmentsMelder returns no data', async () => {
-    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () => new HttpResponse()))
-
-    const testFunction = async () => await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
-
-    await expect(testFunction).rejects.toThrowError('Attachments data not found.')
-  })
-
   it('returns an error message when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
@@ -234,16 +221,6 @@ describe('getAttachmentSummary', () => {
     const testFunction = async () => await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
 
     await expect(testFunction).rejects.toThrowError('Failed to fetch attachment download.')
-  })
-
-  it('returns an error message when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns no data', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () => new HttpResponse()),
-    )
-
-    const testFunction = async () => await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
-
-    await expect(testFunction).rejects.toThrowError('Attachment download data not found.')
   })
 })
 

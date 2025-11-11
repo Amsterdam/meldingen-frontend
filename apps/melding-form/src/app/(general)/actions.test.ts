@@ -71,18 +71,6 @@ describe('postPrimaryForm', () => {
     expect(redirect).not.toHaveBeenCalled()
   })
 
-  it('returns an error when postMelding does not return data', async () => {
-    server.use(http.post(ENDPOINTS.POST_MELDING, () => new HttpResponse()))
-
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-
-    const result = await postPrimaryForm({}, null, formData)
-
-    expect(result).toEqual({ formData, systemError: new Error('Melding data not found.') })
-    expect(redirect).not.toHaveBeenCalled()
-  })
-
   it('should set correct cookies', async () => {
     const formData = new FormData()
     formData.set('primary', 'Test')

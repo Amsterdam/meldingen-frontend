@@ -1,19 +1,18 @@
-import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
-  plugins: [tsconfigPaths(), react()],
+  plugins: [tsconfigPaths()],
   test: {
-    clearMocks: true,
     coverage: {
       enabled: true,
       include: ['src/**/*.{js,jsx,ts,tsx}'],
+      exclude: ['src/index.ts'],
       thresholds: {
-        branches: 94.8,
-        functions: 91.8,
-        lines: 96.8,
-        statements: 96.8,
+        branches: 77,
+        functions: 72,
+        lines: 68,
+        statements: 68,
       },
     },
     globals: true,

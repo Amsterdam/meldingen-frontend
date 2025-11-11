@@ -48,7 +48,6 @@ export const postPrimaryForm = async (
   }
 
   if (error) return { formData, systemError: error }
-  if (!data) return { formData, systemError: new Error('Melding data not found.') }
 
   const { classification, created_at, id, public_id, token } = data
 
