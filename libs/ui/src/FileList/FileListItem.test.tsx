@@ -16,12 +16,14 @@ vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () =>
 }))
 
 const defaultProps: FileListItemProps = {
-  actionButtonLabelCancel: 'Annuleren',
-  actionButtonLabelDelete: 'Verwijderen',
   deleteButtonId: 'test-id',
   file,
-  progressLabelFinished: 'Upload geslaagd',
-  progressLabelLoading: 'Upload 100%',
+  labels: {
+    actionButtonCancelLabel: 'Annuleren',
+    actionButtonDeleteLabel: 'Verwijderen',
+    progressFinishedLabel: 'Upload geslaagd',
+    progressLoadingLabel: 'Upload 100%',
+  },
   status: 'success' as const,
 }
 

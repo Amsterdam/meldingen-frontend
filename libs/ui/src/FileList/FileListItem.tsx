@@ -11,28 +11,22 @@ import styles from './FileList.module.css'
 // an unordered list with list items is used here because NVDA currently (16-9-2025) reads the number of items in a description list incorrectly.
 
 export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
-  actionButtonLabelCancel: string
-  actionButtonLabelDelete: string
   deleteButtonId: string
   errorMessage?: string
   file: File
+  labels: {
+    actionButtonCancelLabel: string
+    actionButtonDeleteLabel: string
+    progressFinishedLabel: string
+    progressLoadingLabel: string
+  }
   onDelete?: () => void
-  progressLabelFinished: string
-  progressLabelLoading: string
   status: 'pending' | 'uploading' | 'success' | 'error'
 }
 
-export const FileListItem = ({
-  actionButtonLabelCancel,
-  actionButtonLabelDelete,
-  deleteButtonId,
-  errorMessage,
-  file,
-  onDelete,
-  progressLabelFinished,
-  progressLabelLoading,
-  status,
-}: FileListItemProps) => {
+export const FileListItem = ({ deleteButtonId, errorMessage, file, labels, onDelete, status }: FileListItemProps) => {
+  const { actionButtonCancelLabel, actionButtonDeleteLabel, progressFinishedLabel, progressLoadingLabel } = labels
+
   // Memoize the creation of an object url from the file,
   // to prevent it from creating a new one on every render.
   const imageUrl = useMemo(() => URL.createObjectURL(file), [file])
@@ -40,8 +34,8 @@ export const FileListItem = ({
   const isError = status === 'error'
   const isFinished = status === 'success'
 
-  const actionButtonLabel = isFinished || isError ? actionButtonLabelDelete : actionButtonLabelCancel
-  const progressLabel = isFinished ? progressLabelFinished : progressLabelLoading
+  const actionButtonLabel = isFinished || isError ? actionButtonDeleteLabel : actionButtonCancelLabel
+  const progressLabel = isFinished ? progressFinishedLabel : progressLoadingLabel
 
   const handleDelete = () => {
     URL.revokeObjectURL(imageUrl)
