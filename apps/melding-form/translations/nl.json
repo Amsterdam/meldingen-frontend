@@ -90,14 +90,20 @@
     "status": "{fileCount} van {maxFiles} bestanden toegevoegd",
     "file-upload": {
       "button": "Bestanden kiezen",
-      "drop-area": "Sleep bestanden in dit vak of"
+      "drop-area": "Sleep bestanden in dit vak of",
+      "action-button-delete": "Verwijderen",
+      "action-button-cancel": "Annuleren",
+      "progress-finished": "Upload geslaagd",
+      "progress-loading": "Upload {percentage}%"
     },
     "delete-notification": "{fileName} is verwijderd",
     "no-js-alert-title": "JavaScript is niet beschikbaar",
     "no-js-alert-description": "Wijzig dit in de instellingen van uw browser of herlaad de pagina.",
     "submit-button": "Volgende vraag",
     "errors": {
-      "too-many-files": "U kunt maximaal {maxFiles} bestanden uploaden."
+      "too-many-files": "U kunt maximaal {maxFiles} bestanden uploaden.",
+      "too-many-attempts": "U heeft te vaak geprobeerd een foto toe te voegen. Verwijder eerst een mislukte poging uit de lijst om nog een foto toe te voegen.",
+      "duplicate-upload": "Het gekozen bestand is al toegevoegd."
     }
   },
   "contact": {

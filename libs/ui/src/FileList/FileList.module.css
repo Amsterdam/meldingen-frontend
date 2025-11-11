@@ -5,6 +5,7 @@
   font-weight: var(--ams-typography-body-text-font-weight);
   hyphenate-limit-chars: var(--ams-typography-hyphenate-limit-chars);
   hyphens: auto;
+  inline-size: 100%;
   line-height: var(--ams-typography-body-text-line-height);
   list-style: none;
   margin-block: 0;
@@ -16,15 +17,10 @@
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
-  width: 100%;
 }
 
 .item {
   padding-block: var(--ams-space-s);
-}
-
-.item:not(:last-child) {
-  border-block-end: var(--ams-border-width-s) solid var(--ams-color-separator);
 }
 
 .container {
@@ -34,40 +30,54 @@
   padding-block: var(--ams-space-s);
 
   @media screen and (min-width: 37.5rem) {
-    gap: var(--ams-space-xs) var(--ams-space-s);
-    grid-template-columns: auto 1fr auto auto;
-    row-gap: 0;
+    grid-template-columns: 1fr 2fr 1fr;
   }
 }
 
 .containerWithError {
   border-inline-start: var(--ams-field-invalid-border-inline-start);
   padding-inline-start: var(--ams-field-invalid-padding-inline-start);
-}
-
-.name {
-  font-weight: var(--ams-typography-heading-font-weight);
 
   @media screen and (min-width: 37.5rem) {
-    grid-column: 2 / -1;
+    padding-inline-start: 0;
   }
 }
 
-.thumbnail {
-  grid-row-start: 1;
+.imageContainer {
+  display: block;
+  max-inline-size: 50%;
 
   @media screen and (min-width: 37.5rem) {
-    align-self: start;
-    grid-row: 1 / 3; /* Span two rows */
-    height: var(--ams-space-2xl);
-    width: var(--ams-space-2xl);
+    display: flex;
+    justify-content: center;
+    max-inline-size: unset;
   }
 }
 
-.error {
-  display: flex; /* Remove phantom whitespace */
+.description {
+  display: flex;
+  flex-direction: column;
+}
+
+.errorMessage {
+  color: var(--ams-error-message-color);
+}
+
+.statusMessage {
+  color: var(--ams-color-text-secondary);
+}
+
+.icon {
+  color: var(--ams-color-feedback-error);
+}
+
+.deleteButton {
+  inline-size: fit-content;
+  line-height: var(--ams-typography-body-text-large-line-height);
+  padding-block: 0;
+  padding-inline: var(--ams-space-s);
 
   @media screen and (min-width: 37.5rem) {
-    grid-column: 1 / -1;
+    justify-self: end;
   }
 }
