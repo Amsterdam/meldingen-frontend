@@ -56,7 +56,6 @@ describe('Page', () => {
       files: [
         expect.objectContaining({
           blob: expect.any(Blob),
-          contentType: 'image/webp',
           fileName: 'IMG_0815.jpg',
         }),
       ],

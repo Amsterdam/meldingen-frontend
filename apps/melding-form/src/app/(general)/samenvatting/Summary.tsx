@@ -1,20 +1,19 @@
 'use client'
 
-import { FileList, Heading, Paragraph } from '@amsterdam/design-system-react'
+import { Heading, Paragraph } from '@amsterdam/design-system-react'
 import Form from 'next/form'
 import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect } from 'react'
 
-import { Link, SubmitButton, SummaryList } from '@meldingen/ui'
+import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
+import { AttachmentImage } from './_components/AttachmentImage'
 import { postSummaryForm } from './actions'
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { FormState } from 'apps/melding-form/src/types'
-
-import styles from './Summary.module.css'
 
 type GenericSummaryData = {
   key: string
@@ -25,7 +24,6 @@ type GenericSummaryData = {
 type File = {
   blob: Blob
   fileName: string
-  contentType: string
 }
 
 type Props = {
@@ -101,11 +99,13 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
             <SummaryList.Item>
               <SummaryList.Term>{attachments.term}</SummaryList.Term>
               <SummaryList.Description>
-                <FileList className={styles.fileListAttachments}>
-                  {attachments.files.map(({ fileName, blob, contentType }) => (
-                    <FileList.Item key={fileName} file={new File([blob], fileName, { type: contentType })} />
+                <UnorderedList markers={false} className="ams-gap-m">
+                  {attachments.files.map(({ fileName, blob }) => (
+                    <UnorderedList.Item key={fileName}>
+                      <AttachmentImage blob={blob} fileName={fileName} />
+                    </UnorderedList.Item>
                   ))}
-                </FileList>
+                </UnorderedList>
               </SummaryList.Description>
               <SummaryList.Description>
                 <NextLink href="/bijlage" legacyBehavior passHref>
