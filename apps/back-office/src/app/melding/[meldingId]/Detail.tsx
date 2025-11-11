@@ -43,6 +43,8 @@ export const Detail = ({
 }: Props) => {
   const t = useTranslations('detail')
 
+  const hasAttachments = attachments.files.length > 0
+
   return (
     <Grid paddingBottom="2x-large" paddingTop="x-large">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
@@ -96,9 +98,9 @@ export const Detail = ({
           </DescriptionList>
         )}
 
-        <DescriptionList className={styles.attachmentsDescriptionList}>
+        <DescriptionList className={clsx(hasAttachments && styles.attachmentsDescriptionList)}>
           <DescriptionList.Term>{t('attachments.title')}</DescriptionList.Term>
-          {attachments.files.length > 0 ? (
+          {hasAttachments ? (
             <div className={clsx(styles.attachmentsGrid, 'ams-mb-l')}>
               {attachments.files.map((file) => (
                 <DescriptionList.Description key={file.fileName} className={styles.attachmentsDescription}>
@@ -107,7 +109,9 @@ export const Detail = ({
               ))}
             </div>
           ) : (
-            <Paragraph>{t('attachments.no-data')}</Paragraph>
+            <DescriptionList.Description>
+              <Paragraph>{t('attachments.no-data')}</Paragraph>
+            </DescriptionList.Description>
           )}
         </DescriptionList>
       </Grid.Cell>
