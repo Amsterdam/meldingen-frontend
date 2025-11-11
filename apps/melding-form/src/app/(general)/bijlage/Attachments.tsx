@@ -14,7 +14,7 @@ import { Column, FileList, FileUpload, Heading, InvalidFormAlert, SubmitButton }
 
 import { submitAttachmentsForm } from './actions'
 import type { ExistingFileType } from './page'
-import type { FileUpload as FileUploadType } from './utils'
+import type { FileUpload as FileUploadType, PendingFileUpload } from './utils'
 import { startUpload } from './utils'
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
@@ -46,7 +46,7 @@ const createDuplicatedUploadError = (newFile: File, errorMessage: string): FileU
   status: 'error',
 })
 
-const createFileUpload = (newFile: File): FileUploadType => ({
+const createFileUpload = (newFile: File): PendingFileUpload => ({
   file: newFile,
   id: crypto.randomUUID(),
   progress: 0,
@@ -69,7 +69,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [fileUploads, setFileUploads] = useState<FileUploadType[]>(existingFileUploads)
+  const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
   const [errorMessage, setErrorMessage] = useState<string>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
 
@@ -110,11 +110,10 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     })
 
     setFileUploads((prev) => [...prev, ...newFileUploads])
+    const validFileUploads = newFileUploads.filter((upload) => upload.status === 'pending')
 
-    newFileUploads.forEach((upload) => {
+    validFileUploads.forEach((upload) => {
       const xhr = upload.xhr
-
-      if (!xhr) return
 
       xhr.open(
         'POST',
