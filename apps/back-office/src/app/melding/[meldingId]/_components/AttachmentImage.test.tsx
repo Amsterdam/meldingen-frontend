@@ -23,13 +23,9 @@ describe('AttachmentImage', () => {
 
     expect(createObjectURLMock).toHaveBeenCalled()
 
-    expect(Image).toHaveBeenCalledWith(
-      expect.objectContaining({
-        src: 'test-url',
-        alt: '',
-      }),
-      undefined,
-    )
+    const image = screen.getByRole('presentation')
+
+    expect(image).toHaveAttribute('src', 'test-url')
   })
 
   it('renders an an error message when the blob is missing', async () => {
