@@ -5,7 +5,7 @@ import { getFullNLAddress } from '../../utils'
 import { melding } from 'apps/back-office/src/mocks/data'
 
 vi.mock('./_components/AttachmentImage', () => ({
-  AttachmentImage: vi.fn(() => <div>AttchmentsImage</div>),
+  AttachmentImage: vi.fn(() => <div>AttachmentsImage</div>),
 }))
 
 const defaultProps = {
