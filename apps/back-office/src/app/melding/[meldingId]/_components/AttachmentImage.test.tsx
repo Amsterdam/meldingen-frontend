@@ -1,4 +1,3 @@
-import { Image } from '@amsterdam/design-system-react'
 import { render, screen } from '@testing-library/react'
 
 import { AttachmentImage } from './AttachmentImage'
