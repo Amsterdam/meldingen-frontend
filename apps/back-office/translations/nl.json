@@ -19,8 +19,8 @@
   },
   "detail": {
     "attachments": {
-      "title": "Bijlagen",
-      "no-data": "Geen bijlagen toegevoegd"
+      "title": "Bestanden",
+      "no-data": "Geen bestanden toegevoegd"
     },
     "metadata": {
       "title": "Melding {publicId} - Gemeente Amsterdam"
