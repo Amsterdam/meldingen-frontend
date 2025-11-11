@@ -27,7 +27,7 @@ export default async () => {
 
   if (staticFormsError) throw new Error('Failed to fetch static forms.')
 
-  const attachmentsFormId = staticFormsData?.find((form) => form.type === 'attachments')?.id
+  const attachmentsFormId = staticFormsData.find((form) => form.type === 'attachments')?.id
 
   if (!attachmentsFormId) throw new Error('Attachments form id not found.')
 
@@ -36,7 +36,6 @@ export default async () => {
   })
 
   if (error) throw new Error('Failed to fetch attachments form data.')
-  if (!data) throw new Error('Attachments form data not found.')
 
   const attachmentsForm = data.components
 
@@ -51,25 +50,31 @@ export default async () => {
     query: { token },
   })
 
-  if (attachmentError) throw new Error('Failed to fetch attachments data.')
+  if (attachmentError) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(attachmentError)
+  }
 
-  const attachments = await Promise.all(
-    attachmentData.map(async ({ id, original_filename }): Promise<ExistingFileType> => {
-      const { data, error } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
-        path: { melding_id: parseInt(meldingId, 10), attachment_id: id },
-        query: { token, type: 'thumbnail' },
-      })
+  const attachments = attachmentData
+    ? await Promise.all(
+        attachmentData.map(async ({ id, original_filename }): Promise<ExistingFileType> => {
+          const { data, error } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
+            path: { melding_id: parseInt(meldingId, 10), attachment_id: id },
+            query: { token, type: 'thumbnail' },
+          })
 
-      if (error) throw new Error('Failed to fetch attachment download.')
+          if (error) throw new Error('Failed to fetch attachment download.')
 
-      // Returning blob instead of File since the File api is not available in Node.js
-      return {
-        blob: data as Blob,
-        fileName: original_filename,
-        serverId: id,
-      }
-    }),
-  )
+          // Returning blob instead of File since the File api is not available in Node.js
+          return {
+            blob: data as Blob,
+            fileName: original_filename,
+            serverId: id,
+          }
+        }),
+      )
+    : []
 
   return (
     <Attachments

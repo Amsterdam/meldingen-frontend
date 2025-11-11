@@ -32,12 +32,12 @@ export const postLocationForm = async () => {
   }
 
   // Set melding state to 'location_submitted'
-  const { error: stateError } = await putMeldingByMeldingIdSubmitLocation({
+  const { error } = await putMeldingByMeldingIdSubmitLocation({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
   })
 
-  if (stateError) return { systemError: stateError }
+  if (error) return { systemError: error }
 
   return redirect('/bijlage')
 }

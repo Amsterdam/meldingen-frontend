@@ -7,9 +7,9 @@ import {
   getAttachmentsSummary,
   getContactSummary,
   getLocationSummary,
+  getMeldingData,
   getPrimaryFormSummary,
 } from './utils'
-import { getMeldingData } from '../_utils/getMeldingData'
 import { COOKIES } from 'apps/melding-form/src/constants'
 
 export const generateMetadata = async () => {

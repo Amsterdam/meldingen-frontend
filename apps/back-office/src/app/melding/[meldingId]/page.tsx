@@ -26,7 +26,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   const t = await getTranslations()
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
-  if (error || !data) return t('errors.melding-not-found')
+  if (error) return t('errors.melding-not-found')
 
   const additionalQuestions = await getAdditionalQuestionsData(meldingId)
   if ('error' in additionalQuestions) return additionalQuestions.error

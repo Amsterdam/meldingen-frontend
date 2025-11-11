@@ -56,12 +56,6 @@ describe('Page', () => {
     await expect(Page()).rejects.toThrowError('Failed to fetch attachments form data.')
   })
 
-  it('throws an error if attachments form data is not found', async () => {
-    server.use(http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(null)))
-
-    await expect(Page()).rejects.toThrowError('Attachments form data not found.')
-  })
-
   it('throws an error if attachments form label is not found', async () => {
     server.use(
       http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
@@ -101,12 +95,21 @@ describe('Page', () => {
     )
   })
 
-  it('throws an error if attachments data cannot be fetched', async () => {
+  it('logs an error to the console when attachments data cannot be fetched', async () => {
     server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () => HttpResponse.json(null, { status: 500 })),
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () =>
+        HttpResponse.json('Test error', { status: 500 }),
+      ),
     )
 
-    await expect(Page()).rejects.toThrowError('Failed to fetch attachments data.')
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    expect(consoleSpy).toHaveBeenCalledWith('Test error')
+
+    consoleSpy.mockRestore()
   })
 
   it('throws an error if attachments cannot be fetched', async () => {

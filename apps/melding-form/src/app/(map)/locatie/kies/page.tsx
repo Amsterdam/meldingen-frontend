@@ -27,12 +27,16 @@ export default async () => {
     query: { token },
   })
 
-  if (error) throw new Error('Failed to fetch melding data.')
+  if (error) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(error)
+  }
 
-  const coordinates = data.geo_location?.geometry?.coordinates && {
+  const coordinates = data?.geo_location?.geometry?.coordinates && {
     lat: data.geo_location.geometry.coordinates[0],
     lng: data.geo_location.geometry.coordinates[1],
   }
 
-  return <SelectLocation classification={data.classification?.name} coordinates={coordinates} />
+  return <SelectLocation classification={data?.classification?.name} coordinates={coordinates} />
 }

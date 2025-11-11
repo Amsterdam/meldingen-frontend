@@ -15,12 +15,11 @@ export const getAdditionalQuestionsData = async (meldingId: number) => {
   if (error) return { error: handleApiError(error) }
 
   return {
-    data:
-      data?.map((answer) => ({
-        key: String(answer.question.id),
-        term: answer.question.text,
-        description: answer.text,
-      })) || [],
+    data: data.map((answer) => ({
+      key: String(answer.question.id),
+      term: answer.question.text,
+      description: answer.text,
+    })),
   }
 }
 

@@ -8,17 +8,28 @@ import {
   getStaticFormByStaticFormId,
   MeldingOutput,
 } from '@meldingen/api-client'
+import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 
 import { getFullNLAddress } from '../_utils/getFullNLAddress'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
+
+export const getMeldingData = async (meldingId: string, token: string) => {
+  const { data, error } = await getMeldingByMeldingIdMelder({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (error) throw new Error('Failed to fetch melding data.')
+
+  return data
+}
 
 export const getPrimaryFormSummary = async (description: string) => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
   if (staticFormsError) throw new Error('Failed to fetch static forms.')
-  if (!staticFormsData) throw new Error('Static forms data not found.')
 
-  const primaryFormId = staticFormsData?.find((form) => form.type === 'primary')?.id
+  const primaryFormId = staticFormsData.find((form) => form.type === 'primary')?.id
 
   if (!primaryFormId) throw new Error('Primary form id not found.')
 
@@ -27,7 +38,6 @@ export const getPrimaryFormSummary = async (description: string) => {
   })
 
   if (primaryFormError) throw new Error('Failed to fetch primary form data.')
-  if (!primaryFormData) throw new Error('Primary form data not found.')
 
   const primaryForm = primaryFormData.components[0]
 
@@ -68,17 +78,16 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
   if (error) throw new Error('Failed to fetch additional questions data.')
 
   return {
-    data:
-      data?.map((answer) => {
-        const panels = formComponents.components as FormPanelComponentOutput[]
-        const panelId = findPanelIdByQuestionId(panels, answer.question.id)
-        return {
-          key: `${answer.question.id}`,
-          term: answer.question.text,
-          description: answer.text,
-          link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}` : '/',
-        }
-      }) || [],
+    data: data.map((answer) => {
+      const panels = formComponents.components as FormPanelComponentOutput[]
+      const panelId = findPanelIdByQuestionId(panels, answer.question.id)
+      return {
+        key: `${answer.question.id}`,
+        term: answer.question.text,
+        description: answer.text,
+        link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}` : '/',
+      }
+    }),
   }
 }
 
@@ -89,7 +98,6 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
   })
 
   if (error) throw new Error('Failed to fetch attachments data.')
-  if (!data) throw new Error('Attachments data not found.')
 
   const attachments = await Promise.all(
     data.map(async ({ id, original_filename }) => {
@@ -102,7 +110,6 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
       const contentType = response.headers.get('content-type')
 
       if (error) throw new Error('Failed to fetch attachment download.')
-      if (!data) throw new Error('Attachment download data not found.')
 
       // Returning blob instead of File since the File api is not available in Node.js
       return {
@@ -110,7 +117,7 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
         fileName: original_filename,
         contentType: contentType!,
       }
-    }) || [],
+    }),
   )
 
   return { data: { key: 'attachments', term: label, files: attachments } }
