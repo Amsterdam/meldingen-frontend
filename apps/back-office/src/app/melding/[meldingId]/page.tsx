@@ -31,9 +31,6 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   const additionalQuestions = await getAdditionalQuestionsData(meldingId)
   if ('error' in additionalQuestions) return additionalQuestions.error
 
-  const attachments = await getAttachmentsData(meldingId, t)
-  if ('error' in attachments) return attachments.error
-
   const additionalQuestionsWithMeldingText = [
     {
       key: 'text',
@@ -43,9 +40,12 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
     ...additionalQuestions.data,
   ]
 
-  const meldingData = getMeldingData(data, t)
-  const location = getLocationData(data, t)
+  const attachments = await getAttachmentsData(meldingId, t)
+  if ('error' in attachments) return attachments.error
+
   const contact = getContactData(data, t)
+  const location = getLocationData(data, t)
+  const meldingData = getMeldingData(data, t)
 
   return (
     <Detail
