@@ -1,11 +1,19 @@
 import { http, HttpResponse } from 'msw'
 
-import { getAdditionalQuestionsData, getContactData, getLocationData, getMeldingData } from './utils'
+import {
+  getAdditionalQuestionsData,
+  getAttachmentsData,
+  getContactData,
+  getLocationData,
+  getMeldingData,
+} from './utils'
 import { getFullNLAddress } from '../../utils'
 import { melding } from 'apps/back-office/src/mocks/data'
 import { additionalQuestions } from 'apps/back-office/src/mocks/data'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
+
+import { Blob } from 'buffer'
 
 const mockMeldingId = 88
 
@@ -159,5 +167,54 @@ describe('getMeldingData', () => {
         term: 'detail.melding-data.state.term',
       },
     ])
+  })
+})
+
+describe('getAttachmentsData', () => {
+  it('returns correct attachments data', async () => {
+    const result = await getAttachmentsData(mockMeldingId, (key: string) => key)
+
+    expect(result).toMatchObject({
+      files: [
+        {
+          blob: expect.any(Blob),
+          fileName: 'IMG_0815.jpg',
+        },
+      ],
+      key: 'attachments',
+      term: 'detail.attachments.title',
+    })
+  })
+
+  it('returns an error message when getMeldingByMeldingIdAttachments returns an error', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    const result = await getAttachmentsData(mockMeldingId, (key: string) => key)
+
+    expect(result).toEqual({ error: 'Error message' })
+  })
+
+  it('returns an attachment with error message when getAttachmentById returns an error ', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })),
+    )
+
+    const result = await getAttachmentsData(mockMeldingId, (key: string) => key)
+
+    expect(result).toMatchObject({
+      files: [
+        {
+          blob: null,
+          fileName: 'IMG_0815.jpg',
+          error: 'Error message',
+        },
+      ],
+      key: 'attachments',
+      term: 'detail.attachments.title',
+    })
   })
 })
