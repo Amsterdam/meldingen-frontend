@@ -14,7 +14,7 @@ import { Column, FileList, FileUpload, Heading, InvalidFormAlert, SubmitButton }
 
 import { submitAttachmentsForm } from './actions'
 import type { ExistingFileType } from './page'
-import type { ExistingFileUpload, FileUpload as FileUploadType } from './utils'
+import type { FileUpload as FileUploadType, PendingFileUpload } from './utils'
 import { startUpload } from './utils'
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
@@ -26,9 +26,10 @@ import type { FormState } from 'apps/melding-form/src/types'
 
 import styles from './Attachments.module.css'
 
-const MAX_FILES = 3
+const MAX_SUCCESSFUL_UPLOADS = 3
+export const MAX_UPLOAD_ATTEMPTS = 10
 
-type Props = {
+export type Props = {
   formData: StaticFormTextAreaComponentOutput[]
   meldingId: number
   token: string
@@ -37,16 +38,23 @@ type Props = {
 
 const initialState: Pick<FormState, 'systemError'> = {}
 
-const createFileUploads = (newFiles: File[]): FileUploadType[] =>
-  newFiles.map((file) => ({
-    file,
-    id: crypto.randomUUID(),
-    progress: 0,
-    status: 'pending',
-    xhr: new XMLHttpRequest(),
-  }))
+const createDuplicatedUploadError = (newFile: File, errorMessage: string): FileUploadType => ({
+  error: errorMessage,
+  file: newFile,
+  id: crypto.randomUUID(),
+  progress: 0,
+  status: 'error',
+})
 
-const mapExistingFilesToUploads = (files: ExistingFileType[]): ExistingFileUpload[] =>
+const createFileUpload = (newFile: File): PendingFileUpload => ({
+  file: newFile,
+  id: crypto.randomUUID(),
+  progress: 0,
+  status: 'pending',
+  xhr: new XMLHttpRequest(),
+})
+
+const mapExistingFilesToUploads = (files: ExistingFileType[]): FileUploadType[] =>
   files.map((file) => ({
     ...file,
     id: crypto.randomUUID(),
@@ -61,7 +69,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [fileUploads, setFileUploads] = useState<(FileUploadType | ExistingFileUpload)[]>(existingFileUploads)
+  const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
   const [errorMessage, setErrorMessage] = useState<string>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
 
@@ -83,16 +91,28 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
     const newFiles = Array.from(event.currentTarget.files)
 
-    if (newFiles.length + fileUploads.length > MAX_FILES) {
-      setErrorMessage(t('errors.too-many-files', { maxFiles: MAX_FILES }))
+    if (newFiles.length + fileUploads.length > MAX_UPLOAD_ATTEMPTS) {
+      setErrorMessage(t('errors.too-many-attempts'))
       return
     }
 
-    const newFileUploads = createFileUploads(newFiles)
+    if (newFiles.length + fileUploads.filter((file) => file.status === 'success').length > MAX_SUCCESSFUL_UPLOADS) {
+      setErrorMessage(t('errors.too-many-files', { maxFiles: MAX_SUCCESSFUL_UPLOADS }))
+      return
+    }
+
+    const newFileUploads = newFiles.map((newFile) => {
+      if (fileUploads.find((f) => f.file.name === newFile.name)) {
+        return createDuplicatedUploadError(newFile, t('errors.duplicate-upload'))
+      }
+
+      return createFileUpload(newFile)
+    })
 
     setFileUploads((prev) => [...prev, ...newFileUploads])
+    const validFileUploads = newFileUploads.filter((upload) => upload.status === 'pending')
 
-    newFileUploads.forEach((upload) => {
+    validFileUploads.forEach((upload) => {
       const xhr = upload.xhr
 
       xhr.open(
@@ -198,12 +218,12 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             <Paragraph aria-live="assertive">
               {t('status', {
                 fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
-                maxFiles: MAX_FILES,
+                maxFiles: MAX_SUCCESSFUL_UPLOADS,
               })}
             </Paragraph>
 
             <FileUpload
-              accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround"
+              accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp"
               aria-describedby={getAriaDescribedBy('file-upload', description, errorMessage)}
               aria-labelledby="file-upload-label file-upload"
               buttonText={t('file-upload.button')}
@@ -216,13 +236,20 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
             {fileUploads.length > 0 && (
               <FileList>
-                {fileUploads.map(({ error, file, id, serverId, status, xhr }) => (
+                {fileUploads.map(({ error, file, id, progress, serverId, status, xhr }) => (
                   <FileList.Item
-                    key={id}
                     deleteButtonId={id}
+                    errorMessage={error}
                     file={file}
-                    errorMessage={status === 'error' ? error : undefined}
+                    key={id}
+                    labels={{
+                      actionButtonCancelLabel: t('file-upload.action-button-cancel'),
+                      actionButtonDeleteLabel: t('file-upload.action-button-delete'),
+                      progressFinishedLabel: t('file-upload.progress-finished'),
+                      progressLoadingLabel: t('file-upload.progress-loading', { percentage: Math.round(progress) }),
+                    }}
                     onDelete={() => handleDelete(id, file.name, xhr, serverId)}
+                    status={status}
                   />
                 ))}
               </FileList>

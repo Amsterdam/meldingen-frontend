@@ -4,6 +4,10 @@ import { Detail } from './Detail'
 import { getFullNLAddress } from '../../utils'
 import { melding } from 'apps/back-office/src/mocks/data'
 
+vi.mock('./_components/AttachmentImage', () => ({
+  AttachmentImage: vi.fn(() => <div>AttachmentsImage</div>),
+}))
+
 const defaultProps = {
   additionalQuestionsWithMeldingText: [
     { key: 'text', term: 'Test melding text', description: 'Test melding description' },
@@ -11,6 +15,11 @@ const defaultProps = {
     { key: '2', term: 'Term 2', description: 'Description 2' },
     { key: '3', term: 'Term 3', description: 'Description 3' },
   ],
+  attachments: {
+    files: [{ blob: new Blob(['test-blob'], { type: 'image/jpeg' }), fileName: 'IMG_0815.jpg' }],
+    key: 'attachments',
+    term: 'detail.attachments.title',
+  },
   meldingData: [
     { key: 'created_at', term: 'Created at', description: '2023-10-01' },
     { key: 'classification', term: 'Classification', description: 'Test classification' },
@@ -86,5 +95,25 @@ describe('Detail', () => {
     const link = screen.getByRole('link', { name: 'Change state' })
 
     expect(link).toBeInTheDocument()
+  })
+
+  it('renders the attachments', () => {
+    render(<Detail {...defaultProps} />)
+
+    expect(screen.getByText('attachments.title')).toBeInTheDocument()
+    expect(screen.getByText('AttachmentsImage')).toBeInTheDocument()
+  })
+
+  it('renders a no-data message when there are no attachments', () => {
+    const attachments = {
+      files: [],
+      key: 'attachments',
+      term: 'detail.attachments.title',
+    }
+
+    render(<Detail {...defaultProps} attachments={attachments} />)
+
+    expect(screen.getByText('attachments.title')).toBeInTheDocument()
+    expect(screen.getByText('attachments.no-data')).toBeInTheDocument()
   })
 })

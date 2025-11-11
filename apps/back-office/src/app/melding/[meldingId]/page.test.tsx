@@ -8,6 +8,8 @@ import { additionalQuestions, melding } from 'apps/back-office/src/mocks/data'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
 
+import { Blob } from 'buffer'
+
 vi.mock('./Detail', () => ({
   Detail: vi.fn(() => <div>Detail Component</div>),
 }))
@@ -35,6 +37,21 @@ describe('Page', () => {
   it('returns an error message when getMeldingByMeldingIdAnswers returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    const params = Promise.resolve({ meldingId: 123 })
+    const result = await Page({ params })
+
+    const { getByText } = render(result)
+
+    expect(getByText('Error message')).toBeInTheDocument()
+  })
+
+  it('returns an error message when getMeldingByMeldingIdAttachments returns an error', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
@@ -108,9 +125,21 @@ describe('Page', () => {
       },
     ]
 
+    const attachments = {
+      files: [
+        expect.objectContaining({
+          blob: expect.any(Blob),
+          fileName: 'IMG_0815.jpg',
+        }),
+      ],
+      key: 'attachments',
+      term: 'detail.attachments.title',
+    }
+
     expect(Detail).toHaveBeenCalledWith(
       {
         additionalQuestionsWithMeldingText: additionalQuestionsWithMeldingText,
+        attachments: attachments,
         contact: contact,
         location: location,
         meldingData: meldingData,

@@ -1,5 +1,5 @@
 import { safeJSONParse, startUpload } from './utils'
-import type { FileUpload } from './utils'
+import type { PendingFileUpload } from './utils'
 
 const xhrMock = {
   status: 200,
@@ -8,7 +8,7 @@ const xhrMock = {
   send: vi.fn(),
 } as unknown as XMLHttpRequest
 
-const fileUpload: FileUpload = {
+const fileUpload: PendingFileUpload = {
   file: new File(['content'], 'test.txt'),
   id: 'abc',
   progress: 0,
@@ -16,7 +16,7 @@ const fileUpload: FileUpload = {
   xhr: xhrMock,
 }
 
-const otherFileUpload: FileUpload = {
+const otherFileUpload: PendingFileUpload = {
   ...fileUpload,
   id: 'other',
 }
