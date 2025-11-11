@@ -38,8 +38,8 @@ export type Props = {
 
 const initialState: Pick<FormState, 'systemError'> = {}
 
-const createDuplicatedUploadError = (newFile: File, t: (key: string) => string): FileUploadType => ({
-  error: t('errors.duplicate-upload'),
+const createDuplicatedUploadError = (newFile: File, errorMessage: string): FileUploadType => ({
+  error: errorMessage,
   file: newFile,
   id: crypto.randomUUID(),
   progress: 0,
@@ -103,7 +103,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
     const newFileUploads = newFiles.map((newFile) => {
       if (fileUploads.find((f) => f.file.name === newFile.name)) {
-        return createDuplicatedUploadError(newFile, t)
+        return createDuplicatedUploadError(newFile, t('errors.duplicate-upload'))
       }
 
       return createFileUpload(newFile)
