@@ -96,19 +96,16 @@ export const Detail = ({
           </DescriptionList>
         )}
 
-        <Heading level={2} className="ams-mb-m">
-          {t('attachments.title')}
-        </Heading>
         {attachments.files.length > 0 ? (
-          <DescriptionList className={clsx(styles.attachmentsGrid, 'ams-mb-l')}>
-            {attachments.files.map((file) => (
-              <div key={file.fileName}>
-                <DescriptionList.Term>{file.fileName}</DescriptionList.Term>
-                <DescriptionList.Description>
+          <DescriptionList className={styles.attachmentsDescriptionList}>
+            <DescriptionList.Term>{t('attachments.title')}</DescriptionList.Term>
+            <div className={clsx(styles.attachmentsGrid, 'ams-mb-l')}>
+              {attachments.files.map((file) => (
+                <DescriptionList.Description key={file.fileName} className={styles.attachmentsDescription}>
                   <AttachmentImage blob={file.blob} fileName={file.fileName} />
                 </DescriptionList.Description>
-              </div>
-            ))}
+              ))}
+            </div>
           </DescriptionList>
         ) : (
           <Paragraph>{t('attachments.no-data')}</Paragraph>

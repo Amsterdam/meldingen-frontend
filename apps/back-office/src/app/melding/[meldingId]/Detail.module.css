@@ -1,4 +1,13 @@
+.attachmentsDescriptionList {
+  grid-template-columns: unset;
+}
+
 .attachmentsGrid {
   display: grid;
+  gap: 1rem;
   grid-template-columns: 1fr 1fr;
+}
+
+.attachmentsDescription {
+  grid-column-start: unset;
 }
