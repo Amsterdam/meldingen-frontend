@@ -92,7 +92,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     const newFiles = Array.from(event.currentTarget.files)
 
     if (newFiles.length + fileUploads.length > MAX_UPLOAD_ATTEMPTS) {
-      setErrorMessage(t('errors.too-many-attempts', { maxAttempts: MAX_UPLOAD_ATTEMPTS }))
+      setErrorMessage(t('errors.too-many-attempts'))
       return
     }
 
