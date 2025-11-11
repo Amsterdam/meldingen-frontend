@@ -96,9 +96,9 @@ export const Detail = ({
           </DescriptionList>
         )}
 
-        {attachments.files.length > 0 ? (
-          <DescriptionList className={styles.attachmentsDescriptionList}>
-            <DescriptionList.Term>{t('attachments.title')}</DescriptionList.Term>
+        <DescriptionList className={styles.attachmentsDescriptionList}>
+          <DescriptionList.Term>{t('attachments.title')}</DescriptionList.Term>
+          {attachments.files.length > 0 ? (
             <div className={clsx(styles.attachmentsGrid, 'ams-mb-l')}>
               {attachments.files.map((file) => (
                 <DescriptionList.Description key={file.fileName} className={styles.attachmentsDescription}>
@@ -106,10 +106,10 @@ export const Detail = ({
                 </DescriptionList.Description>
               ))}
             </div>
-          </DescriptionList>
-        ) : (
-          <Paragraph>{t('attachments.no-data')}</Paragraph>
-        )}
+          ) : (
+            <Paragraph>{t('attachments.no-data')}</Paragraph>
+          )}
+        </DescriptionList>
       </Grid.Cell>
     </Grid>
   )

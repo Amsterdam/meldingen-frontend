@@ -2,14 +2,6 @@ import { render, screen } from '@testing-library/react'
 
 import { AttachmentImage } from './AttachmentImage'
 
-vi.mock('@amsterdam/design-system-react', async () => {
-  const actual = await vi.importActual('@amsterdam/design-system-react')
-  return {
-    ...actual,
-    Image: vi.fn(),
-  }
-})
-
 const createObjectURLMock = vi.fn().mockImplementation(() => {
   return 'test-url'
 })
