@@ -190,7 +190,7 @@ describe('Attachments', () => {
 
     await user.click(deleteButton)
 
-    const liveRegion = screen.getByText('delete-notification', { selector: 'div' })
+    const liveRegion = screen.getByText('delete-notification')
 
     expect(liveRegion).toBeInTheDocument()
   })
