@@ -1,5 +1,7 @@
 import { AuthOptions } from 'next-auth'
 import type { JWT } from 'next-auth/jwt'
+import AzureAD from 'next-auth/providers/azure-ad'
+import { Provider } from 'next-auth/providers/index'
 import KeycloakProvider from 'next-auth/providers/keycloak'
 
 /**
@@ -46,8 +48,10 @@ const refreshAccessToken = async (token: JWT) => {
   }
 }
 
-export const authOptions: AuthOptions = {
-  providers: [
+const authProviders: Provider[] = []
+
+if (process.env.CLIENT_ID) {
+  authProviders.push(
     KeycloakProvider({
       wellKnown: undefined,
       clientId: process.env.CLIENT_ID,
@@ -63,7 +67,21 @@ export const authOptions: AuthOptions = {
       token: process.env.TOKEN_URL,
       userinfo: process.env.USERINFO_URL,
     }),
-  ],
+  )
+}
+
+if (process.env.ENTRA_CLIENT_ID) {
+  authProviders.push(
+    AzureAD({
+      clientId: process.env.ENTRA_CLIENT_ID,
+      clientSecret: process.env.ENTRA_CLIENT_SECRET,
+      tenantId: process.env.ENTRA_TENANT_ID,
+    }),
+  )
+}
+
+export const authOptions: AuthOptions = {
+  providers: authProviders,
   callbacks: {
     jwt: async ({ account, token, user }) => {
       if (account && user) {
