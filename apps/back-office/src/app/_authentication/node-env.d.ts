@@ -8,5 +8,8 @@ declare namespace NodeJS {
     JWKS_URL: string
     TOKEN_URL: string
     USERINFO_URL: string
+    ENTRA_CLIENT_ID: string
+    ENTRA_CLIENT_SECRET: string
+    ENTRA_TENANT_ID: string
   }
 }
