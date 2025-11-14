@@ -4,7 +4,7 @@ import { WarningIcon } from '@amsterdam/design-system-react-icons'
 import { clsx } from 'clsx'
 import { HTMLAttributes } from 'react'
 
-import { AttachmentImage } from './FileListImage'
+import { FileListImage } from './FileListImage'
 
 import styles from './FileList.module.css'
 
@@ -41,7 +41,7 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, labels, onDel
           {isError ? (
             <Icon svg={WarningIcon} size="heading-1" className={styles.icon} />
           ) : (
-            <AttachmentImage blob={file} />
+            <FileListImage blob={file} />
           )}
         </div>
         <div className={styles.description}>

@@ -1,4 +1,5 @@
 'use client'
+
 import { Image } from '@amsterdam/design-system-react'
 import { useEffect, useState } from 'react'
 
@@ -10,7 +11,7 @@ type Props = {
 
 const Loading = () => <div className={styles.loading} />
 
-export const AttachmentImage = ({ blob }: Props) => {
+export const FileListImage = ({ blob }: Props) => {
   const [url, setUrl] = useState<string | null>(null)
 
   useEffect(() => {
