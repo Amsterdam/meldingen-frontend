@@ -132,7 +132,7 @@ describe('Attachments', () => {
     const link = screen.getByRole('link', { name: 'Upload failed' })
 
     expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '#test-id')
+    expect(link).toHaveAttribute('href', '#example.png')
   })
 
   it('renders an empty error message when an upload has an error without a message', async () => {
@@ -153,7 +153,7 @@ describe('Attachments', () => {
     const link = screen.getByRole('link', { name: '' })
 
     expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '#test-id')
+    expect(link).toHaveAttribute('href', '#example.png')
   })
 
   it('renders an empty aria-live region when no file is deleted', () => {
