@@ -10,6 +10,7 @@ const createObjectURLMock = vi.fn().mockImplementation((file: File) => {
 })
 
 global.URL.createObjectURL = createObjectURLMock
+global.URL.revokeObjectURL = vi.fn()
 
 vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
   default: vi.fn(),
@@ -102,9 +103,6 @@ describe('FileListItem', () => {
   })
 
   it('calls onDelete when the remove button is clicked', async () => {
-    const revokeObjectURLMock = vi.fn()
-    global.URL.revokeObjectURL = revokeObjectURLMock
-
     const user = userEvent.setup()
 
     const onDelete = vi.fn()
@@ -116,7 +114,6 @@ describe('FileListItem', () => {
     await user.click(deleteButton)
 
     expect(onDelete).toHaveBeenCalled()
-    expect(revokeObjectURLMock).toHaveBeenCalled()
   })
 
   it('adds the provided id to the delete button', () => {

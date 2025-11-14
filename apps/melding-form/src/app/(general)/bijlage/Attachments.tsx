@@ -41,14 +41,14 @@ const initialState: Pick<FormState, 'systemError'> = {}
 const createDuplicatedUploadError = (newFile: File, errorMessage: string): FileUploadType => ({
   error: errorMessage,
   file: newFile,
-  id: crypto.randomUUID(),
+  id: newFile.name,
   progress: 0,
   status: 'error',
 })
 
 const createFileUpload = (newFile: File): PendingFileUpload => ({
   file: newFile,
-  id: crypto.randomUUID(),
+  id: newFile.name,
   progress: 0,
   status: 'pending',
   xhr: new XMLHttpRequest(),
@@ -56,9 +56,11 @@ const createFileUpload = (newFile: File): PendingFileUpload => ({
 
 const mapExistingFilesToUploads = (files: ExistingFileType[]): FileUploadType[] =>
   files.map((file) => ({
-    ...file,
-    id: crypto.randomUUID(),
+    serverId: file.serverId,
+    blob: file.blob,
     file: new File([file.blob], file.fileName),
+    fileName: file.fileName,
+    id: file.fileName,
     progress: 100,
     status: 'success',
   }))
