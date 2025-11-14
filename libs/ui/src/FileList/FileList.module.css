@@ -81,3 +81,9 @@
     justify-self: end;
   }
 }
+
+.loading {
+  aspect-ratio: var(--ams-aspect-ratio-16-9);
+  background-color: var(--ams-color-separator);
+  inline-size: 100%;
+}
