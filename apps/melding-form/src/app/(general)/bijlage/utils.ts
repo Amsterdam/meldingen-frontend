@@ -11,7 +11,7 @@ export const safeJSONParse = (jsonString?: string) => {
 }
 
 export type FileUpload = {
-  error?: string
+  errorMessage?: string
   file: File
   id: string
   progress: number // 0-100
