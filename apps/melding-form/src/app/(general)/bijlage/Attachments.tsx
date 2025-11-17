@@ -54,17 +54,20 @@ const createFileUpload = (file: File, id: string): PendingFileUpload => ({
   xhr: new XMLHttpRequest(),
 })
 
-const mapExistingFilesToUploads = (files: ExistingFileType[]): FileUploadType[] =>
+const mapExistingFilesToUploads = (files: ExistingFileType[], idPrefix: string): FileUploadType[] =>
   files.map((file, index) => ({
     ...file,
     file: new File([file.blob], file.fileName),
-    id: `bestand-${index + 1}`,
+    id: `${idPrefix}-${index + 1}`,
     progress: 100,
     status: 'success',
   }))
 
 export const Attachments = ({ files, formData, meldingId, token }: Props) => {
-  const existingFileUploads = mapExistingFilesToUploads(files)
+  const t = useTranslations('attachments')
+  const tShared = useTranslations('shared')
+
+  const existingFileUploads = mapExistingFilesToUploads(files, t('file-upload.id-prefix'))
 
   const inputRef = useRef<HTMLInputElement>(null)
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
@@ -80,14 +83,11 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     .filter((upload) => upload.status === 'error')
     .map((upload) => ({ key: upload.id, message: upload.errorMessage || '' }))
 
-  const t = useTranslations('attachments')
-  const tShared = useTranslations('shared')
-
   const { label, description } = formData[0]
 
   const getNextUploadId = () => {
     uploadIdCounter.current += 1
-    return `bestand-${uploadIdCounter.current}`
+    return `${t('file-upload.id-prefix')}-${uploadIdCounter.current}`
   }
 
   const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
