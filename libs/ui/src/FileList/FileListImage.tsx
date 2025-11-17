@@ -6,23 +6,27 @@ import { useEffect, useState } from 'react'
 import styles from './FileListImage.module.css'
 
 type Props = {
-  blob: Blob
+  file: File | { name: string }
 }
 
 const Loading = () => <div className={styles.loading} />
 
-export const FileListImage = ({ blob }: Props) => {
+export const FileListImage = ({ file }: Props) => {
   const [url, setUrl] = useState<string | null>(null)
 
   useEffect(() => {
-    const objectUrl = URL.createObjectURL(blob)
+    // If 'file' is not a File instance (just a file name from the backend), show the loading indicator.
+    // This occurs when the backend has not yet made the file available for download directly after upload.
+    if (!(file instanceof File)) return
+
+    const objectUrl = URL.createObjectURL(file)
 
     setUrl(objectUrl)
 
     return () => {
       URL.revokeObjectURL(objectUrl)
     }
-  }, [blob])
+  }, [file])
 
   return url ? (
     <Image

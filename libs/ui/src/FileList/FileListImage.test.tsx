@@ -7,11 +7,11 @@ const createObjectURLMock = vi.fn().mockImplementation(() => 'test-url')
 global.URL.createObjectURL = createObjectURLMock
 global.URL.revokeObjectURL = vi.fn()
 
-const testBlob = new Blob(['test-blob'], { type: 'image/jpeg' }) as Blob
+const testFile = new File(['test-blob'], 'test.jpg', { type: 'image/jpeg' })
 
 describe('FileListImage', () => {
   it('renders an image when a blob is provided', async () => {
-    render(<FileListImage blob={testBlob} />)
+    render(<FileListImage file={testFile} />)
 
     expect(createObjectURLMock).toHaveBeenCalled()
 
@@ -21,10 +21,18 @@ describe('FileListImage', () => {
   })
 
   it('revokes the object URL on unmount', () => {
-    const { unmount } = render(<FileListImage blob={testBlob} />)
+    const { unmount } = render(<FileListImage file={testFile} />)
 
     unmount()
 
     expect(global.URL.revokeObjectURL).toHaveBeenCalledWith('test-url')
+  })
+
+  it('shows a loading indicator when only passing the file name instead of a File instance', () => {
+    const { container } = render(<FileListImage file={{ name: 'test' }} />)
+
+    const loadingIndicator = container.querySelector('[class*="_loading"]')
+
+    expect(loadingIndicator).toBeInTheDocument()
   })
 })

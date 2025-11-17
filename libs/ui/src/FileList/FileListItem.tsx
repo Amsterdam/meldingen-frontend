@@ -14,7 +14,7 @@ import styles from './FileListItem.module.css'
 export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
   deleteButtonId: string
   errorMessage?: string
-  file: File
+  file: File | { name: string }
   labels: {
     actionButtonCancelLabel: string
     actionButtonDeleteLabel: string
@@ -41,7 +41,7 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, labels, onDel
           {isError ? (
             <Icon svg={WarningIcon} size="heading-1" className={styles.icon} />
           ) : (
-            <FileListImage blob={file} />
+            <FileListImage file={file} />
           )}
         </div>
         <div className={styles.description}>

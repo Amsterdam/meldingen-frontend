@@ -12,7 +12,7 @@ import { COOKIES } from 'apps/melding-form/src/constants'
 import { isTypeTextAreaComponent } from 'apps/melding-form/src/typeguards'
 
 export type ExistingFileType = {
-  blob: Blob
+  blob?: Blob
   fileName: string
   serverId: number
 }
@@ -64,11 +64,17 @@ export default async () => {
             query: { token, type: 'thumbnail' },
           })
 
-          if (error) throw new Error('Failed to fetch attachment download.')
+          // The call returns an error if the download is not ready yet.
+          // We should not throw an error in that case, but just show the file name without the image.
+          if (error) {
+            // TODO: Log the error to an error reporting service
+            // eslint-disable-next-line no-console
+            console.error(error)
+          }
 
           // Returning blob instead of File since the File api is not available in Node.js
           return {
-            blob: data as Blob,
+            blob: data,
             fileName: original_filename,
             serverId: id,
           }

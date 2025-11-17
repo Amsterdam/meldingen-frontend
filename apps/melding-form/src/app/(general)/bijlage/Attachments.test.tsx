@@ -112,6 +112,25 @@ describe('Attachments', () => {
     expect(fileName).toBeInTheDocument()
   })
 
+  it('shows initial uploads without image if download is not yet ready', () => {
+    const mockFileName = 'IMG_SERVER_TEST.jpg'
+    const initialUploads: ExistingFileType[] = [
+      {
+        blob: undefined,
+        fileName: mockFileName,
+        serverId: 1,
+      },
+    ]
+
+    const { container } = render(<Attachments {...defaultProps} files={initialUploads} />)
+
+    const fileName = screen.getAllByText(mockFileName)[0]
+    const loadingIndicator = container.querySelector('[class*="_loading"]')
+
+    expect(fileName).toBeInTheDocument()
+    expect(loadingIndicator).toBeInTheDocument()
+  })
+
   it('renders an Invalid Form Alert when an upload has an error', async () => {
     const user = userEvent.setup()
 

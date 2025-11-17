@@ -111,14 +111,4 @@ describe('Page', () => {
 
     consoleSpy.mockRestore()
   })
-
-  it('throws an error if attachments cannot be fetched', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
-      ),
-    )
-
-    await expect(Page()).rejects.toThrowError('Failed to fetch attachment download.')
-  })
 })
