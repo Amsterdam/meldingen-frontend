@@ -185,17 +185,14 @@ describe('getAttachmentSummary', () => {
     const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
 
     expect(result).toMatchObject({
-      data: {
-        key: 'attachments',
-        term: "Foto's",
-        files: [
-          {
-            blob: expect.any(Blob),
-            contentType: 'image/webp',
-            fileName: 'IMG_0815.jpg',
-          },
-        ],
-      },
+      key: 'attachments',
+      term: "Foto's",
+      files: [
+        {
+          blob: expect.any(Blob),
+          fileName: 'IMG_0815.jpg',
+        },
+      ],
     })
   })
 

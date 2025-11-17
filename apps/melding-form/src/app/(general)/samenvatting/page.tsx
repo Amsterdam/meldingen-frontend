@@ -39,7 +39,7 @@ export default async () => {
 
   return (
     <Summary
-      attachments={attachments.data}
+      attachments={attachments}
       additionalQuestions={additionalQuestions.data}
       contact={contact}
       location={location}
