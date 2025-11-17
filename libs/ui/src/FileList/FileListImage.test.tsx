@@ -7,10 +7,10 @@ const createObjectURLMock = vi.fn().mockImplementation(() => 'test-url')
 global.URL.createObjectURL = createObjectURLMock
 global.URL.revokeObjectURL = vi.fn()
 
-const testFile = new File(['test-blob'], 'test.jpg', { type: 'image/jpeg' })
+const testFile = new File(['test-file'], 'test.jpg', { type: 'image/jpeg' })
 
 describe('FileListImage', () => {
-  it('renders an image when a blob is provided', async () => {
+  it('renders an image when a file is provided', async () => {
     render(<FileListImage file={testFile} />)
 
     expect(createObjectURLMock).toHaveBeenCalled()
