@@ -8,6 +8,7 @@ import tsParser from '@typescript-eslint/parser'
 import eslintConfigPrettier from 'eslint-config-prettier/flat'
 import _import from 'eslint-plugin-import'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
+import perfectionist from 'eslint-plugin-perfectionist'
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 import react from 'eslint-plugin-react'
 import globals from 'globals'
@@ -39,18 +40,70 @@ export default tseslint.config(
   // JavaScript, TypeScript & React
   {
     files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
-    plugins: {
-      '@typescript-eslint': tsPlugin,
-      import: fixupPluginRules(_import),
-      'jsx-a11y': jsxA11y,
-      'prefer-arrow-functions': preferArrowFunctions,
-      react,
-    },
     languageOptions: {
       parser: tsParser,
       parserOptions: {
         ecmaFeatures: { jsx: true },
       },
+    },
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+      import: fixupPluginRules(_import),
+      'jsx-a11y': jsxA11y,
+      perfectionist,
+      'prefer-arrow-functions': preferArrowFunctions,
+      react,
+    },
+    rules: {
+      ...eslint.configs.recommended.rules,
+      ...jsxA11y.configs.strict.rules,
+      ...perfectionist.configs['recommended-natural'].rules,
+      ...react.configs.recommended.rules,
+      ...tsPlugin.configs.recommended.rules,
+
+      // TypeScript
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      '@typescript-eslint/no-explicit-any': 'warn',
+
+      // Import
+      'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+      'import/newline-after-import': 'error',
+      'import/no-cycle': 'warn',
+      'import/no-default-export': 'error',
+      'import/no-named-as-default': 'warn',
+
+      // ESLint
+      'no-console': 'warn',
+      // Perfectionist
+      'perfectionist/sort-imports': [
+        'error',
+        {
+          customGroups: [
+            {
+              elementNamePattern: ['^@meldingen'],
+              groupName: 'value-internal',
+            },
+            {
+              elementNamePattern: ['^apps/', '^libs/'],
+              groupName: 'value-parent',
+            },
+            {
+              elementNamePattern: ['.css$'],
+              groupName: 'unknown',
+            },
+          ],
+        },
+      ],
+      'perfectionist/sort-modules': 'off', // This impacts readability in a negative way. We want to decide the order of modules ourselves.
+      'perfectionist/sort-union-types': 'off', // This causes more issues than it solves
+      'prefer-arrow-functions/prefer-arrow-functions': 'error',
+
+      // React
+      'react/display-name': 'off',
+      'react/function-component-definition': 'off',
+      'react/jsx-props-no-spreading': 'off',
+      'react/react-in-jsx-scope': 'off',
+      'react/require-default-props': 'off',
     },
     settings: {
       'import/resolver': {
@@ -59,53 +112,6 @@ export default tseslint.config(
         },
       },
       react: { version: 'detect' },
-    },
-    rules: {
-      ...eslint.configs.recommended.rules,
-      ...jsxA11y.configs.strict.rules,
-      ...react.configs.recommended.rules,
-      ...tsPlugin.configs.recommended.rules,
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
-      'no-console': 'warn',
-      'prefer-arrow-functions/prefer-arrow-functions': 'error',
-      'import/prefer-default-export': 'off',
-      'import/no-default-export': 'error',
-      'import/order': [
-        'error',
-        {
-          alphabetize: {
-            order: 'asc',
-            caseInsensitive: true,
-          },
-          groups: ['external', 'internal', ['parent', 'sibling', 'index']],
-          named: true,
-          'newlines-between': 'always',
-          pathGroups: [
-            {
-              pattern: '@meldingen/**',
-              group: 'internal',
-            },
-            {
-              pattern: 'apps/**',
-              group: 'parent',
-            },
-            {
-              // It's not possible to match *.module.css files on all depths,
-              // so the most common depths are specified here. Add to this list if needed.
-              pattern: '{./,../,../../}*.module.css',
-              group: 'unknown',
-              position: 'after',
-            },
-          ],
-          pathGroupsExcludedImportTypes: ['builtin'],
-        },
-      ],
-      'react/display-name': 'off',
-      'react/function-component-definition': 'off',
-      'react/jsx-props-no-spreading': 'off',
-      'react/react-in-jsx-scope': 'off',
-      'react/require-default-props': 'off',
     },
   },
   // Don't force using type over interface in .d.ts files
@@ -126,8 +132,8 @@ export default tseslint.config(
   // JSON
   {
     files: ['**/*.json'],
-    plugins: { json },
     language: 'json/json',
+    plugins: { json },
     ...json.configs.recommended,
   },
 
