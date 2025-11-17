@@ -10,7 +10,7 @@ global.URL.revokeObjectURL = vi.fn()
 const testBlob = new Blob(['test-blob'], { type: 'image/jpeg' }) as Blob
 
 describe('AttachmentImage', () => {
-  it('renders an image when a blob is provided', async () => {
+  it('renders an image when a blob is provided', () => {
     render(<AttachmentImage blob={testBlob} fileName="IMG_0815.jpg" />)
 
     expect(createObjectURLMock).toHaveBeenCalled()
