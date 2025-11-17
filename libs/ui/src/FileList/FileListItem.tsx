@@ -1,11 +1,12 @@
 import { Button } from '@amsterdam/design-system-react/dist/Button'
 import { Icon } from '@amsterdam/design-system-react/dist/Icon'
-import { Image } from '@amsterdam/design-system-react/dist/Image'
 import { WarningIcon } from '@amsterdam/design-system-react-icons'
 import { clsx } from 'clsx'
-import { HTMLAttributes, useMemo } from 'react'
+import { HTMLAttributes } from 'react'
 
-import styles from './FileList.module.css'
+import { FileListImage } from './FileListImage'
+
+import styles from './FileListItem.module.css'
 
 // Although a description list (<dl>, <dt> and <dd>) would be more semantically correct than an unordered list (<ul> and <li>),
 // an unordered list with list items is used here because NVDA currently (16-9-2025) reads the number of items in a description list incorrectly.
@@ -13,7 +14,7 @@ import styles from './FileList.module.css'
 export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
   deleteButtonId: string
   errorMessage?: string
-  file: File
+  file: File | { name: string }
   labels: {
     actionButtonCancelLabel: string
     actionButtonDeleteLabel: string
@@ -27,20 +28,11 @@ export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
 export const FileListItem = ({ deleteButtonId, errorMessage, file, labels, onDelete, status }: FileListItemProps) => {
   const { actionButtonCancelLabel, actionButtonDeleteLabel, progressFinishedLabel, progressLoadingLabel } = labels
 
-  // Memoize the creation of an object url from the file,
-  // to prevent it from creating a new one on every render.
-  const imageUrl = useMemo(() => URL.createObjectURL(file), [file])
-
   const isError = status === 'error'
   const isFinished = status === 'success'
 
   const actionButtonLabel = isFinished || isError ? actionButtonDeleteLabel : actionButtonCancelLabel
   const progressLabel = isFinished ? progressFinishedLabel : progressLoadingLabel
-
-  const handleDelete = () => {
-    URL.revokeObjectURL(imageUrl)
-    onDelete?.()
-  }
 
   return (
     <li className={styles.item}>
@@ -49,11 +41,7 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, labels, onDel
           {isError ? (
             <Icon svg={WarningIcon} size="heading-1" className={styles.icon} />
           ) : (
-            <Image
-              src={imageUrl}
-              alt=""
-              width={256} // Fixed width for when CSS does not load. Gets overridden by CSS.
-            />
+            <FileListImage file={file} />
           )}
         </div>
         <div className={styles.description}>
@@ -64,7 +52,7 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, labels, onDel
             <span className={styles.statusMessage}>{progressLabel}</span>
           )}
         </div>
-        <Button className={styles.deleteButton} id={deleteButtonId} variant="secondary" onClick={handleDelete}>
+        <Button className={styles.deleteButton} id={deleteButtonId} variant="secondary" onClick={() => onDelete?.()}>
           {actionButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
         </Button>
       </div>

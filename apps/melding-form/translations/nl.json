@@ -89,10 +89,11 @@
     "hint-text": "(niet verplicht)",
     "status": "{fileCount} van {maxFiles} bestanden toegevoegd",
     "file-upload": {
-      "button": "Bestanden kiezen",
-      "drop-area": "Sleep bestanden in dit vak of",
       "action-button-delete": "Verwijderen",
       "action-button-cancel": "Annuleren",
+      "button": "Bestanden kiezen",
+      "drop-area": "Sleep bestanden in dit vak of",
+      "id-prefix": "bestand",
       "progress-finished": "Upload geslaagd",
       "progress-loading": "Upload {percentage}%"
     },

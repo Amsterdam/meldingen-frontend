@@ -11,8 +11,8 @@ export const safeJSONParse = (jsonString?: string) => {
 }
 
 export type FileUpload = {
-  error?: string
-  file: File
+  errorMessage?: string
+  file: File | { name: string }
   id: string
   progress: number // 0-100
   serverId?: number
@@ -70,6 +70,10 @@ export const startUpload = (
   )
 
   const formData = new FormData()
-  formData.append('file', fileUpload.file)
+
+  if (fileUpload.file instanceof File) {
+    formData.append('file', fileUpload.file)
+  }
+
   xhr.send(formData)
 }

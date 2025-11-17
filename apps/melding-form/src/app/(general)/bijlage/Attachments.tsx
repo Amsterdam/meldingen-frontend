@@ -38,36 +38,40 @@ export type Props = {
 
 const initialState: Pick<FormState, 'systemError'> = {}
 
-const createDuplicatedUploadError = (newFile: File, errorMessage: string): FileUploadType => ({
-  error: errorMessage,
-  file: newFile,
-  id: crypto.randomUUID(),
+const createDuplicatedUploadError = (file: File, errorMessage: string, id: string): FileUploadType => ({
+  errorMessage,
+  file,
+  id,
   progress: 0,
   status: 'error',
 })
 
-const createFileUpload = (newFile: File): PendingFileUpload => ({
-  file: newFile,
-  id: crypto.randomUUID(),
+const createFileUpload = (file: File, id: string): PendingFileUpload => ({
+  file,
+  id,
   progress: 0,
   status: 'pending',
   xhr: new XMLHttpRequest(),
 })
 
-const mapExistingFilesToUploads = (files: ExistingFileType[]): FileUploadType[] =>
-  files.map((file) => ({
+const mapExistingFilesToUploads = (files: ExistingFileType[], idPrefix: string): FileUploadType[] =>
+  files.map((file, index) => ({
     ...file,
-    id: crypto.randomUUID(),
-    file: new File([file.blob], file.fileName),
+    file: file.blob ? new File([file.blob], file.fileName) : { name: file.fileName },
+    id: `${idPrefix}-${index + 1}`,
     progress: 100,
     status: 'success',
   }))
 
 export const Attachments = ({ files, formData, meldingId, token }: Props) => {
-  const existingFileUploads = mapExistingFilesToUploads(files)
+  const t = useTranslations('attachments')
+  const tShared = useTranslations('shared')
+
+  const existingFileUploads = mapExistingFilesToUploads(files, t('file-upload.id-prefix'))
 
   const inputRef = useRef<HTMLInputElement>(null)
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
+  const uploadIdCounter = useRef(files.length)
 
   const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
   const [errorMessage, setErrorMessage] = useState<string>()
@@ -77,12 +81,14 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
   const validationErrors = fileUploads
     .filter((upload) => upload.status === 'error')
-    .map((upload) => ({ key: upload.id, message: upload.error || '' }))
-
-  const t = useTranslations('attachments')
-  const tShared = useTranslations('shared')
+    .map((upload) => ({ key: upload.id, message: upload.errorMessage || '' }))
 
   const { label, description } = formData[0]
+
+  const getNextUploadId = () => {
+    uploadIdCounter.current += 1
+    return `${t('file-upload.id-prefix')}-${uploadIdCounter.current}`
+  }
 
   const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
     setErrorMessage(undefined)
@@ -103,10 +109,11 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
     const newFileUploads = newFiles.map((newFile) => {
       if (fileUploads.find((f) => f.file.name === newFile.name)) {
-        return createDuplicatedUploadError(newFile, t('errors.duplicate-upload'))
+        const errorMessage = t('errors.duplicate-upload')
+        return createDuplicatedUploadError(newFile, errorMessage, getNextUploadId())
       }
 
-      return createFileUpload(newFile)
+      return createFileUpload(newFile, getNextUploadId())
     })
 
     setFileUploads((prev) => [...prev, ...newFileUploads])
@@ -236,10 +243,10 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
             {fileUploads.length > 0 && (
               <FileList>
-                {fileUploads.map(({ error, file, id, progress, serverId, status, xhr }) => (
+                {fileUploads.map(({ errorMessage, file, id, progress, serverId, status, xhr }) => (
                   <FileList.Item
                     deleteButtonId={id}
-                    errorMessage={error}
+                    errorMessage={errorMessage}
                     file={file}
                     key={id}
                     labels={{

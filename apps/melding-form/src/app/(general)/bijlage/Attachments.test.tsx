@@ -112,13 +112,32 @@ describe('Attachments', () => {
     expect(fileName).toBeInTheDocument()
   })
 
+  it('shows initial uploads without image if download is not yet ready', () => {
+    const mockFileName = 'IMG_SERVER_TEST.jpg'
+    const initialUploads: ExistingFileType[] = [
+      {
+        blob: undefined,
+        fileName: mockFileName,
+        serverId: 1,
+      },
+    ]
+
+    const { container } = render(<Attachments {...defaultProps} files={initialUploads} />)
+
+    const fileName = screen.getAllByText(mockFileName)[0]
+    const loadingIndicator = container.querySelector('[class*="_loading"]')
+
+    expect(fileName).toBeInTheDocument()
+    expect(loadingIndicator).toBeInTheDocument()
+  })
+
   it('renders an Invalid Form Alert when an upload has an error', async () => {
     const user = userEvent.setup()
 
     ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
-          upload.id === fileUpload.id ? { ...upload, status: 'error', error: 'Upload failed' } : upload,
+          upload.id === fileUpload.id ? { ...upload, status: 'error', errorMessage: 'Upload failed' } : upload,
         ),
       )
     })
@@ -132,7 +151,7 @@ describe('Attachments', () => {
     const link = screen.getByRole('link', { name: 'Upload failed' })
 
     expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '#test-id')
+    expect(link).toHaveAttribute('href', '#file-upload.id-prefix-1')
   })
 
   it('renders an empty error message when an upload has an error without a message', async () => {
@@ -153,7 +172,7 @@ describe('Attachments', () => {
     const link = screen.getByRole('link', { name: '' })
 
     expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '#test-id')
+    expect(link).toHaveAttribute('href', '#file-upload.id-prefix-1')
   })
 
   it('renders an empty aria-live region when no file is deleted', () => {
