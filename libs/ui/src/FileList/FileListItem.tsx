@@ -6,7 +6,7 @@ import { HTMLAttributes } from 'react'
 
 import { FileListImage } from './FileListImage'
 
-import styles from './FileList.module.css'
+import styles from './FileListItem.module.css'
 
 // Although a description list (<dl>, <dt> and <dd>) would be more semantically correct than an unordered list (<ul> and <li>),
 // an unordered list with list items is used here because NVDA currently (16-9-2025) reads the number of items in a description list incorrectly.

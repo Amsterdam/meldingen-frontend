@@ -3,7 +3,7 @@
 import { Image } from '@amsterdam/design-system-react'
 import { useEffect, useState } from 'react'
 
-import styles from './FileList.module.css'
+import styles from './FileListImage.module.css'
 
 type Props = {
   blob: Blob
