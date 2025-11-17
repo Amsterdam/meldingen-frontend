@@ -118,7 +118,7 @@ describe('Attachments', () => {
     ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
-          upload.id === fileUpload.id ? { ...upload, status: 'error', error: 'Upload failed' } : upload,
+          upload.id === fileUpload.id ? { ...upload, status: 'error', errorMessage: 'Upload failed' } : upload,
         ),
       )
     })
@@ -132,7 +132,7 @@ describe('Attachments', () => {
     const link = screen.getByRole('link', { name: 'Upload failed' })
 
     expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '#example.png')
+    expect(link).toHaveAttribute('href', '#file-upload.id-prefix-1')
   })
 
   it('renders an empty error message when an upload has an error without a message', async () => {
@@ -153,7 +153,7 @@ describe('Attachments', () => {
     const link = screen.getByRole('link', { name: '' })
 
     expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '#example.png')
+    expect(link).toHaveAttribute('href', '#file-upload.id-prefix-1')
   })
 
   it('renders an empty aria-live region when no file is deleted', () => {
