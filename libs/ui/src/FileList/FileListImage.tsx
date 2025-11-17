@@ -24,17 +24,13 @@ export const FileListImage = ({ blob }: Props) => {
     }
   }, [blob])
 
-  return (
-    <>
-      {url ? (
-        <Image
-          src={url}
-          alt=""
-          width={256} // Fixed width for when CSS does not load. Gets overridden by CSS.
-        />
-      ) : (
-        <Loading />
-      )}
-    </>
+  return url ? (
+    <Image
+      src={url}
+      alt=""
+      width={256} // Fixed width for when CSS does not load. Gets overridden by CSS.
+    />
+  ) : (
+    <Loading />
   )
 }
