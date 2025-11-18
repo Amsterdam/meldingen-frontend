@@ -1,5 +1,5 @@
 import { Checkbox } from '@amsterdam/design-system-react'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import Image from 'next/image'
 import { Dispatch, SetStateAction } from 'react'
 

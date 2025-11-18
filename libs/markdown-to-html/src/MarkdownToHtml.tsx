@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react'
 
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import { Children, isValidElement } from 'react'
 import ReactMarkdown from 'react-markdown'
 

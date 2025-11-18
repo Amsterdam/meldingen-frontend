@@ -77,7 +77,7 @@ export default defineConfig(
       'import/newline-after-import': 'error',
       'import/no-cycle': 'warn',
       'import/no-default-export': 'error',
-      'import/no-named-as-default': 'warn',
+      'import/no-named-as-default': 'error',
 
       // ESLint
       'no-console': 'warn',
