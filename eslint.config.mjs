@@ -1,20 +1,19 @@
-import { fixupPluginRules } from '@eslint/compat'
 import eslint from '@eslint/js'
 import json from '@eslint/json'
 import markdown from '@eslint/markdown'
 import pluginNext from '@next/eslint-plugin-next'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
+import { defineConfig } from 'eslint/config'
 import eslintConfigPrettier from 'eslint-config-prettier/flat'
-import _import from 'eslint-plugin-import'
+import importPlugin from 'eslint-plugin-import'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import perfectionist from 'eslint-plugin-perfectionist'
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 import react from 'eslint-plugin-react'
 import globals from 'globals'
-import tseslint from 'typescript-eslint'
 
-export default tseslint.config(
+export default defineConfig(
   // Global
   {
     ignores: [
@@ -37,6 +36,32 @@ export default tseslint.config(
     },
   },
 
+  // Config files
+  {
+    files: ['**/*.{cjs,mjs}'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+      import: importPlugin,
+    },
+    settings: {
+      'import/resolver': {
+        node: {
+          extensions: ['cjs', 'mjs'],
+        },
+      },
+    },
+    rules: {
+      ...eslint.configs.recommended.rules,
+      ...tsPlugin.configs.recommended.rules,
+    },
+  },
+
   // JavaScript, TypeScript & React
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
@@ -48,7 +73,7 @@ export default tseslint.config(
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
-      import: fixupPluginRules(_import),
+      import: importPlugin,
       'jsx-a11y': jsxA11y,
       perfectionist,
       'prefer-arrow-functions': preferArrowFunctions,
