@@ -11,9 +11,10 @@ import { useActionState, useEffect, useState } from 'react'
 import { Feature } from '@meldingen/api-client'
 import { Controls, MarkerSelectLayer, PointSelectLayer } from '@meldingen/map'
 
+import type { Coordinates } from 'apps/melding-form/src/types'
+
 import { AddressInput, AssetList, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
-import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './SelectLocation.module.css'
 

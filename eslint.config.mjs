@@ -89,8 +89,9 @@ export default defineConfig(
         {
           customGroups: [
             {
-              elementNamePattern: ['^@meldingen'],
-              groupName: 'value-internal',
+              elementNamePattern: ['^apps/', '^libs/'],
+              groupName: 'type-parent',
+              selector: 'type',
             },
             {
               elementNamePattern: ['^apps/', '^libs/'],
@@ -101,6 +102,7 @@ export default defineConfig(
               groupName: 'unknown',
             },
           ],
+          internalPattern: ['^@meldingen'],
         },
       ],
       'perfectionist/sort-modules': 'off', // This impacts readability in a negative way. We want to decide the order of modules ourselves.

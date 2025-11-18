@@ -15,10 +15,11 @@ import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'reac
 import { Feature } from '@meldingen/api-client'
 import { ListBox, TextInput } from '@meldingen/ui'
 
+import type { Coordinates } from 'apps/melding-form/src/types'
+
 import { convertWktPointToCoordinates } from '../../utils'
 import { PDOKItem } from './types'
 import { debounce, fetchAddressList, fetchAndSetAddress } from './utils'
-import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './AddressInput.module.css'
 

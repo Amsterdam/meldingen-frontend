@@ -7,13 +7,15 @@ import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef, useState } from 'react'
 
-import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+
+import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Column, FileList, FileUpload, Heading, InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
 import type { ExistingFileType } from './page'
 import type { FileUpload as FileUploadType, PendingFileUpload } from './utils'
+import type { FormState } from 'apps/melding-form/src/types'
 
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
@@ -23,7 +25,6 @@ import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFor
 import { submitAttachmentsForm } from './actions'
 import { startUpload } from './utils'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
-import type { FormState } from 'apps/melding-form/src/types'
 import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 
 import styles from './Attachments.module.css'
