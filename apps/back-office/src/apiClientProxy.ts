@@ -1,8 +1,8 @@
-import { client } from 'libs/api-client/src/client.gen'
-import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
 
 import { authOptions } from './app/_authentication/authOptions'
+import { client } from 'libs/api-client/src/client.gen'
 
 client.setConfig({
   auth: async () => {

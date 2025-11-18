@@ -1,26 +1,26 @@
 'use client'
 
 import { Heading, Paragraph, StandaloneLink } from '@amsterdam/design-system-react'
+import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import NextLink from 'next/link'
-import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useRef } from 'react'
 
 import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
-import { postLocationForm } from './actions'
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
+import { postLocationForm } from './actions'
 import type { FormState } from 'apps/melding-form/src/types'
 
 const initialState: Pick<FormState, 'systemError' | 'validationErrors'> = {}
 
 type Props = {
-  prevPage: string
   address?: string
+  prevPage: string
 }
 
 export const Location = ({ address, prevPage }: Props) => {
@@ -66,7 +66,7 @@ export const Location = ({ address, prevPage }: Props) => {
           />
         )}
 
-        <FormHeader title={t('title')} step={t('step')} />
+        <FormHeader step={t('step')} title={t('title')} />
 
         <Heading className="ams-mb-s" level={1} size="level-3">
           {t('question')}

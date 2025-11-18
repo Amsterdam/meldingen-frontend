@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import { Blob } from 'buffer'
 import { http, HttpResponse } from 'msw'
 
 import Page, { generateMetadata } from './page'
@@ -7,8 +8,6 @@ import { additionalQuestions, melding, textAreaComponent } from 'apps/melding-fo
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
-
-import { Blob } from 'buffer'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -31,8 +30,8 @@ describe('Page', () => {
         HttpResponse.json({
           components: [
             {
-              key: 'page1',
               components: [{ question: 35 }, { question: 36 }],
+              key: 'page1',
             },
           ],
         }),
@@ -46,10 +45,10 @@ describe('Page', () => {
     render(PageComponent)
 
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
-      key: item.question.id.toString(),
-      term: item.question.text,
       description: item.text,
+      key: item.question.id.toString(),
       link: '/aanvullende-vragen/2/page1',
+      term: item.question.text,
     }))
 
     const attachments = {
@@ -64,15 +63,15 @@ describe('Page', () => {
     }
 
     const contact = {
+      description: [melding.email, melding.phone],
       key: 'contact',
       term: 'contact-label',
-      description: [melding.email, melding.phone],
     }
 
     const primaryForm = {
+      description: melding.text,
       key: 'primary',
       term: textAreaComponent.label,
-      description: melding.text,
     }
 
     expect(screen.getByText('Summary Component')).toBeInTheDocument()
@@ -83,9 +82,9 @@ describe('Page', () => {
         attachments,
         contact: contact,
         location: {
+          description: 'Oudezijds Voorburgwal 300A, 1012GL Amsterdam',
           key: 'location',
           term: 'location-label',
-          description: 'Oudezijds Voorburgwal 300A, 1012GL Amsterdam',
         },
         primaryForm: primaryForm,
       },

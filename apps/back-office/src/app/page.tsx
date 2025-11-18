@@ -1,8 +1,8 @@
-import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
+import { redirect } from 'next/navigation'
 
-import { Overview } from './Overview'
 import { handleApiError } from '../handleApiError'
+import { Overview } from './Overview'
 import { getMelding } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async () => {

@@ -99,10 +99,10 @@ export const AdditionalQuestions = ({
             ref={invalidFormAlertRef}
           />
         )}
-        <FormHeader title={t('title')} step={t('step')} />
+        <FormHeader step={t('step')} title={t('title')} />
         <FormRenderer
-          formComponents={formComponents}
           action={formAction}
+          formComponents={formComponents}
           panelLabel={panelLabel}
           submitButtonText={t('submit-button')}
           validationErrors={validationErrors}

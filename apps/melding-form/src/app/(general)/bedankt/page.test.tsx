@@ -26,7 +26,7 @@ describe('generateMetadata', () => {
 
 describe('Page', () => {
   it('renders page', async () => {
-    mockCookies({ [COOKIES.PUBLIC_ID]: '1234', [COOKIES.CREATED_AT]: '2025-05-26T11:56:34.081Z' })
+    mockCookies({ [COOKIES.CREATED_AT]: '2025-05-26T11:56:34.081Z', [COOKIES.PUBLIC_ID]: '1234' })
 
     const PageComponent = await Page()
 
@@ -43,7 +43,7 @@ describe('Page', () => {
   })
 
   it('should render description without publicId', async () => {
-    mockCookies({ [COOKIES.PUBLIC_ID]: undefined, [COOKIES.CREATED_AT]: '2025-05-26T11:56:34.081Z' })
+    mockCookies({ [COOKIES.CREATED_AT]: '2025-05-26T11:56:34.081Z', [COOKIES.PUBLIC_ID]: undefined })
 
     const PageComponent = await Page()
 
@@ -55,7 +55,7 @@ describe('Page', () => {
   })
 
   it('should render description without date and time', async () => {
-    mockCookies({ [COOKIES.PUBLIC_ID]: '1234', [COOKIES.CREATED_AT]: undefined })
+    mockCookies({ [COOKIES.CREATED_AT]: undefined, [COOKIES.PUBLIC_ID]: '1234' })
 
     const PageComponent = await Page()
 

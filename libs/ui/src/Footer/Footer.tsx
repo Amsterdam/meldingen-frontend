@@ -11,13 +11,13 @@ export const Footer = () => (
       <Grid paddingVertical="x-large">
         <Grid.Cell span={4}>
           <Column gap="small">
-            <Heading level={2} size="level-3" color="inverse">
+            <Heading color="inverse" level={2} size="level-3">
               Contact
             </Heading>
             <Paragraph color="inverse">Lukt het niet om een melding te doen?</Paragraph>
             <Paragraph color="inverse">
               Bel het telefoonnummer{' '}
-              <Link href="tel:14020" color="inverse">
+              <Link color="inverse" href="tel:14020">
                 14 020
               </Link>
               .

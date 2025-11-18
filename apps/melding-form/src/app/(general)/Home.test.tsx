@@ -1,6 +1,7 @@
+import type { Mock } from 'vitest'
+
 import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
-import type { Mock } from 'vitest'
 
 import { Home } from './Home'
 import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
@@ -31,7 +32,7 @@ describe('Page', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Er staan blowende jongeren')
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message', formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
 
     render(<Home {...defaultProps} />)
 

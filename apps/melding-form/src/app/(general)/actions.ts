@@ -10,9 +10,9 @@ import {
   putMeldingByMeldingIdAnswerQuestions,
 } from '@meldingen/api-client'
 
+import { COOKIES } from '../../constants'
 import { handleApiError } from '../../handleApiError'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
-import { COOKIES } from '../../constants'
 
 export const postPrimaryForm = async (
   { existingId, existingToken }: { existingId?: string; existingToken?: string },

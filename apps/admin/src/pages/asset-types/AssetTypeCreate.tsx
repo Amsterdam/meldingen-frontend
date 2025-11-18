@@ -1,10 +1,10 @@
 import { Create, required, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
 
 type AssetTypeCreateData = {
-  name: string
   arguments: {
     base_url: string
   }
+  name: string
 }
 
 export const transform = (data: AssetTypeCreateData) => ({
@@ -15,7 +15,7 @@ export const transform = (data: AssetTypeCreateData) => ({
 })
 
 export const AssetTypeCreate = () => (
-  <Create transform={transform} redirect="list">
+  <Create redirect="list" transform={transform}>
     <SimpleForm
       toolbar={
         <Toolbar>

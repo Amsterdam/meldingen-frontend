@@ -7,10 +7,10 @@ import {
   StaticFormTextAreaComponentOutput,
 } from '@meldingen/api-client'
 
-import { postPrimaryForm } from './actions'
-import { Home } from './Home'
 import { COOKIES } from '../../constants'
 import { isTypeTextAreaComponent } from '../../typeguards'
+import { postPrimaryForm } from './actions'
+import { Home } from './Home'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.

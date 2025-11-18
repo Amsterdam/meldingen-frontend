@@ -1,10 +1,11 @@
-import { FormTextAreaComponentInputSchema } from 'libs/api-client/src/schemas.gen'
 import { Edit, minLength, required, SaveButton, SimpleForm, TextInput, Toolbar, useEditContext } from 'react-admin'
 import filter from 'uber-json-schema-filter'
 
+import type { AdditionalQuestionsForm } from '../types'
+
 import { ContactForm } from './ContactForm'
 import { PrimaryForm } from './PrimaryForm'
-import type { AdditionalQuestionsForm } from '../types'
+import { FormTextAreaComponentInputSchema } from 'libs/api-client/src/schemas.gen'
 
 const Form = () => {
   const { record } = useEditContext()
@@ -26,9 +27,9 @@ const Form = () => {
         </Toolbar>
       }
     >
-      <TextInput source="title" readOnly />
+      <TextInput readOnly source="title" />
       <TextInput source="components[0].label" validate={validateLabel} />
-      <TextInput source="components[0].description" multiline parse={(value) => value ?? ''} />
+      <TextInput multiline parse={(value) => value ?? ''} source="components[0].description" />
     </SimpleForm>
   )
 }

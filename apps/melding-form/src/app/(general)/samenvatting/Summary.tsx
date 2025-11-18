@@ -1,24 +1,24 @@
 'use client'
 
 import { Heading, Paragraph } from '@amsterdam/design-system-react'
+import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import NextLink from 'next/link'
-import { useTranslations } from 'next-intl'
 import { useActionState, useEffect } from 'react'
 
 import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
-import { AttachmentImage } from './_components/AttachmentImage'
-import { postSummaryForm } from './actions'
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
+import { AttachmentImage } from './_components/AttachmentImage'
+import { postSummaryForm } from './actions'
 import { FormState } from 'apps/melding-form/src/types'
 
 type GenericSummaryData = {
+  description: string
   key: string
   term: string
-  description: string
 }
 
 type File = {
@@ -36,7 +36,7 @@ type Props = {
 
 const initialState: Pick<FormState, 'systemError'> = {}
 
-export const Summary = ({ attachments, primaryForm, additionalQuestions, location, contact }: Props) => {
+export const Summary = ({ additionalQuestions, attachments, contact, location, primaryForm }: Props) => {
   const [{ systemError }, formAction] = useActionState(postSummaryForm, initialState)
 
   const t = useTranslations('summary')
@@ -56,8 +56,8 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert />}
-        <FormHeader title={t('title')} step={t('step')} />
-        <Heading level={1} size="level-3" className="ams-mb-s">
+        <FormHeader step={t('step')} title={t('title')} />
+        <Heading className="ams-mb-s" level={1} size="level-3">
           {t('main-title')}
         </Heading>
         <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
@@ -73,7 +73,7 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
           </SummaryList.Item>
 
           {additionalQuestions.length > 0 &&
-            additionalQuestions.map(({ key, term, description, link }) => (
+            additionalQuestions.map(({ description, key, link, term }) => (
               <SummaryList.Item key={key}>
                 <SummaryList.Term>{term}</SummaryList.Term>
                 <SummaryList.Description>{description}</SummaryList.Description>
@@ -99,8 +99,8 @@ export const Summary = ({ attachments, primaryForm, additionalQuestions, locatio
             <SummaryList.Item>
               <SummaryList.Term>{attachments.term}</SummaryList.Term>
               <SummaryList.Description>
-                <UnorderedList markers={false} className="ams-gap-m">
-                  {attachments.files.map(({ fileName, blob }) => (
+                <UnorderedList className="ams-gap-m" markers={false}>
+                  {attachments.files.map(({ blob, fileName }) => (
                     <UnorderedList.Item key={fileName}>
                       <AttachmentImage blob={blob} fileName={fileName} />
                     </UnorderedList.Item>

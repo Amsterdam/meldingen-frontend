@@ -72,10 +72,10 @@ export const FileUpload = ({
         aria-labelledby={ariaLabelledBy}
         className={clsx(styles.upload, className)}
         id={id}
-        type="button"
         onClick={handleClick}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
+        type="button"
       >
         <span className={styles.dropAreaText}>{dropAreaText}</span> <span className={styles.button}>{buttonText}</span>
       </button>

@@ -27,7 +27,7 @@ export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => (
     }
   >
     <TextInput source="title" validate={required()} />
-    <TextInput source="display" defaultValue="wizard" hidden />
+    <TextInput defaultValue="wizard" hidden source="display" />
     <ClassificationInput />
     <BuilderInput />
   </SimpleForm>

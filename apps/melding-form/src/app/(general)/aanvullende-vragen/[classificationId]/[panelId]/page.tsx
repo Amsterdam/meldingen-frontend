@@ -105,8 +105,8 @@ export default async ({ params }: { params: Params }) => {
     isLastPanel,
     lastPanelPath,
     nextPanelPath,
-    questionKeysAndIds,
     questionAndAnswerIdPairs,
+    questionKeysAndIds,
     requiredQuestionKeys,
   }
 

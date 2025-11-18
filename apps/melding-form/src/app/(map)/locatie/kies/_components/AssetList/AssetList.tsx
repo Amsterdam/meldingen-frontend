@@ -5,9 +5,9 @@ import { Dispatch, SetStateAction } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { getContainerFeatureIconSVG } from './getContainerFeatureIconSVG'
 import { MAX_ASSETS } from '../../SelectLocation'
 import { NotificationType } from '../../SelectLocation'
+import { getContainerFeatureIconSVG } from './getContainerFeatureIconSVG'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './AssetList.module.css'
@@ -26,7 +26,7 @@ const getCheckboxLabel = (asset: Feature, idNummer: string) => {
 
   return (
     <span className={styles.label}>
-      <Image src={icon} alt={altText} width={32} height={32} />
+      <Image alt={altText} height={32} src={icon} width={32} />
       <span>{idNummer}</span>
     </span>
   )
@@ -35,8 +35,8 @@ const getCheckboxLabel = (asset: Feature, idNummer: string) => {
 export const AssetList = ({
   assetList,
   selectedAssets,
-  setNotificationType,
   setCoordinates,
+  setNotificationType,
   setSelectedAssets,
 }: Props) => {
   if (assetList.length === 0 && selectedAssets.length === 0) return
@@ -83,7 +83,7 @@ export const AssetList = ({
 
         return (
           <li key={publicId}>
-            <Checkbox onChange={() => handleDeselectAsset(asset)} checked className={styles.checkbox}>
+            <Checkbox checked className={styles.checkbox} onChange={() => handleDeselectAsset(asset)}>
               {label}
             </Checkbox>
           </li>
@@ -96,7 +96,7 @@ export const AssetList = ({
 
         return (
           <li key={publicId}>
-            <Checkbox className={styles.checkbox} onChange={() => handleSelectAsset(asset)} checked={false}>
+            <Checkbox checked={false} className={styles.checkbox} onChange={() => handleSelectAsset(asset)}>
               {label}
             </Checkbox>
           </li>

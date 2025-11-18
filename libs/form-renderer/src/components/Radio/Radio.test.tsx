@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
-import { type Props, Radio } from './Radio'
+import type { Props } from './Radio'
+
+import { Radio } from './Radio'
 
 const defaultProps: Props = {
   hasHeading: true,
@@ -26,8 +28,8 @@ describe('Radio Component', () => {
     render(<Radio {...defaultProps} description="Test description" />)
 
     const radioWithDescription = screen.getByRole('radiogroup', {
-      name: defaultProps.label,
       description: 'Test description',
+      name: defaultProps.label,
     })
 
     expect(radioWithDescription).toBeInTheDocument()
@@ -77,8 +79,8 @@ describe('Radio Component', () => {
     render(<Radio {...defaultProps} errorMessage="Test error message" />)
 
     const radioWithErrorMessage = screen.getByRole('radiogroup', {
-      name: defaultProps.label,
       description: 'Invoerfout: Test error message',
+      name: defaultProps.label,
     })
 
     expect(radioWithErrorMessage).toBeInTheDocument()

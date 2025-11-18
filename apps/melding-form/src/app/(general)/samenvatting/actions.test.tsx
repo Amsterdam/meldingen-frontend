@@ -1,7 +1,8 @@
+import type { Mock } from 'vitest'
+
 import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import type { Mock } from 'vitest'
 import { vi } from 'vitest'
 
 import { postSummaryForm } from './actions'
@@ -45,6 +46,7 @@ describe('postSummaryForm', () => {
     const deleteMock = vi.fn()
 
     ;(cookies as Mock).mockReturnValue({
+      delete: deleteMock,
       get: (name: string) => {
         if (name === COOKIES.ID) {
           return { value: '123' }
@@ -54,7 +56,6 @@ describe('postSummaryForm', () => {
         }
         return undefined
       },
-      delete: deleteMock,
     })
 
     await postSummaryForm()

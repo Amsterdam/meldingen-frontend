@@ -1,7 +1,8 @@
+import type { Mock } from 'vitest'
+
 import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import type { Mock } from 'vitest'
 
 import { postContactForm } from './actions'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
@@ -68,8 +69,8 @@ describe('postContactForm', () => {
 
     const result = await postContactForm(undefined, formData)
     expect(result).toEqual({
-      validationErrors: [{ key: 'email-input', message: 'Email validation error' }],
       formData,
+      validationErrors: [{ key: 'email-input', message: 'Email validation error' }],
     })
   })
 
@@ -90,8 +91,8 @@ describe('postContactForm', () => {
     const result = await postContactForm(undefined, formData)
 
     expect(result).toEqual({
-      validationErrors: [{ key: 'tel-input', message: 'Phone validation error' }],
       formData,
+      validationErrors: [{ key: 'tel-input', message: 'Phone validation error' }],
     })
   })
 

@@ -5,8 +5,8 @@ import { getWfsFilter } from './getWfsFilter'
 
 describe('getWfsFilter', () => {
   const mockBounds = {
-    getSouthWest: vi.fn(),
     getNorthEast: vi.fn(),
+    getSouthWest: vi.fn(),
   }
 
   const mockMapInstance = {

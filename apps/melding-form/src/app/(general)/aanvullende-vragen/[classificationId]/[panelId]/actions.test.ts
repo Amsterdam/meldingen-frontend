@@ -1,7 +1,8 @@
+import type { Mock } from 'vitest'
+
 import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import type { Mock } from 'vitest'
 
 import { postForm } from './actions'
 import { COOKIES } from 'apps/melding-form/src/constants'
@@ -21,8 +22,8 @@ describe('postForm', () => {
     lastPanelPath: '/test',
     nextPanelPath: '/',
     questionKeysAndIds: [
-      { key: 'key1', id: 1 },
-      { key: 'key2', id: 2 },
+      { id: 1, key: 'key1' },
+      { id: 2, key: 'key2' },
     ],
     requiredQuestionKeys: [],
   }
@@ -58,8 +59,8 @@ describe('postForm', () => {
     const result = await postForm({ ...defaultArgs, requiredQuestionKeys: ['key1', 'key2'] }, null, formData)
 
     expect(result).toEqual({
-      validationErrors: [{ key: 'key2', message: 'Vraag is verplicht en moet worden beantwoord.' }],
       formData,
+      validationErrors: [{ key: 'key2', message: 'Vraag is verplicht en moet worden beantwoord.' }],
     })
   })
 
@@ -79,8 +80,8 @@ describe('postForm', () => {
     const result = await postForm(defaultArgs, null, formData)
 
     expect(result).toEqual({
-      validationErrors: [{ key: 'key1', message: 'Validation error' }],
       formData,
+      validationErrors: [{ key: 'key1', message: 'Validation error' }],
     })
   })
 
@@ -112,7 +113,7 @@ describe('postForm', () => {
 
     const result = await postForm(defaultArgs, null, formData)
 
-    expect(result).toEqual({ systemError: ['Error message', 'Error message'], formData })
+    expect(result).toEqual({ formData, systemError: ['Error message', 'Error message'] })
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
@@ -126,6 +127,6 @@ describe('postForm', () => {
 
     const result = await postForm(defaultArgs, null, formData)
 
-    expect(result).toEqual({ systemError: 'Error message', formData })
+    expect(result).toEqual({ formData, systemError: 'Error message' })
   })
 })

@@ -1,6 +1,6 @@
+import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import NextLink from 'next/link'
-import { getTranslations } from 'next-intl/server'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Heading, StandaloneLink } from '@meldingen/ui'
@@ -29,7 +29,7 @@ export default async () => {
   const date = createdAt ? new Date(createdAt).toLocaleDateString('nl-NL') : undefined
   const time = createdAt ? new Date(createdAt).toLocaleTimeString('nl-NL', { timeStyle: 'short' }) : undefined
 
-  const description = t('description', { publicId, date, time })
+  const description = t('description', { date, publicId, time })
 
   return (
     <main>

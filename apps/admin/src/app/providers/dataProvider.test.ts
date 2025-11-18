@@ -7,14 +7,14 @@ describe('dataProvider', () => {
     const client = dataProvider('http://localhost:3000', httpClient)
 
     await client.update('form', {
+      data: {},
       id: 1,
       previousData: { id: 1 },
-      data: {},
     })
 
     expect(httpClient).toHaveBeenCalledWith('http://localhost:3000/form/1', {
-      method: 'PUT',
       body: '{}',
+      method: 'PUT',
     })
   })
 
@@ -24,14 +24,14 @@ describe('dataProvider', () => {
     const client = dataProvider('http://localhost:3000', httpClient)
 
     await client.update('other', {
+      data: {},
       id: 1,
       previousData: { id: 1 },
-      data: {},
     })
 
     expect(httpClient).toHaveBeenCalledWith('http://localhost:3000/other/1', {
-      method: 'PATCH',
       body: '{}',
+      method: 'PATCH',
     })
   })
 })

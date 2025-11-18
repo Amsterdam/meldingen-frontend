@@ -18,10 +18,10 @@ export const BuilderInput = () => {
     <>
       <TextInput
         defaultValue={[]}
-        source="components"
-        parse={(val) => JSON.parse(val)}
         format={(val) => JSON.stringify(val)}
         hidden
+        parse={(val) => JSON.parse(val)}
+        source="components"
       />
       <div className={styles.builder}>
         <FormBuilder data={data} onChange={onChange} />

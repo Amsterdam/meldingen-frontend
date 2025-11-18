@@ -1,7 +1,7 @@
 'use server'
 
-import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
+import { redirect } from 'next/navigation'
 
 import { isValidMeldingState } from './utils'
 import { putMeldingByMeldingIdComplete, putMeldingByMeldingIdProcess } from 'apps/back-office/src/apiClientProxy'
@@ -33,8 +33,8 @@ export const postChangeStateForm = async ({ meldingId }: { meldingId: number }, 
 
   if (state === 'completed') {
     const { error } = await putMeldingByMeldingIdComplete({
-      path: { melding_id: meldingId },
       body: { mail_body: 'Dit is de body van de melding afgehandeld email.' },
+      path: { melding_id: meldingId },
     })
 
     if (error) return { errorMessage: handleApiError(error) }

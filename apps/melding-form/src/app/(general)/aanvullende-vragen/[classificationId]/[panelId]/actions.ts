@@ -5,9 +5,9 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
+import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
-import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
@@ -15,9 +15,9 @@ type ArgsType = {
   isLastPanel: boolean
   lastPanelPath: string
   nextPanelPath: string
-  questionKeysAndIds: { key: string; id: number }[]
-  requiredQuestionKeys: string[]
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
+  questionKeysAndIds: { id: number; key: string }[]
+  requiredQuestionKeys: string[]
 }
 
 const getUnansweredRequiredQuestionKeys = (requiredKeys: string[], entries: [string, unknown][]) =>
@@ -38,8 +38,8 @@ export const postForm = async (
     isLastPanel,
     lastPanelPath,
     nextPanelPath,
-    questionKeysAndIds,
     questionAndAnswerIdPairs,
+    questionKeysAndIds,
     requiredQuestionKeys,
   }: ArgsType,
   _: unknown,

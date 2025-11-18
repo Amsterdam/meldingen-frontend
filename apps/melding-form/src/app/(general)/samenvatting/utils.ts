@@ -42,7 +42,7 @@ export const getPrimaryFormSummary = async (description: string) => {
   const primaryForm = primaryFormData.components[0]
 
   return {
-    data: { key: 'primary', term: primaryForm.label, description },
+    data: { description, key: 'primary', term: primaryForm.label },
   }
 }
 
@@ -82,10 +82,10 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
       const panels = formComponents.components as FormPanelComponentOutput[]
       const panelId = findPanelIdByQuestionId(panels, answer.question.id)
       return {
-        key: `${answer.question.id}`,
-        term: answer.question.text,
         description: answer.text,
+        key: `${answer.question.id}`,
         link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}` : '/',
+        term: answer.question.text,
       }
     }),
   }
@@ -102,7 +102,7 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
   const attachments = await Promise.all(
     data.map(async ({ id, original_filename }) => {
       const { data, error } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
-        path: { melding_id: parseInt(meldingId, 10), attachment_id: id },
+        path: { attachment_id: id, melding_id: parseInt(meldingId, 10) },
 
         query: { token, type: 'thumbnail' },
       })
@@ -117,16 +117,16 @@ export const getAttachmentsSummary = async (label: string, meldingId: string, to
     }),
   )
 
-  return { key: 'attachments', term: label, files: attachments }
+  return { files: attachments, key: 'attachments', term: label }
 }
 
 export const getLocationSummary = (t: (key: string) => string, meldingData: MeldingOutput) => {
   const address = getFullNLAddress(meldingData) || t('errors.no-location')
 
   return {
+    description: address,
     key: 'location',
     term: t('location-label'),
-    description: address,
   }
 }
 
@@ -134,8 +134,8 @@ export const getContactSummary = (label: string, email?: string | null, phone?: 
   if (!email && !phone) return undefined
 
   return {
+    description: [email, phone].filter((item) => item !== undefined && item !== null), // Filter out undefined or null items
     key: 'contact',
     term: label,
-    description: [email, phone].filter((item) => item !== undefined && item !== null), // Filter out undefined or null items
   }
 }

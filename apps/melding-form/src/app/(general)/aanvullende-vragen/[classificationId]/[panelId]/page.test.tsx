@@ -60,8 +60,8 @@ describe('Page', () => {
   it('renders the AdditionalQuestions component with correct props', async () => {
     const formData = {
       components: [
-        { key: 'panel-1', type: 'panel', label: 'Panel 1', components: [{ key: 'question-1', question: 'q1' }] },
-        { key: 'panel-2', type: 'panel', label: 'Panel 2', components: [{ key: 'question-2', question: 'q2' }] },
+        { components: [{ key: 'question-1', question: 'q1' }], key: 'panel-1', label: 'Panel 1', type: 'panel' },
+        { components: [{ key: 'question-2', question: 'q2' }], key: 'panel-2', label: 'Panel 2', type: 'panel' },
       ],
     }
 
@@ -87,10 +87,10 @@ describe('Page', () => {
     const formData = {
       components: [
         {
-          key: 'panel-1',
-          type: 'panel',
-          label: 'Panel 1',
           components: [{ key: 'question-1', question: additionalQuestions[0].question.id }],
+          key: 'panel-1',
+          label: 'Panel 1',
+          type: 'panel',
         },
       ],
     }
@@ -122,10 +122,10 @@ describe('Page', () => {
     const formData = {
       components: [
         {
-          key: 'panel-1',
-          type: 'panel',
-          label: 'Panel 1',
           components: [{ key: 'question-1', question: 'q1', type: 'selectboxes' }],
+          key: 'panel-1',
+          label: 'Panel 1',
+          type: 'panel',
         },
       ],
     }
@@ -157,7 +157,7 @@ describe('Page', () => {
   it('logs an error to the console when the answers for additional questions cannot be fetched', async () => {
     const formData = {
       components: [
-        { key: 'panel-1', type: 'panel', label: 'Panel 1', components: [{ key: 'question-1', question: 'q1' }] },
+        { components: [{ key: 'question-1', question: 'q1' }], key: 'panel-1', label: 'Panel 1', type: 'panel' },
       ],
     }
 
@@ -181,12 +181,12 @@ describe('Page', () => {
   it('passes postForm with the correct bounded args to AdditionalQuestions', async () => {
     const formData = {
       components: [
-        { key: 'panel-1', type: 'panel', label: 'Panel 1', components: [{ key: 'question-1', question: 'q1' }] },
+        { components: [{ key: 'question-1', question: 'q1' }], key: 'panel-1', label: 'Panel 1', type: 'panel' },
         {
-          key: 'panel-2',
-          type: 'panel',
-          label: 'Panel 2',
           components: [{ key: 'question-2', question: 'q2', validate: { required: true } }],
+          key: 'panel-2',
+          label: 'Panel 2',
+          type: 'panel',
         },
       ],
     }
@@ -210,11 +210,11 @@ describe('Page', () => {
       isLastPanel: true,
       lastPanelPath: '/aanvullende-vragen/1/panel-2',
       nextPanelPath: '/locatie',
-      questionKeysAndIds: [{ key: 'question-2', id: 'q2' }],
       questionAndAnswerIdPairs: [
         { answerId: additionalQuestions[0].id, questionId: additionalQuestions[0].question.id },
         { answerId: additionalQuestions[1].id, questionId: additionalQuestions[1].question.id },
       ],
+      questionKeysAndIds: [{ id: 'q2', key: 'question-2' }],
       requiredQuestionKeys: ['question-2'],
     })
   })
@@ -222,12 +222,12 @@ describe('Page', () => {
   it('passes postForm with the correct bounded args to AdditionalQuestions when not on last panel', async () => {
     const formData = {
       components: [
-        { key: 'panel-1', type: 'panel', label: 'Panel 1', components: [{ key: 'question-1', question: 'q1' }] },
+        { components: [{ key: 'question-1', question: 'q1' }], key: 'panel-1', label: 'Panel 1', type: 'panel' },
         {
-          key: 'panel-2',
-          type: 'panel',
-          label: 'Panel 2',
           components: [{ key: 'question-2', question: 'q2', validate: { required: true } }],
+          key: 'panel-2',
+          label: 'Panel 2',
+          type: 'panel',
         },
       ],
     }
@@ -251,7 +251,7 @@ describe('Page', () => {
       isLastPanel: false,
       lastPanelPath: '/aanvullende-vragen/1/panel-2',
       nextPanelPath: '/aanvullende-vragen/1/panel-2',
-      questionKeysAndIds: [{ key: 'question-1', id: 'q1' }],
+      questionKeysAndIds: [{ id: 'q1', key: 'question-1' }],
       requiredQuestionKeys: [],
     })
   })

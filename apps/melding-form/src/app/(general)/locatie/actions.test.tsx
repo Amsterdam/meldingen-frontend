@@ -1,7 +1,8 @@
+import type { Mock } from 'vitest'
+
 import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import type { Mock } from 'vitest'
 
 import { postLocationForm } from './actions'
 import { COOKIES } from 'apps/melding-form/src/constants'
@@ -44,9 +45,9 @@ describe('postLocationForm', () => {
       ),
     )
     mockCookies({
+      [COOKIES.ADDRESS]: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam',
       [COOKIES.ID]: '123',
       [COOKIES.TOKEN]: 'test-token',
-      [COOKIES.ADDRESS]: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam',
     })
 
     const result = await postLocationForm()
@@ -56,9 +57,9 @@ describe('postLocationForm', () => {
 
   it('redirects to /bijlage when the form is submitted successfully', async () => {
     mockCookies({
+      [COOKIES.ADDRESS]: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam',
       [COOKIES.ID]: '123',
       [COOKIES.TOKEN]: 'test-token',
-      [COOKIES.ADDRESS]: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam',
     })
 
     await postLocationForm()

@@ -1,4 +1,4 @@
-import { ErrorMessage, Field, Label, Select as ADSSelect } from '@amsterdam/design-system-react'
+import { Select as ADSSelect, ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
@@ -13,16 +13,16 @@ export type Props = {
       value: string
     }[]
   }
+  defaultValue?: string
   description?: string
-  hasHeading: boolean
   errorMessage?: string
+  hasHeading: boolean
   id: string
   label: string
   validate?: { required: boolean } | null
-  defaultValue?: string
 }
 
-export const Select = ({ description, errorMessage, hasHeading, id, label, validate, data, defaultValue }: Props) => {
+export const Select = ({ data, defaultValue, description, errorMessage, hasHeading, id, label, validate }: Props) => {
   const labelComponent = (
     <Label htmlFor={id} optional={!validate?.required}>
       {label}
@@ -30,7 +30,7 @@ export const Select = ({ description, errorMessage, hasHeading, id, label, valid
   )
 
   return (
-    <Field key={id} invalid={Boolean(errorMessage)}>
+    <Field invalid={Boolean(errorMessage)} key={id}>
       {hasHeading ? <h1 className={styles.h1}>{labelComponent}</h1> : labelComponent}
       {description && (
         <MarkdownToHtml id={`${id}-description`} type="description">
@@ -39,13 +39,13 @@ export const Select = ({ description, errorMessage, hasHeading, id, label, valid
       )}
       {errorMessage && <ErrorMessage id={`${id}-error`}>{errorMessage}</ErrorMessage>}
       <ADSSelect
-        key={defaultValue}
         aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
         aria-required={validate?.required ? 'true' : undefined}
+        defaultValue={defaultValue}
         id={id}
         invalid={Boolean(errorMessage)}
+        key={defaultValue}
         name={id}
-        defaultValue={defaultValue}
       >
         {data.values.map(({ label: optionLabel, value }) => (
           <ADSSelect.Option key={value} value={value}>

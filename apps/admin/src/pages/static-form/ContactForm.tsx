@@ -11,26 +11,26 @@ export const ContactForm = () => {
         </Toolbar>
       }
     >
-      <TextInput source="title" readOnly />
+      <TextInput readOnly source="title" />
       <span>
         <strong>E-mail</strong>
       </span>
       <TextInput source="components[0].label" validate={validateLabel} />
       <TextInput
-        source="components[0].description"
         multiline
         /* v8 ignore next */
         parse={(value) => value ?? ''}
+        source="components[0].description"
       />
       <span>
         <strong>Telefoonnummer</strong>
       </span>
       <TextInput source="components[1].label" validate={validateLabel} />
       <TextInput
-        source="components[1].description"
         multiline
         /* v8 ignore next */
         parse={(value) => value ?? ''}
+        source="components[1].description"
       />
     </SimpleForm>
   )

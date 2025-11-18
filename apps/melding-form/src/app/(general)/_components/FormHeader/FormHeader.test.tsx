@@ -4,7 +4,7 @@ import { FormHeader } from './FormHeader'
 
 describe('FormHeader', () => {
   it('renders', () => {
-    render(<FormHeader title="Test Title" step="Step 1" />)
+    render(<FormHeader step="Step 1" title="Test Title" />)
 
     const header = screen.getByRole('banner', { name: 'Test Title' })
 
@@ -12,7 +12,7 @@ describe('FormHeader', () => {
   })
 
   it('renders the step in a paragraph', () => {
-    render(<FormHeader title="Test Title" step="Step 1" />)
+    render(<FormHeader step="Step 1" title="Test Title" />)
 
     const paragraph = screen.getByText('Step 1')
 

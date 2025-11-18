@@ -1,6 +1,7 @@
+import type { Mock } from 'vitest'
+
 import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
-import type { Mock } from 'vitest'
 import { vi } from 'vitest'
 
 import { Summary } from './Summary'
@@ -16,16 +17,16 @@ vi.mock('react', async (importOriginal) => {
 const defaultProps = {
   additionalQuestions: [
     {
-      key: '1',
-      term: 'Text Field 1',
       description: 'Antwoord vraag 1',
+      key: '1',
       link: '/link/to/page',
+      term: 'Text Field 1',
     },
     {
-      key: '2',
-      term: 'Text Area 2',
       description: 'Antwoord vraag 2',
+      key: '2',
       link: '/link/to/page',
+      term: 'Text Area 2',
     },
   ],
   attachments: {
@@ -40,19 +41,19 @@ const defaultProps = {
     term: 'Foto’s',
   },
   contact: {
+    description: ['test@test.com', '+31612345678'],
     key: 'contact',
     term: 'Wat zijn uw contactgegevens?',
-    description: ['test@test.com', '+31612345678'],
   },
   location: {
+    description: 'Nieuwmarkt 247, 1011MB Amsterdam',
     key: 'location',
     term: 'Waar staat de container?',
-    description: 'Nieuwmarkt 247, 1011MB Amsterdam',
   },
   primaryForm: {
+    description: 'Er ligt heel veel afval op straat.',
     key: 'primary',
     term: 'Wat wilt u melden?',
-    description: 'Er ligt heel veel afval op straat.',
   },
 }
 

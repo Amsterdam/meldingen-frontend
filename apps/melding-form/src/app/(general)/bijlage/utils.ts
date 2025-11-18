@@ -21,8 +21,8 @@ export type FileUpload = {
 }
 
 export type PendingFileUpload = Omit<FileUpload, 'status'> & {
-  xhr: XMLHttpRequest
   status: 'pending'
+  xhr: XMLHttpRequest
 }
 
 // We're using XMLHttpRequest instead of fetch here,
@@ -48,9 +48,9 @@ export const startUpload = (
         upload.id === fileUpload.id
           ? {
               ...upload,
+              error: xhr.status !== 200 ? safeJSONParse(xhr.response)?.detail : undefined,
               serverId: safeJSONParse(xhr.response)?.id,
               status: xhr.status === 200 ? 'success' : 'error',
-              error: xhr.status !== 200 ? safeJSONParse(xhr.response)?.detail : undefined,
             }
           : upload,
       ),
@@ -60,7 +60,7 @@ export const startUpload = (
   xhr.onerror = () => {
     setFileUploads((prev) =>
       prev.map((upload) =>
-        upload.id === fileUpload.id ? { ...upload, status: 'error', error: 'Network error' } : upload,
+        upload.id === fileUpload.id ? { ...upload, error: 'Network error', status: 'error' } : upload,
       ),
     )
   }

@@ -1,10 +1,12 @@
 import type { Component as ComponentSchema } from '@formio/core'
-import { Components, FormBuilder as FormioFormBuilder } from '@formio/js'
 import type { FormBuilder as FormBuilderProps } from '@formio/js'
+
+import { Components, FormBuilder as FormioFormBuilder } from '@formio/js'
 import { useEffect, useRef } from 'react'
 
 import { Radio, Select, SelectBoxes, Textarea, Textfield } from './components'
 import nl from './translations/nl.json'
+
 import '@formio/js/dist/formio.builder.min.css'
 
 type ExtendedFormBuilderOptions = FormBuilderProps['options'] & {
@@ -14,24 +16,24 @@ type ExtendedFormBuilderOptions = FormBuilderProps['options'] & {
 }
 
 const options: ExtendedFormBuilderOptions = {
-  language: 'nl',
-  i18n: { nl },
-  noDefaultSubmitButton: true,
   builder: {
+    advanced: false,
     basic: {
-      default: true,
       components: {
         button: false,
         checkbox: false,
         number: false,
         password: false,
       },
+      default: true,
     },
-    advanced: false,
-    layout: false,
     data: false,
+    layout: false,
     premium: false,
   },
+  i18n: { nl },
+  language: 'nl',
+  noDefaultSubmitButton: true,
 }
 
 type Props = {
@@ -54,22 +56,22 @@ export const FormBuilder = ({ data, onChange }: Props) => {
   useEffect(() => {
     if (!ref.current) return
 
-    builderInstance.current = new FormioFormBuilder(ref.current, { display: 'wizard', components: data ?? [] }, options)
+    builderInstance.current = new FormioFormBuilder(ref.current, { components: data ?? [], display: 'wizard' }, options)
 
     const handleChange = () => {
       onChange(builderInstance.current?.instance.form)
     }
 
     const builderEvents = [
-      { name: 'addComponent', action: handleChange },
-      { name: 'saveComponent', action: handleChange },
-      { name: 'updateComponent', action: handleChange },
-      { name: 'removeComponent', action: handleChange },
-      { name: 'deleteComponent', action: handleChange },
+      { action: handleChange, name: 'addComponent' },
+      { action: handleChange, name: 'saveComponent' },
+      { action: handleChange, name: 'updateComponent' },
+      { action: handleChange, name: 'removeComponent' },
+      { action: handleChange, name: 'deleteComponent' },
     ]
 
     builderInstance.current.ready.then(() => {
-      builderEvents.forEach(({ name, action }) => {
+      builderEvents.forEach(({ action, name }) => {
         builderInstance.current?.instance.on(name, action)
       })
     })

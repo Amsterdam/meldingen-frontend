@@ -3,10 +3,11 @@
  * Copyright Gemeente Amsterdam
  */
 
+import type { ForwardedRef } from 'react'
+
 import { FieldSetProps } from '@amsterdam/design-system-react'
 import clsx from 'clsx'
 import { forwardRef } from 'react'
-import type { ForwardedRef } from 'react'
 
 import styles from './FieldSet.module.css'
 

@@ -1,6 +1,6 @@
 import { clsx } from 'clsx'
-import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
+import NextLink from 'next/link'
 import { Fragment } from 'react'
 
 import { DescriptionList, Grid, Heading, Link, Paragraph } from '@meldingen/ui'
@@ -11,17 +11,17 @@ import { BackLink } from './_components/BackLink'
 import styles from './Detail.module.css'
 
 type DescriptionListItem = {
+  description: string
   key: string
   term: string
-  description: string
 }
 
 type MeldingDataItem = DescriptionListItem & { link?: { href: string; label: string } }
 
 type File = {
   blob: Blob | null
-  fileName: string
   error?: string
+  fileName: string
 }
 
 type Props = {
@@ -47,15 +47,15 @@ export const Detail = ({
 
   return (
     <Grid paddingBottom="2x-large" paddingTop="x-large">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
+      <Grid.Cell span={{ medium: 6, narrow: 4, wide: 6 }} start={{ medium: 2, narrow: 1, wide: 3 }}>
         <BackLink className="ams-mb-s" href={`/`}>
           {t('back-link')}
         </BackLink>
-        <Heading level={1} className="ams-mb-m">
+        <Heading className="ams-mb-m" level={1}>
           {t('title', { publicId })}
         </Heading>
         <DescriptionList className="ams-mb-l">
-          {additionalQuestionsWithMeldingText.map(({ key, term, description }) => (
+          {additionalQuestionsWithMeldingText.map(({ description, key, term }) => (
             <Fragment key={key}>
               <DescriptionList.Term>{term}</DescriptionList.Term>
               <DescriptionList.Description>{description}</DescriptionList.Description>
@@ -64,7 +64,7 @@ export const Detail = ({
         </DescriptionList>
         {location && (
           <DescriptionList className="ams-mb-l">
-            {location.map(({ key, term, description }) => (
+            {location.map(({ description, key, term }) => (
               <Fragment key={key}>
                 <DescriptionList.Term>{term}</DescriptionList.Term>
                 <DescriptionList.Description>{description}</DescriptionList.Description>
@@ -73,13 +73,13 @@ export const Detail = ({
           </DescriptionList>
         )}
         <DescriptionList className="ams-mb-l">
-          {meldingData.map(({ key, term, description, link }) => (
+          {meldingData.map(({ description, key, link, term }) => (
             <Fragment key={key}>
               <DescriptionList.Term>{term}</DescriptionList.Term>
               <DescriptionList.Description>{description}</DescriptionList.Description>
               {link && (
                 <DescriptionList.Description>
-                  <NextLink href={link.href} passHref legacyBehavior>
+                  <NextLink href={link.href} legacyBehavior passHref>
                     <Link>{link.label}</Link>
                   </NextLink>
                 </DescriptionList.Description>
@@ -89,7 +89,7 @@ export const Detail = ({
         </DescriptionList>
         {contact && (
           <DescriptionList className="ams-mb-l">
-            {contact.map(({ key, term, description }) => (
+            {contact.map(({ description, key, term }) => (
               <Fragment key={key}>
                 <DescriptionList.Term>{term}</DescriptionList.Term>
                 <DescriptionList.Description>{description}</DescriptionList.Description>
@@ -103,7 +103,7 @@ export const Detail = ({
           {hasAttachments ? (
             <div className={clsx(styles.attachmentsGrid, 'ams-mb-l')}>
               {attachments.files.map((file) => (
-                <DescriptionList.Description key={file.fileName} className={styles.attachmentsDescription}>
+                <DescriptionList.Description className={styles.attachmentsDescription} key={file.fileName}>
                   <AttachmentImage blob={file.blob} fileName={file.fileName} />
                 </DescriptionList.Description>
               ))}

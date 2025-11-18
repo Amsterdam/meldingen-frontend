@@ -1,5 +1,5 @@
-import NextLink from 'next/link'
 import { useTranslations } from 'next-intl'
+import NextLink from 'next/link'
 import { AnchorHTMLAttributes } from 'react'
 
 import { Grid, Heading, Link, Pagination, Table } from '@meldingen/ui'
@@ -29,16 +29,16 @@ type MeldingWithAddress = MeldingOutput & { address?: string }
 
 export const formatValue = (melding: MeldingWithAddress, key: string, t: (key: string) => string) => {
   switch (key) {
-    case 'created_at':
-      return new Date(melding.created_at).toLocaleDateString('nl-NL')
-    case 'classification':
-      return melding.classification ? melding.classification.name : t('overview.no-classification')
-    case 'state':
-      return t(`shared.state.${melding.state}`)
     case 'address':
       return melding.address || ''
+    case 'classification':
+      return melding.classification ? melding.classification.name : t('overview.no-classification')
+    case 'created_at':
+      return new Date(melding.created_at).toLocaleDateString('nl-NL')
     case 'postal_code':
       return melding.postal_code || ''
+    case 'state':
+      return t(`shared.state.${melding.state}`)
     default:
       return undefined
   }
@@ -82,8 +82,8 @@ export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props)
 
   return (
     <Grid paddingBottom="2x-large" paddingTop="x-large">
-      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
-        <Heading level={1} className="ams-mb-m">
+      <Grid.Cell span={{ medium: 8, narrow: 4, wide: 12 }}>
+        <Heading className="ams-mb-m" level={1}>
           {t('overview.title', { meldingenCount })}
         </Heading>
         <Table className="ams-mb-l">

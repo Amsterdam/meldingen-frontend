@@ -1,5 +1,5 @@
-import NextLink from 'next/link'
 import { getTranslations } from 'next-intl/server'
+import NextLink from 'next/link'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Footer, Grid, Header, Heading, Page, StandaloneLink } from '@meldingen/ui'
@@ -19,7 +19,7 @@ export default async function NotFound() {
     <Page>
       <Header />
       <Grid paddingBottom="x-large">
-        <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
+        <Grid.Cell span={{ medium: 6, narrow: 4, wide: 6 }} start={{ medium: 2, narrow: 1, wide: 3 }}>
           <main>
             <Heading className="ams-mb-m" level={1}>
               {t('title')}

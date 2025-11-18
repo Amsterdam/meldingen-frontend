@@ -1,4 +1,4 @@
-import { CharacterCount, ErrorMessage, Field, Label, TextArea as ADSTextArea } from '@amsterdam/design-system-react'
+import { TextArea as ADSTextArea, CharacterCount, ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
 import { useRef, useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
@@ -10,8 +10,8 @@ import styles from './TextArea.module.css'
 export type Props = {
   defaultValue?: string
   description?: string
-  hasHeading: boolean
   errorMessage?: string
+  hasHeading: boolean
   id: string
   label: string
   maxCharCount?: number | null
@@ -44,7 +44,7 @@ export const TextArea = ({
   )
 
   return (
-    <Field key={id} invalid={Boolean(errorMessage)}>
+    <Field invalid={Boolean(errorMessage)} key={id}>
       {hasHeading ? <h1 className={styles.h1}>{labelComponent}</h1> : labelComponent}
       {description && (
         <MarkdownToHtml id={`${id}-description`} type="description">
@@ -55,13 +55,13 @@ export const TextArea = ({
       <ADSTextArea
         aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
         aria-required={validate?.required ? 'true' : undefined}
+        defaultValue={defaultValue}
         id={id}
         invalid={Boolean(errorMessage)}
         name={id}
         onChange={typeof maxCharCount === 'number' ? handleChange : undefined}
         ref={ref}
         rows={4}
-        defaultValue={defaultValue}
       />
       {maxCharCount && <CharacterCount length={charCount} maxLength={maxCharCount} />}
     </Field>

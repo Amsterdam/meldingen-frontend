@@ -1,15 +1,15 @@
 'use client'
 
 import { Field, Grid, Heading, Label, Paragraph, Select } from '@amsterdam/design-system-react'
-import Form from 'next/form'
 import { useTranslations } from 'next-intl'
+import Form from 'next/form'
 import { useActionState } from 'react'
 
 import { SubmitButton } from '@meldingen/ui'
 
+import { BackLink } from '../_components/BackLink'
 import { postChangeStateForm } from './actions'
 import { isValidMeldingState } from './utils'
-import { BackLink } from '../_components/BackLink'
 
 type Props = {
   meldingId: number
@@ -27,7 +27,7 @@ export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
 
   return (
     <Grid paddingBottom="2x-large" paddingTop="x-large">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
+      <Grid.Cell span={{ medium: 6, narrow: 4, wide: 6 }} start={{ medium: 2, narrow: 1, wide: 3 }}>
         <BackLink className="ams-mb-s" href={`/melding/${meldingId}`}>
           {t('change-state.back-link')}
         </BackLink>

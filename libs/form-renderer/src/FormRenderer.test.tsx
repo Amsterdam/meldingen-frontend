@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
-import { FormRenderer, type Props } from './FormRenderer'
+import type { Props } from './FormRenderer'
+
+import { FormRenderer } from './FormRenderer'
 import { form } from './mocks/data'
 
 const defaultProps: Props = {
@@ -35,7 +37,7 @@ describe('FormRenderer', () => {
     expect(form).toBeInTheDocument()
   })
 
-  components.map(({ name, index, role }) => {
+  components.map(({ index, name, role }) => {
     it(`renders a ${name}`, () => {
       render(<FormRenderer {...defaultProps} />)
 
@@ -71,7 +73,7 @@ describe('FormRenderer', () => {
     expect(submitButton).toBeInTheDocument()
   })
 
-  components.map(({ name, index }) => {
+  components.map(({ index, name }) => {
     it(`renders a ${name} with a heading if there is only 1 ${name}`, () => {
       const props: Props = {
         ...defaultProps,
@@ -86,7 +88,7 @@ describe('FormRenderer', () => {
     })
   })
 
-  components.map(({ name, index, role }) => {
+  components.map(({ index, name, role }) => {
     if (name === 'CheckboxGroup') {
       // Because of an NVDA bug, we need to add the description and error to the label of a Checkbox group
       it(`renders a CheckboxGroup with an error when there is one`, () => {
@@ -113,8 +115,8 @@ describe('FormRenderer', () => {
         )
 
         const components = screen.getByRole(role, {
-          name: form.components[0].components[index].label,
           description: 'Invoerfout: Test error message',
+          name: form.components[0].components[index].label,
         })
 
         expect(components).toBeInTheDocument()

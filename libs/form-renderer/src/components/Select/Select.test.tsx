@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
-import { type Props, Select } from './Select'
+import type { Props } from './Select'
+
+import { Select } from './Select'
 
 const defaultProps: Props = {
   data: {
@@ -28,8 +30,8 @@ describe('Select Component', () => {
     render(<Select {...defaultProps} description="Test description" />)
 
     const selectWithDescription = screen.getByRole('combobox', {
-      name: defaultProps.label,
       description: 'Test description',
+      name: defaultProps.label,
     })
 
     expect(selectWithDescription).toBeInTheDocument()
@@ -87,8 +89,8 @@ describe('Select Component', () => {
     render(<Select {...defaultProps} errorMessage="Test error message" />)
 
     const selectWithErrorMessage = screen.getByRole('combobox', {
-      name: defaultProps.label,
       description: 'Invoerfout: Test error message',
+      name: defaultProps.label,
     })
 
     expect(selectWithErrorMessage).toBeInTheDocument()

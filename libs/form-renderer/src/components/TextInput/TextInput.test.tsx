@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
-import { type Props, TextInput } from './TextInput'
+import type { Props } from './TextInput'
+
+import { TextInput } from './TextInput'
 
 const defaultProps: Props = {
   hasHeading: true,
@@ -22,8 +24,8 @@ describe('TextInput Component', () => {
     render(<TextInput {...defaultProps} description="Test description" />)
 
     const textInputWithDescription = screen.getByRole('textbox', {
-      name: defaultProps.label,
       description: 'Test description',
+      name: defaultProps.label,
     })
 
     expect(textInputWithDescription).toBeInTheDocument()
@@ -65,8 +67,8 @@ describe('TextInput Component', () => {
     render(<TextInput {...defaultProps} errorMessage="Test error message" />)
 
     const textInputWithErrorMessage = screen.getByRole('textbox', {
-      name: defaultProps.label,
       description: 'Invoerfout: Test error message',
+      name: defaultProps.label,
     })
 
     expect(textInputWithErrorMessage).toBeInTheDocument()

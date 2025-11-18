@@ -4,11 +4,13 @@ import { http, HttpResponse } from 'msw'
 import { useActionState } from 'react'
 import { Mock } from 'vitest'
 
-import { Attachments, type Props } from './Attachments'
+import type { Props } from './Attachments'
+import type { FileUpload } from './utils'
+
+import { Attachments } from './Attachments'
 import { MAX_UPLOAD_ATTEMPTS } from './Attachments'
 import { ExistingFileType } from './page'
 import { startUpload } from './utils'
-import type { FileUpload } from './utils'
 import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
@@ -137,7 +139,7 @@ describe('Attachments', () => {
     ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
-          upload.id === fileUpload.id ? { ...upload, status: 'error', errorMessage: 'Upload failed' } : upload,
+          upload.id === fileUpload.id ? { ...upload, errorMessage: 'Upload failed', status: 'error' } : upload,
         ),
       )
     })
@@ -193,7 +195,7 @@ describe('Attachments', () => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id
-            ? { ...upload, status: 'success', progress: 100, xhr: xhrMock as XMLHttpRequest, serverId: 123 }
+            ? { ...upload, progress: 100, serverId: 123, status: 'success', xhr: xhrMock as XMLHttpRequest }
             : upload,
         ),
       )
@@ -223,7 +225,7 @@ describe('Attachments', () => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id
-            ? { ...upload, status: 'success', progress: 100, xhr: xhrMock as XMLHttpRequest, serverId: 123 }
+            ? { ...upload, progress: 100, serverId: 123, status: 'success', xhr: xhrMock as XMLHttpRequest }
             : upload,
         ),
       )
@@ -276,13 +278,13 @@ describe('Attachments', () => {
 
     const abortMock = vi.fn()
 
-    const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.OPENED, abort: abortMock }
+    const xhrMock: Partial<XMLHttpRequest> = { abort: abortMock, readyState: XMLHttpRequest.OPENED }
 
     ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id
-            ? { ...upload, status: 'loading', progress: 20, xhr: xhrMock as XMLHttpRequest, serverId: 123 }
+            ? { ...upload, progress: 20, serverId: 123, status: 'loading', xhr: xhrMock as XMLHttpRequest }
             : upload,
         ),
       )
@@ -313,7 +315,7 @@ describe('Attachments', () => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id
-            ? { ...upload, status: 'error', progress: 0, xhr: xhrMock as XMLHttpRequest, serverId: undefined }
+            ? { ...upload, progress: 0, serverId: undefined, status: 'error', xhr: xhrMock as XMLHttpRequest }
             : upload,
         ),
       )
@@ -350,7 +352,7 @@ describe('Attachments', () => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id
-            ? { ...upload, status: 'success', progress: 100, xhr: xhrMock as XMLHttpRequest, serverId: 123 }
+            ? { ...upload, progress: 100, serverId: 123, status: 'success', xhr: xhrMock as XMLHttpRequest }
             : upload,
         ),
       )

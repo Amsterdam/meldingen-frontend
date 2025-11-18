@@ -60,7 +60,7 @@ export default async () => {
     ? await Promise.all(
         attachmentData.map(async ({ id, original_filename }): Promise<ExistingFileType> => {
           const { data, error } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
-            path: { melding_id: parseInt(meldingId, 10), attachment_id: id },
+            path: { attachment_id: id, melding_id: parseInt(meldingId, 10) },
             query: { token, type: 'thumbnail' },
           })
 

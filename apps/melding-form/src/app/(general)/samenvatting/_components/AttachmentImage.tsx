@@ -25,7 +25,7 @@ export const AttachmentImage = ({ blob, fileName }: Props) => {
 
   return (
     <>
-      {url ? <Image src={url} alt="" className={styles.image} /> : <Loading />}
+      {url ? <Image alt="" className={styles.image} src={url} /> : <Loading />}
       <Paragraph>{fileName}</Paragraph>
     </>
   )

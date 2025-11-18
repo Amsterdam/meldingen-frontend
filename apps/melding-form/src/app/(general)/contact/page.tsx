@@ -47,7 +47,7 @@ export default async () => {
     console.error(meldingError)
   }
 
-  const { phone, email } = data || {}
+  const { email, phone } = data || {}
 
   const formComponents = contactFormComponents.map((component) => {
     if (component.key === 'tel-input' && phone) {

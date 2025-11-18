@@ -2,15 +2,17 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 
-import { AssetList, type Props } from './AssetList'
+import type { Props } from './AssetList'
+
+import { AssetList } from './AssetList'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 const defaultProps: Props = {
   assetList: containerAssets,
   selectedAssets: [],
   setCoordinates: vi.fn(),
-  setSelectedAssets: vi.fn(),
   setNotificationType: vi.fn(),
+  setSelectedAssets: vi.fn(),
 }
 
 describe('AssetList', () => {

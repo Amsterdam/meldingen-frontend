@@ -51,8 +51,8 @@ describe('Page', () => {
         HttpResponse.json({
           components: [
             {
-              type: 'textarea',
               label: '', // No label provided
+              type: 'textarea',
             },
           ],
         }),
@@ -67,8 +67,8 @@ describe('Page', () => {
       http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
         HttpResponse.json({
           components: [
-            { key: 'email-input', type: 'textarea', label: 'Email' },
-            { key: 'tel-input', type: 'textarea', label: 'Phone' },
+            { key: 'email-input', label: 'Email', type: 'textarea' },
+            { key: 'tel-input', label: 'Phone', type: 'textarea' },
           ],
         }),
       ),

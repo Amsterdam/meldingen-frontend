@@ -53,10 +53,10 @@ export const fetchAddressList = async (
     const responseData = await response.json()
     if (response.ok) {
       const responseList: PDOKItem[] = responseData.response.docs.map(
-        (item: { id: string; weergavenaam: string; centroide_ll: string }): PDOKItem => ({
+        (item: { centroide_ll: string; id: string; weergavenaam: string }): PDOKItem => ({
+          centroide_ll: item.centroide_ll,
           id: item.id,
           weergave_naam: item.weergavenaam,
-          centroide_ll: item.centroide_ll,
         }),
       )
 

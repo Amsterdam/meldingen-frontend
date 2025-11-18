@@ -1,4 +1,5 @@
 import type { Feature } from 'geojson'
+
 import L from 'leaflet'
 
 import {
@@ -19,12 +20,12 @@ export type AssetFeature = Feature & {
 }
 
 const containerIcons: Record<(typeof containerTypes)[number], L.Icon> = {
-  Papier: papierAfvalIcon,
+  Gft: gftAfvalIcon,
   Glas: glasAfvalIcon,
+  Papier: papierAfvalIcon,
+  Plastic: plasticAfvalIcon,
   Rest: restAfvalIcon,
   Textiel: textielAfvalIcon,
-  Plastic: plasticAfvalIcon,
-  Gft: gftAfvalIcon,
 }
 
 export const getContainerFeatureIcon = (feature: AssetFeature, isSelected: boolean): L.Icon => {
@@ -36,8 +37,8 @@ export const getContainerFeatureIcon = (feature: AssetFeature, isSelected: boole
     return L.icon({
       ...icon.options,
       className: styles.border,
-      iconSize: [60, 60],
       iconAnchor: [34, 56],
+      iconSize: [60, 60],
     })
   }
 

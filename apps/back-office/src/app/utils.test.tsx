@@ -3,9 +3,9 @@ import { getFullNLAddress, getShortNLAddress } from './utils'
 describe('getShortNLAddress', () => {
   it('returns the correct short address when all fields are present', () => {
     const address = getShortNLAddress({
-      street: 'Damrak',
       house_number: 1,
       house_number_addition: 'A',
+      street: 'Damrak',
     })
 
     expect(address).toBe('Damrak 1A')
@@ -13,9 +13,9 @@ describe('getShortNLAddress', () => {
 
   it('returns the correct short address when house_number_addition is missing', () => {
     const address = getShortNLAddress({
-      street: 'Damrak',
       house_number: 1,
       house_number_addition: undefined,
+      street: 'Damrak',
     })
 
     expect(address).toBe('Damrak 1')
@@ -23,9 +23,9 @@ describe('getShortNLAddress', () => {
 
   it('returns undefined if street is missing', () => {
     const address = getShortNLAddress({
-      street: undefined,
       house_number: 1,
       house_number_addition: 'A',
+      street: undefined,
     })
 
     expect(address).toBeUndefined()
@@ -33,9 +33,9 @@ describe('getShortNLAddress', () => {
 
   it('returns undefined if house_number is missing', () => {
     const address = getShortNLAddress({
-      street: 'Damrak',
       house_number: undefined,
       house_number_addition: 'A',
+      street: 'Damrak',
     })
 
     expect(address).toBeUndefined()
@@ -45,11 +45,11 @@ describe('getShortNLAddress', () => {
 describe('getFullNLAddress', () => {
   it('returns the correct full address when all fields are present', () => {
     const address = getFullNLAddress({
-      street: 'Damrak',
+      city: 'Amsterdam',
       house_number: 1,
       house_number_addition: 'A',
       postal_code: '1012LG',
-      city: 'Amsterdam',
+      street: 'Damrak',
     })
 
     expect(address).toBe('Damrak 1A, 1012LG Amsterdam')
@@ -57,11 +57,11 @@ describe('getFullNLAddress', () => {
 
   it('returns undefined if short address is missing', () => {
     const address = getFullNLAddress({
-      street: undefined,
+      city: 'Amsterdam',
       house_number: 1,
       house_number_addition: 'A',
       postal_code: '1012LG',
-      city: 'Amsterdam',
+      street: undefined,
     })
 
     expect(address).toBeUndefined()
@@ -69,11 +69,11 @@ describe('getFullNLAddress', () => {
 
   it('returns undefined if postal_code is missing', () => {
     const address = getFullNLAddress({
-      street: 'Damrak',
+      city: 'Amsterdam',
       house_number: 1,
       house_number_addition: 'A',
       postal_code: undefined,
-      city: 'Amsterdam',
+      street: 'Damrak',
     })
 
     expect(address).toBeUndefined()
@@ -81,11 +81,11 @@ describe('getFullNLAddress', () => {
 
   it('returns undefined if city is missing', () => {
     const address = getFullNLAddress({
-      street: 'Damrak',
+      city: undefined,
       house_number: 1,
       house_number_addition: 'A',
       postal_code: '1012LG',
-      city: undefined,
+      street: 'Damrak',
     })
     expect(address).toBeUndefined()
   })

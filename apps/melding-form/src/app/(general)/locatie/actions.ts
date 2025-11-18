@@ -1,8 +1,8 @@
 'use server'
 
+import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
 
 import { putMeldingByMeldingIdSubmitLocation } from '@meldingen/api-client'
 

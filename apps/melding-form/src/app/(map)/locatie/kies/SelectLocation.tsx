@@ -3,9 +3,9 @@
 import { Button } from '@amsterdam/design-system-react'
 import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import clsx from 'clsx'
+import { useTranslations } from 'next-intl'
 import dynamic from 'next/dynamic'
 import Form from 'next/form'
-import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
@@ -69,15 +69,15 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
             setSelectedAssets={setSelectedAssets}
           />
           <input
-            type="hidden"
-            name="coordinates"
             defaultValue={coordinates ? JSON.stringify(coordinates) : undefined}
+            name="coordinates"
+            type="hidden"
           />
         </Form>
       </SideBarTop>
       <SideBarBottom isHidden={!showAssetList}>
         {notificationType === 'too-many-assets' && !isWideWindow && (
-          <Notification type={notificationType} onClose={() => setNotificationType(null)} />
+          <Notification onClose={() => setNotificationType(null)} type={notificationType} />
         )}
         <AssetList
           assetList={assetList}
@@ -86,51 +86,51 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
           setNotificationType={setNotificationType}
           setSelectedAssets={setSelectedAssets}
         />
-        <Button form="address" type="submit" className={styles.hideButtonMobile}>
+        <Button className={styles.hideButtonMobile} form="address" type="submit">
           {t('submit-button.desktop')}
         </Button>
       </SideBarBottom>
       <div className={styles.map}>
         <Map isHidden={showAssetList}>
           <PointSelectLayer
-            // If there are selected assets, do not add a point marker
-            selectedPoint={selectedAssets.length === 0 ? coordinates : undefined}
             onSelectedPointChange={(coordinates) => {
               setSelectedAssets([])
               setCoordinates(coordinates)
             }}
+            // If there are selected assets, do not add a point marker
+            selectedPoint={selectedAssets.length === 0 ? coordinates : undefined}
           />
           <MarkerSelectLayer
             classification={classification}
             markers={assetList}
-            selectedMarkers={selectedAssets}
-            onMarkersChange={setAssetList}
-            onSelectedMarkersChange={setSelectedAssets}
-            updateSelectedPoint={setCoordinates}
             maxMarkers={MAX_ASSETS}
+            onMarkersChange={setAssetList}
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
+            onSelectedMarkersChange={setSelectedAssets}
+            selectedMarkers={selectedAssets}
+            updateSelectedPoint={setCoordinates}
           />
           <Controls
+            onCurrentLocationError={() => setNotificationType('location-service-disabled')}
             texts={controlsTexts}
             updateSelectedPoint={setCoordinates}
-            onCurrentLocationError={() => setNotificationType('location-service-disabled')}
           >
-            {notificationType && <Notification type={notificationType} onClose={() => setNotificationType(null)} />}
+            {notificationType && <Notification onClose={() => setNotificationType(null)} type={notificationType} />}
           </Controls>
         </Map>
         <div className={styles.buttonWrapper}>
           <Button
+            className={clsx(styles.submitbutton, showAssetList && styles.removeAbsolutePosition)}
             form="address"
             type="submit"
-            className={clsx(styles.submitbutton, showAssetList && styles.removeAbsolutePosition)}
           >
             {t('submit-button.mobile')}
           </Button>
           {showAssetListToggleButton && (
             <Button
-              variant="secondary"
-              onClick={() => setShowAssetList((prevState) => !prevState)}
               className={clsx(styles.toggleButton, showAssetList && styles.removeAbsolutePosition)}
+              onClick={() => setShowAssetList((prevState) => !prevState)}
+              variant="secondary"
             >
               {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
             </Button>

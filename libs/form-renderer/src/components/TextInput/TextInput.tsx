@@ -10,8 +10,8 @@ import styles from './TextInput.module.css'
 export type Props = {
   defaultValue?: string
   description?: string
-  hasHeading: boolean
   errorMessage?: string
+  hasHeading: boolean
   id: string
   label: string
   validate?: { required: boolean } | null
@@ -25,7 +25,7 @@ export const TextInput = ({ defaultValue, description, errorMessage, hasHeading,
   )
 
   return (
-    <Field key={id} invalid={Boolean(errorMessage)}>
+    <Field invalid={Boolean(errorMessage)} key={id}>
       {hasHeading ? <h1 className={styles.h1}>{labelComponent}</h1> : labelComponent}
       {description && (
         <MarkdownToHtml id={`${id}-description`} type="description">

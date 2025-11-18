@@ -1,4 +1,11 @@
 import type { BaseComponent, Component } from '@formio/core'
+
+import filter from 'uber-json-schema-filter'
+
+import type { FormInput } from '@meldingen/api-client'
+
+import type { AdditionalQuestionsForm } from '../../types'
+
 import {
   FormCheckboxComponentInputSchema,
   FormComponentInputValidateSchema,
@@ -9,11 +16,6 @@ import {
   FormTextAreaComponentInputSchema,
   FormTextFieldComponentInputSchema,
 } from 'libs/api-client/src/schemas.gen'
-import filter from 'uber-json-schema-filter'
-
-import type { FormInput } from '@meldingen/api-client'
-
-import type { AdditionalQuestionsForm } from '../../types'
 
 const filterBySchemaPerType = (obj: Component) => {
   switch (obj.type) {

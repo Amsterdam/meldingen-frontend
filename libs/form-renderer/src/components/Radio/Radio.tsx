@@ -1,4 +1,4 @@
-import { Column, ErrorMessage, Radio as ADSRadio } from '@amsterdam/design-system-react'
+import { Radio as ADSRadio, Column, ErrorMessage } from '@amsterdam/design-system-react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { FieldSet } from '@meldingen/ui'
@@ -6,9 +6,10 @@ import { FieldSet } from '@meldingen/ui'
 import { getAriaDescribedBy } from '../../utils'
 
 export type Props = {
+  defaultValue?: string
   description?: string
-  hasHeading: boolean
   errorMessage?: string
+  hasHeading: boolean
   id: string
   label: string
   validate?: { required: boolean } | null
@@ -16,17 +17,16 @@ export type Props = {
     label: string
     value: string
   }[]
-  defaultValue?: string
 }
 
-export const Radio = ({ description, errorMessage, hasHeading, id, label, validate, values, defaultValue }: Props) => (
+export const Radio = ({ defaultValue, description, errorMessage, hasHeading, id, label, validate, values }: Props) => (
   <FieldSet
     aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
     aria-required={validate?.required ? 'true' : undefined}
+    hasHeading={hasHeading}
     invalid={Boolean(errorMessage)}
     legend={label}
     optional={!validate?.required}
-    hasHeading={hasHeading}
     role="radiogroup"
   >
     {description && (
@@ -38,11 +38,11 @@ export const Radio = ({ description, errorMessage, hasHeading, id, label, valida
     <Column gap="x-small">
       {values.map(({ label: radioLabel, value }, index) => (
         <ADSRadio
-          key={value}
           aria-required={validate?.required ? 'true' : undefined}
           defaultChecked={value === defaultValue}
           id={index === 0 ? id : undefined} // Use component id for first radio, to be able to link to it in the Invalid Form Alert
           invalid={Boolean(errorMessage)}
+          key={value}
           name={id}
           value={value}
         >

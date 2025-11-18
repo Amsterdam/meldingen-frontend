@@ -15,9 +15,9 @@ import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'reac
 import { Feature } from '@meldingen/api-client'
 import { ListBox, TextInput } from '@meldingen/ui'
 
+import { convertWktPointToCoordinates } from '../../utils'
 import { PDOKItem } from './types'
 import { debounce, fetchAddressList, fetchAndSetAddress } from './utils'
-import { convertWktPointToCoordinates } from '../../utils'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import styles from './AddressInput.module.css'
@@ -38,7 +38,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
   const t = useTranslations('select-location.combo-box')
 
   // Make sure the ComboboxOptions do not overflow the viewport
-  const { refs, floatingStyles } = useFloating({
+  const { floatingStyles, refs } = useFloating({
     middleware: [
       size({
         apply: ({ availableHeight, elements }) => {
@@ -104,14 +104,14 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
         {t.rich('description', { english: (chunks) => <span lang="en">{chunks}</span> })}
       </Description>
       <Combobox
+        as="div"
+        className={styles.combobox}
         // Combobox does not rerender when address is set using keyboard on the Map, for some reason.
         // Setting the address as key makes sure it does.
         key={address}
-        as="div"
         onChange={handleAddressSelect}
-        value={query}
-        className={styles.combobox}
         ref={refs.setReference}
+        value={query}
       >
         <ComboboxInput as={TextInput} autoComplete="off" name="address" onChange={handleInputChange} />
         {showListBox && (
@@ -124,12 +124,12 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
           >
             {addressList.length > 0 ? (
               addressList.map((option) => (
-                <ComboboxOption key={option.id} value={option} as={ListBox.Option}>
+                <ComboboxOption as={ListBox.Option} key={option.id} value={option}>
                   {option.weergave_naam}
                 </ComboboxOption>
               ))
             ) : (
-              <ComboboxOption value="" disabled as={ListBox.Option}>
+              <ComboboxOption as={ListBox.Option} disabled value="">
                 {t('no-results')}
               </ComboboxOption>
             )}

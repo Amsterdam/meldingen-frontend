@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { FileListItem, type FileListItemProps } from './FileListItem'
+import type { FileListItemProps } from './FileListItem'
+
+import { FileListItem } from './FileListItem'
 
 const file = new File(['sample content'], 'sample.txt', { type: 'text/plain' })
 
@@ -86,8 +88,8 @@ describe('FileListItem', () => {
   it('renders correct labels when an error occurs', () => {
     const defaultPropsWithError = {
       ...defaultProps,
-      status: 'error' as const,
       errorMessage: 'errors.duplicate-upload',
+      status: 'error' as const,
     }
 
     render(<FileListItem {...defaultPropsWithError} />)

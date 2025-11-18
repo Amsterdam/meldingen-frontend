@@ -1,5 +1,6 @@
-import { AuthOptions } from 'next-auth'
 import type { JWT } from 'next-auth/jwt'
+
+import { AuthOptions } from 'next-auth'
 import KeycloakProvider from 'next-auth/providers/keycloak'
 
 /**
@@ -13,15 +14,15 @@ const refreshAccessToken = async (token: JWT) => {
       throw new Error('Refresh token expired')
 
     const response = await fetch(process.env.TOKEN_URL, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
         client_id: process.env.CLIENT_ID,
         client_secret: process.env.CLIENT_SECRET,
         grant_type: 'refresh_token',
         refresh_token: token.refreshToken || '',
       }),
-      method: 'POST',
       cache: 'no-store',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      method: 'POST',
     })
 
     const refreshedTokens = await response.json()
@@ -47,23 +48,6 @@ const refreshAccessToken = async (token: JWT) => {
 }
 
 export const authOptions: AuthOptions = {
-  providers: [
-    KeycloakProvider({
-      wellKnown: undefined,
-      clientId: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
-      issuer: process.env.ISSUER_URL,
-      authorization: {
-        params: {
-          scope: 'openid email profile',
-        },
-        url: process.env.AUTH_URL,
-      },
-      jwks_endpoint: process.env.JWKS_URL,
-      token: process.env.TOKEN_URL,
-      userinfo: process.env.USERINFO_URL,
-    }),
-  ],
   callbacks: {
     jwt: async ({ account, token, user }) => {
       if (account && user) {
@@ -87,7 +71,7 @@ export const authOptions: AuthOptions = {
       // Access token has expired, try to update it
       return refreshAccessToken(token)
     },
-    redirect: async ({ url, baseUrl }) => {
+    redirect: async ({ baseUrl, url }) => {
       // Use callback url
       if (url.startsWith('/')) return `${baseUrl}${url}`
       else if (new URL(url).origin === baseUrl) return url
@@ -102,4 +86,21 @@ export const authOptions: AuthOptions = {
       return session
     },
   },
+  providers: [
+    KeycloakProvider({
+      authorization: {
+        params: {
+          scope: 'openid email profile',
+        },
+        url: process.env.AUTH_URL,
+      },
+      clientId: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      issuer: process.env.ISSUER_URL,
+      jwks_endpoint: process.env.JWKS_URL,
+      token: process.env.TOKEN_URL,
+      userinfo: process.env.USERINFO_URL,
+      wellKnown: undefined,
+    }),
+  ],
 }

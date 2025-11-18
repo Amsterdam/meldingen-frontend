@@ -1,6 +1,6 @@
+import { WarningIcon } from '@amsterdam/design-system-react-icons'
 import { Button } from '@amsterdam/design-system-react/dist/Button'
 import { Icon } from '@amsterdam/design-system-react/dist/Icon'
-import { WarningIcon } from '@amsterdam/design-system-react-icons'
 import { clsx } from 'clsx'
 import { HTMLAttributes } from 'react'
 
@@ -39,7 +39,7 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, labels, onDel
       <div className={clsx(styles.container, errorMessage && styles.containerWithError)}>
         <div className={styles.imageContainer}>
           {isError ? (
-            <Icon svg={WarningIcon} size="heading-1" className={styles.icon} />
+            <Icon className={styles.icon} size="heading-1" svg={WarningIcon} />
           ) : (
             <FileListImage file={file} />
           )}
@@ -52,7 +52,7 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, labels, onDel
             <span className={styles.statusMessage}>{progressLabel}</span>
           )}
         </div>
-        <Button className={styles.deleteButton} id={deleteButtonId} variant="secondary" onClick={() => onDelete?.()}>
+        <Button className={styles.deleteButton} id={deleteButtonId} onClick={() => onDelete?.()} variant="secondary">
           {actionButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
         </Button>
       </div>

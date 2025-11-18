@@ -1,6 +1,7 @@
+import type { Mock } from 'vitest'
+
 import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
-import type { Mock } from 'vitest'
 
 import { Contact } from './Contact'
 import { contact as contactFormData } from 'apps/melding-form/src/mocks/data'
