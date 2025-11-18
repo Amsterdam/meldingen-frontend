@@ -54,6 +54,14 @@ export default tseslint.config(
       'prefer-arrow-functions': preferArrowFunctions,
       react,
     },
+    settings: {
+      'import/resolver': {
+        node: {
+          extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
+        },
+      },
+      react: { version: 'detect' },
+    },
     rules: {
       ...eslint.configs.recommended.rules,
       ...jsxA11y.configs.strict.rules,
@@ -74,6 +82,8 @@ export default tseslint.config(
 
       // ESLint
       'no-console': 'warn',
+      'prefer-arrow-functions/prefer-arrow-functions': 'error',
+
       // Perfectionist
       'perfectionist/sort-imports': [
         'error',
@@ -96,7 +106,6 @@ export default tseslint.config(
       ],
       'perfectionist/sort-modules': 'off', // This impacts readability in a negative way. We want to decide the order of modules ourselves.
       'perfectionist/sort-union-types': 'off', // This causes more issues than it solves
-      'prefer-arrow-functions/prefer-arrow-functions': 'error',
 
       // React
       'react/display-name': 'off',
@@ -105,15 +114,8 @@ export default tseslint.config(
       'react/react-in-jsx-scope': 'off',
       'react/require-default-props': 'off',
     },
-    settings: {
-      'import/resolver': {
-        node: {
-          extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
-        },
-      },
-      react: { version: 'detect' },
-    },
   },
+
   // Don't force using type over interface in .d.ts files
   {
     files: ['**/*.d.ts'],
@@ -121,6 +123,7 @@ export default tseslint.config(
       '@typescript-eslint/consistent-type-definitions': 'off',
     },
   },
+
   // Don't force named exports for non-React files
   {
     files: ['**/*.{js,ts,mjs,cjs}'],
