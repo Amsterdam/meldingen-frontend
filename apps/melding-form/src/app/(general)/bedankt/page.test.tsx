@@ -33,7 +33,7 @@ describe('Page', () => {
     render(PageComponent)
 
     const heading = screen.getByRole('heading', { name: 'title' })
-    const paragraph = screen.getByText('description:{"publicId":"1234","date":"26-5-2025","time":"11:56"}')
+    const paragraph = screen.getByText('description:{"date":"26-5-2025","publicId":"1234","time":"11:56"}')
     const link = screen.getByRole('link', { name: 'link' })
 
     expect(redirect).not.toHaveBeenCalledWith('/')
