@@ -39,7 +39,7 @@ export default tseslint.config(
 
   // JavaScript, TypeScript & React
   {
-    files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
