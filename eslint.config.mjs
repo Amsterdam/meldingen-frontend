@@ -36,32 +36,6 @@ export default defineConfig(
     },
   },
 
-  // Config files
-  {
-    files: ['**/*.{cjs,mjs}'],
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
-      },
-    },
-    plugins: {
-      '@typescript-eslint': tsPlugin,
-      import: importPlugin,
-    },
-    settings: {
-      'import/resolver': {
-        node: {
-          extensions: ['cjs', 'mjs'],
-        },
-      },
-    },
-    rules: {
-      ...eslint.configs.recommended.rules,
-      ...tsPlugin.configs.recommended.rules,
-    },
-  },
-
   // JavaScript, TypeScript & React
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
@@ -82,7 +56,7 @@ export default defineConfig(
     settings: {
       'import/resolver': {
         node: {
-          extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
+          extensions: ['js', 'jsx', 'ts', 'tsx'],
         },
       },
       react: { version: 'detect' },
