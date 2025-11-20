@@ -47,4 +47,3 @@ out
 *.key
 *.pem
 .env.*
-!*.local
