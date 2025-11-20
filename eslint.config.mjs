@@ -15,6 +15,43 @@ import react from 'eslint-plugin-react'
 import { defineConfig } from 'eslint/config'
 import globals from 'globals'
 
+const perfectionistImportGroups = {
+  customGroups: [
+    {
+      elementNamePattern: ['^apps/', '^libs/'],
+      groupName: 'type-parent',
+      selector: 'type',
+    },
+    {
+      elementNamePattern: ['^apps/', '^libs/'],
+      groupName: 'value-parent',
+    },
+    {
+      elementNamePattern: ['.css$'],
+      groupName: 'unknown',
+    },
+  ],
+  internalPattern: ['^@meldingen'],
+}
+
+const perfectionistCustomGridPropsOrder = {
+  customGroups: [
+    {
+      groupName: 'narrow',
+      elementNamePattern: 'narrow',
+    },
+    {
+      groupName: 'medium',
+      elementNamePattern: 'medium',
+    },
+    {
+      groupName: 'wide',
+      elementNamePattern: 'wide',
+    },
+  ],
+  groups: ['narrow', 'medium', 'wide'],
+}
+
 export default defineConfig(
   // Global
   {
@@ -86,28 +123,9 @@ export default defineConfig(
       'prefer-arrow-functions/prefer-arrow-functions': 'error',
 
       // Perfectionist
-      'perfectionist/sort-imports': [
-        'error',
-        {
-          customGroups: [
-            {
-              elementNamePattern: ['^apps/', '^libs/'],
-              groupName: 'type-parent',
-              selector: 'type',
-            },
-            {
-              elementNamePattern: ['^apps/', '^libs/'],
-              groupName: 'value-parent',
-            },
-            {
-              elementNamePattern: ['.css$'],
-              groupName: 'unknown',
-            },
-          ],
-          internalPattern: ['^@meldingen'],
-        },
-      ],
+      'perfectionist/sort-imports': ['error', perfectionistImportGroups],
       'perfectionist/sort-modules': 'off', // This impacts readability in a negative way. We want to decide the order of modules ourselves.
+      'perfectionist/sort-objects': ['error', perfectionistCustomGridPropsOrder],
       'perfectionist/sort-union-types': 'off', // This causes more issues than it solves
 
       // React
