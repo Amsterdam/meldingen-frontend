@@ -41,6 +41,7 @@ Thumbs.db
 # Next.js
 .next
 out
+next-env.d.ts
 
 # Files that (sometimes) contain secrets
 *.der
