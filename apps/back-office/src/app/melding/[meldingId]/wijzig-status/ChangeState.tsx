@@ -1,15 +1,15 @@
 'use client'
 
 import { Field, Grid, Heading, Label, Paragraph, Select } from '@amsterdam/design-system-react'
-import Form from 'next/form'
 import { useTranslations } from 'next-intl'
+import Form from 'next/form'
 import { useActionState } from 'react'
 
 import { SubmitButton } from '@meldingen/ui'
 
+import { BackLink } from '../_components/BackLink'
 import { postChangeStateForm } from './actions'
 import { isValidMeldingState } from './utils'
-import { BackLink } from '../_components/BackLink'
 
 type Props = {
   meldingId: number

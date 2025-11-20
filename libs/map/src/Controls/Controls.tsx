@@ -2,22 +2,23 @@ import { Button } from '@amsterdam/design-system-react'
 import { MinusIcon, PlusIcon } from '@amsterdam/design-system-react-icons'
 import { PropsWithChildren, useContext } from 'react'
 
-import { MapContext } from '../Map/Map'
 import type { Coordinates } from '../types'
+
+import { MapContext } from '../Map/Map'
 
 import styles from './Controls.module.css'
 
 export type Props = PropsWithChildren & {
+  onCurrentLocationError: () => void
   texts: {
     currentLocation: string
     zoomIn: string
     zoomOut: string
   }
   updateSelectedPoint: (point?: Coordinates) => void
-  onCurrentLocationError: () => void
 }
 
-export const Controls = ({ children, texts, updateSelectedPoint, onCurrentLocationError }: Props) => {
+export const Controls = ({ children, onCurrentLocationError, texts, updateSelectedPoint }: Props) => {
   const map = useContext(MapContext)
 
   const handleZoomIn = () => {
@@ -47,16 +48,16 @@ export const Controls = ({ children, texts, updateSelectedPoint, onCurrentLocati
   return (
     <>
       <div className={styles.overlayTopLeft}>
-        <Button variant="secondary" onClick={handleCurrentLocationButtonClick}>
+        <Button onClick={handleCurrentLocationButtonClick} variant="secondary">
           {texts.currentLocation}
         </Button>
         {children}
       </div>
       <div className={styles.overlayBottomRight}>
-        <Button variant="secondary" iconOnly icon={PlusIcon} onClick={handleZoomIn}>
+        <Button icon={PlusIcon} iconOnly onClick={handleZoomIn} variant="secondary">
           {texts.zoomIn}
         </Button>
-        <Button variant="secondary" iconOnly icon={MinusIcon} onClick={handleZoomOut}>
+        <Button icon={MinusIcon} iconOnly onClick={handleZoomOut} variant="secondary">
           {texts.zoomOut}
         </Button>
       </div>

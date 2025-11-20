@@ -23,20 +23,20 @@ export type Component =
   | StaticFormTextAreaComponent
 
 export type Form = {
-  id: number
-  title: string
-  display: 'wizard' | string
-  created_at: string
-  updated_at: string
   classification: number
   components: PanelComponent[]
+  created_at: string
+  display: 'wizard' | string
+  id: number
+  title: string
+  updated_at: string
 }
 
 export type PanelComponent = {
-  label: string
-  key: string
-  type: 'panel'
-  input: false
-  position: number
   components: Component[]
+  input: false
+  key: string
+  label: string
+  position: number
+  type: 'panel'
 }

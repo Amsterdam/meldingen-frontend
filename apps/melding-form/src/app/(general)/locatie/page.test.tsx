@@ -1,6 +1,7 @@
+import type { Mock } from 'vitest'
+
 import { render, screen } from '@testing-library/react'
 import { cookies } from 'next/headers'
-import type { Mock } from 'vitest'
 
 import { Location } from './Location'
 import Page from './page'
@@ -24,13 +25,13 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(screen.getByText('Location Component')).toBeInTheDocument()
-    expect(Location).toHaveBeenCalledWith({ prevPage: '/', address: undefined }, undefined)
+    expect(Location).toHaveBeenCalledWith({ address: undefined, prevPage: '/' }, undefined)
   })
 
   it('renders Location component with props from cookies', async () => {
     mockCookies({
-      [COOKIES.LAST_PANEL_PATH]: '/previous',
       [COOKIES.ADDRESS]: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam',
+      [COOKIES.LAST_PANEL_PATH]: '/previous',
     })
 
     const PageComponent = await Page()
@@ -39,7 +40,7 @@ describe('Page', () => {
 
     expect(screen.getByText('Location Component')).toBeInTheDocument()
     expect(Location).toHaveBeenCalledWith(
-      { prevPage: '/previous', address: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam' },
+      { address: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam', prevPage: '/previous' },
       undefined,
     )
   })

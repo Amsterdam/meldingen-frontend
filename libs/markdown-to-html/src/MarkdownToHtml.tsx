@@ -1,6 +1,7 @@
-import clsx from 'clsx'
-import { Children, isValidElement } from 'react'
 import type { PropsWithChildren } from 'react'
+
+import { clsx } from 'clsx'
+import { Children, isValidElement } from 'react'
 import ReactMarkdown from 'react-markdown'
 
 import { Column, Heading, Link, OrderedList, Paragraph, UnorderedList } from '@meldingen/ui'

@@ -1,14 +1,13 @@
 import { render } from '@testing-library/react'
+import { Blob } from 'buffer'
 import { http, HttpResponse } from 'msw'
 
+import { getFullNLAddress } from '../../utils'
 import { Detail } from './Detail'
 import Page, { generateMetadata } from './page'
-import { getFullNLAddress } from '../../utils'
 import { additionalQuestions, melding } from 'apps/back-office/src/mocks/data'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
-
-import { Blob } from 'buffer'
 
 vi.mock('./Detail', () => ({
   Detail: vi.fn(() => <div>Detail Component</div>),
@@ -70,7 +69,7 @@ describe('Page', () => {
 
     render(result)
 
-    const { id, created_at, classification, email, phone, public_id } = melding
+    const { classification, created_at, email, id, phone, public_id } = melding
 
     const additionalQuestionsWithMeldingText = [
       {
@@ -91,8 +90,8 @@ describe('Page', () => {
     ]
 
     const contact = [
-      { key: 'email', term: 'detail.contact.email', description: email },
-      { key: 'phone', term: 'detail.contact.phone', description: phone },
+      { description: email, key: 'email', term: 'detail.contact.email' },
+      { description: phone, key: 'phone', term: 'detail.contact.phone' },
     ]
 
     const location = [
@@ -105,23 +104,23 @@ describe('Page', () => {
 
     const meldingData = [
       {
+        description: new Date(created_at).toLocaleDateString('nl-NL'),
         key: 'created_at',
         term: 'detail.melding-data.created_at',
-        description: new Date(created_at).toLocaleDateString('nl-NL'),
       },
       {
+        description: classification!.name,
         key: 'classification',
         term: 'detail.melding-data.classification',
-        description: classification!.name,
       },
       {
-        key: 'state',
-        term: 'detail.melding-data.state.term',
         description: 'shared.state.questions_answered',
+        key: 'state',
         link: {
           href: `/melding/${id}/wijzig-status`,
           label: 'detail.melding-data.state.link',
         },
+        term: 'detail.melding-data.state.term',
       },
     ]
 

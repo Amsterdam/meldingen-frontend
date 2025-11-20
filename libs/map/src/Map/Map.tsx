@@ -3,7 +3,6 @@ import { latLng, Map, tileLayer } from 'leaflet'
 import { createContext, PropsWithChildren, useEffect, useRef, useState } from 'react'
 
 import 'leaflet/dist/leaflet.css'
-
 import styles from './Map.module.css'
 
 export type Props = PropsWithChildren & {
@@ -31,22 +30,22 @@ export const MapComponent = ({ children, isHidden, testMapInstance }: Props) => 
 
     const map = new Map(mapRef.current, {
       center: latLng([52.370216, 4.895168]),
-      zoom: 14,
       layers: [
         tileLayer('https://{s}.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
           attribution: '',
           subdomains: ['t1', 't2', 't3', 't4'],
         }),
       ],
-      zoomControl: false,
-      maxZoom: 18,
-      minZoom: 11,
       // Prevent the user browsing too far outside Amsterdam otherwise the map will render blank greyspace.
       // Amsterdam tile layer only supports Amsterdam and the immediate surrounding areas
       maxBounds: [
         [52.25168, 4.64034],
         [52.50536, 5.10737],
       ],
+      maxZoom: 18,
+      minZoom: 11,
+      zoom: 14,
+      zoomControl: false,
     })
 
     // Remove Leaflet link from the map

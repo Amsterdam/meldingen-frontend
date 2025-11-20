@@ -1,5 +1,6 @@
-import clsx from 'clsx'
 import type { ForwardedRef, HTMLAttributes, PropsWithChildren } from 'react'
+
+import { clsx } from 'clsx'
 import { forwardRef } from 'react'
 
 import { ListBoxOption } from './ListBoxOption'
@@ -10,7 +11,7 @@ type Props = PropsWithChildren<HTMLAttributes<HTMLUListElement>>
 
 export const ListBoxRoot = forwardRef(
   ({ children, className, ...restProps }: Props, ref: ForwardedRef<HTMLUListElement>) => (
-    <ul {...restProps} ref={ref} className={clsx(styles.list, className)}>
+    <ul {...restProps} className={clsx(styles.list, className)} ref={ref}>
       {children}
     </ul>
   ),

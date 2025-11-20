@@ -13,13 +13,13 @@ const MaxCharCountInputs = () => {
   return (
     <>
       <TextInput
-        source="components[0].maxCharCount"
-        onChange={onChange}
         inputMode="numeric"
+        onChange={onChange}
         parse={(value) => parseInt(value, 10)}
+        source="components[0].maxCharCount"
       />
       {/* Hidden input to set max length in JSONLogic using maxCharCount field */}
-      <TextInput source="components[0].validate.json.if[0]['<='][1]" hidden />
+      <TextInput hidden source="components[0].validate.json.if[0]['<='][1]" />
     </>
   )
 }
@@ -35,10 +35,10 @@ export const PrimaryForm = () => {
         </Toolbar>
       }
     >
-      <TextInput source="title" readOnly />
+      <TextInput readOnly source="title" />
       <TextInput source="components[0].label" validate={validateLabel} />
       {/* v8 ignore next */}
-      <TextInput source="components[0].description" multiline parse={(value) => value ?? ''} />
+      <TextInput multiline parse={(value) => value ?? ''} source="components[0].description" />
       <MaxCharCountInputs />
       {/* Set JSONLogic error message */}
       <TextInput source="components[0].validate.json.if[2]" />

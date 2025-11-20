@@ -6,18 +6,18 @@ import { AssetTypeCreate, transform } from './AssetTypeCreate'
 describe('transform function', () => {
   it('should transform data correctly', () => {
     const inputData = {
-      name: 'Test Asset Type',
       arguments: {
         base_url: 'https://example.com/wfs',
       },
+      name: 'Test Asset Type',
     }
 
     const expectedTransformedData = {
-      name: 'Test Asset Type',
       arguments: {
         base_url: 'https://example.com/wfs',
       },
       class_name: 'meldingen.wfs.ProxyWfsProviderFactory',
+      name: 'Test Asset Type',
     }
 
     expect(transform(inputData)).toEqual(expectedTransformedData)

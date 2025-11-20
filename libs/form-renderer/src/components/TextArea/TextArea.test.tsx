@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { type Props, TextArea } from './TextArea'
+import type { Props } from './TextArea'
+
+import { TextArea } from './TextArea'
 
 const defaultProps: Props = {
   hasHeading: true,
@@ -23,8 +25,8 @@ describe('TextArea Component', () => {
     render(<TextArea {...defaultProps} description="Test description" />)
 
     const textAreaWithDescription = screen.getByRole('textbox', {
-      name: defaultProps.label,
       description: 'Test description',
+      name: defaultProps.label,
     })
 
     expect(textAreaWithDescription).toBeInTheDocument()
@@ -96,8 +98,8 @@ describe('TextArea Component', () => {
     render(<TextArea {...defaultProps} errorMessage="Test error message" />)
 
     const textAreaWithErrorMessage = screen.getByRole('textbox', {
-      name: defaultProps.label,
       description: 'Invoerfout: Test error message',
+      name: defaultProps.label,
     })
 
     expect(textAreaWithErrorMessage).toBeInTheDocument()

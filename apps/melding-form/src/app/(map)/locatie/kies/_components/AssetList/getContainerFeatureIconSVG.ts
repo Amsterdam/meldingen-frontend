@@ -3,12 +3,12 @@ import type { Feature } from '@meldingen/api-client'
 export const containerTypes = ['Papier', 'Glas', 'Rest', 'Textiel', 'Plastic', 'Gft'] as const
 
 export const containerIconsSVG: Record<(typeof containerTypes)[number], string> = {
-  Papier: '/afval/papier.svg',
+  Gft: '/afval/gft.svg',
   Glas: '/afval/glas.svg',
+  Papier: '/afval/papier.svg',
+  Plastic: '/afval/plastic.svg',
   Rest: '/afval/rest.svg',
   Textiel: '/afval/textiel.svg',
-  Plastic: '/afval/plastic.svg',
-  Gft: '/afval/gft.svg',
 }
 
 export const getContainerFeatureIconSVG = (feature: Feature): string => {

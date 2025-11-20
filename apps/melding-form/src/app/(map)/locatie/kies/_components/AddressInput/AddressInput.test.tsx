@@ -2,14 +2,16 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 
-import { AddressInput, type Props } from './AddressInput'
+import type { Props } from './AddressInput'
+
+import { AddressInput } from './AddressInput'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
+  disconnect: vi.fn(),
   observe: vi.fn(),
   unobserve: vi.fn(),
-  disconnect: vi.fn(),
 }))
 
 const defaultProps: Props = {
@@ -88,7 +90,7 @@ describe('AddressInput', () => {
     server.use(
       http.get(ENDPOINTS.PDOK_SUGGEST, () =>
         HttpResponse.json({
-          response: { numFound: 0, start: 0, maxScore: 0.0, numFoundExact: true, docs: [] },
+          response: { docs: [], maxScore: 0.0, numFound: 0, numFoundExact: true, start: 0 },
         }),
       ),
     )
@@ -120,8 +122,8 @@ describe('AddressInput', () => {
       http.get(ENDPOINTS.PDOK_REVERSE, () =>
         HttpResponse.json({
           response: {
-            numFound: 0,
             docs: [],
+            numFound: 0,
           },
         }),
       ),

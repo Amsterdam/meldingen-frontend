@@ -3,11 +3,11 @@ import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 import { vi } from 'vitest'
 
-import { Overview } from './Overview'
-import Page, { generateMetadata } from './page'
 import { meldingen } from '../mocks/data'
 import { ENDPOINTS } from '../mocks/endpoints'
 import { server } from '../mocks/node'
+import { Overview } from './Overview'
+import Page, { generateMetadata } from './page'
 
 vi.mock('./Overview', () => ({
   Overview: vi.fn(() => <div>Overview Component</div>),

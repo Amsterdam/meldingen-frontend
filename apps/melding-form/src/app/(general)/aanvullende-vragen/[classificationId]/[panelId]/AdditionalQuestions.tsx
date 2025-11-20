@@ -3,8 +3,9 @@
 import { useTranslations } from 'next-intl'
 import { useActionState, useEffect, useRef } from 'react'
 
-import { FormRenderer, isSelectboxes } from '@meldingen/form-renderer'
 import type { Component } from '@meldingen/form-renderer'
+
+import { FormRenderer, isSelectboxes } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
 import { BackLink } from '../../../_components/BackLink/BackLink'
@@ -99,10 +100,10 @@ export const AdditionalQuestions = ({
             ref={invalidFormAlertRef}
           />
         )}
-        <FormHeader title={t('title')} step={t('step')} />
+        <FormHeader step={t('step')} title={t('title')} />
         <FormRenderer
-          formComponents={formComponents}
           action={formAction}
+          formComponents={formComponents}
           panelLabel={panelLabel}
           submitButtonText={t('submit-button')}
           validationErrors={validationErrors}

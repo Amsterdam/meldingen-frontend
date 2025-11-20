@@ -33,9 +33,9 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const additionalQuestionsWithMeldingText = [
     {
+      description: data.text,
       key: 'text',
       term: t('detail.melding-text'),
-      description: data.text,
     },
     ...additionalQuestions.data,
   ]
@@ -50,11 +50,11 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   return (
     <Detail
       additionalQuestionsWithMeldingText={additionalQuestionsWithMeldingText}
+      attachments={attachments}
       contact={contact}
       location={location}
       meldingData={meldingData}
       publicId={data.public_id}
-      attachments={attachments}
     />
   )
 }

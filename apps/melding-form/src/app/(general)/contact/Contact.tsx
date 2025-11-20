@@ -1,22 +1,23 @@
 'use client'
 
 import { ErrorMessage, Field, Heading, Label } from '@amsterdam/design-system-react'
-import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
-import Form from 'next/form'
 import { useTranslations } from 'next-intl'
+import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
 
 import type { StaticFormTextAreaComponent } from '@meldingen/form-renderer'
+
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
 
-import { postContactForm } from './actions'
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
+import { postContactForm } from './actions'
 import { FormState } from 'apps/melding-form/src/types'
+import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 
 const initialState: FormState = {}
 
@@ -72,8 +73,8 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
             ref={invalidFormAlertRef}
           />
         )}
-        <FormHeader title={t('title')} step={t('step')} />
-        <Heading level={1} size="level-3" className="ams-mb-m">
+        <FormHeader step={t('step')} title={t('title')} />
+        <Heading className="ams-mb-m" level={1} size="level-3">
           {t('question')}
         </Heading>
         <MarkdownToHtml className="ams-mb-m">{t('description')}</MarkdownToHtml>
@@ -96,8 +97,8 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
               id="email-input"
               invalid={Boolean(emailErrorMessage)}
               name="email"
-              spellCheck="false"
               size={30} // Based on this recommendation: https://design-system.service.gov.uk/patterns/email-addresses/#help-users-to-enter-a-valid-email-address
+              spellCheck="false"
               type="email"
             />
           </Field>

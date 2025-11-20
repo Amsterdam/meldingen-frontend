@@ -2,8 +2,10 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Map } from 'leaflet'
 
-import { Controls, type Props } from './Controls'
+import type { Props } from './Controls'
+
 import { MapContext } from '../Map/Map'
+import { Controls } from './Controls'
 
 const INITIAL_ZOOM = 10
 
@@ -19,9 +21,9 @@ const defaultTexts = {
 }
 
 const defaultProps: Props = {
+  onCurrentLocationError: vi.fn(),
   texts: defaultTexts,
   updateSelectedPoint: vi.fn(),
-  onCurrentLocationError: vi.fn(),
 }
 
 describe('Controls', () => {

@@ -30,8 +30,8 @@ export const FileListImage = ({ file }: Props) => {
 
   return url ? (
     <Image
-      src={url}
       alt=""
+      src={url}
       width={256} // Fixed width for when CSS does not load. Gets overridden by CSS.
     />
   ) : (

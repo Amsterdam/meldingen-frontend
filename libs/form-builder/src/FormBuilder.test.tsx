@@ -4,15 +4,15 @@ import { FormBuilder } from './FormBuilder'
 
 const mockData = [
   {
-    key: 'page1',
-    type: 'panel',
-    input: false,
     components: [
       {
         label: 'Eerste vraag',
         type: 'textfield',
       },
     ],
+    input: false,
+    key: 'page1',
+    type: 'panel',
   },
 ]
 

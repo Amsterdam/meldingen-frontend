@@ -1,34 +1,34 @@
 import { Admin as ReactAdmin, Resource } from 'react-admin'
 
-import { CustomLayout } from './components'
-import { i18nProvider, useAuthProvider } from './providers'
 import { AssetTypeCreate, AssetTypeEdit, AssetTypeList } from '../pages/asset-types'
 import { ClassificationCreate, ClassificationEdit, ClassificationList } from '../pages/classification'
 import { FormCreate, FormEdit, FormList } from '../pages/form/components'
 import { StaticFormEdit, StaticFormList } from '../pages/static-form'
+import { CustomLayout } from './components'
+import { i18nProvider, useAuthProvider } from './providers'
 
 export const Admin = () => {
-  const { keycloakClient, dataProviderRef, authProvider } = useAuthProvider()
+  const { authProvider, dataProviderRef, keycloakClient } = useAuthProvider()
 
   if (!keycloakClient) return <p>Loading...</p>
 
   return (
     <ReactAdmin
-      layout={CustomLayout}
-      dataProvider={dataProviderRef.current}
       authProvider={authProvider.current}
+      dataProvider={dataProviderRef.current}
       i18nProvider={i18nProvider}
+      layout={CustomLayout}
     >
-      <Resource name="form" list={<FormList />} edit={<FormEdit />} create={<FormCreate />} />
+      <Resource create={<FormCreate />} edit={<FormEdit />} list={<FormList />} name="form" />
       <Resource
-        name="classification"
-        list={<ClassificationList />}
-        edit={<ClassificationEdit />}
         create={<ClassificationCreate />}
+        edit={<ClassificationEdit />}
+        list={<ClassificationList />}
+        name="classification"
         recordRepresentation="name"
       />
-      <Resource name="static-form" list={<StaticFormList />} edit={<StaticFormEdit />} recordRepresentation="name" />
-      <Resource name="asset-type" list={<AssetTypeList />} edit={<AssetTypeEdit />} create={<AssetTypeCreate />} />
+      <Resource edit={<StaticFormEdit />} list={<StaticFormList />} name="static-form" recordRepresentation="name" />
+      <Resource create={<AssetTypeCreate />} edit={<AssetTypeEdit />} list={<AssetTypeList />} name="asset-type" />
     </ReactAdmin>
   )
 }

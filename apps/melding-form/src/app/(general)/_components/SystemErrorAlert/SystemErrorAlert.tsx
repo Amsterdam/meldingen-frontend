@@ -7,7 +7,7 @@ export const SystemErrorAlert = () => {
   const t = useTranslations('shared')
 
   return (
-    <Alert role="alert" headingLevel={2} severity="error" heading={t('system-error-alert-title')} className="ams-mb-xl">
+    <Alert className="ams-mb-xl" heading={t('system-error-alert-title')} headingLevel={2} role="alert" severity="error">
       <Paragraph>{t('system-error-alert-description')}</Paragraph>
     </Alert>
   )

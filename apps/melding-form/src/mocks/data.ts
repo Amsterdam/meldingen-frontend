@@ -9,24 +9,25 @@ import {
 
 // Form
 export const textAreaComponent: FormTextAreaComponentOutput = {
-  label: 'First question',
-  description: '',
-  key: 'textArea1',
-  type: 'textarea',
-  input: true,
   autoExpand: false,
+  description: '',
+  input: true,
+  key: 'textArea1',
+  label: 'First question',
   maxCharCount: 0,
   position: 1,
   question: 1,
+  type: 'textarea',
 }
 
 export const checkboxComponent: FormCheckboxComponentOutput = {
-  label: 'Select Boxes 1',
   description: '',
-  key: 'selectBoxes',
-  type: 'selectboxes',
   input: true,
+  key: 'selectBoxes',
+  label: 'Select Boxes 1',
   position: 1,
+  question: 2,
+  type: 'selectboxes',
   validate: {
     json: null,
     required: true,
@@ -35,82 +36,81 @@ export const checkboxComponent: FormCheckboxComponentOutput = {
   values: [
     {
       label: 'One',
-      value: 'one',
       position: 1,
+      value: 'one',
     },
     {
       label: 'Two',
-      value: 'two',
       position: 2,
+      value: 'two',
     },
   ],
-  question: 2,
 }
 
 export const form: FormOutput = {
-  title: 'Wizard form mock',
-  display: 'wizard',
-  created_at: '2024-07-16T13:13:30.968809',
-  updated_at: '2024-07-16T13:13:30.968809',
-  id: 2,
   classification: 1,
   components: [
     {
-      title: 'First page',
-      label: 'Page 1',
-      key: 'page1',
-      type: 'panel',
-      input: false,
-      position: 1,
       components: [textAreaComponent],
+      input: false,
+      key: 'page1',
+      label: 'Page 1',
+      position: 1,
+      title: 'First page',
+      type: 'panel',
     },
     {
-      title: 'Second page',
-      label: 'Page 2',
-      key: 'page2',
-      type: 'panel',
-      input: false,
-      position: 2,
       components: [
         {
-          label: 'Second question',
-          description: '',
-          key: 'textArea2',
-          type: 'textarea',
-          input: true,
           autoExpand: false,
+          description: '',
+          input: true,
+          key: 'textArea2',
+          label: 'Second question',
           maxCharCount: 0,
           position: 1,
           question: 2,
+          type: 'textarea',
           values: undefined,
         },
       ],
+      input: false,
+      key: 'page2',
+      label: 'Page 2',
+      position: 2,
+      title: 'Second page',
+      type: 'panel',
     },
   ],
+  created_at: '2024-07-16T13:13:30.968809',
+  display: 'wizard',
+  id: 2,
+  title: 'Wizard form mock',
+  updated_at: '2024-07-16T13:13:30.968809',
 }
 
 export const contact: FormTextAreaComponentOutput[] = [
   {
-    type: 'textarea',
-    label: 'Wat is uw e-mailadres?',
+    autoExpand: false,
     description: 'Test 1',
-    key: 'email',
     input: true,
+    key: 'email',
+    label: 'Wat is uw e-mailadres?',
     maxCharCount: 0,
     position: 0,
-    autoExpand: false,
     question: 1,
+    type: 'textarea',
   },
   {
-    type: 'textarea',
-    label: 'Wat is uw telefoonnummer?',
+    autoExpand: false,
     description: 'Test 2',
-    key: 'tel',
     input: true,
+    key: 'tel',
+    label: 'Wat is uw telefoonnummer?',
     maxCharCount: 0,
     position: 1,
-    autoExpand: false,
     question: 2,
+    type: 'textarea',
   },
 ]
 
@@ -119,8 +119,8 @@ export const PDOKFree = {
   response: {
     docs: [
       {
-        weergavenaam: 'Amstel 1, Amsterdam',
         centroide_ll: 'POINT(4.895168 52.370216)',
+        weergavenaam: 'Amstel 1, Amsterdam',
       },
     ],
   },
@@ -128,14 +128,14 @@ export const PDOKFree = {
 
 export const PDOKReverse = {
   response: {
-    numFound: 1,
     docs: [
       {
+        id: 'adr-758e934b8651217819abcf0e60a45b39',
         type: 'adres',
         weergavenaam: 'Nieuwmarkt 15, 1011JR Amsterdam',
-        id: 'adr-758e934b8651217819abcf0e60a45b39',
       },
     ],
+    numFound: 1,
   },
 }
 
@@ -143,24 +143,24 @@ export const PDOKSuggest = {
   response: {
     docs: [
       {
-        weergavenaam: 'Amsteldijk 152A-H, 1079LG Amsterdam',
         id: 'adr-bc581db7d4fc654e4ed35abce874ee11',
+        weergavenaam: 'Amsteldijk 152A-H, 1079LG Amsterdam',
       },
       {
-        weergavenaam: 'Amstelkade 166A-H, 1078AX Amsterdam',
         id: 'adr-8d27e7c75aef4349f37e1bebae62d45a',
+        weergavenaam: 'Amstelkade 166A-H, 1078AX Amsterdam',
       },
       {
-        weergavenaam: 'Amstelkade 169A-H, 1078AZ Amsterdam',
         id: 'adr-6da11c41a94dad446b1ddcf3cdf927e6',
+        weergavenaam: 'Amstelkade 169A-H, 1078AZ Amsterdam',
       },
       {
-        weergavenaam: 'Amstelveenseweg 170B-H, 1075XP Amsterdam',
         id: 'adr-e15725abe37eb0e4dfeecad2f1055f83',
+        weergavenaam: 'Amstelveenseweg 170B-H, 1075XP Amsterdam',
       },
       {
-        weergavenaam: 'Amstel 312A-H, 1017AP Amsterdam',
         id: 'adr-1e36f861ba5cede46a2c8e1b53bd55a2',
+        weergavenaam: 'Amstel 312A-H, 1017AP Amsterdam',
       },
     ],
   },
@@ -168,56 +168,56 @@ export const PDOKSuggest = {
 
 // Melding
 export const melding: MeldingOutput = {
-  public_id: 'AB123',
-  id: 123,
-  created_at: '2025-02-18T10:34:29.103642',
-  updated_at: '2025-02-18T10:34:40.730569',
-  text: 'Alles',
-  state: 'questions_answered',
+  city: 'Amsterdam',
   classification: {
-    id: 2,
     created_at: '2025-07-15T09:43:46Z',
-    updated_at: '2025-07-15T09:43:46Z',
+    id: 2,
     name: 'container',
+    updated_at: '2025-07-15T09:43:46Z',
   },
-  geo_location: {
-    type: 'Feature',
-    geometry: { type: 'Point', coordinates: [52.370216, 4.895168] },
-    properties: {},
-  },
+  created_at: '2025-02-18T10:34:29.103642',
   email: 'email@email.email',
-  phone: '0612345678',
-  street: 'Oudezijds Voorburgwal',
+  geo_location: {
+    geometry: { coordinates: [52.370216, 4.895168], type: 'Point' },
+    properties: {},
+    type: 'Feature',
+  },
   house_number: 300,
   house_number_addition: 'A',
+  id: 123,
+  phone: '0612345678',
   postal_code: '1012GL',
-  city: 'Amsterdam',
+  public_id: 'AB123',
+  state: 'questions_answered',
+  street: 'Oudezijds Voorburgwal',
+  text: 'Alles',
+  updated_at: '2025-02-18T10:34:40.730569',
 }
 
 export const additionalQuestions: AnswerQuestionOutput[] = [
   {
-    id: 123,
     created_at: '2025-02-18T10:34:32.181638',
-    updated_at: '2025-02-18T10:34:32.181638',
-    text: 'q1',
+    id: 123,
     question: {
-      id: 35,
       created_at: '2025-02-17T11:06:22.137002',
-      updated_at: '2025-02-17T11:06:22.137002',
+      id: 35,
       text: 'Wat wilt u melden?',
+      updated_at: '2025-02-17T11:06:22.137002',
     },
+    text: 'q1',
+    updated_at: '2025-02-18T10:34:32.181638',
   },
   {
-    id: 124,
     created_at: '2025-02-18T10:34:32.187573',
-    updated_at: '2025-02-18T10:34:32.187573',
-    text: 'q2',
+    id: 124,
     question: {
-      id: 36,
       created_at: '2025-02-17T11:06:22.137002',
-      updated_at: '2025-02-17T11:06:22.137002',
+      id: 36,
       text: 'Text Field',
+      updated_at: '2025-02-17T11:06:22.137002',
     },
+    text: 'q2',
+    updated_at: '2025-02-18T10:34:32.187573',
   },
 ]
 
@@ -229,8 +229,8 @@ export const containerAssets: Feature[] = [
     },
     id: 'container.1',
     properties: {
-      name: 'Test Feature',
       id_nummer: 'Container-001',
+      name: 'Test Feature',
     },
     type: 'Feature',
   },
@@ -241,8 +241,8 @@ export const containerAssets: Feature[] = [
     },
     id: 'container.2',
     properties: {
-      name: 'Test Feature',
       id_nummer: 'Container-002',
+      name: 'Test Feature',
     },
     type: 'Feature',
   },

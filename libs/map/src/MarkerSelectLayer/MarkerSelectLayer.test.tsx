@@ -6,11 +6,11 @@ import { MarkerSelectLayer, Props } from './MarkerSelectLayer'
 const defaultProps: Props = {
   markers: [],
   maxMarkers: 5,
-  selectedMarkers: [],
   onMarkersChange: vi.fn(),
-  onSelectedMarkersChange: vi.fn(),
-  updateSelectedPoint: vi.fn(),
   onMaxMarkersReached: vi.fn(),
+  onSelectedMarkersChange: vi.fn(),
+  selectedMarkers: [],
+  updateSelectedPoint: vi.fn(),
 }
 
 describe('MarkerSelectLayer', () => {

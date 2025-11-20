@@ -24,7 +24,7 @@ export const ClassificationEdit = () => (
     >
       <TextInput source="name" validate={required()} />
       <ReferenceInput reference="asset-type" sort={{ field: 'name', order: 'ASC' }} source="asset_type" />
-      <TextInput source="form" readOnly />
+      <TextInput readOnly source="form" />
     </SimpleForm>
   </Edit>
 )

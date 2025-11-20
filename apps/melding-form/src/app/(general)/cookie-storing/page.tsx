@@ -1,5 +1,5 @@
-import NextLink from 'next/link'
 import { getTranslations } from 'next-intl/server'
+import NextLink from 'next/link'
 
 import { Heading, Paragraph, StandaloneLink } from '@meldingen/ui'
 

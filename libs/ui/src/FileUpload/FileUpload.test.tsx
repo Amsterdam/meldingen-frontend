@@ -8,7 +8,7 @@ import { FileUpload } from './FileUpload'
 
 describe('FileUpload', () => {
   it('renders button and texts', () => {
-    render(<FileUpload onChange={vi.fn()} buttonText="Button text" dropAreaText="Drop area text" />)
+    render(<FileUpload buttonText="Button text" dropAreaText="Drop area text" onChange={vi.fn()} />)
 
     const button = screen.getByRole('button', { name: 'Drop area text Button text' })
 

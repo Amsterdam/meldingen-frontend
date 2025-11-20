@@ -1,5 +1,5 @@
-import { cookies } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
+import { cookies } from 'next/headers'
 
 import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 

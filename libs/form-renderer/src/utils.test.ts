@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
-import { form } from './mocks/data'
 import type { Component } from './types'
+
+import { form } from './mocks/data'
 import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
 
 describe('type guards', () => {
@@ -27,9 +28,9 @@ describe('type guards', () => {
 
   it('returns false for all guards if type is unknown', () => {
     const unknownComponent = {
-      type: 'unknown',
-      key: 'bad',
       defaultValue: 'oops',
+      key: 'bad',
+      type: 'unknown',
     } as Component
 
     expect(isRadio(unknownComponent)).toBe(false)

@@ -3,10 +3,10 @@ import { AnswerQuestionOutput, MeldingOutput } from '../apiClientProxy'
 export const melding: MeldingOutput = {
   city: 'Amsterdam',
   classification: {
-    id: 1,
     created_at: '2025-02-18T10:34:29.103642',
-    updated_at: '2025-02-18T10:34:40.730569',
+    id: 1,
     name: 'Test classification',
+    updated_at: '2025-02-18T10:34:40.730569',
   },
   created_at: '2025-02-18T10:34:29.103642',
   email: 'email@email.email',
@@ -63,27 +63,27 @@ export const meldingen: MeldingOutput[] = [
 
 export const additionalQuestions: AnswerQuestionOutput[] = [
   {
-    id: 123,
     created_at: '2025-02-18T10:34:32.181638',
-    updated_at: '2025-02-18T10:34:32.181638',
-    text: 'q1',
+    id: 123,
     question: {
-      id: 35,
       created_at: '2025-02-17T11:06:22.137002',
-      updated_at: '2025-02-17T11:06:22.137002',
+      id: 35,
       text: 'Wat wilt u melden?',
+      updated_at: '2025-02-17T11:06:22.137002',
     },
+    text: 'q1',
+    updated_at: '2025-02-18T10:34:32.181638',
   },
   {
-    id: 124,
     created_at: '2025-02-18T10:34:32.187573',
-    updated_at: '2025-02-18T10:34:32.187573',
-    text: 'q2',
+    id: 124,
     question: {
-      id: 36,
       created_at: '2025-02-17T11:06:22.137002',
-      updated_at: '2025-02-17T11:06:22.137002',
+      id: 36,
       text: 'Text Field',
+      updated_at: '2025-02-17T11:06:22.137002',
     },
+    text: 'q2',
+    updated_at: '2025-02-18T10:34:32.187573',
   },
 ]

@@ -1,17 +1,17 @@
 import { latLng, LeafletKeyboardEvent, LeafletMouseEvent, marker, Marker } from 'leaflet'
 import { useContext, useEffect, useRef } from 'react'
 
-import { Crosshair } from './Crosshair'
 import { MapContext } from '../Map/Map'
 import { defaultIcon } from '../markerIcons'
 import { Coordinates } from '../types'
+import { Crosshair } from './Crosshair'
 
 type Props = {
-  selectedPoint?: Coordinates
   onSelectedPointChange: (point: Coordinates) => void
+  selectedPoint?: Coordinates
 }
 
-export const PointSelectLayer = ({ selectedPoint, onSelectedPointChange }: Props) => {
+export const PointSelectLayer = ({ onSelectedPointChange, selectedPoint }: Props) => {
   const map = useContext(MapContext)
   const markerRef = useRef<Marker | null>(null)
 
@@ -26,7 +26,7 @@ export const PointSelectLayer = ({ selectedPoint, onSelectedPointChange }: Props
     if (!map || !crosshair) return
 
     // Show crosshair when map is controlled using arrow keys
-    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(originalEvent.key)) {
+    if (['ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp'].includes(originalEvent.key)) {
       crosshair.style.display = 'block'
     }
     // Select point on spacebar or Enter

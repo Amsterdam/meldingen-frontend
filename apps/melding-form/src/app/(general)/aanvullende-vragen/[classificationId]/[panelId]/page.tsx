@@ -2,6 +2,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import type { AnswerQuestionOutput, FormOutput, FormPanelComponentOutput } from '@meldingen/api-client'
+
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
 import { postForm } from './actions'
@@ -105,8 +106,8 @@ export default async ({ params }: { params: Params }) => {
     isLastPanel,
     lastPanelPath,
     nextPanelPath,
-    questionKeysAndIds,
     questionAndAnswerIdPairs,
+    questionKeysAndIds,
     requiredQuestionKeys,
   }
 

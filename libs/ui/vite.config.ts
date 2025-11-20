@@ -6,8 +6,8 @@ export default defineConfig({
   test: {
     coverage: {
       enabled: true,
-      include: ['src/**/*.{js,jsx,ts,tsx}'],
       exclude: ['src/index.ts'],
+      include: ['src/**/*.{js,jsx,ts,tsx}'],
       thresholds: {
         branches: 92,
         functions: 83,
@@ -15,8 +15,8 @@ export default defineConfig({
         statements: 82,
       },
     },
-    globals: true,
     environment: 'jsdom',
+    globals: true,
     include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     setupFiles: ['./vitest.setup.ts'],
     watch: false,

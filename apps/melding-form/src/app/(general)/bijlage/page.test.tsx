@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import { Blob } from 'buffer'
 import { http, HttpResponse } from 'msw'
 
 import { Attachments } from './Attachments'
@@ -7,8 +8,6 @@ import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
-
-import { Blob } from 'buffer'
 
 vi.mock('./Attachments', () => ({
   Attachments: vi.fn(() => <div>Attachments Component</div>),
@@ -62,8 +61,8 @@ describe('Page', () => {
         HttpResponse.json({
           components: [
             {
-              type: 'textarea',
               label: '', // No label provided
+              type: 'textarea',
             },
           ],
         }),

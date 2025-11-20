@@ -1,3 +1,5 @@
+/* eslint-disable perfectionist/sort-objects */
+
 export const ENDPOINTS = {
   // Form
   GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID: 'http://localhost:8000/form/classification/:id',

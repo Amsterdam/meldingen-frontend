@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import { formatValue, LinkComponent, Overview } from './Overview'
 import { melding } from '../mocks/data'
+import { formatValue, LinkComponent, Overview } from './Overview'
 
 describe('Overview', () => {
   it('should render correctly', () => {
@@ -98,7 +98,7 @@ describe('LinkComponent', () => {
 
   it('passes additional props to the link', () => {
     const { container } = render(
-      <LinkComponent href="/foo" target="_blank" rel="noopener noreferrer">
+      <LinkComponent href="/foo" rel="noopener noreferrer" target="_blank">
         Test Link
       </LinkComponent>,
     )

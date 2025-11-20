@@ -1,10 +1,12 @@
 'use server'
 
+import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
 
-import { type Feature, patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
+import type { Feature } from '@meldingen/api-client'
+
+import { patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
 
 import { convertWktPointToCoordinates } from './utils'
 import { COOKIES } from 'apps/melding-form/src/constants'
@@ -34,8 +36,8 @@ export const postCoordinatesAndAssets = async (
     for (const asset of selectedAssets) {
       const { error } = await postMeldingByMeldingIdAsset({
         body: {
-          external_id: String(asset.id),
           asset_type_id: 1,
+          external_id: String(asset.id),
         },
         path: { melding_id: parseInt(meldingId, 10) },
         query: { token },
@@ -78,9 +80,9 @@ export const postCoordinatesAndAssets = async (
 
   const { error } = await patchMeldingByMeldingIdLocation({
     body: {
-      type: 'Feature',
-      geometry: { type: 'Point', coordinates: [parsedCoordinates.lat, parsedCoordinates.lng] },
+      geometry: { coordinates: [parsedCoordinates.lat, parsedCoordinates.lng], type: 'Point' },
       properties: {},
+      type: 'Feature',
     },
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },

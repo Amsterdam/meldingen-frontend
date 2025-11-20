@@ -1,5 +1,5 @@
-import { cookies } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
+import { cookies } from 'next/headers'
 
 import { Summary } from './Summary'
 import {
@@ -39,8 +39,8 @@ export default async () => {
 
   return (
     <Summary
-      attachments={attachments}
       additionalQuestions={additionalQuestions.data}
+      attachments={attachments}
       contact={contact}
       location={location}
       primaryForm={primaryForm.data}

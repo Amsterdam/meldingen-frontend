@@ -1,28 +1,31 @@
 'use client'
 
-import { Alert, ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
-import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
-import Form from 'next/form'
-import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 
-import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
+import { Alert, ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
+import { useTranslations } from 'next-intl'
+import Form from 'next/form'
+import { useActionState, useEffect, useRef, useState } from 'react'
+
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+
+import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Column, FileList, FileUpload, Heading, InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
-import { submitAttachmentsForm } from './actions'
 import type { ExistingFileType } from './page'
 import type { FileUpload as FileUploadType, PendingFileUpload } from './utils'
-import { startUpload } from './utils'
+import type { FormState } from 'apps/melding-form/src/types'
+
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
+import { submitAttachmentsForm } from './actions'
+import { startUpload } from './utils'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
-import type { FormState } from 'apps/melding-form/src/types'
+import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 
 import styles from './Attachments.module.css'
 
@@ -30,10 +33,10 @@ const MAX_SUCCESSFUL_UPLOADS = 3
 export const MAX_UPLOAD_ATTEMPTS = 10
 
 export type Props = {
+  files: ExistingFileType[]
   formData: StaticFormTextAreaComponentOutput[]
   meldingId: number
   token: string
-  files: ExistingFileType[]
 }
 
 const initialState: Pick<FormState, 'systemError'> = {}
@@ -83,7 +86,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     .filter((upload) => upload.status === 'error')
     .map((upload) => ({ key: upload.id, message: upload.errorMessage || '' }))
 
-  const { label, description } = formData[0]
+  const { description, label } = formData[0]
 
   const getNextUploadId = () => {
     uploadIdCounter.current += 1
@@ -206,7 +209,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             ref={invalidFormAlertRef}
           />
         )}
-        <FormHeader title={t('title')} step={t('step')} />
+        <FormHeader step={t('step')} title={t('title')} />
 
         <Column>
           <Column gap="small">
@@ -262,7 +265,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
               </FileList>
             )}
 
-            <div className="ams-visually-hidden" aria-live="polite">
+            <div aria-live="polite" className="ams-visually-hidden">
               {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
             </div>
           </Column>

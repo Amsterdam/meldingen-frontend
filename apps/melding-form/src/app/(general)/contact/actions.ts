@@ -20,7 +20,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
   const email = formData.get('email')
   const phone = formData.get('phone')
 
-  const { response, error } = await patchMeldingByMeldingIdContact({
+  const { error, response } = await patchMeldingByMeldingIdContact({
     body: {
       email: email ? (email as string) : null,
       phone: phone ? (phone as string) : null,

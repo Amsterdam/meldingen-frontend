@@ -26,7 +26,7 @@ const postAnswer = (questionId: number, meldingId: string, token: string, value:
 export const buildAnswerPromises = (
   entries: [string, string | File][],
   meldingId: string,
-  questionKeysAndIds: { key: string; id: number }[],
+  questionKeysAndIds: { id: number; key: string }[],
   token: string,
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[],
 ) =>

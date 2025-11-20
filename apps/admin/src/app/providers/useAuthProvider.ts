@@ -1,21 +1,22 @@
 import type { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js'
+import type { AuthProvider, DataProvider } from 'react-admin'
+
 import Keycloak from 'keycloak-js'
 import { httpClient, keycloakAuthProvider } from 'ra-keycloak'
 import { useRef } from 'react'
-import type { AuthProvider, DataProvider } from 'react-admin'
 
 import { dataProvider } from './dataProvider'
 
 const initOptions: KeycloakInitOptions = {
-  onLoad: 'login-required',
   checkLoginIframe: false,
+  onLoad: 'login-required',
   responseMode: 'query',
 }
 
 const config: KeycloakConfig = {
-  url: import.meta.env.VITE_KEYCLOAK_BASE_URL,
-  realm: import.meta.env.VITE_KEYCLOAK_REALM,
   clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
+  realm: import.meta.env.VITE_KEYCLOAK_REALM,
+  url: import.meta.env.VITE_KEYCLOAK_BASE_URL,
 }
 
 export const useAuthProvider = () => {
@@ -38,5 +39,5 @@ export const useAuthProvider = () => {
 
   dataProviderRef.current = dataProvider(import.meta.env.VITE_BACKEND_BASE_URL, httpClient(keycloakClient))
 
-  return { keycloakClient, dataProviderRef, authProvider }
+  return { authProvider, dataProviderRef, keycloakClient }
 }

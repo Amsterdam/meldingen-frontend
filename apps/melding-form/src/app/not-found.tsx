@@ -1,5 +1,5 @@
-import NextLink from 'next/link'
 import { getTranslations } from 'next-intl/server'
+import NextLink from 'next/link'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Footer, Grid, Header, Heading, Page, StandaloneLink } from '@meldingen/ui'

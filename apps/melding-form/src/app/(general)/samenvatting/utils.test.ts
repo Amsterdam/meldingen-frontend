@@ -1,3 +1,4 @@
+import { Blob } from 'buffer'
 import { http, HttpResponse } from 'msw'
 
 import type { MeldingOutput } from '@meldingen/api-client'
@@ -13,8 +14,6 @@ import {
 import { additionalQuestions, melding } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
-
-import { Blob } from 'buffer'
 
 const mockMeldingId = '88'
 const mockToken = 'test-token'
@@ -44,9 +43,9 @@ describe('getPrimaryFormSummary', () => {
 
     expect(result).toEqual({
       data: {
+        description: 'Er ligt hier veel afval op straat.',
         key: 'primary',
         term: 'First question',
-        description: 'Er ligt hier veel afval op straat.',
       },
     })
   })
@@ -96,8 +95,8 @@ describe('getAdditionalQuestionsSummary', () => {
         HttpResponse.json({
           components: [
             {
-              key: 'page1',
               components: [{ question: 35 }, { question: 36 }],
+              key: 'page1',
             },
           ],
         }),
@@ -106,10 +105,10 @@ describe('getAdditionalQuestionsSummary', () => {
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
 
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
-      key: item.question.id.toString(),
-      term: item.question.text,
       description: item.text,
+      key: item.question.id.toString(),
       link: '/aanvullende-vragen/1/page1',
+      term: item.question.text,
     }))
 
     expect(result).toEqual({ data: additionalQuestionsSummary })
@@ -132,8 +131,8 @@ describe('getAdditionalQuestionsSummary', () => {
         HttpResponse.json({
           components: [
             {
-              key: 'page1',
               components: [{ question: 999 }, { question: 998 }],
+              key: 'page1',
             },
           ],
         }),
@@ -142,10 +141,10 @@ describe('getAdditionalQuestionsSummary', () => {
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
 
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
-      key: item.question.id.toString(),
-      term: item.question.text,
       description: item.text,
+      key: item.question.id.toString(),
       link: '/',
+      term: item.question.text,
     }))
 
     expect(result).toEqual({ data: additionalQuestionsSummary })
@@ -185,14 +184,14 @@ describe('getAttachmentSummary', () => {
     const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
 
     expect(result).toMatchObject({
-      key: 'attachments',
-      term: "Foto's",
       files: [
         {
           blob: expect.any(Blob),
           fileName: 'IMG_0815.jpg',
         },
       ],
+      key: 'attachments',
+      term: "Foto's",
     })
   })
 
@@ -226,9 +225,9 @@ describe('getLocationSummary', () => {
     const result = getLocationSummary((key) => key, melding)
 
     expect(result).toEqual({
+      description: 'Oudezijds Voorburgwal 300A, 1012GL Amsterdam',
       key: 'location',
       term: 'location-label',
-      description: 'Oudezijds Voorburgwal 300A, 1012GL Amsterdam',
     })
   })
 
@@ -236,9 +235,9 @@ describe('getLocationSummary', () => {
     const result = getLocationSummary((key) => key, {} as MeldingOutput)
 
     expect(result).toEqual({
+      description: 'errors.no-location',
       key: 'location',
       term: 'location-label',
-      description: 'errors.no-location',
     })
   })
 })
@@ -248,9 +247,9 @@ describe('getContactSummary', () => {
     const result = getContactSummary('Wat zijn uw contactgegevens?', 'test@test.com', '+31612345678')
 
     expect(result).toEqual({
+      description: ['test@test.com', '+31612345678'],
       key: 'contact',
       term: 'Wat zijn uw contactgegevens?',
-      description: ['test@test.com', '+31612345678'],
     })
   })
 

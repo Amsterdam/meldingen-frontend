@@ -16,9 +16,9 @@ export const getAdditionalQuestionsData = async (meldingId: number) => {
 
   return {
     data: data.map((answer) => ({
+      description: answer.text,
       key: String(answer.question.id),
       term: answer.question.text,
-      description: answer.text,
     })),
   }
 }
@@ -28,40 +28,40 @@ export const getContactData = (data: MeldingOutput, t: (key: string) => string) 
 
   return [
     {
+      description: email ?? t('detail.contact.no-data'),
       key: 'email',
       term: t('detail.contact.email'),
-      description: email ?? t('detail.contact.no-data'),
     },
     {
+      description: phone ?? t('detail.contact.no-data'),
       key: 'phone',
       term: t('detail.contact.phone'),
-      description: phone ?? t('detail.contact.no-data'),
     },
   ]
 }
 
 export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) => {
-  const { id, created_at, classification, state } = data
+  const { classification, created_at, id, state } = data
 
   return [
     {
+      description: new Date(created_at).toLocaleDateString('nl-NL'),
       key: 'created_at',
       term: t('detail.melding-data.created_at'),
-      description: new Date(created_at).toLocaleDateString('nl-NL'),
     },
     {
+      description: classification ? classification.name : t('detail.no-classification'),
       key: 'classification',
       term: t('detail.melding-data.classification'),
-      description: classification ? classification.name : t('detail.no-classification'),
     },
     {
-      key: 'state',
-      term: t('detail.melding-data.state.term'),
       description: t(`shared.state.${state}`),
+      key: 'state',
       link: {
         href: `/melding/${id}/wijzig-status`,
         label: t('detail.melding-data.state.link'),
       },
+      term: t('detail.melding-data.state.term'),
     },
   ]
 }
@@ -73,9 +73,9 @@ export const getLocationData = (data: MeldingOutput, t: (key: string) => string)
 
   return [
     {
+      description: address,
       key: 'address',
       term: t('detail.location.address'),
-      description: address,
     },
   ]
 }
@@ -96,7 +96,7 @@ export const getAttachmentsData = async (meldingId: number, t: (key: string) => 
       })
 
       if (error) {
-        return { blob: null, fileName: original_filename, error: handleApiError(error) }
+        return { blob: null, error: handleApiError(error), fileName: original_filename }
       }
 
       // Returning blob instead of File since the File api is not available in Node.js
@@ -107,5 +107,5 @@ export const getAttachmentsData = async (meldingId: number, t: (key: string) => 
     }),
   )
 
-  return { key: 'attachments', term: t('detail.attachments.title'), files: attachments }
+  return { files: attachments, key: 'attachments', term: t('detail.attachments.title') }
 }

@@ -8,8 +8,8 @@ vi.mock('next/server', async () => {
   return {
     ...actual,
     NextResponse: {
-      redirect: vi.fn((url: URL) => ({ type: 'redirect', url: url.toString() })),
       next: vi.fn(() => ({ type: 'next' })),
+      redirect: vi.fn((url: URL) => ({ type: 'redirect', url: url.toString() })),
     },
   }
 })
@@ -40,7 +40,7 @@ describe('proxy', () => {
   })
 
   it('calls NextResponse.next if both token and id are present', () => {
-    const request = createMockRequest({ [COOKIES.TOKEN]: 'abc', [COOKIES.ID]: '123' })
+    const request = createMockRequest({ [COOKIES.ID]: '123', [COOKIES.TOKEN]: 'abc' })
     const result = proxy(request)
 
     expect(NextResponse.next).toHaveBeenCalled()

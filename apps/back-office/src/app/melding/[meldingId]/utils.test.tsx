@@ -1,5 +1,7 @@
+import { Blob } from 'buffer'
 import { http, HttpResponse } from 'msw'
 
+import { getFullNLAddress } from '../../utils'
 import {
   getAdditionalQuestionsData,
   getAttachmentsData,
@@ -7,13 +9,10 @@ import {
   getLocationData,
   getMeldingData,
 } from './utils'
-import { getFullNLAddress } from '../../utils'
 import { melding } from 'apps/back-office/src/mocks/data'
 import { additionalQuestions } from 'apps/back-office/src/mocks/data'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
-
-import { Blob } from 'buffer'
 
 const mockMeldingId = 88
 
@@ -22,9 +21,9 @@ describe('getAdditionalQuestionsData', () => {
     const result = await getAdditionalQuestionsData(mockMeldingId)
 
     const additionalQuestionsData = additionalQuestions.map((item) => ({
+      description: item.text,
       key: item.question.id.toString(),
       term: item.question.text,
-      description: item.text,
     }))
 
     expect(result).toEqual({ data: additionalQuestionsData })
@@ -90,9 +89,9 @@ describe('getLocationData', () => {
 
     expect(result).toEqual([
       {
+        description: getFullNLAddress(melding),
         key: 'address',
         term: 'detail.location.address',
-        description: getFullNLAddress(melding),
       },
     ])
   })
@@ -113,7 +112,7 @@ describe('getMeldingData', () => {
   it('should return correct melding summary', () => {
     const result = getMeldingData(melding, (key: string) => key)
 
-    const { id, classification, created_at } = melding
+    const { classification, created_at, id } = melding
 
     expect(result).toEqual([
       {
@@ -209,8 +208,8 @@ describe('getAttachmentsData', () => {
       files: [
         {
           blob: null,
-          fileName: 'IMG_0815.jpg',
           error: 'Error message',
+          fileName: 'IMG_0815.jpg',
         },
       ],
       key: 'attachments',

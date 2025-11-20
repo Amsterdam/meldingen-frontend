@@ -6,11 +6,11 @@ export default defineConfig({
   test: {
     coverage: {
       enabled: true,
-      include: ['src/**/*.{js,jsx,ts,tsx}'],
       exclude: ['src/index.ts'],
+      include: ['src/**/*.{js,jsx,ts,tsx}'],
     },
-    globals: true,
     environment: 'jsdom',
+    globals: true,
     include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     setupFiles: ['./vitest.setup.ts'],
     watch: false,

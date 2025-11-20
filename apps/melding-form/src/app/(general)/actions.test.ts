@@ -3,11 +3,11 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Mock, vi } from 'vitest'
 
-import { postPrimaryForm } from './actions'
 import { COOKIES } from '../../constants'
 import { form } from '../../mocks/data'
 import { ENDPOINTS } from '../../mocks/endpoints'
 import { server } from '../../mocks/node'
+import { postPrimaryForm } from './actions'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
@@ -19,8 +19,8 @@ vi.mock('next/navigation', () => ({
 
 describe('postPrimaryForm', () => {
   const mockCookies = {
-    set: vi.fn(),
     delete: vi.fn(),
+    set: vi.fn(),
   }
 
   beforeEach(() => {
@@ -153,11 +153,11 @@ describe('postPrimaryForm', () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING, () =>
         HttpResponse.json({
-          id: 123,
+          classification: undefined,
           created_at: '2025-05-26T11:56:34.081Z',
+          id: 123,
           public_id: 'B100AA',
           token: 'test-token',
-          classification: undefined,
         }),
       ),
     )

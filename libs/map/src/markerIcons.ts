@@ -1,43 +1,43 @@
 import L from 'leaflet'
 
 export const defaultIcon = L.icon({
-  iconUrl: '/icon-select-marker.svg',
-  iconSize: [30, 40],
   iconAnchor: [15, 40],
+  iconSize: [30, 40],
+  iconUrl: '/icon-select-marker.svg',
 })
 
 export const gftAfvalIcon = L.icon({
-  iconUrl: '/afval/gft.svg',
-  iconSize: [44, 44],
   iconAnchor: [22, 44],
+  iconSize: [44, 44],
+  iconUrl: '/afval/gft.svg',
 })
 
 export const glasAfvalIcon = L.icon({
-  iconUrl: '/afval/glas.svg',
-  iconSize: [44, 44],
   iconAnchor: [22, 44],
+  iconSize: [44, 44],
+  iconUrl: '/afval/glas.svg',
 })
 
 export const papierAfvalIcon = L.icon({
-  iconUrl: '/afval/papier.svg',
-  iconSize: [44, 44],
   iconAnchor: [22, 44],
+  iconSize: [44, 44],
+  iconUrl: '/afval/papier.svg',
 })
 
 export const plasticAfvalIcon = L.icon({
-  iconUrl: '/afval/plastic.svg',
-  iconSize: [44, 44],
   iconAnchor: [22, 44],
+  iconSize: [44, 44],
+  iconUrl: '/afval/plastic.svg',
 })
 
 export const restAfvalIcon = L.icon({
-  iconUrl: '/afval/rest.svg',
-  iconSize: [44, 44],
   iconAnchor: [22, 44],
+  iconSize: [44, 44],
+  iconUrl: '/afval/rest.svg',
 })
 
 export const textielAfvalIcon = L.icon({
-  iconUrl: '/afval/textiel.svg',
-  iconSize: [44, 44],
   iconAnchor: [22, 44],
+  iconSize: [44, 44],
+  iconUrl: '/afval/textiel.svg',
 })

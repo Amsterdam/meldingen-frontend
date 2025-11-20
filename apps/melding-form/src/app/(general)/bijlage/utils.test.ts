@@ -1,11 +1,12 @@
-import { safeJSONParse, startUpload } from './utils'
 import type { PendingFileUpload } from './utils'
 
+import { safeJSONParse, startUpload } from './utils'
+
 const xhrMock = {
-  status: 200,
   response: JSON.stringify({ id: 123 }),
-  upload: {} as XMLHttpRequestUpload,
   send: vi.fn(),
+  status: 200,
+  upload: {} as XMLHttpRequestUpload,
 } as unknown as XMLHttpRequest
 
 const fileUpload: PendingFileUpload = {
@@ -55,10 +56,10 @@ describe('startUpload', () => {
 
   it("sets status to 'error' on load with non-200", () => {
     const xhrMock = {
-      status: 500,
       response: JSON.stringify({ detail: 'Test error' }),
-      upload: {} as XMLHttpRequestUpload,
       send: vi.fn(),
+      status: 500,
+      upload: {} as XMLHttpRequestUpload,
     } as unknown as XMLHttpRequest
 
     startUpload(xhrMock, fileUpload, setFileUploadsMock)

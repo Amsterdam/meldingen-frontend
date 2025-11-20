@@ -1,7 +1,8 @@
+import type { AutocompleteInputProps, RaRecord } from 'react-admin'
+
 import { Icon } from '@amsterdam/design-system-react'
 import { PowerPlugWithSocketIcon } from '@amsterdam/design-system-react-icons'
 import { useState } from 'react'
-import type { AutocompleteInputProps, RaRecord } from 'react-admin'
 import { AutocompleteInput, Confirm, ReferenceInput, useRecordContext } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
 
@@ -15,7 +16,7 @@ const OptionRenderer = () => {
   return (
     <span className={styles.autoCompleteOption}>
       <span>{record.name}</span>
-      {record.form && <Icon svg={PowerPlugWithSocketIcon} className={styles.autoCompleteOptionIcon} />}
+      {record.form && <Icon className={styles.autoCompleteOptionIcon} svg={PowerPlugWithSocketIcon} />}
     </span>
   )
 }
@@ -24,7 +25,7 @@ const inputText = (choice: RaRecord) => `${choice.name}`
 
 export const ClassificationInput = () => {
   const record = useRecordContext()
-  const { setValue, getValues } = useFormContext()
+  const { getValues, setValue } = useFormContext()
 
   const [previousSelectedValue, setPreviousSelectedValue] = useState(record?.classification)
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -53,27 +54,27 @@ export const ClassificationInput = () => {
     <>
       <ReferenceInput reference="classification" sort={{ field: 'name', order: 'ASC' }} source="classification">
         <AutocompleteInput
-          open={autocompleteOpen}
+          inputText={inputText}
+          onChange={handleChange}
+          onClose={() => {
+            setAutocompleteOpen(false)
+          }}
           onOpen={() => {
             if (!dialogOpen) {
               setAutocompleteOpen(true)
             }
           }}
-          onClose={() => {
-            setAutocompleteOpen(false)
-          }}
+          open={autocompleteOpen}
           openOnFocus={false}
-          inputText={inputText}
           optionText={<OptionRenderer />}
-          onChange={handleChange}
         />
       </ReferenceInput>
       <Confirm
-        isOpen={dialogOpen}
-        title="ma.dialog.overwriteClassification.title"
         content="ma.dialog.overwriteClassification.content"
-        onConfirm={handleDialogConfirm}
+        isOpen={dialogOpen}
         onClose={handleDialogClose}
+        onConfirm={handleDialogConfirm}
+        title="ma.dialog.overwriteClassification.title"
       />
     </>
   )

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import { Detail } from './Detail'
 import { getFullNLAddress } from '../../utils'
+import { Detail } from './Detail'
 import { melding } from 'apps/back-office/src/mocks/data'
 
 vi.mock('./_components/AttachmentImage', () => ({
@@ -10,10 +10,10 @@ vi.mock('./_components/AttachmentImage', () => ({
 
 const defaultProps = {
   additionalQuestionsWithMeldingText: [
-    { key: 'text', term: 'Test melding text', description: 'Test melding description' },
-    { key: '1', term: 'Term 1', description: 'Description 1' },
-    { key: '2', term: 'Term 2', description: 'Description 2' },
-    { key: '3', term: 'Term 3', description: 'Description 3' },
+    { description: 'Test melding description', key: 'text', term: 'Test melding text' },
+    { description: 'Description 1', key: '1', term: 'Term 1' },
+    { description: 'Description 2', key: '2', term: 'Term 2' },
+    { description: 'Description 3', key: '3', term: 'Term 3' },
   ],
   attachments: {
     files: [{ blob: new Blob(['test-blob'], { type: 'image/jpeg' }), fileName: 'IMG_0815.jpg' }],
@@ -21,13 +21,13 @@ const defaultProps = {
     term: 'detail.attachments.title',
   },
   meldingData: [
-    { key: 'created_at', term: 'Created at', description: '2023-10-01' },
-    { key: 'classification', term: 'Classification', description: 'Test classification' },
+    { description: '2023-10-01', key: 'created_at', term: 'Created at' },
+    { description: 'Test classification', key: 'classification', term: 'Classification' },
     {
-      key: 'state',
-      term: 'State',
       description: 'processing',
+      key: 'state',
       link: { href: '/melding/123/wijzig-status', label: 'Change state' },
+      term: 'State',
     },
   ],
   meldingId: 123,
@@ -59,8 +59,8 @@ describe('Detail', () => {
       <Detail
         {...defaultProps}
         contact={[
-          { key: 'email', term: 'Email', description: 'email@email.email' },
-          { key: 'phone', term: 'Phone', description: '1234567890' },
+          { description: 'email@email.email', key: 'email', term: 'Email' },
+          { description: '1234567890', key: 'phone', term: 'Phone' },
         ]}
       />,
     )
@@ -74,7 +74,7 @@ describe('Detail', () => {
     render(
       <Detail
         {...defaultProps}
-        location={[{ key: 'address', term: 'location.address', description: getFullNLAddress(melding)! }]}
+        location={[{ description: getFullNLAddress(melding)!, key: 'address', term: 'location.address' }]}
       />,
     )
 

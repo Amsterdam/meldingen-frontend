@@ -3,14 +3,14 @@ import type { Feature } from '@meldingen/api-client'
 import { containerIconsSVG, containerTypes, getContainerFeatureIconSVG } from './getContainerFeatureIconSVG'
 
 const makeFeature = (type: (typeof containerTypes)[number] | string): Feature => ({
-  type: 'Feature',
   geometry: {
-    type: 'Point',
     coordinates: [0, 0],
+    type: 'Point',
   },
   properties: {
     fractie_omschrijving: type,
   },
+  type: 'Feature',
 })
 
 describe('getContainerFeatureIconSVG', () => {
@@ -24,7 +24,7 @@ describe('getContainerFeatureIconSVG', () => {
   })
 
   it('returns fallback SVG if feature has no properties', () => {
-    const feature = { type: 'Feature', geometry: { type: 'Point', coordinates: [0, 0] } } as Feature
+    const feature = { geometry: { coordinates: [0, 0], type: 'Point' }, type: 'Feature' } as Feature
     const svg = getContainerFeatureIconSVG(feature)
 
     expect(svg).toBe('/afval/rest.svg')

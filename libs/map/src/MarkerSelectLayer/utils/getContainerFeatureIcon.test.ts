@@ -1,15 +1,17 @@
-import { type AssetFeature, containerTypes, getContainerFeatureIcon } from './getContainerFeatureIcon'
+import type { AssetFeature } from './getContainerFeatureIcon'
+
+import { containerTypes, getContainerFeatureIcon } from './getContainerFeatureIcon'
 
 const makeFeature = (type: (typeof containerTypes)[number] | string) =>
   ({
-    type: 'Feature',
     geometry: {
-      type: 'Point',
       coordinates: [0, 0],
+      type: 'Point',
     },
     properties: {
       fractie_omschrijving: type,
     },
+    type: 'Feature',
   }) as AssetFeature
 
 describe('containerFeatureIcons', () => {

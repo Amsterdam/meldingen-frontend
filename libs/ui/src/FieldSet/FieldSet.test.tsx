@@ -5,7 +5,7 @@ import { FieldSet } from './FieldSet'
 
 describe('FieldSet', () => {
   it('renders without heading when hasHeading is false', () => {
-    render(<FieldSet legend="Test" hasHeading={false} />)
+    render(<FieldSet hasHeading={false} legend="Test" />)
 
     const component = screen.getByRole('group', { name: 'Test' })
     const heading = screen.queryByRole('heading')
@@ -33,7 +33,7 @@ describe('FieldSet', () => {
   })
 
   it('renders an extra class name', () => {
-    render(<FieldSet hasHeading className="extra" legend="Test" />)
+    render(<FieldSet className="extra" hasHeading legend="Test" />)
 
     const component = screen.getByRole('group', { name: 'Test' })
 

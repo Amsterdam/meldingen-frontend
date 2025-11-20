@@ -19,10 +19,10 @@ export const createClusterIcon = (cluster: MarkerCluster) => {
   cluster.options.keyboard = false
 
   return divIcon({
-    html: cluster.getChildCount().toString(),
     className: 'meldingen-cluster',
-    iconSize: [70, 70],
+    html: cluster.getChildCount().toString(),
     iconAnchor: [35, 35],
+    iconSize: [70, 70],
   })
 }
 
@@ -68,22 +68,22 @@ export type Props = {
   classification?: string
   markers: Feature[]
   maxMarkers: number
-  selectedMarkers: Feature[]
   onMarkersChange: (markers: Feature[]) => void
-  onSelectedMarkersChange: (selectedMarkers: Feature[]) => void
-  updateSelectedPoint: (point?: Coordinates) => void
   onMaxMarkersReached: (maxReached: boolean) => void
+  onSelectedMarkersChange: (selectedMarkers: Feature[]) => void
+  selectedMarkers: Feature[]
+  updateSelectedPoint: (point?: Coordinates) => void
 }
 
 export const MarkerSelectLayer = ({
   classification,
   markers,
   maxMarkers,
-  selectedMarkers,
   onMarkersChange,
-  onSelectedMarkersChange,
-  updateSelectedPoint,
   onMaxMarkersReached,
+  onSelectedMarkersChange,
+  selectedMarkers,
+  updateSelectedPoint,
 }: Props) => {
   const map = useContext(MapContext)
   const markersRef = useRef<Record<string, Marker>>({})

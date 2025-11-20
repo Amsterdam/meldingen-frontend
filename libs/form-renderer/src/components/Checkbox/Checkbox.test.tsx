@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
-import { Checkbox, type Props } from './Checkbox'
+import type { Props } from './Checkbox'
+
+import { Checkbox } from './Checkbox'
 
 const defaultProps: Props = {
   hasHeading: true,

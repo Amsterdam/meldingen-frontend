@@ -22,5 +22,5 @@ export const AttachmentImage = ({ blob, fileName }: Props) => {
 
   if (!blob) return <Paragraph>{fileName}</Paragraph>
 
-  return url && <Image src={url} alt="" />
+  return url && <Image alt="" src={url} />
 }
