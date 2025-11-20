@@ -1,16 +1,18 @@
+/* eslint-disable perfectionist/sort-objects */
+
 import eslint from '@eslint/js'
 import json from '@eslint/json'
 import markdown from '@eslint/markdown'
 import pluginNext from '@next/eslint-plugin-next'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
-import { defineConfig } from 'eslint/config'
 import eslintConfigPrettier from 'eslint-config-prettier/flat'
 import importPlugin from 'eslint-plugin-import'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import perfectionist from 'eslint-plugin-perfectionist'
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 import react from 'eslint-plugin-react'
+import { defineConfig } from 'eslint/config'
 import globals from 'globals'
 
 export default defineConfig(
@@ -38,7 +40,7 @@ export default defineConfig(
 
   // JavaScript, TypeScript & React
   {
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {

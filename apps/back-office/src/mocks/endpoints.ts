@@ -1,5 +1,5 @@
 export const ENDPOINTS = {
-  // Attachmets
+  // Attachments
   GET_ATTACHMENT_BY_ID: '/attachment/:id',
 
   // Melding
