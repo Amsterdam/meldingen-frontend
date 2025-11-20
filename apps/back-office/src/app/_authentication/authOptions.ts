@@ -1,6 +1,7 @@
 import type { JWT } from 'next-auth/jwt'
 
 import { AuthOptions } from 'next-auth'
+import AzureAD from 'next-auth/providers/azure-ad'
 import KeycloakProvider from 'next-auth/providers/keycloak'
 
 /**
@@ -87,6 +88,11 @@ export const authOptions: AuthOptions = {
     },
   },
   providers: [
+    AzureAD({
+      clientId: process.env.ENTRA_CLIENT_ID,
+      clientSecret: process.env.ENTRA_CLIENT_SECRET,
+      tenantId: process.env.ENTRA_TENANT_ID,
+    }),
     KeycloakProvider({
       authorization: {
         params: {
