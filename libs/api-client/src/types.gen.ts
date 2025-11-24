@@ -116,6 +116,28 @@ export type AnswerQuestionOutput = {
 };
 
 /**
+ * AssetOutput
+ */
+export type AssetOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * External Id
+     */
+    external_id: string;
+};
+
+/**
  * AssetTypeInput
  */
 export type AssetTypeInput = {
@@ -133,6 +155,10 @@ export type AssetTypeInput = {
     arguments: {
         [key: string]: unknown;
     };
+    /**
+     * Max Assets
+     */
+    max_assets: number;
 };
 
 /**
@@ -165,6 +191,10 @@ export type AssetTypeOutput = {
     arguments: {
         [key: string]: unknown;
     };
+    /**
+     * Max Assets
+     */
+    max_assets: number;
 };
 
 /**
@@ -185,6 +215,10 @@ export type AssetTypeUpdateInput = {
     arguments?: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Max Assets
+     */
+    max_assets?: number | null;
 };
 
 /**
@@ -506,6 +540,7 @@ export type FormCheckboxComponentOutput = {
      */
     position: number;
     validate?: FormComponentOutputValidate | null;
+    conditional?: FormIoConditional | null;
     /**
      * Values
      */
@@ -582,6 +617,24 @@ export type FormComponentValueOutput = {
      * Position
      */
     position: number;
+};
+
+/**
+ * FormIOConditional
+ */
+export type FormIoConditional = {
+    /**
+     * Show
+     */
+    show: boolean;
+    /**
+     * When
+     */
+    when: string;
+    /**
+     * Eq
+     */
+    eq: string | number | number | boolean | null;
 };
 
 /**
@@ -772,6 +825,7 @@ export type FormRadioComponentOutput = {
      */
     position: number;
     validate?: FormComponentOutputValidate | null;
+    conditional?: FormIoConditional | null;
     /**
      * Values
      */
@@ -864,6 +918,7 @@ export type FormSelectComponentOutput = {
      */
     position: number;
     validate?: FormComponentOutputValidate | null;
+    conditional?: FormIoConditional | null;
     /**
      * Widget
      */
@@ -940,6 +995,7 @@ export type FormTextAreaComponentOutput = {
      */
     position: number;
     validate?: FormComponentOutputValidate | null;
+    conditional?: FormIoConditional | null;
     /**
      * Autoexpand
      */
@@ -1007,6 +1063,7 @@ export type FormTextFieldInputComponentOutput = {
      */
     position: number;
     validate?: FormComponentOutputValidate | null;
+    conditional?: FormIoConditional | null;
     /**
      * Question
      */
@@ -1965,6 +2022,7 @@ export type SimpleClassificationOutput = {
      * Name
      */
     name: string;
+    asset_type?: AssetTypeOutput | null;
 };
 
 /**
@@ -2092,6 +2150,7 @@ export type StaticFormCheckboxComponentOutput = {
      */
     position: number;
     validate?: FormComponentOutputValidate | null;
+    conditional?: FormIoConditional | null;
     /**
      * Values
      */
@@ -2210,6 +2269,7 @@ export type StaticFormRadioComponentOutput = {
      */
     position: number;
     validate?: FormComponentOutputValidate | null;
+    conditional?: FormIoConditional | null;
     /**
      * Values
      */
@@ -2245,6 +2305,7 @@ export type StaticFormSelectComponentOutput = {
      */
     position: number;
     validate?: FormComponentOutputValidate | null;
+    conditional?: FormIoConditional | null;
     /**
      * Widget
      */
@@ -2285,6 +2346,7 @@ export type StaticFormTextAreaComponentOutput = {
      */
     position: number;
     validate?: FormComponentOutputValidate | null;
+    conditional?: FormIoConditional | null;
     /**
      * Autoexpand
      */
@@ -2324,6 +2386,7 @@ export type StaticFormTextFieldInputComponentOutput = {
      */
     position: number;
     validate?: FormComponentOutputValidate | null;
+    conditional?: FormIoConditional | null;
 };
 
 /**
@@ -4368,6 +4431,125 @@ export type PostMeldingByMeldingIdAssetResponses = {
 };
 
 export type PostMeldingByMeldingIdAssetResponse = PostMeldingByMeldingIdAssetResponses[keyof PostMeldingByMeldingIdAssetResponses];
+
+export type GetMeldingByMeldingIdAssetsMelderData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query: {
+        /**
+         * Token
+         *
+         * The token of the melding.
+         */
+        token: string;
+    };
+    url: '/melding/{melding_id}/assets/melder';
+};
+
+export type GetMeldingByMeldingIdAssetsMelderErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetMeldingByMeldingIdAssetsMelderError = GetMeldingByMeldingIdAssetsMelderErrors[keyof GetMeldingByMeldingIdAssetsMelderErrors];
+
+export type GetMeldingByMeldingIdAssetsMelderResponses = {
+    /**
+     * Response Melding Assets Melder Melding  Melding Id  Assets Melder Get
+     *
+     * Successful Response
+     */
+    200: Array<AssetOutput>;
+};
+
+export type GetMeldingByMeldingIdAssetsMelderResponse = GetMeldingByMeldingIdAssetsMelderResponses[keyof GetMeldingByMeldingIdAssetsMelderResponses];
+
+export type GetMeldingByMeldingIdAssetsData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/assets';
+};
+
+export type GetMeldingByMeldingIdAssetsErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetMeldingByMeldingIdAssetsError = GetMeldingByMeldingIdAssetsErrors[keyof GetMeldingByMeldingIdAssetsErrors];
+
+export type GetMeldingByMeldingIdAssetsResponses = {
+    /**
+     * Response Melding Assets Melding  Melding Id  Assets Get
+     *
+     * Successful Response
+     */
+    200: Array<AssetOutput>;
+};
+
+export type GetMeldingByMeldingIdAssetsResponse = GetMeldingByMeldingIdAssetsResponses[keyof GetMeldingByMeldingIdAssetsResponses];
 
 export type DeleteMeldingByMeldingIdAssetByAssetIdData = {
     body?: never;
