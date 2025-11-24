@@ -137,7 +137,7 @@ describe('Contact', () => {
     const formData = new FormData()
 
     formData.append('email', 'Email data from action')
-    formData.append('tel', 'Tel data from action')
+    formData.append('phone', 'Phone data from action')
     ;(useActionState as Mock).mockReturnValue([{ formData }, vi.fn()])
 
     const contactFormDataWithDefaultValues = [
@@ -157,6 +157,6 @@ describe('Contact', () => {
     const telInput = screen.getByRole('textbox', { name: 'Wat is uw telefoonnummer? (niet verplicht)' })
 
     expect(emailInput).toHaveValue('Email data from action')
-    expect(telInput).toHaveValue('Tel data from action')
+    expect(telInput).toHaveValue('Phone data from action')
   })
 })
