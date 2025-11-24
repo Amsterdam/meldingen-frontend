@@ -19,7 +19,7 @@ import { i18nProvider } from './providers'
 
 const tokenRequest: SilentRequest = {
   forceRefresh: false, // Set this to "true" to skip a cached token and go to the server to get a new token
-  scopes: ['User.Read'],
+  scopes: [`${import.meta.env.VITE_MSAL_CLIENT_ID}/.default openid email`],
 }
 
 const httpClient = msalHttpClient({
