@@ -226,8 +226,8 @@ importers:
   libs/form-builder:
     dependencies:
       '@formio/js':
-        specifier: 5.0.2
-        version: 5.0.2(@popperjs/core@2.11.8)
+        specifier: 5.2.3
+        version: 5.2.3(@popperjs/core@2.11.8)
     devDependencies:
       '@formio/core':
         specifier: 2.5.2
@@ -772,20 +772,14 @@ packages:
   '@formatjs/intl-localematcher@0.6.2':
     resolution: {integrity: sha512-XOMO2Hupl0wdd172Y06h6kLpBz6Dv+J4okPLl4LPtzbr8f66WbIoy4ev98EBuZ6ZK4h5ydTN6XneT4QVpD7cdA==}
 
-  '@formio/bootstrap@3.0.2-rc.1':
-    resolution: {integrity: sha512-CfwnU04l8yMc0kr1j2Y7mj193Z5BfqoNiCGBsTz1bDIr/tnaQkfEOZ21zJ15KVpCXVGc6SjW7QQ1JY8UVsE0lQ==}
-
-  '@formio/choices.js@10.2.1':
-    resolution: {integrity: sha512-NCE5u7jG3XGokJP16MyAbVSUptKu/mpJYAxd4PPIoLiO/l9Do5uoOQ0MgNb9qG9qABJiOX+qNRE8q8RybY/SwQ==}
-
-  '@formio/core@2.3.3':
-    resolution: {integrity: sha512-Tgv5FEwEf9xQtl/cqviaWyBCFcwGCb1pVXwTjIH7KxtWMwsyXtbxGotjfFyZY9unOw6Snk2ik/sln80yQe5y9A==}
+  '@formio/bootstrap@3.1.3':
+    resolution: {integrity: sha512-VRtBKJojV5b8RvcM0Vm+i/byjyydJGoDwKW8f3GkahfVejMocxnU43rEYnhGO/P3izDW5MmjzWKDwMA/l9pcqg==}
 
   '@formio/core@2.5.2':
     resolution: {integrity: sha512-izOAwUSqjxeEtHjvym3/Xn01uDh6c+7bfzfaKLzTo012czvh21sglOASDROxvzopTxgzWFtKKRs/RwcAOw+1fw==}
 
-  '@formio/js@5.0.2':
-    resolution: {integrity: sha512-zAuCUuxBPCJ7Nmt8+xPE5XyLkVg550a//I9ke8bhI7EGlRkN6xF1Ve7Nomsi8ruohiw2BVcMH+5SS3LXWUm0uQ==}
+  '@formio/js@5.2.3':
+    resolution: {integrity: sha512-g1TpRxuwrE6vkcDcO3+zBvrpK2/9J/FvjkzooAfxwAFBo6+4JEBHjy3buLLrAct9d4swAALW3VQbw/wbiQGW0Q==}
 
   '@formio/text-mask-addons@3.8.0-formio.4':
     resolution: {integrity: sha512-vhkeIyuL+1rtC9S4IW8O3JCwroPtvJrkrcMO4wyELNqMIgQRKbiyBAitZfUP4tY04xdB5lxAinbzdwb+NMdX6w==}
@@ -1596,9 +1590,6 @@ packages:
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
 
-  '@types/json-logic-js@2.0.8':
-    resolution: {integrity: sha512-WgNsDPuTPKYXl0Jh0IfoCoJoAGGYZt5qzpmjuLSEg7r0cKp/kWtWp0HAsVepyPSPyXiHo6uXp/B/kW/2J1fa2Q==}
-
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
@@ -2092,6 +2083,9 @@ packages:
     resolution: {integrity: sha512-OAlb+T7V4Op9OwdkjmguYRqncdlx5JiofwOAUkmTF+jNdHwzTaTs4sRAGpzLF3oOz5xAyDGrPgeIDFQmDOTiJw==}
     engines: {node: '>= 16'}
 
+  choices.js@11.1.0:
+    resolution: {integrity: sha512-mIt0uLhedHg2ea/K2PACrVpt391vRGHuOoctPAiHcyemezwzNMxj7jOzNEk8e7EbjLh0S0sspDkSCADOKz9kcw==}
+
   chokidar@4.0.3:
     resolution: {integrity: sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==}
     engines: {node: '>= 14.16.0'}
@@ -2175,9 +2169,6 @@ packages:
   cookie@1.0.2:
     resolution: {integrity: sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==}
     engines: {node: '>=18'}
-
-  core-js@3.45.1:
-    resolution: {integrity: sha512-L4NPsJlCfZsPeXukyzHFlg/i7IIVwHSItR0wg0FLNqYClJ4MQYTYLbC7EkjKYRLZF2iof2MUgN0EGy7MdQFChg==}
 
   core-js@3.47.0:
     resolution: {integrity: sha512-c3Q2VVkGAUyupsjRnaNX6u8Dq2vAdzm9iuPj5FW0fRxzlxgq9Q39MDq10IvmQSpLgHQNyQzQmOo6bgGHmH3NNg==}
@@ -2314,10 +2305,6 @@ packages:
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
 
-  deepmerge@4.3.1:
-    resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
-    engines: {node: '>=0.10.0'}
-
   default-browser-id@5.0.0:
     resolution: {integrity: sha512-A6p/pu/6fyBcA1TRz/GqWYPViplrftcW2gZC9q79ngNCKAeR/X3gcEdXQHl4KNXV+3wgIJ1CPkJQ3IHM6lcsyA==}
     engines: {node: '>=18'}
@@ -2392,9 +2379,6 @@ packages:
 
   dompurify@3.2.4:
     resolution: {integrity: sha512-ysFSFEDVduQpyhzAob/kkuJjf5zWkZD8/A9ywSp1byueyuCfHamrCBa14/Oc2iiB0e51B+NpxSl5gmzn+Ms/mg==}
-
-  dompurify@3.2.7:
-    resolution: {integrity: sha512-WhL/YuveyGXJaerVlMYGWhvQswa7myDG17P7Vu65EWC05o8vfeNbvNf4d/BOvH99+ZW+LlQsc1GDKMa1vNK6dw==}
 
   dompurify@3.3.0:
     resolution: {integrity: sha512-r+f6MYR1gGN1eJv0TVQbhA7if/U7P87cdPl3HN5rikqaBSBxLiCb/b9O+2eG0cxz0ghyU+mU1QkbsOwERMYlWQ==}
@@ -2735,8 +2719,8 @@ packages:
   functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
 
-  fuse.js@6.6.2:
-    resolution: {integrity: sha512-cJaJkxCCxC8qIIcPBF9yGxY0W/tVZS3uEISDxhYIdtk8OL93pe+6Zj7LjCqVV4dzbqcriOZ+kQ/NE4RXZHsIGA==}
+  fuse.js@7.1.0:
+    resolution: {integrity: sha512-trLf4SzuuUxfusZADLINj+dE8clK1frKdmqiJNb1Es75fmI5oY6X2mxLVUciLLjxqw/xr72Dhy+lER6dGd02FQ==}
     engines: {node: '>=10'}
 
   gensync@1.0.0-beta.2:
@@ -4036,9 +4020,6 @@ packages:
   redent@3.0.0:
     resolution: {integrity: sha512-6tDA8g98We0zd0GvVeMT9arEOnTw9qM03L9cJXaCjrip1OO764RDBLBfrB4cwzNGDj5OA5ioymC9GkizgWJDUg==}
     engines: {node: '>=8'}
-
-  redux@4.2.1:
-    resolution: {integrity: sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==}
 
   reflect.getprototypeof@1.0.10:
     resolution: {integrity: sha512-00o4I+DVrefhv+nX0ulyi3biSHCPDe+yLv5o/p6d/UVlirijB8E16FtfwSAi4g3tcqrQ4lRAqQSoFEZJehYEcw==}
@@ -5380,30 +5361,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@formio/bootstrap@3.0.2-rc.1': {}
-
-  '@formio/choices.js@10.2.1':
-    dependencies:
-      deepmerge: 4.3.1
-      fuse.js: 6.6.2
-      redux: 4.2.1
-
-  '@formio/core@2.3.3':
-    dependencies:
-      '@types/json-logic-js': 2.0.8
-      browser-cookies: 1.2.0
-      core-js: 3.47.0
-      dayjs: 1.11.19
-      dompurify: 3.3.0
-      eventemitter3: 5.0.1
-      fast-json-patch: 3.1.1
-      fetch-ponyfill: 7.1.0
-      inputmask: 5.0.9
-      json-logic-js: 2.0.5
-      lodash: 4.17.21
-      moment: 2.30.1
-    transitivePeerDependencies:
-      - encoding
+  '@formio/bootstrap@3.1.3': {}
 
   '@formio/core@2.5.2':
     dependencies:
@@ -5421,11 +5379,10 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@formio/js@5.0.2(@popperjs/core@2.11.8)':
+  '@formio/js@5.2.3(@popperjs/core@2.11.8)':
     dependencies:
-      '@formio/bootstrap': 3.0.2-rc.1
-      '@formio/choices.js': 10.2.1
-      '@formio/core': 2.3.3
+      '@formio/bootstrap': 3.1.3
+      '@formio/core': 2.5.2
       '@formio/text-mask-addons': 3.8.0-formio.4
       '@formio/vanilla-text-mask': 5.1.1-formio.1
       abortcontroller-polyfill: 1.7.8
@@ -5433,11 +5390,12 @@ snapshots:
       bootstrap: 5.3.8(@popperjs/core@2.11.8)
       browser-cookies: 1.2.0
       browser-md5-file: 1.1.1
+      choices.js: 11.1.0
       compare-versions: 6.1.1
-      core-js: 3.45.1
+      core-js: 3.47.0
       dialog-polyfill: 0.5.6
       dom-autoscroller: 2.3.4
-      dompurify: 3.2.7
+      dompurify: 3.3.0
       downloadjs: 1.4.7
       dragula: 3.7.3
       eventemitter3: 5.0.1
@@ -6141,8 +6099,6 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
 
-  '@types/json-logic-js@2.0.8': {}
-
   '@types/json-schema@7.0.15': {}
 
   '@types/json5@0.0.29': {}
@@ -6751,6 +6707,10 @@ snapshots:
 
   check-error@2.1.1: {}
 
+  choices.js@11.1.0:
+    dependencies:
+      fuse.js: 7.1.0
+
   chokidar@4.0.3:
     dependencies:
       readdirp: 4.1.2
@@ -6816,8 +6776,6 @@ snapshots:
   cookie@0.7.2: {}
 
   cookie@1.0.2: {}
-
-  core-js@3.45.1: {}
 
   core-js@3.47.0: {}
 
@@ -6933,8 +6891,6 @@ snapshots:
 
   deep-is@0.1.4: {}
 
-  deepmerge@4.3.1: {}
-
   default-browser-id@5.0.0: {}
 
   default-browser@5.4.0:
@@ -7012,10 +6968,6 @@ snapshots:
       iselement: 1.1.4
 
   dompurify@3.2.4:
-    optionalDependencies:
-      '@types/trusted-types': 2.0.7
-
-  dompurify@3.2.7:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
@@ -7556,7 +7508,7 @@ snapshots:
 
   functions-have-names@1.2.3: {}
 
-  fuse.js@6.6.2: {}
+  fuse.js@7.1.0: {}
 
   gensync@1.0.0-beta.2: {}
 
@@ -9157,10 +9109,6 @@ snapshots:
     dependencies:
       indent-string: 4.0.0
       strip-indent: 3.0.0
-
-  redux@4.2.1:
-    dependencies:
-      '@babel/runtime': 7.28.4
 
   reflect.getprototypeof@1.0.10:
     dependencies:
