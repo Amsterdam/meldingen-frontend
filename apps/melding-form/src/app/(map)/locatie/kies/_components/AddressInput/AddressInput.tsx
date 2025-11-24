@@ -79,7 +79,6 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
     }
   }
 
-  // TODO: do we want to show a loading state?
   const debouncedFetchAddressList = debounce((value: string) => {
     fetchAddressList(value, setAddressList, setShowListBox)
   })
