@@ -15,7 +15,7 @@ export const AddSchema = {
                         type: 'string'
                     },
                     {
-                        '$ref': '#/components/schemas/Var'
+                        $ref: '#/components/schemas/Var'
                     }
                 ]
             },
@@ -24,7 +24,9 @@ export const AddSchema = {
         }
     },
     type: 'object',
-    required: ['+'],
+    required: [
+        '+'
+    ],
     title: 'Add'
 } as const;
 
@@ -39,25 +41,25 @@ export const All_InputSchema = {
                             type: 'array'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Input'
+                            $ref: '#/components/schemas/Filter-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Input'
+                            $ref: '#/components/schemas/Map-Input'
                         }
                     ]
                 },
@@ -67,109 +69,109 @@ export const All_InputSchema = {
                             type: 'boolean'
                         },
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Input'
+                            $ref: '#/components/schemas/All-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Input'
+                            $ref: '#/components/schemas/And-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Input'
+                            $ref: '#/components/schemas/Filter-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Input'
+                            $ref: '#/components/schemas/In-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Input'
+                            $ref: '#/components/schemas/Map-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Input'
+                            $ref: '#/components/schemas/None_-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Input'
+                            $ref: '#/components/schemas/Or-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Input'
+                            $ref: '#/components/schemas/Reduce-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Input'
+                            $ref: '#/components/schemas/Some-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -181,7 +183,9 @@ export const All_InputSchema = {
         }
     },
     type: 'object',
-    required: ['all'],
+    required: [
+        'all'
+    ],
     title: 'All'
 } as const;
 
@@ -196,25 +200,25 @@ export const All_OutputSchema = {
                             type: 'array'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Output'
+                            $ref: '#/components/schemas/Filter-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Output'
+                            $ref: '#/components/schemas/Map-Output'
                         }
                     ]
                 },
@@ -224,109 +228,109 @@ export const All_OutputSchema = {
                             type: 'boolean'
                         },
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Output'
+                            $ref: '#/components/schemas/All-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Output'
+                            $ref: '#/components/schemas/And-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Output'
+                            $ref: '#/components/schemas/Filter-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Output'
+                            $ref: '#/components/schemas/In-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Output'
+                            $ref: '#/components/schemas/Map-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Output'
+                            $ref: '#/components/schemas/None_-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Output'
+                            $ref: '#/components/schemas/Or-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Output'
+                            $ref: '#/components/schemas/Reduce-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Output'
+                            $ref: '#/components/schemas/Some-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -338,7 +342,9 @@ export const All_OutputSchema = {
         }
     },
     type: 'object',
-    required: ['all'],
+    required: [
+        'all'
+    ],
     title: 'All'
 } as const;
 
@@ -366,109 +372,109 @@ export const And_InputSchema = {
                         type: 'array'
                     },
                     {
-                        '$ref': '#/components/schemas/Add'
+                        $ref: '#/components/schemas/Add'
                     },
                     {
-                        '$ref': '#/components/schemas/All-Input'
+                        $ref: '#/components/schemas/All-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/And-Input'
+                        $ref: '#/components/schemas/And-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/Cat'
+                        $ref: '#/components/schemas/Cat'
                     },
                     {
-                        '$ref': '#/components/schemas/Divide'
+                        $ref: '#/components/schemas/Divide'
                     },
                     {
-                        '$ref': '#/components/schemas/Equals'
+                        $ref: '#/components/schemas/Equals'
                     },
                     {
-                        '$ref': '#/components/schemas/Filter-Input'
+                        $ref: '#/components/schemas/Filter-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/GreaterThan'
+                        $ref: '#/components/schemas/GreaterThan'
                     },
                     {
-                        '$ref': '#/components/schemas/GreaterThanOrEqual'
+                        $ref: '#/components/schemas/GreaterThanOrEqual'
                     },
                     {
-                        '$ref': '#/components/schemas/If'
+                        $ref: '#/components/schemas/If'
                     },
                     {
-                        '$ref': '#/components/schemas/In-Input'
+                        $ref: '#/components/schemas/In-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/LessThan'
+                        $ref: '#/components/schemas/LessThan'
                     },
                     {
-                        '$ref': '#/components/schemas/LessThanOrEqual'
+                        $ref: '#/components/schemas/LessThanOrEqual'
                     },
                     {
-                        '$ref': '#/components/schemas/Log'
+                        $ref: '#/components/schemas/Log'
                     },
                     {
-                        '$ref': '#/components/schemas/Map-Input'
+                        $ref: '#/components/schemas/Map-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/Max'
+                        $ref: '#/components/schemas/Max'
                     },
                     {
-                        '$ref': '#/components/schemas/Merge'
+                        $ref: '#/components/schemas/Merge'
                     },
                     {
-                        '$ref': '#/components/schemas/Min'
+                        $ref: '#/components/schemas/Min'
                     },
                     {
-                        '$ref': '#/components/schemas/Missing'
+                        $ref: '#/components/schemas/Missing'
                     },
                     {
-                        '$ref': '#/components/schemas/MissingSome'
+                        $ref: '#/components/schemas/MissingSome'
                     },
                     {
-                        '$ref': '#/components/schemas/Modulo'
+                        $ref: '#/components/schemas/Modulo'
                     },
                     {
-                        '$ref': '#/components/schemas/Multiply'
+                        $ref: '#/components/schemas/Multiply'
                     },
                     {
-                        '$ref': '#/components/schemas/None_-Input'
+                        $ref: '#/components/schemas/None_-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/Not'
+                        $ref: '#/components/schemas/Not'
                     },
                     {
-                        '$ref': '#/components/schemas/NotEquals'
+                        $ref: '#/components/schemas/NotEquals'
                     },
                     {
-                        '$ref': '#/components/schemas/NotNot'
+                        $ref: '#/components/schemas/NotNot'
                     },
                     {
-                        '$ref': '#/components/schemas/Or-Input'
+                        $ref: '#/components/schemas/Or-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/Reduce-Input'
+                        $ref: '#/components/schemas/Reduce-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/Some-Input'
+                        $ref: '#/components/schemas/Some-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/StrictEquals'
+                        $ref: '#/components/schemas/StrictEquals'
                     },
                     {
-                        '$ref': '#/components/schemas/StrictNotEquals'
+                        $ref: '#/components/schemas/StrictNotEquals'
                     },
                     {
-                        '$ref': '#/components/schemas/Substr'
+                        $ref: '#/components/schemas/Substr'
                     },
                     {
-                        '$ref': '#/components/schemas/Subtract'
+                        $ref: '#/components/schemas/Subtract'
                     },
                     {
-                        '$ref': '#/components/schemas/Var'
+                        $ref: '#/components/schemas/Var'
                     },
                     {
-                        '$ref': '#/components/schemas/Length'
+                        $ref: '#/components/schemas/Length'
                     }
                 ]
             },
@@ -477,7 +483,9 @@ export const And_InputSchema = {
         }
     },
     type: 'object',
-    required: ['and'],
+    required: [
+        'and'
+    ],
     title: 'And'
 } as const;
 
@@ -505,109 +513,109 @@ export const And_OutputSchema = {
                         type: 'array'
                     },
                     {
-                        '$ref': '#/components/schemas/Add'
+                        $ref: '#/components/schemas/Add'
                     },
                     {
-                        '$ref': '#/components/schemas/All-Output'
+                        $ref: '#/components/schemas/All-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/And-Output'
+                        $ref: '#/components/schemas/And-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/Cat'
+                        $ref: '#/components/schemas/Cat'
                     },
                     {
-                        '$ref': '#/components/schemas/Divide'
+                        $ref: '#/components/schemas/Divide'
                     },
                     {
-                        '$ref': '#/components/schemas/Equals'
+                        $ref: '#/components/schemas/Equals'
                     },
                     {
-                        '$ref': '#/components/schemas/Filter-Output'
+                        $ref: '#/components/schemas/Filter-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/GreaterThan'
+                        $ref: '#/components/schemas/GreaterThan'
                     },
                     {
-                        '$ref': '#/components/schemas/GreaterThanOrEqual'
+                        $ref: '#/components/schemas/GreaterThanOrEqual'
                     },
                     {
-                        '$ref': '#/components/schemas/If'
+                        $ref: '#/components/schemas/If'
                     },
                     {
-                        '$ref': '#/components/schemas/In-Output'
+                        $ref: '#/components/schemas/In-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/LessThan'
+                        $ref: '#/components/schemas/LessThan'
                     },
                     {
-                        '$ref': '#/components/schemas/LessThanOrEqual'
+                        $ref: '#/components/schemas/LessThanOrEqual'
                     },
                     {
-                        '$ref': '#/components/schemas/Log'
+                        $ref: '#/components/schemas/Log'
                     },
                     {
-                        '$ref': '#/components/schemas/Map-Output'
+                        $ref: '#/components/schemas/Map-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/Max'
+                        $ref: '#/components/schemas/Max'
                     },
                     {
-                        '$ref': '#/components/schemas/Merge'
+                        $ref: '#/components/schemas/Merge'
                     },
                     {
-                        '$ref': '#/components/schemas/Min'
+                        $ref: '#/components/schemas/Min'
                     },
                     {
-                        '$ref': '#/components/schemas/Missing'
+                        $ref: '#/components/schemas/Missing'
                     },
                     {
-                        '$ref': '#/components/schemas/MissingSome'
+                        $ref: '#/components/schemas/MissingSome'
                     },
                     {
-                        '$ref': '#/components/schemas/Modulo'
+                        $ref: '#/components/schemas/Modulo'
                     },
                     {
-                        '$ref': '#/components/schemas/Multiply'
+                        $ref: '#/components/schemas/Multiply'
                     },
                     {
-                        '$ref': '#/components/schemas/None_-Output'
+                        $ref: '#/components/schemas/None_-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/Not'
+                        $ref: '#/components/schemas/Not'
                     },
                     {
-                        '$ref': '#/components/schemas/NotEquals'
+                        $ref: '#/components/schemas/NotEquals'
                     },
                     {
-                        '$ref': '#/components/schemas/NotNot'
+                        $ref: '#/components/schemas/NotNot'
                     },
                     {
-                        '$ref': '#/components/schemas/Or-Output'
+                        $ref: '#/components/schemas/Or-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/Reduce-Output'
+                        $ref: '#/components/schemas/Reduce-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/Some-Output'
+                        $ref: '#/components/schemas/Some-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/StrictEquals'
+                        $ref: '#/components/schemas/StrictEquals'
                     },
                     {
-                        '$ref': '#/components/schemas/StrictNotEquals'
+                        $ref: '#/components/schemas/StrictNotEquals'
                     },
                     {
-                        '$ref': '#/components/schemas/Substr'
+                        $ref: '#/components/schemas/Substr'
                     },
                     {
-                        '$ref': '#/components/schemas/Subtract'
+                        $ref: '#/components/schemas/Subtract'
                     },
                     {
-                        '$ref': '#/components/schemas/Var'
+                        $ref: '#/components/schemas/Var'
                     },
                     {
-                        '$ref': '#/components/schemas/Length'
+                        $ref: '#/components/schemas/Length'
                     }
                 ]
             },
@@ -616,7 +624,9 @@ export const And_OutputSchema = {
         }
     },
     type: 'object',
-    required: ['and'],
+    required: [
+        'and'
+    ],
     title: 'And'
 } as const;
 
@@ -629,7 +639,9 @@ export const AnswerInputSchema = {
         }
     },
     type: 'object',
-    required: ['text'],
+    required: [
+        'text'
+    ],
     title: 'AnswerInput'
 } as const;
 
@@ -653,7 +665,12 @@ export const AnswerOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'text'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'text'
+    ],
     title: 'AnswerOutput'
 } as const;
 
@@ -676,12 +693,47 @@ export const AnswerQuestionOutputSchema = {
             title: 'Text'
         },
         question: {
-            '$ref': '#/components/schemas/QuestionOutput'
+            $ref: '#/components/schemas/QuestionOutput'
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'text', 'question'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'text',
+        'question'
+    ],
     title: 'AnswerQuestionOutput'
+} as const;
+
+export const AssetOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        external_id: {
+            type: 'string',
+            title: 'External Id'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'external_id'
+    ],
+    title: 'AssetOutput'
 } as const;
 
 export const AssetTypeInputSchema = {
@@ -698,10 +750,19 @@ export const AssetTypeInputSchema = {
             additionalProperties: true,
             type: 'object',
             title: 'Arguments'
+        },
+        max_assets: {
+            type: 'integer',
+            title: 'Max Assets'
         }
     },
     type: 'object',
-    required: ['name', 'class_name', 'arguments'],
+    required: [
+        'name',
+        'class_name',
+        'arguments',
+        'max_assets'
+    ],
     title: 'AssetTypeInput'
 } as const;
 
@@ -731,10 +792,22 @@ export const AssetTypeOutputSchema = {
             additionalProperties: true,
             type: 'object',
             title: 'Arguments'
+        },
+        max_assets: {
+            type: 'integer',
+            title: 'Max Assets'
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'name', 'class_name', 'arguments'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'name',
+        'class_name',
+        'arguments',
+        'max_assets'
+    ],
     title: 'AssetTypeOutput'
 } as const;
 
@@ -773,6 +846,17 @@ export const AssetTypeUpdateInputSchema = {
                 }
             ],
             title: 'Arguments'
+        },
+        max_assets: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Max Assets'
         }
     },
     type: 'object',
@@ -799,13 +883,22 @@ export const AttachmentOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'original_filename'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'original_filename'
+    ],
     title: 'AttachmentOutput'
 } as const;
 
 export const AttachmentTypesSchema = {
     type: 'string',
-    enum: ['original', 'optimized', 'thumbnail'],
+    enum: [
+        'original',
+        'optimized',
+        'thumbnail'
+    ],
     title: 'AttachmentTypes'
 } as const;
 
@@ -824,7 +917,9 @@ export const Body_melding_attachment_melding__melding_id__attachment_postSchema 
         }
     },
     type: 'object',
-    required: ['file'],
+    required: [
+        'file'
+    ],
     title: 'Body_melding_attachment_melding__melding_id__attachment_post'
 } as const;
 
@@ -868,7 +963,9 @@ export const CatSchema = {
         }
     },
     type: 'object',
-    required: ['cat'],
+    required: [
+        'cat'
+    ],
     title: 'Cat'
 } as const;
 
@@ -892,7 +989,9 @@ export const ClassificationCreateInputSchema = {
         }
     },
     type: 'object',
-    required: ['name'],
+    required: [
+        'name'
+    ],
     title: 'ClassificationCreateInput'
 } as const;
 
@@ -938,7 +1037,12 @@ export const ClassificationOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'name'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'name'
+    ],
     title: 'ClassificationOutput'
 } as const;
 
@@ -980,7 +1084,9 @@ export const CompleteMeldingInputSchema = {
         }
     },
     type: 'object',
-    required: ['mail_body'],
+    required: [
+        'mail_body'
+    ],
     title: 'CompleteMeldingInput'
 } as const;
 
@@ -1022,7 +1128,9 @@ export const DivideSchema = {
         }
     },
     type: 'object',
-    required: ['/'],
+    required: [
+        '/'
+    ],
     title: 'Divide'
 } as const;
 
@@ -1040,7 +1148,9 @@ export const EqualsSchema = {
         }
     },
     type: 'object',
-    required: ['=='],
+    required: [
+        '=='
+    ],
     title: 'Equals'
 } as const;
 
@@ -1108,25 +1218,25 @@ export const FeatureSchema = {
                 {
                     oneOf: [
                         {
-                            '$ref': '#/components/schemas/Point'
+                            $ref: '#/components/schemas/Point'
                         },
                         {
-                            '$ref': '#/components/schemas/MultiPoint'
+                            $ref: '#/components/schemas/MultiPoint'
                         },
                         {
-                            '$ref': '#/components/schemas/LineString'
+                            $ref: '#/components/schemas/LineString'
                         },
                         {
-                            '$ref': '#/components/schemas/MultiLineString'
+                            $ref: '#/components/schemas/MultiLineString'
                         },
                         {
-                            '$ref': '#/components/schemas/Polygon'
+                            $ref: '#/components/schemas/Polygon'
                         },
                         {
-                            '$ref': '#/components/schemas/MultiPolygon'
+                            $ref: '#/components/schemas/MultiPolygon'
                         },
                         {
-                            '$ref': '#/components/schemas/GeometryCollection'
+                            $ref: '#/components/schemas/GeometryCollection'
                         }
                     ],
                     discriminator: {
@@ -1155,7 +1265,7 @@ export const FeatureSchema = {
                     type: 'object'
                 },
                 {
-                    '$ref': '#/components/schemas/BaseModel'
+                    $ref: '#/components/schemas/BaseModel'
                 },
                 {
                     type: 'null'
@@ -1179,7 +1289,11 @@ export const FeatureSchema = {
         }
     },
     type: 'object',
-    required: ['type', 'geometry', 'properties'],
+    required: [
+        'type',
+        'geometry',
+        'properties'
+    ],
     title: 'Feature',
     description: 'Feature Model'
 } as const;
@@ -1245,14 +1359,17 @@ export const FeatureCollectionSchema = {
         },
         features: {
             items: {
-                '$ref': '#/components/schemas/Feature'
+                $ref: '#/components/schemas/Feature'
             },
             type: 'array',
             title: 'Features'
         }
     },
     type: 'object',
-    required: ['type', 'features'],
+    required: [
+        'type',
+        'features'
+    ],
     title: 'FeatureCollection',
     description: 'FeatureCollection Model'
 } as const;
@@ -1268,25 +1385,25 @@ export const Filter_InputSchema = {
                             type: 'array'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Input'
+                            $ref: '#/components/schemas/Filter-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Input'
+                            $ref: '#/components/schemas/Map-Input'
                         }
                     ]
                 },
@@ -1296,109 +1413,109 @@ export const Filter_InputSchema = {
                             type: 'boolean'
                         },
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Input'
+                            $ref: '#/components/schemas/All-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Input'
+                            $ref: '#/components/schemas/And-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Input'
+                            $ref: '#/components/schemas/Filter-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Input'
+                            $ref: '#/components/schemas/In-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Input'
+                            $ref: '#/components/schemas/Map-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Input'
+                            $ref: '#/components/schemas/None_-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Input'
+                            $ref: '#/components/schemas/Or-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Input'
+                            $ref: '#/components/schemas/Reduce-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Input'
+                            $ref: '#/components/schemas/Some-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -1410,7 +1527,9 @@ export const Filter_InputSchema = {
         }
     },
     type: 'object',
-    required: ['filter'],
+    required: [
+        'filter'
+    ],
     title: 'Filter'
 } as const;
 
@@ -1425,25 +1544,25 @@ export const Filter_OutputSchema = {
                             type: 'array'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Output'
+                            $ref: '#/components/schemas/Filter-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Output'
+                            $ref: '#/components/schemas/Map-Output'
                         }
                     ]
                 },
@@ -1453,109 +1572,109 @@ export const Filter_OutputSchema = {
                             type: 'boolean'
                         },
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Output'
+                            $ref: '#/components/schemas/All-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Output'
+                            $ref: '#/components/schemas/And-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Output'
+                            $ref: '#/components/schemas/Filter-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Output'
+                            $ref: '#/components/schemas/In-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Output'
+                            $ref: '#/components/schemas/Map-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Output'
+                            $ref: '#/components/schemas/None_-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Output'
+                            $ref: '#/components/schemas/Or-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Output'
+                            $ref: '#/components/schemas/Reduce-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Output'
+                            $ref: '#/components/schemas/Some-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -1567,7 +1686,9 @@ export const Filter_OutputSchema = {
         }
     },
     type: 'object',
-    required: ['filter'],
+    required: [
+        'filter'
+    ],
     title: 'Filter'
 } as const;
 
@@ -1595,7 +1716,7 @@ export const FormCheckboxComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            '$ref': '#/components/schemas/FormIoComponentTypeEnum',
+            $ref: '#/components/schemas/FormIoComponentTypeEnum',
             default: 'selectboxes'
         },
         input: {
@@ -1605,7 +1726,7 @@ export const FormCheckboxComponentInputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentInputValidate'
+                    $ref: '#/components/schemas/FormComponentInputValidate'
                 },
                 {
                     type: 'null'
@@ -1614,7 +1735,7 @@ export const FormCheckboxComponentInputSchema = {
         },
         values: {
             items: {
-                '$ref': '#/components/schemas/FormComponentValueInput'
+                $ref: '#/components/schemas/FormComponentValueInput'
             },
             type: 'array',
             title: 'Values'
@@ -1622,7 +1743,13 @@ export const FormCheckboxComponentInputSchema = {
     },
     additionalProperties: false,
     type: 'object',
-    required: ['label', 'description', 'key', 'input', 'values'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'input',
+        'values'
+    ],
     title: 'FormCheckboxComponentInput'
 } as const;
 
@@ -1655,7 +1782,17 @@ export const FormCheckboxComponentOutputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentOutputValidate'
+                    $ref: '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -1664,7 +1801,7 @@ export const FormCheckboxComponentOutputSchema = {
         },
         values: {
             items: {
-                '$ref': '#/components/schemas/FormComponentValueOutput'
+                $ref: '#/components/schemas/FormComponentValueOutput'
             },
             type: 'array',
             title: 'Values'
@@ -1675,7 +1812,16 @@ export const FormCheckboxComponentOutputSchema = {
         }
     },
     type: 'object',
-    required: ['label', 'description', 'key', 'type', 'input', 'position', 'values', 'question'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'type',
+        'input',
+        'position',
+        'values',
+        'question'
+    ],
     title: 'FormCheckboxComponentOutput'
 } as const;
 
@@ -1684,109 +1830,109 @@ export const FormComponentInputValidateSchema = {
         json: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/Add'
+                    $ref: '#/components/schemas/Add'
                 },
                 {
-                    '$ref': '#/components/schemas/All-Input'
+                    $ref: '#/components/schemas/All-Input'
                 },
                 {
-                    '$ref': '#/components/schemas/And-Input'
+                    $ref: '#/components/schemas/And-Input'
                 },
                 {
-                    '$ref': '#/components/schemas/Cat'
+                    $ref: '#/components/schemas/Cat'
                 },
                 {
-                    '$ref': '#/components/schemas/Divide'
+                    $ref: '#/components/schemas/Divide'
                 },
                 {
-                    '$ref': '#/components/schemas/Equals'
+                    $ref: '#/components/schemas/Equals'
                 },
                 {
-                    '$ref': '#/components/schemas/Filter-Input'
+                    $ref: '#/components/schemas/Filter-Input'
                 },
                 {
-                    '$ref': '#/components/schemas/GreaterThan'
+                    $ref: '#/components/schemas/GreaterThan'
                 },
                 {
-                    '$ref': '#/components/schemas/GreaterThanOrEqual'
+                    $ref: '#/components/schemas/GreaterThanOrEqual'
                 },
                 {
-                    '$ref': '#/components/schemas/If'
+                    $ref: '#/components/schemas/If'
                 },
                 {
-                    '$ref': '#/components/schemas/In-Input'
+                    $ref: '#/components/schemas/In-Input'
                 },
                 {
-                    '$ref': '#/components/schemas/LessThan'
+                    $ref: '#/components/schemas/LessThan'
                 },
                 {
-                    '$ref': '#/components/schemas/LessThanOrEqual'
+                    $ref: '#/components/schemas/LessThanOrEqual'
                 },
                 {
-                    '$ref': '#/components/schemas/Log'
+                    $ref: '#/components/schemas/Log'
                 },
                 {
-                    '$ref': '#/components/schemas/Map-Input'
+                    $ref: '#/components/schemas/Map-Input'
                 },
                 {
-                    '$ref': '#/components/schemas/Max'
+                    $ref: '#/components/schemas/Max'
                 },
                 {
-                    '$ref': '#/components/schemas/Merge'
+                    $ref: '#/components/schemas/Merge'
                 },
                 {
-                    '$ref': '#/components/schemas/Min'
+                    $ref: '#/components/schemas/Min'
                 },
                 {
-                    '$ref': '#/components/schemas/Missing'
+                    $ref: '#/components/schemas/Missing'
                 },
                 {
-                    '$ref': '#/components/schemas/MissingSome'
+                    $ref: '#/components/schemas/MissingSome'
                 },
                 {
-                    '$ref': '#/components/schemas/Modulo'
+                    $ref: '#/components/schemas/Modulo'
                 },
                 {
-                    '$ref': '#/components/schemas/Multiply'
+                    $ref: '#/components/schemas/Multiply'
                 },
                 {
-                    '$ref': '#/components/schemas/None_-Input'
+                    $ref: '#/components/schemas/None_-Input'
                 },
                 {
-                    '$ref': '#/components/schemas/Not'
+                    $ref: '#/components/schemas/Not'
                 },
                 {
-                    '$ref': '#/components/schemas/NotEquals'
+                    $ref: '#/components/schemas/NotEquals'
                 },
                 {
-                    '$ref': '#/components/schemas/NotNot'
+                    $ref: '#/components/schemas/NotNot'
                 },
                 {
-                    '$ref': '#/components/schemas/Or-Input'
+                    $ref: '#/components/schemas/Or-Input'
                 },
                 {
-                    '$ref': '#/components/schemas/Reduce-Input'
+                    $ref: '#/components/schemas/Reduce-Input'
                 },
                 {
-                    '$ref': '#/components/schemas/Some-Input'
+                    $ref: '#/components/schemas/Some-Input'
                 },
                 {
-                    '$ref': '#/components/schemas/StrictEquals'
+                    $ref: '#/components/schemas/StrictEquals'
                 },
                 {
-                    '$ref': '#/components/schemas/StrictNotEquals'
+                    $ref: '#/components/schemas/StrictNotEquals'
                 },
                 {
-                    '$ref': '#/components/schemas/Substr'
+                    $ref: '#/components/schemas/Substr'
                 },
                 {
-                    '$ref': '#/components/schemas/Subtract'
+                    $ref: '#/components/schemas/Subtract'
                 },
                 {
-                    '$ref': '#/components/schemas/Var'
+                    $ref: '#/components/schemas/Var'
                 },
                 {
-                    '$ref': '#/components/schemas/Length'
+                    $ref: '#/components/schemas/Length'
                 },
                 {
                     type: 'null'
@@ -1820,109 +1966,109 @@ export const FormComponentOutputValidateSchema = {
         json: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/Add'
+                    $ref: '#/components/schemas/Add'
                 },
                 {
-                    '$ref': '#/components/schemas/All-Output'
+                    $ref: '#/components/schemas/All-Output'
                 },
                 {
-                    '$ref': '#/components/schemas/And-Output'
+                    $ref: '#/components/schemas/And-Output'
                 },
                 {
-                    '$ref': '#/components/schemas/Cat'
+                    $ref: '#/components/schemas/Cat'
                 },
                 {
-                    '$ref': '#/components/schemas/Divide'
+                    $ref: '#/components/schemas/Divide'
                 },
                 {
-                    '$ref': '#/components/schemas/Equals'
+                    $ref: '#/components/schemas/Equals'
                 },
                 {
-                    '$ref': '#/components/schemas/Filter-Output'
+                    $ref: '#/components/schemas/Filter-Output'
                 },
                 {
-                    '$ref': '#/components/schemas/GreaterThan'
+                    $ref: '#/components/schemas/GreaterThan'
                 },
                 {
-                    '$ref': '#/components/schemas/GreaterThanOrEqual'
+                    $ref: '#/components/schemas/GreaterThanOrEqual'
                 },
                 {
-                    '$ref': '#/components/schemas/If'
+                    $ref: '#/components/schemas/If'
                 },
                 {
-                    '$ref': '#/components/schemas/In-Output'
+                    $ref: '#/components/schemas/In-Output'
                 },
                 {
-                    '$ref': '#/components/schemas/LessThan'
+                    $ref: '#/components/schemas/LessThan'
                 },
                 {
-                    '$ref': '#/components/schemas/LessThanOrEqual'
+                    $ref: '#/components/schemas/LessThanOrEqual'
                 },
                 {
-                    '$ref': '#/components/schemas/Log'
+                    $ref: '#/components/schemas/Log'
                 },
                 {
-                    '$ref': '#/components/schemas/Map-Output'
+                    $ref: '#/components/schemas/Map-Output'
                 },
                 {
-                    '$ref': '#/components/schemas/Max'
+                    $ref: '#/components/schemas/Max'
                 },
                 {
-                    '$ref': '#/components/schemas/Merge'
+                    $ref: '#/components/schemas/Merge'
                 },
                 {
-                    '$ref': '#/components/schemas/Min'
+                    $ref: '#/components/schemas/Min'
                 },
                 {
-                    '$ref': '#/components/schemas/Missing'
+                    $ref: '#/components/schemas/Missing'
                 },
                 {
-                    '$ref': '#/components/schemas/MissingSome'
+                    $ref: '#/components/schemas/MissingSome'
                 },
                 {
-                    '$ref': '#/components/schemas/Modulo'
+                    $ref: '#/components/schemas/Modulo'
                 },
                 {
-                    '$ref': '#/components/schemas/Multiply'
+                    $ref: '#/components/schemas/Multiply'
                 },
                 {
-                    '$ref': '#/components/schemas/None_-Output'
+                    $ref: '#/components/schemas/None_-Output'
                 },
                 {
-                    '$ref': '#/components/schemas/Not'
+                    $ref: '#/components/schemas/Not'
                 },
                 {
-                    '$ref': '#/components/schemas/NotEquals'
+                    $ref: '#/components/schemas/NotEquals'
                 },
                 {
-                    '$ref': '#/components/schemas/NotNot'
+                    $ref: '#/components/schemas/NotNot'
                 },
                 {
-                    '$ref': '#/components/schemas/Or-Output'
+                    $ref: '#/components/schemas/Or-Output'
                 },
                 {
-                    '$ref': '#/components/schemas/Reduce-Output'
+                    $ref: '#/components/schemas/Reduce-Output'
                 },
                 {
-                    '$ref': '#/components/schemas/Some-Output'
+                    $ref: '#/components/schemas/Some-Output'
                 },
                 {
-                    '$ref': '#/components/schemas/StrictEquals'
+                    $ref: '#/components/schemas/StrictEquals'
                 },
                 {
-                    '$ref': '#/components/schemas/StrictNotEquals'
+                    $ref: '#/components/schemas/StrictNotEquals'
                 },
                 {
-                    '$ref': '#/components/schemas/Substr'
+                    $ref: '#/components/schemas/Substr'
                 },
                 {
-                    '$ref': '#/components/schemas/Subtract'
+                    $ref: '#/components/schemas/Subtract'
                 },
                 {
-                    '$ref': '#/components/schemas/Var'
+                    $ref: '#/components/schemas/Var'
                 },
                 {
-                    '$ref': '#/components/schemas/Length'
+                    $ref: '#/components/schemas/Length'
                 },
                 {
                     type: 'null'
@@ -1947,7 +2093,10 @@ export const FormComponentOutputValidateSchema = {
         }
     },
     type: 'object',
-    required: ['required', 'required_error_message'],
+    required: [
+        'required',
+        'required_error_message'
+    ],
     title: 'FormComponentOutputValidate'
 } as const;
 
@@ -1965,7 +2114,10 @@ export const FormComponentValueInputSchema = {
         }
     },
     type: 'object',
-    required: ['label', 'value'],
+    required: [
+        'label',
+        'value'
+    ],
     title: 'FormComponentValueInput'
 } as const;
 
@@ -1985,8 +2137,52 @@ export const FormComponentValueOutputSchema = {
         }
     },
     type: 'object',
-    required: ['label', 'value', 'position'],
+    required: [
+        'label',
+        'value',
+        'position'
+    ],
     title: 'FormComponentValueOutput'
+} as const;
+
+export const FormIOConditionalSchema = {
+    properties: {
+        show: {
+            type: 'boolean',
+            title: 'Show'
+        },
+        when: {
+            type: 'string',
+            title: 'When'
+        },
+        eq: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'number'
+                },
+                {
+                    type: 'boolean'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Eq'
+        }
+    },
+    type: 'object',
+    required: [
+        'show',
+        'when',
+        'eq'
+    ],
+    title: 'FormIOConditional'
 } as const;
 
 export const FormInputSchema = {
@@ -1997,28 +2193,28 @@ export const FormInputSchema = {
             title: 'Title'
         },
         display: {
-            '$ref': '#/components/schemas/FormIoFormDisplayEnum'
+            $ref: '#/components/schemas/FormIoFormDisplayEnum'
         },
         components: {
             items: {
                 oneOf: [
                     {
-                        '$ref': '#/components/schemas/FormPanelComponentInput'
+                        $ref: '#/components/schemas/FormPanelComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormTextAreaComponentInput'
+                        $ref: '#/components/schemas/FormTextAreaComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormTextFieldComponentInput'
+                        $ref: '#/components/schemas/FormTextFieldComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormRadioComponentInput'
+                        $ref: '#/components/schemas/FormRadioComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormCheckboxComponentInput'
+                        $ref: '#/components/schemas/FormCheckboxComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormSelectComponentInput'
+                        $ref: '#/components/schemas/FormSelectComponentInput'
                     }
                 ]
             },
@@ -2039,25 +2235,37 @@ export const FormInputSchema = {
         }
     },
     type: 'object',
-    required: ['title', 'display', 'components'],
+    required: [
+        'title',
+        'display',
+        'components'
+    ],
     title: 'FormInput'
 } as const;
 
 export const FormIoComponentTypeEnumSchema = {
     type: 'string',
-    enum: ['panel', 'textarea', 'textfield', 'selectboxes', 'radio', 'select'],
+    enum: [
+        'panel',
+        'textarea',
+        'textfield',
+        'selectboxes',
+        'radio',
+        'select'
+    ],
     title: 'FormIoComponentTypeEnum',
     description: 'The value of the type field'
 } as const;
 
 export const FormIoFormDisplayEnumSchema = {
     type: 'string',
-    enum: ['form', 'wizard', 'pdf'],
+    enum: [
+        'form',
+        'wizard',
+        'pdf'
+    ],
     title: 'FormIoFormDisplayEnum',
-    description: `The value of the display field on the form can be one of the following:
-- form
-- wizard
-- pdf`
+    description: 'The value of the display field on the form can be one of the following:\n- form\n- wizard\n- pdf'
 } as const;
 
 export const FormOutputSchema = {
@@ -2097,22 +2305,22 @@ export const FormOutputSchema = {
             items: {
                 anyOf: [
                     {
-                        '$ref': '#/components/schemas/FormPanelComponentOutput'
+                        $ref: '#/components/schemas/FormPanelComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormTextAreaComponentOutput'
+                        $ref: '#/components/schemas/FormTextAreaComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormTextFieldInputComponentOutput'
+                        $ref: '#/components/schemas/FormTextFieldInputComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormCheckboxComponentOutput'
+                        $ref: '#/components/schemas/FormCheckboxComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormRadioComponentOutput'
+                        $ref: '#/components/schemas/FormRadioComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormSelectComponentOutput'
+                        $ref: '#/components/schemas/FormSelectComponentOutput'
                     }
                 ]
             },
@@ -2121,7 +2329,14 @@ export const FormOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'title', 'display', 'components'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'title',
+        'display',
+        'components'
+    ],
     title: 'FormOutput'
 } as const;
 
@@ -2143,7 +2358,7 @@ export const FormPanelComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            '$ref': '#/components/schemas/FormIoComponentTypeEnum',
+            $ref: '#/components/schemas/FormIoComponentTypeEnum',
             default: 'panel'
         },
         input: {
@@ -2155,19 +2370,19 @@ export const FormPanelComponentInputSchema = {
             items: {
                 oneOf: [
                     {
-                        '$ref': '#/components/schemas/FormTextAreaComponentInput'
+                        $ref: '#/components/schemas/FormTextAreaComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormTextFieldComponentInput'
+                        $ref: '#/components/schemas/FormTextFieldComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormRadioComponentInput'
+                        $ref: '#/components/schemas/FormRadioComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormCheckboxComponentInput'
+                        $ref: '#/components/schemas/FormCheckboxComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormSelectComponentInput'
+                        $ref: '#/components/schemas/FormSelectComponentInput'
                     }
                 ]
             },
@@ -2177,7 +2392,12 @@ export const FormPanelComponentInputSchema = {
     },
     additionalProperties: false,
     type: 'object',
-    required: ['label', 'title', 'key', 'components'],
+    required: [
+        'label',
+        'title',
+        'key',
+        'components'
+    ],
     title: 'FormPanelComponentInput'
 } as const;
 
@@ -2211,19 +2431,19 @@ export const FormPanelComponentOutputSchema = {
             items: {
                 anyOf: [
                     {
-                        '$ref': '#/components/schemas/FormTextAreaComponentOutput'
+                        $ref: '#/components/schemas/FormTextAreaComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormTextFieldInputComponentOutput'
+                        $ref: '#/components/schemas/FormTextFieldInputComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormCheckboxComponentOutput'
+                        $ref: '#/components/schemas/FormCheckboxComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormRadioComponentOutput'
+                        $ref: '#/components/schemas/FormRadioComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormSelectComponentOutput'
+                        $ref: '#/components/schemas/FormSelectComponentOutput'
                     }
                 ]
             },
@@ -2232,7 +2452,15 @@ export const FormPanelComponentOutputSchema = {
         }
     },
     type: 'object',
-    required: ['title', 'label', 'key', 'type', 'input', 'position', 'components'],
+    required: [
+        'title',
+        'label',
+        'key',
+        'type',
+        'input',
+        'position',
+        'components'
+    ],
     title: 'FormPanelComponentOutput'
 } as const;
 
@@ -2260,7 +2488,7 @@ export const FormRadioComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            '$ref': '#/components/schemas/FormIoComponentTypeEnum',
+            $ref: '#/components/schemas/FormIoComponentTypeEnum',
             default: 'radio'
         },
         input: {
@@ -2270,7 +2498,7 @@ export const FormRadioComponentInputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentInputValidate'
+                    $ref: '#/components/schemas/FormComponentInputValidate'
                 },
                 {
                     type: 'null'
@@ -2279,7 +2507,7 @@ export const FormRadioComponentInputSchema = {
         },
         values: {
             items: {
-                '$ref': '#/components/schemas/FormComponentValueInput'
+                $ref: '#/components/schemas/FormComponentValueInput'
             },
             type: 'array',
             title: 'Values'
@@ -2287,7 +2515,13 @@ export const FormRadioComponentInputSchema = {
     },
     additionalProperties: false,
     type: 'object',
-    required: ['label', 'description', 'key', 'input', 'values'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'input',
+        'values'
+    ],
     title: 'FormRadioComponentInput'
 } as const;
 
@@ -2320,7 +2554,17 @@ export const FormRadioComponentOutputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentOutputValidate'
+                    $ref: '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -2329,7 +2573,7 @@ export const FormRadioComponentOutputSchema = {
         },
         values: {
             items: {
-                '$ref': '#/components/schemas/FormComponentValueOutput'
+                $ref: '#/components/schemas/FormComponentValueOutput'
             },
             type: 'array',
             title: 'Values'
@@ -2340,7 +2584,16 @@ export const FormRadioComponentOutputSchema = {
         }
     },
     type: 'object',
-    required: ['label', 'description', 'key', 'type', 'input', 'position', 'values', 'question'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'type',
+        'input',
+        'position',
+        'values',
+        'question'
+    ],
     title: 'FormRadioComponentOutput'
 } as const;
 
@@ -2348,14 +2601,16 @@ export const FormSelectComponentDataInputSchema = {
     properties: {
         values: {
             items: {
-                '$ref': '#/components/schemas/FormComponentValueInput'
+                $ref: '#/components/schemas/FormComponentValueInput'
             },
             type: 'array',
             title: 'Values'
         }
     },
     type: 'object',
-    required: ['values'],
+    required: [
+        'values'
+    ],
     title: 'FormSelectComponentDataInput'
 } as const;
 
@@ -2363,14 +2618,16 @@ export const FormSelectComponentDataOutputSchema = {
     properties: {
         values: {
             items: {
-                '$ref': '#/components/schemas/FormComponentValueOutput'
+                $ref: '#/components/schemas/FormComponentValueOutput'
             },
             type: 'array',
             title: 'Values'
         }
     },
     type: 'object',
-    required: ['values'],
+    required: [
+        'values'
+    ],
     title: 'FormSelectComponentDataOutput'
 } as const;
 
@@ -2398,7 +2655,7 @@ export const FormSelectComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            '$ref': '#/components/schemas/FormIoComponentTypeEnum',
+            $ref: '#/components/schemas/FormIoComponentTypeEnum',
             default: 'select'
         },
         input: {
@@ -2408,7 +2665,7 @@ export const FormSelectComponentInputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentInputValidate'
+                    $ref: '#/components/schemas/FormComponentInputValidate'
                 },
                 {
                     type: 'null'
@@ -2424,12 +2681,20 @@ export const FormSelectComponentInputSchema = {
             title: 'Placeholder'
         },
         data: {
-            '$ref': '#/components/schemas/FormSelectComponentDataInput'
+            $ref: '#/components/schemas/FormSelectComponentDataInput'
         }
     },
     additionalProperties: false,
     type: 'object',
-    required: ['label', 'description', 'key', 'input', 'widget', 'placeholder', 'data'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'input',
+        'widget',
+        'placeholder',
+        'data'
+    ],
     title: 'FormSelectComponentInput'
 } as const;
 
@@ -2462,7 +2727,17 @@ export const FormSelectComponentOutputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentOutputValidate'
+                    $ref: '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -2478,7 +2753,7 @@ export const FormSelectComponentOutputSchema = {
             title: 'Placeholder'
         },
         data: {
-            '$ref': '#/components/schemas/FormSelectComponentDataOutput'
+            $ref: '#/components/schemas/FormSelectComponentDataOutput'
         },
         question: {
             type: 'integer',
@@ -2486,7 +2761,18 @@ export const FormSelectComponentOutputSchema = {
         }
     },
     type: 'object',
-    required: ['label', 'description', 'key', 'type', 'input', 'position', 'widget', 'placeholder', 'data', 'question'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'type',
+        'input',
+        'position',
+        'widget',
+        'placeholder',
+        'data',
+        'question'
+    ],
     title: 'FormSelectComponentOutput'
 } as const;
 
@@ -2514,7 +2800,7 @@ export const FormTextAreaComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            '$ref': '#/components/schemas/FormIoComponentTypeEnum',
+            $ref: '#/components/schemas/FormIoComponentTypeEnum',
             default: 'textarea'
         },
         input: {
@@ -2524,7 +2810,7 @@ export const FormTextAreaComponentInputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentInputValidate'
+                    $ref: '#/components/schemas/FormComponentInputValidate'
                 },
                 {
                     type: 'null'
@@ -2550,7 +2836,13 @@ export const FormTextAreaComponentInputSchema = {
     },
     additionalProperties: false,
     type: 'object',
-    required: ['label', 'description', 'key', 'input', 'autoExpand'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'input',
+        'autoExpand'
+    ],
     title: 'FormTextAreaComponentInput'
 } as const;
 
@@ -2583,7 +2875,17 @@ export const FormTextAreaComponentOutputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentOutputValidate'
+                    $ref: '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -2611,7 +2913,17 @@ export const FormTextAreaComponentOutputSchema = {
         }
     },
     type: 'object',
-    required: ['label', 'description', 'key', 'type', 'input', 'position', 'autoExpand', 'maxCharCount', 'question'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'type',
+        'input',
+        'position',
+        'autoExpand',
+        'maxCharCount',
+        'question'
+    ],
     title: 'FormTextAreaComponentOutput'
 } as const;
 
@@ -2639,7 +2951,7 @@ export const FormTextFieldComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            '$ref': '#/components/schemas/FormIoComponentTypeEnum',
+            $ref: '#/components/schemas/FormIoComponentTypeEnum',
             default: 'textfield'
         },
         input: {
@@ -2649,7 +2961,7 @@ export const FormTextFieldComponentInputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentInputValidate'
+                    $ref: '#/components/schemas/FormComponentInputValidate'
                 },
                 {
                     type: 'null'
@@ -2659,7 +2971,12 @@ export const FormTextFieldComponentInputSchema = {
     },
     additionalProperties: false,
     type: 'object',
-    required: ['label', 'description', 'key', 'input'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'input'
+    ],
     title: 'FormTextFieldComponentInput'
 } as const;
 
@@ -2692,7 +3009,17 @@ export const FormTextFieldInputComponentOutputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentOutputValidate'
+                    $ref: '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -2705,7 +3032,15 @@ export const FormTextFieldInputComponentOutputSchema = {
         }
     },
     type: 'object',
-    required: ['label', 'description', 'key', 'type', 'input', 'position', 'question'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'type',
+        'input',
+        'position',
+        'question'
+    ],
     title: 'FormTextFieldInputComponentOutput'
 } as const;
 
@@ -2771,7 +3106,7 @@ export const GeoJson_InputSchema = {
         geometry: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/Point'
+                    $ref: '#/components/schemas/Point'
                 },
                 {
                     type: 'null'
@@ -2785,7 +3120,7 @@ export const GeoJson_InputSchema = {
                     type: 'object'
                 },
                 {
-                    '$ref': '#/components/schemas/BaseModel'
+                    $ref: '#/components/schemas/BaseModel'
                 },
                 {
                     type: 'null'
@@ -2809,7 +3144,11 @@ export const GeoJson_InputSchema = {
         }
     },
     type: 'object',
-    required: ['type', 'geometry', 'properties'],
+    required: [
+        'type',
+        'geometry',
+        'properties'
+    ],
     title: 'GeoJson'
 } as const;
 
@@ -2875,7 +3214,7 @@ export const GeoJson_OutputSchema = {
         geometry: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/Point'
+                    $ref: '#/components/schemas/Point'
                 },
                 {
                     type: 'null'
@@ -2889,7 +3228,7 @@ export const GeoJson_OutputSchema = {
                     type: 'object'
                 },
                 {
-                    '$ref': '#/components/schemas/BaseModel'
+                    $ref: '#/components/schemas/BaseModel'
                 },
                 {
                     type: 'null'
@@ -2913,7 +3252,11 @@ export const GeoJson_OutputSchema = {
         }
     },
     type: 'object',
-    required: ['type', 'geometry', 'properties'],
+    required: [
+        'type',
+        'geometry',
+        'properties'
+    ],
     title: 'GeoJson'
 } as const;
 
@@ -2980,25 +3323,25 @@ export const GeometryCollectionSchema = {
             items: {
                 oneOf: [
                     {
-                        '$ref': '#/components/schemas/Point'
+                        $ref: '#/components/schemas/Point'
                     },
                     {
-                        '$ref': '#/components/schemas/MultiPoint'
+                        $ref: '#/components/schemas/MultiPoint'
                     },
                     {
-                        '$ref': '#/components/schemas/LineString'
+                        $ref: '#/components/schemas/LineString'
                     },
                     {
-                        '$ref': '#/components/schemas/MultiLineString'
+                        $ref: '#/components/schemas/MultiLineString'
                     },
                     {
-                        '$ref': '#/components/schemas/Polygon'
+                        $ref: '#/components/schemas/Polygon'
                     },
                     {
-                        '$ref': '#/components/schemas/MultiPolygon'
+                        $ref: '#/components/schemas/MultiPolygon'
                     },
                     {
-                        '$ref': '#/components/schemas/GeometryCollection'
+                        $ref: '#/components/schemas/GeometryCollection'
                     }
                 ],
                 discriminator: {
@@ -3019,7 +3362,10 @@ export const GeometryCollectionSchema = {
         }
     },
     type: 'object',
-    required: ['type', 'geometries'],
+    required: [
+        'type',
+        'geometries'
+    ],
     title: 'GeometryCollection',
     description: 'GeometryCollection Model'
 } as const;
@@ -3040,7 +3386,7 @@ export const GreaterThanSchema = {
                             type: 'string'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         }
                     ]
                 },
@@ -3065,7 +3411,9 @@ export const GreaterThanSchema = {
         }
     },
     type: 'object',
-    required: ['>'],
+    required: [
+        '>'
+    ],
     title: 'GreaterThan'
 } as const;
 
@@ -3085,7 +3433,7 @@ export const GreaterThanOrEqualSchema = {
                             type: 'string'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         }
                     ]
                 },
@@ -3110,7 +3458,9 @@ export const GreaterThanOrEqualSchema = {
         }
     },
     type: 'object',
-    required: ['>='],
+    required: [
+        '>='
+    ],
     title: 'GreaterThanOrEqual'
 } as const;
 
@@ -3118,7 +3468,7 @@ export const HTTPValidationErrorSchema = {
     properties: {
         detail: {
             items: {
-                '$ref': '#/components/schemas/ValidationError'
+                $ref: '#/components/schemas/ValidationError'
             },
             type: 'array',
             title: 'Detail'
@@ -3137,7 +3487,9 @@ export const IfSchema = {
         }
     },
     type: 'object',
-    required: ['if'],
+    required: [
+        'if'
+    ],
     title: 'If'
 } as const;
 
@@ -3154,109 +3506,109 @@ export const In_InputSchema = {
                             type: 'string'
                         },
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Input'
+                            $ref: '#/components/schemas/All-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Input'
+                            $ref: '#/components/schemas/And-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Input'
+                            $ref: '#/components/schemas/Filter-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Input'
+                            $ref: '#/components/schemas/In-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Input'
+                            $ref: '#/components/schemas/Map-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Input'
+                            $ref: '#/components/schemas/None_-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Input'
+                            $ref: '#/components/schemas/Or-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Input'
+                            $ref: '#/components/schemas/Reduce-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Input'
+                            $ref: '#/components/schemas/Some-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 },
@@ -3288,7 +3640,9 @@ export const In_InputSchema = {
         }
     },
     type: 'object',
-    required: ['in'],
+    required: [
+        'in'
+    ],
     title: 'In'
 } as const;
 
@@ -3305,109 +3659,109 @@ export const In_OutputSchema = {
                             type: 'string'
                         },
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Output'
+                            $ref: '#/components/schemas/All-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Output'
+                            $ref: '#/components/schemas/And-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Output'
+                            $ref: '#/components/schemas/Filter-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Output'
+                            $ref: '#/components/schemas/In-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Output'
+                            $ref: '#/components/schemas/Map-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Output'
+                            $ref: '#/components/schemas/None_-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Output'
+                            $ref: '#/components/schemas/Or-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Output'
+                            $ref: '#/components/schemas/Reduce-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Output'
+                            $ref: '#/components/schemas/Some-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 },
@@ -3439,7 +3793,9 @@ export const In_OutputSchema = {
         }
     },
     type: 'object',
-    required: ['in'],
+    required: [
+        'in'
+    ],
     title: 'In'
 } as const;
 
@@ -3458,13 +3814,13 @@ export const LengthSchema = {
                                     type: 'string'
                                 },
                                 {
-                                    '$ref': '#/components/schemas/Var'
+                                    $ref: '#/components/schemas/Var'
                                 },
                                 {
-                                    '$ref': '#/components/schemas/If'
+                                    $ref: '#/components/schemas/If'
                                 },
                                 {
-                                    '$ref': '#/components/schemas/Substr'
+                                    $ref: '#/components/schemas/Substr'
                                 }
                             ]
                         }
@@ -3478,7 +3834,9 @@ export const LengthSchema = {
         }
     },
     type: 'object',
-    required: ['length'],
+    required: [
+        'length'
+    ],
     title: 'Length'
 } as const;
 
@@ -3500,7 +3858,7 @@ export const LessThanSchema = {
                                     type: 'string'
                                 },
                                 {
-                                    '$ref': '#/components/schemas/Var'
+                                    $ref: '#/components/schemas/Var'
                                 }
                             ]
                         },
@@ -3564,7 +3922,9 @@ export const LessThanSchema = {
         }
     },
     type: 'object',
-    required: ['<'],
+    required: [
+        '<'
+    ],
     title: 'LessThan'
 } as const;
 
@@ -3647,7 +4007,9 @@ export const LessThanOrEqualSchema = {
         }
     },
     type: 'object',
-    required: ['<='],
+    required: [
+        '<='
+    ],
     title: 'LessThanOrEqual'
 } as const;
 
@@ -3714,10 +4076,10 @@ export const LineStringSchema = {
             items: {
                 anyOf: [
                     {
-                        '$ref': '#/components/schemas/Position2D'
+                        $ref: '#/components/schemas/Position2D'
                     },
                     {
-                        '$ref': '#/components/schemas/Position3D'
+                        $ref: '#/components/schemas/Position3D'
                     }
                 ]
             },
@@ -3727,7 +4089,10 @@ export const LineStringSchema = {
         }
     },
     type: 'object',
-    required: ['type', 'coordinates'],
+    required: [
+        'type',
+        'coordinates'
+    ],
     title: 'LineString',
     description: 'LineString Model'
 } as const;
@@ -3772,7 +4137,9 @@ export const LogSchema = {
         }
     },
     type: 'object',
-    required: ['log'],
+    required: [
+        'log'
+    ],
     title: 'Log'
 } as const;
 
@@ -3792,7 +4159,11 @@ export const MailPreviewInputSchema = {
         }
     },
     type: 'object',
-    required: ['title', 'preview_text', 'body_text'],
+    required: [
+        'title',
+        'preview_text',
+        'body_text'
+    ],
     title: 'MailPreviewInput'
 } as const;
 
@@ -3807,134 +4178,134 @@ export const Map_InputSchema = {
                             type: 'array'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Input'
+                            $ref: '#/components/schemas/Filter-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Input'
+                            $ref: '#/components/schemas/Map-Input'
                         }
                     ]
                 },
                 {
                     anyOf: [
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Input'
+                            $ref: '#/components/schemas/All-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Input'
+                            $ref: '#/components/schemas/And-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Input'
+                            $ref: '#/components/schemas/Filter-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Input'
+                            $ref: '#/components/schemas/In-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Input'
+                            $ref: '#/components/schemas/Map-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Input'
+                            $ref: '#/components/schemas/None_-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Input'
+                            $ref: '#/components/schemas/Or-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Input'
+                            $ref: '#/components/schemas/Reduce-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Input'
+                            $ref: '#/components/schemas/Some-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -3946,7 +4317,9 @@ export const Map_InputSchema = {
         }
     },
     type: 'object',
-    required: ['map'],
+    required: [
+        'map'
+    ],
     title: 'Map'
 } as const;
 
@@ -3961,134 +4334,134 @@ export const Map_OutputSchema = {
                             type: 'array'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Output'
+                            $ref: '#/components/schemas/Filter-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Output'
+                            $ref: '#/components/schemas/Map-Output'
                         }
                     ]
                 },
                 {
                     anyOf: [
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Output'
+                            $ref: '#/components/schemas/All-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Output'
+                            $ref: '#/components/schemas/And-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Output'
+                            $ref: '#/components/schemas/Filter-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Output'
+                            $ref: '#/components/schemas/In-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Output'
+                            $ref: '#/components/schemas/Map-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Output'
+                            $ref: '#/components/schemas/None_-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Output'
+                            $ref: '#/components/schemas/Or-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Output'
+                            $ref: '#/components/schemas/Reduce-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Output'
+                            $ref: '#/components/schemas/Some-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -4100,7 +4473,9 @@ export const Map_OutputSchema = {
         }
     },
     type: 'object',
-    required: ['map'],
+    required: [
+        'map'
+    ],
     title: 'Map'
 } as const;
 
@@ -4122,7 +4497,9 @@ export const MaxSchema = {
         }
     },
     type: 'object',
-    required: ['max'],
+    required: [
+        'max'
+    ],
     title: 'Max'
 } as const;
 
@@ -4138,7 +4515,10 @@ export const MeldingAssetInputSchema = {
         }
     },
     type: 'object',
-    required: ['external_id', 'asset_type_id'],
+    required: [
+        'external_id',
+        'asset_type_id'
+    ],
     title: 'MeldingAssetInput'
 } as const;
 
@@ -4202,7 +4582,7 @@ export const MeldingCreateOutputSchema = {
         classification: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/SimpleClassificationOutput'
+                    $ref: '#/components/schemas/SimpleClassificationOutput'
                 },
                 {
                     type: 'null'
@@ -4212,7 +4592,7 @@ export const MeldingCreateOutputSchema = {
         geo_location: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/GeoJson-Output'
+                    $ref: '#/components/schemas/GeoJson-Output'
                 },
                 {
                     type: 'null'
@@ -4304,7 +4684,15 @@ export const MeldingCreateOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'public_id', 'text', 'state', 'token'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'public_id',
+        'text',
+        'state',
+        'token'
+    ],
     title: 'MeldingCreateOutput'
 } as const;
 
@@ -4317,7 +4705,9 @@ export const MeldingInputSchema = {
         }
     },
     type: 'object',
-    required: ['text'],
+    required: [
+        'text'
+    ],
     title: 'MeldingInput'
 } as const;
 
@@ -4350,7 +4740,7 @@ export const MeldingOutputSchema = {
         classification: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/SimpleClassificationOutput'
+                    $ref: '#/components/schemas/SimpleClassificationOutput'
                 },
                 {
                     type: 'null'
@@ -4360,7 +4750,7 @@ export const MeldingOutputSchema = {
         geo_location: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/GeoJson-Output'
+                    $ref: '#/components/schemas/GeoJson-Output'
                 },
                 {
                     type: 'null'
@@ -4448,7 +4838,14 @@ export const MeldingOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'public_id', 'text', 'state'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'public_id',
+        'text',
+        'state'
+    ],
     title: 'MeldingOutput'
 } as const;
 
@@ -4481,7 +4878,7 @@ export const MeldingUpdateOutputSchema = {
         classification: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/SimpleClassificationOutput'
+                    $ref: '#/components/schemas/SimpleClassificationOutput'
                 },
                 {
                     type: 'null'
@@ -4491,7 +4888,7 @@ export const MeldingUpdateOutputSchema = {
         geo_location: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/GeoJson-Output'
+                    $ref: '#/components/schemas/GeoJson-Output'
                 },
                 {
                     type: 'null'
@@ -4583,7 +4980,15 @@ export const MeldingUpdateOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'public_id', 'text', 'state', 'token'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'public_id',
+        'text',
+        'state',
+        'token'
+    ],
     title: 'MeldingUpdateOutput'
 } as const;
 
@@ -4594,7 +4999,9 @@ export const MergeSchema = {
         }
     },
     type: 'object',
-    required: ['merge'],
+    required: [
+        'merge'
+    ],
     title: 'Merge'
 } as const;
 
@@ -4616,7 +5023,9 @@ export const MinSchema = {
         }
     },
     type: 'object',
-    required: ['min'],
+    required: [
+        'min'
+    ],
     title: 'Min'
 } as const;
 
@@ -4634,14 +5043,16 @@ export const MissingSchema = {
                     type: 'string'
                 },
                 {
-                    '$ref': '#/components/schemas/Merge'
+                    $ref: '#/components/schemas/Merge'
                 }
             ],
             title: 'Missing'
         }
     },
     type: 'object',
-    required: ['missing'],
+    required: [
+        'missing'
+    ],
     title: 'Missing'
 } as const;
 
@@ -4666,7 +5077,9 @@ export const MissingSomeSchema = {
         }
     },
     type: 'object',
-    required: ['missing_some'],
+    required: [
+        'missing_some'
+    ],
     title: 'MissingSome'
 } as const;
 
@@ -4686,7 +5099,7 @@ export const ModuloSchema = {
                             type: 'string'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         }
                     ]
                 },
@@ -4711,7 +5124,9 @@ export const ModuloSchema = {
         }
     },
     type: 'object',
-    required: ['%'],
+    required: [
+        '%'
+    ],
     title: 'Modulo'
 } as const;
 
@@ -4779,10 +5194,10 @@ export const MultiLineStringSchema = {
                 items: {
                     anyOf: [
                         {
-                            '$ref': '#/components/schemas/Position2D'
+                            $ref: '#/components/schemas/Position2D'
                         },
                         {
-                            '$ref': '#/components/schemas/Position3D'
+                            $ref: '#/components/schemas/Position3D'
                         }
                     ]
                 },
@@ -4794,7 +5209,10 @@ export const MultiLineStringSchema = {
         }
     },
     type: 'object',
-    required: ['type', 'coordinates'],
+    required: [
+        'type',
+        'coordinates'
+    ],
     title: 'MultiLineString',
     description: 'MultiLineString Model'
 } as const;
@@ -4862,10 +5280,10 @@ export const MultiPointSchema = {
             items: {
                 anyOf: [
                     {
-                        '$ref': '#/components/schemas/Position2D'
+                        $ref: '#/components/schemas/Position2D'
                     },
                     {
-                        '$ref': '#/components/schemas/Position3D'
+                        $ref: '#/components/schemas/Position3D'
                     }
                 ]
             },
@@ -4874,7 +5292,10 @@ export const MultiPointSchema = {
         }
     },
     type: 'object',
-    required: ['type', 'coordinates'],
+    required: [
+        'type',
+        'coordinates'
+    ],
     title: 'MultiPoint',
     description: 'MultiPoint Model'
 } as const;
@@ -4944,10 +5365,10 @@ export const MultiPolygonSchema = {
                     items: {
                         anyOf: [
                             {
-                                '$ref': '#/components/schemas/Position2D'
+                                $ref: '#/components/schemas/Position2D'
                             },
                             {
-                                '$ref': '#/components/schemas/Position3D'
+                                $ref: '#/components/schemas/Position3D'
                             }
                         ]
                     },
@@ -4961,7 +5382,10 @@ export const MultiPolygonSchema = {
         }
     },
     type: 'object',
-    required: ['type', 'coordinates'],
+    required: [
+        'type',
+        'coordinates'
+    ],
     title: 'MultiPolygon',
     description: 'MultiPolygon Model'
 } as const;
@@ -4981,7 +5405,7 @@ export const MultiplySchema = {
                         type: 'string'
                     },
                     {
-                        '$ref': '#/components/schemas/Var'
+                        $ref: '#/components/schemas/Var'
                     }
                 ]
             },
@@ -4990,7 +5414,9 @@ export const MultiplySchema = {
         }
     },
     type: 'object',
-    required: ['*'],
+    required: [
+        '*'
+    ],
     title: 'Multiply'
 } as const;
 
@@ -5005,25 +5431,25 @@ export const None__InputSchema = {
                             type: 'array'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Input'
+                            $ref: '#/components/schemas/Filter-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Input'
+                            $ref: '#/components/schemas/Map-Input'
                         }
                     ]
                 },
@@ -5033,109 +5459,109 @@ export const None__InputSchema = {
                             type: 'boolean'
                         },
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Input'
+                            $ref: '#/components/schemas/All-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Input'
+                            $ref: '#/components/schemas/And-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Input'
+                            $ref: '#/components/schemas/Filter-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Input'
+                            $ref: '#/components/schemas/In-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Input'
+                            $ref: '#/components/schemas/Map-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Input'
+                            $ref: '#/components/schemas/None_-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Input'
+                            $ref: '#/components/schemas/Or-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Input'
+                            $ref: '#/components/schemas/Reduce-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Input'
+                            $ref: '#/components/schemas/Some-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -5147,7 +5573,9 @@ export const None__InputSchema = {
         }
     },
     type: 'object',
-    required: ['none'],
+    required: [
+        'none'
+    ],
     title: 'None_'
 } as const;
 
@@ -5162,25 +5590,25 @@ export const None__OutputSchema = {
                             type: 'array'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Output'
+                            $ref: '#/components/schemas/Filter-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Output'
+                            $ref: '#/components/schemas/Map-Output'
                         }
                     ]
                 },
@@ -5190,109 +5618,109 @@ export const None__OutputSchema = {
                             type: 'boolean'
                         },
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Output'
+                            $ref: '#/components/schemas/All-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Output'
+                            $ref: '#/components/schemas/And-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Output'
+                            $ref: '#/components/schemas/Filter-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Output'
+                            $ref: '#/components/schemas/In-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Output'
+                            $ref: '#/components/schemas/Map-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Output'
+                            $ref: '#/components/schemas/None_-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Output'
+                            $ref: '#/components/schemas/Or-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Output'
+                            $ref: '#/components/schemas/Reduce-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Output'
+                            $ref: '#/components/schemas/Some-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -5304,7 +5732,9 @@ export const None__OutputSchema = {
         }
     },
     type: 'object',
-    required: ['none'],
+    required: [
+        'none'
+    ],
     title: 'None_'
 } as const;
 
@@ -5365,7 +5795,9 @@ export const NotSchema = {
         }
     },
     type: 'object',
-    required: ['!'],
+    required: [
+        '!'
+    ],
     title: 'Not'
 } as const;
 
@@ -5383,7 +5815,9 @@ export const NotEqualsSchema = {
         }
     },
     type: 'object',
-    required: ['!='],
+    required: [
+        '!='
+    ],
     title: 'NotEquals'
 } as const;
 
@@ -5437,7 +5871,9 @@ export const NotNotSchema = {
         }
     },
     type: 'object',
-    required: ['!!'],
+    required: [
+        '!!'
+    ],
     title: 'NotNot'
 } as const;
 
@@ -5465,109 +5901,109 @@ export const Or_InputSchema = {
                         type: 'array'
                     },
                     {
-                        '$ref': '#/components/schemas/Add'
+                        $ref: '#/components/schemas/Add'
                     },
                     {
-                        '$ref': '#/components/schemas/All-Input'
+                        $ref: '#/components/schemas/All-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/And-Input'
+                        $ref: '#/components/schemas/And-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/Cat'
+                        $ref: '#/components/schemas/Cat'
                     },
                     {
-                        '$ref': '#/components/schemas/Divide'
+                        $ref: '#/components/schemas/Divide'
                     },
                     {
-                        '$ref': '#/components/schemas/Equals'
+                        $ref: '#/components/schemas/Equals'
                     },
                     {
-                        '$ref': '#/components/schemas/Filter-Input'
+                        $ref: '#/components/schemas/Filter-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/GreaterThan'
+                        $ref: '#/components/schemas/GreaterThan'
                     },
                     {
-                        '$ref': '#/components/schemas/GreaterThanOrEqual'
+                        $ref: '#/components/schemas/GreaterThanOrEqual'
                     },
                     {
-                        '$ref': '#/components/schemas/If'
+                        $ref: '#/components/schemas/If'
                     },
                     {
-                        '$ref': '#/components/schemas/In-Input'
+                        $ref: '#/components/schemas/In-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/LessThan'
+                        $ref: '#/components/schemas/LessThan'
                     },
                     {
-                        '$ref': '#/components/schemas/LessThanOrEqual'
+                        $ref: '#/components/schemas/LessThanOrEqual'
                     },
                     {
-                        '$ref': '#/components/schemas/Log'
+                        $ref: '#/components/schemas/Log'
                     },
                     {
-                        '$ref': '#/components/schemas/Map-Input'
+                        $ref: '#/components/schemas/Map-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/Max'
+                        $ref: '#/components/schemas/Max'
                     },
                     {
-                        '$ref': '#/components/schemas/Merge'
+                        $ref: '#/components/schemas/Merge'
                     },
                     {
-                        '$ref': '#/components/schemas/Min'
+                        $ref: '#/components/schemas/Min'
                     },
                     {
-                        '$ref': '#/components/schemas/Missing'
+                        $ref: '#/components/schemas/Missing'
                     },
                     {
-                        '$ref': '#/components/schemas/MissingSome'
+                        $ref: '#/components/schemas/MissingSome'
                     },
                     {
-                        '$ref': '#/components/schemas/Modulo'
+                        $ref: '#/components/schemas/Modulo'
                     },
                     {
-                        '$ref': '#/components/schemas/Multiply'
+                        $ref: '#/components/schemas/Multiply'
                     },
                     {
-                        '$ref': '#/components/schemas/None_-Input'
+                        $ref: '#/components/schemas/None_-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/Not'
+                        $ref: '#/components/schemas/Not'
                     },
                     {
-                        '$ref': '#/components/schemas/NotEquals'
+                        $ref: '#/components/schemas/NotEquals'
                     },
                     {
-                        '$ref': '#/components/schemas/NotNot'
+                        $ref: '#/components/schemas/NotNot'
                     },
                     {
-                        '$ref': '#/components/schemas/Or-Input'
+                        $ref: '#/components/schemas/Or-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/Reduce-Input'
+                        $ref: '#/components/schemas/Reduce-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/Some-Input'
+                        $ref: '#/components/schemas/Some-Input'
                     },
                     {
-                        '$ref': '#/components/schemas/StrictEquals'
+                        $ref: '#/components/schemas/StrictEquals'
                     },
                     {
-                        '$ref': '#/components/schemas/StrictNotEquals'
+                        $ref: '#/components/schemas/StrictNotEquals'
                     },
                     {
-                        '$ref': '#/components/schemas/Substr'
+                        $ref: '#/components/schemas/Substr'
                     },
                     {
-                        '$ref': '#/components/schemas/Subtract'
+                        $ref: '#/components/schemas/Subtract'
                     },
                     {
-                        '$ref': '#/components/schemas/Var'
+                        $ref: '#/components/schemas/Var'
                     },
                     {
-                        '$ref': '#/components/schemas/Length'
+                        $ref: '#/components/schemas/Length'
                     }
                 ]
             },
@@ -5576,7 +6012,9 @@ export const Or_InputSchema = {
         }
     },
     type: 'object',
-    required: ['or'],
+    required: [
+        'or'
+    ],
     title: 'Or'
 } as const;
 
@@ -5604,109 +6042,109 @@ export const Or_OutputSchema = {
                         type: 'array'
                     },
                     {
-                        '$ref': '#/components/schemas/Add'
+                        $ref: '#/components/schemas/Add'
                     },
                     {
-                        '$ref': '#/components/schemas/All-Output'
+                        $ref: '#/components/schemas/All-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/And-Output'
+                        $ref: '#/components/schemas/And-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/Cat'
+                        $ref: '#/components/schemas/Cat'
                     },
                     {
-                        '$ref': '#/components/schemas/Divide'
+                        $ref: '#/components/schemas/Divide'
                     },
                     {
-                        '$ref': '#/components/schemas/Equals'
+                        $ref: '#/components/schemas/Equals'
                     },
                     {
-                        '$ref': '#/components/schemas/Filter-Output'
+                        $ref: '#/components/schemas/Filter-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/GreaterThan'
+                        $ref: '#/components/schemas/GreaterThan'
                     },
                     {
-                        '$ref': '#/components/schemas/GreaterThanOrEqual'
+                        $ref: '#/components/schemas/GreaterThanOrEqual'
                     },
                     {
-                        '$ref': '#/components/schemas/If'
+                        $ref: '#/components/schemas/If'
                     },
                     {
-                        '$ref': '#/components/schemas/In-Output'
+                        $ref: '#/components/schemas/In-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/LessThan'
+                        $ref: '#/components/schemas/LessThan'
                     },
                     {
-                        '$ref': '#/components/schemas/LessThanOrEqual'
+                        $ref: '#/components/schemas/LessThanOrEqual'
                     },
                     {
-                        '$ref': '#/components/schemas/Log'
+                        $ref: '#/components/schemas/Log'
                     },
                     {
-                        '$ref': '#/components/schemas/Map-Output'
+                        $ref: '#/components/schemas/Map-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/Max'
+                        $ref: '#/components/schemas/Max'
                     },
                     {
-                        '$ref': '#/components/schemas/Merge'
+                        $ref: '#/components/schemas/Merge'
                     },
                     {
-                        '$ref': '#/components/schemas/Min'
+                        $ref: '#/components/schemas/Min'
                     },
                     {
-                        '$ref': '#/components/schemas/Missing'
+                        $ref: '#/components/schemas/Missing'
                     },
                     {
-                        '$ref': '#/components/schemas/MissingSome'
+                        $ref: '#/components/schemas/MissingSome'
                     },
                     {
-                        '$ref': '#/components/schemas/Modulo'
+                        $ref: '#/components/schemas/Modulo'
                     },
                     {
-                        '$ref': '#/components/schemas/Multiply'
+                        $ref: '#/components/schemas/Multiply'
                     },
                     {
-                        '$ref': '#/components/schemas/None_-Output'
+                        $ref: '#/components/schemas/None_-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/Not'
+                        $ref: '#/components/schemas/Not'
                     },
                     {
-                        '$ref': '#/components/schemas/NotEquals'
+                        $ref: '#/components/schemas/NotEquals'
                     },
                     {
-                        '$ref': '#/components/schemas/NotNot'
+                        $ref: '#/components/schemas/NotNot'
                     },
                     {
-                        '$ref': '#/components/schemas/Or-Output'
+                        $ref: '#/components/schemas/Or-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/Reduce-Output'
+                        $ref: '#/components/schemas/Reduce-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/Some-Output'
+                        $ref: '#/components/schemas/Some-Output'
                     },
                     {
-                        '$ref': '#/components/schemas/StrictEquals'
+                        $ref: '#/components/schemas/StrictEquals'
                     },
                     {
-                        '$ref': '#/components/schemas/StrictNotEquals'
+                        $ref: '#/components/schemas/StrictNotEquals'
                     },
                     {
-                        '$ref': '#/components/schemas/Substr'
+                        $ref: '#/components/schemas/Substr'
                     },
                     {
-                        '$ref': '#/components/schemas/Subtract'
+                        $ref: '#/components/schemas/Subtract'
                     },
                     {
-                        '$ref': '#/components/schemas/Var'
+                        $ref: '#/components/schemas/Var'
                     },
                     {
-                        '$ref': '#/components/schemas/Length'
+                        $ref: '#/components/schemas/Length'
                     }
                 ]
             },
@@ -5715,7 +6153,9 @@ export const Or_OutputSchema = {
         }
     },
     type: 'object',
-    required: ['or'],
+    required: [
+        'or'
+    ],
     title: 'Or'
 } as const;
 
@@ -5781,17 +6221,20 @@ export const PointSchema = {
         coordinates: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/Position2D'
+                    $ref: '#/components/schemas/Position2D'
                 },
                 {
-                    '$ref': '#/components/schemas/Position3D'
+                    $ref: '#/components/schemas/Position3D'
                 }
             ],
             title: 'Coordinates'
         }
     },
     type: 'object',
-    required: ['type', 'coordinates'],
+    required: [
+        'type',
+        'coordinates'
+    ],
     title: 'Point',
     description: 'Point Model'
 } as const;
@@ -5860,10 +6303,10 @@ export const PolygonSchema = {
                 items: {
                     anyOf: [
                         {
-                            '$ref': '#/components/schemas/Position2D'
+                            $ref: '#/components/schemas/Position2D'
                         },
                         {
-                            '$ref': '#/components/schemas/Position3D'
+                            $ref: '#/components/schemas/Position3D'
                         }
                     ]
                 },
@@ -5875,7 +6318,10 @@ export const PolygonSchema = {
         }
     },
     type: 'object',
-    required: ['type', 'coordinates'],
+    required: [
+        'type',
+        'coordinates'
+    ],
     title: 'Polygon',
     description: 'Polygon Model'
 } as const;
@@ -5936,7 +6382,12 @@ export const QuestionOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'text'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'text'
+    ],
     title: 'QuestionOutput'
 } as const;
 
@@ -5951,134 +6402,134 @@ export const Reduce_InputSchema = {
                             type: 'array'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Input'
+                            $ref: '#/components/schemas/Filter-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Input'
+                            $ref: '#/components/schemas/Map-Input'
                         }
                     ]
                 },
                 {
                     anyOf: [
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Input'
+                            $ref: '#/components/schemas/All-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Input'
+                            $ref: '#/components/schemas/And-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Input'
+                            $ref: '#/components/schemas/Filter-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Input'
+                            $ref: '#/components/schemas/In-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Input'
+                            $ref: '#/components/schemas/Map-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Input'
+                            $ref: '#/components/schemas/None_-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Input'
+                            $ref: '#/components/schemas/Or-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Input'
+                            $ref: '#/components/schemas/Reduce-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Input'
+                            $ref: '#/components/schemas/Some-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 },
@@ -6091,7 +6542,9 @@ export const Reduce_InputSchema = {
         }
     },
     type: 'object',
-    required: ['reduce'],
+    required: [
+        'reduce'
+    ],
     title: 'Reduce'
 } as const;
 
@@ -6106,134 +6559,134 @@ export const Reduce_OutputSchema = {
                             type: 'array'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Output'
+                            $ref: '#/components/schemas/Filter-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Output'
+                            $ref: '#/components/schemas/Map-Output'
                         }
                     ]
                 },
                 {
                     anyOf: [
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Output'
+                            $ref: '#/components/schemas/All-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Output'
+                            $ref: '#/components/schemas/And-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Output'
+                            $ref: '#/components/schemas/Filter-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Output'
+                            $ref: '#/components/schemas/In-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Output'
+                            $ref: '#/components/schemas/Map-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Output'
+                            $ref: '#/components/schemas/None_-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Output'
+                            $ref: '#/components/schemas/Or-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Output'
+                            $ref: '#/components/schemas/Reduce-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Output'
+                            $ref: '#/components/schemas/Some-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 },
@@ -6246,7 +6699,9 @@ export const Reduce_OutputSchema = {
         }
     },
     type: 'object',
-    required: ['reduce'],
+    required: [
+        'reduce'
+    ],
     title: 'Reduce'
 } as const;
 
@@ -6267,10 +6722,25 @@ export const SimpleClassificationOutputSchema = {
         name: {
             type: 'string',
             title: 'Name'
+        },
+        asset_type: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/AssetTypeOutput'
+                },
+                {
+                    type: 'null'
+                }
+            ]
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'name'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'name'
+    ],
     title: 'SimpleClassificationOutput'
 } as const;
 
@@ -6309,7 +6779,13 @@ export const SimpleFormOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'title', 'display'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'title',
+        'display'
+    ],
     title: 'SimpleFormOutput'
 } as const;
 
@@ -6341,7 +6817,14 @@ export const SimpleStaticFormOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'title', 'display', 'type'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'title',
+        'display',
+        'type'
+    ],
     title: 'SimpleStaticFormOutput'
 } as const;
 
@@ -6356,25 +6839,25 @@ export const Some_InputSchema = {
                             type: 'array'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Input'
+                            $ref: '#/components/schemas/Filter-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Input'
+                            $ref: '#/components/schemas/Map-Input'
                         }
                     ]
                 },
@@ -6384,109 +6867,109 @@ export const Some_InputSchema = {
                             type: 'boolean'
                         },
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Input'
+                            $ref: '#/components/schemas/All-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Input'
+                            $ref: '#/components/schemas/And-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Input'
+                            $ref: '#/components/schemas/Filter-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Input'
+                            $ref: '#/components/schemas/In-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Input'
+                            $ref: '#/components/schemas/Map-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Input'
+                            $ref: '#/components/schemas/None_-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Input'
+                            $ref: '#/components/schemas/Or-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Input'
+                            $ref: '#/components/schemas/Reduce-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Input'
+                            $ref: '#/components/schemas/Some-Input'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -6498,7 +6981,9 @@ export const Some_InputSchema = {
         }
     },
     type: 'object',
-    required: ['some'],
+    required: [
+        'some'
+    ],
     title: 'Some'
 } as const;
 
@@ -6513,25 +6998,25 @@ export const Some_OutputSchema = {
                             type: 'array'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Output'
+                            $ref: '#/components/schemas/Filter-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Output'
+                            $ref: '#/components/schemas/Map-Output'
                         }
                     ]
                 },
@@ -6541,109 +7026,109 @@ export const Some_OutputSchema = {
                             type: 'boolean'
                         },
                         {
-                            '$ref': '#/components/schemas/Add'
+                            $ref: '#/components/schemas/Add'
                         },
                         {
-                            '$ref': '#/components/schemas/All-Output'
+                            $ref: '#/components/schemas/All-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/And-Output'
+                            $ref: '#/components/schemas/And-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Cat'
+                            $ref: '#/components/schemas/Cat'
                         },
                         {
-                            '$ref': '#/components/schemas/Divide'
+                            $ref: '#/components/schemas/Divide'
                         },
                         {
-                            '$ref': '#/components/schemas/Equals'
+                            $ref: '#/components/schemas/Equals'
                         },
                         {
-                            '$ref': '#/components/schemas/Filter-Output'
+                            $ref: '#/components/schemas/Filter-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThan'
+                            $ref: '#/components/schemas/GreaterThan'
                         },
                         {
-                            '$ref': '#/components/schemas/GreaterThanOrEqual'
+                            $ref: '#/components/schemas/GreaterThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/If'
+                            $ref: '#/components/schemas/If'
                         },
                         {
-                            '$ref': '#/components/schemas/In-Output'
+                            $ref: '#/components/schemas/In-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThan'
+                            $ref: '#/components/schemas/LessThan'
                         },
                         {
-                            '$ref': '#/components/schemas/LessThanOrEqual'
+                            $ref: '#/components/schemas/LessThanOrEqual'
                         },
                         {
-                            '$ref': '#/components/schemas/Log'
+                            $ref: '#/components/schemas/Log'
                         },
                         {
-                            '$ref': '#/components/schemas/Map-Output'
+                            $ref: '#/components/schemas/Map-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Max'
+                            $ref: '#/components/schemas/Max'
                         },
                         {
-                            '$ref': '#/components/schemas/Merge'
+                            $ref: '#/components/schemas/Merge'
                         },
                         {
-                            '$ref': '#/components/schemas/Min'
+                            $ref: '#/components/schemas/Min'
                         },
                         {
-                            '$ref': '#/components/schemas/Missing'
+                            $ref: '#/components/schemas/Missing'
                         },
                         {
-                            '$ref': '#/components/schemas/MissingSome'
+                            $ref: '#/components/schemas/MissingSome'
                         },
                         {
-                            '$ref': '#/components/schemas/Modulo'
+                            $ref: '#/components/schemas/Modulo'
                         },
                         {
-                            '$ref': '#/components/schemas/Multiply'
+                            $ref: '#/components/schemas/Multiply'
                         },
                         {
-                            '$ref': '#/components/schemas/None_-Output'
+                            $ref: '#/components/schemas/None_-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Not'
+                            $ref: '#/components/schemas/Not'
                         },
                         {
-                            '$ref': '#/components/schemas/NotEquals'
+                            $ref: '#/components/schemas/NotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/NotNot'
+                            $ref: '#/components/schemas/NotNot'
                         },
                         {
-                            '$ref': '#/components/schemas/Or-Output'
+                            $ref: '#/components/schemas/Or-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Reduce-Output'
+                            $ref: '#/components/schemas/Reduce-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/Some-Output'
+                            $ref: '#/components/schemas/Some-Output'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictEquals'
+                            $ref: '#/components/schemas/StrictEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/StrictNotEquals'
+                            $ref: '#/components/schemas/StrictNotEquals'
                         },
                         {
-                            '$ref': '#/components/schemas/Substr'
+                            $ref: '#/components/schemas/Substr'
                         },
                         {
-                            '$ref': '#/components/schemas/Subtract'
+                            $ref: '#/components/schemas/Subtract'
                         },
                         {
-                            '$ref': '#/components/schemas/Var'
+                            $ref: '#/components/schemas/Var'
                         },
                         {
-                            '$ref': '#/components/schemas/Length'
+                            $ref: '#/components/schemas/Length'
                         }
                     ]
                 }
@@ -6655,7 +7140,9 @@ export const Some_OutputSchema = {
         }
     },
     type: 'object',
-    required: ['some'],
+    required: [
+        'some'
+    ],
     title: 'Some'
 } as const;
 
@@ -6670,7 +7157,9 @@ export const StatesOutputSchema = {
         }
     },
     type: 'object',
-    required: ['states'],
+    required: [
+        'states'
+    ],
     title: 'StatesOutput'
 } as const;
 
@@ -6703,7 +7192,17 @@ export const StaticFormCheckboxComponentOutputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentOutputValidate'
+                    $ref: '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -6712,14 +7211,22 @@ export const StaticFormCheckboxComponentOutputSchema = {
         },
         values: {
             items: {
-                '$ref': '#/components/schemas/FormComponentValueOutput'
+                $ref: '#/components/schemas/FormComponentValueOutput'
             },
             type: 'array',
             title: 'Values'
         }
     },
     type: 'object',
-    required: ['label', 'description', 'key', 'type', 'input', 'position', 'values'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'type',
+        'input',
+        'position',
+        'values'
+    ],
     title: 'StaticFormCheckboxComponentOutput'
 } as const;
 
@@ -6731,28 +7238,28 @@ export const StaticFormInputSchema = {
             title: 'Title'
         },
         display: {
-            '$ref': '#/components/schemas/FormIoFormDisplayEnum'
+            $ref: '#/components/schemas/FormIoFormDisplayEnum'
         },
         components: {
             items: {
                 oneOf: [
                     {
-                        '$ref': '#/components/schemas/FormPanelComponentInput'
+                        $ref: '#/components/schemas/FormPanelComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormTextAreaComponentInput'
+                        $ref: '#/components/schemas/FormTextAreaComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormTextFieldComponentInput'
+                        $ref: '#/components/schemas/FormTextFieldComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormRadioComponentInput'
+                        $ref: '#/components/schemas/FormRadioComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormCheckboxComponentInput'
+                        $ref: '#/components/schemas/FormCheckboxComponentInput'
                     },
                     {
-                        '$ref': '#/components/schemas/FormSelectComponentInput'
+                        $ref: '#/components/schemas/FormSelectComponentInput'
                     }
                 ]
             },
@@ -6761,7 +7268,11 @@ export const StaticFormInputSchema = {
         }
     },
     type: 'object',
-    required: ['title', 'display', 'components'],
+    required: [
+        'title',
+        'display',
+        'components'
+    ],
     title: 'StaticFormInput'
 } as const;
 
@@ -6795,22 +7306,22 @@ export const StaticFormOutputSchema = {
             items: {
                 anyOf: [
                     {
-                        '$ref': '#/components/schemas/StaticFormPanelComponentOutput'
+                        $ref: '#/components/schemas/StaticFormPanelComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/StaticFormTextAreaComponentOutput'
+                        $ref: '#/components/schemas/StaticFormTextAreaComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/StaticFormTextFieldInputComponentOutput'
+                        $ref: '#/components/schemas/StaticFormTextFieldInputComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/StaticFormCheckboxComponentOutput'
+                        $ref: '#/components/schemas/StaticFormCheckboxComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/StaticFormRadioComponentOutput'
+                        $ref: '#/components/schemas/StaticFormRadioComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/StaticFormSelectComponentOutput'
+                        $ref: '#/components/schemas/StaticFormSelectComponentOutput'
                     }
                 ]
             },
@@ -6819,7 +7330,15 @@ export const StaticFormOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'title', 'display', 'type', 'components'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'title',
+        'display',
+        'type',
+        'components'
+    ],
     title: 'StaticFormOutput'
 } as const;
 
@@ -6853,19 +7372,19 @@ export const StaticFormPanelComponentOutputSchema = {
             items: {
                 anyOf: [
                     {
-                        '$ref': '#/components/schemas/StaticFormTextAreaComponentOutput'
+                        $ref: '#/components/schemas/StaticFormTextAreaComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/StaticFormTextFieldInputComponentOutput'
+                        $ref: '#/components/schemas/StaticFormTextFieldInputComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/StaticFormCheckboxComponentOutput'
+                        $ref: '#/components/schemas/StaticFormCheckboxComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/StaticFormRadioComponentOutput'
+                        $ref: '#/components/schemas/StaticFormRadioComponentOutput'
                     },
                     {
-                        '$ref': '#/components/schemas/StaticFormSelectComponentOutput'
+                        $ref: '#/components/schemas/StaticFormSelectComponentOutput'
                     }
                 ]
             },
@@ -6874,7 +7393,15 @@ export const StaticFormPanelComponentOutputSchema = {
         }
     },
     type: 'object',
-    required: ['title', 'label', 'key', 'type', 'input', 'position', 'components'],
+    required: [
+        'title',
+        'label',
+        'key',
+        'type',
+        'input',
+        'position',
+        'components'
+    ],
     title: 'StaticFormPanelComponentOutput'
 } as const;
 
@@ -6907,7 +7434,17 @@ export const StaticFormRadioComponentOutputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentOutputValidate'
+                    $ref: '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -6916,14 +7453,22 @@ export const StaticFormRadioComponentOutputSchema = {
         },
         values: {
             items: {
-                '$ref': '#/components/schemas/FormComponentValueOutput'
+                $ref: '#/components/schemas/FormComponentValueOutput'
             },
             type: 'array',
             title: 'Values'
         }
     },
     type: 'object',
-    required: ['label', 'description', 'key', 'type', 'input', 'position', 'values'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'type',
+        'input',
+        'position',
+        'values'
+    ],
     title: 'StaticFormRadioComponentOutput'
 } as const;
 
@@ -6956,7 +7501,17 @@ export const StaticFormSelectComponentOutputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentOutputValidate'
+                    $ref: '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -6972,11 +7527,21 @@ export const StaticFormSelectComponentOutputSchema = {
             title: 'Placeholder'
         },
         data: {
-            '$ref': '#/components/schemas/FormSelectComponentDataOutput'
+            $ref: '#/components/schemas/FormSelectComponentDataOutput'
         }
     },
     type: 'object',
-    required: ['label', 'description', 'key', 'type', 'input', 'position', 'widget', 'placeholder', 'data'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'type',
+        'input',
+        'position',
+        'widget',
+        'placeholder',
+        'data'
+    ],
     title: 'StaticFormSelectComponentOutput'
 } as const;
 
@@ -7009,7 +7574,17 @@ export const StaticFormTextAreaComponentOutputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentOutputValidate'
+                    $ref: '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -7033,7 +7608,16 @@ export const StaticFormTextAreaComponentOutputSchema = {
         }
     },
     type: 'object',
-    required: ['label', 'description', 'key', 'type', 'input', 'position', 'autoExpand', 'maxCharCount'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'type',
+        'input',
+        'position',
+        'autoExpand',
+        'maxCharCount'
+    ],
     title: 'StaticFormTextAreaComponentOutput'
 } as const;
 
@@ -7066,7 +7650,17 @@ export const StaticFormTextFieldInputComponentOutputSchema = {
         validate: {
             anyOf: [
                 {
-                    '$ref': '#/components/schemas/FormComponentOutputValidate'
+                    $ref: '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -7075,7 +7669,14 @@ export const StaticFormTextFieldInputComponentOutputSchema = {
         }
     },
     type: 'object',
-    required: ['label', 'description', 'key', 'type', 'input', 'position'],
+    required: [
+        'label',
+        'description',
+        'key',
+        'type',
+        'input',
+        'position'
+    ],
     title: 'StaticFormTextFieldInputComponentOutput'
 } as const;
 
@@ -7093,7 +7694,9 @@ export const StrictEqualsSchema = {
         }
     },
     type: 'object',
-    required: ['==='],
+    required: [
+        '==='
+    ],
     title: 'StrictEquals'
 } as const;
 
@@ -7111,7 +7714,9 @@ export const StrictNotEqualsSchema = {
         }
     },
     type: 'object',
-    required: ['!=='],
+    required: [
+        '!=='
+    ],
     title: 'StrictNotEquals'
 } as const;
 
@@ -7153,7 +7758,9 @@ export const SubstrSchema = {
         }
     },
     type: 'object',
-    required: ['substr'],
+    required: [
+        'substr'
+    ],
     title: 'Substr'
 } as const;
 
@@ -7219,7 +7826,9 @@ export const SubtractSchema = {
         }
     },
     type: 'object',
-    required: ['-'],
+    required: [
+        '-'
+    ],
     title: 'Subtract'
 } as const;
 
@@ -7237,7 +7846,10 @@ export const UserCreateInputSchema = {
         }
     },
     type: 'object',
-    required: ['username', 'email'],
+    required: [
+        'username',
+        'email'
+    ],
     title: 'UserCreateInput'
 } as const;
 
@@ -7265,7 +7877,13 @@ export const UserOutputSchema = {
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'email', 'username'],
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'email',
+        'username'
+    ],
     title: 'UserOutput'
 } as const;
 
@@ -7326,7 +7944,11 @@ export const ValidationErrorSchema = {
         }
     },
     type: 'object',
-    required: ['loc', 'msg', 'type'],
+    required: [
+        'loc',
+        'msg',
+        'type'
+    ],
     title: 'ValidationError'
 } as const;
 
@@ -7378,6 +8000,8 @@ export const VarSchema = {
         }
     },
     type: 'object',
-    required: ['var'],
+    required: [
+        'var'
+    ],
     title: 'Var'
 } as const;
