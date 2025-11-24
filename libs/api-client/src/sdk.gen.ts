@@ -21,800 +21,491 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
 /**
  * Attachment:Download
  */
-export const getAttachmentById = <ThrowOnError extends boolean = false>(options: Options<GetAttachmentByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetAttachmentByIdResponses, GetAttachmentByIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/attachment/{id}',
-        ...options
-    });
-};
+export const getAttachmentById = <ThrowOnError extends boolean = false>(options: Options<GetAttachmentByIdData, ThrowOnError>) => (options.client ?? client).get<GetAttachmentByIdResponses, GetAttachmentByIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/attachment/{id}',
+    ...options
+});
 
 /**
  * Classification:List
  */
-export const getClassification = <ThrowOnError extends boolean = false>(options?: Options<GetClassificationData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetClassificationResponses, GetClassificationErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/classification/',
-        ...options
-    });
-};
+export const getClassification = <ThrowOnError extends boolean = false>(options?: Options<GetClassificationData, ThrowOnError>) => (options?.client ?? client).get<GetClassificationResponses, GetClassificationErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/classification/',
+    ...options
+});
 
 /**
  * Classification:Create
  */
-export const postClassification = <ThrowOnError extends boolean = false>(options: Options<PostClassificationData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostClassificationResponses, PostClassificationErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/classification/',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const postClassification = <ThrowOnError extends boolean = false>(options: Options<PostClassificationData, ThrowOnError>) => (options.client ?? client).post<PostClassificationResponses, PostClassificationErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/classification/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Classification:Delete
  */
-export const deleteClassificationByClassificationId = <ThrowOnError extends boolean = false>(options: Options<DeleteClassificationByClassificationIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteClassificationByClassificationIdResponses, DeleteClassificationByClassificationIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/classification/{classification_id}',
-        ...options
-    });
-};
+export const deleteClassificationByClassificationId = <ThrowOnError extends boolean = false>(options: Options<DeleteClassificationByClassificationIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteClassificationByClassificationIdResponses, DeleteClassificationByClassificationIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/classification/{classification_id}',
+    ...options
+});
 
 /**
  * Classification:Retrieve
  */
-export const getClassificationByClassificationId = <ThrowOnError extends boolean = false>(options: Options<GetClassificationByClassificationIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetClassificationByClassificationIdResponses, GetClassificationByClassificationIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/classification/{classification_id}',
-        ...options
-    });
-};
+export const getClassificationByClassificationId = <ThrowOnError extends boolean = false>(options: Options<GetClassificationByClassificationIdData, ThrowOnError>) => (options.client ?? client).get<GetClassificationByClassificationIdResponses, GetClassificationByClassificationIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/classification/{classification_id}',
+    ...options
+});
 
 /**
  * Classification:Update
  */
-export const patchClassificationByClassificationId = <ThrowOnError extends boolean = false>(options: Options<PatchClassificationByClassificationIdData, ThrowOnError>) => {
-    return (options.client ?? client).patch<PatchClassificationByClassificationIdResponses, PatchClassificationByClassificationIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/classification/{classification_id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const patchClassificationByClassificationId = <ThrowOnError extends boolean = false>(options: Options<PatchClassificationByClassificationIdData, ThrowOnError>) => (options.client ?? client).patch<PatchClassificationByClassificationIdResponses, PatchClassificationByClassificationIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/classification/{classification_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Mail:Preview
  */
-export const postMailPreview = <ThrowOnError extends boolean = false>(options: Options<PostMailPreviewData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostMailPreviewResponses, PostMailPreviewErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/mail/preview',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const postMailPreview = <ThrowOnError extends boolean = false>(options: Options<PostMailPreviewData, ThrowOnError>) => (options.client ?? client).post<PostMailPreviewResponses, PostMailPreviewErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/mail/preview',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Melding:List
  */
-export const getMelding = <ThrowOnError extends boolean = false>(options?: Options<GetMeldingData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetMeldingResponses, GetMeldingErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/melding/',
-        ...options
-    });
-};
+export const getMelding = <ThrowOnError extends boolean = false>(options?: Options<GetMeldingData, ThrowOnError>) => (options?.client ?? client).get<GetMeldingResponses, GetMeldingErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/',
+    ...options
+});
 
 /**
  * Melding:Create
  */
-export const postMelding = <ThrowOnError extends boolean = false>(options: Options<PostMeldingData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostMeldingResponses, PostMeldingErrors, ThrowOnError>({
-        url: '/melding/',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const postMelding = <ThrowOnError extends boolean = false>(options: Options<PostMeldingData, ThrowOnError>) => (options.client ?? client).post<PostMeldingResponses, PostMeldingErrors, ThrowOnError>({
+    url: '/melding/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Melding:Retrieve
  */
-export const getMeldingByMeldingId = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetMeldingByMeldingIdResponses, GetMeldingByMeldingIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/melding/{melding_id}',
-        ...options
-    });
-};
+export const getMeldingByMeldingId = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdResponses, GetMeldingByMeldingIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}',
+    ...options
+});
 
 /**
  * Melding:Update
  */
-export const patchMeldingByMeldingId = <ThrowOnError extends boolean = false>(options: Options<PatchMeldingByMeldingIdData, ThrowOnError>) => {
-    return (options.client ?? client).patch<PatchMeldingByMeldingIdResponses, PatchMeldingByMeldingIdErrors, ThrowOnError>({
-        url: '/melding/{melding_id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const patchMeldingByMeldingId = <ThrowOnError extends boolean = false>(options: Options<PatchMeldingByMeldingIdData, ThrowOnError>) => (options.client ?? client).patch<PatchMeldingByMeldingIdResponses, PatchMeldingByMeldingIdErrors, ThrowOnError>({
+    url: '/melding/{melding_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Melding:Retrieve Melder
  */
-export const getMeldingByMeldingIdMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdMelderData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetMeldingByMeldingIdMelderResponses, GetMeldingByMeldingIdMelderErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/melder',
-        ...options
-    });
-};
+export const getMeldingByMeldingIdMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdMelderData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdMelderResponses, GetMeldingByMeldingIdMelderErrors, ThrowOnError>({ url: '/melding/{melding_id}/melder', ...options });
 
 /**
  * Melding:Answer Questions
  */
-export const putMeldingByMeldingIdAnswerQuestions = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdAnswerQuestionsData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutMeldingByMeldingIdAnswerQuestionsResponses, PutMeldingByMeldingIdAnswerQuestionsErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/answer_questions',
-        ...options
-    });
-};
+export const putMeldingByMeldingIdAnswerQuestions = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdAnswerQuestionsData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdAnswerQuestionsResponses, PutMeldingByMeldingIdAnswerQuestionsErrors, ThrowOnError>({ url: '/melding/{melding_id}/answer_questions', ...options });
 
 /**
  * Melding:Add-Attachments
  */
-export const putMeldingByMeldingIdAddAttachments = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdAddAttachmentsData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutMeldingByMeldingIdAddAttachmentsResponses, PutMeldingByMeldingIdAddAttachmentsErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/add_attachments',
-        ...options
-    });
-};
+export const putMeldingByMeldingIdAddAttachments = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdAddAttachmentsData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdAddAttachmentsResponses, PutMeldingByMeldingIdAddAttachmentsErrors, ThrowOnError>({ url: '/melding/{melding_id}/add_attachments', ...options });
 
 /**
  * Melding:Submit-Location
  */
-export const putMeldingByMeldingIdSubmitLocation = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdSubmitLocationData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutMeldingByMeldingIdSubmitLocationResponses, PutMeldingByMeldingIdSubmitLocationErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/submit_location',
-        ...options
-    });
-};
+export const putMeldingByMeldingIdSubmitLocation = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdSubmitLocationData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdSubmitLocationResponses, PutMeldingByMeldingIdSubmitLocationErrors, ThrowOnError>({ url: '/melding/{melding_id}/submit_location', ...options });
 
 /**
  * Melding:Submit
  */
-export const putMeldingByMeldingIdSubmit = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdSubmitData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutMeldingByMeldingIdSubmitResponses, PutMeldingByMeldingIdSubmitErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/submit',
-        ...options
-    });
-};
+export const putMeldingByMeldingIdSubmit = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdSubmitData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdSubmitResponses, PutMeldingByMeldingIdSubmitErrors, ThrowOnError>({ url: '/melding/{melding_id}/submit', ...options });
 
 /**
  * Melding:Process
  */
-export const putMeldingByMeldingIdProcess = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdProcessData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutMeldingByMeldingIdProcessResponses, PutMeldingByMeldingIdProcessErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/melding/{melding_id}/process',
-        ...options
-    });
-};
+export const putMeldingByMeldingIdProcess = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdProcessData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdProcessResponses, PutMeldingByMeldingIdProcessErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/process',
+    ...options
+});
 
 /**
  * Melding:Complete
  */
-export const putMeldingByMeldingIdComplete = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdCompleteData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutMeldingByMeldingIdCompleteResponses, PutMeldingByMeldingIdCompleteErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/melding/{melding_id}/complete',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const putMeldingByMeldingIdComplete = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdCompleteData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdCompleteResponses, PutMeldingByMeldingIdCompleteErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/complete',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Melding:Answer-Question
  */
-export const postMeldingByMeldingIdQuestionByQuestionId = <ThrowOnError extends boolean = false>(options: Options<PostMeldingByMeldingIdQuestionByQuestionIdData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostMeldingByMeldingIdQuestionByQuestionIdResponses, PostMeldingByMeldingIdQuestionByQuestionIdErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/question/{question_id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const postMeldingByMeldingIdQuestionByQuestionId = <ThrowOnError extends boolean = false>(options: Options<PostMeldingByMeldingIdQuestionByQuestionIdData, ThrowOnError>) => (options.client ?? client).post<PostMeldingByMeldingIdQuestionByQuestionIdResponses, PostMeldingByMeldingIdQuestionByQuestionIdErrors, ThrowOnError>({
+    url: '/melding/{melding_id}/question/{question_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Melding:Update-Answer
  */
-export const patchMeldingByMeldingIdAnswerByAnswerId = <ThrowOnError extends boolean = false>(options: Options<PatchMeldingByMeldingIdAnswerByAnswerIdData, ThrowOnError>) => {
-    return (options.client ?? client).patch<PatchMeldingByMeldingIdAnswerByAnswerIdResponses, PatchMeldingByMeldingIdAnswerByAnswerIdErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/answer/{answer_id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const patchMeldingByMeldingIdAnswerByAnswerId = <ThrowOnError extends boolean = false>(options: Options<PatchMeldingByMeldingIdAnswerByAnswerIdData, ThrowOnError>) => (options.client ?? client).patch<PatchMeldingByMeldingIdAnswerByAnswerIdResponses, PatchMeldingByMeldingIdAnswerByAnswerIdErrors, ThrowOnError>({
+    url: '/melding/{melding_id}/answer/{answer_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Melding:Attachment
  */
-export const postMeldingByMeldingIdAttachment = <ThrowOnError extends boolean = false>(options: Options<PostMeldingByMeldingIdAttachmentData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostMeldingByMeldingIdAttachmentResponses, PostMeldingByMeldingIdAttachmentErrors, ThrowOnError>({
-        ...formDataBodySerializer,
-        url: '/melding/{melding_id}/attachment',
-        ...options,
-        headers: {
-            'Content-Type': null,
-            ...options.headers
-        }
-    });
-};
+export const postMeldingByMeldingIdAttachment = <ThrowOnError extends boolean = false>(options: Options<PostMeldingByMeldingIdAttachmentData, ThrowOnError>) => (options.client ?? client).post<PostMeldingByMeldingIdAttachmentResponses, PostMeldingByMeldingIdAttachmentErrors, ThrowOnError>({
+    ...formDataBodySerializer,
+    url: '/melding/{melding_id}/attachment',
+    ...options,
+    headers: {
+        'Content-Type': null,
+        ...options.headers
+    }
+});
 
 /**
  * Melding:Attachment-Download
  */
-export const getMeldingByMeldingIdAttachmentByAttachmentIdDownload = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponses, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/attachment/{attachment_id}/download',
-        ...options
-    });
-};
+export const getMeldingByMeldingIdAttachmentByAttachmentIdDownload = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponses, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadErrors, ThrowOnError>({ url: '/melding/{melding_id}/attachment/{attachment_id}/download', ...options });
 
 /**
  * Melding:Attachments
  */
-export const getMeldingByMeldingIdAttachments = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAttachmentsData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetMeldingByMeldingIdAttachmentsResponses, GetMeldingByMeldingIdAttachmentsErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/melding/{melding_id}/attachments',
-        ...options
-    });
-};
+export const getMeldingByMeldingIdAttachments = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAttachmentsData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAttachmentsResponses, GetMeldingByMeldingIdAttachmentsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/attachments',
+    ...options
+});
 
 /**
  * Melding:Attachments Melder
  */
-export const getMeldingByMeldingIdAttachmentsMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAttachmentsMelderData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetMeldingByMeldingIdAttachmentsMelderResponses, GetMeldingByMeldingIdAttachmentsMelderErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/attachments/melder',
-        ...options
-    });
-};
+export const getMeldingByMeldingIdAttachmentsMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAttachmentsMelderData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAttachmentsMelderResponses, GetMeldingByMeldingIdAttachmentsMelderErrors, ThrowOnError>({ url: '/melding/{melding_id}/attachments/melder', ...options });
 
 /**
  * Melding:Attachment-Delete
  */
-export const deleteMeldingByMeldingIdAttachmentByAttachmentId = <ThrowOnError extends boolean = false>(options: Options<DeleteMeldingByMeldingIdAttachmentByAttachmentIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponses, DeleteMeldingByMeldingIdAttachmentByAttachmentIdErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/attachment/{attachment_id}',
-        ...options
-    });
-};
+export const deleteMeldingByMeldingIdAttachmentByAttachmentId = <ThrowOnError extends boolean = false>(options: Options<DeleteMeldingByMeldingIdAttachmentByAttachmentIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponses, DeleteMeldingByMeldingIdAttachmentByAttachmentIdErrors, ThrowOnError>({ url: '/melding/{melding_id}/attachment/{attachment_id}', ...options });
 
 /**
  * Melding:Location-Add
  */
-export const patchMeldingByMeldingIdLocation = <ThrowOnError extends boolean = false>(options: Options<PatchMeldingByMeldingIdLocationData, ThrowOnError>) => {
-    return (options.client ?? client).patch<PatchMeldingByMeldingIdLocationResponses, PatchMeldingByMeldingIdLocationErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/location',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const patchMeldingByMeldingIdLocation = <ThrowOnError extends boolean = false>(options: Options<PatchMeldingByMeldingIdLocationData, ThrowOnError>) => (options.client ?? client).patch<PatchMeldingByMeldingIdLocationResponses, PatchMeldingByMeldingIdLocationErrors, ThrowOnError>({
+    url: '/melding/{melding_id}/location',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Melding:Contact-Add
  */
-export const patchMeldingByMeldingIdContact = <ThrowOnError extends boolean = false>(options: Options<PatchMeldingByMeldingIdContactData, ThrowOnError>) => {
-    return (options.client ?? client).patch<PatchMeldingByMeldingIdContactResponses, PatchMeldingByMeldingIdContactErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/contact',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const patchMeldingByMeldingIdContact = <ThrowOnError extends boolean = false>(options: Options<PatchMeldingByMeldingIdContactData, ThrowOnError>) => (options.client ?? client).patch<PatchMeldingByMeldingIdContactResponses, PatchMeldingByMeldingIdContactErrors, ThrowOnError>({
+    url: '/melding/{melding_id}/contact',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Melding:Add-Contact-Info
  */
-export const putMeldingByMeldingIdAddContactInfo = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdAddContactInfoData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutMeldingByMeldingIdAddContactInfoResponses, PutMeldingByMeldingIdAddContactInfoErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/add_contact_info',
-        ...options
-    });
-};
+export const putMeldingByMeldingIdAddContactInfo = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdAddContactInfoData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdAddContactInfoResponses, PutMeldingByMeldingIdAddContactInfoErrors, ThrowOnError>({ url: '/melding/{melding_id}/add_contact_info', ...options });
 
 /**
  * Melding:Answers Melder
  */
-export const getMeldingByMeldingIdAnswersMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAnswersMelderData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetMeldingByMeldingIdAnswersMelderResponses, GetMeldingByMeldingIdAnswersMelderErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/answers/melder',
-        ...options
-    });
-};
+export const getMeldingByMeldingIdAnswersMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAnswersMelderData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAnswersMelderResponses, GetMeldingByMeldingIdAnswersMelderErrors, ThrowOnError>({ url: '/melding/{melding_id}/answers/melder', ...options });
 
 /**
  * Melding:Answers
  */
-export const getMeldingByMeldingIdAnswers = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAnswersData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetMeldingByMeldingIdAnswersResponses, GetMeldingByMeldingIdAnswersErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/melding/{melding_id}/answers',
-        ...options
-    });
-};
+export const getMeldingByMeldingIdAnswers = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAnswersData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAnswersResponses, GetMeldingByMeldingIdAnswersErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/answers',
+    ...options
+});
 
 /**
  * Melding:Add-Asset
  */
-export const postMeldingByMeldingIdAsset = <ThrowOnError extends boolean = false>(options: Options<PostMeldingByMeldingIdAssetData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostMeldingByMeldingIdAssetResponses, PostMeldingByMeldingIdAssetErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/asset',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const postMeldingByMeldingIdAsset = <ThrowOnError extends boolean = false>(options: Options<PostMeldingByMeldingIdAssetData, ThrowOnError>) => (options.client ?? client).post<PostMeldingByMeldingIdAssetResponses, PostMeldingByMeldingIdAssetErrors, ThrowOnError>({
+    url: '/melding/{melding_id}/asset',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Melding:Assets Melder
  */
-export const getMeldingByMeldingIdAssetsMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAssetsMelderData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetMeldingByMeldingIdAssetsMelderResponses, GetMeldingByMeldingIdAssetsMelderErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/assets/melder',
-        ...options
-    });
-};
+export const getMeldingByMeldingIdAssetsMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAssetsMelderData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAssetsMelderResponses, GetMeldingByMeldingIdAssetsMelderErrors, ThrowOnError>({ url: '/melding/{melding_id}/assets/melder', ...options });
 
 /**
  * Melding:Assets
  */
-export const getMeldingByMeldingIdAssets = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAssetsData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetMeldingByMeldingIdAssetsResponses, GetMeldingByMeldingIdAssetsErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/melding/{melding_id}/assets',
-        ...options
-    });
-};
+export const getMeldingByMeldingIdAssets = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAssetsData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAssetsResponses, GetMeldingByMeldingIdAssetsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/assets',
+    ...options
+});
 
 /**
  * Melding:Delete-Asset
  */
-export const deleteMeldingByMeldingIdAssetByAssetId = <ThrowOnError extends boolean = false>(options: Options<DeleteMeldingByMeldingIdAssetByAssetIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteMeldingByMeldingIdAssetByAssetIdResponses, DeleteMeldingByMeldingIdAssetByAssetIdErrors, ThrowOnError>({
-        url: '/melding/{melding_id}/asset/{asset_id}',
-        ...options
-    });
-};
+export const deleteMeldingByMeldingIdAssetByAssetId = <ThrowOnError extends boolean = false>(options: Options<DeleteMeldingByMeldingIdAssetByAssetIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteMeldingByMeldingIdAssetByAssetIdResponses, DeleteMeldingByMeldingIdAssetByAssetIdErrors, ThrowOnError>({ url: '/melding/{melding_id}/asset/{asset_id}', ...options });
 
 /**
  * Melding:Next Possible States
  */
-export const getMeldingByMeldingIdNextPossibleStates = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdNextPossibleStatesData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetMeldingByMeldingIdNextPossibleStatesResponses, GetMeldingByMeldingIdNextPossibleStatesErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/melding/{melding_id}/next_possible_states',
-        ...options
-    });
-};
+export const getMeldingByMeldingIdNextPossibleStates = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdNextPossibleStatesData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdNextPossibleStatesResponses, GetMeldingByMeldingIdNextPossibleStatesErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/next_possible_states',
+    ...options
+});
 
 /**
  * User:List
  */
-export const getUser = <ThrowOnError extends boolean = false>(options?: Options<GetUserData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetUserResponses, GetUserErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/user/',
-        ...options
-    });
-};
+export const getUser = <ThrowOnError extends boolean = false>(options?: Options<GetUserData, ThrowOnError>) => (options?.client ?? client).get<GetUserResponses, GetUserErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/user/',
+    ...options
+});
 
 /**
  * User:Create
  */
-export const postUser = <ThrowOnError extends boolean = false>(options: Options<PostUserData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostUserResponses, PostUserErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/user/',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const postUser = <ThrowOnError extends boolean = false>(options: Options<PostUserData, ThrowOnError>) => (options.client ?? client).post<PostUserResponses, PostUserErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/user/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * User:Delete
  */
-export const deleteUserByUserId = <ThrowOnError extends boolean = false>(options: Options<DeleteUserByUserIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteUserByUserIdResponses, DeleteUserByUserIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/user/{user_id}',
-        ...options
-    });
-};
+export const deleteUserByUserId = <ThrowOnError extends boolean = false>(options: Options<DeleteUserByUserIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteUserByUserIdResponses, DeleteUserByUserIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/user/{user_id}',
+    ...options
+});
 
 /**
  * User:Retrieve
  */
-export const getUserByUserId = <ThrowOnError extends boolean = false>(options: Options<GetUserByUserIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetUserByUserIdResponses, GetUserByUserIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/user/{user_id}',
-        ...options
-    });
-};
+export const getUserByUserId = <ThrowOnError extends boolean = false>(options: Options<GetUserByUserIdData, ThrowOnError>) => (options.client ?? client).get<GetUserByUserIdResponses, GetUserByUserIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/user/{user_id}',
+    ...options
+});
 
 /**
  * User:Update
  */
-export const patchUserByUserId = <ThrowOnError extends boolean = false>(options: Options<PatchUserByUserIdData, ThrowOnError>) => {
-    return (options.client ?? client).patch<PatchUserByUserIdResponses, PatchUserByUserIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/user/{user_id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const patchUserByUserId = <ThrowOnError extends boolean = false>(options: Options<PatchUserByUserIdData, ThrowOnError>) => (options.client ?? client).patch<PatchUserByUserIdResponses, PatchUserByUserIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/user/{user_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Form:List
  */
-export const getForm = <ThrowOnError extends boolean = false>(options?: Options<GetFormData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetFormResponses, GetFormErrors, ThrowOnError>({
-        url: '/form/',
-        ...options
-    });
-};
+export const getForm = <ThrowOnError extends boolean = false>(options?: Options<GetFormData, ThrowOnError>) => (options?.client ?? client).get<GetFormResponses, GetFormErrors, ThrowOnError>({ url: '/form/', ...options });
 
 /**
  * Form:Create
  */
-export const postForm = <ThrowOnError extends boolean = false>(options: Options<PostFormData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostFormResponses, PostFormErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/form/',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const postForm = <ThrowOnError extends boolean = false>(options: Options<PostFormData, ThrowOnError>) => (options.client ?? client).post<PostFormResponses, PostFormErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/form/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Form:Delete
  */
-export const deleteFormByFormId = <ThrowOnError extends boolean = false>(options: Options<DeleteFormByFormIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteFormByFormIdResponses, DeleteFormByFormIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/form/{form_id}',
-        ...options
-    });
-};
+export const deleteFormByFormId = <ThrowOnError extends boolean = false>(options: Options<DeleteFormByFormIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteFormByFormIdResponses, DeleteFormByFormIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/form/{form_id}',
+    ...options
+});
 
 /**
  * Form:Retrieve
  */
-export const getFormByFormId = <ThrowOnError extends boolean = false>(options: Options<GetFormByFormIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetFormByFormIdResponses, GetFormByFormIdErrors, ThrowOnError>({
-        url: '/form/{form_id}',
-        ...options
-    });
-};
+export const getFormByFormId = <ThrowOnError extends boolean = false>(options: Options<GetFormByFormIdData, ThrowOnError>) => (options.client ?? client).get<GetFormByFormIdResponses, GetFormByFormIdErrors, ThrowOnError>({ url: '/form/{form_id}', ...options });
 
 /**
  * Form:Update
  */
-export const putFormByFormId = <ThrowOnError extends boolean = false>(options: Options<PutFormByFormIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutFormByFormIdResponses, PutFormByFormIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/form/{form_id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const putFormByFormId = <ThrowOnError extends boolean = false>(options: Options<PutFormByFormIdData, ThrowOnError>) => (options.client ?? client).put<PutFormByFormIdResponses, PutFormByFormIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/form/{form_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Form:Classification
  */
-export const getFormClassificationByClassificationId = <ThrowOnError extends boolean = false>(options: Options<GetFormClassificationByClassificationIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetFormClassificationByClassificationIdResponses, GetFormClassificationByClassificationIdErrors, ThrowOnError>({
-        url: '/form/classification/{classification_id}',
-        ...options
-    });
-};
+export const getFormClassificationByClassificationId = <ThrowOnError extends boolean = false>(options: Options<GetFormClassificationByClassificationIdData, ThrowOnError>) => (options.client ?? client).get<GetFormClassificationByClassificationIdResponses, GetFormClassificationByClassificationIdErrors, ThrowOnError>({ url: '/form/classification/{classification_id}', ...options });
 
 /**
  * Static-Form:Retrieve
  */
-export const getStaticFormByStaticFormId = <ThrowOnError extends boolean = false>(options: Options<GetStaticFormByStaticFormIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetStaticFormByStaticFormIdResponses, GetStaticFormByStaticFormIdErrors, ThrowOnError>({
-        url: '/static-form/{static_form_id}',
-        ...options
-    });
-};
+export const getStaticFormByStaticFormId = <ThrowOnError extends boolean = false>(options: Options<GetStaticFormByStaticFormIdData, ThrowOnError>) => (options.client ?? client).get<GetStaticFormByStaticFormIdResponses, GetStaticFormByStaticFormIdErrors, ThrowOnError>({ url: '/static-form/{static_form_id}', ...options });
 
 /**
  * Static-Form:Update
  */
-export const putStaticFormByStaticFormId = <ThrowOnError extends boolean = false>(options: Options<PutStaticFormByStaticFormIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutStaticFormByStaticFormIdResponses, PutStaticFormByStaticFormIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/static-form/{static_form_id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const putStaticFormByStaticFormId = <ThrowOnError extends boolean = false>(options: Options<PutStaticFormByStaticFormIdData, ThrowOnError>) => (options.client ?? client).put<PutStaticFormByStaticFormIdResponses, PutStaticFormByStaticFormIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/static-form/{static_form_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Static-Form:List
  */
-export const getStaticForm = <ThrowOnError extends boolean = false>(options?: Options<GetStaticFormData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetStaticFormResponses, GetStaticFormErrors, ThrowOnError>({
-        url: '/static-form/',
-        ...options
-    });
-};
+export const getStaticForm = <ThrowOnError extends boolean = false>(options?: Options<GetStaticFormData, ThrowOnError>) => (options?.client ?? client).get<GetStaticFormResponses, GetStaticFormErrors, ThrowOnError>({ url: '/static-form/', ...options });
 
 /**
  * Asset-Type:List
  */
-export const getAssetType = <ThrowOnError extends boolean = false>(options?: Options<GetAssetTypeData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetAssetTypeResponses, GetAssetTypeErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/asset-type/',
-        ...options
-    });
-};
+export const getAssetType = <ThrowOnError extends boolean = false>(options?: Options<GetAssetTypeData, ThrowOnError>) => (options?.client ?? client).get<GetAssetTypeResponses, GetAssetTypeErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/asset-type/',
+    ...options
+});
 
 /**
  * Asset-Type:Create
  */
-export const postAssetType = <ThrowOnError extends boolean = false>(options: Options<PostAssetTypeData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostAssetTypeResponses, PostAssetTypeErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/asset-type/',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const postAssetType = <ThrowOnError extends boolean = false>(options: Options<PostAssetTypeData, ThrowOnError>) => (options.client ?? client).post<PostAssetTypeResponses, PostAssetTypeErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/asset-type/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Asset-Type:Delete
  */
-export const deleteAssetTypeByAssetTypeId = <ThrowOnError extends boolean = false>(options: Options<DeleteAssetTypeByAssetTypeIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteAssetTypeByAssetTypeIdResponses, DeleteAssetTypeByAssetTypeIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/asset-type/{asset_type_id}',
-        ...options
-    });
-};
+export const deleteAssetTypeByAssetTypeId = <ThrowOnError extends boolean = false>(options: Options<DeleteAssetTypeByAssetTypeIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteAssetTypeByAssetTypeIdResponses, DeleteAssetTypeByAssetTypeIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/asset-type/{asset_type_id}',
+    ...options
+});
 
 /**
  * Asset-Type:Retrieve
  */
-export const getAssetTypeByAssetTypeId = <ThrowOnError extends boolean = false>(options: Options<GetAssetTypeByAssetTypeIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetAssetTypeByAssetTypeIdResponses, GetAssetTypeByAssetTypeIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/asset-type/{asset_type_id}',
-        ...options
-    });
-};
+export const getAssetTypeByAssetTypeId = <ThrowOnError extends boolean = false>(options: Options<GetAssetTypeByAssetTypeIdData, ThrowOnError>) => (options.client ?? client).get<GetAssetTypeByAssetTypeIdResponses, GetAssetTypeByAssetTypeIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/asset-type/{asset_type_id}',
+    ...options
+});
 
 /**
  * Asset-Type:Update
  */
-export const patchAssetTypeByAssetTypeId = <ThrowOnError extends boolean = false>(options: Options<PatchAssetTypeByAssetTypeIdData, ThrowOnError>) => {
-    return (options.client ?? client).patch<PatchAssetTypeByAssetTypeIdResponses, PatchAssetTypeByAssetTypeIdErrors, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/asset-type/{asset_type_id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
+export const patchAssetTypeByAssetTypeId = <ThrowOnError extends boolean = false>(options: Options<PatchAssetTypeByAssetTypeIdData, ThrowOnError>) => (options.client ?? client).patch<PatchAssetTypeByAssetTypeIdResponses, PatchAssetTypeByAssetTypeIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/asset-type/{asset_type_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Wfs:Retrieve
  */
-export const getWfsByName = <ThrowOnError extends boolean = false>(options: Options<GetWfsByNameData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetWfsByNameResponses, GetWfsByNameErrors, ThrowOnError>({
-        url: '/wfs/{name}',
-        ...options
-    });
-};
+export const getWfsByName = <ThrowOnError extends boolean = false>(options: Options<GetWfsByNameData, ThrowOnError>) => (options.client ?? client).get<GetWfsByNameResponses, GetWfsByNameErrors, ThrowOnError>({ url: '/wfs/{name}', ...options });
