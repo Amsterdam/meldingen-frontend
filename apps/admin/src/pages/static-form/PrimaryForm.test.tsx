@@ -1,25 +1,31 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AdminContext } from 'react-admin'
-import { FormProvider, useForm } from 'react-hook-form'
 
 import { PrimaryForm } from './PrimaryForm'
 
+const mockGetValues = vi.fn()
+const mockSetValue = vi.fn()
+
+vi.mock('react-hook-form', async () => {
+  const actual = await import('react-hook-form')
+
+  return {
+    ...actual,
+    useFormContext: () => ({
+      getValues: mockGetValues,
+      setValue: mockSetValue,
+    }),
+  }
+})
+
 describe('PrimaryForm', () => {
   it('renders all fields and static labels', () => {
-    const PrimaryFormWithContext = () => {
-      const methods = useForm()
-
-      return (
-        <FormProvider {...methods}>
-          <AdminContext>
-            <PrimaryForm />
-          </AdminContext>
-        </FormProvider>
-      )
-    }
-
-    render(<PrimaryFormWithContext />)
+    render(
+      <AdminContext>
+        <PrimaryForm />
+      </AdminContext>,
+    )
 
     const label = screen.getByRole('textbox', { name: 'resources.undefined.fields.components[0].label' })
     const description = screen.getByRole('textbox', {
@@ -41,22 +47,11 @@ describe('PrimaryForm', () => {
   it('calls getValues and setValue when maxCharCount changes', async () => {
     const user = userEvent.setup()
 
-    const mockGetValues = vi.fn()
-    const mockSetValue = vi.fn()
-
-    const PrimaryFormWithContext = () => {
-      const methods = useForm()
-
-      return (
-        <FormProvider {...{ ...methods, getValues: mockGetValues, setValue: mockSetValue }}>
-          <AdminContext>
-            <PrimaryForm />
-          </AdminContext>
-        </FormProvider>
-      )
-    }
-
-    render(<PrimaryFormWithContext />)
+    render(
+      <AdminContext>
+        <PrimaryForm />
+      </AdminContext>,
+    )
 
     const maxCharCount = screen.getByRole('textbox', {
       name: 'resources.undefined.fields.components[0].maxCharCount',
