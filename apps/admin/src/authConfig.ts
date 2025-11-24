@@ -8,6 +8,9 @@ export const msalConfig: Configuration = {
     clientId: import.meta.env.VITE_MSAL_CLIENT_ID,
     // We need to disable this feature because it is already handled by react-admin, and would otherwise conflict
     navigateToLoginRequestUrl: false,
+    OIDCOptions: {
+      serverResponseType: 'query',
+    },
     // Full redirect URL, in form of http://localhost:8080/auth-callback
     redirectUri: `${import.meta.env.VITE_APP_BASE_URI}/auth-callback`,
   },
