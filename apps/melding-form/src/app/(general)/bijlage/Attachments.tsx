@@ -58,11 +58,11 @@ const createFileUpload = (file: File, id: string): PendingFileUpload => ({
 })
 
 const mapExistingFilesToUploads = (files: ExistingFileType[], idPrefix: string): FileUploadType[] =>
-  files.map((file, index) => ({
-    ...file,
-    file: file.blob ? new File([file.blob], file.fileName) : { name: file.fileName },
+  files.map(({ blob, fileName, serverId }, index) => ({
+    file: blob ? new File([blob], fileName) : { name: fileName },
     id: `${idPrefix}-${index + 1}`,
     progress: 100,
+    serverId,
     status: 'success',
   }))
 
