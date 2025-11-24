@@ -684,6 +684,30 @@ export const AnswerQuestionOutputSchema = {
     title: 'AnswerQuestionOutput'
 } as const;
 
+export const AssetOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        external_id: {
+            type: 'string',
+            title: 'External Id'
+        }
+    },
+    type: 'object',
+    required: ['id', 'created_at', 'updated_at', 'external_id'],
+    title: 'AssetOutput'
+} as const;
+
 export const AssetTypeInputSchema = {
     properties: {
         name: {
@@ -698,10 +722,14 @@ export const AssetTypeInputSchema = {
             additionalProperties: true,
             type: 'object',
             title: 'Arguments'
+        },
+        max_assets: {
+            type: 'integer',
+            title: 'Max Assets'
         }
     },
     type: 'object',
-    required: ['name', 'class_name', 'arguments'],
+    required: ['name', 'class_name', 'arguments', 'max_assets'],
     title: 'AssetTypeInput'
 } as const;
 
@@ -731,10 +759,14 @@ export const AssetTypeOutputSchema = {
             additionalProperties: true,
             type: 'object',
             title: 'Arguments'
+        },
+        max_assets: {
+            type: 'integer',
+            title: 'Max Assets'
         }
     },
     type: 'object',
-    required: ['id', 'created_at', 'updated_at', 'name', 'class_name', 'arguments'],
+    required: ['id', 'created_at', 'updated_at', 'name', 'class_name', 'arguments', 'max_assets'],
     title: 'AssetTypeOutput'
 } as const;
 
@@ -773,6 +805,17 @@ export const AssetTypeUpdateInputSchema = {
                 }
             ],
             title: 'Arguments'
+        },
+        max_assets: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Max Assets'
         }
     },
     type: 'object',
@@ -1662,6 +1705,16 @@ export const FormCheckboxComponentOutputSchema = {
                 }
             ]
         },
+        conditional: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         values: {
             items: {
                 '$ref': '#/components/schemas/FormComponentValueOutput'
@@ -1987,6 +2040,42 @@ export const FormComponentValueOutputSchema = {
     type: 'object',
     required: ['label', 'value', 'position'],
     title: 'FormComponentValueOutput'
+} as const;
+
+export const FormIOConditionalSchema = {
+    properties: {
+        show: {
+            type: 'boolean',
+            title: 'Show'
+        },
+        when: {
+            type: 'string',
+            title: 'When'
+        },
+        eq: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'number'
+                },
+                {
+                    type: 'boolean'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Eq'
+        }
+    },
+    type: 'object',
+    required: ['show', 'when', 'eq'],
+    title: 'FormIOConditional'
 } as const;
 
 export const FormInputSchema = {
@@ -2327,6 +2416,16 @@ export const FormRadioComponentOutputSchema = {
                 }
             ]
         },
+        conditional: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         values: {
             items: {
                 '$ref': '#/components/schemas/FormComponentValueOutput'
@@ -2469,6 +2568,16 @@ export const FormSelectComponentOutputSchema = {
                 }
             ]
         },
+        conditional: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         widget: {
             type: 'string',
             title: 'Widget'
@@ -2590,6 +2699,16 @@ export const FormTextAreaComponentOutputSchema = {
                 }
             ]
         },
+        conditional: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         autoExpand: {
             type: 'boolean',
             title: 'Autoexpand'
@@ -2693,6 +2812,16 @@ export const FormTextFieldInputComponentOutputSchema = {
             anyOf: [
                 {
                     '$ref': '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -6267,6 +6396,16 @@ export const SimpleClassificationOutputSchema = {
         name: {
             type: 'string',
             title: 'Name'
+        },
+        asset_type: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/AssetTypeOutput'
+                },
+                {
+                    type: 'null'
+                }
+            ]
         }
     },
     type: 'object',
@@ -6710,6 +6849,16 @@ export const StaticFormCheckboxComponentOutputSchema = {
                 }
             ]
         },
+        conditional: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         values: {
             items: {
                 '$ref': '#/components/schemas/FormComponentValueOutput'
@@ -6914,6 +7063,16 @@ export const StaticFormRadioComponentOutputSchema = {
                 }
             ]
         },
+        conditional: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         values: {
             items: {
                 '$ref': '#/components/schemas/FormComponentValueOutput'
@@ -6957,6 +7116,16 @@ export const StaticFormSelectComponentOutputSchema = {
             anyOf: [
                 {
                     '$ref': '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -7016,6 +7185,16 @@ export const StaticFormTextAreaComponentOutputSchema = {
                 }
             ]
         },
+        conditional: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         autoExpand: {
             type: 'boolean',
             title: 'Autoexpand'
@@ -7067,6 +7246,16 @@ export const StaticFormTextFieldInputComponentOutputSchema = {
             anyOf: [
                 {
                     '$ref': '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    '$ref': '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
