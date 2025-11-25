@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
 import type { Props } from './FormRenderer'
+import type { Component } from './types'
 
 import { FormRenderer } from './FormRenderer'
 import { form } from './mocks/data'
@@ -53,7 +54,7 @@ describe('FormRenderer', () => {
       formComponents: [
         {
           ...form.components[0].components[0],
-          type: 'unsupported',
+          type: 'unsupported' as unknown as Component['type'],
         },
       ],
     }
@@ -100,7 +101,7 @@ describe('FormRenderer', () => {
         )
 
         const components = screen.getByRole(role, {
-          name: `${form.components[0].components[index].label} Invoerfout: Test error message`,
+          name: `${form.components[0].components[index].label} Invoerfout:Test error message`,
         })
 
         expect(components).toBeInTheDocument()
@@ -115,7 +116,7 @@ describe('FormRenderer', () => {
         )
 
         const components = screen.getByRole(role, {
-          description: 'Invoerfout: Test error message',
+          description: 'Invoerfout:Test error message',
           name: form.components[0].components[index].label,
         })
 
