@@ -36,7 +36,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
 
   const telLabel = formComponents[1].label
   const telDescription = formComponents[1].description
-  const telDefaultValue = (formData?.get('tel') as string | undefined) || formComponents[1].defaultValue
+  const telDefaultValue = (formData?.get('phone') as string | undefined) || formComponents[1].defaultValue
   const telErrorMessage = validationErrors?.find((error) => error.key === 'tel-input')?.message
 
   // Set focus on InvalidFormAlert when there are validation errors
