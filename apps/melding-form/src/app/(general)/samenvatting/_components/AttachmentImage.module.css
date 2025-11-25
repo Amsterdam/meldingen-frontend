@@ -1,6 +1,9 @@
 .image {
   margin-block-end: var(--ams-space-m);
-  max-inline-size: 24rem;
+
+  @media screen and (min-width: 37.5rem) {
+    max-inline-size: calc(50% - (var(--ams-grid-column-gap) / 2));
+  }
 }
 
 .loading {

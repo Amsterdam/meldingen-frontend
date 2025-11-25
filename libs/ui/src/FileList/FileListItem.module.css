@@ -1,5 +1,5 @@
 .container {
-  align-items: center;
+  align-items: start;
   display: grid;
   gap: var(--ams-space-s);
   padding-block: var(--ams-space-s);
@@ -21,10 +21,10 @@
 .imageContainer {
   display: block;
   max-inline-size: 50%;
+  min-width: 7.5rem;
 
   @media screen and (min-width: 37.5rem) {
     display: flex;
-    justify-content: center;
     max-inline-size: unset;
   }
 }
