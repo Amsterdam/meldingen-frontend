@@ -20,14 +20,14 @@ vi.mock('react-hook-form', async () => {
 })
 
 describe('PrimaryForm', () => {
-  it('renders all fields and static labels', () => {
+  it('renders all fields and static labels', async () => {
     render(
       <AdminContext>
         <PrimaryForm />
       </AdminContext>,
     )
 
-    const label = screen.getByRole('textbox', { name: 'resources.undefined.fields.components[0].label' })
+    const label = await screen.findByRole('textbox', { name: 'resources.undefined.fields.components[0].label' })
     const description = screen.getByRole('textbox', {
       name: 'resources.undefined.fields.components[0].description',
     })

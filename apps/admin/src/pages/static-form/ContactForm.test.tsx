@@ -4,14 +4,14 @@ import { AdminContext } from 'react-admin'
 import { ContactForm } from './ContactForm'
 
 describe('ContactForm', () => {
-  it('renders all fields and static labels', () => {
+  it('renders all fields and static labels', async () => {
     render(
       <AdminContext>
         <ContactForm />
       </AdminContext>,
     )
 
-    const emailLabel = screen.getByRole('textbox', { name: 'resources.undefined.fields.components[0].label' })
+    const emailLabel = await screen.findByRole('textbox', { name: 'resources.undefined.fields.components[0].label' })
     const emailDescription = screen.getByRole('textbox', {
       name: 'resources.undefined.fields.components[0].description',
     })
