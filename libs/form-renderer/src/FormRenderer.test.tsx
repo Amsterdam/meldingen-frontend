@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
 import type { Props } from './FormRenderer'
+import type { Component } from './types'
 
 import { FormRenderer } from './FormRenderer'
 import { form } from './mocks/data'
@@ -53,7 +54,7 @@ describe('FormRenderer', () => {
       formComponents: [
         {
           ...form.components[0].components[0],
-          type: 'unsupported',
+          type: 'unsupported' as unknown as Component['type'],
         },
       ],
     }

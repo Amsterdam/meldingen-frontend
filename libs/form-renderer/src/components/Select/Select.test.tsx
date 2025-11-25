@@ -85,7 +85,7 @@ describe('Select Component', () => {
     expect(heading).not.toBeInTheDocument()
   })
 
-  it.only('renders an error message when there is one', () => {
+  it('renders an error message when there is one', () => {
     render(<Select {...defaultProps} errorMessage="Test error message" />)
 
     screen.debug()
