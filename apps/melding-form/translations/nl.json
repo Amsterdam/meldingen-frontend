@@ -104,7 +104,8 @@
     "errors": {
       "too-many-files": "U kunt maximaal {maxFiles} bestanden uploaden.",
       "too-many-attempts": "U heeft te vaak geprobeerd een foto toe te voegen. Verwijder eerst een mislukte poging uit de lijst om nog een foto toe te voegen.",
-      "duplicate-upload": "Het gekozen bestand is al toegevoegd."
+      "duplicate-upload": "Het gekozen bestand is al toegevoegd.",
+      "pending-uploads": "Wacht tot de foto is toegevoegd of annuleer."
     }
   },
   "contact": {

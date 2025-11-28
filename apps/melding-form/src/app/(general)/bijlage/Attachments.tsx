@@ -1,6 +1,6 @@
 'use client'
 
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, MouseEvent } from 'react'
 
 import { Alert, ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
@@ -80,11 +80,14 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const [errorMessage, setErrorMessage] = useState<string>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
 
-  const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
+  const [validationErrors, setValidationErrors] = useState<
+    {
+      key: string
+      message: string
+    }[]
+  >([])
 
-  const validationErrors = fileUploads
-    .filter((upload) => upload.status === 'error')
-    .map((upload) => ({ key: upload.id, message: upload.errorMessage || '' }))
+  const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
 
   const { description, label } = formData[0]
 
@@ -130,7 +133,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`,
       )
 
-      startUpload(xhr, upload, setFileUploads)
+      startUpload(xhr, upload, setFileUploads, setValidationErrors)
     })
 
     // Clear the file input after starting the upload, so it is empty for the next selection.
@@ -175,11 +178,35 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     setDeletedFileName(fileName)
   }
 
+  const handleOnClick = (e: MouseEvent<HTMLButtonElement>) => {
+    // Add validation error if there are pending uploads
+    if (fileUploads.some((upload) => upload.status === 'uploading')) {
+      e.preventDefault()
+      fileUploads.map((upload) => {
+        if (upload.status === 'uploading' && !validationErrors.some((error) => error.key === upload.id)) {
+          setValidationErrors([{ key: upload.id, message: t('errors.pending-uploads') }])
+        }
+      })
+    }
+  }
+
   // Set focus on InvalidFormAlert when there are validation errors
   useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
 
   // Update document title when there are validation errors
   const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
+
+  useEffect(() => {
+    // Set validation errors
+    fileUploads
+      .filter((upload) => upload.status === 'error')
+      .map((upload) => {
+        // Add validation error if it does not already exist
+        if (!validationErrors.some((error) => error.key === upload.id)) {
+          setValidationErrors((errors) => [...errors, { key: upload.id, message: upload.errorMessage || upload.error }])
+        }
+      })
+  }, [fileUploads])
 
   useEffect(() => {
     if (systemError) {
@@ -275,7 +302,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           </Alert>
 
           <Form action={formAction}>
-            <SubmitButton>{t('submit-button')}</SubmitButton>
+            <SubmitButton onClick={handleOnClick}>{t('submit-button')}</SubmitButton>
           </Form>
         </Column>
       </main>
