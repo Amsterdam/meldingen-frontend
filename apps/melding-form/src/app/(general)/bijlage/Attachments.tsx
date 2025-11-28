@@ -1,6 +1,6 @@
 'use client'
 
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, MouseEvent } from 'react'
 
 import { Alert, ErrorMessage, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
@@ -175,6 +175,13 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     setDeletedFileName(fileName)
   }
 
+  const validateFormSubmission = (e: MouseEvent<HTMLButtonElement>) => {
+    if (fileUploads.filter((upload) => upload.status === 'uploading').length > 0) {
+      e.preventDefault()
+      setErrorMessage(t('errors.upload-in-progress'))
+    }
+  }
+
   // Set focus on InvalidFormAlert when there are validation errors
   useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
 
@@ -275,7 +282,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           </Alert>
 
           <Form action={formAction}>
-            <SubmitButton>{t('submit-button')}</SubmitButton>
+            <SubmitButton onClick={validateFormSubmission}>{t('submit-button')}</SubmitButton>
           </Form>
         </Column>
       </main>
