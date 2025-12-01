@@ -1,34 +1,64 @@
-import { Admin as ReactAdmin, Resource } from 'react-admin'
+import { SilentRequest } from '@azure/msal-browser'
+import { LoginPage, msalHttpClient, msalRefreshAuth } from 'ra-auth-msal'
+import jsonServerProvider from 'ra-data-json-server'
+import { addRefreshAuthToDataProvider, Admin as ReactAdmin, Resource } from 'react-admin'
+import { BrowserRouter } from 'react-router-dom'
 
+import { authProvider, myMSALObj } from '../authProvider'
 import { AssetTypeCreate, AssetTypeEdit, AssetTypeList } from '../pages/asset-types'
 import { ClassificationCreate, ClassificationEdit, ClassificationList } from '../pages/classification'
 import { FormCreate, FormEdit, FormList } from '../pages/form/components'
 import { StaticFormEdit, StaticFormList } from '../pages/static-form'
 import { CustomLayout } from './components'
-import { i18nProvider, useAuthProvider } from './providers'
+import { i18nProvider } from './providers'
+
+// Based on:
+// https://github.com/marmelab/ra-auth-msal/tree/main/packages/demo-react-admin
+// https://marmelab.com/blog/2023/09/13/active-directory-integration-tutorial.html
+
+const tokenRequest: SilentRequest = {
+  forceRefresh: false, // Set this to "true" to skip a cached token and go to the server to get a new token
+  scopes: [`${import.meta.env.VITE_MSAL_CLIENT_ID}/.default openid email`],
+}
+
+const httpClient = msalHttpClient({
+  msalInstance: myMSALObj,
+  tokenRequest,
+})
 
 export const Admin = () => {
-  const { authProvider, dataProviderRef, keycloakClient } = useAuthProvider()
+  // const { authProvider, dataProviderRef, keycloakClient } = useAuthProvider()
 
-  if (!keycloakClient) return <p>Loading...</p>
+  // if (!keycloakClient) return <p>Loading...</p>
+
+  const dataProvider = addRefreshAuthToDataProvider(
+    jsonServerProvider('http://localhost:8000', httpClient),
+    msalRefreshAuth({
+      msalInstance: myMSALObj,
+      tokenRequest,
+    }),
+  )
 
   return (
-    <ReactAdmin
-      authProvider={authProvider.current}
-      dataProvider={dataProviderRef.current}
-      i18nProvider={i18nProvider}
-      layout={CustomLayout}
-    >
-      <Resource create={<FormCreate />} edit={<FormEdit />} list={<FormList />} name="form" />
-      <Resource
-        create={<ClassificationCreate />}
-        edit={<ClassificationEdit />}
-        list={<ClassificationList />}
-        name="classification"
-        recordRepresentation="name"
-      />
-      <Resource edit={<StaticFormEdit />} list={<StaticFormList />} name="static-form" recordRepresentation="name" />
-      <Resource create={<AssetTypeCreate />} edit={<AssetTypeEdit />} list={<AssetTypeList />} name="asset-type" />
-    </ReactAdmin>
+    <BrowserRouter>
+      <ReactAdmin
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        layout={CustomLayout}
+        loginPage={LoginPage}
+      >
+        <Resource create={<FormCreate />} edit={<FormEdit />} list={<FormList />} name="form" />
+        <Resource
+          create={<ClassificationCreate />}
+          edit={<ClassificationEdit />}
+          list={<ClassificationList />}
+          name="classification"
+          recordRepresentation="name"
+        />
+        <Resource edit={<StaticFormEdit />} list={<StaticFormList />} name="static-form" recordRepresentation="name" />
+        <Resource create={<AssetTypeCreate />} edit={<AssetTypeEdit />} list={<AssetTypeList />} name="asset-type" />
+      </ReactAdmin>
+    </BrowserRouter>
   )
 }
