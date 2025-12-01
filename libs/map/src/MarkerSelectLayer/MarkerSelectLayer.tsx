@@ -6,7 +6,7 @@ import { Feature, getWfsByName } from '@meldingen/api-client'
 
 import { MapContext } from '../Map/Map'
 import { Coordinates } from '../types'
-import { AssetFeature, getContainerFeatureIcon } from './utils/getContainerFeatureIcon'
+import { AssetFeature, getContainerAssetIcon } from './utils/getContainerAssetIcon'
 import { getWfsFilter } from './utils/getWfsFilter'
 
 import './cluster.css'
@@ -108,31 +108,31 @@ export const MarkerSelectLayer = ({
       showCoverageOnHover: false,
     })
 
-    markers.forEach((feature) => {
-      if (!feature.geometry || feature.geometry.type !== 'Point') return
+    markers.forEach((asset) => {
+      if (!asset.geometry || asset.geometry.type !== 'Point') return
 
-      const geometry = feature.geometry
+      const geometry = asset.geometry
       const [lng, lat] = geometry.coordinates
       const latlng = latLng(lat, lng)
-      const isSelected = selectedMarkers.some((a) => a.id === feature.id)
+      const isSelected = selectedMarkers.some((a) => a.id === asset.id)
 
       const marker = new Marker(latlng, {
-        icon: getContainerFeatureIcon(feature as AssetFeature, isSelected),
+        icon: getContainerAssetIcon(asset as AssetFeature, isSelected),
         keyboard: false,
       })
 
-      if (feature.id !== null && (typeof feature.id === 'string' || typeof feature.id === 'number')) {
-        markersRef.current[feature.id] = marker
+      if (asset.id !== null && (typeof asset.id === 'string' || typeof asset.id === 'number')) {
+        markersRef.current[asset.id] = marker
       }
 
       marker.on('click', () => {
         if (isSelected) {
           onMaxMarkersReached(false)
-          onSelectedMarkersChange(selectedMarkers.filter((a) => a.id !== feature.id))
+          onSelectedMarkersChange(selectedMarkers.filter((a) => a.id !== asset.id))
 
           if (selectedMarkers.length <= 1) {
             updateSelectedPoint(undefined)
-          } else if (feature.id === selectedMarkers[0].id) {
+          } else if (asset.id === selectedMarkers[0].id) {
             // Set the address of the second asset on the list
             // when the last selected asset (#1 on the list) is deselected
             // @ts-expect-error an asset always has coordinates
@@ -144,7 +144,7 @@ export const MarkerSelectLayer = ({
             onMaxMarkersReached(true)
             return
           }
-          onSelectedMarkersChange([feature, ...selectedMarkers])
+          onSelectedMarkersChange([asset, ...selectedMarkers])
           updateSelectedPoint({ lat, lng })
         }
       })

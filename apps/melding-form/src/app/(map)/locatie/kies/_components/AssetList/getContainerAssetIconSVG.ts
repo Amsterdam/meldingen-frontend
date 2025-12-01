@@ -11,7 +11,7 @@ export const containerIconsSVG: Record<(typeof containerTypes)[number], string> 
   Textiel: '/afval/textiel.svg',
 }
 
-export const getContainerFeatureIconSVG = (feature: Feature): string => {
+export const getContainerAssetIconSVG = (feature: Feature): string => {
   const containerFeatureType = feature.properties?.fractie_omschrijving as (typeof containerTypes)[number]
 
   return containerIconsSVG[containerFeatureType] || '/afval/rest.svg'
