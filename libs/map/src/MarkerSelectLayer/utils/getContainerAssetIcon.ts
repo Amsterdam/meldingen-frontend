@@ -1,6 +1,6 @@
-import type { Feature } from 'geojson'
-
 import L from 'leaflet'
+
+import { Feature } from '@meldingen/api-client'
 
 import {
   gftAfvalIcon,

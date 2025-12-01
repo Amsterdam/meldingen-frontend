@@ -1,4 +1,4 @@
-import type { AssetFeature } from './getContainerAssetIcon'
+import { Feature } from '@meldingen/api-client'
 
 import { containerTypes, getContainerAssetIcon } from './getContainerAssetIcon'
 
@@ -12,7 +12,7 @@ const makeFeature = (type: (typeof containerTypes)[number] | string) =>
       fractie_omschrijving: type,
     },
     type: 'Feature',
-  }) as AssetFeature
+  }) as Feature
 
 describe('containerAssetIcons', () => {
   containerTypes.forEach((type) => {

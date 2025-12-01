@@ -6,7 +6,7 @@ import { Feature, getWfsByName } from '@meldingen/api-client'
 
 import { MapContext } from '../Map/Map'
 import { Coordinates } from '../types'
-import { AssetFeature, getContainerAssetIcon } from './utils/getContainerAssetIcon'
+import { getContainerAssetIcon } from './utils/getContainerAssetIcon'
 import { getWfsFilter } from './utils/getWfsFilter'
 
 import './cluster.css'
@@ -117,7 +117,7 @@ export const MarkerSelectLayer = ({
       const isSelected = selectedMarkers.some((a) => a.id === asset.id)
 
       const marker = new Marker(latlng, {
-        icon: getContainerAssetIcon(asset as AssetFeature, isSelected),
+        icon: getContainerAssetIcon(asset, isSelected),
         keyboard: false,
       })
 
