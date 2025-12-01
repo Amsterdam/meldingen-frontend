@@ -10,4 +10,7 @@ export const authProvider = msalAuthProvider({
     scopes: [`${import.meta.env.VITE_MSAL_CLIENT_ID}/.default`, 'openid', 'email'],
   },
   msalInstance: myMSALObj,
+  tokenRequest: {
+    scopes: [`${import.meta.env.VITE_MSAL_CLIENT_ID}/.default`, 'openid', 'email'],
+  },
 })
