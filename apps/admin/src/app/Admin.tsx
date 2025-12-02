@@ -1,49 +1,26 @@
-import { SilentRequest } from '@azure/msal-browser'
-import { LoginPage, msalHttpClient, msalRefreshAuth } from 'ra-auth-msal'
-import simpleRestProvider from 'ra-data-simple-rest'
-import { addRefreshAuthToDataProvider, Admin as ReactAdmin, Resource } from 'react-admin'
+import { LoginPage } from 'ra-auth-msal'
+import { Admin as ReactAdmin, Resource } from 'react-admin'
 import { BrowserRouter } from 'react-router-dom'
 
-import { authProvider, myMSALObj } from '../authProvider'
 import { AssetTypeCreate, AssetTypeEdit, AssetTypeList } from '../pages/asset-types'
 import { ClassificationCreate, ClassificationEdit, ClassificationList } from '../pages/classification'
 import { FormCreate, FormEdit, FormList } from '../pages/form/components'
 import { StaticFormEdit, StaticFormList } from '../pages/static-form'
 import { CustomLayout } from './components'
 import { i18nProvider } from './providers'
-
-// Based on:
-// https://github.com/marmelab/ra-auth-msal/tree/main/packages/demo-react-admin
-// https://marmelab.com/blog/2023/09/13/active-directory-integration-tutorial.html
-
-const tokenRequest: SilentRequest = {
-  forceRefresh: false, // Set this to "true" to skip a cached token and go to the server to get a new token
-  scopes: [`${import.meta.env.VITE_MSAL_CLIENT_ID}/.default openid email`],
-}
-
-const httpClient = msalHttpClient({
-  msalInstance: myMSALObj,
-  tokenRequest,
-})
+import { entraAuthProvider } from './providers/entraAuthProvider'
+import { entraDataProvider } from './providers/entraDataProvider'
 
 export const Admin = () => {
   // const { authProvider, dataProviderRef, keycloakClient } = useAuthProvider()
 
   // if (!keycloakClient) return <p>Loading...</p>
 
-  const dataProvider = addRefreshAuthToDataProvider(
-    simpleRestProvider('http://localhost:8000', httpClient),
-    msalRefreshAuth({
-      msalInstance: myMSALObj,
-      tokenRequest,
-    }),
-  )
-
   return (
     <BrowserRouter>
       <ReactAdmin
-        authProvider={authProvider}
-        dataProvider={dataProvider}
+        authProvider={entraAuthProvider}
+        dataProvider={entraDataProvider}
         i18nProvider={i18nProvider}
         layout={CustomLayout}
         loginPage={LoginPage}
