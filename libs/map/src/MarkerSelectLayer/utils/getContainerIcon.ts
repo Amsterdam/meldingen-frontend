@@ -11,7 +11,7 @@ import {
   textielAfvalIcon,
 } from '../../markerIcons'
 
-import styles from './getContainerAssetIcon.module.css'
+import styles from './getContainerIcon.module.css'
 
 export const containerTypes = ['Papier', 'Glas', 'Rest', 'Textiel', 'Plastic', 'Gft'] as const
 
@@ -24,10 +24,10 @@ const containerIcons: Record<(typeof containerTypes)[number], L.Icon> = {
   Textiel: textielAfvalIcon,
 }
 
-export const getContainerAssetIcon = (asset: Feature, isSelected: boolean): L.Icon => {
-  const containerAssetType = asset.properties?.fractie_omschrijving as (typeof containerTypes)[number]
+export const getContainerIcon = (feature: Feature, isSelected: boolean): L.Icon => {
+  const containerType = feature.properties?.fractie_omschrijving as (typeof containerTypes)[number]
 
-  const icon = containerIcons[containerAssetType] || restAfvalIcon
+  const icon = containerIcons[containerType] || restAfvalIcon
 
   if (isSelected) {
     return L.icon({

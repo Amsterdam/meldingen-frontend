@@ -1,6 +1,6 @@
 import { Feature } from '@meldingen/api-client'
 
-import { containerTypes, getContainerAssetIcon } from './getContainerAssetIcon'
+import { containerTypes, getContainerIcon } from './getContainerIcon'
 
 const makeFeature = (type: (typeof containerTypes)[number] | string) =>
   ({
@@ -14,11 +14,11 @@ const makeFeature = (type: (typeof containerTypes)[number] | string) =>
     type: 'Feature',
   }) as Feature
 
-describe('containerAssetIcons', () => {
+describe('containerIcons', () => {
   containerTypes.forEach((type) => {
     it(`returns the correct icon for type ${type}`, () => {
       const feature = makeFeature(type)
-      const icon = getContainerAssetIcon(feature, false)
+      const icon = getContainerIcon(feature, false)
 
       expect(icon.options.iconUrl).toBe(`/afval/${type.toLowerCase()}.svg`)
     })
@@ -27,7 +27,7 @@ describe('containerAssetIcons', () => {
   containerTypes.forEach((type) => {
     it(`returns the correct selected icon for type ${type}`, () => {
       const feature = makeFeature(type)
-      const icon = getContainerAssetIcon(feature, true)
+      const icon = getContainerIcon(feature, true)
 
       expect(icon.options.iconUrl).toBe(`/afval/${type.toLowerCase()}.svg`)
       expect(icon.options.className).toContain('border')
