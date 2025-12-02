@@ -17,7 +17,6 @@
     "@azure/msal-browser": "3.23.0",
     "keycloak-js": "26.2.1",
     "ra-auth-msal": "3.1.0",
-    "ra-data-json-server": "5.13.2",
     "ra-data-simple-rest": "5.13.2",
     "ra-i18n-polyglot": "5.13.2",
     "ra-keycloak": "2.0.0",

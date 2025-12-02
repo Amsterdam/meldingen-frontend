@@ -1,6 +1,6 @@
 import { SilentRequest } from '@azure/msal-browser'
 import { LoginPage, msalHttpClient, msalRefreshAuth } from 'ra-auth-msal'
-import jsonServerProvider from 'ra-data-json-server'
+import simpleRestProvider from 'ra-data-simple-rest'
 import { addRefreshAuthToDataProvider, Admin as ReactAdmin, Resource } from 'react-admin'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -32,7 +32,7 @@ export const Admin = () => {
   // if (!keycloakClient) return <p>Loading...</p>
 
   const dataProvider = addRefreshAuthToDataProvider(
-    jsonServerProvider('http://localhost:8000', httpClient),
+    simpleRestProvider('http://localhost:8000', httpClient),
     msalRefreshAuth({
       msalInstance: myMSALObj,
       tokenRequest,
