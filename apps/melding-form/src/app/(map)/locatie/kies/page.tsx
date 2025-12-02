@@ -77,6 +77,12 @@ export default async () => {
         id: asset.external_id,
         properties: { id_nummer: `${asset.external_id}` },
         type: 'Feature',
+        // Additional properties from api:
+        // geometry: { type: 'Point', coordinates: [lng, lat] },
+        // public_id (e.g. REA00271')
+        // public_name: 'Glas container' e.g. type of asset. We use this as alt text and now also for icons.
+
+        // maybe just all properties from asset?
       }
     }) as Feature[]) || []
 
