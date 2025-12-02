@@ -15,10 +15,10 @@ const refreshAccessToken = async (token: JWT, isEntra: boolean) => {
     if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
       throw new Error('Refresh token expired')
 
-    const response = await fetch(isEntra ? process.env.ENTRA_TOKEN_URL : process.env.TOKEN_URL, {
+    const response = await fetch(isEntra ? process.env.ENTRA_TOKEN_URL : process.env.KEYCLOAK_TOKEN_URL, {
       body: new URLSearchParams({
-        client_id: isEntra ? process.env.ENTRA_CLIENT_ID : process.env.CLIENT_ID,
-        client_secret: isEntra ? process.env.ENTRA_CLIENT_SECRET : process.env.CLIENT_SECRET,
+        client_id: isEntra ? process.env.ENTRA_CLIENT_ID : process.env.KEYCLOAK_CLIENT_ID,
+        client_secret: isEntra ? process.env.ENTRA_CLIENT_SECRET : process.env.KEYCLOAK_CLIENT_SECRET,
         grant_type: 'refresh_token',
         refresh_token: token.refreshToken || '',
       }),
@@ -76,14 +76,14 @@ const getProviders = () => {
         params: {
           scope: 'openid email profile',
         },
-        url: process.env.AUTH_URL,
+        url: process.env.KEYCLOAK_AUTH_URL,
       },
-      clientId: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
-      issuer: process.env.ISSUER_URL,
-      jwks_endpoint: process.env.JWKS_URL,
-      token: process.env.TOKEN_URL,
-      userinfo: process.env.USERINFO_URL,
+      clientId: process.env.KEYCLOAK_CLIENT_ID,
+      clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
+      issuer: process.env.KEYCLOAK_ISSUER_URL,
+      jwks_endpoint: process.env.KEYCLOAK_JWKS_URL,
+      token: process.env.KEYCLOAK_TOKEN_URL,
+      userinfo: process.env.KEYCLOAK_USERINFO_URL,
       wellKnown: undefined,
     }),
   ]
