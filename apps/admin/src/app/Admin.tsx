@@ -7,9 +7,7 @@ import { ClassificationCreate, ClassificationEdit, ClassificationList } from '..
 import { FormCreate, FormEdit, FormList } from '../pages/form/components'
 import { StaticFormEdit, StaticFormList } from '../pages/static-form'
 import { CustomLayout } from './components'
-import { i18nProvider } from './providers'
-import { entraAuthProvider } from './providers/entraAuthProvider'
-import { entraDataProvider } from './providers/entraDataProvider'
+import { entraAuthProvider, entraDataProvider, i18nProvider } from './providers'
 
 export const Admin = () => {
   // const { authProvider, dataProviderRef, keycloakClient } = useAuthProvider()
