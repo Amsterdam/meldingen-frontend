@@ -17,7 +17,7 @@ const httpClient = msalHttpClient({
 })
 
 export const entraDataProvider = addRefreshAuthToDataProvider(
-  simpleRestProvider('http://localhost:8000', httpClient),
+  simpleRestProvider(import.meta.env.VITE_BACKEND_BASE_URL, httpClient),
   msalRefreshAuth({
     msalInstance,
     tokenRequest,
