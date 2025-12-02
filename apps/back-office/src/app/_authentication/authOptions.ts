@@ -1,6 +1,7 @@
 import type { JWT } from 'next-auth/jwt'
 
 import { AuthOptions } from 'next-auth'
+import AzureAD from 'next-auth/providers/azure-ad'
 import KeycloakProvider from 'next-auth/providers/keycloak'
 
 /**
@@ -47,6 +48,11 @@ const refreshAccessToken = async (token: JWT) => {
   }
 }
 
+const isEntraAuthEnabled =
+  Boolean(process.env.ENTRA_CLIENT_ID) &&
+  Boolean(process.env.ENTRA_CLIENT_SECRET) &&
+  Boolean(process.env.ENTRA_TENANT_ID)
+
 export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
@@ -87,20 +93,30 @@ export const authOptions: AuthOptions = {
     },
   },
   providers: [
-    KeycloakProvider({
-      authorization: {
-        params: {
-          scope: 'openid email profile',
-        },
-        url: process.env.AUTH_URL,
-      },
-      clientId: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
-      issuer: process.env.ISSUER_URL,
-      jwks_endpoint: process.env.JWKS_URL,
-      token: process.env.TOKEN_URL,
-      userinfo: process.env.USERINFO_URL,
-      wellKnown: undefined,
-    }),
+    ...(isEntraAuthEnabled
+      ? [
+          AzureAD({
+            clientId: process.env.ENTRA_CLIENT_ID,
+            clientSecret: process.env.ENTRA_CLIENT_SECRET,
+            tenantId: process.env.ENTRA_TENANT_ID,
+          }),
+        ]
+      : [
+          KeycloakProvider({
+            authorization: {
+              params: {
+                scope: 'openid email profile',
+              },
+              url: process.env.AUTH_URL,
+            },
+            clientId: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRET,
+            issuer: process.env.ISSUER_URL,
+            jwks_endpoint: process.env.JWKS_URL,
+            token: process.env.TOKEN_URL,
+            userinfo: process.env.USERINFO_URL,
+            wellKnown: undefined,
+          }),
+        ]),
   ],
 }
