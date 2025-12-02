@@ -7,6 +7,7 @@ declare namespace NodeJS {
     ENTRA_CLIENT_ID: string
     ENTRA_CLIENT_SECRET: string
     ENTRA_TENANT_ID: string
+    ENTRA_TOKEN_URL: string
     ISSUER_URL: string
     JWKS_URL: string
     TOKEN_URL: string
