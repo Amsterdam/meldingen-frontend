@@ -9,6 +9,11 @@ export const msalInstance = new PublicClientApplication(entraAuthConfig)
 
 export const scopes = [`${import.meta.env.VITE_ENTRA_CLIENT_ID}/.default`, 'openid', 'email']
 
+export const isEntraAuthEnabled =
+  Boolean(import.meta.env.VITE_ENTRA_APP_BASE_URL) &&
+  Boolean(import.meta.env.VITE_ENTRA_AUTHORITY) &&
+  Boolean(import.meta.env.VITE_ENTRA_CLIENT_ID)
+
 export const entraAuthProvider = msalAuthProvider({
   loginRequest: { scopes },
   msalInstance,

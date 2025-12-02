@@ -7,21 +7,24 @@ import { ClassificationCreate, ClassificationEdit, ClassificationList } from '..
 import { FormCreate, FormEdit, FormList } from '../pages/form/components'
 import { StaticFormEdit, StaticFormList } from '../pages/static-form'
 import { CustomLayout } from './components'
-import { entraAuthProvider, entraDataProvider, i18nProvider } from './providers'
+import {
+  entraAuthProvider,
+  entraDataProvider,
+  i18nProvider,
+  isEntraAuthEnabled,
+  keycloakAuthProvider,
+  keycloakDataProvider,
+} from './providers'
 
 export const Admin = () => {
-  // const { authProvider, dataProviderRef, keycloakClient } = useAuthProvider()
-
-  // if (!keycloakClient) return <p>Loading...</p>
-
   return (
     <BrowserRouter>
       <ReactAdmin
-        authProvider={entraAuthProvider}
-        dataProvider={entraDataProvider}
+        authProvider={isEntraAuthEnabled ? entraAuthProvider : keycloakAuthProvider}
+        dataProvider={isEntraAuthEnabled ? entraDataProvider : keycloakDataProvider}
         i18nProvider={i18nProvider}
         layout={CustomLayout}
-        loginPage={LoginPage}
+        loginPage={isEntraAuthEnabled ? LoginPage : undefined}
       >
         <Resource create={<FormCreate />} edit={<FormEdit />} list={<FormList />} name="form" />
         <Resource
