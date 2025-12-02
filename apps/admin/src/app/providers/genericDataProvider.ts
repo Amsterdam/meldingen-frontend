@@ -8,19 +8,21 @@ type HttpClient = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ) => Promise<{ body: string; headers: Headers; json: any; status: number }>
 
-export const dataProvider = (apiUrl: string, httpClient: HttpClient): DataProvider => ({
+export const genericDataProvider = (apiUrl: string, httpClient: HttpClient): DataProvider => ({
   ...simpleRestProvider(apiUrl, httpClient),
-  update: (resource, params) => {
+  update: async (resource, params) => {
     // 'form' and 'static-form' updates use PUT requests, all other updates use PATCH requests
     if (resource === 'form' || resource === 'static-form') {
-      return httpClient(`${apiUrl}/${resource}/${params.id}`, {
+      const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
         body: JSON.stringify(params.data),
         method: 'PUT',
-      }).then(({ json }) => ({ data: json }))
+      })
+      return { data: json }
     }
-    return httpClient(`${apiUrl}/${resource}/${params.id}`, {
+    const { json: json_1 } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
       body: JSON.stringify(params.data),
       method: 'PATCH',
-    }).then(({ json }) => ({ data: json }))
+    })
+    return { data: json_1 }
   },
 })

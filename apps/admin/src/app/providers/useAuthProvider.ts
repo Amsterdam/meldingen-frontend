@@ -5,7 +5,7 @@ import Keycloak from 'keycloak-js'
 import { httpClient, keycloakAuthProvider } from 'ra-keycloak'
 import { useRef } from 'react'
 
-import { dataProvider } from './dataProvider'
+import { genericDataProvider } from './genericDataProvider'
 
 const initOptions: KeycloakInitOptions = {
   checkLoginIframe: false,
@@ -37,7 +37,7 @@ export const useAuthProvider = () => {
     logoutRedirectUri: `/#/login`,
   })
 
-  dataProviderRef.current = dataProvider(import.meta.env.VITE_BACKEND_BASE_URL, httpClient(keycloakClient))
+  dataProviderRef.current = genericDataProvider(import.meta.env.VITE_BACKEND_BASE_URL, httpClient(keycloakClient))
 
   return { authProvider, dataProviderRef, keycloakClient }
 }

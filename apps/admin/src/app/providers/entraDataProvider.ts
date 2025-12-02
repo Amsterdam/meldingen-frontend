@@ -1,10 +1,10 @@
 import type { SilentRequest } from '@azure/msal-browser'
 
 import { msalHttpClient, msalRefreshAuth } from 'ra-auth-msal'
-import simpleRestProvider from 'ra-data-simple-rest'
 import { addRefreshAuthToDataProvider } from 'react-admin'
 
 import { msalInstance, scopes } from './entraAuthProvider'
+import { genericDataProvider } from './genericDataProvider'
 
 export const tokenRequest: SilentRequest = {
   forceRefresh: false,
@@ -17,7 +17,7 @@ const httpClient = msalHttpClient({
 })
 
 export const entraDataProvider = addRefreshAuthToDataProvider(
-  simpleRestProvider(import.meta.env.VITE_BACKEND_BASE_URL, httpClient),
+  genericDataProvider(import.meta.env.VITE_BACKEND_BASE_URL, httpClient),
   msalRefreshAuth({
     msalInstance,
     tokenRequest,
