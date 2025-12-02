@@ -7,11 +7,12 @@ import { Coordinates } from '../types'
 import { Crosshair } from './Crosshair'
 
 type Props = {
+  hideSelectedPoint: boolean
   onSelectedPointChange: (point: Coordinates) => void
   selectedPoint?: Coordinates
 }
 
-export const PointSelectLayer = ({ onSelectedPointChange, selectedPoint }: Props) => {
+export const PointSelectLayer = ({ hideSelectedPoint, onSelectedPointChange, selectedPoint }: Props) => {
   const map = useContext(MapContext)
   const markerRef = useRef<Marker | null>(null)
 
@@ -41,6 +42,16 @@ export const PointSelectLayer = ({ onSelectedPointChange, selectedPoint }: Props
     if (crosshair) crosshair.style.display = 'none'
   }
 
+  // Fly to selected point on initial page loading
+  useEffect(() => {
+    if (!map || !selectedPoint) return
+    const { lat, lng } = selectedPoint
+
+    const currentZoom = map.getZoom()
+    const flyToMinZoom = 18
+    map.flyTo([lat, lng], currentZoom < flyToMinZoom ? flyToMinZoom : currentZoom)
+  }, [map])
+
   // Register map events
   useEffect(() => {
     if (!map) return
@@ -63,7 +74,8 @@ export const PointSelectLayer = ({ onSelectedPointChange, selectedPoint }: Props
     // Remove previous marker
     markerRef.current?.remove()
 
-    if (!selectedPoint) {
+    // Do not show marker when selectedAsset are present
+    if (hideSelectedPoint || !selectedPoint) {
       markerRef.current = null
       return
     }
