@@ -94,7 +94,6 @@ export const Location = ({ address, assetList, prevPage }: Props) => {
         {assetList &&
           assetList.length > 0 &&
           assetList.map((asset) => {
-            console.log('--- ~ asset:', asset)
             const idNummer = asset.external_id
             return (
               <div className="ams-mb-m" key={idNummer}>
