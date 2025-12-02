@@ -133,8 +133,8 @@ export const MarkerSelectLayer = ({
           if (selectedMarkers.length <= 1) {
             updateSelectedPoint(undefined)
           } else if (feature.id === selectedMarkers[0].id) {
-            // Set the address of the second marker on the list
-            // when the last selected marker (#1 on the list) is deselected
+            // Set the address of the second selected marker when
+            // the last selected marker (#1 on the list) is deselected
             // @ts-expect-error an marker always has coordinates
             const [y, x] = selectedMarkers[1].geometry.coordinates
             updateSelectedPoint({ lat: x, lng: y })
