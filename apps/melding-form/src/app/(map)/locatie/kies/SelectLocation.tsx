@@ -42,11 +42,8 @@ export const SelectLocation = ({
 }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
-  console.log('--- ~ coordinates:', coordinates)
   const [notificationType, setNotificationType] = useState<NotificationType | null>(null)
-
   const [selectedAssets, setSelectedAssets] = useState<Feature[]>(prefilledSelectedAssets)
-
   const [showAssetList, setShowAssetList] = useState(false)
 
   const postCoordinatesAndAssetsWithSelectedAssets = postCoordinatesAndAssets.bind(null, { selectedAssets })
@@ -102,12 +99,12 @@ export const SelectLocation = ({
       <div className={styles.map}>
         <Map isHidden={showAssetList}>
           <PointSelectLayer
+            // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}
             onSelectedPointChange={(coordinates) => {
               setSelectedAssets([])
               setCoordinates(coordinates)
             }}
-            // If there are selected assets, do not add a point marker
             selectedPoint={coordinates}
           />
           <MarkerSelectLayer
