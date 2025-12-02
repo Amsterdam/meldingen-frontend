@@ -26,10 +26,10 @@ export const createClusterIcon = (cluster: MarkerCluster) => {
   })
 }
 
-const fetchMarkersOnMoveEnd = async (
+const fetchFeaturesOnMoveEnd = async (
   classification: Props['classification'],
   map: Map,
-  onMarkersChange: Props['onMarkersChange'],
+  onFeaturesChange: Props['onFeaturesChange'],
   markerLayerRef: RefObject<Layer | null>,
 ) => {
   // Don't fetch markers when map is hidden with display: none
@@ -55,20 +55,20 @@ const fetchMarkersOnMoveEnd = async (
       console.error(error)
     }
 
-    onMarkersChange(data?.features || [])
+    onFeaturesChange(data?.features || [])
   }
 
   if (zoom < ZOOM_THRESHOLD && markerLayerRef.current) {
     markerLayerRef.current.remove()
-    onMarkersChange([])
+    onFeaturesChange([])
   }
 }
 
 export type Props = {
   classification?: string
-  markers: Feature[]
+  features: Feature[]
   maxMarkers: number
-  onMarkersChange: (markers: Feature[]) => void
+  onFeaturesChange: (markers: Feature[]) => void
   onMaxMarkersReached: (maxReached: boolean) => void
   onSelectedMarkersChange: (selectedMarkers: Feature[]) => void
   selectedMarkers: Feature[]
@@ -77,9 +77,9 @@ export type Props = {
 
 export const MarkerSelectLayer = ({
   classification,
-  markers,
+  features,
   maxMarkers,
-  onMarkersChange,
+  onFeaturesChange,
   onMaxMarkersReached,
   onSelectedMarkersChange,
   selectedMarkers,
@@ -91,15 +91,15 @@ export const MarkerSelectLayer = ({
 
   useEffect(() => {
     if (!map) return
-    map.on('moveend', () => fetchMarkersOnMoveEnd(classification, map, onMarkersChange, markerLayerRef))
+    map.on('moveend', () => fetchFeaturesOnMoveEnd(classification, map, onFeaturesChange, markerLayerRef))
 
     return () => {
-      map.off('moveend', () => fetchMarkersOnMoveEnd(classification, map, onMarkersChange, markerLayerRef))
+      map.off('moveend', () => fetchFeaturesOnMoveEnd(classification, map, onFeaturesChange, markerLayerRef))
     }
   }, [map])
 
   useEffect(() => {
-    if (!map || markers.length === 0) return
+    if (!map || features.length === 0) return
 
     markerLayerRef.current?.remove()
 
@@ -108,34 +108,34 @@ export const MarkerSelectLayer = ({
       showCoverageOnHover: false,
     })
 
-    markers.forEach((asset) => {
-      if (!asset.geometry || asset.geometry.type !== 'Point') return
+    features.forEach((feature) => {
+      if (!feature.geometry || feature.geometry.type !== 'Point') return
 
-      const geometry = asset.geometry
+      const geometry = feature.geometry
       const [lng, lat] = geometry.coordinates
       const latlng = latLng(lat, lng)
-      const isSelected = selectedMarkers.some((a) => a.id === asset.id)
+      const isSelected = selectedMarkers.some((a) => a.id === feature.id)
 
       const marker = new Marker(latlng, {
-        icon: getContainerAssetIcon(asset, isSelected),
+        icon: getContainerAssetIcon(feature, isSelected),
         keyboard: false,
       })
 
-      if (asset.id !== null && (typeof asset.id === 'string' || typeof asset.id === 'number')) {
-        markersRef.current[asset.id] = marker
+      if (feature.id !== null && (typeof feature.id === 'string' || typeof feature.id === 'number')) {
+        markersRef.current[feature.id] = marker
       }
 
       marker.on('click', () => {
         if (isSelected) {
           onMaxMarkersReached(false)
-          onSelectedMarkersChange(selectedMarkers.filter((a) => a.id !== asset.id))
+          onSelectedMarkersChange(selectedMarkers.filter((a) => a.id !== feature.id))
 
           if (selectedMarkers.length <= 1) {
             updateSelectedPoint(undefined)
-          } else if (asset.id === selectedMarkers[0].id) {
-            // Set the address of the second asset on the list
-            // when the last selected asset (#1 on the list) is deselected
-            // @ts-expect-error an asset always has coordinates
+          } else if (feature.id === selectedMarkers[0].id) {
+            // Set the address of the second marker on the list
+            // when the last selected marker (#1 on the list) is deselected
+            // @ts-expect-error an marker always has coordinates
             const [y, x] = selectedMarkers[1].geometry.coordinates
             updateSelectedPoint({ lat: x, lng: y })
           }
@@ -144,7 +144,7 @@ export const MarkerSelectLayer = ({
             onMaxMarkersReached(true)
             return
           }
-          onSelectedMarkersChange([asset, ...selectedMarkers])
+          onSelectedMarkersChange([feature, ...selectedMarkers])
           updateSelectedPoint({ lat, lng })
         }
       })
@@ -159,7 +159,7 @@ export const MarkerSelectLayer = ({
       markerClusterGroup.clearLayers()
       markerLayerRef.current = null
     }
-  }, [map, markers, selectedMarkers])
+  }, [map, features, selectedMarkers])
 
   return undefined
 }
