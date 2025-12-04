@@ -33,7 +33,7 @@ const MAX_SUCCESSFUL_UPLOADS = 3
 export const MAX_UPLOAD_ATTEMPTS = 10
 
 type GenericErrorMessage = {
-  description?: string
+  description: string
   heading: string
 }
 
