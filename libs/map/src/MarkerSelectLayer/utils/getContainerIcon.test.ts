@@ -14,7 +14,7 @@ const makeFeature = (type: (typeof containerTypes)[number] | string) =>
     type: 'Feature',
   }) as Feature
 
-describe('containerIcons', () => {
+describe('getContainerIcon', () => {
   containerTypes.forEach((type) => {
     it(`returns the correct icon for type ${type}`, () => {
       const feature = makeFeature(type)
