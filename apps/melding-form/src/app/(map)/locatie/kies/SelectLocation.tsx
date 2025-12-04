@@ -103,9 +103,9 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
           />
           <MarkerSelectLayer
             classification={classification}
-            markers={assetList}
+            features={assetList}
             maxMarkers={MAX_ASSETS}
-            onMarkersChange={setAssetList}
+            onFeaturesChange={setAssetList}
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
             onSelectedMarkersChange={setSelectedAssets}
             selectedMarkers={selectedAssets}
