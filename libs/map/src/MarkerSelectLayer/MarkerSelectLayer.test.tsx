@@ -4,9 +4,9 @@ import { vi } from 'vitest'
 import { MarkerSelectLayer, Props } from './MarkerSelectLayer'
 
 const defaultProps: Props = {
-  markers: [],
+  features: [],
   maxMarkers: 5,
-  onMarkersChange: vi.fn(),
+  onFeaturesChange: vi.fn(),
   onMaxMarkersReached: vi.fn(),
   onSelectedMarkersChange: vi.fn(),
   selectedMarkers: [],

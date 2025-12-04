@@ -1,6 +1,6 @@
-import type { Feature } from 'geojson'
-
 import L from 'leaflet'
+
+import { Feature } from '@meldingen/api-client'
 
 import {
   gftAfvalIcon,
@@ -11,13 +11,9 @@ import {
   textielAfvalIcon,
 } from '../../markerIcons'
 
-import styles from './getContainerFeatureIcon.module.css'
+import styles from './getContainerIcon.module.css'
 
 export const containerTypes = ['Papier', 'Glas', 'Rest', 'Textiel', 'Plastic', 'Gft'] as const
-
-export type AssetFeature = Feature & {
-  properties: { fractie_omschrijving: (typeof containerTypes)[number] & { [name: string]: string | boolean | null } }
-}
 
 const containerIcons: Record<(typeof containerTypes)[number], L.Icon> = {
   Gft: gftAfvalIcon,
@@ -28,10 +24,10 @@ const containerIcons: Record<(typeof containerTypes)[number], L.Icon> = {
   Textiel: textielAfvalIcon,
 }
 
-export const getContainerFeatureIcon = (feature: AssetFeature, isSelected: boolean): L.Icon => {
-  const containerFeatureType = feature.properties?.fractie_omschrijving as (typeof containerTypes)[number]
+export const getContainerIcon = (feature: Feature, isSelected: boolean): L.Icon => {
+  const containerType = feature.properties?.fractie_omschrijving as (typeof containerTypes)[number]
 
-  const icon = containerIcons[containerFeatureType] || restAfvalIcon
+  const icon = containerIcons[containerType] || restAfvalIcon
 
   if (isSelected) {
     return L.icon({

@@ -9,7 +9,7 @@ import type { Coordinates } from 'apps/melding-form/src/types'
 
 import { MAX_ASSETS } from '../../SelectLocation'
 import { NotificationType } from '../../SelectLocation'
-import { getContainerFeatureIconSVG } from './getContainerFeatureIconSVG'
+import { getContainerAssetIconSVG } from './getContainerAssetIconSVG'
 
 import styles from './AssetList.module.css'
 
@@ -22,7 +22,7 @@ export type Props = {
 }
 
 const getCheckboxLabel = (asset: Feature, idNummer: string) => {
-  const icon = getContainerFeatureIconSVG(asset)
+  const icon = getContainerAssetIconSVG(asset)
   const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
 
   return (

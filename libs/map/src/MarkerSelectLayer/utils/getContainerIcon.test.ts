@@ -1,6 +1,6 @@
-import type { AssetFeature } from './getContainerFeatureIcon'
+import { Feature } from '@meldingen/api-client'
 
-import { containerTypes, getContainerFeatureIcon } from './getContainerFeatureIcon'
+import { containerTypes, getContainerIcon } from './getContainerIcon'
 
 const makeFeature = (type: (typeof containerTypes)[number] | string) =>
   ({
@@ -12,13 +12,13 @@ const makeFeature = (type: (typeof containerTypes)[number] | string) =>
       fractie_omschrijving: type,
     },
     type: 'Feature',
-  }) as AssetFeature
+  }) as Feature
 
-describe('containerFeatureIcons', () => {
+describe('getContainerIcon', () => {
   containerTypes.forEach((type) => {
     it(`returns the correct icon for type ${type}`, () => {
       const feature = makeFeature(type)
-      const icon = getContainerFeatureIcon(feature, false)
+      const icon = getContainerIcon(feature, false)
 
       expect(icon.options.iconUrl).toBe(`/afval/${type.toLowerCase()}.svg`)
     })
@@ -27,7 +27,7 @@ describe('containerFeatureIcons', () => {
   containerTypes.forEach((type) => {
     it(`returns the correct selected icon for type ${type}`, () => {
       const feature = makeFeature(type)
-      const icon = getContainerFeatureIcon(feature, true)
+      const icon = getContainerIcon(feature, true)
 
       expect(icon.options.iconUrl).toBe(`/afval/${type.toLowerCase()}.svg`)
       expect(icon.options.className).toContain('border')
