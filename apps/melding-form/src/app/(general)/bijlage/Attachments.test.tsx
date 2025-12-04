@@ -375,7 +375,7 @@ describe('Attachments', () => {
     expect(errorMessage).toBeInTheDocument()
   })
 
-  it('should throw an error when attempting to upload too many files', async () => {
+  it('throws an error when attempting to upload too many files', async () => {
     const user = userEvent.setup()
 
     render(<Attachments {...defaultProps} />)
@@ -389,9 +389,11 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [file, file2, file3, file4])
 
-    const errorMessage = screen.getByText('errors.too-many-files')
+    const errorMessageHeading = screen.getByText('errors.too-many-files.heading')
+    const errorMessageDescription = screen.getByText('errors.too-many-files.description')
 
-    expect(errorMessage).toBeInTheDocument()
+    expect(errorMessageHeading).toBeInTheDocument()
+    expect(errorMessageDescription).toBeInTheDocument()
     expect(screen.queryByText('example.png')).not.toBeInTheDocument()
     expect(screen.queryByText('example2.png')).not.toBeInTheDocument()
     expect(screen.queryByText('example3.png')).not.toBeInTheDocument()
@@ -420,7 +422,7 @@ describe('Attachments', () => {
     await user.upload(fileInput, [file])
     await user.upload(fileInput, [file])
 
-    const errorMessage = screen.getAllByText('errors.duplicate-upload')
+    const errorMessage = screen.getAllByText('validation-errors.duplicate-upload')
 
     expect(errorMessage[0]).toBeInTheDocument()
   })
@@ -437,8 +439,42 @@ describe('Attachments', () => {
       Array.from({ length: MAX_UPLOAD_ATTEMPTS + 1 }, () => mockFile),
     )
 
-    const errorMessage = screen.getByText('errors.too-many-attempts')
+    const errorMessageHeading = screen.getByText('errors.too-many-attempts.heading')
+    const errorMessageDescription = screen.getByText('errors.too-many-attempts.description')
 
-    expect(errorMessage).toBeInTheDocument()
+    expect(errorMessageHeading).toBeInTheDocument()
+    expect(errorMessageDescription).toBeInTheDocument()
+  })
+
+  it('shows an error when continuing while an upload is in progress', async () => {
+    const user = userEvent.setup()
+
+    const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.LOADING }
+
+    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+      setFileUploads((prev: FileUpload[]) =>
+        prev.map((upload) =>
+          upload.id === fileUpload.id
+            ? { ...upload, progress: 20, serverId: 123, status: 'uploading', xhr: xhrMock as XMLHttpRequest }
+            : upload,
+        ),
+      )
+    })
+
+    render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+
+    await user.upload(fileInput, [mockFile])
+
+    const submitButton = screen.getByRole('button', { name: 'submit-button' })
+
+    await user.click(submitButton)
+
+    const errorMessageHeading = screen.getByText('errors.upload-in-progress.heading')
+    const errorMessageDescription = screen.getByText('errors.upload-in-progress.description')
+
+    expect(errorMessageHeading).toBeInTheDocument()
+    expect(errorMessageDescription).toBeInTheDocument()
   })
 })
