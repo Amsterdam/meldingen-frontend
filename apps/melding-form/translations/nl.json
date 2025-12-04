@@ -102,10 +102,21 @@
     "no-js-alert-description": "Wijzig dit in de instellingen van uw browser of herlaad de pagina.",
     "submit-button": "Volgende vraag",
     "errors": {
-      "too-many-files": "U kunt maximaal {maxFiles} bestanden uploaden.",
-      "too-many-attempts": "U heeft te vaak geprobeerd een foto toe te voegen. Verwijder eerst een mislukte poging uit de lijst om nog een foto toe te voegen.",
-      "duplicate-upload": "Het gekozen bestand is al toegevoegd.",
-      "upload-in-progress": "Wacht tot de foto is toegevoegd of annuleer."
+      "too-many-files": {
+        "heading": "Verbeter de fouten om uw foto’s toe te voegen",
+        "description": "U kunt maximaal {maxFiles} bestanden uploaden."
+      },
+      "too-many-attempts": {
+        "heading": "Verbeter de fouten om uw foto’s toe te voegen",
+        "description": "U heeft te vaak geprobeerd een foto toe te voegen. Verwijder eerst een mislukte poging uit de lijst om nog een foto toe te voegen."
+      },
+      "upload-in-progress": {
+        "heading": "De foto's zijn nog niet toegevoegd",
+        "description": "Niet alle foto's zijn klaar met uploaden. Wacht tot alle foto's klaar zijn of annuleer voordat u verder gaat."
+      }
+    },
+    "validation-errors": {
+      "duplicate-upload": "Het gekozen bestand is al toegevoegd."
     }
   },
   "contact": {
