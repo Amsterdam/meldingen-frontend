@@ -20,11 +20,6 @@ keycloakInstance.onTokenExpired = () => {
 const initOptions: KeycloakInitOptions = {
   checkLoginIframe: false,
   onLoad: 'login-required',
-  responseMode: 'query',
 }
 
-export const keycloakAuthProvider = raKeycloakAuthProvider(keycloakInstance, {
-  initOptions,
-  loginRedirectUri: '/#/auth-callback',
-  logoutRedirectUri: '/#/login',
-})
+export const keycloakAuthProvider = raKeycloakAuthProvider(keycloakInstance, { initOptions })
