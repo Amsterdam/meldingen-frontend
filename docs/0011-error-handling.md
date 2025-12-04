@@ -36,9 +36,15 @@ When we do, we will update this section.
 
 #### Attachments
 
-The attachments page (`/bijlage`) also handles errors in a slightly different manner.
-At the time of writing, we do not know how exactly.
-When we do, we will update this section.
+The attachments page (`/bijlage`) handles errors slightly differently.  
+It distinguishes between three types of errors:
+
+- System errors: errors returned by API responses
+- Generic errors: validation errors that apply to the entire form
+- Validation errors: errors tied to a specific upload/component
+
+All three types of errors are displayed at the top of the page.  
+However, validation errors also include a link that takes the user directly to the corresponding upload.
 
 ## Back office
 
