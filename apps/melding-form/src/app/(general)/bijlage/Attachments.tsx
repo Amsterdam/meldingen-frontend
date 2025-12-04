@@ -188,7 +188,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    if (fileUploads.filter((upload) => upload.status === 'uploading').length > 0) {
+    if (fileUploads.some((u) => u.status === 'uploading')) {
       e.preventDefault()
       setGenericError({
         description: t('errors.upload-in-progress.description'),
