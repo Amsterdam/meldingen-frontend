@@ -4,6 +4,12 @@ import { AuthOptions } from 'next-auth'
 import AzureAD from 'next-auth/providers/azure-ad'
 import KeycloakProvider from 'next-auth/providers/keycloak'
 
+const getEnvVars = (isEntra: boolean) => ({
+  clientId: isEntra ? process.env.ENTRA_CLIENT_ID : process.env.KEYCLOAK_CLIENT_ID,
+  clientSecret: isEntra ? process.env.ENTRA_CLIENT_SECRET : process.env.KEYCLOAK_CLIENT_SECRET,
+  tokenUrl: isEntra ? process.env.ENTRA_TOKEN_URL : process.env.KEYCLOAK_TOKEN_URL,
+})
+
 /**
  * Takes a token, and returns a new token with updated
  * `accessToken`, `accessTokenExpiresAt`, `refreshToken` and `refreshTokenExpiresAt` when an error occurs,
@@ -15,10 +21,12 @@ const refreshAccessToken = async (token: JWT, isEntra: boolean) => {
     if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
       throw new Error('Refresh token expired')
 
-    const response = await fetch(isEntra ? process.env.ENTRA_TOKEN_URL : process.env.KEYCLOAK_TOKEN_URL, {
+    const { clientId, clientSecret, tokenUrl } = getEnvVars(isEntra)
+
+    const response = await fetch(tokenUrl, {
       body: new URLSearchParams({
-        client_id: isEntra ? process.env.ENTRA_CLIENT_ID : process.env.KEYCLOAK_CLIENT_ID,
-        client_secret: isEntra ? process.env.ENTRA_CLIENT_SECRET : process.env.KEYCLOAK_CLIENT_SECRET,
+        client_id: clientId,
+        client_secret: clientSecret,
         grant_type: 'refresh_token',
         refresh_token: token.refreshToken || '',
       }),
