@@ -17,12 +17,15 @@ export const genericDataProvider = (apiUrl: string, httpClient: HttpClient): Dat
         body: JSON.stringify(params.data),
         method: 'PUT',
       })
+
       return { data: json }
     }
-    const { json: json_1 } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
+
+    const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
       body: JSON.stringify(params.data),
       method: 'PATCH',
     })
-    return { data: json_1 }
+
+    return { data: json }
   },
 })
