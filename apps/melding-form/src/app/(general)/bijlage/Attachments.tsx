@@ -82,10 +82,11 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const uploadIdCounter = useRef(files.length)
 
   const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
-  const [genericErrorMessage, setGenericErrorMessage] = useState<GenericErrorMessage>()
+  const [genericError, setGenericError] = useState<GenericErrorMessage>()
+  const [systemError, setSystemError] = useState<string>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
 
-  const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
+  const [{ systemError: actionSystemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
 
   const validationErrors = fileUploads
     .filter((upload) => upload.status === 'error')
@@ -99,14 +100,14 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   }
 
   const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    setGenericErrorMessage(undefined)
+    setGenericError(undefined)
 
     if (!event.currentTarget.files) return
 
     const newFiles = Array.from(event.currentTarget.files)
 
     if (newFiles.length + fileUploads.length > MAX_UPLOAD_ATTEMPTS) {
-      setGenericErrorMessage({
+      setGenericError({
         description: t('errors.too-many-attempts.description'),
         heading: t('errors.too-many-attempts.heading'),
       })
@@ -114,7 +115,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     }
 
     if (newFiles.length + fileUploads.filter((file) => file.status === 'success').length > MAX_SUCCESSFUL_UPLOADS) {
-      setGenericErrorMessage({
+      setGenericError({
         description: t('errors.too-many-files.description', { maxFiles: MAX_SUCCESSFUL_UPLOADS }),
         heading: t('errors.too-many-files.heading'),
       })
@@ -151,7 +152,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   }
 
   const handleDelete = async (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => {
-    setGenericErrorMessage(undefined)
+    setGenericError(undefined)
 
     // Abort upload if in progress
     if (xhr && xhr.readyState !== XMLHttpRequest.DONE) {
@@ -178,7 +179,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     })
 
     if (error) {
-      setGenericErrorMessage({ heading: handleApiError(error) })
+      setSystemError(handleApiError(error))
       return
     }
 
@@ -189,7 +190,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     if (fileUploads.filter((upload) => upload.status === 'uploading').length > 0) {
       e.preventDefault()
-      setGenericErrorMessage({
+      setGenericError({
         description: t('errors.upload-in-progress.description'),
         heading: t('errors.upload-in-progress.heading'),
       })
@@ -209,6 +210,10 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
       console.error(systemError)
     }
   }, [systemError])
+
+  useEffect(() => {
+    if (actionSystemError) setSystemError(handleApiError(actionSystemError))
+  }, [actionSystemError])
 
   return (
     <>
@@ -230,15 +235,9 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             ref={invalidFormAlertRef}
           />
         )}
-        {genericErrorMessage && (
-          <Alert
-            className="ams-mb-m"
-            heading={genericErrorMessage.heading}
-            headingLevel={2}
-            severity="error"
-            tabIndex={-1}
-          >
-            <Paragraph>{genericErrorMessage.description}</Paragraph>
+        {genericError && (
+          <Alert className="ams-mb-m" heading={genericError.heading} headingLevel={2} severity="error" tabIndex={-1}>
+            <Paragraph>{genericError.description}</Paragraph>
           </Alert>
         )}
         <FormHeader step={t('step')} title={t('title')} />
@@ -265,7 +264,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
             <FileUpload
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp"
-              aria-describedby={getAriaDescribedBy('file-upload', description, genericErrorMessage?.heading)}
+              aria-describedby={getAriaDescribedBy('file-upload', description, genericError?.heading)}
               aria-labelledby="file-upload-label file-upload"
               buttonText={t('file-upload.button')}
               dropAreaText={t('file-upload.drop-area')}
