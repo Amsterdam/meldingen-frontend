@@ -32,7 +32,7 @@ const MAX_SUCCESSFUL_UPLOADS = 3
 export const MAX_UPLOAD_ATTEMPTS = 10
 
 type GenericErrorMessage = {
-  description: string
+  description?: string
   heading: string
 }
 
@@ -115,8 +115,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
     if (newFiles.length + fileUploads.filter((file) => file.status === 'success').length > MAX_SUCCESSFUL_UPLOADS) {
       setGenericError({
-        description: t('errors.too-many-files.description', { maxFiles: MAX_SUCCESSFUL_UPLOADS }),
-        heading: t('errors.too-many-files.heading'),
+        heading: t('errors.too-many-files.heading', { maxFiles: MAX_SUCCESSFUL_UPLOADS }),
       })
       return
     }
@@ -232,7 +231,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         )}
         {genericError && (
           <Alert className="ams-mb-m" heading={genericError.heading} headingLevel={2} severity="error">
-            <Paragraph>{genericError.description}</Paragraph>
+            {genericError.description && <Paragraph>{genericError.description}</Paragraph>}
           </Alert>
         )}
         <FormHeader step={t('step')} title={t('title')} />

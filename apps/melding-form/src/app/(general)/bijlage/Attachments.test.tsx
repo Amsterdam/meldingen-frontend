@@ -392,10 +392,8 @@ describe('Attachments', () => {
     await user.upload(fileInput, [file, file2, file3, file4])
 
     const errorMessageHeading = screen.getByText('errors.too-many-files.heading')
-    const errorMessageDescription = screen.getByText('errors.too-many-files.description')
 
     expect(errorMessageHeading).toBeInTheDocument()
-    expect(errorMessageDescription).toBeInTheDocument()
     expect(screen.queryByText('example.png')).not.toBeInTheDocument()
     expect(screen.queryByText('example2.png')).not.toBeInTheDocument()
     expect(screen.queryByText('example3.png')).not.toBeInTheDocument()

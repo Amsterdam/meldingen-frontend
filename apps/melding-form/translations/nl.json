@@ -103,8 +103,7 @@
     "submit-button": "Volgende vraag",
     "errors": {
       "too-many-files": {
-        "heading": "Verbeter de fouten om uw foto’s toe te voegen",
-        "description": "U kunt maximaal {maxFiles} bestanden uploaden."
+        "heading": "U kunt maximaal {maxFiles} bestanden uploaden."
       },
       "too-many-attempts": {
         "heading": "Verbeter de fouten om uw foto’s toe te voegen",
