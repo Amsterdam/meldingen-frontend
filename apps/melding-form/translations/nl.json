@@ -112,7 +112,7 @@
       },
       "upload-in-progress": {
         "heading": "De foto’s zijn nog niet toegevoegd",
-        "description": "Niet alle foto's zijn klaar met uploaden. Wacht tot alle foto's klaar zijn of annuleer voordat u verder gaat."
+        "description": "Wacht tot de foto’s zijn toegevoegd of annuleer."
       }
     },
     "validation-errors": {
