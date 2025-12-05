@@ -111,7 +111,7 @@
         "description": "U heeft te vaak geprobeerd een foto toe te voegen. Verwijder eerst een mislukte poging uit de lijst om nog een foto toe te voegen."
       },
       "upload-in-progress": {
-        "heading": "De foto's zijn nog niet toegevoegd",
+        "heading": "De foto’s zijn nog niet toegevoegd",
         "description": "Niet alle foto's zijn klaar met uploaden. Wacht tot alle foto's klaar zijn of annuleer voordat u verder gaat."
       }
     },
