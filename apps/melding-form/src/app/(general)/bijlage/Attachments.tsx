@@ -24,7 +24,6 @@ import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
 import { submitAttachmentsForm } from './actions'
 import { startUpload } from './utils'
-import { handleApiError } from 'apps/melding-form/src/handleApiError'
 import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 
 import styles from './Attachments.module.css'
@@ -83,7 +82,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
   const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
   const [genericError, setGenericError] = useState<GenericErrorMessage>()
-  const [systemError, setSystemError] = useState<string>()
+  const [systemError, setSystemError] = useState<string | unknown>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
 
   const [{ systemError: actionSystemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
@@ -179,7 +178,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     })
 
     if (error) {
-      setSystemError(handleApiError(error))
+      setSystemError(error)
       return
     }
 
@@ -204,16 +203,12 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
 
   useEffect(() => {
-    if (systemError) {
-      // TODO: Log the error to an error reporting service
-      // eslint-disable-next-line no-console
-      console.error(systemError)
-    }
-  }, [systemError])
-
-  useEffect(() => {
-    if (actionSystemError) setSystemError(handleApiError(actionSystemError))
-  }, [actionSystemError])
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    if (systemError) console.error(systemError)
+    // eslint-disable-next-line no-console
+    if (actionSystemError) console.error(actionSystemError)
+  }, [systemError, actionSystemError])
 
   return (
     <>
@@ -222,7 +217,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(systemError) && <SystemErrorAlert />}
+        {(Boolean(systemError) || Boolean(actionSystemError)) && <SystemErrorAlert />}
         {validationErrors.length > 0 && (
           <InvalidFormAlert
             className="ams-mb-m"
@@ -236,7 +231,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           />
         )}
         {genericError && (
-          <Alert className="ams-mb-m" heading={genericError.heading} headingLevel={2} severity="error" tabIndex={-1}>
+          <Alert className="ams-mb-m" heading={genericError.heading} headingLevel={2} severity="error">
             <Paragraph>{genericError.description}</Paragraph>
           </Alert>
         )}
@@ -264,7 +259,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
             <FileUpload
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp"
-              aria-describedby={getAriaDescribedBy('file-upload', description, genericError?.heading)}
+              aria-describedby={getAriaDescribedBy('file-upload', description)}
               aria-labelledby="file-upload-label file-upload"
               buttonText={t('file-upload.button')}
               dropAreaText={t('file-upload.drop-area')}
