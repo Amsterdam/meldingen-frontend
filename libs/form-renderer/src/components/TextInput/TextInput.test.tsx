@@ -67,7 +67,7 @@ describe('TextInput Component', () => {
     render(<TextInput {...defaultProps} errorMessage="Test error message" />)
 
     const textInputWithErrorMessage = screen.getByRole('textbox', {
-      description: 'Invoerfout: Test error message',
+      description: 'Invoerfout:Test error message',
       name: defaultProps.label,
     })
 
