@@ -81,6 +81,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const uploadIdCounter = useRef(files.length)
 
   const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
+  console.log('--- ~ fileUploads:', fileUploads.length)
   const [genericError, setGenericError] = useState<GenericErrorMessage>()
   const [systemError, setSystemError] = useState<string | unknown>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
@@ -113,7 +114,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
       return
     }
 
-    if (newFiles.length + fileUploads.filter((file) => file.status === 'success').length > MAX_SUCCESSFUL_UPLOADS) {
+    if (newFiles.length + fileUploads.filter((file) => file.status !== 'error').length > MAX_SUCCESSFUL_UPLOADS) {
       setGenericError({
         heading: t('errors.too-many-files.heading', { maxFiles: MAX_SUCCESSFUL_UPLOADS }),
       })
