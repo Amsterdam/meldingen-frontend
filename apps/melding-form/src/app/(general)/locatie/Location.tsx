@@ -17,7 +17,7 @@ import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
-import { getContainerFeatureIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerFeatureIconSVG'
+import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
 import { postLocationForm } from './actions'
 
 import styles from './Location.module.css'
@@ -31,7 +31,7 @@ type Props = {
 }
 
 const getAssetElement = (asset: Feature, idNummer: string) => {
-  const icon = getContainerFeatureIconSVG(asset)
+  const icon = getContainerAssetIconSVG(asset)
   const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
 
   return (

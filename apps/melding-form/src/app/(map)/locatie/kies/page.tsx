@@ -6,6 +6,7 @@ import {
   Feature,
   getMeldingByMeldingIdAssetsMelder,
   getMeldingByMeldingIdMelder,
+  getWfsByName,
 } from '@meldingen/api-client'
 
 import { SelectLocation } from './SelectLocation'
@@ -17,6 +18,50 @@ export const generateMetadata = async () => {
   return {
     title: t('metadata.title'),
   }
+}
+
+const getFilter = (id: string) => {
+  return `
+    <Filter>
+      
+ <ResourceId rid="${id}" />
+      
+        </Filter>
+        `
+}
+
+const getAssetsFromMelding = async (meldingId: string, token: string) => {
+  // Get existing assets for this melding
+  const { data: assetIds } = await getMeldingByMeldingIdAssetsMelder({
+    path: {
+      melding_id: parseInt(meldingId, 10),
+    },
+    query: { token },
+  })
+
+  // Delete all assets to avoid conflicts with previously selected assets
+  assetIds?.forEach(async (asset) => {
+    await deleteMeldingByMeldingIdAssetByAssetId({
+      path: {
+        asset_id: asset.id,
+        melding_id: parseInt(meldingId, 10),
+      },
+      query: { token },
+    })
+  })
+
+  const assets = await Promise.all(
+    (assetIds ?? []).map((asset) => {
+      const filter = getFilter(asset.external_id)
+
+      return getWfsByName({
+        path: { name: 'container' },
+        query: { filter },
+      }).then(({ data }) => data?.features?.[0] as Feature)
+    }),
+  )
+
+  return assets
 }
 
 export default async () => {
@@ -32,59 +77,18 @@ export default async () => {
     query: { token },
   })
 
-  // Get existing assets for this report
-  const { data: assetData } = await getMeldingByMeldingIdAssetsMelder({
-    path: {
-      melding_id: parseInt(meldingId, 10),
-    },
-    query: { token },
-  })
-
-  // Delete all assets to avoid conflicts with previously selected assets
-  if (assetData && assetData.length > 0) {
-    assetData.forEach(async (asset) => {
-      await deleteMeldingByMeldingIdAssetByAssetId({
-        path: {
-          asset_id: asset.id,
-          melding_id: parseInt(meldingId, 10),
-        },
-        query: { token },
-      })
-    })
-  }
-
   if (error) {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
     console.error(error)
   }
 
+  const selectedAssets = await getAssetsFromMelding(meldingId, token)
+
   const coordinates = data?.geo_location?.geometry?.coordinates && {
     lat: data.geo_location.geometry.coordinates[0],
     lng: data.geo_location.geometry.coordinates[1],
   }
-
-  // TODO: properties should be returned from the API
-  const selectedAssets =
-    (assetData?.map((asset) => {
-      return {
-        ...asset,
-        db_id: asset.id,
-        geometry: {
-          coordinates: data?.geo_location?.geometry?.coordinates,
-          type: 'Point',
-        },
-        id: asset.external_id,
-        properties: { id_nummer: `${asset.external_id}` },
-        type: 'Feature',
-        // Additional properties from api:
-        // geometry: { type: 'Point', coordinates: [lng, lat] },
-        // public_id (e.g. REA00271')
-        // public_name: 'Glas container' e.g. type of asset. We use this as alt text and now also for icons.
-
-        // maybe just all properties from asset?
-      }
-    }) as Feature[]) || []
 
   return (
     <SelectLocation

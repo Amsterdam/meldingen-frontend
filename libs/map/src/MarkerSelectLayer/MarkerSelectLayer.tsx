@@ -48,6 +48,7 @@ const fetchFeaturesOnMoveEnd = async (
       path: { name: 'container' },
       query: { filter },
     })
+    console.log('--- ~ data:', data)
 
     if (error) {
       // TODO: Log the error to an error reporting service
