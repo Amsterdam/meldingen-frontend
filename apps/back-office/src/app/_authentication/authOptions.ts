@@ -4,24 +4,29 @@ import { AuthOptions } from 'next-auth'
 import AzureAD from 'next-auth/providers/azure-ad'
 import KeycloakProvider from 'next-auth/providers/keycloak'
 
-const getEnvVars = (isEntraAuthEnabled: boolean) => ({
+const isEntraAuthEnabled =
+  Boolean(process.env.ENTRA_CLIENT_ID) &&
+  Boolean(process.env.ENTRA_CLIENT_SECRET) &&
+  Boolean(process.env.ENTRA_TENANT_ID)
+
+const envVars = {
   clientId: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_ID : process.env.KEYCLOAK_CLIENT_ID,
   clientSecret: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_SECRET : process.env.KEYCLOAK_CLIENT_SECRET,
   tokenUrl: isEntraAuthEnabled ? process.env.ENTRA_TOKEN_URL : process.env.KEYCLOAK_TOKEN_URL,
-})
+}
 
 /**
  * Takes a token, and returns a new token with updated
  * `accessToken`, `accessTokenExpiresAt`, `refreshToken` and `refreshTokenExpiresAt` when an error occurs,
  * returns the old token and an error property
  */
-const refreshAccessToken = async (token: JWT, isEntraAuthEnabled: boolean) => {
+const refreshAccessToken = async (token: JWT) => {
   try {
     // refreshTokenExpiresAt is Keycloak-specific
     if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
       throw new Error('Refresh token expired')
 
-    const { clientId, clientSecret, tokenUrl } = getEnvVars(isEntraAuthEnabled)
+    const { clientId, clientSecret, tokenUrl } = envVars
 
     const response = await fetch(tokenUrl, {
       body: new URLSearchParams({
@@ -56,11 +61,6 @@ const refreshAccessToken = async (token: JWT, isEntraAuthEnabled: boolean) => {
     }
   }
 }
-
-const isEntraAuthEnabled =
-  Boolean(process.env.ENTRA_CLIENT_ID) &&
-  Boolean(process.env.ENTRA_CLIENT_SECRET) &&
-  Boolean(process.env.ENTRA_TENANT_ID)
 
 const getProviders = () => {
   if (isEntraAuthEnabled) {
@@ -120,7 +120,7 @@ export const authOptions: AuthOptions = {
       }
 
       // Access token has expired, try to update it
-      return refreshAccessToken(token, isEntraAuthEnabled)
+      return refreshAccessToken(token)
     },
     redirect: async ({ baseUrl, url }) => {
       // Use callback url
