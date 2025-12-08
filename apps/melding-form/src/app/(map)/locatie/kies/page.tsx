@@ -22,12 +22,10 @@ export const generateMetadata = async () => {
 
 const getFilter = (id: string) => {
   return `
-    <Filter>
-      
- <ResourceId rid="${id}" />
-      
-        </Filter>
-        `
+    <Filter> 
+      <ResourceId rid="${id}" />
+    </Filter>
+    `
 }
 
 const getAssetsFromMelding = async (meldingId: string, token: string) => {
@@ -51,7 +49,7 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
   })
 
   const assets = await Promise.all(
-    (assetIds ?? []).map((asset) => {
+    (assetIds ?? []).map(async (asset) => {
       const filter = getFilter(asset.external_id)
 
       return getWfsByName({
@@ -94,7 +92,7 @@ export default async () => {
     <SelectLocation
       classification={data?.classification?.name}
       coordinates={coordinates}
-      prefilledSelectedAssets={selectedAssets}
+      selectedAssets={selectedAssets}
     />
   )
 }

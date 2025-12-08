@@ -26,7 +26,7 @@ const Map = dynamic(() => import('@meldingen/map').then((module) => module.Map),
 type Props = {
   classification?: string
   coordinates?: Coordinates
-  prefilledSelectedAssets: Feature[]
+  selectedAssets: Feature[]
 }
 
 export type NotificationType = 'too-many-assets' | 'location-service-disabled'
@@ -38,12 +38,12 @@ export const MAX_ASSETS = 5
 export const SelectLocation = ({
   classification,
   coordinates: coordinatesFromServer,
-  prefilledSelectedAssets,
+  selectedAssets: selectedAssetsFromServer,
 }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
   const [notificationType, setNotificationType] = useState<NotificationType | null>(null)
-  const [selectedAssets, setSelectedAssets] = useState<Feature[]>(prefilledSelectedAssets)
+  const [selectedAssets, setSelectedAssets] = useState<Feature[]>(selectedAssetsFromServer)
   const [showAssetList, setShowAssetList] = useState(false)
 
   const postCoordinatesAndAssetsWithSelectedAssets = postCoordinatesAndAssets.bind(null, { selectedAssets })
