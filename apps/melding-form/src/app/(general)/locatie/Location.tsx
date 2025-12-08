@@ -26,23 +26,25 @@ const initialState: Pick<FormState, 'systemError' | 'validationErrors'> = {}
 
 type Props = {
   address?: string
-  assetList?: any[]
   prevPage: string
+  savedAssets: Feature[]
 }
 
-const getAssetElement = (asset: Feature, idNummer: string) => {
+const getAssetElement = (asset: Feature) => {
   const icon = getContainerAssetIconSVG(asset)
   const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
+  // TODO: use assetType instead of "container" when available
+  const label = `${asset.properties?.fractie_omschrijving} container - ${asset.properties?.id_nummer}`
 
   return (
     <span className={styles.label}>
       <Image alt={altText} height={32} src={icon} width={32} />
-      <span>{idNummer}</span>
+      <Paragraph>{label}</Paragraph>
     </span>
   )
 }
 
-export const Location = ({ address, assetList, prevPage }: Props) => {
+export const Location = ({ address, prevPage, savedAssets }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ systemError, validationErrors }, formAction] = useActionState(postLocationForm, initialState)
@@ -91,16 +93,12 @@ export const Location = ({ address, assetList, prevPage }: Props) => {
           {t('question')}
         </Heading>
         <Paragraph className="ams-mb-s">{address ?? t('description')}</Paragraph>
-        {assetList &&
-          assetList.length > 0 &&
-          assetList.map((asset) => {
-            const idNummer = asset.external_id
-            return (
-              <div className="ams-mb-m" key={idNummer}>
-                {getAssetElement(asset, idNummer)}
-              </div>
-            )
-          })}
+        {savedAssets.length > 0 &&
+          savedAssets.map((asset) => (
+            <div className="ams-mb-m" key={asset.id}>
+              {getAssetElement(asset)}
+            </div>
+          ))}
         <NextLink href="/locatie/kies" legacyBehavior passHref>
           <StandaloneLink className="ams-mb-m" id="location-link">
             {address ? t('link.with-location') : t('link.without-location')}

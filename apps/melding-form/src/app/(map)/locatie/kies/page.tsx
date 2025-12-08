@@ -66,7 +66,7 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
         return null
       }
 
-      return data.features[0]
+      return data.features[0] ?? null
     }),
   )
 
