@@ -1,7 +1,19 @@
 import type { JWT } from 'next-auth/jwt'
 
 import { AuthOptions } from 'next-auth'
+import AzureAD from 'next-auth/providers/azure-ad'
 import KeycloakProvider from 'next-auth/providers/keycloak'
+
+const isEntraAuthEnabled =
+  Boolean(process.env.ENTRA_CLIENT_ID) &&
+  Boolean(process.env.ENTRA_CLIENT_SECRET) &&
+  Boolean(process.env.ENTRA_TENANT_ID)
+
+const envVars = {
+  clientId: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_ID : process.env.KEYCLOAK_CLIENT_ID,
+  clientSecret: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_SECRET : process.env.KEYCLOAK_CLIENT_SECRET,
+  tokenUrl: isEntraAuthEnabled ? process.env.ENTRA_TOKEN_URL : process.env.KEYCLOAK_TOKEN_URL,
+}
 
 /**
  * Takes a token, and returns a new token with updated
@@ -10,13 +22,16 @@ import KeycloakProvider from 'next-auth/providers/keycloak'
  */
 const refreshAccessToken = async (token: JWT) => {
   try {
+    // refreshTokenExpiresAt is Keycloak-specific
     if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
       throw new Error('Refresh token expired')
 
-    const response = await fetch(process.env.TOKEN_URL, {
+    const { clientId, clientSecret, tokenUrl } = envVars
+
+    const response = await fetch(tokenUrl, {
       body: new URLSearchParams({
-        client_id: process.env.CLIENT_ID,
-        client_secret: process.env.CLIENT_SECRET,
+        client_id: clientId,
+        client_secret: clientSecret,
         grant_type: 'refresh_token',
         refresh_token: token.refreshToken || '',
       }),
@@ -47,9 +62,45 @@ const refreshAccessToken = async (token: JWT) => {
   }
 }
 
+const getProviders = () => {
+  if (isEntraAuthEnabled) {
+    return [
+      AzureAD({
+        authorization: {
+          params: {
+            scope: `openid email ${process.env.ENTRA_CLIENT_ID}/.default offline_access`,
+          },
+        },
+        clientId: process.env.ENTRA_CLIENT_ID,
+        clientSecret: process.env.ENTRA_CLIENT_SECRET,
+        tenantId: process.env.ENTRA_TENANT_ID,
+      }),
+    ]
+  }
+
+  return [
+    KeycloakProvider({
+      authorization: {
+        params: {
+          scope: 'openid email profile',
+        },
+        url: process.env.KEYCLOAK_AUTH_URL,
+      },
+      clientId: process.env.KEYCLOAK_CLIENT_ID,
+      clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
+      issuer: process.env.KEYCLOAK_ISSUER_URL,
+      jwks_endpoint: process.env.KEYCLOAK_JWKS_URL,
+      token: process.env.KEYCLOAK_TOKEN_URL,
+      userinfo: process.env.KEYCLOAK_USERINFO_URL,
+      wellKnown: undefined,
+    }),
+  ]
+}
+
 export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
+      // Account and user are Keycloak-specific
       if (account && user) {
         // account is only available the first time this callback is called on a new session (after the user signs in)
         return {
@@ -86,21 +137,5 @@ export const authOptions: AuthOptions = {
       return session
     },
   },
-  providers: [
-    KeycloakProvider({
-      authorization: {
-        params: {
-          scope: 'openid email profile',
-        },
-        url: process.env.AUTH_URL,
-      },
-      clientId: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
-      issuer: process.env.ISSUER_URL,
-      jwks_endpoint: process.env.JWKS_URL,
-      token: process.env.TOKEN_URL,
-      userinfo: process.env.USERINFO_URL,
-      wellKnown: undefined,
-    }),
-  ],
+  providers: getProviders(),
 }
