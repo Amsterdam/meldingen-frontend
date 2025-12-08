@@ -224,8 +224,8 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             {errorMessage && <ErrorMessage id="file-upload-error-message">{errorMessage}</ErrorMessage>}
           </Column>
 
-          <Column className={styles.needsJavaScript}>
-            <Paragraph aria-live="assertive">
+          <div className={styles.needsJavaScript}>
+            <Paragraph aria-live="assertive" className="ams-mb-m">
               {t('status', {
                 fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
                 maxFiles: MAX_SUCCESSFUL_UPLOADS,
@@ -268,7 +268,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             <div aria-live="polite" className="ams-visually-hidden">
               {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
             </div>
-          </Column>
+          </div>
 
           <Alert className={styles.noJavaScriptAlert} heading={t('no-js-alert-title')} headingLevel={2}>
             <Paragraph>{t('no-js-alert-description')}</Paragraph>

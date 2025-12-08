@@ -1,15 +1,16 @@
-.container {
+.item {
   align-items: start;
   display: grid;
   gap: var(--ams-space-s);
-  padding-block: var(--ams-space-s);
+  margin-block: var(--ams-space-m) var(--ams-space-l);
 
   @media screen and (min-width: 37.5rem) {
     grid-template-columns: 1fr 2fr 1fr;
+    margin-block-end: var(--ams-space-m);
   }
 }
 
-.containerWithError {
+.itemWithError {
   border-inline-start: var(--ams-field-invalid-border-inline-start);
   padding-inline-start: var(--ams-field-invalid-padding-inline-start);
 
