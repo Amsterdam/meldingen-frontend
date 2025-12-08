@@ -35,7 +35,7 @@ export const startUpload = (
   xhr.upload.onprogress = (event) => {
     if (event.lengthComputable) {
       setFileUploads((prev) =>
-        prev.map((upload) =>
+        prev.map((upload): FileUpload | PendingFileUpload =>
           upload.id === fileUpload.id ? { ...upload, progress: (event.loaded / event.total) * 100 } : upload,
         ),
       )
@@ -44,11 +44,11 @@ export const startUpload = (
 
   xhr.onload = () => {
     setFileUploads((prev) =>
-      prev.map((upload) =>
+      prev.map((upload): FileUpload | PendingFileUpload =>
         upload.id === fileUpload.id
           ? {
               ...upload,
-              error: xhr.status !== 200 ? safeJSONParse(xhr.response)?.detail : undefined,
+              errorMessage: xhr.status !== 200 ? safeJSONParse(xhr.response)?.detail : undefined,
               serverId: safeJSONParse(xhr.response)?.id,
               status: xhr.status === 200 ? 'success' : 'error',
             }
@@ -59,14 +59,16 @@ export const startUpload = (
 
   xhr.onerror = () => {
     setFileUploads((prev) =>
-      prev.map((upload) =>
-        upload.id === fileUpload.id ? { ...upload, error: 'Network error', status: 'error' } : upload,
+      prev.map((upload): FileUpload | PendingFileUpload =>
+        upload.id === fileUpload.id ? { ...upload, errorMessage: 'Network error', status: 'error' } : upload,
       ),
     )
   }
 
   setFileUploads((prev) =>
-    prev.map((upload) => (upload.id === fileUpload.id ? { ...upload, status: 'uploading' } : upload)),
+    prev.map((upload): FileUpload | PendingFileUpload =>
+      upload.id === fileUpload.id ? { ...upload, status: 'uploading' } : upload,
+    ),
   )
 
   const formData = new FormData()
