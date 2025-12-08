@@ -25,6 +25,8 @@
 
   @media screen and (min-width: 37.5rem) {
     display: flex;
+    height: 100%;
+    justify-content: center;
     max-inline-size: unset;
   }
 }
@@ -43,6 +45,7 @@
 }
 
 .icon {
+  align-self: auto;
   color: var(--ams-color-feedback-error);
 }
 
