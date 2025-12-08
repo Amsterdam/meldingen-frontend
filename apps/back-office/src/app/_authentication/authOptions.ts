@@ -4,10 +4,10 @@ import { AuthOptions } from 'next-auth'
 import AzureAD from 'next-auth/providers/azure-ad'
 import KeycloakProvider from 'next-auth/providers/keycloak'
 
-const getEnvVars = (isEntra: boolean) => ({
-  clientId: isEntra ? process.env.ENTRA_CLIENT_ID : process.env.KEYCLOAK_CLIENT_ID,
-  clientSecret: isEntra ? process.env.ENTRA_CLIENT_SECRET : process.env.KEYCLOAK_CLIENT_SECRET,
-  tokenUrl: isEntra ? process.env.ENTRA_TOKEN_URL : process.env.KEYCLOAK_TOKEN_URL,
+const getEnvVars = (isEntraAuthEnabled: boolean) => ({
+  clientId: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_ID : process.env.KEYCLOAK_CLIENT_ID,
+  clientSecret: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_SECRET : process.env.KEYCLOAK_CLIENT_SECRET,
+  tokenUrl: isEntraAuthEnabled ? process.env.ENTRA_TOKEN_URL : process.env.KEYCLOAK_TOKEN_URL,
 })
 
 /**
@@ -15,13 +15,13 @@ const getEnvVars = (isEntra: boolean) => ({
  * `accessToken`, `accessTokenExpiresAt`, `refreshToken` and `refreshTokenExpiresAt` when an error occurs,
  * returns the old token and an error property
  */
-const refreshAccessToken = async (token: JWT, isEntra: boolean) => {
+const refreshAccessToken = async (token: JWT, isEntraAuthEnabled: boolean) => {
   try {
     // refreshTokenExpiresAt is Keycloak-specific
     if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
       throw new Error('Refresh token expired')
 
-    const { clientId, clientSecret, tokenUrl } = getEnvVars(isEntra)
+    const { clientId, clientSecret, tokenUrl } = getEnvVars(isEntraAuthEnabled)
 
     const response = await fetch(tokenUrl, {
       body: new URLSearchParams({
