@@ -1,9 +1,10 @@
 import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useEffect } from 'react'
 import { Mock } from 'vitest'
 
+import { containerAssets } from '../../../../mocks/data'
 import { AssetList } from './_components'
 import { SelectLocation } from './SelectLocation'
 
@@ -123,5 +124,18 @@ describe('Asset list toggle button', () => {
     const toggleButtonMap = screen.getByRole('button', { name: 'toggle-button.map' })
 
     expect(toggleButtonMap).toBeInTheDocument()
+  })
+
+  it('shows prefilled selected assets', async () => {
+    render(<SelectLocation selectedAssets={containerAssets} />)
+
+    await waitFor(() => {
+      expect(AssetList).toHaveBeenCalledWith(
+        expect.objectContaining({
+          selectedAssets: containerAssets,
+        }),
+        undefined,
+      )
+    })
   })
 })
