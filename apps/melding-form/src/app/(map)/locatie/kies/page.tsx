@@ -3,7 +3,6 @@ import { cookies } from 'next/headers'
 
 import {
   deleteMeldingByMeldingIdAssetByAssetId,
-  Feature,
   getMeldingByMeldingIdAssetsMelder,
   getMeldingByMeldingIdMelder,
   getWfsByName,
@@ -39,27 +38,39 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
 
   // Delete all assets to avoid conflicts with previously selected assets
   assetIds?.forEach(async (asset) => {
-    await deleteMeldingByMeldingIdAssetByAssetId({
+    const { error } = await deleteMeldingByMeldingIdAssetByAssetId({
       path: {
         asset_id: asset.id,
         melding_id: parseInt(meldingId, 10),
       },
       query: { token },
     })
+
+    if (error) {
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(error)
+    }
   })
 
   const assets = await Promise.all(
     (assetIds ?? []).map(async (asset) => {
       const filter = getFilter(asset.external_id)
 
-      return getWfsByName({
-        path: { name: 'container' },
-        query: { filter },
-      }).then(({ data }) => data?.features?.[0] as Feature)
+      const { data, error } = await getWfsByName({ path: { name: 'container' }, query: { filter } })
+
+      if (error) {
+        // TODO: Log the error to an error reporting service
+        // eslint-disable-next-line no-console
+        console.error(error)
+        return null
+      }
+
+      return data.features[0]
     }),
   )
 
-  return assets
+  return assets.filter((asset) => asset !== null)
 }
 
 export default async () => {
