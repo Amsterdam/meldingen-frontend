@@ -15,6 +15,7 @@ vi.mock('react', async (importOriginal) => {
 
 const defaultProps = {
   prevPage: '/previous',
+  savedAssets: [],
 }
 
 describe('Location', () => {
