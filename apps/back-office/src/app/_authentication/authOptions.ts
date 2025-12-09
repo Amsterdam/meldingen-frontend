@@ -21,12 +21,14 @@ const envVars = {
  * returns the old token and an error property
  */
 const refreshAccessToken = async (token: JWT) => {
+  console.error("REFRESHING", token)
   try {
     // refreshTokenExpiresAt is Keycloak-specific
     if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
       throw new Error('Refresh token expired')
 
     const { clientId, clientSecret, tokenUrl } = envVars
+    console.error("TOKEN STUFF", clientId, tokenUrl)
 
     const response = await fetch(tokenUrl, {
       body: new URLSearchParams({
@@ -40,11 +42,18 @@ const refreshAccessToken = async (token: JWT) => {
       method: 'POST',
     })
 
+    console.error("RESPONSE", response);
+
     const refreshedTokens = await response.json()
 
+    console.error("RESPONSE", refreshedTokens);
+
     if (!response.ok) {
+      console.error("THROWING REFRESHED TOKENS")
       throw refreshedTokens
     }
+
+    console.error("RETURNING");
 
     return {
       ...token,
@@ -55,6 +64,7 @@ const refreshAccessToken = async (token: JWT) => {
         refreshedTokens.refresh_expires_in && Date.now() + refreshedTokens.refresh_expires_in * 1000,
     }
   } catch {
+    console.error("ERRORRRRRRRRRR")
     return {
       ...token,
       error: 'RefreshAccessTokenError',
@@ -64,6 +74,7 @@ const refreshAccessToken = async (token: JWT) => {
 
 const getProviders = () => {
   if (isEntraAuthEnabled) {
+    console.error("Entra is enabled");
     return [
       AzureAD({
         authorization: {
@@ -77,6 +88,7 @@ const getProviders = () => {
       }),
     ]
   }
+    console.error("Keycloak is enabled");
 
   return [
     KeycloakProvider({
@@ -100,6 +112,7 @@ const getProviders = () => {
 export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
+      console.error("JWT DATA", account, token, user);
       // Account and user are Keycloak-specific
       if (account && user) {
         // account is only available the first time this callback is called on a new session (after the user signs in)
@@ -123,6 +136,7 @@ export const authOptions: AuthOptions = {
       return refreshAccessToken(token)
     },
     redirect: async ({ baseUrl, url }) => {
+      console.error("REDIRECT", baseUrl, url)
       // Use callback url
       if (url.startsWith('/')) return `${baseUrl}${url}`
       else if (new URL(url).origin === baseUrl) return url
@@ -130,6 +144,7 @@ export const authOptions: AuthOptions = {
       return baseUrl
     },
     session: async ({ session, token }) => {
+      console.error("SESSION", session, token)
       // Send properties to the client, like an access_token and user id from a provider.
       session.accessToken = token.accessToken
       session.error = token.error
