@@ -50,14 +50,15 @@ const refreshAccessToken = async (token: JWT) => {
 
     console.error("RESPONSE", response);
 
+    if (!response.ok) {
+      const responseText = await response.text();
+      console.error("THROWING REFRESHED TOKENS", await response.text(), response.status)
+      throw new Error('Failed to refresh access token ' + responseText)
+    }
+
     const refreshedTokens = await response.json()
 
     console.error("RESPONSE", refreshedTokens);
-
-    if (!response.ok) {
-      console.error("THROWING REFRESHED TOKENS", await response.text(), response.text, response.status)
-      throw refreshedTokens
-    }
 
     console.error("RETURNING");
 
@@ -118,7 +119,7 @@ const getProviders = () => {
 export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
-      console.error("JWT DATA", account, token, user);
+      console.error('JWT DATA', { account }, { token }, { user })
       if (token.accessTokenExpiresAt && Date.now() < token.accessTokenExpiresAt) {
         return token
       }
