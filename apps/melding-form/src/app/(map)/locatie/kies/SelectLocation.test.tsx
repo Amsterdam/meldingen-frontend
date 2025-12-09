@@ -1,5 +1,5 @@
 import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useEffect } from 'react'
 import { Mock } from 'vitest'
@@ -126,16 +126,14 @@ describe('Asset list toggle button', () => {
     expect(toggleButtonMap).toBeInTheDocument()
   })
 
-  it('shows prefilled selected assets', async () => {
+  it('shows prefilled selected assets', () => {
     render(<SelectLocation selectedAssets={containerAssets} />)
 
-    await waitFor(() => {
-      expect(AssetList).toHaveBeenCalledWith(
-        expect.objectContaining({
-          selectedAssets: containerAssets,
-        }),
-        undefined,
-      )
-    })
+    expect(AssetList).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: containerAssets,
+      }),
+      undefined,
+    )
   })
 })
