@@ -105,7 +105,7 @@ describe('Location', () => {
     expect(link).toBeInTheDocument()
   })
 
-  it.only('renders saved assets', () => {
+  it('renders saved assets', () => {
     render(<Location {...defaultProps} savedAssets={containerAssets} />)
 
     expect(screen.getByText('Restafval container - Container-001')).toBeInTheDocument()
