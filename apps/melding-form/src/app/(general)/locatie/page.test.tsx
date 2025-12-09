@@ -1,8 +1,5 @@
-import type { Mock } from 'vitest'
-
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { cookies } from 'next/headers'
 
 import { Location } from './Location'
 import Page from './page'
@@ -22,19 +19,8 @@ describe('Page', () => {
   beforeEach(() => {
     mockIdAndTokenCookies()
   })
-  it('renders Location component with default props when cookies are not set', async () => {
-    ;(cookies as Mock).mockReturnValue({
-      get: (name: string) => {
-        if (name === COOKIES.ID) {
-          return { value: '123' }
-        }
-        if (name === COOKIES.TOKEN) {
-          return { value: 'test-token' }
-        }
-        return undefined
-      },
-    })
 
+  it('renders Location component with default props when cookies are not set', async () => {
     const PageComponent = await Page()
 
     render(PageComponent)
