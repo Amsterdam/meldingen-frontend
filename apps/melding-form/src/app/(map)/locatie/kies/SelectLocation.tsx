@@ -33,7 +33,7 @@ export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 
 const initialState: { errorMessage?: string } = {}
 
-// 3 is the default maximun from the backend
+// 3 is the default maximum from the backend
 export const MAX_ASSETS = 3
 
 export const SelectLocation = ({
