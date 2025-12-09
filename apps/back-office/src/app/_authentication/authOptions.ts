@@ -120,6 +120,18 @@ export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
       console.error('JWT DATA', { account }, { token }, { user })
+
+      if (!token.accessToken) {
+        token.accessToken = account?.access_token;
+
+      }
+      if (!token.refreshToken) {
+        token.refreshToken = account?.refresh_token;
+      }
+      if (!token.accessTokenExpiresAt) {
+        token.accessTokenExpiresAt = account?.expires_at;
+      }
+
       if (token.accessTokenExpiresAt && Date.now() < token.accessTokenExpiresAt) {
         return token
       }
