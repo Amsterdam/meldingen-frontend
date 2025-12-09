@@ -14,7 +14,7 @@ export const ENDPOINTS = {
     'http://localhost:8000/melding/:id/attachment/:attachmentId/download',
   GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER: 'http://localhost:8000/melding/:id/attachments/melder',
   GET_MELDING_BY_MELDING_ID_MELDER: 'http://localhost:8000/melding/:id/melder',
-  GET_MELDING_BY_MELDING_ID_ASSETS_MELDER: 'http://localhost:8000/melding/:melding_id/assets/melder', //
+  GET_MELDING_BY_MELDING_ID_ASSETS_MELDER: 'http://localhost:8000/melding/:melding_id/assets/melder',
 
   PATCH_MELDING_BY_MELDING_ID: 'http://localhost:8000/melding/:id',
   PATCH_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID: 'http://localhost:8000/melding/:id/answer/:answerId',
