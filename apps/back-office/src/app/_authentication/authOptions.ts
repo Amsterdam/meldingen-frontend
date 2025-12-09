@@ -132,10 +132,14 @@ export const authOptions: AuthOptions = {
         token.accessTokenExpiresAt = account?.expires_at;
       }
 
+      console.error("NOW IS " + Date.now());
+      console.error("EXPIRES AT " + token.accessTokenExpiresAt);
+
       if (token.accessTokenExpiresAt && Date.now() < token.accessTokenExpiresAt) {
         return token
       }
 
+      console.error("GOING TO REFRESH");
       // Access token has expired, try to update it
       return refreshAccessToken(token)
     },
