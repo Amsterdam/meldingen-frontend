@@ -73,7 +73,7 @@ describe('startUpload', () => {
     const result = updater([fileUpload])
 
     expect(result[0].status).toBe('error')
-    expect(result[0].error).toBe('Test error')
+    expect(result[0].errorMessage).toBe('Test error')
   })
 
   it('sets status to uploading when upload starts', () => {
@@ -119,7 +119,7 @@ describe('startUpload', () => {
     const result = updater([fileUpload])
 
     expect(result[0].status).toBe('error')
-    expect(result[0].error).toBe('Network error')
+    expect(result[0].errorMessage).toBe('Network error')
   })
 
   it('returns the original file object if id does not match on load', () => {

@@ -1,5 +1,7 @@
 .image {
   margin-block-end: var(--ams-space-m);
+  object-fit: contain;
+  object-position: left;
 
   @media screen and (min-width: 37.5rem) {
     max-inline-size: calc(50% - (var(--ams-grid-column-gap) / 2));
