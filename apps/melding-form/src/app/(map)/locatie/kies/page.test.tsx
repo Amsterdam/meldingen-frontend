@@ -138,13 +138,7 @@ describe('Page', () => {
   it('deletes assets from melding', async () => {
     const mockGetWfsByName = vi.fn()
 
-    server.use(
-      http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, (req) => {
-        mockGetWfsByName(req)
-
-        return HttpResponse.json('Test error', { status: 500 })
-      }),
-    )
+    server.use(http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, mockGetWfsByName))
 
     const PageComponent = await Page()
     render(PageComponent)
