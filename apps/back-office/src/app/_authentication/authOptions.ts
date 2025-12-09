@@ -135,7 +135,7 @@ export const authOptions: AuthOptions = {
       console.error("NOW IS " + Date.now());
       console.error("EXPIRES AT " + token.accessTokenExpiresAt);
 
-      if (token.accessTokenExpiresAt && Date.now() < token.accessTokenExpiresAt) {
+      if (token.accessTokenExpiresAt && Date.now() / 1000 < token.accessTokenExpiresAt) {
         return token
       }
 
