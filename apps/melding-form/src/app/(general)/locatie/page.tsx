@@ -5,13 +5,11 @@ import { getMeldingByMeldingIdAssetsMelder, getWfsByName } from '@meldingen/api-
 import { Location } from './Location'
 import { COOKIES } from 'apps/melding-form/src/constants'
 
-const getFilter = (id: string) => {
-  return `
-    <Filter> 
-      <ResourceId rid="${id}" />
-    </Filter>
-    `
-}
+const getFilter = (id: string) => `
+  <Filter>
+    <ResourceId rid="${id}" />
+  </Filter>
+`
 
 const getAssetsFromMelding = async (meldingId: string, token: string) => {
   // Get existing assets for this melding
