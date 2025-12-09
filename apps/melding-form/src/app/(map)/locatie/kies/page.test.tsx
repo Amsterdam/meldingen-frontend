@@ -64,7 +64,7 @@ describe('Page', () => {
     )
   })
 
-  it('fetches assetIds from melding and pass assets to SelectLocation', async () => {
+  it('fetches assetIds from melding and passes assets to SelectLocation', async () => {
     let callCount = 0
     server.use(
       http.get(ENDPOINTS.GET_WFS_BY_NAME, () => {
