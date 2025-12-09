@@ -121,26 +121,22 @@ export const authOptions: AuthOptions = {
     jwt: async ({ account, token, user }) => {
       console.error('JWT DATA', { account }, { token }, { user })
 
-      if (!token.accessToken) {
-        token.accessToken = account?.access_token;
-
+      if (account && user) {
+        const newToken = {
+          ...token,
+          accessToken: account.access_token,
+          accessTokenExpires: Date.now() + (account.expires_in * 1000),
+          idToken: account.id_token,
+          refreshToken: account.refresh_token,
+          refreshTokenExpiresAt:account.refresh_expires_in * 1000,
+          user,
+        };
+        console.error("returning token 1 " + JSON.stringify(newToken));
+        return newToken
       }
-      if (!token.refreshToken) {
-        token.refreshToken = account?.refresh_token;
-      }
-      if (!token.accessTokenExpiresAt) {
-        token.accessTokenExpiresAt = account?.expires_at;
-        token.accessTokenExpires = account?.refresh_expires_in;
-      }
-
-      if (!token.idToken) {
-        token.idToken = account?.id_token;
-      }
-
-      console.error("NOW IS " + Date.now());
-      console.error("EXPIRES AT " + token.accessTokenExpiresAt);
 
       if (token.accessTokenExpiresAt && Date.now() / 1000 < token.accessTokenExpiresAt) {
+        console.error("returning token 2" + JSON.stringify(token));
         return token
       }
 

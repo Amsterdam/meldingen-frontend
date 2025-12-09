@@ -8,6 +8,8 @@ client.setConfig({
   auth: async () => {
     const session = await getServerSession(authOptions)
 
+    console.error("im now at the session"  + JSON.stringify(session));
+
     if (!session || !session.accessToken || session.error) {
       redirect('/api/auth/signin')
     }
