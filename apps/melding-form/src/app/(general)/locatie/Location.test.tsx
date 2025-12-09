@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
 
 import { Location } from './Location'
+import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -102,5 +103,12 @@ describe('Location', () => {
     const link = screen.getByRole('link', { name: 'link.with-location' })
 
     expect(link).toBeInTheDocument()
+  })
+
+  it.only('renders saved assets', () => {
+    render(<Location {...defaultProps} savedAssets={containerAssets} />)
+
+    expect(screen.getByText('Restafval container - Container-001')).toBeInTheDocument()
+    expect(screen.getByText('Glas container - Container-002')).toBeInTheDocument()
   })
 })

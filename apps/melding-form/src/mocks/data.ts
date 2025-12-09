@@ -230,6 +230,7 @@ export const containerAssets: Feature[] = [
     },
     id: 'container.1',
     properties: {
+      fractie_omschrijving: 'Restafval',
       id_nummer: 'Container-001',
       name: 'Test Feature',
     },
@@ -242,6 +243,7 @@ export const containerAssets: Feature[] = [
     },
     id: 'container.2',
     properties: {
+      fractie_omschrijving: 'Glas',
       id_nummer: 'Container-002',
       name: 'Test Feature',
     },

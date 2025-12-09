@@ -34,7 +34,7 @@ const getAssetElement = (asset: Feature) => {
   const icon = getContainerAssetIconSVG(asset)
   const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
   // TODO: use assetType instead of "container" when available
-  const label = `${asset.properties?.fractie_omschrijving} container - ${asset.properties?.id_nummer}`
+  const label = `${asset.properties?.fractie_omschrijving ?? ''} container - ${asset.properties?.id_nummer}`
 
   return (
     <span className={styles.label}>
