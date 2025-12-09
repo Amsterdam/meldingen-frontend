@@ -113,21 +113,6 @@ export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
       console.error("JWT DATA", account, token, user);
-      // Account and user are Keycloak-specific
-      if (account && user) {
-        // account is only available the first time this callback is called on a new session (after the user signs in)
-        return {
-          accessToken: account.access_token,
-          // Access token expiry date in milliseconds
-          accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
-          refreshToken: account.refresh_token,
-          // Refresh token expiry date in milliseconds
-          refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
-          user,
-        }
-      }
-
-      // Return previous token if the access token has not expired yet
       if (token.accessTokenExpiresAt && Date.now() < token.accessTokenExpiresAt) {
         return token
       }
