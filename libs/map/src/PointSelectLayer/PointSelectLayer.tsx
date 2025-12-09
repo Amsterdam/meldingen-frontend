@@ -6,6 +6,8 @@ import { defaultIcon } from '../markerIcons'
 import { Coordinates } from '../types'
 import { Crosshair } from './Crosshair'
 
+const FLY_TO_MIN_ZOOM = 18
+
 type Props = {
   hideSelectedPoint: boolean
   onSelectedPointChange: (point: Coordinates) => void
@@ -48,8 +50,7 @@ export const PointSelectLayer = ({ hideSelectedPoint, onSelectedPointChange, sel
     const { lat, lng } = selectedPoint
 
     const currentZoom = map.getZoom()
-    const flyToMinZoom = 18
-    map.flyTo([lat, lng], currentZoom < flyToMinZoom ? flyToMinZoom : currentZoom)
+    map.flyTo([lat, lng], currentZoom < FLY_TO_MIN_ZOOM ? FLY_TO_MIN_ZOOM : currentZoom)
   }, [map])
 
   // Register map events
@@ -74,7 +75,7 @@ export const PointSelectLayer = ({ hideSelectedPoint, onSelectedPointChange, sel
     // Remove previous marker
     markerRef.current?.remove()
 
-    // Do not show marker when selectedAsset are present
+    // Do not show marker when selectedAssets are present
     if (hideSelectedPoint || !selectedPoint) {
       markerRef.current = null
       return
@@ -93,8 +94,7 @@ export const PointSelectLayer = ({ hideSelectedPoint, onSelectedPointChange, sel
 
     // Zoom to marker
     const currentZoom = map.getZoom()
-    const flyToMinZoom = 18
-    map.flyTo([lat, lng], currentZoom < flyToMinZoom ? flyToMinZoom : currentZoom)
+    map.flyTo([lat, lng], currentZoom < FLY_TO_MIN_ZOOM ? FLY_TO_MIN_ZOOM : currentZoom)
   }, [map, selectedPoint])
 
   return <Crosshair id="crosshair" />
