@@ -35,27 +35,21 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, labels, onDel
   const progressLabel = isFinished ? progressFinishedLabel : progressLoadingLabel
 
   return (
-    <li className={styles.item}>
-      <div className={clsx(styles.container, errorMessage && styles.containerWithError)}>
-        <div className={styles.imageContainer}>
-          {isError ? (
-            <Icon className={styles.icon} size="heading-1" svg={WarningIcon} />
-          ) : (
-            <FileListImage file={file} />
-          )}
-        </div>
-        <div className={styles.description}>
-          <span>{file.name}</span>
-          {isError ? (
-            <span className={styles.errorMessage}>{errorMessage}</span>
-          ) : (
-            <span className={styles.statusMessage}>{progressLabel}</span>
-          )}
-        </div>
-        <Button className={styles.deleteButton} id={deleteButtonId} onClick={() => onDelete?.()} variant="secondary">
-          {actionButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
-        </Button>
+    <li className={clsx(styles.item, errorMessage && styles.itemWithError)}>
+      <div className={styles.imageContainer}>
+        {isError ? <Icon className={styles.icon} size="heading-1" svg={WarningIcon} /> : <FileListImage file={file} />}
       </div>
+      <div className={styles.description}>
+        <span>{file.name}</span>
+        {isError ? (
+          <span className={styles.errorMessage}>{errorMessage}</span>
+        ) : (
+          <span className={styles.statusMessage}>{progressLabel}</span>
+        )}
+      </div>
+      <Button className={styles.deleteButton} id={deleteButtonId} onClick={() => onDelete?.()} variant="secondary">
+        {actionButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
+      </Button>
     </li>
   )
 }

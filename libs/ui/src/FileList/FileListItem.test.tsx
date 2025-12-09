@@ -100,8 +100,8 @@ describe('FileListItem', () => {
     expect(buttonLabel).toBeInTheDocument()
     expect(statusMessage).toBeInTheDocument()
 
-    const container = screen.getByRole('listitem').firstChild
-    expect(container).toHaveClass(/containerWithError/)
+    const container = screen.getByRole('listitem')
+    expect(container).toHaveClass(/itemWithError/)
   })
 
   it('calls onDelete when the remove button is clicked', async () => {
