@@ -446,7 +446,7 @@ describe('Attachments', () => {
     expect(errorMessageDescription).toBeInTheDocument()
   })
 
-  it('shows an error when continuing while an upload is in progress', async () => {
+  it('shows an error when trying to navigate to the next page while an upload is in progress', async () => {
     const user = userEvent.setup()
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.LOADING }
