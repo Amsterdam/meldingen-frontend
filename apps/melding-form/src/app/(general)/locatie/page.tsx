@@ -60,5 +60,5 @@ export default async () => {
 
   const assets = await getAssetsFromMelding(meldingId, token)
 
-  return <Location address={address} prevPage={prevPage ? prevPage.value : '/'} savedAssets={assets} />
+  return <Location address={address} prevPage={prevPage ? prevPage.value : '/'} selectedAssets={assets} />
 }

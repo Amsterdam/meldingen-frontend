@@ -16,7 +16,7 @@ vi.mock('react', async (importOriginal) => {
 
 const defaultProps = {
   prevPage: '/previous',
-  savedAssets: [],
+  selectedAssets: [],
 }
 
 describe('Location', () => {
@@ -106,7 +106,7 @@ describe('Location', () => {
   })
 
   it('renders saved assets', () => {
-    render(<Location {...defaultProps} savedAssets={containerAssets} />)
+    render(<Location {...defaultProps} selectedAssets={containerAssets} />)
 
     expect(screen.getByText('Restafval container - Container-001')).toBeInTheDocument()
     expect(screen.getByText('Glas container - Container-002')).toBeInTheDocument()

@@ -84,10 +84,10 @@ describe('Page', () => {
 
     render(PageComponent)
 
-    expect(Location).toHaveBeenCalledWith(expect.objectContaining({ savedAssets: containerAssets }), undefined)
+    expect(Location).toHaveBeenCalledWith(expect.objectContaining({ selectedAssets: containerAssets }), undefined)
   })
 
-  it('returns empty savedAssets when no assets are found', async () => {
+  it('returns empty selectedAssets when no assets are found', async () => {
     server.use(http.get(ENDPOINTS.GET_WFS_BY_NAME, () => HttpResponse.json({ features: [] })))
 
     const PageComponent = await Page()
@@ -95,7 +95,7 @@ describe('Page', () => {
 
     expect(Location).toHaveBeenCalledWith(
       expect.objectContaining({
-        savedAssets: [],
+        selectedAssets: [],
       }),
       undefined,
     )
@@ -118,7 +118,7 @@ describe('Page', () => {
 
     expect(Location).toHaveBeenCalledWith(
       expect.objectContaining({
-        savedAssets: [],
+        selectedAssets: [],
       }),
       undefined,
     )
@@ -137,7 +137,7 @@ describe('Page', () => {
 
     expect(Location).toHaveBeenCalledWith(
       expect.objectContaining({
-        savedAssets: [],
+        selectedAssets: [],
       }),
       undefined,
     )

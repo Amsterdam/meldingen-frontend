@@ -1,6 +1,6 @@
 'use client'
 
-import { Heading, Paragraph, StandaloneLink } from '@amsterdam/design-system-react'
+import { Heading, Paragraph, StandaloneLink, UnorderedList } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import Image from 'next/image'
@@ -27,24 +27,23 @@ const initialState: Pick<FormState, 'systemError' | 'validationErrors'> = {}
 type Props = {
   address?: string
   prevPage: string
-  savedAssets: Feature[]
+  selectedAssets: Feature[]
 }
 
 const getAssetElement = (asset: Feature) => {
   const icon = getContainerAssetIconSVG(asset)
-  const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
   // TODO: use assetType instead of "container" when available
   const label = `${asset.properties?.fractie_omschrijving ?? ''} container - ${asset.properties?.id_nummer}`
 
   return (
-    <span className={styles.label}>
-      <Image alt={altText} height={32} src={icon} width={32} />
+    <>
+      <Image alt="" height={32} src={icon} width={32} />
       <Paragraph>{label}</Paragraph>
-    </span>
+    </>
   )
 }
 
-export const Location = ({ address, prevPage, savedAssets }: Props) => {
+export const Location = ({ address, prevPage, selectedAssets }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ systemError, validationErrors }, formAction] = useActionState(postLocationForm, initialState)
@@ -93,12 +92,16 @@ export const Location = ({ address, prevPage, savedAssets }: Props) => {
           {t('question')}
         </Heading>
         <Paragraph className="ams-mb-s">{address ?? t('description')}</Paragraph>
-        {savedAssets.length > 0 &&
-          savedAssets.map((asset) => (
-            <div className="ams-mb-m" key={asset.id}>
-              {getAssetElement(asset)}
-            </div>
-          ))}
+        {selectedAssets.length > 0 && (
+          <UnorderedList className="ams-mb-m" markers={false}>
+            {selectedAssets.map((asset) => (
+              <UnorderedList.Item className={styles.label} key={asset.id}>
+                {getAssetElement(asset)}
+              </UnorderedList.Item>
+            ))}
+          </UnorderedList>
+        )}
+
         <NextLink href="/locatie/kies" legacyBehavior passHref>
           <StandaloneLink className="ams-mb-m" id="location-link">
             {address ? t('link.with-location') : t('link.without-location')}
