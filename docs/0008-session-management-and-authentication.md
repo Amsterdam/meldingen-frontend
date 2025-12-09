@@ -23,5 +23,27 @@ but it will still be associated with the same melding id.
 ## Admin
 
 Our Admin requires that you log in before you can use it.
-We use [React Admin's Keycloak provider](https://github.com/marmelab/ra-keycloak) for this.
-We intend to create a wrapper around this provider, so other users can use their own authentication provider.
+Locally, we use Keycloak for this.
+If you have the back end running on your machine, you can log in with `meldingen_user` and `password`.
+
+For the deployed instance of the Admin app, we use Entra ID.
+Entra ID is used when the environment variables `VITE_ENTRA_APP_BASE_URL`, `VITE_ENTRA_AUTHORITY` and `VITE_ENTRA_CLIENT_ID` are set.
+
+If any of these variables are not set, the application will revert to Keycloak authentication.
+When configured properly, you should be able to log in automatically if you access the Admin app from a workspace with the necessary permissions.
+
+[See here](https://gemeente-amsterdam.atlassian.net/wiki/spaces/TS/pages/2359492609/Authenticatie+in+V2) for more technical details.
+
+## Back office
+
+Our Back office app also requires that you log in before you can use it.
+Locally, we use Keycloak for this.
+If you have the back end running on your machine, you can log in with `meldingen_user` and `password`.
+
+For the deployed instance of the Back office app, we use Entra ID.
+Entra ID is used when the environment variables `ENTRA_CLIENT_ID`, `ENTRA_CLIENT_SECRET`, `ENTRA_TENANT_ID` and `ENTRA_TOKEN_URL` are set.
+
+If any of these variables are not set, the application will revert to Keycloak authentication.
+When configured properly, you should be able to log in automatically if you access the Back office app from a workspace with the necessary permissions.
+
+[See here](https://gemeente-amsterdam.atlassian.net/wiki/spaces/TS/pages/2359492609/Authenticatie+in+V2) for more technical details.

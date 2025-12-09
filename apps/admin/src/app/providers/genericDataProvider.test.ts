@@ -1,10 +1,10 @@
-import { dataProvider } from './dataProvider'
+import { genericDataProvider } from './genericDataProvider'
 
-describe('dataProvider', () => {
+describe('genericDataProvider', () => {
   it('uses a PUT request for the `form` resource', async () => {
     const httpClient = vi.fn().mockResolvedValue({ json: { id: 1 } })
 
-    const client = dataProvider('http://localhost:3000', httpClient)
+    const client = genericDataProvider('http://localhost:3000', httpClient)
 
     await client.update('form', {
       data: {},
@@ -21,7 +21,7 @@ describe('dataProvider', () => {
   it('uses a PATCH request for all other resources', async () => {
     const httpClient = vi.fn().mockResolvedValue({ json: { id: 1 } })
 
-    const client = dataProvider('http://localhost:3000', httpClient)
+    const client = genericDataProvider('http://localhost:3000', httpClient)
 
     await client.update('other', {
       data: {},

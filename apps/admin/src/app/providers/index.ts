@@ -1,3 +1,6 @@
-export { dataProvider } from './dataProvider'
+export { entraAuthProvider } from './entraAuthProvider'
+export { isEntraAuthEnabled } from './entraAuthProvider'
+export { entraDataProvider } from './entraDataProvider'
 export { i18nProvider } from './i18nProvider'
-export { useAuthProvider } from './useAuthProvider'
+export { keycloakAuthProvider } from './keycloakAuthProvider'
+export { keycloakDataProvider } from './keycloakDataProvider'
