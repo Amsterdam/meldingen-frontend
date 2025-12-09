@@ -30,6 +30,12 @@ const refreshAccessToken = async (token: JWT) => {
     const { clientId, clientSecret, tokenUrl } = envVars
     console.error("TOKEN STUFF", clientId, tokenUrl)
 
+    console.error("The params are " + JSON.stringify({
+        client_id: clientId,
+        client_secret: 'secret',
+        grant_type: 'refresh_token',
+        refresh_token: token.refreshToken || '',
+      }))
     const response = await fetch(tokenUrl, {
       body: new URLSearchParams({
         client_id: clientId,
@@ -49,7 +55,7 @@ const refreshAccessToken = async (token: JWT) => {
     console.error("RESPONSE", refreshedTokens);
 
     if (!response.ok) {
-      console.error("THROWING REFRESHED TOKENS")
+      console.error("THROWING REFRESHED TOKENS", await response.text(), response.text, response.status)
       throw refreshedTokens
     }
 
