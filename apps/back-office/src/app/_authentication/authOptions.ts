@@ -130,6 +130,11 @@ export const authOptions: AuthOptions = {
       }
       if (!token.accessTokenExpiresAt) {
         token.accessTokenExpiresAt = account?.expires_at;
+        token.accessTokenExpires = account?.refresh_expires_in;
+      }
+
+      if (!token.idToken) {
+        token.idToken = account?.id_token;
       }
 
       console.error("NOW IS " + Date.now());
