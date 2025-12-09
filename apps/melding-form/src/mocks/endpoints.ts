@@ -7,7 +7,7 @@ export const ENDPOINTS = {
   // Melding
   DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID:
     'http://localhost:8000/melding/:id/attachment/:attachmentId',
-  DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID: 'http://localhost:8000/melding/:melding_id/asset/:asset_id', //
+  DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID: 'http://localhost:8000/melding/:melding_id/asset/:asset_id',
 
   GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER: 'http://localhost:8000/melding/:id/answers/melder',
   GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD:
