@@ -29,15 +29,22 @@ const getFilter = (id: string) => {
 
 const getAssetsFromMelding = async (meldingId: string, token: string) => {
   // Get existing assets for this melding
-  const { data: assetIds } = await getMeldingByMeldingIdAssetsMelder({
+  const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
     path: {
       melding_id: parseInt(meldingId, 10),
     },
     query: { token },
   })
 
+  if (error) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(error)
+    return []
+  }
+
   // Delete all assets to avoid conflicts with previously selected assets
-  assetIds?.forEach(async (asset) => {
+  assetIds.forEach(async (asset) => {
     const { error } = await deleteMeldingByMeldingIdAssetByAssetId({
       path: {
         asset_id: asset.id,
@@ -54,7 +61,7 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
   })
 
   const assets = await Promise.all(
-    (assetIds ?? []).map(async (asset) => {
+    assetIds.map(async (asset) => {
       const filter = getFilter(asset.external_id)
 
       const { data, error } = await getWfsByName({ path: { name: 'container' }, query: { filter } })
