@@ -93,7 +93,7 @@ describe('Page', () => {
     )
   })
 
-  it('logs an error when fetches assetIds from melding fails', async () => {
+  it('logs an error when fetching assetIds from melding fails', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS_MELDER, () =>
         HttpResponse.json('Test error', { status: 500 }),
