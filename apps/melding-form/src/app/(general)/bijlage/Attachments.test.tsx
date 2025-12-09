@@ -427,7 +427,7 @@ describe('Attachments', () => {
     expect(errorMessage[0]).toBeInTheDocument()
   })
 
-  it('shows an error when trying to upload too many files ', async () => {
+  it('shows an error when there are too many files in the file list', async () => {
     const user = userEvent.setup()
 
     render(<Attachments {...defaultProps} />)
