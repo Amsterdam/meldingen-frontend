@@ -19,13 +19,11 @@ export const generateMetadata = async () => {
   }
 }
 
-const getFilter = (id: string) => {
-  return `
-    <Filter> 
-      <ResourceId rid="${id}" />
-    </Filter>
-    `
-}
+const getFilter = (id: string) => `
+  <Filter>
+    <ResourceId rid="${id}" />
+  </Filter>
+`
 
 const getAssetsFromMelding = async (meldingId: string, token: string) => {
   // Get existing assets for this melding
