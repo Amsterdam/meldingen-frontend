@@ -3,6 +3,7 @@ import type { JWT } from 'next-auth/jwt'
 import { AuthOptions } from 'next-auth'
 import AzureAD from 'next-auth/providers/azure-ad'
 import KeycloakProvider from 'next-auth/providers/keycloak'
+import { cookies } from 'next/headers'
 
 const isEntraAuthEnabled =
   Boolean(process.env.ENTRA_CLIENT_ID) &&
@@ -121,6 +122,24 @@ export const authOptions: AuthOptions = {
       console.error('JWT DATA', { account }, { token }, { user })
 
       if (account && user) {
+        try {
+          const cookieStore = await cookies()
+          if (account.refresh_token) {
+            cookieStore.set('refresh_token', account.refresh_token, {
+                httpOnly: true,
+                sameSite: 'strict',
+            });
+          }
+          if (account.id_token) {
+            cookieStore.set('id_token', account.id_token, {
+                httpOnly: true,
+                sameSite: 'strict',
+            });
+          }
+        } catch (e: any) {
+          console.log("something went wrong " + e.message)
+        }
+
         const newToken = {
           ...token,
           accessToken: account.access_token,
