@@ -124,7 +124,7 @@ export const authOptions: AuthOptions = {
         const newToken = {
           ...token,
           accessToken: account.access_token,
-          accessTokenExpiresAt: account.expires_at * 1000,
+          accessTokenExpiresAt: account.expires_at! * 1000,
           idToken: account.id_token,
           refreshToken: account.refresh_token,
           user,
