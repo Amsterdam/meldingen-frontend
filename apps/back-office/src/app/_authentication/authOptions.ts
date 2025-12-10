@@ -113,6 +113,8 @@ export const authOptions: AuthOptions = {
     jwt: async ({ account, token, user }) => {
       if (account && user) {
         console.log("First time login" + JSON.stringify(account));
+        try {
+
         const cookieStore = await cookies()
 
         if (account.refresh_token) {
@@ -128,13 +130,17 @@ export const authOptions: AuthOptions = {
               sameSite: 'strict',
           });
         }
+        } catch (e: any) {
+          console.log("something went wrong " + e.message)
+        }
 
         // Very important: this can be a max of 4096 bytes, or the application will break.
         // This is why we store the refresh and id token in seperate httpOnly cookies instead
         return {
           accessToken: account.access_token,
           accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
-          refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
+          // refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
+          refreshTokenExpiresAt: account.expires_at && account.expires_at * 1000,
           user,
         };
       }
