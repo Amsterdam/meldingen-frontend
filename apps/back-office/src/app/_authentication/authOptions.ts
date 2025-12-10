@@ -52,7 +52,7 @@ const refreshAccessToken = async (token: JWT) => {
 
     if (!response.ok) {
       const responseText = await response.text();
-      console.error("THROWING REFRESHED TOKENS", await response.text(), response.status)
+      console.error("THROWING REFRESHED TOKENS", await responseText, response.status)
       throw new Error('Failed to refresh access token ' + responseText)
     }
 
