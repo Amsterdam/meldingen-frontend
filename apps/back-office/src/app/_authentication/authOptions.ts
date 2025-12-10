@@ -70,12 +70,10 @@ const refreshAccessToken = async (token: JWT) => {
       refreshTokenExpiresAt:
         refreshedTokens.refresh_expires_in && Date.now() + refreshedTokens.refresh_expires_in * 1000,
     }
-  } catch {
-    console.error("ERRORRRRRRRRRR")
-    return {
-      ...token,
-      error: 'RefreshAccessTokenError',
-    }
+  } catch (e: any) {
+    console.error("ERRORRRRRRRRRR " + e.message + "    " + e.toString())
+
+    throw e;
   }
 }
 
@@ -130,7 +128,7 @@ export const authOptions: AuthOptions = {
           accessTokenExpires: account.expires_at,
           idToken: account.id_token,
           refreshToken: account.refresh_token,
-          ...user,
+          user,
         };
         console.error("returning token 1 " + JSON.stringify(newToken));
         return newToken
