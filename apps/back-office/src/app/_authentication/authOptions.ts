@@ -126,7 +126,7 @@ export const authOptions: AuthOptions = {
           accessToken: account.access_token,
           accessTokenExpiresAt: account.expires_at! * 1000,
           idToken: account.id_token,
-          refreshToken: account.refresh_token,
+          // refreshToken: account.refresh_token,
           user,
         };
         console.error("returning token 1 " + JSON.stringify(newToken));
