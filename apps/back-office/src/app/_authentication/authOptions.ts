@@ -146,6 +146,7 @@ export const authOptions: AuthOptions = {
       return refreshAccessToken(token)
       } catch {
         console.error("some error")
+        throw new Error('aaaa');
       }
     },
     redirect: async ({ baseUrl, url }) => {
