@@ -28,7 +28,8 @@ const refreshAccessToken = async (token: JWT) => {
 
     const { clientId, clientSecret, tokenUrl } = envVars
 
-    const refreshToken = cookies.get('refresh_token')?.value;
+    const cookieStore = await cookies()
+    const refreshToken = cookieStore.get('refresh_token')?.value;
 
     const response = await fetch(tokenUrl, {
       body: new URLSearchParams({
@@ -49,12 +50,12 @@ const refreshAccessToken = async (token: JWT) => {
 
     const refreshedTokens = await response.json()
 
-    cookies.set('refresh_token', refreshedTokens.refresh_token, {
-        httpOnly: true,
-        overwrite: true,
-        sameSite: 'strict',
-    });
-
+    if (refreshedTokens.refresh_token) {
+      cookieStore.set('refresh_token', refreshedTokens.refresh_token, {
+          httpOnly: true,
+          sameSite: 'strict',
+      });
+    }
 
     return {
       ...token,
@@ -105,17 +106,21 @@ export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
       if (account && user) {
-        cookies.set('refresh_token', account.refresh_token, {
-            httpOnly: true,
-            overwrite: true,
-            sameSite: 'strict',
-        });
+        const cookieStore = await cookies()
 
-        cookies.set('id_token', account.id_token, {
-            httpOnly: true,
-            overwrite: true,
-            sameSite: 'strict',
-        });
+        if (account.refresh_token) {
+          cookieStore.set('refresh_token', account.refresh_token!, {
+              httpOnly: true,
+              sameSite: 'strict',
+          });
+        }
+
+        if (account.id_token) {
+          cookieStore.set('id_token', account.id_token!, {
+              httpOnly: true,
+              sameSite: 'strict',
+          });
+        }
 
         // Very important: this can be a max of 4096 bytes, or the application will break.
         // This is why we store the refresh and id token in seperate httpOnly cookies instead
