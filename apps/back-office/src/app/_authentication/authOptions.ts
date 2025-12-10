@@ -139,6 +139,7 @@ export const authOptions: AuthOptions = {
         // Very important: this can be a max of 4096 bytes, or the application will break.
         // This is why we store the refresh and id token in seperate httpOnly cookies instead
         return {
+          ...token,
           accessToken: account.access_token,
           accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
           // refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
