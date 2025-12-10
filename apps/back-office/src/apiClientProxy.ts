@@ -6,6 +6,7 @@ import { client } from 'libs/api-client/src/client.gen'
 
 client.setConfig({
   auth: async () => {
+    console.error("i got here at least");
     let session;
 
     try {

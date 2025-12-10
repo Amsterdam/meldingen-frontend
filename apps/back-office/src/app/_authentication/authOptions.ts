@@ -119,6 +119,8 @@ const getProviders = () => {
 export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
+      try {
+
       console.error('JWT DATA', { account }, { token }, { user })
 
       if (account && user) {
@@ -128,7 +130,7 @@ export const authOptions: AuthOptions = {
           accessTokenExpires: account.expires_at,
           idToken: account.id_token,
           refreshToken: account.refresh_token,
-          user,
+          ...user,
         };
         console.error("returning token 1 " + JSON.stringify(newToken));
         return newToken
@@ -142,6 +144,9 @@ export const authOptions: AuthOptions = {
       console.error("GOING TO REFRESH");
       // Access token has expired, try to update it
       return refreshAccessToken(token)
+      } catch {
+        console.error("some error")
+      }
     },
     redirect: async ({ baseUrl, url }) => {
       console.error("REDIRECT", baseUrl, url)
