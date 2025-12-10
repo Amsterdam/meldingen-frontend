@@ -22,7 +22,8 @@ const envVars = {
  * returns the old token and an error property
  */
 const refreshAccessToken = async (token: JWT) => {
-    // refreshTokenExpiresAt is Keycloak-specific
+    console.log("Refreshing access token " + JSON.stringify(token))
+
     if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
       throw new Error('Refresh token expired')
 
@@ -30,6 +31,8 @@ const refreshAccessToken = async (token: JWT) => {
 
     const cookieStore = await cookies()
     const refreshToken = cookieStore.get('refresh_token')?.value;
+
+    console.log("Refresh token " + JSON.stringify(refreshToken))
 
     const response = await fetch(tokenUrl, {
       body: new URLSearchParams({
@@ -45,10 +48,13 @@ const refreshAccessToken = async (token: JWT) => {
 
     if (!response.ok) {
       const responseText = await response.text();
+      console.error("Failed to refresh access token: " + responseText);
       throw new Error('Failed to refresh access token ' + responseText)
     }
 
     const refreshedTokens = await response.json()
+
+    console.log("Refreshed tokens " + JSON.stringify(refreshedTokens))
 
     if (refreshedTokens.refresh_token) {
       cookieStore.set('refresh_token', refreshedTokens.refresh_token, {
@@ -106,17 +112,18 @@ export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
       if (account && user) {
+        console.log("First time login" + JSON.stringify(account));
         const cookieStore = await cookies()
 
         if (account.refresh_token) {
-          cookieStore.set('refresh_token', account.refresh_token!, {
+          cookieStore.set('refresh_token', account.refresh_token, {
               httpOnly: true,
               sameSite: 'strict',
           });
         }
 
         if (account.id_token) {
-          cookieStore.set('id_token', account.id_token!, {
+          cookieStore.set('id_token', account.id_token, {
               httpOnly: true,
               sameSite: 'strict',
           });
