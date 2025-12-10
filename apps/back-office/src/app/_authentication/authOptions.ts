@@ -125,10 +125,9 @@ export const authOptions: AuthOptions = {
         const newToken = {
           ...token,
           accessToken: account.access_token,
-          accessTokenExpires: Date.now() + (account.expires_in * 1000),
+          accessTokenExpires: account.expires_at,
           idToken: account.id_token,
           refreshToken: account.refresh_token,
-          refreshTokenExpiresAt:account.refresh_expires_in * 1000,
           user,
         };
         console.error("returning token 1 " + JSON.stringify(newToken));
