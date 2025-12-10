@@ -3,6 +3,7 @@ import type { JWT } from 'next-auth/jwt'
 import { AuthOptions } from 'next-auth'
 import AzureAD from 'next-auth/providers/azure-ad'
 import KeycloakProvider from 'next-auth/providers/keycloak'
+import { cookies } from 'next/headers'
 
 const isEntraAuthEnabled =
   Boolean(process.env.ENTRA_CLIENT_ID) &&
@@ -21,7 +22,6 @@ const envVars = {
  * returns the old token and an error property
  */
 const refreshAccessToken = async (token: JWT) => {
-  try {
     // refreshTokenExpiresAt is Keycloak-specific
     if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
       throw new Error('Refresh token expired')
@@ -40,11 +40,12 @@ const refreshAccessToken = async (token: JWT) => {
       method: 'POST',
     })
 
-    const refreshedTokens = await response.json()
-
     if (!response.ok) {
-      throw refreshedTokens
+      const responseText = await response.text();
+      throw new Error('Failed to refresh access token ' + responseText)
     }
+
+    const refreshedTokens = await response.json()
 
     return {
       ...token,
@@ -54,12 +55,6 @@ const refreshAccessToken = async (token: JWT) => {
       refreshTokenExpiresAt:
         refreshedTokens.refresh_expires_in && Date.now() + refreshedTokens.refresh_expires_in * 1000,
     }
-  } catch {
-    return {
-      ...token,
-      error: 'RefreshAccessTokenError',
-    }
-  }
 }
 
 const getProviders = () => {
@@ -100,27 +95,27 @@ const getProviders = () => {
 export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
-      // Account and user are Keycloak-specific
       if (account && user) {
-        // account is only available the first time this callback is called on a new session (after the user signs in)
-        return {
+        const cookieStore = await cookies();
+
+        const newToken = {
+          ...token,
           accessToken: account.access_token,
-          // Access token expiry date in milliseconds
-          accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
-          refreshToken: account.refresh_token,
-          // Refresh token expiry date in milliseconds
-          refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
+          accessTokenExpiresAt: account.expires_at! * 1000,
+          // idToken: account.id_token,
+          // refreshToken: account.refresh_token,
           user,
-        }
+        };
+
+
+        cookieStore.set('refresh', 'test', {
+          httpOnly: true
+        })
+
+        return newToken
       }
 
-      // Return previous token if the access token has not expired yet
-      if (token.accessTokenExpiresAt && Date.now() < token.accessTokenExpiresAt) {
-        return token
-      }
-
-      // Access token has expired, try to update it
-      return refreshAccessToken(token)
+      return token;
     },
     redirect: async ({ baseUrl, url }) => {
       // Use callback url
