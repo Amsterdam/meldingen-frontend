@@ -129,6 +129,12 @@ export const authOptions: AuthOptions = {
         });
 
         return newToken
+      }      if (token.accessTokenExpiresAt && Date.now() < token.accessTokenExpiresAt) {
+        return token
+      }
+
+      if (token.accessTokenExpiresAt && Date.now() < token.accessTokenExpiresAt) {
+        return token
       }
 
       return refreshAccessToken(token);
