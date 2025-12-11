@@ -1,5 +1,6 @@
 import {
   AnswerQuestionOutput,
+  AssetOutput,
   Feature,
   FormCheckboxComponentOutput,
   FormOutput,
@@ -229,6 +230,7 @@ export const containerAssets: Feature[] = [
     },
     id: 'container.1',
     properties: {
+      fractie_omschrijving: 'Restafval',
       id_nummer: 'Container-001',
       name: 'Test Feature',
     },
@@ -241,9 +243,25 @@ export const containerAssets: Feature[] = [
     },
     id: 'container.2',
     properties: {
+      fractie_omschrijving: 'Glas',
       id_nummer: 'Container-002',
       name: 'Test Feature',
     },
     type: 'Feature',
+  },
+]
+
+export const containerAssetIds: AssetOutput[] = [
+  {
+    created_at: '2025-12-08T14:14:33Z',
+    external_id: 'container.1',
+    id: 69,
+    updated_at: '2025-12-08T14:14:33Z',
+  },
+  {
+    created_at: '2025-12-08T14:14:33Z',
+    external_id: 'container.2',
+    id: 70,
+    updated_at: '2025-12-08T14:14:33Z',
   },
 ]
