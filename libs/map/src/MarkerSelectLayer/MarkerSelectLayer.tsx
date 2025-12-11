@@ -26,7 +26,7 @@ export const createClusterIcon = (cluster: MarkerCluster) => {
   })
 }
 
-const fetchFeaturesOnMoveEnd = async (
+export const fetchFeaturesOnMoveEnd = async (
   classification: Props['classification'],
   map: Map,
   onFeaturesChange: Props['onFeaturesChange'],
