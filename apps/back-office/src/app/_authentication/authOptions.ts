@@ -112,6 +112,7 @@ const getProviders = () => {
 export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
+      console.log(allTokens())
       if (account && user) {
 
         const newToken = {
