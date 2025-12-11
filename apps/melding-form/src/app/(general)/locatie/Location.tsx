@@ -36,10 +36,10 @@ const getAssetElement = (asset: Feature) => {
   const label = `${asset.properties?.fractie_omschrijving ?? ''} container - ${asset.properties?.id_nummer}`
 
   return (
-    <>
+    <UnorderedList.Item className={styles.label} key={asset.id}>
       <Image alt="" height={32} src={icon} width={32} />
       <Paragraph>{label}</Paragraph>
-    </>
+    </UnorderedList.Item>
   )
 }
 
@@ -94,11 +94,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
         <Paragraph className="ams-mb-s">{address ?? t('description')}</Paragraph>
         {selectedAssets.length > 0 && (
           <UnorderedList className="ams-mb-m" markers={false}>
-            {selectedAssets.map((asset) => (
-              <UnorderedList.Item className={styles.label} key={asset.id}>
-                {getAssetElement(asset)}
-              </UnorderedList.Item>
-            ))}
+            {selectedAssets.map((asset) => getAssetElement(asset))}
           </UnorderedList>
         )}
 
