@@ -107,10 +107,13 @@ export const authOptions: AuthOptions = {
           user,
         };
 
+        console.log("Got here");
 
-        cookieStore.set('refresh', 'test', {
+        cookieStore.set('refresh', account.refresh_token, {
           httpOnly: true
         })
+
+        console.log("Did not get here");
 
         return newToken
       }
