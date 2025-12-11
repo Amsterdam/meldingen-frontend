@@ -16,7 +16,7 @@ const isEntraAuthEnabled =
  * For now, the user has to log in every 90 minutes (default access token lifetime).
  * https://gemeente-amsterdam.atlassian.net/browse/SIG-6986
  **/
-const shouldStoreRefreshToken = isEntraAuthEnabled
+const shouldStoreRefreshToken = !isEntraAuthEnabled
 
 const envVars = {
   clientId: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_ID : process.env.KEYCLOAK_CLIENT_ID,
@@ -111,14 +111,12 @@ export const authOptions: AuthOptions = {
     jwt: async ({ account, token, user }) => {
       // account is only available the first time this callback is called on a new session (after the user signs in)
       if (account && user) {
-        console.log(JSON.stringify({account, user, token, shouldStoreRefreshToken}))
         let baseToken: JWT = {
           ...token,
           accessToken: account.access_token,
           // Access token expiry date in milliseconds
           accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
-          refreshTokenExpiresAt:
-            account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
+          refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
           user,
         }
 
@@ -134,24 +132,15 @@ export const authOptions: AuthOptions = {
         return baseToken
       }
 
-      console.log("Here 1");
-
       // Return previous token if the access token has not expired yet
       if (token.accessTokenExpiresAt && Date.now() < token.accessTokenExpiresAt) {
-        console.log({token})
         return token
       }
 
-      console.log("Here 2");
-
       // Access token has expired, try to update it
       if (shouldStoreRefreshToken) {
-        console.log({token, ab: 'ab'})
         return refreshAccessToken(token)
       }
-
-
-      console.log("Here 3");
 
       // We have no refresh token. Throwing an error forces sign in again
       throw new Error('Token has expired')
