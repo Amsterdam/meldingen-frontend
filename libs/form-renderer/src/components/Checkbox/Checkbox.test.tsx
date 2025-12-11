@@ -73,7 +73,7 @@ describe('Checkbox Component', () => {
     render(<Checkbox {...defaultProps} errorMessage="Test error message" />)
 
     const checkboxWithErrorAddedToLabel = screen.getByRole('group', {
-      name: `${defaultProps.label} Invoerfout: Test error message`,
+      name: `${defaultProps.label} Invoerfout:Test error message`,
     })
 
     expect(checkboxWithErrorAddedToLabel).toBeInTheDocument()
