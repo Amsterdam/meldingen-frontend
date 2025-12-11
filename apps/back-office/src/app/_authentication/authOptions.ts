@@ -1,5 +1,3 @@
-import type { JWT } from 'next-auth/jwt'
-
 import { AuthOptions } from 'next-auth'
 import AzureAD from 'next-auth/providers/azure-ad'
 import KeycloakProvider from 'next-auth/providers/keycloak'
@@ -9,58 +7,64 @@ const isEntraAuthEnabled =
   Boolean(process.env.ENTRA_CLIENT_SECRET) &&
   Boolean(process.env.ENTRA_TENANT_ID)
 
-const envVars = {
-  clientId: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_ID : process.env.KEYCLOAK_CLIENT_ID,
-  clientSecret: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_SECRET : process.env.KEYCLOAK_CLIENT_SECRET,
-  tokenUrl: isEntraAuthEnabled ? process.env.ENTRA_TOKEN_URL : process.env.KEYCLOAK_TOKEN_URL,
-}
-
 /**
  * Takes a token, and returns a new token with updated
  * `accessToken`, `accessTokenExpiresAt`, `refreshToken` and `refreshTokenExpiresAt` when an error occurs,
  * returns the old token and an error property
+ *
+ * This is currently unused, because we cannot store the refresh token securely.
+ * https://gemeente-amsterdam.atlassian.net/browse/SIG-6986
  */
-const refreshAccessToken = async (token: JWT) => {
-  try {
-    // refreshTokenExpiresAt is Keycloak-specific
-    if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
-      throw new Error('Refresh token expired')
 
-    const { clientId, clientSecret, tokenUrl } = envVars
+/**
+  const envVars = {
+    clientId: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_ID : process.env.KEYCLOAK_CLIENT_ID,
+    clientSecret: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_SECRET : process.env.KEYCLOAK_CLIENT_SECRET,
+    tokenUrl: isEntraAuthEnabled ? process.env.ENTRA_TOKEN_URL : process.env.KEYCLOAK_TOKEN_URL,
+  }
 
-    const response = await fetch(tokenUrl, {
-      body: new URLSearchParams({
-        client_id: clientId,
-        client_secret: clientSecret,
-        grant_type: 'refresh_token',
-        refresh_token: token.refreshToken || '',
-      }),
-      cache: 'no-store',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      method: 'POST',
-    })
+  const refreshAccessToken = async (token: JWT) => {
+    try {
+      // refreshTokenExpiresAt is Keycloak-specific
+      if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
+        throw new Error('Refresh token expired')
 
-    const refreshedTokens = await response.json()
+      const { clientId, clientSecret, tokenUrl } = envVars
 
-    if (!response.ok) {
-      throw refreshedTokens
-    }
+      const response = await fetch(tokenUrl, {
+        body: new URLSearchParams({
+          client_id: clientId,
+          client_secret: clientSecret,
+          grant_type: 'refresh_token',
+          refresh_token: token.refreshToken || '',
+        }),
+        cache: 'no-store',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        method: 'POST',
+      })
 
-    return {
-      ...token,
-      accessToken: refreshedTokens.access_token,
-      accessTokenExpiresAt: Date.now() + refreshedTokens.expires_in * 1000,
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
-      refreshTokenExpiresAt:
-        refreshedTokens.refresh_expires_in && Date.now() + refreshedTokens.refresh_expires_in * 1000,
-    }
-  } catch {
-    return {
-      ...token,
-      error: 'RefreshAccessTokenError',
+      const refreshedTokens = await response.json()
+
+      if (!response.ok) {
+        throw refreshedTokens
+      }
+
+      return {
+        ...token,
+        accessToken: refreshedTokens.access_token,
+        accessTokenExpiresAt: Date.now() + refreshedTokens.expires_in * 1000,
+        refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+        refreshTokenExpiresAt:
+          refreshedTokens.refresh_expires_in && Date.now() + refreshedTokens.refresh_expires_in * 1000,
+      }
+    } catch {
+      return {
+        ...token,
+        error: 'RefreshAccessTokenError',
+      }
     }
   }
-}
+ */
 
 const getProviders = () => {
   if (isEntraAuthEnabled) {
@@ -100,27 +104,22 @@ const getProviders = () => {
 export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
-      // Account and user are Keycloak-specific
+      // account is only available the first time this callback is called on a new session (after the user signs in)
       if (account && user) {
-        // account is only available the first time this callback is called on a new session (after the user signs in)
+        /**
+         * We cannot store the refresh token because it is bigger than 4kb combined with the access token.
+         * For this reason the user gets logged out after the access token expires.
+         * We should store the refresh token in a different secure storage, like a database through the backend.
+         * https://gemeente-amsterdam.atlassian.net/browse/SIG-6986
+         **/
         return {
           accessToken: account.access_token,
-          // Access token expiry date in milliseconds
-          accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
-          refreshToken: account.refresh_token,
-          // Refresh token expiry date in milliseconds
-          refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
+          accessTokenExpiresAt: account.expires_at! * 1000,
           user,
         }
       }
 
-      // Return previous token if the access token has not expired yet
-      if (token.accessTokenExpiresAt && Date.now() < token.accessTokenExpiresAt) {
-        return token
-      }
-
-      // Access token has expired, try to update it
-      return refreshAccessToken(token)
+      return token
     },
     redirect: async ({ baseUrl, url }) => {
       // Use callback url
