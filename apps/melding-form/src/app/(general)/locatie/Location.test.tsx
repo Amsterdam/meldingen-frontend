@@ -108,7 +108,9 @@ describe('Location', () => {
   it('renders saved assets', () => {
     render(<Location {...defaultProps} selectedAssets={containerAssets} />)
 
-    expect(screen.getByText('Restafval container - Container-001')).toBeInTheDocument()
-    expect(screen.getByText('Glas container - Container-002')).toBeInTheDocument()
+    const listItems = screen.getAllByRole('listitem')
+
+    expect(listItems[0]).toHaveTextContent('Restafval container - Container-001')
+    expect(listItems[1]).toHaveTextContent('Glas container - Container-002')
   })
 })
