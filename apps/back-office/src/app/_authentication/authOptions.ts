@@ -4,6 +4,7 @@ import { AuthOptions } from 'next-auth'
 import AzureAD from 'next-auth/providers/azure-ad'
 import KeycloakProvider from 'next-auth/providers/keycloak'
 import { cookies } from 'next/headers'
+import { saveTokens, getTokens, allTokens } from './tokenStore'
 
 const isEntraAuthEnabled =
   Boolean(process.env.ENTRA_CLIENT_ID) &&
@@ -22,7 +23,18 @@ const envVars = {
  * returns the old token and an error property
  */
 const refreshAccessToken = async (token: JWT) => {
-    // refreshTokenExpiresAt is Keycloak-specific
+    if (!token.email) {
+      throw new Error('Could not find refresh token')
+    }
+
+    const tokens = getTokens(token.email)
+
+    if (!tokens?.refreshToken) {
+      throw new Error('Could not find refresh token')
+    }
+
+    const { refreshToken, idToken } = tokens;
+
     if (token.refreshTokenExpiresAt && Date.now() > token.refreshTokenExpiresAt)
       throw new Error('Refresh token expired')
 
@@ -33,7 +45,7 @@ const refreshAccessToken = async (token: JWT) => {
         client_id: clientId,
         client_secret: clientSecret,
         grant_type: 'refresh_token',
-        refresh_token: token.refreshToken || '',
+        refresh_token: refreshToken || '',
       }),
       cache: 'no-store',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -47,17 +59,22 @@ const refreshAccessToken = async (token: JWT) => {
 
     const refreshedTokens = await response.json()
 
+    saveTokens(token.email!, {
+      idToken,
+      refreshToken: refreshedTokens.refresh_token!,
+    });
+
     return {
       ...token,
       accessToken: refreshedTokens.access_token,
       accessTokenExpiresAt: Date.now() + refreshedTokens.expires_in * 1000,
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
       refreshTokenExpiresAt:
         refreshedTokens.refresh_expires_in && Date.now() + refreshedTokens.refresh_expires_in * 1000,
     }
 }
 
 const getProviders = () => {
+  console.log(allTokens())
   if (isEntraAuthEnabled) {
     return [
       AzureAD({
@@ -96,29 +113,25 @@ export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
       if (account && user) {
-        const cookieStore = await cookies();
 
         const newToken = {
           ...token,
           accessToken: account.access_token,
           accessTokenExpiresAt: account.expires_at! * 1000,
-          // idToken: account.id_token,
-          // refreshToken: account.refresh_token,
+          refreshTokenExpiresAt:
+            account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
           user,
         };
 
-        console.log("Got here");
-
-        cookieStore.set('refresh', account.refresh_token!, {
-          httpOnly: true
-        })
-
-        console.log("Did not get here");
+        saveTokens(user.email!, {
+          idToken: account.id_token!,
+          refreshToken: account.refresh_token!,
+        });
 
         return newToken
       }
 
-      return token;
+      return refreshAccessToken(token);
     },
     redirect: async ({ baseUrl, url }) => {
       // Use callback url
