@@ -1,4 +1,4 @@
-import L, { divIcon, latLng, Layer, Map, Marker, MarkerCluster } from 'leaflet'
+import { Layer, Map } from 'leaflet'
 import 'leaflet.markercluster'
 import { RefObject, useContext, useEffect, useRef } from 'react'
 
@@ -6,25 +6,13 @@ import { Feature, getWfsByName } from '@meldingen/api-client'
 
 import { MapContext } from '../Map/Map'
 import { Coordinates } from '../types'
-import { getContainerIcon } from './utils/getContainerIcon'
-import { getWfsFilter } from './utils/getWfsFilter'
+import { useAddMarkersToMap } from './useAddMarkersToMap'
 
 import './cluster.css'
+import { getWfsFilter } from './utils/getWfsFilter'
 
 const classificationsWithAssets = ['container']
 export const ZOOM_THRESHOLD = 16
-
-export const createClusterIcon = (cluster: MarkerCluster) => {
-  // Cluster markers should not be keyboard accessible
-  cluster.options.keyboard = false
-
-  return divIcon({
-    className: 'meldingen-cluster',
-    html: cluster.getChildCount().toString(),
-    iconAnchor: [35, 35],
-    iconSize: [70, 70],
-  })
-}
 
 export const fetchFeaturesOnMoveEnd = async (
   classification: Props['classification'],
@@ -86,7 +74,6 @@ export const MarkerSelectLayer = ({
   updateSelectedPoint,
 }: Props) => {
   const map = useContext(MapContext)
-  const markersRef = useRef<Record<string, Marker>>({})
   const markerLayerRef = useRef<Layer | null>(null)
 
   useEffect(() => {
@@ -98,68 +85,16 @@ export const MarkerSelectLayer = ({
     }
   }, [map])
 
-  useEffect(() => {
-    if (!map || features.length === 0) return
-
-    markerLayerRef.current?.remove()
-
-    const markerClusterGroup = L.markerClusterGroup({
-      iconCreateFunction: createClusterIcon,
-      showCoverageOnHover: false,
-    })
-
-    features.forEach((feature) => {
-      if (!feature.geometry || feature.geometry.type !== 'Point') return
-
-      const geometry = feature.geometry
-      const [lng, lat] = geometry.coordinates
-      const latlng = latLng(lat, lng)
-      const isSelected = selectedMarkers.some((a) => a.id === feature.id)
-
-      const marker = new Marker(latlng, {
-        icon: getContainerIcon(feature, isSelected),
-        keyboard: false,
-      })
-
-      if (feature.id !== null && (typeof feature.id === 'string' || typeof feature.id === 'number')) {
-        markersRef.current[feature.id] = marker
-      }
-
-      marker.on('click', () => {
-        if (isSelected) {
-          onMaxMarkersReached(false)
-          onSelectedMarkersChange(selectedMarkers.filter((a) => a.id !== feature.id))
-
-          if (selectedMarkers.length <= 1) {
-            updateSelectedPoint(undefined)
-          } else if (feature.id === selectedMarkers[0].id) {
-            // Set the address of the second selected marker when
-            // the last selected marker (#1 on the list) is deselected
-            // @ts-expect-error an marker always has coordinates
-            const [y, x] = selectedMarkers[1].geometry.coordinates
-            updateSelectedPoint({ lat: x, lng: y })
-          }
-        } else {
-          if (selectedMarkers.length >= maxMarkers) {
-            onMaxMarkersReached(true)
-            return
-          }
-          onSelectedMarkersChange([feature, ...selectedMarkers])
-          updateSelectedPoint({ lat, lng })
-        }
-      })
-
-      markerClusterGroup.addLayer(marker)
-    })
-
-    markerLayerRef.current = markerClusterGroup
-    markerClusterGroup.addTo(map)
-
-    return () => {
-      markerClusterGroup.clearLayers()
-      markerLayerRef.current = null
-    }
-  }, [map, features, selectedMarkers])
+  useAddMarkersToMap({
+    features,
+    map,
+    markerLayerRef,
+    maxMarkers,
+    onMaxMarkersReached,
+    onSelectedMarkersChange,
+    selectedMarkers,
+    updateSelectedPoint,
+  })
 
   return undefined
 }
