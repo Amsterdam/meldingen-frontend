@@ -109,7 +109,7 @@ export const authOptions: AuthOptions = {
 
         console.log("Got here");
 
-        cookieStore.set('refresh', account.refresh_token, {
+        cookieStore.set('refresh', account.refresh_token!, {
           httpOnly: true
         })
 
