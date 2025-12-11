@@ -111,6 +111,7 @@ export const authOptions: AuthOptions = {
     jwt: async ({ account, token, user }) => {
       // account is only available the first time this callback is called on a new session (after the user signs in)
       if (account && user) {
+        console.log(JSON.stringify({account, user, token}))
         let baseToken: JWT = {
           accessToken: account.access_token,
           // Access token expiry date in milliseconds
@@ -130,15 +131,23 @@ export const authOptions: AuthOptions = {
         return baseToken
       }
 
+      console.log("Here 1");
+
       // Return previous token if the access token has not expired yet
       if (token.accessTokenExpiresAt && Date.now() < token.accessTokenExpiresAt) {
+        console.log({token})
         return token
       }
 
+      console.log("Here 2");
+
       // Access token has expired, try to update it
       if (shouldStoreRefreshToken) {
+        console.log({token, ab: 'ab'})
         return refreshAccessToken(token)
       }
+
+      console.log("Here 3");
 
       // We have no refresh token. Throwing an error forces sign in again
       throw new Error('Token has expired')
