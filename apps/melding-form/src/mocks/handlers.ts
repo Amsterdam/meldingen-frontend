@@ -4,6 +4,7 @@ import { ENDPOINTS } from './endpoints'
 import {
   additionalQuestions,
   contact,
+  containerAssetIds,
   containerAssets,
   form,
   melding,
@@ -18,6 +19,7 @@ export const handlers = [
 
   // Melding
   http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID, () => new HttpResponse()),
+  http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, () => new HttpResponse()),
 
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () => HttpResponse.json(additionalQuestions)),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
@@ -29,6 +31,7 @@ export const handlers = [
     HttpResponse.json([{ id: 42, original_filename: 'IMG_0815.jpg' }]),
   ),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)),
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS_MELDER, () => HttpResponse.json(containerAssetIds)),
 
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () =>
     HttpResponse.json({

@@ -24,7 +24,7 @@ const mockMapInstance = {
 
 describe('PointSelectLayer', () => {
   it('renders Crosshair', () => {
-    const { container } = render(<PointSelectLayer onSelectedPointChange={vi.fn()} />)
+    const { container } = render(<PointSelectLayer hideSelectedPoint={false} onSelectedPointChange={vi.fn()} />)
 
     const crosshair = container.querySelector('#crosshair')
 

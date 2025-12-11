@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
 
 import { Location } from './Location'
+import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -15,6 +16,7 @@ vi.mock('react', async (importOriginal) => {
 
 const defaultProps = {
   prevPage: '/previous',
+  selectedAssets: [],
 }
 
 describe('Location', () => {
@@ -101,5 +103,14 @@ describe('Location', () => {
     const link = screen.getByRole('link', { name: 'link.with-location' })
 
     expect(link).toBeInTheDocument()
+  })
+
+  it('renders saved assets', () => {
+    render(<Location {...defaultProps} selectedAssets={containerAssets} />)
+
+    const listItems = screen.getAllByRole('listitem')
+
+    expect(listItems[0]).toHaveTextContent('Restafval container - Container-001')
+    expect(listItems[1]).toHaveTextContent('Glas container - Container-002')
   })
 })
