@@ -22,9 +22,14 @@ const mockMapInstance = {
   remove: vi.fn(),
 } as unknown as Map
 
+const defaultProps = {
+  hideSelectedPoint: false,
+  onSelectedPointChange: vi.fn(),
+}
+
 describe('PointSelectLayer', () => {
   it('renders Crosshair', () => {
-    const { container } = render(<PointSelectLayer hideSelectedPoint={false} onSelectedPointChange={vi.fn()} />)
+    const { container } = render(<PointSelectLayer {...defaultProps} />)
 
     const crosshair = container.querySelector('#crosshair')
 
@@ -36,7 +41,7 @@ describe('PointSelectLayer', () => {
 
     render(
       <MapComponent testMapInstance={mockMapInstance}>
-        <PointSelectLayer onSelectedPointChange={mockOnSelectedPointChange} />
+        <PointSelectLayer {...defaultProps} onSelectedPointChange={mockOnSelectedPointChange} />
       </MapComponent>,
     )
 
@@ -54,7 +59,7 @@ describe('PointSelectLayer', () => {
   it('shows crosshair when using arrow key', () => {
     render(
       <MapComponent testMapInstance={mockMapInstance}>
-        <PointSelectLayer onSelectedPointChange={vi.fn()} />
+        <PointSelectLayer {...defaultProps} />
       </MapComponent>,
     )
 
@@ -77,7 +82,7 @@ describe('PointSelectLayer', () => {
   it('does not do anything on keydown when crosshair does not exist', () => {
     render(
       <MapComponent testMapInstance={undefined}>
-        <PointSelectLayer onSelectedPointChange={vi.fn()} />
+        <PointSelectLayer {...defaultProps} />
       </MapComponent>,
     )
 
@@ -107,7 +112,7 @@ describe('PointSelectLayer', () => {
 
     render(
       <MapComponent testMapInstance={mockMapInstance}>
-        <PointSelectLayer onSelectedPointChange={mockOnSelectedPointChange} />
+        <PointSelectLayer {...defaultProps} onSelectedPointChange={mockOnSelectedPointChange} />
       </MapComponent>,
     )
 
@@ -142,7 +147,7 @@ describe('PointSelectLayer', () => {
   it('hides crosshair on map blur/mousemove/dragstart', () => {
     render(
       <MapComponent testMapInstance={mockMapInstance}>
-        <PointSelectLayer onSelectedPointChange={vi.fn()} />
+        <PointSelectLayer {...defaultProps} />
       </MapComponent>,
     )
 
@@ -173,7 +178,7 @@ describe('PointSelectLayer', () => {
           } as unknown as Map
         }
       >
-        <PointSelectLayer onSelectedPointChange={vi.fn()} selectedPoint={testCoords} />
+        <PointSelectLayer {...defaultProps} selectedPoint={testCoords} />
       </MapComponent>,
     )
 
@@ -196,7 +201,7 @@ describe('PointSelectLayer', () => {
           } as unknown as Map
         }
       >
-        <PointSelectLayer onSelectedPointChange={vi.fn()} selectedPoint={testCoords} />
+        <PointSelectLayer {...defaultProps} selectedPoint={testCoords} />
       </MapComponent>,
     )
 
