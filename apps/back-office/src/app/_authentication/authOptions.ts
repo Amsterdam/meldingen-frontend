@@ -111,12 +111,14 @@ export const authOptions: AuthOptions = {
     jwt: async ({ account, token, user }) => {
       // account is only available the first time this callback is called on a new session (after the user signs in)
       if (account && user) {
-        console.log(JSON.stringify({account, user, token}))
+        console.log(JSON.stringify({account, user, token, shouldStoreRefreshToken}))
         let baseToken: JWT = {
           ...token,
           accessToken: account.access_token,
           // Access token expiry date in milliseconds
           accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
+          refreshTokenExpiresAt:
+            account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
           user,
         }
 
