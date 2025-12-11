@@ -113,6 +113,7 @@ export const authOptions: AuthOptions = {
       if (account && user) {
         console.log(JSON.stringify({account, user, token}))
         let baseToken: JWT = {
+          ...token,
           accessToken: account.access_token,
           // Access token expiry date in milliseconds
           accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
@@ -146,7 +147,7 @@ export const authOptions: AuthOptions = {
         console.log({token, ab: 'ab'})
         return refreshAccessToken(token)
       }
-      
+
 
       console.log("Here 3");
 
