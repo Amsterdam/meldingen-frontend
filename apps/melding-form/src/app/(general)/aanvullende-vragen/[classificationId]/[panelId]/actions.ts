@@ -8,10 +8,12 @@ import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
+import { FormOutputWithoutPanelComponents } from './page'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 type ArgsType = {
+  formComponents: FormOutputWithoutPanelComponents[]
   isLastPanel: boolean
   lastPanelPath: string
   nextPanelPath: string
@@ -35,6 +37,7 @@ const getUnansweredRequiredQuestionKeys = (requiredKeys: string[], entries: [str
 
 export const postForm = async (
   {
+    formComponents,
     isLastPanel,
     lastPanelPath,
     nextPanelPath,
@@ -71,7 +74,9 @@ export const postForm = async (
       formData,
       validationErrors: missingRequiredKeys.map((key) => ({
         key,
-        message: 'Vraag is verplicht en moet worden beantwoord.',
+        message:
+          formComponents.find((component) => component.key === key)?.validate?.required_error_message ||
+          'Vraag is verplicht en moet worden beantwoord.',
       })),
     }
   }
