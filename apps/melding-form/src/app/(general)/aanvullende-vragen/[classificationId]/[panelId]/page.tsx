@@ -23,7 +23,7 @@ const getPreviousPanelPath = (classificationId: number, currentPanelIndex: numbe
   return `/aanvullende-vragen/${classificationId}/${formData.components[currentPanelIndex - 1].key}`
 }
 
-type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
+export type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
 
 const getFormComponents = (components: FormOutputWithoutPanelComponents[], answers?: AnswerQuestionOutput[]) =>
   components.map((component) => {
@@ -103,6 +103,7 @@ export default async ({ params }: { params: Params }) => {
   const nextPanelPath = getNextPanelPath(classificationId, currentPanelIndex, data)
 
   const extraArgs = {
+    formComponents,
     isLastPanel,
     lastPanelPath,
     nextPanelPath,

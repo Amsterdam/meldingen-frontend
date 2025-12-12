@@ -245,6 +245,7 @@ const nl: TranslationMessages = {
         'components[0].label': 'Label',
         'components[0].maxCharCount': 'Maximaal aantal tekens',
         'components[0].validate.json.if[2]': 'Foutmelding teveel tekens',
+        'components[0].validate.required_error_message': 'Foutmelding verplichte vraag',
         'components[1].description': 'Beschrijving',
         'components[1].label': 'Label',
         title: 'Naam',

@@ -70,7 +70,7 @@ export default async () => {
     ? await getPrefilledPrimaryFormComponents(meldingId, token, primaryFormComponents)
     : primaryFormComponents
 
-  const action = postPrimaryForm.bind(null, { existingId: meldingId, existingToken: token })
+  const action = postPrimaryForm.bind(null, { existingId: meldingId, existingToken: token, formComponents })
 
   return <Home action={action} formComponents={formComponents} />
 }
