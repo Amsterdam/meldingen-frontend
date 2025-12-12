@@ -37,7 +37,7 @@ export const postPrimaryForm = async (
           key: 'primary',
           message:
             formComponents.find((component) => component.key === 'primary')?.validate?.required_error_message ||
-            'Vraag is verplicht en moet worden beantwoord.',
+            'Vul in wat u wilt melden.',
         },
       ],
     }

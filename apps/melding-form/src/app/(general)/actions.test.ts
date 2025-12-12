@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import { Mock, vi } from 'vitest'
 
 import { COOKIES } from '../../constants'
-import { form } from '../../mocks/data'
+import { form, textAreaComponent } from '../../mocks/data'
 import { ENDPOINTS } from '../../mocks/endpoints'
 import { server } from '../../mocks/node'
 import { postPrimaryForm } from './actions'
@@ -17,6 +17,16 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
+const formData = new FormData()
+
+const primaryFormComponents = [
+  {
+    ...textAreaComponent,
+    key: 'primary',
+    validate: { required: true, required_error_message: 'Dit veld is verplicht.' },
+  },
+]
+
 describe('postPrimaryForm', () => {
   const mockCookies = {
     delete: vi.fn(),
@@ -27,14 +37,27 @@ describe('postPrimaryForm', () => {
     ;(cookies as Mock).mockReturnValue(mockCookies)
   })
 
-  it('returns a validation error when primary question is not answered', async () => {
-    const formData = new FormData()
-
-    const result = await postPrimaryForm({ formComponents: [] }, null, formData)
+  it('returns a custom validation error when primary question is not answered', async () => {
+    const result = await postPrimaryForm({ formComponents: primaryFormComponents }, null, formData)
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'primary', message: 'Vraag is verplicht en moet worden beantwoord.' }],
+      validationErrors: [{ key: 'primary', message: 'Dit veld is verplicht.' }],
+    })
+  })
+
+  it('returns a default validation error when primary question is not answered and custom message is missing', async () => {
+    const formData = new FormData()
+
+    const result = await postPrimaryForm(
+      { formComponents: [{ ...primaryFormComponents[0], validate: { required: true, required_error_message: '' } }] },
+      null,
+      formData,
+    )
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'primary', message: 'Vul in wat u wilt melden.' }],
     })
   })
 
@@ -51,7 +74,7 @@ describe('postPrimaryForm', () => {
     const formData = new FormData()
     formData.append('primary', 'value1')
 
-    const result = await postPrimaryForm({ formComponents: [] }, null, formData)
+    const result = await postPrimaryForm({ formComponents: primaryFormComponents }, null, formData)
 
     expect(result).toEqual({
       formData,
@@ -65,7 +88,7 @@ describe('postPrimaryForm', () => {
     const formData = new FormData()
     formData.set('primary', 'Test')
 
-    const result = await postPrimaryForm({ formComponents: [] }, null, formData)
+    const result = await postPrimaryForm({ formComponents: primaryFormComponents }, null, formData)
 
     expect(result).toEqual({ formData, systemError: 'Error message' })
     expect(redirect).not.toHaveBeenCalled()
@@ -75,7 +98,7 @@ describe('postPrimaryForm', () => {
     const formData = new FormData()
     formData.set('primary', 'Test')
 
-    await postPrimaryForm({ formComponents: [] }, null, formData)
+    await postPrimaryForm({ formComponents: primaryFormComponents }, null, formData)
 
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: 86400 })
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.CREATED_AT, '2025-05-26T11:56:34.081Z', {
@@ -90,7 +113,11 @@ describe('postPrimaryForm', () => {
     const formData = new FormData()
     formData.set('primary', 'Test')
 
-    await postPrimaryForm({ existingId: '123', existingToken: 'test-token', formComponents: [] }, null, formData)
+    await postPrimaryForm(
+      { existingId: '123', existingToken: 'test-token', formComponents: primaryFormComponents },
+      null,
+      formData,
+    )
 
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.PUBLIC_ID, 'PATCH request', { maxAge: 86400 })
   })
@@ -106,7 +133,7 @@ describe('postPrimaryForm', () => {
       const formData = new FormData()
       formData.set('primary', 'Test')
 
-      const result = await postPrimaryForm({ formComponents: [] }, null, formData)
+      const result = await postPrimaryForm({ formComponents: primaryFormComponents }, null, formData)
 
       expect(result).toEqual({ formData, systemError: 'Error message' })
       expect(redirect).not.toHaveBeenCalled()
@@ -122,7 +149,7 @@ describe('postPrimaryForm', () => {
       const formData = new FormData()
       formData.set('primary', 'Test')
 
-      const result = await postPrimaryForm({ formComponents: [] }, null, formData)
+      const result = await postPrimaryForm({ formComponents: primaryFormComponents }, null, formData)
 
       expect(result).toEqual({ formData, systemError: 'Error message' })
       expect(redirect).not.toHaveBeenCalled()
@@ -132,7 +159,7 @@ describe('postPrimaryForm', () => {
       const formData = new FormData()
       formData.set('primary', 'Test')
 
-      await postPrimaryForm({ formComponents: [] }, null, formData)
+      await postPrimaryForm({ formComponents: primaryFormComponents }, null, formData)
 
       expect(redirect).toHaveBeenCalledWith('/locatie')
     })
@@ -143,7 +170,7 @@ describe('postPrimaryForm', () => {
       const formData = new FormData()
       formData.set('primary', 'Test')
 
-      await postPrimaryForm({ formComponents: [] }, null, formData)
+      await postPrimaryForm({ formComponents: primaryFormComponents }, null, formData)
 
       expect(redirect).toHaveBeenCalledWith('/aanvullende-vragen/2/page1')
     })
