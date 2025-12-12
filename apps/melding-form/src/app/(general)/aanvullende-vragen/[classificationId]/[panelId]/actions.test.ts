@@ -18,6 +18,7 @@ vi.mock('next/navigation', () => ({
 
 describe('postForm', () => {
   const defaultArgs = {
+    formComponents: [],
     isLastPanel: true,
     lastPanelPath: '/test',
     nextPanelPath: '/',
