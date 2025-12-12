@@ -8,7 +8,7 @@ import { Crosshair } from './Crosshair'
 
 const FLY_TO_MIN_ZOOM = 18
 
-type Props = {
+export type Props = {
   hideSelectedPoint: boolean
   onSelectedPointChange: (point: Coordinates) => void
   selectedPoint?: Coordinates
