@@ -64,7 +64,7 @@ export const MapComponent = ({ children, hasAlert, isHidden, testMapInstance }: 
 
   useEffect(() => {
     // Leaflet has to know it should recalculate dimensions of the map
-    // when it is shown/hidden as this changes the size of the map container
+    // when it is shown/hidden or has an Alert as this can change the size of the map container
     mapInstance?.invalidateSize()
   }, [isHidden, hasAlert])
 
