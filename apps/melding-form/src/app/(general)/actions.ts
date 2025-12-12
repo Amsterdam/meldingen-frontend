@@ -8,14 +8,21 @@ import {
   patchMeldingByMeldingId,
   postMelding,
   putMeldingByMeldingIdAnswerQuestions,
+  StaticFormTextAreaComponentOutput,
 } from '@meldingen/api-client'
 
 import { COOKIES } from '../../constants'
 import { handleApiError } from '../../handleApiError'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
 
+type ArgsType = {
+  existingId?: string
+  existingToken?: string
+  formComponents: StaticFormTextAreaComponentOutput[]
+}
+
 export const postPrimaryForm = async (
-  { existingId, existingToken }: { existingId?: string; existingToken?: string },
+  { existingId, existingToken, formComponents }: ArgsType,
   _: unknown,
   formData: FormData,
 ) => {
@@ -25,7 +32,14 @@ export const postPrimaryForm = async (
   if (!formDataObj.primary) {
     return {
       formData,
-      validationErrors: [{ key: 'primary', message: 'Vraag is verplicht en moet worden beantwoord.' }],
+      validationErrors: [
+        {
+          key: 'primary',
+          message:
+            formComponents.find((component) => component.key === 'primary')?.validate?.required_error_message ||
+            'Vraag is verplicht en moet worden beantwoord.',
+        },
+      ],
     }
   }
 
