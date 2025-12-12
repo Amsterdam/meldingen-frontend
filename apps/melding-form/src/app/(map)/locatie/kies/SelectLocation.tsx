@@ -98,7 +98,7 @@ export const SelectLocation = ({
         </Button>
       </SideBarBottom>
       <div className={styles.map}>
-        <Map isHidden={showAssetList}>
+        <Map hasAlert={Boolean(notificationType)} isHidden={showAssetList}>
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}

@@ -5,12 +5,15 @@
   gap: var(--ams-space-m);
   padding-block: var(--ams-space-m);
   padding-inline: var(--ams-space-m);
-  position: absolute;
+  position: sticky;
 }
 
 .overlayTopLeft {
   composes: overlay;
-  top: 0;
+
+  /* Ensure my location button is always on top. Top property does not work for some reason */
+  /* stylelint-disable-next-line unit-disallowed-list */
+  bottom: 1000px;
 }
 
 .overlayBottomRight {
