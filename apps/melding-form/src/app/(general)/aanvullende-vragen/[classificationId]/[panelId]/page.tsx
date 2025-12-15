@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import type { AnswerQuestionOutput, FormOutput, FormPanelComponentOutput } from '@meldingen/api-client'
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
+import { Component } from '@meldingen/form-renderer'
 
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
@@ -25,7 +26,10 @@ const getPreviousPanelPath = (classificationId: number, currentPanelIndex: numbe
 
 export type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
 
-const getFormComponents = (components: FormOutputWithoutPanelComponents[], answers?: AnswerQuestionOutput[]) =>
+const getFormComponents = (
+  components: FormOutputWithoutPanelComponents[],
+  answers?: AnswerQuestionOutput[],
+): Component[] =>
   components.map((component) => {
     const answer = answers?.find((answer) => answer.question.id === component.question)
 

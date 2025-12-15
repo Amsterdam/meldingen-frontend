@@ -15,7 +15,7 @@ import { COOKIES } from '../../constants'
 import { handleApiError } from '../../handleApiError'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
 
-type ArgsType = {
+export type ArgsType = {
   existingId?: string
   existingToken?: string
   formComponents: StaticFormTextAreaComponentOutput[]

@@ -4,16 +4,16 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
+import { Component } from '@meldingen/form-renderer'
 
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
-import { FormOutputWithoutPanelComponents } from './page'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
-type ArgsType = {
-  formComponents: FormOutputWithoutPanelComponents[]
+export type ArgsType = {
+  formComponents: Component[]
   isLastPanel: boolean
   lastPanelPath: string
   nextPanelPath: string
