@@ -5,13 +5,6 @@ import { Mock, vi } from 'vitest'
 import { MapComponent } from '../Map/Map'
 import { PointSelectLayer } from './PointSelectLayer'
 
-vi.mock('leaflet', async (importOriginal) => {
-  const actual = await importOriginal()
-  return {
-    ...(typeof actual === 'object' ? actual : {}),
-  }
-})
-
 const testCoords = { lat: 52.370216, lng: 4.895168 }
 
 const mockMapInstance = {
