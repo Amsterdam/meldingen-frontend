@@ -23,7 +23,7 @@ const mockMapInstance = {
     getSouthWest: vi.fn(() => ({ lat: 52.3676, lng: 4.9041 })),
   })),
   getSize: vi.fn(() => ({ x: 800, y: 600 })),
-  getZoom: vi.fn(() => 420),
+  getZoom: vi.fn(() => 18),
   invalidateSize: vi.fn(),
   off: vi.fn(),
   on: vi.fn(),
