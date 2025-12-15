@@ -17,20 +17,15 @@ import { postCoordinatesAndAssets } from './actions'
 
 import styles from './SelectLocation.module.css'
 
-const Controls = dynamic(() => import('@meldingen/map').then((module) => module.Controls), {
-  loading: () => <p>Loading...</p>, // TODO: improve loading state
-  ssr: false,
-})
+const Controls = dynamic(() => import('@meldingen/map').then((module) => module.Controls), { ssr: false })
 const Map = dynamic(() => import('@meldingen/map').then((module) => module.Map), {
   loading: () => <p>Loading...</p>, // TODO: improve loading state
   ssr: false,
 })
 const MarkerSelectLayer = dynamic(() => import('@meldingen/map').then((module) => module.MarkerSelectLayer), {
-  loading: () => <p>Loading...</p>, // TODO: improve loading state
   ssr: false,
 })
 const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) => module.PointSelectLayer), {
-  loading: () => <p>Loading...</p>, // TODO: improve loading state
   ssr: false,
 })
 
