@@ -181,7 +181,7 @@ describe('PointSelectLayer', () => {
 
   it('flies to a minimum zoom level when selectedPoint is provided and current zoom is too low', () => {
     const mockFlyTo = vi.fn()
-    const currentZoom = 420
+    const currentZoom = 18
 
     render(
       <MapComponent
