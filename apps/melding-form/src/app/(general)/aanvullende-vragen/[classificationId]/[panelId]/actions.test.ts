@@ -4,6 +4,9 @@ import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
+import type { ArgsType } from './actions'
+
+import { checkboxComponent, textAreaComponent } from '../../../../../mocks/data'
 import { postForm } from './actions'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
@@ -17,7 +20,7 @@ vi.mock('next/navigation', () => ({
 }))
 
 describe('postForm', () => {
-  const defaultArgs = {
+  const defaultArgs: ArgsType = {
     formComponents: [],
     isLastPanel: true,
     lastPanelPath: '/test',
@@ -53,15 +56,30 @@ describe('postForm', () => {
     expect(cookieInstance.set).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH, '/test', { maxAge: 86400 })
   })
 
-  it('returns validation errors for missing required questions', async () => {
+  it('returns custom and fallback validation errors for missing required questions', async () => {
+    const formComponentsWithoutPanelComponents = [textAreaComponent, checkboxComponent]
     const formData = new FormData()
-    formData.append('key1', 'value1') // key2 is missing
 
-    const result = await postForm({ ...defaultArgs, requiredQuestionKeys: ['key1', 'key2'] }, null, formData)
+    const result = await postForm(
+      {
+        ...defaultArgs,
+        formComponents: formComponentsWithoutPanelComponents,
+        requiredQuestionKeys: ['textArea1', 'selectBoxes'],
+      },
+      null,
+      formData,
+    )
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'key2', message: 'Vraag is verplicht en moet worden beantwoord.' }],
+      validationErrors: [
+        // Fallback error message
+        { key: 'textArea1', message: 'Vraag is verplicht en moet worden beantwoord.' },
+        {
+          key: 'selectBoxes',
+          message: 'Dit veld is verplicht',
+        },
+      ],
     })
   })
 
