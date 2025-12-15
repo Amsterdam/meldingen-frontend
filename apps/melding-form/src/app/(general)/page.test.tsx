@@ -56,6 +56,7 @@ describe('Page', () => {
     expect(extraArgs).toMatchObject({
       existingId: '123',
       existingToken: 'test-token',
+      formComponents: [textAreaComponent],
     })
   })
 
