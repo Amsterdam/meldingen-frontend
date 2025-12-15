@@ -1,6 +1,6 @@
 import L, { divIcon, latLng, Layer, Map, Marker, MarkerCluster } from 'leaflet'
 import 'leaflet.markercluster'
-import { RefObject, useEffect, useRef } from 'react'
+import { RefObject, useEffect } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
@@ -30,7 +30,7 @@ export type Props = {
   updateSelectedPoint: (point?: Coordinates) => void
 }
 
-export const useAddMarkersToMap = async ({
+export const useAddMarkersToMap = ({
   features,
   map,
   markerLayerRef,
@@ -40,8 +40,6 @@ export const useAddMarkersToMap = async ({
   selectedMarkers,
   updateSelectedPoint,
 }: Props) => {
-  const markersRef = useRef<Record<string, Marker>>({})
-
   useEffect(() => {
     if (!map || features.length === 0) return
 
@@ -64,10 +62,6 @@ export const useAddMarkersToMap = async ({
         icon: getContainerIcon(feature, isSelected),
         keyboard: false,
       })
-
-      if (feature.id !== null && (typeof feature.id === 'string' || typeof feature.id === 'number')) {
-        markersRef.current[feature.id] = marker
-      }
 
       marker.on('click', () => {
         if (isSelected) {
