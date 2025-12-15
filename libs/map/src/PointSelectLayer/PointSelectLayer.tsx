@@ -6,7 +6,7 @@ import { defaultIcon } from '../markerIcons'
 import { Coordinates } from '../types'
 import { Crosshair } from './Crosshair'
 
-const FLY_TO_MIN_ZOOM = 18
+export const FLY_TO_MIN_ZOOM = 18
 
 type Props = {
   hideSelectedPoint: boolean
@@ -44,15 +44,6 @@ export const PointSelectLayer = ({ hideSelectedPoint, onSelectedPointChange, sel
     if (crosshair) crosshair.style.display = 'none'
   }
 
-  // Fly to selected point on initial page loading
-  useEffect(() => {
-    if (!map || !selectedPoint) return
-    const { lat, lng } = selectedPoint
-
-    const currentZoom = map.getZoom()
-    map.flyTo([lat, lng], currentZoom < FLY_TO_MIN_ZOOM ? FLY_TO_MIN_ZOOM : currentZoom)
-  }, [map])
-
   // Register map events
   useEffect(() => {
     if (!map) return
@@ -68,31 +59,27 @@ export const PointSelectLayer = ({ hideSelectedPoint, onSelectedPointChange, sel
     }
   }, [map])
 
-  // Add marker to map based on selected point
+  // Zoom to selected point and add marker if applicable
   useEffect(() => {
-    if (!map) return
-
     // Remove previous marker
     markerRef.current?.remove()
 
-    // Do not show marker when selectedAssets are present
-    if (hideSelectedPoint || !selectedPoint) {
-      markerRef.current = null
-      return
-    }
+    if (!map || !selectedPoint) return
 
     const { lat, lng } = selectedPoint
 
-    // Create marker and add to map
-    const newMarker = marker(latLng([lat, lng]), {
-      icon: defaultIcon,
-      keyboard: false,
-    }).addTo(map)
+    if (!hideSelectedPoint) {
+      // Create marker and add to map
+      const newMarker = marker(latLng([lat, lng]), {
+        icon: defaultIcon,
+        keyboard: false,
+      }).addTo(map)
 
-    // Store marker layer in ref
-    markerRef.current = newMarker
+      // Store marker layer in ref
+      markerRef.current = newMarker
+    }
 
-    // Zoom to marker
+    // Zoom to selected point
     const currentZoom = map.getZoom()
     map.flyTo([lat, lng], currentZoom < FLY_TO_MIN_ZOOM ? FLY_TO_MIN_ZOOM : currentZoom)
   }, [map, selectedPoint])

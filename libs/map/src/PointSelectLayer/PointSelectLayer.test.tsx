@@ -3,7 +3,7 @@ import { Map } from 'leaflet'
 import { Mock, vi } from 'vitest'
 
 import { MapComponent } from '../Map/Map'
-import { PointSelectLayer } from './PointSelectLayer'
+import { FLY_TO_MIN_ZOOM, PointSelectLayer } from './PointSelectLayer'
 
 const testCoords = { lat: 52.370216, lng: 4.895168 }
 
@@ -156,9 +156,10 @@ describe('PointSelectLayer', () => {
     expect(crosshair?.style.display).toBe('none')
   })
 
-  it('adds a marker to the map when selectedPoint prop is provided', () => {
+  it('adds a marker and flies to selectedPoint when provided', () => {
     const mockAddLayer = vi.fn()
     const mockFlyTo = vi.fn()
+    const currentZoom = FLY_TO_MIN_ZOOM + 1
 
     render(
       <MapComponent
@@ -167,7 +168,7 @@ describe('PointSelectLayer', () => {
             ...mockMapInstance,
             addLayer: mockAddLayer,
             flyTo: mockFlyTo,
-            getZoom: vi.fn(() => 10),
+            getZoom: vi.fn(() => currentZoom),
           } as unknown as Map
         }
       >
@@ -176,12 +177,12 @@ describe('PointSelectLayer', () => {
     )
 
     expect(mockAddLayer).toHaveBeenCalledWith(expect.objectContaining({ _latlng: testCoords }))
-    expect(mockFlyTo).toHaveBeenCalled()
+    expect(mockFlyTo).toHaveBeenCalledWith([testCoords.lat, testCoords.lng], currentZoom)
   })
 
   it('flies to a minimum zoom level when selectedPoint is provided and current zoom is too low', () => {
     const mockFlyTo = vi.fn()
-    const currentZoom = 18
+    const currentZoom = FLY_TO_MIN_ZOOM - 1
 
     render(
       <MapComponent
@@ -198,6 +199,27 @@ describe('PointSelectLayer', () => {
       </MapComponent>,
     )
 
-    expect(mockFlyTo).toHaveBeenCalledWith([testCoords.lat, testCoords.lng], currentZoom)
+    expect(mockFlyTo).toHaveBeenCalledWith([testCoords.lat, testCoords.lng], FLY_TO_MIN_ZOOM)
+  })
+
+  it('does not add a marker when hideSelectedPoint is true', () => {
+    const mockAddLayer = vi.fn()
+
+    render(
+      <MapComponent
+        testMapInstance={
+          {
+            ...mockMapInstance,
+            addLayer: mockAddLayer,
+            flyTo: vi.fn(),
+            getZoom: vi.fn(() => FLY_TO_MIN_ZOOM),
+          } as unknown as Map
+        }
+      >
+        <PointSelectLayer {...defaultProps} hideSelectedPoint={true} selectedPoint={testCoords} />
+      </MapComponent>,
+    )
+
+    expect(mockAddLayer).not.toHaveBeenCalled()
   })
 })
