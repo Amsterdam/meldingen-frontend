@@ -3,3 +3,8 @@
   display: flex;
   gap: var(--ams-checkbox-gap);
 }
+
+.location {
+  display: flex;
+  flex-direction: column;
+}

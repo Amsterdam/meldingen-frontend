@@ -1,6 +1,7 @@
 'use client'
 
-import { Heading, Paragraph, StandaloneLink, UnorderedList } from '@amsterdam/design-system-react'
+import { ErrorMessage, Field, Heading, Paragraph, StandaloneLink, UnorderedList } from '@amsterdam/design-system-react'
+import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import Image from 'next/image'
@@ -10,7 +11,7 @@ import { useActionState, useEffect, useRef } from 'react'
 import { Feature } from '@meldingen/api-client'
 import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
-import type { FormState } from 'apps/melding-form/src/types'
+import type { ValidationError } from 'apps/melding-form/src/types'
 
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
@@ -22,7 +23,7 @@ import { postLocationForm } from './actions'
 
 import styles from './Location.module.css'
 
-const initialState: Pick<FormState, 'systemError' | 'validationErrors'> = {}
+const initialState: { systemError?: unknown; validationError?: ValidationError } = {}
 
 type Props = {
   address?: string
@@ -46,16 +47,16 @@ const getAssetElement = (asset: Feature) => {
 export const Location = ({ address, prevPage, selectedAssets }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ systemError, validationErrors }, formAction] = useActionState(postLocationForm, initialState)
+  const [{ systemError, validationError }, formAction] = useActionState(postLocationForm, initialState)
 
   const t = useTranslations('location')
   const tShared = useTranslations('shared')
 
   // Set focus on InvalidFormAlert when there are validation errors
-  useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
+  useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationError && [validationError])
 
   // Update document title when there are validation errors
-  const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
+  const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationError && [validationError])
 
   useEffect(() => {
     if (systemError) {
@@ -73,13 +74,10 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert />}
-        {validationErrors && (
+        {validationError && (
           <InvalidFormAlert
             className="ams-mb-m"
-            errors={validationErrors.map((error) => ({
-              id: `#${error.key}`,
-              label: error.message,
-            }))}
+            errors={[{ id: `#${validationError.key}`, label: validationError.message }]}
             heading={tShared('invalid-form-alert-title')}
             headingLevel={2}
             ref={invalidFormAlertRef}
@@ -88,21 +86,26 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
 
         <FormHeader step={t('step')} title={t('title')} />
 
-        <Heading className="ams-mb-s" level={1} size="level-3">
-          {t('question')}
-        </Heading>
-        <Paragraph className="ams-mb-s">{address ?? t('description')}</Paragraph>
-        {selectedAssets.length > 0 && (
-          <UnorderedList className="ams-mb-m" markers={false}>
-            {selectedAssets.map((asset) => getAssetElement(asset))}
-          </UnorderedList>
-        )}
+        <Field className={clsx(styles.location, 'ams-mb-m')} invalid={Boolean(validationError)} key={'id'}>
+          <Heading className="ams-mb-s" level={1} size="level-3">
+            {t('question')}
+          </Heading>
+          <Paragraph className="ams-mb-s">{address ?? t('description')}</Paragraph>
+          {selectedAssets.length > 0 && (
+            <UnorderedList className="ams-mb-m" markers={false}>
+              {selectedAssets.map((asset) => getAssetElement(asset))}
+            </UnorderedList>
+          )}
 
-        <NextLink href="/locatie/kies" legacyBehavior passHref>
-          <StandaloneLink className="ams-mb-m" id="location-link">
-            {address ? t('link.with-location') : t('link.without-location')}
-          </StandaloneLink>
-        </NextLink>
+          {validationError && (
+            <ErrorMessage id={`${validationError.key}-error`}>{validationError.message}</ErrorMessage>
+          )}
+          <NextLink href="/locatie/kies" legacyBehavior passHref>
+            <StandaloneLink id="location-link">
+              {address ? t('link.with-location') : t('link.without-location')}
+            </StandaloneLink>
+          </NextLink>
+        </Field>
 
         <Form action={formAction} noValidate>
           <SubmitButton>{t('submit-button')}</SubmitButton>

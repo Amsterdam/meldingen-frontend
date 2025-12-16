@@ -59,9 +59,9 @@ describe('Location', () => {
     expect(alert).toHaveTextContent('system-error-alert-title')
   })
 
-  it('renders an Invalid Form Alert when there are validation errors', () => {
+  it('renders an Invalid Form Alert when there is a validation error', () => {
     ;(useActionState as Mock).mockReturnValue([
-      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      { validationError: { key: 'key1', message: 'Test error message' } },
       vi.fn(),
     ])
 
