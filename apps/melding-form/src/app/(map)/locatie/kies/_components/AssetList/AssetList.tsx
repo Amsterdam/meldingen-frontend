@@ -1,5 +1,4 @@
 import { Checkbox } from '@amsterdam/design-system-react'
-import { clsx } from 'clsx'
 import Image from 'next/image'
 import { Dispatch, SetStateAction } from 'react'
 
@@ -76,7 +75,7 @@ export const AssetList = ({
   }
 
   return (
-    <ul className={clsx(styles.container, 'ams-mb-m')}>
+    <ul className={styles.container}>
       {selectedAssets.map((asset) => {
         // @ts-expect-error id_nummer always exists on asset properties
         const publicId = asset.properties.id_nummer as string
