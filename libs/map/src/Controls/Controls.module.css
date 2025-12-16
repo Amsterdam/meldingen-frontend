@@ -12,6 +12,10 @@
   > * {
     pointer-events: auto; /* Allow interaction with overlay child elements */
   }
+
+  @media screen and (min-width: 72.5rem) {
+    margin-block-end: 0;
+  }
 }
 
 .overlayTopLeft {
