@@ -28,9 +28,8 @@
   display: none;
 
   @media screen and (min-width: 72.5rem) {
-    bottom: 0;
     display: flex;
-    right: 0;
+    place-self: end end;
   }
 }
 
