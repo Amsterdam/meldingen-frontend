@@ -1,11 +1,13 @@
 'use client'
 
-import { Heading, Paragraph, StandaloneLink } from '@amsterdam/design-system-react'
+import { Heading, Paragraph, StandaloneLink, UnorderedList } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
+import Image from 'next/image'
 import NextLink from 'next/link'
 import { useActionState, useEffect, useRef } from 'react'
 
+import { Feature } from '@meldingen/api-client'
 import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
 import type { FormState } from 'apps/melding-form/src/types'
@@ -15,16 +17,33 @@ import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
+import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
 import { postLocationForm } from './actions'
+
+import styles from './Location.module.css'
 
 const initialState: Pick<FormState, 'systemError' | 'validationErrors'> = {}
 
 type Props = {
   address?: string
   prevPage: string
+  selectedAssets: Feature[]
 }
 
-export const Location = ({ address, prevPage }: Props) => {
+const getAssetElement = (asset: Feature) => {
+  const icon = getContainerAssetIconSVG(asset)
+  // TODO: use assetType instead of "container" when available
+  const label = `${asset.properties?.fractie_omschrijving ?? ''} container - ${asset.properties?.id_nummer}`
+
+  return (
+    <UnorderedList.Item className={styles.label} key={asset.id}>
+      <Image alt="" height={32} src={icon} width={32} />
+      <Paragraph>{label}</Paragraph>
+    </UnorderedList.Item>
+  )
+}
+
+export const Location = ({ address, prevPage, selectedAssets }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ systemError, validationErrors }, formAction] = useActionState(postLocationForm, initialState)
@@ -73,6 +92,12 @@ export const Location = ({ address, prevPage }: Props) => {
           {t('question')}
         </Heading>
         <Paragraph className="ams-mb-s">{address ?? t('description')}</Paragraph>
+        {selectedAssets.length > 0 && (
+          <UnorderedList className="ams-mb-m" markers={false}>
+            {selectedAssets.map((asset) => getAssetElement(asset))}
+          </UnorderedList>
+        )}
+
         <NextLink href="/locatie/kies" legacyBehavior passHref>
           <StandaloneLink className="ams-mb-m" id="location-link">
             {address ? t('link.with-location') : t('link.without-location')}

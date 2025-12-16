@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw'
 
 import Page, { generateMetadata } from './page'
 import { SelectLocation } from './SelectLocation'
-import { melding } from 'apps/melding-form/src/mocks/data'
+import { containerAssets, melding } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
@@ -62,5 +62,104 @@ describe('Page', () => {
       }),
       undefined,
     )
+  })
+
+  it('fetches assetIds from melding and passes assets to SelectLocation', async () => {
+    let callCount = 0
+    server.use(
+      http.get(ENDPOINTS.GET_WFS_BY_NAME, () => {
+        callCount += 1
+
+        if (callCount === 1) {
+          return HttpResponse.json({
+            features: [containerAssets[0]],
+          })
+        } else {
+          return HttpResponse.json({
+            features: [containerAssets[1]],
+          })
+        }
+      }),
+    )
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: containerAssets,
+      }),
+      undefined,
+    )
+  })
+
+  it('logs an error when fetching assetIds from melding fails', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS_MELDER, () =>
+        HttpResponse.json('Test error', { status: 500 }),
+      ),
+    )
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(consoleSpy).toHaveBeenCalledWith('Test error')
+
+    consoleSpy.mockRestore()
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
+  it('logs an error when the wfs endpoint fails', async () => {
+    server.use(http.get(ENDPOINTS.GET_WFS_BY_NAME, () => HttpResponse.json('Test error', { status: 500 })))
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(consoleSpy).toHaveBeenCalledWith('Test error')
+
+    consoleSpy.mockRestore()
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
+  it('deletes assets from melding', async () => {
+    const mockGetWfsByName = vi.fn()
+
+    server.use(http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, mockGetWfsByName))
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(mockGetWfsByName).toHaveBeenCalledTimes(2)
+  })
+
+  it('logs an error when delete assets from melding fails', async () => {
+    server.use(
+      http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, () =>
+        HttpResponse.json('Test error', { status: 500 }),
+      ),
+    )
+
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(consoleSpy).toHaveBeenCalledWith('Test error')
+
+    consoleSpy.mockRestore()
   })
 })
