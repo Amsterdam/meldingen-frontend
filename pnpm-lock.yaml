@@ -163,8 +163,8 @@ importers:
   apps/admin:
     dependencies:
       '@azure/msal-browser':
-        specifier: 3.23.0
-        version: 3.23.0
+        specifier: 4.27.0
+        version: 4.27.0
       keycloak-js:
         specifier: 26.2.2
         version: 26.2.2
@@ -316,8 +316,16 @@ packages:
     resolution: {integrity: sha512-+QgdMvaeEpdtgRTD7AHHq9aw8uga7mXVHV1KshO1RQ2uI5B55xJ4aEpGlg/ga3H+0arEVcRfT4ZVmX7QLXiCVw==}
     engines: {node: '>=0.8.0'}
 
+  '@azure/msal-browser@4.27.0':
+    resolution: {integrity: sha512-bZ8Pta6YAbdd0o0PEaL1/geBsPrLEnyY/RDWqvF1PP9RUH8EMLvUMGoZFYS6jSlUan6KZ9IMTLCnwpWWpQRK/w==}
+    engines: {node: '>=0.8.0'}
+
   '@azure/msal-common@14.14.2':
     resolution: {integrity: sha512-XV0P5kSNwDwCA/SjIxTe9mEAsKB0NqGNSuaVrkCCE2lAyBr/D6YtD80Vkdp4tjWnPFwjzkwldjr1xU/facOJog==}
+    engines: {node: '>=0.8.0'}
+
+  '@azure/msal-common@15.13.3':
+    resolution: {integrity: sha512-shSDU7Ioecya+Aob5xliW9IGq1Ui8y4EVSdWGyI1Gbm4Vg61WpP95LuzcY214/wEjSn6w4PZYD4/iVldErHayQ==}
     engines: {node: '>=0.8.0'}
 
   '@babel/code-frame@7.27.1':
@@ -4962,7 +4970,13 @@ snapshots:
     dependencies:
       '@azure/msal-common': 14.14.2
 
+  '@azure/msal-browser@4.27.0':
+    dependencies:
+      '@azure/msal-common': 15.13.3
+
   '@azure/msal-common@14.14.2': {}
+
+  '@azure/msal-common@15.13.3': {}
 
   '@babel/code-frame@7.27.1':
     dependencies:
