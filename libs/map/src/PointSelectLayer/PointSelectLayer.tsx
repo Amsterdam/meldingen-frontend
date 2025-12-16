@@ -44,6 +44,17 @@ export const PointSelectLayer = ({ hideSelectedPoint, onSelectedPointChange, sel
     if (crosshair) crosshair.style.display = 'none'
   }
 
+  // When hideSelectedPoint is true:
+  // - Only fly to the selected point on initial page load
+  // - When the selected point changes after that, do not fly to it
+  useEffect(() => {
+    if (!hideSelectedPoint || !map || !selectedPoint) return
+    const { lat, lng } = selectedPoint
+
+    const currentZoom = map.getZoom()
+    map.flyTo([lat, lng], currentZoom < FLY_TO_MIN_ZOOM ? FLY_TO_MIN_ZOOM : currentZoom)
+  }, [map])
+
   // Register map events
   useEffect(() => {
     if (!map) return
@@ -59,30 +70,28 @@ export const PointSelectLayer = ({ hideSelectedPoint, onSelectedPointChange, sel
     }
   }, [map])
 
-  // Zoom to selected point and add marker if applicable
+  // Add marker at selected point and zoom to it when hideSelectedPoint is false
   useEffect(() => {
     // Remove previous marker
     markerRef.current?.remove()
 
-    if (!map || !selectedPoint) return
+    if (!map || !selectedPoint || hideSelectedPoint) return
 
     const { lat, lng } = selectedPoint
 
-    if (!hideSelectedPoint) {
-      // Create marker and add to map
-      const newMarker = marker(latLng([lat, lng]), {
-        icon: defaultIcon,
-        keyboard: false,
-      }).addTo(map)
+    // Create marker and add to map
+    const newMarker = marker(latLng([lat, lng]), {
+      icon: defaultIcon,
+      keyboard: false,
+    }).addTo(map)
 
-      // Store marker layer in ref
-      markerRef.current = newMarker
-    }
+    // Store marker layer in ref
+    markerRef.current = newMarker
 
     // Zoom to selected point
     const currentZoom = map.getZoom()
     map.flyTo([lat, lng], currentZoom < FLY_TO_MIN_ZOOM ? FLY_TO_MIN_ZOOM : currentZoom)
-  }, [map, selectedPoint])
+  }, [map, selectedPoint, hideSelectedPoint])
 
   return <Crosshair id="crosshair" />
 }
