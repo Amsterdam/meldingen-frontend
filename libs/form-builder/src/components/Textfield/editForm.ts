@@ -105,7 +105,7 @@ export const editForm = () => ({
           label: 'Validation',
         },
       ],
-      keys: 'tabs',
+      key: 'tabs',
       type: 'tabs',
     },
   ],
