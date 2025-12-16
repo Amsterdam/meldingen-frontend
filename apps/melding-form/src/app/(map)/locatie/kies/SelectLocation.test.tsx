@@ -14,7 +14,7 @@ vi.mock('./_components/AssetList/AssetList', () => ({
 
 vi.mock('@meldingen/map', () => ({
   Controls: vi.fn(),
-  Map: vi.fn(),
+  Map: vi.fn(({ children }) => <div>{children}</div>),
   MarkerSelectLayer: vi.fn(),
   PointSelectLayer: vi.fn(),
 }))
