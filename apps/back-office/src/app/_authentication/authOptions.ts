@@ -117,6 +117,7 @@ export const authOptions: AuthOptions = {
           // Access token expiry date in milliseconds
           accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
           refreshToken: shouldUseRefreshToken ? account.refresh_token : undefined,
+          // Refresh token expiry date in milliseconds
           refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
           user,
         }
