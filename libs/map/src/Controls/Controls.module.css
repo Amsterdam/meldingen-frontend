@@ -9,16 +9,13 @@
   pointer-events: none; /* Allow clicks to pass through to the map */
   z-index: 1;
 
-  /* position: sticky; */
+  > * {
+    pointer-events: auto; /* Allow interaction with overlay child elements */
+  }
 }
 
 .overlayTopLeft {
   composes: overlay;
-
-  /* Ensure my location button is always on top. Top property does not work for some reason */
-  /* stylelint-disable-next-line unit-disallowed-list */
-
-  /* bottom: 1000px; */
 }
 
 .overlayBottomRight {
@@ -31,8 +28,4 @@
     display: flex;
     place-self: end end;
   }
-}
-
-.interactive {
-  pointer-events: auto; /* Allow interaction with controls */
 }

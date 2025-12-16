@@ -48,16 +48,16 @@ export const Controls = ({ children, onCurrentLocationError, texts, updateSelect
   return (
     <>
       <div className={styles.overlayTopLeft}>
-        <Button className={styles.interactive} onClick={handleCurrentLocationButtonClick} variant="secondary">
+        <Button onClick={handleCurrentLocationButtonClick} variant="secondary">
           {texts.currentLocation}
         </Button>
         {children}
       </div>
       <div className={styles.overlayBottomRight}>
-        <Button className={styles.interactive} icon={PlusIcon} iconOnly onClick={handleZoomIn} variant="secondary">
+        <Button icon={PlusIcon} iconOnly onClick={handleZoomIn} variant="secondary">
           {texts.zoomIn}
         </Button>
-        <Button className={styles.interactive} icon={MinusIcon} iconOnly onClick={handleZoomOut} variant="secondary">
+        <Button icon={MinusIcon} iconOnly onClick={handleZoomOut} variant="secondary">
           {texts.zoomOut}
         </Button>
       </div>
