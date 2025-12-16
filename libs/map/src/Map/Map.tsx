@@ -70,7 +70,7 @@ export const MapComponent = ({ children, hasAlert, isHidden, testMapInstance }: 
 
   return (
     <MapContext.Provider value={mapInstance}>
-      <div className={clsx(styles.container, isHidden && styles.hideMap, hasAlert && styles.hasAlert)}>
+      <div className={clsx(styles.container, isHidden && styles.hideMap, hasAlert && styles.notInteractive)}>
         <div className={styles.map} ref={mapRef} />
         {children}
       </div>

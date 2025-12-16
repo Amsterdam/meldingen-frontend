@@ -1,8 +1,17 @@
 .container {
+  display: grid;
   height: 100%;
+  isolation: isolate; /* Prevents Map z-index use from bleeding into our app. */
   min-height: 16rem;
-  overflow: hidden;
+
+  /* overflow: hidden; */
   position: relative;
+
+  /* Make sure all children of map container overlap */
+  > * {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+  }
 }
 
 .hideMap {
@@ -12,4 +21,8 @@
 .map {
   height: 100%;
   isolation: isolate; /* Prevents Leaflet z-index use from bleeding into our app. */
+}
+
+.notInteractive {
+  pointer-events: none; /* Disable interaction with the map */
 }

@@ -1,11 +1,14 @@
 .notification {
   /* Adding extra margin to make space for the submit button on mobile */
-  margin-block-end: 3.85rem;
+
+  /* margin-block-end: 3.85rem; */
   max-width: 37.5rem;
 
-  @media screen and (min-width: 72.5rem) {
+  /* @media screen and (min-width: 72.5rem) {
     margin-block-end: unset;
-  }
+  } */
+
+  pointer-events: auto; /* Allow interaction with notification */
 }
 
 .notification h2 {
