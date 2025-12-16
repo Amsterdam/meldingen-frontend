@@ -6,12 +6,15 @@ import { defaultIcon } from '../markerIcons'
 import { Coordinates } from '../types'
 import { Crosshair } from './Crosshair'
 
+const FLY_TO_MIN_ZOOM = 18
+
 type Props = {
+  hideSelectedPoint: boolean
   onSelectedPointChange: (point: Coordinates) => void
   selectedPoint?: Coordinates
 }
 
-export const PointSelectLayer = ({ onSelectedPointChange, selectedPoint }: Props) => {
+export const PointSelectLayer = ({ hideSelectedPoint, onSelectedPointChange, selectedPoint }: Props) => {
   const map = useContext(MapContext)
   const markerRef = useRef<Marker | null>(null)
 
@@ -41,6 +44,15 @@ export const PointSelectLayer = ({ onSelectedPointChange, selectedPoint }: Props
     if (crosshair) crosshair.style.display = 'none'
   }
 
+  // Fly to selected point on initial page loading
+  useEffect(() => {
+    if (!map || !selectedPoint) return
+    const { lat, lng } = selectedPoint
+
+    const currentZoom = map.getZoom()
+    map.flyTo([lat, lng], currentZoom < FLY_TO_MIN_ZOOM ? FLY_TO_MIN_ZOOM : currentZoom)
+  }, [map])
+
   // Register map events
   useEffect(() => {
     if (!map) return
@@ -63,7 +75,8 @@ export const PointSelectLayer = ({ onSelectedPointChange, selectedPoint }: Props
     // Remove previous marker
     markerRef.current?.remove()
 
-    if (!selectedPoint) {
+    // Do not show marker when selectedAssets are present
+    if (hideSelectedPoint || !selectedPoint) {
       markerRef.current = null
       return
     }
@@ -81,8 +94,7 @@ export const PointSelectLayer = ({ onSelectedPointChange, selectedPoint }: Props
 
     // Zoom to marker
     const currentZoom = map.getZoom()
-    const flyToMinZoom = 18
-    map.flyTo([lat, lng], currentZoom < flyToMinZoom ? flyToMinZoom : currentZoom)
+    map.flyTo([lat, lng], currentZoom < FLY_TO_MIN_ZOOM ? FLY_TO_MIN_ZOOM : currentZoom)
   }, [map, selectedPoint])
 
   return <Crosshair id="crosshair" />

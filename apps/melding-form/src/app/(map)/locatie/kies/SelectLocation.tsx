@@ -9,7 +9,6 @@ import Form from 'next/form'
 import { useActionState, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
-import { Controls, MarkerSelectLayer, PointSelectLayer } from '@meldingen/map'
 
 import type { Coordinates } from 'apps/melding-form/src/types'
 
@@ -18,27 +17,40 @@ import { postCoordinatesAndAssets } from './actions'
 
 import styles from './SelectLocation.module.css'
 
+const Controls = dynamic(() => import('@meldingen/map').then((module) => module.Controls), { ssr: false })
 const Map = dynamic(() => import('@meldingen/map').then((module) => module.Map), {
   loading: () => <p>Loading...</p>, // TODO: improve loading state
+  ssr: false,
+})
+const MarkerSelectLayer = dynamic(() => import('@meldingen/map').then((module) => module.MarkerSelectLayer), {
+  ssr: false,
+})
+const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) => module.PointSelectLayer), {
   ssr: false,
 })
 
 type Props = {
   classification?: string
   coordinates?: Coordinates
+  selectedAssets: Feature[]
 }
 
 export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 
 const initialState: { errorMessage?: string } = {}
 
-export const MAX_ASSETS = 5
+// 3 is the default maximum from the backend
+export const MAX_ASSETS = 3
 
-export const SelectLocation = ({ classification, coordinates: coordinatesFromServer }: Props) => {
+export const SelectLocation = ({
+  classification,
+  coordinates: coordinatesFromServer,
+  selectedAssets: selectedAssetsFromServer,
+}: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
   const [notificationType, setNotificationType] = useState<NotificationType | null>(null)
-  const [selectedAssets, setSelectedAssets] = useState<Feature[]>([])
+  const [selectedAssets, setSelectedAssets] = useState<Feature[]>(selectedAssetsFromServer)
   const [showAssetList, setShowAssetList] = useState(false)
 
   const postCoordinatesAndAssetsWithSelectedAssets = postCoordinatesAndAssets.bind(null, { selectedAssets })
@@ -94,12 +106,13 @@ export const SelectLocation = ({ classification, coordinates: coordinatesFromSer
       <div className={styles.map}>
         <Map isHidden={showAssetList}>
           <PointSelectLayer
+            // If there are selected assets, do not add a point marker
+            hideSelectedPoint={selectedAssets.length > 0}
             onSelectedPointChange={(coordinates) => {
               setSelectedAssets([])
               setCoordinates(coordinates)
             }}
-            // If there are selected assets, do not add a point marker
-            selectedPoint={selectedAssets.length === 0 ? coordinates : undefined}
+            selectedPoint={coordinates}
           />
           <MarkerSelectLayer
             classification={classification}
