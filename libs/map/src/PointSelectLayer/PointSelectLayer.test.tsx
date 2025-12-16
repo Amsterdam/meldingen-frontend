@@ -222,4 +222,45 @@ describe('PointSelectLayer', () => {
 
     expect(mockAddLayer).not.toHaveBeenCalled()
   })
+
+  it('only flies to selectedPoint on initial load when hideSelectedPoint is true', () => {
+    const mockFlyTo = vi.fn()
+
+    const { rerender } = render(
+      <MapComponent
+        testMapInstance={
+          {
+            ...mockMapInstance,
+            flyTo: mockFlyTo,
+            getZoom: vi.fn(() => FLY_TO_MIN_ZOOM),
+          } as unknown as Map
+        }
+      >
+        <PointSelectLayer {...defaultProps} hideSelectedPoint={true} selectedPoint={testCoords} />
+      </MapComponent>,
+    )
+
+    // Initial load - should fly to selectedPoint
+    expect(mockFlyTo).toHaveBeenCalledWith([testCoords.lat, testCoords.lng], FLY_TO_MIN_ZOOM)
+
+    mockFlyTo.mockClear()
+
+    // Rerender with a different selectedPoint - should NOT fly to it
+    const newCoords = { lat: 52.3, lng: 4.9 }
+    rerender(
+      <MapComponent
+        testMapInstance={
+          {
+            ...mockMapInstance,
+            flyTo: mockFlyTo,
+            getZoom: vi.fn(() => FLY_TO_MIN_ZOOM),
+          } as unknown as Map
+        }
+      >
+        <PointSelectLayer {...defaultProps} hideSelectedPoint={true} selectedPoint={newCoords} />
+      </MapComponent>,
+    )
+
+    expect(mockFlyTo).not.toHaveBeenCalled()
+  })
 })
