@@ -16,7 +16,7 @@ const isEntraAuthEnabled =
  * For now, the user has to log in every 90 minutes (default access token lifetime).
  * https://gemeente-amsterdam.atlassian.net/browse/SIG-6986
  **/
-const shouldStoreRefreshToken = !isEntraAuthEnabled
+const shouldUseRefreshToken = !isEntraAuthEnabled
 
 const envVars = {
   clientId: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_ID : process.env.KEYCLOAK_CLIENT_ID,
@@ -116,7 +116,7 @@ export const authOptions: AuthOptions = {
           accessToken: account.access_token,
           // Access token expiry date in milliseconds
           accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
-          refreshToken: shouldStoreRefreshToken ? account.refresh_token : undefined,
+          refreshToken: shouldUseRefreshToken ? account.refresh_token : undefined,
           refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
           user,
         }
@@ -128,7 +128,7 @@ export const authOptions: AuthOptions = {
       }
 
       // Access token has expired, try to update it
-      if (shouldStoreRefreshToken) {
+      if (shouldUseRefreshToken) {
         return refreshAccessToken(token)
       }
 
