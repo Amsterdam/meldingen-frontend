@@ -22,12 +22,12 @@ vi.mock('react', async (importOriginal) => {
 
 describe('MapComponent', () => {
   it('renders the component', () => {
-    const { container } = render(<MapComponent hasAlert={false} />)
+    const { container } = render(<MapComponent />)
     expect(container.firstChild).toBeInTheDocument()
   })
 
   it('applies hideMap class when isHidden is true', () => {
-    const { container } = render(<MapComponent hasAlert={false} isHidden />)
+    const { container } = render(<MapComponent isHidden />)
 
     const element = container.querySelector('[class*="_hideMap"]')
 
@@ -39,7 +39,7 @@ describe('MapComponent', () => {
     const createdMapInstanceRef = { current: false }
     ;(useRef as Mock).mockReturnValueOnce(containerRef).mockReturnValue(createdMapInstanceRef)
 
-    const { container } = render(<MapComponent hasAlert={false} />)
+    const { container } = render(<MapComponent />)
 
     const leafletContainer = container.querySelector('[class*="leaflet-container"]')
     expect(leafletContainer).toBeInTheDocument()
@@ -50,22 +50,10 @@ describe('MapComponent', () => {
       invalidateSize: vi.fn(),
     } as unknown as Map
 
-    const { rerender } = render(<MapComponent hasAlert={false} isHidden={false} testMapInstance={mockMapInstance} />)
-    rerender(<MapComponent hasAlert={false} isHidden={true} />)
+    const { rerender } = render(<MapComponent isHidden={false} testMapInstance={mockMapInstance} />)
+    rerender(<MapComponent isHidden={true} />)
 
     expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
-  })
-
-  it('calls invalidateSize and add classname when hasAlert prop set to true', () => {
-    const mockMapInstance = {
-      invalidateSize: vi.fn(),
-    } as unknown as Map
-
-    const { container } = render(<MapComponent hasAlert={true} isHidden={false} testMapInstance={mockMapInstance} />)
-    const element = container.querySelector('[class*="_hasAlert"]')
-
-    expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
-    expect(element).toBeInTheDocument()
   })
 
   it('calls remove when the component unmounts', () => {
@@ -78,7 +66,7 @@ describe('MapComponent', () => {
     const createdMapInstanceRef = { current: false }
     ;(useRef as Mock).mockReturnValueOnce(containerRef).mockReturnValue(createdMapInstanceRef)
 
-    const { unmount } = render(<MapComponent hasAlert={false} testMapInstance={mockMapInstance} />)
+    const { unmount } = render(<MapComponent testMapInstance={mockMapInstance} />)
     unmount()
 
     expect(mockMapInstance.remove).toHaveBeenCalled()
