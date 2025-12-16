@@ -2,7 +2,7 @@
 
 import { type Client, formDataBodySerializer, type Options as Options2, type TDataShape } from './client';
 import { client } from './client.gen';
-import type { DeleteAssetTypeByAssetTypeIdData, DeleteAssetTypeByAssetTypeIdErrors, DeleteAssetTypeByAssetTypeIdResponses, DeleteClassificationByClassificationIdData, DeleteClassificationByClassificationIdErrors, DeleteClassificationByClassificationIdResponses, DeleteFormByFormIdData, DeleteFormByFormIdErrors, DeleteFormByFormIdResponses, DeleteMeldingByMeldingIdAssetByAssetIdData, DeleteMeldingByMeldingIdAssetByAssetIdErrors, DeleteMeldingByMeldingIdAssetByAssetIdResponses, DeleteMeldingByMeldingIdAttachmentByAttachmentIdData, DeleteMeldingByMeldingIdAttachmentByAttachmentIdErrors, DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponses, DeleteUserByUserIdData, DeleteUserByUserIdErrors, DeleteUserByUserIdResponses, GetAssetTypeByAssetTypeIdData, GetAssetTypeByAssetTypeIdErrors, GetAssetTypeByAssetTypeIdResponses, GetAssetTypeData, GetAssetTypeErrors, GetAssetTypeResponses, GetAttachmentByIdData, GetAttachmentByIdErrors, GetAttachmentByIdResponses, GetClassificationByClassificationIdData, GetClassificationByClassificationIdErrors, GetClassificationByClassificationIdResponses, GetClassificationData, GetClassificationErrors, GetClassificationResponses, GetFormByFormIdData, GetFormByFormIdErrors, GetFormByFormIdResponses, GetFormClassificationByClassificationIdData, GetFormClassificationByClassificationIdErrors, GetFormClassificationByClassificationIdResponses, GetFormData, GetFormErrors, GetFormResponses, GetMeldingByMeldingIdAnswersData, GetMeldingByMeldingIdAnswersErrors, GetMeldingByMeldingIdAnswersMelderData, GetMeldingByMeldingIdAnswersMelderErrors, GetMeldingByMeldingIdAnswersMelderResponses, GetMeldingByMeldingIdAnswersResponses, GetMeldingByMeldingIdAssetsData, GetMeldingByMeldingIdAssetsErrors, GetMeldingByMeldingIdAssetsMelderData, GetMeldingByMeldingIdAssetsMelderErrors, GetMeldingByMeldingIdAssetsMelderResponses, GetMeldingByMeldingIdAssetsResponses, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadErrors, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponses, GetMeldingByMeldingIdAttachmentsData, GetMeldingByMeldingIdAttachmentsErrors, GetMeldingByMeldingIdAttachmentsMelderData, GetMeldingByMeldingIdAttachmentsMelderErrors, GetMeldingByMeldingIdAttachmentsMelderResponses, GetMeldingByMeldingIdAttachmentsResponses, GetMeldingByMeldingIdData, GetMeldingByMeldingIdErrors, GetMeldingByMeldingIdMelderData, GetMeldingByMeldingIdMelderErrors, GetMeldingByMeldingIdMelderResponses, GetMeldingByMeldingIdNextPossibleStatesData, GetMeldingByMeldingIdNextPossibleStatesErrors, GetMeldingByMeldingIdNextPossibleStatesResponses, GetMeldingByMeldingIdResponses, GetMeldingData, GetMeldingErrors, GetMeldingResponses, GetStaticFormByStaticFormIdData, GetStaticFormByStaticFormIdErrors, GetStaticFormByStaticFormIdResponses, GetStaticFormData, GetStaticFormErrors, GetStaticFormResponses, GetUserByUserIdData, GetUserByUserIdErrors, GetUserByUserIdResponses, GetUserData, GetUserErrors, GetUserResponses, GetWfsByNameData, GetWfsByNameErrors, GetWfsByNameResponses, PatchAssetTypeByAssetTypeIdData, PatchAssetTypeByAssetTypeIdErrors, PatchAssetTypeByAssetTypeIdResponses, PatchClassificationByClassificationIdData, PatchClassificationByClassificationIdErrors, PatchClassificationByClassificationIdResponses, PatchMeldingByMeldingIdAnswerByAnswerIdData, PatchMeldingByMeldingIdAnswerByAnswerIdErrors, PatchMeldingByMeldingIdAnswerByAnswerIdResponses, PatchMeldingByMeldingIdContactData, PatchMeldingByMeldingIdContactErrors, PatchMeldingByMeldingIdContactResponses, PatchMeldingByMeldingIdData, PatchMeldingByMeldingIdErrors, PatchMeldingByMeldingIdLocationData, PatchMeldingByMeldingIdLocationErrors, PatchMeldingByMeldingIdLocationResponses, PatchMeldingByMeldingIdResponses, PatchUserByUserIdData, PatchUserByUserIdErrors, PatchUserByUserIdResponses, PostAssetTypeData, PostAssetTypeErrors, PostAssetTypeResponses, PostClassificationData, PostClassificationErrors, PostClassificationResponses, PostFormData, PostFormErrors, PostFormResponses, PostMailPreviewData, PostMailPreviewErrors, PostMailPreviewResponses, PostMeldingByMeldingIdAssetData, PostMeldingByMeldingIdAssetErrors, PostMeldingByMeldingIdAssetResponses, PostMeldingByMeldingIdAttachmentData, PostMeldingByMeldingIdAttachmentErrors, PostMeldingByMeldingIdAttachmentResponses, PostMeldingByMeldingIdQuestionByQuestionIdData, PostMeldingByMeldingIdQuestionByQuestionIdErrors, PostMeldingByMeldingIdQuestionByQuestionIdResponses, PostMeldingData, PostMeldingErrors, PostMeldingResponses, PostUserData, PostUserErrors, PostUserResponses, PutFormByFormIdData, PutFormByFormIdErrors, PutFormByFormIdResponses, PutMeldingByMeldingIdAddAttachmentsData, PutMeldingByMeldingIdAddAttachmentsErrors, PutMeldingByMeldingIdAddAttachmentsResponses, PutMeldingByMeldingIdAddContactInfoData, PutMeldingByMeldingIdAddContactInfoErrors, PutMeldingByMeldingIdAddContactInfoResponses, PutMeldingByMeldingIdAnswerQuestionsData, PutMeldingByMeldingIdAnswerQuestionsErrors, PutMeldingByMeldingIdAnswerQuestionsResponses, PutMeldingByMeldingIdCompleteData, PutMeldingByMeldingIdCompleteErrors, PutMeldingByMeldingIdCompleteResponses, PutMeldingByMeldingIdProcessData, PutMeldingByMeldingIdProcessErrors, PutMeldingByMeldingIdProcessResponses, PutMeldingByMeldingIdSubmitData, PutMeldingByMeldingIdSubmitErrors, PutMeldingByMeldingIdSubmitLocationData, PutMeldingByMeldingIdSubmitLocationErrors, PutMeldingByMeldingIdSubmitLocationResponses, PutMeldingByMeldingIdSubmitResponses, PutStaticFormByStaticFormIdData, PutStaticFormByStaticFormIdErrors, PutStaticFormByStaticFormIdResponses } from './types.gen';
+import type { DeleteAssetTypeByAssetTypeIdData, DeleteAssetTypeByAssetTypeIdErrors, DeleteAssetTypeByAssetTypeIdResponses, DeleteClassificationByClassificationIdData, DeleteClassificationByClassificationIdErrors, DeleteClassificationByClassificationIdResponses, DeleteFormByFormIdData, DeleteFormByFormIdErrors, DeleteFormByFormIdResponses, DeleteMeldingByMeldingIdAssetByAssetIdData, DeleteMeldingByMeldingIdAssetByAssetIdErrors, DeleteMeldingByMeldingIdAssetByAssetIdResponses, DeleteMeldingByMeldingIdAttachmentByAttachmentIdData, DeleteMeldingByMeldingIdAttachmentByAttachmentIdErrors, DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponses, DeleteUserByUserIdData, DeleteUserByUserIdErrors, DeleteUserByUserIdResponses, GetAssetTypeByAssetTypeIdData, GetAssetTypeByAssetTypeIdErrors, GetAssetTypeByAssetTypeIdResponses, GetAssetTypeData, GetAssetTypeErrors, GetAssetTypeResponses, GetAttachmentByIdData, GetAttachmentByIdErrors, GetAttachmentByIdResponses, GetClassificationByClassificationIdData, GetClassificationByClassificationIdErrors, GetClassificationByClassificationIdResponses, GetClassificationData, GetClassificationErrors, GetClassificationResponses, GetDocsData, GetDocsResponses, GetFormByFormIdData, GetFormByFormIdErrors, GetFormByFormIdResponses, GetFormClassificationByClassificationIdData, GetFormClassificationByClassificationIdErrors, GetFormClassificationByClassificationIdResponses, GetFormData, GetFormErrors, GetFormResponses, GetMeldingByMeldingIdAnswersData, GetMeldingByMeldingIdAnswersErrors, GetMeldingByMeldingIdAnswersMelderData, GetMeldingByMeldingIdAnswersMelderErrors, GetMeldingByMeldingIdAnswersMelderResponses, GetMeldingByMeldingIdAnswersResponses, GetMeldingByMeldingIdAssetsData, GetMeldingByMeldingIdAssetsErrors, GetMeldingByMeldingIdAssetsMelderData, GetMeldingByMeldingIdAssetsMelderErrors, GetMeldingByMeldingIdAssetsMelderResponses, GetMeldingByMeldingIdAssetsResponses, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadErrors, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponses, GetMeldingByMeldingIdAttachmentsData, GetMeldingByMeldingIdAttachmentsErrors, GetMeldingByMeldingIdAttachmentsMelderData, GetMeldingByMeldingIdAttachmentsMelderErrors, GetMeldingByMeldingIdAttachmentsMelderResponses, GetMeldingByMeldingIdAttachmentsResponses, GetMeldingByMeldingIdData, GetMeldingByMeldingIdErrors, GetMeldingByMeldingIdMelderData, GetMeldingByMeldingIdMelderErrors, GetMeldingByMeldingIdMelderResponses, GetMeldingByMeldingIdNextPossibleStatesData, GetMeldingByMeldingIdNextPossibleStatesErrors, GetMeldingByMeldingIdNextPossibleStatesResponses, GetMeldingByMeldingIdResponses, GetMeldingData, GetMeldingErrors, GetMeldingResponses, GetStaticFormByStaticFormIdData, GetStaticFormByStaticFormIdErrors, GetStaticFormByStaticFormIdResponses, GetStaticFormData, GetStaticFormErrors, GetStaticFormResponses, GetUserByUserIdData, GetUserByUserIdErrors, GetUserByUserIdResponses, GetUserData, GetUserErrors, GetUserResponses, GetWfsByNameData, GetWfsByNameErrors, GetWfsByNameResponses, PatchAssetTypeByAssetTypeIdData, PatchAssetTypeByAssetTypeIdErrors, PatchAssetTypeByAssetTypeIdResponses, PatchClassificationByClassificationIdData, PatchClassificationByClassificationIdErrors, PatchClassificationByClassificationIdResponses, PatchMeldingByMeldingIdAnswerByAnswerIdData, PatchMeldingByMeldingIdAnswerByAnswerIdErrors, PatchMeldingByMeldingIdAnswerByAnswerIdResponses, PatchMeldingByMeldingIdContactData, PatchMeldingByMeldingIdContactErrors, PatchMeldingByMeldingIdContactResponses, PatchMeldingByMeldingIdData, PatchMeldingByMeldingIdErrors, PatchMeldingByMeldingIdLocationData, PatchMeldingByMeldingIdLocationErrors, PatchMeldingByMeldingIdLocationResponses, PatchMeldingByMeldingIdResponses, PatchUserByUserIdData, PatchUserByUserIdErrors, PatchUserByUserIdResponses, PostAssetTypeData, PostAssetTypeErrors, PostAssetTypeResponses, PostClassificationData, PostClassificationErrors, PostClassificationResponses, PostFormData, PostFormErrors, PostFormResponses, PostMailPreviewData, PostMailPreviewErrors, PostMailPreviewResponses, PostMeldingByMeldingIdAssetData, PostMeldingByMeldingIdAssetErrors, PostMeldingByMeldingIdAssetResponses, PostMeldingByMeldingIdAttachmentData, PostMeldingByMeldingIdAttachmentErrors, PostMeldingByMeldingIdAttachmentResponses, PostMeldingByMeldingIdQuestionByQuestionIdData, PostMeldingByMeldingIdQuestionByQuestionIdErrors, PostMeldingByMeldingIdQuestionByQuestionIdResponses, PostMeldingData, PostMeldingErrors, PostMeldingResponses, PostUserData, PostUserErrors, PostUserResponses, PutFormByFormIdData, PutFormByFormIdErrors, PutFormByFormIdResponses, PutMeldingByMeldingIdAddAttachmentsData, PutMeldingByMeldingIdAddAttachmentsErrors, PutMeldingByMeldingIdAddAttachmentsResponses, PutMeldingByMeldingIdAddContactInfoData, PutMeldingByMeldingIdAddContactInfoErrors, PutMeldingByMeldingIdAddContactInfoResponses, PutMeldingByMeldingIdAnswerQuestionsData, PutMeldingByMeldingIdAnswerQuestionsErrors, PutMeldingByMeldingIdAnswerQuestionsResponses, PutMeldingByMeldingIdCompleteData, PutMeldingByMeldingIdCompleteErrors, PutMeldingByMeldingIdCompleteResponses, PutMeldingByMeldingIdProcessData, PutMeldingByMeldingIdProcessErrors, PutMeldingByMeldingIdProcessResponses, PutMeldingByMeldingIdSubmitData, PutMeldingByMeldingIdSubmitErrors, PutMeldingByMeldingIdSubmitLocationData, PutMeldingByMeldingIdSubmitLocationErrors, PutMeldingByMeldingIdSubmitLocationResponses, PutMeldingByMeldingIdSubmitResponses, PutStaticFormByStaticFormIdData, PutStaticFormByStaticFormIdErrors, PutStaticFormByStaticFormIdResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -106,6 +106,7 @@ export const getMelding = <ThrowOnError extends boolean = false>(options?: Optio
  * Melding:Create
  */
 export const postMelding = <ThrowOnError extends boolean = false>(options: Options<PostMeldingData, ThrowOnError>) => (options.client ?? client).post<PostMeldingResponses, PostMeldingErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
     url: '/melding/',
     ...options,
     headers: {
@@ -127,6 +128,7 @@ export const getMeldingByMeldingId = <ThrowOnError extends boolean = false>(opti
  * Melding:Update
  */
 export const patchMeldingByMeldingId = <ThrowOnError extends boolean = false>(options: Options<PatchMeldingByMeldingIdData, ThrowOnError>) => (options.client ?? client).patch<PatchMeldingByMeldingIdResponses, PatchMeldingByMeldingIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
     url: '/melding/{melding_id}',
     ...options,
     headers: {
@@ -138,27 +140,47 @@ export const patchMeldingByMeldingId = <ThrowOnError extends boolean = false>(op
 /**
  * Melding:Retrieve Melder
  */
-export const getMeldingByMeldingIdMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdMelderData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdMelderResponses, GetMeldingByMeldingIdMelderErrors, ThrowOnError>({ url: '/melding/{melding_id}/melder', ...options });
+export const getMeldingByMeldingIdMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdMelderData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdMelderResponses, GetMeldingByMeldingIdMelderErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/melder',
+    ...options
+});
 
 /**
  * Melding:Answer Questions
  */
-export const putMeldingByMeldingIdAnswerQuestions = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdAnswerQuestionsData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdAnswerQuestionsResponses, PutMeldingByMeldingIdAnswerQuestionsErrors, ThrowOnError>({ url: '/melding/{melding_id}/answer_questions', ...options });
+export const putMeldingByMeldingIdAnswerQuestions = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdAnswerQuestionsData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdAnswerQuestionsResponses, PutMeldingByMeldingIdAnswerQuestionsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/answer_questions',
+    ...options
+});
 
 /**
  * Melding:Add-Attachments
  */
-export const putMeldingByMeldingIdAddAttachments = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdAddAttachmentsData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdAddAttachmentsResponses, PutMeldingByMeldingIdAddAttachmentsErrors, ThrowOnError>({ url: '/melding/{melding_id}/add_attachments', ...options });
+export const putMeldingByMeldingIdAddAttachments = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdAddAttachmentsData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdAddAttachmentsResponses, PutMeldingByMeldingIdAddAttachmentsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/add_attachments',
+    ...options
+});
 
 /**
  * Melding:Submit-Location
  */
-export const putMeldingByMeldingIdSubmitLocation = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdSubmitLocationData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdSubmitLocationResponses, PutMeldingByMeldingIdSubmitLocationErrors, ThrowOnError>({ url: '/melding/{melding_id}/submit_location', ...options });
+export const putMeldingByMeldingIdSubmitLocation = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdSubmitLocationData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdSubmitLocationResponses, PutMeldingByMeldingIdSubmitLocationErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/submit_location',
+    ...options
+});
 
 /**
  * Melding:Submit
  */
-export const putMeldingByMeldingIdSubmit = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdSubmitData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdSubmitResponses, PutMeldingByMeldingIdSubmitErrors, ThrowOnError>({ url: '/melding/{melding_id}/submit', ...options });
+export const putMeldingByMeldingIdSubmit = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdSubmitData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdSubmitResponses, PutMeldingByMeldingIdSubmitErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/submit',
+    ...options
+});
 
 /**
  * Melding:Process
@@ -186,6 +208,7 @@ export const putMeldingByMeldingIdComplete = <ThrowOnError extends boolean = fal
  * Melding:Answer-Question
  */
 export const postMeldingByMeldingIdQuestionByQuestionId = <ThrowOnError extends boolean = false>(options: Options<PostMeldingByMeldingIdQuestionByQuestionIdData, ThrowOnError>) => (options.client ?? client).post<PostMeldingByMeldingIdQuestionByQuestionIdResponses, PostMeldingByMeldingIdQuestionByQuestionIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
     url: '/melding/{melding_id}/question/{question_id}',
     ...options,
     headers: {
@@ -198,6 +221,7 @@ export const postMeldingByMeldingIdQuestionByQuestionId = <ThrowOnError extends 
  * Melding:Update-Answer
  */
 export const patchMeldingByMeldingIdAnswerByAnswerId = <ThrowOnError extends boolean = false>(options: Options<PatchMeldingByMeldingIdAnswerByAnswerIdData, ThrowOnError>) => (options.client ?? client).patch<PatchMeldingByMeldingIdAnswerByAnswerIdResponses, PatchMeldingByMeldingIdAnswerByAnswerIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
     url: '/melding/{melding_id}/answer/{answer_id}',
     ...options,
     headers: {
@@ -211,6 +235,7 @@ export const patchMeldingByMeldingIdAnswerByAnswerId = <ThrowOnError extends boo
  */
 export const postMeldingByMeldingIdAttachment = <ThrowOnError extends boolean = false>(options: Options<PostMeldingByMeldingIdAttachmentData, ThrowOnError>) => (options.client ?? client).post<PostMeldingByMeldingIdAttachmentResponses, PostMeldingByMeldingIdAttachmentErrors, ThrowOnError>({
     ...formDataBodySerializer,
+    security: [{ scheme: 'bearer', type: 'http' }],
     url: '/melding/{melding_id}/attachment',
     ...options,
     headers: {
@@ -222,7 +247,11 @@ export const postMeldingByMeldingIdAttachment = <ThrowOnError extends boolean = 
 /**
  * Melding:Attachment-Download
  */
-export const getMeldingByMeldingIdAttachmentByAttachmentIdDownload = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponses, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadErrors, ThrowOnError>({ url: '/melding/{melding_id}/attachment/{attachment_id}/download', ...options });
+export const getMeldingByMeldingIdAttachmentByAttachmentIdDownload = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponses, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/attachment/{attachment_id}/download',
+    ...options
+});
 
 /**
  * Melding:Attachments
@@ -236,17 +265,26 @@ export const getMeldingByMeldingIdAttachments = <ThrowOnError extends boolean = 
 /**
  * Melding:Attachments Melder
  */
-export const getMeldingByMeldingIdAttachmentsMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAttachmentsMelderData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAttachmentsMelderResponses, GetMeldingByMeldingIdAttachmentsMelderErrors, ThrowOnError>({ url: '/melding/{melding_id}/attachments/melder', ...options });
+export const getMeldingByMeldingIdAttachmentsMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAttachmentsMelderData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAttachmentsMelderResponses, GetMeldingByMeldingIdAttachmentsMelderErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/attachments/melder',
+    ...options
+});
 
 /**
  * Melding:Attachment-Delete
  */
-export const deleteMeldingByMeldingIdAttachmentByAttachmentId = <ThrowOnError extends boolean = false>(options: Options<DeleteMeldingByMeldingIdAttachmentByAttachmentIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponses, DeleteMeldingByMeldingIdAttachmentByAttachmentIdErrors, ThrowOnError>({ url: '/melding/{melding_id}/attachment/{attachment_id}', ...options });
+export const deleteMeldingByMeldingIdAttachmentByAttachmentId = <ThrowOnError extends boolean = false>(options: Options<DeleteMeldingByMeldingIdAttachmentByAttachmentIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponses, DeleteMeldingByMeldingIdAttachmentByAttachmentIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/attachment/{attachment_id}',
+    ...options
+});
 
 /**
  * Melding:Location-Add
  */
 export const patchMeldingByMeldingIdLocation = <ThrowOnError extends boolean = false>(options: Options<PatchMeldingByMeldingIdLocationData, ThrowOnError>) => (options.client ?? client).patch<PatchMeldingByMeldingIdLocationResponses, PatchMeldingByMeldingIdLocationErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
     url: '/melding/{melding_id}/location',
     ...options,
     headers: {
@@ -259,6 +297,7 @@ export const patchMeldingByMeldingIdLocation = <ThrowOnError extends boolean = f
  * Melding:Contact-Add
  */
 export const patchMeldingByMeldingIdContact = <ThrowOnError extends boolean = false>(options: Options<PatchMeldingByMeldingIdContactData, ThrowOnError>) => (options.client ?? client).patch<PatchMeldingByMeldingIdContactResponses, PatchMeldingByMeldingIdContactErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
     url: '/melding/{melding_id}/contact',
     ...options,
     headers: {
@@ -270,12 +309,20 @@ export const patchMeldingByMeldingIdContact = <ThrowOnError extends boolean = fa
 /**
  * Melding:Add-Contact-Info
  */
-export const putMeldingByMeldingIdAddContactInfo = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdAddContactInfoData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdAddContactInfoResponses, PutMeldingByMeldingIdAddContactInfoErrors, ThrowOnError>({ url: '/melding/{melding_id}/add_contact_info', ...options });
+export const putMeldingByMeldingIdAddContactInfo = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdAddContactInfoData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdAddContactInfoResponses, PutMeldingByMeldingIdAddContactInfoErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/add_contact_info',
+    ...options
+});
 
 /**
  * Melding:Answers Melder
  */
-export const getMeldingByMeldingIdAnswersMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAnswersMelderData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAnswersMelderResponses, GetMeldingByMeldingIdAnswersMelderErrors, ThrowOnError>({ url: '/melding/{melding_id}/answers/melder', ...options });
+export const getMeldingByMeldingIdAnswersMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAnswersMelderData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAnswersMelderResponses, GetMeldingByMeldingIdAnswersMelderErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/answers/melder',
+    ...options
+});
 
 /**
  * Melding:Answers
@@ -290,6 +337,7 @@ export const getMeldingByMeldingIdAnswers = <ThrowOnError extends boolean = fals
  * Melding:Add-Asset
  */
 export const postMeldingByMeldingIdAsset = <ThrowOnError extends boolean = false>(options: Options<PostMeldingByMeldingIdAssetData, ThrowOnError>) => (options.client ?? client).post<PostMeldingByMeldingIdAssetResponses, PostMeldingByMeldingIdAssetErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
     url: '/melding/{melding_id}/asset',
     ...options,
     headers: {
@@ -301,7 +349,11 @@ export const postMeldingByMeldingIdAsset = <ThrowOnError extends boolean = false
 /**
  * Melding:Assets Melder
  */
-export const getMeldingByMeldingIdAssetsMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAssetsMelderData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAssetsMelderResponses, GetMeldingByMeldingIdAssetsMelderErrors, ThrowOnError>({ url: '/melding/{melding_id}/assets/melder', ...options });
+export const getMeldingByMeldingIdAssetsMelder = <ThrowOnError extends boolean = false>(options: Options<GetMeldingByMeldingIdAssetsMelderData, ThrowOnError>) => (options.client ?? client).get<GetMeldingByMeldingIdAssetsMelderResponses, GetMeldingByMeldingIdAssetsMelderErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/assets/melder',
+    ...options
+});
 
 /**
  * Melding:Assets
@@ -315,7 +367,11 @@ export const getMeldingByMeldingIdAssets = <ThrowOnError extends boolean = false
 /**
  * Melding:Delete-Asset
  */
-export const deleteMeldingByMeldingIdAssetByAssetId = <ThrowOnError extends boolean = false>(options: Options<DeleteMeldingByMeldingIdAssetByAssetIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteMeldingByMeldingIdAssetByAssetIdResponses, DeleteMeldingByMeldingIdAssetByAssetIdErrors, ThrowOnError>({ url: '/melding/{melding_id}/asset/{asset_id}', ...options });
+export const deleteMeldingByMeldingIdAssetByAssetId = <ThrowOnError extends boolean = false>(options: Options<DeleteMeldingByMeldingIdAssetByAssetIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteMeldingByMeldingIdAssetByAssetIdResponses, DeleteMeldingByMeldingIdAssetByAssetIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/asset/{asset_id}',
+    ...options
+});
 
 /**
  * Melding:Next Possible States
@@ -382,7 +438,11 @@ export const patchUserByUserId = <ThrowOnError extends boolean = false>(options:
 /**
  * Form:List
  */
-export const getForm = <ThrowOnError extends boolean = false>(options?: Options<GetFormData, ThrowOnError>) => (options?.client ?? client).get<GetFormResponses, GetFormErrors, ThrowOnError>({ url: '/form/', ...options });
+export const getForm = <ThrowOnError extends boolean = false>(options?: Options<GetFormData, ThrowOnError>) => (options?.client ?? client).get<GetFormResponses, GetFormErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/form/',
+    ...options
+});
 
 /**
  * Form:Create
@@ -409,7 +469,11 @@ export const deleteFormByFormId = <ThrowOnError extends boolean = false>(options
 /**
  * Form:Retrieve
  */
-export const getFormByFormId = <ThrowOnError extends boolean = false>(options: Options<GetFormByFormIdData, ThrowOnError>) => (options.client ?? client).get<GetFormByFormIdResponses, GetFormByFormIdErrors, ThrowOnError>({ url: '/form/{form_id}', ...options });
+export const getFormByFormId = <ThrowOnError extends boolean = false>(options: Options<GetFormByFormIdData, ThrowOnError>) => (options.client ?? client).get<GetFormByFormIdResponses, GetFormByFormIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/form/{form_id}',
+    ...options
+});
 
 /**
  * Form:Update
@@ -427,12 +491,20 @@ export const putFormByFormId = <ThrowOnError extends boolean = false>(options: O
 /**
  * Form:Classification
  */
-export const getFormClassificationByClassificationId = <ThrowOnError extends boolean = false>(options: Options<GetFormClassificationByClassificationIdData, ThrowOnError>) => (options.client ?? client).get<GetFormClassificationByClassificationIdResponses, GetFormClassificationByClassificationIdErrors, ThrowOnError>({ url: '/form/classification/{classification_id}', ...options });
+export const getFormClassificationByClassificationId = <ThrowOnError extends boolean = false>(options: Options<GetFormClassificationByClassificationIdData, ThrowOnError>) => (options.client ?? client).get<GetFormClassificationByClassificationIdResponses, GetFormClassificationByClassificationIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/form/classification/{classification_id}',
+    ...options
+});
 
 /**
  * Static-Form:Retrieve
  */
-export const getStaticFormByStaticFormId = <ThrowOnError extends boolean = false>(options: Options<GetStaticFormByStaticFormIdData, ThrowOnError>) => (options.client ?? client).get<GetStaticFormByStaticFormIdResponses, GetStaticFormByStaticFormIdErrors, ThrowOnError>({ url: '/static-form/{static_form_id}', ...options });
+export const getStaticFormByStaticFormId = <ThrowOnError extends boolean = false>(options: Options<GetStaticFormByStaticFormIdData, ThrowOnError>) => (options.client ?? client).get<GetStaticFormByStaticFormIdResponses, GetStaticFormByStaticFormIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/static-form/{static_form_id}',
+    ...options
+});
 
 /**
  * Static-Form:Update
@@ -450,7 +522,11 @@ export const putStaticFormByStaticFormId = <ThrowOnError extends boolean = false
 /**
  * Static-Form:List
  */
-export const getStaticForm = <ThrowOnError extends boolean = false>(options?: Options<GetStaticFormData, ThrowOnError>) => (options?.client ?? client).get<GetStaticFormResponses, GetStaticFormErrors, ThrowOnError>({ url: '/static-form/', ...options });
+export const getStaticForm = <ThrowOnError extends boolean = false>(options?: Options<GetStaticFormData, ThrowOnError>) => (options?.client ?? client).get<GetStaticFormResponses, GetStaticFormErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/static-form/',
+    ...options
+});
 
 /**
  * Asset-Type:List
@@ -508,4 +584,17 @@ export const patchAssetTypeByAssetTypeId = <ThrowOnError extends boolean = false
 /**
  * Wfs:Retrieve
  */
-export const getWfsByName = <ThrowOnError extends boolean = false>(options: Options<GetWfsByNameData, ThrowOnError>) => (options.client ?? client).get<GetWfsByNameResponses, GetWfsByNameErrors, ThrowOnError>({ url: '/wfs/{name}', ...options });
+export const getWfsByName = <ThrowOnError extends boolean = false>(options: Options<GetWfsByNameData, ThrowOnError>) => (options.client ?? client).get<GetWfsByNameResponses, GetWfsByNameErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/wfs/{name}',
+    ...options
+});
+
+/**
+ * Docs:Scalar
+ */
+export const getDocs = <ThrowOnError extends boolean = false>(options?: Options<GetDocsData, ThrowOnError>) => (options?.client ?? client).get<GetDocsResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/docs/',
+    ...options
+});
