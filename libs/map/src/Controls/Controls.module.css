@@ -10,6 +10,8 @@
 
 .overlayTopLeft {
   composes: overlay;
+
+  /* Save some space for the submit button which out of the document flow */
   max-height: calc(100% - 7rem);
   overflow-y: auto;
   top: 0;
