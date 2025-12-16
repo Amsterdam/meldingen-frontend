@@ -1733,6 +1733,16 @@ export const FormCheckboxComponentInputSchema = {
                 }
             ]
         },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         values: {
             items: {
                 $ref: '#/components/schemas/FormComponentValueInput'
@@ -2145,6 +2155,149 @@ export const FormComponentValueOutputSchema = {
     title: 'FormComponentValueOutput'
 } as const;
 
+export const FormDateComponentInputSchema = {
+    properties: {
+        label: {
+            type: 'string',
+            minLength: 3,
+            title: 'Label'
+        },
+        description: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description'
+        },
+        key: {
+            type: 'string',
+            minLength: 3,
+            title: 'Key'
+        },
+        type: {
+            $ref: '#/components/schemas/FormIoComponentTypeEnum',
+            default: 'date'
+        },
+        input: {
+            type: 'boolean',
+            title: 'Input'
+        },
+        validate: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormComponentInputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        dayRange: {
+            type: 'integer',
+            title: 'Dayrange'
+        }
+    },
+    additionalProperties: false,
+    type: 'object',
+    required: [
+        'label',
+        'description',
+        'key',
+        'input',
+        'dayRange'
+    ],
+    title: 'FormDateComponentInput'
+} as const;
+
+export const FormDateComponentOutputSchema = {
+    properties: {
+        label: {
+            type: 'string',
+            title: 'Label'
+        },
+        description: {
+            type: 'string',
+            title: 'Description'
+        },
+        key: {
+            type: 'string',
+            title: 'Key'
+        },
+        type: {
+            type: 'string',
+            title: 'Type'
+        },
+        input: {
+            type: 'boolean',
+            title: 'Input'
+        },
+        position: {
+            type: 'integer',
+            title: 'Position'
+        },
+        validate: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        dayRange: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Dayrange'
+        },
+        question: {
+            type: 'integer',
+            title: 'Question'
+        }
+    },
+    type: 'object',
+    required: [
+        'label',
+        'description',
+        'key',
+        'type',
+        'input',
+        'position',
+        'question'
+    ],
+    title: 'FormDateComponentOutput'
+} as const;
+
 export const FormIOConditionalSchema = {
     properties: {
         show: {
@@ -2153,6 +2306,7 @@ export const FormIOConditionalSchema = {
         },
         when: {
             type: 'string',
+            minLength: 1,
             title: 'When'
         },
         eq: {
@@ -2215,6 +2369,12 @@ export const FormInputSchema = {
                     },
                     {
                         $ref: '#/components/schemas/FormSelectComponentInput'
+                    },
+                    {
+                        $ref: '#/components/schemas/FormDateComponentInput'
+                    },
+                    {
+                        $ref: '#/components/schemas/FormTimeComponentInput'
                     }
                 ]
             },
@@ -2251,7 +2411,9 @@ export const FormIoComponentTypeEnumSchema = {
         'textfield',
         'selectboxes',
         'radio',
-        'select'
+        'select',
+        'date',
+        'time'
     ],
     title: 'FormIoComponentTypeEnum',
     description: 'The value of the type field'
@@ -2321,6 +2483,12 @@ export const FormOutputSchema = {
                     },
                     {
                         $ref: '#/components/schemas/FormSelectComponentOutput'
+                    },
+                    {
+                        $ref: '#/components/schemas/FormDateComponentOutput'
+                    },
+                    {
+                        $ref: '#/components/schemas/FormTimeComponentOutput'
                     }
                 ]
             },
@@ -2366,6 +2534,16 @@ export const FormPanelComponentInputSchema = {
             title: 'Input',
             default: false
         },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         components: {
             items: {
                 oneOf: [
@@ -2383,6 +2561,12 @@ export const FormPanelComponentInputSchema = {
                     },
                     {
                         $ref: '#/components/schemas/FormSelectComponentInput'
+                    },
+                    {
+                        $ref: '#/components/schemas/FormDateComponentInput'
+                    },
+                    {
+                        $ref: '#/components/schemas/FormTimeComponentInput'
                     }
                 ]
             },
@@ -2427,6 +2611,16 @@ export const FormPanelComponentOutputSchema = {
             type: 'integer',
             title: 'Position'
         },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         components: {
             items: {
                 anyOf: [
@@ -2444,6 +2638,12 @@ export const FormPanelComponentOutputSchema = {
                     },
                     {
                         $ref: '#/components/schemas/FormSelectComponentOutput'
+                    },
+                    {
+                        $ref: '#/components/schemas/FormDateComponentOutput'
+                    },
+                    {
+                        $ref: '#/components/schemas/FormTimeComponentOutput'
                     }
                 ]
             },
@@ -2499,6 +2699,16 @@ export const FormRadioComponentInputSchema = {
             anyOf: [
                 {
                     $ref: '#/components/schemas/FormComponentInputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -2672,6 +2882,16 @@ export const FormSelectComponentInputSchema = {
                 }
             ]
         },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         widget: {
             type: 'string',
             title: 'Widget'
@@ -2811,6 +3031,16 @@ export const FormTextAreaComponentInputSchema = {
             anyOf: [
                 {
                     $ref: '#/components/schemas/FormComponentInputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
                 },
                 {
                     type: 'null'
@@ -2967,6 +3197,16 @@ export const FormTextFieldComponentInputSchema = {
                     type: 'null'
                 }
             ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
         }
     },
     additionalProperties: false,
@@ -3042,6 +3282,133 @@ export const FormTextFieldInputComponentOutputSchema = {
         'question'
     ],
     title: 'FormTextFieldInputComponentOutput'
+} as const;
+
+export const FormTimeComponentInputSchema = {
+    properties: {
+        label: {
+            type: 'string',
+            minLength: 3,
+            title: 'Label'
+        },
+        description: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description'
+        },
+        key: {
+            type: 'string',
+            minLength: 3,
+            title: 'Key'
+        },
+        type: {
+            $ref: '#/components/schemas/FormIoComponentTypeEnum',
+            default: 'time'
+        },
+        input: {
+            type: 'boolean',
+            title: 'Input'
+        },
+        validate: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormComponentInputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        }
+    },
+    additionalProperties: false,
+    type: 'object',
+    required: [
+        'label',
+        'description',
+        'key',
+        'input'
+    ],
+    title: 'FormTimeComponentInput'
+} as const;
+
+export const FormTimeComponentOutputSchema = {
+    properties: {
+        label: {
+            type: 'string',
+            title: 'Label'
+        },
+        description: {
+            type: 'string',
+            title: 'Description'
+        },
+        key: {
+            type: 'string',
+            title: 'Key'
+        },
+        type: {
+            type: 'string',
+            title: 'Type'
+        },
+        input: {
+            type: 'boolean',
+            title: 'Input'
+        },
+        position: {
+            type: 'integer',
+            title: 'Position'
+        },
+        validate: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormComponentOutputValidate'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        question: {
+            type: 'integer',
+            title: 'Question'
+        }
+    },
+    type: 'object',
+    required: [
+        'label',
+        'description',
+        'key',
+        'type',
+        'input',
+        'position',
+        'question'
+    ],
+    title: 'FormTimeComponentOutput'
 } as const;
 
 export const GeoJson_InputSchema = {
@@ -7260,6 +7627,12 @@ export const StaticFormInputSchema = {
                     },
                     {
                         $ref: '#/components/schemas/FormSelectComponentInput'
+                    },
+                    {
+                        $ref: '#/components/schemas/FormDateComponentInput'
+                    },
+                    {
+                        $ref: '#/components/schemas/FormTimeComponentInput'
                     }
                 ]
             },
@@ -7367,6 +7740,16 @@ export const StaticFormPanelComponentOutputSchema = {
         position: {
             type: 'integer',
             title: 'Position'
+        },
+        conditional: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/FormIOConditional'
+                },
+                {
+                    type: 'null'
+                }
+            ]
         },
         components: {
             items: {
