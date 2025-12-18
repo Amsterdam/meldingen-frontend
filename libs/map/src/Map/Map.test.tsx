@@ -62,7 +62,7 @@ describe('MapComponent', () => {
     } as unknown as Map
 
     const { container } = render(<MapComponent hasAlert={true} isHidden={false} testMapInstance={mockMapInstance} />)
-    const element = container.querySelector('[class*="_hasAlert"]')
+    const element = container.querySelector('[class*="notInteractive"]')
 
     expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
     expect(element).toBeInTheDocument()
