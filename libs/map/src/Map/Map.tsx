@@ -6,7 +6,7 @@ import 'leaflet/dist/leaflet.css'
 import styles from './Map.module.css'
 
 export type Props = PropsWithChildren & {
-  hasAlert: boolean
+  hasAlert?: boolean
   isHidden?: boolean
   /* This prop is only used for unit tests. */
   testMapInstance?: Map
