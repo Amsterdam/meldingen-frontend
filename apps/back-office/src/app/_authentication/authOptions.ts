@@ -9,6 +9,15 @@ const isEntraAuthEnabled =
   Boolean(process.env.ENTRA_CLIENT_SECRET) &&
   Boolean(process.env.ENTRA_TENANT_ID)
 
+/**
+ * We cannot store the refresh token for Entra because it is bigger than 4kb combined with the access token.
+ * For this reason the user gets logged out after the access token expires.
+ * We should store the refresh token in a different secure storage, like a database through the backend.
+ * For now, the user has to log in every 90 minutes (default access token lifetime).
+ * https://gemeente-amsterdam.atlassian.net/browse/SIG-6986
+ **/
+const shouldUseRefreshToken = !isEntraAuthEnabled
+
 const envVars = {
   clientId: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_ID : process.env.KEYCLOAK_CLIENT_ID,
   clientSecret: isEntraAuthEnabled ? process.env.ENTRA_CLIENT_SECRET : process.env.KEYCLOAK_CLIENT_SECRET,
@@ -100,14 +109,14 @@ const getProviders = () => {
 export const authOptions: AuthOptions = {
   callbacks: {
     jwt: async ({ account, token, user }) => {
-      // Account and user are Keycloak-specific
+      // account is only available the first time this callback is called on a new session (after the user signs in)
       if (account && user) {
-        // account is only available the first time this callback is called on a new session (after the user signs in)
         return {
+          ...token,
           accessToken: account.access_token,
           // Access token expiry date in milliseconds
           accessTokenExpiresAt: account.expires_at && account.expires_at * 1000,
-          refreshToken: account.refresh_token,
+          refreshToken: shouldUseRefreshToken ? account.refresh_token : undefined,
           // Refresh token expiry date in milliseconds
           refreshTokenExpiresAt: account.refresh_expires_in && Date.now() + account.refresh_expires_in * 1000,
           user,
@@ -120,7 +129,12 @@ export const authOptions: AuthOptions = {
       }
 
       // Access token has expired, try to update it
-      return refreshAccessToken(token)
+      if (shouldUseRefreshToken) {
+        return refreshAccessToken(token)
+      }
+
+      // We have no refresh token. Throwing an error forces sign in again
+      throw new Error('Token has expired')
     },
     redirect: async ({ baseUrl, url }) => {
       // Use callback url

@@ -9,7 +9,6 @@ import Form from 'next/form'
 import { useActionState, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
-import { Controls, MarkerSelectLayer, PointSelectLayer } from '@meldingen/map'
 
 import type { Coordinates } from 'apps/melding-form/src/types'
 
@@ -18,8 +17,15 @@ import { postCoordinatesAndAssets } from './actions'
 
 import styles from './SelectLocation.module.css'
 
+const Controls = dynamic(() => import('@meldingen/map').then((module) => module.Controls), { ssr: false })
 const Map = dynamic(() => import('@meldingen/map').then((module) => module.Map), {
   loading: () => <p>Loading...</p>, // TODO: improve loading state
+  ssr: false,
+})
+const MarkerSelectLayer = dynamic(() => import('@meldingen/map').then((module) => module.MarkerSelectLayer), {
+  ssr: false,
+})
+const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) => module.PointSelectLayer), {
   ssr: false,
 })
 

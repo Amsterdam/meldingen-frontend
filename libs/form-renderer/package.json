@@ -11,6 +11,6 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "next": "16.0.7"
+    "next": "16.0.10"
   }
 }
