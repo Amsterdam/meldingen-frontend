@@ -34,10 +34,12 @@ describe('PrimaryForm', () => {
     const maxCharCount = screen.getByRole('textbox', {
       name: 'resources.undefined.fields.components[0].maxCharCount',
     })
-    const maxCharCountErrorMessage = screen.getByText('resources.undefined.fields.components[0].validate.json.if[2]')
-    const requiredErrorMessage = screen.getByText(
-      'resources.undefined.fields.components[0].validate.required_error_message',
-    )
+    const maxCharCountErrorMessage = screen.getByRole('textbox', {
+      name: 'resources.undefined.fields.components[0].validate.json.if[2]',
+    })
+    const requiredErrorMessage = screen.getByRole('textbox', {
+      name: 'resources.undefined.fields.components[0].validate.required_error_message',
+    })
     const submitButton = screen.getByRole('button', { name: 'ra.action.save' })
 
     expect(label).toBeInTheDocument()
