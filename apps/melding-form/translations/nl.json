@@ -64,7 +64,7 @@
       "zoom-out": "Uitzoomen"
     },
     "errors": {
-      "no-location": "Vul een locatie in.",
+      "no-location": "Vul een adres in.",
       "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam."
     },
     "notifications": {
