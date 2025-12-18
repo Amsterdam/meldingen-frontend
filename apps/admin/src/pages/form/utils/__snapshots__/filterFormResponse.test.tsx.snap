@@ -7,6 +7,11 @@ exports[`filterFormResponse > renders the correct output 1`] = `
     {
       "components": [
         {
+          "conditional": {
+            "eq": "",
+            "show": null,
+            "when": null,
+          },
           "description": "",
           "input": true,
           "key": "textField1",
@@ -19,6 +24,11 @@ exports[`filterFormResponse > renders the correct output 1`] = `
         },
         {
           "autoExpand": false,
+          "conditional": {
+            "eq": "",
+            "show": null,
+            "when": null,
+          },
           "description": "",
           "input": true,
           "key": "textArea1",
@@ -31,6 +41,11 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           },
         },
         {
+          "conditional": {
+            "eq": "",
+            "show": null,
+            "when": null,
+          },
           "description": "",
           "input": true,
           "key": "selectBoxes",
@@ -54,6 +69,11 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           ],
         },
         {
+          "conditional": {
+            "eq": "",
+            "show": null,
+            "when": null,
+          },
           "data": {
             "custom": "",
             "json": "",
@@ -82,6 +102,11 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           "widget": "html5",
         },
         {
+          "conditional": {
+            "eq": "",
+            "show": null,
+            "when": null,
+          },
           "description": "",
           "input": true,
           "key": "radio",
@@ -102,6 +127,11 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           ],
         },
       ],
+      "conditional": {
+        "eq": "",
+        "show": null,
+        "when": null,
+      },
       "input": false,
       "key": "page1",
       "label": "Page 1",
@@ -111,6 +141,11 @@ exports[`filterFormResponse > renders the correct output 1`] = `
     {
       "components": [
         {
+          "conditional": {
+            "eq": "",
+            "show": null,
+            "when": null,
+          },
           "description": "Description",
           "input": true,
           "key": "textField2",
@@ -130,6 +165,11 @@ exports[`filterFormResponse > renders the correct output 1`] = `
         },
         {
           "autoExpand": true,
+          "conditional": {
+            "eq": "",
+            "show": null,
+            "when": null,
+          },
           "description": "Description",
           "input": true,
           "key": "textArea2",
@@ -149,6 +189,11 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           },
         },
         {
+          "conditional": {
+            "eq": "",
+            "show": null,
+            "when": null,
+          },
           "description": "Description",
           "input": true,
           "key": "selectBoxes1",
@@ -177,6 +222,11 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           ],
         },
         {
+          "conditional": {
+            "eq": "",
+            "show": null,
+            "when": null,
+          },
           "data": {
             "custom": "",
             "json": "",
@@ -213,6 +263,11 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           "widget": "html5",
         },
         {
+          "conditional": {
+            "eq": "",
+            "show": null,
+            "when": null,
+          },
           "description": "Description",
           "input": true,
           "key": "radio1",
@@ -241,6 +296,11 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           ],
         },
       ],
+      "conditional": {
+        "eq": "",
+        "show": null,
+        "when": null,
+      },
       "input": false,
       "key": "page2",
       "label": "Page 2",
