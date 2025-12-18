@@ -505,6 +505,7 @@ export type FormCheckboxComponentInput = {
      */
     input: boolean;
     validate?: FormComponentInputValidate | null;
+    conditional?: FormIoConditional | null;
     /**
      * Values
      */
@@ -620,6 +621,75 @@ export type FormComponentValueOutput = {
 };
 
 /**
+ * FormDateComponentInput
+ */
+export type FormDateComponentInput = {
+    /**
+     * Label
+     */
+    label: string;
+    /**
+     * Description
+     */
+    description: string | null;
+    /**
+     * Key
+     */
+    key: string;
+    type?: FormIoComponentTypeEnum;
+    /**
+     * Input
+     */
+    input: boolean;
+    validate?: FormComponentInputValidate | null;
+    conditional?: FormIoConditional | null;
+    /**
+     * Dayrange
+     */
+    dayRange: number;
+};
+
+/**
+ * FormDateComponentOutput
+ */
+export type FormDateComponentOutput = {
+    /**
+     * Label
+     */
+    label: string;
+    /**
+     * Description
+     */
+    description: string;
+    /**
+     * Key
+     */
+    key: string;
+    /**
+     * Type
+     */
+    type: string;
+    /**
+     * Input
+     */
+    input: boolean;
+    /**
+     * Position
+     */
+    position: number;
+    validate?: FormComponentOutputValidate | null;
+    conditional?: FormIoConditional | null;
+    /**
+     * Dayrange
+     */
+    dayRange?: number | null;
+    /**
+     * Question
+     */
+    question: number;
+};
+
+/**
  * FormIOConditional
  */
 export type FormIoConditional = {
@@ -649,7 +719,7 @@ export type FormInput = {
     /**
      * Components
      */
-    components: Array<FormPanelComponentInput | FormTextAreaComponentInput | FormTextFieldComponentInput | FormRadioComponentInput | FormCheckboxComponentInput | FormSelectComponentInput>;
+    components: Array<FormPanelComponentInput | FormTextAreaComponentInput | FormTextFieldComponentInput | FormRadioComponentInput | FormCheckboxComponentInput | FormSelectComponentInput | FormDateComponentInput | FormTimeComponentInput>;
     /**
      * Classification
      */
@@ -661,7 +731,7 @@ export type FormInput = {
  *
  * The value of the type field
  */
-export type FormIoComponentTypeEnum = 'panel' | 'textarea' | 'textfield' | 'selectboxes' | 'radio' | 'select';
+export type FormIoComponentTypeEnum = 'panel' | 'textarea' | 'textfield' | 'selectboxes' | 'radio' | 'select' | 'date' | 'time';
 
 /**
  * FormIoFormDisplayEnum
@@ -704,7 +774,7 @@ export type FormOutput = {
     /**
      * Components
      */
-    components: Array<FormPanelComponentOutput | FormTextAreaComponentOutput | FormTextFieldInputComponentOutput | FormCheckboxComponentOutput | FormRadioComponentOutput | FormSelectComponentOutput>;
+    components: Array<FormPanelComponentOutput | FormTextAreaComponentOutput | FormTextFieldInputComponentOutput | FormCheckboxComponentOutput | FormRadioComponentOutput | FormSelectComponentOutput | FormDateComponentOutput | FormTimeComponentOutput>;
 };
 
 /**
@@ -728,10 +798,11 @@ export type FormPanelComponentInput = {
      * Input
      */
     input?: boolean;
+    conditional?: FormIoConditional | null;
     /**
      * Components
      */
-    components: Array<FormTextAreaComponentInput | FormTextFieldComponentInput | FormRadioComponentInput | FormCheckboxComponentInput | FormSelectComponentInput>;
+    components: Array<FormTextAreaComponentInput | FormTextFieldComponentInput | FormRadioComponentInput | FormCheckboxComponentInput | FormSelectComponentInput | FormDateComponentInput | FormTimeComponentInput>;
 };
 
 /**
@@ -762,10 +833,11 @@ export type FormPanelComponentOutput = {
      * Position
      */
     position: number;
+    conditional?: FormIoConditional | null;
     /**
      * Components
      */
-    components: Array<FormTextAreaComponentOutput | FormTextFieldInputComponentOutput | FormCheckboxComponentOutput | FormRadioComponentOutput | FormSelectComponentOutput>;
+    components: Array<FormTextAreaComponentOutput | FormTextFieldInputComponentOutput | FormCheckboxComponentOutput | FormRadioComponentOutput | FormSelectComponentOutput | FormDateComponentOutput | FormTimeComponentOutput>;
 };
 
 /**
@@ -790,6 +862,7 @@ export type FormRadioComponentInput = {
      */
     input: boolean;
     validate?: FormComponentInputValidate | null;
+    conditional?: FormIoConditional | null;
     /**
      * Values
      */
@@ -878,6 +951,7 @@ export type FormSelectComponentInput = {
      */
     input: boolean;
     validate?: FormComponentInputValidate | null;
+    conditional?: FormIoConditional | null;
     /**
      * Widget
      */
@@ -956,6 +1030,7 @@ export type FormTextAreaComponentInput = {
      */
     input: boolean;
     validate?: FormComponentInputValidate | null;
+    conditional?: FormIoConditional | null;
     /**
      * Autoexpand
      */
@@ -1032,12 +1107,74 @@ export type FormTextFieldComponentInput = {
      */
     input: boolean;
     validate?: FormComponentInputValidate | null;
+    conditional?: FormIoConditional | null;
 };
 
 /**
  * FormTextFieldInputComponentOutput
  */
 export type FormTextFieldInputComponentOutput = {
+    /**
+     * Label
+     */
+    label: string;
+    /**
+     * Description
+     */
+    description: string;
+    /**
+     * Key
+     */
+    key: string;
+    /**
+     * Type
+     */
+    type: string;
+    /**
+     * Input
+     */
+    input: boolean;
+    /**
+     * Position
+     */
+    position: number;
+    validate?: FormComponentOutputValidate | null;
+    conditional?: FormIoConditional | null;
+    /**
+     * Question
+     */
+    question: number;
+};
+
+/**
+ * FormTimeComponentInput
+ */
+export type FormTimeComponentInput = {
+    /**
+     * Label
+     */
+    label: string;
+    /**
+     * Description
+     */
+    description: string | null;
+    /**
+     * Key
+     */
+    key: string;
+    type?: FormIoComponentTypeEnum;
+    /**
+     * Input
+     */
+    input: boolean;
+    validate?: FormComponentInputValidate | null;
+    conditional?: FormIoConditional | null;
+};
+
+/**
+ * FormTimeComponentOutput
+ */
+export type FormTimeComponentOutput = {
     /**
      * Label
      */
@@ -2169,7 +2306,7 @@ export type StaticFormInput = {
     /**
      * Components
      */
-    components: Array<FormPanelComponentInput | FormTextAreaComponentInput | FormTextFieldComponentInput | FormRadioComponentInput | FormCheckboxComponentInput | FormSelectComponentInput>;
+    components: Array<FormPanelComponentInput | FormTextAreaComponentInput | FormTextFieldComponentInput | FormRadioComponentInput | FormCheckboxComponentInput | FormSelectComponentInput | FormDateComponentInput | FormTimeComponentInput>;
 };
 
 /**
@@ -2234,6 +2371,7 @@ export type StaticFormPanelComponentOutput = {
      * Position
      */
     position: number;
+    conditional?: FormIoConditional | null;
     /**
      * Components
      */
@@ -5739,3 +5877,19 @@ export type GetWfsByNameResponses = {
 };
 
 export type GetWfsByNameResponse = GetWfsByNameResponses[keyof GetWfsByNameResponses];
+
+export type GetDocsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/docs/';
+};
+
+export type GetDocsResponses = {
+    /**
+     * Successful Response
+     */
+    200: string;
+};
+
+export type GetDocsResponse = GetDocsResponses[keyof GetDocsResponses];

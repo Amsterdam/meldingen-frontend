@@ -4,6 +4,10 @@
   gap: var(--ams-space-m);
   padding-block: var(--ams-space-m);
   padding-inline: var(--ams-space-m);
+
+  @media screen and (min-width: 72.5rem) {
+    padding-block: var(--ams-space-m) 0;
+  }
 }
 
 .backLink {
