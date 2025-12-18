@@ -3,9 +3,12 @@
   flex-direction: column;
   grid-row-start: 2;
   overflow-y: auto;
-  padding-block-end: var(--ams-space-m);
   padding-inline: var(--ams-space-m);
   row-gap: var(--ams-space-m);
+
+  @media screen and (min-width: 72.5rem) {
+    padding-block-start: var(--ams-space-m);
+  }
 }
 
 .hide {
