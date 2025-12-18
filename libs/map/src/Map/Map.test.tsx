@@ -56,7 +56,7 @@ describe('MapComponent', () => {
     expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
   })
 
-  it('calls invalidateSize and add classname when hasAlert prop set to true', () => {
+  it('calls invalidateSize and adds classname when hasAlert prop set to true', () => {
     const mockMapInstance = {
       invalidateSize: vi.fn(),
     } as unknown as Map
