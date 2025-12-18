@@ -1,5 +1,6 @@
 'use server'
 
+import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -48,6 +49,8 @@ export const postForm = async (
   _: unknown,
   formData: FormData,
 ) => {
+  const t = await getTranslations('additional-questions.errors')
+
   // Get session variables from cookies
   const cookieStore = await cookies()
   const meldingId = cookieStore.get(COOKIES.ID)?.value
@@ -76,7 +79,7 @@ export const postForm = async (
         key,
         message:
           formComponents.find((component) => component.key === key)?.validate?.required_error_message ||
-          'Vraag is verplicht en moet worden beantwoord.',
+          t('required-error-message-fallback'),
       })),
     }
   }

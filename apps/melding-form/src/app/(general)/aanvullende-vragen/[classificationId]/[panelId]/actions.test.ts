@@ -74,7 +74,7 @@ describe('postForm', () => {
       formData,
       validationErrors: [
         // Fallback error message
-        { key: 'textArea1', message: 'Vraag is verplicht en moet worden beantwoord.' },
+        { key: 'textArea1', message: 'required-error-message-fallback' },
         {
           key: 'selectBoxes',
           message: 'Dit veld is verplicht',
