@@ -6,7 +6,6 @@ import { redirect } from 'next/navigation'
 
 import type { ArgsType } from './actions'
 
-import { checkboxComponent, textAreaComponent } from '../../../../../mocks/data'
 import { postForm } from './actions'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
@@ -21,7 +20,6 @@ vi.mock('next/navigation', () => ({
 
 describe('postForm', () => {
   const defaultArgs: ArgsType = {
-    formComponents: [],
     isLastPanel: true,
     lastPanelPath: '/test',
     nextPanelPath: '/',
@@ -57,14 +55,15 @@ describe('postForm', () => {
   })
 
   it('returns custom and fallback validation errors for missing required questions', async () => {
-    const formComponentsWithoutPanelComponents = [textAreaComponent, checkboxComponent]
     const formData = new FormData()
 
     const result = await postForm(
       {
         ...defaultArgs,
-        formComponents: formComponentsWithoutPanelComponents,
-        requiredQuestionKeys: ['textArea1', 'selectBoxes'],
+        requiredQuestionKeys: [
+          { key: 'textArea1', requiredErrorMessage: 'required-error-message-fallback' },
+          { key: 'selectBoxes', requiredErrorMessage: 'Dit veld is verplicht' },
+        ],
       },
       null,
       formData,
@@ -73,7 +72,6 @@ describe('postForm', () => {
     expect(result).toEqual({
       formData,
       validationErrors: [
-        // Fallback error message
         { key: 'textArea1', message: 'required-error-message-fallback' },
         {
           key: 'selectBoxes',

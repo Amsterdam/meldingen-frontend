@@ -1,11 +1,9 @@
 'use server'
 
-import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
-import { Component } from '@meldingen/form-renderer'
 
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
@@ -13,19 +11,20 @@ import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
+type RequiredQuestionKey = { key: string; requiredErrorMessage: string }
+
 export type ArgsType = {
-  formComponents: Component[]
   isLastPanel: boolean
   lastPanelPath: string
   nextPanelPath: string
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
   questionKeysAndIds: { id: number; key: string }[]
-  requiredQuestionKeys: string[]
+  requiredQuestionKeys: RequiredQuestionKey[]
 }
 
-const getUnansweredRequiredQuestionKeys = (requiredKeys: string[], entries: [string, unknown][]) =>
-  requiredKeys.filter((requiredKey) => {
-    const entry = entries.find(([key]) => key === requiredKey)
+const getUnansweredRequiredQuestionKeys = (requiredKeys: RequiredQuestionKey[], entries: [string, unknown][]) =>
+  requiredKeys.filter(({ key }) => {
+    const entry = entries.find(([entrieKey]) => entrieKey === key)
 
     // If entries do not contain a key that is in requiredKeys, add it to missingRequiredKeys
     if (!entry) return true
@@ -38,7 +37,6 @@ const getUnansweredRequiredQuestionKeys = (requiredKeys: string[], entries: [str
 
 export const postForm = async (
   {
-    formComponents,
     isLastPanel,
     lastPanelPath,
     nextPanelPath,
@@ -49,8 +47,6 @@ export const postForm = async (
   _: unknown,
   formData: FormData,
 ) => {
-  const t = await getTranslations('additional-questions.errors')
-
   // Get session variables from cookies
   const cookieStore = await cookies()
   const meldingId = cookieStore.get(COOKIES.ID)?.value
@@ -75,11 +71,9 @@ export const postForm = async (
   if (missingRequiredKeys.length > 0) {
     return {
       formData,
-      validationErrors: missingRequiredKeys.map((key) => ({
+      validationErrors: missingRequiredKeys.map(({ key, requiredErrorMessage }) => ({
         key,
-        message:
-          formComponents.find((component) => component.key === key)?.validate?.required_error_message ||
-          t('required-error-message-fallback'),
+        message: requiredErrorMessage,
       })),
     }
   }

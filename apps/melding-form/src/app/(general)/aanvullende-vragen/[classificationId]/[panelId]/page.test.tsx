@@ -215,7 +215,7 @@ describe('Page', () => {
         { answerId: additionalQuestions[1].id, questionId: additionalQuestions[1].question.id },
       ],
       questionKeysAndIds: [{ id: 'q2', key: 'question-2' }],
-      requiredQuestionKeys: ['question-2'],
+      requiredQuestionKeys: [{ key: 'question-2', requiredErrorMessage: 'required-error-message-fallback' }],
     })
   })
 
