@@ -11,18 +11,20 @@ import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
-type ArgsType = {
+type RequiredQuestionKey = { key: string; requiredErrorMessage: string }
+
+export type ArgsType = {
   isLastPanel: boolean
   lastPanelPath: string
   nextPanelPath: string
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
   questionKeysAndIds: { id: number; key: string }[]
-  requiredQuestionKeys: string[]
+  requiredQuestionKeys: RequiredQuestionKey[]
 }
 
-const getUnansweredRequiredQuestionKeys = (requiredKeys: string[], entries: [string, unknown][]) =>
-  requiredKeys.filter((requiredKey) => {
-    const entry = entries.find(([key]) => key === requiredKey)
+const getUnansweredRequiredQuestionKeys = (requiredKeys: RequiredQuestionKey[], entries: [string, unknown][]) =>
+  requiredKeys.filter(({ key }) => {
+    const entry = entries.find(([entrieKey]) => entrieKey === key)
 
     // If entries do not contain a key that is in requiredKeys, add it to missingRequiredKeys
     if (!entry) return true
@@ -69,9 +71,9 @@ export const postForm = async (
   if (missingRequiredKeys.length > 0) {
     return {
       formData,
-      validationErrors: missingRequiredKeys.map((key) => ({
+      validationErrors: missingRequiredKeys.map(({ key, requiredErrorMessage }) => ({
         key,
-        message: 'Vraag is verplicht en moet worden beantwoord.',
+        message: requiredErrorMessage,
       })),
     }
   }

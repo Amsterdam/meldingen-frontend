@@ -14,8 +14,14 @@ import { COOKIES } from '../../constants'
 import { handleApiError } from '../../handleApiError'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
 
+export type ArgsType = {
+  existingId?: string
+  existingToken?: string
+  requiredErrorMessage: string
+}
+
 export const postPrimaryForm = async (
-  { existingId, existingToken }: { existingId?: string; existingToken?: string },
+  { existingId, existingToken, requiredErrorMessage }: ArgsType,
   _: unknown,
   formData: FormData,
 ) => {
@@ -25,7 +31,12 @@ export const postPrimaryForm = async (
   if (!formDataObj.primary) {
     return {
       formData,
-      validationErrors: [{ key: 'primary', message: 'Vraag is verplicht en moet worden beantwoord.' }],
+      validationErrors: [
+        {
+          key: 'primary',
+          message: requiredErrorMessage,
+        },
+      ],
     }
   }
 

@@ -42,6 +42,7 @@ export const PrimaryForm = () => {
       <MaxCharCountInputs />
       {/* Set JSONLogic error message */}
       <TextInput source="components[0].validate.json.if[2]" />
+      <TextInput source="components[0].validate.required_error_message" />
     </SimpleForm>
   )
 }

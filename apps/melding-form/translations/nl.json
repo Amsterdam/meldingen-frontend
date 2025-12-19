@@ -15,6 +15,9 @@
       "title": "Stap 1 van 4: Beschrijf uw melding - Gemeente Amsterdam"
     },
     "back-link": "Vorige vraag",
+    "errors": {
+      "required-error-message-fallback": "Vraag is verplicht en moet worden beantwoord."
+    },
     "title": "Melding openbare ruimte",
     "step": "Stap 1 van 4: Beschrijf uw melding",
     "submit-button": "Volgende vraag"
