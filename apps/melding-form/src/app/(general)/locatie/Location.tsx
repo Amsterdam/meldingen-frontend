@@ -1,6 +1,6 @@
 'use client'
 
-import { Heading, Paragraph, StandaloneLink, UnorderedList } from '@amsterdam/design-system-react'
+import { ErrorMessage, Field, Heading, Paragraph, StandaloneLink, UnorderedList } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import Image from 'next/image'
@@ -46,7 +46,7 @@ const getAssetElement = (asset: Feature) => {
 export const Location = ({ address, prevPage, selectedAssets }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ systemError, validationErrors }, formAction] = useActionState(postLocationForm, initialState)
+  const [{ systemError, validationErrors = [] }, formAction] = useActionState(postLocationForm, initialState)
 
   const t = useTranslations('location')
   const tShared = useTranslations('shared')
@@ -73,7 +73,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert />}
-        {validationErrors && (
+        {validationErrors.length > 0 && (
           <InvalidFormAlert
             className="ams-mb-m"
             errors={validationErrors.map((error) => ({
@@ -88,21 +88,24 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
 
         <FormHeader step={t('step')} title={t('title')} />
 
-        <Heading className="ams-mb-s" level={1} size="level-3">
-          {t('question')}
-        </Heading>
-        <Paragraph className="ams-mb-s">{address ?? t('description')}</Paragraph>
-        {selectedAssets.length > 0 && (
-          <UnorderedList className="ams-mb-m" markers={false}>
-            {selectedAssets.map((asset) => getAssetElement(asset))}
-          </UnorderedList>
-        )}
+        <Field className="ams-mb-m" invalid={validationErrors.length > 0}>
+          <Heading level={1} size="level-3">
+            {t('question')}
+          </Heading>
+          <Paragraph>{address ?? t('description')}</Paragraph>
+          {selectedAssets.length > 0 && (
+            <UnorderedList markers={false}>{selectedAssets.map((asset) => getAssetElement(asset))}</UnorderedList>
+          )}
 
-        <NextLink href="/locatie/kies" legacyBehavior passHref>
-          <StandaloneLink className="ams-mb-m" id="location-link">
-            {address ? t('link.with-location') : t('link.without-location')}
-          </StandaloneLink>
-        </NextLink>
+          {validationErrors.length > 0 &&
+            validationErrors.map((error) => <ErrorMessage key={error.key}>{error.message}</ErrorMessage>)}
+
+          <NextLink href="/locatie/kies" legacyBehavior passHref>
+            <StandaloneLink id="location-link">
+              {address ? t('link.with-location') : t('link.without-location')}
+            </StandaloneLink>
+          </NextLink>
+        </Field>
 
         <Form action={formAction} noValidate>
           <SubmitButton>{t('submit-button')}</SubmitButton>
