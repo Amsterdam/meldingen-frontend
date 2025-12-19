@@ -22,10 +22,12 @@ export const postLocationForm = async () => {
   // Return validation error if address is not supplied
   if (!address) {
     return {
-      validationError: {
-        key: 'location-link',
-        message: t('errors.no-location'),
-      },
+      validationErrors: [
+        {
+          key: 'location-link',
+          message: t('errors.no-location'),
+        },
+      ],
     }
   }
 
