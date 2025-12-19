@@ -65,12 +65,15 @@ export default async () => {
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
   const isExistingMelding = meldingId && token
+  const requiredErrorMessage =
+    primaryFormComponents.find((component) => component.key === 'primary')?.validate?.required_error_message ||
+    'Vul in wat u wilt melden.'
 
   const formComponents = isExistingMelding
     ? await getPrefilledPrimaryFormComponents(meldingId, token, primaryFormComponents)
     : primaryFormComponents
 
-  const action = postPrimaryForm.bind(null, { existingId: meldingId, existingToken: token, formComponents })
+  const action = postPrimaryForm.bind(null, { existingId: meldingId, existingToken: token, requiredErrorMessage })
 
   return <Home action={action} formComponents={formComponents} />
 }

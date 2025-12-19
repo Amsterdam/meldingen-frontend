@@ -25,7 +25,7 @@ const getPreviousPanelPath = (classificationId: number, currentPanelIndex: numbe
   return `/aanvullende-vragen/${classificationId}/${formData.components[currentPanelIndex - 1].key}`
 }
 
-export type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
+type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
 
 const getFormComponents = (
   components: FormOutputWithoutPanelComponents[],

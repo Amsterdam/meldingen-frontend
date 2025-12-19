@@ -3,6 +3,7 @@ import { http, HttpResponse } from 'msw'
 import { Mock } from 'vitest'
 
 import * as actionsModule from './actions'
+import { ArgsType } from './actions'
 import { Home } from './Home'
 import Page from './page'
 import { melding, textAreaComponent } from 'apps/melding-form/src/mocks/data'
@@ -18,7 +19,7 @@ vi.mock('next/headers', () => ({
 
 vi.mock('./actions', () => ({ postPrimaryForm: vi.fn() }))
 
-let capturedAction: ((argsObj: unknown, _: unknown, formData: FormData) => void) | null = null
+let capturedAction: ((argsObj: ArgsType, _: unknown, formData: FormData) => void) | null = null
 
 vi.mock('./Home', () => ({
   Home: vi.fn((props: { action: () => void }) => {
@@ -46,7 +47,7 @@ describe('Page', () => {
 
     // Call the bound action
     if (capturedAction) {
-      capturedAction({}, undefined, new FormData())
+      capturedAction({ requiredErrorMessage: 'Vul in wat u wilt melden.' }, undefined, new FormData())
     }
 
     expect(actionsModule.postPrimaryForm).toHaveBeenCalled()
@@ -56,7 +57,46 @@ describe('Page', () => {
     expect(extraArgs).toMatchObject({
       existingId: '123',
       existingToken: 'test-token',
-      formComponents: [textAreaComponent],
+      requiredErrorMessage: 'Vul in wat u wilt melden.',
+    })
+  })
+
+  it('passes custom required error message when it is set', async () => {
+    const primaryFormWithCustomErrorMessage = {
+      components: [
+        {
+          ...textAreaComponent,
+          key: 'primary',
+          validate: {
+            required: true,
+            required_error_message: 'Custom error message',
+          },
+        },
+      ],
+    }
+    server.use(
+      http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(primaryFormWithCustomErrorMessage)),
+    )
+
+    mockIdAndTokenCookies()
+
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    // Call the bound action
+    if (capturedAction) {
+      capturedAction({ requiredErrorMessage: 'Vul in wat u wilt melden.' }, undefined, new FormData())
+    }
+
+    expect(actionsModule.postPrimaryForm).toHaveBeenCalled()
+
+    const [extraArgs] = (actionsModule.postPrimaryForm as Mock).mock.calls[0]
+
+    expect(extraArgs).toMatchObject({
+      existingId: '123',
+      existingToken: 'test-token',
+      requiredErrorMessage: 'Custom error message',
     })
   })
 

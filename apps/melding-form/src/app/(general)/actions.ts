@@ -8,7 +8,6 @@ import {
   patchMeldingByMeldingId,
   postMelding,
   putMeldingByMeldingIdAnswerQuestions,
-  StaticFormTextAreaComponentOutput,
 } from '@meldingen/api-client'
 
 import { COOKIES } from '../../constants'
@@ -18,11 +17,11 @@ import { hasValidationErrors } from './_utils/hasValidationErrors'
 export type ArgsType = {
   existingId?: string
   existingToken?: string
-  formComponents: StaticFormTextAreaComponentOutput[]
+  requiredErrorMessage: string
 }
 
 export const postPrimaryForm = async (
-  { existingId, existingToken, formComponents }: ArgsType,
+  { existingId, existingToken, requiredErrorMessage }: ArgsType,
   _: unknown,
   formData: FormData,
 ) => {
@@ -35,9 +34,7 @@ export const postPrimaryForm = async (
       validationErrors: [
         {
           key: 'primary',
-          message:
-            formComponents.find((component) => component.key === 'primary')?.validate?.required_error_message ||
-            'Vul in wat u wilt melden.',
+          message: requiredErrorMessage,
         },
       ],
     }
