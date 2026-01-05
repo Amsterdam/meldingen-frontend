@@ -12,6 +12,11 @@
   }
 }
 
+.hasAssetList {
+  height: 100vh; /* Fallback for browsers that do not support dvh */
+  height: 100dvh;
+}
+
 .hideButtonMobile {
   display: none;
 
@@ -31,6 +36,7 @@
 
 .buttonWrapper {
   display: flex;
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens with increased base font size */
   justify-content: space-between;
 }
 

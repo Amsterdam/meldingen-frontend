@@ -72,7 +72,7 @@ export const SelectLocation = ({
   const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
 
   return (
-    <div className={styles.grid}>
+    <div className={clsx(styles.grid, showAssetList && styles.hasAssetList)}>
       <SideBarTop>
         <Form action={formAction} id="address" noValidate>
           <AddressInput
