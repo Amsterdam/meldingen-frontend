@@ -134,7 +134,7 @@ export const SelectLocation = ({
         </Map>
         <div className={styles.buttonWrapper}>
           <Button
-            className={clsx(styles.submitbutton, showAssetList && styles.removeAbsolutePosition)}
+            className={clsx(styles.submitButton, showAssetList && styles.removeAbsolutePosition)}
             form="address"
             type="submit"
           >
