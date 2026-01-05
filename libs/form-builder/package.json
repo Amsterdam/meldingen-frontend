@@ -11,9 +11,9 @@
     "type-check": "tsc --project ./tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@formio/js": "5.2.3"
+    "@formio/js": "5.2.4"
   },
   "devDependencies": {
-    "@formio/core": "2.5.2"
+    "@formio/core": "2.5.3"
   }
 }
