@@ -21,13 +21,13 @@
     "ra-i18n-polyglot": "5.13.4",
     "ra-keycloak": "2.0.0",
     "react-admin": "5.13.4",
-    "react-hook-form": "7.68.0",
+    "react-hook-form": "7.69.0",
     "react-router-dom": "7.11.0",
     "uber-json-schema-filter": "2.0.5",
     "vite": "7.3.0"
   },
   "devDependencies": {
-    "@formio/core": "2.5.2",
+    "@formio/core": "2.5.3",
     "ra-core": "5.13.4"
   }
 }

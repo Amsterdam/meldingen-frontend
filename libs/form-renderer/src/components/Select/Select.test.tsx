@@ -89,7 +89,7 @@ describe('Select Component', () => {
     render(<Select {...defaultProps} errorMessage="Test error message" />)
 
     const selectWithErrorMessage = screen.getByRole('combobox', {
-      description: 'Invoerfout: Test error message',
+      description: 'Invoerfout:Test error message',
       name: defaultProps.label,
     })
 
