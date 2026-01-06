@@ -215,7 +215,9 @@ describe('Page', () => {
         { answerId: additionalQuestions[1].id, questionId: additionalQuestions[1].question.id },
       ],
       questionKeysAndIds: [{ id: 'q2', key: 'question-2' }],
-      requiredQuestionKeys: [{ key: 'question-2', requiredErrorMessage: 'required-error-message-fallback' }],
+      requiredQuestionKeysWithErrorMessages: [
+        { key: 'question-2', requiredErrorMessage: 'required-error-message-fallback' },
+      ],
     })
   })
 
@@ -252,7 +254,7 @@ describe('Page', () => {
       lastPanelPath: '/aanvullende-vragen/1/panel-2',
       nextPanelPath: '/aanvullende-vragen/1/panel-2',
       questionKeysAndIds: [{ id: 'q1', key: 'question-1' }],
-      requiredQuestionKeys: [],
+      requiredQuestionKeysWithErrorMessages: [],
     })
   })
 })

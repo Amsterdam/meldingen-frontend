@@ -27,7 +27,7 @@ describe('postForm', () => {
       { id: 1, key: 'key1' },
       { id: 2, key: 'key2' },
     ],
-    requiredQuestionKeys: [],
+    requiredQuestionKeysWithErrorMessages: [],
   }
 
   beforeEach(() => {
@@ -60,7 +60,7 @@ describe('postForm', () => {
     const result = await postForm(
       {
         ...defaultArgs,
-        requiredQuestionKeys: [
+        requiredQuestionKeysWithErrorMessages: [
           { key: 'textArea1', requiredErrorMessage: 'required-error-message-fallback' },
           { key: 'selectBoxes', requiredErrorMessage: 'Dit veld is verplicht' },
         ],
