@@ -3,7 +3,6 @@ import { http, HttpResponse } from 'msw'
 import { Mock } from 'vitest'
 
 import * as actionsModule from './actions'
-import { ArgsType } from './actions'
 import { Home } from './Home'
 import Page from './page'
 import { melding, textAreaComponent } from 'apps/melding-form/src/mocks/data'
@@ -19,7 +18,7 @@ vi.mock('next/headers', () => ({
 
 vi.mock('./actions', () => ({ postPrimaryForm: vi.fn() }))
 
-let capturedAction: ((argsObj: ArgsType, _: unknown, formData: FormData) => void) | null = null
+let capturedAction: ((argsObj: unknown, _: unknown, formData: FormData) => void) | null = null
 
 vi.mock('./Home', () => ({
   Home: vi.fn((props: { action: () => void }) => {
@@ -47,7 +46,7 @@ describe('Page', () => {
 
     // Call the bound action
     if (capturedAction) {
-      capturedAction({ requiredErrorMessage: 'Vul in wat u wilt melden.' }, undefined, new FormData())
+      capturedAction({}, undefined, new FormData())
     }
 
     expect(actionsModule.postPrimaryForm).toHaveBeenCalled()
@@ -57,11 +56,11 @@ describe('Page', () => {
     expect(extraArgs).toMatchObject({
       existingId: '123',
       existingToken: 'test-token',
-      requiredErrorMessage: 'Vul in wat u wilt melden.',
+      requiredErrorMessage: 'required-error-message-fallback',
     })
   })
 
-  it('passes custom required error message when it is set', async () => {
+  it('passes a custom required error message when it is set', async () => {
     const primaryFormWithCustomErrorMessage = {
       components: [
         {
@@ -86,7 +85,7 @@ describe('Page', () => {
 
     // Call the bound action
     if (capturedAction) {
-      capturedAction({ requiredErrorMessage: 'Vul in wat u wilt melden.' }, undefined, new FormData())
+      capturedAction({}, undefined, new FormData())
     }
 
     expect(actionsModule.postPrimaryForm).toHaveBeenCalled()
