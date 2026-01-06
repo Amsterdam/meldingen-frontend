@@ -1,8 +1,9 @@
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 
+import { client } from '@meldingen/api-client'
+
 import { authOptions } from './app/_authentication/authOptions'
-import { client } from 'libs/api-client/src/client.gen'
 
 client.setConfig({
   auth: async () => {
