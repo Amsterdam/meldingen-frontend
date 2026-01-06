@@ -92,8 +92,8 @@ export default async ({ params }: { params: Params }) => {
     key: key,
   }))
 
-  // Pass required questions keys to the action
-  const requiredQuestionKeys = panelComponents
+  // Pass required questions keys with the associated error messages to the action
+  const requiredQuestionKeysWithErrorMessages = panelComponents
     .filter((question) => question.validate?.required)
     .map(({ key, validate }) => ({
       key,
@@ -115,7 +115,7 @@ export default async ({ params }: { params: Params }) => {
     nextPanelPath,
     questionAndAnswerIdPairs,
     questionKeysAndIds,
-    requiredQuestionKeys,
+    requiredQuestionKeysWithErrorMessages,
   }
 
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)
