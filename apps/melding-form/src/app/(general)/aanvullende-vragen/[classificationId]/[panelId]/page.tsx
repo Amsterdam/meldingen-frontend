@@ -97,7 +97,7 @@ export default async ({ params }: { params: Params }) => {
     .filter((question) => question.validate?.required)
     .map(({ key, validate }) => ({
       key,
-      requiredErrorMessage: validate?.required_error_message ?? t('required-error-message-fallback'),
+      requiredErrorMessage: validate?.required_error_message || t('required-error-message-fallback'),
     }))
 
   // Pass isLastPanel to the action

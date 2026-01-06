@@ -69,7 +69,7 @@ export default async () => {
 
   const isExistingMelding = meldingId && token
   const requiredErrorMessage =
-    primaryFormComponents.find((component) => component.key === 'primary')?.validate?.required_error_message ??
+    primaryFormComponents.find((component) => component.key === 'primary')?.validate?.required_error_message ||
     t('required-error-message-fallback')
 
   const formComponents = isExistingMelding
