@@ -79,7 +79,7 @@ describe('Radio Component', () => {
     render(<Radio {...defaultProps} errorMessage="Test error message" />)
 
     const radioWithErrorMessage = screen.getByRole('radiogroup', {
-      description: 'Invoerfout: Test error message',
+      description: 'Invoerfout:Test error message',
       name: defaultProps.label,
     })
 
