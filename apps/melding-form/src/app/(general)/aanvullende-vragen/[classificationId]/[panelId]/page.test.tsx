@@ -134,7 +134,8 @@ describe('Page', () => {
 
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
-        HttpResponse.json([{ id: 'answer-1', question: { id: 'q1' }, text: 'One, Two' }]),
+        // TODO: Temporarily mock this as a text answer for now. We should handle all answer types when the BE is done with their multiple answer types work.
+        HttpResponse.json([{ id: 'answer-1', question: { id: 'q1' }, text: 'One, Two', type: 'text' }]),
       ),
     )
 
