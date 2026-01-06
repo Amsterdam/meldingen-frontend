@@ -46,7 +46,7 @@ const getAssetElement = (asset: Feature) => {
 export const Location = ({ address, prevPage, selectedAssets }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ systemError, validationErrors = [] }, formAction] = useActionState(postLocationForm, initialState)
+  const [{ systemError, validationErrors }, formAction] = useActionState(postLocationForm, initialState)
 
   const t = useTranslations('location')
   const tShared = useTranslations('shared')
@@ -73,7 +73,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert />}
-        {validationErrors.length > 0 && (
+        {validationErrors && (
           <InvalidFormAlert
             className="ams-mb-m"
             errors={validationErrors.map((error) => ({
@@ -88,7 +88,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
 
         <FormHeader step={t('step')} title={t('title')} />
 
-        <Field className="ams-mb-m" invalid={validationErrors.length > 0}>
+        <Field className="ams-mb-m" invalid={Boolean(validationErrors)}>
           <Heading level={1} size="level-3">
             {t('question')}
           </Heading>
@@ -97,7 +97,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
             <UnorderedList markers={false}>{selectedAssets.map((asset) => getAssetElement(asset))}</UnorderedList>
           )}
 
-          {validationErrors.length > 0 &&
+          {validationErrors &&
             validationErrors.map((error) => <ErrorMessage key={error.key}>{error.message}</ErrorMessage>)}
 
           <NextLink href="/locatie/kies" legacyBehavior passHref>
