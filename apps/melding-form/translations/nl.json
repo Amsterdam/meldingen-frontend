@@ -8,19 +8,22 @@
     },
     "title": "Melding openbare ruimte",
     "step": "Stap 1 van 4: Beschrijf uw melding",
-    "submit-button": "Volgende vraag"
+    "submit-button": "Volgende vraag",
+    "errors": {
+      "required-error-message-fallback": "Vul in wat u wilt melden."
+    }
   },
   "additional-questions": {
     "metadata": {
       "title": "Stap 1 van 4: Beschrijf uw melding - Gemeente Amsterdam"
     },
     "back-link": "Vorige vraag",
-    "errors": {
-      "required-error-message-fallback": "Vraag is verplicht en moet worden beantwoord."
-    },
     "title": "Melding openbare ruimte",
     "step": "Stap 1 van 4: Beschrijf uw melding",
-    "submit-button": "Volgende vraag"
+    "submit-button": "Volgende vraag",
+    "errors": {
+      "required-error-message-fallback": "Vraag is verplicht en moet worden beantwoord."
+    }
   },
   "location": {
     "metadata": {

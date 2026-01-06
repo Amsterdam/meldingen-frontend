@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 
 import {
@@ -41,6 +42,8 @@ const getPrefilledPrimaryFormComponents = async (
 }
 
 export default async () => {
+  const t = await getTranslations('homepage.errors')
+
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
   if (staticFormsError) throw new Error('Failed to fetch static forms.')
@@ -66,8 +69,8 @@ export default async () => {
 
   const isExistingMelding = meldingId && token
   const requiredErrorMessage =
-    primaryFormComponents.find((component) => component.key === 'primary')?.validate?.required_error_message ||
-    'Vul in wat u wilt melden.'
+    primaryFormComponents.find((component) => component.key === 'primary')?.validate?.required_error_message ??
+    t('required-error-message-fallback')
 
   const formComponents = isExistingMelding
     ? await getPrefilledPrimaryFormComponents(meldingId, token, primaryFormComponents)
