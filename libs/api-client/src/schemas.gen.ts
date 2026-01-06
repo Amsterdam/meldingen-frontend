@@ -630,83 +630,6 @@ export const And_OutputSchema = {
     title: 'And'
 } as const;
 
-export const AnswerInputSchema = {
-    properties: {
-        text: {
-            type: 'string',
-            minLength: 1,
-            title: 'Text'
-        }
-    },
-    type: 'object',
-    required: [
-        'text'
-    ],
-    title: 'AnswerInput'
-} as const;
-
-export const AnswerOutputSchema = {
-    properties: {
-        id: {
-            type: 'integer',
-            title: 'Id'
-        },
-        created_at: {
-            type: 'string',
-            title: 'Created At'
-        },
-        updated_at: {
-            type: 'string',
-            title: 'Updated At'
-        },
-        text: {
-            type: 'string',
-            title: 'Text'
-        }
-    },
-    type: 'object',
-    required: [
-        'id',
-        'created_at',
-        'updated_at',
-        'text'
-    ],
-    title: 'AnswerOutput'
-} as const;
-
-export const AnswerQuestionOutputSchema = {
-    properties: {
-        id: {
-            type: 'integer',
-            title: 'Id'
-        },
-        created_at: {
-            type: 'string',
-            title: 'Created At'
-        },
-        updated_at: {
-            type: 'string',
-            title: 'Updated At'
-        },
-        text: {
-            type: 'string',
-            title: 'Text'
-        },
-        question: {
-            $ref: '#/components/schemas/QuestionOutput'
-        }
-    },
-    type: 'object',
-    required: [
-        'id',
-        'created_at',
-        'updated_at',
-        'text',
-        'question'
-    ],
-    title: 'AnswerQuestionOutput'
-} as const;
-
 export const AssetOutputSchema = {
     properties: {
         id: {
@@ -1088,6 +1011,103 @@ export const CompleteMeldingInputSchema = {
         'mail_body'
     ],
     title: 'CompleteMeldingInput'
+} as const;
+
+export const DateAnswerObjectSchema = {
+    properties: {
+        value: {
+            type: 'string',
+            title: 'Value'
+        },
+        label: {
+            type: 'string',
+            title: 'Label'
+        },
+        converted_date: {
+            type: 'string',
+            title: 'Converted Date'
+        }
+    },
+    type: 'object',
+    required: [
+        'value',
+        'label',
+        'converted_date'
+    ],
+    title: 'DateAnswerObject',
+    description: 'Used to display an answer in a date answer component.'
+} as const;
+
+export const DateAnswerOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        type: {
+            type: 'string',
+            const: 'date',
+            title: 'Type'
+        },
+        date: {
+            $ref: '#/components/schemas/DateAnswerObject'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'type',
+        'date'
+    ],
+    title: 'DateAnswerOutput'
+} as const;
+
+export const DateAnswerQuestionOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        type: {
+            type: 'string',
+            const: 'date',
+            title: 'Type'
+        },
+        date: {
+            $ref: '#/components/schemas/DateAnswerObject'
+        },
+        question: {
+            $ref: '#/components/schemas/QuestionOutput'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'type',
+        'date',
+        'question'
+    ],
+    title: 'DateAnswerQuestionOutput'
 } as const;
 
 export const DivideSchema = {
@@ -2301,12 +2321,25 @@ export const FormDateComponentOutputSchema = {
 export const FormIOConditionalSchema = {
     properties: {
         show: {
-            type: 'boolean',
+            anyOf: [
+                {
+                    type: 'boolean'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Show'
         },
         when: {
-            type: 'string',
-            minLength: 1,
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'When'
         },
         eq: {
@@ -8215,6 +8248,154 @@ export const SubtractSchema = {
     title: 'Subtract'
 } as const;
 
+export const TextAnswerOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        type: {
+            type: 'string',
+            const: 'text',
+            title: 'Type'
+        },
+        text: {
+            type: 'string',
+            title: 'Text'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'type',
+        'text'
+    ],
+    title: 'TextAnswerOutput'
+} as const;
+
+export const TextAnswerQuestionOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        type: {
+            type: 'string',
+            const: 'text',
+            title: 'Type'
+        },
+        text: {
+            type: 'string',
+            title: 'Text'
+        },
+        question: {
+            $ref: '#/components/schemas/QuestionOutput'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'type',
+        'text',
+        'question'
+    ],
+    title: 'TextAnswerQuestionOutput'
+} as const;
+
+export const TimeAnswerOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        type: {
+            type: 'string',
+            const: 'time',
+            title: 'Type'
+        },
+        time: {
+            type: 'string',
+            title: 'Time'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'type',
+        'time'
+    ],
+    title: 'TimeAnswerOutput'
+} as const;
+
+export const TimeAnswerQuestionOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        type: {
+            type: 'string',
+            const: 'time',
+            title: 'Type'
+        },
+        time: {
+            type: 'string',
+            title: 'Time'
+        },
+        question: {
+            $ref: '#/components/schemas/QuestionOutput'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'type',
+        'time',
+        'question'
+    ],
+    title: 'TimeAnswerQuestionOutput'
+} as const;
+
 export const UserCreateInputSchema = {
     properties: {
         username: {
@@ -8333,6 +8514,106 @@ export const ValidationErrorSchema = {
         'type'
     ],
     title: 'ValidationError'
+} as const;
+
+export const ValueLabelAnswerOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        type: {
+            type: 'string',
+            const: 'value_label',
+            title: 'Type'
+        },
+        values_and_labels: {
+            items: {
+                $ref: '#/components/schemas/ValueLabelObject'
+            },
+            type: 'array',
+            title: 'Values And Labels'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'type',
+        'values_and_labels'
+    ],
+    title: 'ValueLabelAnswerOutput'
+} as const;
+
+export const ValueLabelAnswerQuestionOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        type: {
+            type: 'string',
+            const: 'value_label',
+            title: 'Type'
+        },
+        values_and_labels: {
+            items: {
+                $ref: '#/components/schemas/ValueLabelObject'
+            },
+            type: 'array',
+            title: 'Values And Labels'
+        },
+        question: {
+            $ref: '#/components/schemas/QuestionOutput'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'type',
+        'values_and_labels',
+        'question'
+    ],
+    title: 'ValueLabelAnswerQuestionOutput'
+} as const;
+
+export const ValueLabelObjectSchema = {
+    properties: {
+        value: {
+            type: 'string',
+            title: 'Value'
+        },
+        label: {
+            type: 'string',
+            title: 'Label'
+        }
+    },
+    type: 'object',
+    required: [
+        'value',
+        'label'
+    ],
+    title: 'ValueLabelObject',
+    description: 'Used to display an answer in a value label answer component.'
 } as const;
 
 export const VarSchema = {
