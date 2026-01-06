@@ -8,7 +8,7 @@ export default defineConfig({
     path: './libs/api-client/src',
   },
   plugins: [
-    { name: '@hey-api/client-next', runtimeConfigPath: '../runtime-config' },
+    { exportFromIndex: true, name: '@hey-api/client-next', runtimeConfigPath: '../runtime-config' },
     { exportFromIndex: true, name: '@hey-api/schemas' },
     { name: '@hey-api/sdk', operationId: false },
   ],
