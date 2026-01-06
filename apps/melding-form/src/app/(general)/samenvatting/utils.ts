@@ -82,7 +82,8 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
       const panels = formComponents.components as FormPanelComponentOutput[]
       const panelId = findPanelIdByQuestionId(panels, answer.question.id)
       return {
-        description: answer.text,
+        // TODO: only pass text answers for now. We should handle all answer types when the BE is done with their multiple answer types work.
+        description: answer.type === 'text' ? answer.text : '',
         key: `${answer.question.id}`,
         link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}` : '/',
         term: answer.question.text,

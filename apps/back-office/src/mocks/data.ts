@@ -1,4 +1,4 @@
-import { AnswerQuestionOutput, MeldingOutput } from '../apiClientProxy'
+import { MeldingOutput, TextAnswerQuestionOutput } from '../apiClientProxy'
 
 export const melding: MeldingOutput = {
   city: 'Amsterdam',
@@ -61,7 +61,7 @@ export const meldingen: MeldingOutput[] = [
   },
 ]
 
-export const additionalQuestions: AnswerQuestionOutput[] = [
+export const additionalQuestions: TextAnswerQuestionOutput[] = [
   {
     created_at: '2025-02-18T10:34:32.181638',
     id: 123,
@@ -72,6 +72,7 @@ export const additionalQuestions: AnswerQuestionOutput[] = [
       updated_at: '2025-02-17T11:06:22.137002',
     },
     text: 'q1',
+    type: 'text',
     updated_at: '2025-02-18T10:34:32.181638',
   },
   {
@@ -84,6 +85,7 @@ export const additionalQuestions: AnswerQuestionOutput[] = [
       updated_at: '2025-02-17T11:06:22.137002',
     },
     text: 'q2',
+    type: 'text',
     updated_at: '2025-02-18T10:34:32.187573',
   },
 ]
