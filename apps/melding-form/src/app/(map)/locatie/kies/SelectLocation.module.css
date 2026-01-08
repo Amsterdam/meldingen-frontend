@@ -2,12 +2,19 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
-  height: 100vh; /* Fallback for browsers that do not support dvh */
-  height: 100dvh;
+  min-height: 100vh; /* Fallback for browsers that do not support dvh */
+  min-height: 100dvh;
 
   @media screen and (min-width: 72.5rem) {
     grid-template-columns: 1fr 2fr;
+    height: 100vh; /* Fallback for browsers that do not support dvh */
+    height: 100dvh;
   }
+}
+
+.hasAssetList {
+  height: 100vh; /* Fallback for browsers that do not support dvh */
+  height: 100dvh;
 }
 
 .hideButtonMobile {
@@ -29,10 +36,11 @@
 
 .buttonWrapper {
   display: flex;
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens with increased base font size */
   justify-content: space-between;
 }
 
-.submitbutton {
+.submitButton {
   bottom: 0;
   margin-block: var(--ams-space-m);
   margin-inline: var(--ams-space-m);
@@ -48,6 +56,7 @@
 }
 
 .toggleButton {
-  composes: submitbutton;
+  /* stylelint-disable-next-line value-keyword-case */
+  composes: submitButton;
   right: 0;
 }

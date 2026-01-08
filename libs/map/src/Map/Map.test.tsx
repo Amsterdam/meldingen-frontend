@@ -56,6 +56,18 @@ describe('MapComponent', () => {
     expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
   })
 
+  it('calls invalidateSize and adds classname when hasAlert prop set to true', () => {
+    const mockMapInstance = {
+      invalidateSize: vi.fn(),
+    } as unknown as Map
+
+    const { container } = render(<MapComponent hasAlert={true} isHidden={false} testMapInstance={mockMapInstance} />)
+    const element = container.querySelector('[class*="notInteractive"]')
+
+    expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
+    expect(element).toBeInTheDocument()
+  })
+
   it('calls remove when the component unmounts', () => {
     const mockMapInstance = {
       invalidateSize: vi.fn(),
