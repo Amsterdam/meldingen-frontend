@@ -36,10 +36,14 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
     const emailError = error?.detail.find((error) => error.loc.includes('email'))
     const phoneError = error?.detail.find((error) => error.loc.includes('phone'))
 
+    const emailTooLongError = emailError?.msg.includes('The email address is too long')
+
     return {
       formData,
       validationErrors: [
-        ...(emailError ? [{ key: 'email-input', message: emailError.msg }] : []),
+        ...(emailError
+          ? [{ key: 'email-input', message: emailTooLongError ? t('email-too-long') : t('invalid-email') }]
+          : []),
         ...(phoneError ? [{ key: 'tel-input', message: t('invalid-phone-number') }] : []),
       ],
     }
