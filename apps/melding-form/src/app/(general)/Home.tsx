@@ -11,7 +11,6 @@ import type { FormState } from '../../types'
 import { FormHeader } from './_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from './_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from './_utils/getDocumentTitleOnError'
-import { useSetFocusOnInvalidFormAlert } from './_utils/useSetFocusOnInvalidFormAlert'
 
 const initialState: FormState = {}
 
@@ -22,6 +21,7 @@ type Props = {
 
 export const Home = ({ action, formComponents: formComponentsFromServer }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
+  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
 
@@ -45,11 +45,18 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
       })
     : formComponentsFromServer
 
-  // Set focus on InvalidFormAlert when there are validation errors
-  useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
-
   // Update document title when there are validation errors
   const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
+
+  // Set focus on InvalidFormAlert when there are validation errors
+  // and on SystemErrorAlert when there is a system error
+  useEffect(() => {
+    if (validationErrors && invalidFormAlertRef.current) {
+      invalidFormAlertRef.current.focus()
+    } else if (systemError && systemErrorAlertRef.current) {
+      systemErrorAlertRef.current.focus()
+    }
+  }, [validationErrors, systemError])
 
   useEffect(() => {
     if (systemError) {
@@ -62,7 +69,7 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
   return (
     <main>
       <title>{documentTitle}</title>
-      {Boolean(systemError) && <SystemErrorAlert />}
+      {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
       {validationErrors && (
         <InvalidFormAlert
           className="ams-mb-m"
