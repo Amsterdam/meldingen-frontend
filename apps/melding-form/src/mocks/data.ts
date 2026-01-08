@@ -1,11 +1,11 @@
 import {
-  AnswerQuestionOutput,
   AssetOutput,
   Feature,
   FormCheckboxComponentOutput,
   FormOutput,
   FormTextAreaComponentOutput,
   MeldingOutput,
+  TextAnswerQuestionOutput,
 } from '@meldingen/api-client'
 
 // Form
@@ -195,7 +195,7 @@ export const melding: MeldingOutput = {
   updated_at: '2025-02-18T10:34:40.730569',
 }
 
-export const additionalQuestions: AnswerQuestionOutput[] = [
+export const additionalQuestions: TextAnswerQuestionOutput[] = [
   {
     created_at: '2025-02-18T10:34:32.181638',
     id: 123,
@@ -206,6 +206,7 @@ export const additionalQuestions: AnswerQuestionOutput[] = [
       updated_at: '2025-02-17T11:06:22.137002',
     },
     text: 'q1',
+    type: 'text',
     updated_at: '2025-02-18T10:34:32.181638',
   },
   {
@@ -218,6 +219,7 @@ export const additionalQuestions: AnswerQuestionOutput[] = [
       updated_at: '2025-02-17T11:06:22.137002',
     },
     text: 'q2',
+    type: 'text',
     updated_at: '2025-02-18T10:34:32.187573',
   },
 ]

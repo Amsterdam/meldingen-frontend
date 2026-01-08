@@ -61,61 +61,6 @@ export type AndOutput = {
 };
 
 /**
- * AnswerInput
- */
-export type AnswerInput = {
-    /**
-     * Text
-     */
-    text: string;
-};
-
-/**
- * AnswerOutput
- */
-export type AnswerOutput = {
-    /**
-     * Id
-     */
-    id: number;
-    /**
-     * Created At
-     */
-    created_at: string;
-    /**
-     * Updated At
-     */
-    updated_at: string;
-    /**
-     * Text
-     */
-    text: string;
-};
-
-/**
- * AnswerQuestionOutput
- */
-export type AnswerQuestionOutput = {
-    /**
-     * Id
-     */
-    id: number;
-    /**
-     * Created At
-     */
-    created_at: string;
-    /**
-     * Updated At
-     */
-    updated_at: string;
-    /**
-     * Text
-     */
-    text: string;
-    question: QuestionOutput;
-};
-
-/**
  * AssetOutput
  */
 export type AssetOutput = {
@@ -341,6 +286,73 @@ export type CompleteMeldingInput = {
      * Mail Body
      */
     mail_body: string;
+};
+
+/**
+ * DateAnswerObject
+ *
+ * Used to display an answer in a date answer component.
+ */
+export type DateAnswerObject = {
+    /**
+     * Value
+     */
+    value: string;
+    /**
+     * Label
+     */
+    label: string;
+    /**
+     * Converted Date
+     */
+    converted_date: string;
+};
+
+/**
+ * DateAnswerOutput
+ */
+export type DateAnswerOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Type
+     */
+    type: 'date';
+    date: DateAnswerObject;
+};
+
+/**
+ * DateAnswerQuestionOutput
+ */
+export type DateAnswerQuestionOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Type
+     */
+    type: 'date';
+    date: DateAnswerObject;
+    question: QuestionOutput;
 };
 
 /**
@@ -696,11 +708,11 @@ export type FormIoConditional = {
     /**
      * Show
      */
-    show: boolean;
+    show: boolean | null;
     /**
      * When
      */
-    when: string;
+    when: string | null;
     /**
      * Eq
      */
@@ -2586,6 +2598,112 @@ export type Subtract = {
 };
 
 /**
+ * TextAnswerOutput
+ */
+export type TextAnswerOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Type
+     */
+    type: 'text';
+    /**
+     * Text
+     */
+    text: string;
+};
+
+/**
+ * TextAnswerQuestionOutput
+ */
+export type TextAnswerQuestionOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Type
+     */
+    type: 'text';
+    /**
+     * Text
+     */
+    text: string;
+    question: QuestionOutput;
+};
+
+/**
+ * TimeAnswerOutput
+ */
+export type TimeAnswerOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Type
+     */
+    type: 'time';
+    /**
+     * Time
+     */
+    time: string;
+};
+
+/**
+ * TimeAnswerQuestionOutput
+ */
+export type TimeAnswerQuestionOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Type
+     */
+    type: 'time';
+    /**
+     * Time
+     */
+    time: string;
+    question: QuestionOutput;
+};
+
+/**
  * UserCreateInput
  */
 export type UserCreateInput = {
@@ -2655,6 +2773,75 @@ export type ValidationError = {
      * Error Type
      */
     type: string;
+};
+
+/**
+ * ValueLabelAnswerOutput
+ */
+export type ValueLabelAnswerOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Type
+     */
+    type: 'value_label';
+    /**
+     * Values And Labels
+     */
+    values_and_labels: Array<ValueLabelObject>;
+};
+
+/**
+ * ValueLabelAnswerQuestionOutput
+ */
+export type ValueLabelAnswerQuestionOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Type
+     */
+    type: 'value_label';
+    /**
+     * Values And Labels
+     */
+    values_and_labels: Array<ValueLabelObject>;
+    question: QuestionOutput;
+};
+
+/**
+ * ValueLabelObject
+ *
+ * Used to display an answer in a value label answer component.
+ */
+export type ValueLabelObject = {
+    /**
+     * Value
+     */
+    value: string;
+    /**
+     * Label
+     */
+    label: string;
 };
 
 /**
@@ -3731,7 +3918,7 @@ export type PutMeldingByMeldingIdCompleteResponses = {
 export type PutMeldingByMeldingIdCompleteResponse = PutMeldingByMeldingIdCompleteResponses[keyof PutMeldingByMeldingIdCompleteResponses];
 
 export type PostMeldingByMeldingIdQuestionByQuestionIdData = {
-    body: AnswerInput;
+    body?: unknown;
     path: {
         /**
          * Melding Id
@@ -3741,8 +3928,6 @@ export type PostMeldingByMeldingIdQuestionByQuestionIdData = {
         melding_id: number;
         /**
          * Question Id
-         *
-         * The id of the question.
          */
         question_id: number;
     };
@@ -3794,15 +3979,25 @@ export type PostMeldingByMeldingIdQuestionByQuestionIdError = PostMeldingByMeldi
 
 export type PostMeldingByMeldingIdQuestionByQuestionIdResponses = {
     /**
+     * Response Melding Answer Question Melding  Melding Id  Question  Question Id  Post
+     *
      * Successful Response
      */
-    201: AnswerOutput;
+    201: ({
+        type: 'text';
+    } & TextAnswerOutput) | ({
+        type: 'time';
+    } & TimeAnswerOutput) | ({
+        type: 'date';
+    } & DateAnswerOutput) | ({
+        type: 'value_label';
+    } & ValueLabelAnswerOutput);
 };
 
 export type PostMeldingByMeldingIdQuestionByQuestionIdResponse = PostMeldingByMeldingIdQuestionByQuestionIdResponses[keyof PostMeldingByMeldingIdQuestionByQuestionIdResponses];
 
 export type PatchMeldingByMeldingIdAnswerByAnswerIdData = {
-    body: AnswerInput;
+    body?: unknown;
     path: {
         /**
          * Melding Id
@@ -3812,8 +4007,6 @@ export type PatchMeldingByMeldingIdAnswerByAnswerIdData = {
         melding_id: number;
         /**
          * Answer Id
-         *
-         * The id of the answer.
          */
         answer_id: number;
     };
@@ -3865,9 +4058,19 @@ export type PatchMeldingByMeldingIdAnswerByAnswerIdError = PatchMeldingByMelding
 
 export type PatchMeldingByMeldingIdAnswerByAnswerIdResponses = {
     /**
+     * Response Melding Update Answer Melding  Melding Id  Answer  Answer Id  Patch
+     *
      * Successful Response
      */
-    200: AnswerOutput;
+    200: ({
+        type: 'text';
+    } & TextAnswerOutput) | ({
+        type: 'time';
+    } & TimeAnswerOutput) | ({
+        type: 'date';
+    } & DateAnswerOutput) | ({
+        type: 'value_label';
+    } & ValueLabelAnswerOutput);
 };
 
 export type PatchMeldingByMeldingIdAnswerByAnswerIdResponse = PatchMeldingByMeldingIdAnswerByAnswerIdResponses[keyof PatchMeldingByMeldingIdAnswerByAnswerIdResponses];
@@ -4448,7 +4651,15 @@ export type GetMeldingByMeldingIdAnswersMelderResponses = {
      *
      * Successful Response
      */
-    200: Array<AnswerQuestionOutput>;
+    200: Array<({
+        type: 'text';
+    } & TextAnswerQuestionOutput) | ({
+        type: 'time';
+    } & TimeAnswerQuestionOutput) | ({
+        type: 'date';
+    } & DateAnswerQuestionOutput) | ({
+        type: 'value_label';
+    } & ValueLabelAnswerQuestionOutput)>;
 };
 
 export type GetMeldingByMeldingIdAnswersMelderResponse = GetMeldingByMeldingIdAnswersMelderResponses[keyof GetMeldingByMeldingIdAnswersMelderResponses];
@@ -4504,7 +4715,15 @@ export type GetMeldingByMeldingIdAnswersResponses = {
      *
      * Successful Response
      */
-    200: Array<AnswerQuestionOutput>;
+    200: Array<({
+        type: 'text';
+    } & TextAnswerQuestionOutput) | ({
+        type: 'time';
+    } & TimeAnswerQuestionOutput) | ({
+        type: 'date';
+    } & DateAnswerQuestionOutput) | ({
+        type: 'value_label';
+    } & ValueLabelAnswerQuestionOutput)>;
 };
 
 export type GetMeldingByMeldingIdAnswersResponse = GetMeldingByMeldingIdAnswersResponses[keyof GetMeldingByMeldingIdAnswersResponses];
