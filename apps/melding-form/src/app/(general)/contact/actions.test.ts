@@ -77,10 +77,7 @@ describe('postContactForm', () => {
   it('returns a validation error if phone is invalid', async () => {
     server.use(
       http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_CONTACT, () =>
-        HttpResponse.json(
-          { detail: [{ loc: 'phone', msg: 'Phone validation error', type: 'value_error' }] },
-          { status: 422 },
-        ),
+        HttpResponse.json({ detail: [{ loc: 'phone', type: 'value_error' }] }, { status: 422 }),
       ),
     )
 
@@ -92,7 +89,7 @@ describe('postContactForm', () => {
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'tel-input', message: 'Phone validation error' }],
+      validationErrors: [{ key: 'tel-input', message: 'invalid-phone-number' }],
     })
   })
 

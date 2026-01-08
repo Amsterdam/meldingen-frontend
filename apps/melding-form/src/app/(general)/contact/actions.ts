@@ -1,5 +1,6 @@
 'use server'
 
+import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -10,8 +11,9 @@ import { COOKIES } from 'apps/melding-form/src/constants'
 import { isApiErrorArray } from 'apps/melding-form/src/handleApiError'
 
 export const postContactForm = async (_: unknown, formData: FormData) => {
-  const cookieStore = await cookies()
+  const t = await getTranslations('contact.errors')
 
+  const cookieStore = await cookies()
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
@@ -38,7 +40,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
       formData,
       validationErrors: [
         ...(emailError ? [{ key: 'email-input', message: emailError.msg }] : []),
-        ...(phoneError ? [{ key: 'tel-input', message: phoneError.msg }] : []),
+        ...(phoneError ? [{ key: 'tel-input', message: t('invalid-phone-number') }] : []),
       ],
     }
   }
