@@ -16,7 +16,8 @@ export const getAdditionalQuestionsData = async (meldingId: number) => {
 
   return {
     data: data.map((answer) => ({
-      description: answer.text,
+      // TODO: only pass text answers for now. We should handle all answer types when the BE is done with their multiple answer types work.
+      description: answer.type === 'text' ? answer.text : '',
       key: String(answer.question.id),
       term: answer.question.text,
     })),
