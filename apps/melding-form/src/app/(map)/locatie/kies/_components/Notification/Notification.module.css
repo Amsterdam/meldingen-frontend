@@ -1,3 +1,16 @@
 .notification {
   max-width: 37.5rem;
 }
+
+/*
+ * The Amsterdam Design System sets hyphenate-limit-chars to 12 8 4.
+ * This causes the Notification to overflow on small screens, when the base font size is increased.
+ * We unset this property here, until this is fixed in the Design System.
+ */
+.notification h2 {
+  hyphenate-limit-chars: unset;
+}
+
+.notification p {
+  hyphenate-limit-chars: unset;
+}

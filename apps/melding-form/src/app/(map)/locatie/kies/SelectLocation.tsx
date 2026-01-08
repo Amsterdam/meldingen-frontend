@@ -72,7 +72,7 @@ export const SelectLocation = ({
   const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
 
   return (
-    <div className={styles.grid}>
+    <div className={clsx(styles.grid, showAssetList && styles.hasAssetList)}>
       <SideBarTop>
         <Form action={formAction} id="address" noValidate>
           <AddressInput
@@ -104,7 +104,7 @@ export const SelectLocation = ({
         </Button>
       </SideBarBottom>
       <div className={styles.map}>
-        <Map isHidden={showAssetList}>
+        <Map hasAlert={Boolean(notificationType)} isHidden={showAssetList}>
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}
@@ -134,7 +134,7 @@ export const SelectLocation = ({
         </Map>
         <div className={styles.buttonWrapper}>
           <Button
-            className={clsx(styles.submitbutton, showAssetList && styles.removeAbsolutePosition)}
+            className={clsx(styles.submitButton, showAssetList && styles.removeAbsolutePosition)}
             form="address"
             type="submit"
           >
