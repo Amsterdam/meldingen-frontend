@@ -45,8 +45,13 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
       })
     : formComponentsFromServer
 
-  // Update document title when there are validation errors
-  const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
+  // Update document title when there are system or validation errors
+  const documentTitle = getDocumentTitleOnError({
+    hasSystemError: Boolean(systemError),
+    originalDocTitle: t('metadata.title'),
+    translateFunction: tShared,
+    validationErrorCount: validationErrors?.length,
+  })
 
   // Set focus on InvalidFormAlert when there are validation errors
   // and on SystemErrorAlert when there is a system error
