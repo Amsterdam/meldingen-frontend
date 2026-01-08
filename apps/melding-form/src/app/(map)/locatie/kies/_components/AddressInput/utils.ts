@@ -39,6 +39,8 @@ export const fetchAddressList = async (
   value: string,
   setAddressList: (list: PDOKItem[]) => void,
   setShowListBox: (show: boolean) => void,
+  setErrorMessage: (message: string) => void,
+  t: ReturnType<typeof useTranslations>,
 ) => {
   if (value.length < 3) {
     setShowListBox(false)
@@ -64,7 +66,7 @@ export const fetchAddressList = async (
     }
     setShowListBox(true)
   } catch (error) {
-    // TODO: do we want to show a message to the user here?
+    setErrorMessage(t('pdok-failed-list'))
     // eslint-disable-next-line no-console
     console.error(error)
   }

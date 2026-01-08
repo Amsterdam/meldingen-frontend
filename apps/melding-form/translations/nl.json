@@ -48,7 +48,8 @@
       "label": "Zoek op adres",
       "description": "Als er autoaanvul-resultaten zijn, gebruik dan de pijltjes omhoog en omlaag om te bekijken en druk op enter om te kiezen. Voor <english>touch</english>-apparaten, verken met aanraking of veegbewegingen <english>(swipe)</english>.",
       "no-results": "Geen resultaten gevonden",
-      "no-address": "Locatie pin op de kaart"
+      "no-address": "Locatie pin op de kaart",
+      "pdok-failed-list": "Er gaat iets fout bij het ophalen van het adres. Vul opnieuw een adres in."
     },
     "submit-button": {
       "mobile": "Bevestigen",

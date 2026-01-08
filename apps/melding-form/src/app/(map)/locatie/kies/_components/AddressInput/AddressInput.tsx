@@ -24,16 +24,17 @@ import { debounce, fetchAddressList, fetchAndSetAddress } from './utils'
 import styles from './AddressInput.module.css'
 
 export type Props = {
+  actionErrorMessage?: string
   coordinates?: Coordinates
-  errorMessage?: string
   setCoordinates: (coordinates?: Coordinates) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
-export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSelectedAssets }: Props) => {
+export const AddressInput = ({ actionErrorMessage, coordinates, setCoordinates, setSelectedAssets }: Props) => {
   const [address, setAddress] = useState('')
-  const [query, setQuery] = useState('')
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(actionErrorMessage)
+  const [query, setQuery] = useState('')
   const [showListBox, setShowListBox] = useState(false)
 
   const t = useTranslations('select-location.combo-box')
@@ -63,6 +64,10 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
     setQuery(address)
   }, [address])
 
+  useEffect(() => {
+    setErrorMessage(actionErrorMessage)
+  }, [actionErrorMessage])
+
   const handleAddressSelect = (value: PDOKItem | string | null) => {
     if (typeof value === 'string' || value === null) {
       setQuery(value ?? '')
@@ -80,7 +85,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
   }
 
   const debouncedFetchAddressList = debounce((value: string) => {
-    fetchAddressList(value, setAddressList, setShowListBox)
+    fetchAddressList(value, setAddressList, setShowListBox, setErrorMessage, t)
   })
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
