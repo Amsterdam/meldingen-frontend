@@ -10,13 +10,14 @@ import {
   Label as HUILabel,
 } from '@headlessui/react'
 import { useTranslations } from 'next-intl'
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 import { ListBox, TextInput } from '@meldingen/ui'
 
 import type { Coordinates } from 'apps/melding-form/src/types'
 
+import { NotificationType } from '../../SelectLocation'
 import { convertWktPointToCoordinates } from '../../utils'
 import { PDOKItem } from './types'
 import { debounce, fetchAddressList, fetchAndSetAddress } from './utils'
@@ -27,10 +28,17 @@ export type Props = {
   actionErrorMessage?: string
   coordinates?: Coordinates
   setCoordinates: (coordinates?: Coordinates) => void
-  setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
+  setNotificationType: (type: NotificationType | null) => void
+  setSelectedAssets: (selectedAssets: Feature[]) => void
 }
 
-export const AddressInput = ({ actionErrorMessage, coordinates, setCoordinates, setSelectedAssets }: Props) => {
+export const AddressInput = ({
+  actionErrorMessage,
+  coordinates,
+  setCoordinates,
+  setNotificationType,
+  setSelectedAssets,
+}: Props) => {
   const [address, setAddress] = useState('')
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
   const [errorMessage, setErrorMessage] = useState<string | undefined>(actionErrorMessage)
@@ -57,7 +65,7 @@ export const AddressInput = ({ actionErrorMessage, coordinates, setCoordinates, 
       setAddress('')
       return
     }
-    fetchAndSetAddress(coordinates, setAddress, t)
+    fetchAndSetAddress(coordinates, setAddress, t, setNotificationType)
   }, [coordinates, t])
 
   useEffect(() => {

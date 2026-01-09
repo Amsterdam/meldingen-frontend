@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl'
 
+import { NotificationType } from '../../SelectLocation'
 import { PDOKItem } from './types'
 import { Coordinates } from 'apps/melding-form/src/types'
 
@@ -25,11 +26,13 @@ export const fetchAndSetAddress = async (
   { lat, lng }: Coordinates,
   setAddress: (address: string) => void,
   t: ReturnType<typeof useTranslations>,
+  setNotificationType: (type: NotificationType | null) => void,
 ) => {
   try {
     const result = await getAddressFromCoordinates({ lat, lng })
     setAddress(result || t('no-address'))
   } catch (error) {
+    setNotificationType('pdok-no-address-found')
     // eslint-disable-next-line no-console
     console.error(error)
   }

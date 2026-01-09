@@ -77,6 +77,11 @@
         "close-button": "Sluiten",
         "description": "Dit kunt u wijzigen in de voorkeuren of instellingen van uw browser of systeem.",
         "title": "Geen toestemming om uw locatie te gebruiken"
+      },
+      "pdok-no-address-found": {
+        "close-button": "Sluiten",
+        "description": "Probeer opnieuw de locatie te selecteren of een adres in te vullen.",
+        "title": "Het adres is niet bekend"
       }
     }
   },

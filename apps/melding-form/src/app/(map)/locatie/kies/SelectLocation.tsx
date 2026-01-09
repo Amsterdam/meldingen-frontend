@@ -35,7 +35,7 @@ type Props = {
   selectedAssets: Feature[]
 }
 
-export type NotificationType = 'too-many-assets' | 'location-service-disabled'
+export type NotificationType = 'too-many-assets' | 'location-service-disabled' | 'pdok-no-address-found'
 
 const initialState: { errorMessage?: string } = {}
 
@@ -79,6 +79,7 @@ export const SelectLocation = ({
             actionErrorMessage={errorMessage}
             coordinates={coordinates}
             setCoordinates={setCoordinates}
+            setNotificationType={setNotificationType}
             setSelectedAssets={setSelectedAssets}
           />
           <input

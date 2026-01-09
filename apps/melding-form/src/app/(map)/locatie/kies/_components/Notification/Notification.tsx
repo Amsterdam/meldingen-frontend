@@ -15,8 +15,15 @@ const getTexts = (t: (key: string, options?: { maxAssets: number }) => string) =
     severity: 'error' as AlertProps['severity'],
     title: t('location-service-disabled.title'),
   },
+  'pdok-no-address-found': {
+    closeButton: t('pdok-no-address-found.close-button'),
+    description: t('pdok-no-address-found.description'),
+    severity: 'error' as AlertProps['severity'],
+    title: t('pdok-no-address-found.title'),
+  },
   'too-many-assets': {
     closeButton: t('too-many-assets.close-button'),
+    description: undefined,
     severity: undefined,
     title: t('too-many-assets.title', { maxAssets: MAX_ASSETS }),
   },
@@ -39,9 +46,7 @@ export const Notification = ({ type, ...restProps }: Props) => {
       role="alert"
       severity={texts[type].severity}
     >
-      {type === 'location-service-disabled' && texts[type].description && (
-        <Paragraph>{texts[type].description}</Paragraph>
-      )}
+      {texts[type].description && <Paragraph>{texts[type].description}</Paragraph>}
     </Alert>
   )
 }
