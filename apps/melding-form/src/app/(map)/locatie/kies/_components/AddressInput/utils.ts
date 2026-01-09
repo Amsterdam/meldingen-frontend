@@ -17,14 +17,19 @@ export const debounce = (fn: Function, delay = 250) => {
   }
 }
 
-export type Props = {
+export type PropsAddress = {
   coordinates: Coordinates
   setAddress: (address: string) => void
   setNotificationType: (type: NotificationType | null) => void
   t: ReturnType<typeof useTranslations>
 }
 
-export const fetchAndSetAddress = async ({ coordinates: { lat, lng }, setAddress, setNotificationType, t }: Props) => {
+export const fetchAndSetAddress = async ({
+  coordinates: { lat, lng },
+  setAddress,
+  setNotificationType,
+  t,
+}: PropsAddress) => {
   try {
     const response = await fetch(
       `https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?lat=${lat}&lon=${lng}&rows=1&distance=30`,
@@ -45,13 +50,21 @@ export const fetchAndSetAddress = async ({ coordinates: { lat, lng }, setAddress
   }
 }
 
-export const fetchAddressList = async (
-  value: string,
-  setAddressList: (list: PDOKItem[]) => void,
-  setShowListBox: (show: boolean) => void,
-  setErrorMessage: (message: string) => void,
-  t: ReturnType<typeof useTranslations>,
-) => {
+export type PropsAddressList = {
+  setAddressList: (list: PDOKItem[]) => void
+  setErrorMessage: (message: string) => void
+  setShowListBox: (show: boolean) => void
+  t: ReturnType<typeof useTranslations>
+  value: string
+}
+
+export const fetchAddressList = async ({
+  setAddressList,
+  setErrorMessage,
+  setShowListBox,
+  t,
+  value,
+}: PropsAddressList) => {
   if (value.length < 3) {
     setShowListBox(false)
     setAddressList([])
@@ -62,22 +75,25 @@ export const fetchAddressList = async (
     const response = await fetch(
       `https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?${pdokQueryParams}&q=${value}`,
     )
-    const responseData = await response.json()
-    if (response.ok) {
-      const responseList: PDOKItem[] = responseData.response.docs.map(
-        (item: { centroide_ll: string; id: string; weergavenaam: string }): PDOKItem => ({
-          centroide_ll: item.centroide_ll,
-          id: item.id,
-          weergave_naam: item.weergavenaam,
-        }),
-      )
 
-      setAddressList(responseList)
+    if (!response.ok) {
+      throw new Error(response.statusText)
     }
+
+    const result = await response.json()
+    const addressList: PDOKItem[] = result.response.docs.map(
+      (item: { centroide_ll: string; id: string; weergavenaam: string }): PDOKItem => ({
+        centroide_ll: item.centroide_ll,
+        id: item.id,
+        weergave_naam: item.weergavenaam,
+      }),
+    )
+
+    setAddressList(addressList)
     setShowListBox(true)
   } catch (error) {
-    setErrorMessage(t('pdok-failed-list'))
     // eslint-disable-next-line no-console
     console.error(error)
+    setErrorMessage(t('pdok-failed-list'))
   }
 }

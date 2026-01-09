@@ -93,7 +93,7 @@ export const AddressInput = ({
   }
 
   const debouncedFetchAddressList = debounce((value: string) => {
-    fetchAddressList(value, setAddressList, setShowListBox, setErrorMessage, t)
+    fetchAddressList({ setAddressList, setErrorMessage, setShowListBox, t, value })
   })
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
