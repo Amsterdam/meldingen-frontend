@@ -15,11 +15,11 @@ const getTexts = (t: (key: string, options?: { maxAssets: number }) => string) =
     severity: 'error' as AlertProps['severity'],
     title: t('location-service-disabled.title'),
   },
-  'pdok-no-address-found': {
-    closeButton: t('pdok-no-address-found.close-button'),
-    description: t('pdok-no-address-found.description'),
+  'pdok-reverse-coordinates-error': {
+    closeButton: t('pdok-reverse-coordinates-error.close-button'),
+    description: t('pdok-reverse-coordinates-error.description'),
     severity: 'error' as AlertProps['severity'],
-    title: t('pdok-no-address-found.title'),
+    title: t('pdok-reverse-coordinates-error.title'),
   },
   'too-many-assets': {
     closeButton: t('too-many-assets.close-button'),

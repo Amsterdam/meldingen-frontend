@@ -16,6 +16,7 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
 
 const defaultProps: Props = {
   setCoordinates: vi.fn(),
+  setNotificationType: vi.fn(),
   setSelectedAssets: vi.fn(),
 }
 
@@ -134,5 +135,13 @@ describe('AddressInput', () => {
     await waitFor(() => {
       expect(screen.getByDisplayValue('no-address')).toBeInTheDocument()
     })
+  })
+
+  it('shows an error when an action error message is provided', () => {
+    render(<AddressInput {...defaultProps} actionErrorMessage="This is an error message" />)
+
+    const errorMessage = screen.getByText('This is an error message')
+
+    expect(errorMessage).toBeInTheDocument()
   })
 })

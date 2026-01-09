@@ -65,7 +65,7 @@ export const AddressInput = ({
       setAddress('')
       return
     }
-    fetchAndSetAddress(coordinates, setAddress, t, setNotificationType)
+    fetchAndSetAddress({ coordinates, setAddress, setNotificationType, t })
   }, [coordinates, t])
 
   useEffect(() => {

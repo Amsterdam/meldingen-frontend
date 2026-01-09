@@ -17,24 +17,31 @@ export const debounce = (fn: Function, delay = 250) => {
   }
 }
 
-export const getAddressFromCoordinates = async ({ lat, lng }: Coordinates) =>
-  fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?lat=${lat}&lon=${lng}&rows=1&distance=30`)
-    .then((res) => res.json())
-    .then((result) => result.response.docs[0]?.weergavenaam)
+export type Props = {
+  coordinates: Coordinates
+  setAddress: (address: string) => void
+  setNotificationType: (type: NotificationType | null) => void
+  t: ReturnType<typeof useTranslations>
+}
 
-export const fetchAndSetAddress = async (
-  { lat, lng }: Coordinates,
-  setAddress: (address: string) => void,
-  t: ReturnType<typeof useTranslations>,
-  setNotificationType: (type: NotificationType | null) => void,
-) => {
+export const fetchAndSetAddress = async ({ coordinates: { lat, lng }, setAddress, setNotificationType, t }: Props) => {
   try {
-    const result = await getAddressFromCoordinates({ lat, lng })
-    setAddress(result || t('no-address'))
+    const response = await fetch(
+      `https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?lat=${lat}&lon=${lng}&rows=1&distance=30`,
+    )
+
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+
+    const result = await response.json()
+    const address = result.response.docs?.[0]?.weergavenaam ?? t('no-address')
+
+    setAddress(address)
   } catch (error) {
-    setNotificationType('pdok-no-address-found')
     // eslint-disable-next-line no-console
     console.error(error)
+    setNotificationType('pdok-reverse-coordinates-error')
   }
 }
 
