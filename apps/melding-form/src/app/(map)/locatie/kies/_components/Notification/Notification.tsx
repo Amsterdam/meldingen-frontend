@@ -17,7 +17,6 @@ const getTexts = (t: (key: string, options?: { maxAssets: number }) => string) =
   },
   'too-many-assets': {
     closeButton: t('too-many-assets.close-button'),
-    description: undefined,
     severity: undefined,
     title: t('too-many-assets.title', { maxAssets: MAX_ASSETS }),
   },
