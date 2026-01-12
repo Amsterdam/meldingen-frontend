@@ -79,7 +79,6 @@ export const SelectLocation = ({
             actionErrorMessage={errorMessage}
             coordinates={coordinates}
             setCoordinates={setCoordinates}
-            setNotificationType={setNotificationType}
             setSelectedAssets={setSelectedAssets}
           />
           <input

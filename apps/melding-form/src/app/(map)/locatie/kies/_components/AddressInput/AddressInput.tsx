@@ -27,14 +27,13 @@ export type Props = {
   actionErrorMessage?: string
   coordinates?: Coordinates
   setCoordinates: (coordinates?: Coordinates) => void
-
   setSelectedAssets: (selectedAssets: Feature[]) => void
 }
 
 export const AddressInput = ({ actionErrorMessage, coordinates, setCoordinates, setSelectedAssets }: Props) => {
   const [address, setAddress] = useState('')
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(actionErrorMessage)
+  const [errorMessage, setErrorMessage] = useState<string | undefined>()
   const [query, setQuery] = useState('')
   const [showListBox, setShowListBox] = useState(false)
 
@@ -64,10 +63,6 @@ export const AddressInput = ({ actionErrorMessage, coordinates, setCoordinates, 
   useEffect(() => {
     setQuery(address)
   }, [address])
-
-  useEffect(() => {
-    setErrorMessage(actionErrorMessage)
-  }, [actionErrorMessage])
 
   const handleAddressSelect = (value: PDOKItem | string | null) => {
     if (typeof value === 'string' || value === null) {
@@ -106,6 +101,7 @@ export const AddressInput = ({ actionErrorMessage, coordinates, setCoordinates, 
     <HUIField as={Field} invalid={!!errorMessage}>
       <HUILabel as={Label}>{t('label')}</HUILabel>
       {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
+      {actionErrorMessage && <Description as={ErrorMessage}>{actionErrorMessage}</Description>}
       <Description className="ams-visually-hidden">
         {t.rich('description', { english: (chunks) => <span lang="en">{chunks}</span> })}
       </Description>
