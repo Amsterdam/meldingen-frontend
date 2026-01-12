@@ -92,10 +92,7 @@ describe('Page', () => {
   })
 
   it('updates the document title when there is a system error', () => {
-    const formData = new FormData()
-
-    formData.append('textArea1', 'Er staan blowende jongeren')
-    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
 
     render(<Home {...defaultProps} />)
 
@@ -103,11 +100,8 @@ describe('Page', () => {
   })
 
   it('updates the document title when there are validation errors', () => {
-    const formData = new FormData()
-
-    formData.append('textArea1', 'Er staan blowende jongeren')
     ;(useActionState as Mock).mockReturnValue([
-      { formData, validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
     ])
 
@@ -117,11 +111,8 @@ describe('Page', () => {
   })
 
   it('sets focus on InvalidFormAlert when there are validation errors', () => {
-    const formData = new FormData()
-
-    formData.append('textArea1', 'Er staan blowende jongeren')
     ;(useActionState as Mock).mockReturnValue([
-      { formData, validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
     ])
 
@@ -133,10 +124,7 @@ describe('Page', () => {
   })
 
   it('sets focus on SystemErrorAlert when there is a system error', () => {
-    const formData = new FormData()
-
-    formData.append('textArea1', 'Er staan blowende jongeren')
-    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
     render(<Home {...defaultProps} />)
 
     const alert = screen.getByRole('alert')
