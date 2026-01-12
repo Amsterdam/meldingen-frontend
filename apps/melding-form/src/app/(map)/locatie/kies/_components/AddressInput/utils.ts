@@ -48,7 +48,7 @@ export const fetchAndSetAddress = async ({
     console.error(error)
 
     setAddress(t('no-address'))
-    setErrorMessage(t('pdok-reverse-coordinates-failed'))
+    setErrorMessage(t('pdok-reverse-api-warning'))
   }
 }
 
