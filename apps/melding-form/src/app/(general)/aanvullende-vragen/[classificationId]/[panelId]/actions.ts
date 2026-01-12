@@ -11,18 +11,23 @@ import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
-type ArgsType = {
+type RequiredQuestionKeyWithErrorMessage = { key: string; requiredErrorMessage: string }
+
+export type ArgsType = {
   isLastPanel: boolean
   lastPanelPath: string
   nextPanelPath: string
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
   questionKeysAndIds: { id: number; key: string }[]
-  requiredQuestionKeys: string[]
+  requiredQuestionKeysWithErrorMessages: RequiredQuestionKeyWithErrorMessage[]
 }
 
-const getUnansweredRequiredQuestionKeys = (requiredKeys: string[], entries: [string, unknown][]) =>
-  requiredKeys.filter((requiredKey) => {
-    const entry = entries.find(([key]) => key === requiredKey)
+const getUnansweredRequiredQuestionKeysWithErrorMessages = (
+  requiredKeysWithErrorMessages: RequiredQuestionKeyWithErrorMessage[],
+  entries: [string, unknown][],
+) =>
+  requiredKeysWithErrorMessages.filter(({ key }) => {
+    const entry = entries.find(([entryKey]) => entryKey === key)
 
     // If entries do not contain a key that is in requiredKeys, add it to missingRequiredKeys
     if (!entry) return true
@@ -40,7 +45,7 @@ export const postForm = async (
     nextPanelPath,
     questionAndAnswerIdPairs,
     questionKeysAndIds,
-    requiredQuestionKeys,
+    requiredQuestionKeysWithErrorMessages,
   }: ArgsType,
   _: unknown,
   formData: FormData,
@@ -64,14 +69,17 @@ export const postForm = async (
   const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(entries))
 
   // Check if all required questions are answered
-  const missingRequiredKeys = getUnansweredRequiredQuestionKeys(requiredQuestionKeys, entriesWithMergedCheckboxes)
+  const missingRequiredKeysWithErrorMessages = getUnansweredRequiredQuestionKeysWithErrorMessages(
+    requiredQuestionKeysWithErrorMessages,
+    entriesWithMergedCheckboxes,
+  )
 
-  if (missingRequiredKeys.length > 0) {
+  if (missingRequiredKeysWithErrorMessages.length > 0) {
     return {
       formData,
-      validationErrors: missingRequiredKeys.map((key) => ({
+      validationErrors: missingRequiredKeysWithErrorMessages.map(({ key, requiredErrorMessage }) => ({
         key,
-        message: 'Vraag is verplicht en moet worden beantwoord.',
+        message: requiredErrorMessage,
       })),
     }
   }

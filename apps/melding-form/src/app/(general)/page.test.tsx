@@ -56,6 +56,46 @@ describe('Page', () => {
     expect(extraArgs).toMatchObject({
       existingId: '123',
       existingToken: 'test-token',
+      requiredErrorMessage: 'required-error-message-fallback',
+    })
+  })
+
+  it('passes a custom required error message when it is set', async () => {
+    const primaryFormWithCustomErrorMessage = {
+      components: [
+        {
+          ...textAreaComponent,
+          key: 'primary',
+          validate: {
+            required: true,
+            required_error_message: 'Custom error message',
+          },
+        },
+      ],
+    }
+    server.use(
+      http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(primaryFormWithCustomErrorMessage)),
+    )
+
+    mockIdAndTokenCookies()
+
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    // Call the bound action
+    if (capturedAction) {
+      capturedAction({}, undefined, new FormData())
+    }
+
+    expect(actionsModule.postPrimaryForm).toHaveBeenCalled()
+
+    const [extraArgs] = (actionsModule.postPrimaryForm as Mock).mock.calls[0]
+
+    expect(extraArgs).toMatchObject({
+      existingId: '123',
+      existingToken: 'test-token',
+      requiredErrorMessage: 'Custom error message',
     })
   })
 
