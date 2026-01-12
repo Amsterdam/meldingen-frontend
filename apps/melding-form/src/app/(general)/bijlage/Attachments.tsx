@@ -72,6 +72,7 @@ const mapExistingFilesToUploads = (files: ExistingFileType[], idPrefix: string):
 
 export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
+  const uploadIdCounter = useRef(files.length)
 
   const genericErrorAlertRef = useRef<HTMLDivElement>(null)
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
@@ -81,8 +82,6 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const tShared = useTranslations('shared')
 
   const existingFileUploads = mapExistingFilesToUploads(files, t('file-upload.id-prefix'))
-
-  const uploadIdCounter = useRef(files.length)
 
   const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
   const [genericError, setGenericError] = useState<GenericErrorMessage>()
