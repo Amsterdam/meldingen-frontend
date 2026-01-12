@@ -39,7 +39,7 @@ const defaultPropsAddressList: PropsAddressList = {
   value: 'Nieuwmarkt',
 }
 
-describe.only('fetchAddressList', () => {
+describe('fetchAddressList', () => {
   it('should return address list', async () => {
     await fetchAddressList(defaultPropsAddressList)
 
