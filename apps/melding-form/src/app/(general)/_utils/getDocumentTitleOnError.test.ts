@@ -20,7 +20,7 @@ describe('getDocumentTitleOnError', () => {
       translateFunction: t,
     })
 
-    expect(title).toBe('system-error-alert-title - Test title')
+    expect(title).toBe(`system-error-alert-title - ${originalDocTitle}`)
   })
 
   it('returns original title when validationErrorCount is 0', () => {
@@ -40,6 +40,6 @@ describe('getDocumentTitleOnError', () => {
       validationErrorCount: 3,
     })
 
-    expect(title).toBe('(3 errors) Test title')
+    expect(title).toBe(`(3 errors) ${originalDocTitle}`)
   })
 })
