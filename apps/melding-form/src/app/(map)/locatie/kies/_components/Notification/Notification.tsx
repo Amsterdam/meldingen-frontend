@@ -40,7 +40,9 @@ export const Notification = ({ type, ...restProps }: Props) => {
       role="alert"
       severity={texts[type].severity}
     >
-      {texts[type].description && <Paragraph>{texts[type].description}</Paragraph>}
+      {type === 'location-service-disabled' && texts[type].description && (
+        <Paragraph>{texts[type].description}</Paragraph>
+      )}
     </Alert>
   )
 }
