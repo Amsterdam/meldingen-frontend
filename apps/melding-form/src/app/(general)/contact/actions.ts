@@ -1,5 +1,6 @@
 'use server'
 
+import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -10,8 +11,9 @@ import { COOKIES } from 'apps/melding-form/src/constants'
 import { isApiErrorArray } from 'apps/melding-form/src/handleApiError'
 
 export const postContactForm = async (_: unknown, formData: FormData) => {
-  const cookieStore = await cookies()
+  const t = await getTranslations('contact.errors')
 
+  const cookieStore = await cookies()
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
@@ -34,11 +36,15 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
     const emailError = error?.detail.find((error) => error.loc.includes('email'))
     const phoneError = error?.detail.find((error) => error.loc.includes('phone'))
 
+    const emailTooLongError = emailError?.msg.includes('The email address is too long')
+
     return {
       formData,
       validationErrors: [
-        ...(emailError ? [{ key: 'email-input', message: emailError.msg }] : []),
-        ...(phoneError ? [{ key: 'tel-input', message: phoneError.msg }] : []),
+        ...(emailError
+          ? [{ key: 'email-input', message: emailTooLongError ? t('email-too-long') : t('invalid-email') }]
+          : []),
+        ...(phoneError ? [{ key: 'tel-input', message: t('invalid-phone-number') }] : []),
       ],
     }
   }
