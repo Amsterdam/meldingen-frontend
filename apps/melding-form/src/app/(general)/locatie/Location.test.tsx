@@ -113,4 +113,45 @@ describe('Location', () => {
     expect(listItems[0]).toHaveTextContent('Restafval container - Container-001')
     expect(listItems[1]).toHaveTextContent('Glas container - Container-002')
   })
+
+  it('updates the document title when there is a system error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+
+    render(<Location {...defaultProps} />)
+
+    expect(document.title).toBe('system-error-alert-title - metadata.title')
+  })
+
+  it('updates the document title when there are validation errors', () => {
+    ;(useActionState as Mock).mockReturnValue([
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      vi.fn(),
+    ])
+
+    render(<Location {...defaultProps} />)
+
+    expect(document.title).toBe('error-count-label metadata.title')
+  })
+
+  it('sets focus on InvalidFormAlert when there are validation errors', () => {
+    ;(useActionState as Mock).mockReturnValue([
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      vi.fn(),
+    ])
+
+    const { container } = render(<Location {...defaultProps} />)
+
+    const alert = container.querySelector('.ams-alert')
+
+    expect(alert).toHaveFocus()
+  })
+
+  it('sets focus on SystemErrorAlert when there is a system error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+    render(<Location {...defaultProps} />)
+
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveFocus()
+  })
 })
