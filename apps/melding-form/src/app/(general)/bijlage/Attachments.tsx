@@ -210,11 +210,9 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   useEffect(() => {
     if (validationErrors && invalidFormAlertRef.current) {
       invalidFormAlertRef.current.focus()
-    }
-    if ((systemError || actionSystemError) && systemErrorAlertRef.current) {
+    } else if ((systemError || actionSystemError) && systemErrorAlertRef.current) {
       systemErrorAlertRef.current.focus()
-    }
-    if (genericError && genericErrorAlertRef.current) {
+    } else if (genericError && genericErrorAlertRef.current) {
       genericErrorAlertRef.current.focus()
     }
   }, [validationErrors, systemError, actionSystemError, genericError])
