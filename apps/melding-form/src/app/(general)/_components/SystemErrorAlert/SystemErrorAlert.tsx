@@ -24,3 +24,5 @@ export const SystemErrorAlert = forwardRef((_, ref: ForwardedRef<HTMLDivElement>
     </Alert>
   )
 })
+
+SystemErrorAlert.displayName = 'SystemErrorAlert'
