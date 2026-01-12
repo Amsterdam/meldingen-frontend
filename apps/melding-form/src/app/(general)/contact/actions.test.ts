@@ -57,7 +57,7 @@ describe('postContactForm', () => {
     server.use(
       http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_CONTACT, () =>
         HttpResponse.json(
-          { detail: [{ loc: 'email', msg: 'Email validation error', type: 'value_error' }] },
+          { detail: [{ loc: 'email', msg: 'Unused error message', type: 'value_error' }] },
           { status: 422 },
         ),
       ),
@@ -70,17 +70,43 @@ describe('postContactForm', () => {
     const result = await postContactForm(undefined, formData)
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'email-input', message: 'Email validation error' }],
+      validationErrors: [{ key: 'email-input', message: 'invalid-email' }],
+    })
+  })
+
+  it('returns a specific validation error if email is too long', async () => {
+    server.use(
+      http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_CONTACT, () =>
+        HttpResponse.json(
+          {
+            detail: [
+              {
+                loc: 'email',
+                msg: 'emailError value is not a valid email address: The email address is too long (71 characters too many).',
+                type: 'value_error',
+              },
+            ],
+          },
+          { status: 422 },
+        ),
+      ),
+    )
+
+    const formData = new FormData()
+    formData.set('email', 'invalid-email')
+    formData.set('phone', '0612345678')
+
+    const result = await postContactForm(undefined, formData)
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'email-input', message: 'email-too-long' }],
     })
   })
 
   it('returns a validation error if phone is invalid', async () => {
     server.use(
       http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_CONTACT, () =>
-        HttpResponse.json(
-          { detail: [{ loc: 'phone', msg: 'Phone validation error', type: 'value_error' }] },
-          { status: 422 },
-        ),
+        HttpResponse.json({ detail: [{ loc: 'phone', type: 'value_error' }] }, { status: 422 }),
       ),
     )
 
@@ -92,7 +118,7 @@ describe('postContactForm', () => {
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'tel-input', message: 'Phone validation error' }],
+      validationErrors: [{ key: 'tel-input', message: 'invalid-phone-number' }],
     })
   })
 

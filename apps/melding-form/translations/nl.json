@@ -133,7 +133,12 @@
     "step": "Stap 3 van 4: Uw gegevens",
     "question": "Mogen we u bellen voor vragen? En op de hoogte houden via e-mail?",
     "description": "Vaak hebben we nog een vraag. Daarmee kunnen we het probleem sneller of beter oplossen. Of we willen iets uitleggen. Wij willen u dan graag even bellen. Of anders e-mailen wij u.\n\nWij gebruiken uw telefoonnummer en e-mailadres alléén voor deze melding.",
-    "submit-button": "Volgende vraag"
+    "submit-button": "Volgende vraag",
+    "errors": {
+      "invalid-email": "Vul een geldig e-mailadres in, bijvoorbeeld naam@voorbeeld.com.",
+      "invalid-phone-number": "Vul een geldig telefoonnummer in, bijvoorbeeld 06 4444 0655 of 020 255 4800.",
+      "email-too-long": "Het e-mailadres moet tussen de 6 en 254 tekens lang zijn. Vul een geldig e-mailadres in, bijvoorbeeld naam@voorbeeld.com."
+    }
   },
   "summary": {
     "metadata": {
