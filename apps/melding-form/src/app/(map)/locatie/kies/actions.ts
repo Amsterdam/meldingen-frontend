@@ -58,6 +58,7 @@ export const postCoordinatesAndAssets = async (
     return { errorMessage: t('errors.no-location') }
   }
 
+  // If the user pins the location on the map without a valid address, use the coordinates directly
   if (addressCookie === t('combo-box.no-address')) {
     coordinates = JSON.parse(coordinatesCookie as string)
     address = addressCookie
