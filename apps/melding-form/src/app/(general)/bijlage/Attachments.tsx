@@ -3,6 +3,7 @@
 import type { ChangeEvent, FormEvent } from 'react'
 
 import { Alert, Paragraph } from '@amsterdam/design-system-react'
+import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef, useState } from 'react'
@@ -247,7 +248,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         )}
         {genericError && (
           <Alert
-            className="ams-mb-m"
+            className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
             heading={genericError.heading}
             headingLevel={2}
             ref={genericErrorAlertRef}
