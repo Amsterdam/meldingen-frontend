@@ -2,7 +2,7 @@ import { getDocumentTitleOnError } from './getDocumentTitleOnError'
 
 describe('getDocumentTitleOnError', () => {
   const originalDocTitle = 'Test title'
-  const t = (_key: string, options?: { count: number }) => `(${options?.count ?? 0} errors)`
+  const t = (key: string, options?: { count: number }) => (options?.count ? `(${options?.count ?? 0} errors)` : key)
 
   it('returns original title when there are no errors', () => {
     const title = getDocumentTitleOnError({

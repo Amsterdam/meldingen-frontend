@@ -9,11 +9,11 @@ export const getDocumentTitleOnError = ({
   translateFunction: (key: string, options?: { count: number }) => string
   validationErrorCount?: number
 }) => {
-  if (hasSystemError) {
-    return `${t('system-error-alert-title')} - ${originalDocTitle}`
-  }
   if (validationErrorCount && validationErrorCount > 0) {
     return `${t('error-count-label', { count: validationErrorCount })} ${originalDocTitle}`
+  }
+  if (hasSystemError) {
+    return `${t('system-error-alert-title')} - ${originalDocTitle}`
   }
 
   return originalDocTitle
