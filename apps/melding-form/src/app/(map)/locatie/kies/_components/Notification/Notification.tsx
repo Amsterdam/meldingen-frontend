@@ -15,12 +15,6 @@ const getTexts = (t: (key: string, options?: { maxAssets: number }) => string) =
     severity: 'error' as AlertProps['severity'],
     title: t('location-service-disabled.title'),
   },
-  'pdok-reverse-coordinates-error': {
-    closeButton: t('pdok-reverse-coordinates-error.close-button'),
-    description: t('pdok-reverse-coordinates-error.description'),
-    severity: 'error' as AlertProps['severity'],
-    title: t('pdok-reverse-coordinates-error.title'),
-  },
   'too-many-assets': {
     closeButton: t('too-many-assets.close-button'),
     description: undefined,

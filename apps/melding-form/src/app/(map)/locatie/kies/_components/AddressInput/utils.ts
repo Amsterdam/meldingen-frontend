@@ -1,6 +1,5 @@
 import { useTranslations } from 'next-intl'
 
-import { NotificationType } from '../../SelectLocation'
 import { PDOKItem } from './types'
 import { Coordinates } from 'apps/melding-form/src/types'
 
@@ -20,14 +19,14 @@ export const debounce = (fn: Function, delay = 250) => {
 export type PropsAddress = {
   coordinates: Coordinates
   setAddress: (address: string) => void
-  setNotificationType: (type: NotificationType | null) => void
+  setErrorMessage: (message?: string) => void
   t: ReturnType<typeof useTranslations>
 }
 
 export const fetchAndSetAddress = async ({
   coordinates: { lat, lng },
   setAddress,
-  setNotificationType,
+  setErrorMessage,
   t,
 }: PropsAddress) => {
   try {
@@ -39,16 +38,17 @@ export const fetchAndSetAddress = async ({
       throw new Error(response.statusText)
     }
 
+    setErrorMessage(undefined)
     const result = await response.json()
     const address = result.response.docs?.[0]?.weergavenaam ?? t('no-address')
 
     setAddress(address)
   } catch (error) {
-    // TODO: Should not throw error. But use a fallback notification to inform user.
-
     // eslint-disable-next-line no-console
     console.error(error)
-    setNotificationType('pdok-reverse-coordinates-error')
+
+    setAddress(t('no-address'))
+    setErrorMessage(t('pdok-reverse-coordinates-failed'))
   }
 }
 

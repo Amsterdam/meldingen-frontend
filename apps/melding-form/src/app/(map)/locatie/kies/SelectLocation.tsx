@@ -35,7 +35,7 @@ type Props = {
   selectedAssets: Feature[]
 }
 
-export type NotificationType = 'too-many-assets' | 'location-service-disabled' | 'pdok-reverse-coordinates-error'
+export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 
 const initialState: { errorMessage?: string } = {}
 
