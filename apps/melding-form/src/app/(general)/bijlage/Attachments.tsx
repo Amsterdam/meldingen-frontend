@@ -21,7 +21,6 @@ import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
-import { useSetFocusOnInvalidFormAlert } from '../_utils/useSetFocusOnInvalidFormAlert'
 import { submitAttachmentsForm } from './actions'
 import { startUpload } from './utils'
 import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
@@ -71,13 +70,17 @@ const mapExistingFilesToUploads = (files: ExistingFileType[], idPrefix: string):
   }))
 
 export const Attachments = ({ files, formData, meldingId, token }: Props) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const genericErrorAlertRef = useRef<HTMLDivElement>(null)
+  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
+  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
+
   const t = useTranslations('attachments')
   const tShared = useTranslations('shared')
 
   const existingFileUploads = mapExistingFilesToUploads(files, t('file-upload.id-prefix'))
 
-  const inputRef = useRef<HTMLInputElement>(null)
-  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const uploadIdCounter = useRef(files.length)
 
   const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
@@ -195,11 +198,26 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     }
   }
 
-  // Set focus on InvalidFormAlert when there are validation errors
-  useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
+  // Update document title when there are system, validation or generic errors
+  const documentTitle = getDocumentTitleOnError({
+    hasSystemError: Boolean(systemError) || Boolean(actionSystemError) || Boolean(genericError),
+    originalDocTitle: t('metadata.title'),
+    translateFunction: tShared,
+    validationErrorCount: validationErrors.length,
+  })
 
-  // Update document title when there are validation errors
-  const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
+  // Set focus on alerts when there are errors
+  useEffect(() => {
+    if (validationErrors && invalidFormAlertRef.current) {
+      invalidFormAlertRef.current.focus()
+    }
+    if ((systemError || actionSystemError) && systemErrorAlertRef.current) {
+      systemErrorAlertRef.current.focus()
+    }
+    if (genericError && genericErrorAlertRef.current) {
+      genericErrorAlertRef.current.focus()
+    }
+  }, [validationErrors, systemError, actionSystemError, genericError])
 
   useEffect(() => {
     // TODO: Log the error to an error reporting service
@@ -216,7 +234,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {t('back-link')}
       </BackLink>
       <main>
-        {(Boolean(systemError) || Boolean(actionSystemError)) && <SystemErrorAlert />}
+        {(Boolean(systemError) || Boolean(actionSystemError)) && <SystemErrorAlert ref={systemErrorAlertRef} />}
         {validationErrors.length > 0 && (
           <InvalidFormAlert
             className="ams-mb-m"
@@ -230,7 +248,15 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           />
         )}
         {genericError && (
-          <Alert className="ams-mb-m" heading={genericError.heading} headingLevel={2} severity="error">
+          <Alert
+            className="ams-mb-m"
+            heading={genericError.heading}
+            headingLevel={2}
+            ref={genericErrorAlertRef}
+            role="alert"
+            severity="error"
+            tabIndex={-1}
+          >
             {genericError.description && <Paragraph>{genericError.description}</Paragraph>}
           </Alert>
         )}
