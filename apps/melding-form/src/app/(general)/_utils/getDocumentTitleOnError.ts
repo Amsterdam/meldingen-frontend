@@ -1,14 +1,16 @@
+type ArgsType = {
+  hasSystemError?: boolean
+  originalDocTitle: string
+  translateFunction: (key: string, options?: { count: number }) => string
+  validationErrorCount?: number
+}
+
 export const getDocumentTitleOnError = ({
   hasSystemError,
   originalDocTitle,
   translateFunction: t,
   validationErrorCount,
-}: {
-  hasSystemError?: boolean
-  originalDocTitle: string
-  translateFunction: (key: string, options?: { count: number }) => string
-  validationErrorCount?: number
-}) => {
+}: ArgsType) => {
   if (validationErrorCount && validationErrorCount > 0) {
     return `${t('error-count-label', { count: validationErrorCount })} ${originalDocTitle}`
   }
