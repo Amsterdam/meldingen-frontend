@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -44,6 +45,7 @@ type Params = Promise<{
 
 export default async ({ params }: { params: Params }) => {
   const { classificationId, panelId } = await params
+  const t = await getTranslations('additional-questions.errors')
 
   const { data, error } = await getFormClassificationByClassificationId({
     path: { classification_id: classificationId },
@@ -93,8 +95,13 @@ export default async ({ params }: { params: Params }) => {
     key: key,
   }))
 
-  // Pass required questions keys to the action
-  const requiredQuestionKeys = panelComponents.filter((question) => question.validate?.required).map(({ key }) => key)
+  // Pass required questions keys with the associated error messages to the action
+  const requiredQuestionKeysWithErrorMessages = panelComponents
+    .filter((question) => question.validate?.required)
+    .map(({ key, validate }) => ({
+      key,
+      requiredErrorMessage: validate?.required_error_message || t('required-error-message-fallback'),
+    }))
 
   // Pass isLastPanel to the action
   const isLastPanel = currentPanelIndex === data.components.length - 1
@@ -111,7 +118,7 @@ export default async ({ params }: { params: Params }) => {
     nextPanelPath,
     questionAndAnswerIdPairs,
     questionKeysAndIds,
-    requiredQuestionKeys,
+    requiredQuestionKeysWithErrorMessages,
   }
 
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)
