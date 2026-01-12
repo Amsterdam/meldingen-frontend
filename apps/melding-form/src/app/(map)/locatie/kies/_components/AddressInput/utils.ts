@@ -44,6 +44,8 @@ export const fetchAndSetAddress = async ({
 
     setAddress(address)
   } catch (error) {
+    // TODO: Should not throw error. But use a fallback notification to inform user.
+
     // eslint-disable-next-line no-console
     console.error(error)
     setNotificationType('pdok-reverse-coordinates-error')
@@ -52,19 +54,11 @@ export const fetchAndSetAddress = async ({
 
 export type PropsAddressList = {
   setAddressList: (list: PDOKItem[]) => void
-  setErrorMessage: (message: string) => void
   setShowListBox: (show: boolean) => void
-  t: ReturnType<typeof useTranslations>
   value: string
 }
 
-export const fetchAddressList = async ({
-  setAddressList,
-  setErrorMessage,
-  setShowListBox,
-  t,
-  value,
-}: PropsAddressList) => {
+export const fetchAddressList = async ({ setAddressList, setShowListBox, value }: PropsAddressList) => {
   if (value.length < 3) {
     setShowListBox(false)
     setAddressList([])
@@ -92,8 +86,8 @@ export const fetchAddressList = async ({
     setAddressList(addressList)
     setShowListBox(true)
   } catch (error) {
+    // Only log the error, the user can continue without suggestions
     // eslint-disable-next-line no-console
     console.error(error)
-    setErrorMessage(t('pdok-failed-list'))
   }
 }
