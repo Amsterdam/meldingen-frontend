@@ -294,9 +294,11 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             </div>
           </div>
 
-          <Alert className={styles.noJavaScriptAlert} heading={t('no-js-alert-title')} headingLevel={2}>
-            <Paragraph>{t('no-js-alert-description')}</Paragraph>
-          </Alert>
+          <div className={styles.loadingContainer}>
+            <Alert className={styles.noJavaScriptAlert} heading={t('no-js-alert-title')} headingLevel={2}>
+              <Paragraph>{t('no-js-alert-description')}</Paragraph>
+            </Alert>
+          </div>
 
           <Form action={formAction} onSubmit={handleSubmit}>
             <SubmitButton>{t('submit-button')}</SubmitButton>

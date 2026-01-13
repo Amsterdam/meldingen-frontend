@@ -3,6 +3,54 @@
   font-weight: var(--ams-hint-font-weight);
 }
 
+@keyframes loading {
+  0% {
+    background-color: var(--ams-color-background);
+  }
+
+  50% {
+    background-color: var(--ams-color-separator);
+  }
+
+  100% {
+    background-color: var(--ams-color-background);
+  }
+}
+
+.loadingContainer {
+  animation-delay: 0.3s;
+  animation-duration: 2s;
+
+  /*
+   * Stop the animation after 3 seconds (1.5 iterations * 2s duration)
+   * At that point, the no-JavaScript alert will be shown.
+   */
+  animation-iteration-count: 1.5;
+  animation-name: loading;
+  animation-timing-function: ease-in-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    background-color: var(--ams-color-separator);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.noJavaScriptAlert {
+  animation: fade-in 0s ease-in-out forwards;
+  animation-delay: 3s;
+  opacity: 0;
+}
+
 :global(.js-enabled) .noJavaScriptAlert {
   display: none;
 }
