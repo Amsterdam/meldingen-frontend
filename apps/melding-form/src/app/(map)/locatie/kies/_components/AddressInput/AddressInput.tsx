@@ -24,16 +24,15 @@ import { debounce, fetchAddressList, fetchAndSetAddress } from './utils'
 import styles from './AddressInput.module.css'
 
 export type Props = {
-  actionErrorMessage?: string
   coordinates?: Coordinates
+  errorMessage?: string
   setCoordinates: (coordinates?: Coordinates) => void
   setSelectedAssets: (selectedAssets: Feature[]) => void
 }
 
-export const AddressInput = ({ actionErrorMessage, coordinates, setCoordinates, setSelectedAssets }: Props) => {
+export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSelectedAssets }: Props) => {
   const [address, setAddress] = useState('')
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
-  const [errorMessage, setErrorMessage] = useState<string | undefined>()
   const [query, setQuery] = useState('')
   const [showListBox, setShowListBox] = useState(false)
 
@@ -57,7 +56,7 @@ export const AddressInput = ({ actionErrorMessage, coordinates, setCoordinates, 
       setAddress('')
       return
     }
-    fetchAndSetAddress({ coordinates, setAddress, setErrorMessage, t })
+    fetchAndSetAddress({ coordinates, setAddress, t })
   }, [coordinates, t])
 
   useEffect(() => {
@@ -98,10 +97,9 @@ export const AddressInput = ({ actionErrorMessage, coordinates, setCoordinates, 
   }
 
   return (
-    <HUIField as={Field} invalid={!!errorMessage}>
+    <HUIField as={Field} invalid={Boolean(errorMessage)}>
       <HUILabel as={Label}>{t('label')}</HUILabel>
       {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
-      {actionErrorMessage && <Description as={ErrorMessage}>{actionErrorMessage}</Description>}
       <Description className="ams-visually-hidden">
         {t.rich('description', { english: (chunks) => <span lang="en">{chunks}</span> })}
       </Description>

@@ -19,16 +19,10 @@ export const debounce = (fn: Function, delay = 250) => {
 export type PropsAddress = {
   coordinates: Coordinates
   setAddress: (address: string) => void
-  setErrorMessage: (message?: string) => void
   t: ReturnType<typeof useTranslations>
 }
 
-export const fetchAndSetAddress = async ({
-  coordinates: { lat, lng },
-  setAddress,
-  setErrorMessage,
-  t,
-}: PropsAddress) => {
+export const fetchAndSetAddress = async ({ coordinates: { lat, lng }, setAddress, t }: PropsAddress) => {
   try {
     const response = await fetch(
       `https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?lat=${lat}&lon=${lng}&rows=1&distance=30`,
@@ -38,7 +32,6 @@ export const fetchAndSetAddress = async ({
       throw new Error(response.statusText)
     }
 
-    setErrorMessage(undefined)
     const result = await response.json()
     const address = result.response.docs?.[0]?.weergavenaam ?? t('no-address')
 
@@ -46,9 +39,7 @@ export const fetchAndSetAddress = async ({
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error)
-
     setAddress(t('no-address'))
-    setErrorMessage(t('pdok-reverse-api-warning'))
   }
 }
 

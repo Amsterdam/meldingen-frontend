@@ -76,8 +76,8 @@ export const SelectLocation = ({
       <SideBarTop>
         <Form action={formAction} id="address" noValidate>
           <AddressInput
-            actionErrorMessage={errorMessage}
             coordinates={coordinates}
+            errorMessage={errorMessage}
             setCoordinates={setCoordinates}
             setSelectedAssets={setSelectedAssets}
           />
