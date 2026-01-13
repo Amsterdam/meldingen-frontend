@@ -54,7 +54,7 @@
   opacity: 0;
 }
 
-:global(.js-enabled) .noJavaScriptAlert {
+:global(.js-enabled) .loadingContainer {
   display: none;
 }
 
