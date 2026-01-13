@@ -1,3 +1,7 @@
+.genericErrorAlert {
+  outline-offset: var(--ams-focus-outline-offset);
+}
+
 .hint {
   display: inline-block;
   font-weight: var(--ams-hint-font-weight);

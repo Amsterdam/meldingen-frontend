@@ -2,29 +2,44 @@ import { getDocumentTitleOnError } from './getDocumentTitleOnError'
 
 describe('getDocumentTitleOnError', () => {
   const originalDocTitle = 'Test title'
-  const t = (_: string, { count }: { count: number }) => `(${count} errors)`
+  const t = (key: string, options?: { count: number }) => (options?.count ? `(${options?.count ?? 0} errors)` : key)
 
-  it('returns original title when there are no validationErrors', () => {
-    const title = getDocumentTitleOnError(originalDocTitle, t, undefined)
-
-    expect(title).toBe(originalDocTitle)
-  })
-
-  it('returns original title when validationErrors is an empty array', () => {
-    const title = getDocumentTitleOnError(originalDocTitle, t, [])
+  it('returns original title when there are no errors', () => {
+    const title = getDocumentTitleOnError({
+      originalDocTitle,
+      translateFunction: t,
+    })
 
     expect(title).toBe(originalDocTitle)
   })
 
-  it('returns error count label and original title when validationErrors are present', () => {
-    const validationErrors = [
-      { key: 'a', message: 'Error A' },
-      { key: 'b', message: 'Error B' },
-      { key: 'c', message: 'Error C' },
-    ] // 3 errors
+  it('returns system error title and original title when there is a system error', () => {
+    const title = getDocumentTitleOnError({
+      hasSystemError: true,
+      originalDocTitle,
+      translateFunction: t,
+    })
 
-    const title = getDocumentTitleOnError(originalDocTitle, t, validationErrors)
+    expect(title).toBe(`system-error-alert-title - ${originalDocTitle}`)
+  })
 
-    expect(title).toBe('(3 errors) Test title')
+  it('returns original title when validationErrorCount is 0', () => {
+    const title = getDocumentTitleOnError({
+      originalDocTitle,
+      translateFunction: t,
+      validationErrorCount: 0,
+    })
+
+    expect(title).toBe(originalDocTitle)
+  })
+
+  it('returns error count label and original title when validationErrorCount is > 0', () => {
+    const title = getDocumentTitleOnError({
+      originalDocTitle,
+      translateFunction: t,
+      validationErrorCount: 3,
+    })
+
+    expect(title).toBe(`(3 errors) ${originalDocTitle}`)
   })
 })
