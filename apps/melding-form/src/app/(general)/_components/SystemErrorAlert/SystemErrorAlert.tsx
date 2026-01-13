@@ -1,13 +1,18 @@
+import type { Ref } from 'react'
+
 import { Alert } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
-import { ForwardedRef, forwardRef } from 'react'
 
 import { Paragraph } from '@meldingen/ui'
 
 import styles from './SystemErrorAlert.module.css'
 
-export const SystemErrorAlert = forwardRef((_, ref: ForwardedRef<HTMLDivElement>) => {
+type Props = {
+  ref?: Ref<HTMLDivElement>
+}
+
+export const SystemErrorAlert = ({ ref }: Props) => {
   const t = useTranslations('shared')
 
   return (
@@ -23,6 +28,4 @@ export const SystemErrorAlert = forwardRef((_, ref: ForwardedRef<HTMLDivElement>
       <Paragraph>{t('system-error-alert-description')}</Paragraph>
     </Alert>
   )
-})
-
-SystemErrorAlert.displayName = 'SystemErrorAlert'
+}
