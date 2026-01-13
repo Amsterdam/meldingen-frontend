@@ -11,7 +11,6 @@ import { server } from 'apps/melding-form/src/mocks/node'
 const defaultPropsAddress: PropsAddress = {
   coordinates: { lat: 52.37239126063553, lng: 4.900905743712159 },
   setAddress: vi.fn(),
-  setErrorMessage: vi.fn(),
   t: vi.fn((key) => key) as unknown as ReturnType<typeof useTranslations>,
 }
 
@@ -19,7 +18,6 @@ describe('fetchAndSetAddress', () => {
   it('should return correct address', async () => {
     await fetchAndSetAddress(defaultPropsAddress)
 
-    expect(defaultPropsAddress.setErrorMessage).toHaveBeenCalledWith(undefined)
     expect(defaultPropsAddress.setAddress).toHaveBeenCalledWith('Nieuwmarkt 15, 1011JR Amsterdam')
   })
 
@@ -29,7 +27,6 @@ describe('fetchAndSetAddress', () => {
     await fetchAndSetAddress(defaultPropsAddress)
 
     expect(defaultPropsAddress.setAddress).toHaveBeenCalledWith('no-address')
-    expect(defaultPropsAddress.setErrorMessage).toHaveBeenCalledWith('pdok-reverse-api-warning')
   })
 })
 

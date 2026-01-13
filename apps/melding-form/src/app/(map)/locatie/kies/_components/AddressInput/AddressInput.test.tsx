@@ -137,7 +137,7 @@ describe('AddressInput', () => {
   })
 
   it('shows an error when an action error message is provided', () => {
-    render(<AddressInput {...defaultProps} actionErrorMessage="This is an error message" />)
+    render(<AddressInput {...defaultProps} errorMessage="This is an error message" />)
 
     const errorMessage = screen.getByText('This is an error message')
 
