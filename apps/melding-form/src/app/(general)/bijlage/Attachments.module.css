@@ -29,10 +29,10 @@
   animation-duration: 2s;
 
   /*
-   * Stop the animation after 3 seconds (1.5 iterations * 2s duration)
+   * Stop the animation after 3 seconds (1.35 iterations * 2s duration - 0.3s delay = 3s).
    * At that point, the no-JavaScript alert will be shown.
    */
-  animation-iteration-count: 1.5;
+  animation-iteration-count: 1.35;
   animation-name: loading;
   animation-timing-function: ease-in-out;
 
