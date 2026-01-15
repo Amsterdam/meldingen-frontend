@@ -17,17 +17,17 @@
     "@azure/msal-browser": "3.23.0",
     "keycloak-js": "26.2.2",
     "ra-auth-msal": "3.1.0",
-    "ra-data-simple-rest": "5.13.4",
-    "ra-i18n-polyglot": "5.13.4",
+    "ra-data-simple-rest": "5.13.5",
+    "ra-i18n-polyglot": "5.13.5",
     "ra-keycloak": "2.0.0",
-    "react-admin": "5.13.4",
-    "react-hook-form": "7.69.0",
-    "react-router-dom": "7.11.0",
+    "react-admin": "5.13.5",
+    "react-hook-form": "7.71.1",
+    "react-router-dom": "7.12.0",
     "uber-json-schema-filter": "2.0.5",
-    "vite": "7.3.0"
+    "vite": "7.3.1"
   },
   "devDependencies": {
-    "@formio/core": "2.5.3",
-    "ra-core": "5.13.4"
+    "@formio/core": "2.5.4",
+    "ra-core": "5.13.5"
   }
 }
