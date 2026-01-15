@@ -12,14 +12,14 @@ import { Feature } from '@meldingen/api-client'
 
 import type { Coordinates } from 'apps/melding-form/src/types'
 
-import { AddressInput, AssetList, Notification, SideBarBottom, SideBarTop } from './_components'
+import { AddressInput, AssetList, MapLoading, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
 
 import styles from './SelectLocation.module.css'
 
 const Controls = dynamic(() => import('@meldingen/map').then((module) => module.Controls), { ssr: false })
 const Map = dynamic(() => import('@meldingen/map').then((module) => module.Map), {
-  loading: () => <p>Loading...</p>, // TODO: improve loading state
+  loading: () => <MapLoading />,
   ssr: false,
 })
 const MarkerSelectLayer = dynamic(() => import('@meldingen/map').then((module) => module.MarkerSelectLayer), {

@@ -1,0 +1,66 @@
+@keyframes loading {
+  0% {
+    background-color: var(--ams-color-background);
+    cursor: progress;
+  }
+
+  50% {
+    background-color: var(--ams-color-separator);
+    cursor: progress;
+  }
+
+  100% {
+    background-color: var(--ams-color-background);
+    cursor: progress;
+  }
+}
+
+@keyframes load-instantly {
+  0% {
+    background-color: var(--ams-color-separator);
+  }
+
+  100% {
+    background-color: var(--ams-color-separator);
+  }
+}
+
+.loadingContainer {
+  animation-delay: 0.3s;
+  animation-duration: 2s;
+
+  /*
+   * Stop the animation after 3 seconds (1.35 iterations * 2s duration - 0.3s delay = 3s).
+   * At that point, the no-JavaScript alert will be shown.
+   */
+  animation-iteration-count: 1.35;
+  animation-name: loading;
+  animation-timing-function: ease-in-out;
+  display: grid;
+  height: 100%;
+  width: 100%;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation-name: load-instantly;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.noJavaScriptAlert {
+  animation: fade-in 0s ease-in-out forwards;
+  animation-delay: 3s;
+  height: fit-content;
+  justify-self: center;
+  margin-block-start: var(--ams-space-m);
+  opacity: 0;
+  width: fit-content;
+}
