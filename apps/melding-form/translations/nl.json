@@ -71,7 +71,9 @@
     },
     "errors": {
       "no-location": "Vul een locatie in.",
-      "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam."
+      "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam.",
+      "no-js-alert-title": "JavaScript is niet beschikbaar",
+      "no-js-alert-description": "Wijzig dit in de instellingen van uw browser of herlaad de pagina."
     },
     "notifications": {
       "too-many-assets": {
