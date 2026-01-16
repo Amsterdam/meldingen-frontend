@@ -477,4 +477,59 @@ describe('Attachments', () => {
     expect(errorMessageHeading).toBeInTheDocument()
     expect(errorMessageDescription).toBeInTheDocument()
   })
+
+  it('updates the document title when there is a system error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+
+    render(<Attachments {...defaultProps} />)
+
+    expect(document.title).toBe('system-error-alert-title - metadata.title')
+  })
+
+  it('updates the document title when there are validation errors', async () => {
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+
+    const file = mockFile
+
+    await user.upload(fileInput, [file])
+    await user.upload(fileInput, [file])
+
+    expect(document.title).toBe('error-count-label metadata.title')
+  })
+
+  it('updates the document title when there is a generic error', async () => {
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+
+    await user.upload(
+      fileInput,
+      Array.from({ length: MAX_UPLOAD_ATTEMPTS + 1 }, () => mockFile),
+    )
+
+    expect(document.title).toBe('system-error-alert-title - metadata.title')
+  })
+
+  it('sets focus on SystemErrorAlert when there is a system error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+    render(<Attachments {...defaultProps} />)
+
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveFocus()
+  })
+
+  it.skip('sets focus on InvalidFormAlert when there are validation errors', async () => {
+    // TODO: Fix this test
+  })
+
+  it.skip('sets focus on the generic error Alert when there is a generic error', async () => {
+    // TODO: Fix this test
+  })
 })

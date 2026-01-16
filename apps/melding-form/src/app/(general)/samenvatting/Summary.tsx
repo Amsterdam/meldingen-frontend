@@ -4,13 +4,14 @@ import { Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import NextLink from 'next/link'
-import { useActionState, useEffect } from 'react'
+import { useActionState, useEffect, useRef } from 'react'
 
 import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink/BackLink'
 import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
+import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { postSummaryForm } from './actions'
 import { FormState } from 'apps/melding-form/src/types'
@@ -37,9 +38,26 @@ type Props = {
 const initialState: Pick<FormState, 'systemError'> = {}
 
 export const Summary = ({ additionalQuestions, attachments, contact, location, primaryForm }: Props) => {
+  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
+
   const [{ systemError }, formAction] = useActionState(postSummaryForm, initialState)
 
   const t = useTranslations('summary')
+  const tShared = useTranslations('shared')
+
+  // Update document title when there are system or validation errors
+  const documentTitle = getDocumentTitleOnError({
+    hasSystemError: Boolean(systemError),
+    originalDocTitle: t('metadata.title'),
+    translateFunction: tShared,
+  })
+
+  // Set focus on SystemErrorAlert when there is a system error
+  useEffect(() => {
+    if (systemError && systemErrorAlertRef.current) {
+      systemErrorAlertRef.current.focus()
+    }
+  }, [systemError])
 
   useEffect(() => {
     if (systemError) {
@@ -51,11 +69,12 @@ export const Summary = ({ additionalQuestions, attachments, contact, location, p
 
   return (
     <>
+      <title>{documentTitle}</title>
       <BackLink className="ams-mb-s" href="/contact">
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(systemError) && <SystemErrorAlert />}
+        {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
         <FormHeader step={t('step')} title={t('title')} />
         <Heading className="ams-mb-s" level={1} size="level-3">
           {t('main-title')}

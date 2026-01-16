@@ -11,7 +11,7 @@ import { useAddMarkersToMap } from './useAddMarkersToMap'
 import './cluster.css'
 import { getWfsFilter } from './utils/getWfsFilter'
 
-const classificationsWithAssets = ['container']
+const classificationsWithAssets = ['container', 'Demo container is vol']
 export const ZOOM_THRESHOLD = 16
 
 export const fetchFeaturesOnMoveEnd = async (

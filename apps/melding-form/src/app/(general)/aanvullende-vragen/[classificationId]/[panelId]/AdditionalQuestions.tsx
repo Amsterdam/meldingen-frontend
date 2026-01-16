@@ -12,7 +12,6 @@ import { BackLink } from '../../../_components/BackLink/BackLink'
 import { FormHeader } from '../../../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../../../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../../../_utils/getDocumentTitleOnError'
-import { useSetFocusOnInvalidFormAlert } from '../../../_utils/useSetFocusOnInvalidFormAlert'
 import { FormState, ValidationError } from 'apps/melding-form/src/types'
 
 const getPrefilledFormComponents = (components: Component[], formData: FormData): Component[] =>
@@ -54,6 +53,7 @@ export const AdditionalQuestions = ({
   previousPanelPath,
 }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
+  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
 
@@ -69,11 +69,23 @@ export const AdditionalQuestions = ({
     ? getPrefilledFormComponents(formComponentsFromServer, formData)
     : formComponentsFromServer
 
-  // Set focus on InvalidFormAlert when there are validation errors
-  useSetFocusOnInvalidFormAlert(invalidFormAlertRef, validationErrors)
+  // Update document title when there are system or validation errors
+  const documentTitle = getDocumentTitleOnError({
+    hasSystemError: Boolean(systemError),
+    originalDocTitle: t('metadata.title'),
+    translateFunction: tShared,
+    validationErrorCount: validationErrors?.length,
+  })
 
-  // Update document title when there are validation errors
-  const documentTitle = getDocumentTitleOnError(t('metadata.title'), tShared, validationErrors)
+  // Set focus on InvalidFormAlert when there are validation errors
+  // and on SystemErrorAlert when there is a system error
+  useEffect(() => {
+    if (validationErrors && invalidFormAlertRef.current) {
+      invalidFormAlertRef.current.focus()
+    } else if (systemError && systemErrorAlertRef.current) {
+      systemErrorAlertRef.current.focus()
+    }
+  }, [validationErrors, systemError])
 
   useEffect(() => {
     if (systemError) {
@@ -90,7 +102,7 @@ export const AdditionalQuestions = ({
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(systemError) && <SystemErrorAlert />}
+        {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
         {validationErrors && (
           <InvalidFormAlert
             className="ams-mb-m"
