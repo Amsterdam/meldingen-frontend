@@ -10,7 +10,7 @@ import {
   Label as HUILabel,
 } from '@headlessui/react'
 import { useTranslations } from 'next-intl'
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 import { ListBox, TextInput } from '@meldingen/ui'
@@ -27,16 +27,16 @@ export type Props = {
   coordinates?: Coordinates
   errorMessage?: string
   setCoordinates: (coordinates?: Coordinates) => void
-  setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
+  setSelectedAssets: (selectedAssets: Feature[]) => void
 }
 
 export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSelectedAssets }: Props) => {
   const [address, setAddress] = useState('')
-  const [query, setQuery] = useState('')
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
+  const [query, setQuery] = useState('')
   const [showListBox, setShowListBox] = useState(false)
 
-  const t = useTranslations('select-location.combo-box')
+  const t = useTranslations('select-location')
 
   // Make sure the ComboboxOptions do not overflow the viewport
   const { floatingStyles, refs } = useFloating({
@@ -52,11 +52,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
   })
 
   useEffect(() => {
-    if (!coordinates) {
-      setAddress('')
-      return
-    }
-    fetchAndSetAddress(coordinates, setAddress, t)
+    if (coordinates) fetchAndSetAddress({ coordinates, setAddress, t })
   }, [coordinates, t])
 
   useEffect(() => {
@@ -75,12 +71,12 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
         setCoordinates(coordinates)
       }
 
-      setAddress(value.weergave_naam)
+      setAddress(value.weergavenaam)
     }
   }
 
   const debouncedFetchAddressList = debounce((value: string) => {
-    fetchAddressList(value, setAddressList, setShowListBox)
+    fetchAddressList({ setAddressList, setShowListBox, t, value })
   })
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -93,12 +89,13 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
     }
 
     setQuery(value)
+    if (coordinates) setCoordinates(undefined)
     debouncedFetchAddressList(value)
   }
 
   return (
-    <HUIField as={Field} invalid={!!errorMessage}>
-      <HUILabel as={Label}>{t('label')}</HUILabel>
+    <HUIField as={Field} invalid={Boolean(errorMessage)}>
+      <HUILabel as={Label}>{t('combo-box.label')}</HUILabel>
       {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Description className="ams-visually-hidden">
         {t.rich('description', { english: (chunks) => <span lang="en">{chunks}</span> })}
@@ -125,12 +122,12 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
             {addressList.length > 0 ? (
               addressList.map((option) => (
                 <ComboboxOption as={ListBox.Option} key={option.id} value={option}>
-                  {option.weergave_naam}
+                  {option.weergavenaam}
                 </ComboboxOption>
               ))
             ) : (
               <ComboboxOption as={ListBox.Option} disabled value="">
-                {t('no-results')}
+                {t('combo-box.no-results')}
               </ComboboxOption>
             )}
           </ComboboxOptions>

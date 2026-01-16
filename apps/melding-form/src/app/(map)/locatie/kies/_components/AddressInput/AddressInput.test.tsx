@@ -23,7 +23,7 @@ describe('AddressInput', () => {
   it('should render the address input', () => {
     render(<AddressInput {...defaultProps} />)
 
-    const input = screen.getByRole('combobox', { name: 'label' })
+    const input = screen.getByRole('combobox', { name: 'combo-box.label' })
 
     expect(input).toBeInTheDocument()
   })
@@ -41,7 +41,7 @@ describe('AddressInput', () => {
 
     render(<AddressInput {...defaultProps} />)
 
-    const input = screen.getByRole('combobox', { name: 'label' })
+    const input = screen.getByRole('combobox', { name: 'combo-box.label' })
 
     await user.type(input, 'aa')
 
@@ -56,7 +56,7 @@ describe('AddressInput', () => {
 
     render(<AddressInput {...defaultProps} />)
 
-    const input = screen.getByRole('combobox', { name: 'label' })
+    const input = screen.getByRole('combobox', { name: 'combo-box.label' })
 
     await user.type(input, 'abc')
 
@@ -66,12 +66,35 @@ describe('AddressInput', () => {
     })
   })
 
+  it('should clear coordinates when input is removed', async () => {
+    const user = userEvent.setup()
+
+    render(<AddressInput {...defaultProps} />)
+
+    const input = screen.getByRole('combobox', { name: 'combo-box.label' })
+
+    await user.type(input, 'abc')
+
+    await waitFor(() => {
+      const listBox = screen.getByRole('listbox')
+      expect(listBox).toBeInTheDocument()
+    })
+
+    await user.type(input, '{Backspace}{Backspace}{Backspace}')
+
+    await waitFor(() => {
+      const listBox = screen.queryByRole('listbox')
+      expect(listBox).not.toBeInTheDocument()
+      expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
+    })
+  })
+
   it('should show all options returned by the API', async () => {
     const user = userEvent.setup()
 
     render(<AddressInput {...defaultProps} />)
 
-    const input = screen.getByRole('combobox', { name: 'label' })
+    const input = screen.getByRole('combobox', { name: 'combo-box.label' })
 
     await user.type(input, 'abc')
 
@@ -99,12 +122,12 @@ describe('AddressInput', () => {
 
     render(<AddressInput {...defaultProps} />)
 
-    const input = screen.getByRole('combobox', { name: 'label' })
+    const input = screen.getByRole('combobox', { name: 'combo-box.label' })
 
     await user.type(input, 'abc')
 
     await waitFor(() => {
-      const noResults = screen.getByRole('option', { name: 'no-results' })
+      const noResults = screen.getByRole('option', { name: 'combo-box.no-results' })
       expect(noResults).toBeInTheDocument()
     })
   })
@@ -132,7 +155,15 @@ describe('AddressInput', () => {
     render(<AddressInput {...defaultProps} coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
 
     await waitFor(() => {
-      expect(screen.getByDisplayValue('no-address')).toBeInTheDocument()
+      expect(screen.getByDisplayValue('combo-box.no-address')).toBeInTheDocument()
     })
+  })
+
+  it('shows an error when an error message is provided', () => {
+    render(<AddressInput {...defaultProps} errorMessage="This is an error message" />)
+
+    const errorMessage = screen.getByText('This is an error message')
+
+    expect(errorMessage).toBeInTheDocument()
   })
 })

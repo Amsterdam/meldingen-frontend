@@ -12,7 +12,7 @@ import { convertWktPointToCoordinates } from './utils'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
-const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam'
+const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 
 export const postCoordinatesAndAssets = async (
   { selectedAssets }: { selectedAssets: Feature[] },
@@ -26,8 +26,8 @@ export const postCoordinatesAndAssets = async (
 
   if (!meldingId || !token) return redirect('/cookie-storing')
 
-  const address = formData.get('address')
-  const coordinates = formData.get('coordinates')
+  const addressFormData = formData.get('address')
+  const coordinatesFormData = formData.get('coordinates')
   const t = await getTranslations('select-location')
 
   /** Post assets */
@@ -49,38 +49,47 @@ export const postCoordinatesAndAssets = async (
     }
   }
 
-  /** Fallback to fetch address when Javascript is not working in the browser */
+  /** Fetch coordinates from PDOK */
 
-  let PDOKLocation = null
+  let coordinates = null
+  let address = ''
 
-  if (!address) return { errorMessage: t('errors.no-location') }
-
-  if (!coordinates) {
-    const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`)
-
-    if (!res.ok) return { errorMessage: 'PDOK API error' }
-
-    PDOKLocation = await res.json()
-
-    if (!PDOKLocation.response.docs.length) return { errorMessage: t('errors.pdok-no-address-found') }
+  if (!addressFormData) {
+    return { errorMessage: t('errors.no-location') }
   }
 
-  const PDOKCoordinates = PDOKLocation && convertWktPointToCoordinates(PDOKLocation.response.docs[0].centroide_ll)
+  // When both address and coordinates are present in the form data, or
+  // when the user pins the location on the map which does not have a valid address, use the form data directly
+  if ((addressFormData && coordinatesFormData) || addressFormData === t('combo-box.no-address')) {
+    coordinates = JSON.parse(coordinatesFormData as string)
+    address = addressFormData as string
+  } else {
+    const response = await fetch(
+      `https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${addressFormData}&${queryParams}`,
+    )
 
-  if (!coordinates && !PDOKCoordinates) return { errorMessage: 'No coordinates found' }
+    if (!response.ok) return { errorMessage: t('errors.pdok-failed') }
+
+    const result = await response.json()
+
+    if (!result.response.docs.length) return { errorMessage: t('errors.pdok-no-address-found') }
+
+    const PDOKCoordinates = convertWktPointToCoordinates(result.response.docs[0].centroide_ll)
+
+    coordinates = PDOKCoordinates
+    address = result.response.docs[0].weergavenaam
+  }
+
+  if (!coordinates) return { errorMessage: 'No coordinates found' }
 
   /** Post coordinates and address */
 
-  const addressCookie: string = coordinates ? address : PDOKLocation.response.docs[0].weergavenaam
-
   const oneDay = 24 * 60 * 60
-  cookieStore.set(COOKIES.ADDRESS, addressCookie, { maxAge: oneDay })
-
-  const parsedCoordinates = coordinates ? JSON.parse(coordinates as string) : PDOKCoordinates
+  cookieStore.set(COOKIES.ADDRESS, address, { maxAge: oneDay })
 
   const { error } = await patchMeldingByMeldingIdLocation({
     body: {
-      geometry: { coordinates: [parsedCoordinates.lat, parsedCoordinates.lng], type: 'Point' },
+      geometry: { coordinates: [coordinates.lat, coordinates.lng], type: 'Point' },
       properties: {},
       type: 'Feature',
     },

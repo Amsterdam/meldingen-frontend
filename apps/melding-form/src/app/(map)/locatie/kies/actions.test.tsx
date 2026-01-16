@@ -21,9 +21,9 @@ describe('postCoordinatesAndAssets', () => {
 
   mockCookies({ [COOKIES.ID]: '123', [COOKIES.TOKEN]: 'test-token' }, mockSetCookie)
 
-  it('sets the address in cookies and redirects', async () => {
-    const address = 'Oudezijds Voorburgwal 300, Amsterdam'
-    const coordinates = '{"lat":52.37065901,"lng":4.89367338}'
+  it('sets the address from PDOK /free in cookies and redirects', async () => {
+    const address = 'Amstel 1, Amsterdam'
+    const coordinates = '{"lat":52.370216,"lng":4.895168}'
 
     const formData = new FormData()
     formData.set('address', address)
@@ -74,7 +74,7 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets({ selectedAssets: [] }, undefined, formData)
 
-    expect(result).toEqual({ errorMessage: 'PDOK API error' })
+    expect(result).toEqual({ errorMessage: 'errors.pdok-failed' })
   })
 
   it('returns an error message if no address is provided', async () => {
