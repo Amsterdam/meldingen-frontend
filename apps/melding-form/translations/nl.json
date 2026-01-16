@@ -54,8 +54,7 @@
       "label": "Zoek op adres",
       "description": "Als er autoaanvul-resultaten zijn, gebruik dan de pijltjes omhoog en omlaag om te bekijken en druk op enter om te kiezen. Voor <english>touch</english>-apparaten, verken met aanraking of veegbewegingen <english>(swipe)</english>.",
       "no-results": "Geen resultaten gevonden",
-      "no-address": "Locatie pin op de kaart",
-      "pdok-reverse-api-warning": "Er is iets mis gegaan bij het ophalen van het adres. De coordinaten zijn wel opgeslagen, u kunt doorgaan met uw melding."
+      "no-address": "Locatie pin op de kaart"
     },
     "submit-button": {
       "mobile": "Bevestigen",
@@ -73,7 +72,9 @@
     "errors": {
       "no-location": "Vul een locatie in.",
       "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam.",
-      "pdok-failed": "Er is iets mis gegaan. Probeer het opnieuw of herlaad de pagina."
+      "pdok-failed": "Er is iets mis gegaan. Probeer het opnieuw of herlaad de pagina.",
+      "pdok-reverse-api-error": "Unable to fetch address from coordinates from PDOK",
+      "pdok-suggest-api-error": "Unable to fetch address suggestions from PDOK"
     },
     "notifications": {
       "too-many-assets": {

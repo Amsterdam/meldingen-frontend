@@ -29,27 +29,28 @@ export const fetchAndSetAddress = async ({ coordinates: { lat, lng }, setAddress
     )
 
     if (!response.ok) {
-      throw new Error(response.statusText)
+      throw new Error(t('errors.pdok-reverse-api-error'))
     }
 
     const result = await response.json()
-    const address = result.response.docs?.[0]?.weergavenaam ?? t('no-address')
+    const address = result.response.docs?.[0]?.weergavenaam ?? t('combo-box.no-address')
 
     setAddress(address)
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error)
-    setAddress(t('no-address'))
+    setAddress(t('combo-box.no-address'))
   }
 }
 
 export type AddressListArgType = {
   setAddressList: (list: PDOKItem[]) => void
   setShowListBox: (show: boolean) => void
+  t: ReturnType<typeof useTranslations>
   value: string
 }
 
-export const fetchAddressList = async ({ setAddressList, setShowListBox, value }: AddressListArgType) => {
+export const fetchAddressList = async ({ setAddressList, setShowListBox, t, value }: AddressListArgType) => {
   if (value.length < 3) {
     setShowListBox(false)
     setAddressList([])
@@ -62,7 +63,7 @@ export const fetchAddressList = async ({ setAddressList, setShowListBox, value }
     )
 
     if (!response.ok) {
-      throw new Error(response.statusText)
+      throw new Error(t('errors.pdok-suggest-api-error'))
     }
 
     const result = await response.json()

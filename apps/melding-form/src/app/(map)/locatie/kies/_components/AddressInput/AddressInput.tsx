@@ -36,7 +36,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
   const [query, setQuery] = useState('')
   const [showListBox, setShowListBox] = useState(false)
 
-  const t = useTranslations('select-location.combo-box')
+  const t = useTranslations('select-location')
 
   // Make sure the ComboboxOptions do not overflow the viewport
   const { floatingStyles, refs } = useFloating({
@@ -80,7 +80,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
   }
 
   const debouncedFetchAddressList = debounce((value: string) => {
-    fetchAddressList({ setAddressList, setShowListBox, value })
+    fetchAddressList({ setAddressList, setShowListBox, t, value })
   })
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -98,7 +98,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
 
   return (
     <HUIField as={Field} invalid={Boolean(errorMessage)}>
-      <HUILabel as={Label}>{t('label')}</HUILabel>
+      <HUILabel as={Label}>{t('combo-box.label')}</HUILabel>
       {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Description className="ams-visually-hidden">
         {t.rich('description', { english: (chunks) => <span lang="en">{chunks}</span> })}
@@ -130,7 +130,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
               ))
             ) : (
               <ComboboxOption as={ListBox.Option} disabled value="">
-                {t('no-results')}
+                {t('combo-box.no-results')}
               </ComboboxOption>
             )}
           </ComboboxOptions>
