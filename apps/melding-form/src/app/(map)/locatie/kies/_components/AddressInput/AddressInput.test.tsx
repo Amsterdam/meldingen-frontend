@@ -66,6 +66,29 @@ describe('AddressInput', () => {
     })
   })
 
+  it('should clear coordinates when input is removed', async () => {
+    const user = userEvent.setup()
+
+    render(<AddressInput {...defaultProps} />)
+
+    const input = screen.getByRole('combobox', { name: 'combo-box.label' })
+
+    await user.type(input, 'abc')
+
+    await waitFor(() => {
+      const listBox = screen.getByRole('listbox')
+      expect(listBox).toBeInTheDocument()
+    })
+
+    await user.type(input, '{Backspace}{Backspace}{Backspace}')
+
+    await waitFor(() => {
+      const listBox = screen.queryByRole('listbox')
+      expect(listBox).not.toBeInTheDocument()
+      expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
+    })
+  })
+
   it('should show all options returned by the API', async () => {
     const user = userEvent.setup()
 
