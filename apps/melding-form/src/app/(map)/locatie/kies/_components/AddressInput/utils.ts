@@ -66,15 +66,8 @@ export const fetchAddressList = async ({ setAddressList, setShowListBox, value }
     }
 
     const result = await response.json()
-    const addressList: PDOKItem[] = result.response.docs.map(
-      (item: { centroide_ll: string; id: string; weergavenaam: string }): PDOKItem => ({
-        centroide_ll: item.centroide_ll,
-        id: item.id,
-        weergave_naam: item.weergavenaam,
-      }),
-    )
 
-    setAddressList(addressList)
+    setAddressList(result.response.docs)
     setShowListBox(true)
   } catch (error) {
     // Only log the error, the user can continue without suggestions

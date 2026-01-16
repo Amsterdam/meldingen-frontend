@@ -75,7 +75,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
         setCoordinates(coordinates)
       }
 
-      setAddress(value.weergave_naam)
+      setAddress(value.weergavenaam)
     }
   }
 
@@ -125,7 +125,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
             {addressList.length > 0 ? (
               addressList.map((option) => (
                 <ComboboxOption as={ListBox.Option} key={option.id} value={option}>
-                  {option.weergave_naam}
+                  {option.weergavenaam}
                 </ComboboxOption>
               ))
             ) : (
