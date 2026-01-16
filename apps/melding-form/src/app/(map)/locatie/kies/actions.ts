@@ -81,6 +81,7 @@ export const postCoordinatesAndAssets = async (
   }
 
   if (!coordinates) return { errorMessage: 'No coordinates found' }
+
   /** Post coordinates and address */
 
   const oneDay = 24 * 60 * 60
