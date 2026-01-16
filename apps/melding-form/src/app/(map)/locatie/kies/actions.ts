@@ -58,10 +58,11 @@ export const postCoordinatesAndAssets = async (
     return { errorMessage: t('errors.no-location') }
   }
 
-  // If the user pins the location on the map which does not have a valid address, use the coordinates directly
-  if (addressFormData === t('combo-box.no-address')) {
+  // When both address and coordinates are present in the form data, or
+  // when the user pins the location on the map which does not have a valid address, use the form data directly
+  if ((addressFormData && coordinatesFormData) || addressFormData === t('combo-box.no-address')) {
     coordinates = JSON.parse(coordinatesFormData as string)
-    address = addressFormData
+    address = addressFormData as string
   } else {
     const response = await fetch(
       `https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${addressFormData}&${queryParams}`,

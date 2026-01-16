@@ -52,11 +52,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
   })
 
   useEffect(() => {
-    if (!coordinates) {
-      setAddress('')
-      return
-    }
-    fetchAndSetAddress({ coordinates, setAddress, t })
+    if (coordinates) fetchAndSetAddress({ coordinates, setAddress, t })
   }, [coordinates, t])
 
   useEffect(() => {
@@ -93,6 +89,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
     }
 
     setQuery(value)
+    if (coordinates) setCoordinates(undefined)
     debouncedFetchAddressList(value)
   }
 
