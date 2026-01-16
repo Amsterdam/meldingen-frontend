@@ -16,13 +16,13 @@ export const debounce = (fn: Function, delay = 250) => {
   }
 }
 
-export type PropsAddress = {
+export type AddressArgType = {
   coordinates: Coordinates
   setAddress: (address: string) => void
   t: ReturnType<typeof useTranslations>
 }
 
-export const fetchAndSetAddress = async ({ coordinates: { lat, lng }, setAddress, t }: PropsAddress) => {
+export const fetchAndSetAddress = async ({ coordinates: { lat, lng }, setAddress, t }: AddressArgType) => {
   try {
     const response = await fetch(
       `https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?lat=${lat}&lon=${lng}&rows=1&distance=30`,
@@ -43,13 +43,13 @@ export const fetchAndSetAddress = async ({ coordinates: { lat, lng }, setAddress
   }
 }
 
-export type PropsAddressList = {
+export type AddressListArgType = {
   setAddressList: (list: PDOKItem[]) => void
   setShowListBox: (show: boolean) => void
   value: string
 }
 
-export const fetchAddressList = async ({ setAddressList, setShowListBox, value }: PropsAddressList) => {
+export const fetchAddressList = async ({ setAddressList, setShowListBox, value }: AddressListArgType) => {
   if (value.length < 3) {
     setShowListBox(false)
     setAddressList([])
