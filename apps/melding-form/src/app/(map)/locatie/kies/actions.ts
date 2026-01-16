@@ -26,8 +26,8 @@ export const postCoordinatesAndAssets = async (
 
   if (!meldingId || !token) return redirect('/cookie-storing')
 
-  const addressCookie = formData.get('address')
-  const coordinatesCookie = formData.get('coordinates')
+  const addressFormData = formData.get('address')
+  const coordinatesFormData = formData.get('coordinates')
   const t = await getTranslations('select-location')
 
   /** Post assets */
@@ -54,17 +54,17 @@ export const postCoordinatesAndAssets = async (
   let coordinates = null
   let address = ''
 
-  if (!addressCookie) {
+  if (!addressFormData) {
     return { errorMessage: t('errors.no-location') }
   }
 
   // If the user pins the location on the map which does not have a valid address, use the coordinates directly
-  if (addressCookie === t('combo-box.no-address')) {
-    coordinates = JSON.parse(coordinatesCookie as string)
-    address = addressCookie
+  if (addressFormData === t('combo-box.no-address')) {
+    coordinates = JSON.parse(coordinatesFormData as string)
+    address = addressFormData
   } else {
     const response = await fetch(
-      `https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${addressCookie}&${queryParams}`,
+      `https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${addressFormData}&${queryParams}`,
     )
 
     if (!response.ok) return { errorMessage: t('errors.pdok-failed') }
