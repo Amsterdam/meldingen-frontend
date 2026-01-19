@@ -8,8 +8,8 @@ export const MapLoadingIndicator = () => {
 
   return (
     <div className={styles.loadingContainer}>
-      <Alert className={styles.noJavaScriptAlert} heading={t('no-js-alert-title')} headingLevel={2}>
-        <Paragraph>{t('no-js-alert-description')}</Paragraph>
+      <Alert className={styles.noJavaScriptAlert} heading={t('no-js.heading')} headingLevel={2}>
+        <Paragraph>{t('no-js.description')}</Paragraph>
       </Alert>
     </div>
   )
