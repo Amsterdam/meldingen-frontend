@@ -72,9 +72,7 @@
     "errors": {
       "no-location": "Vul een locatie in.",
       "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam.",
-      "pdok-failed": "Er is iets mis gegaan. Probeer het opnieuw of herlaad de pagina.",
-      "pdok-reverse-api-error": "Unable to fetch address from coordinates from PDOK",
-      "pdok-suggest-api-error": "Unable to fetch address suggestions from PDOK"
+      "pdok-failed": "Er is iets mis gegaan. Probeer het opnieuw of herlaad de pagina."
     },
     "notifications": {
       "too-many-assets": {
