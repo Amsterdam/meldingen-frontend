@@ -5,6 +5,7 @@ import { http, HttpResponse } from 'msw'
 import type { Props } from './AddressInput'
 
 import { AddressInput } from './AddressInput'
+import * as utils from './utils'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
@@ -18,6 +19,15 @@ const defaultProps: Props = {
   setCoordinates: vi.fn(),
   setSelectedAssets: vi.fn(),
 }
+
+vi.mock('./utils', async () => {
+  const actual = await vi.importActual<typeof import('./utils')>('./utils')
+
+  return {
+    ...actual,
+    fetchAndSetAddress: vi.fn(),
+  }
+})
 
 describe('AddressInput', () => {
   it('should render the address input', () => {
@@ -69,7 +79,7 @@ describe('AddressInput', () => {
   it('should clear coordinates when input is removed', async () => {
     const user = userEvent.setup()
 
-    render(<AddressInput {...defaultProps} />)
+    render(<AddressInput {...defaultProps} coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
 
@@ -85,6 +95,7 @@ describe('AddressInput', () => {
     await waitFor(() => {
       const listBox = screen.queryByRole('listbox')
       expect(listBox).not.toBeInTheDocument()
+      expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
     })
   })
 
@@ -132,6 +143,11 @@ describe('AddressInput', () => {
   })
 
   it('shows an address based on provided coordinates ', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    vi.mocked(utils.fetchAndSetAddress).mockImplementationOnce(async ({ coordinates, setAddress, t }) =>
+      setAddress('Nieuwmarkt 15, 1011JR Amsterdam'),
+    )
+
     render(<AddressInput {...defaultProps} coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
 
     await waitFor(() => {
@@ -140,6 +156,10 @@ describe('AddressInput', () => {
   })
 
   it('shows a generic label if no address is found within 30 meters of the coordinates', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    vi.mocked(utils.fetchAndSetAddress).mockImplementationOnce(async ({ coordinates, setAddress, t }) =>
+      setAddress('no-address'),
+    )
     server.use(
       http.get(ENDPOINTS.PDOK_REVERSE, () =>
         HttpResponse.json({
