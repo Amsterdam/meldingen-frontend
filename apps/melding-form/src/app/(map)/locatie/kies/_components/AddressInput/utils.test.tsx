@@ -33,7 +33,6 @@ describe('fetchAndSetAddress', () => {
 const defaultPropsAddressList: AddressListArgType = {
   setAddressList: vi.fn(),
   setShowListBox: vi.fn(),
-  t: vi.fn((key) => key) as unknown as ReturnType<typeof useTranslations>,
   value: 'Nieuwmarkt',
 }
 
