@@ -26,7 +26,7 @@ describe('fetchAndSetAddress', () => {
 
     await fetchAndSetAddress(defaultPropsAddress)
 
-    expect(defaultPropsAddress.setAddress).toHaveBeenCalledWith('combo-box.no-address')
+    expect(defaultPropsAddress.setAddress).toHaveBeenCalledWith('no-address')
   })
 })
 
@@ -66,7 +66,7 @@ describe('fetchAddressList', () => {
 
     expect(consoleSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        message: 'errors.pdok-suggest-api-error',
+        message: 'Unable to fetch address suggestions from PDOK',
       }),
     )
 
