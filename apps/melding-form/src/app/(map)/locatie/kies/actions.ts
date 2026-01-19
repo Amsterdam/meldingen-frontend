@@ -51,22 +51,15 @@ export const postCoordinatesAndAssets = async (
 
   /** Fetch coordinates from PDOK */
 
-  let coordinates = null
-  let address = ''
+  let address = addressFormData as string
+  let coordinates = coordinatesFormData ? JSON.parse(coordinatesFormData as string) : null
 
-  if (!addressFormData) {
+  if (!address) {
     return { errorMessage: t('errors.no-location') }
   }
 
-  // When both address and coordinates are present in the form data, or
-  // when the user pins the location on the map which does not have a valid address, use the form data directly
-  if ((addressFormData && coordinatesFormData) || addressFormData === t('combo-box.no-address')) {
-    coordinates = JSON.parse(coordinatesFormData as string)
-    address = addressFormData as string
-  } else {
-    const response = await fetch(
-      `https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${addressFormData}&${queryParams}`,
-    )
+  if (!coordinates) {
+    const response = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`)
 
     if (!response.ok) return { errorMessage: t('errors.pdok-failed') }
 
