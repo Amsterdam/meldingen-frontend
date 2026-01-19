@@ -1,9 +1,9 @@
 import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 
-import styles from './MapLoading.module.css'
+import styles from './MapLoadingIndicator.module.css'
 
-export const MapLoading = () => {
+export const MapLoadingIndicator = () => {
   const t = useTranslations('select-location.errors')
 
   return (

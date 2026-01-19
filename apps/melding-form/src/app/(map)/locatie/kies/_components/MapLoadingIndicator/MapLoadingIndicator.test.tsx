@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react'
 
-import { MapLoading } from './MapLoading'
+import { MapLoadingIndicator } from './MapLoadingIndicator'
 
-describe('MapLoading', () => {
+describe('MapLoadingIndicator', () => {
   it('should render', () => {
-    render(<MapLoading />)
+    render(<MapLoadingIndicator />)
 
     const heading = screen.getByRole('heading', { name: 'no-js-alert-title' })
 
