@@ -69,11 +69,11 @@ export const postCoordinatesAndAssets = async (
 
     const PDOKCoordinates = convertWktPointToCoordinates(result.response.docs[0].centroide_ll)
 
+    if (!PDOKCoordinates) return { errorMessage: t('errors.pdok-failed') }
+
     coordinates = PDOKCoordinates
     address = result.response.docs[0].weergavenaam
   }
-
-  if (!coordinates) return { errorMessage: 'No coordinates found' }
 
   /** Post coordinates and address */
 

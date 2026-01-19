@@ -82,14 +82,14 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
 
+    if (coordinates) setCoordinates(undefined)
+
     if (value === '') {
       setAddressList([])
-      setCoordinates(undefined)
       return
     }
 
     setQuery(value)
-    if (coordinates) setCoordinates(undefined)
     debouncedFetchAddressList(value)
   }
 

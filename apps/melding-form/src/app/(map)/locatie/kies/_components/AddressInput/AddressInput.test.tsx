@@ -85,7 +85,6 @@ describe('AddressInput', () => {
     await waitFor(() => {
       const listBox = screen.queryByRole('listbox')
       expect(listBox).not.toBeInTheDocument()
-      expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
     })
   })
 
