@@ -29,7 +29,7 @@ export const fetchAndSetAddress = async ({ coordinates: { lat, lng }, setAddress
     )
 
     if (!response.ok) {
-      throw new Error(response.statusText)
+      throw new Error('Unable to fetch address from coordinates from PDOK')
     }
 
     const result = await response.json()
@@ -62,7 +62,7 @@ export const fetchAddressList = async ({ setAddressList, setShowListBox, value }
     )
 
     if (!response.ok) {
-      throw new Error(response.statusText)
+      throw new Error('Unable to fetch address suggestions from PDOK')
     }
 
     const result = await response.json()
