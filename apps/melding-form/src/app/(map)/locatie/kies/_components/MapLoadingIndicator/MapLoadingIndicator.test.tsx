@@ -6,7 +6,7 @@ describe('MapLoadingIndicator', () => {
   it('should render', () => {
     render(<MapLoadingIndicator />)
 
-    const heading = screen.getByRole('heading', { name: 'no-js-alert-title' })
+    const heading = screen.getByRole('heading', { name: 'no-js.heading' })
 
     expect(heading).toBeInTheDocument()
   })
