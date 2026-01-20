@@ -10,7 +10,7 @@ import {
   Label as HUILabel,
 } from '@headlessui/react'
 import { useTranslations } from 'next-intl'
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 import { ListBox, TextInput } from '@meldingen/ui'
@@ -27,13 +27,13 @@ export type Props = {
   coordinates?: Coordinates
   errorMessage?: string
   setCoordinates: (coordinates?: Coordinates) => void
-  setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
+  setSelectedAssets: (selectedAssets: Feature[]) => void
 }
 
 export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSelectedAssets }: Props) => {
   const [address, setAddress] = useState('')
-  const [query, setQuery] = useState('')
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
+  const [query, setQuery] = useState('')
   const [showListBox, setShowListBox] = useState(false)
 
   const t = useTranslations('select-location.combo-box')
@@ -52,11 +52,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
   })
 
   useEffect(() => {
-    if (!coordinates) {
-      setAddress('')
-      return
-    }
-    fetchAndSetAddress(coordinates, setAddress, t)
+    if (coordinates) fetchAndSetAddress({ coordinates, setAddress, t })
   }, [coordinates, t])
 
   useEffect(() => {
@@ -75,20 +71,21 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
         setCoordinates(coordinates)
       }
 
-      setAddress(value.weergave_naam)
+      setAddress(value.weergavenaam)
     }
   }
 
   const debouncedFetchAddressList = debounce((value: string) => {
-    fetchAddressList(value, setAddressList, setShowListBox)
+    fetchAddressList({ setAddressList, setShowListBox, value })
   })
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
 
+    if (coordinates) setCoordinates(undefined)
+
     if (value === '') {
       setAddressList([])
-      setCoordinates(undefined)
       return
     }
 
@@ -97,7 +94,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
   }
 
   return (
-    <HUIField as={Field} invalid={!!errorMessage}>
+    <HUIField as={Field} invalid={Boolean(errorMessage)}>
       <HUILabel as={Label}>{t('label')}</HUILabel>
       {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Description className="ams-visually-hidden">
@@ -125,7 +122,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
             {addressList.length > 0 ? (
               addressList.map((option) => (
                 <ComboboxOption as={ListBox.Option} key={option.id} value={option}>
-                  {option.weergave_naam}
+                  {option.weergavenaam}
                 </ComboboxOption>
               ))
             ) : (
