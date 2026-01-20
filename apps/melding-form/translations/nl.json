@@ -72,7 +72,7 @@
     "errors": {
       "no-js": {
         "heading": "JavaScript is niet beschikbaar",
-        "description": "Wijzig dit in de instellingen van uw browser of herlaad de pagina."
+        "description": "Wijzig dit in de instellingen van uw browser of probeer opnieuw de pagina te laden."
       },
       "no-location": "Vul een locatie in.",
       "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam.",
@@ -110,7 +110,7 @@
     },
     "delete-notification": "{fileName} is verwijderd",
     "no-js-alert-title": "JavaScript is niet beschikbaar",
-    "no-js-alert-description": "Wijzig dit in de instellingen van uw browser of herlaad de pagina.",
+    "no-js-alert-description": "Wijzig dit in de instellingen van uw browser of probeer opnieuw de pagina te laden.",
     "submit-button": "Volgende vraag",
     "errors": {
       "too-many-files": {
