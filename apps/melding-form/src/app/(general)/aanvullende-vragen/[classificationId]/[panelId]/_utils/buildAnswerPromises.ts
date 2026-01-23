@@ -5,7 +5,7 @@ import {
 
 const patchAnswer = (answerId: number, meldingId: string, token: string, value: string, key: string) =>
   patchMeldingByMeldingIdAnswerByAnswerId({
-    body: { text: value },
+    body: { text: value, type: 'text' },
     path: {
       answer_id: answerId,
       melding_id: parseInt(meldingId, 10),
@@ -15,7 +15,7 @@ const patchAnswer = (answerId: number, meldingId: string, token: string, value: 
 
 const postAnswer = (questionId: number, meldingId: string, token: string, value: string, key: string) =>
   postMeldingByMeldingIdQuestionByQuestionId({
-    body: { text: value },
+    body: { text: value, type: 'text' },
     path: {
       melding_id: parseInt(meldingId, 10),
       question_id: questionId,
