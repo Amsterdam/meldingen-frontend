@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 
-import { getMeldingByMeldingIdAssetsMelder, getWfsByName } from '@meldingen/api-client'
+import { getAssetTypeByAssetTypeIdWfs, getMeldingByMeldingIdAssetsMelder } from '@meldingen/api-client'
 
 import { Location } from './Location'
 import { COOKIES } from 'apps/melding-form/src/constants'
@@ -31,7 +31,7 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
     assetIds.map(async (asset) => {
       const filter = getFilter(asset.external_id)
 
-      const { data, error } = await getWfsByName({ path: { name: 'container' }, query: { filter } })
+      const { data, error } = await getAssetTypeByAssetTypeIdWfs({ path: { asset_type_id: 1 }, query: { filter } })
 
       if (error) {
         // TODO: Log the error to an error reporting service

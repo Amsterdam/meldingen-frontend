@@ -108,8 +108,8 @@ export const handlers = [
     return undefined
   }),
 
-  // Wfs Layer
-  http.get(ENDPOINTS.GET_WFS_BY_NAME, ({ params }) => {
+  // Asset type
+  http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, ({ params }) => {
     if (params.name === 'container') {
       return HttpResponse.json({
         features: containerAssets,
