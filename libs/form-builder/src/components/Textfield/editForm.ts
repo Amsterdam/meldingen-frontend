@@ -79,6 +79,20 @@ export const editForm = () => ({
               weight: 11,
             },
             {
+              input: true,
+              key: 'validate.min_length',
+              label: 'Minimun characters',
+              type: 'number',
+              weight: 12,
+            },
+            {
+              input: true,
+              key: 'validate.min_length_error_message',
+              label: 'Minimun characters error message',
+              type: 'textfield',
+              weight: 13,
+            },
+            {
               components: [
                 {
                   content: validationExamplesHTML,

@@ -1,4 +1,4 @@
-import type { BaseComponent, Component } from '@formio/core'
+import type { Component } from '@formio/core'
 
 import filter from 'uber-json-schema-filter'
 
@@ -15,7 +15,7 @@ import {
   FormTextFieldComponentInputSchema,
 } from '@meldingen/api-client'
 
-import type { AdditionalQuestionsForm } from '../../types'
+import type { AdditionalQuestionsForm, validateObjType } from '../../types'
 
 const filterBySchemaPerType = (obj: Component) => {
   switch (obj.type) {
@@ -41,15 +41,44 @@ const filterBySchemaPerType = (obj: Component) => {
   }
 }
 
-const getFilteredValidateObject = (validateObj: BaseComponent['validate']) => {
-  const validate = filter(FormComponentInputValidateSchema, validateObj)
-
-  // Explicitly remove the 'json' key if its value is an empty string, the API doesn't accept that
-  if (validate?.json === '') {
-    delete validate.json
+const mapValidationsToJsonLogic = (validateObj: validateObjType) => {
+  if (validateObj.min_length && validateObj.min_length_error_message) {
+    validateObj.json = {
+      if: [
+        {
+          '>=': [
+            {
+              length: [
+                {
+                  var: 'text',
+                },
+              ],
+            },
+            validateObj.min_length,
+          ],
+        },
+        true,
+        validateObj.min_length_error_message,
+      ],
+    }
   }
 
-  return validate
+  // Explicitly remove the 'json' key if its value is an empty string, the API doesn't accept that
+  if (validateObj.json === '') {
+    delete validateObj.json
+  }
+
+  return validateObj
+}
+
+const getFilteredValidateObject = (validateObj?: validateObjType) => {
+  if (!validateObj) return undefined
+
+  const validateObjWithJsonLogic = mapValidationsToJsonLogic(validateObj)
+
+  const validation = filter(FormComponentInputValidateSchema, validateObjWithJsonLogic)
+
+  return validation
 }
 
 export const filterFormResponse = (obj: AdditionalQuestionsForm): FormInput => {
