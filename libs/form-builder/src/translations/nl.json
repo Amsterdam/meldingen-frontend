@@ -403,5 +403,7 @@
   "invalidDatetime": "Ongeldige datum/tijd",
   "Required error message": "Foutmelding voor verplichte vraag",
   "Minimun characters": "Minimale aantal tekens",
-  "Minimun characters error message": "Foutmelding voor minimale aantal tekens"
+  "Minimun characters error message": "Foutmelding voor minimale aantal tekens",
+  "Maximum characters": "Maximale aantal tekens",
+  "Maximum characters error message": "Foutmelding voor maximale aantal tekens"
 }

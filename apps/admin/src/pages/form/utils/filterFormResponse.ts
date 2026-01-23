@@ -63,6 +63,27 @@ const mapValidationsToJsonLogic = (validateObj: validateObjType) => {
     }
   }
 
+  if (validateObj.max_length && validateObj.max_length_error_message) {
+    validateObj.json = {
+      if: [
+        {
+          '<=': [
+            {
+              length: [
+                {
+                  var: 'text',
+                },
+              ],
+            },
+            validateObj.max_length,
+          ],
+        },
+        true,
+        validateObj.max_length_error_message,
+      ],
+    }
+  }
+
   // Explicitly remove the 'json' key if its value is an empty string, the API doesn't accept that
   if (validateObj.json === '') {
     delete validateObj.json
