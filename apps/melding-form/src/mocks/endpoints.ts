@@ -41,6 +41,6 @@ export const ENDPOINTS = {
   GET_STATIC_FORM: 'http://localhost:8000/static-form',
   GET_STATIC_FORM_BY_STATIC_FORM_ID: 'http://localhost:8000/static-form/:staticFormId',
 
-  // Wfs Layer
-  GET_WFS_BY_NAME: 'http://localhost:8000/wfs/:name',
+  // Asset type
+  GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS: 'http://localhost:8000/asset-type/:asset_type_id/wfs',
 }

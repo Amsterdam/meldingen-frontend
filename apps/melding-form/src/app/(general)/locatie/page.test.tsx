@@ -51,7 +51,7 @@ describe('Page', () => {
   it('fetches and passes saved assets to Location component', async () => {
     let callCount = 0
     server.use(
-      http.get(ENDPOINTS.GET_WFS_BY_NAME, () => {
+      http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => {
         callCount += 1
 
         if (callCount === 1) {
@@ -74,7 +74,7 @@ describe('Page', () => {
   })
 
   it('returns empty selectedAssets when no assets are found', async () => {
-    server.use(http.get(ENDPOINTS.GET_WFS_BY_NAME, () => HttpResponse.json({ features: [] })))
+    server.use(http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json({ features: [] })))
 
     const PageComponent = await Page()
     render(PageComponent)
@@ -111,7 +111,9 @@ describe('Page', () => {
   })
 
   it('logs an error when the wfs endpoint fails', async () => {
-    server.use(http.get(ENDPOINTS.GET_WFS_BY_NAME, () => HttpResponse.json('Test error', { status: 500 })))
+    server.use(
+      http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json('Test error', { status: 500 })),
+    )
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     const PageComponent = await Page()

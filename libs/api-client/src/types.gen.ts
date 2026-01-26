@@ -289,6 +289,17 @@ export type CompleteMeldingInput = {
 };
 
 /**
+ * DateAnswerInput
+ */
+export type DateAnswerInput = {
+    date: DateAnswerObject;
+    /**
+     * Type
+     */
+    type: 'date';
+};
+
+/**
  * DateAnswerObject
  *
  * Used to display an answer in a date answer component.
@@ -2598,6 +2609,20 @@ export type Subtract = {
 };
 
 /**
+ * TextAnswerInput
+ */
+export type TextAnswerInput = {
+    /**
+     * Text
+     */
+    text: string;
+    /**
+     * Type
+     */
+    type: 'text';
+};
+
+/**
  * TextAnswerOutput
  */
 export type TextAnswerOutput = {
@@ -2648,6 +2673,20 @@ export type TextAnswerQuestionOutput = {
      */
     text: string;
     question: QuestionOutput;
+};
+
+/**
+ * TimeAnswerInput
+ */
+export type TimeAnswerInput = {
+    /**
+     * Time
+     */
+    time: string;
+    /**
+     * Type
+     */
+    type: 'time';
 };
 
 /**
@@ -2773,6 +2812,20 @@ export type ValidationError = {
      * Error Type
      */
     type: string;
+};
+
+/**
+ * ValueLabelAnswerInput
+ */
+export type ValueLabelAnswerInput = {
+    /**
+     * Values And Labels
+     */
+    values_and_labels: Array<ValueLabelObject>;
+    /**
+     * Type
+     */
+    type: 'value_label';
 };
 
 /**
@@ -3784,6 +3837,266 @@ export type PutMeldingByMeldingIdSubmitResponses = {
 
 export type PutMeldingByMeldingIdSubmitResponse = PutMeldingByMeldingIdSubmitResponses[keyof PutMeldingByMeldingIdSubmitResponses];
 
+export type PutMeldingByMeldingIdPlanData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/plan';
+};
+
+export type PutMeldingByMeldingIdPlanErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Transition not allowed from current state
+     */
+    400: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Unexpected error
+     */
+    default: unknown;
+};
+
+export type PutMeldingByMeldingIdPlanError = PutMeldingByMeldingIdPlanErrors[keyof PutMeldingByMeldingIdPlanErrors];
+
+export type PutMeldingByMeldingIdPlanResponses = {
+    /**
+     * Successful Response
+     */
+    200: MeldingOutput;
+};
+
+export type PutMeldingByMeldingIdPlanResponse = PutMeldingByMeldingIdPlanResponses[keyof PutMeldingByMeldingIdPlanResponses];
+
+export type PutMeldingByMeldingIdRequestReopenData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/request_reopen';
+};
+
+export type PutMeldingByMeldingIdRequestReopenErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Transition not allowed from current state
+     */
+    400: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Unexpected error
+     */
+    default: unknown;
+};
+
+export type PutMeldingByMeldingIdRequestReopenError = PutMeldingByMeldingIdRequestReopenErrors[keyof PutMeldingByMeldingIdRequestReopenErrors];
+
+export type PutMeldingByMeldingIdRequestReopenResponses = {
+    /**
+     * Successful Response
+     */
+    200: MeldingOutput;
+};
+
+export type PutMeldingByMeldingIdRequestReopenResponse = PutMeldingByMeldingIdRequestReopenResponses[keyof PutMeldingByMeldingIdRequestReopenResponses];
+
+export type PutMeldingByMeldingIdReopenData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/reopen';
+};
+
+export type PutMeldingByMeldingIdReopenErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Transition not allowed from current state
+     */
+    400: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Unexpected error
+     */
+    default: unknown;
+};
+
+export type PutMeldingByMeldingIdReopenError = PutMeldingByMeldingIdReopenErrors[keyof PutMeldingByMeldingIdReopenErrors];
+
+export type PutMeldingByMeldingIdReopenResponses = {
+    /**
+     * Successful Response
+     */
+    200: MeldingOutput;
+};
+
+export type PutMeldingByMeldingIdReopenResponse = PutMeldingByMeldingIdReopenResponses[keyof PutMeldingByMeldingIdReopenResponses];
+
+export type PutMeldingByMeldingIdRequestProcessingData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/request_processing';
+};
+
+export type PutMeldingByMeldingIdRequestProcessingErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Transition not allowed from current state
+     */
+    400: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Unexpected error
+     */
+    default: unknown;
+};
+
+export type PutMeldingByMeldingIdRequestProcessingError = PutMeldingByMeldingIdRequestProcessingErrors[keyof PutMeldingByMeldingIdRequestProcessingErrors];
+
+export type PutMeldingByMeldingIdRequestProcessingResponses = {
+    /**
+     * Successful Response
+     */
+    200: MeldingOutput;
+};
+
+export type PutMeldingByMeldingIdRequestProcessingResponse = PutMeldingByMeldingIdRequestProcessingResponses[keyof PutMeldingByMeldingIdRequestProcessingResponses];
+
 export type PutMeldingByMeldingIdProcessData = {
     body?: never;
     path: {
@@ -3917,8 +4230,84 @@ export type PutMeldingByMeldingIdCompleteResponses = {
 
 export type PutMeldingByMeldingIdCompleteResponse = PutMeldingByMeldingIdCompleteResponses[keyof PutMeldingByMeldingIdCompleteResponses];
 
+export type PutMeldingByMeldingIdCancelData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/cancel';
+};
+
+export type PutMeldingByMeldingIdCancelErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Transition not allowed from current state
+     */
+    400: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Unexpected error
+     */
+    default: unknown;
+};
+
+export type PutMeldingByMeldingIdCancelError = PutMeldingByMeldingIdCancelErrors[keyof PutMeldingByMeldingIdCancelErrors];
+
+export type PutMeldingByMeldingIdCancelResponses = {
+    /**
+     * Successful Response
+     */
+    200: MeldingOutput;
+};
+
+export type PutMeldingByMeldingIdCancelResponse = PutMeldingByMeldingIdCancelResponses[keyof PutMeldingByMeldingIdCancelResponses];
+
 export type PostMeldingByMeldingIdQuestionByQuestionIdData = {
-    body?: unknown;
+    /**
+     * Answer Input
+     */
+    body: ({
+        type: 'text';
+    } & TextAnswerInput) | ({
+        type: 'time';
+    } & TimeAnswerInput) | ({
+        type: 'date';
+    } & DateAnswerInput) | ({
+        type: 'value_label';
+    } & ValueLabelAnswerInput);
     path: {
         /**
          * Melding Id
@@ -3928,6 +4317,8 @@ export type PostMeldingByMeldingIdQuestionByQuestionIdData = {
         melding_id: number;
         /**
          * Question Id
+         *
+         * The id of the question.
          */
         question_id: number;
     };
@@ -3997,7 +4388,18 @@ export type PostMeldingByMeldingIdQuestionByQuestionIdResponses = {
 export type PostMeldingByMeldingIdQuestionByQuestionIdResponse = PostMeldingByMeldingIdQuestionByQuestionIdResponses[keyof PostMeldingByMeldingIdQuestionByQuestionIdResponses];
 
 export type PatchMeldingByMeldingIdAnswerByAnswerIdData = {
-    body?: unknown;
+    /**
+     * Answer Input
+     */
+    body: ({
+        type: 'text';
+    } & TextAnswerInput) | ({
+        type: 'time';
+    } & TimeAnswerInput) | ({
+        type: 'date';
+    } & DateAnswerInput) | ({
+        type: 'value_label';
+    } & ValueLabelAnswerInput);
     path: {
         /**
          * Melding Id
@@ -4007,6 +4409,8 @@ export type PatchMeldingByMeldingIdAnswerByAnswerIdData = {
         melding_id: number;
         /**
          * Answer Id
+         *
+         * The id of the answer.
          */
         answer_id: number;
     };
@@ -6010,15 +6414,15 @@ export type PatchAssetTypeByAssetTypeIdResponses = {
 
 export type PatchAssetTypeByAssetTypeIdResponse = PatchAssetTypeByAssetTypeIdResponses[keyof PatchAssetTypeByAssetTypeIdResponses];
 
-export type GetWfsByNameData = {
+export type GetAssetTypeByAssetTypeIdWfsData = {
     body?: never;
     path: {
         /**
-         * Name
+         * Asset Type Id
          *
-         * The name of the asset type.
+         * The asset type id.
          */
-        name: string;
+        asset_type_id: number;
     };
     query?: {
         /**
@@ -6054,10 +6458,10 @@ export type GetWfsByNameData = {
          */
         filter?: string | null;
     };
-    url: '/wfs/{name}';
+    url: '/asset-type/{asset_type_id}/wfs';
 };
 
-export type GetWfsByNameErrors = {
+export type GetAssetTypeByAssetTypeIdWfsErrors = {
     /**
      * ResponseWithDetail
      *
@@ -6086,16 +6490,16 @@ export type GetWfsByNameErrors = {
     422: HttpValidationError;
 };
 
-export type GetWfsByNameError = GetWfsByNameErrors[keyof GetWfsByNameErrors];
+export type GetAssetTypeByAssetTypeIdWfsError = GetAssetTypeByAssetTypeIdWfsErrors[keyof GetAssetTypeByAssetTypeIdWfsErrors];
 
-export type GetWfsByNameResponses = {
+export type GetAssetTypeByAssetTypeIdWfsResponses = {
     /**
      * Successful Response
      */
     200: FeatureCollection;
 };
 
-export type GetWfsByNameResponse = GetWfsByNameResponses[keyof GetWfsByNameResponses];
+export type GetAssetTypeByAssetTypeIdWfsResponse = GetAssetTypeByAssetTypeIdWfsResponses[keyof GetAssetTypeByAssetTypeIdWfsResponses];
 
 export type GetDocsData = {
     body?: never;

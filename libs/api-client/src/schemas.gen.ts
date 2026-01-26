@@ -1013,6 +1013,25 @@ export const CompleteMeldingInputSchema = {
     title: 'CompleteMeldingInput'
 } as const;
 
+export const DateAnswerInputSchema = {
+    properties: {
+        date: {
+            $ref: '#/components/schemas/DateAnswerObject'
+        },
+        type: {
+            type: 'string',
+            const: 'date',
+            title: 'Type'
+        }
+    },
+    type: 'object',
+    required: [
+        'date',
+        'type'
+    ],
+    title: 'DateAnswerInput'
+} as const;
+
 export const DateAnswerObjectSchema = {
     properties: {
         value: {
@@ -8248,6 +8267,27 @@ export const SubtractSchema = {
     title: 'Subtract'
 } as const;
 
+export const TextAnswerInputSchema = {
+    properties: {
+        text: {
+            type: 'string',
+            minLength: 1,
+            title: 'Text'
+        },
+        type: {
+            type: 'string',
+            const: 'text',
+            title: 'Type'
+        }
+    },
+    type: 'object',
+    required: [
+        'text',
+        'type'
+    ],
+    title: 'TextAnswerInput'
+} as const;
+
 export const TextAnswerOutputSchema = {
     properties: {
         id: {
@@ -8320,6 +8360,27 @@ export const TextAnswerQuestionOutputSchema = {
         'question'
     ],
     title: 'TextAnswerQuestionOutput'
+} as const;
+
+export const TimeAnswerInputSchema = {
+    properties: {
+        time: {
+            type: 'string',
+            pattern: '^\\d{2}:\\d{2}$',
+            title: 'Time'
+        },
+        type: {
+            type: 'string',
+            const: 'time',
+            title: 'Type'
+        }
+    },
+    type: 'object',
+    required: [
+        'time',
+        'type'
+    ],
+    title: 'TimeAnswerInput'
 } as const;
 
 export const TimeAnswerOutputSchema = {
@@ -8514,6 +8575,29 @@ export const ValidationErrorSchema = {
         'type'
     ],
     title: 'ValidationError'
+} as const;
+
+export const ValueLabelAnswerInputSchema = {
+    properties: {
+        values_and_labels: {
+            items: {
+                $ref: '#/components/schemas/ValueLabelObject'
+            },
+            type: 'array',
+            title: 'Values And Labels'
+        },
+        type: {
+            type: 'string',
+            const: 'value_label',
+            title: 'Type'
+        }
+    },
+    type: 'object',
+    required: [
+        'values_and_labels',
+        'type'
+    ],
+    title: 'ValueLabelAnswerInput'
 } as const;
 
 export const ValueLabelAnswerOutputSchema = {
