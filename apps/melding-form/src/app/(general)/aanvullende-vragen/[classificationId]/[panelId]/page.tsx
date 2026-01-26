@@ -2,7 +2,14 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import type { FormOutput, FormPanelComponentOutput, TextAnswerQuestionOutput } from '@meldingen/api-client'
+import type {
+  FormCheckboxComponentOutput,
+  FormOutput,
+  FormPanelComponentOutput,
+  FormRadioComponentOutput,
+  FormSelectComponentOutput,
+  TextAnswerQuestionOutput,
+} from '@meldingen/api-client'
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
@@ -22,6 +29,19 @@ const getPreviousPanelPath = (classificationId: number, currentPanelIndex: numbe
   if (currentPanelIndex === 0) return '/'
 
   return `/aanvullende-vragen/${classificationId}/${formData.components[currentPanelIndex - 1].key}`
+}
+
+const getValuesAndLabels = (component: FormOutputWithoutPanelComponents) => {
+  switch (component.type) {
+    case 'radio':
+      return (component as FormRadioComponentOutput).values
+    case 'select':
+      return (component as FormSelectComponentOutput).data.values
+    case 'selectboxes':
+      return (component as FormCheckboxComponentOutput).values
+    default:
+      return undefined
+  }
 }
 
 type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
@@ -89,11 +109,18 @@ export default async ({ params }: { params: Params }) => {
     questionId: answer.question.id,
   }))
 
-  // Pass question keys and ids to the action
-  const questionKeysAndIds = panelComponents.map(({ key, question }) => ({
-    id: question,
-    key: key,
-  }))
+  // Pass question keys, ids, type and values and labels to the action
+  const questionMetadata = panelComponents.map((component) => {
+    const { key, question, type } = component
+    const valuesAndLabels = getValuesAndLabels(component)
+
+    return {
+      id: question,
+      key,
+      type,
+      valuesAndLabels,
+    }
+  })
 
   // Pass required questions keys with the associated error messages to the action
   const requiredQuestionKeysWithErrorMessages = panelComponents
@@ -117,7 +144,7 @@ export default async ({ params }: { params: Params }) => {
     lastPanelPath,
     nextPanelPath,
     questionAndAnswerIdPairs,
-    questionKeysAndIds,
+    questionMetadata,
     requiredQuestionKeysWithErrorMessages,
   }
 

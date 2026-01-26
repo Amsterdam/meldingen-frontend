@@ -18,7 +18,7 @@ export type ArgsType = {
   lastPanelPath: string
   nextPanelPath: string
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
-  questionKeysAndIds: { id: number; key: string }[]
+  questionMetadata: { id: number; key: string; type: string }[]
   requiredQuestionKeysWithErrorMessages: RequiredQuestionKeyWithErrorMessage[]
 }
 
@@ -44,7 +44,7 @@ export const postForm = async (
     lastPanelPath,
     nextPanelPath,
     questionAndAnswerIdPairs,
-    questionKeysAndIds,
+    questionMetadata,
     requiredQuestionKeysWithErrorMessages,
   }: ArgsType,
   _: unknown,
@@ -64,8 +64,7 @@ export const postForm = async (
   // Checkbox answers are stored as separate key-value pairs in the FormData object.
   // This function merges these answers into a single string value per question, using an identifier in the Checkbox component.
   // TODO: This isn't the most robust solution.
-  const formDataObj = Object.fromEntries(formData)
-  const entries = Object.entries(formDataObj)
+  const entries = Array.from(formData.entries()).filter(([, value]) => typeof value === 'string') as [string, string][]
   const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(entries))
 
   // Check if all required questions are answered
@@ -88,7 +87,7 @@ export const postForm = async (
   const promiseArray = buildAnswerPromises(
     entriesWithMergedCheckboxes,
     meldingId,
-    questionKeysAndIds,
+    questionMetadata,
     token,
     questionAndAnswerIdPairs,
   )
