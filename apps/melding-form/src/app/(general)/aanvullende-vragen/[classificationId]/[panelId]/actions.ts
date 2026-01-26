@@ -18,7 +18,12 @@ export type ArgsType = {
   lastPanelPath: string
   nextPanelPath: string
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
-  questionMetadata: { id: number; key: string; type: string }[]
+  questionMetadata: {
+    id: number
+    key: string
+    type: string
+    valuesAndLabels?: { label: string; value: string }[]
+  }[]
   requiredQuestionKeysWithErrorMessages: RequiredQuestionKeyWithErrorMessage[]
 }
 

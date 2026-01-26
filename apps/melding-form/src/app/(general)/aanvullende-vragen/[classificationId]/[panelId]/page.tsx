@@ -33,12 +33,16 @@ const getPreviousPanelPath = (classificationId: number, currentPanelIndex: numbe
 
 const getValuesAndLabels = (component: FormOutputWithoutPanelComponents) => {
   switch (component.type) {
-    case 'radio':
-      return (component as FormRadioComponentOutput).values
+    case 'radio': {
+      // Remove 'position' key from each object
+      return (component as FormRadioComponentOutput).values.map(({ position: _, ...rest }) => rest)
+    }
     case 'select':
-      return (component as FormSelectComponentOutput).data.values
+      // Remove 'position' key from each object
+      return (component as FormSelectComponentOutput).data.values.map(({ position: _, ...rest }) => rest)
     case 'selectboxes':
-      return (component as FormCheckboxComponentOutput).values
+      // Remove 'position' key from each object
+      return (component as FormCheckboxComponentOutput).values.map(({ position: _, ...rest }) => rest)
     default:
       return undefined
   }
