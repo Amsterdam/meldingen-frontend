@@ -2,7 +2,7 @@ import { mergeCheckboxAnswers } from './mergeCheckboxAnswers'
 
 describe('mergeCheckboxAnswers', () => {
   it('merges checkbox answers correctly', () => {
-    const answers: [string, string | File][] = [
+    const answers: [string, string][] = [
       ['checkbox___checkboxQuestionId___value1', 'answer 1'],
       ['checkbox___checkboxQuestionId___value2', 'answer 2'],
       ['nonCheckboxQuestion', 'answer 3'],
@@ -16,7 +16,7 @@ describe('mergeCheckboxAnswers', () => {
   })
 
   it('handles non-checkbox answers correctly', () => {
-    const answers: [string, string | File][] = [
+    const answers: [string, string][] = [
       ['q1', 'answer1'],
       ['q2', 'answer2'],
     ]
@@ -29,7 +29,7 @@ describe('mergeCheckboxAnswers', () => {
   })
 
   it('handles mixed answers correctly', () => {
-    const answers: [string, string | File][] = [
+    const answers: [string, string][] = [
       ['checkbox___checkboxQuestionId___value1', 'answer 1'],
       ['nonCheckboxQuestion1', 'answer 2'],
       ['checkbox___checkboxQuestionId___value2', 'answer 3'],
@@ -45,7 +45,7 @@ describe('mergeCheckboxAnswers', () => {
   })
 
   it('handles empty answers array', () => {
-    const answers: [string, string | File][] = []
+    const answers: [string, string][] = []
 
     const result = mergeCheckboxAnswers(answers)
     expect(result).toEqual({})
