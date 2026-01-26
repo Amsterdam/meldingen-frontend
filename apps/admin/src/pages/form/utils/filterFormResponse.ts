@@ -42,7 +42,7 @@ const filterBySchemaPerType = (obj: Component) => {
 }
 
 const mapValidationsToJsonLogic = (validateObj: validateObjType) => {
-  if (validateObj.min_length && validateObj.min_length_error_message) {
+  if (validateObj.minLength && validateObj.minLengthErrorMessage) {
     validateObj.json = {
       if: [
         {
@@ -54,16 +54,16 @@ const mapValidationsToJsonLogic = (validateObj: validateObjType) => {
                 },
               ],
             },
-            validateObj.min_length,
+            validateObj.minLength,
           ],
         },
         true,
-        validateObj.min_length_error_message,
+        validateObj.minLengthErrorMessage,
       ],
     }
   }
 
-  if (validateObj.max_length && validateObj.max_length_error_message) {
+  if (validateObj.maxLength && validateObj.maxLengthErrorMessage) {
     validateObj.json = {
       if: [
         {
@@ -75,11 +75,11 @@ const mapValidationsToJsonLogic = (validateObj: validateObjType) => {
                 },
               ],
             },
-            validateObj.max_length,
+            validateObj.maxLength,
           ],
         },
         true,
-        validateObj.max_length_error_message,
+        validateObj.maxLengthErrorMessage,
       ],
     }
   }

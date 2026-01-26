@@ -5,7 +5,7 @@ import { FormBuilder } from '@meldingen/form-builder'
 
 import styles from './BuilderInput.module.css'
 
-const parseMinLengthRule = (rule) => {
+const parseJsonLoginRules = (rule) => {
   if (!rule || !Array.isArray(rule.if)) return null
 
   const [condition, , errorMessage] = rule.if
@@ -19,6 +19,15 @@ const parseMinLengthRule = (rule) => {
     }
   }
 
+  if (condition['<=']) {
+    const [, maxLength] = condition['<=']
+
+    return {
+      maxLength,
+      maxLengthErrorMessage: errorMessage,
+    }
+  }
+
   return null
 }
 
@@ -26,15 +35,14 @@ const mapJsonLogicValidationsToFormFields = (data) =>
   data.map((page) => ({
     ...page,
     components: page.components.map((component) => {
-      const minLengthValidation = parseMinLengthRule(component.validate?.json)
+      const validationData = parseJsonLoginRules(component.validate?.json)
 
-      if (minLengthValidation) {
+      if (validationData) {
         return {
           ...component,
           validate: {
             ...component.validate,
-            min_length: minLengthValidation.minLength,
-            min_length_error_message: minLengthValidation.minLengthErrorMessage,
+            ...validationData,
           },
         }
       }
@@ -47,6 +55,7 @@ export const BuilderInput = () => {
   const { getValues, setValue } = useFormContext()
 
   const data = getValues('components')
+  console.log('--- ~ data check dit:', data)
   const result = data && mapJsonLogicValidationsToFormFields(data)
 
   const onChange = (schema: { components: unknown[] }) => {
