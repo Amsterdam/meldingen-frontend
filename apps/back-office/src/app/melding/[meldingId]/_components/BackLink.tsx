@@ -1,3 +1,5 @@
+'use client'
+
 import type { AnchorHTMLAttributes } from 'react'
 
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons'
