@@ -119,12 +119,7 @@ export default async ({ params }: { params: Params }) => {
     const { key, question, type } = component
     const valuesAndLabels = getValuesAndLabels(component)
 
-    return {
-      id: question,
-      key,
-      type,
-      valuesAndLabels,
-    }
+    return { id: question, key, type, valuesAndLabels }
   })
 
   const requiredQuestionKeysWithErrorMessages = panelComponents
