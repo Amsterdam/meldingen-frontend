@@ -9,13 +9,13 @@ type Props = {
   file: File | { name: string }
 }
 
-const Loading = () => <div className={styles.loading} />
+const Placeholder = () => <div className={styles.placeholder} />
 
 export const FileListImage = ({ file }: Props) => {
   const [url, setUrl] = useState<string | null>(null)
 
   useEffect(() => {
-    // If 'file' is not a File instance (just a file name from the backend), show the loading indicator.
+    // If 'file' is not a File instance (just a file name from the backend), show the placeholder.
     // This occurs when the backend has not yet made the file available for download directly after upload.
     if (!(file instanceof File)) return
 
@@ -36,6 +36,6 @@ export const FileListImage = ({ file }: Props) => {
       width={256} // Fixed width for when CSS does not load. Gets overridden by CSS.
     />
   ) : (
-    <Loading />
+    <Placeholder />
   )
 }
