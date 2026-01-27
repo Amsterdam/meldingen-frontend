@@ -8,8 +8,36 @@
   }
 }
 
+@keyframes loading {
+  0% {
+    background-color: var(--ams-color-background);
+    cursor: progress;
+  }
+
+  50% {
+    background-color: var(--ams-color-separator);
+    cursor: progress;
+  }
+
+  100% {
+    background-color: var(--ams-color-background);
+    cursor: progress;
+  }
+}
+
 .loading {
   composes: image;
+  animation-duration: 2s;
+
+  /* Stop loading state after 30s and show a grey placeholder */
+  animation-iteration-count: 14.5;
+  animation-name: loading;
+  animation-timing-function: ease-in-out;
   aspect-ratio: var(--ams-aspect-ratio-16-9);
   background-color: var(--ams-color-separator);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    background-color: var(--ams-color-separator);
+  }
 }
