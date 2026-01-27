@@ -38,24 +38,6 @@ export const editForm = () => ({
               },
             },
             {
-              input: true,
-              key: 'maxCharCount',
-              label: 'Max character count',
-              tooltip:
-                'Show a live count of the number of characters with a maximum amount of characters. Leave empty when the character counter should not be shown.',
-              type: 'textfield',
-              validate: {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                custom: (context: any) => {
-                  if (!context.data.maxCharCount) {
-                    context.data.maxCharCount = null
-                  }
-                  return true
-                },
-              },
-              weight: 1202,
-            },
-            {
               conditional: {
                 json: {
                   '==': [{ var: 'data.editor' }, ''],
