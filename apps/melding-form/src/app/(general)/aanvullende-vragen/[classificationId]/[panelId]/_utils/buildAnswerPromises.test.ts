@@ -60,7 +60,7 @@ describe('buildAnswerPromises', () => {
       {
         id: 1,
         key: 'key1',
-        type: 'checkbox',
+        type: 'selectboxes',
         valuesAndLabels: [
           { label: 'Label 1', value: 'value1' },
           { label: 'Label 2', value: 'value2' },
@@ -154,15 +154,15 @@ describe('buildAnswerPromises', () => {
   })
 
   it('returns undefined for checkbox inputs with no matching valuesAndLabels', () => {
-    const entry: [string, string[]] = ['key1', ['nonexistentValue']]
+    const entry: [string, string[]] = ['key1', ['value1', 'value2']]
     const questionMetadata = [
       {
         id: 1,
         key: 'key1',
-        type: 'checkbox',
+        type: 'selectboxes',
         valuesAndLabels: [
-          { label: 'Label 1', value: 'value1' },
-          { label: 'Label 2', value: 'value2' },
+          { label: 'Label 1', value: 'not-value1' },
+          { label: 'Label 2', value: 'not-value2' },
         ],
       },
     ]
@@ -173,15 +173,15 @@ describe('buildAnswerPromises', () => {
   })
 
   it('returns undefined for select inputs with no matching valuesAndLabels', () => {
-    const entry: [string, string] = ['key1', 'nonexistentValue']
+    const entry: [string, string] = ['key1', 'value1']
     const questionMetadata = [
       {
         id: 1,
         key: 'key1',
         type: 'select',
         valuesAndLabels: [
-          { label: 'Label 1', value: 'value1' },
-          { label: 'Label 2', value: 'value2' },
+          { label: 'Label 1', value: 'not-value1' },
+          { label: 'Label 2', value: 'not-value2' },
         ],
       },
     ]
@@ -192,15 +192,15 @@ describe('buildAnswerPromises', () => {
   })
 
   it('returns undefined for radio inputs with no matching valuesAndLabels', () => {
-    const entry: [string, string] = ['key1', 'nonexistentValue']
+    const entry: [string, string] = ['key1', 'value1']
     const questionMetadata = [
       {
         id: 1,
         key: 'key1',
         type: 'radio',
         valuesAndLabels: [
-          { label: 'Label 1', value: 'value1' },
-          { label: 'Label 2', value: 'value2' },
+          { label: 'Label 1', value: 'not-value1' },
+          { label: 'Label 2', value: 'not-value2' },
         ],
       },
     ]
@@ -211,15 +211,15 @@ describe('buildAnswerPromises', () => {
   })
 
   it('returns undefined for a PATCH request with checkbox inputs with no matching valuesAndLabels', () => {
-    const entry: [string, string[]] = ['key1', ['nonexistentValue']]
+    const entry: [string, string[]] = ['key1', ['value1', 'value2']]
     const questionMetadata = [
       {
         id: 1,
         key: 'key1',
-        type: 'checkbox',
+        type: 'selectboxes',
         valuesAndLabels: [
-          { label: 'Label 1', value: 'value1' },
-          { label: 'Label 2', value: 'value2' },
+          { label: 'Label 1', value: 'not-value1' },
+          { label: 'Label 2', value: 'not-value2' },
         ],
       },
     ]
