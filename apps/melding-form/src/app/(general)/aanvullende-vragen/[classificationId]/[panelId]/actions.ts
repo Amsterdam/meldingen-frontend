@@ -89,13 +89,13 @@ export const postForm = async (
   }
 
   // Build promise array
-  const promiseArray = buildAnswerPromises(
-    entriesWithMergedCheckboxes,
+  const promiseArray = buildAnswerPromises({
+    entries: entriesWithMergedCheckboxes,
     meldingId,
+    questionAndAnswerIdPairs,
     questionMetadata,
     token,
-    questionAndAnswerIdPairs,
-  )
+  })
   const results = await Promise.all(promiseArray)
 
   // Return validation errors if there are any
