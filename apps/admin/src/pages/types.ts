@@ -1,9 +1,9 @@
-import type { BaseComponent, Form, HasChildComponents } from '@formio/core'
+import type { Component, Form, HasChildComponents } from '@formio/core'
 
-export type validateObjType = BaseComponent['validate'] & {
-  maxLength?: number
+export type validateObjType = Component['validate'] & {
+  maxLength: number
   maxLengthErrorMessage?: string
-  minLength?: number
+  minLength: number
   minLengthErrorMessage?: string
 }
 

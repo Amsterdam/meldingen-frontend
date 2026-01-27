@@ -41,8 +41,34 @@ const filterBySchemaPerType = (obj: Component) => {
   }
 }
 
-const mapValidationsToJsonLogic = (validateObj: validateObjType) => {
-  if (validateObj.minLength && validateObj.minLengthErrorMessage) {
+const isTextInput = (validateObj: Component['validate']): validateObj is validateObjType =>
+  validateObj !== undefined && (Object.hasOwn(validateObj, 'maxLength') || Object.hasOwn(validateObj, 'minLength'))
+
+const mapValidationsToJsonLogic = (validateObj: Component['validate']) => {
+  if (isTextInput(validateObj)) {
+    let maxLengthValidation
+
+    if (validateObj.maxLength && validateObj.maxLengthErrorMessage) {
+      maxLengthValidation = {
+        if: [
+          {
+            '<=': [
+              {
+                length: [
+                  {
+                    var: 'text',
+                  },
+                ],
+              },
+              validateObj.maxLength,
+            ],
+          },
+          true,
+          validateObj.maxLengthErrorMessage,
+        ],
+      }
+    }
+
     validateObj.json = {
       if: [
         {
@@ -54,45 +80,19 @@ const mapValidationsToJsonLogic = (validateObj: validateObjType) => {
                 },
               ],
             },
-            validateObj.minLength,
+            validateObj.minLength || 0,
           ],
         },
-        true,
-        validateObj.minLengthErrorMessage,
+        maxLengthValidation || true,
+        validateObj.minLengthErrorMessage || '',
       ],
     }
-  }
-
-  if (validateObj.maxLength && validateObj.maxLengthErrorMessage) {
-    validateObj.json = {
-      if: [
-        {
-          '<=': [
-            {
-              length: [
-                {
-                  var: 'text',
-                },
-              ],
-            },
-            validateObj.maxLength,
-          ],
-        },
-        true,
-        validateObj.maxLengthErrorMessage,
-      ],
-    }
-  }
-
-  // Explicitly remove the 'json' key if its value is an empty string, the API doesn't accept that
-  if (validateObj.json === '') {
-    delete validateObj.json
   }
 
   return validateObj
 }
 
-const getFilteredValidateObject = (validateObj?: validateObjType) => {
+const getFilteredValidateObject = (validateObj?: Component['validate']) => {
   if (!validateObj) return undefined
 
   const validateObjWithJsonLogic = mapValidationsToJsonLogic(validateObj)
