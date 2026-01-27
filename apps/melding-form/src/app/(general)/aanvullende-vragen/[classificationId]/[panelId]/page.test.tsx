@@ -118,42 +118,43 @@ describe('Page', () => {
     )
   })
 
-  // it('renders the AdditionalQuestions component with prefilled checkbox components', async () => {
-  //   const formData = {
-  //     components: [
-  //       {
-  //         components: [{ key: 'question-1', question: 'q1', type: 'selectboxes' }],
-  //         key: 'panel-1',
-  //         label: 'Panel 1',
-  //         type: 'panel',
-  //       },
-  //     ],
-  //   }
+  // TODO: temporarily skipped because we don't handle prefilling correctly yet
+  it.skip('renders the AdditionalQuestions component with prefilled checkbox components', async () => {
+    const formData = {
+      components: [
+        {
+          components: [{ key: 'question-1', question: 'q1', type: 'selectboxes' }],
+          key: 'panel-1',
+          label: 'Panel 1',
+          type: 'panel',
+        },
+      ],
+    }
 
-  //   server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
+    server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
 
-  //   server.use(
-  //     http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
-  //       // TODO: Temporarily mock this as a text answer for now. We should handle all answer types when the BE is done with their multiple answer types work.
-  //       HttpResponse.json([{ id: 'answer-1', question: { id: 'q1' }, text: 'One, Two', type: 'text' }]),
-  //     ),
-  //   )
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+        // TODO: Temporarily mock this as a text answer for now. We should handle all answer types when the BE is done with their multiple answer types work.
+        HttpResponse.json([{ id: 'answer-1', question: { id: 'q1' }, text: 'One, Two', type: 'text' }]),
+      ),
+    )
 
-  //   const PageComponent = await Page(defaultProps)
+    const PageComponent = await Page(defaultProps)
 
-  //   render(PageComponent)
+    render(PageComponent)
 
-  //   expect(screen.getByText('AdditionalQuestions Component')).toBeInTheDocument()
-  //   expect(AdditionalQuestions).toHaveBeenCalledWith(
-  //     expect.objectContaining({
-  //       action: expect.any(Function),
-  //       formComponents: [{ defaultValues: ['One', 'Two'], key: 'question-1', question: 'q1', type: 'selectboxes' }],
-  //       panelLabel: 'Panel 1',
-  //       previousPanelPath: '/',
-  //     }),
-  //     undefined,
-  //   )
-  // })
+    expect(screen.getByText('AdditionalQuestions Component')).toBeInTheDocument()
+    expect(AdditionalQuestions).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: expect.any(Function),
+        formComponents: [{ defaultValues: ['One', 'Two'], key: 'question-1', question: 'q1', type: 'selectboxes' }],
+        panelLabel: 'Panel 1',
+        previousPanelPath: '/',
+      }),
+      undefined,
+    )
+  })
 
   it('logs an error to the console when the answers for additional questions cannot be fetched', async () => {
     const formData = {
