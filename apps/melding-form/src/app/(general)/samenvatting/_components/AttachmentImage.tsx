@@ -8,7 +8,7 @@ type Props = {
   fileName: string
 }
 
-const Placeholder = () => <div className={styles.loading} />
+const Loading = () => <div className={styles.loading} />
 
 export const AttachmentImage = ({ blob, fileName }: Props) => {
   const [url, setUrl] = useState<string | null>(null)
@@ -25,7 +25,7 @@ export const AttachmentImage = ({ blob, fileName }: Props) => {
 
   return (
     <>
-      {url ? <Image alt="" className={styles.image} src={url} /> : <Placeholder />}
+      {url ? <Image alt="" className={styles.image} src={url} /> : <Loading />}
       <Paragraph>{fileName}</Paragraph>
     </>
   )
