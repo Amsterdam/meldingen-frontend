@@ -41,10 +41,7 @@ describe('buildAnswerPromises', () => {
     expect(await result[0]).toMatchObject({
       key: 'key1',
       value: {
-        data: expect.objectContaining({
-          id: 1,
-          text: 'PATCH request',
-        }),
+        data: expect.objectContaining({ id: 1, text: 'PATCH request' }),
       },
     })
   })
@@ -55,10 +52,7 @@ describe('buildAnswerPromises', () => {
     expect(await result[0]).toMatchObject({
       key: 'key1',
       value: {
-        data: expect.objectContaining({
-          id: 1,
-          text: 'POST request',
-        }),
+        data: expect.objectContaining({ id: 1, text: 'POST request' }),
       },
     })
   })
