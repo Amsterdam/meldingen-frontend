@@ -1,3 +1,4 @@
+import { ContainerComponent } from '@formio/core'
 import { TextInput } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
 
@@ -5,37 +6,41 @@ import { FormBuilder } from '@meldingen/form-builder'
 
 import styles from './BuilderInput.module.css'
 
-const parseJsonLoginRules = (rule) => {
+const parseJsonLogicRules = (rule: Record<string, unknown>) => {
   if (!rule || !Array.isArray(rule.if)) return null
 
-  const [condition, , errorMessage] = rule.if
+  let validateData = {}
+
+  const [condition, secondRule, errorMessage] = rule.if
 
   if (condition['>=']) {
     const [, minLength] = condition['>=']
 
-    return {
+    validateData = {
+      ...validateData,
       minLength,
       minLengthErrorMessage: errorMessage,
     }
   }
 
-  if (condition['<=']) {
-    const [, maxLength] = condition['<=']
+  const [secondCondition, , secondErrorMessage] = secondRule.if
 
-    return {
-      maxLength,
-      maxLengthErrorMessage: errorMessage,
-    }
+  const [, maxLength] = secondCondition['<=']
+
+  validateData = {
+    ...validateData,
+    maxLength,
+    maxLengthErrorMessage: secondErrorMessage,
   }
 
-  return null
+  return validateData || null
 }
 
-const mapJsonLogicValidationsToFormFields = (data) =>
+const mapJsonLogicValidationsToFormFields = (data: ContainerComponent[]) =>
   data.map((page) => ({
     ...page,
     components: page.components.map((component) => {
-      const validationData = parseJsonLoginRules(component.validate?.json)
+      const validationData = parseJsonLogicRules(component.validate?.json)
 
       if (validationData) {
         return {
@@ -55,7 +60,6 @@ export const BuilderInput = () => {
   const { getValues, setValue } = useFormContext()
 
   const data = getValues('components')
-  console.log('--- ~ data check dit:', data)
   const result = data && mapJsonLogicValidationsToFormFields(data)
 
   const onChange = (schema: { components: unknown[] }) => {
