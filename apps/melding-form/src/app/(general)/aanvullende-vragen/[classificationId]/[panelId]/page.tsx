@@ -31,7 +31,8 @@ const getPreviousPanelPath = (classificationId: number, currentPanelIndex: numbe
   return `/aanvullende-vragen/${classificationId}/${formData.components[currentPanelIndex - 1].key}`
 }
 
-// Remove 'position' key from each object
+// The backend returns a 'position' key in each value-label object,
+// which we do not want to include in the question metadata.
 const stripPositionKey = <T extends { position?: unknown }>(obj: T): Omit<T, 'position'> => {
   const { position: _position, ...rest } = obj
   return rest
