@@ -75,7 +75,7 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
     query: { token },
   })
 
-  if (error) throw new Error('Failed to fetch additional questions data.') // TODO: also return error object?
+  if (error) throw new Error('Failed to fetch additional questions data.')
 
   return {
     data: data.map((answer) => {
