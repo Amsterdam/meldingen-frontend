@@ -2,11 +2,13 @@ import {
   FormPanelComponentOutput,
   getFormClassificationByClassificationId,
   getMeldingByMeldingIdAnswersMelder,
+  GetMeldingByMeldingIdAnswersMelderResponses,
   getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
   getMeldingByMeldingIdAttachmentsMelder,
   getStaticForm,
   getStaticFormByStaticFormId,
   MeldingOutput,
+  ValueLabelObject,
 } from '@meldingen/api-client'
 import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 
@@ -57,6 +59,19 @@ const findPanelIdByQuestionId = (panels: FormPanelComponentOutput[], id: number)
   return undefined
 }
 
+const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
+  switch (answer.type) {
+    case 'text':
+      return answer.text
+    case 'time':
+      return answer.time
+    case 'value_label':
+      return answer.values_and_labels.map((option: ValueLabelObject) => option.label).join(', ')
+    default:
+      return ''
+  }
+}
+
 export const getAdditionalQuestionsSummary = async (meldingId: string, token: string, classificationId?: number) => {
   if (!classificationId) return { data: [] }
 
@@ -81,9 +96,9 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
     data: data.map((answer) => {
       const panels = formComponents.components as FormPanelComponentOutput[]
       const panelId = findPanelIdByQuestionId(panels, answer.question.id)
+
       return {
-        // TODO: only pass text answers for now. We should handle all answer types when the BE is done with their multiple answer types work.
-        description: answer.type === 'text' ? answer.text : '',
+        description: getDescription(answer),
         key: `${answer.question.id}`,
         link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}` : '/',
         term: answer.question.text,
