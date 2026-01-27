@@ -4,6 +4,28 @@ import {
   PostMeldingByMeldingIdQuestionByQuestionIdData,
 } from '@meldingen/api-client'
 
+const getCheckboxAnswerBody = (
+  value: string[],
+  valuesAndLabels?: ValueAndLabel[],
+): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
+  const selected = valuesAndLabels?.filter((valAndLabel) => value.includes(valAndLabel.value))
+
+  if (!selected || selected.length === 0) return undefined
+
+  return { type: 'value_label', values_and_labels: selected }
+}
+
+const getValueLabelAnswerBody = (
+  value: string,
+  valuesAndLabels?: ValueAndLabel[],
+): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
+  const found = valuesAndLabels?.find((valAndLabel) => valAndLabel.value === value)
+
+  if (!found) return undefined
+
+  return { type: 'value_label', values_and_labels: [found] }
+}
+
 type ValueAndLabel = {
   label: string
   value: string
@@ -16,22 +38,13 @@ const getAnswerBody = (
 ): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
   // Handle checkbox values, which are passed as an array
   if (Array.isArray(value)) {
-    const valuesAndLabelsForCheckboxes = valuesAndLabels?.filter((valAndLabel) => value.includes(valAndLabel.value))
-
-    if (!valuesAndLabelsForCheckboxes || valuesAndLabelsForCheckboxes.length === 0) return undefined
-
-    return { type: 'value_label', values_and_labels: valuesAndLabelsForCheckboxes }
+    return getCheckboxAnswerBody(value, valuesAndLabels)
   }
 
   switch (formioType) {
     case 'radio':
-    case 'select': {
-      const valueAndLabel = valuesAndLabels?.find((valAndLabel) => valAndLabel.value === value)
-
-      if (!valueAndLabel) return undefined
-
-      return { type: 'value_label', values_and_labels: [valueAndLabel] }
-    }
+    case 'select':
+      return getValueLabelAnswerBody(value, valuesAndLabels)
     case 'textarea':
     case 'textfield':
       return { text: value, type: 'text' }
@@ -103,18 +116,15 @@ export const buildAnswerPromises = ({
     // Do not handle empty answers
     if (value.length === 0) return undefined
 
-    const questionId = questionMetadata.find((component) => component.key === key)?.id
-    const type = questionMetadata.find((component) => component.key === key)?.type
+    const question = questionMetadata.find((component) => component.key === key)
+    if (!question || !question.type || !question.id) return undefined
 
-    if (!questionId || !type) return undefined
+    const { id: questionId, type, valuesAndLabels } = question
 
     const answerId = questionAndAnswerIdPairs?.find((item) => item.questionId === questionId)?.answerId
-    const valuesAndLabels = questionMetadata.find((component) => component.key === key)?.valuesAndLabels
+
+    const params = { key, meldingId, token, type, value, valuesAndLabels }
 
     // If an answerId exists, it is an existing answer
-    if (answerId) {
-      return patchAnswer({ answerId, key, meldingId, token, type, value, valuesAndLabels })
-    }
-
-    return postAnswer({ key, meldingId, questionId, token, type, value, valuesAndLabels })
+    return answerId ? patchAnswer({ ...params, answerId }) : postAnswer({ ...params, questionId })
   })
