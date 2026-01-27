@@ -31,18 +31,20 @@ const getPreviousPanelPath = (classificationId: number, currentPanelIndex: numbe
   return `/aanvullende-vragen/${classificationId}/${formData.components[currentPanelIndex - 1].key}`
 }
 
+// Remove 'position' key from each object
+const stripPositionKey = <T extends { position?: unknown }>(obj: T): Omit<T, 'position'> => {
+  const { position: _position, ...rest } = obj
+  return rest
+}
+
 const getValuesAndLabels = (component: FormOutputWithoutPanelComponents) => {
   switch (component.type) {
-    case 'radio': {
-      // Remove 'position' key from each object
-      return (component as FormRadioComponentOutput).values.map(({ position: _, ...rest }) => rest)
-    }
+    case 'radio':
+      return (component as FormRadioComponentOutput).values.map(stripPositionKey)
     case 'select':
-      // Remove 'position' key from each object
-      return (component as FormSelectComponentOutput).data.values.map(({ position: _, ...rest }) => rest)
+      return (component as FormSelectComponentOutput).data.values.map(stripPositionKey)
     case 'selectboxes':
-      // Remove 'position' key from each object
-      return (component as FormCheckboxComponentOutput).values.map(({ position: _, ...rest }) => rest)
+      return (component as FormCheckboxComponentOutput).values.map(stripPositionKey)
     default:
       return undefined
   }
@@ -107,13 +109,11 @@ export default async ({ params }: { params: Params }) => {
 
   const formComponents = getFormComponents(panelComponents, textAnswers)
 
-  // Pass question and answer ID pairs to the action
   const questionAndAnswerIdPairs = answers?.map((answer) => ({
     answerId: answer.id,
     questionId: answer.question.id,
   }))
 
-  // Pass question keys, ids, type and values and labels to the action
   const questionMetadata = panelComponents.map((component) => {
     const { key, question, type } = component
     const valuesAndLabels = getValuesAndLabels(component)
@@ -126,7 +126,6 @@ export default async ({ params }: { params: Params }) => {
     }
   })
 
-  // Pass required questions keys with the associated error messages to the action
   const requiredQuestionKeysWithErrorMessages = panelComponents
     .filter((question) => question.validate?.required)
     .map(({ key, validate }) => ({
@@ -134,13 +133,8 @@ export default async ({ params }: { params: Params }) => {
       requiredErrorMessage: validate?.required_error_message || t('required-error-message-fallback'),
     }))
 
-  // Pass isLastPanel to the action
   const isLastPanel = currentPanelIndex === data.components.length - 1
-
-  // Pass last panel path to the action
   const lastPanelPath = `/aanvullende-vragen/${classificationId}/${data.components[data.components.length - 1].key}`
-
-  // Pass next panel path to the action
   const nextPanelPath = getNextPanelPath(classificationId, currentPanelIndex, data)
 
   const extraArgs = {
@@ -152,6 +146,7 @@ export default async ({ params }: { params: Params }) => {
     requiredQuestionKeysWithErrorMessages,
   }
 
+  // Pass extra arguments to the postForm action
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)
 
   // Pass previous panel path to the Aanvullende vragen component
