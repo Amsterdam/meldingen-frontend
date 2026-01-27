@@ -1,7 +1,7 @@
 import { buildAnswerPromises } from './buildAnswerPromises'
 
 const defaultArgs = {
-  entries: [['key1', 'test']],
+  entries: [['key1', 'test']] as [string, string | string[]][],
   meldingId: '123',
   questionAndAnswerIdPairs: [],
   questionMetadata: [{ id: 1, key: 'key1', type: 'textfield' }],
@@ -11,25 +11,22 @@ const defaultArgs = {
 describe('buildAnswerPromises', () => {
   it('returns an array with undefined when the answer is an empty string', () => {
     const emptyEntry: [string, string] = ['key1', '']
-    const questionMetadata = [{ id: 1, key: 'key1', type: 'textfield' }]
 
-    const result = buildAnswerPromises({ ...defaultArgs, entries: [emptyEntry], questionMetadata })
+    const result = buildAnswerPromises({ ...defaultArgs, entries: [emptyEntry] })
     expect(result).toEqual([undefined])
   })
 
   it('returns an array with undefined when questionMetadata does not contain the entry key', () => {
-    const entry: [string, string] = ['key1', 'test']
     const questionMetadata = [{ id: 1, key: 'key2', type: 'textfield' }]
 
-    const result = buildAnswerPromises({ ...defaultArgs, entries: [entry], questionMetadata })
+    const result = buildAnswerPromises({ ...defaultArgs, questionMetadata })
     expect(result).toEqual([undefined])
   })
 
   it('returns an array with undefined when questionMetadata contains no type for the entry key', () => {
-    const entry: [string, string] = ['key1', 'test']
     const questionMetadata = [{ id: 1, key: 'key1', type: '' }]
 
-    const result = buildAnswerPromises({ ...defaultArgs, entries: [entry], questionMetadata })
+    const result = buildAnswerPromises({ ...defaultArgs, questionMetadata })
     expect(result).toEqual([undefined])
   })
 
@@ -115,7 +112,6 @@ describe('buildAnswerPromises', () => {
   })
 
   it('handles textarea inputs', async () => {
-    const entry: [string, string] = ['key1', 'This is a longer text input.']
     const questionMetadata = [
       {
         id: 1,
@@ -124,13 +120,12 @@ describe('buildAnswerPromises', () => {
       },
     ]
 
-    const result = buildAnswerPromises({ ...defaultArgs, entries: [entry], questionMetadata })
+    const result = buildAnswerPromises({ ...defaultArgs, questionMetadata })
 
     expect(await result[0]).toMatchObject({ key: 'key1' })
   })
 
   it('handles time inputs', async () => {
-    const entry: [string, string] = ['key1', '12:30']
     const questionMetadata = [
       {
         id: 1,
@@ -139,13 +134,12 @@ describe('buildAnswerPromises', () => {
       },
     ]
 
-    const result = buildAnswerPromises({ ...defaultArgs, entries: [entry], questionMetadata })
+    const result = buildAnswerPromises({ ...defaultArgs, questionMetadata })
 
     expect(await result[0]).toMatchObject({ key: 'key1' })
   })
 
   it('returns type text for unknown question types', async () => {
-    const entry: [string, string] = ['key1', 'test']
     const questionMetadata = [
       {
         id: 1,
@@ -154,7 +148,7 @@ describe('buildAnswerPromises', () => {
       },
     ]
 
-    const result = buildAnswerPromises({ ...defaultArgs, entries: [entry], questionMetadata })
+    const result = buildAnswerPromises({ ...defaultArgs, questionMetadata })
 
     expect(await result[0]).toMatchObject({ key: 'key1' })
   })
