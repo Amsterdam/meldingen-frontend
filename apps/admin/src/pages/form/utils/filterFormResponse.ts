@@ -1,4 +1,4 @@
-import type { BaseComponent, Component } from '@formio/core'
+import type { Component } from '@formio/core'
 
 import filter from 'uber-json-schema-filter'
 
@@ -15,7 +15,7 @@ import {
   FormTextFieldComponentInputSchema,
 } from '@meldingen/api-client'
 
-import type { AdditionalQuestionsForm } from '../../types'
+import type { AdditionalQuestionsForm, validateObjType } from '../../types'
 
 const filterBySchemaPerType = (obj: Component) => {
   switch (obj.type) {
@@ -41,15 +41,65 @@ const filterBySchemaPerType = (obj: Component) => {
   }
 }
 
-const getFilteredValidateObject = (validateObj: BaseComponent['validate']) => {
-  const validate = filter(FormComponentInputValidateSchema, validateObj)
+const isTextInput = (validateObj: Component['validate']): validateObj is validateObjType =>
+  validateObj !== undefined && (Object.hasOwn(validateObj, 'maxLength') || Object.hasOwn(validateObj, 'minLength'))
 
-  // Explicitly remove the 'json' key if its value is an empty string, the API doesn't accept that
-  if (validate?.json === '') {
-    delete validate.json
+const mapValidationsToJsonLogic = (validateObj: Component['validate']) => {
+  if (isTextInput(validateObj)) {
+    let maxLengthValidation
+
+    if (validateObj.maxLength && validateObj.maxLengthErrorMessage) {
+      maxLengthValidation = {
+        if: [
+          {
+            '<=': [
+              {
+                length: [
+                  {
+                    var: 'text',
+                  },
+                ],
+              },
+              validateObj.maxLength,
+            ],
+          },
+          true,
+          validateObj.maxLengthErrorMessage,
+        ],
+      }
+    }
+
+    validateObj.json = {
+      if: [
+        {
+          '>=': [
+            {
+              length: [
+                {
+                  var: 'text',
+                },
+              ],
+            },
+            validateObj.minLength || 0,
+          ],
+        },
+        maxLengthValidation || true,
+        validateObj.minLengthErrorMessage || '',
+      ],
+    }
   }
 
-  return validate
+  return validateObj
+}
+
+const getFilteredValidateObject = (validateObj?: Component['validate']) => {
+  if (!validateObj) return undefined
+
+  const validateObjWithJsonLogic = mapValidationsToJsonLogic(validateObj)
+
+  const validation = filter(FormComponentInputValidateSchema, validateObjWithJsonLogic)
+
+  return validation
 }
 
 export const filterFormResponse = (obj: AdditionalQuestionsForm): FormInput => {
