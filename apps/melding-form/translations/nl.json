@@ -40,7 +40,7 @@
     },
     "submit-button": "Volgende vraag",
     "errors": {
-      "no-location": "Vul een locatie in."
+      "no-location": "Vul een adres in."
     }
   },
   "select-location": {
@@ -74,7 +74,7 @@
         "heading": "JavaScript is niet beschikbaar",
         "description": "Wijzig dit in de instellingen van uw browser of probeer opnieuw de pagina te laden."
       },
-      "no-location": "Vul een locatie in.",
+      "no-location": "Vul een adres in.",
       "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam.",
       "pdok-failed": "Er is iets mis gegaan. Probeer het opnieuw of herlaad de pagina."
     },
