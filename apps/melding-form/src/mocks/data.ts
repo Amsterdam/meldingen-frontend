@@ -6,6 +6,8 @@ import {
   FormTextAreaComponentOutput,
   MeldingOutput,
   TextAnswerQuestionOutput,
+  TimeAnswerQuestionOutput,
+  ValueLabelAnswerQuestionOutput,
 } from '@meldingen/api-client'
 
 // Form
@@ -228,6 +230,39 @@ export const additionalQuestions: TextAnswerQuestionOutput[] = [
     updated_at: '2025-02-18T10:34:32.187573',
   },
 ]
+
+export const selectAdditionalQuestion: ValueLabelAnswerQuestionOutput = {
+  created_at: '2025-02-18T10:34:32.193489',
+  id: 125,
+  question: {
+    created_at: '2025-02-17T11:06:22.137002',
+    id: 37,
+    text: 'Select Field',
+    updated_at: '2025-02-17T11:06:22.137002',
+  },
+  type: 'value_label',
+  updated_at: '2025-02-18T10:34:32.193489',
+  values_and_labels: [
+    {
+      label: 'Option 1',
+      value: 'option_1',
+    },
+  ],
+}
+
+export const timeAdditionalQuestion: TimeAnswerQuestionOutput = {
+  created_at: '2025-02-18T10:34:32.199123',
+  id: 126,
+  question: {
+    created_at: '2025-02-17T11:06:22.137002',
+    id: 38,
+    text: 'Time Field',
+    updated_at: '2025-02-17T11:06:22.137002',
+  },
+  time: '14:30',
+  type: 'time',
+  updated_at: '2025-02-18T10:34:32.199123',
+}
 
 export const containerAssets: Feature[] = [
   {
