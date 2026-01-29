@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 import { Fragment } from 'react'
 
-import { DescriptionList, Grid, Heading, Paragraph, StandaloneLink } from '@meldingen/ui'
+import { DescriptionList, Grid, Heading, Link, Paragraph } from '@meldingen/ui'
 
 import { AttachmentImage } from './_components/AttachmentImage'
 import { BackLink } from './_components/BackLink'
@@ -80,7 +80,7 @@ export const Detail = ({
               {link && (
                 <DescriptionList.Description>
                   <NextLink href={link.href} legacyBehavior passHref>
-                    <StandaloneLink>{link.label}</StandaloneLink>
+                    <Link>{link.label}</Link>
                   </NextLink>
                 </DescriptionList.Description>
               )}
