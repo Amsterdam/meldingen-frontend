@@ -1,5 +1,3 @@
-'use client'
-
 import type { AnchorHTMLAttributes } from 'react'
 
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons'
@@ -13,6 +11,6 @@ type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & {
 
 export const BackLink = ({ href, ...restProps }: Props) => (
   <NextLink href={href} legacyBehavior passHref>
-    <StandaloneLink {...restProps} icon={ChevronBackwardIcon} />
+    <StandaloneLink {...restProps} icon={<ChevronBackwardIcon />} />
   </NextLink>
 )
