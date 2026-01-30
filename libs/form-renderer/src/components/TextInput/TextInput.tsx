@@ -3,6 +3,7 @@ import { ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { TextInput as ADSTextInput } from '@meldingen/ui'
 
+import { Validate } from '../../types'
 import { getAriaDescribedBy } from '../../utils'
 
 import styles from './TextInput.module.css'
@@ -14,12 +15,22 @@ export type Props = {
   hasHeading: boolean
   id: string
   label: string
-  validate?: { required: boolean } | null
+  validate: Validate
 }
 
-export const TextInput = ({ defaultValue, description, errorMessage, hasHeading, id, label, validate }: Props) => {
+export const TextInput = ({
+  defaultValue,
+  description,
+  errorMessage,
+  hasHeading,
+  id,
+  label,
+  validate: { required },
+  validate,
+}: Props) => {
+  console.log('--- ~ validate:', validate)
   const labelComponent = (
-    <Label htmlFor={id} optional={!validate?.required}>
+    <Label htmlFor={id} optional={!required}>
       {label}
     </Label>
   )
@@ -35,7 +46,7 @@ export const TextInput = ({ defaultValue, description, errorMessage, hasHeading,
       {errorMessage && <ErrorMessage id={`${id}-error`}>{errorMessage}</ErrorMessage>}
       <ADSTextInput
         aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
-        aria-required={validate?.required ? 'true' : undefined}
+        aria-required={required ? 'true' : undefined}
         defaultValue={defaultValue}
         id={id}
         invalid={Boolean(errorMessage)}

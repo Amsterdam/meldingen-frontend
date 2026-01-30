@@ -8,7 +8,7 @@ const defaultProps: Props = {
   hasHeading: true,
   id: 'test-id',
   label: 'Test label',
-  validate: { required: true },
+  validate: { json: {}, required: true },
 }
 
 describe('TextInput Component', () => {
@@ -40,7 +40,7 @@ describe('TextInput Component', () => {
   })
 
   it('correctly marks TextInput as not required', () => {
-    render(<TextInput {...defaultProps} validate={{ required: false }} />)
+    render(<TextInput {...defaultProps} validate={{ json: {}, required: false }} />)
 
     const textInput = screen.getByRole('textbox', { name: `${defaultProps.label} (niet verplicht)` })
 
