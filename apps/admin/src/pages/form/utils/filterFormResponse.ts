@@ -41,52 +41,26 @@ const filterBySchemaPerType = (obj: Component) => {
   }
 }
 
-const isTextInput = (validateObj: Component['validate']): validateObj is validateObjType =>
+const hasMinMaxValidations = (validateObj: Component['validate']): validateObj is validateObjType =>
   validateObj !== undefined && (Object.hasOwn(validateObj, 'maxLength') || Object.hasOwn(validateObj, 'minLength'))
 
 const mapValidationsToJsonLogic = (validateObj: Component['validate']) => {
-  if (isTextInput(validateObj)) {
-    let maxLengthValidation
+  if (!hasMinMaxValidations(validateObj)) return validateObj
 
-    if (validateObj.maxLength && validateObj.maxLengthErrorMessage) {
-      maxLengthValidation = {
-        if: [
-          {
-            '<=': [
-              {
-                length: [
-                  {
-                    var: 'text',
-                  },
-                ],
-              },
-              validateObj.maxLength,
-            ],
-          },
-          true,
-          validateObj.maxLengthErrorMessage,
-        ],
+  const textLength = { length: [{ var: 'text' }] }
+
+  const minLength = validateObj.minLength ?? 0
+  const minLengthErrorMessage = validateObj.minLengthErrorMessage ?? ''
+
+  const hasMaxLength = validateObj.maxLength != null && validateObj.maxLengthErrorMessage
+  const nestedRule = hasMaxLength
+    ? {
+        if: [{ '<=': [textLength, validateObj.maxLength] }, true, validateObj.maxLengthErrorMessage],
       }
-    }
+    : true
 
-    validateObj.json = {
-      if: [
-        {
-          '>=': [
-            {
-              length: [
-                {
-                  var: 'text',
-                },
-              ],
-            },
-            validateObj.minLength || 0,
-          ],
-        },
-        maxLengthValidation || true,
-        validateObj.minLengthErrorMessage || '',
-      ],
-    }
+  validateObj.json = {
+    if: [{ '>=': [textLength, minLength] }, nestedRule, minLengthErrorMessage],
   }
 
   return validateObj
