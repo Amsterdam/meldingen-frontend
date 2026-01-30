@@ -7,6 +7,23 @@ import type { Component } from './types'
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
 
+const parseJsonLogicRules = (rule: Record<string, unknown>) => {
+  if (!rule || !Array.isArray(rule.if)) return null
+
+  const [, secondRule] = rule.if
+
+  if (secondRule.if === undefined) return null
+
+  const [secondCondition, , secondErrorMessage] = secondRule.if
+
+  const [, maxLength] = secondCondition['<=']
+
+  return {
+    maxLength,
+    maxLengthErrorMessage: secondErrorMessage,
+  }
+}
+
 const getComponent = (component: Component, hasOneFormComponent: boolean, errorMessage?: string) => {
   const { key } = component
   if (isRadio(component)) {
@@ -19,7 +36,23 @@ const getComponent = (component: Component, hasOneFormComponent: boolean, errorM
     return <Checkbox {...component} errorMessage={errorMessage} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
   if (isTextarea(component)) {
-    return <TextArea {...component} errorMessage={errorMessage} hasHeading={hasOneFormComponent} id={key} key={key} />
+    const validateData = parseJsonLogicRules(component.validate.json)
+
+    const validate = {
+      ...component.validate,
+      ...validateData,
+    }
+
+    return (
+      <TextArea
+        {...component}
+        errorMessage={errorMessage}
+        hasHeading={hasOneFormComponent}
+        id={key}
+        key={key}
+        validate={validate}
+      />
+    )
   }
   if (isTextfield(component)) {
     return <TextInput {...component} errorMessage={errorMessage} hasHeading={hasOneFormComponent} id={key} key={key} />
@@ -41,6 +74,7 @@ export type Props = {
 }
 
 export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonText, validationErrors }: Props) => {
+  console.log('--- ~ formComponents:', formComponents)
   const hasOneFormComponent = formComponents.length === 1
   return (
     <>

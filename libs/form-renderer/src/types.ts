@@ -7,12 +7,42 @@ import type {
   StaticFormTextAreaComponentOutput,
 } from '@meldingen/api-client'
 
-export type FormCheckboxComponent = FormCheckboxComponentOutput & { defaultValues?: string[] }
-export type FormRadioComponent = FormRadioComponentOutput & { defaultValue?: string }
-export type FormSelectComponent = FormSelectComponentOutput & { defaultValue?: string }
-export type FormTextAreaComponent = FormTextAreaComponentOutput & { defaultValue?: string }
-export type FormTextFieldInputComponent = FormTextFieldInputComponentOutput & { defaultValue?: string }
-export type StaticFormTextAreaComponent = StaticFormTextAreaComponentOutput & { defaultValue?: string }
+export type Validate = {
+  json: Record<string, unknown>
+  maxLength?: number
+  maxLengthErrorMessage?: string
+  minLength?: number
+  minLengthErrorMessage?: string
+  required: boolean
+}
+
+type WithValidate<T> = Omit<T, 'validate'> & {
+  validate: Validate
+}
+
+export type FormCheckboxComponent = WithValidate<FormCheckboxComponentOutput> & {
+  defaultValues?: string[]
+}
+
+export type FormRadioComponent = WithValidate<FormRadioComponentOutput> & {
+  defaultValue?: string
+}
+
+export type FormSelectComponent = WithValidate<FormSelectComponentOutput> & {
+  defaultValue?: string
+}
+
+export type FormTextAreaComponent = WithValidate<FormTextAreaComponentOutput> & {
+  defaultValue?: string
+}
+
+export type FormTextFieldInputComponent = WithValidate<FormTextFieldInputComponentOutput> & {
+  defaultValue?: string
+}
+
+export type StaticFormTextAreaComponent = WithValidate<StaticFormTextAreaComponentOutput> & {
+  defaultValue?: string
+}
 
 export type Component =
   | FormCheckboxComponent

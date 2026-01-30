@@ -3,6 +3,7 @@ import { useRef, useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
+import { Validate } from '../../types'
 import { getAriaDescribedBy } from '../../utils'
 
 import styles from './TextArea.module.css'
@@ -14,8 +15,7 @@ export type Props = {
   hasHeading: boolean
   id: string
   label: string
-  maxCharCount?: number | null
-  validate?: { required: boolean } | null
+  validate: Validate
 }
 
 export const TextArea = ({
@@ -25,8 +25,7 @@ export const TextArea = ({
   hasHeading,
   id,
   label,
-  maxCharCount,
-  validate,
+  validate: { maxLength, required },
 }: Props) => {
   const ref = useRef<HTMLTextAreaElement>(null)
   const [charCount, setCharCount] = useState(defaultValue?.length || 0)
@@ -38,7 +37,7 @@ export const TextArea = ({
   }
 
   const labelComponent = (
-    <Label htmlFor={id} optional={!validate?.required}>
+    <Label htmlFor={id} optional={!required}>
       {label}
     </Label>
   )
@@ -54,16 +53,16 @@ export const TextArea = ({
       {errorMessage && <ErrorMessage id={`${id}-error`}>{errorMessage}</ErrorMessage>}
       <ADSTextArea
         aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
-        aria-required={validate?.required ? 'true' : undefined}
+        aria-required={required ? 'true' : undefined}
         defaultValue={defaultValue}
         id={id}
         invalid={Boolean(errorMessage)}
         name={id}
-        onChange={typeof maxCharCount === 'number' ? handleChange : undefined}
+        onChange={handleChange}
         ref={ref}
         rows={4}
       />
-      {maxCharCount && <CharacterCount length={charCount} maxLength={maxCharCount} />}
+      {maxLength && <CharacterCount length={charCount} maxLength={maxLength} />}
     </Field>
   )
 }
