@@ -4,15 +4,18 @@ import { useFormContext } from 'react-hook-form'
 
 import { FormBuilder } from '@meldingen/form-builder'
 
+import { validateObjType } from '../../types'
+
 import styles from './BuilderInput.module.css'
 
 const parseJsonLogicRules = (rule: Record<string, unknown>) => {
-  if (!rule || !Array.isArray(rule.if)) return null
+  if (!rule || !Array.isArray(rule.if)) return {}
 
-  let validateData = {}
+  let validateData = {} as validateObjType
 
-  const [condition, secondRule, errorMessage] = rule.if
+  const [condition, nestedRule, errorMessage] = rule.if
 
+  // Parse minLength rule from JsonLogic
   if (condition['>=']) {
     const [, minLength] = condition['>=']
 
@@ -23,23 +26,30 @@ const parseJsonLogicRules = (rule: Record<string, unknown>) => {
     }
   }
 
-  const [secondCondition, , secondErrorMessage] = secondRule.if
+  // Parse maxLength rule from JsonLogic
+  if (nestedRule.if !== undefined) {
+    const [secondCondition, , secondErrorMessage] = nestedRule.if
 
-  const [, maxLength] = secondCondition['<=']
+    const [, maxLength] = secondCondition['<=']
 
-  validateData = {
-    ...validateData,
-    maxLength,
-    maxLengthErrorMessage: secondErrorMessage,
+    validateData = {
+      ...validateData,
+      maxLength,
+      maxLengthErrorMessage: secondErrorMessage,
+    }
   }
 
-  return validateData || null
+  if (validateData?.json === '') {
+    delete validateData.json
+  }
+
+  return validateData
 }
 
-const mapJsonLogicValidationsToFormFields = (data: ContainerComponent[]) =>
-  data.map((page) => ({
-    ...page,
-    components: page.components.map((component) => {
+const mapJsonLogicValidationsToFormData = (panels: ContainerComponent[]) =>
+  panels.map((panel) => ({
+    ...panel,
+    components: panel.components.map((component) => {
       const validationData = parseJsonLogicRules(component.validate?.json)
 
       if (validationData) {
@@ -59,8 +69,10 @@ const mapJsonLogicValidationsToFormFields = (data: ContainerComponent[]) =>
 export const BuilderInput = () => {
   const { getValues, setValue } = useFormContext()
 
-  const data = getValues('components')
-  const result = data && mapJsonLogicValidationsToFormFields(data)
+  const panelComponents = getValues('components')
+
+  // Parse JsonLogic rules to prefill validation fields in the form builder
+  const PanelComponentsWithFormData = panelComponents && mapJsonLogicValidationsToFormData(panelComponents)
 
   const onChange = (schema: { components: unknown[] }) => {
     setValue('components', schema?.components)
@@ -76,7 +88,7 @@ export const BuilderInput = () => {
         source="components"
       />
       <div className={styles.builder}>
-        <FormBuilder data={result} onChange={onChange} />
+        <FormBuilder data={PanelComponentsWithFormData} onChange={onChange} />
       </div>
     </>
   )
