@@ -74,7 +74,6 @@ export type Props = {
 }
 
 export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonText, validationErrors }: Props) => {
-  console.log('--- ~ formComponents:', formComponents)
   const hasOneFormComponent = formComponents.length === 1
   return (
     <>
