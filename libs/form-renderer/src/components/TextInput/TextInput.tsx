@@ -26,9 +26,7 @@ export const TextInput = ({
   id,
   label,
   validate: { required },
-  validate,
 }: Props) => {
-  console.log('--- ~ validate:', validate)
   const labelComponent = (
     <Label htmlFor={id} optional={!required}>
       {label}
