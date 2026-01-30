@@ -28,11 +28,11 @@ describe('FileListImage', () => {
     expect(global.URL.revokeObjectURL).toHaveBeenCalledWith('test-url')
   })
 
-  it('shows a loading indicator when only passing the file name instead of a File instance', () => {
+  it('shows a placeholder when only passing the file name instead of a File instance', () => {
     const { container } = render(<FileListImage file={{ name: 'test' }} />)
 
-    const loadingIndicator = container.querySelector('[class*="_loading"]')
+    const placeholder = container.querySelector('[class*="_placeholder"]')
 
-    expect(loadingIndicator).toBeInTheDocument()
+    expect(placeholder).toBeInTheDocument()
   })
 })
