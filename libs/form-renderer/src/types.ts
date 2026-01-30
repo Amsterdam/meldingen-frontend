@@ -17,7 +17,7 @@ export type Validate = {
 }
 
 type WithValidate<T> = Omit<T, 'validate'> & {
-  validate: Validate
+  validate?: Validate
 }
 
 export type FormCheckboxComponent = WithValidate<FormCheckboxComponentOutput> & {

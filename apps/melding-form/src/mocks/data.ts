@@ -19,6 +19,11 @@ export const textAreaComponent: FormTextAreaComponentOutput = {
   position: 1,
   question: 1,
   type: 'textarea',
+  validate: {
+    json: null,
+    required: true,
+    required_error_message: 'Dit veld is verplicht',
+  },
 }
 
 export const checkboxComponent: FormCheckboxComponentOutput = {
