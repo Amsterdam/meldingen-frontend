@@ -73,6 +73,10 @@ const getFilteredValidateObject = (validateObj?: Component['validate']) => {
 
   const validation = filter(FormComponentInputValidateSchema, validateObjWithJsonLogic)
 
+  if (validation.json === '') {
+    delete validation.json
+  }
+
   return validation
 }
 
