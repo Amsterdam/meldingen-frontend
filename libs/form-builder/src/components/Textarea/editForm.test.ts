@@ -23,13 +23,15 @@ describe('editForm', () => {
     // Check for the right input fields
     const displayKeys = displayTab?.components.map((c) => c.key)
     expect(displayKeys).toContain('label')
-    expect(displayKeys).toContain('maxCharCount')
     expect(displayKeys).toContain('description')
     expect(displayKeys).toContain('autoExpand')
 
     const validationKeys = validationTab?.components.map((c) => c.key)
     expect(validationKeys).toContain('validate.required')
     expect(validationKeys).toContain('validate.required_error_message')
-    expect(validationKeys).toContain('json-validation-json')
+    expect(validationKeys).toContain('validate.minLength')
+    expect(validationKeys).toContain('validate.minLengthErrorMessage')
+    expect(validationKeys).toContain('validate.maxLength')
+    expect(validationKeys).toContain('validate.maxLengthErrorMessage')
   })
 })
