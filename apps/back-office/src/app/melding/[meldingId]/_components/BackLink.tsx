@@ -11,6 +11,6 @@ type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & {
 
 export const BackLink = ({ href, ...restProps }: Props) => (
   <NextLink href={href} legacyBehavior passHref>
-    <StandaloneLink {...restProps} icon={ChevronBackwardIcon} />
+    <StandaloneLink {...restProps} icon={<ChevronBackwardIcon />} />
   </NextLink>
 )
