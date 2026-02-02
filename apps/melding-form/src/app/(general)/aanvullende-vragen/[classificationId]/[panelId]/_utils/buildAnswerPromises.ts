@@ -2,11 +2,12 @@ import {
   patchMeldingByMeldingIdAnswerByAnswerId,
   postMeldingByMeldingIdQuestionByQuestionId,
   PostMeldingByMeldingIdQuestionByQuestionIdData,
+  ValueLabelObject,
 } from '@meldingen/api-client'
 
 const getCheckboxAnswerBody = (
   value: string[],
-  valuesAndLabels?: ValueAndLabel[],
+  valuesAndLabels?: ValueLabelObject[],
 ): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
   const selectedValuesAndLabels = valuesAndLabels?.filter((valAndLabel) => value.includes(valAndLabel.value))
 
@@ -17,7 +18,7 @@ const getCheckboxAnswerBody = (
 
 const getValueLabelAnswerBody = (
   value: string,
-  valuesAndLabels?: ValueAndLabel[],
+  valuesAndLabels?: ValueLabelObject[],
 ): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
   const selectedValueAndLabel = valuesAndLabels?.find((valAndLabel) => valAndLabel.value === value)
 
@@ -26,15 +27,10 @@ const getValueLabelAnswerBody = (
   return { type: 'value_label', values_and_labels: [selectedValueAndLabel] }
 }
 
-type ValueAndLabel = {
-  label: string
-  value: string
-}
-
 const getAnswerBody = (
   formioType: string,
   value: string | string[],
-  valuesAndLabels?: ValueAndLabel[],
+  valuesAndLabels?: ValueLabelObject[],
 ): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
   // Handle checkbox values, which are passed as an array
   if (Array.isArray(value)) {
