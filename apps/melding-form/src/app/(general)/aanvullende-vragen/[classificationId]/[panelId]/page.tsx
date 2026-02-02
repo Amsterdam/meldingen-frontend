@@ -66,11 +66,12 @@ const getFormComponents = (
         return { ...component, defaultValue: answer.text }
       case 'time':
         return { ...component, defaultValue: answer.time }
-      case 'value_label':
+      case 'value_label': {
         if (component.type === 'selectboxes') {
           return { ...component, defaultValues: answer.values_and_labels.map(({ value }) => value) }
         }
-        return { ...component, defaultValue: answer.values_and_labels[0]?.value || '' }
+        return { ...component, defaultValue: answer.values_and_labels[0]?.value ?? undefined }
+      }
       default:
         return component
     }
