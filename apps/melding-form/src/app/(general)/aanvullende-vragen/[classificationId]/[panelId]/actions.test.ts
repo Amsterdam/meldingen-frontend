@@ -23,9 +23,9 @@ describe('postForm', () => {
     isLastPanel: true,
     lastPanelPath: '/test',
     nextPanelPath: '/',
-    questionKeysAndIds: [
-      { id: 1, key: 'key1' },
-      { id: 2, key: 'key2' },
+    questionMetadata: [
+      { id: 1, key: 'key1', type: 'textfield' },
+      { id: 2, key: 'key2', type: 'textfield' },
     ],
     requiredQuestionKeysWithErrorMessages: [],
   }

@@ -18,7 +18,12 @@ export type ArgsType = {
   lastPanelPath: string
   nextPanelPath: string
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
-  questionKeysAndIds: { id: number; key: string }[]
+  questionMetadata: {
+    id: number
+    key: string
+    type: string
+    valuesAndLabels?: { label: string; value: string }[]
+  }[]
   requiredQuestionKeysWithErrorMessages: RequiredQuestionKeyWithErrorMessage[]
 }
 
@@ -44,7 +49,7 @@ export const postForm = async (
     lastPanelPath,
     nextPanelPath,
     questionAndAnswerIdPairs,
-    questionKeysAndIds,
+    questionMetadata,
     requiredQuestionKeysWithErrorMessages,
   }: ArgsType,
   _: unknown,
@@ -62,11 +67,10 @@ export const postForm = async (
   cookieStore.set(COOKIES.LAST_PANEL_PATH, lastPanelPath, { maxAge: oneDay })
 
   // Checkbox answers are stored as separate key-value pairs in the FormData object.
-  // This function merges these answers into a single string value per question, using an identifier in the Checkbox component.
-  // TODO: This isn't the most robust solution.
-  const formDataObj = Object.fromEntries(formData)
-  const entries = Object.entries(formDataObj)
-  const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(entries))
+  // This function merges these answers into an array per question, using an identifier in the Checkbox component.
+  const entriesArray = Array.from(formData.entries())
+  const stringEntries = entriesArray.filter(([, value]) => typeof value === 'string') as [string, string][]
+  const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(stringEntries))
 
   // Check if all required questions are answered
   const missingRequiredKeysWithErrorMessages = getUnansweredRequiredQuestionKeysWithErrorMessages(
@@ -85,13 +89,13 @@ export const postForm = async (
   }
 
   // Build promise array
-  const promiseArray = buildAnswerPromises(
-    entriesWithMergedCheckboxes,
+  const promiseArray = buildAnswerPromises({
+    entries: entriesWithMergedCheckboxes,
     meldingId,
-    questionKeysAndIds,
-    token,
     questionAndAnswerIdPairs,
-  )
+    questionMetadata,
+    token,
+  })
   const results = await Promise.all(promiseArray)
 
   // Return validation errors if there are any

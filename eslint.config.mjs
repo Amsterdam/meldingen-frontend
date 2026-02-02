@@ -110,6 +110,7 @@ export default defineConfig(
       // TypeScript
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
 
       // Import
       'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
@@ -120,6 +121,7 @@ export default defineConfig(
 
       // ESLint
       'no-console': 'warn',
+      'no-unused-vars': 'off', // Handled by @typescript-eslint/no-unused-vars
       'prefer-arrow-functions/prefer-arrow-functions': 'error',
 
       // Perfectionist
