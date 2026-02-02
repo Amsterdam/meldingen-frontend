@@ -19,11 +19,11 @@ const getValueLabelAnswerBody = (
   value: string,
   valuesAndLabels?: ValueAndLabel[],
 ): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
-  const found = valuesAndLabels?.find((valAndLabel) => valAndLabel.value === value)
+  const selectedValueAndLabel = valuesAndLabels?.find((valAndLabel) => valAndLabel.value === value)
 
-  if (!found) return undefined
+  if (!selectedValueAndLabel) return undefined
 
-  return { type: 'value_label', values_and_labels: [found] }
+  return { type: 'value_label', values_and_labels: [selectedValueAndLabel] }
 }
 
 type ValueAndLabel = {
