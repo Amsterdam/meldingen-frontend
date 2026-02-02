@@ -8,7 +8,7 @@ import type {
   FormPanelComponentOutput,
   FormRadioComponentOutput,
   FormSelectComponentOutput,
-  TextAnswerQuestionOutput,
+  GetMeldingByMeldingIdAnswersMelderResponses,
 } from '@meldingen/api-client'
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
@@ -53,16 +53,28 @@ const getValuesAndLabels = (component: FormOutputWithoutPanelComponents) => {
 
 type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
 
-const getFormComponents = (components: FormOutputWithoutPanelComponents[], answers?: TextAnswerQuestionOutput[]) =>
+const getFormComponents = (
+  components: FormOutputWithoutPanelComponents[],
+  answers?: GetMeldingByMeldingIdAnswersMelderResponses['200'],
+) =>
   components.map((component) => {
     const answer = answers?.find((answer) => answer.question.id === component.question)
 
     // Prefill if answer exists, otherwise return component without defaultValue(s)
-    if (component.type === 'selectboxes' && answer) {
-      const defaultValues = answer.text.split(',').map((value) => value.trim())
-      return { ...component, defaultValues }
+    switch (answer?.type) {
+      case 'text':
+        return { ...component, defaultValue: answer.text }
+      case 'time':
+        return { ...component, defaultValue: answer.time }
+      case 'value_label': {
+        if (component.type === 'selectboxes') {
+          return { ...component, defaultValues: answer.values_and_labels.map(({ value }) => value) }
+        }
+        return { ...component, defaultValue: answer.values_and_labels[0]?.value ?? undefined }
+      }
+      default:
+        return component
     }
-    return answer ? { ...component, defaultValue: answer.text } : component
   })
 
 type Params = Promise<{
@@ -105,10 +117,7 @@ export default async ({ params }: { params: Params }) => {
     console.error(answersError)
   }
 
-  // TODO: only pass text answers for now. We should handle all answer types when the BE is done with their multiple answer types work.
-  const textAnswers = answers?.filter((answer) => answer.type === 'text')
-
-  const formComponents = getFormComponents(panelComponents, textAnswers)
+  const formComponents = getFormComponents(panelComponents, answers)
 
   const questionAndAnswerIdPairs = answers?.map((answer) => ({
     answerId: answer.id,

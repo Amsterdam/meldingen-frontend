@@ -90,7 +90,7 @@ const postAnswer = ({ key, meldingId, questionId, token, type, value, valuesAndL
       question_id: questionId,
     },
     query: { token },
-  }).then((results) => ({ key, value: results })) // TODO: do we need this?
+  }).then((results) => ({ key, value: results }))
 }
 
 type BuildAnswerPromisesArgs = {
