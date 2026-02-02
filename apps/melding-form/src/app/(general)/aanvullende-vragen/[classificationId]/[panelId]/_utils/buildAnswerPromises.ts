@@ -2,39 +2,35 @@ import {
   patchMeldingByMeldingIdAnswerByAnswerId,
   postMeldingByMeldingIdQuestionByQuestionId,
   PostMeldingByMeldingIdQuestionByQuestionIdData,
+  ValueLabelObject,
 } from '@meldingen/api-client'
 
 const getCheckboxAnswerBody = (
   value: string[],
-  valuesAndLabels?: ValueAndLabel[],
+  valuesAndLabels?: ValueLabelObject[],
 ): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
-  const selected = valuesAndLabels?.filter((valAndLabel) => value.includes(valAndLabel.value))
+  const selectedValuesAndLabels = valuesAndLabels?.filter((valAndLabel) => value.includes(valAndLabel.value))
 
-  if (!selected || selected.length === 0) return undefined
+  if (!selectedValuesAndLabels || selectedValuesAndLabels.length === 0) return undefined
 
-  return { type: 'value_label', values_and_labels: selected }
+  return { type: 'value_label', values_and_labels: selectedValuesAndLabels }
 }
 
 const getValueLabelAnswerBody = (
   value: string,
-  valuesAndLabels?: ValueAndLabel[],
+  valuesAndLabels?: ValueLabelObject[],
 ): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
-  const found = valuesAndLabels?.find((valAndLabel) => valAndLabel.value === value)
+  const selectedValueAndLabel = valuesAndLabels?.find((valAndLabel) => valAndLabel.value === value)
 
-  if (!found) return undefined
+  if (!selectedValueAndLabel) return undefined
 
-  return { type: 'value_label', values_and_labels: [found] }
-}
-
-type ValueAndLabel = {
-  label: string
-  value: string
+  return { type: 'value_label', values_and_labels: [selectedValueAndLabel] }
 }
 
 const getAnswerBody = (
   formioType: string,
   value: string | string[],
-  valuesAndLabels?: ValueAndLabel[],
+  valuesAndLabels?: ValueLabelObject[],
 ): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
   // Handle checkbox values, which are passed as an array
   if (Array.isArray(value)) {

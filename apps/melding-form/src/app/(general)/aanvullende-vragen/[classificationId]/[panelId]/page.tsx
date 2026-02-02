@@ -32,7 +32,7 @@ const getPreviousPanelPath = (classificationId: number, currentPanelIndex: numbe
 }
 
 // The backend returns a 'position' key in each value-label object,
-// which we do not want to include in the question metadata.
+// but it does not accept that key when we send the answer back. For that reason, we strip it here.
 const stripPositionKey = <T extends { position?: unknown }>(obj: T): Omit<T, 'position'> => {
   const { position: _position, ...rest } = obj
   return rest

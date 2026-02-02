@@ -67,9 +67,10 @@ export const postForm = async (
   cookieStore.set(COOKIES.LAST_PANEL_PATH, lastPanelPath, { maxAge: oneDay })
 
   // Checkbox answers are stored as separate key-value pairs in the FormData object.
-  // This function merges these answers into a single string value per question, using an identifier in the Checkbox component.
-  const entries = Array.from(formData.entries()).filter(([, value]) => typeof value === 'string') as [string, string][]
-  const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(entries))
+  // This function merges these answers into an array per question, using an identifier in the Checkbox component.
+  const entriesArray = Array.from(formData.entries())
+  const stringEntries = entriesArray.filter(([, value]) => typeof value === 'string') as [string, string][]
+  const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(stringEntries))
 
   // Check if all required questions are answered
   const missingRequiredKeysWithErrorMessages = getUnansweredRequiredQuestionKeysWithErrorMessages(
