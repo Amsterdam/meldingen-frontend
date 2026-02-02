@@ -9,7 +9,7 @@ import {
   getLocationData,
   getMeldingData,
 } from './utils'
-import { melding } from 'apps/back-office/src/mocks/data'
+import { additionalTimeQuestion, additionalValueLabelQuestion, melding } from 'apps/back-office/src/mocks/data'
 import { additionalQuestions } from 'apps/back-office/src/mocks/data'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
@@ -17,7 +17,7 @@ import { server } from 'apps/back-office/src/mocks/node'
 const mockMeldingId = 88
 
 describe('getAdditionalQuestionsData', () => {
-  it('should return correct additional questions data', async () => {
+  it('returns correct additional text question data', async () => {
     const result = await getAdditionalQuestionsData(mockMeldingId)
 
     const additionalQuestionsData = additionalQuestions.map((item) => ({
@@ -29,7 +29,57 @@ describe('getAdditionalQuestionsData', () => {
     expect(result).toEqual({ data: additionalQuestionsData })
   })
 
-  it('should return an error message when error is returned', async () => {
+  it('returns correct additional time question data', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () => HttpResponse.json([additionalTimeQuestion])))
+
+    const result = await getAdditionalQuestionsData(mockMeldingId)
+
+    expect(result).toEqual({
+      data: [
+        {
+          description: additionalTimeQuestion.time,
+          key: additionalTimeQuestion.question.id.toString(),
+          term: additionalTimeQuestion.question.text,
+        },
+      ],
+    })
+  })
+
+  it('returns correct additional value_label question data', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () => HttpResponse.json([additionalValueLabelQuestion])),
+    )
+
+    const result = await getAdditionalQuestionsData(mockMeldingId)
+
+    expect(result).toEqual({
+      data: [
+        {
+          description: additionalValueLabelQuestion.values_and_labels
+            .map((valAndLabel) => valAndLabel.label)
+            .join(', '),
+          key: additionalValueLabelQuestion.question.id.toString(),
+          term: additionalValueLabelQuestion.question.text,
+        },
+      ],
+    })
+  })
+
+  it('returns an empty description for unsupported question types', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () =>
+        HttpResponse.json([{ question: { id: 3, text: 'Unsupported question type' }, type: 'unsupported_type' }]),
+      ),
+    )
+
+    const result = await getAdditionalQuestionsData(mockMeldingId)
+
+    expect(result).toEqual({
+      data: [{ description: '', key: '3', term: 'Unsupported question type' }],
+    })
+  })
+
+  it('returns an error message when error is returned', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -42,7 +92,7 @@ describe('getAdditionalQuestionsData', () => {
 })
 
 describe('getContactData', () => {
-  it('should return correct contact data', () => {
+  it('returns correct contact data', () => {
     const result = getContactData(melding, (key: string) => key)
 
     expect(result).toEqual([
@@ -59,7 +109,7 @@ describe('getContactData', () => {
     ])
   })
 
-  it('should return a fallback label when contact data does not exist', () => {
+  it('returns a fallback label when contact data does not exist', () => {
     const meldingDataWithoutContact = {
       ...melding,
       email: null,
@@ -84,7 +134,7 @@ describe('getContactData', () => {
 })
 
 describe('getLocationData', () => {
-  it('should return correct location data', () => {
+  it('returns correct location data', () => {
     const result = getLocationData(melding, (key: string) => key)
 
     expect(result).toEqual([
@@ -96,7 +146,7 @@ describe('getLocationData', () => {
     ])
   })
 
-  it('should return undefined when not all location data exists', () => {
+  it('returns undefined when not all location data exists', () => {
     const meldingDataWithoutPostalCode = {
       ...melding,
       postal_code: null,
@@ -109,7 +159,7 @@ describe('getLocationData', () => {
 })
 
 describe('getMeldingData', () => {
-  it('should return correct melding summary', () => {
+  it('returns correct melding summary', () => {
     const result = getMeldingData(melding, (key: string) => key)
 
     const { classification, created_at, id } = melding
@@ -137,7 +187,7 @@ describe('getMeldingData', () => {
     ])
   })
 
-  it('should return correct melding summary when classification is null', () => {
+  it('returns correct melding summary when classification is null', () => {
     const meldingDataWithoutClassification = {
       ...melding,
       classification: null,
