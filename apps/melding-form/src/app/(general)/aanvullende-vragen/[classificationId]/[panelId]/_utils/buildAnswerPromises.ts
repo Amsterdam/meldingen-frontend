@@ -8,11 +8,11 @@ const getCheckboxAnswerBody = (
   value: string[],
   valuesAndLabels?: ValueAndLabel[],
 ): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
-  const selected = valuesAndLabels?.filter((valAndLabel) => value.includes(valAndLabel.value))
+  const selectedValuesAndLabels = valuesAndLabels?.filter((valAndLabel) => value.includes(valAndLabel.value))
 
-  if (!selected || selected.length === 0) return undefined
+  if (!selectedValuesAndLabels || selectedValuesAndLabels.length === 0) return undefined
 
-  return { type: 'value_label', values_and_labels: selected }
+  return { type: 'value_label', values_and_labels: selectedValuesAndLabels }
 }
 
 const getValueLabelAnswerBody = (
