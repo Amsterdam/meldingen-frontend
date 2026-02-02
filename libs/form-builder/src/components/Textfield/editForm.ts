@@ -2,27 +2,6 @@
 // - https://github.com/formio/formio.js/blob/master/src/components/_classes/component/editForm
 // - https://github.com/formio/formio.js/tree/master/src/components/textfield/editForm
 
-const validationExamplesHTML = `
-<p>Validatie voorbeelden:</p>
-<ul>
-<li>Mag maximaal 100 tekens zijn:
-<pre><code>{"if": [
-  { "<=": [{ "length": [{ "var": "text" }]}, 100]},
-  true,
-  "De omschrijving van de melding mag maximaal 100 tekens zijn."
-]}
-</code></pre>
-</li>
-<li>Moet minimaal 3 tekens zijn:
-<pre><code>{"if": [
-  { ">=": [{ "length": [{ "var": "text" }]}, 3]},
-  true,
-  "De omschrijving van de melding moet minimaal 3 tekens zijn."
-]}
-</code></pre>
-</ul>
-`
-
 export const editForm = () => ({
   components: [
     {
@@ -79,26 +58,55 @@ export const editForm = () => ({
               weight: 11,
             },
             {
-              components: [
-                {
-                  content: validationExamplesHTML,
-                  tag: 'div',
-                  type: 'htmlelement',
-                },
-                {
-                  as: 'json',
-                  editor: 'ace',
-                  hideLabel: true,
-                  input: true,
-                  key: 'validate.json',
-                  rows: 5,
-                  type: 'textarea',
-                },
-              ],
-              key: 'json-validation-json',
-              title: 'JSONLogic Validation',
-              type: 'panel',
-              weight: 400,
+              calculateValue: (context: any) => {
+                // An empty string is only used on initial load for number inputs,
+                // so we use that here to load the value from the JSON validation only once on load.
+                if (context.data?.validate?.maxLength === '') {
+                  return context.data?.validate?.json?.if?.[0]?.['<=']?.[1] ?? ''
+                }
+
+                return context.data?.validate?.maxLength ?? ''
+              },
+              input: true,
+              key: 'validate.maxLength',
+              label: 'Max Length',
+              type: 'number',
+              weight: 12,
+            },
+            {
+              calculateValue: (context: any) => {
+                if (context.data?.validate?.maxLengthErrorMessage === undefined) {
+                  return context.data?.validate?.json?.if?.[2] ?? ''
+                }
+
+                return context.data?.validate?.maxLengthErrorMessage ?? ''
+              },
+              input: true,
+              key: 'validate.maxLengthErrorMessage',
+              label: 'Max Length Error Message',
+              type: 'textfield',
+              weight: 13,
+            },
+            {
+              as: 'json',
+              calculateValue: (context: any) => {
+                const maxLength = context.data?.validate?.maxLength
+                const maxLengthMessage = context.data?.validate?.maxLengthErrorMessage
+
+                if (maxLength) {
+                  return {
+                    if: [{ '<=': [{ length: [{ var: 'text' }] }, maxLength] }, true, maxLengthMessage || ''],
+                  }
+                }
+
+                return ''
+              },
+              editor: 'ace',
+              // hidden: true,
+              input: true,
+              key: 'validate.json',
+              rows: 5,
+              type: 'textarea',
             },
           ],
           key: 'validation',
