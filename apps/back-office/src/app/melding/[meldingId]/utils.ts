@@ -2,10 +2,25 @@ import { getFullNLAddress } from '../../utils'
 import {
   getAttachmentById,
   getMeldingByMeldingIdAnswers,
+  GetMeldingByMeldingIdAnswersMelderResponses,
   getMeldingByMeldingIdAttachments,
   MeldingOutput,
+  ValueLabelObject,
 } from 'apps/back-office/src/apiClientProxy'
 import { handleApiError } from 'apps/back-office/src/handleApiError'
+
+const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
+  switch (answer.type) {
+    case 'text':
+      return answer.text
+    case 'time':
+      return answer.time
+    case 'value_label':
+      return answer.values_and_labels.map((option: ValueLabelObject) => option.label).join(', ')
+    default:
+      return ''
+  }
+}
 
 export const getAdditionalQuestionsData = async (meldingId: number) => {
   const { data, error } = await getMeldingByMeldingIdAnswers({
@@ -16,8 +31,7 @@ export const getAdditionalQuestionsData = async (meldingId: number) => {
 
   return {
     data: data.map((answer) => ({
-      // TODO: only pass text answers for now. We should handle all answer types when the BE is done with their multiple answer types work.
-      description: answer.type === 'text' ? answer.text : '',
+      description: getDescription(answer),
       key: String(answer.question.id),
       term: answer.question.text,
     })),
