@@ -1,10 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 // Sourced from:
 // - https://github.com/formio/formio.js/tree/main/src/components/_classes/component/editForm
 // - https://github.com/formio/formio.js/tree/main/src/components/textfield/editForm
 
-const getMaxLengthValue = (context: any) => {
+type Context = {
+  data?: {
+    validate?: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      json?: any
+      maxLength?: number | ''
+      maxLengthErrorMessage?: string
+      minLength?: number | ''
+      minLengthErrorMessage?: string
+    }
+  }
+  self: {
+    pristine: boolean
+  }
+}
+
+const getMaxLengthValue = (context: Context) => {
   const validateObj = context.data?.validate
   // Form.io uses this 'pristine' value to determine if this input has been modified since load.
   if (context.self.pristine) {
@@ -13,7 +27,7 @@ const getMaxLengthValue = (context: any) => {
   return validateObj?.maxLength ?? ''
 }
 
-const getMaxLengthErrorMessageValue = (context: any, maxLengthValue: number | '') => {
+const getMaxLengthErrorMessageValue = (context: Context, maxLengthValue: number | '') => {
   const validateObj = context.data?.validate
   if (context.self.pristine && maxLengthValue !== '') {
     return validateObj?.json?.if?.[2] ?? ''
@@ -21,7 +35,7 @@ const getMaxLengthErrorMessageValue = (context: any, maxLengthValue: number | ''
   return validateObj?.maxLengthErrorMessage ?? ''
 }
 
-const getMinLengthValue = (context: any) => {
+const getMinLengthValue = (context: Context) => {
   const validateObj = context.data?.validate
   if (context.self.pristine) {
     const nestedRule = validateObj?.json?.if?.[1]?.if?.[0]?.['>=']?.[1]
@@ -31,7 +45,7 @@ const getMinLengthValue = (context: any) => {
   return validateObj?.minLength ?? ''
 }
 
-const getMinLengthErrorMessageValue = (context: any, minLengthValue: number | '') => {
+const getMinLengthErrorMessageValue = (context: Context, minLengthValue: number | '') => {
   const validateObj = context.data?.validate
   if (context.self.pristine && minLengthValue !== '') {
     const nestedRule = validateObj?.json?.if?.[1]?.if?.[2]
@@ -41,7 +55,7 @@ const getMinLengthErrorMessageValue = (context: any, minLengthValue: number | ''
   return validateObj?.minLengthErrorMessage ?? ''
 }
 
-const getJsonLogicValue = (context: any) => {
+const getJsonLogicValue = (context: Context) => {
   const validateObj = context.data?.validate
   const maxLength = validateObj?.maxLength as number | ''
   const maxLengthMessage = validateObj?.maxLengthErrorMessage as string | undefined
@@ -133,7 +147,7 @@ export const editForm = () => ({
               type: 'number',
             },
             {
-              calculateValue: (context: any) => getMaxLengthErrorMessageValue(context, getMaxLengthValue(context)),
+              calculateValue: (context: Context) => getMaxLengthErrorMessageValue(context, getMaxLengthValue(context)),
               input: true,
               key: 'validate.maxLengthErrorMessage',
               label: 'Max Length Error Message',
@@ -147,7 +161,7 @@ export const editForm = () => ({
               type: 'number',
             },
             {
-              calculateValue: (context: any) => getMinLengthErrorMessageValue(context, getMinLengthValue(context)),
+              calculateValue: (context: Context) => getMinLengthErrorMessageValue(context, getMinLengthValue(context)),
               input: true,
               key: 'validate.minLengthErrorMessage',
               label: 'Min Length Error Message',
@@ -157,7 +171,7 @@ export const editForm = () => ({
               as: 'json',
               calculateValue: getJsonLogicValue,
               editor: 'ace',
-              hidden: true,
+              hidden: true, // This field stores the data we send to the backend. It is calculated from the other validation fields, so we hide it from the user.
               input: true,
               key: 'validate.json',
               rows: 5,
