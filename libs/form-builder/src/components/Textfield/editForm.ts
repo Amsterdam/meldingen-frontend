@@ -157,7 +157,7 @@ export const editForm = () => ({
               as: 'json',
               calculateValue: getJsonLogicValue,
               editor: 'ace',
-              // hidden: true,
+              hidden: true,
               input: true,
               key: 'validate.json',
               rows: 5,
