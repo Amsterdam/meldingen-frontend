@@ -1,6 +1,6 @@
 // Sourced from:
-// - https://github.com/formio/formio.js/blob/master/src/components/_classes/component/editForm
-// - https://github.com/formio/formio.js/tree/master/src/components/textfield/editForm
+// - https://github.com/formio/formio.js/tree/main/src/components/_classes/component/editForm
+// - https://github.com/formio/formio.js/tree/main/src/components/textfield/editForm
 
 export const editForm = () => ({
   components: [
@@ -19,7 +19,6 @@ export const editForm = () => ({
               validate: {
                 required: true,
               },
-              weight: 0,
             },
             {
               as: 'html',
@@ -30,7 +29,6 @@ export const editForm = () => ({
               placeholder: 'Description for this field.',
               tooltip: 'The description is text that will appear below the input field.',
               type: 'textarea',
-              weight: 200,
               wysiwyg: {
                 isUseWorkerDisabled: true,
                 minLines: 3,
@@ -48,58 +46,115 @@ export const editForm = () => ({
               label: 'Required',
               tooltip: 'A required field must be filled in before the form can be submitted.',
               type: 'checkbox',
-              weight: 10,
             },
             {
               input: true,
               key: 'validate.required_error_message',
               label: 'Required error message',
               type: 'textfield',
-              weight: 11,
             },
             {
               calculateValue: (context: any) => {
-                // An empty string is only used on initial load for number inputs,
-                // so we use that here to load the value from the JSON validation only once on load.
-                if (context.data?.validate?.maxLength === '') {
-                  return context.data?.validate?.json?.if?.[0]?.['<=']?.[1] ?? ''
+                const validateObj = context.data?.validate
+
+                // Form.io uses this 'pristine' value to determine if this input has been modified since load.
+                if (context.self.pristine) {
+                  return validateObj?.json?.if?.[0]?.['<=']?.[1] ?? ''
                 }
 
-                return context.data?.validate?.maxLength ?? ''
+                return validateObj?.maxLength ?? ''
               },
               input: true,
               key: 'validate.maxLength',
               label: 'Max Length',
               type: 'number',
-              weight: 12,
             },
             {
               calculateValue: (context: any) => {
-                if (context.data?.validate?.maxLengthErrorMessage === undefined) {
-                  return context.data?.validate?.json?.if?.[2] ?? ''
+                const validateObj = context.data?.validate
+
+                // Form.io uses this 'pristine' value to determine if this input has been modified since load.
+                if (context.self.pristine) {
+                  return validateObj?.json?.if?.[2] ?? ''
                 }
 
-                return context.data?.validate?.maxLengthErrorMessage ?? ''
+                return validateObj?.maxLengthErrorMessage ?? ''
               },
               input: true,
               key: 'validate.maxLengthErrorMessage',
               label: 'Max Length Error Message',
               type: 'textfield',
-              weight: 13,
+            },
+            {
+              calculateValue: (context: any) => {
+                const validateObj = context.data?.validate
+
+                // Form.io uses this 'pristine' value to determine if this input has been modified since load.
+                if (context.self.pristine) {
+                  return validateObj?.json?.if?.[1]?.if?.[0]?.['>=']?.[1] ?? ''
+                }
+
+                return validateObj?.minLength ?? ''
+              },
+              input: true,
+              key: 'validate.minLength',
+              label: 'Min Length',
+              type: 'number',
+            },
+            {
+              calculateValue: (context: any) => {
+                const validateObj = context.data?.validate
+
+                // Form.io uses this 'pristine' value to determine if this input has been modified since load.
+                if (context.self.pristine) {
+                  return validateObj?.json?.if?.[1]?.if?.[2] ?? ''
+                }
+
+                return validateObj?.minLengthErrorMessage ?? ''
+              },
+              input: true,
+              key: 'validate.minLengthErrorMessage',
+              label: 'Min Length Error Message',
+              type: 'textfield',
             },
             {
               as: 'json',
               calculateValue: (context: any) => {
-                const maxLength = context.data?.validate?.maxLength
-                const maxLengthMessage = context.data?.validate?.maxLengthErrorMessage
+                const validateObj = context.data?.validate
 
-                if (maxLength) {
-                  return {
-                    if: [{ '<=': [{ length: [{ var: 'text' }] }, maxLength] }, true, maxLengthMessage || ''],
-                  }
+                const maxLength = validateObj?.maxLength as number | ''
+                const maxLengthMessage = validateObj?.maxLengthErrorMessage as string | undefined
+                const minLength = validateObj?.minLength as number | ''
+                const minLengthMessage = validateObj?.minLengthErrorMessage as string | undefined
+
+                const minLengthRule =
+                  minLength !== ''
+                    ? {
+                        if: [{ '>=': [{ length: [{ var: 'text' }] }, minLength] }, true, minLengthMessage || ''],
+                      }
+                    : null
+
+                const getMaxLengthRule = (nestedRule: { if: unknown[] } | null) =>
+                  maxLength !== ''
+                    ? {
+                        if: [
+                          { '<=': [{ length: [{ var: 'text' }] }, maxLength] },
+                          nestedRule ?? true,
+                          maxLengthMessage || '',
+                        ],
+                      }
+                    : null
+
+                switch (true) {
+                  case minLength !== '' && maxLength !== '':
+                    return getMaxLengthRule(minLengthRule)
+                  case minLength !== '':
+                    return minLengthRule
+                  case maxLength !== '':
+                    return getMaxLengthRule(null)
+                  default:
+                    return ''
                 }
-
-                return ''
               },
               editor: 'ace',
               // hidden: true,
