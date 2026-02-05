@@ -40,6 +40,19 @@ describe('getMaxLengthValue', () => {
     const result = getMaxLengthValue(context)
     expect(result).toBe('')
   })
+
+  it('returns empty string when json logic is not set', () => {
+    const context = {
+      data: {
+        validate: {
+          json: {},
+        },
+      },
+      self: { pristine: true },
+    }
+    const result = getMaxLengthValue(context)
+    expect(result).toBe('')
+  })
 })
 
 describe('getMaxLengthErrorMessageValue', () => {
@@ -75,6 +88,19 @@ describe('getMaxLengthErrorMessageValue', () => {
     const result = getMaxLengthErrorMessageValue(context, 50)
     expect(result).toBe('')
   })
+
+  it('returns empty string when json logic is not set', () => {
+    const context = {
+      data: {
+        validate: {
+          json: {},
+        },
+      },
+      self: { pristine: true },
+    }
+    const result = getMaxLengthErrorMessageValue(context, 100)
+    expect(result).toBe('')
+  })
 })
 
 describe('getMinLengthValue', () => {
@@ -87,12 +113,33 @@ describe('getMinLengthValue', () => {
     expect(result).toBe(10)
   })
 
-  it('returns minLength from json logic on first load', () => {
+  it('returns minLength from non-nested json logic on first load', () => {
     const context = {
       data: {
         validate: {
           json: {
             if: [{ '>=': [{ length: [{ var: 'text' }] }, 5] }, true, 'Min length not met'],
+          },
+        },
+      },
+      self: { pristine: true },
+    }
+    const result = getMinLengthValue(context)
+    expect(result).toBe(5)
+  })
+
+  it('returns minLength from nested json logic on first load', () => {
+    const context = {
+      data: {
+        validate: {
+          json: {
+            if: [
+              { '<=': [{ length: [{ var: 'text' }] }, 100] },
+              {
+                if: [{ '>=': [{ length: [{ var: 'text' }] }, 5] }, true, 'Min length not met'],
+              },
+              'Max length exceeded',
+            ],
           },
         },
       },
@@ -110,6 +157,19 @@ describe('getMinLengthValue', () => {
     const result = getMinLengthValue(context)
     expect(result).toBe('')
   })
+
+  it('returns empty string when json logic is not set', () => {
+    const context = {
+      data: {
+        validate: {
+          json: {},
+        },
+      },
+      self: { pristine: true },
+    }
+    const result = getMinLengthValue(context)
+    expect(result).toBe('')
+  })
 })
 
 describe('getMinLengthErrorMessageValue', () => {
@@ -122,7 +182,7 @@ describe('getMinLengthErrorMessageValue', () => {
     expect(result).toBe('Too short!')
   })
 
-  it('returns minLengthErrorMessage from json logic on first load', () => {
+  it('returns minLengthErrorMessage from non-nested json logic on first load', () => {
     const context = {
       data: {
         validate: {
@@ -137,12 +197,46 @@ describe('getMinLengthErrorMessageValue', () => {
     expect(result).toBe('Min length not met')
   })
 
-  it('returns empty string when minLengthErrorMessage is not set', () => {
+  it('returns minLengthErrorMessage from nested json logic on first load', () => {
+    const context = {
+      data: {
+        validate: {
+          json: {
+            if: [
+              { '<=': [{ length: [{ var: 'text' }] }, 100] },
+              {
+                if: [{ '>=': [{ length: [{ var: 'text' }] }, 5] }, true, 'Min length not met'],
+              },
+              'Max length exceeded',
+            ],
+          },
+        },
+      },
+      self: { pristine: true },
+    }
+    const result = getMinLengthErrorMessageValue(context, 5)
+    expect(result).toBe('Min length not met')
+  })
+
+  it('returns empty string when json logic is not set', () => {
+    const context = {
+      data: {
+        validate: {
+          json: {},
+        },
+      },
+      self: { pristine: true },
+    }
+    const result = getMinLengthErrorMessageValue(context, 5)
+    expect(result).toBe('')
+  })
+
+  it('returns minLengthErrorMessage when pristine but minLengthValue is empty', () => {
     const context = {
       data: { validate: { minLengthErrorMessage: undefined } },
-      self: { pristine: false },
+      self: { pristine: true },
     }
-    const result = getMinLengthErrorMessageValue(context, 10)
+    const result = getMinLengthErrorMessageValue(context, '')
     expect(result).toBe('')
   })
 })
@@ -176,6 +270,7 @@ describe('getJsonLogicValue', () => {
     const context = {
       data: {
         validate: {
+          maxLength: '' as const,
           minLength: 5,
           minLengthErrorMessage: 'Too short!',
         },
@@ -188,21 +283,47 @@ describe('getJsonLogicValue', () => {
     })
   })
 
-  // it('returns correct json logic for only maxLength set', () => {
-  //   const context = {
-  //     data: {
-  //       validate: {
-  //         maxLength: 10,
-  //         maxLengthErrorMessage: 'Too long!',
-  //       },
-  //     },
-  //     self: { pristine: false },
-  //   }
-  //   const result = getJsonLogicValue(context)
-  //   expect(result).toEqual({
-  //     if: [{ '<=': [{ length: [{ var: 'text' }] }, 10] }, true, 'Too long!'],
-  //   })
-  // })
+  it('returns correct json logic for only maxLength set', () => {
+    const context = {
+      data: {
+        validate: {
+          maxLength: 10,
+          maxLengthErrorMessage: 'Too long!',
+          minLength: '' as const,
+        },
+      },
+      self: { pristine: false },
+    }
+    const result = getJsonLogicValue(context)
+    expect(result).toEqual({
+      if: [{ '<=': [{ length: [{ var: 'text' }] }, 10] }, true, 'Too long!'],
+    })
+  })
+
+  it('returns empty string when neither minLength nor maxLength are set', () => {
+    const context = {
+      data: {
+        validate: {
+          maxLength: '' as const,
+          minLength: '' as const,
+        },
+      },
+      self: { pristine: false },
+    }
+    const result = getJsonLogicValue(context)
+    expect(result).toBe('')
+  })
+
+  it('uses empty string as maxLengthMessage when not provided', () => {
+    const context = {
+      data: { validate: { maxLength: 5, minLength: '' as const } },
+      self: { pristine: false },
+    }
+    const result = getJsonLogicValue(context)
+    expect(result).toEqual({
+      if: [{ '<=': [{ length: [{ var: 'text' }] }, 5] }, true, ''],
+    })
+  })
 })
 
 describe('editForm', () => {
@@ -241,5 +362,35 @@ describe('editForm', () => {
       'validate.minLengthErrorMessage',
       'validate.json', // This is a hidden field which stores the JSON logic
     ])
+  })
+
+  it('calculates the value for minLengthErrorMessage correctly', () => {
+    const form = editForm()
+    const validationTab = form.components[0].components[1]
+    const minLengthErrorMessageField = validationTab.components.find((c) => c.key === 'validate.minLengthErrorMessage')
+
+    const context = {
+      data: { validate: { minLengthErrorMessage: 'Too short!' } },
+      self: { pristine: false },
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = (minLengthErrorMessageField as any)?.calculateValue?.(context)
+    expect(result).toBe('Too short!')
+  })
+
+  it('calculates the value for maxLengthErrorMessage correctly', () => {
+    const form = editForm()
+    const validationTab = form.components[0].components[1]
+    const maxLengthErrorMessageField = validationTab.components.find((c) => c.key === 'validate.maxLengthErrorMessage')
+
+    const context = {
+      data: { validate: { maxLengthErrorMessage: 'Too long!' } },
+      self: { pristine: false },
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = (maxLengthErrorMessageField as any)?.calculateValue?.(context)
+    expect(result).toBe('Too long!')
   })
 })

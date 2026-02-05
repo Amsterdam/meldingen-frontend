@@ -62,19 +62,13 @@ export const getJsonLogicValue = (context: Context) => {
   const minLength = validateObj?.minLength as number | ''
   const minLengthMessage = validateObj?.minLengthErrorMessage as string | undefined
 
-  const minLengthRule =
-    minLength !== ''
-      ? {
-          if: [{ '>=': [{ length: [{ var: 'text' }] }, minLength] }, true, minLengthMessage || ''],
-        }
-      : null
+  const minLengthRule = {
+    if: [{ '>=': [{ length: [{ var: 'text' }] }, minLength] }, true, minLengthMessage || ''],
+  }
 
-  const getMaxLengthRule = (nestedRule: { if: unknown[] } | null) =>
-    maxLength !== ''
-      ? {
-          if: [{ '<=': [{ length: [{ var: 'text' }] }, maxLength] }, nestedRule ?? true, maxLengthMessage || ''],
-        }
-      : null
+  const getMaxLengthRule = (nestedRule: { if: unknown[] } | null) => ({
+    if: [{ '<=': [{ length: [{ var: 'text' }] }, maxLength] }, nestedRule ?? true, maxLengthMessage || ''],
+  })
 
   if (minLength !== '' && maxLength !== '') {
     return getMaxLengthRule(minLengthRule)
