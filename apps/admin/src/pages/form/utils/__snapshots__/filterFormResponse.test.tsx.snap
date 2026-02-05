@@ -18,7 +18,24 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           "label": "Text Field",
           "type": "textfield",
           "validate": {
-            "json": null,
+            "json": {
+              "if": [
+                {
+                  ">=": [
+                    {
+                      "length": [
+                        {
+                          "var": "text",
+                        },
+                      ],
+                    },
+                    "",
+                  ],
+                },
+                true,
+                "",
+              ],
+            },
             "required": false,
           },
         },
@@ -36,7 +53,24 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           "maxCharCount": null,
           "type": "textarea",
           "validate": {
-            "json": null,
+            "json": {
+              "if": [
+                {
+                  ">=": [
+                    {
+                      "length": [
+                        {
+                          "var": "text",
+                        },
+                      ],
+                    },
+                    "",
+                  ],
+                },
+                true,
+                "",
+              ],
+            },
             "required": false,
           },
         },
@@ -153,11 +187,21 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           "type": "textfield",
           "validate": {
             "json": {
-              "==": [
+              "if": [
                 {
-                  "var": "text",
+                  ">=": [
+                    {
+                      "length": [
+                        {
+                          "var": "text",
+                        },
+                      ],
+                    },
+                    "",
+                  ],
                 },
-                "Bob",
+                true,
+                "",
               ],
             },
             "required": true,
@@ -178,11 +222,21 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           "type": "textarea",
           "validate": {
             "json": {
-              "==": [
+              "if": [
                 {
-                  "var": "text",
+                  ">=": [
+                    {
+                      "length": [
+                        {
+                          "var": "text",
+                        },
+                      ],
+                    },
+                    "",
+                  ],
                 },
-                "Bob",
+                true,
+                "",
               ],
             },
             "required": true,

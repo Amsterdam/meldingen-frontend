@@ -3,27 +3,6 @@
 // - https://github.com/formio/formio.js/blob/master/src/components/textarea/editForm
 // - https://github.com/formio/formio.js/blob/master/src/components/textfield/editForm/TextField.edit.display.js
 
-const validationExamplesHTML = `
-<p>Validatie voorbeelden:</p>
-<ul>
-<li>Mag maximaal 100 tekens zijn:
-<pre><code>{"if": [
-  { "<=": [{ "length": [{ "var": "text" }]}, 100]},
-  true,
-  "De omschrijving van de melding mag maximaal 100 tekens zijn."
-]}
-</code></pre>
-</li>
-<li>Moet minimaal 3 tekens zijn:
-<pre><code>{"if": [
-  { ">=": [{ "length": [{ "var": "text" }]}, 3]},
-  true,
-  "De omschrijving van de melding moet minimaal 3 tekens zijn."
-]}
-</code></pre>
-</ul>
-`
-
 export const editForm = () => ({
   components: [
     {
@@ -57,24 +36,6 @@ export const editForm = () => ({
                 isUseWorkerDisabled: true,
                 minLines: 3,
               },
-            },
-            {
-              input: true,
-              key: 'maxCharCount',
-              label: 'Max character count',
-              tooltip:
-                'Show a live count of the number of characters with a maximum amount of characters. Leave empty when the character counter should not be shown.',
-              type: 'textfield',
-              validate: {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                custom: (context: any) => {
-                  if (!context.data.maxCharCount) {
-                    context.data.maxCharCount = null
-                  }
-                  return true
-                },
-              },
-              weight: 1202,
             },
             {
               conditional: {
@@ -111,26 +72,32 @@ export const editForm = () => ({
               weight: 11,
             },
             {
-              components: [
-                {
-                  content: validationExamplesHTML,
-                  tag: 'div',
-                  type: 'htmlelement',
-                },
-                {
-                  as: 'json',
-                  editor: 'ace',
-                  hideLabel: true,
-                  input: true,
-                  key: 'validate.json',
-                  rows: 5,
-                  type: 'textarea',
-                },
-              ],
-              key: 'json-validation-json',
-              title: 'JSONLogic Validation',
-              type: 'panel',
-              weight: 400,
+              input: true,
+              key: 'validate.minLength',
+              label: 'Minimun characters',
+              type: 'number',
+              weight: 12,
+            },
+            {
+              input: true,
+              key: 'validate.minLengthErrorMessage',
+              label: 'Minimun characters error message',
+              type: 'textfield',
+              weight: 13,
+            },
+            {
+              input: true,
+              key: 'validate.maxLength',
+              label: 'Maximum characters',
+              type: 'number',
+              weight: 14,
+            },
+            {
+              input: true,
+              key: 'validate.maxLengthErrorMessage',
+              label: 'Maximum characters error message',
+              type: 'textfield',
+              weight: 15,
             },
           ],
           key: 'validation',
