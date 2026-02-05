@@ -18,7 +18,7 @@ type Context = {
   }
 }
 
-const getMaxLengthValue = (context: Context) => {
+export const getMaxLengthValue = (context: Context) => {
   const validateObj = context.data?.validate
   // Form.io uses this 'pristine' value to determine if this input has been modified since load.
   if (context.self.pristine) {
@@ -27,7 +27,7 @@ const getMaxLengthValue = (context: Context) => {
   return validateObj?.maxLength ?? ''
 }
 
-const getMaxLengthErrorMessageValue = (context: Context, maxLengthValue: number | '') => {
+export const getMaxLengthErrorMessageValue = (context: Context, maxLengthValue: number | '') => {
   const validateObj = context.data?.validate
   if (context.self.pristine && maxLengthValue !== '') {
     return validateObj?.json?.if?.[2] ?? ''
@@ -35,7 +35,7 @@ const getMaxLengthErrorMessageValue = (context: Context, maxLengthValue: number 
   return validateObj?.maxLengthErrorMessage ?? ''
 }
 
-const getMinLengthValue = (context: Context) => {
+export const getMinLengthValue = (context: Context) => {
   const validateObj = context.data?.validate
   if (context.self.pristine) {
     const nestedRule = validateObj?.json?.if?.[1]?.if?.[0]?.['>=']?.[1]
@@ -45,7 +45,7 @@ const getMinLengthValue = (context: Context) => {
   return validateObj?.minLength ?? ''
 }
 
-const getMinLengthErrorMessageValue = (context: Context, minLengthValue: number | '') => {
+export const getMinLengthErrorMessageValue = (context: Context, minLengthValue: number | '') => {
   const validateObj = context.data?.validate
   if (context.self.pristine && minLengthValue !== '') {
     const nestedRule = validateObj?.json?.if?.[1]?.if?.[2]
@@ -55,7 +55,7 @@ const getMinLengthErrorMessageValue = (context: Context, minLengthValue: number 
   return validateObj?.minLengthErrorMessage ?? ''
 }
 
-const getJsonLogicValue = (context: Context) => {
+export const getJsonLogicValue = (context: Context) => {
   const validateObj = context.data?.validate
   const maxLength = validateObj?.maxLength as number | ''
   const maxLengthMessage = validateObj?.maxLengthErrorMessage as string | undefined
