@@ -401,5 +401,9 @@
   "{{ labels }} or {{ lastLabel }}": "{{ labels }} of {{ lastLabel }}",
   "Note that any family member without a BSN will not be displayed.": "Let op, gezinsleden zonder BSN worden niet getoond.",
   "invalidDatetime": "Ongeldige datum/tijd",
-  "Required error message": "Foutmelding voor verplichte vraag"
+  "Required error message": "Foutmelding voor verplichte vraag",
+  "Max Length": "Maximaal aantal tekens",
+  "Max Length Error Message": "Foutmelding voor maximaal aantal tekens",
+  "Min Length": "Minimaal aantal tekens",
+  "Min Length Error Message": "Foutmelding voor minimaal aantal tekens"
 }

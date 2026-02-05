@@ -1,7 +1,29 @@
-import { editForm } from './editForm'
+import { editForm, getMaxCharCountValue } from './editForm'
+
+describe('getMaxCharCountValue', () => {
+  it('returns the maxLength from validate object', () => {
+    const context = {
+      data: { validate: { maxLength: 150 } },
+      self: { pristine: false },
+    }
+
+    const result = getMaxCharCountValue(context)
+    expect(result).toBe(150)
+  })
+
+  it('returns empty string if maxLength is not set', () => {
+    const context = {
+      data: { validate: {} },
+      self: { pristine: false },
+    }
+
+    const result = getMaxCharCountValue(context)
+    expect(result).toBe('')
+  })
+})
 
 describe('editForm', () => {
-  it('should return an object with correct tabs and inputs', () => {
+  it('returns an object with correct tabs and inputs', () => {
     const form = editForm()
 
     // Check top-level structure
@@ -23,13 +45,49 @@ describe('editForm', () => {
     // Check for the right input fields
     const displayKeys = displayTab?.components.map((c) => c.key)
     expect(displayKeys).toContain('label')
-    expect(displayKeys).toContain('maxCharCount')
     expect(displayKeys).toContain('description')
-    expect(displayKeys).toContain('autoExpand')
+    expect(displayKeys).toContain('maxCharCount') // This is a hidden field which calculates the max char count based on the validate.maxLength value
 
     const validationKeys = validationTab?.components.map((c) => c.key)
-    expect(validationKeys).toContain('validate.required')
-    expect(validationKeys).toContain('validate.required_error_message')
-    expect(validationKeys).toContain('json-validation-json')
+
+    expect(validationKeys).toStrictEqual([
+      'validate.required',
+      'validate.required_error_message',
+      'validate.maxLength',
+      'validate.maxLengthErrorMessage',
+      'validate.minLength',
+      'validate.minLengthErrorMessage',
+      'validate.json', // This is a hidden field which stores the JSON logic
+    ])
+  })
+
+  it('calculates the value for minLengthErrorMessage correctly', () => {
+    const form = editForm()
+    const validationTab = form.components[0].components[1]
+    const minLengthErrorMessageField = validationTab.components.find((c) => c.key === 'validate.minLengthErrorMessage')
+
+    const context = {
+      data: { validate: { minLengthErrorMessage: 'Too short!' } },
+      self: { pristine: false },
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = (minLengthErrorMessageField as any)?.calculateValue?.(context)
+    expect(result).toBe('Too short!')
+  })
+
+  it('calculates the value for maxLengthErrorMessage correctly', () => {
+    const form = editForm()
+    const validationTab = form.components[0].components[1]
+    const maxLengthErrorMessageField = validationTab.components.find((c) => c.key === 'validate.maxLengthErrorMessage')
+
+    const context = {
+      data: { validate: { maxLengthErrorMessage: 'Too long!' } },
+      self: { pristine: false },
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = (maxLengthErrorMessageField as any)?.calculateValue?.(context)
+    expect(result).toBe('Too long!')
   })
 })
