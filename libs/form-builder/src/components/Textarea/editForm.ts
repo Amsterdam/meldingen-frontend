@@ -17,8 +17,6 @@ export const getMaxCharCountValue = (context: Context) => {
   return validateObj?.maxLength ?? ''
 }
 
-// The back end expects a null value when there is no max char count, but the form builder sets it to an empty string when the value is cleared.
-// Validate runs last on save, so we need to set it to null there.
 export const convertEmptyStringToNull = (context: { data?: { maxCharCount?: number | '' | null } }) => {
   if (!context.data?.maxCharCount) {
     context.data!.maxCharCount = null
@@ -64,6 +62,8 @@ export const editForm = () => ({
               input: true,
               key: 'maxCharCount',
               type: 'textfield',
+              // The back end expects a null value when there is no max char count, but the form builder sets it to an empty string when the value is cleared.
+              // Validate runs last on save, so we need to set it to null here.
               validate: { custom: convertEmptyStringToNull },
               validateWhenHidden: true,
             },
