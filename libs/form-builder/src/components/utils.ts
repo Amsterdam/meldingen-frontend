@@ -39,17 +39,25 @@ export const getMinLengthErrorMessageValue = (context: Context, minLengthValue: 
 
 export const getJsonLogicValue = (context: Context) => {
   const validateObj = context.data?.validate
-  const maxLength = validateObj?.maxLength as number | ''
-  const maxLengthMessage = validateObj?.maxLengthErrorMessage as string | undefined
-  const minLength = validateObj?.minLength as number | ''
-  const minLengthMessage = validateObj?.minLengthErrorMessage as string | undefined
+  const rawMaxLength = validateObj?.maxLength
+  const rawMinLength = validateObj?.minLength
+  const rawMaxLengthMessage = validateObj?.maxLengthErrorMessage
+  const rawMinLengthMessage = validateObj?.minLengthErrorMessage
+
+  const maxLength: number | '' =
+    typeof rawMaxLength === 'number' && Number.isFinite(rawMaxLength) ? rawMaxLength : ''
+  const minLength: number | '' =
+    typeof rawMinLength === 'number' && Number.isFinite(rawMinLength) ? rawMinLength : ''
+
+  const maxLengthMessage = typeof rawMaxLengthMessage === 'string' ? rawMaxLengthMessage : ''
+  const minLengthMessage = typeof rawMinLengthMessage === 'string' ? rawMinLengthMessage : ''
 
   const minLengthRule = {
-    if: [{ '>=': [{ length: [{ var: 'text' }] }, minLength] }, true, minLengthMessage || ''],
+    if: [{ '>=': [{ length: [{ var: 'text' }] }, minLength] }, true, minLengthMessage],
   }
 
   const getMaxLengthRule = (nestedRule: { if: unknown[] } | null) => ({
-    if: [{ '<=': [{ length: [{ var: 'text' }] }, maxLength] }, nestedRule ?? true, maxLengthMessage || ''],
+    if: [{ '<=': [{ length: [{ var: 'text' }] }, maxLength] }, nestedRule ?? true, maxLengthMessage],
   })
 
   if (minLength !== '' && maxLength !== '') {
