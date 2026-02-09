@@ -44,10 +44,8 @@ export const getJsonLogicValue = (context: Context) => {
   const rawMaxLengthMessage = validateObj?.maxLengthErrorMessage
   const rawMinLengthMessage = validateObj?.minLengthErrorMessage
 
-  const maxLength: number | '' =
-    typeof rawMaxLength === 'number' && Number.isFinite(rawMaxLength) ? rawMaxLength : ''
-  const minLength: number | '' =
-    typeof rawMinLength === 'number' && Number.isFinite(rawMinLength) ? rawMinLength : ''
+  const maxLength: number | '' = typeof rawMaxLength === 'number' && Number.isFinite(rawMaxLength) ? rawMaxLength : ''
+  const minLength: number | '' = typeof rawMinLength === 'number' && Number.isFinite(rawMinLength) ? rawMinLength : ''
 
   const maxLengthMessage = typeof rawMaxLengthMessage === 'string' ? rawMaxLengthMessage : ''
   const minLengthMessage = typeof rawMinLengthMessage === 'string' ? rawMinLengthMessage : ''
