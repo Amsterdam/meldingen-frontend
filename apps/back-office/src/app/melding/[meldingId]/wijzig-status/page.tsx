@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { ChangeState } from './ChangeState'
-import { getMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
+import { getMeldingByMeldingId, getMeldingByMeldingIdNextPossibleStates } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('change-state')
@@ -26,5 +26,20 @@ export default async ({ params }: Params) => {
     return t('melding-not-found')
   }
 
-  return <ChangeState meldingId={meldingId} meldingState={data.state} publicId={data.public_id} />
+  const { data: possibleStates, error: possibleStatesError } = await getMeldingByMeldingIdNextPossibleStates({
+    path: { melding_id: meldingId },
+  })
+
+  if (possibleStatesError) {
+    return 'possible-states-not-found' // TODO
+  }
+
+  return (
+    <ChangeState
+      meldingId={meldingId}
+      meldingState={data.state}
+      possibleStates={possibleStates.states}
+      publicId={data.public_id}
+    />
+  )
 }

@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState } from 'react'
 
+import { MeldingOutput, StatesOutput } from '@meldingen/api-client'
 import { SubmitButton } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
@@ -13,13 +14,14 @@ import { isValidMeldingState } from './utils'
 
 type Props = {
   meldingId: number
-  meldingState: string
-  publicId: string
+  meldingState: MeldingOutput['state']
+  possibleStates: StatesOutput['states']
+  publicId: MeldingOutput['public_id']
 }
 
 const initialState: { errorMessage?: string } = {}
 
-export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
+export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId }: Props) => {
   const postChangeStateFormWithMeldingId = postChangeStateForm.bind(null, { meldingId })
   const [{ errorMessage }, formAction] = useActionState(postChangeStateFormWithMeldingId, initialState)
 
@@ -39,9 +41,12 @@ export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
           <Field className="ams-mb-l">
             <Label htmlFor="state">{t('change-state.label')}</Label>
             <Select defaultValue={isValidMeldingState(meldingState) ? meldingState : undefined} id="state" name="state">
-              <Select.Option value="">{t('change-state.options.default')}</Select.Option>
-              <Select.Option value="processing">{t('shared.state.processing')}</Select.Option>
-              <Select.Option value="completed">{t('shared.state.completed')}</Select.Option>
+              <Select.Option value={meldingState}>{t(`shared.state.${meldingState}`)}</Select.Option>
+              {possibleStates.map((state) => (
+                <Select.Option key={state} value={state}>
+                  {t(`shared.state.${state}`)}
+                </Select.Option>
+              ))}
             </Select>
           </Field>
           <SubmitButton>{t('change-state.submit-button')}</SubmitButton>
