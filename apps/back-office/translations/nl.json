@@ -56,26 +56,16 @@
     "back-link": "Meldingdetails",
     "title": "Wijzig status melding {publicId}",
     "label": "Wijzig status",
-    "options": {
-      "default": "Kies een status"
-    },
     "submit-button": "Wijzig status",
     "errors": {
-      "invalid-state": "Ongeldige status",
-      "melding-not-found": "An error occurred"
+      "invalid-state": "Ongeldige status"
     }
   },
   "shared": {
     "state": {
       "processing": "In behandeling",
       "completed": "Afgehandeld",
-      "submitted": "Gemeld",
-      "questions_answered": "Aanvullende vragen beantwoord",
-      "new": "Melding beschrijving toegevoegd",
-      "classified": "Melding geclassificeerd",
-      "contact_info_added": "Contactgegevens ingevuld",
-      "location_submitted": "Locatie toegevoegd",
-      "attachments_added": "Bijlagen toegevoegd"
+      "submitted": "Gemeld"
     }
   }
 }

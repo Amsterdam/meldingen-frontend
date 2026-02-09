@@ -20,19 +20,13 @@ export default async ({ params }: Params) => {
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
-  const t = await getTranslations('change-state.errors')
-
-  if (error) {
-    return t('melding-not-found')
-  }
+  if (error) throw new Error('Failed to fetch melding data.')
 
   const { data: possibleStates, error: possibleStatesError } = await getMeldingByMeldingIdNextPossibleStates({
     path: { melding_id: meldingId },
   })
 
-  if (possibleStatesError) {
-    return 'possible-states-not-found' // TODO
-  }
+  if (possibleStatesError) throw new Error('Failed to fetch next possible states.')
 
   return (
     <ChangeState
