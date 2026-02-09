@@ -54,7 +54,7 @@ export const postChangeStateForm = async ({ meldingId }: MeldingIdParam, _: unkn
 
   if (handler) {
     const { error } = await handler(meldingId)
-    if (error) return { systemError: error }
+    if (error) return { meldingStateFromAction: state, systemError: error }
   }
 
   return redirect(`/melding/${meldingId}`)

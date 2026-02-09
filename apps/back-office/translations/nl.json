@@ -58,7 +58,10 @@
     "label": "Wijzig status",
     "submit-button": "Wijzig status",
     "errors": {
-      "invalid-state": "Ongeldige status"
+      "unable-to-change-state": {
+        "heading": "De status kan niet worden gewijzigd",
+        "description": "Het kan zijn dat de status al is aangepast door een andere behandelaar."
+      }
     }
   },
   "shared": {
