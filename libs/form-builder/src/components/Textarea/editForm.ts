@@ -61,7 +61,7 @@ export const editForm = () => ({
               hidden: true, // This field stores the max character count. It is calculated from the validate.maxLength value
               input: true,
               key: 'maxCharCount',
-              type: 'textfield',
+              type: 'number',
               // The back end expects a null value when there is no max char count, but the form builder sets it to an empty string when the value is cleared.
               // Validate runs last on save, so we need to set it to null here.
               validate: { custom: convertEmptyStringToNull },
