@@ -1,4 +1,4 @@
-import { editForm, getMaxCharCountValue } from './editForm'
+import { convertEmptyStringToNull, editForm, getMaxCharCountValue } from './editForm'
 
 describe('getMaxCharCountValue', () => {
   it('returns the maxLength from validate object', () => {
@@ -19,6 +19,28 @@ describe('getMaxCharCountValue', () => {
 
     const result = getMaxCharCountValue(context)
     expect(result).toBe('')
+  })
+})
+
+describe('convertEmptyStringToNull', () => {
+  it('sets maxCharCount to null if it is an empty string', () => {
+    const context = {
+      data: { maxCharCount: '' as const },
+    }
+
+    const result = convertEmptyStringToNull(context)
+    expect(result).toBe(true)
+    expect(context.data.maxCharCount).toBeNull()
+  })
+
+  it('does not change maxCharCount if it has a valid number', () => {
+    const context = {
+      data: { maxCharCount: 200 },
+    }
+
+    const result = convertEmptyStringToNull(context)
+    expect(result).toBe(true)
+    expect(context.data.maxCharCount).toBe(200)
   })
 })
 
