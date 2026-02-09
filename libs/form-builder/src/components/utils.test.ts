@@ -7,7 +7,7 @@ import {
 } from './utils'
 
 describe('getMaxLengthValue', () => {
-  it('returns maxLength rule when maxLength is set', () => {
+  it('returns maxLength value when maxLength is set', () => {
     const context = {
       data: { validate: { maxLength: 50 } },
       self: { pristine: false },
@@ -103,7 +103,7 @@ describe('getMaxLengthErrorMessageValue', () => {
 })
 
 describe('getMinLengthValue', () => {
-  it('returns minLength rule when minLength is set', () => {
+  it('returns minLength value when minLength is set', () => {
     const context = {
       data: { validate: { minLength: 10 } },
       self: { pristine: false },
@@ -230,7 +230,7 @@ describe('getMinLengthErrorMessageValue', () => {
     expect(result).toBe('')
   })
 
-  it('returns minLengthErrorMessage when pristine but minLengthValue is empty', () => {
+  it('returns empty string on first load when minLengthValue is empty string', () => {
     const context = {
       data: { validate: { minLengthErrorMessage: undefined } },
       self: { pristine: true },
