@@ -1,16 +1,15 @@
 'use client'
 
-import { Field, Grid, Heading, Label, Paragraph, Select } from '@amsterdam/design-system-react'
+import { Field, Grid, Heading, Label, Select } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import { MeldingOutput, StatesOutput } from '@meldingen/api-client'
 import { SubmitButton } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
 import { postChangeStateForm } from './actions'
-import { isValidMeldingState } from './utils'
 
 type Props = {
   meldingId: number
@@ -19,13 +18,21 @@ type Props = {
   publicId: MeldingOutput['public_id']
 }
 
-const initialState: { errorMessage?: string } = {}
+const initialState: { systemError?: unknown } = {}
 
 export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId }: Props) => {
   const postChangeStateFormWithMeldingId = postChangeStateForm.bind(null, { meldingId })
-  const [{ errorMessage }, formAction] = useActionState(postChangeStateFormWithMeldingId, initialState)
+  const [{ systemError }, formAction] = useActionState(postChangeStateFormWithMeldingId, initialState)
 
   const t = useTranslations()
+
+  useEffect(() => {
+    if (systemError) {
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(systemError)
+    }
+  }, [systemError])
 
   return (
     <Grid paddingBottom="2x-large" paddingTop="x-large">
@@ -36,11 +43,11 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
         <Heading className="ams-mb-l" level={1}>
           {t('change-state.title', { publicId })}
         </Heading>
-        {errorMessage && <Paragraph>{errorMessage}</Paragraph>}
+        {/* {errorMessage && <Paragraph>{errorMessage}</Paragraph>} */}
         <Form action={formAction} noValidate>
           <Field className="ams-mb-l">
             <Label htmlFor="state">{t('change-state.label')}</Label>
-            <Select defaultValue={isValidMeldingState(meldingState) ? meldingState : undefined} id="state" name="state">
+            <Select defaultValue={meldingState} id="state" name="state">
               <Select.Option value={meldingState}>{t(`shared.state.${meldingState}`)}</Select.Option>
               {possibleStates.map((state) => (
                 <Select.Option key={state} value={state}>
