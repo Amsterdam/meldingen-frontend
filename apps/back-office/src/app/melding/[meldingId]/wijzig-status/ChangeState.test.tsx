@@ -44,7 +44,7 @@ describe('ChangeState', () => {
     expect(select).toHaveValue('processing')
   })
 
-  it('display a generic error message when the action returns an error with type invalid_state', () => {
+  it('displays a generic error message when the action returns an error with type invalid_state', () => {
     ;(useActionState as Mock).mockReturnValue([{ error: { type: 'invalid_state' } }, vi.fn()])
 
     render(<ChangeState {...defaultProps} />)
@@ -53,7 +53,7 @@ describe('ChangeState', () => {
     expect(screen.getByText('errors.generic.description')).toBeInTheDocument()
   })
 
-  it('display a generic error message when the action returns an error with type state_change_failed', () => {
+  it('displays a generic error message when the action returns an error with type state_change_failed', () => {
     ;(useActionState as Mock).mockReturnValue([{ error: { type: 'state_change_failed' } }, vi.fn()])
 
     render(<ChangeState {...defaultProps} />)

@@ -64,11 +64,11 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
       console.error(error.message)
-    }
 
-    // Set focus on Alert when there is an error
-    if (error && errorAlertRef.current) {
-      errorAlertRef.current.focus()
+      // Set focus on Alert when there is an error
+      if (errorAlertRef.current) {
+        errorAlertRef.current.focus()
+      }
     }
   }, [error])
 
