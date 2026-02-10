@@ -66,13 +66,13 @@
   },
   "shared": {
     "state": {
-      "cancel": "Geannuleerd",
-      "complete": "Afgehandeld",
-      "plan": "Ingepland",
-      "process": "In behandeling",
-      "reopen": "Heropend",
-      "request_processing": "In afwachting van behandeling",
-      "request_reopen": "Verzoek tot heropenen",
+      "awaiting_processing": "In afwachting van behandeling",
+      "canceled": "Geannuleerd",
+      "completed": "Afgehandeld",
+      "planned": "Ingepland",
+      "processing": "In behandeling",
+      "reopen_requested": "Verzoek tot heropenen",
+      "reopened": "Heropend",
       "submitted": "Gemeld"
     }
   }

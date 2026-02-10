@@ -13,13 +13,13 @@ import {
 } from 'apps/back-office/src/apiClientProxy'
 
 const STATES = {
-  CANCEL: 'cancel',
-  COMPLETE: 'complete',
-  PLAN: 'plan',
-  PROCESS: 'process',
-  REOPEN: 'reopen',
-  REQUEST_PROCESSING: 'request_processing',
-  REQUEST_REOPEN: 'request_reopen',
+  AWAITING_PROCESSING: 'awaiting_processing',
+  CANCELED: 'canceled',
+  COMPLETED: 'completed',
+  PLANNED: 'planned',
+  PROCESSING: 'processing',
+  REOPEN_REQUESTED: 'reopen_requested',
+  REOPENED: 'reopened',
 } as const
 
 type StateType = (typeof STATES)[keyof typeof STATES]
@@ -32,18 +32,19 @@ const extractStateFromFormData = (formData: FormData): StateType => {
 type StateHandler = (meldingId: number) => Promise<{ error?: unknown }>
 
 const stateHandlers: Record<StateType, StateHandler> = {
-  [STATES.CANCEL]: async (meldingId) => putMeldingByMeldingIdCancel({ path: { melding_id: meldingId } }),
-  [STATES.COMPLETE]: async (meldingId) =>
+  [STATES.AWAITING_PROCESSING]: async (meldingId) =>
+    putMeldingByMeldingIdRequestProcessing({ path: { melding_id: meldingId } }),
+  [STATES.CANCELED]: async (meldingId) => putMeldingByMeldingIdCancel({ path: { melding_id: meldingId } }),
+  [STATES.COMPLETED]: async (meldingId) =>
     putMeldingByMeldingIdComplete({
       body: { mail_body: 'Dit is de body van de melding afgehandeld email.' },
       path: { melding_id: meldingId },
     }),
-  [STATES.PLAN]: async (meldingId) => putMeldingByMeldingIdPlan({ path: { melding_id: meldingId } }),
-  [STATES.PROCESS]: async (meldingId) => putMeldingByMeldingIdProcess({ path: { melding_id: meldingId } }),
-  [STATES.REOPEN]: async (meldingId) => putMeldingByMeldingIdReopen({ path: { melding_id: meldingId } }),
-  [STATES.REQUEST_PROCESSING]: async (meldingId) =>
-    putMeldingByMeldingIdRequestProcessing({ path: { melding_id: meldingId } }),
-  [STATES.REQUEST_REOPEN]: async (meldingId) => putMeldingByMeldingIdRequestReopen({ path: { melding_id: meldingId } }),
+  [STATES.PLANNED]: async (meldingId) => putMeldingByMeldingIdPlan({ path: { melding_id: meldingId } }),
+  [STATES.PROCESSING]: async (meldingId) => putMeldingByMeldingIdProcess({ path: { melding_id: meldingId } }),
+  [STATES.REOPEN_REQUESTED]: async (meldingId) =>
+    putMeldingByMeldingIdRequestReopen({ path: { melding_id: meldingId } }),
+  [STATES.REOPENED]: async (meldingId) => putMeldingByMeldingIdReopen({ path: { melding_id: meldingId } }),
 }
 
 type MeldingIdParam = { meldingId: number }
