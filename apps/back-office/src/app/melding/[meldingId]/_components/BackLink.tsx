@@ -1,18 +1,16 @@
 import type { AnchorHTMLAttributes } from 'react'
 
-import { clsx } from 'clsx'
+import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons'
 import NextLink from 'next/link'
 
-import { Link } from '@meldingen/ui'
-
-import styles from './BackLink.module.css'
+import { StandaloneLink } from '@meldingen/ui'
 
 type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & {
   href: string
 }
 
-export const BackLink = ({ className, href, ...restProps }: Props) => (
+export const BackLink = ({ href, ...restProps }: Props) => (
   <NextLink href={href} legacyBehavior passHref>
-    <Link className={clsx(className, styles.link)} {...restProps} />
+    <StandaloneLink {...restProps} icon={<ChevronBackwardIcon />} />
   </NextLink>
 )

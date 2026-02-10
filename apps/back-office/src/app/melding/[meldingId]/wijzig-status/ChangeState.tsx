@@ -10,6 +10,7 @@ import { MeldingOutput, StatesOutput } from '@meldingen/api-client'
 import { SubmitButton } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
+import { CancelLink } from '../_components/CancelLink'
 import { postChangeStateForm } from './actions'
 
 import styles from './ChangeState.module.css'
@@ -86,10 +87,13 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
   }
 
   return (
-    <main>
-      <title>{documentTitle}</title>
-      <Grid paddingBottom="2x-large" paddingTop="x-large">
-        <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
+    <Grid paddingBottom="2x-large" paddingTop="x-large">
+      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
+        <title>{documentTitle}</title>
+        <BackLink className="ams-mb-s" href={`/melding/${meldingId}`}>
+          {t('back-link')}
+        </BackLink>
+        <main>
           {error && (
             <Alert
               className={clsx('ams-mb-m', styles.alert)}
@@ -127,11 +131,11 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
             </Field>
             <ActionGroup>
               <SubmitButton>{t('submit-button')}</SubmitButton>
-              <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
+              <CancelLink href={`/melding/${meldingId}`}>{t('cancel-link')}</CancelLink>
             </ActionGroup>
           </Form>
-        </Grid.Cell>
-      </Grid>
-    </main>
+        </main>
+      </Grid.Cell>
+    </Grid>
   )
 }

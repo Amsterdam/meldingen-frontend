@@ -37,6 +37,14 @@ describe('ChangeState', () => {
     expect(backLink).toHaveAttribute('href', '/melding/123')
   })
 
+  it('renders the cancel link', () => {
+    render(<ChangeState {...defaultProps} />)
+
+    const cancelLink = screen.getByRole('link', { name: 'cancel-link' })
+    expect(cancelLink).toBeInTheDocument()
+    expect(cancelLink).toHaveAttribute('href', '/melding/123')
+  })
+
   it('sets the default value of the select field if melding state is valid', () => {
     render(<ChangeState {...defaultProps} />)
 

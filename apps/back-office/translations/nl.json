@@ -53,10 +53,11 @@
     "metadata": {
       "title": "Wijzig status - Gemeente Amsterdam"
     },
+    "back-link": "Meldingdetails",
     "title": "Wijzig status melding {publicId}",
     "label": "Wijzig status",
     "submit-button": "Wijzig status",
-    "back-link": "Annuleer wijziging",
+    "cancel-link": "Annuleer wijziging",
     "errors": {
       "generic": {
         "heading": "Er is iets misgegaan",
