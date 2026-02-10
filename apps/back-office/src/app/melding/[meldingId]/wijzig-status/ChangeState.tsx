@@ -1,13 +1,13 @@
 'use client'
 
-import { Alert, Field, Grid, Heading, Label, Select } from '@amsterdam/design-system-react'
+import { ActionGroup, Alert, Field, Grid, Heading, Label, Paragraph, Select } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
 
 import { MeldingOutput, StatesOutput } from '@meldingen/api-client'
-import { Paragraph, SubmitButton } from '@meldingen/ui'
+import { SubmitButton } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
 import { postChangeStateForm } from './actions'
@@ -90,9 +90,6 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
       <title>{documentTitle}</title>
       <Grid paddingBottom="2x-large" paddingTop="x-large">
         <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-          <BackLink className="ams-mb-s" href={`/melding/${meldingId}`}>
-            {t('back-link')}
-          </BackLink>
           {error && (
             <Alert
               className={clsx('ams-mb-m', styles.alert)}
@@ -128,7 +125,10 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
                 ))}
               </Select>
             </Field>
-            <SubmitButton>{t('submit-button')}</SubmitButton>
+            <ActionGroup>
+              <SubmitButton>{t('submit-button')}</SubmitButton>
+              <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
+            </ActionGroup>
           </Form>
         </Grid.Cell>
       </Grid>
