@@ -1,7 +1,8 @@
 import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
-import { postChangeStateForm, STATES_LIST } from './actions'
+import { postChangeStateForm } from './actions'
+import { STATES_LIST } from './constants'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
 
