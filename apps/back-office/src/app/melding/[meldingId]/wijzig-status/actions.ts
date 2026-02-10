@@ -55,17 +55,22 @@ export const postChangeStateForm = async ({ meldingId }: MeldingIdParam, _: unkn
   const state = extractStateFromFormData(formData)
 
   if (!STATES_LIST.includes(state)) {
-    return { meldingStateFromAction: state, systemError: new Error(`Invalid state: ${state}`) }
+    return {
+      error: { message: `Invalid state: ${state}`, type: 'invalid_state' as const },
+      meldingStateFromAction: state,
+    }
   }
 
   // We check that state is in STATES_LIST, so we can safely cast it to State here
   const handler = stateHandlers[state as State]
 
-  if (handler) {
-    const { error } = await handler(meldingId)
+  const { error } = await handler(meldingId)
 
-    if (error) return { meldingStateFromAction: state, systemError: error }
-  }
+  if (error)
+    return {
+      error: { message: error, type: 'state_change_failed' as const },
+      meldingStateFromAction: state,
+    }
 
   return redirect(`/melding/${meldingId}`)
 }

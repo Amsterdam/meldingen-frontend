@@ -21,16 +21,22 @@ type Props = {
   publicId: MeldingOutput['public_id']
 }
 
-const initialState: { meldingStateFromAction?: string; systemError?: unknown } = {}
+const initialState: {
+  error?: {
+    message: unknown
+    type: 'invalid_state' | 'state_change_failed'
+  }
+  meldingStateFromAction?: string
+} = {}
 
 type ArgsType = {
   errorMessage: string
-  hasSystemError: boolean
+  hasError: boolean
   originalDocTitle: string
 }
 
-const getDocumentTitleOnError = ({ errorMessage, hasSystemError, originalDocTitle }: ArgsType) => {
-  if (hasSystemError) {
+const getDocumentTitleOnError = ({ errorMessage, hasError, originalDocTitle }: ArgsType) => {
+  if (hasError) {
     return `${errorMessage} - ${originalDocTitle}`
   }
 
@@ -38,40 +44,46 @@ const getDocumentTitleOnError = ({ errorMessage, hasSystemError, originalDocTitl
 }
 
 export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId }: Props) => {
-  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
+  const errorAlertRef = useRef<HTMLDivElement>(null)
 
   const postChangeStateFormWithMeldingId = postChangeStateForm.bind(null, { meldingId })
 
-  const [{ meldingStateFromAction, systemError }, formAction] = useActionState(
-    postChangeStateFormWithMeldingId,
-    initialState,
-  )
+  const [{ error, meldingStateFromAction }, formAction] = useActionState(postChangeStateFormWithMeldingId, initialState)
 
   const t = useTranslations('change-state')
   const tShared = useTranslations('shared')
 
   const documentTitle = getDocumentTitleOnError({
-    errorMessage: t('errors.unable-to-change-state.heading'),
-    hasSystemError: Boolean(systemError),
+    errorMessage: t('errors.change-state.heading'),
+    hasError: Boolean(error),
     originalDocTitle: t('metadata.title'),
   })
 
-  // Set focus on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (systemError && systemErrorAlertRef.current) {
-      systemErrorAlertRef.current.focus()
-    }
-  }, [systemError])
-
-  useEffect(() => {
-    if (systemError) {
+    if (error) {
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
-      console.error(systemError)
+      console.error(error.message)
     }
-  }, [systemError])
+
+    // Set focus on Alert when there is an error
+    if (error && errorAlertRef.current) {
+      errorAlertRef.current.focus()
+    }
+  }, [error])
 
   const stateToDisplay = meldingStateFromAction ?? meldingState
+
+  const alertTexts = {
+    invalid_state: {
+      description: t('errors.generic.description'),
+      heading: t('errors.generic.heading'),
+    },
+    state_change_failed: {
+      description: t('errors.change-state.description'),
+      heading: t('errors.change-state.heading'),
+    },
+  }
 
   return (
     <main>
@@ -84,17 +96,17 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
           <Heading className="ams-mb-l" level={1}>
             {t('title', { publicId })}
           </Heading>
-          {Boolean(systemError) && (
+          {error && (
             <Alert
               className={clsx('ams-mb-m', styles.alert)}
-              heading={t('errors.unable-to-change-state.heading')}
+              heading={alertTexts[error.type].heading}
               headingLevel={2}
-              ref={systemErrorAlertRef}
+              ref={errorAlertRef}
               role="alert"
               severity="error"
               tabIndex={-1}
             >
-              <Paragraph>{t('errors.unable-to-change-state.description')}</Paragraph>
+              <Paragraph>{alertTexts[error.type].description}</Paragraph>
             </Alert>
           )}
           <Form action={formAction} noValidate>

@@ -58,7 +58,11 @@
     "label": "Wijzig status",
     "submit-button": "Wijzig status",
     "errors": {
-      "unable-to-change-state": {
+      "generic": {
+        "heading": "Er is iets misgegaan",
+        "description": "Probeer het later opnieuw."
+      },
+      "change-state": {
         "heading": "De status kan niet worden gewijzigd",
         "description": "Het kan zijn dat de status al is aangepast door een andere behandelaar."
       }
