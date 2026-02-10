@@ -23,8 +23,6 @@ const extractStateFromFormData = (formData: FormData) => {
 type StateHandler = (meldingId: number) => Promise<{ error?: unknown }>
 
 const stateHandlers: Record<State, StateHandler> = {
-  [STATES.AWAITING_PROCESSING]: async (meldingId) =>
-    putMeldingByMeldingIdRequestProcessing({ path: { melding_id: meldingId } }),
   [STATES.CANCELED]: async (meldingId) => putMeldingByMeldingIdCancel({ path: { melding_id: meldingId } }),
   [STATES.COMPLETED]: async (meldingId) =>
     putMeldingByMeldingIdComplete({
@@ -33,6 +31,8 @@ const stateHandlers: Record<State, StateHandler> = {
     }),
   [STATES.PLANNED]: async (meldingId) => putMeldingByMeldingIdPlan({ path: { melding_id: meldingId } }),
   [STATES.PROCESSING]: async (meldingId) => putMeldingByMeldingIdProcess({ path: { melding_id: meldingId } }),
+  [STATES.PROCESSING_REQUESTED]: async (meldingId) =>
+    putMeldingByMeldingIdRequestProcessing({ path: { melding_id: meldingId } }),
   [STATES.REOPEN_REQUESTED]: async (meldingId) =>
     putMeldingByMeldingIdRequestReopen({ path: { melding_id: meldingId } }),
   [STATES.REOPENED]: async (meldingId) => putMeldingByMeldingIdReopen({ path: { melding_id: meldingId } }),

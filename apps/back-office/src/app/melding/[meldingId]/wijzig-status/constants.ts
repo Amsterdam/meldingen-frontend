@@ -1,9 +1,9 @@
 export const STATES = {
-  AWAITING_PROCESSING: 'awaiting_processing',
   CANCELED: 'canceled',
   COMPLETED: 'completed',
   PLANNED: 'planned',
   PROCESSING: 'processing',
+  PROCESSING_REQUESTED: 'processing_requested',
   REOPEN_REQUESTED: 'reopen_requested',
   REOPENED: 'reopened',
 } as const
