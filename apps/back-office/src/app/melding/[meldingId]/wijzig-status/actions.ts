@@ -22,16 +22,18 @@ const STATES = {
   REOPENED: 'reopened',
 } as const
 
-type StateType = (typeof STATES)[keyof typeof STATES]
+const STATES_LIST: string[] = Object.values(STATES)
 
-const extractStateFromFormData = (formData: FormData): StateType => {
+type State = (typeof STATES)[keyof typeof STATES]
+
+const extractStateFromFormData = (formData: FormData) => {
   const formDataObj = Object.fromEntries(formData)
-  return formDataObj.state as StateType
+  return formDataObj.state as string
 }
 
 type StateHandler = (meldingId: number) => Promise<{ error?: unknown }>
 
-const stateHandlers: Record<StateType, StateHandler> = {
+const stateHandlers: Record<State, StateHandler> = {
   [STATES.AWAITING_PROCESSING]: async (meldingId) =>
     putMeldingByMeldingIdRequestProcessing({ path: { melding_id: meldingId } }),
   [STATES.CANCELED]: async (meldingId) => putMeldingByMeldingIdCancel({ path: { melding_id: meldingId } }),
@@ -51,10 +53,17 @@ type MeldingIdParam = { meldingId: number }
 
 export const postChangeStateForm = async ({ meldingId }: MeldingIdParam, _: unknown, formData: FormData) => {
   const state = extractStateFromFormData(formData)
-  const handler = stateHandlers[state]
+
+  if (!STATES_LIST.includes(state)) {
+    return { meldingStateFromAction: state, systemError: new Error(`Invalid state: ${state}`) }
+  }
+
+  // We check that state is in STATES_LIST, so we can safely cast it to State here
+  const handler = stateHandlers[state as State]
 
   if (handler) {
     const { error } = await handler(meldingId)
+
     if (error) return { meldingStateFromAction: state, systemError: error }
   }
 

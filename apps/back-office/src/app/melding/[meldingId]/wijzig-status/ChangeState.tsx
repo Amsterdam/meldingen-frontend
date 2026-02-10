@@ -71,6 +71,8 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
     }
   }, [systemError])
 
+  const stateToDisplay = meldingStateFromAction ?? meldingState
+
   return (
     <main>
       <title>{documentTitle}</title>
@@ -98,8 +100,14 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
           <Form action={formAction} noValidate>
             <Field className="ams-mb-l">
               <Label htmlFor="state">{t('label')}</Label>
-              {/* TODO: check if setting melding state from action works */}
-              <Select defaultValue={meldingStateFromAction ?? meldingState} id="state" name="state">
+              <Select
+                defaultValue={stateToDisplay}
+                id="state"
+                // React doesn't update the defaultValue of a select element after the initial render,
+                // so we use the key prop to force a remount of the select element when stateToDisplay changes
+                key={stateToDisplay}
+                name="state"
+              >
                 <Select.Option value={meldingState}>{tShared(`state.${meldingState}`)}</Select.Option>
                 {possibleStates.map((state) => (
                   <Select.Option key={state} value={state}>
