@@ -93,9 +93,6 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
           <BackLink className="ams-mb-s" href={`/melding/${meldingId}`}>
             {t('back-link')}
           </BackLink>
-          <Heading className="ams-mb-l" level={1}>
-            {t('title', { publicId })}
-          </Heading>
           {error && (
             <Alert
               className={clsx('ams-mb-m', styles.alert)}
@@ -109,6 +106,9 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
               <Paragraph>{alertTexts[error.type].description}</Paragraph>
             </Alert>
           )}
+          <Heading className="ams-mb-l" level={1}>
+            {t('title', { publicId })}
+          </Heading>
           <Form action={formAction} noValidate>
             <Field className="ams-mb-l">
               <Label htmlFor="state">{t('label')}</Label>

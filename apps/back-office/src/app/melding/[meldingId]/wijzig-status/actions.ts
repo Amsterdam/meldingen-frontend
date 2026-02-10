@@ -2,6 +2,7 @@
 
 import { redirect } from 'next/navigation'
 
+import { STATES, STATES_LIST } from './constants'
 import {
   putMeldingByMeldingIdCancel,
   putMeldingByMeldingIdComplete,
@@ -11,18 +12,6 @@ import {
   putMeldingByMeldingIdRequestProcessing,
   putMeldingByMeldingIdRequestReopen,
 } from 'apps/back-office/src/apiClientProxy'
-
-const STATES = {
-  AWAITING_PROCESSING: 'awaiting_processing',
-  CANCELED: 'canceled',
-  COMPLETED: 'completed',
-  PLANNED: 'planned',
-  PROCESSING: 'processing',
-  REOPEN_REQUESTED: 'reopen_requested',
-  REOPENED: 'reopened',
-} as const
-
-export const STATES_LIST: string[] = Object.values(STATES)
 
 type State = (typeof STATES)[keyof typeof STATES]
 
