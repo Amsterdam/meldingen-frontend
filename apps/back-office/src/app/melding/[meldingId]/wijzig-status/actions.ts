@@ -22,7 +22,7 @@ const STATES = {
   REOPENED: 'reopened',
 } as const
 
-const STATES_LIST: string[] = Object.values(STATES)
+export const STATES_LIST: string[] = Object.values(STATES)
 
 type State = (typeof STATES)[keyof typeof STATES]
 
