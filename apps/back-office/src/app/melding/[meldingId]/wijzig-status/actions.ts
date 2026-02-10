@@ -38,10 +38,19 @@ const stateHandlers: Record<State, StateHandler> = {
   [STATES.REOPENED]: async (meldingId) => putMeldingByMeldingIdReopen({ path: { melding_id: meldingId } }),
 }
 
-type MeldingIdParam = { meldingId: number }
+type MeldingIdParam = { currentState: string; meldingId: number }
 
-export const postChangeStateForm = async ({ meldingId }: MeldingIdParam, _: unknown, formData: FormData) => {
+export const postChangeStateForm = async (
+  { currentState, meldingId }: MeldingIdParam,
+  _: unknown,
+  formData: FormData,
+) => {
   const state = extractStateFromFormData(formData)
+  const redirectPath = `/melding/${meldingId}`
+
+  // If the selected state is the same as the current state,
+  // we simply redirect without calling the API
+  if (state === currentState) return redirect(redirectPath)
 
   if (!STATES_LIST.includes(state)) {
     return {
@@ -61,5 +70,5 @@ export const postChangeStateForm = async ({ meldingId }: MeldingIdParam, _: unkn
       meldingStateFromAction: state,
     }
 
-  return redirect(`/melding/${meldingId}`)
+  return redirect(redirectPath)
 }

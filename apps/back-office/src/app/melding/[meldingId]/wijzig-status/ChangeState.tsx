@@ -46,7 +46,7 @@ const getDocumentTitleOnError = ({ errorMessage, hasError, originalDocTitle }: A
 export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId }: Props) => {
   const errorAlertRef = useRef<HTMLDivElement>(null)
 
-  const postChangeStateFormWithMeldingId = postChangeStateForm.bind(null, { meldingId })
+  const postChangeStateFormWithMeldingId = postChangeStateForm.bind(null, { currentState: meldingState, meldingId })
 
   const [{ error, meldingStateFromAction }, formAction] = useActionState(postChangeStateFormWithMeldingId, initialState)
 
