@@ -184,9 +184,11 @@ Store in `.env.local` (gitignored):
 
 ### Production (Entra ID)
 
-<!-- TODO: you don't have to uncomment things for production? -->
+The production builds use Entra ID instead of Keycloak.
+This is done by using different environment variables, which are set in Azure DevOps.
 
-For production, uncomment and configure Entra ID variables:
+Generally, it is not necessary to use Entra ID locally.
+If you do want to test Entra ID locally, uncomment and configure these Entra ID variables:
 
 ```bash
 ENTRA_CLIENT_ID=<app-registration-id>
@@ -441,6 +443,20 @@ const total = parseInt(response.headers.get('Content-Range')?.split('/')[1] || '
 
 ---
 
+### JavaScript Code Style Principles
+
+We follow Clean Code principles throughout this codebase. Prioritize **clarity and readability** over clever or overly concise solutions. Code should be easy to understand and maintain by any team member, not just the original author.
+
+- **Legibility over cleverness:** Write code that is self-explanatory and easy to follow. Avoid "smart" one-liners or obscure patterns that make the intent unclear.
+- **DRY (Don't Repeat Yourself):** Extract reusable logic into functions or components when you see duplication. However, don't over-abstract prematurely—wait until repetition is clear (see Rule of Three).
+- **YAGNI (You Aren't Gonna Need It):** Only implement features and abstractions that are actually required. Avoid speculative generalization or adding options "just in case."
+- **Rule of Three:** If you find yourself copying similar code a third time, refactor it into a shared function or component. Do not cross app boundaries when doing this, an app should be self-contained. It is okay to export shared functions or components from libraries.
+- **Descriptive naming:** Use clear, descriptive names for variables, functions, and components. Avoid abbreviations unless they are widely understood.
+- **Consistent formatting:** Follow the project's Prettier and ESLint rules for code style and formatting.
+- **Comment only when necessary:** Prefer self-documenting code, but add comments to explain non-obvious decisions, workarounds, or business logic.
+
+---
+
 ## CSS Modules Patterns
 
 All styling uses CSS Modules with Amsterdam Design System tokens:
@@ -480,6 +496,7 @@ All styling uses CSS Modules with Amsterdam Design System tokens:
 
 ## Testing Patterns
 
+We use Vitest + React Testing Library + MSW.
 Tests are co-located with source files. MSW mocks are set up globally.
 
 ```typescript
