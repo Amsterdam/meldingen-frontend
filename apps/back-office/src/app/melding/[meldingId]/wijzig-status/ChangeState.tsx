@@ -25,7 +25,7 @@ type Props = {
 const initialState: {
   error?: {
     message: unknown
-    type: 'invalid_state' | 'state_change_failed'
+    type: 'invalid-state' | 'state-change-failed'
   }
   meldingStateFromAction?: string
 } = {}
@@ -55,7 +55,7 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
   const tShared = useTranslations('shared')
 
   const documentTitle = getDocumentTitleOnError({
-    errorMessage: t('errors.change-state.heading'),
+    errorMessage: error ? t(`errors.${error.type}.heading`) : '',
     hasError: Boolean(error),
     originalDocTitle: t('metadata.title'),
   })
@@ -75,17 +75,6 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
 
   const stateToDisplay = meldingStateFromAction ?? meldingState
 
-  const alertTexts = {
-    invalid_state: {
-      description: t('errors.generic.description'),
-      heading: t('errors.generic.heading'),
-    },
-    state_change_failed: {
-      description: t('errors.change-state.description'),
-      heading: t('errors.change-state.heading'),
-    },
-  }
-
   return (
     <Grid paddingBottom="2x-large" paddingTop="x-large">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
@@ -97,14 +86,14 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
           {error && (
             <Alert
               className={clsx('ams-mb-m', styles.alert)}
-              heading={alertTexts[error.type].heading}
+              heading={t(`errors.${error.type}.heading`)}
               headingLevel={2}
               ref={errorAlertRef}
               role="alert"
               severity="error"
               tabIndex={-1}
             >
-              <Paragraph>{alertTexts[error.type].description}</Paragraph>
+              <Paragraph>{t(`errors.${error.type}.description`)}</Paragraph>
             </Alert>
           )}
           <Heading className="ams-mb-l" level={1}>

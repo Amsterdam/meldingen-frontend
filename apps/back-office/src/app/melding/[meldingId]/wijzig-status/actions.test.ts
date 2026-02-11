@@ -28,7 +28,7 @@ describe('postChangeStateForm', () => {
     const result = await postChangeStateForm(defaultArgs, null, formData)
 
     expect(result).toEqual({
-      error: { message: 'Invalid state: invalid', type: 'invalid_state' },
+      error: { message: 'Invalid state: invalid', type: 'invalid-state' },
       meldingStateFromAction: 'invalid',
     })
     expect(redirect).not.toHaveBeenCalledWith('/melding/123')
@@ -47,7 +47,7 @@ describe('postChangeStateForm', () => {
     const result = await postChangeStateForm(defaultArgs, null, formData)
 
     expect(result).toEqual({
-      error: { message: { detail: 'Error message' }, type: 'state_change_failed' },
+      error: { message: { detail: 'Error message' }, type: 'state-change-failed' },
       meldingStateFromAction: 'processing',
     })
     expect(redirect).not.toHaveBeenCalledWith('/melding/123')

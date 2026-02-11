@@ -52,21 +52,21 @@ describe('ChangeState', () => {
     expect(select).toHaveValue('processing')
   })
 
-  it('displays a generic error message when the action returns an error with type invalid_state', () => {
-    ;(useActionState as Mock).mockReturnValue([{ error: { type: 'invalid_state' } }, vi.fn()])
+  it('displays the correct error message when the action returns an error with type invalid-state', () => {
+    ;(useActionState as Mock).mockReturnValue([{ error: { type: 'invalid-state' } }, vi.fn()])
 
     render(<ChangeState {...defaultProps} />)
 
-    expect(screen.getByText('errors.generic.heading')).toBeInTheDocument()
-    expect(screen.getByText('errors.generic.description')).toBeInTheDocument()
+    expect(screen.getByText('errors.invalid-state.heading')).toBeInTheDocument()
+    expect(screen.getByText('errors.invalid-state.description')).toBeInTheDocument()
   })
 
-  it('displays a generic error message when the action returns an error with type state_change_failed', () => {
-    ;(useActionState as Mock).mockReturnValue([{ error: { type: 'state_change_failed' } }, vi.fn()])
+  it('displays the correct error message when the action returns an error with type state-change-failed', () => {
+    ;(useActionState as Mock).mockReturnValue([{ error: { type: 'state-change-failed' } }, vi.fn()])
 
     render(<ChangeState {...defaultProps} />)
 
-    expect(screen.getByText('errors.change-state.heading')).toBeInTheDocument()
-    expect(screen.getByText('errors.change-state.description')).toBeInTheDocument()
+    expect(screen.getByText('errors.state-change-failed.heading')).toBeInTheDocument()
+    expect(screen.getByText('errors.state-change-failed.description')).toBeInTheDocument()
   })
 })
