@@ -17,7 +17,7 @@ export const handlers = [
     }),
   ),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NEXT_POSSIBLE_STATES, () =>
-    HttpResponse.json({ states: ['awaiting_processing', 'completed'] }),
+    HttpResponse.json({ states: ['processing_requested', 'completed'] }),
   ),
 
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_CANCEL, () => new HttpResponse()),

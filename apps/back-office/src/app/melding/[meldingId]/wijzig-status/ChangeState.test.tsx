@@ -15,7 +15,7 @@ vi.mock('react', async (importOriginal) => {
 const defaultProps = {
   meldingId: 123,
   meldingState: 'processing',
-  possibleStates: ['awaiting_processing', 'completed'],
+  possibleStates: ['processing_requested', 'completed'],
   publicId: 'ABC',
 }
 
@@ -25,7 +25,7 @@ describe('ChangeState', () => {
 
     expect(screen.getByRole('combobox', { name: 'label' })).toBeInTheDocument()
     expect(screen.getByRole('option', { name: 'state.processing' })).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'state.awaiting_processing' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'state.processing_requested' })).toBeInTheDocument()
     expect(screen.getByRole('option', { name: 'state.completed' })).toBeInTheDocument()
   })
 
