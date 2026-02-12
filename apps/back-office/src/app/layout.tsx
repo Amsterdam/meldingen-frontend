@@ -1,7 +1,10 @@
 import type { PropsWithChildren } from 'react'
 
+import { HouseFillIcon } from '@amsterdam/design-system-react-icons'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
+
+import { Menu, Page, PageHeader } from '@meldingen/ui'
 
 import '@amsterdam/design-system-tokens/dist/index.css'
 import '@amsterdam/design-system-tokens/dist/compact.css'
@@ -21,9 +24,25 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
   const locale = await getLocale()
 
   return (
-    <html lang={locale}>
+    <html dir="ltr" lang={locale}>
       <NextIntlClientProvider>
-        <body>{children}</body>
+        <body>
+          <Page withMenu>
+            <PageHeader brandName="Meldingen" className="ams-page__area--header" noMenuButtonOnWideWindow>
+              <Menu>
+                <Menu.Link href="/" icon={<HouseFillIcon />}>
+                  Overzicht
+                </Menu.Link>
+              </Menu>
+            </PageHeader>
+            <Menu className="ams-page__area--menu" inWideWindow>
+              <Menu.Link href="/" icon={<HouseFillIcon />}>
+                Overzicht
+              </Menu.Link>
+            </Menu>
+            {children}
+          </Page>
+        </body>
       </NextIntlClientProvider>
     </html>
   )
