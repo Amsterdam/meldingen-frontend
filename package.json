@@ -6,7 +6,7 @@
   "license": "EUPL-1.2",
   "private": true,
   "engines": {
-    "node": "^22",
+    "node": "^24",
     "pnpm": "^10"
   },
   "repository": {
