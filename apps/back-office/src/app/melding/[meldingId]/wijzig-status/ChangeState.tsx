@@ -1,15 +1,15 @@
 'use client'
 
-import { Field, Grid, Heading, Label, Paragraph, Select } from '@amsterdam/design-system-react'
+import { Button, Field, Grid, Heading, Label, Paragraph, Select } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState } from 'react'
 
-import { SubmitButton } from '@meldingen/ui'
-
 import { BackLink } from '../_components/BackLink'
 import { postChangeStateForm } from './actions'
 import { isValidMeldingState } from './utils'
+
+import styles from './ChangeState.module.css'
 
 type Props = {
   meldingId: number
@@ -26,27 +26,42 @@ export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
   const t = useTranslations()
 
   return (
-    <Grid paddingBottom="2x-large" paddingTop="x-large">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <BackLink className="ams-mb-s" href={`/melding/${meldingId}`}>
-          {t('change-state.back-link')}
-        </BackLink>
-        <Heading className="ams-mb-l" level={1}>
-          {t('change-state.title', { publicId })}
-        </Heading>
-        {errorMessage && <Paragraph>{errorMessage}</Paragraph>}
-        <Form action={formAction} noValidate>
-          <Field className="ams-mb-l">
-            <Label htmlFor="state">{t('change-state.label')}</Label>
-            <Select defaultValue={isValidMeldingState(meldingState) ? meldingState : undefined} id="state" name="state">
-              <Select.Option value="">{t('change-state.options.default')}</Select.Option>
-              <Select.Option value="processing">{t('shared.state.processing')}</Select.Option>
-              <Select.Option value="completed">{t('shared.state.completed')}</Select.Option>
-            </Select>
-          </Field>
-          <SubmitButton>{t('change-state.submit-button')}</SubmitButton>
-        </Form>
-      </Grid.Cell>
-    </Grid>
+    <div className="ams-page__area--body">
+      <Grid className="ams-mb-s">
+        <Grid.Cell span="all">
+          <BackLink href={`/melding/${meldingId}`}>{t('change-state.back-link')}</BackLink>
+        </Grid.Cell>
+      </Grid>
+
+      <Grid as="main" gapVertical="large">
+        <Grid.Cell span={{ narrow: 4, medium: 5, wide: 6 }}>
+          <Heading level={1}>{t('change-state.title', { publicId })}</Heading>
+          {errorMessage && <Paragraph>{errorMessage}</Paragraph>}
+        </Grid.Cell>
+
+        <Grid.Cell className={styles.whiteCell} span={{ narrow: 4, medium: 5, wide: 6 }}>
+          <Form action={formAction} id="change-state-form" noValidate>
+            <Field>
+              <Label htmlFor="state">{t('change-state.label')}</Label>
+              <Select
+                defaultValue={isValidMeldingState(meldingState) ? meldingState : undefined}
+                id="state"
+                name="state"
+              >
+                <Select.Option value="">{t('change-state.options.default')}</Select.Option>
+                <Select.Option value="processing">{t('shared.state.processing')}</Select.Option>
+                <Select.Option value="completed">{t('shared.state.completed')}</Select.Option>
+              </Select>
+            </Field>
+          </Form>
+        </Grid.Cell>
+
+        <Grid.Cell span="all">
+          <Button form="change-state-form" type="submit">
+            {t('change-state.submit-button')}
+          </Button>
+        </Grid.Cell>
+      </Grid>
+    </div>
   )
 }
