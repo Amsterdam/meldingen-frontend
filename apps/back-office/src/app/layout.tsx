@@ -4,7 +4,9 @@ import { HouseFillIcon } from '@amsterdam/design-system-react-icons'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
 
-import { Menu, Page, PageHeader } from '@meldingen/ui'
+import { Menu, Page } from '@meldingen/ui'
+
+import { Header } from './_components/Header'
 
 import '@amsterdam/design-system-tokens/dist/index.css'
 import '@amsterdam/design-system-tokens/dist/compact.css'
@@ -28,13 +30,13 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
       <NextIntlClientProvider>
         <body>
           <Page withMenu>
-            <PageHeader brandName="Meldingen" className="ams-page__area--header" noMenuButtonOnWideWindow>
+            <Header>
               <Menu>
                 <Menu.Link href="/" icon={<HouseFillIcon />}>
                   Overzicht
                 </Menu.Link>
               </Menu>
-            </PageHeader>
+            </Header>
             <Menu className="ams-page__area--menu" inWideWindow>
               <Menu.Link href="/" icon={<HouseFillIcon />}>
                 Overzicht
