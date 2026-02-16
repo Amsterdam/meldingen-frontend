@@ -54,10 +54,11 @@ export const Detail = ({
       </Grid>
 
       <Grid as="main">
-        <Grid.Cell span={{ narrow: 4, medium: 5, wide: 7 }}>
-          <Heading level={1}>{t('title', { publicId })}</Heading>
-
-          <DescriptionList>
+        <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
+          <Heading className="ams-mb-m" level={1}>
+            {t('title', { publicId })}
+          </Heading>
+          <DescriptionList className="ams-mb-l">
             {additionalQuestionsWithMeldingText.map(({ description, key, term }) => (
               <Fragment key={key}>
                 <DescriptionList.Term>{term}</DescriptionList.Term>
@@ -65,9 +66,8 @@ export const Detail = ({
               </Fragment>
             ))}
           </DescriptionList>
-
           {location && (
-            <DescriptionList>
+            <DescriptionList className="ams-mb-l">
               {location.map(({ description, key, term }) => (
                 <Fragment key={key}>
                   <DescriptionList.Term>{term}</DescriptionList.Term>
@@ -76,7 +76,6 @@ export const Detail = ({
               ))}
             </DescriptionList>
           )}
-
           <DescriptionList className="ams-mb-l">
             {meldingData.map(({ description, key, link, term }) => (
               <Fragment key={key}>
@@ -92,7 +91,6 @@ export const Detail = ({
               </Fragment>
             ))}
           </DescriptionList>
-
           {contact && (
             <DescriptionList className="ams-mb-l">
               {contact.map(({ description, key, term }) => (
