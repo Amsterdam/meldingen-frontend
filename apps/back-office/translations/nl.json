@@ -66,6 +66,9 @@
     }
   },
   "shared": {
+    "menu": {
+      "overview": "Overzicht"
+    },
     "state": {
       "processing": "In behandeling",
       "completed": "Afgehandeld",

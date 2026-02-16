@@ -26,6 +26,8 @@ export const generateMetadata = async () => {
 const RootLayout = async ({ children }: PropsWithChildren) => {
   const locale = await getLocale()
 
+  const t = await getTranslations('shared')
+
   return (
     <html dir="ltr" lang={locale}>
       <NextIntlClientProvider>
@@ -35,7 +37,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
               <Menu>
                 <NextLink href="/" legacyBehavior passHref>
                   <Menu.Link href="/" icon={<HouseFillIcon />}>
-                    Overzicht
+                    {t('menu.overview')}
                   </Menu.Link>
                 </NextLink>
               </Menu>
@@ -43,7 +45,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
             <Menu className="ams-page__area--menu" inWideWindow>
               <NextLink href="/" legacyBehavior passHref>
                 <Menu.Link href="/" icon={<HouseFillIcon />}>
-                  Overzicht
+                  {t('menu.overview')}
                 </Menu.Link>
               </NextLink>
             </Menu>
