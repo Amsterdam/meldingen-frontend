@@ -1,6 +1,7 @@
 'use client'
 
 import { Button, Field, Grid, Heading, Label, Paragraph, Select } from '@amsterdam/design-system-react'
+import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState } from 'react'
@@ -35,13 +36,12 @@ export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
 
       <Grid as="main" gapVertical="large">
         <Grid.Cell span={{ narrow: 4, medium: 5, wide: 6 }}>
-          <Heading level={1}>{t('change-state.title', { publicId })}</Heading>
+          <Heading className="ams-mb-l" level={1}>
+            {t('change-state.title', { publicId })}
+          </Heading>
           {errorMessage && <Paragraph>{errorMessage}</Paragraph>}
-        </Grid.Cell>
-
-        <Grid.Cell className={styles.whiteCell} span={{ narrow: 4, medium: 5, wide: 6 }}>
-          <Form action={formAction} id="change-state-form" noValidate>
-            <Field>
+          <Form action={formAction} noValidate>
+            <Field className={clsx(styles.whiteField, 'ams-mb-l')}>
               <Label htmlFor="state">{t('change-state.label')}</Label>
               <Select
                 defaultValue={isValidMeldingState(meldingState) ? meldingState : undefined}
@@ -53,13 +53,8 @@ export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
                 <Select.Option value="completed">{t('shared.state.completed')}</Select.Option>
               </Select>
             </Field>
+            <Button type="submit">{t('change-state.submit-button')}</Button>
           </Form>
-        </Grid.Cell>
-
-        <Grid.Cell span="all">
-          <Button form="change-state-form" type="submit">
-            {t('change-state.submit-button')}
-          </Button>
         </Grid.Cell>
       </Grid>
     </div>

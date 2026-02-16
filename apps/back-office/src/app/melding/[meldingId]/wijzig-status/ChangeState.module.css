@@ -1,6 +1,5 @@
-.whiteCell {
+.whiteField {
   background-color: var(--ams-color-background);
-  grid-row-start: 2;
   padding-block: var(--ams-space-l);
   padding-inline: var(--ams-space-l);
 }
