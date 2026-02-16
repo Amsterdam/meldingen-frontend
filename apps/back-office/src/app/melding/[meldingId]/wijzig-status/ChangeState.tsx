@@ -35,7 +35,7 @@ export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
       </Grid>
 
       <Grid as="main" gapVertical="large">
-        <Grid.Cell span={{ narrow: 4, medium: 5, wide: 6 }}>
+        <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
           <Heading className="ams-mb-l" level={1}>
             {t('change-state.title', { publicId })}
           </Heading>
