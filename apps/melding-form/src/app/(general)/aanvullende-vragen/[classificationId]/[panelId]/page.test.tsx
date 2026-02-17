@@ -6,7 +6,7 @@ import { Mock } from 'vitest'
 import * as actionsModule from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 import Page from './page'
-import { additionalQuestions } from 'apps/melding-form/src/mocks/data'
+import { additionalQuestions, selectAdditionalQuestion } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
@@ -83,76 +83,271 @@ describe('Page', () => {
     )
   })
 
-  it('renders the AdditionalQuestions component with prefilled form components', async () => {
-    const formData = {
-      components: [
-        {
-          components: [{ key: 'question-1', question: additionalQuestions[0].question.id }],
-          key: 'panel-1',
-          label: 'Panel 1',
-          type: 'panel',
-        },
-      ],
-    }
-
-    server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
-
-    const PageComponent = await Page(defaultProps)
-
-    render(PageComponent)
-
-    expect(AdditionalQuestions).toHaveBeenCalledWith(
-      expect.objectContaining({
-        action: expect.any(Function),
-        formComponents: [
+  describe('prefilling additional questions for different component types', () => {
+    it('renders the AdditionalQuestions component with prefilled text components', async () => {
+      const formData = {
+        components: [
           {
-            defaultValue: additionalQuestions[0].text,
-            key: 'question-1',
-            question: additionalQuestions[0].question.id,
+            components: [{ key: 'question-1', question: additionalQuestions[0].question.id }],
+            key: 'panel-1',
+            label: 'Panel 1',
+            type: 'panel',
           },
         ],
-        panelLabel: 'Panel 1',
-        previousPanelPath: '/',
-      }),
-      undefined,
-    )
-  })
+      }
 
-  it('renders the AdditionalQuestions component with prefilled checkbox components', async () => {
-    const formData = {
-      components: [
-        {
-          components: [{ key: 'question-1', question: 'q1', type: 'selectboxes' }],
-          key: 'panel-1',
-          label: 'Panel 1',
-          type: 'panel',
-        },
-      ],
-    }
+      server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
 
-    server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
+      const PageComponent = await Page(defaultProps)
 
-    server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
-        // TODO: Temporarily mock this as a text answer for now. We should handle all answer types when the BE is done with their multiple answer types work.
-        HttpResponse.json([{ id: 'answer-1', question: { id: 'q1' }, text: 'One, Two', type: 'text' }]),
-      ),
-    )
+      render(PageComponent)
 
-    const PageComponent = await Page(defaultProps)
+      expect(AdditionalQuestions).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: expect.any(Function),
+          formComponents: [
+            {
+              defaultValue: additionalQuestions[0].text,
+              key: 'question-1',
+              question: additionalQuestions[0].question.id,
+            },
+          ],
+          panelLabel: 'Panel 1',
+          previousPanelPath: '/',
+        }),
+        undefined,
+      )
+    })
 
-    render(PageComponent)
+    it('renders the AdditionalQuestions component with prefilled select components', async () => {
+      const formData = {
+        components: [
+          {
+            components: [
+              {
+                data: { values: selectAdditionalQuestion.values_and_labels },
+                key: 'question-1',
+                question: selectAdditionalQuestion.question.id,
+                type: 'select',
+              },
+            ],
+            key: 'panel-1',
+            label: 'Panel 1',
+            type: 'panel',
+          },
+        ],
+      }
 
-    expect(screen.getByText('AdditionalQuestions Component')).toBeInTheDocument()
-    expect(AdditionalQuestions).toHaveBeenCalledWith(
-      expect.objectContaining({
-        action: expect.any(Function),
-        formComponents: [{ defaultValues: ['One', 'Two'], key: 'question-1', question: 'q1', type: 'selectboxes' }],
-        panelLabel: 'Panel 1',
-        previousPanelPath: '/',
-      }),
-      undefined,
-    )
+      server.use(
+        http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)),
+        http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+          HttpResponse.json([selectAdditionalQuestion]),
+        ),
+      )
+
+      const PageComponent = await Page(defaultProps)
+
+      render(PageComponent)
+
+      expect(AdditionalQuestions).toHaveBeenCalledWith(
+        expect.objectContaining({
+          formComponents: [
+            {
+              data: { values: selectAdditionalQuestion.values_and_labels },
+              defaultValue: selectAdditionalQuestion.values_and_labels[0].value,
+              key: 'question-1',
+              question: selectAdditionalQuestion.question.id,
+              type: 'select',
+            },
+          ],
+        }),
+        undefined,
+      )
+    })
+
+    it('renders the AdditionalQuestions component with prefilled time components', async () => {
+      const formData = {
+        components: [
+          {
+            components: [
+              {
+                key: 'question-1',
+                question: 3,
+                type: 'time',
+              },
+            ],
+            key: 'panel-1',
+            label: 'Panel 1',
+            type: 'panel',
+          },
+        ],
+      }
+
+      server.use(
+        http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)),
+        http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+          HttpResponse.json([{ id: 3, question: { id: 3 }, time: '14:30', type: 'time' }]),
+        ),
+      )
+
+      const PageComponent = await Page(defaultProps)
+
+      render(PageComponent)
+
+      expect(AdditionalQuestions).toHaveBeenCalledWith(
+        expect.objectContaining({
+          formComponents: [
+            {
+              defaultValue: '14:30',
+              key: 'question-1',
+              question: 3,
+              type: 'time',
+            },
+          ],
+        }),
+        undefined,
+      )
+    })
+
+    it('renders the AdditionalQuestions component with prefilled checkbox components', async () => {
+      const formData = {
+        components: [
+          {
+            components: [
+              {
+                key: 'question-1',
+                question: 'q1',
+                type: 'selectboxes',
+                values: [
+                  { label: 'One', position: 1, value: 'One' },
+                  { label: 'Two', position: 2, value: 'Two' },
+                ],
+              },
+            ],
+            key: 'panel-1',
+            label: 'Panel 1',
+            type: 'panel',
+          },
+        ],
+      }
+
+      server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
+
+      server.use(
+        http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+          HttpResponse.json([
+            {
+              id: 'answer-1',
+              question: { id: 'q1' },
+              type: 'value_label',
+              values_and_labels: [
+                { label: 'One', value: 'One' },
+                { label: 'Two', value: 'Two' },
+              ],
+            },
+          ]),
+        ),
+      )
+
+      const PageComponent = await Page(defaultProps)
+
+      render(PageComponent)
+
+      expect(screen.getByText('AdditionalQuestions Component')).toBeInTheDocument()
+      expect(AdditionalQuestions).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: expect.any(Function),
+          formComponents: [
+            {
+              defaultValues: ['One', 'Two'],
+              key: 'question-1',
+              question: 'q1',
+              type: 'selectboxes',
+              values: [
+                { label: 'One', position: 1, value: 'One' },
+                { label: 'Two', position: 2, value: 'Two' },
+              ],
+            },
+          ],
+          panelLabel: 'Panel 1',
+          previousPanelPath: '/',
+        }),
+        undefined,
+      )
+    })
+
+    it('renders the AdditionalQuestions component with no prefilled values if no answers exist', async () => {
+      const formData = {
+        components: [
+          {
+            components: [{ key: 'question-1', question: 'q1' }],
+            key: 'panel-1',
+            label: 'Panel 1',
+            type: 'panel',
+          },
+        ],
+      }
+
+      server.use(
+        http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)),
+        http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () => HttpResponse.json([])),
+      )
+
+      const PageComponent = await Page(defaultProps)
+
+      render(PageComponent)
+
+      expect(AdditionalQuestions).toHaveBeenCalledWith(
+        expect.objectContaining({ formComponents: [{ key: 'question-1', question: 'q1' }] }),
+        undefined,
+      )
+    })
+
+    it('renders the AdditionalQuestions component with no prefilled values if no matching answer exists', async () => {
+      const formData = {
+        components: [
+          {
+            components: [
+              {
+                data: { values: selectAdditionalQuestion.values_and_labels },
+                key: 'question-1',
+                question: selectAdditionalQuestion.question.id,
+                type: 'select',
+              },
+            ],
+            key: 'panel-1',
+            label: 'Panel 1',
+            type: 'panel',
+          },
+        ],
+      }
+
+      server.use(
+        http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)),
+        http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+          HttpResponse.json([{ ...selectAdditionalQuestion, values_and_labels: [] }]),
+        ),
+      )
+
+      const PageComponent = await Page(defaultProps)
+
+      render(PageComponent)
+
+      expect(AdditionalQuestions).toHaveBeenCalledWith(
+        expect.objectContaining({
+          formComponents: [
+            {
+              data: { values: selectAdditionalQuestion.values_and_labels },
+              defaultValue: undefined,
+              key: 'question-1',
+              question: selectAdditionalQuestion.question.id,
+              type: 'select',
+            },
+          ],
+        }),
+        undefined,
+      )
+    })
   })
 
   it('logs an error to the console when the answers for additional questions cannot be fetched', async () => {
@@ -182,9 +377,14 @@ describe('Page', () => {
   it('passes postForm with the correct bounded args to AdditionalQuestions', async () => {
     const formData = {
       components: [
-        { components: [{ key: 'question-1', question: 'q1' }], key: 'panel-1', label: 'Panel 1', type: 'panel' },
         {
-          components: [{ key: 'question-2', question: 'q2', validate: { required: true } }],
+          components: [{ key: 'question-1', question: 'q1', type: 'textfield' }],
+          key: 'panel-1',
+          label: 'Panel 1',
+          type: 'panel',
+        },
+        {
+          components: [{ key: 'question-2', question: 'q2', type: 'textfield', validate: { required: true } }],
           key: 'panel-2',
           label: 'Panel 2',
           type: 'panel',
@@ -215,7 +415,7 @@ describe('Page', () => {
         { answerId: additionalQuestions[0].id, questionId: additionalQuestions[0].question.id },
         { answerId: additionalQuestions[1].id, questionId: additionalQuestions[1].question.id },
       ],
-      questionKeysAndIds: [{ id: 'q2', key: 'question-2' }],
+      questionMetadata: [{ id: 'q2', key: 'question-2', type: 'textfield' }],
       requiredQuestionKeysWithErrorMessages: [
         { key: 'question-2', requiredErrorMessage: 'required-error-message-fallback' },
       ],
@@ -225,9 +425,14 @@ describe('Page', () => {
   it('passes postForm with the correct bounded args to AdditionalQuestions when not on last panel', async () => {
     const formData = {
       components: [
-        { components: [{ key: 'question-1', question: 'q1' }], key: 'panel-1', label: 'Panel 1', type: 'panel' },
         {
-          components: [{ key: 'question-2', question: 'q2', validate: { required: true } }],
+          components: [{ key: 'question-1', question: 'q1', type: 'textfield' }],
+          key: 'panel-1',
+          label: 'Panel 1',
+          type: 'panel',
+        },
+        {
+          components: [{ key: 'question-2', question: 'q2', type: 'textfield', validate: { required: true } }],
           key: 'panel-2',
           label: 'Panel 2',
           type: 'panel',
@@ -254,8 +459,131 @@ describe('Page', () => {
       isLastPanel: false,
       lastPanelPath: '/aanvullende-vragen/1/panel-2',
       nextPanelPath: '/aanvullende-vragen/1/panel-2',
-      questionKeysAndIds: [{ id: 'q1', key: 'question-1' }],
+      questionMetadata: [{ id: 'q1', key: 'question-1', type: 'textfield' }],
       requiredQuestionKeysWithErrorMessages: [],
+    })
+  })
+
+  it('passes postForm with the correct bounded args to AdditionalQuestions when there is a radio question', async () => {
+    const formData = {
+      components: [
+        {
+          components: [
+            {
+              key: 'question-1',
+              question: 'q1',
+              type: 'radio',
+              values: [{ label: 'Label 1', position: 1, value: 'value1' }],
+            },
+          ],
+          key: 'panel-1',
+          label: 'Panel 1',
+          type: 'panel',
+        },
+      ],
+    }
+
+    server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
+
+    const PageComponent = await Page(defaultProps)
+
+    render(PageComponent)
+
+    // Call the bound action
+    if (capturedAction) {
+      capturedAction({}, undefined, new FormData())
+    }
+
+    expect(actionsModule.postForm).toHaveBeenCalled()
+
+    const [extraArgs] = (actionsModule.postForm as Mock).mock.calls[0]
+
+    expect(extraArgs).toMatchObject({
+      questionMetadata: [
+        { id: 'q1', key: 'question-1', type: 'radio', valuesAndLabels: [{ label: 'Label 1', value: 'value1' }] },
+      ],
+    })
+  })
+
+  it('passes postForm with the correct bounded args to AdditionalQuestions when there is a select question', async () => {
+    const formData = {
+      components: [
+        {
+          components: [
+            {
+              data: { values: [{ label: 'Label 1', position: 1, value: 'value1' }] },
+              key: 'question-1',
+              question: 'q1',
+              type: 'select',
+            },
+          ],
+          key: 'panel-1',
+          label: 'Panel 1',
+          type: 'panel',
+        },
+      ],
+    }
+
+    server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
+
+    const PageComponent = await Page(defaultProps)
+
+    render(PageComponent)
+
+    // Call the bound action
+    if (capturedAction) {
+      capturedAction({}, undefined, new FormData())
+    }
+
+    expect(actionsModule.postForm).toHaveBeenCalled()
+
+    const [extraArgs] = (actionsModule.postForm as Mock).mock.calls[0]
+
+    expect(extraArgs).toMatchObject({
+      questionMetadata: [
+        { id: 'q1', key: 'question-1', type: 'select', valuesAndLabels: [{ label: 'Label 1', value: 'value1' }] },
+      ],
+    })
+  })
+
+  it('passes postForm with the correct bounded args to AdditionalQuestions when there is a selectboxes (checkbox) question', async () => {
+    const formData = {
+      components: [
+        {
+          components: [
+            {
+              key: 'question-1',
+              question: 'q1',
+              type: 'selectboxes',
+              values: [{ label: 'Label 1', position: 1, value: 'value1' }],
+            },
+          ],
+          key: 'panel-1',
+          label: 'Panel 1',
+          type: 'panel',
+        },
+      ],
+    }
+
+    server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
+
+    const PageComponent = await Page(defaultProps)
+
+    render(PageComponent)
+
+    // Call the bound action
+    if (capturedAction) {
+      capturedAction({}, undefined, new FormData())
+    }
+
+    expect(actionsModule.postForm).toHaveBeenCalled()
+
+    const [extraArgs] = (actionsModule.postForm as Mock).mock.calls[0]
+
+    expect(extraArgs).toMatchObject({
+      questionMetadata: [
+        { id: 'q1', key: 'question-1', type: 'selectboxes', valuesAndLabels: [{ label: 'Label 1', value: 'value1' }] },
+      ],
     })
   })
 })

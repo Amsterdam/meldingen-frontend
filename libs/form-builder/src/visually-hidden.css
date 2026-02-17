@@ -1,0 +1,16 @@
+/* Sourced from https://github.com/Amsterdam/design-system/blob/main/packages/css/src/components/visually-hidden/visually-hidden.scss */
+
+/* stylelint-disable unit-disallowed-list */
+.visually-hidden {
+  block-size: 1px;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-user-select: none;
+
+  /* Safari support is added with the prefixed property. */
+  user-select: none;
+  white-space: nowrap;
+}

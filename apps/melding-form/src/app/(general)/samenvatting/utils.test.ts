@@ -1,4 +1,3 @@
-import { Blob } from 'buffer'
 import { http, HttpResponse } from 'msw'
 
 import type { MeldingOutput } from '@meldingen/api-client'
@@ -176,6 +175,93 @@ describe('getAdditionalQuestionsSummary', () => {
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
 
     expect(result).toEqual({ data: [] })
+  })
+
+  it('supports the time answer type', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [{ components: [{ question: 37 }], key: 'page1' }],
+        }),
+      ),
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+        HttpResponse.json([{ question: { id: 37, text: 'Time question' }, time: '14:30', type: 'time' }]),
+      ),
+    )
+
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
+
+    expect(result).toEqual({
+      data: [
+        {
+          description: '14:30',
+          key: '37',
+          link: '/aanvullende-vragen/1/page1',
+          term: 'Time question',
+        },
+      ],
+    })
+  })
+
+  it('supports the value_label answer type', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [{ components: [{ question: 38 }], key: 'page1' }],
+        }),
+      ),
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+        HttpResponse.json([
+          {
+            question: { id: 38, text: 'Value label question' },
+            type: 'value_label',
+            values_and_labels: [
+              { label: 'Option 1', value: '1' },
+              { label: 'Option 2', value: '2' },
+            ],
+          },
+        ]),
+      ),
+    )
+
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
+
+    expect(result).toEqual({
+      data: [
+        {
+          description: 'Option 1, Option 2',
+          key: '38',
+          link: '/aanvullende-vragen/1/page1',
+          term: 'Value label question',
+        },
+      ],
+    })
+  })
+
+  it('returns an empty description for unsupported answer types', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [{ components: [{ question: 39 }], key: 'page1' }],
+        }),
+      ),
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+        HttpResponse.json([{ question: { id: 39, text: 'Unsupported question' }, type: 'unsupported_type' }]),
+      ),
+    )
+
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
+
+    expect(result).toEqual({
+      data: [
+        {
+          description: '',
+          key: '39',
+          link: '/aanvullende-vragen/1/page1',
+          term: 'Unsupported question',
+        },
+      ],
+    })
   })
 })
 

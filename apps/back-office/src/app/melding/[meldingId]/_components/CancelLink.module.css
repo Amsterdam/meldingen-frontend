@@ -1,0 +1,5 @@
+.link {
+  font-size: var(--ams-typography-body-text-font-size);
+  font-weight: var(--ams-typography-body-text-font-weight);
+  line-height: var(--ams-typography-body-text-line-height);
+}
