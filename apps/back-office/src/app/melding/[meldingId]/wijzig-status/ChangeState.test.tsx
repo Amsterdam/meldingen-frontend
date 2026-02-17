@@ -52,21 +52,35 @@ describe('ChangeState', () => {
     expect(select).toHaveValue('processing')
   })
 
-  it('displays the correct error message when the action returns an error with type invalid-state', () => {
-    ;(useActionState as Mock).mockReturnValue([{ error: { type: 'invalid-state' } }, vi.fn()])
+  it('displays the correct error message and default value when the action returns an error with type invalid-state', () => {
+    ;(useActionState as Mock).mockReturnValue([
+      { error: { type: 'invalid-state' }, meldingStateFromAction: 'completed' },
+      vi.fn(),
+    ])
 
     render(<ChangeState {...defaultProps} />)
 
-    expect(screen.getByText('errors.invalid-state.heading')).toBeInTheDocument()
-    expect(screen.getByText('errors.invalid-state.description')).toBeInTheDocument()
+    const select = screen.getByRole('combobox', { name: 'label' })
+    const alert = screen.getByRole('alert', { name: 'errors.invalid-state.heading' })
+
+    expect(alert).toBeInTheDocument()
+    expect(alert).toHaveTextContent('errors.invalid-state.description')
+    expect(select).toHaveValue('completed')
   })
 
-  it('displays the correct error message when the action returns an error with type state-change-failed', () => {
-    ;(useActionState as Mock).mockReturnValue([{ error: { type: 'state-change-failed' } }, vi.fn()])
+  it('displays the correct error message and default value when the action returns an error with type state-change-failed', () => {
+    ;(useActionState as Mock).mockReturnValue([
+      { error: { type: 'state-change-failed' }, meldingStateFromAction: 'completed' },
+      vi.fn(),
+    ])
 
     render(<ChangeState {...defaultProps} />)
 
-    expect(screen.getByText('errors.state-change-failed.heading')).toBeInTheDocument()
-    expect(screen.getByText('errors.state-change-failed.description')).toBeInTheDocument()
+    const select = screen.getByRole('combobox', { name: 'label' })
+    const alert = screen.getByRole('alert', { name: 'errors.state-change-failed.heading' })
+
+    expect(alert).toBeInTheDocument()
+    expect(alert).toHaveTextContent('errors.state-change-failed.description')
+    expect(select).toHaveValue('completed')
   })
 })

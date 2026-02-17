@@ -16,4 +16,5 @@ export const ENDPOINTS = {
   PUT_MELDING_BY_MELDING_ID_REOPEN: '/melding/:id/reopen',
   PUT_MELDING_BY_MELDING_ID_REQUEST_PROCESSING: '/melding/:id/request_processing',
   PUT_MELDING_BY_MELDING_ID_REQUEST_REOPEN: '/melding/:id/request_reopen',
+  PUT_MELDING_BY_MELDING_ID_SUBMIT: '/melding/:id/submit',
 }

@@ -27,4 +27,5 @@ export const handlers = [
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_REOPEN, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_REQUEST_PROCESSING, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_REQUEST_REOPEN, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT, () => new HttpResponse()),
 ]
