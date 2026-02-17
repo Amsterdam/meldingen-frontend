@@ -11,6 +11,7 @@ import {
   putMeldingByMeldingIdReopen,
   putMeldingByMeldingIdRequestProcessing,
   putMeldingByMeldingIdRequestReopen,
+  putMeldingByMeldingIdSubmit,
 } from 'apps/back-office/src/apiClientProxy'
 
 type State = (typeof STATES)[keyof typeof STATES]
@@ -36,6 +37,7 @@ const stateHandlers: Record<State, StateHandler> = {
   [STATES.REOPEN_REQUESTED]: async (meldingId) =>
     putMeldingByMeldingIdRequestReopen({ path: { melding_id: meldingId } }),
   [STATES.REOPENED]: async (meldingId) => putMeldingByMeldingIdReopen({ path: { melding_id: meldingId } }),
+  [STATES.SUBMITTED]: async (meldingId) => putMeldingByMeldingIdSubmit({ path: { melding_id: meldingId } }),
 }
 
 type MeldingIdParam = { currentState: string; meldingId: number }

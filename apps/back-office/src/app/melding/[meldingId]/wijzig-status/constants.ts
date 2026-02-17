@@ -6,6 +6,7 @@ export const STATES = {
   PROCESSING_REQUESTED: 'processing_requested',
   REOPEN_REQUESTED: 'reopen_requested',
   REOPENED: 'reopened',
+  SUBMITTED: 'submitted',
 } as const
 
 export const STATES_LIST: string[] = Object.values(STATES)
