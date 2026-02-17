@@ -1,5 +1,20 @@
 body {
+  /* TODO: temporarily override body background color. Remove this when the design system adds a grey background to ams-body. */
+  background-color: #e8e8e8;
   font-family: 'Amsterdam Sans', Arial, sans-serif;
   margin-block: 0;
   margin-inline: 0;
+}
+
+/* TODO: temporarily override some background colors. Remove this when the design system adds these background colors. */
+.ams-page-header {
+  background-color: var(--ams-color-background);
+}
+
+.ams-page {
+  background-color: #e8e8e8;
+}
+
+.ams-table__table {
+  background-color: var(--ams-color-background);
 }
