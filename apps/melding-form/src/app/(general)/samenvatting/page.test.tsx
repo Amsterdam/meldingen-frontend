@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import { Blob } from 'buffer'
 import { http, HttpResponse } from 'msw'
 
 import Page from './page'

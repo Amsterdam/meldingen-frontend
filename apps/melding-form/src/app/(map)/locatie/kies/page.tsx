@@ -3,9 +3,9 @@ import { cookies } from 'next/headers'
 
 import {
   deleteMeldingByMeldingIdAssetByAssetId,
+  getAssetTypeByAssetTypeIdWfs,
   getMeldingByMeldingIdAssetsMelder,
   getMeldingByMeldingIdMelder,
-  getWfsByName,
 } from '@meldingen/api-client'
 
 import { SelectLocation } from './SelectLocation'
@@ -62,7 +62,7 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
     assetIds.map(async (asset) => {
       const filter = getFilter(asset.external_id)
 
-      const { data, error } = await getWfsByName({ path: { name: 'container' }, query: { filter } })
+      const { data, error } = await getAssetTypeByAssetTypeIdWfs({ path: { asset_type_id: 1 }, query: { filter } })
 
       if (error) {
         // TODO: Log the error to an error reporting service

@@ -2,7 +2,7 @@ import { Layer, Map } from 'leaflet'
 import 'leaflet.markercluster'
 import { RefObject, useContext, useEffect, useRef } from 'react'
 
-import { Feature, getWfsByName } from '@meldingen/api-client'
+import { Feature, getAssetTypeByAssetTypeIdWfs } from '@meldingen/api-client'
 
 import { MapContext } from '../Map/Map'
 import { Coordinates } from '../types'
@@ -11,7 +11,7 @@ import { useAddMarkersToMap } from './useAddMarkersToMap'
 import './cluster.css'
 import { getWfsFilter } from './utils/getWfsFilter'
 
-const classificationsWithAssets = ['container']
+const classificationsWithAssets = ['container', 'Demo container is vol']
 export const ZOOM_THRESHOLD = 16
 
 export const fetchFeaturesOnMoveEnd = async (
@@ -32,8 +32,8 @@ export const fetchFeaturesOnMoveEnd = async (
   if (zoom >= ZOOM_THRESHOLD) {
     const filter = getWfsFilter(map)
 
-    const { data, error } = await getWfsByName({
-      path: { name: 'container' },
+    const { data, error } = await getAssetTypeByAssetTypeIdWfs({
+      path: { asset_type_id: 1 },
       query: { filter },
     })
 

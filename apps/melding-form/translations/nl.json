@@ -40,7 +40,7 @@
     },
     "submit-button": "Volgende vraag",
     "errors": {
-      "no-location": "Vul een locatie in."
+      "no-location": "Vul een adres in."
     }
   },
   "select-location": {
@@ -54,7 +54,7 @@
       "label": "Zoek op adres",
       "description": "Als er autoaanvul-resultaten zijn, gebruik dan de pijltjes omhoog en omlaag om te bekijken en druk op enter om te kiezen. Voor <english>touch</english>-apparaten, verken met aanraking of veegbewegingen <english>(swipe)</english>.",
       "no-results": "Geen resultaten gevonden",
-      "no-address": "Locatie pin op de kaart"
+      "no-address": "Locatie gekozen op de kaart"
     },
     "submit-button": {
       "mobile": "Bevestigen",
@@ -70,8 +70,13 @@
       "zoom-out": "Uitzoomen"
     },
     "errors": {
-      "no-location": "Vul een locatie in.",
-      "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam."
+      "no-js": {
+        "heading": "JavaScript is niet beschikbaar",
+        "description": "Wijzig dit in de instellingen van uw browser of probeer opnieuw de pagina te laden."
+      },
+      "no-location": "Vul een adres in.",
+      "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam.",
+      "pdok-failed": "Er is iets mis gegaan. Probeer het opnieuw of herlaad de pagina."
     },
     "notifications": {
       "too-many-assets": {
@@ -105,7 +110,7 @@
     },
     "delete-notification": "{fileName} is verwijderd",
     "no-js-alert-title": "JavaScript is niet beschikbaar",
-    "no-js-alert-description": "Wijzig dit in de instellingen van uw browser of herlaad de pagina.",
+    "no-js-alert-description": "Wijzig dit in de instellingen van uw browser of probeer opnieuw de pagina te laden.",
     "submit-button": "Volgende vraag",
     "errors": {
       "too-many-files": {

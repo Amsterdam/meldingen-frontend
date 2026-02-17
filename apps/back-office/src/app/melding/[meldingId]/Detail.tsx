@@ -46,75 +46,80 @@ export const Detail = ({
   const hasAttachments = attachments.files.length > 0
 
   return (
-    <Grid paddingBottom="2x-large" paddingTop="x-large">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <BackLink className="ams-mb-s" href={`/`}>
-          {t('back-link')}
-        </BackLink>
-        <Heading className="ams-mb-m" level={1}>
-          {t('title', { publicId })}
-        </Heading>
-        <DescriptionList className="ams-mb-l">
-          {additionalQuestionsWithMeldingText.map(({ description, key, term }) => (
-            <Fragment key={key}>
-              <DescriptionList.Term>{term}</DescriptionList.Term>
-              <DescriptionList.Description>{description}</DescriptionList.Description>
-            </Fragment>
-          ))}
-        </DescriptionList>
-        {location && (
-          <DescriptionList className="ams-mb-l">
-            {location.map(({ description, key, term }) => (
-              <Fragment key={key}>
-                <DescriptionList.Term>{term}</DescriptionList.Term>
-                <DescriptionList.Description>{description}</DescriptionList.Description>
-              </Fragment>
-            ))}
-          </DescriptionList>
-        )}
-        <DescriptionList className="ams-mb-l">
-          {meldingData.map(({ description, key, link, term }) => (
-            <Fragment key={key}>
-              <DescriptionList.Term>{term}</DescriptionList.Term>
-              <DescriptionList.Description>{description}</DescriptionList.Description>
-              {link && (
-                <DescriptionList.Description>
-                  <NextLink href={link.href} legacyBehavior passHref>
-                    <Link>{link.label}</Link>
-                  </NextLink>
-                </DescriptionList.Description>
-              )}
-            </Fragment>
-          ))}
-        </DescriptionList>
-        {contact && (
-          <DescriptionList className="ams-mb-l">
-            {contact.map(({ description, key, term }) => (
-              <Fragment key={key}>
-                <DescriptionList.Term>{term}</DescriptionList.Term>
-                <DescriptionList.Description>{description}</DescriptionList.Description>
-              </Fragment>
-            ))}
-          </DescriptionList>
-        )}
+    <div className="ams-page__area--body">
+      <Grid className="ams-mb-s">
+        <Grid.Cell span="all">
+          <BackLink href={`/`}>{t('back-link')}</BackLink>
+        </Grid.Cell>
+      </Grid>
 
-        <DescriptionList className={clsx(hasAttachments && styles.attachmentsDescriptionList)}>
-          <DescriptionList.Term>{t('attachments.title')}</DescriptionList.Term>
-          {hasAttachments ? (
-            <div className={clsx(styles.attachmentsGrid, 'ams-mb-l')}>
-              {attachments.files.map((file) => (
-                <DescriptionList.Description className={styles.attachmentsDescription} key={file.fileName}>
-                  <AttachmentImage blob={file.blob} fileName={file.fileName} />
-                </DescriptionList.Description>
+      <Grid as="main">
+        <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
+          <Heading className="ams-mb-m" level={1}>
+            {t('title', { publicId })}
+          </Heading>
+          <DescriptionList className="ams-mb-l">
+            {additionalQuestionsWithMeldingText.map(({ description, key, term }) => (
+              <Fragment key={key}>
+                <DescriptionList.Term>{term}</DescriptionList.Term>
+                <DescriptionList.Description>{description}</DescriptionList.Description>
+              </Fragment>
+            ))}
+          </DescriptionList>
+          {location && (
+            <DescriptionList className="ams-mb-l">
+              {location.map(({ description, key, term }) => (
+                <Fragment key={key}>
+                  <DescriptionList.Term>{term}</DescriptionList.Term>
+                  <DescriptionList.Description>{description}</DescriptionList.Description>
+                </Fragment>
               ))}
-            </div>
-          ) : (
-            <DescriptionList.Description>
-              <Paragraph>{t('attachments.no-data')}</Paragraph>
-            </DescriptionList.Description>
+            </DescriptionList>
           )}
-        </DescriptionList>
-      </Grid.Cell>
-    </Grid>
+          <DescriptionList className="ams-mb-l">
+            {meldingData.map(({ description, key, link, term }) => (
+              <Fragment key={key}>
+                <DescriptionList.Term>{term}</DescriptionList.Term>
+                <DescriptionList.Description>{description}</DescriptionList.Description>
+                {link && (
+                  <DescriptionList.Description>
+                    <NextLink href={link.href} legacyBehavior passHref>
+                      <Link>{link.label}</Link>
+                    </NextLink>
+                  </DescriptionList.Description>
+                )}
+              </Fragment>
+            ))}
+          </DescriptionList>
+          {contact && (
+            <DescriptionList className="ams-mb-l">
+              {contact.map(({ description, key, term }) => (
+                <Fragment key={key}>
+                  <DescriptionList.Term>{term}</DescriptionList.Term>
+                  <DescriptionList.Description>{description}</DescriptionList.Description>
+                </Fragment>
+              ))}
+            </DescriptionList>
+          )}
+
+          <DescriptionList className={clsx(hasAttachments && styles.attachmentsDescriptionList)}>
+            <DescriptionList.Term>{t('attachments.title')}</DescriptionList.Term>
+            {hasAttachments ? (
+              <div className={clsx(styles.attachmentsGrid, 'ams-mb-l')}>
+                {attachments.files.map((file) => (
+                  <DescriptionList.Description className={styles.attachmentsDescription} key={file.fileName}>
+                    <AttachmentImage blob={file.blob} fileName={file.fileName} />
+                  </DescriptionList.Description>
+                ))}
+              </div>
+            ) : (
+              <DescriptionList.Description>
+                <Paragraph>{t('attachments.no-data')}</Paragraph>
+              </DescriptionList.Description>
+            )}
+          </DescriptionList>
+        </Grid.Cell>
+      </Grid>
+    </div>
   )
 }

@@ -56,6 +56,8 @@ export default async () => {
     console.error(attachmentError)
   }
 
+  // TODO: we're fetching the attachments on the server here, which means we have to wait for all downloads to finish before we can render the page.
+  // We should probably implement a different approach where we fetch the attachments on the client after the page has loaded.
   const attachments = attachmentData
     ? await Promise.all(
         attachmentData.map(async ({ id, original_filename }): Promise<ExistingFileType> => {
