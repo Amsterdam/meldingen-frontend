@@ -37,3 +37,4 @@ graph TD
 8. [Session management and authentication](./0008-session-management-and-authentication.md)
 9. [Directory structure](./0009-directory-structure.md)
 10. [Progressive enhancement](./0010-progressive-enhancement.md)
+11. [Error handling](./0011-error-handling.md)

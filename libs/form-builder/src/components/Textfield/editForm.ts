@@ -1,27 +1,15 @@
 // Sourced from:
-// - https://github.com/formio/formio.js/blob/master/src/components/_classes/component/editForm
-// - https://github.com/formio/formio.js/tree/master/src/components/textfield/editForm
+// - https://github.com/formio/formio.js/tree/main/src/components/_classes/component/editForm
+// - https://github.com/formio/formio.js/tree/main/src/components/textfield/editForm
 
-const validationExamplesHTML = `
-<p>Validatie voorbeelden:</p>
-<ul>
-<li>Mag maximaal 100 tekens zijn:
-<pre><code>{"if": [
-  { "<=": [{ "length": [{ "var": "text" }]}, 100]},
-  true,
-  "De omschrijving van de melding mag maximaal 100 tekens zijn."
-]}
-</code></pre>
-</li>
-<li>Moet minimaal 3 tekens zijn:
-<pre><code>{"if": [
-  { ">=": [{ "length": [{ "var": "text" }]}, 3]},
-  true,
-  "De omschrijving van de melding moet minimaal 3 tekens zijn."
-]}
-</code></pre>
-</ul>
-`
+import { Context } from '../types'
+import {
+  getJsonLogicValue,
+  getMaxLengthErrorMessageValue,
+  getMaxLengthValue,
+  getMinLengthErrorMessageValue,
+  getMinLengthValue,
+} from '../utils'
 
 export const editForm = () => ({
   components: [
@@ -40,7 +28,6 @@ export const editForm = () => ({
               validate: {
                 required: true,
               },
-              weight: 0,
             },
             {
               as: 'html',
@@ -51,7 +38,6 @@ export const editForm = () => ({
               placeholder: 'Description for this field.',
               tooltip: 'The description is text that will appear below the input field.',
               type: 'textarea',
-              weight: 200,
               wysiwyg: {
                 isUseWorkerDisabled: true,
                 minLines: 3,
@@ -69,36 +55,50 @@ export const editForm = () => ({
               label: 'Required',
               tooltip: 'A required field must be filled in before the form can be submitted.',
               type: 'checkbox',
-              weight: 10,
             },
             {
               input: true,
               key: 'validate.required_error_message',
               label: 'Required error message',
               type: 'textfield',
-              weight: 11,
             },
             {
-              components: [
-                {
-                  content: validationExamplesHTML,
-                  tag: 'div',
-                  type: 'htmlelement',
-                },
-                {
-                  as: 'json',
-                  editor: 'ace',
-                  hideLabel: true,
-                  input: true,
-                  key: 'validate.json',
-                  rows: 5,
-                  type: 'textarea',
-                },
-              ],
-              key: 'json-validation-json',
-              title: 'JSONLogic Validation',
-              type: 'panel',
-              weight: 400,
+              calculateValue: getMaxLengthValue,
+              input: true,
+              key: 'validate.maxLength',
+              label: 'Max Length',
+              type: 'number',
+            },
+            {
+              calculateValue: (context: Context) => getMaxLengthErrorMessageValue(context, getMaxLengthValue(context)),
+              input: true,
+              key: 'validate.maxLengthErrorMessage',
+              label: 'Max Length Error Message',
+              type: 'textfield',
+            },
+            {
+              calculateValue: getMinLengthValue,
+              input: true,
+              key: 'validate.minLength',
+              label: 'Min Length',
+              type: 'number',
+            },
+            {
+              calculateValue: (context: Context) => getMinLengthErrorMessageValue(context, getMinLengthValue(context)),
+              input: true,
+              key: 'validate.minLengthErrorMessage',
+              label: 'Min Length Error Message',
+              type: 'textfield',
+            },
+            {
+              as: 'json',
+              calculateValue: getJsonLogicValue,
+              editor: 'ace',
+              hidden: true, // This field stores the data we send to the backend. It is calculated from the other validation fields, so we hide it from the user.
+              input: true,
+              key: 'validate.json',
+              rows: 5,
+              type: 'textarea',
             },
           ],
           key: 'validation',

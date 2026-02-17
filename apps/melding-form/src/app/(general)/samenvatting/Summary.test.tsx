@@ -129,4 +129,21 @@ describe('Summary', () => {
 
     expect(alert).toHaveTextContent('system-error-alert-title')
   })
+
+  it('updates the document title when there is a system error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+
+    render(<Summary {...defaultProps} />)
+
+    expect(document.title).toBe('system-error-alert-title - metadata.title')
+  })
+
+  it('sets focus on SystemErrorAlert when there is a system error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+    render(<Summary {...defaultProps} />)
+
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveFocus()
+  })
 })

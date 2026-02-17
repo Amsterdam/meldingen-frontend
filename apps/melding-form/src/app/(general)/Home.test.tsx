@@ -90,4 +90,45 @@ describe('Page', () => {
 
     expect(input).toHaveValue('Form data from action')
   })
+
+  it('updates the document title when there is a system error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+
+    render(<Home {...defaultProps} />)
+
+    expect(document.title).toBe('system-error-alert-title - metadata.title')
+  })
+
+  it('updates the document title when there are validation errors', () => {
+    ;(useActionState as Mock).mockReturnValue([
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      vi.fn(),
+    ])
+
+    render(<Home {...defaultProps} />)
+
+    expect(document.title).toBe('error-count-label metadata.title')
+  })
+
+  it('sets focus on InvalidFormAlert when there are validation errors', () => {
+    ;(useActionState as Mock).mockReturnValue([
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      vi.fn(),
+    ])
+
+    const { container } = render(<Home {...defaultProps} />)
+
+    const alert = container.querySelector('.ams-alert')
+
+    expect(alert).toHaveFocus()
+  })
+
+  it('sets focus on SystemErrorAlert when there is a system error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+    render(<Home {...defaultProps} />)
+
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveFocus()
+  })
 })

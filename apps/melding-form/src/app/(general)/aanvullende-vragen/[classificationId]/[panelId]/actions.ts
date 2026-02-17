@@ -11,18 +11,28 @@ import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
-type ArgsType = {
+type RequiredQuestionKeyWithErrorMessage = { key: string; requiredErrorMessage: string }
+
+export type ArgsType = {
   isLastPanel: boolean
   lastPanelPath: string
   nextPanelPath: string
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
-  questionKeysAndIds: { id: number; key: string }[]
-  requiredQuestionKeys: string[]
+  questionMetadata: {
+    id: number
+    key: string
+    type: string
+    valuesAndLabels?: { label: string; value: string }[]
+  }[]
+  requiredQuestionKeysWithErrorMessages: RequiredQuestionKeyWithErrorMessage[]
 }
 
-const getUnansweredRequiredQuestionKeys = (requiredKeys: string[], entries: [string, unknown][]) =>
-  requiredKeys.filter((requiredKey) => {
-    const entry = entries.find(([key]) => key === requiredKey)
+const getUnansweredRequiredQuestionKeysWithErrorMessages = (
+  requiredKeysWithErrorMessages: RequiredQuestionKeyWithErrorMessage[],
+  entries: [string, unknown][],
+) =>
+  requiredKeysWithErrorMessages.filter(({ key }) => {
+    const entry = entries.find(([entryKey]) => entryKey === key)
 
     // If entries do not contain a key that is in requiredKeys, add it to missingRequiredKeys
     if (!entry) return true
@@ -39,8 +49,8 @@ export const postForm = async (
     lastPanelPath,
     nextPanelPath,
     questionAndAnswerIdPairs,
-    questionKeysAndIds,
-    requiredQuestionKeys,
+    questionMetadata,
+    requiredQuestionKeysWithErrorMessages,
   }: ArgsType,
   _: unknown,
   formData: FormData,
@@ -57,33 +67,35 @@ export const postForm = async (
   cookieStore.set(COOKIES.LAST_PANEL_PATH, lastPanelPath, { maxAge: oneDay })
 
   // Checkbox answers are stored as separate key-value pairs in the FormData object.
-  // This function merges these answers into a single string value per question, using an identifier in the Checkbox component.
-  // TODO: This isn't the most robust solution.
-  const formDataObj = Object.fromEntries(formData)
-  const entries = Object.entries(formDataObj)
-  const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(entries))
+  // This function merges these answers into an array per question, using an identifier in the Checkbox component.
+  const entriesArray = Array.from(formData.entries())
+  const stringEntries = entriesArray.filter(([, value]) => typeof value === 'string') as [string, string][]
+  const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(stringEntries))
 
   // Check if all required questions are answered
-  const missingRequiredKeys = getUnansweredRequiredQuestionKeys(requiredQuestionKeys, entriesWithMergedCheckboxes)
+  const missingRequiredKeysWithErrorMessages = getUnansweredRequiredQuestionKeysWithErrorMessages(
+    requiredQuestionKeysWithErrorMessages,
+    entriesWithMergedCheckboxes,
+  )
 
-  if (missingRequiredKeys.length > 0) {
+  if (missingRequiredKeysWithErrorMessages.length > 0) {
     return {
       formData,
-      validationErrors: missingRequiredKeys.map((key) => ({
+      validationErrors: missingRequiredKeysWithErrorMessages.map(({ key, requiredErrorMessage }) => ({
         key,
-        message: 'Vraag is verplicht en moet worden beantwoord.',
+        message: requiredErrorMessage,
       })),
     }
   }
 
   // Build promise array
-  const promiseArray = buildAnswerPromises(
-    entriesWithMergedCheckboxes,
+  const promiseArray = buildAnswerPromises({
+    entries: entriesWithMergedCheckboxes,
     meldingId,
-    questionKeysAndIds,
-    token,
     questionAndAnswerIdPairs,
-  )
+    questionMetadata,
+    token,
+  })
   const results = await Promise.all(promiseArray)
 
   // Return validation errors if there are any

@@ -1,0 +1,4 @@
+.link {
+  font-weight: var(--ams-typography-body-text-bold-font-weight);
+  padding-block: var(--ams-space-s);
+}

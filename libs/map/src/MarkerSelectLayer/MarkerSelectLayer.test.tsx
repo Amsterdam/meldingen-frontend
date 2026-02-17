@@ -2,7 +2,7 @@ import { render, waitFor } from '@testing-library/react'
 import { Layer, Map } from 'leaflet'
 import { Mock, vi } from 'vitest'
 
-import { getWfsByName } from '@meldingen/api-client'
+import { getAssetTypeByAssetTypeIdWfs } from '@meldingen/api-client'
 
 import { MapComponent } from '../Map/Map'
 import { fetchFeaturesOnMoveEnd, MarkerSelectLayer, Props } from './MarkerSelectLayer'
@@ -31,7 +31,7 @@ const mockMapInstance = {
 } as unknown as Map
 
 vi.mock('@meldingen/api-client', () => ({
-  getWfsByName: vi.fn().mockResolvedValue({ data: { features: ['Test feature'] }, error: undefined }),
+  getAssetTypeByAssetTypeIdWfs: vi.fn().mockResolvedValue({ data: { features: ['Test feature'] }, error: undefined }),
 }))
 
 describe('MarkerSelectLayer', () => {
@@ -95,7 +95,7 @@ describe('fetchFeaturesOnMoveEnd', () => {
   })
 
   it('logs an error when the API call fails', () => {
-    vi.mocked(getWfsByName).mockResolvedValueOnce({
+    vi.mocked(getAssetTypeByAssetTypeIdWfs).mockResolvedValueOnce({
       data: undefined,
       error: { detail: 'Test error' },
       response: {} as Response,

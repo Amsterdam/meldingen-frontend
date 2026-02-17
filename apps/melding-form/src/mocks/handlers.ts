@@ -77,7 +77,7 @@ export const handlers = [
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_CONTACT_INFO, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ANSWER_QUESTIONS, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_LOCATION, () => new HttpResponse()),
-  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_MELDER, () => new HttpResponse()),
 
   // PDOK
   http.get(ENDPOINTS.PDOK_FREE, () => HttpResponse.json(PDOKFree)),
@@ -108,8 +108,8 @@ export const handlers = [
     return undefined
   }),
 
-  // Wfs Layer
-  http.get(ENDPOINTS.GET_WFS_BY_NAME, ({ params }) => {
+  // Asset type
+  http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, ({ params }) => {
     if (params.name === 'container') {
       return HttpResponse.json({
         features: containerAssets,

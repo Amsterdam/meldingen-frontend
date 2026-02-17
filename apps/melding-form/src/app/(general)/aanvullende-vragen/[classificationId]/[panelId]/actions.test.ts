@@ -4,6 +4,8 @@ import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
+import type { ArgsType } from './actions'
+
 import { postForm } from './actions'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
@@ -17,15 +19,15 @@ vi.mock('next/navigation', () => ({
 }))
 
 describe('postForm', () => {
-  const defaultArgs = {
+  const defaultArgs: ArgsType = {
     isLastPanel: true,
     lastPanelPath: '/test',
     nextPanelPath: '/',
-    questionKeysAndIds: [
-      { id: 1, key: 'key1' },
-      { id: 2, key: 'key2' },
+    questionMetadata: [
+      { id: 1, key: 'key1', type: 'textfield' },
+      { id: 2, key: 'key2', type: 'textfield' },
     ],
-    requiredQuestionKeys: [],
+    requiredQuestionKeysWithErrorMessages: [],
   }
 
   beforeEach(() => {
@@ -52,15 +54,30 @@ describe('postForm', () => {
     expect(cookieInstance.set).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH, '/test', { maxAge: 86400 })
   })
 
-  it('returns validation errors for missing required questions', async () => {
+  it('returns custom and fallback validation errors for missing required questions', async () => {
     const formData = new FormData()
-    formData.append('key1', 'value1') // key2 is missing
 
-    const result = await postForm({ ...defaultArgs, requiredQuestionKeys: ['key1', 'key2'] }, null, formData)
+    const result = await postForm(
+      {
+        ...defaultArgs,
+        requiredQuestionKeysWithErrorMessages: [
+          { key: 'textArea1', requiredErrorMessage: 'required-error-message-fallback' },
+          { key: 'selectBoxes', requiredErrorMessage: 'Dit veld is verplicht' },
+        ],
+      },
+      null,
+      formData,
+    )
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'key2', message: 'Vraag is verplicht en moet worden beantwoord.' }],
+      validationErrors: [
+        { key: 'textArea1', message: 'required-error-message-fallback' },
+        {
+          key: 'selectBoxes',
+          message: 'Dit veld is verplicht',
+        },
+      ],
     })
   })
 

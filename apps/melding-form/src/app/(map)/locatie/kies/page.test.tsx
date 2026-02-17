@@ -67,7 +67,7 @@ describe('Page', () => {
   it('fetches assetIds from melding and passes assets to SelectLocation', async () => {
     let callCount = 0
     server.use(
-      http.get(ENDPOINTS.GET_WFS_BY_NAME, () => {
+      http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => {
         callCount += 1
 
         if (callCount === 1) {
@@ -117,7 +117,9 @@ describe('Page', () => {
   })
 
   it('logs an error when the wfs endpoint fails', async () => {
-    server.use(http.get(ENDPOINTS.GET_WFS_BY_NAME, () => HttpResponse.json('Test error', { status: 500 })))
+    server.use(
+      http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json('Test error', { status: 500 })),
+    )
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     const PageComponent = await Page()
@@ -136,14 +138,14 @@ describe('Page', () => {
   })
 
   it('deletes assets from melding', async () => {
-    const mockGetWfsByName = vi.fn()
+    const mockGetWfsByAssetTypeId = vi.fn()
 
-    server.use(http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, mockGetWfsByName))
+    server.use(http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, mockGetWfsByAssetTypeId))
 
     const PageComponent = await Page()
     render(PageComponent)
 
-    expect(mockGetWfsByName).toHaveBeenCalledTimes(2)
+    expect(mockGetWfsByAssetTypeId).toHaveBeenCalledTimes(2)
   })
 
   it('logs an error when delete assets from melding fails', async () => {

@@ -30,7 +30,7 @@ export const ENDPOINTS = {
   PUT_MELDING_BY_MELDING_ID_ADD_CONTACT_INFO: 'http://localhost:8000/melding/:id/add_contact_info',
   PUT_MELDING_BY_MELDING_ID_ANSWER_QUESTIONS: 'http://localhost:8000/melding/:id/answer_questions',
   PUT_MELDING_BY_MELDING_ID_SUBMIT_LOCATION: 'http://localhost:8000/melding/:id/submit_location',
-  PUT_MELDING_BY_MELDING_ID_SUBMIT: 'http://localhost:8000/melding/:id/submit',
+  PUT_MELDING_BY_MELDING_ID_SUBMIT_MELDER: 'http://localhost:8000/melding/:id/submit/melder',
 
   // PDOK
   PDOK_FREE: 'https://api.pdok.nl/bzk/locatieserver/search/v3_1/free',
@@ -41,6 +41,6 @@ export const ENDPOINTS = {
   GET_STATIC_FORM: 'http://localhost:8000/static-form',
   GET_STATIC_FORM_BY_STATIC_FORM_ID: 'http://localhost:8000/static-form/:staticFormId',
 
-  // Wfs Layer
-  GET_WFS_BY_NAME: 'http://localhost:8000/wfs/:name',
+  // Asset type
+  GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS: 'http://localhost:8000/asset-type/:asset_type_id/wfs',
 }

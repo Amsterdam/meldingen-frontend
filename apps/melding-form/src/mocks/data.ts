@@ -6,6 +6,7 @@ import {
   FormTextAreaComponentOutput,
   MeldingOutput,
   TextAnswerQuestionOutput,
+  ValueLabelAnswerQuestionOutput,
 } from '@meldingen/api-client'
 
 // Form
@@ -144,22 +145,27 @@ export const PDOKSuggest = {
   response: {
     docs: [
       {
+        centroide_ll: 'POINT(4.8937175 52.37329259)',
         id: 'adr-bc581db7d4fc654e4ed35abce874ee11',
         weergavenaam: 'Amsteldijk 152A-H, 1079LG Amsterdam',
       },
       {
+        centroide_ll: 'POINT(4.89302655 52.37336161)',
         id: 'adr-8d27e7c75aef4349f37e1bebae62d45a',
         weergavenaam: 'Amstelkade 166A-H, 1078AX Amsterdam',
       },
       {
+        centroide_ll: 'POINT(4.8941086 52.37307409)',
         id: 'adr-6da11c41a94dad446b1ddcf3cdf927e6',
         weergavenaam: 'Amstelkade 169A-H, 1078AZ Amsterdam',
       },
       {
+        centroide_ll: 'POINT(4.89274646 52.37345931)',
         id: 'adr-e15725abe37eb0e4dfeecad2f1055f83',
         weergavenaam: 'Amstelveenseweg 170B-H, 1075XP Amsterdam',
       },
       {
+        centroide_ll: 'POINT(4.8942242 52.37302144)',
         id: 'adr-1e36f861ba5cede46a2c8e1b53bd55a2',
         weergavenaam: 'Amstel 312A-H, 1017AP Amsterdam',
       },
@@ -223,6 +229,25 @@ export const additionalQuestions: TextAnswerQuestionOutput[] = [
     updated_at: '2025-02-18T10:34:32.187573',
   },
 ]
+
+export const selectAdditionalQuestion: ValueLabelAnswerQuestionOutput = {
+  created_at: '2025-02-18T10:34:32.193489',
+  id: 125,
+  question: {
+    created_at: '2025-02-17T11:06:22.137002',
+    id: 37,
+    text: 'Select Field',
+    updated_at: '2025-02-17T11:06:22.137002',
+  },
+  type: 'value_label',
+  updated_at: '2025-02-18T10:34:32.193489',
+  values_and_labels: [
+    {
+      label: 'Option 1',
+      value: 'option_1',
+    },
+  ],
+}
 
 export const containerAssets: Feature[] = [
   {

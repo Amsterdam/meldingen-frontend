@@ -1,7 +1,15 @@
+import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import type { FormOutput, FormPanelComponentOutput, TextAnswerQuestionOutput } from '@meldingen/api-client'
+import type {
+  FormCheckboxComponentOutput,
+  FormOutput,
+  FormPanelComponentOutput,
+  FormRadioComponentOutput,
+  FormSelectComponentOutput,
+  GetMeldingByMeldingIdAnswersMelderResponses,
+} from '@meldingen/api-client'
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
@@ -23,18 +31,50 @@ const getPreviousPanelPath = (classificationId: number, currentPanelIndex: numbe
   return `/aanvullende-vragen/${classificationId}/${formData.components[currentPanelIndex - 1].key}`
 }
 
+// The backend returns a 'position' key in each value-label object,
+// but it does not accept that key when we send the answer back. For that reason, we strip it here.
+const stripPositionKey = <T extends { position?: unknown }>(obj: T): Omit<T, 'position'> => {
+  const { position: _position, ...rest } = obj
+  return rest
+}
+
+const getValuesAndLabels = (component: FormOutputWithoutPanelComponents) => {
+  switch (component.type) {
+    case 'radio':
+      return (component as FormRadioComponentOutput).values.map(stripPositionKey)
+    case 'select':
+      return (component as FormSelectComponentOutput).data.values.map(stripPositionKey)
+    case 'selectboxes':
+      return (component as FormCheckboxComponentOutput).values.map(stripPositionKey)
+    default:
+      return undefined
+  }
+}
+
 type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
 
-const getFormComponents = (components: FormOutputWithoutPanelComponents[], answers?: TextAnswerQuestionOutput[]) =>
+const getFormComponents = (
+  components: FormOutputWithoutPanelComponents[],
+  answers?: GetMeldingByMeldingIdAnswersMelderResponses['200'],
+) =>
   components.map((component) => {
     const answer = answers?.find((answer) => answer.question.id === component.question)
 
     // Prefill if answer exists, otherwise return component without defaultValue(s)
-    if (component.type === 'selectboxes' && answer) {
-      const defaultValues = answer.text.split(',').map((value) => value.trim())
-      return { ...component, defaultValues }
+    switch (answer?.type) {
+      case 'text':
+        return { ...component, defaultValue: answer.text }
+      case 'time':
+        return { ...component, defaultValue: answer.time }
+      case 'value_label': {
+        if (component.type === 'selectboxes') {
+          return { ...component, defaultValues: answer.values_and_labels.map(({ value }) => value) }
+        }
+        return { ...component, defaultValue: answer.values_and_labels[0]?.value ?? undefined }
+      }
+      default:
+        return component
     }
-    return answer ? { ...component, defaultValue: answer.text } : component
   })
 
 type Params = Promise<{
@@ -44,6 +84,7 @@ type Params = Promise<{
 
 export default async ({ params }: { params: Params }) => {
   const { classificationId, panelId } = await params
+  const t = await getTranslations('additional-questions.errors')
 
   const { data, error } = await getFormClassificationByClassificationId({
     path: { classification_id: classificationId },
@@ -76,33 +117,29 @@ export default async ({ params }: { params: Params }) => {
     console.error(answersError)
   }
 
-  // TODO: only pass text answers for now. We should handle all answer types when the BE is done with their multiple answer types work.
-  const textAnswers = answers?.filter((answer) => answer.type === 'text')
+  const formComponents = getFormComponents(panelComponents, answers)
 
-  const formComponents = getFormComponents(panelComponents, textAnswers)
-
-  // Pass question and answer ID pairs to the action
   const questionAndAnswerIdPairs = answers?.map((answer) => ({
     answerId: answer.id,
     questionId: answer.question.id,
   }))
 
-  // Pass question keys and ids to the action
-  const questionKeysAndIds = panelComponents.map(({ key, question }) => ({
-    id: question,
-    key: key,
-  }))
+  const questionMetadata = panelComponents.map((component) => {
+    const { key, question, type } = component
+    const valuesAndLabels = getValuesAndLabels(component)
 
-  // Pass required questions keys to the action
-  const requiredQuestionKeys = panelComponents.filter((question) => question.validate?.required).map(({ key }) => key)
+    return { id: question, key, type, valuesAndLabels }
+  })
 
-  // Pass isLastPanel to the action
+  const requiredQuestionKeysWithErrorMessages = panelComponents
+    .filter((question) => question.validate?.required)
+    .map(({ key, validate }) => ({
+      key,
+      requiredErrorMessage: validate?.required_error_message || t('required-error-message-fallback'),
+    }))
+
   const isLastPanel = currentPanelIndex === data.components.length - 1
-
-  // Pass last panel path to the action
   const lastPanelPath = `/aanvullende-vragen/${classificationId}/${data.components[data.components.length - 1].key}`
-
-  // Pass next panel path to the action
   const nextPanelPath = getNextPanelPath(classificationId, currentPanelIndex, data)
 
   const extraArgs = {
@@ -110,10 +147,11 @@ export default async ({ params }: { params: Params }) => {
     lastPanelPath,
     nextPanelPath,
     questionAndAnswerIdPairs,
-    questionKeysAndIds,
-    requiredQuestionKeys,
+    questionMetadata,
+    requiredQuestionKeysWithErrorMessages,
   }
 
+  // Pass extra arguments to the postForm action
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)
 
   // Pass previous panel path to the Aanvullende vragen component

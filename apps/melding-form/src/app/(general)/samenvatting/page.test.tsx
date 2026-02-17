@@ -1,8 +1,7 @@
 import { render, screen } from '@testing-library/react'
-import { Blob } from 'buffer'
 import { http, HttpResponse } from 'msw'
 
-import Page, { generateMetadata } from './page'
+import Page from './page'
 import { Summary } from './Summary'
 import { additionalQuestions, melding, textAreaComponent } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
@@ -14,14 +13,6 @@ vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 vi.mock('./Summary', () => ({
   Summary: vi.fn(() => <div>Summary Component</div>),
 }))
-
-describe('generateMetadata', () => {
-  it('returns the correct metadata title', async () => {
-    const metadata = await generateMetadata()
-
-    expect(metadata).toEqual({ title: 'metadata.title' })
-  })
-})
 
 describe('Page', () => {
   it('renders the Summary component', async () => {

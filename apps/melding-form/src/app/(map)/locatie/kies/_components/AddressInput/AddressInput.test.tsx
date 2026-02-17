@@ -66,6 +66,23 @@ describe('AddressInput', () => {
     })
   })
 
+  it('should clear coordinates when input changes', async () => {
+    const user = userEvent.setup()
+
+    render(<AddressInput {...defaultProps} coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
+
+    // Wait for the address to be fetched using coordinates and displayed
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
+    })
+
+    const input = screen.getByRole('combobox', { name: 'label' })
+
+    await user.type(input, 'abc')
+
+    expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
+  })
+
   it('should show all options returned by the API', async () => {
     const user = userEvent.setup()
 
@@ -134,5 +151,13 @@ describe('AddressInput', () => {
     await waitFor(() => {
       expect(screen.getByDisplayValue('no-address')).toBeInTheDocument()
     })
+  })
+
+  it('shows an error when an error message is provided', () => {
+    render(<AddressInput {...defaultProps} errorMessage="This is an error message" />)
+
+    const errorMessage = screen.getByText('This is an error message')
+
+    expect(errorMessage).toBeInTheDocument()
   })
 })

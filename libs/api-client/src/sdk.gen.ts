@@ -2,7 +2,7 @@
 
 import { type Client, formDataBodySerializer, type Options as Options2, type TDataShape } from './client';
 import { client } from './client.gen';
-import type { DeleteAssetTypeByAssetTypeIdData, DeleteAssetTypeByAssetTypeIdErrors, DeleteAssetTypeByAssetTypeIdResponses, DeleteClassificationByClassificationIdData, DeleteClassificationByClassificationIdErrors, DeleteClassificationByClassificationIdResponses, DeleteFormByFormIdData, DeleteFormByFormIdErrors, DeleteFormByFormIdResponses, DeleteMeldingByMeldingIdAssetByAssetIdData, DeleteMeldingByMeldingIdAssetByAssetIdErrors, DeleteMeldingByMeldingIdAssetByAssetIdResponses, DeleteMeldingByMeldingIdAttachmentByAttachmentIdData, DeleteMeldingByMeldingIdAttachmentByAttachmentIdErrors, DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponses, DeleteUserByUserIdData, DeleteUserByUserIdErrors, DeleteUserByUserIdResponses, GetAssetTypeByAssetTypeIdData, GetAssetTypeByAssetTypeIdErrors, GetAssetTypeByAssetTypeIdResponses, GetAssetTypeData, GetAssetTypeErrors, GetAssetTypeResponses, GetAttachmentByIdData, GetAttachmentByIdErrors, GetAttachmentByIdResponses, GetClassificationByClassificationIdData, GetClassificationByClassificationIdErrors, GetClassificationByClassificationIdResponses, GetClassificationData, GetClassificationErrors, GetClassificationResponses, GetDocsData, GetDocsResponses, GetFormByFormIdData, GetFormByFormIdErrors, GetFormByFormIdResponses, GetFormClassificationByClassificationIdData, GetFormClassificationByClassificationIdErrors, GetFormClassificationByClassificationIdResponses, GetFormData, GetFormErrors, GetFormResponses, GetMeldingByMeldingIdAnswersData, GetMeldingByMeldingIdAnswersErrors, GetMeldingByMeldingIdAnswersMelderData, GetMeldingByMeldingIdAnswersMelderErrors, GetMeldingByMeldingIdAnswersMelderResponses, GetMeldingByMeldingIdAnswersResponses, GetMeldingByMeldingIdAssetsData, GetMeldingByMeldingIdAssetsErrors, GetMeldingByMeldingIdAssetsMelderData, GetMeldingByMeldingIdAssetsMelderErrors, GetMeldingByMeldingIdAssetsMelderResponses, GetMeldingByMeldingIdAssetsResponses, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadErrors, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponses, GetMeldingByMeldingIdAttachmentsData, GetMeldingByMeldingIdAttachmentsErrors, GetMeldingByMeldingIdAttachmentsMelderData, GetMeldingByMeldingIdAttachmentsMelderErrors, GetMeldingByMeldingIdAttachmentsMelderResponses, GetMeldingByMeldingIdAttachmentsResponses, GetMeldingByMeldingIdData, GetMeldingByMeldingIdErrors, GetMeldingByMeldingIdMelderData, GetMeldingByMeldingIdMelderErrors, GetMeldingByMeldingIdMelderResponses, GetMeldingByMeldingIdNextPossibleStatesData, GetMeldingByMeldingIdNextPossibleStatesErrors, GetMeldingByMeldingIdNextPossibleStatesResponses, GetMeldingByMeldingIdResponses, GetMeldingData, GetMeldingErrors, GetMeldingResponses, GetStaticFormByStaticFormIdData, GetStaticFormByStaticFormIdErrors, GetStaticFormByStaticFormIdResponses, GetStaticFormData, GetStaticFormErrors, GetStaticFormResponses, GetUserByUserIdData, GetUserByUserIdErrors, GetUserByUserIdResponses, GetUserData, GetUserErrors, GetUserResponses, GetWfsByNameData, GetWfsByNameErrors, GetWfsByNameResponses, PatchAssetTypeByAssetTypeIdData, PatchAssetTypeByAssetTypeIdErrors, PatchAssetTypeByAssetTypeIdResponses, PatchClassificationByClassificationIdData, PatchClassificationByClassificationIdErrors, PatchClassificationByClassificationIdResponses, PatchMeldingByMeldingIdAnswerByAnswerIdData, PatchMeldingByMeldingIdAnswerByAnswerIdErrors, PatchMeldingByMeldingIdAnswerByAnswerIdResponses, PatchMeldingByMeldingIdContactData, PatchMeldingByMeldingIdContactErrors, PatchMeldingByMeldingIdContactResponses, PatchMeldingByMeldingIdData, PatchMeldingByMeldingIdErrors, PatchMeldingByMeldingIdLocationData, PatchMeldingByMeldingIdLocationErrors, PatchMeldingByMeldingIdLocationResponses, PatchMeldingByMeldingIdResponses, PatchUserByUserIdData, PatchUserByUserIdErrors, PatchUserByUserIdResponses, PostAssetTypeData, PostAssetTypeErrors, PostAssetTypeResponses, PostClassificationData, PostClassificationErrors, PostClassificationResponses, PostFormData, PostFormErrors, PostFormResponses, PostMailPreviewData, PostMailPreviewErrors, PostMailPreviewResponses, PostMeldingByMeldingIdAssetData, PostMeldingByMeldingIdAssetErrors, PostMeldingByMeldingIdAssetResponses, PostMeldingByMeldingIdAttachmentData, PostMeldingByMeldingIdAttachmentErrors, PostMeldingByMeldingIdAttachmentResponses, PostMeldingByMeldingIdQuestionByQuestionIdData, PostMeldingByMeldingIdQuestionByQuestionIdErrors, PostMeldingByMeldingIdQuestionByQuestionIdResponses, PostMeldingData, PostMeldingErrors, PostMeldingResponses, PostUserData, PostUserErrors, PostUserResponses, PutFormByFormIdData, PutFormByFormIdErrors, PutFormByFormIdResponses, PutMeldingByMeldingIdAddAttachmentsData, PutMeldingByMeldingIdAddAttachmentsErrors, PutMeldingByMeldingIdAddAttachmentsResponses, PutMeldingByMeldingIdAddContactInfoData, PutMeldingByMeldingIdAddContactInfoErrors, PutMeldingByMeldingIdAddContactInfoResponses, PutMeldingByMeldingIdAnswerQuestionsData, PutMeldingByMeldingIdAnswerQuestionsErrors, PutMeldingByMeldingIdAnswerQuestionsResponses, PutMeldingByMeldingIdCompleteData, PutMeldingByMeldingIdCompleteErrors, PutMeldingByMeldingIdCompleteResponses, PutMeldingByMeldingIdProcessData, PutMeldingByMeldingIdProcessErrors, PutMeldingByMeldingIdProcessResponses, PutMeldingByMeldingIdSubmitData, PutMeldingByMeldingIdSubmitErrors, PutMeldingByMeldingIdSubmitLocationData, PutMeldingByMeldingIdSubmitLocationErrors, PutMeldingByMeldingIdSubmitLocationResponses, PutMeldingByMeldingIdSubmitResponses, PutStaticFormByStaticFormIdData, PutStaticFormByStaticFormIdErrors, PutStaticFormByStaticFormIdResponses } from './types.gen';
+import type { DeleteAssetTypeByAssetTypeIdData, DeleteAssetTypeByAssetTypeIdErrors, DeleteAssetTypeByAssetTypeIdResponses, DeleteClassificationByClassificationIdData, DeleteClassificationByClassificationIdErrors, DeleteClassificationByClassificationIdResponses, DeleteFormByFormIdData, DeleteFormByFormIdErrors, DeleteFormByFormIdResponses, DeleteMeldingByMeldingIdAssetByAssetIdData, DeleteMeldingByMeldingIdAssetByAssetIdErrors, DeleteMeldingByMeldingIdAssetByAssetIdResponses, DeleteMeldingByMeldingIdAttachmentByAttachmentIdData, DeleteMeldingByMeldingIdAttachmentByAttachmentIdErrors, DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponses, DeleteUserByUserIdData, DeleteUserByUserIdErrors, DeleteUserByUserIdResponses, GetAssetTypeByAssetTypeIdData, GetAssetTypeByAssetTypeIdErrors, GetAssetTypeByAssetTypeIdResponses, GetAssetTypeByAssetTypeIdWfsData, GetAssetTypeByAssetTypeIdWfsErrors, GetAssetTypeByAssetTypeIdWfsResponses, GetAssetTypeData, GetAssetTypeErrors, GetAssetTypeResponses, GetAttachmentByIdData, GetAttachmentByIdErrors, GetAttachmentByIdResponses, GetClassificationByClassificationIdData, GetClassificationByClassificationIdErrors, GetClassificationByClassificationIdResponses, GetClassificationData, GetClassificationErrors, GetClassificationResponses, GetDocsData, GetDocsResponses, GetFormByFormIdData, GetFormByFormIdErrors, GetFormByFormIdResponses, GetFormClassificationByClassificationIdData, GetFormClassificationByClassificationIdErrors, GetFormClassificationByClassificationIdResponses, GetFormData, GetFormErrors, GetFormResponses, GetMeldingByMeldingIdAnswersData, GetMeldingByMeldingIdAnswersErrors, GetMeldingByMeldingIdAnswersMelderData, GetMeldingByMeldingIdAnswersMelderErrors, GetMeldingByMeldingIdAnswersMelderResponses, GetMeldingByMeldingIdAnswersResponses, GetMeldingByMeldingIdAssetsData, GetMeldingByMeldingIdAssetsErrors, GetMeldingByMeldingIdAssetsMelderData, GetMeldingByMeldingIdAssetsMelderErrors, GetMeldingByMeldingIdAssetsMelderResponses, GetMeldingByMeldingIdAssetsResponses, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadErrors, GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadResponses, GetMeldingByMeldingIdAttachmentsData, GetMeldingByMeldingIdAttachmentsErrors, GetMeldingByMeldingIdAttachmentsMelderData, GetMeldingByMeldingIdAttachmentsMelderErrors, GetMeldingByMeldingIdAttachmentsMelderResponses, GetMeldingByMeldingIdAttachmentsResponses, GetMeldingByMeldingIdData, GetMeldingByMeldingIdErrors, GetMeldingByMeldingIdMelderData, GetMeldingByMeldingIdMelderErrors, GetMeldingByMeldingIdMelderResponses, GetMeldingByMeldingIdNextPossibleStatesData, GetMeldingByMeldingIdNextPossibleStatesErrors, GetMeldingByMeldingIdNextPossibleStatesResponses, GetMeldingByMeldingIdResponses, GetMeldingData, GetMeldingErrors, GetMeldingResponses, GetStaticFormByStaticFormIdData, GetStaticFormByStaticFormIdErrors, GetStaticFormByStaticFormIdResponses, GetStaticFormData, GetStaticFormErrors, GetStaticFormResponses, GetUserByUserIdData, GetUserByUserIdErrors, GetUserByUserIdResponses, GetUserData, GetUserErrors, GetUserResponses, PatchAssetTypeByAssetTypeIdData, PatchAssetTypeByAssetTypeIdErrors, PatchAssetTypeByAssetTypeIdResponses, PatchClassificationByClassificationIdData, PatchClassificationByClassificationIdErrors, PatchClassificationByClassificationIdResponses, PatchMeldingByMeldingIdAnswerByAnswerIdData, PatchMeldingByMeldingIdAnswerByAnswerIdErrors, PatchMeldingByMeldingIdAnswerByAnswerIdResponses, PatchMeldingByMeldingIdContactData, PatchMeldingByMeldingIdContactErrors, PatchMeldingByMeldingIdContactResponses, PatchMeldingByMeldingIdData, PatchMeldingByMeldingIdErrors, PatchMeldingByMeldingIdLocationData, PatchMeldingByMeldingIdLocationErrors, PatchMeldingByMeldingIdLocationResponses, PatchMeldingByMeldingIdResponses, PatchUserByUserIdData, PatchUserByUserIdErrors, PatchUserByUserIdResponses, PostAssetTypeData, PostAssetTypeErrors, PostAssetTypeResponses, PostClassificationData, PostClassificationErrors, PostClassificationResponses, PostFormData, PostFormErrors, PostFormResponses, PostMailPreviewData, PostMailPreviewErrors, PostMailPreviewResponses, PostMeldingByMeldingIdAssetData, PostMeldingByMeldingIdAssetErrors, PostMeldingByMeldingIdAssetResponses, PostMeldingByMeldingIdAttachmentData, PostMeldingByMeldingIdAttachmentErrors, PostMeldingByMeldingIdAttachmentResponses, PostMeldingByMeldingIdQuestionByQuestionIdData, PostMeldingByMeldingIdQuestionByQuestionIdErrors, PostMeldingByMeldingIdQuestionByQuestionIdResponses, PostMeldingData, PostMeldingErrors, PostMeldingResponses, PostUserData, PostUserErrors, PostUserResponses, PutFormByFormIdData, PutFormByFormIdErrors, PutFormByFormIdResponses, PutMeldingByMeldingIdAddAttachmentsData, PutMeldingByMeldingIdAddAttachmentsErrors, PutMeldingByMeldingIdAddAttachmentsResponses, PutMeldingByMeldingIdAddContactInfoData, PutMeldingByMeldingIdAddContactInfoErrors, PutMeldingByMeldingIdAddContactInfoResponses, PutMeldingByMeldingIdAnswerQuestionsData, PutMeldingByMeldingIdAnswerQuestionsErrors, PutMeldingByMeldingIdAnswerQuestionsResponses, PutMeldingByMeldingIdCancelData, PutMeldingByMeldingIdCancelErrors, PutMeldingByMeldingIdCancelResponses, PutMeldingByMeldingIdCompleteData, PutMeldingByMeldingIdCompleteErrors, PutMeldingByMeldingIdCompleteResponses, PutMeldingByMeldingIdPlanData, PutMeldingByMeldingIdPlanErrors, PutMeldingByMeldingIdPlanResponses, PutMeldingByMeldingIdProcessData, PutMeldingByMeldingIdProcessErrors, PutMeldingByMeldingIdProcessResponses, PutMeldingByMeldingIdReopenData, PutMeldingByMeldingIdReopenErrors, PutMeldingByMeldingIdReopenResponses, PutMeldingByMeldingIdRequestProcessingData, PutMeldingByMeldingIdRequestProcessingErrors, PutMeldingByMeldingIdRequestProcessingResponses, PutMeldingByMeldingIdRequestReopenData, PutMeldingByMeldingIdRequestReopenErrors, PutMeldingByMeldingIdRequestReopenResponses, PutMeldingByMeldingIdSubmitData, PutMeldingByMeldingIdSubmitErrors, PutMeldingByMeldingIdSubmitLocationData, PutMeldingByMeldingIdSubmitLocationErrors, PutMeldingByMeldingIdSubmitLocationResponses, PutMeldingByMeldingIdSubmitMelderData, PutMeldingByMeldingIdSubmitMelderErrors, PutMeldingByMeldingIdSubmitMelderResponses, PutMeldingByMeldingIdSubmitResponses, PutStaticFormByStaticFormIdData, PutStaticFormByStaticFormIdErrors, PutStaticFormByStaticFormIdResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -183,6 +183,51 @@ export const putMeldingByMeldingIdSubmit = <ThrowOnError extends boolean = false
 });
 
 /**
+ * Melding:Submit Melder
+ */
+export const putMeldingByMeldingIdSubmitMelder = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdSubmitMelderData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdSubmitMelderResponses, PutMeldingByMeldingIdSubmitMelderErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/submit/melder',
+    ...options
+});
+
+/**
+ * Melding:Plan
+ */
+export const putMeldingByMeldingIdPlan = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdPlanData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdPlanResponses, PutMeldingByMeldingIdPlanErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/plan',
+    ...options
+});
+
+/**
+ * Melding:Request-Reopen
+ */
+export const putMeldingByMeldingIdRequestReopen = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdRequestReopenData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdRequestReopenResponses, PutMeldingByMeldingIdRequestReopenErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/request_reopen',
+    ...options
+});
+
+/**
+ * Melding:Reopen
+ */
+export const putMeldingByMeldingIdReopen = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdReopenData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdReopenResponses, PutMeldingByMeldingIdReopenErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/reopen',
+    ...options
+});
+
+/**
+ * Melding:Request-Processing
+ */
+export const putMeldingByMeldingIdRequestProcessing = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdRequestProcessingData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdRequestProcessingResponses, PutMeldingByMeldingIdRequestProcessingErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/request_processing',
+    ...options
+});
+
+/**
  * Melding:Process
  */
 export const putMeldingByMeldingIdProcess = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdProcessData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdProcessResponses, PutMeldingByMeldingIdProcessErrors, ThrowOnError>({
@@ -202,6 +247,15 @@ export const putMeldingByMeldingIdComplete = <ThrowOnError extends boolean = fal
         'Content-Type': 'application/json',
         ...options.headers
     }
+});
+
+/**
+ * Melding:Cancel
+ */
+export const putMeldingByMeldingIdCancel = <ThrowOnError extends boolean = false>(options: Options<PutMeldingByMeldingIdCancelData, ThrowOnError>) => (options.client ?? client).put<PutMeldingByMeldingIdCancelResponses, PutMeldingByMeldingIdCancelErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/melding/{melding_id}/cancel',
+    ...options
 });
 
 /**
@@ -582,11 +636,11 @@ export const patchAssetTypeByAssetTypeId = <ThrowOnError extends boolean = false
 });
 
 /**
- * Wfs:Retrieve
+ * Asset-Type:Retrieve-Wfs
  */
-export const getWfsByName = <ThrowOnError extends boolean = false>(options: Options<GetWfsByNameData, ThrowOnError>) => (options.client ?? client).get<GetWfsByNameResponses, GetWfsByNameErrors, ThrowOnError>({
+export const getAssetTypeByAssetTypeIdWfs = <ThrowOnError extends boolean = false>(options: Options<GetAssetTypeByAssetTypeIdWfsData, ThrowOnError>) => (options.client ?? client).get<GetAssetTypeByAssetTypeIdWfsResponses, GetAssetTypeByAssetTypeIdWfsErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wfs/{name}',
+    url: '/asset-type/{asset_type_id}/wfs',
     ...options
 });
 

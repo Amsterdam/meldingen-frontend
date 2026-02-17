@@ -12,14 +12,6 @@ import {
 } from './utils'
 import { COOKIES } from 'apps/melding-form/src/constants'
 
-export const generateMetadata = async () => {
-  const t = await getTranslations('summary')
-
-  return {
-    title: t('metadata.title'),
-  }
-}
-
 export default async () => {
   const cookieStore = await cookies()
   // We check for the existence of these cookies in our proxy, so non-null assertion is safe here.

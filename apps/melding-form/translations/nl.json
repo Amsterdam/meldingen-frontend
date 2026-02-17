@@ -8,7 +8,10 @@
     },
     "title": "Melding openbare ruimte",
     "step": "Stap 1 van 4: Beschrijf uw melding",
-    "submit-button": "Volgende vraag"
+    "submit-button": "Volgende vraag",
+    "errors": {
+      "required-error-message-fallback": "Vul in wat u wilt melden."
+    }
   },
   "additional-questions": {
     "metadata": {
@@ -17,7 +20,10 @@
     "back-link": "Vorige vraag",
     "title": "Melding openbare ruimte",
     "step": "Stap 1 van 4: Beschrijf uw melding",
-    "submit-button": "Volgende vraag"
+    "submit-button": "Volgende vraag",
+    "errors": {
+      "required-error-message-fallback": "Vraag is verplicht en moet worden beantwoord."
+    }
   },
   "location": {
     "metadata": {
@@ -34,7 +40,7 @@
     },
     "submit-button": "Volgende vraag",
     "errors": {
-      "no-location": "Vul een locatie in."
+      "no-location": "Vul een adres in."
     }
   },
   "select-location": {
@@ -48,7 +54,7 @@
       "label": "Zoek op adres",
       "description": "Als er autoaanvul-resultaten zijn, gebruik dan de pijltjes omhoog en omlaag om te bekijken en druk op enter om te kiezen. Voor <english>touch</english>-apparaten, verken met aanraking of veegbewegingen <english>(swipe)</english>.",
       "no-results": "Geen resultaten gevonden",
-      "no-address": "Locatie pin op de kaart"
+      "no-address": "Locatie gekozen op de kaart"
     },
     "submit-button": {
       "mobile": "Bevestigen",
@@ -64,8 +70,13 @@
       "zoom-out": "Uitzoomen"
     },
     "errors": {
-      "no-location": "Vul een locatie in.",
-      "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam."
+      "no-js": {
+        "heading": "JavaScript is niet beschikbaar",
+        "description": "Wijzig dit in de instellingen van uw browser of probeer opnieuw de pagina te laden."
+      },
+      "no-location": "Vul een adres in.",
+      "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam.",
+      "pdok-failed": "Er is iets mis gegaan. Probeer het opnieuw of herlaad de pagina."
     },
     "notifications": {
       "too-many-assets": {
@@ -99,7 +110,7 @@
     },
     "delete-notification": "{fileName} is verwijderd",
     "no-js-alert-title": "JavaScript is niet beschikbaar",
-    "no-js-alert-description": "Wijzig dit in de instellingen van uw browser of herlaad de pagina.",
+    "no-js-alert-description": "Wijzig dit in de instellingen van uw browser of probeer opnieuw de pagina te laden.",
     "submit-button": "Volgende vraag",
     "errors": {
       "too-many-files": {
@@ -127,7 +138,12 @@
     "step": "Stap 3 van 4: Uw gegevens",
     "question": "Mogen we u bellen voor vragen? En op de hoogte houden via e-mail?",
     "description": "Vaak hebben we nog een vraag. Daarmee kunnen we het probleem sneller of beter oplossen. Of we willen iets uitleggen. Wij willen u dan graag even bellen. Of anders e-mailen wij u.\n\nWij gebruiken uw telefoonnummer en e-mailadres alléén voor deze melding.",
-    "submit-button": "Volgende vraag"
+    "submit-button": "Volgende vraag",
+    "errors": {
+      "invalid-email": "Vul een geldig e-mailadres in, bijvoorbeeld naam@voorbeeld.com.",
+      "invalid-phone-number": "Vul een geldig telefoonnummer in, bijvoorbeeld 06 4444 0655 of 020 255 4800.",
+      "email-too-long": "Het e-mailadres moet tussen de 6 en 254 tekens lang zijn. Vul een geldig e-mailadres in, bijvoorbeeld naam@voorbeeld.com."
+    }
   },
   "summary": {
     "metadata": {
