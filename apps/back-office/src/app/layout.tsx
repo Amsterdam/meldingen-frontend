@@ -9,10 +9,6 @@ import { Menu, Page } from '@meldingen/ui'
 
 import { Header } from './_components/Header'
 
-import '@amsterdam/design-system-tokens/dist/index.css'
-import '@amsterdam/design-system-tokens/dist/compact.css'
-import '@amsterdam/design-system-assets/font/index.css'
-import '@amsterdam/design-system-css/dist/index.css'
 import './global.css'
 
 export const generateMetadata = async () => {
