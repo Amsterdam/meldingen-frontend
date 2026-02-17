@@ -56,13 +56,17 @@
     "back-link": "Meldingdetails",
     "title": "Wijzig status melding {publicId}",
     "label": "Wijzig status",
-    "options": {
-      "default": "Kies een status"
-    },
     "submit-button": "Wijzig status",
+    "cancel-link": "Annuleer wijziging",
     "errors": {
-      "invalid-state": "Ongeldige status",
-      "melding-not-found": "An error occurred"
+      "invalid-state": {
+        "heading": "Er is iets misgegaan",
+        "description": "Probeer het later opnieuw."
+      },
+      "state-change-failed": {
+        "heading": "De status kan niet worden gewijzigd",
+        "description": "Het kan zijn dat de status al is aangepast door een andere behandelaar."
+      }
     }
   },
   "shared": {
@@ -70,15 +74,14 @@
       "overview": "Overzicht"
     },
     "state": {
-      "processing": "In behandeling",
+      "canceled": "Geannuleerd",
       "completed": "Afgehandeld",
-      "submitted": "Gemeld",
-      "questions_answered": "Aanvullende vragen beantwoord",
-      "new": "Melding beschrijving toegevoegd",
-      "classified": "Melding geclassificeerd",
-      "contact_info_added": "Contactgegevens ingevuld",
-      "location_submitted": "Locatie toegevoegd",
-      "attachments_added": "Bijlagen toegevoegd"
+      "planned": "Ingepland",
+      "processing": "In behandeling",
+      "processing_requested": "In afwachting van behandeling",
+      "reopen_requested": "Verzoek tot heropenen",
+      "reopened": "Heropend",
+      "submitted": "Gemeld"
     }
   }
 }

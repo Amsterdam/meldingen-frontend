@@ -1,3 +1,7 @@
+.alert {
+  outline-offset: var(--ams-focus-outline-offset);
+}
+
 .whiteField {
   background-color: var(--ams-color-background);
   padding-block: var(--ams-space-l);
