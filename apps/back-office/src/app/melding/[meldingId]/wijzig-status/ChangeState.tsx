@@ -107,11 +107,11 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
               <Paragraph>{t(`errors.${error.type}.description`)}</Paragraph>
             </Alert>
           )}
-          <Heading className="ams-mb-l" level={1}>
+          <Heading className="ams-mb-m" level={1}>
             {t('title', { publicId })}
           </Heading>
           <Form action={formAction} noValidate>
-            <Field className={clsx(styles.whiteField, 'ams-mb-l')}>
+            <Field className={clsx(styles.whiteField, 'ams-mb-m')}>
               <Label htmlFor="state">{t('label')}</Label>
               <Select
                 defaultValue={stateToDisplay}
