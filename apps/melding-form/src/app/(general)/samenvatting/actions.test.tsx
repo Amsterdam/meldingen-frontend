@@ -34,7 +34,9 @@ describe('postSummaryForm', () => {
     mockIdAndTokenCookies()
 
     server.use(
-      http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT, () => HttpResponse.json('Error message', { status: 500 })),
+      http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_MELDER, () =>
+        HttpResponse.json('Error message', { status: 500 }),
+      ),
     )
 
     const result = await postSummaryForm()
