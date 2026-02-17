@@ -70,6 +70,9 @@
     }
   },
   "shared": {
+    "menu": {
+      "overview": "Overzicht"
+    },
     "state": {
       "canceled": "Geannuleerd",
       "completed": "Afgehandeld",

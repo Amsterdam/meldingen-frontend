@@ -1,13 +1,22 @@
 'use client'
 
-import { ActionGroup, Alert, Field, Grid, Heading, Label, Paragraph, Select } from '@amsterdam/design-system-react'
+import {
+  ActionGroup,
+  Alert,
+  Button,
+  Field,
+  Grid,
+  Heading,
+  Label,
+  Paragraph,
+  Select,
+} from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
 
 import { MeldingOutput, StatesOutput } from '@meldingen/api-client'
-import { SubmitButton } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
@@ -76,13 +85,15 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
   const stateToDisplay = meldingStateFromAction ?? meldingState
 
   return (
-    <Grid paddingBottom="2x-large" paddingTop="x-large">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <title>{documentTitle}</title>
-        <BackLink className="ams-mb-s" href={`/melding/${meldingId}`}>
-          {t('back-link')}
-        </BackLink>
-        <main>
+    <div className="ams-page__area--body">
+      <title>{documentTitle}</title>
+      <Grid className="ams-mb-s">
+        <Grid.Cell span="all">
+          <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
+        </Grid.Cell>
+      </Grid>
+      <Grid as="main" gapVertical="large">
+        <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
           {error && (
             <Alert
               className={clsx('ams-mb-m', styles.alert)}
@@ -100,7 +111,7 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
             {t('title', { publicId })}
           </Heading>
           <Form action={formAction} noValidate>
-            <Field className="ams-mb-l">
+            <Field className={clsx(styles.whiteField, 'ams-mb-l')}>
               <Label htmlFor="state">{t('label')}</Label>
               <Select
                 defaultValue={stateToDisplay}
@@ -119,12 +130,12 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
               </Select>
             </Field>
             <ActionGroup>
-              <SubmitButton>{t('submit-button')}</SubmitButton>
+              <Button type="submit">{t('submit-button')}</Button>
               <CancelLink href={`/melding/${meldingId}`}>{t('cancel-link')}</CancelLink>
             </ActionGroup>
           </Form>
-        </main>
-      </Grid.Cell>
-    </Grid>
+        </Grid.Cell>
+      </Grid>
+    </div>
   )
 }

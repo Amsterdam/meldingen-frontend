@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 import { Mock } from 'vitest'
 
@@ -20,6 +21,20 @@ const defaultProps = {
 }
 
 describe('ChangeState', () => {
+  it('renders the back link', () => {
+    render(<ChangeState {...defaultProps} />)
+
+    const backLink = screen.getByRole('link', { name: 'back-link' })
+    expect(backLink).toBeInTheDocument()
+    expect(backLink).toHaveAttribute('href', '/melding/123')
+  })
+
+  it('renders the component with the correct title', () => {
+    render(<ChangeState {...defaultProps} />)
+
+    expect(screen.getByRole('heading', { name: 'title' })).toBeInTheDocument()
+  })
+
   it('renders the select field with the correct options', () => {
     render(<ChangeState {...defaultProps} />)
 
@@ -27,14 +42,6 @@ describe('ChangeState', () => {
     expect(screen.getByRole('option', { name: 'state.processing' })).toBeInTheDocument()
     expect(screen.getByRole('option', { name: 'state.processing_requested' })).toBeInTheDocument()
     expect(screen.getByRole('option', { name: 'state.completed' })).toBeInTheDocument()
-  })
-
-  it('renders the back link', () => {
-    render(<ChangeState {...defaultProps} />)
-
-    const backLink = screen.getByRole('link', { name: 'back-link' })
-    expect(backLink).toBeInTheDocument()
-    expect(backLink).toHaveAttribute('href', '/melding/123')
   })
 
   it('renders the cancel link', () => {
@@ -82,5 +89,19 @@ describe('ChangeState', () => {
     expect(alert).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.state-change-failed.description')
     expect(select).toHaveValue('completed')
+  })
+
+  it('submits the form when the submit button is clicked', async () => {
+    const user = userEvent.setup()
+
+    const mockFormAction = vi.fn()
+    ;(useActionState as Mock).mockReturnValue([{}, mockFormAction])
+
+    render(<ChangeState {...defaultProps} />)
+
+    const submitButton = screen.getByRole('button', { name: 'submit-button' })
+    await user.click(submitButton)
+
+    expect(mockFormAction).toHaveBeenCalled()
   })
 })
