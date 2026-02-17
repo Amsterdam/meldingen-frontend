@@ -30,7 +30,7 @@ export const ENDPOINTS = {
   PUT_MELDING_BY_MELDING_ID_ADD_CONTACT_INFO: 'http://localhost:8000/melding/:id/add_contact_info',
   PUT_MELDING_BY_MELDING_ID_ANSWER_QUESTIONS: 'http://localhost:8000/melding/:id/answer_questions',
   PUT_MELDING_BY_MELDING_ID_SUBMIT_LOCATION: 'http://localhost:8000/melding/:id/submit_location',
-  PUT_MELDING_BY_MELDING_ID_SUBMIT: 'http://localhost:8000/melding/:id/submit',
+  PUT_MELDING_BY_MELDING_ID_SUBMIT_MELDER: 'http://localhost:8000/melding/:id/submit/melder',
 
   // PDOK
   PDOK_FREE: 'https://api.pdok.nl/bzk/locatieserver/search/v3_1/free',

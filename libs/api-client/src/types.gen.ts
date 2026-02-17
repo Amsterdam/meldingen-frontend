@@ -3554,16 +3554,12 @@ export type PutMeldingByMeldingIdAnswerQuestionsData = {
     path: {
         /**
          * Melding Id
-         *
-         * The id of the melding.
          */
         melding_id: number;
     };
     query: {
         /**
          * Token
-         *
-         * The token of the melding.
          */
         token: string;
     };
@@ -3775,14 +3771,7 @@ export type PutMeldingByMeldingIdSubmitData = {
          */
         melding_id: number;
     };
-    query: {
-        /**
-         * Token
-         *
-         * The token of the melding.
-         */
-        token: string;
-    };
+    query?: never;
     url: '/melding/{melding_id}/submit';
 };
 
@@ -3836,6 +3825,78 @@ export type PutMeldingByMeldingIdSubmitResponses = {
 };
 
 export type PutMeldingByMeldingIdSubmitResponse = PutMeldingByMeldingIdSubmitResponses[keyof PutMeldingByMeldingIdSubmitResponses];
+
+export type PutMeldingByMeldingIdSubmitMelderData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query: {
+        /**
+         * Token
+         *
+         * The token of the melding.
+         */
+        token: string;
+    };
+    url: '/melding/{melding_id}/submit/melder';
+};
+
+export type PutMeldingByMeldingIdSubmitMelderErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Transition not allowed from current state
+     */
+    400: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Unexpected error
+     */
+    default: unknown;
+};
+
+export type PutMeldingByMeldingIdSubmitMelderError = PutMeldingByMeldingIdSubmitMelderErrors[keyof PutMeldingByMeldingIdSubmitMelderErrors];
+
+export type PutMeldingByMeldingIdSubmitMelderResponses = {
+    /**
+     * Successful Response
+     */
+    200: MeldingOutput;
+};
+
+export type PutMeldingByMeldingIdSubmitMelderResponse = PutMeldingByMeldingIdSubmitMelderResponses[keyof PutMeldingByMeldingIdSubmitMelderResponses];
 
 export type PutMeldingByMeldingIdPlanData = {
     body?: never;
@@ -5188,7 +5249,7 @@ export type PostMeldingByMeldingIdAssetResponses = {
     /**
      * Successful Response
      */
-    200: MeldingOutput;
+    200: MeldingUpdateOutput;
 };
 
 export type PostMeldingByMeldingIdAssetResponse = PostMeldingByMeldingIdAssetResponses[keyof PostMeldingByMeldingIdAssetResponses];
