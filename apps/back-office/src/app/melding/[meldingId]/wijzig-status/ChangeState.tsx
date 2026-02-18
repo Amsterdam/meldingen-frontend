@@ -1,52 +1,141 @@
 'use client'
 
-import { Field, Grid, Heading, Label, Paragraph, Select } from '@amsterdam/design-system-react'
+import {
+  ActionGroup,
+  Alert,
+  Button,
+  Field,
+  Grid,
+  Heading,
+  Label,
+  Paragraph,
+  Select,
+} from '@amsterdam/design-system-react'
+import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState } from 'react'
+import { useActionState, useEffect, useRef } from 'react'
 
-import { SubmitButton } from '@meldingen/ui'
+import { MeldingOutput, StatesOutput } from '@meldingen/api-client'
 
 import { BackLink } from '../_components/BackLink'
+import { CancelLink } from '../_components/CancelLink'
 import { postChangeStateForm } from './actions'
-import { isValidMeldingState } from './utils'
+
+import styles from './ChangeState.module.css'
 
 type Props = {
   meldingId: number
-  meldingState: string
-  publicId: string
+  meldingState: MeldingOutput['state']
+  possibleStates: StatesOutput['states']
+  publicId: MeldingOutput['public_id']
 }
 
-const initialState: { errorMessage?: string } = {}
+const initialState: {
+  error?: {
+    message: unknown
+    type: 'invalid-state' | 'state-change-failed'
+  }
+  meldingStateFromAction?: string
+} = {}
 
-export const ChangeState = ({ meldingId, meldingState, publicId }: Props) => {
-  const postChangeStateFormWithMeldingId = postChangeStateForm.bind(null, { meldingId })
-  const [{ errorMessage }, formAction] = useActionState(postChangeStateFormWithMeldingId, initialState)
+type ArgsType = {
+  errorMessage: string
+  hasError: boolean
+  originalDocTitle: string
+}
 
-  const t = useTranslations()
+const getDocumentTitleOnError = ({ errorMessage, hasError, originalDocTitle }: ArgsType) => {
+  if (hasError) {
+    return `${errorMessage} - ${originalDocTitle}`
+  }
+
+  return originalDocTitle
+}
+
+export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId }: Props) => {
+  const errorAlertRef = useRef<HTMLDivElement>(null)
+
+  const postChangeStateFormWithMeldingId = postChangeStateForm.bind(null, { currentState: meldingState, meldingId })
+
+  const [{ error, meldingStateFromAction }, formAction] = useActionState(postChangeStateFormWithMeldingId, initialState)
+
+  const t = useTranslations('change-state')
+  const tShared = useTranslations('shared')
+
+  const documentTitle = getDocumentTitleOnError({
+    errorMessage: error ? t(`errors.${error.type}.heading`) : '',
+    hasError: Boolean(error),
+    originalDocTitle: t('metadata.title'),
+  })
+
+  useEffect(() => {
+    if (error) {
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(error.message)
+
+      // Set focus on Alert when there is an error
+      if (errorAlertRef.current) {
+        errorAlertRef.current.focus()
+      }
+    }
+  }, [error])
+
+  const stateToDisplay = meldingStateFromAction ?? meldingState
 
   return (
-    <Grid paddingBottom="2x-large" paddingTop="x-large">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        <BackLink className="ams-mb-s" href={`/melding/${meldingId}`}>
-          {t('change-state.back-link')}
-        </BackLink>
-        <Heading className="ams-mb-l" level={1}>
-          {t('change-state.title', { publicId })}
-        </Heading>
-        {errorMessage && <Paragraph>{errorMessage}</Paragraph>}
-        <Form action={formAction} noValidate>
-          <Field className="ams-mb-l">
-            <Label htmlFor="state">{t('change-state.label')}</Label>
-            <Select defaultValue={isValidMeldingState(meldingState) ? meldingState : undefined} id="state" name="state">
-              <Select.Option value="">{t('change-state.options.default')}</Select.Option>
-              <Select.Option value="processing">{t('shared.state.processing')}</Select.Option>
-              <Select.Option value="completed">{t('shared.state.completed')}</Select.Option>
-            </Select>
-          </Field>
-          <SubmitButton>{t('change-state.submit-button')}</SubmitButton>
-        </Form>
-      </Grid.Cell>
-    </Grid>
+    <div className="ams-page__area--body">
+      <title>{documentTitle}</title>
+      <Grid className="ams-mb-s">
+        <Grid.Cell span="all">
+          <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
+        </Grid.Cell>
+      </Grid>
+      <Grid as="main" gapVertical="large">
+        <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
+          {error && (
+            <Alert
+              className={clsx('ams-mb-m', styles.alert)}
+              heading={t(`errors.${error.type}.heading`)}
+              headingLevel={2}
+              ref={errorAlertRef}
+              role="alert"
+              severity="error"
+              tabIndex={-1}
+            >
+              <Paragraph>{t(`errors.${error.type}.description`)}</Paragraph>
+            </Alert>
+          )}
+          <Heading className="ams-mb-m" level={1}>
+            {t('title', { publicId })}
+          </Heading>
+          <Form action={formAction} noValidate>
+            <Field className={clsx(styles.whiteField, 'ams-mb-m')}>
+              <Label htmlFor="state">{t('label')}</Label>
+              <Select
+                defaultValue={stateToDisplay}
+                id="state"
+                // React doesn't update the defaultValue of a select element after the initial render,
+                // so we use the key prop to force a remount of the select element when stateToDisplay changes
+                key={stateToDisplay}
+                name="state"
+              >
+                <Select.Option value={meldingState}>{tShared(`state.${meldingState}`)}</Select.Option>
+                {possibleStates.map((state) => (
+                  <Select.Option key={state} value={state}>
+                    {tShared(`state.${state}`)}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Field>
+            <ActionGroup>
+              <Button type="submit">{t('submit-button')}</Button>
+              <CancelLink href={`/melding/${meldingId}`}>{t('cancel-link')}</CancelLink>
+            </ActionGroup>
+          </Form>
+        </Grid.Cell>
+      </Grid>
+    </div>
   )
 }
