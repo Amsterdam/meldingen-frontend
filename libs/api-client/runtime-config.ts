@@ -1,7 +1,7 @@
 import type { CreateClientConfig } from './src/client.gen'
 
 export const createClientConfig: CreateClientConfig = (config) => {
-  // @ts-expect-error: Vite defines `import.meta.env` at runtime, but TypeScript doesn't know about it.
+  // @ts-ignore: Vite defines `import.meta.env` at runtime, but TypeScript may not know about it.
   const isVite = Boolean(import.meta.env)
   const isServer = typeof window === 'undefined'
 
