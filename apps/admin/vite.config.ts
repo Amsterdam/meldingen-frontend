@@ -17,6 +17,12 @@ export default defineConfig({
         statements: 90,
       },
     },
+    env: {
+      // These environment variables are required in the API client runtime config.
+      // The imports in filterFormResponse.ts call the runtime config, although they don't use the baseUrl themselves.
+      NEXT_INTERNAL_BACKEND_BASE_URL: 'http://localhost:3000',
+      NEXT_PUBLIC_BACKEND_BASE_URL: 'http://localhost:3000',
+    },
     environment: 'jsdom',
     globals: true,
     include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
