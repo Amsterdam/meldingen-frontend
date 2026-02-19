@@ -1,17 +1,24 @@
-import type { CreateClientConfig } from './src/client.gen';
+import type { CreateClientConfig } from './src/client.gen'
 
 export const createClientConfig: CreateClientConfig = (config) => {
-  const isNodeEnv = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
-  const isServer = typeof window === 'undefined';
+  // @ts-ignore: Vite defines `import.meta.env` at runtime, but TypeScript may not know about it.
+  const isVite = Boolean(import.meta.env)
+  const isServer = typeof window === 'undefined'
 
-  // If this function does not run in a Node.js environment
-  // (like in our Admin Vite app), return the config as is.
-  if (!isNodeEnv) return { ...config };
+  if (isVite) {
+    return { ...config }
+  }
+
+  if (!process.env.NEXT_PUBLIC_BACKEND_BASE_URL) {
+    throw new Error('NEXT_PUBLIC_BACKEND_BASE_URL environment variable must be set')
+  }
+
+  if (isServer && !process.env.NEXT_INTERNAL_BACKEND_BASE_URL) {
+    throw new Error('NEXT_INTERNAL_BACKEND_BASE_URL environment variable must be set')
+  }
 
   return {
     ...config,
-    baseUrl: isServer
-      ? process.env.NEXT_INTERNAL_BACKEND_BASE_URL
-      : process.env.NEXT_PUBLIC_BACKEND_BASE_URL || "http://localhost:8000" // Fallback for automated tests
-  };
-};
+    baseUrl: isServer ? process.env.NEXT_INTERNAL_BACKEND_BASE_URL : process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
+  }
+}
