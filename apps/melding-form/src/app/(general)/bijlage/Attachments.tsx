@@ -180,7 +180,9 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     })
 
     if (error) {
-      setSystemError(error)
+      setGenericError({
+        heading: t('errors.delete-failed.heading'),
+      })
       return
     }
 

@@ -123,6 +123,9 @@
       "upload-in-progress": {
         "heading": "De foto’s zijn nog niet toegevoegd",
         "description": "Wacht tot de foto’s zijn toegevoegd of annuleer."
+      },
+      "delete-failed": {
+        "heading": "Het is niet gelukt om de foto te verwijderen. Probeer het opnieuw."
       }
     },
     "validation-errors": {
