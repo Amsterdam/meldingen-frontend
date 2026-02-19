@@ -1,3 +1,8 @@
+@import url('@amsterdam/design-system-assets/font/index.css') layer(amsterdam-design-system);
+@import url('@amsterdam/design-system-css/dist/index.css') layer(amsterdam-design-system);
+@import url('@amsterdam/design-system-tokens/dist/index.css') layer(amsterdam-design-system);
+@import url('@amsterdam/design-system-tokens/dist/compact.css') layer(amsterdam-design-system); /* This should be last, it overrides the default tokens */
+
 body {
   /* TODO: temporarily override body background color. Remove this when the design system adds a grey background to ams-body. */
   background-color: #e8e8e8;
