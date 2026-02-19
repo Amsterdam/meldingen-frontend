@@ -57,7 +57,7 @@
     "title": "Wijzig status melding {publicId}",
     "label": "Wijzig status",
     "submit-button": "Wijzig status",
-    "cancel-link": "Annuleer wijziging",
+    "cancel-link": "Annuleer",
     "errors": {
       "invalid-state": {
         "heading": "Er is iets misgegaan",
