@@ -132,7 +132,8 @@
       "duplicate-upload": "Het gekozen bestand is al toegevoegd.",
       "failed-upload": "Probeer het opnieuw.",
       "invalid-file-type": "Ongeldig bestandstype. U kunt alleen foto’s toevoegen.",
-      "file-too-large": "Een foto mag maximaal 20 MB groot zijn."
+      "file-too-large": "Een foto mag maximaal 20 MB groot zijn.",
+      "invalid-file-extension": "Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp."
     }
   },
   "contact": {

@@ -13,6 +13,7 @@ export const safeJSONParse = (jsonString?: string) => {
 const VALIDATION_ERROR_MESSAGES: Record<string, string> = {
   'Allowed content size exceeded': 'validation-errors.file-too-large',
   'Attachment not allowed': 'validation-errors.invalid-file-type',
+  'Media type of data does not match provided media type': 'validation-errors.invalid-file-extension',
 }
 
 const getValidationErrorMessage = (error: string | undefined, t: (key: string) => string): string =>
