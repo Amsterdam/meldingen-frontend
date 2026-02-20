@@ -129,7 +129,8 @@
       }
     },
     "validation-errors": {
-      "duplicate-upload": "Het gekozen bestand is al toegevoegd."
+      "duplicate-upload": "Het gekozen bestand is al toegevoegd.",
+      "failed-upload": "Probeer het opnieuw."
     }
   },
   "contact": {

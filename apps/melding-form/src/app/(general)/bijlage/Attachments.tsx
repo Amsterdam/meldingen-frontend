@@ -85,7 +85,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
   const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
   const [genericError, setGenericError] = useState<GenericErrorMessage>()
-  const [systemError, setSystemError] = useState<string | unknown>()
+  const [systemError, _setSystemError] = useState<string | unknown>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
 
   const [{ systemError: actionSystemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
@@ -143,7 +143,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`,
       )
 
-      startUpload(xhr, upload, setFileUploads)
+      startUpload(xhr, upload, setFileUploads, t)
     })
 
     // Clear the file input after starting the upload, so it is empty for the next selection.
@@ -242,7 +242,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
               id: `#${error.key}`,
               label: error.message,
             }))}
-            heading={tShared('invalid-form-alert-title')}
+            heading={tShared('system-error-alert-title')}
             headingLevel={2}
             ref={invalidFormAlertRef}
           />

@@ -31,6 +31,7 @@ export const startUpload = (
   xhr: XMLHttpRequest,
   fileUpload: PendingFileUpload,
   setFileUploads: Dispatch<SetStateAction<(FileUpload | PendingFileUpload)[]>>,
+  t: (key: string) => string,
 ) => {
   xhr.upload.onprogress = (event) => {
     if (event.lengthComputable) {
@@ -60,7 +61,9 @@ export const startUpload = (
   xhr.onerror = () => {
     setFileUploads((prev) =>
       prev.map((upload): FileUpload | PendingFileUpload =>
-        upload.id === fileUpload.id ? { ...upload, errorMessage: 'Network error', status: 'error' } : upload,
+        upload.id === fileUpload.id
+          ? { ...upload, errorMessage: t('validation-errors.failed-upload'), status: 'error' }
+          : upload,
       ),
     )
   }
