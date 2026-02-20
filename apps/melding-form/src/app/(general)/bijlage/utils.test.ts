@@ -57,7 +57,7 @@ describe('startUpload', () => {
 
   it("sets status to 'error' on load with non-200", () => {
     const xhrMock = {
-      response: JSON.stringify({ detail: 'validation-errors.failed-upload' }),
+      response: JSON.stringify({ detail: 'Allowed content size exceeded' }),
       send: vi.fn(),
       status: 500,
       upload: {} as XMLHttpRequestUpload,
@@ -74,7 +74,7 @@ describe('startUpload', () => {
     const result = updater([fileUpload])
 
     expect(result[0].status).toBe('error')
-    expect(result[0].errorMessage).toBe('validation-errors.failed-upload')
+    expect(result[0].errorMessage).toBe('validation-errors.file-too-large')
   })
 
   it('sets status to uploading when upload starts', () => {
