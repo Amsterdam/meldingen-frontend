@@ -33,7 +33,7 @@ export const MAX_UPLOAD_ATTEMPTS = 10
 
 type GenericErrorMessage = {
   description?: string
-  heading: string
+  title: string
 }
 
 export type Props = {
@@ -110,14 +110,14 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     if (newFiles.length + fileUploads.length > MAX_UPLOAD_ATTEMPTS) {
       setGenericError({
         description: t('errors.too-many-attempts.description'),
-        heading: t('errors.too-many-attempts.heading'),
+        title: t('errors.too-many-attempts.title'),
       })
       return
     }
 
     if (newFiles.length + fileUploads.filter((file) => file.status !== 'error').length > MAX_SUCCESSFUL_UPLOADS) {
       setGenericError({
-        heading: t('errors.too-many-files.heading', { maxFiles: MAX_SUCCESSFUL_UPLOADS }),
+        title: t('errors.too-many-files.title', { maxFiles: MAX_SUCCESSFUL_UPLOADS }),
       })
       return
     }
@@ -180,7 +180,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
     if (error) {
       setGenericError({
-        heading: t('errors.delete-failed.heading'),
+        title: t('errors.delete-failed.title'),
       })
       return
     }
@@ -194,7 +194,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
       e.preventDefault()
       setGenericError({
         description: t('errors.upload-in-progress.description'),
-        heading: t('errors.upload-in-progress.heading'),
+        title: t('errors.upload-in-progress.title'),
       })
     }
   }
@@ -247,7 +247,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {genericError && (
           <Alert
             className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
-            heading={genericError.heading}
+            heading={genericError.title}
             headingLevel={2}
             ref={genericErrorAlertRef}
             role="alert"
