@@ -10,6 +10,14 @@ export const safeJSONParse = (jsonString?: string) => {
   }
 }
 
+const VALIDATION_ERROR_MESSAGES: Record<string, string> = {
+  'Allowed content size exceeded': 'validation-errors.file-too-large',
+  'Attachment not allowed': 'validation-errors.invalid-file-type',
+}
+
+const getValidationErrorMessage = (error: string | undefined, t: (key: string) => string): string =>
+  t((error && VALIDATION_ERROR_MESSAGES[error]) || 'validation-errors.failed-upload')
+
 export type FileUpload = {
   errorMessage?: string
   file: File | { name: string }
@@ -49,9 +57,10 @@ export const startUpload = (
         upload.id === fileUpload.id
           ? {
               ...upload,
-              errorMessage: xhr.status !== 200 ? safeJSONParse(xhr.response)?.detail : undefined,
+              errorMessage:
+                xhr.status !== 200 ? getValidationErrorMessage(safeJSONParse(xhr.response)?.detail, t) : undefined,
               serverId: safeJSONParse(xhr.response)?.id,
-              status: xhr.status === 200 ? 'success' : 'error',
+              status: xhr.status !== 200 ? 'error' : 'success',
             }
           : upload,
       ),
@@ -62,7 +71,7 @@ export const startUpload = (
     setFileUploads((prev) =>
       prev.map((upload): FileUpload | PendingFileUpload =>
         upload.id === fileUpload.id
-          ? { ...upload, errorMessage: t('validation-errors.failed-upload'), status: 'error' }
+          ? { ...upload, errorMessage: getValidationErrorMessage(undefined, t), status: 'error' }
           : upload,
       ),
     )
