@@ -85,10 +85,9 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
   const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
   const [genericError, setGenericError] = useState<GenericErrorMessage>()
-  const [systemError, _setSystemError] = useState<string | unknown>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
 
-  const [{ systemError: actionSystemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
+  const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
 
   const validationErrors = fileUploads
     .filter((upload) => upload.status === 'error')
@@ -202,7 +201,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
   // Update document title when there are system, validation or generic errors
   const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(systemError) || Boolean(actionSystemError) || Boolean(genericError),
+    hasSystemError: Boolean(systemError) || Boolean(genericError),
     originalDocTitle: t('metadata.title'),
     translateFunction: tShared,
     validationErrorCount: validationErrors.length,
@@ -212,20 +211,18 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   useEffect(() => {
     if (validationErrors && invalidFormAlertRef.current) {
       invalidFormAlertRef.current.focus()
-    } else if ((systemError || actionSystemError) && systemErrorAlertRef.current) {
+    } else if (systemError && systemErrorAlertRef.current) {
       systemErrorAlertRef.current.focus()
     } else if (genericError && genericErrorAlertRef.current) {
       genericErrorAlertRef.current.focus()
     }
-  }, [validationErrors, systemError, actionSystemError, genericError])
+  }, [validationErrors, systemError, genericError])
 
   useEffect(() => {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
     if (systemError) console.error(systemError)
-    // eslint-disable-next-line no-console
-    if (actionSystemError) console.error(actionSystemError)
-  }, [systemError, actionSystemError])
+  }, [systemError])
 
   return (
     <>
@@ -234,7 +231,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {t('back-link')}
       </BackLink>
       <main>
-        {(Boolean(systemError) || Boolean(actionSystemError)) && <SystemErrorAlert ref={systemErrorAlertRef} />}
+        {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
         {validationErrors.length > 0 && (
           <InvalidFormAlert
             className="ams-mb-m"
