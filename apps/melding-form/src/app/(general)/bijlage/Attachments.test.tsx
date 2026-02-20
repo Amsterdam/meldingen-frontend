@@ -369,12 +369,10 @@ describe('Attachments', () => {
     await user.click(deleteButton)
 
     const fileName = screen.getAllByText(mockFile.name)[0]
-    const errorMessageTitle = screen.getByText('system-error-alert-title')
-    const errorMessageDescription = screen.getByText('system-error-alert-description')
+    const errorMessageTitle = screen.getByText('errors.delete-failed.heading')
 
     expect(fileName).toBeInTheDocument()
     expect(errorMessageTitle).toBeInTheDocument()
-    expect(errorMessageDescription).toBeInTheDocument()
   })
 
   it('shows an error when attempting to upload too many files', async () => {

@@ -23,6 +23,7 @@ const otherFileUpload: PendingFileUpload = {
 }
 
 const setFileUploadsMock = vi.fn()
+const t = (key: string) => key
 
 describe('safeJSONParse', () => {
   it('returns undefined for undefined input', () => {
@@ -40,7 +41,7 @@ describe('safeJSONParse', () => {
 
 describe('startUpload', () => {
   it("sets status to 'success' and updates serverId on 200", () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
 
     // Simulate onload event
     xhrMock.onload?.(new ProgressEvent('load'))
@@ -56,13 +57,13 @@ describe('startUpload', () => {
 
   it("sets status to 'error' on load with non-200", () => {
     const xhrMock = {
-      response: JSON.stringify({ detail: 'Test error' }),
+      response: JSON.stringify({ detail: 'validation-errors.failed-upload' }),
       send: vi.fn(),
       status: 500,
       upload: {} as XMLHttpRequestUpload,
     } as unknown as XMLHttpRequest
 
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
 
     // Simulate onload event
     xhrMock.onload?.(new ProgressEvent('load'))
@@ -73,13 +74,13 @@ describe('startUpload', () => {
     const result = updater([fileUpload])
 
     expect(result[0].status).toBe('error')
-    expect(result[0].errorMessage).toBe('Test error')
+    expect(result[0].errorMessage).toBe('validation-errors.failed-upload')
   })
 
   it('sets status to uploading when upload starts', () => {
     const setFileUploadsMock = vi.fn()
 
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
 
     expect(setFileUploadsMock).toHaveBeenCalled()
 
@@ -90,7 +91,7 @@ describe('startUpload', () => {
   })
 
   it('updates progress on upload progress event', () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
 
     const event = { lengthComputable: true, loaded: 50, total: 100 } as ProgressEvent<EventTarget>
 
@@ -108,7 +109,7 @@ describe('startUpload', () => {
   })
 
   it("sets status to 'error' on network error", () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
 
     // Simulate onerror event
     xhrMock.onerror?.(new ProgressEvent('error'))
@@ -119,11 +120,11 @@ describe('startUpload', () => {
     const result = updater([fileUpload])
 
     expect(result[0].status).toBe('error')
-    expect(result[0].errorMessage).toBe('Network error')
+    expect(result[0].errorMessage).toBe('validation-errors.failed-upload')
   })
 
   it('returns the original file object if id does not match on load', () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
 
     // Simulate onload event
     xhrMock.onload?.(new ProgressEvent('load'))
@@ -135,7 +136,7 @@ describe('startUpload', () => {
   })
 
   it('returns the original file object if id does not match on progress', () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
 
     const event = { lengthComputable: true, loaded: 50, total: 100 } as ProgressEvent<EventTarget>
 
@@ -150,7 +151,7 @@ describe('startUpload', () => {
   })
 
   it('returns the original file object if id does not match on error', () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
 
     // Simulate onerror event
     xhrMock.onerror?.(new ProgressEvent('error'))
@@ -164,7 +165,7 @@ describe('startUpload', () => {
   it('returns the original file object if id does not match on upload start', () => {
     const setFileUploadsMock = vi.fn()
 
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
 
     const updater = setFileUploadsMock.mock.calls[0][0]
     const result = updater([otherFileUpload])
