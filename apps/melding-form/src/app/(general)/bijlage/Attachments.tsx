@@ -239,7 +239,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
               id: `#${error.key}`,
               label: error.message,
             }))}
-            heading={tShared('system-error-alert-title')}
+            heading={tShared('generic-error-alert-title')}
             headingLevel={2}
             ref={invalidFormAlertRef}
           />
