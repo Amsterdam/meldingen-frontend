@@ -11,7 +11,13 @@ vi.mock('@meldingen/api-client', () => ({
 }))
 
 describe('ApiClientInitializer', () => {
-  it('should call client.setConfig with the correct baseUrl', async () => {
+  it('throws an error if NEXT_PUBLIC_BACKEND_BASE_URL is not set', () => {
+    expect(() => render(<ApiClientInitializer />)).toThrow(
+      'NEXT_PUBLIC_BACKEND_BASE_URL environment variable must be set',
+    )
+  })
+
+  it('calls client.setConfig with the correct baseUrl', async () => {
     process.env.NEXT_PUBLIC_BACKEND_BASE_URL = 'testBaseUrl'
 
     render(<ApiClientInitializer />)
@@ -21,7 +27,7 @@ describe('ApiClientInitializer', () => {
     })
   })
 
-  it('should render null', () => {
+  it('renders null', () => {
     const { container } = render(<ApiClientInitializer />)
 
     expect(container.firstChild).toBeNull()
