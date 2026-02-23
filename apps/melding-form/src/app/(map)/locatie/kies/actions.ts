@@ -26,12 +26,11 @@ export const postCoordinatesAndAssets = async (
 
   if (!meldingId || !token) return redirect('/cookie-storing')
 
-  const addressFormData = formData.get('address')
-  const coordinatesFormData = formData.get('coordinates')
+  const addressFormDataRaw = formData.get('address')
+  const addressFormData = typeof addressFormDataRaw === 'string' ? addressFormDataRaw : undefined
   const t = await getTranslations('select-location')
 
-  /** Post assets */
-
+  // Post assets
   if (selectedAssets.length > 0) {
     for (const asset of selectedAssets) {
       const { error } = await postMeldingByMeldingIdAsset({
@@ -49,33 +48,26 @@ export const postCoordinatesAndAssets = async (
     }
   }
 
-  /** Fetch coordinates from PDOK */
-
-  let address = addressFormData as string
-  let coordinates = coordinatesFormData ? JSON.parse(coordinatesFormData as string) : null
-
-  if (!address) {
+  if (!addressFormData) {
     return { errorMessage: t('errors.no-location') }
   }
 
-  if (!coordinates) {
-    const response = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`)
+  // Get coordinates from address
+  const response = await fetch(
+    `https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${addressFormData}&${queryParams}`,
+  )
 
-    if (!response.ok) return { errorMessage: t('errors.pdok-failed') }
+  if (!response.ok) return { errorMessage: t('errors.pdok-failed') }
 
-    const result = await response.json()
+  const result = await response.json()
 
-    if (!result.response.docs.length) return { errorMessage: t('errors.pdok-no-address-found') }
+  if (!result.response.docs.length) return { errorMessage: t('errors.pdok-no-address-found') }
 
-    const PDOKCoordinates = convertWktPointToCoordinates(result.response.docs[0].centroide_ll)
+  const coordinates = convertWktPointToCoordinates(result.response.docs[0].centroide_ll)
 
-    if (!PDOKCoordinates) return { errorMessage: t('errors.pdok-failed') }
+  if (!coordinates) return { errorMessage: t('errors.pdok-failed') }
 
-    coordinates = PDOKCoordinates
-    address = result.response.docs[0].weergavenaam
-  }
-
-  /** Post coordinates and address */
+  const address = result.response.docs[0].weergavenaam
 
   const oneDay = 24 * 60 * 60
   cookieStore.set(COOKIES.ADDRESS, address, { maxAge: oneDay })
