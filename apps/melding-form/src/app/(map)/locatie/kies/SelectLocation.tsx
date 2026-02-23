@@ -55,8 +55,7 @@ export const SelectLocation = ({
   const [selectedAssets, setSelectedAssets] = useState<Feature[]>(selectedAssetsFromServer)
   const [showAssetList, setShowAssetList] = useState(false)
 
-  const postCoordinatesAndAssetsWithSelectedAssets = postCoordinatesAndAssets.bind(null, { selectedAssets })
-  const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssetsWithSelectedAssets, initialState)
+  const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssets, initialState)
 
   const t = useTranslations('select-location')
   const isWideWindow = useIsAfterBreakpoint('wide')
@@ -84,6 +83,7 @@ export const SelectLocation = ({
             setCoordinates={setCoordinates}
             setSelectedAssets={setSelectedAssets}
           />
+          <input name="selectedAssets" type="hidden" value={JSON.stringify(selectedAssets)} />
         </Form>
       </SideBarTop>
       <SideBarBottom isHidden={!showAssetList}>

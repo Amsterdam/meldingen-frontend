@@ -28,8 +28,9 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', 'Amstel 1, Amsterdam')
+    formData.set('selectedAssets', JSON.stringify([]))
 
-    await postCoordinatesAndAssets({ selectedAssets: [] }, undefined, formData)
+    await postCoordinatesAndAssets(undefined, formData)
 
     expect(redirect).toHaveBeenCalledWith('/cookie-storing')
   })
@@ -46,12 +47,52 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', 'Amstel 1, Amsterdam')
+    formData.set('selectedAssets', JSON.stringify(containerAssets))
 
-    await postCoordinatesAndAssets({ selectedAssets: containerAssets }, undefined, formData)
+    await postCoordinatesAndAssets(undefined, formData)
 
     expect(capturedBodies).toHaveLength(2)
     expect(capturedBodies[0]).toEqual({ asset_type_id: 1, external_id: 'container.1' })
     expect(capturedBodies[1]).toEqual({ asset_type_id: 1, external_id: 'container.2' })
+    expect(redirect).toHaveBeenCalledWith('/locatie')
+  })
+
+  it('skips posting assets when selectedAssets is not in FormData', async () => {
+    const capturedBodies: unknown[] = []
+
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ASSET, async ({ request }) => {
+        capturedBodies.push(await request.json())
+        return HttpResponse.json()
+      }),
+    )
+
+    const formData = new FormData()
+    formData.set('address', 'Amstel 1, Amsterdam')
+
+    await postCoordinatesAndAssets(undefined, formData)
+
+    expect(capturedBodies).toHaveLength(0)
+    expect(redirect).toHaveBeenCalledWith('/locatie')
+  })
+
+  it('skips posting assets when selectedAssets is a File (non-string)', async () => {
+    const capturedBodies: unknown[] = []
+
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ASSET, async ({ request }) => {
+        capturedBodies.push(await request.json())
+        return HttpResponse.json()
+      }),
+    )
+
+    const formData = new FormData()
+    formData.set('address', 'Amstel 1, Amsterdam')
+    formData.set('selectedAssets', new Blob(['[{"id":1}]'], { type: 'application/json' }))
+
+    await postCoordinatesAndAssets(undefined, formData)
+
+    expect(capturedBodies).toHaveLength(0)
     expect(redirect).toHaveBeenCalledWith('/locatie')
   })
 
@@ -60,8 +101,9 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', address)
+    formData.set('selectedAssets', JSON.stringify([]))
 
-    await postCoordinatesAndAssets({ selectedAssets: [] }, undefined, formData)
+    await postCoordinatesAndAssets(undefined, formData)
 
     expect(mockSetCookie).toHaveBeenCalledWith(COOKIES.ADDRESS, address, { maxAge: 86400 })
     expect(redirect).toHaveBeenCalledWith('/locatie')
@@ -72,8 +114,9 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', 'Amstel 1, Amsterdam')
+    formData.set('selectedAssets', JSON.stringify([]))
 
-    const result = await postCoordinatesAndAssets({ selectedAssets: [] }, undefined, formData)
+    const result = await postCoordinatesAndAssets(undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'errors.pdok-failed' })
   })
@@ -91,8 +134,9 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', address)
+    formData.set('selectedAssets', JSON.stringify([]))
 
-    const result = await postCoordinatesAndAssets({ selectedAssets: [] }, undefined, formData)
+    const result = await postCoordinatesAndAssets(undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'errors.pdok-no-address-found' })
   })
@@ -110,16 +154,18 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', address)
+    formData.set('selectedAssets', JSON.stringify([]))
 
-    const result = await postCoordinatesAndAssets({ selectedAssets: [] }, undefined, formData)
+    const result = await postCoordinatesAndAssets(undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'errors.pdok-failed' })
   })
 
   it('returns an error message if no address is provided', async () => {
     const formData = new FormData()
+    formData.set('selectedAssets', JSON.stringify([]))
 
-    const result = await postCoordinatesAndAssets({ selectedAssets: [] }, undefined, formData)
+    const result = await postCoordinatesAndAssets(undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'errors.no-location' })
   })
@@ -135,8 +181,9 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', address)
+    formData.set('selectedAssets', JSON.stringify(containerAssets))
 
-    const result = await postCoordinatesAndAssets({ selectedAssets: containerAssets }, undefined, formData)
+    const result = await postCoordinatesAndAssets(undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'Error message' })
   })
@@ -152,8 +199,9 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', address)
+    formData.set('selectedAssets', JSON.stringify(containerAssets))
 
-    const result = await postCoordinatesAndAssets({ selectedAssets: containerAssets }, undefined, formData)
+    const result = await postCoordinatesAndAssets(undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'Error message' })
   })

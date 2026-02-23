@@ -4,8 +4,6 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import type { Feature } from '@meldingen/api-client'
-
 import { patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
 
 import { convertWktPointToCoordinates } from './utils'
@@ -14,11 +12,9 @@ import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 
-export const postCoordinatesAndAssets = async (
-  { selectedAssets }: { selectedAssets: Feature[] },
-  _: unknown,
-  formData: FormData,
-) => {
+export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) => {
+  const selectedAssetsRaw = formData.get('selectedAssets')
+  const selectedAssets = selectedAssetsRaw && typeof selectedAssetsRaw === 'string' ? JSON.parse(selectedAssetsRaw) : []
   const cookieStore = await cookies()
 
   const meldingId = cookieStore.get(COOKIES.ID)?.value
