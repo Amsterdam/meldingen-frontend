@@ -1,4 +1,16 @@
 .link {
   font-weight: var(--ams-typography-body-text-bold-font-weight);
+  margin-block: var(--ams-space-s);
+
+  /* Use grid inline padding for margin, to align with other grids on the page. */
+  margin-inline: var(--ams-grid-padding-inline);
   padding-block: var(--ams-space-s);
+
+  @media screen and (min-width: 37.5rem) {
+    margin-inline: var(--ams-grid-medium-padding-inline);
+  }
+
+  @media screen and (min-width: 72.5rem) {
+    margin-inline: var(--ams-grid-wide-padding-inline);
+  }
 }
