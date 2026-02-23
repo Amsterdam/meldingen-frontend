@@ -126,6 +126,23 @@ exports[`filterFormResponse > renders the correct output 1`] = `
             },
           ],
         },
+        {
+          "conditional": {
+            "eq": "",
+            "show": null,
+            "when": null,
+          },
+          "description": "",
+          "input": true,
+          "key": "time",
+          "label": "Time",
+          "type": "time",
+          "validate": {
+            "json": null,
+            "required": false,
+            "required_error_message": null,
+          },
+        },
       ],
       "conditional": {
         "eq": "",
@@ -294,6 +311,21 @@ exports[`filterFormResponse > renders the correct output 1`] = `
               "value": "two",
             },
           ],
+        },
+        {
+          "conditional": {
+            "eq": "",
+            "show": null,
+            "when": null,
+          },
+          "description": "",
+          "input": true,
+          "key": "time1",
+          "label": "Time",
+          "type": "time",
+          "validate": {
+            "required": false,
+          },
         },
       ],
       "conditional": {
