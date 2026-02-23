@@ -1,11 +1,10 @@
 import type { Component as ComponentSchema } from '@formio/core'
 import type { FormBuilder as FormBuilderProps } from '@formio/js'
 
-import { Components, FormBuilder as FormioFormBuilder, Templates } from '@formio/js'
+import { Components, FormBuilder as FormioFormBuilder } from '@formio/js'
 import { useEffect, useRef } from 'react'
 
 import { Radio, Select, SelectBoxes, Textarea, Textfield, Time } from './components'
-import { time } from './templates'
 
 import '@formio/js/dist/formio.builder.min.css'
 import './visually-hidden.css' // This class is set by Form.io, but not included in the builder CSS, so we add it ourselves
@@ -55,11 +54,6 @@ export const FormBuilder = ({ data, onChange }: Props) => {
     textfield: Textfield,
     time: Time,
   })
-
-  Templates.current = {
-    ...Templates.current,
-    time: time,
-  }
 
   useEffect(() => {
     if (!ref.current) return

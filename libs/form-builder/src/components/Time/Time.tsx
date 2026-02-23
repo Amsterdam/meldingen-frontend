@@ -2,7 +2,7 @@ import { Components } from '@formio/js'
 
 import { editForm } from './editForm'
 
-// import { editForm } from './editForm'
+import './time.css'
 
 const FormioComponent = Components.components.component
 
@@ -29,15 +29,11 @@ export class Time extends FormioComponent {
 
   render() {
     return super.render(`
-      <div class="time-component">
         <input
           ref="input"
           type="time"
-          class="form-control"
-          placeholder="${this.component.placeholder || ''}"
-          ${this.component.disabled ? 'disabled' : ''}
+          class="time-component"
         />
-      </div>
     `)
   }
 }
