@@ -33,13 +33,10 @@ const filterBySchemaPerType = (obj: Component) => {
       if (!Object.hasOwn(obj, 'autoExpand')) {
         return filter(FormTextAreaComponentInputSchema, { ...obj, autoExpand: false })
       }
-
       return filter(FormTextAreaComponentInputSchema, obj)
     case 'textfield':
       return filter(FormTextFieldComponentInputSchema, obj)
     case 'time':
-      console.log('filetr:', filter(FormTimeComponentInputSchema, obj))
-
       return filter(FormTimeComponentInputSchema, obj)
     default:
       throw Error(`Type ${obj.type} is unknown, please add it to filterFormResponse.`)
