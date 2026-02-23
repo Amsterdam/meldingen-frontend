@@ -164,4 +164,38 @@ describe('Page', () => {
 
     consoleSpy.mockRestore()
   })
+
+  it('passes null address to SelectLocation when fetching address from coordinates fails', async () => {
+    server.use(http.get(ENDPOINTS.PDOK_REVERSE, () => HttpResponse.json('Test error', { status: 500 })))
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        address: null,
+      }),
+      undefined,
+    )
+  })
+
+  it('passes null address to SelectLocation when no address is found from coordinates', async () => {
+    server.use(
+      http.get(ENDPOINTS.PDOK_REVERSE, () =>
+        HttpResponse.json({
+          response: { docs: [] },
+        }),
+      ),
+    )
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        address: null,
+      }),
+      undefined,
+    )
+  })
 })
