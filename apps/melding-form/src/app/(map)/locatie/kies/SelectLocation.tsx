@@ -30,7 +30,6 @@ const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) =>
 })
 
 type Props = {
-  address: string | null
   classification?: string
   coordinates?: Coordinates
   selectedAssets: Feature[]
@@ -44,7 +43,6 @@ const initialState: { errorMessage?: string } = {}
 export const MAX_ASSETS = 3
 
 export const SelectLocation = ({
-  address,
   classification,
   coordinates: coordinatesFromServer,
   selectedAssets: selectedAssetsFromServer,
@@ -77,11 +75,15 @@ export const SelectLocation = ({
       <SideBarTop>
         <Form action={formAction} id="address" noValidate>
           <AddressInput
-            address={address}
             coordinates={coordinates}
             errorMessage={errorMessage}
             setCoordinates={setCoordinates}
             setSelectedAssets={setSelectedAssets}
+          />
+          <input
+            defaultValue={coordinates ? JSON.stringify(coordinates) : undefined}
+            name="coordinates"
+            type="hidden"
           />
           <input name="selectedAssets" type="hidden" value={JSON.stringify(selectedAssets)} />
         </Form>

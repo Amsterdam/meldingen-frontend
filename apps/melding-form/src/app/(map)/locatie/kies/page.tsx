@@ -78,21 +78,6 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
   return assets.filter((asset) => asset !== null)
 }
 
-const getAddressFromCoordinates = async (coordinates: { lat: number; lng: number }) => {
-  const response = await fetch(
-    `https://api.pdok.nl/bzk/locatieserver/search/v3_1/reverse?lat=${coordinates.lat}&lon=${coordinates.lng}&rows=1&distance=30`,
-  )
-
-  // If the response is not ok, we return null instead of an error.
-  // The page is still usable without a prefilled address.
-  if (!response.ok) {
-    return null
-  }
-
-  const result = await response.json()
-  return result.response.docs?.[0]?.weergavenaam ?? null
-}
-
 export default async () => {
   const cookieStore = await cookies()
   // We check for the existence of these cookies in our proxy, so non-null assertion is safe here.
@@ -119,11 +104,8 @@ export default async () => {
     lng: data.geo_location.geometry.coordinates[1],
   }
 
-  const address = coordinates ? await getAddressFromCoordinates(coordinates) : null
-
   return (
     <SelectLocation
-      address={address}
       classification={data?.classification?.name}
       coordinates={coordinates}
       selectedAssets={selectedAssets}

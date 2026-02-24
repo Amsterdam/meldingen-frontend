@@ -24,23 +24,16 @@ import { debounce, fetchAddressList, fetchAndSetAddress } from './utils'
 import styles from './AddressInput.module.css'
 
 export type Props = {
-  address: string | null
   coordinates?: Coordinates
   errorMessage?: string
   setCoordinates: (coordinates?: Coordinates) => void
   setSelectedAssets: (selectedAssets: Feature[]) => void
 }
 
-export const AddressInput = ({
-  address: addressFromServer,
-  coordinates,
-  errorMessage,
-  setCoordinates,
-  setSelectedAssets,
-}: Props) => {
-  const [address, setAddress] = useState(addressFromServer ?? '')
+export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSelectedAssets }: Props) => {
+  const [address, setAddress] = useState('')
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
-  const [query, setQuery] = useState(addressFromServer ?? '')
+  const [query, setQuery] = useState('')
   const [showListBox, setShowListBox] = useState(false)
 
   const t = useTranslations('select-location.combo-box')
@@ -117,15 +110,7 @@ export const AddressInput = ({
         ref={refs.setReference}
         value={query}
       >
-        <ComboboxInput
-          as={TextInput}
-          autoComplete="off"
-          // Set defaultValue to address to make sure the input is filled when JavaScript is not working.
-          // Gets overridden by value={query} when the component rerenders.
-          defaultValue={address}
-          name="address"
-          onChange={handleInputChange}
-        />
+        <ComboboxInput as={TextInput} autoComplete="off" name="address" onChange={handleInputChange} />
         {showListBox && (
           <ComboboxOptions
             as={ListBox}
