@@ -87,11 +87,7 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
   return (
     <div className="ams-page__area--body">
       <title>{documentTitle}</title>
-      <Grid className="ams-mb-s">
-        <Grid.Cell span="all">
-          <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
-        </Grid.Cell>
-      </Grid>
+      <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
       <Grid as="main" gapVertical="large">
         <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
           {error && (
