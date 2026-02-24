@@ -72,7 +72,11 @@ export const startUpload = (
     setFileUploads((prev) =>
       prev.map((upload): FileUpload | PendingFileUpload =>
         upload.id === fileUpload.id
-          ? { ...upload, errorMessage: getValidationErrorMessage(undefined, t), status: 'error' }
+          ? {
+              ...upload,
+              errorMessage: getValidationErrorMessage(safeJSONParse(xhr.response)?.detail, t),
+              status: 'error',
+            }
           : upload,
       ),
     )

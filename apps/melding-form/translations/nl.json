@@ -125,15 +125,16 @@
         "description": "Wacht tot de foto’s zijn toegevoegd of annuleer."
       },
       "delete-failed": {
-        "title": "Het is niet gelukt om de foto te verwijderen. Probeer het opnieuw."
+        "title": "Het is niet gelukt om de foto te verwijderen.",
+        "description": "Probeer het opnieuw."
       }
     },
     "validation-errors": {
       "duplicate-upload": "Het gekozen bestand is al toegevoegd.",
       "failed-upload": "Probeer het opnieuw.",
-      "invalid-file-type": "Ongeldig bestandstype. U kunt alleen foto’s toevoegen.",
+      "invalid-file-type": "Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp.",
       "file-too-large": "Een foto mag maximaal 20 MB groot zijn.",
-      "invalid-file-extension": "Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp."
+      "invalid-file-extension": "De toevoeging achter de punt in de bestandsnaam is niet gelijk aan het echte bestandstype. Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp."
     }
   },
   "contact": {
@@ -210,7 +211,7 @@
   },
   "shared": {
     "error-count-label": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",
-    "generic-error-alert-title": "Er is iets misgegaan",
+    "generic-error-alert-title": "{count, plural, =1 {Verbeter de fout om uw foto’s toe te voegen} other {Verbeter de fouten om uw foto’s toe te voegen}}",
     "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
     "system-error-alert-description": "Probeer opnieuw naar de volgende vraag te gaan.",
     "system-error-alert-title": "Er is iets misgegaan"
