@@ -10,7 +10,7 @@ import { patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@m
 import { convertWktPointToCoordinates } from './utils'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
-import { Coordinates } from 'apps/melding-form/src/types'
+import type { Coordinates } from 'apps/melding-form/src/types'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 
