@@ -27,5 +27,6 @@ describe('editForm', () => {
 
     const validationKeys = validationTab?.components.map((c) => c.key)
     expect(validationKeys).toContain('validate.required')
+    expect(validationKeys).toContain('validate.required_error_message')
   })
 })
