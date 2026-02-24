@@ -1,3 +1,5 @@
+import { getContextComponents } from '@formio/js/utils'
+
 import { convertEmptyStringToNull, editForm, getMaxCharCountValue } from './editForm'
 
 describe('getMaxCharCountValue', () => {
@@ -60,9 +62,11 @@ describe('editForm', () => {
     // Check for the right tabs
     const displayTab = tabs?.components.find((t) => t.key === 'display')
     const validationTab = tabs?.components.find((t) => t.key === 'validation')
+    const conditionalTab = tabs?.components.find((t) => t.key === 'conditional')
 
     expect(displayTab).toBeDefined()
     expect(validationTab).toBeDefined()
+    expect(conditionalTab).toBeDefined()
 
     // Check for the right input fields
     const displayKeys = displayTab?.components.map((c) => c.key)
@@ -81,6 +85,9 @@ describe('editForm', () => {
       'validate.minLengthErrorMessage',
       'validate.json', // This is a hidden field which stores the JSON logic
     ])
+
+    const conditionalKeys = conditionalTab?.components.map((c) => c.key)
+    expect(conditionalKeys).toStrictEqual(['conditional.show', 'conditional.when', 'conditional.eq'])
   })
 
   it('calculates the value for minLengthErrorMessage correctly', () => {
@@ -111,5 +118,17 @@ describe('editForm', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = (maxLengthErrorMessageField as any)?.calculateValue?.(context)
     expect(result).toBe('Too long!')
+  })
+
+  it("calls getContextComponents with context and false for 'When' field", () => {
+    const form = editForm()
+    const conditionalTab = form.components[0].components[2]
+    const whenField = conditionalTab.components.find((c) => c.key === 'conditional.when')
+
+    const context = { instance: {} }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(whenField as any)?.data?.custom(context)
+
+    expect(getContextComponents).toHaveBeenCalledWith(context, false)
   })
 })
