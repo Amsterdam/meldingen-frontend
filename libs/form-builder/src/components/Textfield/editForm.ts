@@ -2,6 +2,8 @@
 // - https://github.com/formio/formio.js/tree/main/src/components/_classes/component/editForm
 // - https://github.com/formio/formio.js/tree/main/src/components/textfield/editForm
 
+import { getContextComponents } from '@formio/js/utils'
+
 import { Context } from '../types'
 import {
   getJsonLogicValue,
@@ -103,6 +105,43 @@ export const editForm = () => ({
           ],
           key: 'validation',
           label: 'Validation',
+        },
+        {
+          components: [
+            {
+              data: {
+                values: [
+                  { label: 'True', value: 'true' },
+                  { label: 'False', value: 'false' },
+                ],
+              },
+              dataSrc: 'values',
+              input: true,
+              key: 'conditional.show',
+              label: 'This component should Display:',
+              type: 'select',
+              widget: 'html5',
+            },
+            {
+              data: {
+                custom: (context: unknown) => getContextComponents(context, false),
+              },
+              dataSrc: 'custom',
+              input: true,
+              key: 'conditional.when',
+              label: 'When the form component:',
+              type: 'select',
+              valueProperty: 'value',
+            },
+            {
+              input: true,
+              key: 'conditional.eq',
+              label: 'Has the value:',
+              type: 'textfield',
+            },
+          ],
+          key: 'conditional',
+          label: 'Conditional',
         },
       ],
       key: 'tabs',
