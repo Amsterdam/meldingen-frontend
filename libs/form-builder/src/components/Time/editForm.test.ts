@@ -15,12 +15,17 @@ describe('editForm', () => {
 
     // Check for the right tabs
     const displayTab = tabs?.components.find((t) => t.key === 'display')
+    const validationTab = tabs?.components.find((t) => t.key === 'validation')
 
     expect(displayTab).toBeDefined()
+    expect(validationTab).toBeDefined()
 
     // Check for the right input fields
     const displayKeys = displayTab?.components.map((c) => c.key)
     expect(displayKeys).toContain('label')
     expect(displayKeys).toContain('description')
+
+    const validationKeys = validationTab?.components.map((c) => c.key)
+    expect(validationKeys).toContain('validate.required')
   })
 })

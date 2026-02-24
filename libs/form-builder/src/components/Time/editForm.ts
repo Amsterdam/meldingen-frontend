@@ -34,6 +34,19 @@ export const editForm = () => ({
           key: 'display',
           label: 'Display',
         },
+        {
+          components: [
+            {
+              input: true,
+              key: 'validate.required',
+              label: 'Required',
+              tooltip: 'A required field must be filled in before the form can be submitted.',
+              type: 'checkbox',
+            },
+          ],
+          key: 'validation',
+          label: 'Validation',
+        },
       ],
       key: 'tabs',
       type: 'tabs',
