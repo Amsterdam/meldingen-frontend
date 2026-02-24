@@ -1095,17 +1095,62 @@ const mockRadios = [
   },
 ]
 
+const mockTime = [
+  {
+    conditional: {
+      eq: '',
+      show: null,
+      when: null,
+    },
+    description: '',
+    input: true,
+    key: 'time',
+    label: 'Time',
+    type: 'time',
+    validate: {
+      custom: '',
+      customPrivate: false,
+      json: null,
+      multiple: false,
+      required: false,
+      required_error_message: null,
+      strictDateValidation: false,
+      unique: false,
+    },
+  },
+  {
+    conditional: {
+      eq: '',
+      show: null,
+      when: null,
+    },
+    description: '',
+    input: true,
+    key: 'time1',
+    label: 'Time',
+    type: 'time',
+    validate: {
+      custom: '',
+      customPrivate: false,
+      multiple: false,
+      required: false,
+      strictDateValidation: false,
+      unique: false,
+    },
+  },
+]
+
 export const mockData: AdditionalQuestionsForm & { classification: string | null; id: number } = {
   classification: null,
   components: [
     {
       ...mockPanels[0],
-      components: [mockTextFields[0], mockTextAreas[0], mockSelectBoxes[0], mockSelects[0], mockRadios[0]],
+      components: [mockTextFields[0], mockTextAreas[0], mockSelectBoxes[0], mockSelects[0], mockRadios[0], mockTime[0]],
       path: 'page1',
     },
     {
       ...mockPanels[1],
-      components: [mockTextFields[1], mockTextAreas[1], mockSelectBoxes[1], mockSelects[1], mockRadios[1]],
+      components: [mockTextFields[1], mockTextAreas[1], mockSelectBoxes[1], mockSelects[1], mockRadios[1], mockTime[1]],
       path: 'page2',
     },
   ],

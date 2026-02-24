@@ -13,6 +13,7 @@ import {
   FormSelectComponentInputSchema,
   FormTextAreaComponentInputSchema,
   FormTextFieldComponentInputSchema,
+  FormTimeComponentInputSchema,
 } from '@meldingen/api-client'
 
 import type { AdditionalQuestionsForm } from '../../types'
@@ -32,10 +33,11 @@ const filterBySchemaPerType = (obj: Component) => {
       if (!Object.hasOwn(obj, 'autoExpand')) {
         return filter(FormTextAreaComponentInputSchema, { ...obj, autoExpand: false })
       }
-
       return filter(FormTextAreaComponentInputSchema, obj)
     case 'textfield':
       return filter(FormTextFieldComponentInputSchema, obj)
+    case 'time':
+      return filter(FormTimeComponentInputSchema, obj)
     default:
       throw Error(`Type ${obj.type} is unknown, please add it to filterFormResponse.`)
   }
