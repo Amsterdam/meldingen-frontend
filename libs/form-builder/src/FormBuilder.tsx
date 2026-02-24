@@ -4,11 +4,11 @@ import type { FormBuilder as FormBuilderProps } from '@formio/js'
 import { Components, FormBuilder as FormioFormBuilder } from '@formio/js'
 import { useEffect, useRef } from 'react'
 
-import { Radio, Select, SelectBoxes, Textarea, Textfield } from './components'
-import nl from './translations/nl.json'
+import { Radio, Select, SelectBoxes, Textarea, Textfield, Time } from './components'
 
 import '@formio/js/dist/formio.builder.min.css'
 import './visually-hidden.css' // This class is set by Form.io, but not included in the builder CSS, so we add it ourselves
+import nl from './translations/nl.json'
 
 type ExtendedFormBuilderOptions = FormBuilderProps['options'] & {
   i18n?: {
@@ -52,6 +52,7 @@ export const FormBuilder = ({ data, onChange }: Props) => {
     selectboxes: SelectBoxes,
     textarea: Textarea,
     textfield: Textfield,
+    time: Time,
   })
 
   useEffect(() => {
