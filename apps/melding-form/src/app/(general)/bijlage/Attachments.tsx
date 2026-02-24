@@ -29,7 +29,7 @@ import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 import styles from './Attachments.module.css'
 
 const MAX_SUCCESSFUL_UPLOADS = 3
-export const MAX_UPLOAD_ATTEMPTS = 10
+export const MAX_UPLOAD_ATTEMPTS = 2
 
 type GenericErrorMessage = {
   description?: string
@@ -110,8 +110,8 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
     if (newFiles.length + fileUploads.length > MAX_UPLOAD_ATTEMPTS) {
       setGenericError({
-        description: t('errors.too-many-attempts.description'),
-        title: t('errors.too-many-attempts.title'),
+        description: 'errors.too-many-attempts.description',
+        title: 'errors.too-many-attempts.title',
       })
       return
     }
@@ -126,8 +126,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
     const newFileUploads = newFiles.map((newFile) => {
       if (fileUploads.find((f) => f.file.name === newFile.name)) {
-        const errorMessage = t('validation-errors.duplicate-upload')
-        return createDuplicatedUploadError(newFile, errorMessage, getNextUploadId())
+        return createDuplicatedUploadError(newFile, 'validation-errors.duplicate-upload', getNextUploadId())
       }
 
       return createFileUpload(newFile, getNextUploadId())
@@ -182,7 +181,8 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
     if (error) {
       setGenericError({
-        title: t('errors.delete-failed.title'),
+        description: 'errors.delete-failed.description',
+        title: 'errors.delete-failed.title',
       })
       return
     }
@@ -195,8 +195,8 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     if (fileUploads.some((u) => u.status === 'uploading')) {
       e.preventDefault()
       setGenericError({
-        description: t('errors.upload-in-progress.description'),
-        title: t('errors.upload-in-progress.title'),
+        description: 'errors.upload-in-progress.description',
+        title: 'errors.upload-in-progress.title',
       })
     }
   }
@@ -256,7 +256,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             severity="error"
             tabIndex={-1}
           >
-            {genericError.description && <Paragraph>{genericError.description}</Paragraph>}
+            {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
           </Alert>
         )}
         <FormHeader step={t('step')} title={t('title')} />
