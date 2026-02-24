@@ -29,7 +29,7 @@ import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 import styles from './Attachments.module.css'
 
 const MAX_SUCCESSFUL_UPLOADS = 3
-export const MAX_UPLOAD_ATTEMPTS = 2
+export const MAX_UPLOAD_ATTEMPTS = 10
 
 type GenericErrorMessage = {
   description?: string
