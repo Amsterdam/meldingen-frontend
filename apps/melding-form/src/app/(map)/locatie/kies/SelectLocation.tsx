@@ -85,7 +85,7 @@ export const SelectLocation = ({
             name="coordinates"
             type="hidden"
           />
-          <input name="selectedAssets" type="hidden" value={JSON.stringify(selectedAssets)} />
+          <input name="selectedAssets" type="hidden" value={JSON.stringify(selectedAssets.map((asset) => asset.id))} />
         </Form>
       </SideBarTop>
       <SideBarBottom isHidden={!showAssetList}>

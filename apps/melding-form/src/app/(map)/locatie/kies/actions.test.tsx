@@ -77,7 +77,7 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', 'Amstel 1, Amsterdam')
-    formData.set('selectedAssets', JSON.stringify(containerAssets))
+    formData.set('selectedAssets', JSON.stringify(containerAssets.map((asset) => asset.id)))
 
     await postCoordinatesAndAssets(undefined, formData)
 

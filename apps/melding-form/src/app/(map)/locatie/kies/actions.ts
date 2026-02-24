@@ -4,13 +4,13 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import type { Feature } from '@meldingen/api-client'
 import { patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
+
+import type { Coordinates } from 'apps/melding-form/src/types'
 
 import { convertWktPointToCoordinates } from './utils'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
-import type { Coordinates } from 'apps/melding-form/src/types'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 
@@ -26,7 +26,7 @@ const safeJsonParse = <T>(value: unknown, fallback: T): T => {
 
 export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) => {
   const selectedAssetsRaw = formData.get('selectedAssets')
-  const selectedAssets: Feature[] = safeJsonParse(selectedAssetsRaw, [])
+  const selectedAssets = safeJsonParse<number[]>(selectedAssetsRaw, [])
   const cookieStore = await cookies()
 
   const meldingId = cookieStore.get(COOKIES.ID)?.value
@@ -41,11 +41,11 @@ export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) =
   /** Post assets */
 
   if (selectedAssets.length > 0) {
-    for (const asset of selectedAssets) {
+    for (const assetId of selectedAssets) {
       const { error } = await postMeldingByMeldingIdAsset({
         body: {
           asset_type_id: 1,
-          external_id: String(asset.id),
+          external_id: String(assetId),
         },
         path: { melding_id: parseInt(meldingId, 10) },
         query: { token },
