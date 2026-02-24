@@ -15,6 +15,7 @@ client.setConfig({
 
     return session.accessToken
   },
+  baseUrl: process.env.NEXT_INTERNAL_BACKEND_BASE_URL,
 })
 
 export * from '@meldingen/api-client'
