@@ -4,17 +4,28 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
+import { Feature, patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
 
 import { convertWktPointToCoordinates } from './utils'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
+import { Coordinates } from 'apps/melding-form/src/types'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 
+const safeJsonParse = <T>(value: unknown, fallback: T): T => {
+  if (!value || typeof value !== 'string') return fallback
+
+  try {
+    return JSON.parse(value)
+  } catch {
+    return fallback
+  }
+}
+
 export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) => {
   const selectedAssetsRaw = formData.get('selectedAssets')
-  const selectedAssets = selectedAssetsRaw && typeof selectedAssetsRaw === 'string' ? JSON.parse(selectedAssetsRaw) : []
+  const selectedAssets: Feature[] = safeJsonParse(selectedAssetsRaw, [])
   const cookieStore = await cookies()
 
   const meldingId = cookieStore.get(COOKIES.ID)?.value
@@ -48,7 +59,7 @@ export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) =
   /** Fetch coordinates from PDOK */
 
   let address = addressFormData as string
-  let coordinates = coordinatesFormData ? JSON.parse(coordinatesFormData as string) : null
+  let coordinates: Coordinates | null = safeJsonParse(coordinatesFormData, null)
 
   if (!address) {
     return { errorMessage: t('errors.no-location') }
