@@ -47,12 +47,7 @@ export const Detail = ({
 
   return (
     <div className="ams-page__area--body">
-      <Grid className="ams-mb-s">
-        <Grid.Cell span="all">
-          <BackLink href={`/`}>{t('back-link')}</BackLink>
-        </Grid.Cell>
-      </Grid>
-
+      <BackLink href={`/`}>{t('back-link')}</BackLink>
       <Grid as="main">
         <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
           <Heading className="ams-mb-m" level={1}>
@@ -101,7 +96,6 @@ export const Detail = ({
               ))}
             </DescriptionList>
           )}
-
           <DescriptionList className={clsx(hasAttachments && styles.attachmentsDescriptionList)}>
             <DescriptionList.Term>{t('attachments.title')}</DescriptionList.Term>
             {hasAttachments ? (
