@@ -1,6 +1,6 @@
 import type { PendingFileUpload } from './utils'
 
-import { safeJSONParse, startUpload } from './utils'
+import { getValidationErrorMessageTranslationKey, safeJSONParse, startUpload } from './utils'
 
 const xhrMock = {
   response: JSON.stringify({ id: 123 }),
@@ -23,7 +23,6 @@ const otherFileUpload: PendingFileUpload = {
 }
 
 const setFileUploadsMock = vi.fn()
-const t = (key: string) => key
 
 describe('safeJSONParse', () => {
   it('returns undefined for undefined input', () => {
@@ -41,7 +40,7 @@ describe('safeJSONParse', () => {
 
 describe('startUpload', () => {
   it("sets status to 'success' and updates serverId on 200", () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     // Simulate onload event
     xhrMock.onload?.(new ProgressEvent('load'))
@@ -63,7 +62,7 @@ describe('startUpload', () => {
       upload: {} as XMLHttpRequestUpload,
     } as unknown as XMLHttpRequest
 
-    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     // Simulate onload event
     xhrMock.onload?.(new ProgressEvent('load'))
@@ -80,7 +79,7 @@ describe('startUpload', () => {
   it('sets status to uploading when upload starts', () => {
     const setFileUploadsMock = vi.fn()
 
-    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     expect(setFileUploadsMock).toHaveBeenCalled()
 
@@ -91,7 +90,7 @@ describe('startUpload', () => {
   })
 
   it('updates progress on upload progress event', () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     const event = { lengthComputable: true, loaded: 50, total: 100 } as ProgressEvent<EventTarget>
 
@@ -109,7 +108,7 @@ describe('startUpload', () => {
   })
 
   it("sets status to 'error' on network error", () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     // Simulate onerror event
     xhrMock.onerror?.(new ProgressEvent('error'))
@@ -124,7 +123,7 @@ describe('startUpload', () => {
   })
 
   it('returns the original file object if id does not match on load', () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     // Simulate onload event
     xhrMock.onload?.(new ProgressEvent('load'))
@@ -136,7 +135,7 @@ describe('startUpload', () => {
   })
 
   it('returns the original file object if id does not match on progress', () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     const event = { lengthComputable: true, loaded: 50, total: 100 } as ProgressEvent<EventTarget>
 
@@ -151,7 +150,7 @@ describe('startUpload', () => {
   })
 
   it('returns the original file object if id does not match on error', () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     // Simulate onerror event
     xhrMock.onerror?.(new ProgressEvent('error'))
@@ -165,11 +164,33 @@ describe('startUpload', () => {
   it('returns the original file object if id does not match on upload start', () => {
     const setFileUploadsMock = vi.fn()
 
-    startUpload(xhrMock, fileUpload, setFileUploadsMock, t)
+    startUpload(xhrMock, fileUpload, setFileUploadsMock)
 
     const updater = setFileUploadsMock.mock.calls[0][0]
     const result = updater([otherFileUpload])
 
     expect(result[0]).toBe(otherFileUpload)
+  })
+})
+
+describe('getValidationErrorMessageTranslationKey', () => {
+  it('returns the correct translation key for known errors', () => {
+    expect(getValidationErrorMessageTranslationKey('Allowed content size exceeded')).toBe(
+      'validation-errors.file-too-large',
+    )
+    expect(getValidationErrorMessageTranslationKey('Attachment not allowed')).toBe(
+      'validation-errors.invalid-file-type',
+    )
+    expect(getValidationErrorMessageTranslationKey('Media type of data does not match provided media type')).toBe(
+      'validation-errors.invalid-file-extension',
+    )
+  })
+
+  it('returns the default translation key for unknown errors', () => {
+    expect(getValidationErrorMessageTranslationKey('Unknown error')).toBe('validation-errors.failed-upload')
+  })
+
+  it('returns the default translation key for undefined error', () => {
+    expect(getValidationErrorMessageTranslationKey()).toBe('validation-errors.failed-upload')
   })
 })

@@ -33,6 +33,7 @@ export const MAX_UPLOAD_ATTEMPTS = 10
 
 type GenericErrorMessage = {
   description?: string
+  options?: Record<string, string | number>
   title: string
 }
 
@@ -117,7 +118,8 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
     if (newFiles.length + fileUploads.filter((file) => file.status !== 'error').length > MAX_SUCCESSFUL_UPLOADS) {
       setGenericError({
-        title: t('errors.too-many-files.title', { maxFiles: MAX_SUCCESSFUL_UPLOADS }),
+        options: { maxFiles: MAX_SUCCESSFUL_UPLOADS },
+        title: 'errors.too-many-files.title',
       })
       return
     }
@@ -142,7 +144,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`,
       )
 
-      startUpload(xhr, upload, setFileUploads, t)
+      startUpload(xhr, upload, setFileUploads)
     })
 
     // Clear the file input after starting the upload, so it is empty for the next selection.
@@ -237,7 +239,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             className="ams-mb-m"
             errors={validationErrors.map((error) => ({
               id: `#${error.key}`,
-              label: error.message,
+              label: t(error.message),
             }))}
             heading={tShared('generic-error-alert-title', { count: validationErrors.length })}
             headingLevel={2}
@@ -247,7 +249,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {genericError && (
           <Alert
             className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
-            heading={genericError.title}
+            heading={t(genericError.title, genericError.options)}
             headingLevel={2}
             ref={genericErrorAlertRef}
             role="alert"
@@ -296,7 +298,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
                 {fileUploads.map(({ errorMessage, file, id, progress, serverId, status, xhr }) => (
                   <FileList.Item
                     deleteButtonId={id}
-                    errorMessage={errorMessage}
+                    errorMessage={errorMessage ? t(errorMessage) : undefined}
                     file={file}
                     key={id}
                     labels={{
