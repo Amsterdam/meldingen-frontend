@@ -19,6 +19,8 @@ export const isTextarea = (component: Component): component is FormTextAreaCompo
 export const isTextfield = (component: Component): component is FormTextFieldInputComponent =>
   component.type === 'textfield'
 
+export const isTimefield = (component: Component): component is FormTextFieldInputComponent => component.type === 'time'
+
 export const getAriaDescribedBy = (id: string, description?: string, errorMessage?: string) => {
   const ariaDescribedBy = []
 
