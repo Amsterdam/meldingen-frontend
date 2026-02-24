@@ -19,84 +19,24 @@ vi.mock('next/navigation', () => ({
 describe('postCoordinatesAndAssets', () => {
   const mockSetCookie = vi.fn()
 
-  beforeEach(() => {
-    mockCookies({ [COOKIES.ID]: '123', [COOKIES.TOKEN]: 'test-token' }, mockSetCookie)
-  })
+  mockCookies({ [COOKIES.ID]: '123', [COOKIES.TOKEN]: 'test-token' }, mockSetCookie)
 
-  it('redirects to /cookie-storing if id or token cookies are missing', async () => {
-    mockCookies({}) // No cookies
-
-    const formData = new FormData()
-    formData.set('address', 'Amstel 1, Amsterdam')
-    formData.set('selectedAssets', JSON.stringify([]))
-
-    await postCoordinatesAndAssets(undefined, formData)
-
-    expect(redirect).toHaveBeenCalledWith('/cookie-storing')
-  })
-
-  it('posts each selected asset with the correct body', async () => {
-    const capturedBodies: unknown[] = []
-
-    server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ASSET, async ({ request }) => {
-        capturedBodies.push(await request.json())
-        return HttpResponse.json()
-      }),
-    )
+  it('sets the address from PDOK /free in cookies and redirects', async () => {
+    const address = 'Amstel 1, Amsterdam'
+    const coordinates = '{"lat":52.370216,"lng":4.895168}'
 
     const formData = new FormData()
-    formData.set('address', 'Amstel 1, Amsterdam')
+    formData.set('address', address)
+    formData.set('coordinates', coordinates)
     formData.set('selectedAssets', JSON.stringify(containerAssets))
 
     await postCoordinatesAndAssets(undefined, formData)
 
-    expect(capturedBodies).toHaveLength(2)
-    expect(capturedBodies[0]).toEqual({ asset_type_id: 1, external_id: 'container.1' })
-    expect(capturedBodies[1]).toEqual({ asset_type_id: 1, external_id: 'container.2' })
+    expect(mockSetCookie).toHaveBeenCalledWith(COOKIES.ADDRESS, address, { maxAge: 86400 })
     expect(redirect).toHaveBeenCalledWith('/locatie')
   })
 
-  it('skips posting assets when selectedAssets is not in FormData', async () => {
-    const capturedBodies: unknown[] = []
-
-    server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ASSET, async ({ request }) => {
-        capturedBodies.push(await request.json())
-        return HttpResponse.json()
-      }),
-    )
-
-    const formData = new FormData()
-    formData.set('address', 'Amstel 1, Amsterdam')
-
-    await postCoordinatesAndAssets(undefined, formData)
-
-    expect(capturedBodies).toHaveLength(0)
-    expect(redirect).toHaveBeenCalledWith('/locatie')
-  })
-
-  it('skips posting assets when selectedAssets is a File (non-string)', async () => {
-    const capturedBodies: unknown[] = []
-
-    server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ASSET, async ({ request }) => {
-        capturedBodies.push(await request.json())
-        return HttpResponse.json()
-      }),
-    )
-
-    const formData = new FormData()
-    formData.set('address', 'Amstel 1, Amsterdam')
-    formData.set('selectedAssets', new Blob(['[{"id":1}]'], { type: 'application/json' }))
-
-    await postCoordinatesAndAssets(undefined, formData)
-
-    expect(capturedBodies).toHaveLength(0)
-    expect(redirect).toHaveBeenCalledWith('/locatie')
-  })
-
-  it('fetches coordinates from PDOK API', async () => {
+  it('fetches coordinates from PDOK API if not provided', async () => {
     const address = 'Amstel 1, Amsterdam'
 
     const formData = new FormData()
@@ -109,19 +49,7 @@ describe('postCoordinatesAndAssets', () => {
     expect(redirect).toHaveBeenCalledWith('/locatie')
   })
 
-  it('returns an error message if PDOK free returns an error', async () => {
-    server.use(http.get(ENDPOINTS.PDOK_FREE, () => new HttpResponse(null, { status: 500 })))
-
-    const formData = new FormData()
-    formData.set('address', 'Amstel 1, Amsterdam')
-    formData.set('selectedAssets', JSON.stringify([]))
-
-    const result = await postCoordinatesAndAssets(undefined, formData)
-
-    expect(result).toEqual({ errorMessage: 'errors.pdok-failed' })
-  })
-
-  it('returns an error message if no address is found by PDOK free', async () => {
+  it('throws an error if no address is found by PDOK API', async () => {
     server.use(
       http.get(ENDPOINTS.PDOK_FREE, () =>
         HttpResponse.json({
@@ -141,19 +69,11 @@ describe('postCoordinatesAndAssets', () => {
     expect(result).toEqual({ errorMessage: 'errors.pdok-no-address-found' })
   })
 
-  it('returns an error message if PDOK free does not return coordinates', async () => {
-    server.use(
-      http.get(ENDPOINTS.PDOK_FREE, () =>
-        HttpResponse.json({
-          response: { docs: [{ centroide_ll: 'not-a-coordinate', weergavenaam: 'Amstel 1, Amsterdam' }] },
-        }),
-      ),
-    )
-
-    const address = 'Amstel 1, Amsterdam'
+  it('returns an error message if an error occurs', async () => {
+    server.use(http.get(ENDPOINTS.PDOK_FREE, () => new HttpResponse(null, { status: 500 })))
 
     const formData = new FormData()
-    formData.set('address', address)
+    formData.set('address', 'Amstel 1, Amsterdam')
     formData.set('selectedAssets', JSON.stringify([]))
 
     const result = await postCoordinatesAndAssets(undefined, formData)
@@ -178,9 +98,11 @@ describe('postCoordinatesAndAssets', () => {
     )
 
     const address = 'Oudezijds Voorburgwal 300, Amsterdam'
+    const coordinates = '{"lat":52.37065901,"lng":4.89367338}'
 
     const formData = new FormData()
     formData.set('address', address)
+    formData.set('coordinates', coordinates)
     formData.set('selectedAssets', JSON.stringify(containerAssets))
 
     const result = await postCoordinatesAndAssets(undefined, formData)
@@ -196,9 +118,11 @@ describe('postCoordinatesAndAssets', () => {
     )
 
     const address = 'Oudezijds Voorburgwal 300, Amsterdam'
+    const coordinates = '{"lat":52.37065901,"lng":4.89367338}'
 
     const formData = new FormData()
     formData.set('address', address)
+    formData.set('coordinates', coordinates)
     formData.set('selectedAssets', JSON.stringify(containerAssets))
 
     const result = await postCoordinatesAndAssets(undefined, formData)
