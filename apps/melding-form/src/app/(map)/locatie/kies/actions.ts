@@ -4,7 +4,8 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { Feature, patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
+import type { Feature } from '@meldingen/api-client'
+import { patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
 
 import { convertWktPointToCoordinates } from './utils'
 import { COOKIES } from 'apps/melding-form/src/constants'
