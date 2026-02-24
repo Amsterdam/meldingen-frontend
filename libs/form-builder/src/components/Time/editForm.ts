@@ -1,1 +1,42 @@
-export const editForm = () => ({ components: [{ components: [], key: 'tabs', type: 'tabs' }] })
+export const editForm = () => ({
+  components: [
+    {
+      components: [
+        {
+          components: [
+            {
+              autofocus: true,
+              input: true,
+              key: 'label',
+              label: 'Label',
+              placeholder: 'Field Label',
+              tooltip: 'The label for this field that will appear next to it.',
+              type: 'textfield',
+              validate: {
+                required: true,
+              },
+            },
+            {
+              as: 'html',
+              editor: 'ace',
+              input: true,
+              key: 'description',
+              label: 'Description',
+              placeholder: 'Description for this field.',
+              tooltip: 'The description is text that will appear below the input field.',
+              type: 'textarea',
+              wysiwyg: {
+                isUseWorkerDisabled: true,
+                minLines: 3,
+              },
+            },
+          ],
+          key: 'display',
+          label: 'Display',
+        },
+      ],
+      key: 'tabs',
+      type: 'tabs',
+    },
+  ],
+})

@@ -12,6 +12,15 @@ describe('editForm', () => {
     const tabs = form.components.find((c) => c.type === 'tabs')
     expect(tabs).toBeDefined()
     expect(tabs?.components).toBeInstanceOf(Array)
-    expect(tabs?.components[0]).toBeUndefined()
+
+    // Check for the right tabs
+    const displayTab = tabs?.components.find((t) => t.key === 'display')
+
+    expect(displayTab).toBeDefined()
+
+    // Check for the right input fields
+    const displayKeys = displayTab?.components.map((c) => c.key)
+    expect(displayKeys).toContain('label')
+    expect(displayKeys).toContain('description')
   })
 })
