@@ -75,7 +75,7 @@ export const startUpload = (
         upload.id === fileUpload.id
           ? {
               ...upload,
-              errorMessage: getValidationErrorMessageTranslationKey(safeJSONParse(xhr.response)?.detail),
+              errorMessage: 'validation-errors.failed-upload',
               status: 'error',
             }
           : upload,
