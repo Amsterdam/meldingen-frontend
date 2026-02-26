@@ -125,7 +125,7 @@
         "description": "Wacht tot de foto’s zijn toegevoegd of annuleer."
       },
       "delete-failed": {
-        "title": "Het is niet gelukt om de foto te verwijderen.",
+        "title": "Het is niet gelukt om de foto te verwijderen",
         "description": "Probeer het opnieuw."
       }
     },
