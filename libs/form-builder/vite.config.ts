@@ -10,7 +10,7 @@ export default defineConfig({
       include: ['src/**/*.{js,jsx,ts,tsx}'],
       thresholds: {
         branches: 97,
-        functions: 93,
+        functions: 96,
         lines: 99,
         statements: 99,
       },
