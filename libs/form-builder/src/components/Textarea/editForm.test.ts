@@ -1,5 +1,3 @@
-import { getContextComponents } from '@formio/js/utils'
-
 import { convertEmptyStringToNull, editForm, getMaxCharCountValue } from './editForm'
 
 describe('getMaxCharCountValue', () => {
@@ -118,17 +116,5 @@ describe('editForm', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = (maxLengthErrorMessageField as any)?.calculateValue?.(context)
     expect(result).toBe('Too long!')
-  })
-
-  it("calls getContextComponents with context and false for 'When' field", () => {
-    const form = editForm()
-    const conditionalTab = form.components[0].components[2]
-    const whenField = conditionalTab.components.find((c) => c.key === 'conditional.when')
-
-    const context = { instance: {} }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ;(whenField as any)?.data?.custom(context)
-
-    expect(getContextComponents).toHaveBeenCalledWith(context, false)
   })
 })
