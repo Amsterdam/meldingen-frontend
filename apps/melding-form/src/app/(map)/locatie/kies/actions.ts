@@ -10,7 +10,6 @@ import type { Coordinates } from 'apps/melding-form/src/types'
 
 import { convertWktPointToCoordinates } from './utils'
 import { COOKIES } from 'apps/melding-form/src/constants'
-import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 
@@ -52,7 +51,7 @@ export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) =
       })
 
       if (error) {
-        return { errorMessage: handleApiError(error) }
+        return { errorMessage: t('errors.assets-post-failed') }
       }
     }
   }
@@ -99,7 +98,7 @@ export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) =
   })
 
   if (error) {
-    return { errorMessage: handleApiError(error) }
+    return { errorMessage: t('errors.location-patch-failed') }
   }
 
   return redirect('/locatie')

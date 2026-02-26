@@ -61,7 +61,7 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets(undefined, formData)
 
-    expect(result).toEqual({ errorMessage: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'errors.assets-post-failed' })
   })
 
   it('posts each selected asset with the correct body', async () => {
@@ -172,6 +172,6 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets(undefined, formData)
 
-    expect(result).toEqual({ errorMessage: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'errors.location-patch-failed' })
   })
 })
