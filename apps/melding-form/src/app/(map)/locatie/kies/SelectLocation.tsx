@@ -70,6 +70,10 @@ export const SelectLocation = ({
 
   const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
 
+  const coordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
+
+  const selectedAssetsIds = JSON.stringify(selectedAssets.map((asset) => asset.id))
+
   return (
     <div className={clsx(styles.grid, showAssetList && styles.hasAssetList)}>
       <SideBarTop>
@@ -80,12 +84,8 @@ export const SelectLocation = ({
             setCoordinates={setCoordinates}
             setSelectedAssets={setSelectedAssets}
           />
-          <input
-            defaultValue={coordinates ? JSON.stringify(coordinates) : undefined}
-            name="coordinates"
-            type="hidden"
-          />
-          <input name="selectedAssets" type="hidden" value={JSON.stringify(selectedAssets.map((asset) => asset.id))} />
+          <input defaultValue={coordinatesValue} name="coordinates" type="hidden" />
+          <input name="selectedAssetIds" type="hidden" value={selectedAssetsIds} />
         </Form>
       </SideBarTop>
       <SideBarBottom isHidden={!showAssetList}>

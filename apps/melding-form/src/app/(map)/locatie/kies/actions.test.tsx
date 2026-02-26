@@ -23,10 +23,10 @@ describe('postCoordinatesAndAssets', () => {
     mockCookies({ [COOKIES.ID]: '123', [COOKIES.TOKEN]: 'test-token' }, mockSetCookie)
   })
 
-  it('falls back to empty array if selectedAssets is not valid JSON', async () => {
+  it('falls back to empty array if selectedAssetIds is not valid JSON', async () => {
     const formData = new FormData()
     formData.set('address', 'Amstel 1, Amsterdam')
-    formData.set('selectedAssets', 'invalid-json')
+    formData.set('selectedAssetIds', 'invalid-json')
 
     await postCoordinatesAndAssets(undefined, formData)
 
@@ -38,7 +38,6 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', 'Amstel 1, Amsterdam')
-    formData.set('selectedAssets', JSON.stringify([]))
 
     await postCoordinatesAndAssets(undefined, formData)
 
@@ -58,7 +57,7 @@ describe('postCoordinatesAndAssets', () => {
     const formData = new FormData()
     formData.set('address', address)
     formData.set('coordinates', coordinates)
-    formData.set('selectedAssets', JSON.stringify(containerAssets))
+    formData.set('selectedAssetIds', JSON.stringify(containerAssets))
 
     const result = await postCoordinatesAndAssets(undefined, formData)
 
@@ -77,7 +76,7 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', 'Amstel 1, Amsterdam')
-    formData.set('selectedAssets', JSON.stringify(containerAssets.map((asset) => asset.id)))
+    formData.set('selectedAssetIds', JSON.stringify(containerAssets.map((asset) => asset.id)))
 
     await postCoordinatesAndAssets(undefined, formData)
 
@@ -89,7 +88,6 @@ describe('postCoordinatesAndAssets', () => {
 
   it('returns an error message if no address is provided', async () => {
     const formData = new FormData()
-    formData.set('selectedAssets', JSON.stringify([]))
 
     const result = await postCoordinatesAndAssets(undefined, formData)
 
@@ -101,7 +99,6 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', 'Amstel 1, Amsterdam')
-    formData.set('selectedAssets', JSON.stringify([]))
 
     const result = await postCoordinatesAndAssets(undefined, formData)
 
@@ -121,7 +118,6 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', address)
-    formData.set('selectedAssets', JSON.stringify([]))
 
     const result = await postCoordinatesAndAssets(undefined, formData)
 
@@ -141,7 +137,6 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', address)
-    formData.set('selectedAssets', JSON.stringify([]))
 
     const result = await postCoordinatesAndAssets(undefined, formData)
 
@@ -153,7 +148,6 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', address)
-    formData.set('selectedAssets', JSON.stringify([]))
 
     await postCoordinatesAndAssets(undefined, formData)
 

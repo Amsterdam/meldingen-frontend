@@ -25,8 +25,8 @@ const safeJsonParse = <T>(value: unknown, fallback: T): T => {
 }
 
 export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) => {
-  const selectedAssetsRaw = formData.get('selectedAssets')
-  const selectedAssets = safeJsonParse<number[]>(selectedAssetsRaw, [])
+  const selectedAssetIdsRaw = formData.get('selectedAssetIds')
+  const selectedAssetIds = safeJsonParse<number[]>(selectedAssetIdsRaw, [])
   const cookieStore = await cookies()
 
   const meldingId = cookieStore.get(COOKIES.ID)?.value
@@ -40,12 +40,12 @@ export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) =
 
   /** Post assets */
 
-  if (selectedAssets.length > 0) {
-    for (const assetId of selectedAssets) {
+  if (selectedAssetIds.length > 0) {
+    for (const id of selectedAssetIds) {
       const { error } = await postMeldingByMeldingIdAsset({
         body: {
           asset_type_id: 1,
-          external_id: String(assetId),
+          external_id: String(id),
         },
         path: { melding_id: parseInt(meldingId, 10) },
         query: { token },
