@@ -69,9 +69,7 @@ export const SelectLocation = ({
   }, [isWideWindow])
 
   const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
-
   const coordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
-
   const selectedAssetsIds = JSON.stringify(selectedAssets.map((asset) => asset.id))
 
   return (
