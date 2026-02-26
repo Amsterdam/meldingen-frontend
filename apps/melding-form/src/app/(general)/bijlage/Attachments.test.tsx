@@ -369,12 +369,10 @@ describe('Attachments', () => {
     await user.click(deleteButton)
 
     const fileName = screen.getAllByText(mockFile.name)[0]
-    const errorMessageTitle = screen.getByText('system-error-alert-title')
-    const errorMessageDescription = screen.getByText('system-error-alert-description')
+    const errorMessageTitle = screen.getByText('errors.delete-failed.title')
 
     expect(fileName).toBeInTheDocument()
     expect(errorMessageTitle).toBeInTheDocument()
-    expect(errorMessageDescription).toBeInTheDocument()
   })
 
   it('shows an error when attempting to upload too many files', async () => {
@@ -391,7 +389,7 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [file, file2, file3, file4])
 
-    const errorMessageHeading = screen.getByText('errors.too-many-files.heading')
+    const errorMessageHeading = screen.getByText('errors.too-many-files.title')
 
     expect(errorMessageHeading).toBeInTheDocument()
     expect(screen.queryByText('example.png')).not.toBeInTheDocument()
@@ -439,7 +437,7 @@ describe('Attachments', () => {
       Array.from({ length: MAX_UPLOAD_ATTEMPTS + 1 }, () => mockFile),
     )
 
-    const errorMessageHeading = screen.getByText('errors.too-many-attempts.heading')
+    const errorMessageHeading = screen.getByText('errors.too-many-attempts.title')
     const errorMessageDescription = screen.getByText('errors.too-many-attempts.description')
 
     expect(errorMessageHeading).toBeInTheDocument()
@@ -471,7 +469,7 @@ describe('Attachments', () => {
 
     await user.click(submitButton)
 
-    const errorMessageHeading = screen.getByText('errors.upload-in-progress.heading')
+    const errorMessageHeading = screen.getByText('errors.upload-in-progress.title')
     const errorMessageDescription = screen.getByText('errors.upload-in-progress.description')
 
     expect(errorMessageHeading).toBeInTheDocument()
