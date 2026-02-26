@@ -241,7 +241,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
               id: `#${error.key}`,
               label: t(error.message),
             }))}
-            heading={tShared('generic-error-alert-title', { count: validationErrors.length })}
+            heading={t('validation-errors.alert-title', { count: validationErrors.length })}
             headingLevel={2}
             ref={invalidFormAlertRef}
           />

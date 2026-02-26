@@ -130,6 +130,7 @@
       }
     },
     "validation-errors": {
+      "alert-title": "{count, plural, =1 {Verbeter de fout om uw foto’s toe te voegen} other {Verbeter de fouten om uw foto’s toe te voegen}}",
       "duplicate-upload": "Het gekozen bestand is al toegevoegd.",
       "failed-upload": "Probeer het opnieuw.",
       "invalid-file-type": "Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp.",
@@ -211,7 +212,6 @@
   },
   "shared": {
     "error-count-label": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",
-    "generic-error-alert-title": "{count, plural, =1 {Verbeter de fout om uw foto’s toe te voegen} other {Verbeter de fouten om uw foto’s toe te voegen}}",
     "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
     "system-error-alert-description": "Probeer opnieuw naar de volgende vraag te gaan.",
     "system-error-alert-title": "Er is iets misgegaan"
