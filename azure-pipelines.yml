@@ -8,7 +8,7 @@ trigger:
 
 pr: none
 
-pool: Selfhosted Azure Devops Agents
+pool: ManagedDevOpsPools
 
 # These defaults need to be set as variables on the pipeline in the Devops webinterface
 parameters:
@@ -31,7 +31,7 @@ parameters:
 
 steps:
   - bash: |
-      az pipelines run --project ${{parameters.project}} --id ${{parameters.pipelineId}} --branch ${{parameters.buildPipelineBranch}} --org ${{parameters.organization}} --parameters applicationBranch=$(Build.SourceBranch)
+      az pipelines run --project ${{parameters.project}} --id ${{parameters.pipelineId}} --branch ${{parameters.buildPipelineBranch}} --org ${{parameters.organization}} --parameters applicationBranch=$(Build.SourceBranch) triggeredByScript=true
     displayName: 'Trigger Meldingen Frontend application pipeline for branch $(Build.SourceBranch)'
     env:
       AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)

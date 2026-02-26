@@ -70,6 +70,8 @@
       "zoom-out": "Uitzoomen"
     },
     "errors": {
+      "assets-post-failed": "Er is iets mis gegaan. Probeer het opnieuw of herlaad de pagina.",
+      "location-patch-failed": "Er is iets mis gegaan. Probeer het opnieuw of herlaad de pagina.",
       "no-js": {
         "heading": "JavaScript is niet beschikbaar",
         "description": "Wijzig dit in de instellingen van uw browser of probeer opnieuw de pagina te laden."
