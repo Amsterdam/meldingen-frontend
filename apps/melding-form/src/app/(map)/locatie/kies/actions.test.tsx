@@ -101,7 +101,7 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets({ selectedAssets: containerAssets }, undefined, formData)
 
-    expect(result).toEqual({ errorMessage: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'errors.assets-post-failed' })
   })
 
   it('returns an error when patchMeldingByMeldingIdLocation fails', async () => {
@@ -120,6 +120,6 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets({ selectedAssets: containerAssets }, undefined, formData)
 
-    expect(result).toEqual({ errorMessage: 'Error message' })
+    expect(result).toEqual({ errorMessage: 'errors.location-patch-failed' })
   })
 })
