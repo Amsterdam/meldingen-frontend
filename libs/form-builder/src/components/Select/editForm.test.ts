@@ -17,10 +17,12 @@ describe('editForm', () => {
     const displayTab = tabs?.components.find((t) => t.key === 'display')
     const dataTab = tabs?.components.find((t) => t.key === 'data')
     const validationTab = tabs?.components.find((t) => t.key === 'validation')
+    const conditionalTab = tabs?.components.find((t) => t.key === 'conditional')
 
     expect(displayTab).toBeDefined()
     expect(dataTab).toBeDefined()
     expect(validationTab).toBeDefined()
+    expect(conditionalTab).toBeDefined()
 
     // Check for the right input fields
     const displayKeys = displayTab?.components.map((c) => c.key)
@@ -36,5 +38,8 @@ describe('editForm', () => {
     expect(validationKeys).toContain('validate.required')
     expect(validationKeys).toContain('validate.required_error_message')
     expect(validationKeys).toContain('json-validation-json')
+
+    const conditionalKeys = conditionalTab?.components.map((c) => c.key)
+    expect(conditionalKeys).toStrictEqual(['conditional.show', 'conditional.when', 'conditional.eq'])
   })
 })

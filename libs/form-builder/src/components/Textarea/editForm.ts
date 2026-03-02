@@ -3,6 +3,7 @@
 // - https://github.com/formio/formio.js/blob/main/src/components/textarea/editForm
 // - https://github.com/formio/formio.js/blob/main/src/components/textfield/editForm/TextField.edit.display.js
 
+import { conditionalTab } from '../shared'
 import { Context } from '../types'
 import {
   getJsonLogicValue,
@@ -128,6 +129,7 @@ export const editForm = () => ({
           key: 'validation',
           label: 'Validation',
         },
+        conditionalTab,
       ],
       key: 'tabs',
       type: 'tabs',
