@@ -33,7 +33,8 @@ export const MAX_UPLOAD_ATTEMPTS = 10
 
 type GenericErrorMessage = {
   description?: string
-  heading: string
+  options?: Record<string, string | number>
+  title: string
 }
 
 export type Props = {
@@ -85,10 +86,9 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
   const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
   const [genericError, setGenericError] = useState<GenericErrorMessage>()
-  const [systemError, setSystemError] = useState<string | unknown>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
 
-  const [{ systemError: actionSystemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
+  const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
 
   const validationErrors = fileUploads
     .filter((upload) => upload.status === 'error')
@@ -110,23 +110,23 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
     if (newFiles.length + fileUploads.length > MAX_UPLOAD_ATTEMPTS) {
       setGenericError({
-        description: t('errors.too-many-attempts.description'),
-        heading: t('errors.too-many-attempts.heading'),
+        description: 'errors.too-many-attempts.description',
+        title: 'errors.too-many-attempts.title',
       })
       return
     }
 
     if (newFiles.length + fileUploads.filter((file) => file.status !== 'error').length > MAX_SUCCESSFUL_UPLOADS) {
       setGenericError({
-        heading: t('errors.too-many-files.heading', { maxFiles: MAX_SUCCESSFUL_UPLOADS }),
+        options: { maxFiles: MAX_SUCCESSFUL_UPLOADS },
+        title: 'errors.too-many-files.title',
       })
       return
     }
 
     const newFileUploads = newFiles.map((newFile) => {
       if (fileUploads.find((f) => f.file.name === newFile.name)) {
-        const errorMessage = t('validation-errors.duplicate-upload')
-        return createDuplicatedUploadError(newFile, errorMessage, getNextUploadId())
+        return createDuplicatedUploadError(newFile, 'validation-errors.duplicate-upload', getNextUploadId())
       }
 
       return createFileUpload(newFile, getNextUploadId())
@@ -180,7 +180,10 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     })
 
     if (error) {
-      setSystemError(error)
+      setGenericError({
+        description: 'errors.delete-failed.description',
+        title: 'errors.delete-failed.title',
+      })
       return
     }
 
@@ -192,15 +195,15 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     if (fileUploads.some((u) => u.status === 'uploading')) {
       e.preventDefault()
       setGenericError({
-        description: t('errors.upload-in-progress.description'),
-        heading: t('errors.upload-in-progress.heading'),
+        description: 'errors.upload-in-progress.description',
+        title: 'errors.upload-in-progress.title',
       })
     }
   }
 
   // Update document title when there are system, validation or generic errors
   const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(systemError) || Boolean(actionSystemError) || Boolean(genericError),
+    hasSystemError: Boolean(systemError) || Boolean(genericError),
     originalDocTitle: t('metadata.title'),
     translateFunction: tShared,
     validationErrorCount: validationErrors.length,
@@ -210,20 +213,18 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   useEffect(() => {
     if (validationErrors && invalidFormAlertRef.current) {
       invalidFormAlertRef.current.focus()
-    } else if ((systemError || actionSystemError) && systemErrorAlertRef.current) {
+    } else if (systemError && systemErrorAlertRef.current) {
       systemErrorAlertRef.current.focus()
     } else if (genericError && genericErrorAlertRef.current) {
       genericErrorAlertRef.current.focus()
     }
-  }, [validationErrors, systemError, actionSystemError, genericError])
+  }, [validationErrors, systemError, genericError])
 
   useEffect(() => {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
     if (systemError) console.error(systemError)
-    // eslint-disable-next-line no-console
-    if (actionSystemError) console.error(actionSystemError)
-  }, [systemError, actionSystemError])
+  }, [systemError])
 
   return (
     <>
@@ -232,15 +233,15 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {t('back-link')}
       </BackLink>
       <main>
-        {(Boolean(systemError) || Boolean(actionSystemError)) && <SystemErrorAlert ref={systemErrorAlertRef} />}
+        {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
         {validationErrors.length > 0 && (
           <InvalidFormAlert
             className="ams-mb-m"
             errors={validationErrors.map((error) => ({
               id: `#${error.key}`,
-              label: error.message,
+              label: t(error.message),
             }))}
-            heading={tShared('invalid-form-alert-title')}
+            heading={t('validation-errors.alert-title', { count: validationErrors.length })}
             headingLevel={2}
             ref={invalidFormAlertRef}
           />
@@ -248,14 +249,14 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {genericError && (
           <Alert
             className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
-            heading={genericError.heading}
+            heading={t(genericError.title, genericError.options)}
             headingLevel={2}
             ref={genericErrorAlertRef}
             role="alert"
             severity="error"
             tabIndex={-1}
           >
-            {genericError.description && <Paragraph>{genericError.description}</Paragraph>}
+            {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
           </Alert>
         )}
         <FormHeader step={t('step')} title={t('title')} />
@@ -297,7 +298,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
                 {fileUploads.map(({ errorMessage, file, id, progress, serverId, status, xhr }) => (
                   <FileList.Item
                     deleteButtonId={id}
-                    errorMessage={errorMessage}
+                    errorMessage={errorMessage ? t(errorMessage) : undefined}
                     file={file}
                     key={id}
                     labels={{
