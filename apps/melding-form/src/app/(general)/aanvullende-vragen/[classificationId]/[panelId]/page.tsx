@@ -62,6 +62,8 @@ const getFormComponents = (
 
     // Prefill if answer exists, otherwise return component without defaultValue(s)
     switch (answer?.type) {
+      case 'date':
+        return { ...component, defaultValue: answer.date.value }
       case 'text':
         return { ...component, defaultValue: answer.text }
       case 'time':

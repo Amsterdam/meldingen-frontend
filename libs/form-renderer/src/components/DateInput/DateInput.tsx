@@ -34,7 +34,7 @@ const getDateOptions = (dayRange: number) => {
     return { converted_date, label, value }
   })
 
-  return [...dateEntries, { converted_date: '0', label: 'Weet ik niet', value: 'None' }]
+  return [...dateEntries, { converted_date: null, label: 'Weet ik niet', value: 'Unknown' }]
 }
 
 export type Props = {
