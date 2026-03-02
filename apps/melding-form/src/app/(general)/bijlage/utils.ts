@@ -10,6 +10,15 @@ export const safeJSONParse = (jsonString?: string) => {
   }
 }
 
+export const VALIDATION_ERROR_MESSAGES_TRANSLATION_KEYS: Record<string, string> = {
+  'Allowed content size exceeded': 'validation-errors.file-too-large',
+  'Attachment not allowed': 'validation-errors.invalid-file-type',
+  'Media type of data does not match provided media type': 'validation-errors.invalid-file-extension',
+}
+
+export const getValidationErrorMessageTranslationKey = (error?: string): string =>
+  (error && VALIDATION_ERROR_MESSAGES_TRANSLATION_KEYS[error]) || 'validation-errors.failed-upload'
+
 export type FileUpload = {
   errorMessage?: string
   file: File | { name: string }
@@ -48,9 +57,12 @@ export const startUpload = (
         upload.id === fileUpload.id
           ? {
               ...upload,
-              errorMessage: xhr.status !== 200 ? safeJSONParse(xhr.response)?.detail : undefined,
+              errorMessage:
+                xhr.status !== 200
+                  ? getValidationErrorMessageTranslationKey(safeJSONParse(xhr.response)?.detail)
+                  : undefined,
               serverId: safeJSONParse(xhr.response)?.id,
-              status: xhr.status === 200 ? 'success' : 'error',
+              status: xhr.status !== 200 ? 'error' : 'success',
             }
           : upload,
       ),
@@ -60,7 +72,13 @@ export const startUpload = (
   xhr.onerror = () => {
     setFileUploads((prev) =>
       prev.map((upload): FileUpload | PendingFileUpload =>
-        upload.id === fileUpload.id ? { ...upload, errorMessage: 'Network error', status: 'error' } : upload,
+        upload.id === fileUpload.id
+          ? {
+              ...upload,
+              errorMessage: 'validation-errors.failed-upload',
+              status: 'error',
+            }
+          : upload,
       ),
     )
   }
