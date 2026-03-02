@@ -17,7 +17,7 @@ export const AFTER_ADDITIONAL_QUESTIONS_PATH = '/locatie'
 const isNullOrEmpty = (value: unknown) => value === null || value === ''
 
 const isComponentVisible = (
-  { conditional }: { conditional?: FormIoConditional | null; key: string },
+  { conditional }: { conditional?: FormIoConditional | null },
   answersByKey: AnswersByKey,
 ) => {
   if (
@@ -40,6 +40,7 @@ const isComponentVisible = (
 
 // If a panel has at least one visible component, the panel is visible. Otherwise, the panel is hidden.
 export const isPanelVisible = (panel: PanelKeyWithComponentsConditions, answersByKey: AnswersByKey) =>
+  panel.componentsConditions.length === 0 ||
   panel.componentsConditions.some((component) => isComponentVisible(component, answersByKey))
 
 export const getNextPanelPath = (
