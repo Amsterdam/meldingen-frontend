@@ -4,20 +4,28 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import type { Feature } from '@meldingen/api-client'
-
 import { patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
+
+import type { Coordinates } from 'apps/melding-form/src/types'
 
 import { convertWktPointToCoordinates } from './utils'
 import { COOKIES } from 'apps/melding-form/src/constants'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 
-export const postCoordinatesAndAssets = async (
-  { selectedAssets }: { selectedAssets: Feature[] },
-  _: unknown,
-  formData: FormData,
-) => {
+const safeJsonParse = <T>(value: unknown, fallback: T): T => {
+  if (!value || typeof value !== 'string') return fallback
+
+  try {
+    return JSON.parse(value)
+  } catch {
+    return fallback
+  }
+}
+
+export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) => {
+  const selectedAssetIdsRaw = formData.get('selectedAssetIds')
+  const selectedAssetIds = safeJsonParse<number[]>(selectedAssetIdsRaw, [])
   const cookieStore = await cookies()
 
   const meldingId = cookieStore.get(COOKIES.ID)?.value
@@ -31,12 +39,12 @@ export const postCoordinatesAndAssets = async (
 
   /** Post assets */
 
-  if (selectedAssets.length > 0) {
-    for (const asset of selectedAssets) {
+  if (selectedAssetIds.length > 0) {
+    for (const id of selectedAssetIds) {
       const { error } = await postMeldingByMeldingIdAsset({
         body: {
           asset_type_id: 1,
-          external_id: String(asset.id),
+          external_id: String(id),
         },
         path: { melding_id: parseInt(meldingId, 10) },
         query: { token },
@@ -51,7 +59,7 @@ export const postCoordinatesAndAssets = async (
   /** Fetch coordinates from PDOK */
 
   let address = addressFormData as string
-  let coordinates = coordinatesFormData ? JSON.parse(coordinatesFormData as string) : null
+  let coordinates: Coordinates | null = safeJsonParse(coordinatesFormData, null)
 
   if (!address) {
     return { errorMessage: t('errors.no-location') }

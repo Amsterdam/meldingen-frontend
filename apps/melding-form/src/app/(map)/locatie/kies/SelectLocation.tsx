@@ -53,8 +53,7 @@ export const SelectLocation = ({
   const [selectedAssets, setSelectedAssets] = useState<Feature[]>(selectedAssetsFromServer)
   const [showAssetList, setShowAssetList] = useState(false)
 
-  const postCoordinatesAndAssetsWithSelectedAssets = postCoordinatesAndAssets.bind(null, { selectedAssets })
-  const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssetsWithSelectedAssets, initialState)
+  const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssets, initialState)
 
   const t = useTranslations('select-location')
   const isWideWindow = useIsAfterBreakpoint('wide')
@@ -70,6 +69,8 @@ export const SelectLocation = ({
   }, [isWideWindow])
 
   const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
+  const coordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
+  const selectedAssetsIds = JSON.stringify(selectedAssets.map((asset) => asset.id))
 
   return (
     <div className={clsx(styles.grid, showAssetList && styles.hasAssetList)}>
@@ -81,11 +82,8 @@ export const SelectLocation = ({
             setCoordinates={setCoordinates}
             setSelectedAssets={setSelectedAssets}
           />
-          <input
-            defaultValue={coordinates ? JSON.stringify(coordinates) : undefined}
-            name="coordinates"
-            type="hidden"
-          />
+          <input defaultValue={coordinatesValue} name="coordinates" type="hidden" />
+          <input name="selectedAssetIds" type="hidden" value={selectedAssetsIds} />
         </Form>
       </SideBarTop>
       <SideBarBottom isHidden={!showAssetList}>
