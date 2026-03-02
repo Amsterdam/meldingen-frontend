@@ -13,11 +13,19 @@ export type PanelKeyWithComponentsConditions = {
 export const BEFORE_ADDITIONAL_QUESTIONS_PATH = '/'
 export const AFTER_ADDITIONAL_QUESTIONS_PATH = '/locatie'
 
+const isNullOrEmpty = (value: unknown) => value === null || value === ''
+
 const isComponentVisible = (
   { conditional }: { conditional?: FormIoConditional | null; key: string },
   answersByKey: Record<string, string | null>,
 ) => {
-  if (!conditional || conditional.when === null || conditional.eq === null || conditional.show === null) return true
+  if (
+    !conditional ||
+    isNullOrEmpty(conditional.when) ||
+    isNullOrEmpty(conditional.eq) ||
+    isNullOrEmpty(conditional.show)
+  )
+    return true
 
   const answerValue = answersByKey[conditional.when] ?? null
   const conditionMet = answerValue !== null && answerValue === String(conditional.eq)
