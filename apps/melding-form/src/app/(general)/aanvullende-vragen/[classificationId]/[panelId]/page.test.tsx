@@ -411,9 +411,9 @@ describe('Page', () => {
       classificationId: 1,
       currentPanelIndex: 1,
       lastPanelPath: '/aanvullende-vragen/1/panel-2',
-      navigationPanels: [
-        { componentConditionals: [{ key: 'question-1' }], key: 'panel-1' },
-        { componentConditionals: [{ key: 'question-2' }], key: 'panel-2' },
+      panelKeyWithComponentsConditions: [
+        { componentsConditions: [{ key: 'question-1' }], key: 'panel-1' },
+        { componentsConditions: [{ key: 'question-2' }], key: 'panel-2' },
       ],
       questionAndAnswerIdPairs: [
         { answerId: additionalQuestions[0].id, questionId: additionalQuestions[0].question.id },
@@ -463,9 +463,9 @@ describe('Page', () => {
       classificationId: 1,
       currentPanelIndex: 0,
       lastPanelPath: '/aanvullende-vragen/1/panel-2',
-      navigationPanels: [
-        { componentConditionals: [{ key: 'question-1' }], key: 'panel-1' },
-        { componentConditionals: [{ key: 'question-2' }], key: 'panel-2' },
+      panelKeyWithComponentsConditions: [
+        { componentsConditions: [{ key: 'question-1' }], key: 'panel-1' },
+        { componentsConditions: [{ key: 'question-2' }], key: 'panel-2' },
       ],
       questionMetadata: [{ id: 'q1', key: 'question-1', type: 'textfield' }],
       requiredQuestionKeysWithErrorMessages: [],

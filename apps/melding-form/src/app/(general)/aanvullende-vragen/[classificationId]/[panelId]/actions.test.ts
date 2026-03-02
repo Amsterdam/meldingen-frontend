@@ -20,9 +20,11 @@ vi.mock('next/navigation', () => ({
 
 describe('postForm', () => {
   const defaultArgs: ArgsType = {
-    isLastPanel: true,
+    classificationId: 1,
+    currentPanelIndex: 1,
     lastPanelPath: '/test',
-    nextPanelPath: '/',
+    panelKeyWithComponentsConditions: [],
+    previousAnswersByKey: {},
     questionMetadata: [
       { id: 1, key: 'key1', type: 'textfield' },
       { id: 2, key: 'key2', type: 'textfield' },
@@ -81,6 +83,34 @@ describe('postForm', () => {
     })
   })
 
+  it('returns a validation error for a required question submitted with an empty value', async () => {
+    const formData = new FormData()
+    formData.append('key1', '')
+
+    const result = await postForm(
+      {
+        ...defaultArgs,
+        requiredQuestionKeysWithErrorMessages: [{ key: 'key1', requiredErrorMessage: 'Dit veld is verplicht' }],
+      },
+      null,
+      formData,
+    )
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'key1', message: 'Dit veld is verplicht' }],
+    })
+  })
+
+  it('skips results without a value when checking for validation errors', async () => {
+    const formData = new FormData()
+    formData.append('non-existent-key', 'some-value') // Not in questionMetadata, so result will be undefined
+
+    await postForm(defaultArgs, null, formData)
+
+    expect(redirect).toHaveBeenCalled()
+  })
+
   it('returns validation errors for other invalid answers', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>
@@ -99,6 +129,28 @@ describe('postForm', () => {
     expect(result).toEqual({
       formData,
       validationErrors: [{ key: 'key1', message: 'Validation error' }],
+    })
+  })
+
+  it('uses fallback-key for the validation error key when result key is empty', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>
+        HttpResponse.json({ detail: [{ loc: [''], msg: 'Validation error', type: 'value_error' }] }, { status: 422 }),
+      ),
+    )
+
+    const formData = new FormData()
+    formData.append('', 'some-value')
+
+    const result = await postForm(
+      { ...defaultArgs, questionMetadata: [{ id: 3, key: '', type: 'textfield' }] },
+      null,
+      formData,
+    )
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'fallback-key', message: 'Validation error' }],
     })
   })
 
