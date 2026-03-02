@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
-import type { PanelKeyWithComponentsConditions } from './_utils/navigationUtils'
+import type { AnswersByKey, PanelKeyWithComponentsConditions } from './_utils/navigationUtils'
 
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
@@ -21,7 +21,7 @@ export type ArgsType = {
   currentPanelIndex: number
   lastPanelPath: string
   panelKeyWithComponentsConditions: PanelKeyWithComponentsConditions[]
-  previousAnswersByKey: Record<string, string | null>
+  previousAnswersByKey: AnswersByKey
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
   questionMetadata: {
     id: number
@@ -136,12 +136,7 @@ export const postForm = async (
 
   // Merge previously submitted answers with the current panel's just-submitted answers.
   // Current panel answers take priority, enabling up-to-date conditional evaluation.
-  // TODO: this currently maps checkbox answers to the first value in the array of merged answers for that question, that is incorrect.
-  const currentAnswersByKey = Object.fromEntries(
-    entriesWithMergedCheckboxes.map(([key, value]) => [key, Array.isArray(value) ? (value[0] ?? null) : value || null]),
-  )
-
-  const allAnswersByKey = { ...previousAnswersByKey, ...currentAnswersByKey }
+  const allAnswersByKey = { ...previousAnswersByKey, ...Object.fromEntries(entriesWithMergedCheckboxes) }
 
   const nextPanelPath = getNextPanelPath(
     classificationId,

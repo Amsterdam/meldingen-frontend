@@ -9,6 +9,7 @@ export type PanelKeyWithComponentsConditions = {
   componentsConditions: Array<{ conditional?: FormIoConditional | null; key: string }>
   key: string
 }
+export type AnswersByKey = Record<string, string | string[] | null>
 
 export const BEFORE_ADDITIONAL_QUESTIONS_PATH = '/'
 export const AFTER_ADDITIONAL_QUESTIONS_PATH = '/locatie'
@@ -17,7 +18,7 @@ const isNullOrEmpty = (value: unknown) => value === null || value === ''
 
 const isComponentVisible = (
   { conditional }: { conditional?: FormIoConditional | null; key: string },
-  answersByKey: Record<string, string | null>,
+  answersByKey: AnswersByKey,
 ) => {
   if (
     !conditional ||
@@ -28,20 +29,24 @@ const isComponentVisible = (
     return true
 
   const answerValue = answersByKey[conditional.when] ?? null
-  const conditionMet = answerValue !== null && answerValue === String(conditional.eq)
+  const conditionMet =
+    answerValue !== null &&
+    (Array.isArray(answerValue)
+      ? answerValue.includes(String(conditional.eq)) // For checkboxes, the answerValue is an array. The condition is met if at least one of the values matches the condition.
+      : answerValue === String(conditional.eq))
 
   return conditionMet ? conditional.show : !conditional.show
 }
 
 // If a panel has at least one visible component, the panel is visible. Otherwise, the panel is hidden.
-export const isPanelVisible = (panel: PanelKeyWithComponentsConditions, answersByKey: Record<string, string | null>) =>
+export const isPanelVisible = (panel: PanelKeyWithComponentsConditions, answersByKey: AnswersByKey) =>
   panel.componentsConditions.some((component) => isComponentVisible(component, answersByKey))
 
 export const getNextPanelPath = (
   classificationId: number,
   currentPanelIndex: number,
   panels: PanelKeyWithComponentsConditions[],
-  answersByKey: Record<string, string | null>,
+  answersByKey: AnswersByKey,
 ) => {
   for (let i = currentPanelIndex + 1; i < panels.length; i++) {
     if (isPanelVisible(panels[i], answersByKey)) {
@@ -55,7 +60,7 @@ export const getPreviousPanelPath = (
   classificationId: number,
   currentPanelIndex: number,
   panels: PanelKeyWithComponentsConditions[],
-  answersByKey: Record<string, string | null>,
+  answersByKey: AnswersByKey,
 ) => {
   for (let i = currentPanelIndex - 1; i >= 0; i--) {
     if (isPanelVisible(panels[i], answersByKey)) {
@@ -69,7 +74,7 @@ export const getPreviousAnswersByKey = (
   formData: FormOutput,
   answers: GetMeldingByMeldingIdAnswersMelderResponses['200'] | undefined,
 ) => {
-  const result: Record<string, string | null> = {}
+  const result: AnswersByKey = {}
 
   for (const panel of formData.components as FormPanelComponentOutput[]) {
     for (const component of panel.components) {
@@ -82,7 +87,7 @@ export const getPreviousAnswersByKey = (
       } else if (answer.type === 'time') {
         result[component.key] = answer.time ?? null
       } else if (answer.type === 'value_label') {
-        result[component.key] = answer.values_and_labels?.[0]?.value ?? null
+        result[component.key] = answer.values_and_labels?.map(({ value }) => value) ?? null
       } else {
         result[component.key] = null
       }
