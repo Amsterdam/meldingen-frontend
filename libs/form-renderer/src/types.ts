@@ -1,5 +1,6 @@
 import type {
   FormCheckboxComponentOutput,
+  FormDateComponentOutput,
   FormRadioComponentOutput,
   FormSelectComponentOutput,
   FormTextAreaComponentOutput,
@@ -9,12 +10,14 @@ import type {
 
 export type FormCheckboxComponent = FormCheckboxComponentOutput & { defaultValues?: string[] }
 export type FormRadioComponent = FormRadioComponentOutput & { defaultValue?: string }
+export type FormDateComponent = FormDateComponentOutput & { defaultValue?: string }
 export type FormSelectComponent = FormSelectComponentOutput & { defaultValue?: string }
 export type FormTextAreaComponent = FormTextAreaComponentOutput & { defaultValue?: string }
 export type FormTextFieldInputComponent = FormTextFieldInputComponentOutput & { defaultValue?: string }
 export type StaticFormTextAreaComponent = StaticFormTextAreaComponentOutput & { defaultValue?: string }
 
 export type Component =
+  | FormDateComponent
   | FormCheckboxComponent
   | FormRadioComponent
   | FormSelectComponent

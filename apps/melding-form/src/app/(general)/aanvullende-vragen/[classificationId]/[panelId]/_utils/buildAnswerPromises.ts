@@ -27,6 +27,24 @@ const getValueLabelAnswerBody = (
   return { type: 'value_label', values_and_labels: [selectedValueAndLabel] }
 }
 
+const getDateAnswerBody = (value: string) => {
+  const today = new Date()
+
+  if (value === 'Unknown') {
+    return { date: { converted_date: null, label: 'Weet ik niet', value: 'Unknown' }, type: 'date' }
+  }
+
+  const day = value.charAt(value.length - 1)
+
+  const dayOffset = parseInt(day, 10)
+  const date = new Date(today)
+  date.setDate(today.getDate() - dayOffset)
+
+  const converted_date = date.toISOString().split('T')[0]
+
+  return { date: { converted_date, label: '', value }, type: 'date' }
+}
+
 const getAnswerBody = (
   formioType: string,
   value: string | string[],
@@ -38,6 +56,8 @@ const getAnswerBody = (
   }
 
   switch (formioType) {
+    case 'date':
+      return getDateAnswerBody(value)
     case 'radio':
     case 'select':
       return getValueLabelAnswerBody(value, valuesAndLabels)
@@ -63,6 +83,7 @@ type PatchAnswerParams = AnswerParams & { answerId: number; valuesAndLabels?: { 
 
 const patchAnswer = ({ answerId, key, meldingId, token, type, value, valuesAndLabels }: PatchAnswerParams) => {
   const body = getAnswerBody(type, value, valuesAndLabels)
+  console.log('--- ~ body:', body)
 
   if (!body) return undefined
 
@@ -80,6 +101,7 @@ type PostAnswerParams = AnswerParams & { questionId: number; valuesAndLabels?: {
 
 const postAnswer = ({ key, meldingId, questionId, token, type, value, valuesAndLabels }: PostAnswerParams) => {
   const body = getAnswerBody(type, value, valuesAndLabels)
+  console.log('--- ~ body:', body)
 
   if (!body) return undefined
 
@@ -107,8 +129,10 @@ export const buildAnswerPromises = ({
   questionAndAnswerIdPairs,
   questionMetadata,
   token,
-}: BuildAnswerPromisesArgs) =>
-  entries.map(([key, value]) => {
+}: BuildAnswerPromisesArgs) => {
+  console.log('entries', entries, questionMetadata)
+
+  return entries.map(([key, value]) => {
     // Do not handle empty answers
     if (value.length === 0) return undefined
 
@@ -124,3 +148,4 @@ export const buildAnswerPromises = ({
     // If an answerId exists, it is an existing answer
     return answerId ? patchAnswer({ ...params, answerId }) : postAnswer({ ...params, questionId })
   })
+}
