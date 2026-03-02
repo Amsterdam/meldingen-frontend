@@ -5,18 +5,23 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
+import type { PanelKeyWithComponentsConditions } from './_utils/navigationUtils'
+
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
+import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath } from './_utils/navigationUtils'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 type RequiredQuestionKeyWithErrorMessage = { key: string; requiredErrorMessage: string }
 
 export type ArgsType = {
-  isLastPanel: boolean
+  classificationId: number
+  currentPanelIndex: number
   lastPanelPath: string
-  nextPanelPath: string
+  panelKeyWithComponentsConditions: PanelKeyWithComponentsConditions[]
+  previousAnswersByKey: Record<string, string | null>
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
   questionMetadata: {
     id: number
@@ -45,9 +50,11 @@ const getUnansweredRequiredQuestionKeysWithErrorMessages = (
 
 export const postForm = async (
   {
-    isLastPanel,
+    classificationId,
+    currentPanelIndex,
     lastPanelPath,
-    nextPanelPath,
+    panelKeyWithComponentsConditions,
+    previousAnswersByKey,
     questionAndAnswerIdPairs,
     questionMetadata,
     requiredQuestionKeysWithErrorMessages,
@@ -126,6 +133,24 @@ export const postForm = async (
       systemError: errors,
     }
   }
+
+  // Merge previously submitted answers with the current panel's just-submitted answers.
+  // Current panel answers take priority, enabling up-to-date conditional evaluation.
+  // TODO: this currently maps checkbox answers to the first value in the array of merged answers for that question, that is incorrect.
+  const currentAnswersByKey = Object.fromEntries(
+    entriesWithMergedCheckboxes.map(([key, value]) => [key, Array.isArray(value) ? (value[0] ?? null) : value || null]),
+  )
+
+  const allAnswersByKey = { ...previousAnswersByKey, ...currentAnswersByKey }
+
+  const nextPanelPath = getNextPanelPath(
+    classificationId,
+    currentPanelIndex,
+    panelKeyWithComponentsConditions,
+    allAnswersByKey,
+  )
+
+  const isLastPanel = nextPanelPath === AFTER_ADDITIONAL_QUESTIONS_PATH
 
   // Set melding state to 'questions_answered'
   if (isLastPanel) {

@@ -13,83 +13,18 @@ import type {
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
+import {
+  AFTER_ADDITIONAL_QUESTIONS_PATH,
+  getPreviousAnswersByKey,
+  getPreviousPanelPath,
+} from './_utils/navigationUtils'
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 import { COOKIES } from 'apps/melding-form/src/constants'
 
 export const dynamic = 'force-dynamic'
 
-type Answers = GetMeldingByMeldingIdAnswersMelderResponses['200']
 type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
-
-const BEFORE_ADDITIONAL_QUESTIONS_PATH = '/'
-const AFTER_ADDITIONAL_QUESTIONS_PATH = '/locatie'
-
-const getAnswerValue = (componentKey: string, formData: FormOutput, answers: Answers) => {
-  for (const panel of formData.components) {
-    if (panel.type !== 'panel') continue
-
-    const match = (panel as FormPanelComponentOutput).components.find((component) => component.key === componentKey)
-
-    if (!match) continue
-
-    const answer = answers.find((answer) => answer.question.id === match.question)
-
-    if (!answer) return null
-
-    if (answer.type === 'text') return answer.text ?? null
-    if (answer.type === 'time') return answer.time ?? null
-    if (answer.type === 'value_label') return answer.values_and_labels?.[0]?.value ?? null
-  }
-  return null
-}
-
-const isComponentVisible = (component: FormOutputWithoutPanelComponents, formData: FormOutput, answers: Answers) => {
-  const { conditional } = component
-
-  if (!conditional || conditional.when === null || conditional.eq === null || conditional.show === null) return true
-
-  const answerValue = getAnswerValue(conditional.when, formData, answers)
-  const conditionMet = answerValue !== null && answerValue === String(conditional.eq)
-
-  return conditionMet ? conditional.show : !conditional.show
-}
-
-// If a panel has at least one visible component, the panel is visible. Otherwise, the panel is hidden.
-const isPanelVisible = (panel: FormPanelComponentOutput, formData: FormOutput, answers: Answers) =>
-  panel.components.some((component) => isComponentVisible(component, formData, answers))
-
-const getNextPanelPath = (
-  classificationId: number,
-  currentPanelIndex: number,
-  formData: FormOutput,
-  answers: Answers | undefined,
-) => {
-  for (let i = currentPanelIndex + 1; i < formData.components.length; i++) {
-    const nextPanel = formData.components[i] as FormPanelComponentOutput
-
-    if (!answers || isPanelVisible(nextPanel, formData, answers)) {
-      return `/aanvullende-vragen/${classificationId}/${nextPanel.key}`
-    }
-  }
-  return AFTER_ADDITIONAL_QUESTIONS_PATH
-}
-
-const getPreviousPanelPath = (
-  classificationId: number,
-  currentPanelIndex: number,
-  formData: FormOutput,
-  answers: Answers | undefined,
-) => {
-  for (let i = currentPanelIndex - 1; i >= 0; i--) {
-    const previousPanel = formData.components[i] as FormPanelComponentOutput
-
-    if (!answers || isPanelVisible(previousPanel, formData, answers)) {
-      return `/aanvullende-vragen/${classificationId}/${previousPanel.key}`
-    }
-  }
-  return BEFORE_ADDITIONAL_QUESTIONS_PATH
-}
 
 // The backend returns a 'position' key in each value-label object,
 // but it does not accept that key when we send the answer back. For that reason, we strip it here.
@@ -111,7 +46,10 @@ const getValuesAndLabels = (component: FormOutputWithoutPanelComponents) => {
   }
 }
 
-const getFormComponents = (components: FormOutputWithoutPanelComponents[], answers?: Answers) =>
+const getFormComponents = (
+  components: FormOutputWithoutPanelComponents[],
+  answers?: GetMeldingByMeldingIdAnswersMelderResponses['200'],
+) =>
   components.map((component) => {
     const answer = answers?.find((answer) => answer.question.id === component.question)
 
@@ -193,14 +131,24 @@ export default async ({ params }: { params: Params }) => {
       requiredErrorMessage: validate?.required_error_message || t('required-error-message-fallback'),
     }))
 
-  const nextPanelPath = getNextPanelPath(classificationId, currentPanelIndex, data, answers)
-  const isLastPanel = nextPanelPath === AFTER_ADDITIONAL_QUESTIONS_PATH
   const lastPanelPath = `/aanvullende-vragen/${classificationId}/${data.components[data.components.length - 1].key}`
 
+  // We need the components conditions of all panels to determine the next and previous panel paths, so we extract them here.
+  const panelKeyWithComponentsConditions = (data.components as FormPanelComponentOutput[]).map(
+    ({ components, key }) => ({
+      componentsConditions: components.map(({ conditional, key }) => ({ conditional, key })),
+      key,
+    }),
+  )
+
+  const previousAnswersByKey = getPreviousAnswersByKey(data, answers)
+
   const extraArgs = {
-    isLastPanel,
+    classificationId,
+    currentPanelIndex,
     lastPanelPath,
-    nextPanelPath,
+    panelKeyWithComponentsConditions,
+    previousAnswersByKey,
     questionAndAnswerIdPairs,
     questionMetadata,
     requiredQuestionKeysWithErrorMessages,
@@ -210,7 +158,12 @@ export default async ({ params }: { params: Params }) => {
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)
 
   // Pass previous panel path to the Aanvullende vragen component
-  const previousPanelPath = getPreviousPanelPath(classificationId, currentPanelIndex, data, answers)
+  const previousPanelPath = getPreviousPanelPath(
+    classificationId,
+    currentPanelIndex,
+    panelKeyWithComponentsConditions,
+    previousAnswersByKey,
+  )
 
   return (
     <AdditionalQuestions
