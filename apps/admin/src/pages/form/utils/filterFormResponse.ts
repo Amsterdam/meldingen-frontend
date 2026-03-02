@@ -7,6 +7,7 @@ import type { FormInput } from '@meldingen/api-client'
 import {
   FormCheckboxComponentInputSchema,
   FormComponentInputValidateSchema,
+  FormDateComponentInputSchema,
   FormInputSchema,
   FormPanelComponentInputSchema,
   FormRadioComponentInputSchema,
@@ -20,6 +21,8 @@ import type { AdditionalQuestionsForm } from '../../types'
 
 const filterBySchemaPerType = (obj: Component) => {
   switch (obj.type) {
+    case 'date':
+      return filter(FormDateComponentInputSchema, obj)
     case 'panel':
       return filter(FormPanelComponentInputSchema, obj)
     case 'radio':

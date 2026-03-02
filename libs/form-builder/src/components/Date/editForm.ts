@@ -37,6 +37,22 @@ export const editForm = () => ({
         {
           components: [
             {
+              defaultValue: 7,
+              input: true,
+              key: 'dayRange',
+              label: 'Day range',
+              type: 'number',
+              validate: {
+                required: true,
+              },
+            },
+          ],
+          key: 'data',
+          label: 'Data',
+        },
+        {
+          components: [
+            {
               input: true,
               key: 'validate.required',
               label: 'Required',
