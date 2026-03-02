@@ -27,6 +27,17 @@ const getValueLabelAnswerBody = (
   return { type: 'value_label', values_and_labels: [selectedValueAndLabel] }
 }
 
+const getValueLabelAnswerBodyDate = (
+  value: string,
+  valuesAndLabels?: ValueLabelObject[],
+): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
+  const selectedValueAndLabel = valuesAndLabels?.find((valAndLabel) => valAndLabel.value === value)
+
+  if (!selectedValueAndLabel) return undefined
+
+  return { type: 'value_label', values_and_labels: [selectedValueAndLabel] }
+}
+
 const getAnswerBody = (
   formioType: string,
   value: string | string[],
@@ -38,6 +49,8 @@ const getAnswerBody = (
   }
 
   switch (formioType) {
+    case 'date':
+      return getValueLabelAnswerBodyDate(value, valuesAndLabels)
     case 'radio':
     case 'select':
       return getValueLabelAnswerBody(value, valuesAndLabels)
