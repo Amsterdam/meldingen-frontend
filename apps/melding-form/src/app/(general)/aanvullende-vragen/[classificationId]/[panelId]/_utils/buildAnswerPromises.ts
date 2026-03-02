@@ -83,7 +83,6 @@ type PatchAnswerParams = AnswerParams & { answerId: number; valuesAndLabels?: { 
 
 const patchAnswer = ({ answerId, key, meldingId, token, type, value, valuesAndLabels }: PatchAnswerParams) => {
   const body = getAnswerBody(type, value, valuesAndLabels)
-  console.log('--- ~ body:', body)
 
   if (!body) return undefined
 
@@ -101,7 +100,6 @@ type PostAnswerParams = AnswerParams & { questionId: number; valuesAndLabels?: {
 
 const postAnswer = ({ key, meldingId, questionId, token, type, value, valuesAndLabels }: PostAnswerParams) => {
   const body = getAnswerBody(type, value, valuesAndLabels)
-  console.log('--- ~ body:', body)
 
   if (!body) return undefined
 
@@ -129,10 +127,8 @@ export const buildAnswerPromises = ({
   questionAndAnswerIdPairs,
   questionMetadata,
   token,
-}: BuildAnswerPromisesArgs) => {
-  console.log('entries', entries, questionMetadata)
-
-  return entries.map(([key, value]) => {
+}: BuildAnswerPromisesArgs) =>
+  entries.map(([key, value]) => {
     // Do not handle empty answers
     if (value.length === 0) return undefined
 
@@ -148,4 +144,3 @@ export const buildAnswerPromises = ({
     // If an answerId exists, it is an existing answer
     return answerId ? patchAnswer({ ...params, answerId }) : postAnswer({ ...params, questionId })
   })
-}
