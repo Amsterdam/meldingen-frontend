@@ -405,5 +405,6 @@
   "Max Length": "Maximaal aantal tekens",
   "Max Length Error Message": "Foutmelding voor maximaal aantal tekens",
   "Min Length": "Minimaal aantal tekens",
-  "Min Length Error Message": "Foutmelding voor minimaal aantal tekens"
+  "Min Length Error Message": "Foutmelding voor minimaal aantal tekens",
+  "Day range": "Aantal dagen"
 }
