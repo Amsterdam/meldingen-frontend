@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
 import type { Props } from './TimeInput'
+
 import { TimeInput } from './TimeInput'
 
 const defaultProps: Props = {
