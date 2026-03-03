@@ -45,7 +45,7 @@ export type PanelComponent = {
 }
 
 type DateOptionValues = {
-  converted_date: string
+  converted_date: string | null
   label: string
   value: string
 }
