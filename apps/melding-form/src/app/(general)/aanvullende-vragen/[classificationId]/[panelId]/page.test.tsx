@@ -328,7 +328,7 @@ describe('Page', () => {
               defaultValue: 'day - 1',
               key: 'date2',
               question: 43,
-              type: 'date',
+              type: 'radio',
               values: [
                 { converted_date: '2026-03-03', label: 'Vandaag', value: 'day' },
                 {

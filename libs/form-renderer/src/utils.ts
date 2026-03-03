@@ -1,14 +1,11 @@
 import type {
   Component,
   FormCheckboxComponent,
-  FormDateComponent,
   FormRadioComponent,
   FormSelectComponent,
   FormTextAreaComponent,
   FormTextFieldInputComponent,
 } from './types'
-
-export const isDate = (component: Component): component is FormDateComponent => component.type === 'date'
 
 export const isRadio = (component: Component): component is FormRadioComponent => component.type === 'radio'
 

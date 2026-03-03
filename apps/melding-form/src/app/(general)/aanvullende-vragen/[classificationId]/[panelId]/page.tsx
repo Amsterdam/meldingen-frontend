@@ -132,13 +132,20 @@ export default async ({ params }: { params: Params }) => {
 
   const formComponentsWithDateOptions = setDateComponentOptions(panelComponents)
   const prefilledFormComponents = prefillFormComponents(formComponentsWithDateOptions, answers)
+  const formComponentsWithCorrectRenderTypes = prefilledFormComponents.map((component) => {
+    // The date component is rendered as a radio component, so we change the type here.
+    if (component.type === 'date') {
+      return { ...component, type: 'radio' }
+    }
+    return component
+  })
 
   const questionAndAnswerIdPairs = answers?.map((answer) => ({
     answerId: answer.id,
     questionId: answer.question.id,
   }))
 
-  const questionMetadata = prefilledFormComponents.map((component) => {
+  const questionMetadata = formComponentsWithDateOptions.map((component) => {
     const { key, question, type } = component
     const valuesAndLabels = getValuesAndLabels(component)
 
@@ -174,7 +181,7 @@ export default async ({ params }: { params: Params }) => {
   return (
     <AdditionalQuestions
       action={postFormWithExtraArgs}
-      formComponents={prefilledFormComponents}
+      formComponents={formComponentsWithCorrectRenderTypes}
       panelLabel={panelLabel}
       previousPanelPath={previousPanelPath}
     />

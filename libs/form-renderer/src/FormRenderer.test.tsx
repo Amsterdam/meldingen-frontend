@@ -18,7 +18,6 @@ const components = [
   { index: 2, name: 'CheckboxGroup', role: 'group' },
   { index: 3, name: 'Select', role: 'combobox' },
   { index: 4, name: 'RadioGroup', role: 'radiogroup' },
-  { index: 5, name: 'Date', role: 'radiogroup' },
 ]
 
 describe('FormRenderer', () => {
