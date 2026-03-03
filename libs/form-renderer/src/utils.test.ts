@@ -37,6 +37,7 @@ describe('type guards', () => {
       type: 'unknown',
     } as Component
 
+    expect(isTimeInput(unknownComponent)).toBe(false)
     expect(isRadio(unknownComponent)).toBe(false)
     expect(isSelect(unknownComponent)).toBe(false)
     expect(isSelectboxes(unknownComponent)).toBe(false)
