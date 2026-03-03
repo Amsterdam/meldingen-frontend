@@ -71,7 +71,12 @@ const getDateOptions = (dayRange: number) => {
   return [...dateEntries, { converted_date: null, label: 'Weet ik niet', value: 'Unknown' }]
 }
 
-type FormDateComponentOutputWithValues = FormDateComponentOutput & { values: ReturnType<typeof getDateOptions> }
+export type DateOptionValues = {
+  converted_date: string
+  label: string
+  value: string
+}
+export type FormDateComponentOutputWithValues = FormDateComponentOutput & { values: DateOptionValues[] }
 
 const getValuesAndLabels = (component: FormOutputWithoutPanelComponents) => {
   switch (component.type) {
@@ -176,14 +181,14 @@ export default async ({ params }: { params: Params }) => {
     questionId: answer.question.id,
   }))
 
-  const questionMetadata = panelComponents.map((component) => {
+  const questionMetadata = formComponents.map((component) => {
     const { key, question, type } = component
     const valuesAndLabels = getValuesAndLabels(component)
 
     return { id: question, key, type, valuesAndLabels }
   })
 
-  const requiredQuestionKeysWithErrorMessages = panelComponents
+  const requiredQuestionKeysWithErrorMessages = formComponents
     .filter((question) => question.validate?.required)
     .map(({ key, validate }) => ({
       key,

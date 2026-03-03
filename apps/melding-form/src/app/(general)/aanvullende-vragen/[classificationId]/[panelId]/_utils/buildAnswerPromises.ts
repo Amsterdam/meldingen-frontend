@@ -5,6 +5,8 @@ import {
   ValueLabelObject,
 } from '@meldingen/api-client'
 
+import { DateOptionValues } from '../page'
+
 const getCheckboxAnswerBody = (
   value: string[],
   valuesAndLabels?: ValueLabelObject[],
@@ -27,28 +29,23 @@ const getValueLabelAnswerBody = (
   return { type: 'value_label', values_and_labels: [selectedValueAndLabel] }
 }
 
-const getDateAnswerBody = (value: string) => {
-  const today = new Date()
+const getValueLabelAnswerBodyDate = (
+  value: string,
+  valuesAndLabels?: DateOptionValues[],
+): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
+  const selectedValueAndLabel = valuesAndLabels?.find((valAndLabel) => valAndLabel.value === value)
 
-  if (value === 'Unknown') {
-    return { date: { converted_date: null, label: 'Weet ik niet', value: 'Unknown' }, type: 'date' }
-  }
+  if (!selectedValueAndLabel) return undefined
 
-  const day = value.charAt(value.length - 1)
+  const { converted_date, label } = selectedValueAndLabel
 
-  const dayOffset = parseInt(day, 10)
-  const date = new Date(today)
-  date.setDate(today.getDate() - dayOffset)
-
-  const converted_date = date.toISOString().split('T')[0]
-
-  return { date: { converted_date, label: '', value }, type: 'date' }
+  return { date: { converted_date, label, value }, type: 'date' }
 }
 
 const getAnswerBody = (
   formioType: string,
   value: string | string[],
-  valuesAndLabels?: ValueLabelObject[],
+  valuesAndLabels?: ValueLabelObject[] | DateOptionValues[],
 ): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
   // Handle checkbox values, which are passed as an array
   if (Array.isArray(value)) {
@@ -57,10 +54,10 @@ const getAnswerBody = (
 
   switch (formioType) {
     case 'date':
-      return getDateAnswerBody(value)
+      return getValueLabelAnswerBodyDate(value, valuesAndLabels as DateOptionValues[])
     case 'radio':
     case 'select':
-      return getValueLabelAnswerBody(value, valuesAndLabels)
+      return getValueLabelAnswerBody(value, valuesAndLabels as ValueLabelObject[])
     case 'textarea':
     case 'textfield':
       return { text: value, type: 'text' }
