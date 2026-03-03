@@ -5,7 +5,7 @@ import { Heading, SubmitButton } from '@meldingen/ui'
 import type { Component } from './types'
 
 import { Checkbox, Radio, Select, TextArea, TextInput, TimeInput } from './components'
-import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimefield } from './utils'
+import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimeInput } from './utils'
 
 const getComponent = (component: Component, hasOneFormComponent: boolean, errorMessage?: string) => {
   const { key } = component
@@ -24,7 +24,7 @@ const getComponent = (component: Component, hasOneFormComponent: boolean, errorM
   if (isTextfield(component)) {
     return <TextInput {...component} errorMessage={errorMessage} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
-  if (isTimefield(component)) {
+  if (isTimeInput(component)) {
     return <TimeInput {...component} errorMessage={errorMessage} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
   // eslint-disable-next-line no-console
