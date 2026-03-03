@@ -64,7 +64,7 @@ const getValuesAndLabels = (component: FormOutputWithoutPanelComponents) => {
 
 export type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
 
-const getFormComponents = (
+const prefillFormComponents = (
   components: FormOutputWithoutPanelComponents[],
   answers?: GetMeldingByMeldingIdAnswersMelderResponses['200'],
 ) =>
@@ -131,21 +131,21 @@ export default async ({ params }: { params: Params }) => {
   }
 
   const formComponentsWithDateOptions = setDateComponentOptions(panelComponents)
-  const formComponents = getFormComponents(formComponentsWithDateOptions, answers)
+  const prefilledFormComponents = prefillFormComponents(formComponentsWithDateOptions, answers)
 
   const questionAndAnswerIdPairs = answers?.map((answer) => ({
     answerId: answer.id,
     questionId: answer.question.id,
   }))
 
-  const questionMetadata = formComponents.map((component) => {
+  const questionMetadata = prefilledFormComponents.map((component) => {
     const { key, question, type } = component
     const valuesAndLabels = getValuesAndLabels(component)
 
     return { id: question, key, type, valuesAndLabels }
   })
 
-  const requiredQuestionKeysWithErrorMessages = formComponents
+  const requiredQuestionKeysWithErrorMessages = prefilledFormComponents
     .filter((question) => question.validate?.required)
     .map(({ key, validate }) => ({
       key,
@@ -174,7 +174,7 @@ export default async ({ params }: { params: Params }) => {
   return (
     <AdditionalQuestions
       action={postFormWithExtraArgs}
-      formComponents={formComponents}
+      formComponents={prefilledFormComponents}
       panelLabel={panelLabel}
       previousPanelPath={previousPanelPath}
     />
