@@ -4,15 +4,12 @@ import { Heading, SubmitButton } from '@meldingen/ui'
 
 import type { Component } from './types'
 
-import { Checkbox, DateInput, Radio, Select, TextArea, TextInput } from './components'
+import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 import { isDate, isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
 
 const getComponent = (component: Component, hasOneFormComponent: boolean, errorMessage?: string) => {
   const { key } = component
-  if (isDate(component)) {
-    return <DateInput {...component} errorMessage={errorMessage} hasHeading={hasOneFormComponent} id={key} key={key} />
-  }
-  if (isRadio(component)) {
+  if (isRadio(component) || isDate(component)) {
     return <Radio {...component} errorMessage={errorMessage} hasHeading={hasOneFormComponent} id={key} key={key} />
   }
   if (isSelect(component)) {

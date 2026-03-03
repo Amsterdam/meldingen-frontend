@@ -10,7 +10,7 @@ import type {
 
 export type FormCheckboxComponent = FormCheckboxComponentOutput & { defaultValues?: string[] }
 export type FormRadioComponent = FormRadioComponentOutput & { defaultValue?: string }
-export type FormDateComponent = FormDateComponentOutput & { defaultValue?: string }
+export type FormDateComponent = FormDateComponentOutput & { defaultValue?: string; values: DateOptionValues[] }
 export type FormSelectComponent = FormSelectComponentOutput & { defaultValue?: string }
 export type FormTextAreaComponent = FormTextAreaComponentOutput & { defaultValue?: string }
 export type FormTextFieldInputComponent = FormTextFieldInputComponentOutput & { defaultValue?: string }
@@ -42,4 +42,10 @@ export type PanelComponent = {
   label: string
   position: number
   type: 'panel'
+}
+
+type DateOptionValues = {
+  converted_date: string
+  label: string
+  value: string
 }

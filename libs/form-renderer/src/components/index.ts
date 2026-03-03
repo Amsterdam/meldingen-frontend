@@ -1,5 +1,4 @@
 export { Checkbox } from './Checkbox/Checkbox'
-export { DateInput } from './DateInput/DateInput'
 export { Radio } from './Radio/Radio'
 export { Select } from './Select/Select'
 export { TextArea } from './TextArea/TextArea'
