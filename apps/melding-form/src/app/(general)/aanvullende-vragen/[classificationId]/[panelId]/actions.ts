@@ -19,7 +19,6 @@ type RequiredQuestionKeyWithErrorMessage = { key: string; requiredErrorMessage: 
 export type ArgsType = {
   classificationId: number
   currentPanelIndex: number
-  lastPanelPath: string
   panelKeyWithComponentsConditions: PanelKeyWithComponentsConditions[]
   previousAnswersByKey: AnswersByKey
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
@@ -52,7 +51,6 @@ export const postForm = async (
   {
     classificationId,
     currentPanelIndex,
-    lastPanelPath,
     panelKeyWithComponentsConditions,
     previousAnswersByKey,
     questionAndAnswerIdPairs,
@@ -68,10 +66,6 @@ export const postForm = async (
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
   if (!meldingId || !token) return redirect('/cookie-storing')
-
-  // Set last panel path in cookies
-  const oneDay = 24 * 60 * 60
-  cookieStore.set(COOKIES.LAST_PANEL_PATH, lastPanelPath, { maxAge: oneDay })
 
   // Checkbox answers are stored as separate key-value pairs in the FormData object.
   // This function merges these answers into an array per question, using an identifier in the Checkbox component.
@@ -147,14 +141,23 @@ export const postForm = async (
 
   const isLastPanel = nextPanelPath === AFTER_ADDITIONAL_QUESTIONS_PATH
 
-  // Set melding state to 'questions_answered'
   if (isLastPanel) {
+    // Set melding state to 'questions_answered'
     const { error } = await putMeldingByMeldingIdAnswerQuestions({
       path: { melding_id: parseInt(meldingId, 10) },
       query: { token },
     })
 
     if (error) return { formData, systemError: error }
+
+    // Set current panel path as last panel path in cookies,
+    // so that the user can be redirected back to it from AFTER_ADDITIONAL_QUESTIONS_PATH
+    const oneDay = 24 * 60 * 60
+    cookieStore.set(
+      COOKIES.LAST_PANEL_PATH,
+      `/aanvullende-vragen/${classificationId}/${panelKeyWithComponentsConditions[currentPanelIndex].key}`,
+      { maxAge: oneDay },
+    )
   }
 
   return redirect(nextPanelPath)

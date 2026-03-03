@@ -410,7 +410,6 @@ describe('Page', () => {
     expect(extraArgs).toMatchObject({
       classificationId: 1,
       currentPanelIndex: 1,
-      lastPanelPath: '/aanvullende-vragen/1/panel-2',
       panelKeyWithComponentsConditions: [
         { componentsConditions: [{ key: 'question-1' }], key: 'panel-1' },
         { componentsConditions: [{ key: 'question-2' }], key: 'panel-2' },
@@ -462,7 +461,6 @@ describe('Page', () => {
     expect(extraArgs).toMatchObject({
       classificationId: 1,
       currentPanelIndex: 0,
-      lastPanelPath: '/aanvullende-vragen/1/panel-2',
       panelKeyWithComponentsConditions: [
         { componentsConditions: [{ key: 'question-1' }], key: 'panel-1' },
         { componentsConditions: [{ key: 'question-2' }], key: 'panel-2' },

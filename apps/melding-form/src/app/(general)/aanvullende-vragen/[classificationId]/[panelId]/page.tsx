@@ -131,8 +131,6 @@ export default async ({ params }: { params: Params }) => {
       requiredErrorMessage: validate?.required_error_message || t('required-error-message-fallback'),
     }))
 
-  const lastPanelPath = `/aanvullende-vragen/${classificationId}/${data.components[data.components.length - 1].key}`
-
   // We need the components conditions of all panels to determine the next and previous panel paths, so we extract them here.
   const panelKeyWithComponentsConditions = (data.components as FormPanelComponentOutput[]).map(
     ({ components, key }) => ({
@@ -146,7 +144,6 @@ export default async ({ params }: { params: Params }) => {
   const extraArgs = {
     classificationId,
     currentPanelIndex,
-    lastPanelPath,
     panelKeyWithComponentsConditions,
     previousAnswersByKey,
     questionAndAnswerIdPairs,

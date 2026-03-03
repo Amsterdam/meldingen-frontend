@@ -22,8 +22,10 @@ describe('postForm', () => {
   const defaultArgs: ArgsType = {
     classificationId: 1,
     currentPanelIndex: 1,
-    lastPanelPath: '/test',
-    panelKeyWithComponentsConditions: [],
+    panelKeyWithComponentsConditions: [
+      { componentsConditions: [{ key: 'question-1' }], key: 'panel-1' },
+      { componentsConditions: [{ key: 'question-2' }], key: 'panel-2' },
+    ],
     previousAnswersByKey: {},
     questionMetadata: [
       { id: 1, key: 'key1', type: 'textfield' },
@@ -46,14 +48,6 @@ describe('postForm', () => {
     await postForm(defaultArgs, null, formData)
 
     expect(redirect).toHaveBeenCalledWith('/cookie-storing')
-  })
-
-  it('sets lastPanelPath in cookies', async () => {
-    const formData = new FormData()
-    await postForm(defaultArgs, null, formData)
-
-    const cookieInstance = await cookies()
-    expect(cookieInstance.set).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH, '/test', { maxAge: 86400 })
   })
 
   it('returns custom and fallback validation errors for missing required questions', async () => {
@@ -197,5 +191,15 @@ describe('postForm', () => {
     const result = await postForm(defaultArgs, null, formData)
 
     expect(result).toEqual({ formData, systemError: 'Error message' })
+  })
+
+  it('sets lastPanelPath in cookies when on last page', async () => {
+    const formData = new FormData()
+    await postForm(defaultArgs, null, formData)
+
+    const cookieInstance = await cookies()
+    expect(cookieInstance.set).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH, '/aanvullende-vragen/1/panel-2', {
+      maxAge: 86400,
+    })
   })
 })
