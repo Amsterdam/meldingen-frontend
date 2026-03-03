@@ -1,4 +1,8 @@
-export const getDateComponentOptions = (dayRange: number) => {
+import { FormDateComponentOutput } from '@meldingen/api-client'
+
+import { FormOutputWithoutPanelComponents } from '../page'
+
+const getDateComponentOptions = (dayRange: number) => {
   const today = new Date()
 
   const dateEntries = Array.from({ length: dayRange }, (_, i) => {
@@ -29,3 +33,13 @@ export const getDateComponentOptions = (dayRange: number) => {
 
   return [...dateEntries, { converted_date: null, label: 'Weet ik niet', value: 'Unknown' }]
 }
+
+export const setDateComponentOptions = (components: FormOutputWithoutPanelComponents[]) =>
+  components.map((component) => {
+    if (component.type === 'date') {
+      const values = getDateComponentOptions((component as FormDateComponentOutput).dayRange)
+      return { ...component, values }
+    }
+
+    return component
+  })

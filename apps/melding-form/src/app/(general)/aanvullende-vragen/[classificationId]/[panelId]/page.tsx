@@ -14,7 +14,7 @@ import type {
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
-import { getDateComponentOptions } from './_utils/getDateComponentOptions'
+import { setDateComponentOptions } from './_utils/setDateComponentOptions'
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 import { COOKIES } from 'apps/melding-form/src/constants'
@@ -62,25 +62,13 @@ const getValuesAndLabels = (component: FormOutputWithoutPanelComponents) => {
   }
 }
 
-type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
-
-const setComponentOptions = (components: FormOutputWithoutPanelComponents[]) =>
-  components.map((component) => {
-    switch (component.type) {
-      case 'date':
-        return { ...component, values: getDateComponentOptions((component as FormDateComponentOutput).dayRange) }
-      default:
-        return component
-    }
-  })
+export type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
 
 const getFormComponents = (
   components: FormOutputWithoutPanelComponents[],
   answers?: GetMeldingByMeldingIdAnswersMelderResponses['200'],
-) => {
-  const componentWithCustomOptions = setComponentOptions(components)
-
-  return componentWithCustomOptions.map((component) => {
+) =>
+  components.map((component) => {
     const answer = answers?.find((answer) => answer.question.id === component.question)
 
     // Prefill if answer exists, otherwise return component without defaultValue(s)
@@ -101,7 +89,6 @@ const getFormComponents = (
         return component
     }
   })
-}
 
 type Params = Promise<{
   classificationId: number
@@ -143,7 +130,8 @@ export default async ({ params }: { params: Params }) => {
     console.error(answersError)
   }
 
-  const formComponents = getFormComponents(panelComponents, answers)
+  const formComponentsWithDateOptions = setDateComponentOptions(panelComponents)
+  const formComponents = getFormComponents(formComponentsWithDateOptions, answers)
 
   const questionAndAnswerIdPairs = answers?.map((answer) => ({
     answerId: answer.id,
