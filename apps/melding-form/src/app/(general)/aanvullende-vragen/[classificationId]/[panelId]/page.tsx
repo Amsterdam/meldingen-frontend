@@ -17,6 +17,7 @@ import {
   AFTER_ADDITIONAL_QUESTIONS_PATH,
   getPreviousAnswersByKey,
   getPreviousPanelPath,
+  isPanelComponentOutput,
 } from './_utils/navigationUtils'
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
@@ -25,9 +26,6 @@ import { COOKIES } from 'apps/melding-form/src/constants'
 export const dynamic = 'force-dynamic'
 
 type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
-
-const isPanelComponentOutput = (component: FormOutput['components'][number]): component is FormPanelComponentOutput =>
-  component.type === 'panel'
 
 // The backend returns a 'position' key in each value-label object,
 // but it does not accept that key when we send the answer back. For that reason, we strip it here.

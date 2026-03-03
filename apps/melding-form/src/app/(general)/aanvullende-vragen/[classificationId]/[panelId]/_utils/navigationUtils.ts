@@ -71,13 +71,18 @@ export const getPreviousPanelPath = (
   return BEFORE_ADDITIONAL_QUESTIONS_PATH
 }
 
+export const isPanelComponentOutput = (
+  component: FormOutput['components'][number],
+): component is FormPanelComponentOutput => component.type === 'panel'
+
 export const getPreviousAnswersByKey = (
   formData: FormOutput,
   answers: GetMeldingByMeldingIdAnswersMelderResponses['200'] | undefined,
 ) => {
   const result: AnswersByKey = {}
 
-  for (const panel of formData.components as FormPanelComponentOutput[]) {
+  for (const panel of formData.components) {
+    if (!isPanelComponentOutput(panel)) continue
     for (const component of panel.components) {
       const answer = answers?.find((a) => a.question.id === component.question)
 

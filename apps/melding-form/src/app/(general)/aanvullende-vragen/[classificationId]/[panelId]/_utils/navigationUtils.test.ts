@@ -141,8 +141,19 @@ describe('getPreviousPanelPath', () => {
 
 describe('getPreviousAnswersByKey', () => {
   const formData = {
-    components: [{ components: [{ key: 'field-1', question: 1 }] }],
+    components: [{ components: [{ key: 'field-1', question: 1 }], key: 'panel-1', type: 'panel' }],
   } as unknown as FormOutput
+
+  it('skips non-panel components', () => {
+    const formDataWithNonPanel = {
+      components: [
+        { key: 'submit-button', type: 'button' },
+        { components: [{ key: 'field-1', question: 1 }], key: 'panel-1', type: 'panel' },
+      ],
+    } as unknown as FormOutput
+
+    expect(getPreviousAnswersByKey(formDataWithNonPanel, [])).toEqual({ 'field-1': null })
+  })
 
   it('sets null when no answer is found for a component', () => {
     expect(getPreviousAnswersByKey(formData, [])).toEqual({ 'field-1': null })
