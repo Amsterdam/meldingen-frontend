@@ -3,9 +3,13 @@ import { describe, expect, it } from 'vitest'
 import type { Component } from './types'
 
 import { form } from './mocks/data'
-import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
+import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimeInput } from './utils'
 
 describe('type guards', () => {
+  it('isTimeInput should return true for type "time"', () => {
+    expect(isTimeInput(form.components[0].components[5])).toBe(true)
+  })
+
   it('isRadio should return true for type "radio"', () => {
     expect(isRadio(form.components[0].components[4])).toBe(true)
   })
