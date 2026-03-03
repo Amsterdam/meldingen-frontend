@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import { Props, TimeInput } from './TimeInput'
+import type { Props } from './TimeInput'
+import { TimeInput } from './TimeInput'
 
 const defaultProps: Props = {
   hasHeading: false,
