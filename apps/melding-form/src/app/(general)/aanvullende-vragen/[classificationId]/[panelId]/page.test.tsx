@@ -47,7 +47,7 @@ describe('Page', () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({
-          components: [{ type: 'not-panel' }],
+          components: [{ components: [{ type: 'not-panel' }], key: 'panel-1' }],
         }),
       ),
     )

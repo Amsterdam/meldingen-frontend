@@ -26,6 +26,9 @@ export const dynamic = 'force-dynamic'
 
 type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
 
+const isPanelComponentOutput = (component: FormOutput['components'][number]): component is FormPanelComponentOutput =>
+  component.type === 'panel'
+
 // The backend returns a 'position' key in each value-label object,
 // but it does not accept that key when we send the answer back. For that reason, we strip it here.
 const stripPositionKey = <T extends { position?: unknown }>(obj: T): Omit<T, 'position'> => {
@@ -85,11 +88,14 @@ export default async ({ params }: { params: Params }) => {
 
   if (error) throw new Error('Failed to fetch form by classification.')
 
-  if (data.components[0].type !== 'panel') return redirect(AFTER_ADDITIONAL_QUESTIONS_PATH)
-
   // Get current panel components
   const currentPanelIndex = data.components.findIndex((component) => component.key === panelId)
-  const panel = data.components[currentPanelIndex] as FormPanelComponentOutput
+  const panel = data.components[currentPanelIndex]
+
+  if (!isPanelComponentOutput(panel)) {
+    redirect(AFTER_ADDITIONAL_QUESTIONS_PATH)
+  }
+
   const panelComponents = panel.components
   const panelLabel = panel.label
 
@@ -132,12 +138,12 @@ export default async ({ params }: { params: Params }) => {
     }))
 
   // We need the components conditions of all panels to determine the next and previous panel paths, so we extract them here.
-  const panelKeyWithComponentsConditions = (data.components as FormPanelComponentOutput[]).map(
-    ({ components, key }) => ({
+  const panelKeyWithComponentsConditions = data.components
+    .filter(isPanelComponentOutput)
+    .map(({ components, key }) => ({
       componentsConditions: components.map(({ conditional, key }) => ({ conditional, key })),
       key,
-    }),
-  )
+    }))
 
   const previousAnswersByKey = getPreviousAnswersByKey(data, answers)
 
