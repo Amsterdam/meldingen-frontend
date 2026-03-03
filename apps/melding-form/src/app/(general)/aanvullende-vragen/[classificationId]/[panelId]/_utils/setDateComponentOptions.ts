@@ -2,10 +2,10 @@ import { FormDateComponentOutput } from '@meldingen/api-client'
 
 import { FormOutputWithoutPanelComponents } from '../page'
 
-const getDateComponentOptions = (dayRange: number) => {
+const getDateComponentOptions = (dayRange?: number | null) => {
   const today = new Date()
 
-  const dateEntries = Array.from({ length: dayRange }, (_, i) => {
+  const dateEntries = Array.from({ length: dayRange ?? 0 }, (_, i) => {
     const date = new Date(today)
     date.setDate(today.getDate() - i)
 
