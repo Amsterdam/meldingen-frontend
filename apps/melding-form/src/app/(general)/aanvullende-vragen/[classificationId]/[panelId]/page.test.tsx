@@ -276,6 +276,82 @@ describe('Page', () => {
       )
     })
 
+    it('renders the AdditionalQuestions component with prefilled date component', async () => {
+      const formData = {
+        components: [
+          {
+            components: [
+              {
+                dayRange: 3,
+                key: 'date2',
+                question: 43,
+                type: 'date',
+              },
+            ],
+            key: 'panel-1',
+            label: 'Panel 1',
+            type: 'panel',
+          },
+        ],
+      }
+
+      server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
+
+      server.use(
+        http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+          HttpResponse.json([
+            {
+              date: {
+                converted_date: '2026-03-02',
+                label: 'Gisteren 2 maart',
+                value: 'day - 1',
+              },
+              id: 'answer-1',
+              question: { id: 43 },
+              type: 'date',
+            },
+          ]),
+        ),
+      )
+
+      const PageComponent = await Page(defaultProps)
+
+      render(PageComponent)
+
+      expect(screen.getByText('AdditionalQuestions Component')).toBeInTheDocument()
+      expect(AdditionalQuestions).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: expect.any(Function),
+          formComponents: [
+            {
+              dayRange: 3,
+              defaultValue: 'day - 1',
+              key: 'date2',
+              question: 43,
+              type: 'date',
+              values: [
+                { converted_date: '2026-03-03', label: 'Vandaag', value: 'day' },
+                {
+                  converted_date: '2026-03-02',
+                  label: 'Gisteren 2 maart',
+                  value: 'day - 1',
+                },
+                {
+                  converted_date: '2026-03-01',
+                  label: 'Zondag 1 maart',
+                  value: 'day - 2',
+                },
+                { converted_date: null, label: 'Weet ik niet', value: 'Unknown' },
+              ],
+            },
+          ],
+          panelLabel: 'Panel 1',
+          previousPanelPath: '/',
+        }),
+        undefined,
+      )
+    })
+
     it('renders the AdditionalQuestions component with no prefilled values if no answers exist', async () => {
       const formData = {
         components: [
