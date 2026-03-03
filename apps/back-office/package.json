@@ -17,6 +17,6 @@
   "dependencies": {
     "next": "16.1.6",
     "next-auth": "4.24.13",
-    "next-intl": "4.8.2"
+    "next-intl": "4.8.3"
   }
 }
