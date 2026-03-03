@@ -116,19 +116,28 @@
     "submit-button": "Volgende vraag",
     "errors": {
       "too-many-files": {
-        "heading": "U kunt maximaal {maxFiles} bestanden uploaden."
+        "title": "U kunt maximaal {maxFiles} bestanden uploaden."
       },
       "too-many-attempts": {
-        "heading": "Verbeter de fouten om uw foto’s toe te voegen",
+        "title": "Verbeter de fouten om uw foto’s toe te voegen",
         "description": "U heeft te vaak geprobeerd een foto toe te voegen. Verwijder eerst een mislukte poging uit de lijst om nog een foto toe te voegen."
       },
       "upload-in-progress": {
-        "heading": "De foto’s zijn nog niet toegevoegd",
+        "title": "De foto’s zijn nog niet toegevoegd",
         "description": "Wacht tot de foto’s zijn toegevoegd of annuleer."
+      },
+      "delete-failed": {
+        "title": "Het is niet gelukt om de foto te verwijderen",
+        "description": "Probeer het opnieuw."
       }
     },
     "validation-errors": {
-      "duplicate-upload": "Het gekozen bestand is al toegevoegd."
+      "alert-title": "{count, plural, =1 {Verbeter de fout om uw foto’s toe te voegen} other {Verbeter de fouten om uw foto’s toe te voegen}}",
+      "duplicate-upload": "Het gekozen bestand is al toegevoegd.",
+      "failed-upload": "Probeer het opnieuw.",
+      "invalid-file-type": "Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp.",
+      "file-too-large": "Een foto mag maximaal 20 MB groot zijn.",
+      "invalid-file-extension": "De toevoeging achter de punt in de bestandsnaam is niet gelijk aan het echte bestandstype. Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp."
     }
   },
   "contact": {
@@ -206,7 +215,7 @@
   "shared": {
     "error-count-label": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",
     "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
-    "system-error-alert-title": "Er is iets misgegaan",
-    "system-error-alert-description": "Probeer opnieuw naar de volgende vraag te gaan."
+    "system-error-alert-description": "Probeer opnieuw naar de volgende vraag te gaan.",
+    "system-error-alert-title": "Er is iets misgegaan"
   }
 }
