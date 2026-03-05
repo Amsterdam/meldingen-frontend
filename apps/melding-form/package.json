@@ -15,7 +15,7 @@
     "type-check": "tsc --incremental false"
   },
   "dependencies": {
-    "@floating-ui/react-dom": "2.1.7",
+    "@floating-ui/react-dom": "2.1.8",
     "@headlessui/react": "2.2.9",
     "next": "16.1.6",
     "next-intl": "4.8.3"
