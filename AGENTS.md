@@ -443,7 +443,7 @@ const total = parseInt(response.headers.get('Content-Range')?.split('/')[1] || '
 
 ---
 
-### JavaScript Code Style Principles
+### TypeScript/JavaScript Code Style Principles
 
 We follow Clean Code principles throughout this codebase. Prioritize **clarity and readability** over clever or overly concise solutions. Code should be easy to understand and maintain by any team member, not just the original author.
 
