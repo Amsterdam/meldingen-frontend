@@ -385,7 +385,7 @@ const entraDataProvider = addRefreshAuthToDataProvider(
 
 ## Server Actions Pattern (Critical)
 
-All form submissions in melding-form and back-office use Next.js Server Actions. Follow this exact pattern:
+All form submissions in melding-form and back-office use Next.js Server Actions. Follow this pattern, but be aware of the differences between apps/melding-form and apps/back-office:
 
 ```typescript
 // apps/melding-form/src/app/(general)/contact/actions.ts
@@ -394,7 +394,7 @@ All form submissions in melding-form and back-office use Next.js Server Actions.
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { patchMeldingByMeldingIdContact } from '@meldingen/api-client'
-import { handleApiError, hasValidationErrors, isApiErrorArray } from 'handleApiError'
+import { handleApiError, hasValidationErrors, isApiErrorArray } from 'apps/melding-form/src/handleApiError'
 
 export const postContactForm = async (_: FormState, formData: FormData): Promise<FormState> => {
   const cookieStore = await cookies()
