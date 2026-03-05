@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { putMeldingByMeldingIdSubmit } from '@meldingen/api-client'
+import { putMeldingByMeldingIdSubmitMelder } from '@meldingen/api-client'
 
 import { COOKIES } from 'apps/melding-form/src/constants'
 
@@ -16,7 +16,7 @@ export const postSummaryForm = async () => {
   if (!meldingId || !token) return redirect('/cookie-storing')
 
   // Set melding state to 'submitted'
-  const { error } = await putMeldingByMeldingIdSubmit({
+  const { error } = await putMeldingByMeldingIdSubmitMelder({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
   })

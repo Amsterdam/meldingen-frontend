@@ -7,18 +7,22 @@ import type { FormInput } from '@meldingen/api-client'
 import {
   FormCheckboxComponentInputSchema,
   FormComponentInputValidateSchema,
+  FormDateComponentInputSchema,
   FormInputSchema,
   FormPanelComponentInputSchema,
   FormRadioComponentInputSchema,
   FormSelectComponentInputSchema,
   FormTextAreaComponentInputSchema,
   FormTextFieldComponentInputSchema,
+  FormTimeComponentInputSchema,
 } from '@meldingen/api-client'
 
 import type { AdditionalQuestionsForm } from '../../types'
 
 const filterBySchemaPerType = (obj: Component) => {
   switch (obj.type) {
+    case 'date':
+      return filter(FormDateComponentInputSchema, obj)
     case 'panel':
       return filter(FormPanelComponentInputSchema, obj)
     case 'radio':
@@ -32,10 +36,11 @@ const filterBySchemaPerType = (obj: Component) => {
       if (!Object.hasOwn(obj, 'autoExpand')) {
         return filter(FormTextAreaComponentInputSchema, { ...obj, autoExpand: false })
       }
-
       return filter(FormTextAreaComponentInputSchema, obj)
     case 'textfield':
       return filter(FormTextFieldComponentInputSchema, obj)
+    case 'time':
+      return filter(FormTimeComponentInputSchema, obj)
     default:
       throw Error(`Type ${obj.type} is unknown, please add it to filterFormResponse.`)
   }

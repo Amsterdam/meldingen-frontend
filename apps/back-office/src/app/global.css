@@ -1,5 +1,25 @@
+@import url('@amsterdam/design-system-assets/font/index.css') layer(amsterdam-design-system);
+@import url('@amsterdam/design-system-css/dist/index.css') layer(amsterdam-design-system);
+@import url('@amsterdam/design-system-tokens/dist/index.css') layer(amsterdam-design-system);
+@import url('@amsterdam/design-system-tokens/dist/compact.css') layer(amsterdam-design-system); /* This should be last, it overrides the default tokens */
+
 body {
+  /* TODO: temporarily override body background color. Remove this when the design system adds a grey background to ams-body. */
+  background-color: #e8e8e8;
   font-family: 'Amsterdam Sans', Arial, sans-serif;
   margin-block: 0;
   margin-inline: 0;
+}
+
+/* TODO: temporarily override some background colors. Remove this when the design system adds these background colors. */
+.ams-page-header {
+  background-color: var(--ams-color-background);
+}
+
+.ams-page {
+  background-color: #e8e8e8;
+}
+
+.ams-table__table {
+  background-color: var(--ams-color-background);
 }

@@ -81,8 +81,8 @@ export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props)
   }))
 
   return (
-    <Grid paddingBottom="2x-large" paddingTop="x-large">
-      <Grid.Cell span={{ narrow: 4, medium: 8, wide: 12 }}>
+    <Grid as="main" className="ams-page__area--body" paddingVertical="x-large">
+      <Grid.Cell span="all">
         <Heading className="ams-mb-m" level={1}>
           {t('overview.title', { meldingenCount })}
         </Heading>

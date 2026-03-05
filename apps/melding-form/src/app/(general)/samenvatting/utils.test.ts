@@ -1,4 +1,3 @@
-import { Blob } from 'buffer'
 import { http, HttpResponse } from 'msw'
 
 import type { MeldingOutput } from '@meldingen/api-client'

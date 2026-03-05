@@ -2,6 +2,8 @@
 // - https://github.com/formio/formio.js/blob/master/src/components/_classes/component/editForm
 // - https://github.com/formio/formio.js/blob/master/src/components/selectboxes/editForm
 
+import { conditionalTab } from '../shared'
+
 export const editForm = () => ({
   components: [
     {
@@ -118,6 +120,7 @@ export const editForm = () => ({
           key: 'validation',
           label: 'Validation',
         },
+        conditionalTab,
       ],
       key: 'tabs',
       type: 'tabs',

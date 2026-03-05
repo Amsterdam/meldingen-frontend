@@ -1,6 +1,6 @@
 import type { PendingFileUpload } from './utils'
 
-import { safeJSONParse, startUpload } from './utils'
+import { getValidationErrorMessageTranslationKey, safeJSONParse, startUpload } from './utils'
 
 const xhrMock = {
   response: JSON.stringify({ id: 123 }),
@@ -56,7 +56,7 @@ describe('startUpload', () => {
 
   it("sets status to 'error' on load with non-200", () => {
     const xhrMock = {
-      response: JSON.stringify({ detail: 'Test error' }),
+      response: JSON.stringify({ detail: 'Allowed content size exceeded' }),
       send: vi.fn(),
       status: 500,
       upload: {} as XMLHttpRequestUpload,
@@ -73,7 +73,7 @@ describe('startUpload', () => {
     const result = updater([fileUpload])
 
     expect(result[0].status).toBe('error')
-    expect(result[0].errorMessage).toBe('Test error')
+    expect(result[0].errorMessage).toBe('validation-errors.file-too-large')
   })
 
   it('sets status to uploading when upload starts', () => {
@@ -119,7 +119,7 @@ describe('startUpload', () => {
     const result = updater([fileUpload])
 
     expect(result[0].status).toBe('error')
-    expect(result[0].errorMessage).toBe('Network error')
+    expect(result[0].errorMessage).toBe('validation-errors.failed-upload')
   })
 
   it('returns the original file object if id does not match on load', () => {
@@ -170,5 +170,27 @@ describe('startUpload', () => {
     const result = updater([otherFileUpload])
 
     expect(result[0]).toBe(otherFileUpload)
+  })
+})
+
+describe('getValidationErrorMessageTranslationKey', () => {
+  it('returns the correct translation key for known errors', () => {
+    expect(getValidationErrorMessageTranslationKey('Allowed content size exceeded')).toBe(
+      'validation-errors.file-too-large',
+    )
+    expect(getValidationErrorMessageTranslationKey('Attachment not allowed')).toBe(
+      'validation-errors.invalid-file-type',
+    )
+    expect(getValidationErrorMessageTranslationKey('Media type of data does not match provided media type')).toBe(
+      'validation-errors.invalid-file-extension',
+    )
+  })
+
+  it('returns the default translation key for unknown errors', () => {
+    expect(getValidationErrorMessageTranslationKey('Unknown error')).toBe('validation-errors.failed-upload')
+  })
+
+  it('returns the default translation key for undefined error', () => {
+    expect(getValidationErrorMessageTranslationKey()).toBe('validation-errors.failed-upload')
   })
 })

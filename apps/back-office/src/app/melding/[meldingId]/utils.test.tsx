@@ -1,4 +1,3 @@
-import { Blob } from 'buffer'
 import { http, HttpResponse } from 'msw'
 
 import { getFullNLAddress } from '../../utils'

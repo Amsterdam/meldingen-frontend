@@ -16,7 +16,16 @@ export const handlers = [
       headers: { 'content-type': 'image/webp' },
     }),
   ),
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NEXT_POSSIBLE_STATES, () =>
+    HttpResponse.json({ states: ['processing_requested', 'completed'] }),
+  ),
 
-  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_PROCESS, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_CANCEL, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_COMPLETE, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_PLAN, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_PROCESS, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_REOPEN, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_REQUEST_PROCESSING, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_REQUEST_REOPEN, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT, () => new HttpResponse()),
 ]

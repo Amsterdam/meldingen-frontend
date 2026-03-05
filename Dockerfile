@@ -1,7 +1,7 @@
 #################################################
 ##                   BASE                       #
 #################################################
-FROM node:22-alpine AS base
+FROM node:24-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -52,7 +52,9 @@ WORKDIR /app
 
 # Set the backend URL to a runtime environment variable
 ARG NEXT_INTERNAL_BACKEND_BASE_URL
+ARG NEXT_PUBLIC_BACKEND_BASE_URL
 ENV NEXT_INTERNAL_BACKEND_BASE_URL=$NEXT_INTERNAL_BACKEND_BASE_URL
+ENV NEXT_PUBLIC_BACKEND_BASE_URL=$NEXT_PUBLIC_BACKEND_BASE_URL
 
 ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
