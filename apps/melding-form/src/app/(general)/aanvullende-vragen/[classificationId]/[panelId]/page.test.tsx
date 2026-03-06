@@ -28,11 +28,19 @@ vi.mock('./AdditionalQuestions', () => ({
   }),
 }))
 
+const MOCK_DATE = new Date('2026-03-03T12:00:00.000Z')
+
 const defaultProps = { params: Promise.resolve({ classificationId: 1, panelId: 'panel-1' }) }
 
 describe('Page', () => {
   beforeEach(() => {
     mockIdAndTokenCookies()
+    vi.useFakeTimers()
+    vi.setSystemTime(MOCK_DATE)
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('throws an error if form cannot be fetched by classification', async () => {
