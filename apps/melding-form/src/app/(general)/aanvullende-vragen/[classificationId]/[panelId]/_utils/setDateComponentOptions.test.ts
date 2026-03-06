@@ -25,7 +25,7 @@ describe('setDateComponentOptions', () => {
     })
   })
 
-  it('first entry should be "Vandaag" with correct converted_date', () => {
+  it('returns "Vandaag" with correct converted_date for the first entry', () => {
     const components = [{ dayRange: 1, key: 'incidentDate', type: 'date' }] as FormDateComponentOutputWithValues[]
 
     const result = setDateComponentOptions(components)
