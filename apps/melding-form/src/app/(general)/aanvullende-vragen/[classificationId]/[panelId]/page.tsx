@@ -131,19 +131,6 @@ export default async ({ params }: { params: Params }) => {
   }
 
   const formComponentsWithDateOptions = setDateComponentOptions(panelComponents)
-  const prefilledFormComponents = prefillFormComponents(formComponentsWithDateOptions, answers)
-  const formComponentsWithCorrectRenderTypes = prefilledFormComponents.map((component) => {
-    // The date component is rendered as a radio component, so we change the type here.
-    if (component.type === 'date') {
-      return { ...component, type: 'radio' }
-    }
-    return component
-  })
-
-  const questionAndAnswerIdPairs = answers?.map((answer) => ({
-    answerId: answer.id,
-    questionId: answer.question.id,
-  }))
 
   const questionMetadata = formComponentsWithDateOptions.map((component) => {
     const { key, question, type } = component
@@ -152,7 +139,12 @@ export default async ({ params }: { params: Params }) => {
     return { id: question, key, type, valuesAndLabels }
   })
 
-  const requiredQuestionKeysWithErrorMessages = prefilledFormComponents
+  const questionAndAnswerIdPairs = answers?.map((answer) => ({
+    answerId: answer.id,
+    questionId: answer.question.id,
+  }))
+
+  const requiredQuestionKeysWithErrorMessages = panelComponents
     .filter((question) => question.validate?.required)
     .map(({ key, validate }) => ({
       key,
@@ -177,6 +169,15 @@ export default async ({ params }: { params: Params }) => {
 
   // Pass previous panel path to the Aanvullende vragen component
   const previousPanelPath = getPreviousPanelPath(classificationId, currentPanelIndex, data)
+
+  const prefilledFormComponents = prefillFormComponents(formComponentsWithDateOptions, answers)
+  const formComponentsWithCorrectRenderTypes = prefilledFormComponents.map((component) => {
+    // The date component is rendered as a radio component, so we change the type here.
+    if (component.type === 'date') {
+      return { ...component, type: 'radio' }
+    }
+    return component
+  })
 
   return (
     <AdditionalQuestions
