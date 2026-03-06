@@ -77,7 +77,7 @@ describe('setDateComponentOptions', () => {
     })
   })
 
-  it('values array length should be dayRange + 1 (for "Weet ik niet")', () => {
+  it('returns an array of length dayRange + 1 (for "Weet ik niet")', () => {
     const dayRange = 5
     const components = [{ dayRange, key: 'incidentDate', type: 'date' }] as FormDateComponentOutputWithValues[]
 
