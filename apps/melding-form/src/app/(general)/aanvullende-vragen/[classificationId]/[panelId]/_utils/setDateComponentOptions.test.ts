@@ -1,7 +1,18 @@
 import { FormDateComponentOutputWithValues, FormOutputWithoutPanelComponents } from '../page'
 import { setDateComponentOptions } from './setDateComponentOptions'
 
+const MOCK_DATE = new Date('2026-03-03T12:00:00.000Z')
+
 describe('setDateComponentOptions', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(MOCK_DATE)
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('leaves non-date components unchanged', () => {
     const components = [
       { key: 'name', label: 'Name', type: 'text' },
