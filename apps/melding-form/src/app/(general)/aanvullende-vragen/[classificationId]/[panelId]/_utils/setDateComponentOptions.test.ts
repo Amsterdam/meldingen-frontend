@@ -51,7 +51,7 @@ describe('setDateComponentOptions', () => {
     })
   })
 
-  it('third entry onwards should show full day name and date', () => {
+  it('returns full day name and date from the third entry onwards', () => {
     const components = [{ dayRange: 3, key: 'incidentDate', type: 'date' }] as FormDateComponentOutputWithValues[]
 
     const result = setDateComponentOptions(components)
