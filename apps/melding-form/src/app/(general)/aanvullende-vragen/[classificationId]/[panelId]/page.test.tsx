@@ -47,7 +47,7 @@ describe('Page', () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({
-          components: [{ type: 'not-panel' }],
+          components: [{ components: [{ type: 'not-panel' }], key: 'panel-1' }],
         }),
       ),
     )
@@ -408,9 +408,12 @@ describe('Page', () => {
     const [extraArgs] = (actionsModule.postForm as Mock).mock.calls[0]
 
     expect(extraArgs).toMatchObject({
-      isLastPanel: true,
-      lastPanelPath: '/aanvullende-vragen/1/panel-2',
-      nextPanelPath: '/locatie',
+      classificationId: 1,
+      currentPanelIndex: 1,
+      panelKeyWithComponentsConditions: [
+        { componentsConditions: [{ key: 'question-1' }], key: 'panel-1' },
+        { componentsConditions: [{ key: 'question-2' }], key: 'panel-2' },
+      ],
       questionAndAnswerIdPairs: [
         { answerId: additionalQuestions[0].id, questionId: additionalQuestions[0].question.id },
         { answerId: additionalQuestions[1].id, questionId: additionalQuestions[1].question.id },
@@ -456,9 +459,12 @@ describe('Page', () => {
     const [extraArgs] = (actionsModule.postForm as Mock).mock.calls[0]
 
     expect(extraArgs).toMatchObject({
-      isLastPanel: false,
-      lastPanelPath: '/aanvullende-vragen/1/panel-2',
-      nextPanelPath: '/aanvullende-vragen/1/panel-2',
+      classificationId: 1,
+      currentPanelIndex: 0,
+      panelKeyWithComponentsConditions: [
+        { componentsConditions: [{ key: 'question-1' }], key: 'panel-1' },
+        { componentsConditions: [{ key: 'question-2' }], key: 'panel-2' },
+      ],
       questionMetadata: [{ id: 'q1', key: 'question-1', type: 'textfield' }],
       requiredQuestionKeysWithErrorMessages: [],
     })
