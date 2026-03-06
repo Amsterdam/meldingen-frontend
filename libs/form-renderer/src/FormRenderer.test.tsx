@@ -47,6 +47,23 @@ describe('FormRenderer', () => {
     })
   })
 
+  it('renders a form with a TimeInput component', () => {
+    const props: Props = {
+      ...defaultProps,
+      formComponents: [
+        {
+          ...form.components[0].components[5],
+        },
+      ],
+    }
+
+    render(<FormRenderer {...props} />)
+
+    const timeInput = screen.getByLabelText(form.components[0].components[5].label)
+
+    expect(timeInput).toBeInTheDocument()
+  })
+
   it('renders nothing if an unsupported component is passed', () => {
     const props: Props = {
       ...defaultProps,
