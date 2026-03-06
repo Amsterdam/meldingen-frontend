@@ -12,5 +12,6 @@ Check requirements when they are met (strikethrough when not applicable):
 - [ ] Is **responsive and respects WCAG**
 - [ ] **Documentation** has been updated
 - [ ] **Required PR checks** have passed
+- [ ] Includes AI-assisted code via GitHub Copilot
 
 Be kind to code reviewers, please try to keep pull requests as small and focused as possible :)
