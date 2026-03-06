@@ -38,7 +38,7 @@ describe('setDateComponentOptions', () => {
     })
   })
 
-  it('second entry should be "Gisteren" with correct date', () => {
+  it('returns "Gisteren" with correct date for the second entry', () => {
     const components = [{ dayRange: 2, key: 'incidentDate', type: 'date' }] as FormOutputWithoutPanelComponents[]
 
     const result = setDateComponentOptions(components)
