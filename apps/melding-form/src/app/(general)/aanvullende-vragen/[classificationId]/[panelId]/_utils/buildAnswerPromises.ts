@@ -29,7 +29,7 @@ const getValueLabelAnswerBody = (
   return { type: 'value_label', values_and_labels: [selectedValueAndLabel] }
 }
 
-const getDateBodyDate = (
+const getDateAnswerBody = (
   value: string,
   valuesAndLabels?: DateOptionValues[],
 ): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
@@ -54,7 +54,7 @@ const getAnswerBody = (
 
   switch (formioType) {
     case 'date':
-      return getDateBodyDate(value, valuesAndLabels as DateOptionValues[])
+      return getDateAnswerBody(value, valuesAndLabels as DateOptionValues[])
     case 'radio':
     case 'select':
       return getValueLabelAnswerBody(value, valuesAndLabels as ValueLabelObject[])
