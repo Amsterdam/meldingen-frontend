@@ -26,18 +26,14 @@ describe('TimeInput', () => {
     expect(timeInput).toBeInTheDocument()
   })
 
-  it('renders a description', () => {
-    render(<TimeInput {...defaultProps} description="Test description" />)
+  it('marks the Field and input as invalid when there is an error message', () => {
+    const { container } = render(<TimeInput {...defaultProps} errorMessage="Error!" />)
 
-    expect(screen.getByText('Test description')).toBeInTheDocument()
-  })
+    const field = container.firstChild
+    expect(field).toHaveClass('ams-field--invalid')
 
-  it('renders error message', () => {
-    render(<TimeInput {...defaultProps} errorMessage="Error!" />)
-
-    const timeInput = screen.getByLabelText('Time')
-
-    expect(timeInput).toHaveAccessibleDescription('Invoerfout:Error!')
+    const input = screen.getByLabelText('Time')
+    expect(input).toHaveAttribute('aria-invalid', 'true')
   })
 
   it('renders with heading when hasHeading is true', () => {
@@ -46,6 +42,28 @@ describe('TimeInput', () => {
     const heading = screen.getByRole('heading', { name: defaultProps.label })
 
     expect(heading).toBeInTheDocument()
+  })
+
+  it('does not render with heading when hasHeading is false', () => {
+    render(<TimeInput {...defaultProps} hasHeading={false} />)
+
+    const heading = screen.queryByRole('heading', { name: defaultProps.label })
+
+    expect(heading).not.toBeInTheDocument()
+  })
+
+  it('renders a description', () => {
+    render(<TimeInput {...defaultProps} description="Test description" />)
+
+    expect(screen.getByLabelText('Time')).toHaveAccessibleDescription('Test description')
+  })
+
+  it('renders error message', () => {
+    render(<TimeInput {...defaultProps} errorMessage="Error!" />)
+
+    const timeInput = screen.getByLabelText('Time')
+
+    expect(timeInput).toHaveAccessibleDescription('Invoerfout:Error!')
   })
 
   it('passes defaultValue to ADSTimeInput', () => {
@@ -59,6 +77,6 @@ describe('TimeInput', () => {
 
     const timeInput = screen.getByLabelText('Time')
 
-    expect(timeInput ).toBeRequired()
+    expect(timeInput).toBeRequired()
   })
 })

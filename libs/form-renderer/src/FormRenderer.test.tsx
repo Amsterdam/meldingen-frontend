@@ -47,6 +47,7 @@ describe('FormRenderer', () => {
     })
   })
 
+  // Time does not have a role, so we need to test it separately
   it('renders a form with a TimeInput component', () => {
     const props: Props = {
       ...defaultProps,
