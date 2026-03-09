@@ -81,7 +81,6 @@ Form
     { label: "Zeer urgent", value: "high" },
     { label: "Normaal", value: "normal" }
   ],
-  defaultValue: "normal"             // Pre-selected option
 }
 ```
 

@@ -10,7 +10,7 @@ import type { Component } from './types'
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isVisible } from './utils'
 
-const getDefaultValue = (component: Component): string | string[] => {
+const getValue = (component: Component): string | string[] => {
   if (isSelectboxes(component)) return component.value ?? []
   return component.value ?? ''
 }
@@ -108,7 +108,7 @@ export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonT
   const hasOneFormComponent = formComponents.length === 1
 
   const [values, setValues] = useState<Record<string, string | string[]>>(() =>
-    Object.fromEntries(formComponents.map((component) => [component.key, getDefaultValue(component)])),
+    Object.fromEntries(formComponents.map((component) => [component.key, getValue(component)])),
   )
   const [mounted, setMounted] = useState(false)
 

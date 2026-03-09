@@ -36,7 +36,7 @@ const getPrefilledPrimaryFormComponents = async (
   return formComponents.map((component) => {
     return {
       ...component,
-      defaultValue: data?.text,
+      value: data?.text,
     }
   })
 }
