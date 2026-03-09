@@ -74,7 +74,7 @@ describe('setDateComponentOptions', () => {
     })
   })
 
-  it('return "Weet ik niet" as the last entry', () => {
+  it('returns "Weet ik niet" as the last entry', () => {
     const components = [{ dayRange: 3, key: 'incidentDate', type: 'date' }] as FormDateComponentOutputWithValues[]
 
     const result = setDateComponentOptions(components)
