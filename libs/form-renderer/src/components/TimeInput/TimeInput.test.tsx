@@ -54,9 +54,11 @@ describe('TimeInput', () => {
     expect(screen.getByDisplayValue('12:34')).toBeInTheDocument()
   })
 
-  it('sets aria-required when required', () => {
+  it('correctly marks TimeInput as required', () => {
     render(<TimeInput {...defaultProps} validate={{ required: true }} />)
 
-    expect(screen.getByLabelText('Time')).toHaveAttribute('aria-required', 'true')
+    const timeInput = screen.getByLabelText('Time')
+
+    expect(timeInput ).toBeRequired()
   })
 })
