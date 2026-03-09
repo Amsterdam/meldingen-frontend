@@ -5,8 +5,7 @@ const MOCK_DATE = new Date('2026-03-03T12:00:00.000Z')
 
 describe('setDateComponentOptions', () => {
   beforeEach(() => {
-    vi.useFakeTimers()
-    vi.setSystemTime(MOCK_DATE)
+    vi.useFakeTimers({ now: MOCK_DATE })
   })
 
   afterEach(() => {
