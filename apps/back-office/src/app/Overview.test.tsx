@@ -1,10 +1,25 @@
 import { render, screen } from '@testing-library/react'
 
 import { melding } from '../mocks/data'
-import { formatValue, LinkComponent, Overview } from './Overview'
+import { LinkComponent, Overview } from './Overview'
+import { formatValue } from './overviewFields'
+
+const mockMatchMedia = (matches: boolean) => {
+  Object.defineProperty(window, 'matchMedia', {
+    value: vi.fn().mockImplementation(() => ({
+      addEventListener: vi.fn(),
+      addListener: vi.fn(),
+      matches,
+      removeEventListener: vi.fn(),
+      removeListener: vi.fn(),
+    })),
+    writable: true,
+  })
+}
 
 describe('Overview', () => {
   it('should render correctly', () => {
+    mockMatchMedia(true)
     render(<Overview meldingen={[melding]} meldingenCount={10} totalPages={1} />)
 
     const idHeader = screen.getByRole('columnheader', { name: 'overview.column-header.public_id' })
@@ -12,6 +27,13 @@ describe('Overview', () => {
 
     expect(idHeader).toBeInTheDocument()
     expect(firstId).toBeInTheDocument()
+  })
+
+  it('does not render a table on narrow screens', () => {
+    mockMatchMedia(false)
+    render(<Overview meldingen={[melding]} meldingenCount={10} totalPages={1} />)
+
+    expect(screen.queryByRole('columnheader')).not.toBeInTheDocument()
   })
 })
 
