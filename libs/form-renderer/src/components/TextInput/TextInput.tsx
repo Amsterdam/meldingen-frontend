@@ -8,16 +8,17 @@ import { getAriaDescribedBy } from '../../utils'
 import styles from './TextInput.module.css'
 
 export type Props = {
-  defaultValue?: string
   description?: string
   errorMessage?: string
   hasHeading: boolean
   id: string
   label: string
+  onChange: (value: string) => void
   validate?: { required: boolean } | null
+  value: string
 }
 
-export const TextInput = ({ defaultValue, description, errorMessage, hasHeading, id, label, validate }: Props) => {
+export const TextInput = ({ description, errorMessage, hasHeading, id, label, onChange, validate, value }: Props) => {
   const labelComponent = (
     <Label htmlFor={id} optional={!validate?.required}>
       {label}
@@ -36,10 +37,11 @@ export const TextInput = ({ defaultValue, description, errorMessage, hasHeading,
       <ADSTextInput
         aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
         aria-required={validate?.required ? 'true' : undefined}
-        defaultValue={defaultValue}
         id={id}
         invalid={Boolean(errorMessage)}
         name={id}
+        onChange={(e) => onChange(e.target.value)}
+        value={value}
       />
     </Field>
   )

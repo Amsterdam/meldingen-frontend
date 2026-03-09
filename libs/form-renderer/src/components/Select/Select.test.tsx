@@ -14,7 +14,9 @@ const defaultProps: Props = {
   hasHeading: true,
   id: 'test-id',
   label: 'Test label',
+  onChange: vi.fn(),
   validate: { required: true },
+  value: '',
 }
 
 describe('Select Component', () => {
@@ -62,7 +64,7 @@ describe('Select Component', () => {
   })
 
   it('sets the default value', () => {
-    render(<Select {...defaultProps} defaultValue="test-value-2" />)
+    render(<Select {...defaultProps} value="test-value-2" />)
 
     const select = screen.getByRole('combobox', { name: defaultProps.label })
 

@@ -6,13 +6,14 @@ import { FieldSet } from '@meldingen/ui'
 import { getAriaDescribedBy } from '../../utils'
 
 export type Props = {
-  defaultValues?: string[]
   description?: string
   errorMessage?: string
   hasHeading: boolean
   id: string
   label: string
+  onChange: (value: string[]) => void
   validate?: { required: boolean } | null
+  value: string[]
   values: {
     label: string
     value: string
@@ -20,13 +21,14 @@ export type Props = {
 }
 
 export const Checkbox = ({
-  defaultValues,
   description,
   errorMessage,
   hasHeading,
   id,
   label,
+  onChange,
   validate,
+  value,
   values,
 }: Props) => {
   const ariaDescribedBy = getAriaDescribedBy(id, description, errorMessage)
@@ -49,15 +51,19 @@ export const Checkbox = ({
       )}
       {errorMessage && <ErrorMessage id={`${id}-error`}>{errorMessage}</ErrorMessage>}
       <Column gap="x-small">
-        {values.map(({ label: checkboxLabel, value }, index) => (
+        {values.map(({ label: checkboxLabel, value: checkboxValue }, index) => (
           <ADSCheckbox
             aria-required={validate?.required ? 'true' : undefined}
-            defaultChecked={defaultValues?.includes(value)}
+            checked={value.includes(checkboxValue)}
             id={index === 0 ? id : undefined} // Use component id for first checkbox, to be able to link to it in the Invalid Form Alert
             invalid={Boolean(errorMessage)}
-            key={value}
-            name={`checkbox___${id}___${value}`}
-            value={value}
+            key={checkboxValue}
+            name={`checkbox___${id}___${checkboxValue}`}
+            onChange={(e) => {
+              const newValue = e.target.checked ? [...value, checkboxValue] : value.filter((v) => v !== checkboxValue)
+              onChange(newValue)
+            }}
+            value={checkboxValue}
           >
             {checkboxLabel}
           </ADSCheckbox>

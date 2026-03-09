@@ -1,5 +1,6 @@
+import type { ChangeEvent } from 'react'
+
 import { TextArea as ADSTextArea, CharacterCount, ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
-import { useRef, useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
@@ -8,33 +9,30 @@ import { getAriaDescribedBy } from '../../utils'
 import styles from './TextArea.module.css'
 
 export type Props = {
-  defaultValue?: string
   description?: string
   errorMessage?: string
   hasHeading: boolean
   id: string
   label: string
   maxCharCount?: number | null
+  onChange: (value: string) => void
   validate?: { required: boolean } | null
+  value: string
 }
 
 export const TextArea = ({
-  defaultValue,
   description,
   errorMessage,
   hasHeading,
   id,
   label,
   maxCharCount,
+  onChange,
   validate,
+  value,
 }: Props) => {
-  const ref = useRef<HTMLTextAreaElement>(null)
-  const [charCount, setCharCount] = useState(defaultValue?.length || 0)
-
-  const handleChange = () => {
-    if (ref.current) {
-      setCharCount(ref.current?.value.length)
-    }
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    onChange(e.target.value)
   }
 
   const labelComponent = (
@@ -55,15 +53,14 @@ export const TextArea = ({
       <ADSTextArea
         aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
         aria-required={validate?.required ? 'true' : undefined}
-        defaultValue={defaultValue}
         id={id}
         invalid={Boolean(errorMessage)}
         name={id}
-        onChange={typeof maxCharCount === 'number' ? handleChange : undefined}
-        ref={ref}
+        onChange={handleChange}
         rows={4}
+        value={value}
       />
-      {maxCharCount && <CharacterCount length={charCount} maxLength={maxCharCount} />}
+      {maxCharCount && <CharacterCount length={value.length} maxLength={maxCharCount} />}
     </Field>
   )
 }

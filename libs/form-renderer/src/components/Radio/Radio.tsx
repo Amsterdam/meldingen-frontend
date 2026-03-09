@@ -6,20 +6,31 @@ import { FieldSet } from '@meldingen/ui'
 import { getAriaDescribedBy } from '../../utils'
 
 export type Props = {
-  defaultValue?: string
   description?: string
   errorMessage?: string
   hasHeading: boolean
   id: string
   label: string
+  onChange: (value: string) => void
   validate?: { required: boolean } | null
+  value: string
   values: {
     label: string
     value: string
   }[]
 }
 
-export const Radio = ({ defaultValue, description, errorMessage, hasHeading, id, label, validate, values }: Props) => (
+export const Radio = ({
+  description,
+  errorMessage,
+  hasHeading,
+  id,
+  label,
+  onChange,
+  validate,
+  value,
+  values,
+}: Props) => (
   <FieldSet
     aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
     aria-required={validate?.required ? 'true' : undefined}
@@ -36,15 +47,16 @@ export const Radio = ({ defaultValue, description, errorMessage, hasHeading, id,
     )}
     {errorMessage && <ErrorMessage id={`${id}-error`}>{errorMessage}</ErrorMessage>}
     <Column gap="x-small">
-      {values.map(({ label: radioLabel, value }, index) => (
+      {values.map(({ label: radioLabel, value: radioValue }, index) => (
         <ADSRadio
           aria-required={validate?.required ? 'true' : undefined}
-          defaultChecked={value === defaultValue}
+          checked={radioValue === value}
           id={index === 0 ? id : undefined} // Use component id for first radio, to be able to link to it in the Invalid Form Alert
           invalid={Boolean(errorMessage)}
-          key={value}
+          key={radioValue}
           name={id}
-          value={value}
+          onChange={() => onChange(radioValue)}
+          value={radioValue}
         >
           {radioLabel}
         </ADSRadio>

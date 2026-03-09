@@ -8,7 +8,9 @@ const defaultProps: Props = {
   hasHeading: true,
   id: 'test-id',
   label: 'Test label',
+  onChange: vi.fn(),
   validate: { required: true },
+  value: '',
   values: [
     { label: 'Test value', value: 'test-value' },
     { label: 'Test value 2', value: 'test-value-2' },
@@ -68,7 +70,7 @@ describe('Radio Component', () => {
   })
 
   it('sets the default value', () => {
-    render(<Radio {...defaultProps} defaultValue="test-value-2" />)
+    render(<Radio {...defaultProps} value="test-value-2" />)
 
     const radioOption = screen.getByLabelText('Test value 2')
 

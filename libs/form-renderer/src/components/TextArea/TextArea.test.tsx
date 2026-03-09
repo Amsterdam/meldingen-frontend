@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useState } from 'react'
 
 import type { Props } from './TextArea'
 
@@ -9,7 +10,14 @@ const defaultProps: Props = {
   hasHeading: true,
   id: 'test-id',
   label: 'Test label',
+  onChange: vi.fn(),
   validate: { required: true },
+  value: '',
+}
+
+const ControlledTextArea = (props: Omit<Props, 'value' | 'onChange'> & { initialValue?: string }) => {
+  const [value, setValue] = useState(props.initialValue ?? '')
+  return <TextArea {...props} onChange={setValue} value={value} />
 }
 
 describe('TextArea Component', () => {
@@ -43,7 +51,15 @@ describe('TextArea Component', () => {
   it('counts the number of characters', async () => {
     const user = userEvent.setup()
 
-    render(<TextArea {...defaultProps} maxCharCount={80} />)
+    render(
+      <ControlledTextArea
+        hasHeading={defaultProps.hasHeading}
+        id={defaultProps.id}
+        label={defaultProps.label}
+        maxCharCount={80}
+        validate={defaultProps.validate}
+      />,
+    )
 
     const textArea = screen.getByRole('textbox', { name: defaultProps.label })
 
@@ -55,7 +71,7 @@ describe('TextArea Component', () => {
   })
 
   it('counts the length of defaultValue if supplied', () => {
-    render(<TextArea {...defaultProps} defaultValue="Test" maxCharCount={100} />)
+    render(<TextArea {...defaultProps} maxCharCount={100} value="Test" />)
 
     const characterCount = screen.getByRole('status')
 

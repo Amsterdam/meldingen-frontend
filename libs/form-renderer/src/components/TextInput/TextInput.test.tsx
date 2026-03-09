@@ -8,7 +8,9 @@ const defaultProps: Props = {
   hasHeading: true,
   id: 'test-id',
   label: 'Test label',
+  onChange: vi.fn(),
   validate: { required: true },
+  value: '',
 }
 
 describe('TextInput Component', () => {

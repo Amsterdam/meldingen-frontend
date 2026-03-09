@@ -8,7 +8,9 @@ const defaultProps: Props = {
   hasHeading: true,
   id: 'test-id',
   label: 'Test label',
+  onChange: vi.fn(),
   validate: { required: true },
+  value: [],
   values: [
     { label: 'Test value', value: 'test-value' },
     { label: 'Test value 2', value: 'test-value-2' },
@@ -60,7 +62,7 @@ describe('Checkbox Component', () => {
   })
 
   it('sets the default values', () => {
-    render(<Checkbox {...defaultProps} defaultValues={['test-value', 'test-value-2']} />)
+    render(<Checkbox {...defaultProps} value={['test-value', 'test-value-2']} />)
 
     const checkboxItem1 = screen.getByRole('checkbox', { name: defaultProps.values[0].label })
     const checkboxItem2 = screen.getByRole('checkbox', { name: defaultProps.values[1].label })

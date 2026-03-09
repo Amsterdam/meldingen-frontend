@@ -13,16 +13,27 @@ export type Props = {
       value: string
     }[]
   }
-  defaultValue?: string
   description?: string
   errorMessage?: string
   hasHeading: boolean
   id: string
   label: string
+  onChange: (value: string) => void
   validate?: { required: boolean } | null
+  value: string
 }
 
-export const Select = ({ data, defaultValue, description, errorMessage, hasHeading, id, label, validate }: Props) => {
+export const Select = ({
+  data,
+  description,
+  errorMessage,
+  hasHeading,
+  id,
+  label,
+  onChange,
+  validate,
+  value,
+}: Props) => {
   const labelComponent = (
     <Label htmlFor={id} optional={!validate?.required}>
       {label}
@@ -41,11 +52,11 @@ export const Select = ({ data, defaultValue, description, errorMessage, hasHeadi
       <ADSSelect
         aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
         aria-required={validate?.required ? 'true' : undefined}
-        defaultValue={defaultValue}
         id={id}
         invalid={Boolean(errorMessage)}
-        key={defaultValue}
         name={id}
+        onChange={(e) => onChange(e.target.value)}
+        value={value}
       >
         {data.values.map(({ label: optionLabel, value }) => (
           <ADSSelect.Option key={value} value={value}>
