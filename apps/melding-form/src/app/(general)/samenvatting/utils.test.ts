@@ -177,6 +177,34 @@ describe('getAdditionalQuestionsSummary', () => {
     expect(result).toEqual({ data: [] })
   })
 
+  it('supports the date answer type', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [{ components: [{ question: 37 }], key: 'page1' }],
+        }),
+      ),
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+        HttpResponse.json([
+          { date: { label: '2024-06-01' }, question: { id: 37, text: 'Date question' }, type: 'date' },
+        ]),
+      ),
+    )
+
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
+
+    expect(result).toEqual({
+      data: [
+        {
+          description: '2024-06-01',
+          key: '37',
+          link: '/aanvullende-vragen/1/page1',
+          term: 'Date question',
+        },
+      ],
+    })
+  })
+
   it('supports the time answer type', async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
