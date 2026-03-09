@@ -21,11 +21,9 @@ describe('TimeInput', () => {
   it('renders optional label when not required', () => {
     render(<TimeInput {...defaultProps} validate={{ required: false }} />)
 
-    const timeInputLabel = screen.getByText('Time')
-    const timeInputNotRequiredLabel = screen.getAllByText(`(niet verplicht)`)
+    const timeInput = screen.getByLabelText('Time (niet verplicht)')
 
-    expect(timeInputLabel).toBeInTheDocument()
-    expect(timeInputNotRequiredLabel).toHaveLength(1)
+    expect(timeInput).toBeInTheDocument()
   })
 
   it('renders a description', () => {
