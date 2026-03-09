@@ -4,6 +4,7 @@ import type {
   FormSelectComponentOutput,
   FormTextAreaComponentOutput,
   FormTextFieldInputComponentOutput,
+  FormTimeComponentOutput,
   StaticFormTextAreaComponentOutput,
 } from '@meldingen/api-client'
 
@@ -12,6 +13,7 @@ export type FormRadioComponent = FormRadioComponentOutput & { defaultValue?: str
 export type FormSelectComponent = FormSelectComponentOutput & { defaultValue?: string }
 export type FormTextAreaComponent = FormTextAreaComponentOutput & { defaultValue?: string }
 export type FormTextFieldInputComponent = FormTextFieldInputComponentOutput & { defaultValue?: string }
+export type FormTimeComponent = FormTimeComponentOutput & { defaultValues?: string }
 export type StaticFormTextAreaComponent = StaticFormTextAreaComponentOutput & { defaultValue?: string }
 
 export type Component =
@@ -20,6 +22,7 @@ export type Component =
   | FormSelectComponent
   | FormTextAreaComponent
   | FormTextFieldInputComponent
+  | FormTimeComponent
   | StaticFormTextAreaComponent
 
 export type Form = {
