@@ -8,6 +8,8 @@ import type { MeldingWithAddress, OverviewField } from './overviewFields'
 
 import { formatValue, getMeldingDetailHref, OVERVIEW_FIELDS } from './overviewFields'
 
+import styles from './OverviewMobile.module.css'
+
 type Props = {
   meldingen: MeldingWithAddress[]
 }
@@ -28,9 +30,9 @@ export const OverviewMobile = ({ meldingen }: Props) => {
   const t = useTranslations()
 
   return (
-    <div>
+    <div className={styles.list}>
       {meldingen.map((melding) => (
-        <div key={melding.public_id}>
+        <div className={styles.card} key={melding.public_id}>
           <DescriptionList>
             {OVERVIEW_FIELDS.map((field) => (
               <Fragment key={field.key}>

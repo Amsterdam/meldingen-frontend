@@ -1,0 +1,10 @@
+.list {
+  display: grid;
+  row-gap: var(--ams-space-m);
+}
+
+.card {
+  background-color: var(--ams-color-background);
+  padding-block: var(--ams-space-m);
+  padding-inline: var(--ams-space-m);
+}
