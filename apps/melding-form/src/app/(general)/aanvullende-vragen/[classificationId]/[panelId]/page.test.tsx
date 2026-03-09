@@ -60,8 +60,8 @@ describe('Page', () => {
   it('renders the AdditionalQuestions component with correct props', async () => {
     const formData = {
       components: [
-        { components: [{ key: 'question-1', question: 'q1' }], key: 'panel-1', label: 'Panel 1', type: 'panel' },
-        { components: [{ key: 'question-2', question: 'q2' }], key: 'panel-2', label: 'Panel 2', type: 'panel' },
+        { components: [{ key: 'question-1', question: 'q1' }], key: 'panel-1', title: 'Panel 1', type: 'panel' },
+        { components: [{ key: 'question-2', question: 'q2' }], key: 'panel-2', title: 'Panel 2', type: 'panel' },
       ],
     }
 
@@ -90,7 +90,7 @@ describe('Page', () => {
           {
             components: [{ key: 'question-1', question: additionalQuestions[0].question.id }],
             key: 'panel-1',
-            label: 'Panel 1',
+            title: 'Panel 1',
             type: 'panel',
           },
         ],
@@ -132,7 +132,7 @@ describe('Page', () => {
               },
             ],
             key: 'panel-1',
-            label: 'Panel 1',
+            title: 'Panel 1',
             type: 'panel',
           },
         ],
@@ -177,7 +177,7 @@ describe('Page', () => {
               },
             ],
             key: 'panel-1',
-            label: 'Panel 1',
+            title: 'Panel 1',
             type: 'panel',
           },
         ],
@@ -225,7 +225,7 @@ describe('Page', () => {
               },
             ],
             key: 'panel-1',
-            label: 'Panel 1',
+            title: 'Panel 1',
             type: 'panel',
           },
         ],
@@ -282,7 +282,7 @@ describe('Page', () => {
           {
             components: [{ key: 'question-1', question: 'q1' }],
             key: 'panel-1',
-            label: 'Panel 1',
+            title: 'Panel 1',
             type: 'panel',
           },
         ],
@@ -316,7 +316,7 @@ describe('Page', () => {
               },
             ],
             key: 'panel-1',
-            label: 'Panel 1',
+            title: 'Panel 1',
             type: 'panel',
           },
         ],
@@ -353,7 +353,7 @@ describe('Page', () => {
   it('logs an error to the console when the answers for additional questions cannot be fetched', async () => {
     const formData = {
       components: [
-        { components: [{ key: 'question-1', question: 'q1' }], key: 'panel-1', label: 'Panel 1', type: 'panel' },
+        { components: [{ key: 'question-1', question: 'q1' }], key: 'panel-1', title: 'Panel 1', type: 'panel' },
       ],
     }
 
@@ -380,13 +380,13 @@ describe('Page', () => {
         {
           components: [{ key: 'question-1', question: 'q1', type: 'textfield' }],
           key: 'panel-1',
-          label: 'Panel 1',
+          title: 'Panel 1',
           type: 'panel',
         },
         {
           components: [{ key: 'question-2', question: 'q2', type: 'textfield', validate: { required: true } }],
           key: 'panel-2',
-          label: 'Panel 2',
+          title: 'Panel 2',
           type: 'panel',
         },
       ],
@@ -428,13 +428,13 @@ describe('Page', () => {
         {
           components: [{ key: 'question-1', question: 'q1', type: 'textfield' }],
           key: 'panel-1',
-          label: 'Panel 1',
+          title: 'Panel 1',
           type: 'panel',
         },
         {
           components: [{ key: 'question-2', question: 'q2', type: 'textfield', validate: { required: true } }],
           key: 'panel-2',
-          label: 'Panel 2',
+          title: 'Panel 2',
           type: 'panel',
         },
       ],
@@ -477,7 +477,7 @@ describe('Page', () => {
             },
           ],
           key: 'panel-1',
-          label: 'Panel 1',
+          title: 'Panel 1',
           type: 'panel',
         },
       ],
@@ -518,7 +518,7 @@ describe('Page', () => {
             },
           ],
           key: 'panel-1',
-          label: 'Panel 1',
+          title: 'Panel 1',
           type: 'panel',
         },
       ],
@@ -559,7 +559,7 @@ describe('Page', () => {
             },
           ],
           key: 'panel-1',
-          label: 'Panel 1',
+          title: 'Panel 1',
           type: 'panel',
         },
       ],
