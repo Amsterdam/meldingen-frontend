@@ -8,7 +8,7 @@ import { form } from './mocks/data'
 const defaultProps: Props = {
   action: vi.fn(),
   formComponents: form.components[0].components,
-  panelLabel: form.components[0].label,
+  panelTitle: form.components[0].label,
   submitButtonText: 'Volgende vraag',
 }
 

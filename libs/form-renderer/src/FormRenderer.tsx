@@ -32,7 +32,7 @@ const getComponent = (component: Component, hasOneFormComponent: boolean, errorM
 export type Props = {
   action: (formData: FormData) => void
   formComponents: Component[]
-  panelLabel?: string
+  panelTitle?: string
   submitButtonText: string
   validationErrors?: {
     key: string
@@ -40,7 +40,7 @@ export type Props = {
   }[]
 }
 
-export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonText, validationErrors }: Props) => {
+export const FormRenderer = ({ action, formComponents, panelTitle, submitButtonText, validationErrors }: Props) => {
   const hasOneFormComponent = formComponents.length === 1
   return (
     <>
@@ -48,9 +48,9 @@ export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonT
        * If the page has only one form component, an h1 gets added to the label or legend of that component.
        * If the page has more than one form component, the h1 is rendered here.
        */}
-      {!hasOneFormComponent && panelLabel && (
+      {!hasOneFormComponent && panelTitle && (
         <Heading className="ams-mb-m" level={1} size="level-3">
-          {panelLabel}
+          {panelTitle}
         </Heading>
       )}
       <Form action={action} className="ams-gap-m" noValidate>

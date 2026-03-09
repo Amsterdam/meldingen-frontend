@@ -98,7 +98,7 @@ export default async ({ params }: { params: Params }) => {
   const currentPanelIndex = data.components.findIndex((component) => component.key === panelId)
   const panel = data.components[currentPanelIndex] as FormPanelComponentOutput
   const panelComponents = panel.components
-  const panelLabel = panel.label
+  const panelTitle = panel.title
 
   // Check if answers already exist and prefill if so
   const cookieStore = await cookies()
@@ -161,7 +161,7 @@ export default async ({ params }: { params: Params }) => {
     <AdditionalQuestions
       action={postFormWithExtraArgs}
       formComponents={formComponents}
-      panelLabel={panelLabel}
+      panelTitle={panelTitle}
       previousPanelPath={previousPanelPath}
     />
   )
