@@ -35,8 +35,7 @@ const defaultProps = { params: Promise.resolve({ classificationId: 1, panelId: '
 describe('Page', () => {
   beforeEach(() => {
     mockIdAndTokenCookies()
-    vi.useFakeTimers()
-    vi.setSystemTime(MOCK_DATE)
+    vi.useFakeTimers({ now: MOCK_DATE })
   })
 
   afterEach(() => {
