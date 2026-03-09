@@ -35,8 +35,9 @@ describe('TimeInput', () => {
   it('renders error message', () => {
     render(<TimeInput {...defaultProps} errorMessage="Error!" />)
 
-    expect(screen.getByText('Error!')).toBeInTheDocument()
-    expect(screen.getByLabelText('Time')).toHaveAttribute('aria-describedby', expect.stringContaining('error'))
+    const timeInput = screen.getByLabelText('Time')
+
+    expect(timeInput).toHaveAccessibleDescription('Invoerfout:Error!')
   })
 
   it('renders with heading when hasHeading is true', () => {
