@@ -70,7 +70,7 @@ describe('TextArea Component', () => {
     expect(characterCount).toHaveTextContent('10 van 80 tekens')
   })
 
-  it('counts the length of defaultValue if supplied', () => {
+  it('counts the length of value if supplied', () => {
     render(<TextArea {...defaultProps} maxCharCount={100} value="Test" />)
 
     const characterCount = screen.getByRole('status')

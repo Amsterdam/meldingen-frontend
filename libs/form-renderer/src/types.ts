@@ -7,12 +7,12 @@ import type {
   StaticFormTextAreaComponentOutput,
 } from '@meldingen/api-client'
 
-export type FormCheckboxComponent = FormCheckboxComponentOutput & { defaultValues?: string[] }
-export type FormRadioComponent = FormRadioComponentOutput & { defaultValue?: string }
-export type FormSelectComponent = FormSelectComponentOutput & { defaultValue?: string }
-export type FormTextAreaComponent = FormTextAreaComponentOutput & { defaultValue?: string }
-export type FormTextFieldInputComponent = FormTextFieldInputComponentOutput & { defaultValue?: string }
-export type StaticFormTextAreaComponent = StaticFormTextAreaComponentOutput & { defaultValue?: string }
+export type FormCheckboxComponent = FormCheckboxComponentOutput & { value?: string[] }
+export type FormRadioComponent = FormRadioComponentOutput & { value?: string }
+export type FormSelectComponent = FormSelectComponentOutput & { value?: string }
+export type FormTextAreaComponent = FormTextAreaComponentOutput & { value?: string }
+export type FormTextFieldInputComponent = FormTextFieldInputComponentOutput & { value?: string }
+export type StaticFormTextAreaComponent = StaticFormTextAreaComponentOutput & { value?: string }
 
 export type Component =
   | FormCheckboxComponent

@@ -28,9 +28,9 @@ describe('type guards', () => {
 
   it('returns false for all guards if type is unknown', () => {
     const unknownComponent = {
-      defaultValue: 'oops',
       key: 'bad',
       type: 'unknown',
+      value: 'oops',
     } as Component
 
     expect(isRadio(unknownComponent)).toBe(false)

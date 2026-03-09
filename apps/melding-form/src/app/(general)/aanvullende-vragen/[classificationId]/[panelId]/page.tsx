@@ -10,6 +10,7 @@ import type {
   FormSelectComponentOutput,
   GetMeldingByMeldingIdAnswersMelderResponses,
 } from '@meldingen/api-client'
+import type { Component } from '@meldingen/form-renderer'
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
@@ -60,17 +61,17 @@ const getFormComponents = (
   components.map((component) => {
     const answer = answers?.find((answer) => answer.question.id === component.question)
 
-    // Prefill if answer exists, otherwise return component without defaultValue(s)
+    // Prefill if answer exists, otherwise return component without value(s)
     switch (answer?.type) {
       case 'text':
-        return { ...component, defaultValue: answer.text }
+        return { ...component, value: answer.text }
       case 'time':
-        return { ...component, defaultValue: answer.time }
+        return { ...component, value: answer.time }
       case 'value_label': {
         if (component.type === 'selectboxes') {
-          return { ...component, defaultValues: answer.values_and_labels.map(({ value }) => value) }
+          return { ...component, value: answer.values_and_labels.map(({ value }) => value) } as unknown as Component
         }
-        return { ...component, defaultValue: answer.values_and_labels[0]?.value ?? undefined }
+        return { ...component, value: answer.values_and_labels[0]?.value ?? undefined }
       }
       default:
         return component

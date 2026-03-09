@@ -11,8 +11,8 @@ import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isVisible } from './utils'
 
 const getDefaultValue = (component: Component): string | string[] => {
-  if (isSelectboxes(component)) return component.defaultValues ?? []
-  return component.defaultValue ?? ''
+  if (isSelectboxes(component)) return component.value ?? []
+  return component.value ?? ''
 }
 
 const getComponent = (

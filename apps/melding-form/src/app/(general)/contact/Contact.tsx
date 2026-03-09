@@ -5,8 +5,7 @@ import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
 
-import type { StaticFormTextAreaComponent } from '@meldingen/form-renderer'
-
+import { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
 
@@ -20,7 +19,9 @@ import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 
 const initialState: FormState = {}
 
-export const Contact = ({ formComponents }: { formComponents: StaticFormTextAreaComponent[] }) => {
+type FormTextFieldInputComponent = StaticFormTextAreaComponentOutput & { defaultValue?: string }
+
+export const Contact = ({ formComponents }: { formComponents: FormTextFieldInputComponent[] }) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 

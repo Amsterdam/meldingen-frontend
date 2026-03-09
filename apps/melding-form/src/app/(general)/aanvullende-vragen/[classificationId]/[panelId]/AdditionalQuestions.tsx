@@ -17,15 +17,17 @@ import { FormState, ValidationError } from 'apps/melding-form/src/types'
 const getPrefilledFormComponents = (components: Component[], formData: FormData): Component[] =>
   components.map((component) => {
     if (isSelectboxes(component)) {
-      const defaultValues = component.values.map(({ value }) => formData.get(`checkbox___${component.key}___${value}`))
+      const value = component.values
+        .map(({ value }) => formData.get(`checkbox___${component.key}___${value}`))
+        .filter((value): value is string => typeof value === 'string')
 
-      return { ...component, defaultValues }
+      return { ...component, value }
     }
 
-    const formValue = formData.get(component.key)
+    const value = formData.get(component.key)
 
-    if (typeof formValue === 'string') {
-      return { ...component, defaultValue: formValue }
+    if (typeof value === 'string') {
+      return { ...component, value }
     }
 
     return component

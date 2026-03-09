@@ -107,9 +107,9 @@ describe('Page', () => {
           action: expect.any(Function),
           formComponents: [
             {
-              defaultValue: additionalQuestions[0].text,
               key: 'question-1',
               question: additionalQuestions[0].question.id,
+              value: additionalQuestions[0].text,
             },
           ],
           panelLabel: 'Panel 1',
@@ -154,10 +154,10 @@ describe('Page', () => {
           formComponents: [
             {
               data: { values: selectAdditionalQuestion.values_and_labels },
-              defaultValue: selectAdditionalQuestion.values_and_labels[0].value,
               key: 'question-1',
               question: selectAdditionalQuestion.question.id,
               type: 'select',
+              value: selectAdditionalQuestion.values_and_labels[0].value,
             },
           ],
         }),
@@ -198,10 +198,10 @@ describe('Page', () => {
         expect.objectContaining({
           formComponents: [
             {
-              defaultValue: '14:30',
               key: 'question-1',
               question: 3,
               type: 'time',
+              value: '14:30',
             },
           ],
         }),
@@ -259,10 +259,10 @@ describe('Page', () => {
           action: expect.any(Function),
           formComponents: [
             {
-              defaultValues: ['One', 'Two'],
               key: 'question-1',
               question: 'q1',
               type: 'selectboxes',
+              value: ['One', 'Two'],
               values: [
                 { label: 'One', position: 1, value: 'One' },
                 { label: 'Two', position: 2, value: 'Two' },
@@ -338,10 +338,10 @@ describe('Page', () => {
           formComponents: [
             {
               data: { values: selectAdditionalQuestion.values_and_labels },
-              defaultValue: undefined,
               key: 'question-1',
               question: selectAdditionalQuestion.question.id,
               type: 'select',
+              value: undefined,
             },
           ],
         }),

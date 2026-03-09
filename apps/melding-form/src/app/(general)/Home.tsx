@@ -35,10 +35,10 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
    */
   const formComponents = formData
     ? formComponentsFromServer.map((component) => {
-        const formValue = formData.get(component.key)
+        const value = formData.get(component.key)
 
-        if (typeof formValue === 'string') {
-          return { ...component, defaultValue: formValue }
+        if (typeof value === 'string') {
+          return { ...component, value }
         }
 
         return component

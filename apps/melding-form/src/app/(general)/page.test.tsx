@@ -107,7 +107,7 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(Home).toHaveBeenCalledWith(
-      { action: expect.any(Function), formComponents: [{ ...textAreaComponent, defaultValue: melding.text }] },
+      { action: expect.any(Function), formComponents: [{ ...textAreaComponent, value: melding.text }] },
       undefined,
     )
   })
