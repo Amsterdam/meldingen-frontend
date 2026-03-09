@@ -36,7 +36,7 @@ export type PanelComponent = {
   components: Component[]
   input: false
   key: string
-  label: string
   position: number
+  title: string
   type: 'panel'
 }
