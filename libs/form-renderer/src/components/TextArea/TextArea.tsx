@@ -15,6 +15,7 @@ export type Props = {
   id: string
   label: string
   maxCharCount?: number | null
+  onChange: (value: string) => void
   validate?: { required: boolean } | null
 }
 

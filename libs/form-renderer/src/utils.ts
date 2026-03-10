@@ -7,6 +7,28 @@ import type {
   FormTextFieldInputComponent,
 } from './types'
 
+const isNullOrEmpty = (value: unknown) => value === null || value === ''
+
+export const isVisible = (component: Component, values: Record<string, string | string[]>): boolean => {
+  const { conditional } = component
+
+  if (
+    !conditional ||
+    isNullOrEmpty(conditional.when) ||
+    isNullOrEmpty(conditional.eq) ||
+    isNullOrEmpty(conditional.show)
+  )
+    return true
+
+  const answerValue = values[conditional.when] ?? null
+  const conditionMet =
+    answerValue !== null && Array.isArray(answerValue)
+      ? answerValue.includes(String(conditional.eq)) // For checkboxes, the answerValue is an array. The condition is met if at least one of the values matches the condition.
+      : answerValue === String(conditional.eq)
+
+  return conditional.show ? conditionMet : !conditionMet
+}
+
 export const isRadio = (component: Component): component is FormRadioComponent => component.type === 'radio'
 
 export const isSelect = (component: Component): component is FormSelectComponent => component.type === 'select'

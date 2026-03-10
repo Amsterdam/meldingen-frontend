@@ -1,28 +1,84 @@
 import Form from 'next/form'
+import { useEffect, useState } from 'react'
 
 import { Heading, SubmitButton } from '@meldingen/ui'
 
 import type { Component } from './types'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
-import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield } from './utils'
+import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isVisible } from './utils'
 
-const getComponent = (component: Component, hasOneFormComponent: boolean, errorMessage?: string) => {
+const getValue = (component: Component): string | string[] => {
+  if (isSelectboxes(component)) return component.defaultValues ?? []
+  return component.defaultValue ?? ''
+}
+
+const getComponent = (
+  component: Component,
+  hasOneFormComponent: boolean,
+  errorMessage?: string,
+  onChange?: (value: string | string[]) => void,
+) => {
   const { key } = component
   if (isRadio(component)) {
-    return <Radio {...component} errorMessage={errorMessage} hasHeading={hasOneFormComponent} id={key} key={key} />
+    return (
+      <Radio
+        {...component}
+        errorMessage={errorMessage}
+        hasHeading={hasOneFormComponent}
+        id={key}
+        key={key}
+        onChange={onChange as (value: string) => void}
+      />
+    )
   }
   if (isSelect(component)) {
-    return <Select {...component} errorMessage={errorMessage} hasHeading={hasOneFormComponent} id={key} key={key} />
+    return (
+      <Select
+        {...component}
+        errorMessage={errorMessage}
+        hasHeading={hasOneFormComponent}
+        id={key}
+        key={key}
+        onChange={onChange as (value: string) => void}
+      />
+    )
   }
   if (isSelectboxes(component)) {
-    return <Checkbox {...component} errorMessage={errorMessage} hasHeading={hasOneFormComponent} id={key} key={key} />
+    return (
+      <Checkbox
+        {...component}
+        errorMessage={errorMessage}
+        hasHeading={hasOneFormComponent}
+        id={key}
+        key={key}
+        onChange={onChange as (value: string[]) => void}
+      />
+    )
   }
   if (isTextarea(component)) {
-    return <TextArea {...component} errorMessage={errorMessage} hasHeading={hasOneFormComponent} id={key} key={key} />
+    return (
+      <TextArea
+        {...component}
+        errorMessage={errorMessage}
+        hasHeading={hasOneFormComponent}
+        id={key}
+        key={key}
+        onChange={onChange as (value: string) => void}
+      />
+    )
   }
   if (isTextfield(component)) {
-    return <TextInput {...component} errorMessage={errorMessage} hasHeading={hasOneFormComponent} id={key} key={key} />
+    return (
+      <TextInput
+        {...component}
+        errorMessage={errorMessage}
+        hasHeading={hasOneFormComponent}
+        id={key}
+        key={key}
+        onChange={onChange as (value: string) => void}
+      />
+    )
   }
   // eslint-disable-next-line no-console
   console.error(`Type ${component.type} is unknown, please add it to FormRenderer.`)
@@ -42,6 +98,16 @@ export type Props = {
 
 export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonText, validationErrors }: Props) => {
   const hasOneFormComponent = formComponents.length === 1
+
+  const [values, setValues] = useState<Record<string, string | string[]>>(() =>
+    Object.fromEntries(formComponents.map((component) => [component.key, getValue(component)])),
+  )
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   return (
     <>
       {/*
@@ -55,8 +121,14 @@ export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonT
       )}
       <Form action={action} className="ams-gap-m" noValidate>
         {formComponents.map((component) => {
+          if (mounted && !isVisible(component, values)) return null
+
           const errorMessage = validationErrors?.find((error) => error.key === component.key)?.message
-          return getComponent(component, hasOneFormComponent, errorMessage)
+
+          const onChange = (newValue: string | string[]) =>
+            setValues((prev) => ({ ...prev, [component.key]: newValue }))
+
+          return getComponent(component, hasOneFormComponent, errorMessage, onChange)
         })}
         <SubmitButton>{submitButtonText}</SubmitButton>
       </Form>

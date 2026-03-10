@@ -12,6 +12,7 @@ export type Props = {
   hasHeading: boolean
   id: string
   label: string
+  onChange: (value: string[]) => void
   validate?: { required: boolean } | null
   values: {
     label: string
