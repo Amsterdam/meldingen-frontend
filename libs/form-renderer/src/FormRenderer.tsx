@@ -1,5 +1,5 @@
 import Form from 'next/form'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Heading, SubmitButton } from '@meldingen/ui'
 
@@ -7,6 +7,8 @@ import type { Component } from './types'
 
 import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
 import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isVisible } from './utils'
+
+import styles from './FormRenderer.module.css'
 
 const getValue = (component: Component): string | string[] => {
   if (isSelectboxes(component)) return component.defaultValues ?? []
@@ -102,12 +104,6 @@ export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonT
   const [values, setValues] = useState<Record<string, string | string[]>>(() =>
     Object.fromEntries(formComponents.map((component) => [component.key, getValue(component)])),
   )
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
   return (
     <>
       {/*
@@ -121,14 +117,16 @@ export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonT
       )}
       <Form action={action} className="ams-gap-m" noValidate>
         {formComponents.map((component) => {
-          if (mounted && !isVisible(component, values)) return null
-
           const errorMessage = validationErrors?.find((error) => error.key === component.key)?.message
 
           const onChange = (newValue: string | string[]) =>
             setValues((prev) => ({ ...prev, [component.key]: newValue }))
 
-          return getComponent(component, hasOneFormComponent, errorMessage, onChange)
+          return (
+            <div className={isVisible(component, values) ? undefined : styles.hideComponent} key={component.key}>
+              {getComponent(component, hasOneFormComponent, errorMessage, onChange)}
+            </div>
+          )
         })}
         <SubmitButton>{submitButtonText}</SubmitButton>
       </Form>
