@@ -61,8 +61,10 @@ export const Checkbox = ({
             invalid={Boolean(errorMessage)}
             key={value}
             name={`checkbox___${id}___${value}`}
-            onChange={(e) => {
-              const newValue = e.target.checked ? [...checkedValues, value] : checkedValues.filter((v) => v !== value)
+            onChange={(event) => {
+              const newValue = event.target.checked
+                ? [...checkedValues, value]
+                : checkedValues.filter((localValue) => localValue !== value)
 
               setCheckedValues(newValue)
               onChange(newValue)
