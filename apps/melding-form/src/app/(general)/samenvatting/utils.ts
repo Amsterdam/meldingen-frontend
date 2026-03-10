@@ -61,6 +61,8 @@ const findPanelIdByQuestionId = (panels: FormPanelComponentOutput[], id: number)
 
 const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
   switch (answer.type) {
+    case 'date':
+      return answer.date.label
     case 'text':
       return answer.text
     case 'time':
