@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 
 import type {
   FormCheckboxComponentOutput,
+  FormDateComponentOutput,
   FormOutput,
   FormPanelComponentOutput,
   FormRadioComponentOutput,
@@ -19,13 +20,12 @@ import {
   getPreviousPanelPath,
   isPanelComponentOutput,
 } from './_utils/navigationUtils'
+import { setDateComponentOptions } from './_utils/setDateComponentOptions'
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 import { COOKIES } from 'apps/melding-form/src/constants'
 
 export const dynamic = 'force-dynamic'
-
-type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
 
 // The backend returns a 'position' key in each value-label object,
 // but it does not accept that key when we send the answer back. For that reason, we strip it here.
@@ -34,8 +34,17 @@ const stripPositionKey = <T extends { position?: unknown }>(obj: T): Omit<T, 'po
   return rest
 }
 
+export type DateOptionValues = {
+  converted_date: string
+  label: string
+  value: string
+}
+export type FormDateComponentOutputWithValues = FormDateComponentOutput & { values: DateOptionValues[] }
+
 const getValuesAndLabels = (component: FormOutputWithoutPanelComponents) => {
   switch (component.type) {
+    case 'date':
+      return (component as FormDateComponentOutputWithValues).values
     case 'radio':
       return (component as FormRadioComponentOutput).values.map(stripPositionKey)
     case 'select':
@@ -47,7 +56,9 @@ const getValuesAndLabels = (component: FormOutputWithoutPanelComponents) => {
   }
 }
 
-const getFormComponents = (
+export type FormOutputWithoutPanelComponents = Exclude<FormOutput['components'][number], FormPanelComponentOutput>
+
+const prefillFormComponents = (
   components: FormOutputWithoutPanelComponents[],
   answers?: GetMeldingByMeldingIdAnswersMelderResponses['200'],
 ) =>
@@ -56,6 +67,8 @@ const getFormComponents = (
 
     // Prefill if answer exists, otherwise return component without defaultValue(s)
     switch (answer?.type) {
+      case 'date':
+        return { ...component, defaultValue: answer.date.value }
       case 'text':
         return { ...component, defaultValue: answer.text }
       case 'time':
@@ -114,19 +127,19 @@ export default async ({ params }: { params: Params }) => {
     console.error(answersError)
   }
 
-  const formComponents = getFormComponents(panelComponents, answers)
+  const formComponentsWithDateOptions = setDateComponentOptions(panelComponents)
 
-  const questionAndAnswerIdPairs = answers?.map((answer) => ({
-    answerId: answer.id,
-    questionId: answer.question.id,
-  }))
-
-  const questionMetadata = panelComponents.map((component) => {
+  const questionMetadata = formComponentsWithDateOptions.map((component) => {
     const { key, question, type } = component
     const valuesAndLabels = getValuesAndLabels(component)
 
     return { id: question, key, type, valuesAndLabels }
   })
+
+  const questionAndAnswerIdPairs = answers?.map((answer) => ({
+    answerId: answer.id,
+    questionId: answer.question.id,
+  }))
 
   const requiredQuestionKeysWithErrorMessages = panelComponents
     .filter((question) => question.validate?.required)
@@ -166,10 +179,19 @@ export default async ({ params }: { params: Params }) => {
     previousAnswersByKey,
   )
 
+  const prefilledFormComponents = prefillFormComponents(formComponentsWithDateOptions, answers)
+  const formComponentsWithCorrectRenderTypes = prefilledFormComponents.map((component) => {
+    // The date component is rendered as a radio component, so we change the type here.
+    if (component.type === 'date') {
+      return { ...component, type: 'radio' }
+    }
+    return component
+  })
+
   return (
     <AdditionalQuestions
       action={postFormWithExtraArgs}
-      formComponents={formComponents}
+      formComponents={formComponentsWithCorrectRenderTypes}
       panelLabel={panelLabel}
       previousPanelPath={previousPanelPath}
     />
