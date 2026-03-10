@@ -15,7 +15,7 @@ Each step corresponds to a panel in the additional questions form that is connec
   The backend entity that a component represents. A question has an ID and a key, and belongs to a panel. When a user fills in a component, they are answering its corresponding question.
 
 - **Answer**
-  A user’s response to a question. Answers are stored on the backend and keyed by question ID. When a panel is submitted, each answered question results in either a new answer being created (POST) or an existing answer being updated (PATCH).
+  A user’s response to a question. Answers are stored on the backend and keyed by question ID. When the form on a page is submitted, each answered question results in either a new answer being created (POST) or an existing answer being updated (PATCH).
 
 ## Page
 
