@@ -9,11 +9,13 @@ import { Grid, Heading, Pagination } from '@meldingen/ui'
 
 import type { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
-import { OverviewDesktop } from './OverviewDesktop'
-import { toMeldingenWithAddress } from './overviewFields'
-import { OverviewMobile } from './OverviewMobile'
+import { OverviewDesktop } from './_components/OverviewDesktop'
+import { OverviewMobile } from './_components/OverviewMobile'
+import { getShortNLAddress } from './utils'
 
 import styles from './Overview.module.css'
+
+export type MeldingWithAddress = MeldingOutput & { address?: string }
 
 type Props = {
   meldingen: MeldingOutput[]
@@ -21,6 +23,12 @@ type Props = {
   page?: number
   totalPages: number
 }
+
+export const toMeldingenWithAddress = (meldingen: MeldingOutput[]): MeldingWithAddress[] =>
+  meldingen.map((melding) => ({
+    ...melding,
+    address: getShortNLAddress(melding),
+  }))
 
 export const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
   <NextLink href={props.href || ''} legacyBehavior passHref>

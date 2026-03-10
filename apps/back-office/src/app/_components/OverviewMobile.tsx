@@ -4,9 +4,10 @@ import { Fragment } from 'react'
 
 import { DescriptionList, Link } from '@meldingen/ui'
 
-import type { MeldingWithAddress, OverviewField } from './overviewFields'
+import type { MeldingWithAddress } from '../Overview'
+import type { OverviewField } from './utils/overviewFields'
 
-import { formatValue, getMeldingDetailHref, OVERVIEW_FIELDS } from './overviewFields'
+import { formatValue, getMeldingDetailHref, OVERVIEW_FIELDS } from './utils/overviewFields'
 
 import styles from './OverviewMobile.module.css'
 

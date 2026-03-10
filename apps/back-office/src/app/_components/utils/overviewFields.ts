@@ -1,6 +1,6 @@
 import type { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
-import { getShortNLAddress } from './utils'
+import { MeldingWithAddress } from '../../Overview'
 
 export type OverviewFieldKey = 'public_id' | 'created_at' | 'classification' | 'state' | 'address' | 'postal_code'
 
@@ -23,14 +23,6 @@ export const OVERVIEW_FIELDS: OverviewField[] = [
   { key: 'address', labelKey: 'column-header.address' },
   { key: 'postal_code', labelKey: 'column-header.postal_code' },
 ]
-
-export type MeldingWithAddress = MeldingOutput & { address?: string }
-
-export const toMeldingenWithAddress = (meldingen: MeldingOutput[]): MeldingWithAddress[] =>
-  meldingen.map((melding) => ({
-    ...melding,
-    address: getShortNLAddress(melding),
-  }))
 
 export const getMeldingDetailHref = (melding: Pick<MeldingOutput, 'id' | 'public_id'>) =>
   `/melding/${melding.id}?id=${melding.public_id}`

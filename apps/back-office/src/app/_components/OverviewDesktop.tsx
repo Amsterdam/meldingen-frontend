@@ -2,9 +2,10 @@ import NextLink from 'next/link'
 
 import { Link, Table } from '@meldingen/ui'
 
-import type { MeldingWithAddress, OverviewField } from './overviewFields'
+import type { MeldingWithAddress } from '../Overview'
+import type { OverviewField } from './utils/overviewFields'
 
-import { formatValue, getMeldingDetailHref, OVERVIEW_FIELDS } from './overviewFields'
+import { formatValue, getMeldingDetailHref, OVERVIEW_FIELDS } from './utils/overviewFields'
 
 type Props = {
   fields?: OverviewField[]
