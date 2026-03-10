@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
 import { melding } from '../mocks/data'
+import { formatValue } from './_components/utils/overviewFields'
 import { LinkComponent, Overview } from './Overview'
-import { formatValue } from './overviewFields'
 
 const mockMatchMedia = (matches: boolean) => {
   Object.defineProperty(window, 'matchMedia', {
