@@ -5,7 +5,7 @@ Each step corresponds to a panel in the additional questions form that is connec
 
 ## Glossary
 
-- **Panel** (also: **page**)
+- **Panel** (also: **PanelComponent**, **page**)
   A single step in the form wizard. Each panel contains one or more components and corresponds to a URL segment (`/aanvullende-vragen/[classificationId]/[panelId]`). Panels may be conditionally skipped based on answers given in earlier steps.
 
 - **Component**
