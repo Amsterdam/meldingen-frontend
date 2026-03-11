@@ -20,6 +20,7 @@ const defaultProps: Props = {
   action: vi.fn(),
   formComponents: [textAreaComponent],
   panelLabel: 'Test title',
+  previousAnswersByKey: {},
   previousPanelPath: '/prev',
 }
 
