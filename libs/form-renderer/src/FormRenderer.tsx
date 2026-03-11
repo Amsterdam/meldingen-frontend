@@ -5,8 +5,8 @@ import { Heading, SubmitButton } from '@meldingen/ui'
 
 import type { Component } from './types'
 
-import { Checkbox, Radio, Select, TextArea, TextInput } from './components'
-import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isVisible } from './utils'
+import { Checkbox, Radio, Select, TextArea, TextInput, TimeInput } from './components'
+import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimeInput, isVisible } from './utils'
 
 import styles from './FormRenderer.module.css'
 
@@ -73,6 +73,18 @@ const getComponent = (
   if (isTextfield(component)) {
     return (
       <TextInput
+        {...component}
+        errorMessage={errorMessage}
+        hasHeading={hasOneFormComponent}
+        id={key}
+        key={key}
+        onChange={onChange as (value: string) => void}
+      />
+    )
+  }
+  if (isTimeInput(component)) {
+    return (
+      <TimeInput
         {...component}
         errorMessage={errorMessage}
         hasHeading={hasOneFormComponent}
