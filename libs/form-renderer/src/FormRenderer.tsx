@@ -1,5 +1,5 @@
 import Form from 'next/form'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Heading, SubmitButton } from '@meldingen/ui'
 
@@ -114,11 +114,6 @@ export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonT
   const [values, setValues] = useState<Record<string, string | string[]>>(() =>
     Object.fromEntries(formComponents.map((component) => [component.key, getValue(component)])),
   )
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   return (
     <>
@@ -133,7 +128,7 @@ export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonT
       )}
       <Form action={action} className="ams-gap-m" noValidate>
         {formComponents.map((component) => {
-          if (mounted && !isVisible(component, values)) return null
+          if (!isVisible(component, values)) return null
 
           const errorMessage = validationErrors?.find((error) => error.key === component.key)?.message
 
