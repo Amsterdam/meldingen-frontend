@@ -7,10 +7,10 @@ import {
   getPreviousAnswersByKey,
   getPreviousPanelPath,
   isPanelVisible,
-  PanelKeyWithComponentsConditions,
+  PanelComponentsConditions,
 } from './navigationUtils'
 
-const mockPanel = (key: string, conditions: PanelKeyWithComponentsConditions['componentsConditions'] = []) => ({
+const mockPanel = (key: string, conditions: PanelComponentsConditions['componentsConditions'] = []) => ({
   componentsConditions: conditions,
   key,
 })

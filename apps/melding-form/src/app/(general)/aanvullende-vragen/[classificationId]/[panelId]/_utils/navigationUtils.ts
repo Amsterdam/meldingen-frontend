@@ -5,7 +5,7 @@ import type {
   GetMeldingByMeldingIdAnswersMelderResponses,
 } from '@meldingen/api-client'
 
-export type PanelKeyWithComponentsConditions = {
+export type PanelComponentsConditions = {
   componentsConditions: Array<{ conditional?: FormIoConditional | null; key: string }>
   key: string
 }
@@ -39,14 +39,14 @@ export const isComponentVisible = (
 }
 
 // If a panel has at least one visible component, the panel is visible. Otherwise, the panel is hidden.
-export const isPanelVisible = (panel: PanelKeyWithComponentsConditions, answersByKey: AnswersByKey) =>
+export const isPanelVisible = (panel: PanelComponentsConditions, answersByKey: AnswersByKey) =>
   panel.componentsConditions.length === 0 ||
   panel.componentsConditions.some((component) => isComponentVisible(component, answersByKey))
 
 export const getNextPanelPath = (
   classificationId: number,
   currentPanelIndex: number,
-  panels: PanelKeyWithComponentsConditions[],
+  panels: PanelComponentsConditions[],
   answersByKey: AnswersByKey,
 ) => {
   for (let i = currentPanelIndex + 1; i < panels.length; i++) {
@@ -60,7 +60,7 @@ export const getNextPanelPath = (
 export const getPreviousPanelPath = (
   classificationId: number,
   currentPanelIndex: number,
-  panels: PanelKeyWithComponentsConditions[],
+  panels: PanelComponentsConditions[],
   answersByKey: AnswersByKey,
 ) => {
   for (let i = currentPanelIndex - 1; i >= 0; i--) {

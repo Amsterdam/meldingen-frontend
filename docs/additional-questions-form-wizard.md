@@ -27,8 +27,8 @@ When a user arrives on a form wizard page, the following happens:
 4. **Prepare data for the Server Action**: Several pieces of data are calculated and forwarded to the Server Action:
    - `questionAndAnswerIdPairs`: maps each question ID to its existing answer ID, so the action can decide whether to POST (new answer) or PATCH (update existing answer).
    - `questionMetadata`: id, key, type, and available value/label pairs per component, used to build the correct answer body when submitting.
-   - `requiredQuestionKeysWithErrorMessages`: the keys of required components together with their validation error messages, used to check required fields before submitting.
-   - `panelKeyWithComponentsConditions`: the conditional rules of every component in every panel, used to skip conditionally hidden panels when navigating.
+   - `requiredQuestionErrorMessages`: the keys of required components together with their validation error messages, used to check required fields before submitting.
+   - `panelComponentsConditions`: the conditional rules of every component in every panel, used to skip conditionally hidden panels when navigating.
    - `previousAnswersByKey`: all previously submitted answers keyed by component key. This is merged with the answer(s) given on the current page, to ensure up-to-date answers when calculating the next step in the wizard.
 5. **Calculate previous panel path**: The panel list is walked backwards (skipping conditionally hidden panels) to find the URL for the "back" button.
 6. **Render**: All prepared data is passed to the `AdditionalQuestions` component, which renders the form.

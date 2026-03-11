@@ -141,7 +141,7 @@ export default async ({ params }: { params: Params }) => {
     questionId: answer.question.id,
   }))
 
-  const requiredQuestionKeysWithErrorMessages = panelComponents
+  const requiredQuestionErrorMessages = panelComponents
     .filter((question) => question.validate?.required)
     .map(({ key, validate }) => ({
       key,
@@ -149,23 +149,21 @@ export default async ({ params }: { params: Params }) => {
     }))
 
   // We need the components conditions of all panels to determine the next and previous panel paths, so we extract them here.
-  const panelKeyWithComponentsConditions = data.components
-    .filter(isPanelComponentOutput)
-    .map(({ components, key }) => ({
-      componentsConditions: components.map(({ conditional, key }) => ({ conditional, key })),
-      key,
-    }))
+  const panelComponentsConditions = data.components.filter(isPanelComponentOutput).map(({ components, key }) => ({
+    componentsConditions: components.map(({ conditional, key }) => ({ conditional, key })),
+    key,
+  }))
 
   const previousAnswersByKey = getPreviousAnswersByKey(data, answers)
 
   const extraArgs = {
     classificationId,
     currentPanelIndex,
-    panelKeyWithComponentsConditions,
+    panelComponentsConditions,
     previousAnswersByKey,
     questionAndAnswerIdPairs,
     questionMetadata,
-    requiredQuestionKeysWithErrorMessages,
+    requiredQuestionErrorMessages,
   }
 
   // Pass extra arguments to the postForm action
@@ -175,7 +173,7 @@ export default async ({ params }: { params: Params }) => {
   const previousPanelPath = getPreviousPanelPath(
     classificationId,
     currentPanelIndex,
-    panelKeyWithComponentsConditions,
+    panelComponentsConditions,
     previousAnswersByKey,
   )
 

@@ -493,7 +493,7 @@ describe('Page', () => {
     expect(extraArgs).toMatchObject({
       classificationId: 1,
       currentPanelIndex: 1,
-      panelKeyWithComponentsConditions: [
+      panelComponentsConditions: [
         { componentsConditions: [{ key: 'question-1' }], key: 'panel-1' },
         { componentsConditions: [{ key: 'question-2' }], key: 'panel-2' },
       ],
@@ -502,9 +502,7 @@ describe('Page', () => {
         { answerId: additionalQuestions[1].id, questionId: additionalQuestions[1].question.id },
       ],
       questionMetadata: [{ id: 'q2', key: 'question-2', type: 'textfield' }],
-      requiredQuestionKeysWithErrorMessages: [
-        { key: 'question-2', requiredErrorMessage: 'required-error-message-fallback' },
-      ],
+      requiredQuestionErrorMessages: [{ key: 'question-2', requiredErrorMessage: 'required-error-message-fallback' }],
     })
   })
 
@@ -544,12 +542,12 @@ describe('Page', () => {
     expect(extraArgs).toMatchObject({
       classificationId: 1,
       currentPanelIndex: 0,
-      panelKeyWithComponentsConditions: [
+      panelComponentsConditions: [
         { componentsConditions: [{ key: 'question-1' }], key: 'panel-1' },
         { componentsConditions: [{ key: 'question-2' }], key: 'panel-2' },
       ],
       questionMetadata: [{ id: 'q1', key: 'question-1', type: 'textfield' }],
-      requiredQuestionKeysWithErrorMessages: [],
+      requiredQuestionErrorMessages: [],
     })
   })
 

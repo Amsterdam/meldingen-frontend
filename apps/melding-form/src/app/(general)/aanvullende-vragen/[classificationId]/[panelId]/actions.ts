@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
-import type { AnswersByKey, PanelKeyWithComponentsConditions } from './_utils/navigationUtils'
+import type { AnswersByKey, PanelComponentsConditions } from './_utils/navigationUtils'
 
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
@@ -14,12 +14,12 @@ import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, isComponentVisible }
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
-type RequiredQuestionKeyWithErrorMessage = { key: string; requiredErrorMessage: string }
+type RequiredQuestionErrorMessage = { key: string; requiredErrorMessage: string }
 
 export type ArgsType = {
   classificationId: number
   currentPanelIndex: number
-  panelKeyWithComponentsConditions: PanelKeyWithComponentsConditions[]
+  panelComponentsConditions: PanelComponentsConditions[]
   previousAnswersByKey: AnswersByKey
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
   questionMetadata: {
@@ -28,16 +28,16 @@ export type ArgsType = {
     type: string
     valuesAndLabels?: { label: string; value: string }[]
   }[]
-  requiredQuestionKeysWithErrorMessages: RequiredQuestionKeyWithErrorMessage[]
+  requiredQuestionErrorMessages: RequiredQuestionErrorMessage[]
 }
 
-const getUnansweredRequiredQuestionKeysWithErrorMessages = (
-  requiredKeysWithErrorMessages: RequiredQuestionKeyWithErrorMessage[],
+const getMissingRequiredQuestionErrorMessages = (
+  requiredQuestionErrorMessages: RequiredQuestionErrorMessage[],
   entries: [string, unknown][],
-  componentsConditions: PanelKeyWithComponentsConditions['componentsConditions'],
+  componentsConditions: PanelComponentsConditions['componentsConditions'],
   answersByKey: AnswersByKey,
 ) =>
-  requiredKeysWithErrorMessages.filter(({ key }) => {
+  requiredQuestionErrorMessages.filter(({ key }) => {
     const componentCondition = componentsConditions.find((component) => component.key === key)
 
     // If the component is not visible, it is not required
@@ -58,11 +58,11 @@ export const postForm = async (
   {
     classificationId,
     currentPanelIndex,
-    panelKeyWithComponentsConditions,
+    panelComponentsConditions,
     previousAnswersByKey,
     questionAndAnswerIdPairs,
     questionMetadata,
-    requiredQuestionKeysWithErrorMessages,
+    requiredQuestionErrorMessages,
   }: ArgsType,
   _: unknown,
   formData: FormData,
@@ -85,18 +85,18 @@ export const postForm = async (
   const allAnswersByKey = { ...previousAnswersByKey, ...Object.fromEntries(entriesWithMergedCheckboxes) }
 
   // Check if all required questions are answered
-  const currentPanelComponentsConditions = panelKeyWithComponentsConditions[currentPanelIndex].componentsConditions
-  const missingRequiredKeysWithErrorMessages = getUnansweredRequiredQuestionKeysWithErrorMessages(
-    requiredQuestionKeysWithErrorMessages,
+  const componentsConditions = panelComponentsConditions[currentPanelIndex].componentsConditions
+  const missingRequiredQuestionErrorMessages = getMissingRequiredQuestionErrorMessages(
+    requiredQuestionErrorMessages,
     entriesWithMergedCheckboxes,
-    currentPanelComponentsConditions,
+    componentsConditions,
     allAnswersByKey,
   )
 
-  if (missingRequiredKeysWithErrorMessages.length > 0) {
+  if (missingRequiredQuestionErrorMessages.length > 0) {
     return {
       formData,
-      validationErrors: missingRequiredKeysWithErrorMessages.map(({ key, requiredErrorMessage }) => ({
+      validationErrors: missingRequiredQuestionErrorMessages.map(({ key, requiredErrorMessage }) => ({
         key,
         message: requiredErrorMessage,
       })),
@@ -145,7 +145,7 @@ export const postForm = async (
   const nextPanelPath = getNextPanelPath(
     classificationId,
     currentPanelIndex,
-    panelKeyWithComponentsConditions,
+    panelComponentsConditions,
     allAnswersByKey,
   )
 
@@ -165,7 +165,7 @@ export const postForm = async (
     const oneDay = 24 * 60 * 60
     cookieStore.set(
       COOKIES.LAST_PANEL_PATH,
-      `/aanvullende-vragen/${classificationId}/${panelKeyWithComponentsConditions[currentPanelIndex].key}`,
+      `/aanvullende-vragen/${classificationId}/${panelComponentsConditions[currentPanelIndex].key}`,
       { maxAge: oneDay },
     )
   }
