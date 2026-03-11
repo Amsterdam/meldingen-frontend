@@ -96,6 +96,40 @@ describe('postForm', () => {
     })
   })
 
+  it('does not return a required validation error when the required component is not visible', async () => {
+    const formData = new FormData()
+
+    const result = await postForm(
+      {
+        ...defaultArgs,
+        currentPanelIndex: 0,
+        panelComponentsConditions: [
+          {
+            componentsConditions: [
+              {
+                conditional: {
+                  eq: 'yes',
+                  show: true,
+                  when: 'controller',
+                },
+                key: 'dependent',
+              },
+            ],
+            key: 'panel-1',
+          },
+          { componentsConditions: [], key: 'panel-2' },
+        ],
+        previousAnswersByKey: { controller: 'no' },
+        requiredQuestionErrorMessages: [{ key: 'dependent', requiredErrorMessage: 'Dit veld is verplicht' }],
+      },
+      null,
+      formData,
+    )
+
+    expect(result).toBeUndefined()
+    expect(redirect).toHaveBeenCalled()
+  })
+
   it('skips results without a value when checking for validation errors', async () => {
     const formData = new FormData()
     formData.append('non-existent-key', 'some-value') // Not in questionMetadata, so result will be undefined
