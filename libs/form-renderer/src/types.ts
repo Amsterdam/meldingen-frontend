@@ -43,3 +43,5 @@ export type PanelComponent = {
   position: number
   type: 'panel'
 }
+
+export type AnswersByKey = Record<string, string | string[] | null>

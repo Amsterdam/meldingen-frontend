@@ -10,6 +10,7 @@ const defaultProps: Props = {
   action: vi.fn(),
   formComponents: form.components[0].components,
   panelLabel: form.components[0].label,
+  previousAnswersByKey: {},
   submitButtonText: 'Volgende vraag',
 }
 
@@ -200,5 +201,53 @@ describe('FormRenderer', () => {
     await user.click(screen.getByRole('checkbox', { name: 'One' }))
 
     expect(screen.getByRole('textbox', { name: 'Dependent' })).toBeInTheDocument()
+  })
+
+  it('does not render a component when previousAnswersByKey does not meet the condition', () => {
+    const dependent = {
+      ...form.components[0].components[0],
+      conditional: {
+        eq: 'yes',
+        show: true,
+        when: 'previous-answer',
+      },
+      key: 'dependent-prev',
+      label: 'Dependent Previous',
+    }
+
+    render(
+      <FormRenderer
+        {...defaultProps}
+        formComponents={[dependent]}
+        panelLabel="Test panel"
+        previousAnswersByKey={{ 'previous-answer': 'no' }}
+      />,
+    )
+
+    expect(screen.queryByRole('textbox', { name: 'Dependent Previous' })).not.toBeInTheDocument()
+  })
+
+  it('renders a component when previousAnswersByKey meets the condition', () => {
+    const dependent = {
+      ...form.components[0].components[0],
+      conditional: {
+        eq: 'yes',
+        show: true,
+        when: 'previous-answer',
+      },
+      key: 'dependent-prev',
+      label: 'Dependent Previous',
+    }
+
+    render(
+      <FormRenderer
+        {...defaultProps}
+        formComponents={[dependent]}
+        panelLabel="Test panel"
+        previousAnswersByKey={{ 'previous-answer': 'yes' }}
+      />,
+    )
+
+    expect(screen.getByRole('textbox', { name: 'Dependent Previous' })).toBeInTheDocument()
   })
 })

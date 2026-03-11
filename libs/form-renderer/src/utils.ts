@@ -1,4 +1,5 @@
 import type {
+  AnswersByKey,
   Component,
   FormCheckboxComponent,
   FormRadioComponent,
@@ -10,7 +11,7 @@ import type {
 
 const isNullOrEmpty = (value: unknown) => value === null || value === ''
 
-export const isVisible = (component: Component, values: Record<string, string | string[]>): boolean => {
+export const isVisible = (component: Component, values: AnswersByKey): boolean => {
   const { conditional } = component
 
   if (

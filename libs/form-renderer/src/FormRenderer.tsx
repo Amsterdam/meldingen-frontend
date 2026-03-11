@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import { Heading, SubmitButton } from '@meldingen/ui'
 
-import type { Component } from './types'
+import type { AnswersByKey, Component } from './types'
 
 import { Checkbox, Radio, Select, TextArea, TextInput, TimeInput } from './components'
 import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimeInput, isVisible } from './utils'
@@ -101,6 +101,7 @@ export type Props = {
   action: (formData: FormData) => void
   formComponents: Component[]
   panelLabel?: string
+  previousAnswersByKey?: AnswersByKey
   submitButtonText: string
   validationErrors?: {
     key: string
@@ -108,12 +109,23 @@ export type Props = {
   }[]
 }
 
-export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonText, validationErrors }: Props) => {
+export const FormRenderer = ({
+  action,
+  formComponents,
+  panelLabel,
+  previousAnswersByKey = {},
+  submitButtonText,
+  validationErrors,
+}: Props) => {
   const hasOneFormComponent = formComponents.length === 1
 
-  const [values, setValues] = useState<Record<string, string | string[]>>(() =>
-    Object.fromEntries(formComponents.map((component) => [component.key, getValue(component)])),
-  )
+  const [values, setValues] = useState<AnswersByKey>(() => {
+    const initialComponentValues = Object.fromEntries(
+      formComponents.map((component) => [component.key, getValue(component)]),
+    )
+
+    return { ...previousAnswersByKey, ...initialComponentValues }
+  })
 
   return (
     <>

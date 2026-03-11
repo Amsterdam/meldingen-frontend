@@ -191,6 +191,7 @@ export default async ({ params }: { params: Params }) => {
       action={postFormWithExtraArgs}
       formComponents={formComponentsWithCorrectRenderTypes}
       panelLabel={panelLabel}
+      previousAnswersByKey={previousAnswersByKey}
       previousPanelPath={previousPanelPath}
     />
   )
