@@ -16,7 +16,7 @@ export const AFTER_ADDITIONAL_QUESTIONS_PATH = '/locatie'
 
 const isNullOrEmpty = (value: unknown) => value === null || value === ''
 
-const isComponentVisible = (
+export const isComponentVisible = (
   { conditional }: { conditional?: FormIoConditional | null },
   answersByKey: AnswersByKey,
 ) => {

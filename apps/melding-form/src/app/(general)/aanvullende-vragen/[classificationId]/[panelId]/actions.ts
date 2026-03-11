@@ -10,7 +10,7 @@ import type { AnswersByKey, PanelKeyWithComponentsConditions } from './_utils/na
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
-import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath } from './_utils/navigationUtils'
+import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, isComponentVisible } from './_utils/navigationUtils'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
@@ -34,8 +34,15 @@ export type ArgsType = {
 const getUnansweredRequiredQuestionKeysWithErrorMessages = (
   requiredKeysWithErrorMessages: RequiredQuestionKeyWithErrorMessage[],
   entries: [string, unknown][],
+  componentsConditions: PanelKeyWithComponentsConditions['componentsConditions'],
+  answersByKey: AnswersByKey,
 ) =>
   requiredKeysWithErrorMessages.filter(({ key }) => {
+    const componentCondition = componentsConditions.find((component) => component.key === key)
+
+    // If the component is not visible, it is not required
+    if (componentCondition && !isComponentVisible(componentCondition, answersByKey)) return false
+
     const entry = entries.find(([entryKey]) => entryKey === key)
 
     // If entries do not contain a key that is in requiredKeys, add it to missingRequiredKeys
@@ -73,10 +80,17 @@ export const postForm = async (
   const stringEntries = entriesArray.filter(([, value]) => typeof value === 'string') as [string, string][]
   const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(stringEntries))
 
+  // Merge previously submitted answers with the current panel's just-submitted answers.
+  // Current panel answers take priority, enabling up-to-date conditional evaluation.
+  const allAnswersByKey = { ...previousAnswersByKey, ...Object.fromEntries(entriesWithMergedCheckboxes) }
+
   // Check if all required questions are answered
+  const currentPanelComponentsConditions = panelKeyWithComponentsConditions[currentPanelIndex].componentsConditions
   const missingRequiredKeysWithErrorMessages = getUnansweredRequiredQuestionKeysWithErrorMessages(
     requiredQuestionKeysWithErrorMessages,
     entriesWithMergedCheckboxes,
+    currentPanelComponentsConditions,
+    allAnswersByKey,
   )
 
   if (missingRequiredKeysWithErrorMessages.length > 0) {
@@ -127,10 +141,6 @@ export const postForm = async (
       systemError: errors,
     }
   }
-
-  // Merge previously submitted answers with the current panel's just-submitted answers.
-  // Current panel answers take priority, enabling up-to-date conditional evaluation.
-  const allAnswersByKey = { ...previousAnswersByKey, ...Object.fromEntries(entriesWithMergedCheckboxes) }
 
   const nextPanelPath = getNextPanelPath(
     classificationId,
