@@ -16,9 +16,12 @@ const getValue = (component: Component): string | string[] => {
 const getComponent = (
   component: Component,
   hasOneFormComponent: boolean,
+  onChange: (value: string | string[]) => void,
   errorMessage?: string,
-  onChange?: (value: string | string[]) => void,
 ) => {
+  const onChangeString = (value: string) => onChange(value)
+  const onChangeArray = (value: string[]) => onChange(value)
+
   const { key } = component
   if (isRadio(component)) {
     return (
@@ -28,7 +31,7 @@ const getComponent = (
         hasHeading={hasOneFormComponent}
         id={key}
         key={key}
-        onChange={onChange as (value: string) => void}
+        onChange={onChangeString}
       />
     )
   }
@@ -40,7 +43,7 @@ const getComponent = (
         hasHeading={hasOneFormComponent}
         id={key}
         key={key}
-        onChange={onChange as (value: string) => void}
+        onChange={onChangeString}
       />
     )
   }
@@ -52,7 +55,7 @@ const getComponent = (
         hasHeading={hasOneFormComponent}
         id={key}
         key={key}
-        onChange={onChange as (value: string[]) => void}
+        onChange={onChangeArray}
       />
     )
   }
@@ -64,7 +67,7 @@ const getComponent = (
         hasHeading={hasOneFormComponent}
         id={key}
         key={key}
-        onChange={onChange as (value: string) => void}
+        onChange={onChangeString}
       />
     )
   }
@@ -76,7 +79,7 @@ const getComponent = (
         hasHeading={hasOneFormComponent}
         id={key}
         key={key}
-        onChange={onChange as (value: string) => void}
+        onChange={onChangeString}
       />
     )
   }
@@ -88,7 +91,7 @@ const getComponent = (
         hasHeading={hasOneFormComponent}
         id={key}
         key={key}
-        onChange={onChange as (value: string) => void}
+        onChange={onChangeString}
       />
     )
   }
@@ -149,7 +152,7 @@ export const FormRenderer = ({
           const onChange = (newValue: string | string[]) =>
             setValues((prev) => ({ ...prev, [component.key]: newValue }))
 
-          return getComponent(component, hasOneFormComponent, errorMessage, onChange)
+          return getComponent(component, hasOneFormComponent, onChange, errorMessage)
         })}
         <SubmitButton>{submitButtonText}</SubmitButton>
       </Form>
