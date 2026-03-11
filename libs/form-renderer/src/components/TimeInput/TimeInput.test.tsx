@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import type { Props } from './TimeInput'
 
@@ -8,6 +9,7 @@ const defaultProps: Props = {
   hasHeading: false,
   id: 'time-input',
   label: 'Time',
+  onChange: vi.fn(),
   validate: { required: true },
 }
 
@@ -78,5 +80,18 @@ describe('TimeInput', () => {
     const timeInput = screen.getByLabelText('Time')
 
     expect(timeInput).toBeRequired()
+  })
+
+  it('calls onChange with the correct value when the value changes', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+
+    render(<TimeInput {...defaultProps} onChange={onChange} />)
+
+    const timeInput = screen.getByLabelText('Time')
+
+    await user.type(timeInput, '12:34')
+
+    expect(onChange).toHaveBeenLastCalledWith('12:34')
   })
 })

@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import type { Props } from './Radio'
 
@@ -8,6 +9,7 @@ const defaultProps: Props = {
   hasHeading: true,
   id: 'test-id',
   label: 'Test label',
+  onChange: vi.fn(),
   validate: { required: true },
   values: [
     { label: 'Test value', value: 'test-value' },
@@ -96,5 +98,18 @@ describe('Radio Component', () => {
     inputs.forEach((input) => {
       expect(input).toHaveAttribute('aria-invalid', 'true')
     })
+  })
+
+  it('calls onChange with the correct value when a Radio button is clicked', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+
+    render(<Radio {...defaultProps} onChange={onChange} />)
+
+    const radioOption = screen.getByRole('radio', { name: defaultProps.values[0].label })
+
+    await user.click(radioOption)
+
+    expect(onChange).toHaveBeenLastCalledWith(defaultProps.values[0].value)
   })
 })

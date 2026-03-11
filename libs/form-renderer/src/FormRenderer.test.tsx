@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import type { Props } from './FormRenderer'
 
@@ -140,5 +141,64 @@ describe('FormRenderer', () => {
         expect(components).toBeInTheDocument()
       })
     }
+  })
+
+  it('does not render a component when isVisible returns false, and renders it after onChange updates values (string)', async () => {
+    const user = userEvent.setup()
+
+    const controller = {
+      ...form.components[0].components[0],
+      key: 'controller',
+      label: 'Controller',
+    }
+
+    const dependent = {
+      ...form.components[0].components[0],
+      conditional: {
+        eq: 'yes',
+        show: true,
+        when: 'controller',
+      },
+      key: 'dependent',
+      label: 'Dependent',
+    }
+
+    render(<FormRenderer {...defaultProps} formComponents={[controller, dependent]} panelLabel="Test panel" />)
+
+    expect(screen.queryByRole('textbox', { name: 'Dependent' })).not.toBeInTheDocument()
+
+    const controllerInput = screen.getByRole('textbox', { name: 'Controller' })
+    await user.type(controllerInput, 'yes')
+
+    expect(screen.getByRole('textbox', { name: 'Dependent' })).toBeInTheDocument()
+  })
+
+  it('renders a conditional component after onChange updates values for a checkbox group (string[])', async () => {
+    const user = userEvent.setup()
+
+    const checkboxGroup = {
+      ...form.components[0].components[2],
+      key: 'checkboxGroup',
+      label: 'Checkbox Group',
+    }
+
+    const dependent = {
+      ...form.components[0].components[0],
+      conditional: {
+        eq: 'one',
+        show: true,
+        when: 'checkboxGroup',
+      },
+      key: 'dependent',
+      label: 'Dependent',
+    }
+
+    render(<FormRenderer {...defaultProps} formComponents={[checkboxGroup, dependent]} panelLabel="Test panel" />)
+
+    expect(screen.queryByRole('textbox', { name: 'Dependent' })).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('checkbox', { name: 'One' }))
+
+    expect(screen.getByRole('textbox', { name: 'Dependent' })).toBeInTheDocument()
   })
 })

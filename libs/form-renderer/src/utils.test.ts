@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import type { Component } from './types'
 
 import { form } from './mocks/data'
-import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimeInput } from './utils'
+import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimeInput, isVisible } from './utils'
 
 describe('type guards', () => {
   it('isTimeInput should return true for type "time"', () => {
@@ -43,5 +43,49 @@ describe('type guards', () => {
     expect(isSelectboxes(unknownComponent)).toBe(false)
     expect(isTextarea(unknownComponent)).toBe(false)
     expect(isTextfield(unknownComponent)).toBe(false)
+  })
+})
+
+describe('isVisible', () => {
+  it('returns true when there is no usable conditional', () => {
+    const componentWithoutConditional = { ...form.components[0].components[0] }
+
+    expect(isVisible(componentWithoutConditional, {})).toBe(true)
+
+    const componentWithEmptyConditional = {
+      ...form.components[0].components[0],
+      conditional: { eq: '', show: null, when: '' },
+    }
+
+    expect(isVisible(componentWithEmptyConditional, {})).toBe(true)
+  })
+
+  it('evaluates conditionals against string values', () => {
+    const component = {
+      ...form.components[0].components[0],
+      conditional: { eq: 'yes', show: true, when: 'controller' },
+    }
+
+    expect(isVisible(component, { controller: 'no' })).toBe(false)
+    expect(isVisible(component, { controller: 'yes' })).toBe(true)
+  })
+
+  it('evaluates conditionals against values that are an array of strings and inverts when show is false', () => {
+    const component = {
+      ...form.components[0].components[0],
+      conditional: { eq: 'one', show: false, when: 'boxes' },
+    }
+
+    expect(isVisible(component, { boxes: ['one'] })).toBe(false)
+    expect(isVisible(component, { boxes: ['two'] })).toBe(true)
+  })
+
+  it('returns false when it cannot find a form component', () => {
+    const component = {
+      ...form.components[0].components[0],
+      conditional: { eq: 'yes', show: true, when: 'unknown-component-key' },
+    }
+
+    expect(isVisible(component, {})).toBe(false)
   })
 })
