@@ -80,7 +80,7 @@ describe('isVisible', () => {
     expect(isVisible(component, { boxes: ['two'] })).toBe(true)
   })
 
-  it('returns false when it cannot find a form component', () => {
+  it('returns false when the component key used in the conditional is not present in the values', () => {
     const component = {
       ...form.components[0].components[0],
       conditional: { eq: 'yes', show: true, when: 'unknown-component-key' },
