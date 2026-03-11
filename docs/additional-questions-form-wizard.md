@@ -49,3 +49,16 @@ When the user submits the form, the `postForm` Server Action is called:
 Panels and their components can have conditions that control their visibility. A component is visible when its condition is met based on previously given answers. A panel is visible when it has at least one visible component (or no conditions at all).
 
 Both the previous and next panel paths are calculated by skipping over panels that are not visible given the current set of answers. This ensures the user only sees relevant panels.
+
+## Conditional components on a page
+
+Components on a visible page can also be shown or hidden conditionally. A component can be hidden based on answers given on previous pages, or toggled in real time based on the value of another component on the same page.
+
+### Implementation trade-off
+
+Conditional visibility can be implemented using CSS or JavaScript:
+
+- **CSS**: A class is added to hide the component visually when its conditions are not met. This allows all components to be shown as a fallback when JavaScript is unavailable. However, hidden components are still part of the DOM and submit their data, which can trigger back-end validation errors for fields the user cannot see.
+- **JavaScript**: Conditions are evaluated server-side to determine whether to render a component, with client-side JavaScript toggling visibility in real time based on answers to components on the same page. Because hidden components are not rendered, they submit no data. The downside is that users without JavaScript may not see a component they need to fill in. Also, these users may encounter a required question-validation error they cannot resolve, because the component is not shown.
+
+We currently use the JavaScript approach, but may revisit this if issues arise in practice.
