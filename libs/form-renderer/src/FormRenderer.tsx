@@ -132,6 +132,8 @@ export const FormRenderer = ({ action, formComponents, panelLabel, submitButtonT
 
           const errorMessage = validationErrors?.find((error) => error.key === component.key)?.message
 
+          // This onChange function is only used to make components show and hide conditionally.
+          // It is not used to track form values. All components are uncontrolled.
           const onChange = (newValue: string | string[]) =>
             setValues((prev) => ({ ...prev, [component.key]: newValue }))
 
