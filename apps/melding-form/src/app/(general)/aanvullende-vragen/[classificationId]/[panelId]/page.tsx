@@ -14,24 +14,18 @@ import type {
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
+import {
+  AFTER_ADDITIONAL_QUESTIONS_PATH,
+  getPreviousAnswersByKey,
+  getPreviousPanelPath,
+  isPanelComponentOutput,
+} from './_utils/navigationUtils'
 import { setDateComponentOptions } from './_utils/setDateComponentOptions'
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 import { COOKIES } from 'apps/melding-form/src/constants'
 
 export const dynamic = 'force-dynamic'
-
-const getNextPanelPath = (classificationId: number, currentPanelIndex: number, formData: FormOutput) => {
-  if (currentPanelIndex === formData.components.length - 1) return '/locatie'
-
-  return `/aanvullende-vragen/${classificationId}/${formData.components[currentPanelIndex + 1].key}`
-}
-
-const getPreviousPanelPath = (classificationId: number, currentPanelIndex: number, formData: FormOutput) => {
-  if (currentPanelIndex === 0) return '/'
-
-  return `/aanvullende-vragen/${classificationId}/${formData.components[currentPanelIndex - 1].key}`
-}
 
 // The backend returns a 'position' key in each value-label object,
 // but it does not accept that key when we send the answer back. For that reason, we strip it here.
@@ -105,11 +99,14 @@ export default async ({ params }: { params: Params }) => {
 
   if (error) throw new Error('Failed to fetch form by classification.')
 
-  if (data.components[0].type !== 'panel') return redirect('/locatie')
-
   // Get current panel components
   const currentPanelIndex = data.components.findIndex((component) => component.key === panelId)
-  const panel = data.components[currentPanelIndex] as FormPanelComponentOutput
+  const panel = data.components[currentPanelIndex]
+
+  if (!isPanelComponentOutput(panel)) {
+    redirect(AFTER_ADDITIONAL_QUESTIONS_PATH)
+  }
+
   const panelComponents = panel.components
   const panelLabel = panel.label
 
@@ -151,14 +148,21 @@ export default async ({ params }: { params: Params }) => {
       requiredErrorMessage: validate?.required_error_message || t('required-error-message-fallback'),
     }))
 
-  const isLastPanel = currentPanelIndex === data.components.length - 1
-  const lastPanelPath = `/aanvullende-vragen/${classificationId}/${data.components[data.components.length - 1].key}`
-  const nextPanelPath = getNextPanelPath(classificationId, currentPanelIndex, data)
+  // We need the components conditions of all panels to determine the next and previous panel paths, so we extract them here.
+  const panelKeyWithComponentsConditions = data.components
+    .filter(isPanelComponentOutput)
+    .map(({ components, key }) => ({
+      componentsConditions: components.map(({ conditional, key }) => ({ conditional, key })),
+      key,
+    }))
+
+  const previousAnswersByKey = getPreviousAnswersByKey(data, answers)
 
   const extraArgs = {
-    isLastPanel,
-    lastPanelPath,
-    nextPanelPath,
+    classificationId,
+    currentPanelIndex,
+    panelKeyWithComponentsConditions,
+    previousAnswersByKey,
     questionAndAnswerIdPairs,
     questionMetadata,
     requiredQuestionKeysWithErrorMessages,
@@ -168,7 +172,12 @@ export default async ({ params }: { params: Params }) => {
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)
 
   // Pass previous panel path to the Aanvullende vragen component
-  const previousPanelPath = getPreviousPanelPath(classificationId, currentPanelIndex, data)
+  const previousPanelPath = getPreviousPanelPath(
+    classificationId,
+    currentPanelIndex,
+    panelKeyWithComponentsConditions,
+    previousAnswersByKey,
+  )
 
   const prefilledFormComponents = prefillFormComponents(formComponentsWithDateOptions, answers)
   const formComponentsWithCorrectRenderTypes = prefilledFormComponents.map((component) => {
