@@ -40,7 +40,7 @@ const getMissingRequiredQuestionErrorMessages = (
   requiredQuestionErrorMessages.filter(({ key }) => {
     const componentCondition = componentsConditions.find((component) => component.key === key)
 
-    // If the component is not visible, it is not required
+    // If the component is not visible, it should not return a 'required' error message.
     if (componentCondition && !isComponentVisible(componentCondition, answersByKey)) return false
 
     const entry = entries.find(([entryKey]) => entryKey === key)
