@@ -40,7 +40,7 @@ const mapValidationErrors = (errors: ValidationError[]) =>
 export type Props = {
   action: (_: unknown, formData: FormData) => Promise<FormState>
   formComponents: Component[]
-  panelLabel: string
+  panelTitle: string
   previousPanelPath: string
 }
 
@@ -49,7 +49,7 @@ const initialState: FormState = {}
 export const AdditionalQuestions = ({
   action,
   formComponents: formComponentsFromServer,
-  panelLabel,
+  panelTitle,
   previousPanelPath,
 }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
@@ -116,7 +116,7 @@ export const AdditionalQuestions = ({
         <FormRenderer
           action={formAction}
           formComponents={formComponents}
-          panelLabel={panelLabel}
+          panelTitle={panelTitle}
           submitButtonText={t('submit-button')}
           validationErrors={validationErrors}
         />
