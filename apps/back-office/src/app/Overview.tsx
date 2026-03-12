@@ -1,6 +1,5 @@
 'use client'
 
-import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 import { AnchorHTMLAttributes } from 'react'
@@ -40,8 +39,6 @@ export const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) =>
 export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props) => {
   const t = useTranslations()
 
-  const isWideWindow = useIsAfterBreakpoint('wide')
-
   const meldingenWithAddress = toMeldingenWithAddress(meldingen)
 
   return (
@@ -51,11 +48,13 @@ export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props)
           {t('overview.title', { meldingenCount })}
         </Heading>
 
-        {isWideWindow ? (
-          <OverviewDesktop meldingen={meldingenWithAddress} t={t} />
-        ) : (
+        <div className={styles.mobileOnly}>
           <OverviewMobile meldingen={meldingenWithAddress} />
-        )}
+        </div>
+
+        <div className={styles.desktopOnly}>
+          <OverviewDesktop meldingen={meldingenWithAddress} t={t} />
+        </div>
 
         <Pagination
           className={styles.pagination}

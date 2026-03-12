@@ -1,9 +1,9 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 
-import { melding } from '../mocks/data'
-import { LinkComponent, Overview } from './Overview'
+import { melding } from '../../mocks/data'
+import { LinkComponent, Overview } from '../Overview'
 
-import styles from './Overview.module.css'
+import styles from '../Overview.module.css'
 
 describe('Overview', () => {
   it('should render correctly', () => {
@@ -27,6 +27,11 @@ describe('Overview', () => {
 
     expect(mobileOverview).toHaveClass(styles.mobileOnly)
     expect(desktopOverview).toHaveClass(styles.desktopOnly)
+
+    expect(within(mobileOverview as HTMLElement).getByText('overview.column-header.public_id')).toBeInTheDocument()
+    expect(
+      within(desktopOverview as HTMLElement).getByRole('columnheader', { name: 'overview.column-header.public_id' }),
+    ).toBeInTheDocument()
   })
 })
 

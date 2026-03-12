@@ -1,3 +1,21 @@
 .pagination {
   justify-content: flex-start; /* Align pagination left instead of the default center. */
 }
+
+.mobileOnly {
+  display: block;
+}
+
+.desktopOnly {
+  display: none;
+}
+
+@media screen and (min-width: 72.5rem) {
+  .mobileOnly {
+    display: none;
+  }
+
+  .desktopOnly {
+    display: block;
+  }
+}
