@@ -108,7 +108,7 @@ export default async ({ params }: { params: Params }) => {
   }
 
   const panelComponents = panel.components
-  const panelLabel = panel.label
+  const panelTitle = panel.title
 
   // Check if answers already exist and prefill if so
   const cookieStore = await cookies()
@@ -190,7 +190,7 @@ export default async ({ params }: { params: Params }) => {
     <AdditionalQuestions
       action={postFormWithExtraArgs}
       formComponents={formComponentsWithCorrectRenderTypes}
-      panelLabel={panelLabel}
+      panelTitle={panelTitle}
       previousAnswersByKey={previousAnswersByKey}
       previousPanelPath={previousPanelPath}
     />

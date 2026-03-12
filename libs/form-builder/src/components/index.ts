@@ -1,4 +1,5 @@
 export { Date } from './Date/Date'
+export { Panel } from './Panel/Panel'
 export { Radio } from './Radio/Radio'
 export { Select } from './Select/Select'
 export { SelectBoxes } from './SelectBoxes/SelectBoxes'

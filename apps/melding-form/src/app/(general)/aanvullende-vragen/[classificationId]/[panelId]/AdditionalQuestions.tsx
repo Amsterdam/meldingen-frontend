@@ -42,7 +42,7 @@ const mapValidationErrors = (errors: ValidationError[]) =>
 export type Props = {
   action: (_: unknown, formData: FormData) => Promise<FormState>
   formComponents: Component[]
-  panelLabel: string
+  panelTitle: string
   previousAnswersByKey: AnswersByKey
   previousPanelPath: string
 }
@@ -52,7 +52,7 @@ const initialState: FormState = {}
 export const AdditionalQuestions = ({
   action,
   formComponents: formComponentsFromServer,
-  panelLabel,
+  panelTitle,
   previousAnswersByKey,
   previousPanelPath,
 }: Props) => {
@@ -120,7 +120,7 @@ export const AdditionalQuestions = ({
         <FormRenderer
           action={formAction}
           formComponents={formComponents}
-          panelLabel={panelLabel}
+          panelTitle={panelTitle}
           previousAnswersByKey={previousAnswersByKey}
           submitButtonText={t('submit-button')}
           validationErrors={validationErrors}

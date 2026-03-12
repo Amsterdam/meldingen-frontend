@@ -19,7 +19,7 @@ vi.mock('react', async (importOriginal) => {
 const defaultProps: Props = {
   action: vi.fn(),
   formComponents: [textAreaComponent],
-  panelLabel: 'Test title',
+  panelTitle: 'Test title',
   previousAnswersByKey: {},
   previousPanelPath: '/prev',
 }
