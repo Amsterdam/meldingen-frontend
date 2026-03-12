@@ -122,6 +122,8 @@ export const FormRenderer = ({
 }: Props) => {
   const hasOneFormComponent = formComponents.length === 1
 
+  // These values are only used to make components show and hide conditionally.
+  // They are not used to track form values. All components are uncontrolled.
   const [values, setValues] = useState<AnswersByKey>(() => {
     const initialComponentValues = Object.fromEntries(
       formComponents.map((component) => [component.key, getValue(component)]),
@@ -147,8 +149,6 @@ export const FormRenderer = ({
 
           const errorMessage = validationErrors?.find((error) => error.key === component.key)?.message
 
-          // This onChange function is only used to make components show and hide conditionally.
-          // It is not used to track form values. All components are uncontrolled.
           const onChange = (newValue: string | string[]) =>
             setValues((prev) => ({ ...prev, [component.key]: newValue }))
 
