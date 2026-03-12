@@ -1,6 +1,6 @@
 import type { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
-import { MeldingWithAddress } from '../../Overview'
+import type { MeldingWithAddress } from '../../Overview'
 
 export type OverviewFieldKey = 'public_id' | 'created_at' | 'classification' | 'state' | 'address' | 'postal_code'
 
