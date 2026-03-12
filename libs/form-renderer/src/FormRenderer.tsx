@@ -6,7 +6,7 @@ import { Heading, SubmitButton } from '@meldingen/ui'
 import type { AnswersByKey, Component } from './types'
 
 import { Checkbox, Radio, Select, TextArea, TextInput, TimeInput } from './components'
-import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimeInput, isVisible } from './utils'
+import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimeInput, shouldRender } from './utils'
 
 const getValue = (component: Component): string | string[] => {
   if (isSelectboxes(component)) return component.defaultValues ?? []
@@ -145,7 +145,7 @@ export const FormRenderer = ({
       )}
       <Form action={action} className="ams-gap-m" noValidate>
         {formComponents.map((component) => {
-          if (!isVisible(component, values)) return null
+          if (!shouldRender(component, values)) return null
 
           const errorMessage = validationErrors?.find((error) => error.key === component.key)?.message
 

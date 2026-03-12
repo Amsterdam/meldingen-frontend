@@ -144,7 +144,7 @@ describe('FormRenderer', () => {
     }
   })
 
-  it('does not render a component when isVisible returns false, and renders it after onChange updates values (string)', async () => {
+  it('does not render a component when shouldRender returns false, and renders it after onChange updates values (string)', async () => {
     const user = userEvent.setup()
 
     const controller = {

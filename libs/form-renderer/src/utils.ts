@@ -11,7 +11,7 @@ import type {
 
 const isNullOrEmpty = (value: unknown) => value === null || value === ''
 
-export const isVisible = (component: Component, values: AnswersByKey): boolean => {
+export const shouldRender = (component: Component, values: AnswersByKey): boolean => {
   const { conditional } = component
 
   if (

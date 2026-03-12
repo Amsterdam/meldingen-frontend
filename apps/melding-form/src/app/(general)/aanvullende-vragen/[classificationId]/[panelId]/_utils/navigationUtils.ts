@@ -16,7 +16,7 @@ export const AFTER_ADDITIONAL_QUESTIONS_PATH = '/locatie'
 
 const isNullOrEmpty = (value: unknown) => value === null || value === ''
 
-export const isComponentVisible = (
+export const shouldRenderComponent = (
   { conditional }: { conditional?: FormIoConditional | null },
   answersByKey: AnswersByKey,
 ) => {
@@ -38,10 +38,10 @@ export const isComponentVisible = (
   return conditionMet ? conditional.show : !conditional.show
 }
 
-// If a panel has at least one visible component, the panel is visible. Otherwise, the panel is hidden.
-export const isPanelVisible = (panel: PanelComponentsConditions, answersByKey: AnswersByKey) =>
+// If a panel has at least one rendered component, we should link to it. Otherwise, we should skip it.
+export const shouldLinkToPanel = (panel: PanelComponentsConditions, answersByKey: AnswersByKey) =>
   panel.componentsConditions.length === 0 ||
-  panel.componentsConditions.some((component) => isComponentVisible(component, answersByKey))
+  panel.componentsConditions.some((component) => shouldRenderComponent(component, answersByKey))
 
 export const getNextPanelPath = (
   classificationId: number,
@@ -50,7 +50,7 @@ export const getNextPanelPath = (
   answersByKey: AnswersByKey,
 ) => {
   for (let i = currentPanelIndex + 1; i < panels.length; i++) {
-    if (isPanelVisible(panels[i], answersByKey)) {
+    if (shouldLinkToPanel(panels[i], answersByKey)) {
       return `/aanvullende-vragen/${classificationId}/${panels[i].key}`
     }
   }
@@ -64,7 +64,7 @@ export const getPreviousPanelPath = (
   answersByKey: AnswersByKey,
 ) => {
   for (let i = currentPanelIndex - 1; i >= 0; i--) {
-    if (isPanelVisible(panels[i], answersByKey)) {
+    if (shouldLinkToPanel(panels[i], answersByKey)) {
       return `/aanvullende-vragen/${classificationId}/${panels[i].key}`
     }
   }

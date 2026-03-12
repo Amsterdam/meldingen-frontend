@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import type { Component } from './types'
 
 import { form } from './mocks/data'
-import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimeInput, isVisible } from './utils'
+import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimeInput, shouldRender } from './utils'
 
 describe('type guards', () => {
   it('isTimeInput should return true for type "time"', () => {
@@ -46,18 +46,18 @@ describe('type guards', () => {
   })
 })
 
-describe('isVisible', () => {
+describe('shouldRender', () => {
   it('returns true when there is no usable conditional', () => {
     const componentWithoutConditional = { ...form.components[0].components[0] }
 
-    expect(isVisible(componentWithoutConditional, {})).toBe(true)
+    expect(shouldRender(componentWithoutConditional, {})).toBe(true)
 
     const componentWithEmptyConditional = {
       ...form.components[0].components[0],
       conditional: { eq: '', show: null, when: '' },
     }
 
-    expect(isVisible(componentWithEmptyConditional, {})).toBe(true)
+    expect(shouldRender(componentWithEmptyConditional, {})).toBe(true)
   })
 
   it('evaluates conditionals against string values', () => {
@@ -66,8 +66,8 @@ describe('isVisible', () => {
       conditional: { eq: 'yes', show: true, when: 'controller' },
     }
 
-    expect(isVisible(component, { controller: 'no' })).toBe(false)
-    expect(isVisible(component, { controller: 'yes' })).toBe(true)
+    expect(shouldRender(component, { controller: 'no' })).toBe(false)
+    expect(shouldRender(component, { controller: 'yes' })).toBe(true)
   })
 
   it('evaluates conditionals against values that are an array of strings and inverts when show is false', () => {
@@ -76,8 +76,8 @@ describe('isVisible', () => {
       conditional: { eq: 'one', show: false, when: 'boxes' },
     }
 
-    expect(isVisible(component, { boxes: ['one'] })).toBe(false)
-    expect(isVisible(component, { boxes: ['two'] })).toBe(true)
+    expect(shouldRender(component, { boxes: ['one'] })).toBe(false)
+    expect(shouldRender(component, { boxes: ['two'] })).toBe(true)
   })
 
   it('returns false when the component key used in the conditional is not present in the values', () => {
@@ -86,6 +86,6 @@ describe('isVisible', () => {
       conditional: { eq: 'yes', show: true, when: 'unknown-component-key' },
     }
 
-    expect(isVisible(component, {})).toBe(false)
+    expect(shouldRender(component, {})).toBe(false)
   })
 })

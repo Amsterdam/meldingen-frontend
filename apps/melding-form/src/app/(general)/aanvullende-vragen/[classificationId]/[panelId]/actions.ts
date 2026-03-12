@@ -10,7 +10,7 @@ import type { AnswersByKey, PanelComponentsConditions } from './_utils/navigatio
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
-import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, isComponentVisible } from './_utils/navigationUtils'
+import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, shouldRenderComponent } from './_utils/navigationUtils'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
@@ -40,8 +40,8 @@ const getMissingRequiredQuestionErrorMessages = (
   requiredQuestionErrorMessages.filter(({ key }) => {
     const componentCondition = componentsConditions.find((component) => component.key === key)
 
-    // If the component is not visible, it should not return a 'required' error message.
-    if (componentCondition && !isComponentVisible(componentCondition, answersByKey)) return false
+    // If the component is not rendered, it should not return a 'required' error message.
+    if (componentCondition && !shouldRenderComponent(componentCondition, answersByKey)) return false
 
     const entry = entries.find(([entryKey]) => entryKey === key)
 

@@ -1,13 +1,14 @@
 import type { FormOutput, GetMeldingByMeldingIdAnswersMelderResponses } from '@meldingen/api-client'
 
+import type { PanelComponentsConditions } from './navigationUtils'
+
 import {
   AFTER_ADDITIONAL_QUESTIONS_PATH,
   BEFORE_ADDITIONAL_QUESTIONS_PATH,
   getNextPanelPath,
   getPreviousAnswersByKey,
   getPreviousPanelPath,
-  isPanelVisible,
-  PanelComponentsConditions,
+  shouldLinkToPanel,
 } from './navigationUtils'
 
 const mockPanel = (key: string, conditions: PanelComponentsConditions['componentsConditions'] = []) => ({
@@ -15,59 +16,61 @@ const mockPanel = (key: string, conditions: PanelComponentsConditions['component
   key,
 })
 
-const hiddenWhenValueIsOne = { conditional: { eq: 'one', show: false, when: 'questionKey' }, key: 'key' }
-const shownWhenValueIsOne = { conditional: { eq: 'one', show: true, when: 'questionKey' }, key: 'key' }
+const doNotRenderWhenValueIsOne = { conditional: { eq: 'one', show: false, when: 'questionKey' }, key: 'key' }
+const renderWhenValueIsOne = { conditional: { eq: 'one', show: true, when: 'questionKey' }, key: 'key' }
 
-describe('isPanelVisible', () => {
+describe('shouldLinkToPanel', () => {
   it('returns true when a component has no conditions', () => {
-    expect(isPanelVisible(mockPanel('test', [{ conditional: null, key: 'not-used' }]), {})).toBe(true)
+    expect(shouldLinkToPanel(mockPanel('test', [{ conditional: null, key: 'not-used' }]), {})).toBe(true)
   })
 
-  it('returns false when all components are hidden (show:false, condition met)', () => {
-    expect(isPanelVisible(mockPanel('test', [hiddenWhenValueIsOne]), { questionKey: 'one' })).toBe(false)
+  it('returns false when no components are rendered (show:false, condition met)', () => {
+    expect(shouldLinkToPanel(mockPanel('test', [doNotRenderWhenValueIsOne]), { questionKey: 'one' })).toBe(false)
   })
 
-  it('returns true when at least one component is visible', () => {
-    expect(isPanelVisible(mockPanel('test', [hiddenWhenValueIsOne, shownWhenValueIsOne]), { questionKey: 'one' })).toBe(
-      true,
-    )
+  it('returns true when at least one component is rendered', () => {
+    expect(
+      shouldLinkToPanel(mockPanel('test', [doNotRenderWhenValueIsOne, renderWhenValueIsOne]), { questionKey: 'one' }),
+    ).toBe(true)
   })
 
   it('returns true when show:false but condition is not met', () => {
-    expect(isPanelVisible(mockPanel('test', [hiddenWhenValueIsOne]), { questionKey: 'two' })).toBe(true)
+    expect(shouldLinkToPanel(mockPanel('test', [doNotRenderWhenValueIsOne]), { questionKey: 'two' })).toBe(true)
   })
 
   it('returns true when show:true and condition is met', () => {
-    expect(isPanelVisible(mockPanel('test', [shownWhenValueIsOne]), { questionKey: 'one' })).toBe(true)
+    expect(shouldLinkToPanel(mockPanel('test', [renderWhenValueIsOne]), { questionKey: 'one' })).toBe(true)
   })
 
   it('returns false when show:true but condition is not met', () => {
-    expect(isPanelVisible(mockPanel('test', [shownWhenValueIsOne]), { questionKey: 'two' })).toBe(false)
+    expect(shouldLinkToPanel(mockPanel('test', [renderWhenValueIsOne]), { questionKey: 'two' })).toBe(false)
   })
 
   it('returns true when answer is missing (cannot evaluate conditional)', () => {
-    expect(isPanelVisible(mockPanel('test', [hiddenWhenValueIsOne]), {})).toBe(true)
+    expect(shouldLinkToPanel(mockPanel('test', [doNotRenderWhenValueIsOne]), {})).toBe(true)
   })
 
   it('returns true when show:true, condition is met and answer is an array containing the value', () => {
-    expect(isPanelVisible(mockPanel('test', [shownWhenValueIsOne]), { questionKey: ['one', 'two'] })).toBe(true)
+    expect(shouldLinkToPanel(mockPanel('test', [renderWhenValueIsOne]), { questionKey: ['one', 'two'] })).toBe(true)
   })
 
   it('returns false when show:true, condition is not met and answer is an array not containing the value', () => {
-    expect(isPanelVisible(mockPanel('test', [shownWhenValueIsOne]), { questionKey: ['two', 'three'] })).toBe(false)
+    expect(shouldLinkToPanel(mockPanel('test', [renderWhenValueIsOne]), { questionKey: ['two', 'three'] })).toBe(false)
   })
 
   it('returns false when show:false, condition is met and answer is an array containing the value', () => {
-    expect(isPanelVisible(mockPanel('test', [hiddenWhenValueIsOne]), { questionKey: ['one', 'two'] })).toBe(false)
+    expect(shouldLinkToPanel(mockPanel('test', [doNotRenderWhenValueIsOne]), { questionKey: ['one', 'two'] })).toBe(
+      false,
+    )
   })
 })
 
 describe('getNextPanelPath', () => {
-  const panels = [mockPanel('panel-1'), mockPanel('panel-2', [hiddenWhenValueIsOne]), mockPanel('panel-3')]
+  const panels = [mockPanel('panel-1'), mockPanel('panel-2', [doNotRenderWhenValueIsOne]), mockPanel('panel-3')]
   const classificationId = 1
   const currentPanelIndex = 0
 
-  it('returns the next visible panel', () => {
+  it('returns the next panel that should be linked to', () => {
     expect(getNextPanelPath(classificationId, currentPanelIndex, panels, {})).toBe('/aanvullende-vragen/1/panel-2')
   })
 
@@ -80,8 +83,8 @@ describe('getNextPanelPath', () => {
   it('skips multiple consecutive hidden panels', () => {
     const allHidden = [
       mockPanel('panel-1'),
-      mockPanel('panel-2', [hiddenWhenValueIsOne]),
-      mockPanel('panel-3', [hiddenWhenValueIsOne]),
+      mockPanel('panel-2', [doNotRenderWhenValueIsOne]),
+      mockPanel('panel-3', [doNotRenderWhenValueIsOne]),
       mockPanel('panel-4'),
     ]
     expect(getNextPanelPath(classificationId, currentPanelIndex, allHidden, { questionKey: 'one' })).toBe(
@@ -90,7 +93,7 @@ describe('getNextPanelPath', () => {
   })
 
   it('returns AFTER_ADDITIONAL_QUESTIONS_PATH when all remaining panels are hidden', () => {
-    const allHiddenAfter = [mockPanel('panel-1'), mockPanel('panel-2', [hiddenWhenValueIsOne])]
+    const allHiddenAfter = [mockPanel('panel-1'), mockPanel('panel-2', [doNotRenderWhenValueIsOne])]
     expect(getNextPanelPath(classificationId, currentPanelIndex, allHiddenAfter, { questionKey: 'one' })).toBe(
       AFTER_ADDITIONAL_QUESTIONS_PATH,
     )
@@ -102,10 +105,10 @@ describe('getNextPanelPath', () => {
 })
 
 describe('getPreviousPanelPath', () => {
-  const panels = [mockPanel('panel-1'), mockPanel('panel-2', [hiddenWhenValueIsOne]), mockPanel('panel-3')]
+  const panels = [mockPanel('panel-1'), mockPanel('panel-2', [doNotRenderWhenValueIsOne]), mockPanel('panel-3')]
   const classificationId = 1
 
-  it('returns the previous visible panel', () => {
+  it('returns the previous panel that should be linked to', () => {
     expect(getPreviousPanelPath(classificationId, 2, panels, {})).toBe('/aanvullende-vragen/1/panel-2')
   })
 
@@ -118,8 +121,8 @@ describe('getPreviousPanelPath', () => {
   it('skips multiple consecutive hidden panels', () => {
     const allHidden = [
       mockPanel('panel-1'),
-      mockPanel('panel-2', [hiddenWhenValueIsOne]),
-      mockPanel('panel-3', [hiddenWhenValueIsOne]),
+      mockPanel('panel-2', [doNotRenderWhenValueIsOne]),
+      mockPanel('panel-3', [doNotRenderWhenValueIsOne]),
       mockPanel('panel-4'),
     ]
     expect(getPreviousPanelPath(classificationId, 3, allHidden, { questionKey: 'one' })).toBe(
@@ -128,7 +131,7 @@ describe('getPreviousPanelPath', () => {
   })
 
   it('returns BEFORE_ADDITIONAL_QUESTIONS_PATH when all preceding panels are hidden', () => {
-    const allHiddenBefore = [mockPanel('panel-1', [hiddenWhenValueIsOne]), mockPanel('panel-2')]
+    const allHiddenBefore = [mockPanel('panel-1', [doNotRenderWhenValueIsOne]), mockPanel('panel-2')]
     expect(getPreviousPanelPath(classificationId, 1, allHiddenBefore, { questionKey: 'one' })).toBe(
       BEFORE_ADDITIONAL_QUESTIONS_PATH,
     )

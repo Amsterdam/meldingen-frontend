@@ -91,16 +91,16 @@ Form
 Use the type guards in [libs/form-renderer/src/utils.ts](libs/form-renderer/src/utils.ts):
 
 ```typescript
-import { isRadio, isTextfield, isSelectboxes, isTimeInput, isVisible } from '@meldingen/form-renderer'
+import { isRadio, isTextfield, isSelectboxes, isTimeInput, shouldRender } from '@meldingen/form-renderer'
 
 if (isRadio(component)) {
   // TypeScript now knows component is FormRadioComponent
   component.values // ✓ Available
 }
 
-// isVisible checks the component's conditional rules against current form values
+// shouldRender checks the component's conditional rules against current form values
 // Used in FormRenderer to show/hide components based on other answers
-if (isVisible(component, values)) { ... }
+if (shouldRender(component, values)) { ... }
 ```
 
 ### Adding a New Component Type
