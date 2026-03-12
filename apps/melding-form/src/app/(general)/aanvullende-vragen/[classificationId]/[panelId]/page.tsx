@@ -192,7 +192,7 @@ export default async ({ params }: { params: Params }) => {
     <AdditionalQuestions
       action={postFormWithExtraArgs}
       formComponents={formComponentsWithCorrectRenderTypes}
-      panelLabel={panelLabel}
+      panelTitle={panelTitle}
       previousPanelPath={previousPanelPath}
     />
   )
