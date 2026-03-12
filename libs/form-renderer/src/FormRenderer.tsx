@@ -122,8 +122,8 @@ export const FormRenderer = ({
 }: Props) => {
   const hasOneFormComponent = formComponents.length === 1
 
-  // These values are only used to make components show and hide conditionally.
-  // They are not used to track form values. All components are uncontrolled.
+  // These values track the user's answers so we can show/hide components conditionally.
+  // The form inputs themselves are uncontrolled; we don't use this state to set input values.
   const [values, setValues] = useState<AnswersByKey>(() => {
     const initialComponentValues = Object.fromEntries(
       formComponents.map((component) => [component.key, getValue(component)]),
