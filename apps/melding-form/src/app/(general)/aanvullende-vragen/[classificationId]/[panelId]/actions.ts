@@ -5,18 +5,22 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
+import type { AnswersByKey, PanelKeyWithComponentsConditions } from './_utils/navigationUtils'
+
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
+import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath } from './_utils/navigationUtils'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 type RequiredQuestionKeyWithErrorMessage = { key: string; requiredErrorMessage: string }
 
 export type ArgsType = {
-  isLastPanel: boolean
-  lastPanelPath: string
-  nextPanelPath: string
+  classificationId: number
+  currentPanelIndex: number
+  panelKeyWithComponentsConditions: PanelKeyWithComponentsConditions[]
+  previousAnswersByKey: AnswersByKey
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
   questionMetadata: {
     id: number
@@ -45,9 +49,10 @@ const getUnansweredRequiredQuestionKeysWithErrorMessages = (
 
 export const postForm = async (
   {
-    isLastPanel,
-    lastPanelPath,
-    nextPanelPath,
+    classificationId,
+    currentPanelIndex,
+    panelKeyWithComponentsConditions,
+    previousAnswersByKey,
     questionAndAnswerIdPairs,
     questionMetadata,
     requiredQuestionKeysWithErrorMessages,
@@ -61,10 +66,6 @@ export const postForm = async (
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
   if (!meldingId || !token) return redirect('/cookie-storing')
-
-  // Set last panel path in cookies
-  const oneDay = 24 * 60 * 60
-  cookieStore.set(COOKIES.LAST_PANEL_PATH, lastPanelPath, { maxAge: oneDay })
 
   // Checkbox answers are stored as separate key-value pairs in the FormData object.
   // This function merges these answers into an array per question, using an identifier in the Checkbox component.
@@ -127,14 +128,36 @@ export const postForm = async (
     }
   }
 
-  // Set melding state to 'questions_answered'
+  // Merge previously submitted answers with the current panel's just-submitted answers.
+  // Current panel answers take priority, enabling up-to-date conditional evaluation.
+  const allAnswersByKey = { ...previousAnswersByKey, ...Object.fromEntries(entriesWithMergedCheckboxes) }
+
+  const nextPanelPath = getNextPanelPath(
+    classificationId,
+    currentPanelIndex,
+    panelKeyWithComponentsConditions,
+    allAnswersByKey,
+  )
+
+  const isLastPanel = nextPanelPath === AFTER_ADDITIONAL_QUESTIONS_PATH
+
   if (isLastPanel) {
+    // Set melding state to 'questions_answered'
     const { error } = await putMeldingByMeldingIdAnswerQuestions({
       path: { melding_id: parseInt(meldingId, 10) },
       query: { token },
     })
 
     if (error) return { formData, systemError: error }
+
+    // Set current panel path as last panel path in cookies,
+    // so that the user can be redirected back to it from AFTER_ADDITIONAL_QUESTIONS_PATH
+    const oneDay = 24 * 60 * 60
+    cookieStore.set(
+      COOKIES.LAST_PANEL_PATH,
+      `/aanvullende-vragen/${classificationId}/${panelKeyWithComponentsConditions[currentPanelIndex].key}`,
+      { maxAge: oneDay },
+    )
   }
 
   return redirect(nextPanelPath)

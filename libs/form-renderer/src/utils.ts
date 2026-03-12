@@ -5,6 +5,7 @@ import type {
   FormSelectComponent,
   FormTextAreaComponent,
   FormTextFieldInputComponent,
+  FormTimeComponent,
 } from './types'
 
 export const isRadio = (component: Component): component is FormRadioComponent => component.type === 'radio'
@@ -18,6 +19,8 @@ export const isTextarea = (component: Component): component is FormTextAreaCompo
 
 export const isTextfield = (component: Component): component is FormTextFieldInputComponent =>
   component.type === 'textfield'
+
+export const isTimeInput = (component: Component): component is FormTimeComponent => component.type === 'time'
 
 export const getAriaDescribedBy = (id: string, description?: string, errorMessage?: string) => {
   const ariaDescribedBy = []

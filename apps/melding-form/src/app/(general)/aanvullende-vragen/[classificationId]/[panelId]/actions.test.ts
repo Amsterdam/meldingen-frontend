@@ -20,9 +20,13 @@ vi.mock('next/navigation', () => ({
 
 describe('postForm', () => {
   const defaultArgs: ArgsType = {
-    isLastPanel: true,
-    lastPanelPath: '/test',
-    nextPanelPath: '/',
+    classificationId: 1,
+    currentPanelIndex: 1,
+    panelKeyWithComponentsConditions: [
+      { componentsConditions: [{ key: 'question-1' }], key: 'panel-1' },
+      { componentsConditions: [{ key: 'question-2' }], key: 'panel-2' },
+    ],
+    previousAnswersByKey: {},
     questionMetadata: [
       { id: 1, key: 'key1', type: 'textfield' },
       { id: 2, key: 'key2', type: 'textfield' },
@@ -44,14 +48,6 @@ describe('postForm', () => {
     await postForm(defaultArgs, null, formData)
 
     expect(redirect).toHaveBeenCalledWith('/cookie-storing')
-  })
-
-  it('sets lastPanelPath in cookies', async () => {
-    const formData = new FormData()
-    await postForm(defaultArgs, null, formData)
-
-    const cookieInstance = await cookies()
-    expect(cookieInstance.set).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH, '/test', { maxAge: 86400 })
   })
 
   it('returns custom and fallback validation errors for missing required questions', async () => {
@@ -81,6 +77,34 @@ describe('postForm', () => {
     })
   })
 
+  it('returns a validation error for a required question submitted with an empty value', async () => {
+    const formData = new FormData()
+    formData.append('key1', '')
+
+    const result = await postForm(
+      {
+        ...defaultArgs,
+        requiredQuestionKeysWithErrorMessages: [{ key: 'key1', requiredErrorMessage: 'Dit veld is verplicht' }],
+      },
+      null,
+      formData,
+    )
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'key1', message: 'Dit veld is verplicht' }],
+    })
+  })
+
+  it('skips results without a value when checking for validation errors', async () => {
+    const formData = new FormData()
+    formData.append('non-existent-key', 'some-value') // Not in questionMetadata, so result will be undefined
+
+    await postForm(defaultArgs, null, formData)
+
+    expect(redirect).toHaveBeenCalled()
+  })
+
   it('returns validation errors for other invalid answers', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>
@@ -99,6 +123,28 @@ describe('postForm', () => {
     expect(result).toEqual({
       formData,
       validationErrors: [{ key: 'key1', message: 'Validation error' }],
+    })
+  })
+
+  it('uses fallback-key for the validation error key when result key is empty', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>
+        HttpResponse.json({ detail: [{ loc: [''], msg: 'Validation error', type: 'value_error' }] }, { status: 422 }),
+      ),
+    )
+
+    const formData = new FormData()
+    formData.append('', 'some-value')
+
+    const result = await postForm(
+      { ...defaultArgs, questionMetadata: [{ id: 3, key: '', type: 'textfield' }] },
+      null,
+      formData,
+    )
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'fallback-key', message: 'Validation error' }],
     })
   })
 
@@ -145,5 +191,15 @@ describe('postForm', () => {
     const result = await postForm(defaultArgs, null, formData)
 
     expect(result).toEqual({ formData, systemError: 'Error message' })
+  })
+
+  it('sets lastPanelPath in cookies when on last page', async () => {
+    const formData = new FormData()
+    await postForm(defaultArgs, null, formData)
+
+    const cookieInstance = await cookies()
+    expect(cookieInstance.set).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH, '/aanvullende-vragen/1/panel-2', {
+      maxAge: 86400,
+    })
   })
 })
