@@ -164,7 +164,7 @@ describe('FormRenderer', () => {
       label: 'Dependent',
     }
 
-    render(<FormRenderer {...defaultProps} formComponents={[controller, dependent]} panelLabel="Test panel" />)
+    render(<FormRenderer {...defaultProps} formComponents={[controller, dependent]} />)
 
     expect(screen.queryByRole('textbox', { name: 'Dependent' })).not.toBeInTheDocument()
 
@@ -194,7 +194,7 @@ describe('FormRenderer', () => {
       label: 'Dependent',
     }
 
-    render(<FormRenderer {...defaultProps} formComponents={[checkboxGroup, dependent]} panelLabel="Test panel" />)
+    render(<FormRenderer {...defaultProps} formComponents={[checkboxGroup, dependent]} />)
 
     expect(screen.queryByRole('textbox', { name: 'Dependent' })).not.toBeInTheDocument()
 
@@ -219,7 +219,6 @@ describe('FormRenderer', () => {
       <FormRenderer
         {...defaultProps}
         formComponents={[dependent]}
-        panelLabel="Test panel"
         previousAnswersByKey={{ 'previous-answer': 'no' }}
       />,
     )
@@ -243,7 +242,6 @@ describe('FormRenderer', () => {
       <FormRenderer
         {...defaultProps}
         formComponents={[dependent]}
-        panelLabel="Test panel"
         previousAnswersByKey={{ 'previous-answer': 'yes' }}
       />,
     )
