@@ -9,6 +9,7 @@ const defaultProps: Props = {
   hasHeading: true,
   id: 'test-id',
   label: 'Test label',
+  onChange: vi.fn(),
   validate: { required: true },
 }
 
@@ -113,5 +114,18 @@ describe('TextArea Component', () => {
 
     const input = screen.getByRole('textbox', { name: defaultProps.label })
     expect(input).toHaveAttribute('aria-invalid', 'true')
+  })
+
+  it('calls onChange with the correct value when the value changes', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+
+    render(<TextArea {...defaultProps} onChange={onChange} />)
+
+    const textArea = screen.getByRole('textbox', { name: defaultProps.label })
+
+    await user.type(textArea, 'Test input')
+
+    expect(onChange).toHaveBeenLastCalledWith('Test input')
   })
 })

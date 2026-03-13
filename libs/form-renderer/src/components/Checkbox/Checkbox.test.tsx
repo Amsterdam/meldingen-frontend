@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import type { Props } from './Checkbox'
 
@@ -8,6 +9,7 @@ const defaultProps: Props = {
   hasHeading: true,
   id: 'test-id',
   label: 'Test label',
+  onChange: vi.fn(),
   validate: { required: true },
   values: [
     { label: 'Test value', value: 'test-value' },
@@ -89,5 +91,29 @@ describe('Checkbox Component', () => {
     inputs.forEach((input) => {
       expect(input).toHaveAttribute('aria-invalid', 'true')
     })
+  })
+
+  it('calls onChange with the updated checked values when toggling items', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+
+    const { values } = defaultProps
+
+    render(<Checkbox {...defaultProps} onChange={onChange} />)
+
+    const checkbox1 = screen.getByRole('checkbox', { name: values[0].label })
+    const checkbox2 = screen.getByRole('checkbox', { name: values[1].label })
+
+    await user.click(checkbox1)
+
+    expect(onChange).toHaveBeenLastCalledWith([values[0].value])
+
+    await user.click(checkbox2)
+
+    expect(onChange).toHaveBeenLastCalledWith([values[0].value, values[1].value])
+
+    await user.click(checkbox1)
+
+    expect(onChange).toHaveBeenLastCalledWith([values[1].value])
   })
 })

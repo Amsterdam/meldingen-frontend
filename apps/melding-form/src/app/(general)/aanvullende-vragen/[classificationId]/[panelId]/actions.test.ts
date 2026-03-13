@@ -22,7 +22,7 @@ describe('postForm', () => {
   const defaultArgs: ArgsType = {
     classificationId: 1,
     currentPanelIndex: 1,
-    panelKeyWithComponentsConditions: [
+    panelComponentsConditions: [
       { componentsConditions: [{ key: 'question-1' }], key: 'panel-1' },
       { componentsConditions: [{ key: 'question-2' }], key: 'panel-2' },
     ],
@@ -31,7 +31,7 @@ describe('postForm', () => {
       { id: 1, key: 'key1', type: 'textfield' },
       { id: 2, key: 'key2', type: 'textfield' },
     ],
-    requiredQuestionKeysWithErrorMessages: [],
+    requiredQuestionErrorMessages: [],
   }
 
   beforeEach(() => {
@@ -56,7 +56,7 @@ describe('postForm', () => {
     const result = await postForm(
       {
         ...defaultArgs,
-        requiredQuestionKeysWithErrorMessages: [
+        requiredQuestionErrorMessages: [
           { key: 'textArea1', requiredErrorMessage: 'required-error-message-fallback' },
           { key: 'selectBoxes', requiredErrorMessage: 'Dit veld is verplicht' },
         ],
@@ -84,7 +84,7 @@ describe('postForm', () => {
     const result = await postForm(
       {
         ...defaultArgs,
-        requiredQuestionKeysWithErrorMessages: [{ key: 'key1', requiredErrorMessage: 'Dit veld is verplicht' }],
+        requiredQuestionErrorMessages: [{ key: 'key1', requiredErrorMessage: 'Dit veld is verplicht' }],
       },
       null,
       formData,
@@ -94,6 +94,40 @@ describe('postForm', () => {
       formData,
       validationErrors: [{ key: 'key1', message: 'Dit veld is verplicht' }],
     })
+  })
+
+  it('does not return a required validation error when the required component is not visible', async () => {
+    const formData = new FormData()
+
+    const result = await postForm(
+      {
+        ...defaultArgs,
+        currentPanelIndex: 0,
+        panelComponentsConditions: [
+          {
+            componentsConditions: [
+              {
+                conditional: {
+                  eq: 'yes',
+                  show: true,
+                  when: 'controller',
+                },
+                key: 'dependent',
+              },
+            ],
+            key: 'panel-1',
+          },
+          { componentsConditions: [], key: 'panel-2' },
+        ],
+        previousAnswersByKey: { controller: 'no' },
+        requiredQuestionErrorMessages: [{ key: 'dependent', requiredErrorMessage: 'Dit veld is verplicht' }],
+      },
+      null,
+      formData,
+    )
+
+    expect(result).toBeUndefined()
+    expect(redirect).toHaveBeenCalled()
   })
 
   it('skips results without a value when checking for validation errors', async () => {

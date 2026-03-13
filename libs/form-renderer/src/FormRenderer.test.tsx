@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import type { Props } from './FormRenderer'
 
@@ -9,6 +10,7 @@ const defaultProps: Props = {
   action: vi.fn(),
   formComponents: form.components[0].components,
   panelTitle: form.components[0].title,
+  previousAnswersByKey: {},
   submitButtonText: 'Volgende vraag',
 }
 
@@ -140,5 +142,110 @@ describe('FormRenderer', () => {
         expect(components).toBeInTheDocument()
       })
     }
+  })
+
+  it('does not render a component when shouldRender returns false, and renders it after onChange updates values (string)', async () => {
+    const user = userEvent.setup()
+
+    const controller = {
+      ...form.components[0].components[0],
+      key: 'controller',
+      label: 'Controller',
+    }
+
+    const dependent = {
+      ...form.components[0].components[0],
+      conditional: {
+        eq: 'yes',
+        show: true,
+        when: 'controller',
+      },
+      key: 'dependent',
+      label: 'Dependent',
+    }
+
+    render(<FormRenderer {...defaultProps} formComponents={[controller, dependent]} />)
+
+    expect(screen.queryByRole('textbox', { name: 'Dependent' })).not.toBeInTheDocument()
+
+    const controllerInput = screen.getByRole('textbox', { name: 'Controller' })
+    await user.type(controllerInput, 'yes')
+
+    expect(screen.getByRole('textbox', { name: 'Dependent' })).toBeInTheDocument()
+  })
+
+  it('renders a conditional component after onChange updates values for a checkbox group (string[])', async () => {
+    const user = userEvent.setup()
+
+    const checkboxGroup = {
+      ...form.components[0].components[2],
+      key: 'checkboxGroup',
+      label: 'Checkbox Group',
+    }
+
+    const dependent = {
+      ...form.components[0].components[0],
+      conditional: {
+        eq: 'one',
+        show: true,
+        when: 'checkboxGroup',
+      },
+      key: 'dependent',
+      label: 'Dependent',
+    }
+
+    render(<FormRenderer {...defaultProps} formComponents={[checkboxGroup, dependent]} />)
+
+    expect(screen.queryByRole('textbox', { name: 'Dependent' })).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('checkbox', { name: 'One' }))
+
+    expect(screen.getByRole('textbox', { name: 'Dependent' })).toBeInTheDocument()
+  })
+
+  it('does not render a component when previousAnswersByKey does not meet the condition', () => {
+    const dependent = {
+      ...form.components[0].components[0],
+      conditional: {
+        eq: 'yes',
+        show: true,
+        when: 'previous-answer',
+      },
+      key: 'dependent-prev',
+      label: 'Dependent Previous',
+    }
+
+    render(
+      <FormRenderer
+        {...defaultProps}
+        formComponents={[dependent]}
+        previousAnswersByKey={{ 'previous-answer': 'no' }}
+      />,
+    )
+
+    expect(screen.queryByRole('textbox', { name: 'Dependent Previous' })).not.toBeInTheDocument()
+  })
+
+  it('renders a component when previousAnswersByKey meets the condition', () => {
+    const dependent = {
+      ...form.components[0].components[0],
+      conditional: {
+        eq: 'yes',
+        show: true,
+        when: 'previous-answer',
+      },
+      key: 'dependent-prev',
+      label: 'Dependent Previous',
+    }
+
+    render(
+      <FormRenderer
+        {...defaultProps}
+        formComponents={[dependent]}
+        previousAnswersByKey={{ 'previous-answer': 'yes' }}
+      />,
+    )
+
+    expect(screen.getByRole('textbox', { name: 'Dependent Previous' })).toBeInTheDocument()
   })
 })

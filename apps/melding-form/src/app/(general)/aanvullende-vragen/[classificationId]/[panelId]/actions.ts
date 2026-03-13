@@ -5,21 +5,21 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
-import type { AnswersByKey, PanelKeyWithComponentsConditions } from './_utils/navigationUtils'
+import type { AnswersByKey, PanelComponentsConditions } from './_utils/navigationUtils'
 
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
-import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath } from './_utils/navigationUtils'
+import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, shouldRenderComponent } from './_utils/navigationUtils'
 import { COOKIES } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
-type RequiredQuestionKeyWithErrorMessage = { key: string; requiredErrorMessage: string }
+type RequiredQuestionErrorMessage = { key: string; requiredErrorMessage: string }
 
 export type ArgsType = {
   classificationId: number
   currentPanelIndex: number
-  panelKeyWithComponentsConditions: PanelKeyWithComponentsConditions[]
+  panelComponentsConditions: PanelComponentsConditions[]
   previousAnswersByKey: AnswersByKey
   questionAndAnswerIdPairs?: { answerId: number; questionId: number }[]
   questionMetadata: {
@@ -28,14 +28,21 @@ export type ArgsType = {
     type: string
     valuesAndLabels?: { label: string; value: string }[]
   }[]
-  requiredQuestionKeysWithErrorMessages: RequiredQuestionKeyWithErrorMessage[]
+  requiredQuestionErrorMessages: RequiredQuestionErrorMessage[]
 }
 
-const getUnansweredRequiredQuestionKeysWithErrorMessages = (
-  requiredKeysWithErrorMessages: RequiredQuestionKeyWithErrorMessage[],
+const getMissingRequiredQuestionErrorMessages = (
+  requiredQuestionErrorMessages: RequiredQuestionErrorMessage[],
   entries: [string, unknown][],
+  componentsConditions: PanelComponentsConditions['componentsConditions'],
+  answersByKey: AnswersByKey,
 ) =>
-  requiredKeysWithErrorMessages.filter(({ key }) => {
+  requiredQuestionErrorMessages.filter(({ key }) => {
+    const componentCondition = componentsConditions.find((component) => component.key === key)
+
+    // If the component is not rendered, it should not return a 'required' error message.
+    if (componentCondition && !shouldRenderComponent(componentCondition, answersByKey)) return false
+
     const entry = entries.find(([entryKey]) => entryKey === key)
 
     // If entries do not contain a key that is in requiredKeys, add it to missingRequiredKeys
@@ -51,11 +58,11 @@ export const postForm = async (
   {
     classificationId,
     currentPanelIndex,
-    panelKeyWithComponentsConditions,
+    panelComponentsConditions,
     previousAnswersByKey,
     questionAndAnswerIdPairs,
     questionMetadata,
-    requiredQuestionKeysWithErrorMessages,
+    requiredQuestionErrorMessages,
   }: ArgsType,
   _: unknown,
   formData: FormData,
@@ -73,16 +80,23 @@ export const postForm = async (
   const stringEntries = entriesArray.filter(([, value]) => typeof value === 'string') as [string, string][]
   const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(stringEntries))
 
+  // Merge previously submitted answers with the current panel's just-submitted answers.
+  // Current panel answers take priority, enabling up-to-date conditional evaluation.
+  const allAnswersByKey = { ...previousAnswersByKey, ...Object.fromEntries(entriesWithMergedCheckboxes) }
+
   // Check if all required questions are answered
-  const missingRequiredKeysWithErrorMessages = getUnansweredRequiredQuestionKeysWithErrorMessages(
-    requiredQuestionKeysWithErrorMessages,
+  const componentsConditions = panelComponentsConditions[currentPanelIndex].componentsConditions
+  const missingRequiredQuestionErrorMessages = getMissingRequiredQuestionErrorMessages(
+    requiredQuestionErrorMessages,
     entriesWithMergedCheckboxes,
+    componentsConditions,
+    allAnswersByKey,
   )
 
-  if (missingRequiredKeysWithErrorMessages.length > 0) {
+  if (missingRequiredQuestionErrorMessages.length > 0) {
     return {
       formData,
-      validationErrors: missingRequiredKeysWithErrorMessages.map(({ key, requiredErrorMessage }) => ({
+      validationErrors: missingRequiredQuestionErrorMessages.map(({ key, requiredErrorMessage }) => ({
         key,
         message: requiredErrorMessage,
       })),
@@ -128,14 +142,10 @@ export const postForm = async (
     }
   }
 
-  // Merge previously submitted answers with the current panel's just-submitted answers.
-  // Current panel answers take priority, enabling up-to-date conditional evaluation.
-  const allAnswersByKey = { ...previousAnswersByKey, ...Object.fromEntries(entriesWithMergedCheckboxes) }
-
   const nextPanelPath = getNextPanelPath(
     classificationId,
     currentPanelIndex,
-    panelKeyWithComponentsConditions,
+    panelComponentsConditions,
     allAnswersByKey,
   )
 
@@ -155,7 +165,7 @@ export const postForm = async (
     const oneDay = 24 * 60 * 60
     cookieStore.set(
       COOKIES.LAST_PANEL_PATH,
-      `/aanvullende-vragen/${classificationId}/${panelKeyWithComponentsConditions[currentPanelIndex].key}`,
+      `/aanvullende-vragen/${classificationId}/${panelComponentsConditions[currentPanelIndex].key}`,
       { maxAge: oneDay },
     )
   }

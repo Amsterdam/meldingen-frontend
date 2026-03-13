@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import type { Props } from './Select'
 
@@ -14,6 +15,7 @@ const defaultProps: Props = {
   hasHeading: true,
   id: 'test-id',
   label: 'Test label',
+  onChange: vi.fn(),
   validate: { required: true },
 }
 
@@ -104,5 +106,18 @@ describe('Select Component', () => {
 
     const select = screen.getByRole('combobox', { name: defaultProps.label })
     expect(select).toHaveAttribute('aria-invalid', 'true')
+  })
+
+  it('calls onChange with the correct value when an option is selected', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+
+    render(<Select {...defaultProps} onChange={onChange} />)
+
+    const select = screen.getByRole('combobox', { name: defaultProps.label })
+
+    await user.selectOptions(select, defaultProps.data.values[0].value)
+
+    expect(onChange).toHaveBeenLastCalledWith(defaultProps.data.values[0].value)
   })
 })
