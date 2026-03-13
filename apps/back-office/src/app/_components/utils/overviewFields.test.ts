@@ -1,5 +1,5 @@
 import { melding } from '../../../mocks/data'
-import { formatValue, getMeldingDetailHref, OVERVIEW_FIELDS } from './overviewFields'
+import { formatValue, getMeldingDetailHref, OVERVIEW_FIELDS, OverviewField } from './overviewFields'
 
 describe('overviewFields utils', () => {
   const t = (key: string) => key
@@ -85,7 +85,7 @@ describe('overviewFields utils', () => {
     })
 
     it('returns undefined for unknown keys', () => {
-      const result = formatValue(melding, 'unknown_key', t)
+      const result = formatValue(melding, 'unknown_key' as OverviewField['key'], t)
 
       expect(result).toBeUndefined()
     })
