@@ -23,13 +23,13 @@ type Props = {
   totalPages: number
 }
 
-export const toMeldingenWithAddress = (meldingen: MeldingOutput[]): MeldingWithAddress[] =>
+const toMeldingenWithAddress = (meldingen: MeldingOutput[]): MeldingWithAddress[] =>
   meldingen.map((melding) => ({
     ...melding,
     address: getShortNLAddress(melding),
   }))
 
-export const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
+const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
   <NextLink href={props.href || ''} legacyBehavior passHref>
     {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
     <a {...props} />
@@ -53,7 +53,7 @@ export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props)
         </div>
 
         <div className={styles.desktopOnly}>
-          <OverviewDesktop meldingen={meldingenWithAddress} t={t} />
+          <OverviewDesktop meldingen={meldingenWithAddress} />
         </div>
 
         <Pagination

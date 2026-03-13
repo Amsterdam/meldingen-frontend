@@ -1,45 +1,36 @@
-import NextLink from 'next/link'
+import { useTranslations } from 'next-intl'
 
-import { Link, Table } from '@meldingen/ui'
+import { Table } from '@meldingen/ui'
 
 import type { MeldingWithAddress } from '../Overview'
-import type { OverviewField } from './utils/overviewFields'
 
-import { formatValue, getMeldingDetailHref, OVERVIEW_FIELDS } from './utils/overviewFields'
+import { getOverviewFieldLabel, OVERVIEW_FIELDS, renderOverviewFieldValue } from './utils/overviewFields'
 
-type Props = {
-  fields?: OverviewField[]
-  meldingen: MeldingWithAddress[]
-  t: (key: string, values?: Record<string, string | number | Date>) => string
-}
+const renderTableHeaders = (t: (key: string) => string) =>
+  OVERVIEW_FIELDS.map((field) => <Table.HeaderCell key={field.key}>{getOverviewFieldLabel(field, t)}</Table.HeaderCell>)
 
-const renderTableHeaders = (fields: OverviewField[], t: Props['t']) =>
-  fields.map(({ key, labelKey }) => <Table.HeaderCell key={key}>{t(`overview.${labelKey}`)}</Table.HeaderCell>)
-
-const renderTableRows = (meldingen: MeldingWithAddress[], fields: OverviewField[], t: Props['t']) =>
+const renderTableRows = (meldingen: MeldingWithAddress[], t: (key: string) => string) =>
   meldingen.map((melding) => (
     <Table.Row key={melding.public_id}>
-      {fields.map(({ key }) => {
-        if (key === 'public_id') {
-          return (
-            <Table.Cell key={key}>
-              <NextLink href={getMeldingDetailHref(melding)} legacyBehavior passHref>
-                <Link>{melding.public_id}</Link>
-              </NextLink>
-            </Table.Cell>
-          )
-        }
-
-        return <Table.Cell key={key}>{formatValue(melding, key, t)}</Table.Cell>
-      })}
+      {OVERVIEW_FIELDS.map((field) => (
+        <Table.Cell key={field.key}>{renderOverviewFieldValue(melding, field, t)}</Table.Cell>
+      ))}
     </Table.Row>
   ))
 
-export const OverviewDesktop = ({ fields = OVERVIEW_FIELDS, meldingen, t }: Props) => (
-  <Table className="ams-mb-l">
-    <Table.Header>
-      <Table.Row>{renderTableHeaders(fields, t)}</Table.Row>
-    </Table.Header>
-    <Table.Body>{renderTableRows(meldingen, fields, t)}</Table.Body>
-  </Table>
-)
+type Props = {
+  meldingen: MeldingWithAddress[]
+}
+
+export const OverviewDesktop = ({ meldingen }: Props) => {
+  const t = useTranslations()
+
+  return (
+    <Table className="ams-mb-l">
+      <Table.Header>
+        <Table.Row>{renderTableHeaders(t)}</Table.Row>
+      </Table.Header>
+      <Table.Body>{renderTableRows(meldingen, t)}</Table.Body>
+    </Table>
+  )
+}

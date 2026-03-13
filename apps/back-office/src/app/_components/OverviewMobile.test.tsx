@@ -8,10 +8,8 @@ describe('OverviewMobile', () => {
   it('renders labels, values, and a detail link for each melding', () => {
     const meldingWithAddress = { ...melding, address: 'Amstel 1' }
     const createdAt = new Date(meldingWithAddress.created_at).toLocaleDateString('nl-NL')
-    const classificationText = meldingWithAddress.classification
-      ? meldingWithAddress.classification.name
-      : 'overview.no-classification'
-    const postalCode = meldingWithAddress.postal_code ?? ''
+    const classificationText = meldingWithAddress.classification!.name
+    const postalCode = meldingWithAddress.postal_code
 
     render(<OverviewMobile meldingen={[meldingWithAddress]} />)
 
@@ -26,6 +24,6 @@ describe('OverviewMobile', () => {
     expect(screen.getByText(classificationText)).toBeInTheDocument()
     expect(screen.getByText(`shared.state.${meldingWithAddress.state}`)).toBeInTheDocument()
     expect(screen.getByText('Amstel 1')).toBeInTheDocument()
-    expect(screen.getByText(postalCode)).toBeInTheDocument()
+    expect(screen.getByText(postalCode!)).toBeInTheDocument()
   })
 })

@@ -1,6 +1,11 @@
-import type { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
+import type { ReactNode } from 'react'
+
+import NextLink from 'next/link'
+
+import { Link } from '@meldingen/ui'
 
 import type { MeldingWithAddress } from '../../Overview'
+import type { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
 export const OVERVIEW_FIELDS = [
   { key: 'public_id', labelKey: 'column-header.public_id' },
@@ -11,16 +16,15 @@ export const OVERVIEW_FIELDS = [
   { key: 'postal_code', labelKey: 'column-header.postal_code' },
 ] as const
 
-export type OverviewFieldKey = (typeof OVERVIEW_FIELDS)[number]['key']
+export type OverviewField = (typeof OVERVIEW_FIELDS)[number]
 
 export const getMeldingDetailHref = (melding: Pick<MeldingOutput, 'id' | 'public_id'>) =>
   `/melding/${melding.id}?id=${melding.public_id}`
 
-export const formatValue = (
-  melding: MeldingWithAddress,
-  key: OverviewFieldKey | string,
-  t: (key: string) => string,
-) => {
+export const getOverviewFieldLabel = (field: OverviewField, t: (key: string) => string) =>
+  t(`overview.${field.labelKey}`)
+
+export const formatValue = (melding: MeldingWithAddress, key: OverviewField['key'], t: (key: string) => string) => {
   switch (key) {
     case 'address':
       return melding.address || ''
@@ -37,4 +41,20 @@ export const formatValue = (
     default:
       return undefined
   }
+}
+
+export const renderOverviewFieldValue = (
+  melding: MeldingWithAddress,
+  field: OverviewField,
+  t: (key: string) => string,
+): ReactNode => {
+  if (field.key === 'public_id') {
+    return (
+      <NextLink href={getMeldingDetailHref(melding)} legacyBehavior passHref>
+        <Link>{melding.public_id}</Link>
+      </NextLink>
+    )
+  }
+
+  return formatValue(melding, field.key, t) ?? ''
 }

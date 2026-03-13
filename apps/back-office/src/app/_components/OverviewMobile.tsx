@@ -1,13 +1,12 @@
+import { UnorderedList } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import NextLink from 'next/link'
 import { Fragment } from 'react'
 
-import { DescriptionList, Link } from '@meldingen/ui'
+import { DescriptionList } from '@meldingen/ui'
 
 import type { MeldingWithAddress } from '../Overview'
-import type { OverviewField } from './utils/overviewFields'
 
-import { formatValue, getMeldingDetailHref, OVERVIEW_FIELDS } from './utils/overviewFields'
+import { getOverviewFieldLabel, OVERVIEW_FIELDS, renderOverviewFieldValue } from './utils/overviewFields'
 
 import styles from './OverviewMobile.module.css'
 
@@ -15,35 +14,23 @@ type Props = {
   meldingen: MeldingWithAddress[]
 }
 
-const renderValue = (melding: MeldingWithAddress, field: OverviewField, t: (key: string) => string) => {
-  if (field.key === 'public_id') {
-    return (
-      <NextLink href={getMeldingDetailHref(melding)} legacyBehavior passHref>
-        <Link>{melding.public_id}</Link>
-      </NextLink>
-    )
-  }
-
-  return formatValue(melding, field.key, t) ?? ''
-}
-
 export const OverviewMobile = ({ meldingen }: Props) => {
   const t = useTranslations()
 
   return (
-    <div className={styles.list}>
+    <UnorderedList className={styles.list} markers={false}>
       {meldingen.map((melding) => (
-        <div className={styles.card} key={melding.public_id}>
+        <UnorderedList.Item className={styles.card} key={melding.public_id}>
           <DescriptionList>
             {OVERVIEW_FIELDS.map((field) => (
               <Fragment key={field.key}>
-                <DescriptionList.Term>{t(`overview.${field.labelKey}`)}</DescriptionList.Term>
-                <DescriptionList.Description>{renderValue(melding, field, t)}</DescriptionList.Description>
+                <DescriptionList.Term>{getOverviewFieldLabel(field, t)}</DescriptionList.Term>
+                <DescriptionList.Description>{renderOverviewFieldValue(melding, field, t)}</DescriptionList.Description>
               </Fragment>
             ))}
           </DescriptionList>
-        </div>
+        </UnorderedList.Item>
       ))}
-    </div>
+    </UnorderedList>
   )
 }

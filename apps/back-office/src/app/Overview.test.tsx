@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
 import { melding } from '../mocks/data'
-import { LinkComponent, Overview } from './Overview'
+import { getMeldingDetailHref } from './_components/utils/overviewFields'
+import { Overview } from './Overview'
 
 import styles from './Overview.module.css'
 
@@ -9,8 +10,10 @@ describe('Overview', () => {
   it('should render correctly', () => {
     const { container } = render(<Overview meldingen={[melding]} meldingenCount={10} totalPages={1} />)
 
+    expect(screen.getByRole('heading', { level: 1, name: 'overview.title' })).toBeInTheDocument()
+
     const idHeader = screen.getByRole('columnheader', { name: 'overview.column-header.public_id' })
-    const firstId = screen.getByRole('cell', { name: 'ABC' })
+    const detailLinks = screen.getAllByRole('link', { name: 'ABC' })
 
     // Mobile and desktop views are both rendered and toggled via CSS.
     const publicIdLabels = screen.getAllByText('overview.column-header.public_id')
@@ -19,7 +22,7 @@ describe('Overview', () => {
     const desktopOverview = container.querySelector(`.${styles.desktopOnly}`)
 
     expect(idHeader).toBeInTheDocument()
-    expect(firstId).toBeInTheDocument()
+    expect(detailLinks[0]).toHaveAttribute('href', getMeldingDetailHref(melding))
     expect(publicIdLabels.length).toBeGreaterThan(0)
 
     expect(mobileOverview).toBeInTheDocument()
@@ -27,35 +30,5 @@ describe('Overview', () => {
 
     expect(mobileOverview).toHaveClass(styles.mobileOnly)
     expect(desktopOverview).toHaveClass(styles.desktopOnly)
-  })
-})
-
-describe('LinkComponent', () => {
-  it('renders a link with the given href', () => {
-    const { container } = render(<LinkComponent href="/test-url">Test Link</LinkComponent>)
-    const link = container.querySelector('a')
-
-    expect(link).toBeInTheDocument()
-    expect(link?.getAttribute('href')).toBe('/test-url')
-  })
-
-  it('renders a link with an empty href if none is provided', () => {
-    const { container } = render(<LinkComponent>Test Link</LinkComponent>)
-    const link = container.querySelector('a')
-
-    expect(link).toBeInTheDocument()
-    expect(link?.getAttribute('href')).toBe('')
-  })
-
-  it('passes additional props to the link', () => {
-    const { container } = render(
-      <LinkComponent href="/foo" rel="noopener noreferrer" target="_blank">
-        Test Link
-      </LinkComponent>,
-    )
-
-    const link = container.querySelector('a')
-    expect(link).toHaveAttribute('target', '_blank')
-    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
   })
 })
