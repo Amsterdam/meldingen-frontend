@@ -205,6 +205,7 @@ export const additionalQuestions: TextAnswerQuestionOutput[] = [
   {
     created_at: '2025-02-18T10:34:32.181638',
     id: 123,
+    original_question_text: 'Wat wilt u melden?',
     question: {
       created_at: '2025-02-17T11:06:22.137002',
       id: 35,
@@ -218,6 +219,7 @@ export const additionalQuestions: TextAnswerQuestionOutput[] = [
   {
     created_at: '2025-02-18T10:34:32.187573',
     id: 124,
+    original_question_text: 'Text Field',
     question: {
       created_at: '2025-02-17T11:06:22.137002',
       id: 36,
@@ -233,6 +235,7 @@ export const additionalQuestions: TextAnswerQuestionOutput[] = [
 export const selectAdditionalQuestion: ValueLabelAnswerQuestionOutput = {
   created_at: '2025-02-18T10:34:32.193489',
   id: 125,
+  original_question_text: 'Select Field',
   question: {
     created_at: '2025-02-17T11:06:22.137002',
     id: 37,
