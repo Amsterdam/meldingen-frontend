@@ -316,7 +316,7 @@ export type DateAnswerObject = {
     /**
      * Converted Date
      */
-    converted_date: string;
+    converted_date: string | null;
 };
 
 /**
@@ -339,6 +339,10 @@ export type DateAnswerOutput = {
      * Type
      */
     type: 'date';
+    /**
+     * Original Question Text
+     */
+    original_question_text: string;
     date: DateAnswerObject;
 };
 
@@ -362,6 +366,10 @@ export type DateAnswerQuestionOutput = {
      * Type
      */
     type: 'date';
+    /**
+     * Original Question Text
+     */
+    original_question_text: string;
     date: DateAnswerObject;
     question: QuestionOutput;
 };
@@ -522,7 +530,10 @@ export type FormCheckboxComponentInput = {
      * Key
      */
     key: string;
-    type?: FormIoComponentTypeEnum;
+    /**
+     * Type
+     */
+    type: 'selectboxes';
     /**
      * Input
      */
@@ -659,7 +670,10 @@ export type FormDateComponentInput = {
      * Key
      */
     key: string;
-    type?: FormIoComponentTypeEnum;
+    /**
+     * Type
+     */
+    type: 'date';
     /**
      * Input
      */
@@ -705,7 +719,7 @@ export type FormDateComponentOutput = {
     /**
      * Dayrange
      */
-    dayRange?: number | null;
+    dayRange: number;
     /**
      * Question
      */
@@ -742,19 +756,28 @@ export type FormInput = {
     /**
      * Components
      */
-    components: Array<FormPanelComponentInput | FormTextAreaComponentInput | FormTextFieldComponentInput | FormRadioComponentInput | FormCheckboxComponentInput | FormSelectComponentInput | FormDateComponentInput | FormTimeComponentInput>;
+    components: Array<({
+        type: 'panel';
+    } & FormPanelComponentInput) | ({
+        type: 'textarea';
+    } & FormTextAreaComponentInput) | ({
+        type: 'textfield';
+    } & FormTextFieldComponentInput) | ({
+        type: 'radio';
+    } & FormRadioComponentInput) | ({
+        type: 'selectboxes';
+    } & FormCheckboxComponentInput) | ({
+        type: 'select';
+    } & FormSelectComponentInput) | ({
+        type: 'date';
+    } & FormDateComponentInput) | ({
+        type: 'time';
+    } & FormTimeComponentInput)>;
     /**
      * Classification
      */
     classification?: number | null;
 };
-
-/**
- * FormIoComponentTypeEnum
- *
- * The value of the type field
- */
-export type FormIoComponentTypeEnum = 'panel' | 'textarea' | 'textfield' | 'selectboxes' | 'radio' | 'select' | 'date' | 'time';
 
 /**
  * FormIoFormDisplayEnum
@@ -816,7 +839,10 @@ export type FormPanelComponentInput = {
      * Key
      */
     key: string;
-    type?: FormIoComponentTypeEnum;
+    /**
+     * Type
+     */
+    type: 'panel';
     /**
      * Input
      */
@@ -825,7 +851,21 @@ export type FormPanelComponentInput = {
     /**
      * Components
      */
-    components: Array<FormTextAreaComponentInput | FormTextFieldComponentInput | FormRadioComponentInput | FormCheckboxComponentInput | FormSelectComponentInput | FormDateComponentInput | FormTimeComponentInput>;
+    components: Array<({
+        type: 'textarea';
+    } & FormTextAreaComponentInput) | ({
+        type: 'textfield';
+    } & FormTextFieldComponentInput) | ({
+        type: 'radio';
+    } & FormRadioComponentInput) | ({
+        type: 'selectboxes';
+    } & FormCheckboxComponentInput) | ({
+        type: 'select';
+    } & FormSelectComponentInput) | ({
+        type: 'date';
+    } & FormDateComponentInput) | ({
+        type: 'time';
+    } & FormTimeComponentInput)>;
 };
 
 /**
@@ -879,7 +919,10 @@ export type FormRadioComponentInput = {
      * Key
      */
     key: string;
-    type?: FormIoComponentTypeEnum;
+    /**
+     * Type
+     */
+    type: 'radio';
     /**
      * Input
      */
@@ -968,7 +1011,10 @@ export type FormSelectComponentInput = {
      * Key
      */
     key: string;
-    type?: FormIoComponentTypeEnum;
+    /**
+     * Type
+     */
+    type: 'select';
     /**
      * Input
      */
@@ -1047,7 +1093,10 @@ export type FormTextAreaComponentInput = {
      * Key
      */
     key: string;
-    type?: FormIoComponentTypeEnum;
+    /**
+     * Type
+     */
+    type: 'textarea';
     /**
      * Input
      */
@@ -1124,7 +1173,10 @@ export type FormTextFieldComponentInput = {
      * Key
      */
     key: string;
-    type?: FormIoComponentTypeEnum;
+    /**
+     * Type
+     */
+    type: 'textfield';
     /**
      * Input
      */
@@ -1185,7 +1237,10 @@ export type FormTimeComponentInput = {
      * Key
      */
     key: string;
-    type?: FormIoComponentTypeEnum;
+    /**
+     * Type
+     */
+    type: 'time';
     /**
      * Input
      */
@@ -1620,6 +1675,10 @@ export type MeldingCreateOutput = {
      * State
      */
     state: string;
+    /**
+     * Urgency
+     */
+    urgency?: -1 | 0 | 1;
     classification?: SimpleClassificationOutput | null;
     geo_location?: GeoJsonOutput | null;
     /**
@@ -1664,6 +1723,10 @@ export type MeldingInput = {
      * Text
      */
     text: string;
+    /**
+     * Urgency
+     */
+    urgency?: -1 | 0 | 1;
 };
 
 /**
@@ -1694,6 +1757,10 @@ export type MeldingOutput = {
      * State
      */
     state: string;
+    /**
+     * Urgency
+     */
+    urgency?: -1 | 0 | 1;
     classification?: SimpleClassificationOutput | null;
     geo_location?: GeoJsonOutput | null;
     /**
@@ -1754,6 +1821,10 @@ export type MeldingUpdateOutput = {
      * State
      */
     state: string;
+    /**
+     * Urgency
+     */
+    urgency?: -1 | 0 | 1;
     classification?: SimpleClassificationOutput | null;
     geo_location?: GeoJsonOutput | null;
     /**
@@ -2329,7 +2400,23 @@ export type StaticFormInput = {
     /**
      * Components
      */
-    components: Array<FormPanelComponentInput | FormTextAreaComponentInput | FormTextFieldComponentInput | FormRadioComponentInput | FormCheckboxComponentInput | FormSelectComponentInput | FormDateComponentInput | FormTimeComponentInput>;
+    components: Array<({
+        type: 'panel';
+    } & FormPanelComponentInput) | ({
+        type: 'textarea';
+    } & FormTextAreaComponentInput) | ({
+        type: 'textfield';
+    } & FormTextFieldComponentInput) | ({
+        type: 'radio';
+    } & FormRadioComponentInput) | ({
+        type: 'selectboxes';
+    } & FormCheckboxComponentInput) | ({
+        type: 'select';
+    } & FormSelectComponentInput) | ({
+        type: 'date';
+    } & FormDateComponentInput) | ({
+        type: 'time';
+    } & FormTimeComponentInput)>;
 };
 
 /**
@@ -2643,6 +2730,10 @@ export type TextAnswerOutput = {
      */
     type: 'text';
     /**
+     * Original Question Text
+     */
+    original_question_text: string;
+    /**
      * Text
      */
     text: string;
@@ -2668,6 +2759,10 @@ export type TextAnswerQuestionOutput = {
      * Type
      */
     type: 'text';
+    /**
+     * Original Question Text
+     */
+    original_question_text: string;
     /**
      * Text
      */
@@ -2710,6 +2805,10 @@ export type TimeAnswerOutput = {
      */
     type: 'time';
     /**
+     * Original Question Text
+     */
+    original_question_text: string;
+    /**
      * Time
      */
     time: string;
@@ -2735,6 +2834,10 @@ export type TimeAnswerQuestionOutput = {
      * Type
      */
     type: 'time';
+    /**
+     * Original Question Text
+     */
+    original_question_text: string;
     /**
      * Time
      */
@@ -2812,6 +2915,16 @@ export type ValidationError = {
      * Error Type
      */
     type: string;
+    /**
+     * Input
+     */
+    input?: unknown;
+    /**
+     * Context
+     */
+    ctx?: {
+        [key: string]: unknown;
+    };
 };
 
 /**
@@ -2849,6 +2962,10 @@ export type ValueLabelAnswerOutput = {
      */
     type: 'value_label';
     /**
+     * Original Question Text
+     */
+    original_question_text: string;
+    /**
      * Values And Labels
      */
     values_and_labels: Array<ValueLabelObject>;
@@ -2874,6 +2991,10 @@ export type ValueLabelAnswerQuestionOutput = {
      * Type
      */
     type: 'value_label';
+    /**
+     * Original Question Text
+     */
+    original_question_text: string;
     /**
      * Values And Labels
      */
