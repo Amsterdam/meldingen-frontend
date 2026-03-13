@@ -99,10 +99,10 @@ describe('setDateComponentOptions', () => {
 
   it('handles mixed component types correctly', () => {
     const components = [
-      { key: 'name', label: 'Name', type: 'text' },
-      { dayRange: 2, key: 'incidentDate', type: 'date' },
-      { key: 'description', label: 'Description', type: 'textarea' },
-    ] as FormDateComponentOutputWithValues[]
+      { key: 'name', label: 'Name', type: 'text' } as FormOutputWithoutPanelComponents,
+      { dayRange: 2, key: 'incidentDate', type: 'date' } as FormDateComponentOutputWithValues,
+      { key: 'description', label: 'Description', type: 'textarea' } as FormOutputWithoutPanelComponents,
+    ]
 
     const result = setDateComponentOptions(components)
 

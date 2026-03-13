@@ -1043,7 +1043,14 @@ export const DateAnswerObjectSchema = {
             title: 'Label'
         },
         converted_date: {
-            type: 'string',
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Converted Date'
         }
     },
@@ -1076,6 +1083,10 @@ export const DateAnswerOutputSchema = {
             const: 'date',
             title: 'Type'
         },
+        original_question_text: {
+            type: 'string',
+            title: 'Original Question Text'
+        },
         date: {
             $ref: '#/components/schemas/DateAnswerObject'
         }
@@ -1086,6 +1097,7 @@ export const DateAnswerOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'date'
     ],
     title: 'DateAnswerOutput'
@@ -1110,6 +1122,10 @@ export const DateAnswerQuestionOutputSchema = {
             const: 'date',
             title: 'Type'
         },
+        original_question_text: {
+            type: 'string',
+            title: 'Original Question Text'
+        },
         date: {
             $ref: '#/components/schemas/DateAnswerObject'
         },
@@ -1123,6 +1139,7 @@ export const DateAnswerQuestionOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'date',
         'question'
     ],
@@ -1755,8 +1772,9 @@ export const FormCheckboxComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            $ref: '#/components/schemas/FormIoComponentTypeEnum',
-            default: 'selectboxes'
+            type: 'string',
+            const: 'selectboxes',
+            title: 'Type'
         },
         input: {
             type: 'boolean',
@@ -1796,6 +1814,7 @@ export const FormCheckboxComponentInputSchema = {
         'label',
         'description',
         'key',
+        'type',
         'input',
         'values'
     ],
@@ -2218,8 +2237,9 @@ export const FormDateComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            $ref: '#/components/schemas/FormIoComponentTypeEnum',
-            default: 'date'
+            type: 'string',
+            const: 'date',
+            title: 'Type'
         },
         input: {
             type: 'boolean',
@@ -2256,6 +2276,7 @@ export const FormDateComponentInputSchema = {
         'label',
         'description',
         'key',
+        'type',
         'input',
         'dayRange'
     ],
@@ -2309,14 +2330,7 @@ export const FormDateComponentOutputSchema = {
             ]
         },
         dayRange: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
+            type: 'integer',
             title: 'Dayrange'
         },
         question: {
@@ -2332,6 +2346,7 @@ export const FormDateComponentOutputSchema = {
         'type',
         'input',
         'position',
+        'dayRange',
         'question'
     ],
     title: 'FormDateComponentOutput'
@@ -2428,7 +2443,20 @@ export const FormInputSchema = {
                     {
                         $ref: '#/components/schemas/FormTimeComponentInput'
                     }
-                ]
+                ],
+                discriminator: {
+                    propertyName: 'type',
+                    mapping: {
+                        date: '#/components/schemas/FormDateComponentInput',
+                        panel: '#/components/schemas/FormPanelComponentInput',
+                        radio: '#/components/schemas/FormRadioComponentInput',
+                        select: '#/components/schemas/FormSelectComponentInput',
+                        selectboxes: '#/components/schemas/FormCheckboxComponentInput',
+                        textarea: '#/components/schemas/FormTextAreaComponentInput',
+                        textfield: '#/components/schemas/FormTextFieldComponentInput',
+                        time: '#/components/schemas/FormTimeComponentInput'
+                    }
+                }
             },
             type: 'array',
             title: 'Components'
@@ -2453,22 +2481,6 @@ export const FormInputSchema = {
         'components'
     ],
     title: 'FormInput'
-} as const;
-
-export const FormIoComponentTypeEnumSchema = {
-    type: 'string',
-    enum: [
-        'panel',
-        'textarea',
-        'textfield',
-        'selectboxes',
-        'radio',
-        'select',
-        'date',
-        'time'
-    ],
-    title: 'FormIoComponentTypeEnum',
-    description: 'The value of the type field'
 } as const;
 
 export const FormIoFormDisplayEnumSchema = {
@@ -2578,8 +2590,9 @@ export const FormPanelComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            $ref: '#/components/schemas/FormIoComponentTypeEnum',
-            default: 'panel'
+            type: 'string',
+            const: 'panel',
+            title: 'Type'
         },
         input: {
             type: 'boolean',
@@ -2620,7 +2633,19 @@ export const FormPanelComponentInputSchema = {
                     {
                         $ref: '#/components/schemas/FormTimeComponentInput'
                     }
-                ]
+                ],
+                discriminator: {
+                    propertyName: 'type',
+                    mapping: {
+                        date: '#/components/schemas/FormDateComponentInput',
+                        radio: '#/components/schemas/FormRadioComponentInput',
+                        select: '#/components/schemas/FormSelectComponentInput',
+                        selectboxes: '#/components/schemas/FormCheckboxComponentInput',
+                        textarea: '#/components/schemas/FormTextAreaComponentInput',
+                        textfield: '#/components/schemas/FormTextFieldComponentInput',
+                        time: '#/components/schemas/FormTimeComponentInput'
+                    }
+                }
             },
             type: 'array',
             title: 'Components'
@@ -2632,6 +2657,7 @@ export const FormPanelComponentInputSchema = {
         'label',
         'title',
         'key',
+        'type',
         'components'
     ],
     title: 'FormPanelComponentInput'
@@ -2740,8 +2766,9 @@ export const FormRadioComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            $ref: '#/components/schemas/FormIoComponentTypeEnum',
-            default: 'radio'
+            type: 'string',
+            const: 'radio',
+            title: 'Type'
         },
         input: {
             type: 'boolean',
@@ -2781,6 +2808,7 @@ export const FormRadioComponentInputSchema = {
         'label',
         'description',
         'key',
+        'type',
         'input',
         'values'
     ],
@@ -2917,8 +2945,9 @@ export const FormSelectComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            $ref: '#/components/schemas/FormIoComponentTypeEnum',
-            default: 'select'
+            type: 'string',
+            const: 'select',
+            title: 'Type'
         },
         input: {
             type: 'boolean',
@@ -2962,6 +2991,7 @@ export const FormSelectComponentInputSchema = {
         'label',
         'description',
         'key',
+        'type',
         'input',
         'widget',
         'placeholder',
@@ -3072,8 +3102,9 @@ export const FormTextAreaComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            $ref: '#/components/schemas/FormIoComponentTypeEnum',
-            default: 'textarea'
+            type: 'string',
+            const: 'textarea',
+            title: 'Type'
         },
         input: {
             type: 'boolean',
@@ -3122,6 +3153,7 @@ export const FormTextAreaComponentInputSchema = {
         'label',
         'description',
         'key',
+        'type',
         'input',
         'autoExpand'
     ],
@@ -3233,8 +3265,9 @@ export const FormTextFieldComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            $ref: '#/components/schemas/FormIoComponentTypeEnum',
-            default: 'textfield'
+            type: 'string',
+            const: 'textfield',
+            title: 'Type'
         },
         input: {
             type: 'boolean',
@@ -3267,6 +3300,7 @@ export const FormTextFieldComponentInputSchema = {
         'label',
         'description',
         'key',
+        'type',
         'input'
     ],
     title: 'FormTextFieldComponentInput'
@@ -3360,8 +3394,9 @@ export const FormTimeComponentInputSchema = {
             title: 'Key'
         },
         type: {
-            $ref: '#/components/schemas/FormIoComponentTypeEnum',
-            default: 'time'
+            type: 'string',
+            const: 'time',
+            title: 'Type'
         },
         input: {
             type: 'boolean',
@@ -3394,6 +3429,7 @@ export const FormTimeComponentInputSchema = {
         'label',
         'description',
         'key',
+        'type',
         'input'
     ],
     title: 'FormTimeComponentInput'
@@ -4998,6 +5034,16 @@ export const MeldingCreateOutputSchema = {
             type: 'string',
             title: 'State'
         },
+        urgency: {
+            type: 'integer',
+            enum: [
+                -1,
+                0,
+                1
+            ],
+            title: 'Urgency',
+            default: 0
+        },
         classification: {
             anyOf: [
                 {
@@ -5121,6 +5167,16 @@ export const MeldingInputSchema = {
             type: 'string',
             minLength: 1,
             title: 'Text'
+        },
+        urgency: {
+            type: 'integer',
+            enum: [
+                -1,
+                0,
+                1
+            ],
+            title: 'Urgency',
+            default: 0
         }
     },
     type: 'object',
@@ -5155,6 +5211,16 @@ export const MeldingOutputSchema = {
         state: {
             type: 'string',
             title: 'State'
+        },
+        urgency: {
+            type: 'integer',
+            enum: [
+                -1,
+                0,
+                1
+            ],
+            title: 'Urgency',
+            default: 0
         },
         classification: {
             anyOf: [
@@ -5293,6 +5359,16 @@ export const MeldingUpdateOutputSchema = {
         state: {
             type: 'string',
             title: 'State'
+        },
+        urgency: {
+            type: 'integer',
+            enum: [
+                -1,
+                0,
+                1
+            ],
+            title: 'Urgency',
+            default: 0
         },
         classification: {
             anyOf: [
@@ -7686,7 +7762,20 @@ export const StaticFormInputSchema = {
                     {
                         $ref: '#/components/schemas/FormTimeComponentInput'
                     }
-                ]
+                ],
+                discriminator: {
+                    propertyName: 'type',
+                    mapping: {
+                        date: '#/components/schemas/FormDateComponentInput',
+                        panel: '#/components/schemas/FormPanelComponentInput',
+                        radio: '#/components/schemas/FormRadioComponentInput',
+                        select: '#/components/schemas/FormSelectComponentInput',
+                        selectboxes: '#/components/schemas/FormCheckboxComponentInput',
+                        textarea: '#/components/schemas/FormTextAreaComponentInput',
+                        textfield: '#/components/schemas/FormTextFieldComponentInput',
+                        time: '#/components/schemas/FormTimeComponentInput'
+                    }
+                }
             },
             type: 'array',
             title: 'Components'
@@ -8307,6 +8396,10 @@ export const TextAnswerOutputSchema = {
             const: 'text',
             title: 'Type'
         },
+        original_question_text: {
+            type: 'string',
+            title: 'Original Question Text'
+        },
         text: {
             type: 'string',
             title: 'Text'
@@ -8318,6 +8411,7 @@ export const TextAnswerOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'text'
     ],
     title: 'TextAnswerOutput'
@@ -8342,6 +8436,10 @@ export const TextAnswerQuestionOutputSchema = {
             const: 'text',
             title: 'Type'
         },
+        original_question_text: {
+            type: 'string',
+            title: 'Original Question Text'
+        },
         text: {
             type: 'string',
             title: 'Text'
@@ -8356,6 +8454,7 @@ export const TextAnswerQuestionOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'text',
         'question'
     ],
@@ -8366,7 +8465,7 @@ export const TimeAnswerInputSchema = {
     properties: {
         time: {
             type: 'string',
-            pattern: '^\\d{2}:\\d{2}$',
+            pattern: '^(?:[01]\\d|2[0-3]):[0-5]\\d$',
             title: 'Time'
         },
         type: {
@@ -8402,6 +8501,10 @@ export const TimeAnswerOutputSchema = {
             const: 'time',
             title: 'Type'
         },
+        original_question_text: {
+            type: 'string',
+            title: 'Original Question Text'
+        },
         time: {
             type: 'string',
             title: 'Time'
@@ -8413,6 +8516,7 @@ export const TimeAnswerOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'time'
     ],
     title: 'TimeAnswerOutput'
@@ -8437,6 +8541,10 @@ export const TimeAnswerQuestionOutputSchema = {
             const: 'time',
             title: 'Type'
         },
+        original_question_text: {
+            type: 'string',
+            title: 'Original Question Text'
+        },
         time: {
             type: 'string',
             title: 'Time'
@@ -8451,6 +8559,7 @@ export const TimeAnswerQuestionOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'time',
         'question'
     ],
@@ -8566,6 +8675,13 @@ export const ValidationErrorSchema = {
         type: {
             type: 'string',
             title: 'Error Type'
+        },
+        input: {
+            title: 'Input'
+        },
+        ctx: {
+            type: 'object',
+            title: 'Context'
         }
     },
     type: 'object',
@@ -8619,6 +8735,10 @@ export const ValueLabelAnswerOutputSchema = {
             const: 'value_label',
             title: 'Type'
         },
+        original_question_text: {
+            type: 'string',
+            title: 'Original Question Text'
+        },
         values_and_labels: {
             items: {
                 $ref: '#/components/schemas/ValueLabelObject'
@@ -8633,6 +8753,7 @@ export const ValueLabelAnswerOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'values_and_labels'
     ],
     title: 'ValueLabelAnswerOutput'
@@ -8657,6 +8778,10 @@ export const ValueLabelAnswerQuestionOutputSchema = {
             const: 'value_label',
             title: 'Type'
         },
+        original_question_text: {
+            type: 'string',
+            title: 'Original Question Text'
+        },
         values_and_labels: {
             items: {
                 $ref: '#/components/schemas/ValueLabelObject'
@@ -8674,6 +8799,7 @@ export const ValueLabelAnswerQuestionOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'values_and_labels',
         'question'
     ],
