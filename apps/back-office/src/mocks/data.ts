@@ -70,6 +70,7 @@ export const additionalQuestions: TextAnswerQuestionOutput[] = [
   {
     created_at: '2025-02-18T10:34:32.181638',
     id: 123,
+    original_question_text: 'Wat wilt u melden?',
     question: {
       created_at: '2025-02-17T11:06:22.137002',
       id: 35,
@@ -83,6 +84,7 @@ export const additionalQuestions: TextAnswerQuestionOutput[] = [
   {
     created_at: '2025-02-18T10:34:32.187573',
     id: 124,
+    original_question_text: 'Text Field',
     question: {
       created_at: '2025-02-17T11:06:22.137002',
       id: 36,
@@ -98,6 +100,7 @@ export const additionalQuestions: TextAnswerQuestionOutput[] = [
 export const additionalTimeQuestion: TimeAnswerQuestionOutput = {
   created_at: '2025-02-18T10:34:32.193123',
   id: 125,
+  original_question_text: 'Tijd veld',
   question: {
     created_at: '2025-02-17T11:06:22.137002',
     id: 37,
@@ -112,6 +115,7 @@ export const additionalTimeQuestion: TimeAnswerQuestionOutput = {
 export const additionalValueLabelQuestion: ValueLabelAnswerQuestionOutput = {
   created_at: '2025-02-18T10:34:32.200456',
   id: 126,
+  original_question_text: 'Keuze veld',
   question: {
     created_at: '2025-02-17T11:06:22.137002',
     id: 38,
