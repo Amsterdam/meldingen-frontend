@@ -9,7 +9,6 @@ import { useActionState, useEffect, useRef } from 'react'
 import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink/BackLink'
-import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { AttachmentImage } from './_components/AttachmentImage'
@@ -70,17 +69,16 @@ export const Summary = ({ additionalQuestions, attachments, contact, location, p
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-s" href="/contact">
+      <BackLink className="ams-mb-l" href="/contact">
         {t('back-link')}
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-        <FormHeader step={t('step')} title={t('title')} />
         <Heading className="ams-mb-s" level={1} size="level-3">
           {t('main-title')}
         </Heading>
         <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
-        <SummaryList className="ams-mb-m">
+        <SummaryList className="ams-mb-xl">
           <SummaryList.Item>
             <SummaryList.Term>{primaryForm.term}</SummaryList.Term>
             <SummaryList.Description>{primaryForm.description}</SummaryList.Description>
