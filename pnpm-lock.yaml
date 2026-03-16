@@ -283,6 +283,9 @@ importers:
 
   libs/form-renderer:
     dependencies:
+      '@meldingen/api-client':
+        specifier: workspace:*
+        version: link:../api-client
       '@meldingen/markdown-to-html':
         specifier: workspace:*
         version: link:../markdown-to-html
@@ -292,10 +295,6 @@ importers:
       next:
         specifier: 16.1.6
         version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-    devDependencies:
-      '@meldingen/api-client':
-        specifier: workspace:*
-        version: link:../api-client
 
   libs/map:
     dependencies:
