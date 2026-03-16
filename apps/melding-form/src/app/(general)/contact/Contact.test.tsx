@@ -57,14 +57,6 @@ describe('Contact', () => {
     ;(useActionState as Mock).mockReturnValue([{}, vi.fn()])
   })
 
-  it('renders the form header', () => {
-    render(<Contact formComponents={contactFormData} />)
-
-    const header = screen.getByRole('banner', { name: 'title' })
-
-    expect(header).toBeInTheDocument()
-  })
-
   it('renders page and form', async () => {
     render(<Contact formComponents={contactFormData} />)
 

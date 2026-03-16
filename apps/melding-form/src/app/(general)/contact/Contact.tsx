@@ -11,7 +11,6 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink/BackLink'
-import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { postContactForm } from './actions'
@@ -68,7 +67,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-s" href="/bijlage">
+      <BackLink className="ams-mb-l" href="/bijlage">
         {t('back-link')}
       </BackLink>
       <main>
@@ -85,13 +84,12 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
             ref={invalidFormAlertRef}
           />
         )}
-        <FormHeader step={t('step')} title={t('title')} />
-        <Heading className="ams-mb-m" level={1} size="level-3">
+        <Heading className="ams-mb-s" level={1} size="level-3">
           {t('question')}
         </Heading>
         <MarkdownToHtml className="ams-mb-m">{t('description')}</MarkdownToHtml>
         <Form action={formAction} noValidate>
-          <Field className="ams-mb-m" invalid={Boolean(emailErrorMessage)}>
+          <Field className="ams-mb-l" invalid={Boolean(emailErrorMessage)}>
             <Label htmlFor="email-input" optional>
               {emailLabel}
             </Label>
@@ -114,7 +112,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
               type="email"
             />
           </Field>
-          <Field className="ams-mb-m" invalid={Boolean(telErrorMessage)}>
+          <Field className="ams-mb-xl" invalid={Boolean(telErrorMessage)}>
             <Label htmlFor="tel-input" optional>
               {telLabel}
             </Label>

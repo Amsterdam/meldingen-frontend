@@ -24,14 +24,6 @@ describe('Location', () => {
     ;(useActionState as Mock).mockReturnValue([{}, vi.fn()])
   })
 
-  it('renders', () => {
-    render(<Location {...defaultProps} />)
-
-    const header = screen.getByRole('banner', { name: 'title' })
-
-    expect(header).toBeInTheDocument()
-  })
-
   it('renders the back link', () => {
     render(<Location {...defaultProps} />)
 

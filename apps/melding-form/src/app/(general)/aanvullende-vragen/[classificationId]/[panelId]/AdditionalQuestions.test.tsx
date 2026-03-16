@@ -68,14 +68,6 @@ describe('AdditionalQuestions', () => {
     expect(checkbox).toBeChecked()
   })
 
-  it('renders the form header', () => {
-    render(<AdditionalQuestions {...defaultProps} />)
-
-    const header = screen.getByRole('banner', { name: 'title' })
-
-    expect(header).toBeInTheDocument()
-  })
-
   it('renders an Invalid Form Alert when there are validation errors', () => {
     ;(useActionState as Mock).mockReturnValue([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },

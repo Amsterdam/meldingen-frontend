@@ -50,7 +50,6 @@ describe('Attachments', () => {
     render(<Attachments {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
-    const header = screen.getByRole('banner', { name: 'title' })
     const heading = screen.getByRole('heading', { name: 'First question hint-text' })
     const description = screen.getByText('Test description')
     const fileUpload = screen.getByRole('button', {
@@ -59,7 +58,6 @@ describe('Attachments', () => {
     const noJSAlertHeading = screen.getByRole('heading', { name: 'no-js-alert-title' })
 
     expect(backLink).toBeInTheDocument()
-    expect(header).toBeInTheDocument()
     expect(heading).toBeInTheDocument()
     expect(description).toBeInTheDocument()
     expect(fileUpload).toBeInTheDocument()
