@@ -99,6 +99,7 @@ export default defineConfig(
         '@typescript-eslint/parser': ['.ts', '.tsx'],
       },
       'import/resolver': {
+        // This uses eslint-import-resolver-typescript
         typescript: {},
         node: {
           extensions: ['js', 'jsx', 'ts', 'tsx'],
