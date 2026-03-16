@@ -52,7 +52,12 @@ export const ClassificationInput = () => {
 
   return (
     <>
-      <ReferenceInput reference="classification" sort={{ field: 'name', order: 'ASC' }} source="classification">
+      <ReferenceInput
+        queryOptions={{ meta: { limit: 1000 } }}
+        reference="classification"
+        sort={{ field: 'name', order: 'ASC' }}
+        source="classification"
+      >
         <AutocompleteInput
           inputText={inputText}
           onChange={handleChange}

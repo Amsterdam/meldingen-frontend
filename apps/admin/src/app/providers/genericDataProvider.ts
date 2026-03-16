@@ -10,6 +10,18 @@ type HttpClient = (
 
 export const genericDataProvider = (apiUrl: string, httpClient: HttpClient): DataProvider => ({
   ...simpleRestProvider(apiUrl, httpClient),
+
+  getList: async (resource, params) => {
+    const queryParams = {
+      filter: JSON.stringify(params.filter),
+      limit: JSON.stringify(params.meta?.limit),
+      sort: JSON.stringify([params.sort?.field, params.sort?.order]),
+    }
+
+    const url = `${apiUrl}/${resource}/?${new URLSearchParams(queryParams)}`
+    return httpClient(url).then(({ json }) => ({ data: json, total: json.length }))
+  },
+
   update: async (resource, params) => {
     // 'form' and 'static-form' updates use PUT requests, all other updates use PATCH requests
     if (resource === 'form' || resource === 'static-form') {
