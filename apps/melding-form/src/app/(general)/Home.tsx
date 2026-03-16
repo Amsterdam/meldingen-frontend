@@ -8,7 +8,6 @@ import { InvalidFormAlert } from '@meldingen/ui'
 
 import type { FormState } from '../../types'
 
-import { FormHeader } from './_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from './_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from './_utils/getDocumentTitleOnError'
 
@@ -87,7 +86,6 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
           ref={invalidFormAlertRef}
         />
       )}
-      <FormHeader step={t('step')} title={t('title')} />
       <FormRenderer
         action={formAction}
         formComponents={formComponents}
