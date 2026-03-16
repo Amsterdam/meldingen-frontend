@@ -48,13 +48,9 @@ export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props)
           {t('overview.title', { meldingenCount })}
         </Heading>
 
-        <div className={styles.mobileOnly}>
-          <OverviewMobile meldingen={meldingenWithAddress} />
-        </div>
+        <OverviewMobile meldingen={meldingenWithAddress} />
 
-        <div className={styles.desktopOnly}>
-          <OverviewDesktop meldingen={meldingenWithAddress} />
-        </div>
+        <OverviewDesktop meldingen={meldingenWithAddress} />
 
         <Pagination
           className={styles.pagination}

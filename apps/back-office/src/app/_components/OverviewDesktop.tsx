@@ -6,6 +6,8 @@ import type { MeldingWithAddress } from '../Overview'
 
 import { getOverviewFieldLabel, OVERVIEW_FIELDS, renderOverviewFieldValue } from './utils/overviewFields'
 
+import styles from './OverviewDesktop.module.css'
+
 const renderTableHeaders = (t: (key: string) => string) =>
   OVERVIEW_FIELDS.map((field) => <Table.HeaderCell key={field.key}>{getOverviewFieldLabel(field, t)}</Table.HeaderCell>)
 
@@ -26,7 +28,7 @@ export const OverviewDesktop = ({ meldingen }: Props) => {
   const t = useTranslations()
 
   return (
-    <Table className="ams-mb-l">
+    <Table className={`ams-mb-l ${styles.desktopOnly}`}>
       <Table.Header>
         <Table.Row>{renderTableHeaders(t)}</Table.Row>
       </Table.Header>
