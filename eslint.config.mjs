@@ -115,7 +115,7 @@ export default defineConfig(
       // Import
       'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
       'import/newline-after-import': 'error',
-      'import/no-cycle': 'warn',
+      'import/no-cycle': 'error',
       'import/no-default-export': 'error',
       'import/no-named-as-default': 'error',
 
