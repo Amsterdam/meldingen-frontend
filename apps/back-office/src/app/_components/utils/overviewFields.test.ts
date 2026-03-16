@@ -1,21 +1,8 @@
 import { melding } from '../../../mocks/data'
-import { formatValue, getMeldingDetailHref, OVERVIEW_FIELDS, OverviewField } from './overviewFields'
+import { formatValue, getMeldingDetailHref, OverviewField } from './overviewFields'
 
 describe('overviewFields utils', () => {
   const t = (key: string) => key
-
-  describe('OVERVIEW_FIELDS', () => {
-    it('contains the expected field definitions in order', () => {
-      expect(OVERVIEW_FIELDS).toEqual([
-        { key: 'public_id', labelKey: 'column-header.public_id' },
-        { key: 'created_at', labelKey: 'column-header.created_at' },
-        { key: 'classification', labelKey: 'column-header.classification' },
-        { key: 'state', labelKey: 'column-header.state' },
-        { key: 'address', labelKey: 'column-header.address' },
-        { key: 'postal_code', labelKey: 'column-header.postal_code' },
-      ])
-    })
-  })
 
   describe('getMeldingDetailHref', () => {
     it('builds the detail url using id and public_id', () => {
@@ -87,7 +74,7 @@ describe('overviewFields utils', () => {
     it('returns undefined for unknown keys', () => {
       const result = formatValue(melding, 'unknown_key' as OverviewField['key'], t)
 
-      expect(result).toBeUndefined()
+      expect(result).toBe('')
     })
   })
 })

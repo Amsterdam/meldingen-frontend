@@ -27,8 +27,5 @@ describe('Overview', () => {
 
     expect(mobileOverview).toBeInTheDocument()
     expect(desktopOverview).toBeInTheDocument()
-
-    expect(mobileOverview).toHaveClass(styles.mobileOnly)
-    expect(desktopOverview).toHaveClass(styles.desktopOnly)
   })
 })

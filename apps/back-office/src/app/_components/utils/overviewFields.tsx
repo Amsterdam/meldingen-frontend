@@ -39,7 +39,7 @@ export const formatValue = (melding: MeldingWithAddress, key: OverviewField['key
     case 'state':
       return t(`shared.state.${melding.state}`)
     default:
-      return undefined
+      return ''
   }
 }
 
@@ -56,5 +56,5 @@ export const renderOverviewFieldValue = (
     )
   }
 
-  return formatValue(melding, field.key, t) ?? ''
+  return formatValue(melding, field.key, t)
 }
