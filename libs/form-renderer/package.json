@@ -1,5 +1,5 @@
 {
-  "name": "form-renderer",
+  "name": "@meldingen/form-renderer",
   "version": "0.1.0",
   "description": "Form renderer for the Meldingen applications",
   "scripts": {
@@ -11,6 +11,11 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@meldingen/markdown-to-html": "workspace:*",
+    "@meldingen/ui": "workspace:*",
     "next": "16.1.6"
+  },
+  "devDependencies": {
+    "@meldingen/api-client": "workspace:*"
   }
 }
