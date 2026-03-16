@@ -11,9 +11,9 @@ import { InvalidFormAlert } from '@meldingen/ui'
 import type { AnswersByKey } from './_utils/navigationUtils'
 import type { FormState, ValidationError } from 'apps/melding-form/src/types'
 
-import { BackLink } from '../../../_components/BackLink/BackLink'
 import { SystemErrorAlert } from '../../../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../../../_utils/getDocumentTitleOnError'
+import { BackLink } from 'apps/melding-form/src/app/_components/BackLink/BackLink'
 
 const getPrefilledFormComponents = (components: Component[], formData: FormData): Component[] =>
   components.map((component) => {

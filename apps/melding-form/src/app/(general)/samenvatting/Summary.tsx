@@ -8,9 +8,9 @@ import { useActionState, useEffect, useRef } from 'react'
 
 import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
-import { BackLink } from '../_components/BackLink/BackLink'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
+import { BackLink } from '../../_components/BackLink/BackLink'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { postSummaryForm } from './actions'
 import { FormState } from 'apps/melding-form/src/types'

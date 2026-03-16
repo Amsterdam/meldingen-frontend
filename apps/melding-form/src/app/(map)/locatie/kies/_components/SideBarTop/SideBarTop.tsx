@@ -2,7 +2,7 @@ import { Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { PropsWithChildren } from 'react'
 
-import { BackLink } from 'apps/melding-form/src/app/(general)/_components/BackLink/BackLink'
+import { BackLink } from 'apps/melding-form/src/app/_components/BackLink/BackLink'
 
 import styles from './SideBarTop.module.css'
 
