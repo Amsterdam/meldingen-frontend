@@ -3,18 +3,12 @@
     "description": "Maak een melding van een probleem in de openbare ruimte."
   },
   "homepage": {
-    "metadata": {
-      "title": "Stap 1 van 4: Beschrijf uw melding - Gemeente Amsterdam"
-    },
     "submit-button": "Volgende vraag",
     "errors": {
       "required-error-message-fallback": "Vul in wat u wilt melden."
     }
   },
   "additional-questions": {
-    "metadata": {
-      "title": "Stap 1 van 4: Beschrijf uw melding - Gemeente Amsterdam"
-    },
     "back-link": "Vorige vraag",
     "submit-button": "Volgende vraag",
     "errors": {
@@ -22,9 +16,6 @@
     }
   },
   "location": {
-    "metadata": {
-      "title": "Stap 1 van 4: Beschrijf uw melding - Gemeente Amsterdam"
-    },
     "back-link": "Vorige vraag",
     "question": "Waar staat de container?",
     "description": "In het volgende scherm kunt u op de kaart een adres of container opzoeken.",
@@ -38,9 +29,6 @@
     }
   },
   "select-location": {
-    "metadata": {
-      "title": "Stap 1 van 4: Beschrijf uw melding - Gemeente Amsterdam"
-    },
     "back-link": "Vorige vraag",
     "title": "Selecteer de locatie",
     "description": "Typ het dichtstbijzijnde adres, klik de locatie aan op de kaart of gebruik “Mijn locatie”.",
@@ -87,9 +75,6 @@
     }
   },
   "attachments": {
-    "metadata": {
-      "title": "Stap 2 van 4: Foto’s - Gemeente Amsterdam"
-    },
     "back-link": "Vorige vraag",
     "hint-text": "(niet verplicht)",
     "status": "{fileCount} van {maxFiles} bestanden toegevoegd",
@@ -133,9 +118,6 @@
     }
   },
   "contact": {
-    "metadata": {
-      "title": "Stap 3 van 4: Uw gegevens - Gemeente Amsterdam"
-    },
     "back-link": "Vorige vraag",
     "question": "Mogen we u bellen voor vragen? En op de hoogte houden via e-mail?",
     "description": "Vaak hebben we nog een vraag. Daarmee kunnen we het probleem sneller of beter oplossen. Of we willen iets uitleggen. Wij willen u dan graag even bellen. Of anders e-mailen wij u.\n\nWij gebruiken uw telefoonnummer en e-mailadres alléén voor deze melding.",
@@ -147,9 +129,6 @@
     }
   },
   "summary": {
-    "metadata": {
-      "title": "Stap 4 van 4: Samenvatting - Gemeente Amsterdam"
-    },
     "back-link": "Vorige vraag",
     "main-title": "Versturen",
     "description": "Controleer uw gegevens en verstuur uw melding.",
@@ -203,6 +182,7 @@
   "shared": {
     "error-count-label": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",
     "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
+    "organisation-name": "Gemeente Amsterdam",
     "system-error-alert-description": "Probeer opnieuw naar de volgende vraag te gaan.",
     "system-error-alert-title": "Er is iets misgegaan"
   }

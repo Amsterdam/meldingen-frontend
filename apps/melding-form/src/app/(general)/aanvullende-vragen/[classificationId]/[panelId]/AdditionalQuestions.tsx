@@ -48,6 +48,14 @@ export type Props = {
 
 const initialState: FormState = {}
 
+const getPrimaryHeading = (components: Component[], panelTitle: string) => {
+  if (components.length === 1) {
+    return components[0].label
+  }
+
+  return panelTitle
+}
+
 export const AdditionalQuestions = ({
   action,
   formComponents: formComponentsFromServer,
@@ -75,7 +83,7 @@ export const AdditionalQuestions = ({
   // Update document title when there are system or validation errors
   const documentTitle = getDocumentTitleOnError({
     hasSystemError: Boolean(systemError),
-    originalDocTitle: t('metadata.title'),
+    originalDocTitle: `${getPrimaryHeading(formComponents, panelTitle)} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors?.length,
   })

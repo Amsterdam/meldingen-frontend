@@ -203,7 +203,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   // Update document title when there are system, validation or generic errors
   const documentTitle = getDocumentTitleOnError({
     hasSystemError: Boolean(systemError) || Boolean(genericError),
-    originalDocTitle: t('metadata.title'),
+    originalDocTitle: `${label} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors.length,
   })

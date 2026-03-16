@@ -47,7 +47,7 @@ export const Summary = ({ additionalQuestions, attachments, contact, location, p
   // Update document title when there are system or validation errors
   const documentTitle = getDocumentTitleOnError({
     hasSystemError: Boolean(systemError),
-    originalDocTitle: t('metadata.title'),
+    originalDocTitle: `${t('main-title')} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
   })
 

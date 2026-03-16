@@ -41,7 +41,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   // Update document title when there are system or validation errors
   const documentTitle = getDocumentTitleOnError({
     hasSystemError: Boolean(systemError),
-    originalDocTitle: t('metadata.title'),
+    originalDocTitle: `${t('question')} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors?.length,
   })
