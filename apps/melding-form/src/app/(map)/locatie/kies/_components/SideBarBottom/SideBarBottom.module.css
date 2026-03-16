@@ -8,6 +8,7 @@
 
   @media screen and (min-width: 72.5rem) {
     padding-block: var(--ams-space-m);
+    padding-block-start: var(--ams-space-xl);
   }
 }
 

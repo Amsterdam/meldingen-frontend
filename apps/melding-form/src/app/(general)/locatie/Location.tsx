@@ -13,7 +13,6 @@ import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 import type { FormState } from 'apps/melding-form/src/types'
 
 import { BackLink } from '../_components/BackLink/BackLink'
-import { FormHeader } from '../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
@@ -80,7 +79,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-s" href={prevPage}>
+      <BackLink className="ams-mb-l" href={prevPage}>
         {t('back-link')}
       </BackLink>
       <main>
@@ -98,9 +97,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
           />
         )}
 
-        <FormHeader step={t('step')} title={t('title')} />
-
-        <Field className="ams-mb-m" invalid={Boolean(validationErrors)}>
+        <Field className="ams-mb-xl" invalid={Boolean(validationErrors)}>
           <Heading level={1} size="level-3">
             {t('question')}
           </Heading>
