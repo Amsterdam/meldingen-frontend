@@ -95,6 +95,9 @@ export default defineConfig(
       workspaces,
     },
     settings: {
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx'],
+      },
       'import/resolver': {
         typescript: {},
         node: {
