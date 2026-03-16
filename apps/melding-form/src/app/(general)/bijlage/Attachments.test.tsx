@@ -334,7 +334,7 @@ describe('Attachments', () => {
     expect(fileName).not.toBeInTheDocument()
   })
 
-  it('should throw an error when delete request fails', async () => {
+  it('throws an error when delete request fails', async () => {
     server.use(
       http.delete(
         ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID,
@@ -479,7 +479,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} />)
 
-    expect(document.title).toBe('system-error-alert-title - metadata.title')
+    expect(document.title).toBe(`system-error-alert-title - ${textAreaComponent.label} - organisation-name`)
   })
 
   it('updates the document title when there are validation errors', async () => {
@@ -494,7 +494,7 @@ describe('Attachments', () => {
     await user.upload(fileInput, [file])
     await user.upload(fileInput, [file])
 
-    expect(document.title).toBe('error-count-label metadata.title')
+    expect(document.title).toBe(`error-count-label ${textAreaComponent.label} - organisation-name`)
   })
 
   it('updates the document title when there is a generic error', async () => {
@@ -509,7 +509,7 @@ describe('Attachments', () => {
       Array.from({ length: MAX_UPLOAD_ATTEMPTS + 1 }, () => mockFile),
     )
 
-    expect(document.title).toBe('system-error-alert-title - metadata.title')
+    expect(document.title).toBe(`system-error-alert-title - ${textAreaComponent.label} - organisation-name`)
   })
 
   it('sets focus on SystemErrorAlert when there is a system error', () => {

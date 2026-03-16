@@ -155,7 +155,7 @@ describe('AdditionalQuestions', () => {
 
     render(<AdditionalQuestions {...defaultProps} />)
 
-    expect(document.title).toBe('system-error-alert-title - metadata.title')
+    expect(document.title).toBe(`system-error-alert-title - ${textAreaComponent.label} - organisation-name`)
   })
 
   it('updates the document title when there are validation errors', () => {
@@ -166,7 +166,7 @@ describe('AdditionalQuestions', () => {
 
     render(<AdditionalQuestions {...defaultProps} />)
 
-    expect(document.title).toBe('error-count-label metadata.title')
+    expect(document.title).toBe(`error-count-label ${textAreaComponent.label} - organisation-name`)
   })
 
   it('sets focus on InvalidFormAlert when there are validation errors', () => {
