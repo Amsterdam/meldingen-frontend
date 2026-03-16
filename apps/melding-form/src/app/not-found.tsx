@@ -2,8 +2,9 @@ import { getTranslations } from 'next-intl/server'
 import NextLink from 'next/link'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Footer, Grid, Heading, Page, StandaloneLink } from '@meldingen/ui'
+import { Grid, Heading, Page, StandaloneLink } from '@meldingen/ui'
 
+import { Footer } from './_components/Footer/Footer'
 import { Header } from './_components/Header/Header'
 
 export const generateMetadata = async () => {
