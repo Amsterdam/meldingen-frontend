@@ -8,4 +8,6 @@ const LinkComponent = (props: PropsWithChildren<AnchorHTMLAttributes<HTMLAnchorE
   <NextLink href="/" {...props} />
 )
 
-export const Header = () => <PageHeader brandName="Melding openbare ruimte" logoLinkComponent={LinkComponent} />
+export const Header = () => (
+  <PageHeader brandName="Melding openbare ruimte" className="ams-mb-xl" logoLinkComponent={LinkComponent} />
+)
