@@ -2,8 +2,8 @@ import type { AutocompleteInputProps, RaRecord } from 'react-admin'
 
 import { Icon } from '@amsterdam/design-system-react'
 import { PowerPlugWithSocketIcon } from '@amsterdam/design-system-react-icons'
-import { useState } from 'react'
-import { AutocompleteInput, Confirm, ReferenceInput, useRecordContext } from 'react-admin'
+import { useEffect, useState } from 'react'
+import { AutocompleteInput, Confirm, useGetList, useRecordContext } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
 
 import styles from './ClassificationInput.module.css'
@@ -24,6 +24,22 @@ const OptionRenderer = () => {
 const inputText = (choice: RaRecord) => `${choice.name}`
 
 export const ClassificationInput = () => {
+  const { data, isLoading } = useGetList('classification', {
+    meta: {
+      limit: 2000,
+    },
+    pagination: { page: 1, perPage: 1000 },
+    sort: { field: 'name', order: 'ASC' },
+  })
+
+  const [stableChoices, setStableChoices] = useState<RaRecord[]>([])
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      setStableChoices(data)
+    }
+  }, [data])
+
   const record = useRecordContext()
   const { getValues, setValue } = useFormContext()
 
@@ -52,28 +68,21 @@ export const ClassificationInput = () => {
 
   return (
     <>
-      <ReferenceInput
-        queryOptions={{ meta: { limit: 1000 } }}
-        reference="classification"
-        sort={{ field: 'name', order: 'ASC' }}
+      <AutocompleteInput
+        choices={stableChoices}
+        inputText={inputText}
+        isLoading={isLoading}
+        matchSuggestion={(filterValue, choice) => choice.name?.toLowerCase().includes(filterValue.toLowerCase())}
+        onChange={handleChange}
+        onClose={() => setAutocompleteOpen(false)}
+        onOpen={() => {
+          if (!dialogOpen) setAutocompleteOpen(true)
+        }}
+        open={autocompleteOpen}
+        openOnFocus={false}
+        optionText={<OptionRenderer />}
         source="classification"
-      >
-        <AutocompleteInput
-          inputText={inputText}
-          onChange={handleChange}
-          onClose={() => {
-            setAutocompleteOpen(false)
-          }}
-          onOpen={() => {
-            if (!dialogOpen) {
-              setAutocompleteOpen(true)
-            }
-          }}
-          open={autocompleteOpen}
-          openOnFocus={false}
-          optionText={<OptionRenderer />}
-        />
-      </ReferenceInput>
+      />
       <Confirm
         content="ma.dialog.overwriteClassification.content"
         isOpen={dialogOpen}
