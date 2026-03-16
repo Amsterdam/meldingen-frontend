@@ -12,7 +12,6 @@ import type { AnswersByKey } from './_utils/navigationUtils'
 import type { FormState, ValidationError } from 'apps/melding-form/src/types'
 
 import { BackLink } from '../../../_components/BackLink/BackLink'
-import { FormHeader } from '../../../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../../../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../../../_utils/getDocumentTitleOnError'
 
@@ -102,7 +101,7 @@ export const AdditionalQuestions = ({
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-s" href={previousPanelPath}>
+      <BackLink className="ams-mb-l" href={previousPanelPath}>
         {t('back-link')}
       </BackLink>
       <main>
@@ -116,7 +115,6 @@ export const AdditionalQuestions = ({
             ref={invalidFormAlertRef}
           />
         )}
-        <FormHeader step={t('step')} title={t('title')} />
         <FormRenderer
           action={formAction}
           formComponents={formComponents}

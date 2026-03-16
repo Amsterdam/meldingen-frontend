@@ -9,5 +9,5 @@ const LinkComponent = (props: PropsWithChildren<AnchorHTMLAttributes<HTMLAnchorE
 )
 
 export const Header = () => (
-  <PageHeader brandName="Melding openbare ruimte" className="ams-mb-xl" logoLinkComponent={LinkComponent} />
+  <PageHeader brandName="Melding openbare ruimte" className="ams-mb-l" logoLinkComponent={LinkComponent} />
 )
