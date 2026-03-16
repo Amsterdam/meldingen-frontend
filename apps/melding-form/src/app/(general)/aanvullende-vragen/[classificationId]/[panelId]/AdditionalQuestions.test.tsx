@@ -25,6 +25,12 @@ const defaultProps: Props = {
 }
 
 describe('AdditionalQuestions', () => {
+  it('uses the component label in the document title when there is only one component', () => {
+    render(<AdditionalQuestions {...defaultProps} />)
+
+    expect(document.title).toBe(`${textAreaComponent.label} - organisation-name`)
+  })
+
   it('uses the panel title in the document title when there are multiple components', () => {
     render(
       <AdditionalQuestions
