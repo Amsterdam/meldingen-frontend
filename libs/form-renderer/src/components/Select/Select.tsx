@@ -19,10 +19,21 @@ export type Props = {
   hasHeading: boolean
   id: string
   label: string
+  onChange: (value: string) => void
   validate?: { required: boolean } | null
 }
 
-export const Select = ({ data, defaultValue, description, errorMessage, hasHeading, id, label, validate }: Props) => {
+export const Select = ({
+  data,
+  defaultValue,
+  description,
+  errorMessage,
+  hasHeading,
+  id,
+  label,
+  onChange,
+  validate,
+}: Props) => {
   const labelComponent = (
     <Label htmlFor={id} optional={!validate?.required}>
       {label}
@@ -46,6 +57,7 @@ export const Select = ({ data, defaultValue, description, errorMessage, hasHeadi
         invalid={Boolean(errorMessage)}
         key={defaultValue}
         name={id}
+        onChange={(e) => onChange(e.target.value)}
       >
         {data.values.map(({ label: optionLabel, value }) => (
           <ADSSelect.Option key={value} value={value}>

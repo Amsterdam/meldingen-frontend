@@ -14,10 +14,20 @@ export type Props = {
   hasHeading: boolean
   id: string
   label: string
+  onChange: (value: string) => void
   validate?: { required: boolean } | null
 }
 
-export const TextInput = ({ defaultValue, description, errorMessage, hasHeading, id, label, validate }: Props) => {
+export const TextInput = ({
+  defaultValue,
+  description,
+  errorMessage,
+  hasHeading,
+  id,
+  label,
+  onChange,
+  validate,
+}: Props) => {
   const labelComponent = (
     <Label htmlFor={id} optional={!validate?.required}>
       {label}
@@ -40,6 +50,7 @@ export const TextInput = ({ defaultValue, description, errorMessage, hasHeading,
         id={id}
         invalid={Boolean(errorMessage)}
         name={id}
+        onChange={(e) => onChange(e.target.value)}
       />
     </Field>
   )

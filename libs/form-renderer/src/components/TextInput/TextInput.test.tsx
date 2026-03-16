@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import type { Props } from './TextInput'
 
@@ -8,6 +9,7 @@ const defaultProps: Props = {
   hasHeading: true,
   id: 'test-id',
   label: 'Test label',
+  onChange: vi.fn(),
   validate: { required: true },
 }
 
@@ -82,5 +84,18 @@ describe('TextInput Component', () => {
 
     const input = screen.getByRole('textbox', { name: defaultProps.label })
     expect(input).toHaveAttribute('aria-invalid', 'true')
+  })
+
+  it('calls onChange with the correct value when the value changes', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+
+    render(<TextInput {...defaultProps} onChange={onChange} />)
+
+    const input = screen.getByRole('textbox', { name: defaultProps.label })
+
+    await user.type(input, 'Test input')
+
+    expect(onChange).toHaveBeenLastCalledWith('Test input')
   })
 })

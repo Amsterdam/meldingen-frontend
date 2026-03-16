@@ -8,11 +8,13 @@ import type { Component } from '@meldingen/form-renderer'
 import { FormRenderer, isSelectboxes } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
+import type { AnswersByKey } from './_utils/navigationUtils'
+import type { FormState, ValidationError } from 'apps/melding-form/src/types'
+
 import { BackLink } from '../../../_components/BackLink/BackLink'
 import { FormHeader } from '../../../_components/FormHeader/FormHeader'
 import { SystemErrorAlert } from '../../../_components/SystemErrorAlert/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../../../_utils/getDocumentTitleOnError'
-import { FormState, ValidationError } from 'apps/melding-form/src/types'
 
 const getPrefilledFormComponents = (components: Component[], formData: FormData): Component[] =>
   components.map((component) => {
@@ -41,6 +43,7 @@ export type Props = {
   action: (_: unknown, formData: FormData) => Promise<FormState>
   formComponents: Component[]
   panelTitle: string
+  previousAnswersByKey: AnswersByKey
   previousPanelPath: string
 }
 
@@ -50,6 +53,7 @@ export const AdditionalQuestions = ({
   action,
   formComponents: formComponentsFromServer,
   panelTitle,
+  previousAnswersByKey,
   previousPanelPath,
 }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
@@ -117,6 +121,7 @@ export const AdditionalQuestions = ({
           action={formAction}
           formComponents={formComponents}
           panelTitle={panelTitle}
+          previousAnswersByKey={previousAnswersByKey}
           submitButtonText={t('submit-button')}
           validationErrors={validationErrors}
         />

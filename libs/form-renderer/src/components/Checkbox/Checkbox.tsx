@@ -1,4 +1,5 @@
 import { Checkbox as ADSCheckbox, Column, ErrorMessage } from '@amsterdam/design-system-react'
+import { useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { FieldSet } from '@meldingen/ui'
@@ -12,6 +13,7 @@ export type Props = {
   hasHeading: boolean
   id: string
   label: string
+  onChange: (value: string[]) => void
   validate?: { required: boolean } | null
   values: {
     label: string
@@ -26,9 +28,11 @@ export const Checkbox = ({
   hasHeading,
   id,
   label,
+  onChange,
   validate,
   values,
 }: Props) => {
+  const [checkedValues, setCheckedValues] = useState<string[]>(defaultValues || [])
   const ariaDescribedBy = getAriaDescribedBy(id, description, errorMessage)
 
   return (
@@ -57,6 +61,14 @@ export const Checkbox = ({
             invalid={Boolean(errorMessage)}
             key={value}
             name={`checkbox___${id}___${value}`}
+            onChange={(event) => {
+              const newValue = event.target.checked
+                ? [...checkedValues, value]
+                : checkedValues.filter((localValue) => localValue !== value)
+
+              setCheckedValues(newValue)
+              onChange(newValue)
+            }}
             value={value}
           >
             {checkboxLabel}

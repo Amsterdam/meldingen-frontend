@@ -5,7 +5,7 @@ import type {
   GetMeldingByMeldingIdAnswersMelderResponses,
 } from '@meldingen/api-client'
 
-export type PanelKeyWithComponentsConditions = {
+export type PanelComponentsConditions = {
   componentsConditions: Array<{ conditional?: FormIoConditional | null; key: string }>
   key: string
 }
@@ -16,7 +16,7 @@ export const AFTER_ADDITIONAL_QUESTIONS_PATH = '/locatie'
 
 const isNullOrEmpty = (value: unknown) => value === null || value === ''
 
-const isComponentVisible = (
+export const shouldRenderComponent = (
   { conditional }: { conditional?: FormIoConditional | null },
   answersByKey: AnswersByKey,
 ) => {
@@ -38,19 +38,19 @@ const isComponentVisible = (
   return conditionMet ? conditional.show : !conditional.show
 }
 
-// If a panel has at least one visible component, the panel is visible. Otherwise, the panel is hidden.
-export const isPanelVisible = (panel: PanelKeyWithComponentsConditions, answersByKey: AnswersByKey) =>
+// If a panel has at least one rendered component, we should link to it. Otherwise, we should skip it.
+export const shouldLinkToPanel = (panel: PanelComponentsConditions, answersByKey: AnswersByKey) =>
   panel.componentsConditions.length === 0 ||
-  panel.componentsConditions.some((component) => isComponentVisible(component, answersByKey))
+  panel.componentsConditions.some((component) => shouldRenderComponent(component, answersByKey))
 
 export const getNextPanelPath = (
   classificationId: number,
   currentPanelIndex: number,
-  panels: PanelKeyWithComponentsConditions[],
+  panels: PanelComponentsConditions[],
   answersByKey: AnswersByKey,
 ) => {
   for (let i = currentPanelIndex + 1; i < panels.length; i++) {
-    if (isPanelVisible(panels[i], answersByKey)) {
+    if (shouldLinkToPanel(panels[i], answersByKey)) {
       return `/aanvullende-vragen/${classificationId}/${panels[i].key}`
     }
   }
@@ -60,11 +60,11 @@ export const getNextPanelPath = (
 export const getPreviousPanelPath = (
   classificationId: number,
   currentPanelIndex: number,
-  panels: PanelKeyWithComponentsConditions[],
+  panels: PanelComponentsConditions[],
   answersByKey: AnswersByKey,
 ) => {
   for (let i = currentPanelIndex - 1; i >= 0; i--) {
-    if (isPanelVisible(panels[i], answersByKey)) {
+    if (shouldLinkToPanel(panels[i], answersByKey)) {
       return `/aanvullende-vragen/${classificationId}/${panels[i].key}`
     }
   }

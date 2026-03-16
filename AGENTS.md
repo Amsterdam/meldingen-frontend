@@ -66,6 +66,7 @@ Form
 | `radio`       | Radio button group | [Radio.tsx](libs/form-renderer/src/components/Radio/Radio.tsx)             |
 | `select`      | Dropdown select    | [Select.tsx](libs/form-renderer/src/components/Select/Select.tsx)          |
 | `selectboxes` | Checkbox group     | [Checkbox.tsx](libs/form-renderer/src/components/Checkbox/Checkbox.tsx)    |
+| `time`        | Time input         | [TimeInput.tsx](libs/form-renderer/src/components/TimeInput/TimeInput.tsx) |
 
 ### Component Schema Example
 
@@ -90,12 +91,16 @@ Form
 Use the type guards in [libs/form-renderer/src/utils.ts](libs/form-renderer/src/utils.ts):
 
 ```typescript
-import { isRadio, isTextfield, isSelectboxes } from '@meldingen/form-renderer'
+import { isRadio, isTextfield, isSelectboxes, isTimeInput, shouldRender } from '@meldingen/form-renderer'
 
 if (isRadio(component)) {
   // TypeScript now knows component is FormRadioComponent
   component.values // ✓ Available
 }
+
+// shouldRender checks the component's conditional rules against current form values
+// Used in FormRenderer to show/hide components based on other answers
+if (shouldRender(component, values)) { ... }
 ```
 
 ### Adding a New Component Type
@@ -113,7 +118,7 @@ The renderer handles headings intelligently:
 - **Single component on page**: Label becomes the `<h1>`
 - **Multiple components**: Panel label renders as `<h1>`, component labels are regular labels
 
-This is controlled by `hasOneFormComponent` in [FormRenderer.tsx:44](libs/form-renderer/src/FormRenderer.tsx#L44).
+This is controlled by `hasOneFormComponent` in [FormRenderer.tsx:112](libs/form-renderer/src/FormRenderer.tsx#L112).
 
 ---
 
@@ -580,6 +585,7 @@ it('returns validation error for invalid email', async () => {
 - [docs/0006-monorepo-tooling.md](docs/0006-monorepo-tooling.md): PNPM workspaces
 - [docs/0009-directory-structure.md](docs/0009-directory-structure.md): File conventions
 - [docs/0011-error-handling.md](docs/0011-error-handling.md): Error patterns
+- [docs/additional-questions-form-wizard.md](docs/additional-questions-form-wizard.md): Multi-step wizard for additional questions (panels, answers, conditional navigation)
 
 ---
 

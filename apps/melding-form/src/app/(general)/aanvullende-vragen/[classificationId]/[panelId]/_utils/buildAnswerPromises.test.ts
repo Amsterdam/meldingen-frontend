@@ -73,6 +73,28 @@ describe('buildAnswerPromises', () => {
     expect(await result[0]).toMatchObject({ key: 'key1' })
   })
 
+  it('handles date inputs', async () => {
+    const entry: [string, string] = ['key1', 'value1']
+
+    const questionMetadata = [
+      {
+        id: 1,
+        key: 'key1',
+        type: 'date',
+        valuesAndLabels: [
+          {
+            converted_date: '2026-03-11',
+            label: '11 maart 2026',
+            value: 'value1',
+          },
+        ],
+      },
+    ]
+
+    const result = buildAnswerPromises({ ...defaultArgs, entries: [entry], questionMetadata })
+    expect(await result[0]).toMatchObject({ key: 'key1' })
+  })
+
   it('handles radio inputs', async () => {
     const entry: [string, string] = ['key1', 'value1']
     const questionMetadata = [
@@ -169,6 +191,27 @@ describe('buildAnswerPromises', () => {
 
     const result = buildAnswerPromises({ ...defaultArgs, entries: [entry], questionMetadata })
 
+    expect(result).toEqual([undefined])
+  })
+
+  it('returns undefined for date inputs with no matching valuesAndLabels', () => {
+    const entry: [string, string] = ['key1', 'value1']
+    const questionMetadata = [
+      {
+        id: 1,
+        key: 'key1',
+        type: 'date',
+        valuesAndLabels: [
+          {
+            converted_date: '2026-03-11',
+            label: '11 maart 2026',
+            value: 'not-value1',
+          },
+        ],
+      },
+    ]
+
+    const result = buildAnswerPromises({ ...defaultArgs, entries: [entry], questionMetadata })
     expect(result).toEqual([undefined])
   })
 

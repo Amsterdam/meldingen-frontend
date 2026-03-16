@@ -1,5 +1,5 @@
 import { TextArea as ADSTextArea, CharacterCount, ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
-import { useRef, useState } from 'react'
+import { ChangeEvent, useRef, useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 
@@ -15,6 +15,7 @@ export type Props = {
   id: string
   label: string
   maxCharCount?: number | null
+  onChange: (value: string) => void
   validate?: { required: boolean } | null
 }
 
@@ -26,15 +27,17 @@ export const TextArea = ({
   id,
   label,
   maxCharCount,
+  onChange,
   validate,
 }: Props) => {
   const ref = useRef<HTMLTextAreaElement>(null)
   const [charCount, setCharCount] = useState(defaultValue?.length || 0)
 
-  const handleChange = () => {
-    if (ref.current) {
-      setCharCount(ref.current?.value.length)
+  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    if (typeof maxCharCount === 'number' && ref.current) {
+      setCharCount(ref.current.value.length)
     }
+    onChange(event.target.value)
   }
 
   const labelComponent = (
@@ -59,7 +62,7 @@ export const TextArea = ({
         id={id}
         invalid={Boolean(errorMessage)}
         name={id}
-        onChange={typeof maxCharCount === 'number' ? handleChange : undefined}
+        onChange={handleChange}
         ref={ref}
         rows={4}
       />

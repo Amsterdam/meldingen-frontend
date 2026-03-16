@@ -12,6 +12,7 @@ export type Props = {
   hasHeading: boolean
   id: string
   label: string
+  onChange: (value: string) => void
   validate?: { required: boolean } | null
   values: {
     label: string
@@ -19,7 +20,17 @@ export type Props = {
   }[]
 }
 
-export const Radio = ({ defaultValue, description, errorMessage, hasHeading, id, label, validate, values }: Props) => (
+export const Radio = ({
+  defaultValue,
+  description,
+  errorMessage,
+  hasHeading,
+  id,
+  label,
+  onChange,
+  validate,
+  values,
+}: Props) => (
   <FieldSet
     aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
     aria-required={validate?.required ? 'true' : undefined}
@@ -44,6 +55,7 @@ export const Radio = ({ defaultValue, description, errorMessage, hasHeading, id,
           invalid={Boolean(errorMessage)}
           key={value}
           name={id}
+          onChange={() => onChange(value)}
           value={value}
         >
           {radioLabel}
