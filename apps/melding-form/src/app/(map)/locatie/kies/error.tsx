@@ -4,8 +4,7 @@ import { Button, Grid, Heading, Page, Paragraph } from '@amsterdam/design-system
 import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 
-import { Footer } from '../../../_components/Footer/Footer'
-import { Header } from '../../../_components/Header/Header'
+import { Footer, Header } from '../../../_components/'
 
 export default function Error({ error }: { error: Error & { digest?: string } }) {
   useEffect(() => {

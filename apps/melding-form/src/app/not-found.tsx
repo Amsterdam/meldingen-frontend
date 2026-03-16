@@ -4,8 +4,7 @@ import NextLink from 'next/link'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Grid, Heading, Page, StandaloneLink } from '@meldingen/ui'
 
-import { Footer } from './_components/Footer/Footer'
-import { Header } from './_components/Header/Header'
+import { Footer, Header } from './_components/'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('not-found')

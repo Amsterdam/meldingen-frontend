@@ -13,7 +13,7 @@ import type { FormState, ValidationError } from 'apps/melding-form/src/types'
 
 import { SystemErrorAlert } from '../../../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../../../_utils/getDocumentTitleOnError'
-import { BackLink } from 'apps/melding-form/src/app/_components/BackLink/BackLink'
+import { BackLink } from 'apps/melding-form/src/app/_components'
 
 const getPrefilledFormComponents = (components: Component[], formData: FormData): Component[] =>
   components.map((component) => {

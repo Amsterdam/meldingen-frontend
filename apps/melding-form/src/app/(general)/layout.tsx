@@ -2,8 +2,7 @@ import { ReactNode } from 'react'
 
 import { Grid, Page } from '@meldingen/ui'
 
-import { Footer } from '../_components/Footer/Footer'
-import { Header } from '../_components/Header/Header'
+import { Footer, Header } from '../_components/'
 
 const GeneralLayout = ({ children }: { children: ReactNode }) => (
   <Page>

@@ -20,7 +20,7 @@ import type { FormState } from 'apps/melding-form/src/types'
 
 import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
-import { BackLink } from '../../_components/BackLink/BackLink'
+import { BackLink } from '../../_components'
 import { submitAttachmentsForm } from './actions'
 import { startUpload } from './utils'
 import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
