@@ -43,9 +43,9 @@ export const ClassificationInput = () => {
   }
 
   const handleChange: AutocompleteInputProps['onChange'] = (value, classificationRecord) => {
-    const shouldConfirmOverwrite = typeof classificationRecord === 'object' && classificationRecord?.form
+    const hasExistingFormLink = typeof classificationRecord === 'object' && classificationRecord?.form
 
-    if (shouldConfirmOverwrite) {
+    if (hasExistingFormLink) {
       setDialogOpen(true)
     } else {
       setPreviousSelectedValue(value)
