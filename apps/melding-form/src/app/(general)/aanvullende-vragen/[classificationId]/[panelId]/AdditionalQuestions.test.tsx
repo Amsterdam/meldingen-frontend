@@ -25,6 +25,17 @@ const defaultProps: Props = {
 }
 
 describe('AdditionalQuestions', () => {
+  it('uses the panel title in the document title when there are multiple components', () => {
+    render(
+      <AdditionalQuestions
+        {...defaultProps}
+        formComponents={[textAreaComponent, { ...textAreaComponent, key: 'textArea2', label: 'Second question' }]}
+      />,
+    )
+
+    expect(document.title).toBe(`${defaultProps.panelTitle} - organisation-name`)
+  })
+
   it('renders the back link', () => {
     render(<AdditionalQuestions {...defaultProps} />)
 
@@ -38,7 +49,7 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Er staan blowende jongeren')
-    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData, systemError: 'Test error message' }, vi.fn()])
 
     render(<AdditionalQuestions {...defaultProps} />)
 
@@ -55,7 +66,7 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('checkbox___selectBoxes___one', 'one')
-    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData, systemError: 'Test error message' }, vi.fn()])
 
     render(<AdditionalQuestions {...defaultProps} formComponents={[checkboxComponent]} />)
 
@@ -69,7 +80,7 @@ describe('AdditionalQuestions', () => {
   })
 
   it('renders an Invalid Form Alert when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
     ])
@@ -119,7 +130,7 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Form data from action')
-    ;(useActionState as Mock).mockReturnValue([{ formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
 
     render(
       <AdditionalQuestions
@@ -137,7 +148,7 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('checkbox___selectBoxes___one', 'one')
-    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData, systemError: 'Test error message' }, vi.fn()])
 
     render(
       <AdditionalQuestions {...defaultProps} formComponents={[{ ...checkboxComponent, defaultValues: ['two'] }]} />,
@@ -151,7 +162,7 @@ describe('AdditionalQuestions', () => {
   })
 
   it('updates the document title when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ systemError: 'Test error message' }, vi.fn()])
 
     render(<AdditionalQuestions {...defaultProps} />)
 
@@ -159,7 +170,7 @@ describe('AdditionalQuestions', () => {
   })
 
   it('updates the document title when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
     ])
@@ -170,7 +181,7 @@ describe('AdditionalQuestions', () => {
   })
 
   it('sets focus on InvalidFormAlert when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
     ])
@@ -183,7 +194,7 @@ describe('AdditionalQuestions', () => {
   })
 
   it('sets focus on SystemErrorAlert when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ systemError: 'Test error message' }, vi.fn()])
     render(<AdditionalQuestions {...defaultProps} />)
 
     const alert = screen.getByRole('alert')
