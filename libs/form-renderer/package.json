@@ -11,11 +11,9 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@meldingen/api-client": "workspace:*",
     "@meldingen/markdown-to-html": "workspace:*",
     "@meldingen/ui": "workspace:*",
     "next": "16.1.6"
-  },
-  "devDependencies": {
-    "@meldingen/api-client": "workspace:*"
   }
 }
