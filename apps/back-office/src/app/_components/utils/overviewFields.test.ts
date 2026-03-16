@@ -71,7 +71,7 @@ describe('overviewFields utils', () => {
       expect(result).toBe(`shared.state.${melding.state}`)
     })
 
-    it('returns undefined for unknown keys', () => {
+    it('returns an empty string for unknown keys', () => {
       const result = formatValue(melding, 'unknown_key' as OverviewField['key'], t)
 
       expect(result).toBe('')
