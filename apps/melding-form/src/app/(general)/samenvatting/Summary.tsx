@@ -8,7 +8,7 @@ import { useActionState, useEffect, useRef } from 'react'
 
 import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
-import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
+import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { BackLink } from '../../_components/BackLink/BackLink'
 import { AttachmentImage } from './_components/AttachmentImage'

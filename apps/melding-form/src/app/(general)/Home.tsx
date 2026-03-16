@@ -8,7 +8,7 @@ import { InvalidFormAlert } from '@meldingen/ui'
 
 import type { FormState } from '../../types'
 
-import { SystemErrorAlert } from './_components/SystemErrorAlert/SystemErrorAlert'
+import { SystemErrorAlert } from './_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from './_utils/getDocumentTitleOnError'
 
 const initialState: FormState = {}

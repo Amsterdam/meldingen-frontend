@@ -10,7 +10,7 @@ import type { StaticFormTextAreaComponent } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
 
-import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
+import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { BackLink } from '../../_components/BackLink/BackLink'
 import { postContactForm } from './actions'

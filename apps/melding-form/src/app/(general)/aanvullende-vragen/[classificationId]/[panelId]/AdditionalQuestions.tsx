@@ -11,7 +11,7 @@ import { InvalidFormAlert } from '@meldingen/ui'
 import type { AnswersByKey } from './_utils/navigationUtils'
 import type { FormState, ValidationError } from 'apps/melding-form/src/types'
 
-import { SystemErrorAlert } from '../../../_components/SystemErrorAlert/SystemErrorAlert'
+import { SystemErrorAlert } from '../../../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../../../_utils/getDocumentTitleOnError'
 import { BackLink } from 'apps/melding-form/src/app/_components/BackLink/BackLink'
 
