@@ -1,5 +1,6 @@
 .list {
   display: grid;
+  margin-block-end: var(--ams-space-l);
   row-gap: var(--ams-space-m);
 }
 
