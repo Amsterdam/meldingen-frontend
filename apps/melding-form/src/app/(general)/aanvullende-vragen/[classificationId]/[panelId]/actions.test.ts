@@ -232,7 +232,7 @@ describe('postForm', () => {
     await postForm(defaultArgs, null, formData)
 
     const cookieInstance = await cookies()
-    expect(cookieInstance.set).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH, '/aanvullende-vragen/1/panel-2', {
+    expect(cookieInstance.set).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH, '/aanvullende-vragen/1/panel-2#top', {
       maxAge: 86400,
     })
   })

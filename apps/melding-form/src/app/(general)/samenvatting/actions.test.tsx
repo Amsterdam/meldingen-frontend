@@ -66,6 +66,6 @@ describe('postSummaryForm', () => {
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.TOKEN)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.ID)
-    expect(redirect).toHaveBeenCalledWith('/bedankt')
+    expect(redirect).toHaveBeenCalledWith('/bedankt#top')
   })
 })

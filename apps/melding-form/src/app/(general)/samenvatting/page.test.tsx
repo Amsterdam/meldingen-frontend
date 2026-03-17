@@ -38,7 +38,7 @@ describe('Page', () => {
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
       description: item.text,
       key: item.question.id.toString(),
-      link: '/aanvullende-vragen/2/page1',
+      link: '/aanvullende-vragen/2/page1#top',
       term: item.question.text,
     }))
 

@@ -64,6 +64,6 @@ describe('postLocationForm', () => {
 
     await postLocationForm()
 
-    expect(redirect).toHaveBeenCalledWith('/bijlage')
+    expect(redirect).toHaveBeenCalledWith('/bijlage#top')
   })
 })

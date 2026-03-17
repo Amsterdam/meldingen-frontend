@@ -30,7 +30,7 @@ describe('postCoordinatesAndAssets', () => {
 
     await postCoordinatesAndAssets(undefined, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/locatie')
+    expect(redirect).toHaveBeenCalledWith('/locatie#top')
   })
 
   it('redirects to /cookie-storing if id or token cookies are missing', async () => {
@@ -83,7 +83,7 @@ describe('postCoordinatesAndAssets', () => {
     expect(capturedBodies).toHaveLength(2)
     expect(capturedBodies[0]).toEqual({ asset_type_id: 1, external_id: 'container.1' })
     expect(capturedBodies[1]).toEqual({ asset_type_id: 1, external_id: 'container.2' })
-    expect(redirect).toHaveBeenCalledWith('/locatie')
+    expect(redirect).toHaveBeenCalledWith('/locatie#top')
   })
 
   it('returns an error message if no address is provided', async () => {
@@ -152,7 +152,7 @@ describe('postCoordinatesAndAssets', () => {
     await postCoordinatesAndAssets(undefined, formData)
 
     expect(mockSetCookie).toHaveBeenCalledWith(COOKIES.ADDRESS, address, { maxAge: 86400 })
-    expect(redirect).toHaveBeenCalledWith('/locatie')
+    expect(redirect).toHaveBeenCalledWith('/locatie#top')
   })
 
   it('returns an error when patchMeldingByMeldingIdLocation fails', async () => {

@@ -47,6 +47,6 @@ describe('submitAttachmentsForm', () => {
 
     await submitAttachmentsForm()
 
-    expect(redirect).toHaveBeenCalledWith('/contact')
+    expect(redirect).toHaveBeenCalledWith('/contact#top')
   })
 })

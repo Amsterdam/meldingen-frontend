@@ -27,7 +27,7 @@ describe('postContactForm', () => {
 
     await postContactForm(undefined, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/samenvatting')
+    expect(redirect).toHaveBeenCalledWith('/samenvatting#top')
   })
 
   it('should redirect to /samenvatting page when email and phone are left empty', async () => {
@@ -35,7 +35,7 @@ describe('postContactForm', () => {
 
     await postContactForm(undefined, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/samenvatting')
+    expect(redirect).toHaveBeenCalledWith('/samenvatting#top')
   })
 
   it('should redirect to /cookie-storing when there is no meldingId or token', async () => {

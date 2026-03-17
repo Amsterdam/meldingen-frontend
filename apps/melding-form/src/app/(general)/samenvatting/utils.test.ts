@@ -106,7 +106,7 @@ describe('getAdditionalQuestionsSummary', () => {
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
       description: item.text,
       key: item.question.id.toString(),
-      link: '/aanvullende-vragen/1/page1',
+      link: '/aanvullende-vragen/1/page1#top',
       term: item.question.text,
     }))
 
@@ -142,7 +142,7 @@ describe('getAdditionalQuestionsSummary', () => {
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
       description: item.text,
       key: item.question.id.toString(),
-      link: '/',
+      link: '/#top',
       term: item.question.text,
     }))
 
@@ -198,7 +198,7 @@ describe('getAdditionalQuestionsSummary', () => {
         {
           description: '2024-06-01',
           key: '37',
-          link: '/aanvullende-vragen/1/page1',
+          link: '/aanvullende-vragen/1/page1#top',
           term: 'Date question',
         },
       ],
@@ -224,7 +224,7 @@ describe('getAdditionalQuestionsSummary', () => {
         {
           description: '14:30',
           key: '37',
-          link: '/aanvullende-vragen/1/page1',
+          link: '/aanvullende-vragen/1/page1#top',
           term: 'Time question',
         },
       ],
@@ -259,7 +259,7 @@ describe('getAdditionalQuestionsSummary', () => {
         {
           description: 'Option 1, Option 2',
           key: '38',
-          link: '/aanvullende-vragen/1/page1',
+          link: '/aanvullende-vragen/1/page1#top',
           term: 'Value label question',
         },
       ],
@@ -285,7 +285,7 @@ describe('getAdditionalQuestionsSummary', () => {
         {
           description: '',
           key: '39',
-          link: '/aanvullende-vragen/1/page1',
+          link: '/aanvullende-vragen/1/page1#top',
           term: 'Unsupported question',
         },
       ],

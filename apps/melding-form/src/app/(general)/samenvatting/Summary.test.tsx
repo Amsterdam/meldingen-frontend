@@ -67,7 +67,7 @@ describe('Summary', () => {
     const link = screen.getByRole('link', { name: 'back-link' })
 
     expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '/contact')
+    expect(link).toHaveAttribute('href', '/contact#top')
   })
 
   it('renders the Summary component with data', () => {
@@ -104,20 +104,20 @@ describe('Summary', () => {
     const contactChangeLink = screen.getByRole('link', { name: 'change-links.contact' })
 
     expect(primaryChangeLink).toBeInTheDocument()
-    expect(primaryChangeLink).toHaveAttribute('href', '/')
+    expect(primaryChangeLink).toHaveAttribute('href', '/#top')
 
     expect(additionalChangeLinks).toHaveLength(2)
     expect(additionalChangeLinks[0]).toHaveAttribute('href', '/link/to/page')
     expect(additionalChangeLinks[1]).toHaveAttribute('href', '/link/to/page')
 
     expect(locationChangeLink).toBeInTheDocument()
-    expect(locationChangeLink).toHaveAttribute('href', '/locatie')
+    expect(locationChangeLink).toHaveAttribute('href', '/locatie#top')
 
     expect(attachmentsChangeLink).toBeInTheDocument()
-    expect(attachmentsChangeLink).toHaveAttribute('href', '/bijlage')
+    expect(attachmentsChangeLink).toHaveAttribute('href', '/bijlage#top')
 
     expect(contactChangeLink).toBeInTheDocument()
-    expect(contactChangeLink).toHaveAttribute('href', '/contact')
+    expect(contactChangeLink).toHaveAttribute('href', '/contact#top')
   })
 
   it('renders the Summary component with an error message', () => {

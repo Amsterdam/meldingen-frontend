@@ -138,7 +138,7 @@ describe('postPrimaryForm', () => {
 
       await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
-      expect(redirect).toHaveBeenCalledWith('/locatie')
+      expect(redirect).toHaveBeenCalledWith('/locatie#top')
     })
 
     it('redirects to /aanvullende-vragen when there are additional questions', async () => {
@@ -149,7 +149,7 @@ describe('postPrimaryForm', () => {
 
       await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
-      expect(redirect).toHaveBeenCalledWith('/aanvullende-vragen/2/page1')
+      expect(redirect).toHaveBeenCalledWith('/aanvullende-vragen/2/page1#top')
     })
   })
 
@@ -171,6 +171,6 @@ describe('postPrimaryForm', () => {
 
     await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/locatie')
+    expect(redirect).toHaveBeenCalledWith('/locatie#top')
   })
 })

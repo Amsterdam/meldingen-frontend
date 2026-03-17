@@ -61,7 +61,7 @@ describe('Page', () => {
 
     await Page(defaultProps)
 
-    expect(redirect).toHaveBeenCalledWith('/locatie')
+    expect(redirect).toHaveBeenCalledWith('/locatie#top')
   })
 
   it('renders the AdditionalQuestions component with correct props', async () => {
@@ -84,7 +84,7 @@ describe('Page', () => {
         action: expect.any(Function),
         formComponents: [{ key: 'question-2', question: 'q2' }],
         panelTitle: 'Panel 2',
-        previousPanelPath: '/aanvullende-vragen/1/panel-1',
+        previousPanelPath: '/aanvullende-vragen/1/panel-1#top',
       }),
       undefined,
     )
@@ -120,7 +120,7 @@ describe('Page', () => {
             },
           ],
           panelTitle: 'Panel 1',
-          previousPanelPath: '/',
+          previousPanelPath: '/#top',
         }),
         undefined,
       )
@@ -277,7 +277,7 @@ describe('Page', () => {
             },
           ],
           panelTitle: 'Panel 1',
-          previousPanelPath: '/',
+          previousPanelPath: '/#top',
         }),
         undefined,
       )
@@ -353,7 +353,7 @@ describe('Page', () => {
             },
           ],
           panelTitle: 'Panel 1',
-          previousPanelPath: '/',
+          previousPanelPath: '/#top',
         }),
         undefined,
       )

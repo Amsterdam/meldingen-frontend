@@ -71,12 +71,12 @@ describe('getNextPanelPath', () => {
   const currentPanelIndex = 0
 
   it('returns the next panel that should be linked to', () => {
-    expect(getNextPanelPath(classificationId, currentPanelIndex, panels, {})).toBe('/aanvullende-vragen/1/panel-2')
+    expect(getNextPanelPath(classificationId, currentPanelIndex, panels, {})).toBe('/aanvullende-vragen/1/panel-2#top')
   })
 
   it('skips a hidden panel and returns the one after', () => {
     expect(getNextPanelPath(classificationId, currentPanelIndex, panels, { questionKey: 'one' })).toBe(
-      '/aanvullende-vragen/1/panel-3',
+      '/aanvullende-vragen/1/panel-3#top',
     )
   })
 
@@ -88,7 +88,7 @@ describe('getNextPanelPath', () => {
       mockPanel('panel-4'),
     ]
     expect(getNextPanelPath(classificationId, currentPanelIndex, allHidden, { questionKey: 'one' })).toBe(
-      '/aanvullende-vragen/1/panel-4',
+      '/aanvullende-vragen/1/panel-4#top',
     )
   })
 
@@ -109,12 +109,12 @@ describe('getPreviousPanelPath', () => {
   const classificationId = 1
 
   it('returns the previous panel that should be linked to', () => {
-    expect(getPreviousPanelPath(classificationId, 2, panels, {})).toBe('/aanvullende-vragen/1/panel-2')
+    expect(getPreviousPanelPath(classificationId, 2, panels, {})).toBe('/aanvullende-vragen/1/panel-2#top')
   })
 
   it('skips a hidden panel and returns the one before', () => {
     expect(getPreviousPanelPath(classificationId, 2, panels, { questionKey: 'one' })).toBe(
-      '/aanvullende-vragen/1/panel-1',
+      '/aanvullende-vragen/1/panel-1#top',
     )
   })
 
@@ -126,7 +126,7 @@ describe('getPreviousPanelPath', () => {
       mockPanel('panel-4'),
     ]
     expect(getPreviousPanelPath(classificationId, 3, allHidden, { questionKey: 'one' })).toBe(
-      '/aanvullende-vragen/1/panel-1',
+      '/aanvullende-vragen/1/panel-1#top',
     )
   })
 
