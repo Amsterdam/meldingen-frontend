@@ -15,6 +15,11 @@
     "type-check": "tsc --incremental false"
   },
   "dependencies": {
+    "@meldingen/api-client": "workspace:*",
+    "@meldingen/form-renderer": "workspace:*",
+    "@meldingen/map": "workspace:*",
+    "@meldingen/markdown-to-html": "workspace:*",
+    "@meldingen/ui": "workspace:*",
     "@floating-ui/react-dom": "2.1.8",
     "@headlessui/react": "2.2.9",
     "next": "16.1.6",
