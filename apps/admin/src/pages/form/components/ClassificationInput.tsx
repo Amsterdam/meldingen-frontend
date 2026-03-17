@@ -52,7 +52,13 @@ export const ClassificationInput = () => {
 
   return (
     <>
-      <ReferenceInput reference="classification" sort={{ field: 'name', order: 'ASC' }} source="classification">
+      <ReferenceInput
+        // We need to overwrite the default limit of 50 since there are more classifications
+        queryOptions={{ meta: { limit: 1000 } }}
+        reference="classification"
+        sort={{ field: 'name', order: 'ASC' }}
+        source="classification"
+      >
         <AutocompleteInput
           inputText={inputText}
           onChange={handleChange}
