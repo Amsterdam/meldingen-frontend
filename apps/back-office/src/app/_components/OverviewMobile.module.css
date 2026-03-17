@@ -1,0 +1,17 @@
+.list {
+  display: grid;
+  margin-block-end: var(--ams-space-l);
+  row-gap: var(--ams-space-m);
+}
+
+.card {
+  background-color: var(--ams-color-background);
+  padding-block: var(--ams-space-m);
+  padding-inline: var(--ams-space-m);
+}
+
+@media screen and (min-width: 72.5rem) {
+  .list {
+    display: none;
+  }
+}
