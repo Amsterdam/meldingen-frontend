@@ -1,5 +1,3 @@
-'use client'
-
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 import { AnchorHTMLAttributes } from 'react'

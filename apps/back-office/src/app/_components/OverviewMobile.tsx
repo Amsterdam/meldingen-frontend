@@ -1,8 +1,7 @@
-import { UnorderedList } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { Fragment } from 'react'
 
-import { DescriptionList } from '@meldingen/ui'
+import { DescriptionList, UnorderedList } from '@meldingen/ui'
 
 import type { MeldingWithAddress } from '../Overview'
 
