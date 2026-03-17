@@ -3,6 +3,7 @@ import { http, HttpResponse } from 'msw'
 
 import Page from './page'
 import { Summary } from './Summary'
+import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { additionalQuestions, melding, textAreaComponent } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
@@ -38,7 +39,7 @@ describe('Page', () => {
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
       description: item.text,
       key: item.question.id.toString(),
-      link: '/aanvullende-vragen/2/page1#top',
+      link: `/aanvullende-vragen/2/page1#${TOP_ANCHOR_ID}`,
       term: item.question.text,
     }))
 

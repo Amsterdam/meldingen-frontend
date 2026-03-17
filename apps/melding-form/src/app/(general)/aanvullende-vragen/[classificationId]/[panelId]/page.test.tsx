@@ -6,6 +6,7 @@ import { Mock } from 'vitest'
 import * as actionsModule from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 import Page from './page'
+import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { additionalQuestions, selectAdditionalQuestion } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
@@ -61,7 +62,7 @@ describe('Page', () => {
 
     await Page(defaultProps)
 
-    expect(redirect).toHaveBeenCalledWith('/locatie#top')
+    expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
   })
 
   it('renders the AdditionalQuestions component with correct props', async () => {
@@ -84,7 +85,7 @@ describe('Page', () => {
         action: expect.any(Function),
         formComponents: [{ key: 'question-2', question: 'q2' }],
         panelTitle: 'Panel 2',
-        previousPanelPath: '/aanvullende-vragen/1/panel-1#top',
+        previousPanelPath: `/aanvullende-vragen/1/panel-1#${TOP_ANCHOR_ID}`,
       }),
       undefined,
     )
@@ -120,7 +121,7 @@ describe('Page', () => {
             },
           ],
           panelTitle: 'Panel 1',
-          previousPanelPath: '/#top',
+          previousPanelPath: `/#${TOP_ANCHOR_ID}`,
         }),
         undefined,
       )
@@ -277,7 +278,7 @@ describe('Page', () => {
             },
           ],
           panelTitle: 'Panel 1',
-          previousPanelPath: '/#top',
+          previousPanelPath: `/#${TOP_ANCHOR_ID}`,
         }),
         undefined,
       )
@@ -353,7 +354,7 @@ describe('Page', () => {
             },
           ],
           panelTitle: 'Panel 1',
-          previousPanelPath: '/#top',
+          previousPanelPath: `/#${TOP_ANCHOR_ID}`,
         }),
         undefined,
       )

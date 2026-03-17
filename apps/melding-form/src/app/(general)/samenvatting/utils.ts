@@ -13,6 +13,7 @@ import {
 import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 
 import { getFullNLAddress } from '../_utils/getFullNLAddress'
+import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 export const getMeldingData = async (meldingId: string, token: string) => {
@@ -102,7 +103,7 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
       return {
         description: getDescription(answer),
         key: `${answer.question.id}`,
-        link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}#top` : '/#top',
+        link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}#${TOP_ANCHOR_ID}` : `/#${TOP_ANCHOR_ID}`,
         term: answer.question.text,
       }
     }),

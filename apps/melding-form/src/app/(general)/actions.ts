@@ -10,7 +10,7 @@ import {
   putMeldingByMeldingIdAnswerQuestions,
 } from '@meldingen/api-client'
 
-import { COOKIES } from '../../constants'
+import { COOKIES, TOP_ANCHOR_ID } from '../../constants'
 import { handleApiError } from '../../handleApiError'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
 
@@ -96,13 +96,13 @@ export const postPrimaryForm = async (
 
       if (error) return { formData, systemError: error }
 
-      return redirect('/locatie#top')
+      return redirect(`/locatie#${TOP_ANCHOR_ID}`)
     }
 
     const nextFormFirstKey = data?.components[0].key
 
-    return redirect(`/aanvullende-vragen/${classification.id}/${nextFormFirstKey}#top`)
+    return redirect(`/aanvullende-vragen/${classification.id}/${nextFormFirstKey}#${TOP_ANCHOR_ID}`)
   }
 
-  return redirect('/locatie#top')
+  return redirect(`/locatie#${TOP_ANCHOR_ID}`)
 }

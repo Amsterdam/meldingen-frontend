@@ -11,7 +11,7 @@ import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, shouldRenderComponent } from './_utils/navigationUtils'
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
 type RequiredQuestionErrorMessage = { key: string; requiredErrorMessage: string }
@@ -72,7 +72,7 @@ export const postForm = async (
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
-  if (!meldingId || !token) return redirect('/cookie-storing#top')
+  if (!meldingId || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
 
   // Checkbox answers are stored as separate key-value pairs in the FormData object.
   // This function merges these answers into an array per question, using an identifier in the Checkbox component.
@@ -165,7 +165,7 @@ export const postForm = async (
     const oneDay = 24 * 60 * 60
     cookieStore.set(
       COOKIES.LAST_PANEL_PATH,
-      `/aanvullende-vragen/${classificationId}/${panelComponentsConditions[currentPanelIndex].key}#top`,
+      `/aanvullende-vragen/${classificationId}/${panelComponentsConditions[currentPanelIndex].key}#${TOP_ANCHOR_ID}`,
       { maxAge: oneDay },
     )
   }

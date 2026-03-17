@@ -4,6 +4,8 @@ import NextLink from 'next/link'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Footer, Grid, Header, Heading, Page, StandaloneLink } from '@meldingen/ui'
 
+import { TOP_ANCHOR_ID } from '../constants'
+
 export const generateMetadata = async () => {
   const t = await getTranslations('not-found')
 
@@ -25,7 +27,7 @@ export default async function NotFound() {
               {t('title')}
             </Heading>
             <MarkdownToHtml className="ams-mb-s">{t('description')}</MarkdownToHtml>
-            <NextLink href="/#top" legacyBehavior passHref>
+            <NextLink href={`/#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
               <StandaloneLink>{t('link')}</StandaloneLink>
             </NextLink>
           </main>

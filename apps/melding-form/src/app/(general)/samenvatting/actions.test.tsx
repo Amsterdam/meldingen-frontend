@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 import { vi } from 'vitest'
 
 import { postSummaryForm } from './actions'
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
@@ -27,7 +27,7 @@ describe('postSummaryForm', () => {
 
     await postSummaryForm()
 
-    expect(redirect).toHaveBeenCalledWith('/cookie-storing#top')
+    expect(redirect).toHaveBeenCalledWith(`/cookie-storing#${TOP_ANCHOR_ID}`)
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
@@ -66,6 +66,6 @@ describe('postSummaryForm', () => {
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.TOKEN)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.ID)
-    expect(redirect).toHaveBeenCalledWith('/bedankt#top')
+    expect(redirect).toHaveBeenCalledWith(`/bedankt#${TOP_ANCHOR_ID}`)
   })
 })

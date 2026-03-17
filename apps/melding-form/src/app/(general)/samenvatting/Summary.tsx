@@ -14,6 +14,7 @@ import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAle
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { postSummaryForm } from './actions'
+import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { FormState } from 'apps/melding-form/src/types'
 
 type GenericSummaryData = {
@@ -70,7 +71,7 @@ export const Summary = ({ additionalQuestions, attachments, contact, location, p
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-s" href="/contact#top">
+      <BackLink className="ams-mb-s" href={`/contact#${TOP_ANCHOR_ID}`}>
         {t('back-link')}
       </BackLink>
       <main>
@@ -85,7 +86,7 @@ export const Summary = ({ additionalQuestions, attachments, contact, location, p
             <SummaryList.Term>{primaryForm.term}</SummaryList.Term>
             <SummaryList.Description>{primaryForm.description}</SummaryList.Description>
             <SummaryList.Description>
-              <NextLink href="/#top" legacyBehavior passHref>
+              <NextLink href={`/#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
                 <Link>{t('change-links.primary')}</Link>
               </NextLink>
             </SummaryList.Description>
@@ -108,7 +109,7 @@ export const Summary = ({ additionalQuestions, attachments, contact, location, p
             <SummaryList.Term>{location.term}</SummaryList.Term>
             <SummaryList.Description>{location.description}</SummaryList.Description>
             <SummaryList.Description>
-              <NextLink href="/locatie#top" legacyBehavior passHref>
+              <NextLink href={`/locatie#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
                 <Link>{t('change-links.location')}</Link>
               </NextLink>
             </SummaryList.Description>
@@ -127,7 +128,7 @@ export const Summary = ({ additionalQuestions, attachments, contact, location, p
                 </UnorderedList>
               </SummaryList.Description>
               <SummaryList.Description>
-                <NextLink href="/bijlage#top" legacyBehavior passHref>
+                <NextLink href={`/bijlage#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
                   <Link>{t('change-links.attachments')}</Link>
                 </NextLink>
               </SummaryList.Description>
@@ -141,7 +142,7 @@ export const Summary = ({ additionalQuestions, attachments, contact, location, p
                 <SummaryList.Description key={item}>{item}</SummaryList.Description>
               ))}
               <SummaryList.Description>
-                <NextLink href="/contact#top" legacyBehavior passHref>
+                <NextLink href={`/contact#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
                   <Link>{t('change-links.contact')}</Link>
                 </NextLink>
               </SummaryList.Description>

@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { submitAttachmentsForm } from './actions'
+import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
@@ -25,7 +26,7 @@ describe('submitAttachmentsForm', () => {
 
     await submitAttachmentsForm()
 
-    expect(redirect).toHaveBeenCalledWith('/cookie-storing#top')
+    expect(redirect).toHaveBeenCalledWith(`/cookie-storing#${TOP_ANCHOR_ID}`)
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
@@ -47,6 +48,6 @@ describe('submitAttachmentsForm', () => {
 
     await submitAttachmentsForm()
 
-    expect(redirect).toHaveBeenCalledWith('/contact#top')
+    expect(redirect).toHaveBeenCalledWith(`/contact#${TOP_ANCHOR_ID}`)
   })
 })

@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation'
 import type { ArgsType } from './actions'
 
 import { postForm } from './actions'
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
@@ -47,7 +47,7 @@ describe('postForm', () => {
     const formData = new FormData()
     await postForm(defaultArgs, null, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/cookie-storing#top')
+    expect(redirect).toHaveBeenCalledWith(`/cookie-storing#${TOP_ANCHOR_ID}`)
   })
 
   it('returns custom and fallback validation errors for missing required questions', async () => {
@@ -232,8 +232,12 @@ describe('postForm', () => {
     await postForm(defaultArgs, null, formData)
 
     const cookieInstance = await cookies()
-    expect(cookieInstance.set).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH, '/aanvullende-vragen/1/panel-2#top', {
-      maxAge: 86400,
-    })
+    expect(cookieInstance.set).toHaveBeenCalledWith(
+      COOKIES.LAST_PANEL_PATH,
+      `/aanvullende-vragen/1/panel-2#${TOP_ANCHOR_ID}`,
+      {
+        maxAge: 86400,
+      },
+    )
   })
 })

@@ -10,6 +10,7 @@ import {
   getMeldingData,
   getPrimaryFormSummary,
 } from './utils'
+import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { additionalQuestions, melding } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
@@ -106,7 +107,7 @@ describe('getAdditionalQuestionsSummary', () => {
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
       description: item.text,
       key: item.question.id.toString(),
-      link: '/aanvullende-vragen/1/page1#top',
+      link: `/aanvullende-vragen/1/page1#${TOP_ANCHOR_ID}`,
       term: item.question.text,
     }))
 
@@ -142,7 +143,7 @@ describe('getAdditionalQuestionsSummary', () => {
     const additionalQuestionsSummary = additionalQuestions.map((item) => ({
       description: item.text,
       key: item.question.id.toString(),
-      link: '/#top',
+      link: `/#${TOP_ANCHOR_ID}`,
       term: item.question.text,
     }))
 
@@ -198,7 +199,7 @@ describe('getAdditionalQuestionsSummary', () => {
         {
           description: '2024-06-01',
           key: '37',
-          link: '/aanvullende-vragen/1/page1#top',
+          link: `/aanvullende-vragen/1/page1#${TOP_ANCHOR_ID}`,
           term: 'Date question',
         },
       ],
@@ -224,7 +225,7 @@ describe('getAdditionalQuestionsSummary', () => {
         {
           description: '14:30',
           key: '37',
-          link: '/aanvullende-vragen/1/page1#top',
+          link: `/aanvullende-vragen/1/page1#${TOP_ANCHOR_ID}`,
           term: 'Time question',
         },
       ],
@@ -259,7 +260,7 @@ describe('getAdditionalQuestionsSummary', () => {
         {
           description: 'Option 1, Option 2',
           key: '38',
-          link: '/aanvullende-vragen/1/page1#top',
+          link: `/aanvullende-vragen/1/page1#${TOP_ANCHOR_ID}`,
           term: 'Value label question',
         },
       ],
@@ -285,7 +286,7 @@ describe('getAdditionalQuestionsSummary', () => {
         {
           description: '',
           key: '39',
-          link: '/aanvullende-vragen/1/page1#top',
+          link: `/aanvullende-vragen/1/page1#${TOP_ANCHOR_ID}`,
           term: 'Unsupported question',
         },
       ],

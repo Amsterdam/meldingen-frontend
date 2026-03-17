@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Mock, vi } from 'vitest'
 
-import { COOKIES } from '../../constants'
+import { COOKIES, TOP_ANCHOR_ID } from '../../constants'
 import { form } from '../../mocks/data'
 import { ENDPOINTS } from '../../mocks/endpoints'
 import { server } from '../../mocks/node'
@@ -138,7 +138,7 @@ describe('postPrimaryForm', () => {
 
       await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
-      expect(redirect).toHaveBeenCalledWith('/locatie#top')
+      expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
     })
 
     it('redirects to /aanvullende-vragen when there are additional questions', async () => {
@@ -149,7 +149,7 @@ describe('postPrimaryForm', () => {
 
       await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
-      expect(redirect).toHaveBeenCalledWith('/aanvullende-vragen/2/page1#top')
+      expect(redirect).toHaveBeenCalledWith(`/aanvullende-vragen/2/page1#${TOP_ANCHOR_ID}`)
     })
   })
 
@@ -171,6 +171,6 @@ describe('postPrimaryForm', () => {
 
     await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/locatie#top')
+    expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
   })
 })

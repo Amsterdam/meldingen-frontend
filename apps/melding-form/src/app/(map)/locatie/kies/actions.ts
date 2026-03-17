@@ -9,7 +9,7 @@ import { patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@m
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import { convertWktPointToCoordinates } from './utils'
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 
@@ -31,7 +31,7 @@ export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) =
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
-  if (!meldingId || !token) return redirect('/cookie-storing#top')
+  if (!meldingId || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
 
   const addressFormData = formData.get('address')
   const coordinatesFormData = formData.get('coordinates')
@@ -101,5 +101,5 @@ export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) =
     return { errorMessage: t('errors.location-patch-failed') }
   }
 
-  return redirect('/locatie#top')
+  return redirect(`/locatie#${TOP_ANCHOR_ID}`)
 }

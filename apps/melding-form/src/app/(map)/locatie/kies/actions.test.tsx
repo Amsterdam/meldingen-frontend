@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
 import { postCoordinatesAndAssets } from './actions'
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { containerAssets } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
@@ -30,7 +30,7 @@ describe('postCoordinatesAndAssets', () => {
 
     await postCoordinatesAndAssets(undefined, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/locatie#top')
+    expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
   })
 
   it('redirects to /cookie-storing if id or token cookies are missing', async () => {
@@ -41,7 +41,7 @@ describe('postCoordinatesAndAssets', () => {
 
     await postCoordinatesAndAssets(undefined, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/cookie-storing#top')
+    expect(redirect).toHaveBeenCalledWith(`/cookie-storing#${TOP_ANCHOR_ID}`)
   })
 
   it('returns an error when postMeldingByMeldingIdAsset fails', async () => {
@@ -83,7 +83,7 @@ describe('postCoordinatesAndAssets', () => {
     expect(capturedBodies).toHaveLength(2)
     expect(capturedBodies[0]).toEqual({ asset_type_id: 1, external_id: 'container.1' })
     expect(capturedBodies[1]).toEqual({ asset_type_id: 1, external_id: 'container.2' })
-    expect(redirect).toHaveBeenCalledWith('/locatie#top')
+    expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
   })
 
   it('returns an error message if no address is provided', async () => {
@@ -152,7 +152,7 @@ describe('postCoordinatesAndAssets', () => {
     await postCoordinatesAndAssets(undefined, formData)
 
     expect(mockSetCookie).toHaveBeenCalledWith(COOKIES.ADDRESS, address, { maxAge: 86400 })
-    expect(redirect).toHaveBeenCalledWith('/locatie#top')
+    expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
   })
 
   it('returns an error when patchMeldingByMeldingIdLocation fails', async () => {
