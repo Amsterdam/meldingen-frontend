@@ -14,6 +14,6 @@
     "@meldingen/api-client": "workspace:*",
     "@meldingen/markdown-to-html": "workspace:*",
     "@meldingen/ui": "workspace:*",
-    "next": "16.1.6"
+    "next": "16.1.7"
   }
 }
