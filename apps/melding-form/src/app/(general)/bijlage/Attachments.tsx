@@ -229,7 +229,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-s" href="/locatie#start">
+      <BackLink className="ams-mb-s" href="/locatie#top">
         {t('back-link')}
       </BackLink>
       <main>

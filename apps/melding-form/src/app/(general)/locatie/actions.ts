@@ -15,7 +15,7 @@ export const postLocationForm = async () => {
   const token = cookieStore.get(COOKIES.TOKEN)?.value
   const address = cookieStore.get(COOKIES.ADDRESS)?.value
 
-  if (!meldingId || !token) return redirect('/cookie-storing#start')
+  if (!meldingId || !token) return redirect('/cookie-storing#top')
 
   const t = await getTranslations('location')
 
@@ -39,5 +39,5 @@ export const postLocationForm = async () => {
 
   if (error) return { systemError: error }
 
-  return redirect('/bijlage#start')
+  return redirect('/bijlage#top')
 }

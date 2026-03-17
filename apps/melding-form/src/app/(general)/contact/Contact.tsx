@@ -68,7 +68,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-s" href="/bijlage#start">
+      <BackLink className="ams-mb-s" href="/bijlage#top">
         {t('back-link')}
       </BackLink>
       <main>

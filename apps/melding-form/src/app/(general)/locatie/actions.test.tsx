@@ -29,7 +29,7 @@ describe('postLocationForm', () => {
 
     await postLocationForm()
 
-    expect(redirect).toHaveBeenCalledWith('/cookie-storing#start')
+    expect(redirect).toHaveBeenCalledWith('/cookie-storing#top')
   })
 
   it('returns a validation error when address is missing', async () => {

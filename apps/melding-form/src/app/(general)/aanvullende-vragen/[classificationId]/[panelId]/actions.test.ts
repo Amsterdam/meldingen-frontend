@@ -47,7 +47,7 @@ describe('postForm', () => {
     const formData = new FormData()
     await postForm(defaultArgs, null, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/cookie-storing#start')
+    expect(redirect).toHaveBeenCalledWith('/cookie-storing#top')
   })
 
   it('returns custom and fallback validation errors for missing required questions', async () => {

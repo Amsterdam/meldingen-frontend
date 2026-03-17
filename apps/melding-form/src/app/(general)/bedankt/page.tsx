@@ -37,7 +37,7 @@ export default async () => {
         {t('title')}
       </Heading>
       <MarkdownToHtml className="ams-mb-m">{description}</MarkdownToHtml>
-      <NextLink href="/#start" legacyBehavior passHref>
+      <NextLink href="/#top" legacyBehavior passHref>
         <StandaloneLink href="dummy-href">{t('link')}</StandaloneLink>
       </NextLink>
     </main>

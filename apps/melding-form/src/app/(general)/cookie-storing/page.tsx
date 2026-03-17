@@ -19,7 +19,7 @@ export default async () => {
       <Heading className="ams-mb-m" level={1}>
         {t('title')}
       </Heading>
-      <NextLink href="/#start" legacyBehavior passHref>
+      <NextLink href="/#top" legacyBehavior passHref>
         <StandaloneLink className="ams-mb-m">{t('link')}</StandaloneLink>
       </NextLink>
       <Paragraph>{t('description')}</Paragraph>

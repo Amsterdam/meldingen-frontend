@@ -25,7 +25,7 @@ export default async function NotFound() {
               {t('title')}
             </Heading>
             <MarkdownToHtml className="ams-mb-s">{t('description')}</MarkdownToHtml>
-            <NextLink href="/#start" legacyBehavior passHref>
+            <NextLink href="/#top" legacyBehavior passHref>
               <StandaloneLink>{t('link')}</StandaloneLink>
             </NextLink>
           </main>

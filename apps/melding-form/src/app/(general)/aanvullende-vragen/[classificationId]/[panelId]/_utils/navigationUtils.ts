@@ -11,8 +11,8 @@ export type PanelComponentsConditions = {
 }
 export type AnswersByKey = Record<string, string | string[] | null>
 
-export const BEFORE_ADDITIONAL_QUESTIONS_PATH = '/#start'
-export const AFTER_ADDITIONAL_QUESTIONS_PATH = '/locatie#start'
+export const BEFORE_ADDITIONAL_QUESTIONS_PATH = '/#top'
+export const AFTER_ADDITIONAL_QUESTIONS_PATH = '/locatie#top'
 
 const isNullOrEmpty = (value: unknown) => value === null || value === ''
 
@@ -51,7 +51,7 @@ export const getNextPanelPath = (
 ) => {
   for (let i = currentPanelIndex + 1; i < panels.length; i++) {
     if (shouldLinkToPanel(panels[i], answersByKey)) {
-      return `/aanvullende-vragen/${classificationId}/${panels[i].key}#start`
+      return `/aanvullende-vragen/${classificationId}/${panels[i].key}#top`
     }
   }
   return AFTER_ADDITIONAL_QUESTIONS_PATH
@@ -65,7 +65,7 @@ export const getPreviousPanelPath = (
 ) => {
   for (let i = currentPanelIndex - 1; i >= 0; i--) {
     if (shouldLinkToPanel(panels[i], answersByKey)) {
-      return `/aanvullende-vragen/${classificationId}/${panels[i].key}#start`
+      return `/aanvullende-vragen/${classificationId}/${panels[i].key}#top`
     }
   }
   return BEFORE_ADDITIONAL_QUESTIONS_PATH
