@@ -5,7 +5,7 @@ import {
   ValueLabelObject,
 } from '@meldingen/api-client'
 
-import { DateOptionValues } from '../page'
+import type { DateOptionValues } from '../page'
 
 const getCheckboxAnswerBody = (
   value: string[],

@@ -4,10 +4,10 @@ import { Dispatch, SetStateAction } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
+import type { NotificationType } from '../../SelectLocation'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
-import { MAX_ASSETS } from '../../SelectLocation'
-import { NotificationType } from '../../SelectLocation'
+import { MAX_ASSETS } from '../../constants'
 import { getContainerAssetIconSVG } from './getContainerAssetIconSVG'
 
 import styles from './AssetList.module.css'

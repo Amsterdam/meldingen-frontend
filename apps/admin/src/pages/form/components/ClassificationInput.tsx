@@ -16,7 +16,7 @@ const OptionRenderer = () => {
   return (
     <span className={styles.autoCompleteOption}>
       <span>{record.name}</span>
-      {record.form && <Icon className={styles.autoCompleteOptionIcon} svg={PowerPlugWithSocketIcon} />}
+      {record.form && <Icon className={styles.autoCompleteOptionIcon} hidden={false} svg={PowerPlugWithSocketIcon} />}
     </span>
   )
 }
@@ -43,7 +43,9 @@ export const ClassificationInput = () => {
   }
 
   const handleChange: AutocompleteInputProps['onChange'] = (value, classificationRecord) => {
-    if (typeof classificationRecord === 'object' && classificationRecord?.form) {
+    const hasExistingFormLink = typeof classificationRecord === 'object' && classificationRecord?.form
+
+    if (hasExistingFormLink) {
       setDialogOpen(true)
     } else {
       setPreviousSelectedValue(value)
