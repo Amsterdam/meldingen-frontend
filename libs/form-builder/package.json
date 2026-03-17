@@ -1,5 +1,5 @@
 {
-  "name": "form-builder",
+  "name": "@meldingen/form-builder",
   "version": "0.1.0",
   "description": "A plugin to create forms.",
   "license": "EUPL-1.2",
