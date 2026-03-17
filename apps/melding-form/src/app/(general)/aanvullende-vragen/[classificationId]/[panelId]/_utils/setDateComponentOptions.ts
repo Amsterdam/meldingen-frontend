@@ -1,6 +1,6 @@
 import { FormDateComponentOutput } from '@meldingen/api-client'
 
-import { FormOutputWithoutPanelComponents } from '../page'
+import type { FormOutputWithoutPanelComponents } from '../page'
 
 const getDateComponentOptions = (dayRange?: number | null) => {
   const today = new Date()

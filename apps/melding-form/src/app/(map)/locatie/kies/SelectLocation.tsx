@@ -14,6 +14,7 @@ import type { Coordinates } from 'apps/melding-form/src/types'
 
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
+import { MAX_ASSETS } from './constants'
 
 import styles from './SelectLocation.module.css'
 
@@ -38,9 +39,6 @@ type Props = {
 export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 
 const initialState: { errorMessage?: string } = {}
-
-// 3 is the default maximum from the backend
-export const MAX_ASSETS = 3
 
 export const SelectLocation = ({
   classification,

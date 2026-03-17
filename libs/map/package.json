@@ -1,5 +1,5 @@
 {
-  "name": "map",
+  "name": "@meldingen/map",
   "version": "0.1.0",
   "description": "React components that wrap Leaflet",
   "license": "EUPL-1.2",
@@ -11,6 +11,7 @@
     "type-check": "tsc --project ./tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@meldingen/api-client": "workspace:*",
     "leaflet": "1.9.4",
     "leaflet.markercluster": "1.5.3"
   },

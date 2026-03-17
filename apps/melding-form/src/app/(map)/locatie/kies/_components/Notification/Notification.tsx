@@ -3,8 +3,9 @@ import type { AlertProps } from '@amsterdam/design-system-react'
 import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 
-import { MAX_ASSETS } from '../../SelectLocation'
-import { NotificationType } from '../../SelectLocation'
+import type { NotificationType } from '../../SelectLocation'
+
+import { MAX_ASSETS } from '../../constants'
 
 import styles from './Notification.module.css'
 
