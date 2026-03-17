@@ -13,7 +13,7 @@ export const submitAttachmentsForm = async () => {
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
-  if (!meldingId || !token) return redirect('/cookie-storing')
+  if (!meldingId || !token) return redirect('/cookie-storing#start')
 
   // Set melding state to 'attachments_added'
   const { error } = await putMeldingByMeldingIdAddAttachments({
@@ -23,5 +23,5 @@ export const submitAttachmentsForm = async () => {
 
   if (error) return { systemError: error }
 
-  return redirect('/contact')
+  return redirect('/contact#start')
 }

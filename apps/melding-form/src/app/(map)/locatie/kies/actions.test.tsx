@@ -41,7 +41,7 @@ describe('postCoordinatesAndAssets', () => {
 
     await postCoordinatesAndAssets(undefined, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/cookie-storing')
+    expect(redirect).toHaveBeenCalledWith('/cookie-storing#start')
   })
 
   it('returns an error when postMeldingByMeldingIdAsset fails', async () => {

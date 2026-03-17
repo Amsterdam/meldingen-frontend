@@ -102,7 +102,7 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
       return {
         description: getDescription(answer),
         key: `${answer.question.id}`,
-        link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}` : '/',
+        link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}#start` : '/#start',
         term: answer.question.text,
       }
     }),

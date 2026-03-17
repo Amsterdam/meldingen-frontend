@@ -112,7 +112,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
           {validationErrors &&
             validationErrors.map(({ key, message }) => <ErrorMessage key={key}>{message}</ErrorMessage>)}
 
-          <NextLink href="/locatie/kies" legacyBehavior passHref>
+          <NextLink href="/locatie/kies#start" legacyBehavior passHref>
             <StandaloneLink id="location-link">
               {address ? t('link.with-location') : t('link.without-location')}
             </StandaloneLink>

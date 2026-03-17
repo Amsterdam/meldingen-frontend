@@ -31,7 +31,7 @@ export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) =
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
-  if (!meldingId || !token) return redirect('/cookie-storing')
+  if (!meldingId || !token) return redirect('/cookie-storing#start')
 
   const addressFormData = formData.get('address')
   const coordinatesFormData = formData.get('coordinates')
@@ -101,5 +101,5 @@ export const postCoordinatesAndAssets = async (_: unknown, formData: FormData) =
     return { errorMessage: t('errors.location-patch-failed') }
   }
 
-  return redirect('/locatie')
+  return redirect('/locatie#start')
 }

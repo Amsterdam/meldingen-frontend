@@ -17,7 +17,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
-  if (!meldingId || !token) return redirect('/cookie-storing')
+  if (!meldingId || !token) return redirect('/cookie-storing#start')
 
   const email = formData.get('email')
   const phone = formData.get('phone')
@@ -59,5 +59,5 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
 
   if (stateChangeError) return { formData, systemError: stateChangeError }
 
-  return redirect('/samenvatting')
+  return redirect('/samenvatting#start')
 }

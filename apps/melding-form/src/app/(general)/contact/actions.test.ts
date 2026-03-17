@@ -50,7 +50,7 @@ describe('postContactForm', () => {
 
     await postContactForm(undefined, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/cookie-storing')
+    expect(redirect).toHaveBeenCalledWith('/cookie-storing#start')
   })
 
   it('returns a validation error if email is invalid', async () => {

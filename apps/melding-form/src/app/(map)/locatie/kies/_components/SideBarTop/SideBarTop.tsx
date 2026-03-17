@@ -12,7 +12,7 @@ export const SideBarTop = ({ children }: PropsWithChildren) => {
   return (
     <div className={styles.container}>
       <div className={styles.intro}>
-        <BackLink className="ams-mb-s" href="/locatie">
+        <BackLink className="ams-mb-s" href="/locatie#start">
           {t('back-link')}
         </BackLink>
         <Heading level={1} size="level-2">

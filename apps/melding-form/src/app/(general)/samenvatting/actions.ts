@@ -13,7 +13,7 @@ export const postSummaryForm = async () => {
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
-  if (!meldingId || !token) return redirect('/cookie-storing')
+  if (!meldingId || !token) return redirect('/cookie-storing#start')
 
   // Set melding state to 'submitted'
   const { error } = await putMeldingByMeldingIdSubmitMelder({
@@ -29,5 +29,5 @@ export const postSummaryForm = async () => {
     cookieStore.delete(cookie)
   })
 
-  return redirect('/bedankt')
+  return redirect('/bedankt#start')
 }

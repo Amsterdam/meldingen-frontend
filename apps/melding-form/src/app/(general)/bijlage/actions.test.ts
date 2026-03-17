@@ -25,7 +25,7 @@ describe('submitAttachmentsForm', () => {
 
     await submitAttachmentsForm()
 
-    expect(redirect).toHaveBeenCalledWith('/cookie-storing')
+    expect(redirect).toHaveBeenCalledWith('/cookie-storing#start')
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {

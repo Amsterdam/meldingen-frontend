@@ -96,13 +96,13 @@ export const postPrimaryForm = async (
 
       if (error) return { formData, systemError: error }
 
-      return redirect('/locatie')
+      return redirect('/locatie#start')
     }
 
     const nextFormFirstKey = data?.components[0].key
 
-    return redirect(`/aanvullende-vragen/${classification.id}/${nextFormFirstKey}`)
+    return redirect(`/aanvullende-vragen/${classification.id}/${nextFormFirstKey}#start`)
   }
 
-  return redirect('/locatie')
+  return redirect('/locatie#start')
 }

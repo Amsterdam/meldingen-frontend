@@ -5,7 +5,7 @@ import { Page } from '@meldingen/ui'
 import styles from './layout.module.css'
 
 const MapLayout = ({ children }: { children: ReactNode }) => (
-  <Page className={styles.page}>
+  <Page className={styles.page} id="start">
     <main>{children}</main>
   </Page>
 )
