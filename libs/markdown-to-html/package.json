@@ -1,5 +1,5 @@
 {
-  "name": "markdown-to-html",
+  "name": "@meldingen/markdown-to-html",
   "version": "0.1.0",
   "description": "Converts Markdown strings to HTML elements",
   "license": "EUPL-1.2",
@@ -11,6 +11,7 @@
     "type-check": "tsc --project ./tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@meldingen/ui": "workspace:*",
     "react-markdown": "10.1.0"
   }
 }
