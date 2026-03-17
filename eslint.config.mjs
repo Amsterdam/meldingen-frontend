@@ -12,6 +12,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y'
 import perfectionist from 'eslint-plugin-perfectionist'
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 import react from 'eslint-plugin-react'
+import workspaces from 'eslint-plugin-workspaces'
 import { defineConfig } from 'eslint/config'
 import globals from 'globals'
 
@@ -91,9 +92,15 @@ export default defineConfig(
       perfectionist,
       'prefer-arrow-functions': preferArrowFunctions,
       react,
+      workspaces,
     },
     settings: {
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx'],
+      },
       'import/resolver': {
+        // This uses eslint-import-resolver-typescript
+        typescript: {},
         node: {
           extensions: ['js', 'jsx', 'ts', 'tsx'],
         },
@@ -106,6 +113,7 @@ export default defineConfig(
       ...perfectionist.configs['recommended-natural'].rules,
       ...react.configs.recommended.rules,
       ...tsPlugin.configs.recommended.rules,
+      ...workspaces.configs.recommended.rules,
 
       // TypeScript
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
@@ -115,7 +123,7 @@ export default defineConfig(
       // Import
       'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
       'import/newline-after-import': 'error',
-      'import/no-cycle': 'warn',
+      'import/no-cycle': 'error',
       'import/no-default-export': 'error',
       'import/no-named-as-default': 'error',
 
