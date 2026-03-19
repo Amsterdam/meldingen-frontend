@@ -5,6 +5,7 @@ import { useActionState } from 'react'
 import { vi } from 'vitest'
 
 import { Summary } from './Summary'
+import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -67,7 +68,7 @@ describe('Summary', () => {
     const link = screen.getByRole('link', { name: 'back-link' })
 
     expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '/contact')
+    expect(link).toHaveAttribute('href', `/contact#${TOP_ANCHOR_ID}`)
   })
 
   it('renders the Summary component with data', () => {
@@ -104,20 +105,20 @@ describe('Summary', () => {
     const contactChangeLink = screen.getByRole('link', { name: 'change-links.contact' })
 
     expect(primaryChangeLink).toBeInTheDocument()
-    expect(primaryChangeLink).toHaveAttribute('href', '/')
+    expect(primaryChangeLink).toHaveAttribute('href', `/#${TOP_ANCHOR_ID}`)
 
     expect(additionalChangeLinks).toHaveLength(2)
     expect(additionalChangeLinks[0]).toHaveAttribute('href', '/link/to/page')
     expect(additionalChangeLinks[1]).toHaveAttribute('href', '/link/to/page')
 
     expect(locationChangeLink).toBeInTheDocument()
-    expect(locationChangeLink).toHaveAttribute('href', '/locatie')
+    expect(locationChangeLink).toHaveAttribute('href', `/locatie#${TOP_ANCHOR_ID}`)
 
     expect(attachmentsChangeLink).toBeInTheDocument()
-    expect(attachmentsChangeLink).toHaveAttribute('href', '/bijlage')
+    expect(attachmentsChangeLink).toHaveAttribute('href', `/bijlage#${TOP_ANCHOR_ID}`)
 
     expect(contactChangeLink).toBeInTheDocument()
-    expect(contactChangeLink).toHaveAttribute('href', '/contact')
+    expect(contactChangeLink).toHaveAttribute('href', `/contact#${TOP_ANCHOR_ID}`)
   })
 
   it('renders the Summary component with an error message', () => {

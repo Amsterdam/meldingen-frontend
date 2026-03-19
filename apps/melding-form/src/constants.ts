@@ -6,3 +6,5 @@ export const COOKIES = {
   PUBLIC_ID: 'meldingen_public_id',
   TOKEN: 'meldingen_token',
 } as const
+
+export const TOP_ANCHOR_ID = 'top'

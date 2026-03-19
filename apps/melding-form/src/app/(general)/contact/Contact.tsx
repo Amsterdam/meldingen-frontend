@@ -14,6 +14,7 @@ import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { postContactForm } from './actions'
+import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { FormState } from 'apps/melding-form/src/types'
 import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 
@@ -67,7 +68,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-l" href="/bijlage">
+      <BackLink className="ams-mb-l" href={`/bijlage#${TOP_ANCHOR_ID}`}>
         {t('back-link')}
       </BackLink>
       <main>

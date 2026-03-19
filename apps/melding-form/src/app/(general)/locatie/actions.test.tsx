@@ -5,7 +5,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { postLocationForm } from './actions'
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockCookies, mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
@@ -29,7 +29,7 @@ describe('postLocationForm', () => {
 
     await postLocationForm()
 
-    expect(redirect).toHaveBeenCalledWith('/cookie-storing')
+    expect(redirect).toHaveBeenCalledWith(`/cookie-storing#${TOP_ANCHOR_ID}`)
   })
 
   it('returns a validation error when address is missing', async () => {
@@ -64,6 +64,6 @@ describe('postLocationForm', () => {
 
     await postLocationForm()
 
-    expect(redirect).toHaveBeenCalledWith('/bijlage')
+    expect(redirect).toHaveBeenCalledWith(`/bijlage#${TOP_ANCHOR_ID}`)
   })
 })

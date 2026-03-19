@@ -17,6 +17,7 @@ import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
 import { postLocationForm } from './actions'
+import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 import styles from './Location.module.css'
 
@@ -109,7 +110,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
           {validationErrors &&
             validationErrors.map(({ key, message }) => <ErrorMessage key={key}>{message}</ErrorMessage>)}
 
-          <NextLink href="/locatie/kies" legacyBehavior passHref>
+          <NextLink href={`/locatie/kies#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
             <StandaloneLink id="location-link">
               {address ? t('link.with-location') : t('link.without-location')}
             </StandaloneLink>

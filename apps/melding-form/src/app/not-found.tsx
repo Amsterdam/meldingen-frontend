@@ -4,6 +4,7 @@ import NextLink from 'next/link'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Grid, Heading, Page, StandaloneLink } from '@meldingen/ui'
 
+import { TOP_ANCHOR_ID } from '../constants'
 import { Footer, Header } from './_components/'
 
 export const generateMetadata = async () => {
@@ -27,7 +28,7 @@ export default async function NotFound() {
               {t('title')}
             </Heading>
             <MarkdownToHtml className="ams-mb-s">{t('description')}</MarkdownToHtml>
-            <NextLink href="/" legacyBehavior passHref>
+            <NextLink href={`/#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
               <StandaloneLink>{t('link')}</StandaloneLink>
             </NextLink>
           </main>

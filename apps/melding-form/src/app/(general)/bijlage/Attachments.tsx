@@ -23,6 +23,7 @@ import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { submitAttachmentsForm } from './actions'
 import { startUpload } from './utils'
+import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 
 import styles from './Attachments.module.css'
@@ -228,7 +229,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-l" href="/locatie">
+      <BackLink className="ams-mb-l" href={`/locatie#${TOP_ANCHOR_ID}`}>
         {t('back-link')}
       </BackLink>
       <main>
