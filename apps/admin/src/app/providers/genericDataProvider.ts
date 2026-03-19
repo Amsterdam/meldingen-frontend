@@ -12,15 +12,29 @@ export const genericDataProvider = (apiUrl: string, httpClient: HttpClient): Dat
   ...simpleRestProvider(apiUrl, httpClient),
 
   getList: async (resource, params) => {
+    // You can override the limit manually which is used for querying options for Selects for example
+    const limitValue = params.meta?.limit ?? params.pagination?.perPage ?? 50
+    const limit = JSON.stringify(limitValue)
+
     const searchParams = {
       filter: JSON.stringify(params.filter),
+      limit,
+      offset: JSON.stringify(params.pagination ? (params.pagination.page - 1) * params.pagination.perPage : 0),
+      pagination: JSON.stringify({ page: params.pagination?.page, perPage: params.pagination?.perPage }),
       sort: JSON.stringify([params.sort?.field, params.sort?.order]),
-      ...(params.meta?.limit && { limit: params.meta.limit }),
     }
 
-    const url = `${apiUrl}/${resource}/?${new URLSearchParams(searchParams)}`
+    const url = `${apiUrl}/${resource}?${new URLSearchParams(searchParams)}`
 
-    return httpClient(url).then(({ json }) => ({ data: json, total: json.length }))
+    return httpClient(url).then((response) => {
+      const total = response.headers.get('Content-Range')?.split('/')[1]
+
+      if (!total) {
+        throw new Error('Content-Range header is missing in the response. Total count cannot be determined.')
+      }
+
+      return { data: response.json, total: parseInt(total, 10) }
+    })
   },
 
   update: async (resource, params) => {
