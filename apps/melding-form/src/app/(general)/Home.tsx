@@ -8,8 +8,7 @@ import { InvalidFormAlert } from '@meldingen/ui'
 
 import type { FormState } from '../../types'
 
-import { FormHeader } from './_components/FormHeader/FormHeader'
-import { SystemErrorAlert } from './_components/SystemErrorAlert/SystemErrorAlert'
+import { SystemErrorAlert } from './_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from './_utils/getDocumentTitleOnError'
 
 const initialState: FormState = {}
@@ -48,7 +47,7 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
   // Update document title when there are system or validation errors
   const documentTitle = getDocumentTitleOnError({
     hasSystemError: Boolean(systemError),
-    originalDocTitle: t('metadata.title'),
+    originalDocTitle: `${formComponents[0].label} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors?.length,
   })
@@ -87,7 +86,6 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
           ref={invalidFormAlertRef}
         />
       )}
-      <FormHeader step={t('step')} title={t('title')} />
       <FormRenderer
         action={formAction}
         formComponents={formComponents}

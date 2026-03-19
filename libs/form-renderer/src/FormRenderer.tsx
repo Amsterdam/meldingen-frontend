@@ -8,6 +8,8 @@ import type { AnswersByKey, Component } from './types'
 import { Checkbox, Radio, Select, TextArea, TextInput, TimeInput } from './components'
 import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimeInput, shouldRender } from './utils'
 
+import styles from './FormRenderer.module.css'
+
 const getValue = (component: Component): string | string[] => {
   if (isSelectboxes(component)) return component.defaultValues ?? []
   return component.defaultValue ?? ''
@@ -139,11 +141,11 @@ export const FormRenderer = ({
        * If the page has more than one form component, the h1 is rendered here.
        */}
       {!hasOneFormComponent && panelTitle && (
-        <Heading className="ams-mb-m" level={1} size="level-3">
+        <Heading className="ams-mb-xl" level={1} size="level-3">
           {panelTitle}
         </Heading>
       )}
-      <Form action={action} className="ams-gap-m" noValidate>
+      <Form action={action} className={styles.form} noValidate>
         {formComponents.map((component) => {
           if (!shouldRender(component, values)) return null
 

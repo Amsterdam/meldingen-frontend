@@ -136,7 +136,7 @@ describe('Summary', () => {
 
     render(<Summary {...defaultProps} />)
 
-    expect(document.title).toBe('system-error-alert-title - metadata.title')
+    expect(document.title).toBe('system-error-alert-title - main-title - organisation-name')
   })
 
   it('sets focus on SystemErrorAlert when there is a system error', () => {

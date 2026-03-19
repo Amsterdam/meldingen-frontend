@@ -216,8 +216,6 @@ Translations are organized by feature in `apps/{app}/translations/nl.json`:
 {
   "metadata": { "description": "..." },
   "homepage": {
-    "title": "Melding maken",
-    "step": "Stap 1 van 5",
     "submit-button": "Volgende"
   },
   "contact": {

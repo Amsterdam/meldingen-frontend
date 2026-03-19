@@ -96,7 +96,7 @@ describe('Page', () => {
 
     render(<Home {...defaultProps} />)
 
-    expect(document.title).toBe('system-error-alert-title - metadata.title')
+    expect(document.title).toBe(`system-error-alert-title - ${mockQuestionText.source} - organisation-name`)
   })
 
   it('updates the document title when there are validation errors', () => {
@@ -107,7 +107,7 @@ describe('Page', () => {
 
     render(<Home {...defaultProps} />)
 
-    expect(document.title).toBe('error-count-label metadata.title')
+    expect(document.title).toBe(`error-count-label ${mockQuestionText.source} - organisation-name`)
   })
 
   it('sets focus on InvalidFormAlert when there are validation errors', () => {

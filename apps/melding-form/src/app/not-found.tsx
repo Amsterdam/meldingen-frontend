@@ -2,9 +2,10 @@ import { getTranslations } from 'next-intl/server'
 import NextLink from 'next/link'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Footer, Grid, Header, Heading, Page, StandaloneLink } from '@meldingen/ui'
+import { Grid, Heading, Page, StandaloneLink } from '@meldingen/ui'
 
 import { TOP_ANCHOR_ID } from '../constants'
+import { Footer, Header } from './_components/'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('not-found')
