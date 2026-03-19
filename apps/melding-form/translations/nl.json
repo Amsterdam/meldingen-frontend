@@ -17,8 +17,8 @@
   },
   "location": {
     "back-link": "Vorige vraag",
-    "question": "Waar staat de container?",
-    "description": "In het volgende scherm kunt u op de kaart een adres of container opzoeken.",
+    "question": "Wat is de locatie?",
+    "description": "In het volgende scherm kunt u op de kaart een locatie opzoeken.",
     "link": {
       "without-location": "Selecteer de locatie",
       "with-location": "Wijzig locatie"
@@ -30,7 +30,7 @@
   },
   "select-location": {
     "back-link": "Vorige vraag",
-    "title": "Selecteer de locatie",
+    "title": "Kies de locatie",
     "description": "Typ het dichtstbijzijnde adres, klik de locatie aan op de kaart of gebruik “Mijn locatie”.",
     "combo-box": {
       "label": "Zoek op adres",
