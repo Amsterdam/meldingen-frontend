@@ -835,7 +835,7 @@ export const Body_melding_attachment_melding__melding_id__attachment_postSchema 
     properties: {
         file: {
             type: 'string',
-            format: 'binary',
+            contentMediaType: 'application/octet-stream',
             title: 'File'
         }
     },
@@ -899,6 +899,17 @@ export const ClassificationCreateInputSchema = {
             minLength: 1,
             title: 'Name'
         },
+        instructions: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Instructions'
+        },
         asset_type: {
             anyOf: [
                 {
@@ -935,6 +946,17 @@ export const ClassificationOutputSchema = {
         name: {
             type: 'string',
             title: 'Name'
+        },
+        instructions: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Instructions'
         },
         form: {
             anyOf: [
@@ -982,6 +1004,17 @@ export const ClassificationUpdateInputSchema = {
                 }
             ],
             title: 'Name'
+        },
+        instructions: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Instructions'
         },
         asset_type: {
             anyOf: [
@@ -5167,18 +5200,9 @@ export const MeldingInputSchema = {
             type: 'string',
             minLength: 1,
             title: 'Text'
-        },
-        urgency: {
-            type: 'integer',
-            enum: [
-                -1,
-                0,
-                1
-            ],
-            title: 'Urgency',
-            default: 0
         }
     },
+    additionalProperties: false,
     type: 'object',
     required: [
         'text'
@@ -5332,6 +5356,25 @@ export const MeldingOutputSchema = {
         'state'
     ],
     title: 'MeldingOutput'
+} as const;
+
+export const MeldingUpdateInputSchema = {
+    properties: {
+        urgency: {
+            type: 'integer',
+            enum: [
+                -1,
+                0,
+                1
+            ],
+            title: 'Urgency'
+        }
+    },
+    type: 'object',
+    required: [
+        'urgency'
+    ],
+    title: 'MeldingUpdateInput'
 } as const;
 
 export const MeldingUpdateOutputSchema = {
@@ -7217,6 +7260,17 @@ export const SimpleClassificationOutputSchema = {
         name: {
             type: 'string',
             title: 'Name'
+        },
+        instructions: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Instructions'
         },
         asset_type: {
             anyOf: [

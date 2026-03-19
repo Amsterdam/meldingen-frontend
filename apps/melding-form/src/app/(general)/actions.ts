@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 import {
   getFormClassificationByClassificationId,
-  patchMeldingByMeldingId,
+  patchMeldingByMeldingIdMelder,
   postMelding,
   putMeldingByMeldingIdAnswerQuestions,
 } from '@meldingen/api-client'
@@ -43,7 +43,7 @@ export const postPrimaryForm = async (
   const isExistingMelding = existingId && existingToken
 
   const { data, error, response } = isExistingMelding
-    ? await patchMeldingByMeldingId({
+    ? await patchMeldingByMeldingIdMelder({
         body: { text: formDataObj.primary.toString() },
         path: { melding_id: parseInt(existingId, 10) },
         query: { token: existingToken },
