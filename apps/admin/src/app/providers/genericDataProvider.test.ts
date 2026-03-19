@@ -23,7 +23,7 @@ describe('genericDataProvider', () => {
     const calledUrl = httpClient.mock.calls[0][0] as string
     const url = new URL(calledUrl)
 
-    expect(url.pathname).toBe('/assets/')
+    expect(url.pathname).toBe('/assets')
     expect(url.searchParams.get('filter')).toBe(JSON.stringify(params.filter))
     expect(url.searchParams.get('sort')).toBe(JSON.stringify([params.sort.field, params.sort.order]))
     expect(url.searchParams.get('limit')).toBe('25')

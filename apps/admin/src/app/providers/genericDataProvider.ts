@@ -12,7 +12,7 @@ export const genericDataProvider = (apiUrl: string, httpClient: HttpClient): Dat
   ...simpleRestProvider(apiUrl, httpClient),
 
   getList: async (resource, params) => {
-    // You can override the limit manually which is used for querying options for Selects for example
+    // Allow callers to override the page size via `meta.limit` (e.g. when loading options for a select).
     const limitValue = params.meta?.limit ?? params.pagination?.perPage ?? 50
     const limit = JSON.stringify(limitValue)
 
