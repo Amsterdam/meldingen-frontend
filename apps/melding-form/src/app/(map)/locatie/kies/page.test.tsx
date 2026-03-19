@@ -18,7 +18,7 @@ describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
     const metadata = await generateMetadata()
 
-    expect(metadata).toEqual({ title: 'metadata.title' })
+    expect(metadata).toEqual({ title: 'title - organisation-name' })
   })
 })
 

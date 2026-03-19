@@ -57,14 +57,6 @@ describe('Contact', () => {
     ;(useActionState as Mock).mockReturnValue([{}, vi.fn()])
   })
 
-  it('renders the form header', () => {
-    render(<Contact formComponents={contactFormData} />)
-
-    const header = screen.getByRole('banner', { name: 'title' })
-
-    expect(header).toBeInTheDocument()
-  })
-
   it('renders page and form', async () => {
     render(<Contact formComponents={contactFormData} />)
 
@@ -165,7 +157,7 @@ describe('Contact', () => {
 
     render(<Contact formComponents={contactFormData} />)
 
-    expect(document.title).toBe('system-error-alert-title - metadata.title')
+    expect(document.title).toBe('system-error-alert-title - question - organisation-name')
   })
 
   it('updates the document title when there are validation errors', () => {
@@ -176,7 +168,7 @@ describe('Contact', () => {
 
     render(<Contact formComponents={contactFormData} />)
 
-    expect(document.title).toBe('error-count-label metadata.title')
+    expect(document.title).toBe('error-count-label question - organisation-name')
   })
 
   it('sets focus on InvalidFormAlert when there are validation errors', () => {

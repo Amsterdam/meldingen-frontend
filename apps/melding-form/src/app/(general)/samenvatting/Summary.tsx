@@ -8,10 +8,9 @@ import { useActionState, useEffect, useRef } from 'react'
 
 import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
-import { BackLink } from '../_components/BackLink/BackLink'
-import { FormHeader } from '../_components/FormHeader/FormHeader'
-import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
+import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
+import { BackLink } from '../../_components'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { postSummaryForm } from './actions'
 import { FormState } from 'apps/melding-form/src/types'
@@ -48,7 +47,7 @@ export const Summary = ({ additionalQuestions, attachments, contact, location, p
   // Update document title when there are system or validation errors
   const documentTitle = getDocumentTitleOnError({
     hasSystemError: Boolean(systemError),
-    originalDocTitle: t('metadata.title'),
+    originalDocTitle: `${t('main-title')} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
   })
 
@@ -70,17 +69,16 @@ export const Summary = ({ additionalQuestions, attachments, contact, location, p
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-s" href="/contact">
+      <BackLink className="ams-mb-l" href="/contact">
         {t('back-link')}
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-        <FormHeader step={t('step')} title={t('title')} />
         <Heading className="ams-mb-s" level={1} size="level-3">
           {t('main-title')}
         </Heading>
         <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
-        <SummaryList className="ams-mb-m">
+        <SummaryList className="ams-mb-xl">
           <SummaryList.Item>
             <SummaryList.Term>{primaryForm.term}</SummaryList.Term>
             <SummaryList.Description>{primaryForm.description}</SummaryList.Description>

@@ -18,10 +18,9 @@ import type { ExistingFileType } from './page'
 import type { FileUpload as FileUploadType, PendingFileUpload } from './utils'
 import type { FormState } from 'apps/melding-form/src/types'
 
-import { BackLink } from '../_components/BackLink/BackLink'
-import { FormHeader } from '../_components/FormHeader/FormHeader'
-import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
+import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
+import { BackLink } from '../../_components'
 import { submitAttachmentsForm } from './actions'
 import { startUpload } from './utils'
 import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
@@ -204,7 +203,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   // Update document title when there are system, validation or generic errors
   const documentTitle = getDocumentTitleOnError({
     hasSystemError: Boolean(systemError) || Boolean(genericError),
-    originalDocTitle: t('metadata.title'),
+    originalDocTitle: `${label} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors.length,
   })
@@ -229,7 +228,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-s" href="/locatie">
+      <BackLink className="ams-mb-l" href="/locatie">
         {t('back-link')}
       </BackLink>
       <main>
@@ -259,9 +258,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
           </Alert>
         )}
-        <FormHeader step={t('step')} title={t('title')} />
-
-        <Column>
+        <Column className="ams-mb-xl">
           <Column gap="small">
             <Heading id="file-upload-label" level={1} size="level-3">
               {label} <span className={styles.hint}>{t('hint-text')}</span>
@@ -324,11 +321,10 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
               <Paragraph>{t('no-js-alert-description')}</Paragraph>
             </Alert>
           </div>
-
-          <Form action={formAction} onSubmit={handleSubmit}>
-            <SubmitButton>{t('submit-button')}</SubmitButton>
-          </Form>
         </Column>
+        <Form action={formAction} onSubmit={handleSubmit}>
+          <SubmitButton>{t('submit-button')}</SubmitButton>
+        </Form>
       </main>
     </>
   )

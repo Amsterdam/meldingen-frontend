@@ -24,14 +24,6 @@ describe('Location', () => {
     ;(useActionState as Mock).mockReturnValue([{}, vi.fn()])
   })
 
-  it('renders', () => {
-    render(<Location {...defaultProps} />)
-
-    const header = screen.getByRole('banner', { name: 'title' })
-
-    expect(header).toBeInTheDocument()
-  })
-
   it('renders the back link', () => {
     render(<Location {...defaultProps} />)
 
@@ -119,7 +111,7 @@ describe('Location', () => {
 
     render(<Location {...defaultProps} />)
 
-    expect(document.title).toBe('system-error-alert-title - metadata.title')
+    expect(document.title).toBe('system-error-alert-title - question - organisation-name')
   })
 
   it('updates the document title when there are validation errors', () => {
@@ -130,7 +122,7 @@ describe('Location', () => {
 
     render(<Location {...defaultProps} />)
 
-    expect(document.title).toBe('error-count-label metadata.title')
+    expect(document.title).toBe('error-count-label question - organisation-name')
   })
 
   it('sets focus on InvalidFormAlert when there are validation errors', () => {
