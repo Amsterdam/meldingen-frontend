@@ -226,6 +226,9 @@ importers:
       '@meldingen/api-client':
         specifier: workspace:*
         version: link:../../libs/api-client
+      '@meldingen/markdown-to-html':
+        specifier: workspace:*
+        version: link:../../libs/markdown-to-html
       '@meldingen/ui':
         specifier: workspace:*
         version: link:../../libs/ui
