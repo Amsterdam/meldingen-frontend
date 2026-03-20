@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAddAttachments } from '@meldingen/api-client'
 
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 export const submitAttachmentsForm = async () => {
   const cookieStore = await cookies()
@@ -13,7 +13,7 @@ export const submitAttachmentsForm = async () => {
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
-  if (!meldingId || !token) return redirect('/cookie-storing')
+  if (!meldingId || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
 
   // Set melding state to 'attachments_added'
   const { error } = await putMeldingByMeldingIdAddAttachments({
@@ -23,5 +23,5 @@ export const submitAttachmentsForm = async () => {
 
   if (error) return { systemError: error }
 
-  return redirect('/contact')
+  return redirect(`/contact#${TOP_ANCHOR_ID}`)
 }

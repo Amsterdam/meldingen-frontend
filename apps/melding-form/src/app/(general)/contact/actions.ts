@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation'
 import { patchMeldingByMeldingIdContact, putMeldingByMeldingIdAddContactInfo } from '@meldingen/api-client'
 
 import { hasValidationErrors } from '../_utils/hasValidationErrors'
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { isApiErrorArray } from 'apps/melding-form/src/handleApiError'
 
 export const postContactForm = async (_: unknown, formData: FormData) => {
@@ -17,7 +17,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
-  if (!meldingId || !token) return redirect('/cookie-storing')
+  if (!meldingId || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
 
   const email = formData.get('email')
   const phone = formData.get('phone')
@@ -59,5 +59,5 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
 
   if (stateChangeError) return { formData, systemError: stateChangeError }
 
-  return redirect('/samenvatting')
+  return redirect(`/samenvatting#${TOP_ANCHOR_ID}`)
 }

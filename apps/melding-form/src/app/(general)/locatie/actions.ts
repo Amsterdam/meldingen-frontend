@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdSubmitLocation } from '@meldingen/api-client'
 
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 export const postLocationForm = async () => {
   const cookieStore = await cookies()
@@ -15,7 +15,7 @@ export const postLocationForm = async () => {
   const token = cookieStore.get(COOKIES.TOKEN)?.value
   const address = cookieStore.get(COOKIES.ADDRESS)?.value
 
-  if (!meldingId || !token) return redirect('/cookie-storing')
+  if (!meldingId || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
 
   const t = await getTranslations('location')
 
@@ -39,5 +39,5 @@ export const postLocationForm = async () => {
 
   if (error) return { systemError: error }
 
-  return redirect('/bijlage')
+  return redirect(`/bijlage#${TOP_ANCHOR_ID}`)
 }

@@ -5,14 +5,16 @@ import type {
   GetMeldingByMeldingIdAnswersMelderResponses,
 } from '@meldingen/api-client'
 
+import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
+
 export type PanelComponentsConditions = {
   componentsConditions: Array<{ conditional?: FormIoConditional | null; key: string }>
   key: string
 }
 export type AnswersByKey = Record<string, string | string[] | null>
 
-export const BEFORE_ADDITIONAL_QUESTIONS_PATH = '/'
-export const AFTER_ADDITIONAL_QUESTIONS_PATH = '/locatie'
+export const BEFORE_ADDITIONAL_QUESTIONS_PATH = `/#${TOP_ANCHOR_ID}`
+export const AFTER_ADDITIONAL_QUESTIONS_PATH = `/locatie#${TOP_ANCHOR_ID}`
 
 const isNullOrEmpty = (value: unknown) => value === null || value === ''
 
@@ -51,7 +53,7 @@ export const getNextPanelPath = (
 ) => {
   for (let i = currentPanelIndex + 1; i < panels.length; i++) {
     if (shouldLinkToPanel(panels[i], answersByKey)) {
-      return `/aanvullende-vragen/${classificationId}/${panels[i].key}`
+      return `/aanvullende-vragen/${classificationId}/${panels[i].key}#${TOP_ANCHOR_ID}`
     }
   }
   return AFTER_ADDITIONAL_QUESTIONS_PATH
@@ -65,7 +67,7 @@ export const getPreviousPanelPath = (
 ) => {
   for (let i = currentPanelIndex - 1; i >= 0; i--) {
     if (shouldLinkToPanel(panels[i], answersByKey)) {
-      return `/aanvullende-vragen/${classificationId}/${panels[i].key}`
+      return `/aanvullende-vragen/${classificationId}/${panels[i].key}#${TOP_ANCHOR_ID}`
     }
   }
   return BEFORE_ADDITIONAL_QUESTIONS_PATH
