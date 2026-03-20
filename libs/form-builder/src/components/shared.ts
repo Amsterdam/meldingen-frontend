@@ -3,8 +3,9 @@ import { getContextComponents } from '@formio/js/utils'
 import { Context } from './types'
 
 export const convertEmptyStringToNull = (context: Context) => {
-  if (!context.data?.conditional?.show) {
-    context.data!.conditional!.show = null
+  const data = context?.data
+  if (data && data.conditional && data.conditional.show === '') {
+    data.conditional.show = null
   }
   return true
 }

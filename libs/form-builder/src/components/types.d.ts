@@ -5,6 +5,7 @@ export type Context = {
       show?: 'true' | 'false' | '' | null
       when?: string
     }
+    maxCharCount?: number | '' | null
     validate?: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json?: any

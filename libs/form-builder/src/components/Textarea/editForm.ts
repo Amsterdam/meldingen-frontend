@@ -18,9 +18,10 @@ export const getMaxCharCountValue = (context: Context) => {
   return validateObj?.maxLength ?? ''
 }
 
-export const convertEmptyStringToNull = (context: { data?: { maxCharCount?: number | '' | null } }) => {
-  if (!context.data?.maxCharCount) {
-    context.data!.maxCharCount = null
+export const convertEmptyStringToNull = (context: Context) => {
+  const data = context?.data
+  if (data && data.maxCharCount === '') {
+    data.maxCharCount = null
   }
   return true
 }
