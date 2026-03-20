@@ -9,6 +9,7 @@ describe('transform function', () => {
       arguments: {
         base_url: 'https://example.com/wfs',
       },
+      max_assets: 3,
       name: 'Test Asset Type',
     }
 
@@ -17,6 +18,7 @@ describe('transform function', () => {
         base_url: 'https://example.com/wfs',
       },
       class_name: 'meldingen.wfs.ProxyWfsProviderFactory',
+      max_assets: 3,
       name: 'Test Asset Type',
     }
 
@@ -38,8 +40,11 @@ describe('AssetTypeCreate', () => {
     const baseUrlInput = screen.getByRole('textbox', {
       name: 'resources.asset-type.fields.arguments.base_url',
     })
+    const maxAssetsInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.max_assets' })
 
     expect(nameInput).toBeInTheDocument()
     expect(baseUrlInput).toBeInTheDocument()
+    expect(maxAssetsInput).toBeInTheDocument()
+    expect(maxAssetsInput).toHaveValue('3')
   })
 })

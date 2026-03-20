@@ -1,9 +1,10 @@
-import { Create, required, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
+import { Create, minValue, required, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
 
 type AssetTypeCreateData = {
   arguments: {
     base_url: string
   }
+  max_assets: number
   name: string
 }
 
@@ -27,6 +28,7 @@ export const AssetTypeCreate = () => (
     >
       <TextInput source="name" validate={required()} />
       <TextInput source="arguments.base_url" validate={required()} />
+      <TextInput defaultValue={3} inputMode="numeric" source="max_assets" validate={[required(), minValue(1)]} />
     </SimpleForm>
   </Create>
 )
