@@ -69,6 +69,9 @@ export const postPrimaryForm = async (
   cookieStore.set(COOKIES.CREATED_AT, created_at, { maxAge: oneDay })
   cookieStore.set(COOKIES.PUBLIC_ID, public_id, { maxAge: oneDay })
   cookieStore.set(COOKIES.TOKEN, token, { maxAge: oneDay })
+  if (classification?.asset_type) {
+    cookieStore.set(COOKIES.MAX_ASSETS, classification.asset_type.max_assets.toString(), { maxAge: oneDay })
+  }
 
   // The LAST_PANEL_PATH cookie might be populated by earlier additional questions.
   // Delete it here in case a reclassification occurs.
