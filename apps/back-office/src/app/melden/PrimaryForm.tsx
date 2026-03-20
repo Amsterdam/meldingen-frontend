@@ -5,9 +5,11 @@ import {
   CharacterCount,
   ErrorMessage,
   Field,
+  FieldSet,
   Grid,
   Heading,
   Label,
+  Radio,
   TextArea,
 } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
@@ -17,6 +19,7 @@ import { useActionState, useRef, useState } from 'react'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
+import { Column } from '@meldingen/ui'
 
 import type { FormState } from './actions'
 
@@ -74,6 +77,19 @@ export const PrimaryForm = ({ action, primaryTextArea }: Props) => {
             />
             {maxCharCount && <CharacterCount length={charCount} maxLength={maxCharCount} />}
           </Field>
+          <FieldSet aria-required="true" legend="Wat is de urgentie?" role="radiogroup">
+            <Column gap="x-small">
+              <Radio aria-required="true" name="urgency" value="high">
+                Hoog
+              </Radio>
+              <Radio aria-required="true" name="urgency" value="medium">
+                Normaal
+              </Radio>
+              <Radio aria-required="true" name="urgency" value="low">
+                Laag
+              </Radio>
+            </Column>
+          </FieldSet>
           <Button type="submit">{t('submit-button')}</Button>
         </Form>
       </Grid.Cell>
