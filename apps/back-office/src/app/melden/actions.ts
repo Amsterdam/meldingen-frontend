@@ -63,18 +63,18 @@ export const postPrimaryForm = async (
       if (error) return { formData, systemError: error }
 
       redirect(
-        `${meldingFormBaseUrl}/locatie#top?id=${id}&token=${token}&created_at=${created_at}&public_id=${public_id}&source=back-office`,
+        `${meldingFormBaseUrl}/locatie?id=${id}&token=${token}&created_at=${created_at}&public_id=${public_id}&source=back-office#top`,
       )
     }
 
     const nextFormFirstKey = data?.components[0].key
 
     return redirect(
-      `${meldingFormBaseUrl}/aanvullende-vragen/${classification.id}/${nextFormFirstKey}#top?id=${id}&token=${token}&created_at=${created_at}&public_id=${public_id}&source=back-office`,
+      `${meldingFormBaseUrl}/aanvullende-vragen/${classification.id}/${nextFormFirstKey}?id=${id}&token=${token}&created_at=${created_at}&public_id=${public_id}&source=back-office#top`,
     )
   }
 
   redirect(
-    `${meldingFormBaseUrl}/locatie#top?id=${id}&token=${token}&created_at=${created_at}&public_id=${public_id}&source=back-office`,
+    `${meldingFormBaseUrl}/locatie?id=${id}&token=${token}&created_at=${created_at}&public_id=${public_id}&source=back-office#top`,
   )
 }
