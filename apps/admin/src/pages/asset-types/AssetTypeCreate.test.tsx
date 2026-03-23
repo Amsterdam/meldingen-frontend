@@ -40,11 +40,11 @@ describe('AssetTypeCreate', () => {
     const baseUrlInput = screen.getByRole('textbox', {
       name: 'resources.asset-type.fields.arguments.base_url',
     })
-    const maxAssetsInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.max_assets' })
+    const maxAssetsInput = screen.getByRole('spinbutton', { name: 'resources.asset-type.fields.max_assets' })
 
     expect(nameInput).toBeInTheDocument()
     expect(baseUrlInput).toBeInTheDocument()
     expect(maxAssetsInput).toBeInTheDocument()
-    expect(maxAssetsInput).toHaveValue('3')
+    expect(maxAssetsInput).toHaveValue(3)
   })
 })

@@ -23,11 +23,11 @@ describe('AssetTypeEdit', () => {
     const baseUrlInput = await screen.findByRole('textbox', {
       name: 'resources.asset-type.fields.arguments.base_url',
     })
-    const maxAssetsInput = await screen.findByRole('textbox', { name: 'resources.asset-type.fields.max_assets' })
+    const maxAssetsInput = await screen.findByRole('spinbutton', { name: 'resources.asset-type.fields.max_assets' })
 
     expect(nameInput).toBeInTheDocument()
     expect(baseUrlInput).toBeInTheDocument()
     expect(maxAssetsInput).toBeInTheDocument()
-    expect(maxAssetsInput).toHaveValue('5')
+    expect(maxAssetsInput).toHaveValue(5)
   })
 })
