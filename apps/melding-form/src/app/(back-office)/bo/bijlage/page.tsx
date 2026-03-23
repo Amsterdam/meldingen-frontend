@@ -1,1 +1,1 @@
-export { default } from '../../(general)/bijlage/page'
+export { default } from 'apps/melding-form/src/app/(general)/bijlage/page'

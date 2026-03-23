@@ -38,9 +38,15 @@ export default async () => {
         {t('title')}
       </Heading>
       <MarkdownToHtml className="ams-mb-m">{description}</MarkdownToHtml>
-      <NextLink href={source === 'back-office' ? '/melden' : `/#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
-        <StandaloneLink href="dummy-href">{t('link')}</StandaloneLink>
-      </NextLink>
+      {source === 'back-office' ? (
+        <StandaloneLink href="/melden" target="_parent">
+          {t('link')}
+        </StandaloneLink>
+      ) : (
+        <NextLink href={`/#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
+          <StandaloneLink href="dummy-href">{t('link')}</StandaloneLink>
+        </NextLink>
+      )}
     </main>
   )
 }

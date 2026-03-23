@@ -1,1 +1,1 @@
-export { default } from '../../(general)/samenvatting/page'
+export { default } from 'apps/melding-form/src/app/(general)/samenvatting/page'

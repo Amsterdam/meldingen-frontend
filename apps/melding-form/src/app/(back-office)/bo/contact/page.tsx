@@ -1,1 +1,1 @@
-export { default } from '../../(general)/contact/page'
+export { default } from 'apps/melding-form/src/app/(general)/contact/page'

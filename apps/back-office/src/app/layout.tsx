@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react'
 
-import { HouseFillIcon } from '@amsterdam/design-system-react-icons'
+import { HouseFillIcon, PlusCircleFillIcon } from '@amsterdam/design-system-react-icons'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
 import NextLink from 'next/link'
@@ -36,12 +36,22 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
                     {t('menu.overview')}
                   </Menu.Link>
                 </NextLink>
+                <NextLink href="/melden" legacyBehavior passHref>
+                  <Menu.Link href="/melden" icon={<PlusCircleFillIcon />}>
+                    Melden
+                  </Menu.Link>
+                </NextLink>
               </Menu>
             </Header>
             <Menu className="ams-page__area--menu" inWideWindow>
               <NextLink href="/" legacyBehavior passHref>
                 <Menu.Link href="/" icon={<HouseFillIcon />}>
                   {t('menu.overview')}
+                </Menu.Link>
+              </NextLink>
+              <NextLink href="/melden" legacyBehavior passHref>
+                <Menu.Link href="/melden" icon={<PlusCircleFillIcon />}>
+                  Melden
                 </Menu.Link>
               </NextLink>
             </Menu>
