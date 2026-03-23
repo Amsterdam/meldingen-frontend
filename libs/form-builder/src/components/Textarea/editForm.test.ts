@@ -1,3 +1,4 @@
+import { Context } from '../types'
 import { convertEmptyStringToNull, editForm, getMaxCharCountValue } from './editForm'
 
 describe('getMaxCharCountValue', () => {
@@ -24,23 +25,19 @@ describe('getMaxCharCountValue', () => {
 
 describe('convertEmptyStringToNull', () => {
   it('sets maxCharCount to null if it is an empty string', () => {
-    const context = {
-      data: { maxCharCount: '' as const },
-    }
+    const context = { data: { maxCharCount: '' } } as Context
 
     const result = convertEmptyStringToNull(context)
     expect(result).toBe(true)
-    expect(context.data.maxCharCount).toBeNull()
+    expect(context.data!.maxCharCount).toBeNull()
   })
 
   it('does not change maxCharCount if it has a valid number', () => {
-    const context = {
-      data: { maxCharCount: 200 },
-    }
+    const context = { data: { maxCharCount: 200 } } as Context
 
     const result = convertEmptyStringToNull(context)
     expect(result).toBe(true)
-    expect(context.data.maxCharCount).toBe(200)
+    expect(context.data!.maxCharCount).toBe(200)
   })
 })
 
