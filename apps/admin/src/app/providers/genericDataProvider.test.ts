@@ -31,6 +31,50 @@ describe('genericDataProvider', () => {
     expect(result).toEqual({ data: items, total: 200 })
   })
 
+  it('falls back to limit=50 and offset=0 when pagination is missing', async () => {
+    const items = [{ id: 1 }, { id: 2 }]
+    const httpClient = vi.fn().mockResolvedValue({
+      headers: new Headers({ 'Content-Range': 'items 0-1/2' }),
+      json: items,
+    })
+
+    const client = genericDataProvider('http://localhost:3000', httpClient)
+
+    await client.getList('assets', {
+      filter: {},
+      sort: { field: 'id', order: 'ASC' },
+    })
+
+    const calledUrl = httpClient.mock.calls[0][0] as string
+    const url = new URL(calledUrl)
+
+    expect(url.searchParams.get('limit')).toBe('50')
+    expect(url.searchParams.get('offset')).toBe('0')
+  })
+
+  it('falls back to limit=50 when pagination.perPage is missing', async () => {
+    type Params = Parameters<ReturnType<typeof genericDataProvider>['getList']>[1]
+
+    const items = [{ id: 1 }]
+    const httpClient = vi.fn().mockResolvedValue({
+      headers: new Headers({ 'Content-Range': 'items 0-0/1' }),
+      json: items,
+    })
+
+    const client = genericDataProvider('http://localhost:3000', httpClient)
+
+    await client.getList('assets', {
+      filter: {},
+      pagination: { page: 1 } as Params['pagination'],
+      sort: { field: 'id', order: 'ASC' },
+    })
+
+    const calledUrl = httpClient.mock.calls[0][0] as string
+    const url = new URL(calledUrl)
+
+    expect(url.searchParams.get('limit')).toBe('50')
+  })
+
   it('prefers meta.limit over pagination.perPage when both are provided', async () => {
     const items = [{ id: 1 }]
     const httpClient = vi.fn().mockResolvedValue({
@@ -51,25 +95,6 @@ describe('genericDataProvider', () => {
     const url = new URL(calledUrl)
 
     expect(url.searchParams.get('limit')).toBe('5')
-  })
-
-  it('uses Content-Range header to compute total when available', async () => {
-    const items = [{ id: 1 }, { id: 2 }]
-    const httpClient = vi.fn().mockResolvedValue({
-      headers: new Headers({ 'Content-Range': 'items 0-1/123' }),
-      json: items,
-    })
-
-    const client = genericDataProvider('http://localhost:3000', httpClient)
-
-    const result = await client.getList('assets', {
-      filter: {},
-      meta: { limit: 10 },
-      pagination: { page: 1, perPage: 25 },
-      sort: { field: 'id', order: 'ASC' },
-    })
-
-    expect(result).toEqual({ data: items, total: 123 })
   })
 
   it('throws when Content-Range is missing', async () => {

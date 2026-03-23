@@ -20,7 +20,6 @@ export const genericDataProvider = (apiUrl: string, httpClient: HttpClient): Dat
       filter: JSON.stringify(params.filter),
       limit,
       offset: JSON.stringify(params.pagination ? (params.pagination.page - 1) * params.pagination.perPage : 0),
-      pagination: JSON.stringify({ page: params.pagination?.page, perPage: params.pagination?.perPage }),
       sort: JSON.stringify([params.sort?.field, params.sort?.order]),
     }
 
