@@ -2,6 +2,7 @@ import {
   DeleteWithConfirmButton,
   Edit,
   minValue,
+  NumberInput,
   required,
   SaveButton,
   SimpleForm,
@@ -24,7 +25,7 @@ export const AssetTypeEdit = ({ id }: { id?: number }) => (
     >
       <TextInput source="name" validate={required()} />
       <TextInput source="arguments.base_url" validate={required()} />
-      <TextInput inputMode="numeric" source="max_assets" validate={[required(), minValue(1)]} />
+      <NumberInput source="max_assets" validate={[required(), minValue(1)]} />
     </SimpleForm>
   </Edit>
 )
