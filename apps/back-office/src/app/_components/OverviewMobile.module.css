@@ -1,7 +1,7 @@
 .list {
   display: grid;
   margin-block-end: var(--ams-space-l);
-  row-gap: var(--ams-space-m);
+  row-gap: var(--ams-space-l);
 }
 
 .card {
@@ -12,6 +12,7 @@
 
 .descriptionList {
   grid-template-columns: auto 1fr;
+  row-gap: var(--ams-space-m);
 }
 
 .descriptionList dd {
