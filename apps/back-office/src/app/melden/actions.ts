@@ -72,8 +72,6 @@ export const postPrimaryForm = async (
   cookieStore.set('meldingen_token', token, { maxAge: oneDay })
   cookieStore.set('meldingen_source', 'back-office', { maxAge: oneDay })
 
-  console.log('pre classification', { classification })
-
   if (classification) {
     // Get entire form, in order to redirect to its first panel
     const { data, error } = await getFormClassificationByClassificationId({
@@ -100,8 +98,6 @@ export const postPrimaryForm = async (
     }
 
     const nextFormFirstKey = data?.components[0].key
-
-    console.log('has classication, redirecting', classification.id, nextFormFirstKey)
 
     return { redirectTo: `/melden/shell?start=/aanvullende-vragen/${classification.id}/${nextFormFirstKey}` }
   }
