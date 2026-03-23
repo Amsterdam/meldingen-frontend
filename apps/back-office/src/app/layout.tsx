@@ -1,9 +1,9 @@
 import type { PropsWithChildren } from 'react'
 
-import { HouseFillIcon } from '@amsterdam/design-system-react-icons'
+// import { HouseFillIcon } from '@amsterdam/design-system-react-icons'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
-import NextLink from 'next/link'
+// import NextLink from 'next/link'
 
 import { Menu, Page } from '@meldingen/ui'
 
@@ -22,7 +22,7 @@ export const generateMetadata = async () => {
 const RootLayout = async ({ children }: PropsWithChildren) => {
   const locale = await getLocale()
 
-  const t = await getTranslations('shared')
+  // const t = await getTranslations('shared')
 
   return (
     <html dir="ltr" lang={locale}>
@@ -31,19 +31,19 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
           <Page withMenu>
             <Header>
               <Menu>
-                <NextLink href="/" legacyBehavior passHref>
+                {/* <NextLink href="/" legacyBehavior passHref>
                   <Menu.Link href="/" icon={<HouseFillIcon />}>
                     {t('menu.overview')}
                   </Menu.Link>
-                </NextLink>
+                </NextLink> */}
               </Menu>
             </Header>
             <Menu className="ams-page__area--menu" inWideWindow>
-              <NextLink href="/" legacyBehavior passHref>
+              {/* <NextLink href="/" legacyBehavior passHref>
                 <Menu.Link href="/" icon={<HouseFillIcon />}>
                   {t('menu.overview')}
                 </Menu.Link>
-              </NextLink>
+              </NextLink> */}
             </Menu>
             {children}
           </Page>
