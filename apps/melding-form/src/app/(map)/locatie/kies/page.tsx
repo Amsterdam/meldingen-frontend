@@ -86,7 +86,6 @@ export default async () => {
   // We check for the existence of these cookies in our proxy, so non-null assertion is safe here.
   const meldingId = cookieStore.get(COOKIES.ID)!.value
   const token = cookieStore.get(COOKIES.TOKEN)!.value
-  const maxAssets = cookieStore.get(COOKIES.MAX_ASSETS)?.value
 
   const { data, error } = await getMeldingByMeldingIdMelder({
     path: {
@@ -112,7 +111,7 @@ export default async () => {
     <SelectLocation
       classification={data?.classification?.name}
       coordinates={coordinates}
-      maxAssets={maxAssets ? parseInt(maxAssets, 10) : MAX_ASSETS_FALLBACK}
+      maxAssets={data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK}
       selectedAssets={selectedAssets}
     />
   )

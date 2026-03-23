@@ -3,11 +3,10 @@ import { http, HttpResponse } from 'msw'
 
 import Page, { generateMetadata } from './page'
 import { SelectLocation } from './SelectLocation'
-import { COOKIES } from 'apps/melding-form/src/constants'
 import { containerAssets, melding } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
-import { mockCookies, mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -65,13 +64,7 @@ describe('Page', () => {
     )
   })
 
-  it('passes maxAssets from cookie to SelectLocation when it exists', async () => {
-    mockCookies({
-      [COOKIES.ID]: '123',
-      [COOKIES.MAX_ASSETS]: '5',
-      [COOKIES.TOKEN]: 'test-token',
-    })
-
+  it('passes maxAssets from melding classification.asset_type.max_assets when it exists', async () => {
     const PageComponent = await Page()
     render(PageComponent)
 
@@ -83,11 +76,16 @@ describe('Page', () => {
     )
   })
 
-  it('falls back to maxAssets=3 when cookie does not exist', async () => {
-    mockCookies({
-      [COOKIES.ID]: '123',
-      [COOKIES.TOKEN]: 'test-token',
-    })
+  it('falls back to maxAssets=3 when the API does not provide it', async () => {
+    const meldingWithAssetType = {
+      ...melding,
+      classification: {
+        ...melding.classification,
+        asset_type: { max_assets: undefined },
+      },
+    }
+
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(meldingWithAssetType)))
 
     const PageComponent = await Page()
     render(PageComponent)

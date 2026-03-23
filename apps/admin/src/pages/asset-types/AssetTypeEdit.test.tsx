@@ -7,7 +7,7 @@ describe('AssetTypeEdit', () => {
   it('should render all inputs', async () => {
     const dataProvider = testDataProvider({
       getOne: vi.fn().mockResolvedValueOnce({
-        data: { arguments: { base_url: 'https://example.com/wfs' }, id: 1, max_assets: 5, name: 'foo' },
+        data: { id: 1, max_assets: 5, name: 'foo' },
       }),
     })
 
