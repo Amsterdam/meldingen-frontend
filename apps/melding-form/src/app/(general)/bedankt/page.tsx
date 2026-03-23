@@ -31,13 +31,17 @@ export default async () => {
 
   const description = t('description', { date, publicId, time })
 
+  const backOfficeBaseUrl = process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL
+  const source = cookieStore.get(COOKIES.SOURCE)?.value
+  const returnLink = source === 'back-office' ? `${backOfficeBaseUrl}/melden` : `/#${TOP_ANCHOR_ID}`
+
   return (
     <main>
       <Heading className="ams-mb-m" level={1}>
         {t('title')}
       </Heading>
       <MarkdownToHtml className="ams-mb-m">{description}</MarkdownToHtml>
-      <NextLink href={`/#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
+      <NextLink href={returnLink} legacyBehavior passHref>
         <StandaloneLink href="dummy-href">{t('link')}</StandaloneLink>
       </NextLink>
     </main>

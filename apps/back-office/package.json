@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@meldingen/api-client": "workspace:*",
+    "@meldingen/markdown-to-html": "workspace:*",
     "@meldingen/ui": "workspace:*",
     "next": "16.2.0",
     "next-auth": "4.24.13",

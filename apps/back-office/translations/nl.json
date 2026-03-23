@@ -69,8 +69,16 @@
       }
     }
   },
+  "primary-form": {
+    "metadata": {
+      "title": "Melding doorgeven - Gemeente Amsterdam"
+    },
+    "title": "Melden",
+    "submit-button": "Volgende vraag"
+  },
   "shared": {
     "menu": {
+      "primary-form": "Melden",
       "overview": "Overzicht"
     },
     "state": {
