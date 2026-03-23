@@ -3,7 +3,6 @@ export const COOKIES = {
   CREATED_AT: 'meldingen_created_at',
   ID: 'meldingen_id',
   LAST_PANEL_PATH: 'meldingen_last_panel_path',
-  MAX_ASSETS: 'meldingen_max_assets',
   PUBLIC_ID: 'meldingen_public_id',
   TOKEN: 'meldingen_token',
 } as const
