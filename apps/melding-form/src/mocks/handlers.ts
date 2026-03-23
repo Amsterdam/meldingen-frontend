@@ -33,7 +33,7 @@ export const handlers = [
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS_MELDER, () => HttpResponse.json(containerAssetIds)),
 
-  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () =>
+  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_MELDER, () =>
     HttpResponse.json({
       classification: { id: 2, name: 'Test classification' },
       created_at: '2025-05-26T11:56:34.081Z',

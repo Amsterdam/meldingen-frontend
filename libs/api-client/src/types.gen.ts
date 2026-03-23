@@ -229,6 +229,10 @@ export type ClassificationCreateInput = {
      */
     name: string;
     /**
+     * Instructions
+     */
+    instructions?: string | null;
+    /**
      * Asset Type
      */
     asset_type?: number | null;
@@ -255,6 +259,10 @@ export type ClassificationOutput = {
      */
     name: string;
     /**
+     * Instructions
+     */
+    instructions?: string | null;
+    /**
      * Form
      */
     form?: number | null;
@@ -272,6 +280,10 @@ export type ClassificationUpdateInput = {
      * Name
      */
     name?: string | null;
+    /**
+     * Instructions
+     */
+    instructions?: string | null;
     /**
      * Asset Type
      */
@@ -1723,10 +1735,6 @@ export type MeldingInput = {
      * Text
      */
     text: string;
-    /**
-     * Urgency
-     */
-    urgency?: -1 | 0 | 1;
 };
 
 /**
@@ -1791,6 +1799,16 @@ export type MeldingOutput = {
      * Phone
      */
     phone?: string | null;
+};
+
+/**
+ * MeldingUpdateInput
+ */
+export type MeldingUpdateInput = {
+    /**
+     * Urgency
+     */
+    urgency: -1 | 0 | 1;
 };
 
 /**
@@ -2253,6 +2271,10 @@ export type SimpleClassificationOutput = {
      * Name
      */
     name: string;
+    /**
+     * Instructions
+     */
+    instructions?: string | null;
     asset_type?: AssetTypeOutput | null;
 };
 
@@ -3549,7 +3571,7 @@ export type GetMeldingByMeldingIdResponses = {
 export type GetMeldingByMeldingIdResponse = GetMeldingByMeldingIdResponses[keyof GetMeldingByMeldingIdResponses];
 
 export type PatchMeldingByMeldingIdData = {
-    body: MeldingInput;
+    body: MeldingUpdateInput;
     path: {
         /**
          * Melding Id
@@ -3558,14 +3580,7 @@ export type PatchMeldingByMeldingIdData = {
          */
         melding_id: number;
     };
-    query: {
-        /**
-         * Token
-         *
-         * The token of the melding.
-         */
-        token: string;
-    };
+    query?: never;
     url: '/melding/{melding_id}';
 };
 
@@ -3604,7 +3619,7 @@ export type PatchMeldingByMeldingIdResponses = {
     /**
      * Successful Response
      */
-    200: MeldingUpdateOutput;
+    200: MeldingOutput;
 };
 
 export type PatchMeldingByMeldingIdResponse = PatchMeldingByMeldingIdResponses[keyof PatchMeldingByMeldingIdResponses];
@@ -3669,6 +3684,67 @@ export type GetMeldingByMeldingIdMelderResponses = {
 };
 
 export type GetMeldingByMeldingIdMelderResponse = GetMeldingByMeldingIdMelderResponses[keyof GetMeldingByMeldingIdMelderResponses];
+
+export type PatchMeldingByMeldingIdMelderData = {
+    body: MeldingInput;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query: {
+        /**
+         * Token
+         *
+         * The token of the melding.
+         */
+        token: string;
+    };
+    url: '/melding/{melding_id}/melder';
+};
+
+export type PatchMeldingByMeldingIdMelderErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type PatchMeldingByMeldingIdMelderError = PatchMeldingByMeldingIdMelderErrors[keyof PatchMeldingByMeldingIdMelderErrors];
+
+export type PatchMeldingByMeldingIdMelderResponses = {
+    /**
+     * Successful Response
+     */
+    200: MeldingUpdateOutput;
+};
+
+export type PatchMeldingByMeldingIdMelderResponse = PatchMeldingByMeldingIdMelderResponses[keyof PatchMeldingByMeldingIdMelderResponses];
 
 export type PutMeldingByMeldingIdAnswerQuestionsData = {
     body?: never;
