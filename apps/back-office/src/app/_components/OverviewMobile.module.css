@@ -10,6 +10,15 @@
   padding-inline: var(--ams-space-m);
 }
 
+.descriptionList {
+  grid-template-columns: auto 1fr;
+}
+
+.descriptionList :global(dt),
+.descriptionList :global(dd) {
+  padding-inline-start: 0;
+}
+
 @media screen and (min-width: 72.5rem) {
   .list {
     display: none;
