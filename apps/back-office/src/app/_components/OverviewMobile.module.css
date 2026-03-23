@@ -14,8 +14,7 @@
   grid-template-columns: auto 1fr;
 }
 
-.descriptionList :global(dt),
-.descriptionList :global(dd) {
+.descriptionList dd {
   padding-inline-start: 0;
 }
 
