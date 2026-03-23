@@ -1,5 +1,15 @@
 import { getContextComponents } from '@formio/js/utils'
 
+import { Context } from './types'
+
+export const convertEmptyStringToNull = (context: Context) => {
+  const data = context?.data
+  if (data && data.conditional && data.conditional.show === '') {
+    data.conditional.show = null
+  }
+  return true
+}
+
 export const conditionalTab = {
   components: [
     {
@@ -14,6 +24,9 @@ export const conditionalTab = {
       key: 'conditional.show',
       label: 'This component should Display:',
       type: 'select',
+      // The back end expects a null value when conditional.show is not set, but the form builder sometimes sets it to an empty string.
+      // Validate runs last on save, so we need to set it to null here.
+      validate: { custom: convertEmptyStringToNull },
       widget: 'html5',
     },
     {

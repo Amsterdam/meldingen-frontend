@@ -12,12 +12,12 @@ import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
 import type { FormState } from 'apps/melding-form/src/types'
 
-import { BackLink } from '../_components/BackLink/BackLink'
-import { FormHeader } from '../_components/FormHeader/FormHeader'
-import { SystemErrorAlert } from '../_components/SystemErrorAlert/SystemErrorAlert'
+import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
+import { BackLink } from '../../_components'
 import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
 import { postLocationForm } from './actions'
+import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 import styles from './Location.module.css'
 
@@ -54,7 +54,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
   // Update document title when there are system or validation errors
   const documentTitle = getDocumentTitleOnError({
     hasSystemError: Boolean(systemError),
-    originalDocTitle: t('metadata.title'),
+    originalDocTitle: `${t('question')} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors?.length,
   })
@@ -80,7 +80,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-s" href={prevPage}>
+      <BackLink className="ams-mb-l" href={prevPage}>
         {t('back-link')}
       </BackLink>
       <main>
@@ -98,9 +98,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
           />
         )}
 
-        <FormHeader step={t('step')} title={t('title')} />
-
-        <Field className="ams-mb-m" invalid={Boolean(validationErrors)}>
+        <Field className="ams-mb-xl" invalid={Boolean(validationErrors)}>
           <Heading level={1} size="level-3">
             {t('question')}
           </Heading>
@@ -112,7 +110,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
           {validationErrors &&
             validationErrors.map(({ key, message }) => <ErrorMessage key={key}>{message}</ErrorMessage>)}
 
-          <NextLink href="/locatie/kies" legacyBehavior passHref>
+          <NextLink href={`/locatie/kies#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
             <StandaloneLink id="location-link">
               {address ? t('link.with-location') : t('link.without-location')}
             </StandaloneLink>

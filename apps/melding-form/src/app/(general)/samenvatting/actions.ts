@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdSubmitMelder } from '@meldingen/api-client'
 
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 export const postSummaryForm = async () => {
   const cookieStore = await cookies()
@@ -13,7 +13,7 @@ export const postSummaryForm = async () => {
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
-  if (!meldingId || !token) return redirect('/cookie-storing')
+  if (!meldingId || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
 
   // Set melding state to 'submitted'
   const { error } = await putMeldingByMeldingIdSubmitMelder({
@@ -29,5 +29,5 @@ export const postSummaryForm = async () => {
     cookieStore.delete(cookie)
   })
 
-  return redirect('/bedankt')
+  return redirect(`/bedankt#${TOP_ANCHOR_ID}`)
 }

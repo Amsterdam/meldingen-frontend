@@ -13,9 +13,10 @@ import { COOKIES } from 'apps/melding-form/src/constants'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('select-location')
+  const tShared = await getTranslations('shared')
 
   return {
-    title: t('metadata.title'),
+    title: `${t('title')} - ${tShared('organisation-name')}`,
   }
 }
 

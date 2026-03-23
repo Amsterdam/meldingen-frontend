@@ -1,8 +1,6 @@
 export { FieldSet } from './FieldSet/FieldSet'
 export { FileList } from './FileList/FileList'
 export { FileUpload } from './FileUpload/FileUpload'
-export { Footer } from './Footer/Footer'
-export { Header } from './Header'
 export { InvalidFormAlert } from './InvalidFormAlert/InvalidFormAlert'
 export { Link } from './Link/Link'
 export { ListBox } from './ListBox/ListBox'

@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { postContactForm } from './actions'
+import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
@@ -27,7 +28,7 @@ describe('postContactForm', () => {
 
     await postContactForm(undefined, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/samenvatting')
+    expect(redirect).toHaveBeenCalledWith(`/samenvatting#${TOP_ANCHOR_ID}`)
   })
 
   it('should redirect to /samenvatting page when email and phone are left empty', async () => {
@@ -35,7 +36,7 @@ describe('postContactForm', () => {
 
     await postContactForm(undefined, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/samenvatting')
+    expect(redirect).toHaveBeenCalledWith(`/samenvatting#${TOP_ANCHOR_ID}`)
   })
 
   it('should redirect to /cookie-storing when there is no meldingId or token', async () => {
@@ -50,7 +51,7 @@ describe('postContactForm', () => {
 
     await postContactForm(undefined, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/cookie-storing')
+    expect(redirect).toHaveBeenCalledWith(`/cookie-storing#${TOP_ANCHOR_ID}`)
   })
 
   it('returns a validation error if email is invalid', async () => {
