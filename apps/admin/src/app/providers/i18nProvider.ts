@@ -221,6 +221,7 @@ const nl: TranslationMessages = {
     'asset-type': {
       fields: {
         'arguments.base_url': 'WFS url',
+        max_assets: 'Maximaal aantal te selecteren',
         name: 'Naam',
       },
       name: 'Asset types',

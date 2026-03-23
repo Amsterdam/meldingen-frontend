@@ -66,6 +66,7 @@ describe('postSummaryForm', () => {
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.TOKEN)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.ID)
+    expect(deleteMock).toHaveBeenCalledWith(COOKIES.MAX_ASSETS)
     expect(redirect).toHaveBeenCalledWith(`/bedankt#${TOP_ANCHOR_ID}`)
   })
 })

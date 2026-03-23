@@ -26,6 +26,8 @@ const getFilter = (id: string) => `
   </Filter>
 `
 
+const MAX_ASSETS_FALLBACK = 3
+
 const getAssetsFromMelding = async (meldingId: string, token: string) => {
   // Get existing assets for this melding
   const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
@@ -84,6 +86,7 @@ export default async () => {
   // We check for the existence of these cookies in our proxy, so non-null assertion is safe here.
   const meldingId = cookieStore.get(COOKIES.ID)!.value
   const token = cookieStore.get(COOKIES.TOKEN)!.value
+  const maxAssets = cookieStore.get(COOKIES.MAX_ASSETS)?.value
 
   const { data, error } = await getMeldingByMeldingIdMelder({
     path: {
@@ -109,6 +112,7 @@ export default async () => {
     <SelectLocation
       classification={data?.classification?.name}
       coordinates={coordinates}
+      maxAssets={maxAssets ? parseInt(maxAssets, 10) : MAX_ASSETS_FALLBACK}
       selectedAssets={selectedAssets}
     />
   )

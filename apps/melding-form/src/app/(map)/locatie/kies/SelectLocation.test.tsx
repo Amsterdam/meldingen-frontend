@@ -32,7 +32,7 @@ const setInternalState = <T,>(setter: (value: T) => void, value: T) => {
 
 describe('SelectLocation', () => {
   it('renders', () => {
-    const { container } = render(<SelectLocation selectedAssets={[]} />)
+    const { container } = render(<SelectLocation maxAssets={3} selectedAssets={[]} />)
 
     const sideBarTop = container.querySelectorAll('[class*="_container"]')[0]
     const sideBarBottom = container.querySelector('[class*="_hide"]')
@@ -51,7 +51,7 @@ describe('SelectLocation', () => {
     )
     ;(useIsAfterBreakpoint as Mock).mockImplementationOnce(() => true)
 
-    const { container } = render(<SelectLocation selectedAssets={[]} />)
+    const { container } = render(<SelectLocation maxAssets={3} selectedAssets={[]} />)
 
     const SideBarBottom = container.querySelector('[class*="_hide"]')
 
@@ -73,7 +73,7 @@ describe('SelectLocation', () => {
       setInternalState(setNotificationType, 'too-many-assets'),
     )
 
-    render(<SelectLocation selectedAssets={[]} />)
+    render(<SelectLocation maxAssets={3} selectedAssets={[]} />)
 
     const notificationTitle = screen.getByText('too-many-assets.title')
 
@@ -89,7 +89,7 @@ describe('SelectLocation', () => {
 
 describe('Asset list toggle button', () => {
   it('renders nothing if assetList and selectedAssets are empty', () => {
-    render(<SelectLocation selectedAssets={[]} />)
+    render(<SelectLocation maxAssets={3} selectedAssets={[]} />)
 
     const toggleButton = screen.queryByRole('button', { name: /toggle-button./ })
 
@@ -101,7 +101,7 @@ describe('Asset list toggle button', () => {
       setInternalState(setSelectedAssets, [{ id: '1' }]),
     )
 
-    render(<SelectLocation selectedAssets={[]} />)
+    render(<SelectLocation maxAssets={3} selectedAssets={[]} />)
 
     const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
 
@@ -115,7 +115,7 @@ describe('Asset list toggle button', () => {
       setInternalState(setSelectedAssets, [{ id: '1' }]),
     )
 
-    render(<SelectLocation selectedAssets={[]} />)
+    render(<SelectLocation maxAssets={3} selectedAssets={[]} />)
 
     const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
 
@@ -127,7 +127,7 @@ describe('Asset list toggle button', () => {
   })
 
   it('shows prefilled selected assets', () => {
-    render(<SelectLocation selectedAssets={containerAssets} />)
+    render(<SelectLocation maxAssets={3} selectedAssets={containerAssets} />)
 
     expect(AssetList).toHaveBeenCalledWith(
       expect.objectContaining({
