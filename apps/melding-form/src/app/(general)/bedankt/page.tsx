@@ -25,6 +25,7 @@ export default async () => {
 
   const publicId = cookieStore.get(COOKIES.PUBLIC_ID)?.value
   const createdAt = cookieStore.get(COOKIES.CREATED_AT)?.value
+  const source = cookieStore.get(COOKIES.SOURCE)?.value
 
   const date = createdAt ? new Date(createdAt).toLocaleDateString('nl-NL') : undefined
   const time = createdAt ? new Date(createdAt).toLocaleTimeString('nl-NL', { timeStyle: 'short' }) : undefined
@@ -37,7 +38,7 @@ export default async () => {
         {t('title')}
       </Heading>
       <MarkdownToHtml className="ams-mb-m">{description}</MarkdownToHtml>
-      <NextLink href={`/#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
+      <NextLink href={source === 'back-office' ? '/melden' : `/#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
         <StandaloneLink href="dummy-href">{t('link')}</StandaloneLink>
       </NextLink>
     </main>

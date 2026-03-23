@@ -22,5 +22,5 @@ export const proxy = (request: NextRequest) => {
 }
 
 export const config = {
-  matcher: ['/aanvullende-vragen/:path*', '/locatie/:path*', '/bijlage', '/contact', '/samenvatting'],
+  matcher: ['/aanvullende-vragen/:path*', '/locatie/:path*', '/bijlage', '/contact', '/samenvatting', '/bo/:path*'],
 }
