@@ -26,6 +26,8 @@ const getFilter = (id: string) => `
   </Filter>
 `
 
+const MAX_ASSETS_FALLBACK = 3
+
 const getAssetsFromMelding = async (meldingId: string, token: string) => {
   // Get existing assets for this melding
   const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
@@ -109,6 +111,7 @@ export default async () => {
     <SelectLocation
       classification={data?.classification?.name}
       coordinates={coordinates}
+      maxAssets={data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK}
       selectedAssets={selectedAssets}
     />
   )

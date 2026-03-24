@@ -177,6 +177,15 @@ export const PDOKSuggest = {
 export const melding: MeldingOutput = {
   city: 'Amsterdam',
   classification: {
+    asset_type: {
+      arguments: { base_url: 'https://api.data.amsterdam.nl/v1/wfs/huishoudelijkafval' },
+      class_name: 'Container',
+      created_at: '2025-07-15T09:43:46Z',
+      id: 1,
+      max_assets: 5,
+      name: 'container',
+      updated_at: '2025-07-15T09:43:46Z',
+    },
     created_at: '2025-07-15T09:43:46Z',
     id: 2,
     name: 'container',

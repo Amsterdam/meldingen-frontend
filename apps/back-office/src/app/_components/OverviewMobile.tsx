@@ -20,7 +20,7 @@ export const OverviewMobile = ({ meldingen }: Props) => {
     <UnorderedList className={styles.list} markers={false}>
       {meldingen.map((melding) => (
         <UnorderedList.Item className={styles.card} key={melding.public_id}>
-          <DescriptionList>
+          <DescriptionList className={styles.descriptionList}>
             {OVERVIEW_FIELDS.map((field) => (
               <Fragment key={field.key}>
                 <DescriptionList.Term>{getOverviewFieldLabel(field, t)}</DescriptionList.Term>
