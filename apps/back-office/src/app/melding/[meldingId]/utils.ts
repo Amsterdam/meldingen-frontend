@@ -56,7 +56,7 @@ export const getContactData = (data: MeldingOutput, t: (key: string) => string) 
 }
 
 export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) => {
-  const { classification, created_at, id, state } = data
+  const { classification, created_at, id, state, urgency } = data
 
   return [
     {
@@ -77,6 +77,15 @@ export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) 
         label: t('detail.melding-data.state.link'),
       },
       term: t('detail.melding-data.state.term'),
+    },
+    {
+      description: t(`shared.urgency.[${urgency}]`),
+      key: 'urgency',
+      link: {
+        href: `/melding/${id}/wijzig-urgentie`,
+        label: t('detail.melding-data.urgency.link'),
+      },
+      term: t('detail.melding-data.urgency.term'),
     },
   ]
 }
