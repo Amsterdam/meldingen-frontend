@@ -64,6 +64,40 @@ describe('Page', () => {
     )
   })
 
+  it('passes maxAssets from melding classification.asset_type.max_assets when it exists', async () => {
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        maxAssets: 5,
+      }),
+      undefined,
+    )
+  })
+
+  it('falls back to maxAssets=3 when the API does not provide it', async () => {
+    const meldingWithAssetType = {
+      ...melding,
+      classification: {
+        ...melding.classification,
+        asset_type: { max_assets: undefined },
+      },
+    }
+
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(meldingWithAssetType)))
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        maxAssets: 3,
+      }),
+      undefined,
+    )
+  })
+
   it('fetches assetIds from melding and passes assets to SelectLocation', async () => {
     let callCount = 0
     server.use(
