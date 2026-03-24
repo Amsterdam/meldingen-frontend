@@ -65,7 +65,6 @@
     "notifications": {
       "too-many-assets": {
         "close-button": "Sluiten",
-        "titleq": "U kunt maximaal {maxAssets} containers kiezen",
         "title": "U kunt maximaal {maxAssets, plural, =1 {{maxAssets} container} other {{maxAssets} containers}} kiezen"
       },
       "location-service-disabled": {
