@@ -1,6 +1,6 @@
+import type { IconProps } from '@amsterdam/design-system-react'
 import type { PropsWithChildren } from 'react'
 
-import { IconProps } from '@amsterdam/design-system-react'
 import { HouseFillIcon } from '@amsterdam/design-system-react-icons'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
