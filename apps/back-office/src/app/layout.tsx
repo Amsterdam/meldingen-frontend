@@ -8,8 +8,9 @@ import NextLink from 'next/link'
 
 import { Icon, Menu, Page } from '@meldingen/ui'
 
-import './global.css'
 import { Header } from './_components/Header'
+
+import './global.css'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('metadata')
