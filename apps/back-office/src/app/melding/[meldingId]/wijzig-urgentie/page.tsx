@@ -12,5 +12,5 @@ export default async ({ params }: Params) => {
 
   if (error) throw new Error('Failed to fetch melding data.')
 
-  return <ChangeUrgency currentUrgency={data.urgency ?? 0} meldingId={meldingId} publicId={data.public_id} />
+  return <ChangeUrgency currentUrgency={data.urgency} meldingId={meldingId} publicId={data.public_id} />
 }
