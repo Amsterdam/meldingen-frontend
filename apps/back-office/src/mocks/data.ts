@@ -47,6 +47,7 @@ export const meldingen: MeldingOutput[] = [
     street: null,
     text: 'Alles',
     updated_at: '2025-02-18T10:34:40.730569',
+    urgency: 0,
   },
   {
     city: 'Amsterdam',
@@ -64,6 +65,7 @@ export const meldingen: MeldingOutput[] = [
     street: null,
     text: 'Alles',
     updated_at: '2025-02-18T10:34:40.730569',
+    urgency: 0,
   },
 ]
 
