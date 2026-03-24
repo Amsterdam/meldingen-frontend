@@ -81,12 +81,6 @@ describe('overviewFields utils', () => {
       expect(result).toBe(expected)
     })
 
-    it('falls back to normal urgency when urgency is missing', () => {
-      const result = formatValue({ ...melding, urgency: undefined }, 'urgency', t)
-
-      expect(result).toBe('shared.urgency.[0]')
-    })
-
     it('returns an empty string for unknown keys', () => {
       const result = formatValue(melding, 'unknown_key' as OverviewField['key'], t)
 

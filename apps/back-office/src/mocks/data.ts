@@ -26,6 +26,7 @@ export const melding: MeldingOutput = {
   street: 'Herengracht',
   text: 'Alles',
   updated_at: '2025-02-18T10:34:40.730569',
+  urgency: 0,
 }
 
 export const meldingen: MeldingOutput[] = [
