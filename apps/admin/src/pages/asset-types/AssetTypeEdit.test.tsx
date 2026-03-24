@@ -6,7 +6,9 @@ import { AssetTypeEdit } from './AssetTypeEdit'
 describe('AssetTypeEdit', () => {
   it('should render all inputs', async () => {
     const dataProvider = testDataProvider({
-      getOne: vi.fn().mockResolvedValueOnce({ data: { id: 1, name: 'foo' } }),
+      getOne: vi.fn().mockResolvedValueOnce({
+        data: { id: 1, max_assets: 5, name: 'foo' },
+      }),
     })
 
     render(
@@ -21,8 +23,11 @@ describe('AssetTypeEdit', () => {
     const baseUrlInput = await screen.findByRole('textbox', {
       name: 'resources.asset-type.fields.arguments.base_url',
     })
+    const maxAssetsInput = await screen.findByRole('spinbutton', { name: 'resources.asset-type.fields.max_assets' })
 
     expect(nameInput).toBeInTheDocument()
     expect(baseUrlInput).toBeInTheDocument()
+    expect(maxAssetsInput).toBeInTheDocument()
+    expect(maxAssetsInput).toHaveValue(5)
   })
 })

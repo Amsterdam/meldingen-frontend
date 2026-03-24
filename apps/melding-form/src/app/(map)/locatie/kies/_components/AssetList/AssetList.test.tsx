@@ -9,6 +9,7 @@ import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 const defaultProps: Props = {
   assetList: containerAssets,
+  maxAssets: 5,
   selectedAssets: [],
   setCoordinates: vi.fn(),
   setNotificationType: vi.fn(),
