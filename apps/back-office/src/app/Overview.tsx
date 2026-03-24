@@ -1,11 +1,10 @@
 import { useTranslations } from 'next-intl'
-import NextLink from 'next/link'
-import { AnchorHTMLAttributes, PropsWithChildren } from 'react'
 
 import { Grid, Heading, Pagination } from '@meldingen/ui'
 
 import type { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
+import { LinkComponent } from './_components/LinkComponent'
 import { OverviewDesktop } from './_components/OverviewDesktop'
 import { OverviewMobile } from './_components/OverviewMobile'
 import { getShortNLAddress } from './utils'
@@ -27,10 +26,6 @@ const toMeldingenWithAddress = (meldingen: MeldingOutput[]): MeldingWithAddress[
     address: getShortNLAddress(melding),
   }))
 
-const LinkComponent = (props: PropsWithChildren<AnchorHTMLAttributes<HTMLAnchorElement>>) => (
-  <NextLink href="/" {...props} />
-)
-
 export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props) => {
   const t = useTranslations()
 
@@ -42,11 +37,8 @@ export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props)
         <Heading className="ams-mb-m" level={1}>
           {t('overview.title', { meldingenCount })}
         </Heading>
-
         <OverviewMobile meldingen={meldingenWithAddress} />
-
         <OverviewDesktop meldingen={meldingenWithAddress} />
-
         <Pagination
           className={styles.pagination}
           linkComponent={LinkComponent}

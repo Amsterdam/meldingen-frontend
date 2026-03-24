@@ -1,12 +1,9 @@
 'use client'
 
 import { PageHeader } from '@amsterdam/design-system-react'
-import NextLink from 'next/link'
-import { AnchorHTMLAttributes, PropsWithChildren } from 'react'
+import { PropsWithChildren } from 'react'
 
-const LinkComponent = (props: PropsWithChildren<AnchorHTMLAttributes<HTMLAnchorElement>>) => (
-  <NextLink href="/" {...props} />
-)
+import { LinkComponent } from './LinkComponent'
 
 export const Header = ({ children }: PropsWithChildren) => (
   <PageHeader
