@@ -5,9 +5,7 @@ import NextLink from 'next/link'
 
 import styles from './CancelLink.module.css'
 
-type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & {
-  href: string
-}
+type Props = AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }
 
 export const CancelLink = ({ className, href, ...restProps }: Props) => (
   /*

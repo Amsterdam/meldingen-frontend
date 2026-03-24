@@ -8,9 +8,7 @@ import { Icon } from '@meldingen/ui'
 
 import styles from './BackLink.module.css'
 
-type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & {
-  href: string
-}
+type Props = AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }
 
 export const BackLink = ({ children, className, href, ...restProps }: Props) => (
   /*
