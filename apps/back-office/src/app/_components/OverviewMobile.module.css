@@ -16,6 +16,11 @@
 }
 
 .descriptionList dd {
+  /*
+   * Override `break-word` from the Amsterdam Design System.
+   * `break-word` can cause overflow issues with long addresses and an increased base font size.
+   */
+  overflow-wrap: anywhere;
   padding-inline-start: 0;
 }
 
