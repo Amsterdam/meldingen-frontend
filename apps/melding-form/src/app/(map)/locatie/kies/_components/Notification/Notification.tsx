@@ -5,11 +5,9 @@ import { useTranslations } from 'next-intl'
 
 import type { NotificationType } from '../../SelectLocation'
 
-import { MAX_ASSETS } from '../../constants'
-
 import styles from './Notification.module.css'
 
-const getTexts = (t: (key: string, options?: { maxAssets: number }) => string) => ({
+const getTexts = (t: (key: string, options?: { maxAssets: number }) => string, maxAssets: number) => ({
   'location-service-disabled': {
     closeButton: t('location-service-disabled.close-button'),
     description: t('location-service-disabled.description'),
@@ -19,15 +17,15 @@ const getTexts = (t: (key: string, options?: { maxAssets: number }) => string) =
   'too-many-assets': {
     closeButton: t('too-many-assets.close-button'),
     severity: undefined,
-    title: t('too-many-assets.title', { maxAssets: MAX_ASSETS }),
+    title: t('too-many-assets.title', { maxAssets }),
   },
 })
 
-export type Props = Omit<AlertProps, 'heading' | 'headingLevel'> & { type: NotificationType }
+export type Props = Omit<AlertProps, 'heading' | 'headingLevel'> & { maxAssets: number; type: NotificationType }
 
-export const Notification = ({ type, ...restProps }: Props) => {
+export const Notification = ({ maxAssets, type, ...restProps }: Props) => {
   const t = useTranslations('select-location.notifications')
-  const texts = getTexts(t)
+  const texts = getTexts(t, maxAssets)
 
   return (
     <Alert

@@ -14,7 +14,6 @@ import type { Coordinates } from 'apps/melding-form/src/types'
 
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
-import { MAX_ASSETS } from './constants'
 
 import styles from './SelectLocation.module.css'
 
@@ -33,6 +32,7 @@ const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) =>
 type Props = {
   classification?: string
   coordinates?: Coordinates
+  maxAssets: number
   selectedAssets: Feature[]
 }
 
@@ -43,6 +43,7 @@ const initialState: { errorMessage?: string } = {}
 export const SelectLocation = ({
   classification,
   coordinates: coordinatesFromServer,
+  maxAssets,
   selectedAssets: selectedAssetsFromServer,
 }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
@@ -86,10 +87,11 @@ export const SelectLocation = ({
       </SideBarTop>
       <SideBarBottom isHidden={!showAssetList}>
         {notificationType === 'too-many-assets' && !isWideWindow && (
-          <Notification onClose={() => setNotificationType(null)} type={notificationType} />
+          <Notification maxAssets={maxAssets} onClose={() => setNotificationType(null)} type={notificationType} />
         )}
         <AssetList
           assetList={assetList}
+          maxAssets={maxAssets}
           selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
           setNotificationType={setNotificationType}
@@ -113,7 +115,7 @@ export const SelectLocation = ({
           <MarkerSelectLayer
             classification={classification}
             features={assetList}
-            maxMarkers={MAX_ASSETS}
+            maxMarkers={maxAssets}
             onFeaturesChange={setAssetList}
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
             onSelectedMarkersChange={setSelectedAssets}
@@ -125,7 +127,9 @@ export const SelectLocation = ({
             texts={controlsTexts}
             updateSelectedPoint={setCoordinates}
           >
-            {notificationType && <Notification onClose={() => setNotificationType(null)} type={notificationType} />}
+            {notificationType && (
+              <Notification maxAssets={maxAssets} onClose={() => setNotificationType(null)} type={notificationType} />
+            )}
           </Controls>
         </Map>
         <div className={styles.buttonWrapper}>
