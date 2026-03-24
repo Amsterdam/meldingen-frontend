@@ -71,6 +71,22 @@ describe('overviewFields utils', () => {
       expect(result).toBe(`shared.state.${melding.state}`)
     })
 
+    it.each([
+      { expected: 'shared.urgency.[-1]', urgency: -1 as const },
+      { expected: 'shared.urgency.[0]', urgency: 0 as const },
+      { expected: 'shared.urgency.[1]', urgency: 1 as const },
+    ])('returns the correct translated urgency key for urgency=$urgency', ({ expected, urgency }) => {
+      const result = formatValue({ ...melding, urgency }, 'urgency', t)
+
+      expect(result).toBe(expected)
+    })
+
+    it('falls back to normal urgency when urgency is missing', () => {
+      const result = formatValue({ ...melding, urgency: undefined }, 'urgency', t)
+
+      expect(result).toBe('shared.urgency.[0]')
+    })
+
     it('returns an empty string for unknown keys', () => {
       const result = formatValue(melding, 'unknown_key' as OverviewField['key'], t)
 

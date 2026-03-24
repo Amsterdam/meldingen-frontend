@@ -183,6 +183,15 @@ describe('getMeldingData', () => {
         },
         term: 'detail.melding-data.state.term',
       },
+      {
+        description: 'shared.urgency.[0]',
+        key: 'urgency',
+        link: {
+          href: `/melding/${id}/wijzig-urgentie`,
+          label: 'detail.melding-data.urgency.link',
+        },
+        term: 'detail.melding-data.urgency.term',
+      },
     ])
   })
 
@@ -213,6 +222,15 @@ describe('getMeldingData', () => {
           label: 'detail.melding-data.state.link',
         },
         term: 'detail.melding-data.state.term',
+      },
+      {
+        description: 'shared.urgency.[0]',
+        key: 'urgency',
+        link: {
+          href: `/melding/${melding.id}/wijzig-urgentie`,
+          label: 'detail.melding-data.urgency.link',
+        },
+        term: 'detail.melding-data.urgency.term',
       },
     ])
   })

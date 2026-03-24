@@ -69,7 +69,8 @@
         "description": "Probeer het later opnieuw."
       },
       "urgency-change-failed": {
-        "heading": "De urgentie kan niet worden gewijzigd"
+        "heading": "De urgentie kan niet worden gewijzigd",
+        "description": "Probeer het later opnieuw."
       }
     }
   },
