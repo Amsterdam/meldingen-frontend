@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
-import { AnchorHTMLAttributes } from 'react'
+import { AnchorHTMLAttributes, PropsWithChildren } from 'react'
 
 import { Grid, Heading, Pagination } from '@meldingen/ui'
 
@@ -27,11 +27,8 @@ const toMeldingenWithAddress = (meldingen: MeldingOutput[]): MeldingWithAddress[
     address: getShortNLAddress(melding),
   }))
 
-const LinkComponent = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
-  <NextLink href={props.href || ''} legacyBehavior passHref>
-    {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
-    <a {...props} />
-  </NextLink>
+const LinkComponent = (props: PropsWithChildren<AnchorHTMLAttributes<HTMLAnchorElement>>) => (
+  <NextLink href="/" {...props} />
 )
 
 export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props) => {

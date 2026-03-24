@@ -4,7 +4,7 @@ import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons'
 import { clsx } from 'clsx'
 import NextLink from 'next/link'
 
-import { StandaloneLink } from '@meldingen/ui'
+import { Icon } from '@meldingen/ui'
 
 import styles from './BackLink.module.css'
 
@@ -12,8 +12,16 @@ type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & {
   href: string
 }
 
-export const BackLink = ({ className, href, ...restProps }: Props) => (
-  <NextLink href={href} legacyBehavior passHref>
-    <StandaloneLink {...restProps} className={clsx(styles.link, className)} icon={<ChevronBackwardIcon />} />
+export const BackLink = ({ children, className, href }: Props) => (
+  /*
+   * Apply Amsterdam Design System Standalone Link styling to NextLink.
+   * Using a className avoids issues caused by the `legacyBehavior` prop.
+   */
+  <NextLink
+    className={clsx('ams-standalone-link', 'ams-standalone-link--with-icon', styles.link, className)}
+    href={href}
+  >
+    <Icon svg={<ChevronBackwardIcon />} />
+    {children}
   </NextLink>
 )

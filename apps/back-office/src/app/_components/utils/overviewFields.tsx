@@ -48,7 +48,7 @@ export const renderOverviewFieldValue = (
 ): ReactNode => {
   if (field.key === 'public_id') {
     return (
-      // Apply Amsterdam Design System link styling to NextLink.
+      // Apply Amsterdam Design System Link styling to NextLink.
       // Using a className avoids issues caused by the `legacyBehavior` prop.
       <NextLink className="ams-link" href={getMeldingDetailHref(melding)}>
         {melding.public_id}

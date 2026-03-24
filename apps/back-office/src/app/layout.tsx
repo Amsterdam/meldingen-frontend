@@ -1,15 +1,15 @@
 import type { PropsWithChildren } from 'react'
 
+import { IconProps } from '@amsterdam/design-system-react'
 import { HouseFillIcon } from '@amsterdam/design-system-react-icons'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
 import NextLink from 'next/link'
 
-import { Menu, Page } from '@meldingen/ui'
-
-import { Header } from './_components/Header'
+import { Icon, Menu, Page } from '@meldingen/ui'
 
 import './global.css'
+import { Header } from './_components/Header'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('metadata')
@@ -18,6 +18,19 @@ export const generateMetadata = async () => {
     description: t('description'),
   }
 }
+
+const MenuLinkItem = ({ children, href, icon }: PropsWithChildren<{ href: string; icon: IconProps['svg'] }>) => (
+  <li>
+    {/*
+     * Apply Amsterdam Design System Menu Link styling to NextLink.
+     * Using a className avoids issues caused by the `legacyBehavior` prop.
+     */}
+    <NextLink className="ams-menu__link" href={href}>
+      <Icon className="ams-menu__icon" svg={icon} />
+      {children}
+    </NextLink>
+  </li>
+)
 
 const RootLayout = async ({ children }: PropsWithChildren) => {
   const locale = await getLocale()
@@ -31,19 +44,15 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
           <Page withMenu>
             <Header>
               <Menu>
-                <NextLink href="/" legacyBehavior passHref>
-                  <Menu.Link href="/" icon={<HouseFillIcon />}>
-                    {t('menu.overview')}
-                  </Menu.Link>
-                </NextLink>
+                <MenuLinkItem href="/" icon={<HouseFillIcon />}>
+                  {t('menu.overview')}
+                </MenuLinkItem>
               </Menu>
             </Header>
             <Menu className="ams-page__area--menu" inWideWindow>
-              <NextLink href="/" legacyBehavior passHref>
-                <Menu.Link href="/" icon={<HouseFillIcon />}>
-                  {t('menu.overview')}
-                </Menu.Link>
-              </NextLink>
+              <MenuLinkItem href="/" icon={<HouseFillIcon />}>
+                {t('menu.overview')}
+              </MenuLinkItem>
             </Menu>
             {children}
           </Page>
