@@ -1,13 +1,12 @@
 import type { IconProps } from '@amsterdam/design-system-react'
-import type { AnchorHTMLAttributes } from 'react'
+import type { ComponentProps } from 'react'
 
 import { clsx } from 'clsx'
 import NextLink from 'next/link'
 
 import { Icon } from '@meldingen/ui'
 
-type Props = AnchorHTMLAttributes<HTMLAnchorElement> & {
-  href: string
+type Props = ComponentProps<typeof NextLink> & {
   icon?: IconProps['svg']
   variant?: 'link' | 'standalone-link-with-icon' | 'menu-link'
 }
@@ -28,8 +27,8 @@ const getClassNames = (variant: Props['variant']) => {
   }
 }
 
-export const AmsNextLink = ({ children, className, href, icon, variant, ...restProps }: Props) => (
-  <NextLink className={clsx(getClassNames(variant), className)} href={href} {...restProps}>
+export const AmsNextLink = ({ children, className, icon, variant, ...restProps }: Props) => (
+  <NextLink className={clsx(getClassNames(variant), className)} {...restProps}>
     {icon && <Icon className={variant === 'menu-link' ? 'ams-menu__icon' : undefined} svg={icon} />}
     {children}
   </NextLink>
