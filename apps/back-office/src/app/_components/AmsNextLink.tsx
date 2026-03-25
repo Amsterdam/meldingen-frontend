@@ -1,7 +1,8 @@
-import { IconProps } from '@amsterdam/design-system-react'
+import type { IconProps } from '@amsterdam/design-system-react'
+import type { AnchorHTMLAttributes } from 'react'
+
 import { clsx } from 'clsx'
 import NextLink from 'next/link'
-import { AnchorHTMLAttributes } from 'react'
 
 import { Icon } from '@meldingen/ui'
 
