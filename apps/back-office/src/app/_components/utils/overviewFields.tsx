@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 
-import NextLink from 'next/link'
-
 import type { MeldingWithAddress } from '../../Overview'
 import type { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
+
+import { AmsNextLink } from '../AmsNextLink'
 
 export const OVERVIEW_FIELDS = [
   { key: 'public_id', labelKey: 'column-header.public_id' },
@@ -48,11 +48,9 @@ export const renderOverviewFieldValue = (
 ): ReactNode => {
   if (field.key === 'public_id') {
     return (
-      // Apply Amsterdam Design System Link styling to NextLink.
-      // Using a className avoids issues caused by the `legacyBehavior` prop.
-      <NextLink className="ams-link" href={getMeldingDetailHref(melding)}>
+      <AmsNextLink href={getMeldingDetailHref(melding)} variant="link">
         {melding.public_id}
-      </NextLink>
+      </AmsNextLink>
     )
   }
 

@@ -1,10 +1,10 @@
 import { useTranslations } from 'next-intl'
+import NextLink from 'next/link'
 
 import { Grid, Heading, Pagination } from '@meldingen/ui'
 
 import type { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
-import { LinkComponent } from './_components/LinkComponent'
 import { OverviewDesktop } from './_components/OverviewDesktop'
 import { OverviewMobile } from './_components/OverviewMobile'
 import { getShortNLAddress } from './utils'
@@ -41,7 +41,7 @@ export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props)
         <OverviewDesktop meldingen={meldingenWithAddress} />
         <Pagination
           className={styles.pagination}
-          linkComponent={LinkComponent}
+          linkComponent={({ href = '/', ...props }) => <NextLink href={href} {...props} />}
           linkTemplate={(page) => (page === 1 ? '/' : `/?pagina=${page}`)}
           page={page}
           totalPages={totalPages}

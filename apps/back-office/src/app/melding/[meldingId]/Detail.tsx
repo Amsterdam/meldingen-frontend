@@ -1,10 +1,10 @@
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
-import NextLink from 'next/link'
 import { Fragment } from 'react'
 
 import { DescriptionList, Grid, Heading, Paragraph } from '@meldingen/ui'
 
+import { AmsNextLink } from '../../_components/AmsNextLink'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { BackLink } from './_components/BackLink'
 
@@ -78,13 +78,9 @@ export const Detail = ({
                 <DescriptionList.Description>{description}</DescriptionList.Description>
                 {link && (
                   <DescriptionList.Description>
-                    {/*
-                     * Apply Amsterdam Design System Link styling to NextLink.
-                     * Using a className avoids issues caused by the `legacyBehavior` prop.
-                     */}
-                    <NextLink className="ams-link" href={link.href}>
+                    <AmsNextLink href={link.href} variant="link">
                       {link.label}
-                    </NextLink>
+                    </AmsNextLink>
                   </DescriptionList.Description>
                 )}
               </Fragment>
