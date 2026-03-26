@@ -1,7 +1,7 @@
 import { Datagrid, List, TextField } from 'react-admin'
 
 export const AssetTypeList = () => (
-  <List>
+  <List resource="asset-type">
     <Datagrid rowClick="edit">
       <TextField source="name" />
       <TextField source="id" />
