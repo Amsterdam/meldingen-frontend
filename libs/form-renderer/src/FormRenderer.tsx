@@ -141,7 +141,7 @@ export const FormRenderer = ({
        * If the page has more than one form component, the h1 is rendered here.
        */}
       {!hasOneFormComponent && panelTitle && (
-        <Heading className="ams-mb-xl" level={1} size="level-3">
+        <Heading className="ams-mb-s" level={1} size="level-3">
           {panelTitle}
         </Heading>
       )}

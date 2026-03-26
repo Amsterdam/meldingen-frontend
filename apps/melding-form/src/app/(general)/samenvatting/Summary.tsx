@@ -70,7 +70,7 @@ export const Summary = ({ additionalQuestions, attachments, contact, location, p
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-l" href={`/contact#${TOP_ANCHOR_ID}`}>
+      <BackLink className="ams-mb-m" href={`/contact#${TOP_ANCHOR_ID}`}>
         {t('back-link')}
       </BackLink>
       <main>
@@ -79,7 +79,7 @@ export const Summary = ({ additionalQuestions, attachments, contact, location, p
           {t('main-title')}
         </Heading>
         <Paragraph className="ams-mb-m">{t('description')}</Paragraph>
-        <SummaryList className="ams-mb-xl">
+        <SummaryList className="ams-mb-l">
           <SummaryList.Item>
             <SummaryList.Term>{primaryForm.term}</SummaryList.Term>
             <SummaryList.Description>{primaryForm.description}</SummaryList.Description>

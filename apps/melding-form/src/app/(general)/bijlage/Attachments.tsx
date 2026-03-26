@@ -229,7 +229,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-l" href={`/locatie#${TOP_ANCHOR_ID}`}>
+      <BackLink className="ams-mb-m" href={`/locatie#${TOP_ANCHOR_ID}`}>
         {t('back-link')}
       </BackLink>
       <main>
@@ -259,7 +259,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
           </Alert>
         )}
-        <Column className="ams-mb-xl">
+        <Column className="ams-mb-l">
           <Column gap="small">
             <Heading id="file-upload-label" level={1} size="level-3">
               {label} <span className={styles.hint}>{t('hint-text')}</span>

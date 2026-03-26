@@ -13,10 +13,10 @@ export const SideBarTop = ({ children }: PropsWithChildren) => {
   return (
     <div className={styles.container}>
       <div className={styles.intro}>
-        <BackLink className="ams-mb-l" href={`/locatie#${TOP_ANCHOR_ID}`}>
+        <BackLink className="ams-mb-m" href={`/locatie#${TOP_ANCHOR_ID}`}>
           {t('back-link')}
         </BackLink>
-        <Heading level={1} size="level-2">
+        <Heading className="ams-mb-s" level={1} size="level-2">
           {t('title')}
         </Heading>
         <Paragraph>{t('description')}</Paragraph>
