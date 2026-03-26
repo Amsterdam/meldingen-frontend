@@ -14,6 +14,8 @@ type Props = ComponentProps<typeof NextLink> & {
 /*
  * Use classNames to apply Amsterdam Design System link styling to NextLink.
  * Using a className avoids issues caused by the `legacyBehavior` prop.
+ * We should update or remove this component when Next offers a better way to do this.
+ * See: https://github.com/vercel/next.js/discussions/76329#discussioncomment-14487168
  */
 const getClassNames = (variant: Props['variant']) => {
   switch (variant) {
