@@ -106,7 +106,7 @@ describe('MarkdownToHtml', () => {
 
     const element = container.querySelector('div')
 
-    expect(element).toHaveClass('ams-column extra')
+    expect(element).toHaveClass('extra')
   })
 
   it('does not render disallowed elements', () => {
