@@ -5,12 +5,12 @@ import { redirect } from 'next/navigation'
 
 import {
   getFormClassificationByClassificationId,
-  patchMeldingByMeldingId,
+  patchMeldingByMeldingIdMelder,
   postMelding,
   putMeldingByMeldingIdAnswerQuestions,
 } from '@meldingen/api-client'
 
-import { COOKIES } from '../../constants'
+import { COOKIES, TOP_ANCHOR_ID } from '../../constants'
 import { handleApiError } from '../../handleApiError'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
 
@@ -43,7 +43,7 @@ export const postPrimaryForm = async (
   const isExistingMelding = existingId && existingToken
 
   const { data, error, response } = isExistingMelding
-    ? await patchMeldingByMeldingId({
+    ? await patchMeldingByMeldingIdMelder({
         body: { text: formDataObj.primary.toString() },
         path: { melding_id: parseInt(existingId, 10) },
         query: { token: existingToken },
@@ -96,13 +96,13 @@ export const postPrimaryForm = async (
 
       if (error) return { formData, systemError: error }
 
-      return redirect('/locatie')
+      return redirect(`/locatie#${TOP_ANCHOR_ID}`)
     }
 
     const nextFormFirstKey = data?.components[0].key
 
-    return redirect(`/aanvullende-vragen/${classification.id}/${nextFormFirstKey}`)
+    return redirect(`/aanvullende-vragen/${classification.id}/${nextFormFirstKey}#${TOP_ANCHOR_ID}`)
   }
 
-  return redirect('/locatie')
+  return redirect(`/locatie#${TOP_ANCHOR_ID}`)
 }

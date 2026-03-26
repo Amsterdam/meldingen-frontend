@@ -13,9 +13,10 @@ import { COOKIES } from 'apps/melding-form/src/constants'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('select-location')
+  const tShared = await getTranslations('shared')
 
   return {
-    title: t('metadata.title'),
+    title: `${t('title')} - ${tShared('organisation-name')}`,
   }
 }
 
@@ -24,6 +25,8 @@ const getFilter = (id: string) => `
     <ResourceId rid="${id}" />
   </Filter>
 `
+
+const MAX_ASSETS_FALLBACK = 3
 
 const getAssetsFromMelding = async (meldingId: string, token: string) => {
   // Get existing assets for this melding
@@ -108,6 +111,7 @@ export default async () => {
     <SelectLocation
       classification={data?.classification?.name}
       coordinates={coordinates}
+      maxAssets={data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK}
       selectedAssets={selectedAssets}
     />
   )

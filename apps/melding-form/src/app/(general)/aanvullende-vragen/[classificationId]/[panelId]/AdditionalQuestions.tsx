@@ -11,10 +11,9 @@ import { InvalidFormAlert } from '@meldingen/ui'
 import type { AnswersByKey } from './_utils/navigationUtils'
 import type { FormState, ValidationError } from 'apps/melding-form/src/types'
 
-import { BackLink } from '../../../_components/BackLink/BackLink'
-import { FormHeader } from '../../../_components/FormHeader/FormHeader'
-import { SystemErrorAlert } from '../../../_components/SystemErrorAlert/SystemErrorAlert'
+import { SystemErrorAlert } from '../../../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../../../_utils/getDocumentTitleOnError'
+import { BackLink } from 'apps/melding-form/src/app/_components'
 
 const getPrefilledFormComponents = (components: Component[], formData: FormData): Component[] =>
   components.map((component) => {
@@ -49,6 +48,14 @@ export type Props = {
 
 const initialState: FormState = {}
 
+const getPrimaryHeading = (components: Component[], panelTitle: string) => {
+  if (components.length === 1) {
+    return components[0].label
+  }
+
+  return panelTitle
+}
+
 export const AdditionalQuestions = ({
   action,
   formComponents: formComponentsFromServer,
@@ -76,7 +83,7 @@ export const AdditionalQuestions = ({
   // Update document title when there are system or validation errors
   const documentTitle = getDocumentTitleOnError({
     hasSystemError: Boolean(systemError),
-    originalDocTitle: t('metadata.title'),
+    originalDocTitle: `${getPrimaryHeading(formComponents, panelTitle)} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors?.length,
   })
@@ -102,7 +109,7 @@ export const AdditionalQuestions = ({
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-s" href={previousPanelPath}>
+      <BackLink className="ams-mb-l" href={previousPanelPath}>
         {t('back-link')}
       </BackLink>
       <main>
@@ -116,7 +123,6 @@ export const AdditionalQuestions = ({
             ref={invalidFormAlertRef}
           />
         )}
-        <FormHeader step={t('step')} title={t('title')} />
         <FormRenderer
           action={formAction}
           formComponents={formComponents}

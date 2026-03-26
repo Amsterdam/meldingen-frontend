@@ -7,13 +7,13 @@ import { Feature } from '@meldingen/api-client'
 import type { NotificationType } from '../../SelectLocation'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
-import { MAX_ASSETS } from '../../constants'
 import { getContainerAssetIconSVG } from './getContainerAssetIconSVG'
 
 import styles from './AssetList.module.css'
 
 export type Props = {
   assetList: Feature[]
+  maxAssets: number
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
   setNotificationType: (notificationType: NotificationType | null) => void
@@ -34,6 +34,7 @@ const getCheckboxLabel = (asset: Feature, idNummer: string) => {
 
 export const AssetList = ({
   assetList,
+  maxAssets,
   selectedAssets,
   setCoordinates,
   setNotificationType,
@@ -62,7 +63,7 @@ export const AssetList = ({
   }
 
   const handleSelectAsset = (asset: Feature) => {
-    if (selectedAssets.length >= MAX_ASSETS) {
+    if (selectedAssets.length >= maxAssets) {
       setNotificationType('too-many-assets')
       return
     }

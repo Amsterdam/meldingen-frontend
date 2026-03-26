@@ -14,10 +14,10 @@ export const ENDPOINTS = {
   GET_MELDING_BY_MELDING_ID_MELDER: '/melding/:id/melder',
   GET_MELDING_BY_MELDING_ID_ASSETS_MELDER: '/melding/:melding_id/assets/melder',
 
-  PATCH_MELDING_BY_MELDING_ID: '/melding/:id',
   PATCH_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID: '/melding/:id/answer/:answerId',
   PATCH_MELDING_BY_MELDING_ID_CONTACT: '/melding/:id/contact',
   PATCH_MELDING_BY_MELDING_ID_LOCATION: '/melding/:id/location',
+  PATCH_MELDING_BY_MELDING_ID_MELDER: '/melding/:id/melder',
 
   POST_MELDING: '/melding',
   POST_MELDING_BY_MELDING_ID_ASSET: '/melding/:id/asset',

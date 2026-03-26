@@ -1,11 +1,9 @@
 import type { ReactNode } from 'react'
 
-import NextLink from 'next/link'
-
-import { Link } from '@meldingen/ui'
-
 import type { MeldingWithAddress } from '../../Overview'
 import type { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
+
+import { AmsNextLink } from '../AmsNextLink'
 
 export const OVERVIEW_FIELDS = [
   { key: 'public_id', labelKey: 'column-header.public_id' },
@@ -50,9 +48,9 @@ export const renderOverviewFieldValue = (
 ): ReactNode => {
   if (field.key === 'public_id') {
     return (
-      <NextLink href={getMeldingDetailHref(melding)} legacyBehavior passHref>
-        <Link>{melding.public_id}</Link>
-      </NextLink>
+      <AmsNextLink href={getMeldingDetailHref(melding)} variant="link">
+        {melding.public_id}
+      </AmsNextLink>
     )
   }
 
