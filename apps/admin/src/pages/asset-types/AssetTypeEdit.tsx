@@ -12,7 +12,7 @@ import {
 } from 'react-admin'
 
 export const AssetTypeEdit = ({ id }: { id?: number }) => (
-  <Edit id={id}>
+  <Edit id={id} resource="asset-type">
     <SimpleForm
       toolbar={
         <Toolbar>

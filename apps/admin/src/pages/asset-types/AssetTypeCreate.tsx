@@ -26,7 +26,7 @@ export const transform = (data: AssetTypeCreateData) => ({
 })
 
 export const AssetTypeCreate = () => (
-  <Create redirect="list" transform={transform}>
+  <Create redirect="list" resource="asset-type" transform={transform}>
     <SimpleForm
       toolbar={
         <Toolbar>
