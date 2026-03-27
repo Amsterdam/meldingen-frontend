@@ -8,7 +8,7 @@ import { useActionState, useEffect, useRef } from 'react'
 
 import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
-import { postChangeUrgencyForm } from 'apps/back-office/src/app/melding/[meldingId]/wijzig-urgentie/actions'
+import { postChangeUrgencyForm } from './actions'
 import { FieldSet } from 'libs/ui/src/FieldSet/FieldSet'
 
 import styles from './ChangeUrgency.module.css'
