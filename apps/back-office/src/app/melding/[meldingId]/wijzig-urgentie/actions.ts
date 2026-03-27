@@ -2,10 +2,11 @@
 
 import { redirect } from 'next/navigation'
 
-import { patchMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
+import { URGENCY_VALUES } from './constants'
+import { MeldingOutput, patchMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
 
 type MeldingIdParam = {
-  currentUrgency: -1 | 0 | 1
+  currentUrgency: MeldingOutput['urgency']
   meldingId: number
 }
 
@@ -14,7 +15,8 @@ const extractUrgencyFromFormData = (formData: FormData) => {
   return formDataObj.urgency as string
 }
 
-const isValidUrgency = (value: number): value is -1 | 0 | 1 => value === -1 || value === 0 || value === 1
+const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
+  URGENCY_VALUES.includes(value as MeldingOutput['urgency'])
 
 export const postChangeUrgencyForm = async (
   { currentUrgency, meldingId }: MeldingIdParam,

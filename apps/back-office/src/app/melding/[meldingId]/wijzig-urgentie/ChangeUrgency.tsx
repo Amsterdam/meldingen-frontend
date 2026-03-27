@@ -1,20 +1,22 @@
 'use client'
 
-import { ActionGroup, Alert, Button, Grid, Heading, Paragraph, Radio } from '@amsterdam/design-system-react'
+import { ActionGroup, Alert, Button, FieldSet, Grid, Heading, Paragraph, Radio } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
 
+import { MeldingOutput } from '@meldingen/api-client'
+
 import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
 import { postChangeUrgencyForm } from './actions'
-import { FieldSet } from 'libs/ui/src/FieldSet/FieldSet'
+import { URGENCY_OPTIONS } from './constants'
 
 import styles from './ChangeUrgency.module.css'
 
 export type Props = {
-  currentUrgency: -1 | 0 | 1
+  currentUrgency: MeldingOutput['urgency']
   meldingId: number
   publicId: string
 }
@@ -38,12 +40,6 @@ const getDocumentTitleOnError = ({ errorMessage, hasError, originalDocTitle }: D
 
   return originalDocTitle
 }
-
-const URGENCY_OPTIONS = [
-  { labelKey: 'urgency.[-1]', value: '-1' },
-  { labelKey: 'urgency.[0]', value: '0' },
-  { labelKey: 'urgency.[1]', value: '1' },
-] as const
 
 export const ChangeUrgency = ({ currentUrgency, meldingId, publicId }: Props) => {
   const errorAlertRef = useRef<HTMLDivElement>(null)
@@ -103,19 +99,13 @@ export const ChangeUrgency = ({ currentUrgency, meldingId, publicId }: Props) =>
           </Heading>
 
           <Form action={formAction} noValidate>
-            <FieldSet
-              className={clsx(styles.whiteField, 'ams-mb-m')}
-              hasHeading={false}
-              legend={t('label')}
-              role="radiogroup"
-            >
+            <FieldSet className={clsx(styles.whiteField, 'ams-mb-m')} legend={t('label')} role="radiogroup">
               {URGENCY_OPTIONS.map((option) => (
                 <Radio
-                  defaultChecked={urgencyToDisplay === option.value}
-                  id={`urgency-${option.value}`}
-                  key={option.value}
+                  defaultChecked={urgencyToDisplay === String(option.urgency)}
+                  key={option.urgency}
                   name="urgency"
-                  value={option.value}
+                  value={String(option.urgency)}
                 >
                   {tShared(option.labelKey)}
                 </Radio>
