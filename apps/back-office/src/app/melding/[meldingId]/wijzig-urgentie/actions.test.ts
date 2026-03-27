@@ -6,7 +6,7 @@ import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
 
 describe('postChangeUrgencyForm', () => {
-  const defaultArgs = { currentUrgency: 0 as const, meldingId: 123, meldingText: 'Text' }
+  const defaultArgs = { currentUrgency: 0 as const, meldingId: 123 }
 
   it('redirects without calling API when selected urgency is the same as current urgency', async () => {
     const formData = new FormData()

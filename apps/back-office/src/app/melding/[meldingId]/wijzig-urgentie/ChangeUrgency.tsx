@@ -9,12 +9,11 @@ import { useActionState, useEffect, useRef } from 'react'
 import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
 import { postChangeUrgencyForm } from 'apps/back-office/src/app/melding/[meldingId]/wijzig-urgentie/actions'
-import { handleApiError } from 'apps/back-office/src/handleApiError'
 import { FieldSet } from 'libs/ui/src/FieldSet/FieldSet'
 
 import styles from './ChangeUrgency.module.css'
 
-type Props = {
+export type Props = {
   currentUrgency: -1 | 0 | 1
   meldingId: number
   publicId: string
@@ -70,7 +69,7 @@ export const ChangeUrgency = ({ currentUrgency, meldingId, publicId }: Props) =>
 
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
-    console.error(handleApiError(error))
+    console.error(error)
 
     if (errorAlertRef.current) {
       errorAlertRef.current.focus()

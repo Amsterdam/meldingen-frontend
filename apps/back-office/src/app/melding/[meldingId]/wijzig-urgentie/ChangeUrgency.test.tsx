@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 import { Mock } from 'vitest'
 
+import type { Props } from './ChangeUrgency'
+
 import { ChangeUrgency } from './ChangeUrgency'
 
 vi.mock('react', async (importOriginal) => {
@@ -13,10 +15,9 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-const defaultProps = {
+const defaultProps: Props = {
   currentUrgency: 0 as const,
   meldingId: 123,
-  meldingText: 'Melding text',
   publicId: 'ABC',
 }
 
