@@ -28,7 +28,7 @@ export const postChangeUrgencyForm = async (
 
   const urgencyNumber = Number(urgencyRaw)
 
-  if (!Number.isInteger(urgencyNumber) || !isValidUrgency(urgencyNumber)) {
+  if (!isValidUrgency(urgencyNumber)) {
     return {
       error: { message: `Invalid urgency: ${urgencyRaw}`, type: 'invalid-urgency' as const },
       urgencyFromAction: urgencyRaw,
