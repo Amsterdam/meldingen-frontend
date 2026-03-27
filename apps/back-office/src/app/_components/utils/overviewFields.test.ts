@@ -1,4 +1,5 @@
 import { melding } from '../../../mocks/data'
+import { URGENCY_OPTIONS } from '../../melding/[meldingId]/wijzig-urgentie/constants'
 import { formatValue, getMeldingDetailHref, OverviewField } from './overviewFields'
 
 describe('overviewFields utils', () => {
@@ -71,15 +72,14 @@ describe('overviewFields utils', () => {
       expect(result).toBe(`shared.state.${melding.state}`)
     })
 
-    it.each([
-      { expected: 'shared.urgency.[-1]', urgency: -1 as const },
-      { expected: 'shared.urgency.[0]', urgency: 0 as const },
-      { expected: 'shared.urgency.[1]', urgency: 1 as const },
-    ])('returns the correct translated urgency key for urgency=$urgency', ({ expected, urgency }) => {
-      const result = formatValue({ ...melding, urgency }, 'urgency', t)
+    it.each(URGENCY_OPTIONS)(
+      'returns the correct translated urgency key fos urgency=$urgency',
+      ({ labelKey, urgency }) => {
+        const result = formatValue({ ...melding, urgency }, 'urgency', t)
 
-      expect(result).toBe(expected)
-    })
+        expect(result).toBe(`shared.${labelKey}`)
+      },
+    )
 
     it('returns an empty string for unknown keys', () => {
       const result = formatValue(melding, 'unknown_key' as OverviewField['key'], t)
