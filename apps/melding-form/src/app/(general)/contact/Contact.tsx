@@ -68,7 +68,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-l" href={`/bijlage#${TOP_ANCHOR_ID}`}>
+      <BackLink className="ams-mb-m" href={`/bijlage#${TOP_ANCHOR_ID}`}>
         {t('back-link')}
       </BackLink>
       <main>
@@ -113,7 +113,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
               type="email"
             />
           </Field>
-          <Field className="ams-mb-xl" invalid={Boolean(telErrorMessage)}>
+          <Field className="ams-mb-l" invalid={Boolean(telErrorMessage)}>
             <Label htmlFor="tel-input" optional>
               {telLabel}
             </Label>
