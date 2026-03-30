@@ -72,9 +72,10 @@ export const filterFormResponse = (obj: AdditionalQuestionsForm): FormInput => {
       validate: getFilteredValidateObject(firstLevelComponent.validate),
     }
 
-    // Explicitly remove the 'validate' key for panel components, the API doesn't accept that
+    // Explicitly remove the 'validate' and 'conditional' keys for panel components, the API doesn't accept those
     if (filteredObject.type === 'panel') {
       delete filteredObject.validate
+      delete filteredObject.conditional
     }
 
     return filteredObject
