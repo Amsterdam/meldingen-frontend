@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
 import { postChangeUrgencyForm } from './actions'
+import { URGENCY_VALUES } from './constants'
 import * as apiClientProxy from 'apps/back-office/src/apiClientProxy'
 import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
@@ -60,9 +61,9 @@ describe('postChangeUrgencyForm', () => {
     expect(redirect).not.toHaveBeenCalledWith('/melding/123')
   })
 
-  it.each(['-1', '0', '1'])('redirects on success', async (urgency) => {
+  it.each(URGENCY_VALUES)('redirects on success', async (urgency) => {
     const formData = new FormData()
-    formData.append('urgency', urgency)
+    formData.append('urgency', String(urgency))
 
     await postChangeUrgencyForm(defaultArgs, null, formData)
 
