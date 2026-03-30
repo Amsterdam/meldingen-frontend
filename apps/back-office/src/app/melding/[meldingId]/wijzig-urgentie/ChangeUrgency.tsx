@@ -11,7 +11,7 @@ import { MeldingOutput } from '@meldingen/api-client'
 import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
 import { postChangeUrgencyForm } from './actions'
-import { URGENCY_OPTIONS } from './constants'
+import { URGENCY_VALUES } from './constants'
 
 import styles from './ChangeUrgency.module.css'
 
@@ -100,14 +100,14 @@ export const ChangeUrgency = ({ currentUrgency, meldingId, publicId }: Props) =>
 
           <Form action={formAction} noValidate>
             <FieldSet className={clsx(styles.whiteField, 'ams-mb-m')} legend={t('label')} role="radiogroup">
-              {URGENCY_OPTIONS.map((option) => (
+              {URGENCY_VALUES.map((urgency) => (
                 <Radio
-                  defaultChecked={urgencyToDisplay === String(option.urgency)}
-                  key={option.urgency}
+                  defaultChecked={urgencyToDisplay === String(urgency)}
+                  key={urgency}
                   name="urgency"
-                  value={String(option.urgency)}
+                  value={String(urgency)}
                 >
-                  {tShared(option.labelKey)}
+                  {tShared(`urgency.[${urgency}]`)}
                 </Radio>
               ))}
             </FieldSet>
