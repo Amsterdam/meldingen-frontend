@@ -1,0 +1,9 @@
+.container {
+  h2:not(:last-child) {
+    margin-block-end: var(--ams-space-s);
+  }
+
+  p:not(:last-child) {
+    margin-block-end: var(--ams-space-m);
+  }
+}

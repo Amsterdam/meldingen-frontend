@@ -1,14 +1,5 @@
-.form > * {
-  /* All children of form should get large spacing after... */
-  margin-block-end: var(--ams-space-l);
-}
-
-.form > :nth-last-child(2) {
-  /* ...except the one before the submit button... */
-  margin-block-end: var(--ams-space-xl);
-}
-
-.form > :last-child {
-  /* ...and the submit button itself */
-  margin-block-end: 0;
+.form {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--ams-space-l);
 }

@@ -4,7 +4,9 @@ import { clsx } from 'clsx'
 import { Children, isValidElement } from 'react'
 import ReactMarkdown from 'react-markdown'
 
-import { Column, Heading, Link, OrderedList, Paragraph, UnorderedList } from '@meldingen/ui'
+import { Heading, Link, OrderedList, Paragraph, UnorderedList } from '@meldingen/ui'
+
+import styles from './MarkdownToHtml.module.css'
 
 const richTextMarkdownToHtmlMap = {
   a: ({ children, href }: PropsWithChildren<{ href?: string }>) => {
@@ -76,7 +78,7 @@ export const MarkdownToHtml = ({
   id?: string
   type?: 'description' | 'rich-text'
 }) => (
-  <Column className={clsx(className)} id={id}>
+  <div className={clsx(styles.container, className)} id={id}>
     <ReactMarkdown
       allowedElements={type === 'description' ? descriptionAllowedElements : richTextAllowedElements}
       components={type === 'description' ? descriptionMarkdownToHtmlMap : richTextMarkdownToHtmlMap}
@@ -85,5 +87,5 @@ export const MarkdownToHtml = ({
     >
       {children}
     </ReactMarkdown>
-  </Column>
+  </div>
 )

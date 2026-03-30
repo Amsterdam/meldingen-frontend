@@ -80,7 +80,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-l" href={prevPage}>
+      <BackLink className="ams-mb-m" href={prevPage}>
         {t('back-link')}
       </BackLink>
       <main>
@@ -98,7 +98,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
           />
         )}
 
-        <Field className="ams-mb-xl" invalid={Boolean(validationErrors)}>
+        <Field className="ams-mb-l" invalid={Boolean(validationErrors)}>
           <Heading level={1} size="level-3">
             {t('question')}
           </Heading>

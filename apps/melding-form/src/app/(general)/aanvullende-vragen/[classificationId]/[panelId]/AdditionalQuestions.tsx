@@ -109,7 +109,7 @@ export const AdditionalQuestions = ({
   return (
     <>
       <title>{documentTitle}</title>
-      <BackLink className="ams-mb-l" href={previousPanelPath}>
+      <BackLink className="ams-mb-m" href={previousPanelPath}>
         {t('back-link')}
       </BackLink>
       <main>

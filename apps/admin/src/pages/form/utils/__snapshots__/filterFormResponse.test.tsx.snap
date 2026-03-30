@@ -162,11 +162,6 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           },
         },
       ],
-      "conditional": {
-        "eq": "",
-        "show": null,
-        "when": null,
-      },
       "input": false,
       "key": "page1",
       "label": "Page 1",
@@ -362,11 +357,6 @@ exports[`filterFormResponse > renders the correct output 1`] = `
           },
         },
       ],
-      "conditional": {
-        "eq": "",
-        "show": null,
-        "when": null,
-      },
       "input": false,
       "key": "page2",
       "label": "Page 2",
