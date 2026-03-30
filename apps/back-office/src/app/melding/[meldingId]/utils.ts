@@ -79,7 +79,7 @@ export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) 
       term: t('detail.melding-data.state.term'),
     },
     {
-      description: t(`shared.urgency.[${urgency}]`),
+      description: t(`shared.urgency.${urgency}`),
       key: 'urgency',
       link: {
         href: `/melding/${id}/wijzig-urgentie`,

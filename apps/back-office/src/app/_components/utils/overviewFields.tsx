@@ -38,7 +38,7 @@ export const formatValue = (melding: MeldingWithAddress, key: OverviewField['key
     case 'state':
       return t(`shared.state.${melding.state}`)
     case 'urgency': {
-      return t(`shared.urgency.[${melding.urgency}]`)
+      return t(`shared.urgency.${melding.urgency}`)
     }
     default:
       return ''

@@ -75,7 +75,7 @@ describe('overviewFields utils', () => {
     it.each(URGENCY_VALUES)('returns the correct translated urgency key for urgency=%s', (urgency) => {
       const result = formatValue({ ...melding, urgency }, 'urgency', t)
 
-      expect(result).toBe(`shared.urgency.[${urgency}]`)
+      expect(result).toBe(`shared.urgency.${urgency}`)
     })
 
     it('returns an empty string for unknown keys', () => {

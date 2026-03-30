@@ -109,9 +109,9 @@
       "submitted": "Gemeld"
     },
     "urgency": {
-      "[-1]": "Laag",
-      "[0]": "Normaal",
-      "[1]": "Hoog"
+      "-1": "Laag",
+      "0": "Normaal",
+      "1": "Hoog"
     }
   }
 }

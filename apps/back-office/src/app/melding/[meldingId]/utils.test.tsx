@@ -184,7 +184,7 @@ describe('getMeldingData', () => {
         term: 'detail.melding-data.state.term',
       },
       {
-        description: 'shared.urgency.[0]',
+        description: 'shared.urgency.0',
         key: 'urgency',
         link: {
           href: `/melding/${id}/wijzig-urgentie`,
@@ -224,7 +224,7 @@ describe('getMeldingData', () => {
         term: 'detail.melding-data.state.term',
       },
       {
-        description: 'shared.urgency.[0]',
+        description: 'shared.urgency.0',
         key: 'urgency',
         link: {
           href: `/melding/${melding.id}/wijzig-urgentie`,

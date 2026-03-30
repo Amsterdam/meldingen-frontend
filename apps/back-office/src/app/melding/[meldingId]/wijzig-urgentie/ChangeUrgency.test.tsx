@@ -40,9 +40,9 @@ describe('ChangeUrgency', () => {
     render(<ChangeUrgency {...defaultProps} />)
 
     expect(screen.getByRole('radiogroup', { name: 'label' })).toBeInTheDocument()
-    expect(screen.getByRole('radio', { name: 'urgency.[-1]' })).toBeInTheDocument()
-    expect(screen.getByRole('radio', { name: 'urgency.[0]' })).toBeInTheDocument()
-    expect(screen.getByRole('radio', { name: 'urgency.[1]' })).toBeInTheDocument()
+    expect(screen.getByRole('radio', { name: 'urgency.-1' })).toBeInTheDocument()
+    expect(screen.getByRole('radio', { name: 'urgency.0' })).toBeInTheDocument()
+    expect(screen.getByRole('radio', { name: 'urgency.1' })).toBeInTheDocument()
   })
 
   it('renders the cancel link', () => {
@@ -57,7 +57,7 @@ describe('ChangeUrgency', () => {
   it('defaults to the current urgency', () => {
     render(<ChangeUrgency {...defaultProps} />)
 
-    expect(screen.getByRole('radio', { name: 'urgency.[0]' })).toBeChecked()
+    expect(screen.getByRole('radio', { name: 'urgency.0' })).toBeChecked()
   })
 
   it('displays the correct error message and selected urgency when action returns invalid-urgency', () => {
@@ -69,7 +69,7 @@ describe('ChangeUrgency', () => {
     expect(alert).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.invalid-urgency.description')
 
-    expect(screen.getByRole('radio', { name: 'urgency.[1]' })).toBeChecked()
+    expect(screen.getByRole('radio', { name: 'urgency.1' })).toBeChecked()
   })
 
   it('displays the correct error message and selected urgency when action returns urgency-change-failed', () => {
@@ -84,7 +84,7 @@ describe('ChangeUrgency', () => {
     expect(alert).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.urgency-change-failed.description')
 
-    expect(screen.getByRole('radio', { name: 'urgency.[-1]' })).toBeChecked()
+    expect(screen.getByRole('radio', { name: 'urgency.-1' })).toBeChecked()
   })
 
   it('submits the form when the submit button is clicked', async () => {

@@ -107,7 +107,7 @@ export const ChangeUrgency = ({ currentUrgency, meldingId, publicId }: Props) =>
                   name="urgency"
                   value={String(urgency)}
                 >
-                  {tShared(`urgency.[${urgency}]`)}
+                  {tShared(`urgency.${urgency}`)}
                 </Radio>
               ))}
             </FieldSet>
