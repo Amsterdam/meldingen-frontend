@@ -4,7 +4,6 @@ import { redirect } from 'next/navigation'
 import { postChangeUrgencyForm } from './actions'
 import { URGENCY_VALUES } from './constants'
 import * as apiClientProxy from 'apps/back-office/src/apiClientProxy'
-import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
 import { server } from 'apps/back-office/src/mocks/node'
 
@@ -15,13 +14,9 @@ describe('postChangeUrgencyForm', () => {
     const spy = vi.spyOn(apiClientProxy, 'patchMeldingByMeldingId')
 
     const formData = new FormData()
-    formData.append('urgency', 'invalid')
+    formData.append('urgency', '0')
 
-    await postChangeUrgencyForm(
-      { ...defaultArgs, currentUrgency: 'invalid' as unknown as MeldingOutput['urgency'] },
-      null,
-      formData,
-    )
+    await postChangeUrgencyForm({ ...defaultArgs, currentUrgency: 0 }, null, formData)
 
     expect(spy).not.toHaveBeenCalled()
     expect(redirect).toHaveBeenCalledWith('/melding/123')
