@@ -16,7 +16,7 @@ vi.mock('react', async (importOriginal) => {
 })
 
 const defaultProps: Props = {
-  currentUrgency: 0 as const,
+  currentUrgency: 0,
   meldingId: 123,
   publicId: 'ABC',
 }
