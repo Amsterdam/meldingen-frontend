@@ -81,8 +81,7 @@ export const FileUpload = ({
       </button>
       <input
         {...restProps}
-        aria-hidden="true"
-        aria-label="File input"
+        aria-label="File input" // This is only used in tests, the input is hidden for users
         hidden
         ref={fileInputRef}
         tabIndex={-1}
