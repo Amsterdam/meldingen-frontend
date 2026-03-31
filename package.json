@@ -73,7 +73,7 @@
     "jsdom": "29.0.1",
     "lint-staged": "16.4.0",
     "msw": "2.12.14",
-    "npm-check-updates": "19.6.5",
+    "npm-check-updates": "19.6.6",
     "prettier": "3.8.1",
     "stylelint": "16.26.1",
     "stylelint-config-css-modules": "4.6.0",
