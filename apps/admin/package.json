@@ -24,7 +24,7 @@
     "ra-keycloak": "2.0.0",
     "react-admin": "5.14.4",
     "react-hook-form": "7.72.0",
-    "react-router-dom": "7.13.2",
+    "react-router-dom": "7.13.1",
     "uber-json-schema-filter": "2.0.5",
     "vite": "7.3.1"
   },
