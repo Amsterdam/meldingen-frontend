@@ -18,7 +18,7 @@ import styles from './ChangeUrgency.module.css'
 export type Props = {
   currentUrgency: MeldingOutput['urgency']
   meldingId: number
-  publicId: string
+  publicId: MeldingOutput['public_id']
 }
 
 const initialState: {
