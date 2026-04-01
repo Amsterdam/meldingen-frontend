@@ -3,15 +3,11 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import {
-  getFormClassificationByClassificationId,
-  patchMeldingByMeldingIdMelder,
-  postMelding,
-  putMeldingByMeldingIdAnswerQuestions,
-} from '@meldingen/api-client'
+import { patchMeldingByMeldingIdMelder, postMelding } from '@meldingen/api-client'
 
-import { COOKIES, TOP_ANCHOR_ID } from '../../constants'
+import { COOKIES } from '../../constants'
 import { handleApiError } from '../../handleApiError'
+import { resolveClassificationRedirect } from '../utils'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
 
 export type ArgsType = {
@@ -74,35 +70,9 @@ export const postPrimaryForm = async (
   // Delete it here in case a reclassification occurs.
   cookieStore.delete(COOKIES.LAST_PANEL_PATH)
 
-  if (classification) {
-    // Get entire form, in order to redirect to its first panel
-    const { data, error } = await getFormClassificationByClassificationId({
-      path: { classification_id: classification.id },
-    })
+  const result = await resolveClassificationRedirect(id, token, classification?.id)
 
-    if (error && handleApiError(error) !== 'Not Found') {
-      return { formData, systemError: error }
-    }
+  if (result.type === 'error') return { formData, systemError: result.error }
 
-    const hasAdditionalQuestions = Boolean(data?.components[0])
-
-    // If there are no additional questions for a classification,
-    // set the melding state to 'questions_answered' and redirect to /locatie.
-    if (!hasAdditionalQuestions) {
-      const { error } = await putMeldingByMeldingIdAnswerQuestions({
-        path: { melding_id: id },
-        query: { token },
-      })
-
-      if (error) return { formData, systemError: error }
-
-      return redirect(`/locatie#${TOP_ANCHOR_ID}`)
-    }
-
-    const nextFormFirstKey = data?.components[0].key
-
-    return redirect(`/aanvullende-vragen/${classification.id}/${nextFormFirstKey}#${TOP_ANCHOR_ID}`)
-  }
-
-  return redirect(`/locatie#${TOP_ANCHOR_ID}`)
+  return redirect(result.url)
 }

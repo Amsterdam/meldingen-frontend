@@ -3,10 +3,8 @@ import type { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
-import { getFormClassificationByClassificationId, putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
-
-import { COOKIES, TOP_ANCHOR_ID } from '../../constants'
-import { handleApiError } from '../../handleApiError'
+import { COOKIES } from '../../constants'
+import { resolveClassificationRedirect } from '../utils'
 
 export const GET = async (request: NextRequest) => {
   const { searchParams } = request.nextUrl
@@ -21,51 +19,27 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
+  // Set session variables in cookies
   const cookieStore = await cookies()
   const oneDay = 24 * 60 * 60
-
   cookieStore.set(COOKIES.ID, id, { maxAge: oneDay })
   cookieStore.set(COOKIES.TOKEN, token, { maxAge: oneDay })
   cookieStore.set(COOKIES.CREATED_AT, created_at, { maxAge: oneDay })
   cookieStore.set(COOKIES.PUBLIC_ID, public_id, { maxAge: oneDay })
   cookieStore.set(COOKIES.SOURCE, 'back-office', { maxAge: oneDay })
 
-  if (classification_id) {
-    const { data, error } = await getFormClassificationByClassificationId({
-      path: { classification_id: parseInt(classification_id, 10) },
-    })
+  const result = await resolveClassificationRedirect(
+    parseInt(id, 10),
+    token,
+    classification_id ? parseInt(classification_id, 10) : undefined,
+  )
 
-    if (error && handleApiError(error) !== 'Not Found') {
-      // TODO: Log the error to an error reporting service
-      // eslint-disable-next-line no-console
-      console.error(error)
-      return NextResponse.redirect(new URL('/', request.url))
-    }
-
-    const hasAdditionalQuestions = Boolean(data?.components[0])
-
-    if (!hasAdditionalQuestions) {
-      const { error } = await putMeldingByMeldingIdAnswerQuestions({
-        path: { melding_id: parseInt(id, 10) },
-        query: { token },
-      })
-
-      if (error) {
-        // TODO: Log the error to an error reporting service
-        // eslint-disable-next-line no-console
-        console.error(error)
-        return NextResponse.redirect(new URL('/', request.url))
-      }
-
-      return NextResponse.redirect(new URL(`/locatie#${TOP_ANCHOR_ID}`, request.url))
-    }
-
-    const nextFormFirstKey = data?.components[0].key
-
-    return NextResponse.redirect(
-      new URL(`/aanvullende-vragen/${classification_id}/${nextFormFirstKey}#${TOP_ANCHOR_ID}`, request.url),
-    )
+  if (result.type === 'error') {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(result.error)
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
-  return NextResponse.redirect(new URL(`/locatie#${TOP_ANCHOR_ID}`, request.url))
+  return NextResponse.redirect(new URL(result.url, request.url))
 }
