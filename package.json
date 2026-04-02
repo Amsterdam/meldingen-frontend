@@ -46,7 +46,7 @@
   "devDependencies": {
     "@eslint/js": "9.39.4",
     "@eslint/json": "1.2.0",
-    "@eslint/markdown": "7.5.1",
+    "@eslint/markdown": "8.0.1",
     "@hey-api/openapi-ts": "0.94.5",
     "@next/eslint-plugin-next": "16.2.1",
     "@testing-library/jest-dom": "6.9.1",
