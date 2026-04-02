@@ -18,7 +18,7 @@ export const resolveClassificationRedirect = async (
       path: { classification_id: classificationId },
     })
 
-    if (error && response.status !== 404) return { error, type: 'error' }
+    if (error && response?.status !== 404) return { error, type: 'error' }
 
     const hasAdditionalQuestions = Boolean(data?.components[0])
 
