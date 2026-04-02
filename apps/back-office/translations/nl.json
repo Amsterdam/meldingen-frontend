@@ -12,6 +12,7 @@
       "created_at": "Datum",
       "classification": "Categorie",
       "state": "Status",
+      "urgency": "Urgentie",
       "address": "Adres",
       "postal_code": "Postcode"
     },
@@ -42,12 +43,36 @@
       "state": {
         "term": "Status",
         "link": "Wijzig status"
+      },
+      "urgency": {
+        "term": "Urgentie",
+        "link": "Wijzig urgentie"
       }
     },
     "errors": {
       "melding-not-found": "An error occurred"
     },
     "no-classification": "Geen categorie"
+  },
+  "change-urgency": {
+    "metadata": {
+      "title": "Wijzig urgentie - Gemeente Amsterdam"
+    },
+    "back-link": "Meldingdetails",
+    "title": "Wijzig urgentie melding {publicId}",
+    "label": "Wijzig urgentie",
+    "submit-button": "Wijzig urgentie",
+    "cancel-link": "Annuleer",
+    "errors": {
+      "invalid-urgency": {
+        "heading": "Er is iets misgegaan",
+        "description": "Probeer het later opnieuw."
+      },
+      "urgency-change-failed": {
+        "heading": "De urgentie kan niet worden gewijzigd",
+        "description": "Probeer het later opnieuw."
+      }
+    }
   },
   "change-state": {
     "metadata": {
@@ -82,6 +107,11 @@
       "reopen_requested": "Verzoek tot heropenen",
       "reopened": "Heropend",
       "submitted": "Gemeld"
+    },
+    "urgency": {
+      "-1": "Laag",
+      "0": "Normaal",
+      "1": "Hoog"
     }
   }
 }

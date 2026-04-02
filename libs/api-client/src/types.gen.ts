@@ -1690,7 +1690,7 @@ export type MeldingCreateOutput = {
     /**
      * Urgency
      */
-    urgency?: -1 | 0 | 1;
+    urgency: -1 | 0 | 1;
     classification?: SimpleClassificationOutput | null;
     geo_location?: GeoJsonOutput | null;
     /**
@@ -1768,7 +1768,7 @@ export type MeldingOutput = {
     /**
      * Urgency
      */
-    urgency?: -1 | 0 | 1;
+    urgency: -1 | 0 | 1;
     classification?: SimpleClassificationOutput | null;
     geo_location?: GeoJsonOutput | null;
     /**
@@ -1842,7 +1842,7 @@ export type MeldingUpdateOutput = {
     /**
      * Urgency
      */
-    urgency?: -1 | 0 | 1;
+    urgency: -1 | 0 | 1;
     classification?: SimpleClassificationOutput | null;
     geo_location?: GeoJsonOutput | null;
     /**
@@ -3130,6 +3130,10 @@ export type GetClassificationData = {
          * Sort
          */
         sort?: string;
+        /**
+         * Filter
+         */
+        filter?: string | null;
     };
     url: '/classification/';
 };
@@ -6417,6 +6421,10 @@ export type GetAssetTypeData = {
          * Sort
          */
         sort?: string;
+        /**
+         * Filter
+         */
+        filter?: string | null;
     };
     url: '/asset-type/';
 };
