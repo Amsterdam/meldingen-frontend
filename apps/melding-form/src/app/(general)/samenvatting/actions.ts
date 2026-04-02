@@ -21,10 +21,11 @@ export const postSummaryForm = async () => {
     query: { token },
   })
 
-  if (error)
+  if (error) {
     return { systemError: error }
+  }
 
-    // Delete ADDRESS, TOKEN, LAST_PANEL_PATH, ID, and SOURCE cookies
+  // Delete ADDRESS, TOKEN, LAST_PANEL_PATH, ID, and SOURCE cookies
   ;[COOKIES.ADDRESS, COOKIES.TOKEN, COOKIES.LAST_PANEL_PATH, COOKIES.ID, COOKIES.SOURCE].forEach((cookie) => {
     cookieStore.delete(cookie)
   })
