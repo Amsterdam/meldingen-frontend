@@ -36,11 +36,7 @@ describe('GET', () => {
     ;(cookies as Mock).mockReturnValue(mockCookieStore)
   })
 
-  afterEach(() => {
-    vi.clearAllMocks()
-  })
-
-  it('redirects to / when id, token, created_at, or public_id is missing', async () => {
+  it('redirects to Home when id, token, created_at, or public_id is missing', async () => {
     const { id: _id, ...params } = requiredParams
     const response = await GET(createRequest(params))
     expect(response.headers.get('location')).toBe(`${BASE_URL}/`)
@@ -69,7 +65,7 @@ describe('GET', () => {
     expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.SOURCE, 'back-office', { maxAge: oneDay })
   })
 
-  it('redirects to / and logs error when an API error occurs', async () => {
+  it('redirects to Home and logs error when an API error occurs', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
