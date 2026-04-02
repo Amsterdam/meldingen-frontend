@@ -5074,8 +5074,7 @@ export const MeldingCreateOutputSchema = {
                 0,
                 1
             ],
-            title: 'Urgency',
-            default: 0
+            title: 'Urgency'
         },
         classification: {
             anyOf: [
@@ -5189,6 +5188,7 @@ export const MeldingCreateOutputSchema = {
         'public_id',
         'text',
         'state',
+        'urgency',
         'token'
     ],
     title: 'MeldingCreateOutput'
@@ -5243,8 +5243,7 @@ export const MeldingOutputSchema = {
                 0,
                 1
             ],
-            title: 'Urgency',
-            default: 0
+            title: 'Urgency'
         },
         classification: {
             anyOf: [
@@ -5353,7 +5352,8 @@ export const MeldingOutputSchema = {
         'updated_at',
         'public_id',
         'text',
-        'state'
+        'state',
+        'urgency'
     ],
     title: 'MeldingOutput'
 } as const;
@@ -5410,8 +5410,7 @@ export const MeldingUpdateOutputSchema = {
                 0,
                 1
             ],
-            title: 'Urgency',
-            default: 0
+            title: 'Urgency'
         },
         classification: {
             anyOf: [
@@ -5525,6 +5524,7 @@ export const MeldingUpdateOutputSchema = {
         'public_id',
         'text',
         'state',
+        'urgency',
         'token'
     ],
     title: 'MeldingUpdateOutput'
