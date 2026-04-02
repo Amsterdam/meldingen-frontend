@@ -1,7 +1,6 @@
 import { getFormClassificationByClassificationId, putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
 import { TOP_ANCHOR_ID } from '../constants'
-import { handleApiError } from '../handleApiError'
 
 type ClassificationRedirectResult = { type: 'redirect'; url: string } | { error: unknown; type: 'error' }
 
@@ -15,11 +14,11 @@ export const resolveClassificationRedirect = async (
   classificationId?: number,
 ): Promise<ClassificationRedirectResult> => {
   if (classificationId) {
-    const { data, error } = await getFormClassificationByClassificationId({
+    const { data, error, response } = await getFormClassificationByClassificationId({
       path: { classification_id: classificationId },
     })
 
-    if (error && handleApiError(error) !== 'Not Found') return { error, type: 'error' }
+    if (error && response.status !== 404) return { error, type: 'error' }
 
     const hasAdditionalQuestions = Boolean(data?.components[0])
 

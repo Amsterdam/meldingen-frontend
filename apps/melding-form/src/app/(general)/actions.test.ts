@@ -4,7 +4,6 @@ import { redirect } from 'next/navigation'
 import { Mock, vi } from 'vitest'
 
 import { COOKIES, TOP_ANCHOR_ID } from '../../constants'
-import { form } from '../../mocks/data'
 import { ENDPOINTS } from '../../mocks/endpoints'
 import { server } from '../../mocks/node'
 import { postPrimaryForm } from './actions'
@@ -99,73 +98,22 @@ describe('postPrimaryForm', () => {
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.PUBLIC_ID, 'PATCH request', { maxAge: 86400 })
   })
 
-  describe('with classification', () => {
-    it('returns an error when getFormClassificationByClassificationId returns an error', async () => {
-      server.use(
-        http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
-          HttpResponse.json('Error message', { status: 500 }),
-        ),
-      )
-
-      const formData = new FormData()
-      formData.set('primary', 'Test')
-
-      const result = await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
-
-      expect(result).toEqual({ formData, systemError: 'Error message' })
-      expect(redirect).not.toHaveBeenCalled()
-    })
-
-    it('returns an error message if an error occurs when changing melding state', async () => {
-      server.use(
-        http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ANSWER_QUESTIONS, () =>
-          HttpResponse.json('Error message', { status: 404 }),
-        ),
-      )
-
-      const formData = new FormData()
-      formData.set('primary', 'Test')
-
-      const result = await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
-
-      expect(result).toEqual({ formData, systemError: 'Error message' })
-      expect(redirect).not.toHaveBeenCalled()
-    })
-
-    it('redirects to /locatie when there are no additional questions', async () => {
-      const formData = new FormData()
-      formData.set('primary', 'Test')
-
-      await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
-
-      expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
-    })
-
-    it('redirects to /aanvullende-vragen when there are additional questions', async () => {
-      server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(form)))
-
-      const formData = new FormData()
-      formData.set('primary', 'Test')
-
-      await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
-
-      expect(redirect).toHaveBeenCalledWith(`/aanvullende-vragen/2/page1#${TOP_ANCHOR_ID}`)
-    })
-  })
-
-  it('redirects to /locatie when there is no classification', async () => {
+  it('returns a system error when resolveClassificationRedirect returns an error', async () => {
     server.use(
-      http.post(ENDPOINTS.POST_MELDING, () =>
-        HttpResponse.json({
-          classification: undefined,
-          created_at: '2025-05-26T11:56:34.081Z',
-          id: 123,
-          public_id: 'B100AA',
-          token: 'test-token',
-        }),
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json('Error message', { status: 500 }),
       ),
     )
 
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+
+    const result = await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
+    expect(result).toEqual({ formData, systemError: 'Error message' })
+    expect(redirect).not.toHaveBeenCalled()
+  })
+
+  it('redirects to the correct URL when postPrimaryForm is successful', async () => {
     const formData = new FormData()
     formData.set('primary', 'Test')
 
