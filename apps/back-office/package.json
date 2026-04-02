@@ -17,8 +17,8 @@
   "dependencies": {
     "@meldingen/api-client": "workspace:*",
     "@meldingen/ui": "workspace:*",
-    "next": "16.2.1",
+    "next": "16.2.2",
     "next-auth": "4.24.13",
-    "next-intl": "4.8.3"
+    "next-intl": "4.8.4"
   }
 }
