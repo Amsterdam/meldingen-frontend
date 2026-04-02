@@ -10,6 +10,7 @@ export const OVERVIEW_FIELDS = [
   { key: 'created_at', labelKey: 'column-header.created_at' },
   { key: 'classification', labelKey: 'column-header.classification' },
   { key: 'state', labelKey: 'column-header.state' },
+  { key: 'urgency', labelKey: 'column-header.urgency' },
   { key: 'address', labelKey: 'column-header.address' },
   { key: 'postal_code', labelKey: 'column-header.postal_code' },
 ] as const
@@ -36,6 +37,9 @@ export const formatValue = (melding: MeldingWithAddress, key: OverviewField['key
       return melding.public_id
     case 'state':
       return t(`shared.state.${melding.state}`)
+    case 'urgency': {
+      return t(`shared.urgency.${melding.urgency}`)
+    }
     default:
       return ''
   }

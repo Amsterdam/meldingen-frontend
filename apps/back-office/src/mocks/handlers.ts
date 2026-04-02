@@ -20,6 +20,8 @@ export const handlers = [
     HttpResponse.json({ states: ['processing_requested', 'completed'] }),
   ),
 
+  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () => HttpResponse.json({})),
+
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_CANCEL, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_COMPLETE, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_PLAN, () => new HttpResponse()),

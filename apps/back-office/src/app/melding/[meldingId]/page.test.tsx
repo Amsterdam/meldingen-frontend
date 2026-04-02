@@ -121,6 +121,15 @@ describe('Page', () => {
         },
         term: 'detail.melding-data.state.term',
       },
+      {
+        description: 'shared.urgency.0',
+        key: 'urgency',
+        link: {
+          href: `/melding/${id}/wijzig-urgentie`,
+          label: 'detail.melding-data.urgency.link',
+        },
+        term: 'detail.melding-data.urgency.term',
+      },
     ]
 
     const attachments = {
