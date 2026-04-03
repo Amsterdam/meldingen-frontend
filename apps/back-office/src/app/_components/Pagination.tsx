@@ -17,9 +17,9 @@ export const Pagination = ({ page, pageSize, totalPages }: Props) => {
   const t = useTranslations('overview.navigation')
 
   return (
-    <div className={styles.bottomControls}>
+    <div className={styles.wrapper}>
       {totalPages > 1 && (
-        <Paragraph className={styles.paginationInfo}>
+        <Paragraph className={styles.description}>
           {t('current-page', { currentPage: page ?? 1, totalPages })}
         </Paragraph>
       )}
