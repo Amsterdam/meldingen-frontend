@@ -127,6 +127,25 @@ describe('FormRenderer', () => {
     }
   })
 
+  it('returns an empty string when the Checkbox in a TimeInput is clicked', async () => {
+    const user = userEvent.setup()
+
+    const timeInput = {
+      ...form.components[0].components[5],
+      defaultValue: '10:00',
+      key: 'time-input',
+      label: 'Time Input',
+    }
+
+    render(<FormRenderer {...defaultProps} formComponents={[timeInput]} />)
+
+    const input = screen.getByDisplayValue('10:00')
+
+    await user.click(screen.getByRole('checkbox', { name: 'Weet ik niet' }))
+
+    expect(input).toHaveValue('')
+  })
+
   it('does not render a component when shouldRender returns false, and renders it after onChange updates values (string)', async () => {
     const user = userEvent.setup()
 

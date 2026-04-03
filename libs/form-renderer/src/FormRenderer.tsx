@@ -93,7 +93,7 @@ const getComponent = (
         hasHeading={hasOneFormComponent}
         id={key}
         key={key}
-        onChange={onChangeString}
+        onChange={(value) => onChange(value ?? '')}
       />
     )
   }
