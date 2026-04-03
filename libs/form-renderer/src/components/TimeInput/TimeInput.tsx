@@ -1,5 +1,5 @@
 import { TimeInput as ADSTimeInput, Checkbox, Column, ErrorMessage } from '@amsterdam/design-system-react'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { FieldSet } from '@meldingen/ui'
@@ -29,21 +29,17 @@ export const TimeInput = ({
   onChange,
   validate,
 }: Props) => {
-  const [value, setValue] = useState<string | null>(defaultValue ?? null)
-  const previousValue = useRef<string | null>(defaultValue ?? null)
+  const [isUnknown, setIsUnknown] = useState(defaultValue === null)
+  const [timeValue, setTimeValue] = useState<string>(defaultValue ?? '')
 
-  const handleChange = (newValue: string | null) => {
-    setValue(newValue)
+  const handleTimeChange = (newValue: string) => {
+    setTimeValue(newValue)
     onChange(newValue)
   }
 
   const handleCheckboxChange = (isChecked: boolean) => {
-    if (isChecked) {
-      previousValue.current = value
-      handleChange(null)
-    } else {
-      handleChange(previousValue.current)
-    }
+    setIsUnknown(isChecked)
+    onChange(isChecked ? null : timeValue)
   }
 
   return (
@@ -68,14 +64,11 @@ export const TimeInput = ({
           id={id}
           invalid={Boolean(errorMessage)}
           name={id}
-          onChange={(e) => {
-            previousValue.current = e.target.value
-            handleChange(e.target.value)
-          }}
-          value={value ?? ''}
+          onChange={(e) => !isUnknown && handleTimeChange(e.target.value)}
+          value={isUnknown ? '' : timeValue}
         />
         <Checkbox
-          defaultChecked={defaultValue === null}
+          defaultChecked={isUnknown}
           name={`${id}-time-unknown`}
           onChange={(e) => handleCheckboxChange(e.target.checked)}
         >
