@@ -14,27 +14,29 @@ const defaultProps: Props = {
 }
 
 describe('TimeInput', () => {
-  it('renders label', () => {
+  it('renders the Time Input field set', () => {
     render(<TimeInput {...defaultProps} />)
 
-    expect(screen.getByLabelText('Time')).toBeInTheDocument()
+    const fieldSet = screen.getByRole('group', { name: defaultProps.label })
+
+    expect(fieldSet).toBeInTheDocument()
   })
 
   it('renders optional label when not required', () => {
     render(<TimeInput {...defaultProps} validate={{ required: false }} />)
 
-    const timeInput = screen.getByLabelText('Time (niet verplicht)')
+    const fieldSet = screen.getByRole('group', { name: 'Time (niet verplicht)' })
 
-    expect(timeInput).toBeInTheDocument()
+    expect(fieldSet).toBeInTheDocument()
   })
 
-  it('marks the Field and input as invalid when there is an error message', () => {
+  it('marks the Field Set and input as invalid when there is an error message', () => {
     const { container } = render(<TimeInput {...defaultProps} errorMessage="Error!" />)
 
-    const field = container.firstChild
-    expect(field).toHaveClass('ams-field--invalid')
+    const fieldSet = screen.getByRole('group', { name: defaultProps.label })
+    expect(fieldSet).toHaveClass('ams-field-set--invalid')
 
-    const input = screen.getByLabelText('Time')
+    const input = container.querySelector('input[type="time"]')
     expect(input).toHaveAttribute('aria-invalid', 'true')
   })
 
@@ -57,15 +59,17 @@ describe('TimeInput', () => {
   it('renders a description', () => {
     render(<TimeInput {...defaultProps} description="Test description" />)
 
-    expect(screen.getByLabelText('Time')).toHaveAccessibleDescription('Test description')
+    const fieldSet = screen.getByRole('group', { name: defaultProps.label })
+
+    expect(fieldSet).toHaveAccessibleDescription('Test description')
   })
 
   it('renders error message', () => {
     render(<TimeInput {...defaultProps} errorMessage="Error!" />)
 
-    const timeInput = screen.getByLabelText('Time')
+    const fieldSet = screen.getByRole('group', { name: defaultProps.label })
 
-    expect(timeInput).toHaveAccessibleDescription('Invoerfout:Error!')
+    expect(fieldSet).toHaveAccessibleDescription('Invoerfout:Error!')
   })
 
   it('passes defaultValue to ADSTimeInput', () => {
@@ -74,24 +78,55 @@ describe('TimeInput', () => {
     expect(screen.getByDisplayValue('12:34')).toBeInTheDocument()
   })
 
-  it('correctly marks TimeInput as required', () => {
-    render(<TimeInput {...defaultProps} validate={{ required: true }} />)
+  it('correctly marks the input in the TimeInput group as required', () => {
+    render(<TimeInput {...defaultProps} defaultValue="12:34" validate={{ required: true }} />)
 
-    const timeInput = screen.getByLabelText('Time')
+    const input = screen.getByDisplayValue('12:34')
 
-    expect(timeInput).toBeRequired()
+    expect(input).toBeRequired()
   })
 
   it('calls onChange with the correct value when the value changes', async () => {
     const user = userEvent.setup()
     const onChange = vi.fn()
 
-    render(<TimeInput {...defaultProps} onChange={onChange} />)
+    render(<TimeInput {...defaultProps} defaultValue="11:11" onChange={onChange} />)
 
-    const timeInput = screen.getByLabelText('Time')
+    const input = screen.getByDisplayValue('11:11')
 
-    await user.type(timeInput, '12:34')
+    await user.type(input, '12:34', {
+      initialSelectionEnd: (input as HTMLInputElement).value.length,
+      initialSelectionStart: 0,
+    })
 
+    expect(onChange).toHaveBeenLastCalledWith('12:34')
+  })
+
+  it('calls onChange with null when the Checkbox is checked', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+
+    render(<TimeInput {...defaultProps} defaultValue="12:34" onChange={onChange} />)
+
+    const checkbox = screen.getByRole('checkbox', { name: 'Weet ik niet' })
+
+    await user.click(checkbox)
+
+    expect(onChange).toHaveBeenLastCalledWith(null)
+  })
+
+  it('restores the previous time value when the Checkbox is unchecked', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+
+    render(<TimeInput {...defaultProps} defaultValue="12:34" onChange={onChange} />)
+
+    const checkbox = screen.getByRole('checkbox', { name: 'Weet ik niet' })
+
+    await user.click(checkbox)
+    expect(onChange).toHaveBeenLastCalledWith(null)
+
+    await user.click(checkbox)
     expect(onChange).toHaveBeenLastCalledWith('12:34')
   })
 })

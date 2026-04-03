@@ -20,6 +20,7 @@ const components = [
   { index: 2, name: 'CheckboxGroup', role: 'group' },
   { index: 3, name: 'Select', role: 'combobox' },
   { index: 4, name: 'RadioGroup', role: 'radiogroup' },
+  { index: 5, name: 'TimeInputGroup', role: 'group' },
 ]
 
 describe('FormRenderer', () => {
@@ -49,23 +50,23 @@ describe('FormRenderer', () => {
     })
   })
 
-  // Time does not have a role, so we need to test it separately
-  it('renders a form with a TimeInput component', () => {
-    const props: Props = {
-      ...defaultProps,
-      formComponents: [
-        {
-          ...form.components[0].components[5],
-        },
-      ],
-    }
+  // // Time does not have a role, so we need to test it separately
+  // it('renders a form with a TimeInput component', () => {
+  //   const props: Props = {
+  //     ...defaultProps,
+  //     formComponents: [
+  //       {
+  //         ...form.components[0].components[5],
+  //       },
+  //     ],
+  //   }
 
-    render(<FormRenderer {...props} />)
+  //   render(<FormRenderer {...props} />)
 
-    const timeInput = screen.getByLabelText(form.components[0].components[5].label)
+  //   const timeInput = screen.getByLabelText(form.components[0].components[5].label)
 
-    expect(timeInput).toBeInTheDocument()
-  })
+  //   expect(timeInput).toBeInTheDocument()
+  // })
 
   it('renders nothing if an unsupported component is passed', () => {
     const props: Props = {
