@@ -10,12 +10,7 @@ import { ALLOWED_PAGE_SIZES, COOKIES } from '../../constants'
 
 import styles from './Pagination.module.css'
 
-type AllowedPageSize = (typeof ALLOWED_PAGE_SIZES)[number]
-
-const isAllowedPageSize = (value: number): value is AllowedPageSize =>
-  ALLOWED_PAGE_SIZES.includes(value as AllowedPageSize)
-
-const writePageSizeCookie = (value: AllowedPageSize) => {
+const writePageSizeCookie = (value: number) => {
   document.cookie = `${COOKIES.PAGE_SIZE}=${value}; path=/`
 }
 
@@ -30,7 +25,6 @@ export const PageSizeSelect = ({ page, pageSize }: Props) => {
 
   const onChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const selected = parseInt(event.target.value, 10)
-    if (!isAllowedPageSize(selected)) return
 
     writePageSizeCookie(selected)
 
