@@ -1,6 +1,6 @@
 import type { Mock } from 'vitest'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { useActionState } from 'react'
 
 import type { Props } from './AdditionalQuestions'
@@ -165,6 +165,25 @@ describe('AdditionalQuestions', () => {
 
     expect(checkbox1).toBeChecked()
     expect(checkbox2).not.toBeChecked()
+  })
+
+  it('prefills Time Inputs with a checked checkbox', () => {
+    const formData = new FormData()
+
+    formData.append('timeInput-time-unknown', 'on')
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+
+    render(
+      <AdditionalQuestions
+        {...defaultProps}
+        formComponents={[{ ...textAreaComponent, key: 'timeInput', label: 'Time input', type: 'time' }]}
+      />,
+    )
+
+    const timeInputGroup = screen.getByRole('group', { name: 'Time input (niet verplicht)' })
+    const checkbox = within(timeInputGroup).getByRole('checkbox', { name: 'Weet ik niet' })
+
+    expect(checkbox).toBeChecked()
   })
 
   it('updates the document title when there is a system error', () => {
