@@ -23,6 +23,10 @@ const getPrefilledFormComponents = (components: Component[], formData: FormData)
       return { ...component, defaultValues }
     }
 
+    if (component.type === 'time' && formData.get(`${component.key}-time-unknown`) === 'on') {
+      return { ...component, defaultValue: null } as Component // TODO: We can possibly get rid of this assertion when the Back end allows a Time component to have a null value.
+    }
+
     const formValue = formData.get(component.key)
 
     if (typeof formValue === 'string') {

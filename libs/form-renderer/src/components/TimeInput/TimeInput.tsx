@@ -53,7 +53,7 @@ export const TimeInput = ({
           name={id}
           onChange={(e) => onChange(e.target.value)}
         />
-        <Checkbox defaultChecked={defaultValue === null} name={`${id}-unknown`}>
+        <Checkbox defaultChecked={defaultValue === null} name={`${id}-time-unknown`}>
           Weet ik niet
         </Checkbox>
       </Column>

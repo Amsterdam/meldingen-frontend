@@ -13,7 +13,7 @@ export type FormRadioComponent = FormRadioComponentOutput & { defaultValue?: str
 export type FormSelectComponent = FormSelectComponentOutput & { defaultValue?: string }
 export type FormTextAreaComponent = FormTextAreaComponentOutput & { defaultValue?: string }
 export type FormTextFieldInputComponent = FormTextFieldInputComponentOutput & { defaultValue?: string }
-export type FormTimeComponent = FormTimeComponentOutput & { defaultValue?: string }
+export type FormTimeComponent = FormTimeComponentOutput & { defaultValue?: string | null }
 export type StaticFormTextAreaComponent = StaticFormTextAreaComponentOutput & { defaultValue?: string }
 
 export type Component =

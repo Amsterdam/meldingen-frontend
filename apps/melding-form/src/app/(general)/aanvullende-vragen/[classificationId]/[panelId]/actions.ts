@@ -10,6 +10,7 @@ import type { AnswersByKey, PanelComponentsConditions } from './_utils/navigatio
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
+import { mergeUnknownTimeAnswers } from './_utils/mergeUnknownTimeAnswers'
 import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, shouldRenderComponent } from './_utils/navigationUtils'
 import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
@@ -78,17 +79,17 @@ export const postForm = async (
   // This function merges these answers into an array per question, using an identifier in the Checkbox component.
   const entriesArray = Array.from(formData.entries())
   const stringEntries = entriesArray.filter(([, value]) => typeof value === 'string') as [string, string][]
-  const entriesWithMergedCheckboxes = Object.entries(mergeCheckboxAnswers(stringEntries))
+  const entries = mergeUnknownTimeAnswers(Object.entries(mergeCheckboxAnswers(stringEntries)))
 
   // Merge previously submitted answers with the current panel's just-submitted answers.
   // Current panel answers take priority, enabling up-to-date conditional evaluation.
-  const allAnswersByKey = { ...previousAnswersByKey, ...Object.fromEntries(entriesWithMergedCheckboxes) }
+  const allAnswersByKey = { ...previousAnswersByKey, ...Object.fromEntries(entries) }
 
   // Check if all required questions are answered
   const componentsConditions = panelComponentsConditions[currentPanelIndex].componentsConditions
   const missingRequiredQuestionErrorMessages = getMissingRequiredQuestionErrorMessages(
     requiredQuestionErrorMessages,
-    entriesWithMergedCheckboxes,
+    entries,
     componentsConditions,
     allAnswersByKey,
   )
@@ -105,7 +106,7 @@ export const postForm = async (
 
   // Build promise array
   const promiseArray = buildAnswerPromises({
-    entries: entriesWithMergedCheckboxes,
+    entries,
     meldingId,
     questionAndAnswerIdPairs,
     questionMetadata,
