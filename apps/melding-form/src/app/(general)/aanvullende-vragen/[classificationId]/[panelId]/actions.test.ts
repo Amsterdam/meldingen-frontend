@@ -160,28 +160,6 @@ describe('postForm', () => {
     })
   })
 
-  it('uses fallback-key for the validation error key when result key is empty', async () => {
-    server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>
-        HttpResponse.json({ detail: [{ loc: [''], msg: 'Validation error', type: 'value_error' }] }, { status: 422 }),
-      ),
-    )
-
-    const formData = new FormData()
-    formData.append('', 'some-value')
-
-    const result = await postForm(
-      { ...defaultArgs, questionMetadata: [{ id: 3, key: '', type: 'textfield' }] },
-      null,
-      formData,
-    )
-
-    expect(result).toEqual({
-      formData,
-      validationErrors: [{ key: 'fallback-key', message: 'Validation error' }],
-    })
-  })
-
   it('returns an error message if an error occurs when posting a single answer', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>

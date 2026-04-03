@@ -112,34 +112,29 @@ export const postForm = async (
     questionMetadata,
     token,
   })
-  const results = await Promise.all(promiseArray)
+  const allResults = await Promise.all(promiseArray)
+  const results = allResults.filter((result) => result !== undefined)
 
   // Return validation errors if there are any
-  const resultsWithValidationError = results.filter((result) => {
-    if (!result?.value) return false
-
-    return hasValidationErrors(result.value.response, result.value.error)
-  })
+  const resultsWithValidationError = results.filter(({ value }) => hasValidationErrors(value.response, value.error))
 
   if (resultsWithValidationError.length > 0) {
     return {
       formData,
-      validationErrors: resultsWithValidationError.map((result) => ({
-        key: result?.key || 'fallback-key',
-        message: handleApiError(result?.value.error),
+      validationErrors: resultsWithValidationError.map(({ key, value }) => ({
+        key,
+        message: handleApiError(value.error),
       })),
     }
   }
 
   // Return an array of all errors if there are any
-  const erroredResults = results.filter((result) => result?.value.error)
+  const erroredResults = results.filter(({ value }) => value.error)
 
   if (erroredResults.length > 0) {
-    const errors = erroredResults.map((result) => result?.value.error)
-
     return {
       formData,
-      systemError: errors,
+      systemError: erroredResults.map(({ value }) => value.error),
     }
   }
 
