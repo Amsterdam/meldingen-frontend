@@ -16,7 +16,13 @@
       "address": "Adres",
       "postal_code": "Postcode"
     },
-    "no-classification": "Geen categorie"
+    "no-classification": "Geen categorie",
+    "navigation": {
+      "previous": "Vorige pagina",
+      "next": "Volgende pagina",
+      "current-page": "Pagina {currentPage} van {totalPages}",
+      "label": "Resultaten per pagina"
+    }
   },
   "detail": {
     "attachments": {
