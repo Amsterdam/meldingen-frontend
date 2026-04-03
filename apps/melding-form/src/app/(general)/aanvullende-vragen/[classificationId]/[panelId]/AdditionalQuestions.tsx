@@ -5,7 +5,7 @@ import { useActionState, useEffect, useRef } from 'react'
 
 import type { Component } from '@meldingen/form-renderer'
 
-import { FormRenderer, isSelectboxes } from '@meldingen/form-renderer'
+import { FormRenderer, isSelectboxes, isTimeInput } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
 import type { AnswersByKey } from './_utils/navigationUtils'
@@ -23,8 +23,8 @@ const getPrefilledFormComponents = (components: Component[], formData: FormData)
       return { ...component, defaultValues }
     }
 
-    if (component.type === 'time' && formData.get(`${component.key}-time-unknown`) === 'on') {
-      return { ...component, defaultValue: null } as Component // TODO: We can possibly get rid of this assertion when the Back end allows a Time component to have a null value.
+    if (isTimeInput(component) && formData.get(`${component.key}-time-unknown`) === 'on') {
+      return { ...component, defaultValue: null }
     }
 
     const formValue = formData.get(component.key)
