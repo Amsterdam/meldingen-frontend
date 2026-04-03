@@ -50,24 +50,6 @@ describe('FormRenderer', () => {
     })
   })
 
-  // // Time does not have a role, so we need to test it separately
-  // it('renders a form with a TimeInput component', () => {
-  //   const props: Props = {
-  //     ...defaultProps,
-  //     formComponents: [
-  //       {
-  //         ...form.components[0].components[5],
-  //       },
-  //     ],
-  //   }
-
-  //   render(<FormRenderer {...props} />)
-
-  //   const timeInput = screen.getByLabelText(form.components[0].components[5].label)
-
-  //   expect(timeInput).toBeInTheDocument()
-  // })
-
   it('renders nothing if an unsupported component is passed', () => {
     const props: Props = {
       ...defaultProps,
