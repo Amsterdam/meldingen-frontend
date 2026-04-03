@@ -32,14 +32,19 @@ describe('PageSizeSelect', () => {
 
     expect(document.cookie).toContain('meldingen_bo_overview_page_size=40')
     expect(router.push).toHaveBeenCalledWith('/')
+    expect(router.refresh).not.toHaveBeenCalled()
   })
 
-  it('handles invalid cookie values gracefully', async () => {
-    document.cookie = 'meldingen_bo_overview_page_size=invalid'
+  it('sets a cookie and refreshes the current page when changed on the first page', async () => {
+    const user = userEvent.setup()
 
     render(<PageSizeSelect page={1} pageSize={10} />)
 
     const select = screen.getByLabelText('label')
-    expect(select).toHaveValue('10')
+    await user.selectOptions(select, '20')
+
+    expect(document.cookie).toContain('meldingen_bo_overview_page_size=20')
+    expect(router.refresh).toHaveBeenCalled()
+    expect(router.push).not.toHaveBeenCalled()
   })
 })
