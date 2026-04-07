@@ -24,6 +24,7 @@ export const AssetTypeEdit = ({ id }: { id?: number }) => (
       }
     >
       <TextInput source="name" validate={required()} />
+      <TextInput source="arguments.type_names" validate={required()} />
       <TextInput source="arguments.base_url" validate={required()} />
       <NumberInput source="max_assets" validate={[required(), minValue(1)]} />
     </SimpleForm>

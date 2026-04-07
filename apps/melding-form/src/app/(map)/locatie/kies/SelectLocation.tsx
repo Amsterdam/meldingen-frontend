@@ -35,6 +35,7 @@ type Props = {
   coordinates?: Coordinates
   maxAssets: number
   selectedAssets: Feature[]
+  typeNames?: string
 }
 
 export type NotificationType = 'too-many-assets' | 'location-service-disabled'
@@ -47,6 +48,7 @@ export const SelectLocation = ({
   coordinates: coordinatesFromServer,
   maxAssets,
   selectedAssets: selectedAssetsFromServer,
+  typeNames,
 }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
@@ -123,6 +125,7 @@ export const SelectLocation = ({
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
             onSelectedMarkersChange={setSelectedAssets}
             selectedMarkers={selectedAssets}
+            typeNames={typeNames}
             updateSelectedPoint={setCoordinates}
           />
           <Controls

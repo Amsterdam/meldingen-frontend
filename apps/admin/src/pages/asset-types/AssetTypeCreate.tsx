@@ -13,6 +13,7 @@ import {
 type AssetTypeCreateData = {
   arguments: {
     base_url: string
+    type_names: string
   }
   max_assets: number
   name: string
@@ -37,6 +38,7 @@ export const AssetTypeCreate = () => (
       }
     >
       <TextInput source="name" validate={required()} />
+      <TextInput source="arguments.type_names" validate={required()} />
       <TextInput source="arguments.base_url" validate={required()} />
       <NumberInput defaultValue={3} source="max_assets" validate={[required(), minValue(1)]} />
     </SimpleForm>

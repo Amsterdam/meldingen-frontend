@@ -114,6 +114,7 @@ export default async () => {
       coordinates={coordinates}
       maxAssets={data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK}
       selectedAssets={selectedAssets}
+      typeNames={(data?.classification?.asset_type?.arguments?.type_names as string) ?? undefined}
     />
   )
 }

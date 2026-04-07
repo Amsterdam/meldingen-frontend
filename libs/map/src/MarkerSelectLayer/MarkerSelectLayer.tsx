@@ -18,13 +18,14 @@ export const fetchFeaturesOnMoveEnd = async (
   onFeaturesChange: Props['onFeaturesChange'],
   markerLayerRef: RefObject<Layer | null>,
   assetTypeId?: number,
+  typeNames?: string,
   classification?: string,
 ) => {
   // Don't fetch markers when map is hidden with display: none
   const size = map.getSize()
   const mapIsHidden = size.x === 0 && size.y === 0
 
-  if (!classification || !assetTypeId || mapIsHidden) return
+  if (!classification || !assetTypeId || !typeNames || mapIsHidden) return
 
   const zoom = map.getZoom()
 
@@ -34,7 +35,7 @@ export const fetchFeaturesOnMoveEnd = async (
 
     const { data, error } = await getAssetTypeByAssetTypeIdWfs({
       path: { asset_type_id: assetTypeId },
-      query: { filter },
+      query: { filter, type_names: typeNames },
     })
 
     if (error) {
@@ -61,6 +62,7 @@ export type Props = {
   onMaxMarkersReached: (maxReached: boolean) => void
   onSelectedMarkersChange: (selectedMarkers: Feature[]) => void
   selectedMarkers: Feature[]
+  typeNames?: string
   updateSelectedPoint: (point?: Coordinates) => void
 }
 
@@ -73,6 +75,7 @@ export const MarkerSelectLayer = ({
   onMaxMarkersReached,
   onSelectedMarkersChange,
   selectedMarkers,
+  typeNames,
   updateSelectedPoint,
 }: Props) => {
   const map = useContext(MapContext)
@@ -80,11 +83,13 @@ export const MarkerSelectLayer = ({
 
   useEffect(() => {
     if (!map) return
-    map.on('moveend', () => fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, assetTypeId, classification))
+    map.on('moveend', () =>
+      fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, assetTypeId, typeNames, classification),
+    )
 
     return () => {
       map.off('moveend', () =>
-        fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, assetTypeId, classification),
+        fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, assetTypeId, typeNames, classification),
       )
     }
   }, [map])
