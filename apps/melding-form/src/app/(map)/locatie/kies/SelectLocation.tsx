@@ -30,6 +30,7 @@ const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) =>
 })
 
 type Props = {
+  assetTypeId?: number
   classification?: string
   coordinates?: Coordinates
   maxAssets: number
@@ -41,6 +42,7 @@ export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 const initialState: { errorMessage?: string } = {}
 
 export const SelectLocation = ({
+  assetTypeId,
   classification,
   coordinates: coordinatesFromServer,
   maxAssets,
@@ -113,6 +115,7 @@ export const SelectLocation = ({
             selectedPoint={coordinates}
           />
           <MarkerSelectLayer
+            assetTypeId={assetTypeId}
             classification={classification}
             features={assetList}
             maxMarkers={maxAssets}

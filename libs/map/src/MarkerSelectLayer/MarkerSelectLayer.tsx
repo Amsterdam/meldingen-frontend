@@ -11,20 +11,20 @@ import { useAddMarkersToMap } from './useAddMarkersToMap'
 import './cluster.css'
 import { getWfsFilter } from './utils/getWfsFilter'
 
-const classificationsWithAssets = ['container', 'Demo container is vol']
 export const ZOOM_THRESHOLD = 16
 
 export const fetchFeaturesOnMoveEnd = async (
-  classification: Props['classification'],
   map: Map,
   onFeaturesChange: Props['onFeaturesChange'],
   markerLayerRef: RefObject<Layer | null>,
+  assetTypeId?: number,
+  classification?: string,
 ) => {
   // Don't fetch markers when map is hidden with display: none
   const size = map.getSize()
   const mapIsHidden = size.x === 0 && size.y === 0
 
-  if (!classification || !classificationsWithAssets.includes(classification) || mapIsHidden) return
+  if (!classification || !assetTypeId || mapIsHidden) return
 
   const zoom = map.getZoom()
 
@@ -33,7 +33,7 @@ export const fetchFeaturesOnMoveEnd = async (
     const filter = getWfsFilter(map)
 
     const { data, error } = await getAssetTypeByAssetTypeIdWfs({
-      path: { asset_type_id: 1 },
+      path: { asset_type_id: assetTypeId },
       query: { filter },
     })
 
@@ -53,6 +53,7 @@ export const fetchFeaturesOnMoveEnd = async (
 }
 
 export type Props = {
+  assetTypeId?: number
   classification?: string
   features: Feature[]
   maxMarkers: number
@@ -64,6 +65,7 @@ export type Props = {
 }
 
 export const MarkerSelectLayer = ({
+  assetTypeId,
   classification,
   features,
   maxMarkers,
@@ -78,10 +80,12 @@ export const MarkerSelectLayer = ({
 
   useEffect(() => {
     if (!map) return
-    map.on('moveend', () => fetchFeaturesOnMoveEnd(classification, map, onFeaturesChange, markerLayerRef))
+    map.on('moveend', () => fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, assetTypeId, classification))
 
     return () => {
-      map.off('moveend', () => fetchFeaturesOnMoveEnd(classification, map, onFeaturesChange, markerLayerRef))
+      map.off('moveend', () =>
+        fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, assetTypeId, classification),
+      )
     }
   }, [map])
 

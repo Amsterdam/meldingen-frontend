@@ -109,6 +109,7 @@ export default async () => {
 
   return (
     <SelectLocation
+      assetTypeId={data?.classification?.asset_type?.id}
       classification={data?.classification?.name}
       coordinates={coordinates}
       maxAssets={data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK}
