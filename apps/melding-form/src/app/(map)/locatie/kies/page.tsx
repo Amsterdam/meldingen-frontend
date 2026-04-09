@@ -112,6 +112,7 @@ export default async () => {
       assetTypeId={data?.classification?.asset_type?.id}
       classification={data?.classification?.name}
       coordinates={coordinates}
+      filter={(data?.classification?.asset_type?.arguments?.filter as string) ?? undefined}
       maxAssets={data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK}
       selectedAssets={selectedAssets}
       typeNames={(data?.classification?.asset_type?.arguments?.type_names as string) ?? undefined}

@@ -20,22 +20,23 @@ export const fetchFeaturesOnMoveEnd = async (
   assetTypeId?: number,
   typeNames?: string,
   classification?: string,
+  filter?: string,
 ) => {
   // Don't fetch markers when map is hidden with display: none
   const size = map.getSize()
   const mapIsHidden = size.x === 0 && size.y === 0
 
-  if (!classification || !assetTypeId || !typeNames || mapIsHidden) return
+  if (!classification || !assetTypeId || !typeNames || !filter || mapIsHidden) return
 
   const zoom = map.getZoom()
 
   // Has correct zoom level for markers
   if (zoom >= ZOOM_THRESHOLD) {
-    const filter = getWfsFilter(map)
+    const filterWithCoordinates = getWfsFilter(filter, map)
 
     const { data, error } = await getAssetTypeByAssetTypeIdWfs({
       path: { asset_type_id: assetTypeId },
-      query: { filter, type_names: typeNames },
+      query: { filter: filterWithCoordinates, type_names: typeNames },
     })
 
     if (error) {
@@ -57,6 +58,7 @@ export type Props = {
   assetTypeId?: number
   classification?: string
   features: Feature[]
+  filter?: string
   maxMarkers: number
   onFeaturesChange: (markers: Feature[]) => void
   onMaxMarkersReached: (maxReached: boolean) => void
@@ -70,6 +72,7 @@ export const MarkerSelectLayer = ({
   assetTypeId,
   classification,
   features,
+  filter,
   maxMarkers,
   onFeaturesChange,
   onMaxMarkersReached,
@@ -84,12 +87,12 @@ export const MarkerSelectLayer = ({
   useEffect(() => {
     if (!map) return
     map.on('moveend', () =>
-      fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, assetTypeId, typeNames, classification),
+      fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, assetTypeId, typeNames, classification, filter),
     )
 
     return () => {
       map.off('moveend', () =>
-        fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, assetTypeId, typeNames, classification),
+        fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, assetTypeId, typeNames, classification, filter),
       )
     }
   }, [map])

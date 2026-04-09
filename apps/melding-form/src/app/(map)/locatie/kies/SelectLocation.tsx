@@ -33,6 +33,7 @@ type Props = {
   assetTypeId?: number
   classification?: string
   coordinates?: Coordinates
+  filter?: string
   maxAssets: number
   selectedAssets: Feature[]
   typeNames?: string
@@ -46,6 +47,7 @@ export const SelectLocation = ({
   assetTypeId,
   classification,
   coordinates: coordinatesFromServer,
+  filter,
   maxAssets,
   selectedAssets: selectedAssetsFromServer,
   typeNames,
@@ -120,6 +122,7 @@ export const SelectLocation = ({
             assetTypeId={assetTypeId}
             classification={classification}
             features={assetList}
+            filter={filter}
             maxMarkers={maxAssets}
             onFeaturesChange={setAssetList}
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
