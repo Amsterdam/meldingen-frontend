@@ -76,6 +76,52 @@ describe('Page', () => {
     )
   })
 
+  it('passes assetTypeId from melding classification.asset_type.id when it exists', async () => {
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        assetTypeId: 1,
+      }),
+      undefined,
+    )
+  })
+
+  it('passes filter, typeNames and srsName from melding classification.asset_type.arguments when they exist', async () => {
+    const meldingWithAssetTypeArguments = {
+      ...melding,
+      classification: {
+        ...melding.classification,
+        asset_type: {
+          ...melding.classification?.asset_type,
+          arguments: {
+            ...(melding.classification?.asset_type?.arguments ?? {}),
+            filter: '<Filter>test</Filter>',
+            srs_name: 'EPSG:28992',
+            type_names: 'Type name',
+          },
+        },
+      },
+    }
+
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(meldingWithAssetTypeArguments)),
+    )
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        filter: '<Filter>test</Filter>',
+        srsName: 'EPSG:28992',
+        typeNames: 'Type name',
+      }),
+      undefined,
+    )
+  })
+
   it('falls back to maxAssets=3 when the API does not provide it', async () => {
     const meldingWithAssetType = {
       ...melding,
