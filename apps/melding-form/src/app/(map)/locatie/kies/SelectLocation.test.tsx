@@ -32,7 +32,7 @@ const setInternalState = <T,>(setter: (value: T) => void, value: T) => {
   return undefined
 }
 
-const defaltProps: Props = {
+const defaultProps: Props = {
   assetTypeId: 1,
   classification: 'container',
   filter: 'my-filter',
@@ -44,7 +44,7 @@ const defaltProps: Props = {
 
 describe('SelectLocation', () => {
   it('renders', () => {
-    const { container } = render(<SelectLocation {...defaltProps} />)
+    const { container } = render(<SelectLocation {...defaultProps} />)
 
     const sideBarTop = container.querySelectorAll('[class*="_container"]')[0]
     const sideBarBottom = container.querySelector('[class*="_hide"]')
@@ -63,7 +63,7 @@ describe('SelectLocation', () => {
     )
     ;(useIsAfterBreakpoint as Mock).mockImplementationOnce(() => true)
 
-    const { container } = render(<SelectLocation {...defaltProps} />)
+    const { container } = render(<SelectLocation {...defaultProps} />)
 
     const SideBarBottom = container.querySelector('[class*="_hide"]')
 
@@ -85,7 +85,7 @@ describe('SelectLocation', () => {
       setInternalState(setNotificationType, 'too-many-assets'),
     )
 
-    render(<SelectLocation {...defaltProps} />)
+    render(<SelectLocation {...defaultProps} />)
 
     const notificationTitle = screen.getByText('too-many-assets.title')
 
@@ -101,7 +101,7 @@ describe('SelectLocation', () => {
 
 describe('Asset list toggle button', () => {
   it('renders nothing if assetList and selectedAssets are empty', () => {
-    render(<SelectLocation {...defaltProps} selectedAssets={[]} />)
+    render(<SelectLocation {...defaultProps} selectedAssets={[]} />)
 
     const toggleButton = screen.queryByRole('button', { name: /toggle-button./ })
 
@@ -113,7 +113,7 @@ describe('Asset list toggle button', () => {
       setInternalState(setSelectedAssets, [{ id: '1' }]),
     )
 
-    render(<SelectLocation {...defaltProps} selectedAssets={[]} />)
+    render(<SelectLocation {...defaultProps} selectedAssets={[]} />)
 
     const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
 
@@ -127,7 +127,7 @@ describe('Asset list toggle button', () => {
       setInternalState(setSelectedAssets, [{ id: '1' }]),
     )
 
-    render(<SelectLocation {...defaltProps} selectedAssets={[]} />)
+    render(<SelectLocation {...defaultProps} selectedAssets={[]} />)
 
     const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
 
@@ -139,7 +139,7 @@ describe('Asset list toggle button', () => {
   })
 
   it('shows prefilled selected assets', () => {
-    render(<SelectLocation {...defaltProps} selectedAssets={containerAssets} />)
+    render(<SelectLocation {...defaultProps} selectedAssets={containerAssets} />)
 
     expect(AssetList).toHaveBeenCalledWith(
       expect.objectContaining({
