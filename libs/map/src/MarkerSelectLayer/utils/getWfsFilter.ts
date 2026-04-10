@@ -1,15 +1,18 @@
 import { Map } from 'leaflet'
 
-const DEFAULT_SRS_NAME = 'EPSG:4326'
+export type GetWfsFilterQuery = {
+  filter: string
+  srsName: string
+}
 
-export const getWfsFilter = (filterTemplate: string, mapInstance: Map, srsName: string = DEFAULT_SRS_NAME) => {
+export const getWfsFilter = ({ filter, srsName }: GetWfsFilterQuery, mapInstance: Map) => {
   const bounds = mapInstance.getBounds()
   const north = bounds.getNorth()
   const south = bounds.getSouth()
   const east = bounds.getEast()
   const west = bounds.getWest()
 
-  return filterTemplate
+  return filter
     .replaceAll('{west}', String(west))
     .replaceAll('{south}', String(south))
     .replaceAll('{east}', String(east))

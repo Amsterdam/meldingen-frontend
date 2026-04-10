@@ -30,14 +30,16 @@ const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) =>
 })
 
 export type Props = {
-  assetTypeId?: number
-  classification?: string
   coordinates?: Coordinates
-  filter?: string
   maxAssets: number
   selectedAssets: Feature[]
-  srsName?: string
-  typeNames?: string
+  wfsQuery?: {
+    assetTypeId?: number
+    classification?: string
+    filter?: string
+    srsName?: string
+    typeNames?: string
+  }
 }
 
 export type NotificationType = 'too-many-assets' | 'location-service-disabled'
@@ -45,14 +47,10 @@ export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 const initialState: { errorMessage?: string } = {}
 
 export const SelectLocation = ({
-  assetTypeId,
-  classification,
   coordinates: coordinatesFromServer,
-  filter,
   maxAssets,
   selectedAssets: selectedAssetsFromServer,
-  srsName,
-  typeNames,
+  wfsQuery,
 }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
@@ -121,18 +119,14 @@ export const SelectLocation = ({
             selectedPoint={coordinates}
           />
           <MarkerSelectLayer
-            assetTypeId={assetTypeId}
-            classification={classification}
             features={assetList}
-            filter={filter}
             maxMarkers={maxAssets}
             onFeaturesChange={setAssetList}
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
             onSelectedMarkersChange={setSelectedAssets}
             selectedMarkers={selectedAssets}
-            srsName={srsName}
-            typeNames={typeNames}
             updateSelectedPoint={setCoordinates}
+            wfsQuery={wfsQuery}
           />
           <Controls
             onCurrentLocationError={() => setNotificationType('location-service-disabled')}
