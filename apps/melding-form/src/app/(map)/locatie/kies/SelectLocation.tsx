@@ -29,7 +29,7 @@ const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) =>
   ssr: false,
 })
 
-type Props = {
+export type Props = {
   assetTypeId?: number
   classification?: string
   coordinates?: Coordinates
