@@ -3,10 +3,11 @@ import { Map } from 'leaflet'
 const DEFAULT_SRS_NAME = 'EPSG:4326'
 
 export const getWfsFilter = (filterTemplate: string, mapInstance: Map, srsName: string = DEFAULT_SRS_NAME) => {
-  const north = mapInstance.getBounds().getNorth()
-  const south = mapInstance.getBounds().getSouth()
-  const east = mapInstance.getBounds().getEast()
-  const west = mapInstance.getBounds().getWest()
+  const bounds = mapInstance.getBounds()
+  const north = bounds.getNorth()
+  const south = bounds.getSouth()
+  const east = bounds.getEast()
+  const west = bounds.getWest()
 
   return filterTemplate
     .replaceAll('{west}', String(west))
