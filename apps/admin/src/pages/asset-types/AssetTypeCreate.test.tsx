@@ -9,6 +9,7 @@ describe('transform function', () => {
       arguments: {
         base_url: 'https://example.com/wfs',
         filter: 'my-filter',
+        srs_name: 'EPSG:4326',
         type_names: 'Type name',
       },
       max_assets: 3,
@@ -19,6 +20,7 @@ describe('transform function', () => {
       arguments: {
         base_url: 'https://example.com/wfs',
         filter: 'my-filter',
+        srs_name: 'EPSG:4326',
         type_names: 'Type name',
       },
       class_name: 'meldingen.wfs.ProxyWfsProviderFactory',
@@ -44,6 +46,9 @@ describe('AssetTypeCreate', () => {
     const typeNamesInput = screen.getByRole('textbox', {
       name: 'resources.asset-type.fields.arguments.type_names',
     })
+    const srsNameInput = screen.getByRole('textbox', {
+      name: 'resources.asset-type.fields.arguments.srs_name',
+    })
     const filterInput = screen.getByRole('textbox', {
       name: 'resources.asset-type.fields.arguments.filter',
     })
@@ -54,6 +59,7 @@ describe('AssetTypeCreate', () => {
 
     expect(nameInput).toBeInTheDocument()
     expect(typeNamesInput).toBeInTheDocument()
+    expect(srsNameInput).toBeInTheDocument()
     expect(filterInput).toBeInTheDocument()
     expect(baseUrlInput).toBeInTheDocument()
     expect(maxAssetsInput).toBeInTheDocument()
