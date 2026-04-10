@@ -89,7 +89,8 @@ export const MarkerSelectLayer = ({
 
   useEffect(() => {
     if (!map) return
-    map.on('moveend', () =>
+
+    const handleMoveEnd = () =>
       fetchFeaturesOnMoveEnd(
         map,
         onFeaturesChange,
@@ -99,22 +100,12 @@ export const MarkerSelectLayer = ({
         srsName,
         classification,
         filter,
-      ),
-    )
+      )
+
+    map.on('moveend', handleMoveEnd)
 
     return () => {
-      map.off('moveend', () =>
-        fetchFeaturesOnMoveEnd(
-          map,
-          onFeaturesChange,
-          markerLayerRef,
-          assetTypeId,
-          typeNames,
-          srsName,
-          classification,
-          filter,
-        ),
-      )
+      map.off('moveend', handleMoveEnd)
     }
   }, [map])
 
