@@ -19,6 +19,7 @@ export const fetchFeaturesOnMoveEnd = async (
   markerLayerRef: RefObject<Layer | null>,
   assetTypeId?: number,
   typeNames?: string,
+  srsName?: string,
   classification?: string,
   filter?: string,
 ) => {
@@ -32,7 +33,7 @@ export const fetchFeaturesOnMoveEnd = async (
 
   // Has correct zoom level for markers
   if (zoom >= ZOOM_THRESHOLD) {
-    const filterWithCoordinates = getWfsFilter(filter, map)
+    const filterWithCoordinates = getWfsFilter(filter, map, srsName)
 
     const { data, error } = await getAssetTypeByAssetTypeIdWfs({
       path: { asset_type_id: assetTypeId },
@@ -64,6 +65,7 @@ export type Props = {
   onMaxMarkersReached: (maxReached: boolean) => void
   onSelectedMarkersChange: (selectedMarkers: Feature[]) => void
   selectedMarkers: Feature[]
+  srsName?: string
   typeNames?: string
   updateSelectedPoint: (point?: Coordinates) => void
 }
@@ -78,6 +80,7 @@ export const MarkerSelectLayer = ({
   onMaxMarkersReached,
   onSelectedMarkersChange,
   selectedMarkers,
+  srsName,
   typeNames,
   updateSelectedPoint,
 }: Props) => {
@@ -87,12 +90,30 @@ export const MarkerSelectLayer = ({
   useEffect(() => {
     if (!map) return
     map.on('moveend', () =>
-      fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, assetTypeId, typeNames, classification, filter),
+      fetchFeaturesOnMoveEnd(
+        map,
+        onFeaturesChange,
+        markerLayerRef,
+        assetTypeId,
+        typeNames,
+        srsName,
+        classification,
+        filter,
+      ),
     )
 
     return () => {
       map.off('moveend', () =>
-        fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, assetTypeId, typeNames, classification, filter),
+        fetchFeaturesOnMoveEnd(
+          map,
+          onFeaturesChange,
+          markerLayerRef,
+          assetTypeId,
+          typeNames,
+          srsName,
+          classification,
+          filter,
+        ),
       )
     }
   }, [map])

@@ -14,6 +14,7 @@ type AssetTypeCreateData = {
   arguments: {
     base_url: string
     filter: string
+    srs_name: string
     type_names: string
   }
   max_assets: number
@@ -40,6 +41,7 @@ export const AssetTypeCreate = () => (
     >
       <TextInput source="name" validate={required()} />
       <TextInput source="arguments.type_names" validate={required()} />
+      <TextInput source="arguments.srs_name" validate={required()} />
       <TextInput minRows={4} multiline source="arguments.filter" validate={required()} />
       <TextInput source="arguments.base_url" validate={required()} />
       <NumberInput defaultValue={3} source="max_assets" validate={[required(), minValue(1)]} />

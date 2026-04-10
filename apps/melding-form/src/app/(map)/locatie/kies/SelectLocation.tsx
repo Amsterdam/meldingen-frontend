@@ -36,6 +36,7 @@ type Props = {
   filter?: string
   maxAssets: number
   selectedAssets: Feature[]
+  srsName?: string
   typeNames?: string
 }
 
@@ -50,6 +51,7 @@ export const SelectLocation = ({
   filter,
   maxAssets,
   selectedAssets: selectedAssetsFromServer,
+  srsName,
   typeNames,
 }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
@@ -128,6 +130,7 @@ export const SelectLocation = ({
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
             onSelectedMarkersChange={setSelectedAssets}
             selectedMarkers={selectedAssets}
+            srsName={srsName}
             typeNames={typeNames}
             updateSelectedPoint={setCoordinates}
           />
