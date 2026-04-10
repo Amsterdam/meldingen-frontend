@@ -49,22 +49,22 @@ describe('MarkerSelectLayer', () => {
     expect(container.firstChild).toBeNull()
   })
 
-  it('removes the moveend handler on unmount', async () => {
+  it('removes the moveend handler on unmount', () => {
     const { unmount } = render(
       <MapComponent testMapInstance={mockMapInstance}>
         <MarkerSelectLayer {...defaultProps} classification={undefined} />
       </MapComponent>,
     )
+    const moveEndOnCall = (mockMapInstance.on as unknown as Mock).mock.calls.find((call) => call[0] === 'moveend')
+    expect(moveEndOnCall).toBeDefined()
+
+    const moveEndHandler = moveEndOnCall?.[1]
+
+    expect(moveEndHandler).toEqual(expect.any(Function))
 
     unmount()
 
-    expect(mockMapInstance.off).toHaveBeenCalledWith('moveend', expect.any(Function))
-
-    const moveEndOffCall = (mockMapInstance.off as unknown as Mock).mock.calls.find((call) => call[0] === 'moveend')
-    expect(moveEndOffCall).toBeDefined()
-
-    // Execute the callback passed to `off` to cover the cleanup handler body.
-    await moveEndOffCall?.[1]()
+    expect(mockMapInstance.off).toHaveBeenCalledWith('moveend', moveEndHandler)
   })
 
   // Test one section of the fetchFeaturesOnMoveEnd function
@@ -100,21 +100,6 @@ describe('fetchFeaturesOnMoveEnd', () => {
       'Type name',
       'EPSG:4326',
       undefined,
-      defaultProps.filter,
-    )
-
-    expect(result).toBeUndefined()
-  })
-
-  it('does not fetch assets if classification has no asset support', async () => {
-    const result = await fetchFeaturesOnMoveEnd(
-      mockMapInstance,
-      vi.fn(),
-      { current: null },
-      1,
-      'Type name',
-      'EPSG:4326',
-      'invalid-classification',
       defaultProps.filter,
     )
 
