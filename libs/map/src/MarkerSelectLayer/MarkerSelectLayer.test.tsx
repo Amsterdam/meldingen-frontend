@@ -8,19 +8,21 @@ import { MapComponent } from '../Map/Map'
 import { fetchFeaturesOnMoveEnd, MarkerSelectLayer, Props } from './MarkerSelectLayer'
 
 const defaultProps: Props = {
-  assetTypeId: 1,
-  classification: 'container',
   features: [],
-  filter:
-    '<Filter><And><PropertyIsEqualTo><PropertyName>status</PropertyName><Literal>1</Literal></PropertyIsEqualTo><BBOX><gml:Envelope srsName="{srsName}"><gml:lowerCorner>{west} {south}</gml:lowerCorner><gml:upperCorner>{east} {north}</gml:upperCorner></gml:Envelope></BBOX></And></Filter>',
   maxMarkers: 5,
   onFeaturesChange: vi.fn(),
   onMaxMarkersReached: vi.fn(),
   onSelectedMarkersChange: vi.fn(),
   selectedMarkers: [],
-  srsName: 'EPSG:4326',
-  typeNames: 'Type name',
   updateSelectedPoint: vi.fn(),
+  wfsQuery: {
+    assetTypeId: 1,
+    classification: 'container',
+    filter:
+      '<Filter><And><PropertyIsEqualTo><PropertyName>status</PropertyName><Literal>1</Literal></PropertyIsEqualTo><BBOX><gml:Envelope srsName="{srsName}"><gml:lowerCorner>{west} {south}</gml:lowerCorner><gml:upperCorner>{east} {north}</gml:upperCorner></gml:Envelope></BBOX></And></Filter>',
+    srsName: 'EPSG:4326',
+    typeNames: 'Type name',
+  },
 }
 
 const mockMapInstance = {
@@ -52,7 +54,7 @@ describe('MarkerSelectLayer', () => {
   it('removes the moveend handler on unmount', () => {
     const { unmount } = render(
       <MapComponent testMapInstance={mockMapInstance}>
-        <MarkerSelectLayer {...defaultProps} classification={undefined} />
+        <MarkerSelectLayer {...defaultProps} wfsQuery={{ ...defaultProps.wfsQuery, classification: undefined }} />
       </MapComponent>,
     )
     const moveEndOnCall = (mockMapInstance.on as unknown as Mock).mock.calls.find((call) => call[0] === 'moveend')
@@ -96,11 +98,7 @@ describe('fetchFeaturesOnMoveEnd', () => {
       mockMapInstance,
       vi.fn(),
       { current: null },
-      1,
-      'Type name',
-      'EPSG:4326',
-      undefined,
-      defaultProps.filter,
+      { ...defaultProps.wfsQuery, classification: undefined },
     )
 
     expect(result).toBeUndefined()
@@ -116,11 +114,7 @@ describe('fetchFeaturesOnMoveEnd', () => {
       mockMapInstanceHidden,
       vi.fn(),
       { current: null },
-      1,
-      'Type name',
-      'EPSG:4326',
-      'container',
-      defaultProps.filter,
+      defaultProps.wfsQuery,
     )
 
     expect(result).toBeUndefined()
@@ -135,16 +129,7 @@ describe('fetchFeaturesOnMoveEnd', () => {
 
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-    fetchFeaturesOnMoveEnd(
-      mockMapInstance,
-      vi.fn(),
-      { current: null },
-      1,
-      'Type name',
-      'EPSG:4326',
-      'container',
-      defaultProps.filter,
-    )
+    fetchFeaturesOnMoveEnd(mockMapInstance, vi.fn(), { current: null }, defaultProps.wfsQuery)
 
     waitFor(() => {
       expect(consoleSpy).toHaveBeenCalledWith({ detail: 'Test error' })
@@ -163,16 +148,7 @@ describe('fetchFeaturesOnMoveEnd', () => {
 
     const mockMarkerLayerRef = { current: { remove: vi.fn() } as unknown as Layer }
 
-    await fetchFeaturesOnMoveEnd(
-      lowZoomMapInstance,
-      mockOnFeaturesChange,
-      mockMarkerLayerRef,
-      1,
-      'Type name',
-      'EPSG:4326',
-      'container',
-      defaultProps.filter,
-    )
+    await fetchFeaturesOnMoveEnd(lowZoomMapInstance, mockOnFeaturesChange, mockMarkerLayerRef, defaultProps.wfsQuery)
 
     expect(mockOnFeaturesChange).toHaveBeenCalledWith([])
     expect(mockMarkerLayerRef.current.remove).toHaveBeenCalled()

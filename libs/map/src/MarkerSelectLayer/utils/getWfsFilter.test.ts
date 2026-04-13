@@ -32,35 +32,11 @@ describe('getWfsFilter', () => {
     const template =
       '<Filter><And><PropertyIsEqualTo><PropertyName>status</PropertyName><Literal>1</Literal></PropertyIsEqualTo><BBOX><gml:Envelope srsName="{srsName}"><gml:lowerCorner>{west} {south}</gml:lowerCorner><gml:upperCorner>{east} {north}</gml:upperCorner></gml:Envelope></BBOX></And></Filter>'
 
-    const filter = getWfsFilter(template, mockMapInstance)
+    const filter = getWfsFilter({ filter: template, srsName: 'EPSG:4326' }, mockMapInstance)
     expect(filter).toContain('srsName="EPSG:4326"')
     expect(filter).toContain('<gml:lowerCorner>20 10</gml:lowerCorner>')
     expect(filter).toContain('<gml:upperCorner>40 30</gml:upperCorner>')
     expect(filter).toContain('<PropertyName>status</PropertyName>')
     expect(filter).toContain('<Literal>1</Literal>')
-  })
-
-  it('should use provided srsName override', () => {
-    mockBounds.getWest.mockReturnValue(20)
-    mockBounds.getSouth.mockReturnValue(10)
-    mockBounds.getEast.mockReturnValue(40)
-    mockBounds.getNorth.mockReturnValue(30)
-
-    const template = '<gml:Envelope srsName="{srsName}"></gml:Envelope>'
-
-    const filter = getWfsFilter(template, mockMapInstance, 'EPSG:28992')
-    expect(filter).toContain('srsName="EPSG:28992"')
-  })
-
-  it('should use default srsName when not provided', () => {
-    mockBounds.getWest.mockReturnValue(20)
-    mockBounds.getSouth.mockReturnValue(10)
-    mockBounds.getEast.mockReturnValue(40)
-    mockBounds.getNorth.mockReturnValue(30)
-
-    const template = '<gml:Envelope srsName="{srsName}"></gml:Envelope>'
-
-    const filter = getWfsFilter(template, mockMapInstance)
-    expect(filter).toContain('srsName="EPSG:4326"')
   })
 })

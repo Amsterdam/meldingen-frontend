@@ -82,7 +82,9 @@ describe('Page', () => {
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        assetTypeId: 1,
+        wfsQuery: expect.objectContaining({
+          assetTypeId: 1,
+        }),
       }),
       undefined,
     )
@@ -114,9 +116,11 @@ describe('Page', () => {
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        filter: '<Filter>test</Filter>',
-        srsName: 'EPSG:28992',
-        typeNames: 'Type name',
+        wfsQuery: expect.objectContaining({
+          filter: '<Filter>test</Filter>',
+          srsName: 'EPSG:28992',
+          typeNames: 'Type name',
+        }),
       }),
       undefined,
     )
