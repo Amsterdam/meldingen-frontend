@@ -7,6 +7,7 @@ import { DescriptionList, Grid, Heading, Paragraph } from '@meldingen/ui'
 import { AmsNextLink } from '../../_components/AmsNextLink'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { BackLink } from './_components/BackLink'
+import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
 import styles from './Detail.module.css'
 
@@ -30,7 +31,7 @@ type Props = {
   contact?: DescriptionListItem[]
   location?: DescriptionListItem[]
   meldingData: MeldingDataItem[]
-  publicId: string
+  publicId: MeldingOutput['public_id']
 }
 
 export const Detail = ({

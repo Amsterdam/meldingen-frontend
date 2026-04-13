@@ -29,6 +29,12 @@ const defaultProps = {
       link: { href: '/melding/123/wijzig-status', label: 'Change state' },
       term: 'State',
     },
+    {
+      description: 'Normaal',
+      key: 'urgency',
+      link: { href: '/melding/123/wijzig-urgentie', label: 'Change urgency' },
+      term: 'Urgency',
+    },
   ],
   meldingId: 123,
   publicId: 'B100AA',
@@ -95,6 +101,12 @@ describe('Detail', () => {
     const link = screen.getByRole('link', { name: 'Change state' })
 
     expect(link).toBeInTheDocument()
+
+    expect(screen.getByText('Urgency')).toBeInTheDocument()
+    expect(screen.getByText('Normaal')).toBeInTheDocument()
+
+    const urgencyLink = screen.getByRole('link', { name: 'Change urgency' })
+    expect(urgencyLink).toBeInTheDocument()
   })
 
   it('renders the attachments', () => {
