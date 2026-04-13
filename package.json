@@ -47,8 +47,8 @@
     "@eslint/js": "9.39.4",
     "@eslint/json": "1.2.0",
     "@eslint/markdown": "8.0.1",
-    "@next/eslint-plugin-next": "16.2.3",
     "@hey-api/openapi-ts": "0.95.0",
+    "@next/eslint-plugin-next": "16.2.3",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@testing-library/user-event": "14.6.1",
@@ -104,7 +104,9 @@
       "yaml@>=2.0.0 <2.8.3": "2.8.3",
       "brace-expansion@<5.0.5": "5.0.5",
       "picomatch@<2.3.2": "2.3.2",
-      "picomatch@>=4.0.0 <4.0.4": "4.0.4"
+      "picomatch@>=4.0.0 <4.0.4": "4.0.4",
+      "lodash@>=4.0.0 <=4.17.23": ">=4.18.0",
+      "lodash@<=4.17.23": ">=4.18.0"
     }
   },
   "packageManager": "pnpm@10.15.1+sha512.34e538c329b5553014ca8e8f4535997f96180a1d0f614339357449935350d924e22f8614682191264ec33d1462ac21561aff97f6bb18065351c162c7e8f6de67"
