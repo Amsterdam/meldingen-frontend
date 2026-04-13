@@ -33,7 +33,7 @@ export type Props = {
   coordinates?: Coordinates
   maxAssets: number
   selectedAssets: Feature[]
-  wfsQuery?: {
+  wfsQuery: {
     assetTypeId?: number
     classification?: string
     filter?: string
