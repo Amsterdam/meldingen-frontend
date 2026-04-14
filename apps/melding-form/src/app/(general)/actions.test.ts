@@ -105,6 +105,7 @@ describe('postPrimaryForm', () => {
     formData.set('primary', 'Test')
 
     const result = await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
+    
     expect(result).toEqual({ formData, systemError: 'Error message' })
     expect(redirect).not.toHaveBeenCalled()
   })
