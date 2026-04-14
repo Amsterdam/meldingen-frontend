@@ -83,7 +83,7 @@ describe('Page', () => {
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
         wfsQuery: expect.objectContaining({
-          assetTypeId: 1,
+          assetTypeId: melding.classification?.asset_type?.id,
         }),
       }),
       undefined,
