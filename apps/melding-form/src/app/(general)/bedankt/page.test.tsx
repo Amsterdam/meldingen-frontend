@@ -2,8 +2,6 @@ import { render, screen } from '@testing-library/react'
 import { redirect } from 'next/navigation'
 
 import Page, { generateMetadata } from './page'
-import { COOKIES } from 'apps/melding-form/src/constants'
-import { mockCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -26,9 +24,9 @@ describe('generateMetadata', () => {
 
 describe('Page', () => {
   it('renders page', async () => {
-    mockCookies({ [COOKIES.CREATED_AT]: '2025-05-26T11:56:34.081Z', [COOKIES.PUBLIC_ID]: '1234' })
+    const searchParams = Promise.resolve({ created_at: '2025-05-26T11:56:34.081Z', public_id: '1234' })
 
-    const PageComponent = await Page()
+    const PageComponent = await Page({ searchParams })
 
     render(PageComponent)
 
@@ -43,9 +41,9 @@ describe('Page', () => {
   })
 
   it('should render description without publicId', async () => {
-    mockCookies({ [COOKIES.CREATED_AT]: '2025-05-26T11:56:34.081Z', [COOKIES.PUBLIC_ID]: undefined })
+    const searchParams = Promise.resolve({ created_at: '2025-05-26T11:56:34.081Z', public_id: undefined })
 
-    const PageComponent = await Page()
+    const PageComponent = await Page({ searchParams })
 
     render(PageComponent)
 
@@ -55,9 +53,9 @@ describe('Page', () => {
   })
 
   it('should render description without date and time', async () => {
-    mockCookies({ [COOKIES.CREATED_AT]: undefined, [COOKIES.PUBLIC_ID]: '1234' })
+    const searchParams = Promise.resolve({ created_at: undefined, public_id: '1234' })
 
-    const PageComponent = await Page()
+    const PageComponent = await Page({ searchParams })
 
     render(PageComponent)
 
