@@ -17,7 +17,7 @@
       "postal_code": "Postcode"
     },
     "no-classification": "Geen categorie",
-    "navigation": {
+    "pagination": {
       "previous": "Vorige pagina",
       "next": "Volgende pagina",
       "current-page": "Pagina {currentPage} van {totalPages}",

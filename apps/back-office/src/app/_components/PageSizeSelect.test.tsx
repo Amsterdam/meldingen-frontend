@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 
+import { COOKIES } from '../../constants'
 import { PageSizeSelect } from './PageSizeSelect'
 
 const router = {
@@ -26,7 +27,7 @@ describe('PageSizeSelect', () => {
 
     render(<PageSizeSelect page={2} pageSize={10} />)
 
-    const select = screen.getByLabelText('label')
+    const select = screen.getByRole('combobox', { name: 'label' })
 
     await user.selectOptions(select, '40')
 
@@ -40,7 +41,7 @@ describe('PageSizeSelect', () => {
 
     render(<PageSizeSelect page={1} pageSize={10} />)
 
-    const select = screen.getByLabelText('label')
+    const select = screen.getByRole('combobox', { name: 'label' })
     await user.selectOptions(select, '20')
 
     expect(document.cookie).toContain('meldingen_bo_overview_page_size=20')

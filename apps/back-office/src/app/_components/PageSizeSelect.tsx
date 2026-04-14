@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 
 import { ALLOWED_PAGE_SIZES, COOKIES } from '../../constants'
 
-import styles from './Pagination.module.css'
+import styles from './PageSizeSelect.module.css'
 
 const writePageSizeCookie = (value: number) => {
   document.cookie = `${COOKIES.PAGE_SIZE}=${value}; path=/`
@@ -21,7 +21,7 @@ type Props = {
 
 export const PageSizeSelect = ({ page, pageSize }: Props) => {
   const router = useRouter()
-  const t = useTranslations('overview.navigation')
+  const t = useTranslations('overview.pagination')
 
   const onChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const selected = parseInt(event.target.value, 10)

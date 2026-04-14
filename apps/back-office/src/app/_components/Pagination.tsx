@@ -14,7 +14,7 @@ type Props = {
 }
 
 export const Pagination = ({ page, pageSize, totalPages }: Props) => {
-  const t = useTranslations('overview.navigation')
+  const t = useTranslations('overview.pagination')
 
   return (
     <div className={styles.wrapper}>

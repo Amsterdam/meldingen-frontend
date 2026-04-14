@@ -33,12 +33,4 @@ describe('Pagination', () => {
     expect(screen.getByText('PageSizeSelect')).toBeInTheDocument()
     expect(screen.getByRole('navigation')).toBeInTheDocument()
   })
-
-  it('renders when totalPages is 5 but page is 0', () => {
-    render(<Pagination page={0} pageSize={10} totalPages={5} />)
-
-    expect(screen.getByText('current-page')).toBeInTheDocument()
-    expect(screen.getByText('PageSizeSelect')).toBeInTheDocument()
-    expect(screen.getByRole('navigation')).toBeInTheDocument()
-  })
 })

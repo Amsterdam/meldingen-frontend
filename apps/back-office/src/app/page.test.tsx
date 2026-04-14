@@ -32,6 +32,7 @@ describe('Page', () => {
       get: vi.fn().mockReturnValue(undefined),
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(cookies).mockResolvedValue(mockCookieStore as any)
   })
 

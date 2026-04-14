@@ -2,13 +2,14 @@
   @media screen and (min-width: 72.5rem) {
     align-items: center;
     display: flex;
+    justify-content: space-between;
   }
 }
 
 .description {
   font-size: var(--ams-paragraph-small-font-size);
   line-height: var(--ams-paragraph-small-line-height);
-  padding-block: var(--ams-space-m) var(--ams-space-s);
+  margin-block: var(--ams-space-m) var(--ams-space-s);
 
   @media screen and (min-width: 72.5rem) {
     display: none;
@@ -17,6 +18,7 @@
 
 .pagination {
   justify-content: space-between;
+  margin-block: var(--ams-space-m);
 
   @media screen and (min-width: 72.5rem) {
     justify-content: flex-start;
@@ -29,20 +31,4 @@
   @media screen and (min-width: 72.5rem) {
     display: flex;
   }
-}
-
-.selector {
-  margin-inline-start: auto;
-  padding-block: var(--ams-space-m);
-
-  @media screen and (min-width: 72.5rem) {
-    align-items: center;
-    flex-direction: row;
-    padding-block: unset;
-  }
-}
-
-.selectorLabel {
-  font-size: var(--ams-paragraph-small-font-size);
-  font-weight: var(--ams-typography-body-text-bold-font-weight);
 }
