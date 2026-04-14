@@ -38,7 +38,7 @@ export const PageSizeSelect = ({ page, pageSize }: Props) => {
 
   return (
     <Field className={styles.selector}>
-      <Label className={styles.selectorLabel} htmlFor="page-size" inFieldSet={true}>
+      <Label className={styles.selectorLabel} htmlFor="page-size">
         {t('label')}
       </Label>
       <Select id="page-size" name="page-size" onChange={onChange} value={pageSize}>
