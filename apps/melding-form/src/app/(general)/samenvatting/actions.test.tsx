@@ -73,7 +73,7 @@ describe('postSummaryForm', () => {
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.ID)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.SOURCE)
     expect(redirect).toHaveBeenCalledWith(
-      `/bedankt?created_at=${defaultArgs.created_at}&public_id=${defaultArgs.public_id}#${TOP_ANCHOR_ID}`,
+      `/bedankt?created_at=${encodeURIComponent(defaultArgs.created_at)}&public_id=${defaultArgs.public_id}#${TOP_ANCHOR_ID}`,
     )
   })
 
@@ -99,7 +99,7 @@ describe('postSummaryForm', () => {
     await postSummaryForm(defaultArgs)
 
     expect(redirect).toHaveBeenCalledWith(
-      `/bedankt?created_at=${defaultArgs.created_at}&public_id=${defaultArgs.public_id}&source=test-source#${TOP_ANCHOR_ID}`,
+      `/bedankt?created_at=${encodeURIComponent(defaultArgs.created_at)}&public_id=${defaultArgs.public_id}&source=test-source#${TOP_ANCHOR_ID}`,
     )
   })
 })
