@@ -70,6 +70,7 @@ describe('Page', () => {
 
     expect(Summary).toHaveBeenCalledWith(
       {
+        action: expect.any(Function),
         additionalQuestions: additionalQuestionsSummary,
         attachments,
         contact: contact,
