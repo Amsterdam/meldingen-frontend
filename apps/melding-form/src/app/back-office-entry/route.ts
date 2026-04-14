@@ -12,7 +12,7 @@ export const GET = async (request: NextRequest) => {
   const id = searchParams.get('id')
   const token = searchParams.get('token')
 
-  // If any of the required parameters are missing, redirect to the home page
+  // If id or token is missing, redirect to the home page
   if (!id || !token) {
     return NextResponse.redirect(new URL('/', request.url))
   }
