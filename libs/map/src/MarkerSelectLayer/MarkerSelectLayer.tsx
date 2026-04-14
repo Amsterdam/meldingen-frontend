@@ -39,7 +39,7 @@ export const fetchFeaturesOnMoveEnd = async (
 
   // Has correct zoom level for markers
   if (zoom >= ZOOM_THRESHOLD) {
-    const filterWithCoordinates = getWfsFilter({ filter, srsName }, map)
+    const filterWithCoordinates = getWfsFilter({ filter, mapInstance: map, srsName })
 
     const { data, error } = await getAssetTypeByAssetTypeIdWfs({
       path: { asset_type_id: assetTypeId },

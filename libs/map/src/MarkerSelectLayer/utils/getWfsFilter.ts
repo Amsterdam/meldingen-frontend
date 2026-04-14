@@ -1,11 +1,12 @@
 import { Map } from 'leaflet'
 
-export type GetWfsFilterQuery = {
+export type GetWfsFilterArgs = {
   filter: string
+  mapInstance: Map
   srsName: string
 }
 
-export const getWfsFilter = ({ filter, srsName }: GetWfsFilterQuery, mapInstance: Map) => {
+export const getWfsFilter = ({ filter, mapInstance, srsName }: GetWfsFilterArgs) => {
   const bounds = mapInstance.getBounds()
   const north = bounds.getNorth()
   const south = bounds.getSouth()

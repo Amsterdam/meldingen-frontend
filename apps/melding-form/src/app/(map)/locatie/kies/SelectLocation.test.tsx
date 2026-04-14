@@ -103,7 +103,7 @@ describe('SelectLocation', () => {
 
 describe('Asset list toggle button', () => {
   it('renders nothing if assetList and selectedAssets are empty', () => {
-    render(<SelectLocation {...defaultProps} selectedAssets={[]} />)
+    render(<SelectLocation {...defaultProps} />)
 
     const toggleButton = screen.queryByRole('button', { name: /toggle-button./ })
 
@@ -115,7 +115,7 @@ describe('Asset list toggle button', () => {
       setInternalState(setSelectedAssets, [{ id: '1' }]),
     )
 
-    render(<SelectLocation {...defaultProps} selectedAssets={[]} />)
+    render(<SelectLocation {...defaultProps} />)
 
     const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
 
@@ -129,7 +129,7 @@ describe('Asset list toggle button', () => {
       setInternalState(setSelectedAssets, [{ id: '1' }]),
     )
 
-    render(<SelectLocation {...defaultProps} selectedAssets={[]} />)
+    render(<SelectLocation {...defaultProps} />)
 
     const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
 

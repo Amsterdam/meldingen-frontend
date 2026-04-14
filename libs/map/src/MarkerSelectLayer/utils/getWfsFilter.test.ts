@@ -32,7 +32,7 @@ describe('getWfsFilter', () => {
     const template =
       '<Filter><And><PropertyIsEqualTo><PropertyName>status</PropertyName><Literal>1</Literal></PropertyIsEqualTo><BBOX><gml:Envelope srsName="{srsName}"><gml:lowerCorner>{west} {south}</gml:lowerCorner><gml:upperCorner>{east} {north}</gml:upperCorner></gml:Envelope></BBOX></And></Filter>'
 
-    const filter = getWfsFilter({ filter: template, srsName: 'EPSG:4326' }, mockMapInstance)
+    const filter = getWfsFilter({ filter: template, mapInstance: mockMapInstance, srsName: 'EPSG:4326' })
     expect(filter).toContain('srsName="EPSG:4326"')
     expect(filter).toContain('<gml:lowerCorner>20 10</gml:lowerCorner>')
     expect(filter).toContain('<gml:upperCorner>40 30</gml:upperCorner>')

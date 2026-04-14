@@ -17,15 +17,8 @@ describe('transform function', () => {
     }
 
     const expectedTransformedData = {
-      arguments: {
-        base_url: 'https://example.com/wfs',
-        filter: 'my-filter',
-        srs_name: 'EPSG:4326',
-        type_names: 'Type name',
-      },
+      ...inputData,
       class_name: 'meldingen.wfs.ProxyWfsProviderFactory',
-      max_assets: 3,
-      name: 'Test Asset Type',
     }
 
     expect(transform(inputData)).toEqual(expectedTransformedData)
