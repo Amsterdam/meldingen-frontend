@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { COOKIES } from '../constants'
+import { COOKIES, DEFAULT_PAGE_SIZE, SORT } from '../constants'
 import { handleApiError } from '../handleApiError'
 import { Overview } from './Overview'
 import { getMelding } from 'apps/back-office/src/apiClientProxy'
@@ -18,10 +18,6 @@ export const generateMetadata = async () => {
 type Props = {
   searchParams: Promise<{ pagina?: string }>
 }
-
-const DEFAULT_PAGE_SIZE = 10
-
-const SORT = '["created_at","DESC"]'
 
 const getPageSizeFromCookie = async (): Promise<number> => {
   const cookieStore = await cookies()
