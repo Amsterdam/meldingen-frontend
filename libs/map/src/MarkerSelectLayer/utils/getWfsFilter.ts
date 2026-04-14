@@ -13,9 +13,9 @@ export const getWfsFilter = ({ filter, srsName }: GetWfsFilterQuery, mapInstance
   const west = bounds.getWest()
 
   return filter
-    .replaceAll('{west}', String(west))
-    .replaceAll('{south}', String(south))
-    .replaceAll('{east}', String(east))
-    .replaceAll('{north}', String(north))
-    .replaceAll('{srsName}', srsName)
+    .replace('{west}', String(west))
+    .replace('{south}', String(south))
+    .replace('{east}', String(east))
+    .replace('{north}', String(north))
+    .replace('{srsName}', srsName)
 }
