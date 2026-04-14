@@ -99,9 +99,9 @@ describe('Page', () => {
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
         wfsQuery: expect.objectContaining({
-          filter: '<Filter>test</Filter>',
-          srsName: 'EPSG:28992',
-          typeNames: 'Type name',
+          filter: melding.classification?.asset_type?.arguments?.filter,
+          srsName: melding.classification?.asset_type?.arguments?.srs_name,
+          typeNames: melding.classification?.asset_type?.arguments?.type_names,
         }),
       }),
       undefined,
