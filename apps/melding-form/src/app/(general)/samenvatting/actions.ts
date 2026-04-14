@@ -32,7 +32,8 @@ export const postSummaryForm = async ({ created_at, public_id }: { created_at: s
     cookieStore.delete(cookie)
   })
 
-  return redirect(
-    `/bedankt?created_at=${created_at}&public_id=${public_id}${source ? `&source=${source}` : ''}#${TOP_ANCHOR_ID}`,
-  )
+  const params = new URLSearchParams({ created_at, public_id })
+  if (source) params.set('source', source)
+
+  return redirect(`/bedankt?${params.toString()}#${TOP_ANCHOR_ID}`)
 }
