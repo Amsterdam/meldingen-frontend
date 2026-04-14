@@ -18,7 +18,7 @@ describe('PageSizeSelect', () => {
   beforeEach(() => {
     router.push.mockReset()
     router.refresh.mockReset()
-    document.cookie = ''
+    document.cookie = `${COOKIES.PAGE_SIZE}=10; expires=Thu, 01 Jan 1970 00:00:00 GMT`
   })
 
   it('sets a cookie and resets to page 1 when changed on a later page', async () => {
