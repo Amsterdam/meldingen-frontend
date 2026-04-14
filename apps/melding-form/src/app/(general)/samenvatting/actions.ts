@@ -7,13 +7,15 @@ import { putMeldingByMeldingIdSubmitMelder } from '@meldingen/api-client'
 
 import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
-export const postSummaryForm = async () => {
+export const postSummaryForm = async ({ created_at, public_id }: { created_at: string; public_id: string }) => {
   const cookieStore = await cookies()
 
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
   if (!meldingId || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
+
+  const source = cookieStore.get(COOKIES.SOURCE)?.value
 
   // Set melding state to 'submitted'
   const { error } = await putMeldingByMeldingIdSubmitMelder({
@@ -25,10 +27,12 @@ export const postSummaryForm = async () => {
     return { systemError: error }
   }
 
-  // Delete ADDRESS, TOKEN, LAST_PANEL_PATH, ID, and SOURCE cookies
-  ;[COOKIES.ADDRESS, COOKIES.TOKEN, COOKIES.LAST_PANEL_PATH, COOKIES.ID, COOKIES.SOURCE].forEach((cookie) => {
+  // Delete all session cookies
+  Object.values(COOKIES).forEach((cookie) => {
     cookieStore.delete(cookie)
   })
 
-  return redirect(`/bedankt#${TOP_ANCHOR_ID}`)
+  return redirect(
+    `/bedankt?created_at=${created_at}&public_id=${public_id}${source ? `&source=${source}` : ''}#${TOP_ANCHOR_ID}`,
+  )
 }

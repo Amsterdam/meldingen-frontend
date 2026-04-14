@@ -23,9 +23,7 @@ const createRequest = (params: Record<string, string>) => {
 }
 
 const requiredParams = {
-  created_at: '2025-01-01T00:00:00Z',
   id: '123',
-  public_id: 'B100AA',
   token: 'test-token',
 }
 
@@ -36,7 +34,7 @@ describe('GET', () => {
     ;(cookies as Mock).mockReturnValue(mockCookieStore)
   })
 
-  it('redirects to Home when id, token, created_at, or public_id is missing', async () => {
+  it('redirects to Home when id or token is missing', async () => {
     const { id: _id, ...params } = requiredParams
     const response = await GET(createRequest(params))
     expect(response.headers.get('location')).toBe(`${BASE_URL}/`)
@@ -44,14 +42,6 @@ describe('GET', () => {
     const { token: _token, ...params2 } = requiredParams
     const response2 = await GET(createRequest(params2))
     expect(response2.headers.get('location')).toBe(`${BASE_URL}/`)
-
-    const { created_at: _created_at, ...params3 } = requiredParams
-    const response3 = await GET(createRequest(params3))
-    expect(response3.headers.get('location')).toBe(`${BASE_URL}/`)
-
-    const { public_id: _public_id, ...params4 } = requiredParams
-    const response4 = await GET(createRequest(params4))
-    expect(response4.headers.get('location')).toBe(`${BASE_URL}/`)
   })
 
   it('sets cookies with correct values and maxAge', async () => {
@@ -60,8 +50,6 @@ describe('GET', () => {
     const oneDay = 24 * 60 * 60
     expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: oneDay })
     expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', { maxAge: oneDay })
-    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.CREATED_AT, '2025-01-01T00:00:00Z', { maxAge: oneDay })
-    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.PUBLIC_ID, 'B100AA', { maxAge: oneDay })
     expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.SOURCE, 'back-office', { maxAge: oneDay })
   })
 

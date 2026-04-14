@@ -9,13 +9,11 @@ import { resolveClassificationRedirect } from '../utils'
 export const GET = async (request: NextRequest) => {
   const { searchParams } = request.nextUrl
   const classification_id = searchParams.get('classification_id') ?? undefined
-  const created_at = searchParams.get('created_at')
   const id = searchParams.get('id')
-  const public_id = searchParams.get('public_id')
   const token = searchParams.get('token')
 
   // If any of the required parameters are missing, redirect to the home page
-  if (!id || !token || !created_at || !public_id) {
+  if (!id || !token) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
@@ -24,8 +22,6 @@ export const GET = async (request: NextRequest) => {
   const oneDay = 24 * 60 * 60
   cookieStore.set(COOKIES.ID, id, { maxAge: oneDay })
   cookieStore.set(COOKIES.TOKEN, token, { maxAge: oneDay })
-  cookieStore.set(COOKIES.CREATED_AT, created_at, { maxAge: oneDay })
-  cookieStore.set(COOKIES.PUBLIC_ID, public_id, { maxAge: oneDay })
   cookieStore.set(COOKIES.SOURCE, 'back-office', { maxAge: oneDay })
 
   const result = await resolveClassificationRedirect(

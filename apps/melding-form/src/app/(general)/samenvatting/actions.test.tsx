@@ -19,13 +19,18 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
+const defaultArgs = {
+  created_at: '2024-01-01T00:00:00Z',
+  public_id: 'abc123',
+}
+
 describe('postSummaryForm', () => {
   it('should redirect to /cookie-storing if meldingId or token is missing', async () => {
     ;(cookies as Mock).mockReturnValue({
       get: () => undefined,
     })
 
-    await postSummaryForm()
+    await postSummaryForm(defaultArgs)
 
     expect(redirect).toHaveBeenCalledWith(`/cookie-storing#${TOP_ANCHOR_ID}`)
   })
@@ -39,7 +44,7 @@ describe('postSummaryForm', () => {
       ),
     )
 
-    const result = await postSummaryForm()
+    const result = await postSummaryForm(defaultArgs)
 
     expect(result).toEqual({ systemError: 'Error message' })
   })
@@ -60,13 +65,41 @@ describe('postSummaryForm', () => {
       },
     })
 
-    await postSummaryForm()
+    await postSummaryForm(defaultArgs)
 
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.ADDRESS)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.TOKEN)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.ID)
     expect(deleteMock).toHaveBeenCalledWith(COOKIES.SOURCE)
-    expect(redirect).toHaveBeenCalledWith(`/bedankt#${TOP_ANCHOR_ID}`)
+    expect(redirect).toHaveBeenCalledWith(
+      `/bedankt?created_at=${defaultArgs.created_at}&public_id=${defaultArgs.public_id}#${TOP_ANCHOR_ID}`,
+    )
+  })
+
+  it('includes source query param in redirect URL if source cookie is present', async () => {
+    const deleteMock = vi.fn()
+
+    ;(cookies as Mock).mockReturnValue({
+      delete: deleteMock,
+      get: (name: string) => {
+        if (name === COOKIES.ID) {
+          return { value: '123' }
+        }
+        if (name === COOKIES.TOKEN) {
+          return { value: 'test-token' }
+        }
+        if (name === COOKIES.SOURCE) {
+          return { value: 'test-source' }
+        }
+        return undefined
+      },
+    })
+
+    await postSummaryForm(defaultArgs)
+
+    expect(redirect).toHaveBeenCalledWith(
+      `/bedankt?created_at=${defaultArgs.created_at}&public_id=${defaultArgs.public_id}&source=test-source#${TOP_ANCHOR_ID}`,
+    )
   })
 })

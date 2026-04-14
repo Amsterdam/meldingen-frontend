@@ -56,14 +56,12 @@ export const postPrimaryForm = async (
 
   if (error) return { formData, systemError: error }
 
-  const { classification, created_at, id, public_id, token } = data
+  const { classification, id, token } = data
 
   // Set session variables in cookies
   const cookieStore = await cookies()
   const oneDay = 24 * 60 * 60
   cookieStore.set(COOKIES.ID, id.toString(), { maxAge: oneDay })
-  cookieStore.set(COOKIES.CREATED_AT, created_at, { maxAge: oneDay })
-  cookieStore.set(COOKIES.PUBLIC_ID, public_id, { maxAge: oneDay })
   cookieStore.set(COOKIES.TOKEN, token, { maxAge: oneDay })
 
   // The LAST_PANEL_PATH cookie might be populated by earlier additional questions.

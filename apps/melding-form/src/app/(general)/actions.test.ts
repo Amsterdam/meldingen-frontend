@@ -77,10 +77,6 @@ describe('postPrimaryForm', () => {
     await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: 86400 })
-    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.CREATED_AT, '2025-05-26T11:56:34.081Z', {
-      maxAge: 86400,
-    })
-    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.PUBLIC_ID, 'B100AA', { maxAge: 86400 })
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', { maxAge: 86400 })
     expect(mockCookies.delete).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
   })
@@ -95,7 +91,7 @@ describe('postPrimaryForm', () => {
       formData,
     )
 
-    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.PUBLIC_ID, 'PATCH request', { maxAge: 86400 })
+    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'PATCH request', { maxAge: 86400 })
   })
 
   it('returns a system error when resolveClassificationRedirect returns an error', async () => {

@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 
+import { postSummaryForm } from './actions'
 import { Summary } from './Summary'
 import {
   getAdditionalQuestionsSummary,
@@ -21,7 +22,7 @@ export default async () => {
   const t = await getTranslations('summary')
 
   const meldingData = await getMeldingData(meldingId, token)
-  const { classification, email, phone, text } = meldingData
+  const { classification, created_at, email, phone, public_id, text } = meldingData
 
   const primaryForm = await getPrimaryFormSummary(text)
   const attachments = await getAttachmentsSummary(t('attachments-label'), meldingId, token)
@@ -29,8 +30,12 @@ export default async () => {
   const location = getLocationSummary(t, meldingData)
   const contact = getContactSummary(t('contact-label'), email, phone)
 
+  // Pass extra arguments to the postSummaryForm action
+  const postSummaryFormWithExtraArgs = postSummaryForm.bind(null, { created_at, public_id })
+
   return (
     <Summary
+      action={postSummaryFormWithExtraArgs}
       additionalQuestions={additionalQuestions.data}
       attachments={attachments}
       contact={contact}
