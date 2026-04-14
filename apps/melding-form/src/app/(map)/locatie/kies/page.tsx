@@ -115,9 +115,9 @@ export default async () => {
       wfsQuery={{
         assetTypeId: data?.classification?.asset_type?.id,
         classification: data?.classification?.name,
-        filter: (data?.classification?.asset_type?.arguments?.filter as string) ?? undefined,
-        srsName: (data?.classification?.asset_type?.arguments?.srs_name as string) ?? undefined,
-        typeNames: (data?.classification?.asset_type?.arguments?.type_names as string) ?? undefined,
+        filter: data?.classification?.asset_type?.arguments?.filter as string | undefined,
+        srsName: data?.classification?.asset_type?.arguments?.srs_name as string | undefined,
+        typeNames: data?.classification?.asset_type?.arguments?.type_names as string | undefined,
       }}
     />
   )
