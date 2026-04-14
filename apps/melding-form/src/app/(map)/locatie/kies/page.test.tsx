@@ -76,21 +76,7 @@ describe('Page', () => {
     )
   })
 
-  it('passes assetTypeId from melding classification.asset_type.id when it exists', async () => {
-    const PageComponent = await Page()
-    render(PageComponent)
-
-    expect(SelectLocation).toHaveBeenCalledWith(
-      expect.objectContaining({
-        wfsQuery: expect.objectContaining({
-          assetTypeId: melding.classification?.asset_type?.id,
-        }),
-      }),
-      undefined,
-    )
-  })
-
-  it('passes filter, typeNames and srsName from melding classification.asset_type.arguments when they exist', async () => {
+  it('passes filter, typeNames and srsName and assetTypeId when they exist', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)))
 
     const PageComponent = await Page()
@@ -99,6 +85,7 @@ describe('Page', () => {
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
         wfsQuery: expect.objectContaining({
+          assetTypeId: melding.classification?.asset_type?.id,
           filter: melding.classification?.asset_type?.arguments?.filter,
           srsName: melding.classification?.asset_type?.arguments?.srs_name,
           typeNames: melding.classification?.asset_type?.arguments?.type_names,
