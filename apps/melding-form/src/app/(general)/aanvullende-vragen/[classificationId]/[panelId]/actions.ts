@@ -90,10 +90,20 @@ export const postForm = async (
   if (!meldingId || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
 
   // Checkbox and Time answers are stored as separate key-value pairs in the FormData object.
-  // We filter and merge them into a single entry per question here.
+  // We filter and merge them into a single entry per question.
   // Checkbox and Time components have unique identifiers in their name.
   // Checkbox components start with 'checkbox___' and the Time component inputs start with 'time___'.
   const { checkboxEntries, otherEntries, timeEntries } = categorizeFormEntries(formData)
+
+  // If a Time component has both a time value and an 'unknown' checkbox checked, return a validation error.
+  const timeConflictErrors = timeEntries
+    .filter(([key, value]) => !key.endsWith('-unknown') && value)
+    .filter(([key]) => timeEntries.some(([k, v]) => k === `${key}-unknown` && v === 'on'))
+    .map(([key]) => ({ key: key.replace(/^time___/, ''), message: 'Selecteer een tijd, of vink "Weet ik niet" aan.' }))
+
+  if (timeConflictErrors.length > 0) {
+    return { formData, validationErrors: timeConflictErrors }
+  }
 
   const mergedCheckboxEntries = mergeCheckboxAnswers(checkboxEntries)
   const mergedTimeEntries = mergeUnknownTimeAnswers(timeEntries)
