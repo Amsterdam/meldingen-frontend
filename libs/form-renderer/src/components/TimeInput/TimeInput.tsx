@@ -34,6 +34,9 @@ export const TimeInput = ({
 
   const handleTimeChange = (newValue: string) => {
     setTimeValue(newValue)
+    if (newValue && isUnknown) {
+      setIsUnknown(false)
+    }
     onChange(newValue)
   }
 
@@ -64,11 +67,11 @@ export const TimeInput = ({
           id={id}
           invalid={Boolean(errorMessage)}
           name={id}
-          onChange={(e) => !isUnknown && handleTimeChange(e.target.value)}
+          onChange={(e) => handleTimeChange(e.target.value)}
           value={isUnknown ? '' : timeValue}
         />
         <Checkbox
-          defaultChecked={isUnknown}
+          checked={isUnknown}
           name={`${id}-time-unknown`}
           onChange={(e) => handleCheckboxChange(e.target.checked)}
         >
