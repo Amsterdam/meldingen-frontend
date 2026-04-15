@@ -66,13 +66,13 @@ export const TimeInput = ({
           className={styles.timeInput}
           id={id}
           invalid={Boolean(errorMessage)}
-          name={id}
+          name={`time___${id}`}
           onChange={(e) => handleTimeChange(e.target.value)}
           value={isUnknown ? '' : timeValue}
         />
         <Checkbox
           checked={isUnknown}
-          name={`${id}-time-unknown`}
+          name={`time___${id}-unknown`}
           onChange={(e) => handleCheckboxChange(e.target.checked)}
         >
           Weet ik niet

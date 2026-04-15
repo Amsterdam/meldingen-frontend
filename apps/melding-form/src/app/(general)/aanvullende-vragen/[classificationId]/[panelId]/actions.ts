@@ -55,6 +55,20 @@ const getMissingRequiredQuestionErrorMessages = (
     return !value
   })
 
+const categorizeFormEntries = (formData: FormData) => {
+  const entriesAsStringsWithoutFiles = Array.from(formData.entries()).filter(
+    (entry): entry is [string, string] => typeof entry[1] === 'string',
+  )
+
+  const checkboxEntries = entriesAsStringsWithoutFiles.filter(([key]) => key.startsWith('checkbox___'))
+  const timeEntries = entriesAsStringsWithoutFiles.filter(([key]) => key.startsWith('time___'))
+  const otherEntries = entriesAsStringsWithoutFiles.filter(
+    ([key]) => !key.startsWith('checkbox___') && !key.startsWith('time___'),
+  )
+
+  return { checkboxEntries, otherEntries, timeEntries }
+}
+
 export const postForm = async (
   {
     classificationId,
@@ -75,11 +89,16 @@ export const postForm = async (
 
   if (!meldingId || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
 
-  // Checkbox answers are stored as separate key-value pairs in the FormData object.
-  // This function merges these answers into an array per question, using an identifier in the Checkbox component.
-  const entriesArray = Array.from(formData.entries())
-  const stringEntries = entriesArray.filter(([, value]) => typeof value === 'string') as [string, string][]
-  const entries = mergeUnknownTimeAnswers(Object.entries(mergeCheckboxAnswers(stringEntries)))
+  // Checkbox and Time answers are stored as separate key-value pairs in the FormData object.
+  // We filter and merge them into a single entry per question here.
+  // Checkbox and Time components have unique identifiers in their name.
+  // Checkbox components start with 'checkbox___' and the Time component inputs start with 'time___'.
+  const { checkboxEntries, otherEntries, timeEntries } = categorizeFormEntries(formData)
+
+  const mergedCheckboxEntries = mergeCheckboxAnswers(checkboxEntries)
+  const mergedTimeEntries = mergeUnknownTimeAnswers(timeEntries)
+
+  const entries = [...otherEntries, ...mergedCheckboxEntries, ...mergedTimeEntries]
 
   // Merge previously submitted answers with the current panel's just-submitted answers.
   // Current panel answers take priority, enabling up-to-date conditional evaluation.
