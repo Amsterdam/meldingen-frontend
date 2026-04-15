@@ -23,8 +23,15 @@ const getPrefilledFormComponents = (components: Component[], formData: FormData)
       return { ...component, defaultValues }
     }
 
-    if (isTimeInput(component) && formData.get(`${component.key}-time-unknown`) === 'on') {
-      return { ...component, defaultValue: null }
+    if (isTimeInput(component)) {
+      if (formData.get(`time___${component.key}-unknown`) === 'on') {
+        return { ...component, defaultValue: null }
+      }
+      const timeValue = formData.get(`time___${component.key}`)
+      if (typeof timeValue === 'string') {
+        return { ...component, defaultValue: timeValue }
+      }
+      return component
     }
 
     const formValue = formData.get(component.key)

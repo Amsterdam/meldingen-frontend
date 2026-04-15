@@ -170,7 +170,7 @@ describe('AdditionalQuestions', () => {
   it('prefills Time Inputs with a checked checkbox', () => {
     const formData = new FormData()
 
-    formData.append('timeInput-time-unknown', 'on')
+    formData.append('time___timeInput-unknown', 'on')
     ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
 
     render(

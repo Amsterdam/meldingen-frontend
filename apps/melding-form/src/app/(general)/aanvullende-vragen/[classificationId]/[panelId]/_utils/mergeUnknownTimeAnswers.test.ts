@@ -2,7 +2,7 @@ import { mergeUnknownTimeAnswers } from './mergeUnknownTimeAnswers'
 
 describe('mergeUnknownTimeAnswers', () => {
   it('returns entries unchanged when there are no unknown checkboxes', () => {
-    const entries: [string, string | string[]][] = [
+    const entries: [string, string][] = [
       ['q1', '10:00'],
       ['q2', 'some value'],
     ]
@@ -11,7 +11,7 @@ describe('mergeUnknownTimeAnswers', () => {
   })
 
   it('sets the time value to "unknown" when the unknown checkbox is checked', () => {
-    const entries: [string, string | string[]][] = [
+    const entries: [string, string][] = [
       ['someTime', '10:00'],
       ['someTime-unknown', 'on'],
     ]
@@ -20,7 +20,7 @@ describe('mergeUnknownTimeAnswers', () => {
   })
 
   it('does not set the time value to "unknown" when the unknown checkbox is not checked', () => {
-    const entries: [string, string | string[]][] = [
+    const entries: [string, string][] = [
       ['someTime', '10:00'],
       ['someTime-unknown', 'off'],
     ]
@@ -30,13 +30,13 @@ describe('mergeUnknownTimeAnswers', () => {
 
   it('adds a missing time key as "unknown" when the checkbox is checked but the time input is absent', () => {
     // Some browsers omit empty <input type="time"> from FormData
-    const entries: [string, string | string[]][] = [['someTime-unknown', 'on']]
+    const entries: [string, string][] = [['someTime-unknown', 'on']]
 
     expect(mergeUnknownTimeAnswers(entries)).toEqual([['someTime', 'unknown']])
   })
 
-  it.only('handles multiple time fields independently', () => {
-    const entries: [string, string | string[]][] = [
+  it('handles multiple time fields independently', () => {
+    const entries: [string, string][] = [
       ['time1', '08:00'],
       ['time1-unknown', 'on'],
       ['time2', '09:00'],
