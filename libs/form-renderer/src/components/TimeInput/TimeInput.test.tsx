@@ -129,4 +129,23 @@ describe('TimeInput', () => {
     await user.click(checkbox)
     expect(onChange).toHaveBeenLastCalledWith('12:34')
   })
+
+  it('unchecks the Checkbox when a time value is entered', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+
+    render(<TimeInput {...defaultProps} defaultValue="11:11" onChange={onChange} />)
+
+    const checkbox = screen.getByRole('checkbox', { name: 'Weet ik niet' })
+    const input = screen.getByDisplayValue('11:11')
+
+    await user.click(checkbox)
+
+    expect(checkbox).toBeChecked()
+
+    await user.type(input, '12:34')
+
+    expect(checkbox).not.toBeChecked()
+    expect(onChange).toHaveBeenLastCalledWith('12:34')
+  })
 })
