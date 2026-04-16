@@ -18,17 +18,6 @@ const getCheckboxAnswerBody = (
   return { type: 'value_label', values_and_labels: selectedValuesAndLabels }
 }
 
-const getValueLabelAnswerBody = (
-  value: string,
-  valuesAndLabels?: ValueLabelObject[],
-): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
-  const selectedValueAndLabel = valuesAndLabels?.find((valAndLabel) => valAndLabel.value === value)
-
-  if (!selectedValueAndLabel) return undefined
-
-  return { type: 'value_label', values_and_labels: [selectedValueAndLabel] }
-}
-
 const getDateAnswerBody = (
   value: string,
   valuesAndLabels?: DateOptionValues[],
@@ -48,6 +37,17 @@ const getTimeAnswerBody = (value: string): PostMeldingByMeldingIdQuestionByQuest
   }
 
   return { time: value, type: 'time' }
+}
+
+const getValueLabelAnswerBody = (
+  value: string,
+  valuesAndLabels?: ValueLabelObject[],
+): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
+  const selectedValueAndLabel = valuesAndLabels?.find((valAndLabel) => valAndLabel.value === value)
+
+  if (!selectedValueAndLabel) return undefined
+
+  return { type: 'value_label', values_and_labels: [selectedValueAndLabel] }
 }
 
 const getAnswerBody = (
