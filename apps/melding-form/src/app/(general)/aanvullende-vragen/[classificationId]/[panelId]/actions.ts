@@ -83,6 +83,7 @@ export const postForm = async (
   const { checkboxEntries, otherEntries, timeEntries } = categorizeFormEntries(formData)
 
   // If a Time component has both a time value and an 'unknown' checkbox checked, return a validation error.
+  // This can only happen when JavaScript fails to disable the time input when 'unknown' is checked, or fails to disable the 'unknown' checkbox when a time is entered.
   const timeConflictErrors = timeEntries
     .filter(([key, value]) => !key.endsWith('-unknown') && value)
     .filter(([key]) => timeEntries.some(([k, v]) => k === `${key}-unknown` && v === 'on'))
