@@ -33,6 +33,7 @@ export const PageSizeSelect = ({ page, pageSize }: Props) => {
       return
     }
 
+    // Refresh the page to fetch data with the new page size.
     router.refresh()
   }
 
