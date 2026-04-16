@@ -36,10 +36,8 @@ export const handlers = [
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_MELDER, () =>
     HttpResponse.json({
       classification: { id: 2, name: 'Test classification' },
-      created_at: '2025-05-26T11:56:34.081Z',
       id: 123,
-      public_id: 'PATCH request',
-      token: 'test-token',
+      token: 'PATCH request',
     }),
   ),
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID, () =>
