@@ -9,6 +9,7 @@ import type { AnswersByKey, PanelComponentsConditions } from './_utils/navigatio
 
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
+import { categorizeFormEntries } from './_utils/categorizeFormEntries'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 import { mergeUnknownTimeAnswers } from './_utils/mergeUnknownTimeAnswers'
 import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, shouldRenderComponent } from './_utils/navigationUtils'
@@ -54,20 +55,6 @@ const getMissingRequiredQuestionErrorMessages = (
     // If value is an empty string (or otherwise falsy), add it to missingRequiredKeys
     return !value
   })
-
-const categorizeFormEntries = (formData: FormData) => {
-  const entriesAsStringsWithoutFiles = Array.from(formData.entries()).filter(
-    (entry): entry is [string, string] => typeof entry[1] === 'string',
-  )
-
-  const checkboxEntries = entriesAsStringsWithoutFiles.filter(([key]) => key.startsWith('checkbox___'))
-  const timeEntries = entriesAsStringsWithoutFiles.filter(([key]) => key.startsWith('time___'))
-  const otherEntries = entriesAsStringsWithoutFiles.filter(
-    ([key]) => !key.startsWith('checkbox___') && !key.startsWith('time___'),
-  )
-
-  return { checkboxEntries, otherEntries, timeEntries }
-}
 
 export const postForm = async (
   {
