@@ -42,6 +42,14 @@ const getDateAnswerBody = (
   return { date: { converted_date, label, value }, type: 'date' }
 }
 
+const getTimeAnswerBody = (value: string): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
+  if (value === 'unknown') {
+    return { time: null, type: 'time' }
+  }
+
+  return { time: value, type: 'time' }
+}
+
 const getAnswerBody = (
   formioType: string,
   value: string | string[],
@@ -62,7 +70,7 @@ const getAnswerBody = (
     case 'textfield':
       return { text: value, type: 'text' }
     case 'time':
-      return { time: value, type: 'time' }
+      return getTimeAnswerBody(value)
     default:
       return { text: value, type: 'text' }
   }
