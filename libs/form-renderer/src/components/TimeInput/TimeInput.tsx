@@ -60,6 +60,9 @@ export const TimeInput = ({
       )}
       {errorMessage && <ErrorMessage id={`${id}-error`}>{errorMessage}</ErrorMessage>}
       <Column gap="small">
+        <label className="ams-visually-hidden" htmlFor={id}>
+          Tijdstip
+        </label>
         <ADSTimeInput
           aria-required={validate?.required ? 'true' : undefined}
           className={styles.timeInput}
