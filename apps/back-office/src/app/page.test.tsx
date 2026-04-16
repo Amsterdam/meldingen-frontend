@@ -30,10 +30,9 @@ describe('Page', () => {
   beforeAll(() => {
     const mockCookieStore = {
       get: vi.fn().mockReturnValue(undefined),
-    }
+    } as unknown as Awaited<ReturnType<typeof cookies>>
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    vi.mocked(cookies).mockResolvedValue(mockCookieStore as any)
+    vi.mocked(cookies).mockResolvedValue(mockCookieStore)
   })
 
   it('renders the Overview component without a "pagina" search param', async () => {
