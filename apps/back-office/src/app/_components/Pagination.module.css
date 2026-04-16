@@ -17,8 +17,6 @@
 }
 
 .pagination {
-  justify-content: space-between;
-.pagination {
   justify-content: flex-start;
 }
 
