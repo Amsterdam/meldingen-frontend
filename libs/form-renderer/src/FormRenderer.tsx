@@ -95,7 +95,7 @@ const getComponent = (
         // React doesn't update the defaultValue of an input after the initial render,
         // so we use the key prop to force a remount of the input element when defaultValue changes
         key={`${key}-${component.defaultValue}`}
-        onChange={(value) => onChange(value ?? '')}
+        onChange={onChangeString}
       />
     )
   }

@@ -15,7 +15,7 @@ export type Props = {
   hasHeading: boolean
   id: string
   label: string
-  onChange: (value: string | null) => void
+  onChange: (value: string) => void
   validate?: { required: boolean } | null
 }
 
@@ -42,7 +42,7 @@ export const TimeInput = ({
 
   const handleCheckboxChange = (isChecked: boolean) => {
     setIsUnknown(isChecked)
-    onChange(isChecked ? null : timeValue)
+    onChange(isChecked ? '' : timeValue)
   }
 
   return (
