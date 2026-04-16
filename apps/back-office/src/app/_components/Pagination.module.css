@@ -9,7 +9,7 @@
 .description {
   font-size: var(--ams-paragraph-small-font-size);
   line-height: var(--ams-paragraph-small-line-height);
-  margin-block: var(--ams-space-m) var(--ams-space-s);
+  margin-block-end: var(--ams-space-s);
 
   @media screen and (min-width: 72.5rem) {
     display: none;
@@ -18,10 +18,11 @@
 
 .pagination {
   justify-content: space-between;
-  margin-block: var(--ams-space-m);
+  margin-block-end: var(--ams-space-m);
 
   @media screen and (min-width: 72.5rem) {
     justify-content: flex-start;
+    margin-block-end: unset;
   }
 }
 
