@@ -48,7 +48,6 @@ export const TimeInput = ({
   return (
     <FieldSet
       aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
-      aria-required={validate?.required ? 'true' : undefined}
       hasHeading={hasHeading}
       invalid={Boolean(errorMessage)}
       legend={label}
