@@ -11,7 +11,7 @@ import { ALLOWED_PAGE_SIZES, COOKIES } from '../../constants'
 import styles from './PageSizeSelect.module.css'
 
 const writePageSizeCookie = (value: number) => {
-  document.cookie = `${COOKIES.PAGE_SIZE}=${value}; path=/`
+  document.cookie = `${COOKIES.PAGE_SIZE}=${value}; path=/; max-age=${60 * 60 * 24 * 365}`
 }
 
 type Props = {
