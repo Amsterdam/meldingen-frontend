@@ -92,7 +92,9 @@ const getComponent = (
         errorMessage={errorMessage}
         hasHeading={hasOneFormComponent}
         id={key}
-        key={key}
+        // Include defaultValue in the key so TimeInput remounts and re-initializes
+        // its internal state when the component's defaultValue changes.
+        key={`${key}-${component.defaultValue}`}
         onChange={onChangeString}
       />
     )

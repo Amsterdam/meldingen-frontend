@@ -62,13 +62,9 @@ export const handlers = [
   ),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () => HttpResponse.json({ id: 42 })),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ASSET, () => HttpResponse.json()),
-  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>
-    HttpResponse.json({
-      created_at: '2025-05-26T11:56:34.081Z',
-      id: 1,
-      text: 'POST request',
-      updated_at: '2025-05-26T11:56:34.081Z',
-    }),
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, async ({ request }) =>
+    // Echo back the request body as the response to make it easier to test if the correct body is sent in the request
+    HttpResponse.json(await request.clone().json()),
   ),
 
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_ATTACHMENTS, () => new HttpResponse()),

@@ -123,7 +123,7 @@ export const form: Form = {
             show: null,
             when: null,
           },
-          description: 'Zet je tijd hier neer!',
+          description: '',
           input: true,
           key: 'time1',
           label: 'Tijd label',

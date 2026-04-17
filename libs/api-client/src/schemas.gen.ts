@@ -2632,16 +2632,6 @@ export const FormPanelComponentInputSchema = {
             title: 'Input',
             default: false
         },
-        conditional: {
-            anyOf: [
-                {
-                    $ref: '#/components/schemas/FormIOConditional'
-                },
-                {
-                    type: 'null'
-                }
-            ]
-        },
         components: {
             items: {
                 oneOf: [
@@ -2721,16 +2711,6 @@ export const FormPanelComponentOutputSchema = {
         position: {
             type: 'integer',
             title: 'Position'
-        },
-        conditional: {
-            anyOf: [
-                {
-                    $ref: '#/components/schemas/FormIOConditional'
-                },
-                {
-                    type: 'null'
-                }
-            ]
         },
         components: {
             items: {
@@ -7936,16 +7916,6 @@ export const StaticFormPanelComponentOutputSchema = {
             type: 'integer',
             title: 'Position'
         },
-        conditional: {
-            anyOf: [
-                {
-                    $ref: '#/components/schemas/FormIOConditional'
-                },
-                {
-                    type: 'null'
-                }
-            ]
-        },
         components: {
             items: {
                 anyOf: [
@@ -8518,8 +8488,15 @@ export const TextAnswerQuestionOutputSchema = {
 export const TimeAnswerInputSchema = {
     properties: {
         time: {
-            type: 'string',
-            pattern: '^(?:[01]\\d|2[0-3]):[0-5]\\d$',
+            anyOf: [
+                {
+                    type: 'string',
+                    pattern: '^(?:[01]\\d|2[0-3]):[0-5]\\d$'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Time'
         },
         type: {
@@ -8560,7 +8537,14 @@ export const TimeAnswerOutputSchema = {
             title: 'Original Question Text'
         },
         time: {
-            type: 'string',
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Time'
         }
     },
@@ -8600,7 +8584,14 @@ export const TimeAnswerQuestionOutputSchema = {
             title: 'Original Question Text'
         },
         time: {
-            type: 'string',
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Time'
         },
         question: {

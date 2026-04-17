@@ -85,6 +85,56 @@ describe('AdditionalQuestions', () => {
     expect(checkbox).toBeChecked()
   })
 
+  it('keeps input data on error for time inputs with a checked checkbox', () => {
+    const formData = new FormData()
+
+    formData.append('time___timeInput-unknown', 'on')
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData, systemError: 'Test error message' }, vi.fn()])
+
+    render(
+      <AdditionalQuestions
+        {...defaultProps}
+        formComponents={[{ ...textAreaComponent, key: 'timeInput', label: 'Time input', type: 'time' }]}
+      />,
+    )
+
+    const timeInput = screen.getByLabelText('Tijdstip')
+    const checkbox = screen.getByRole('checkbox', { name: 'Weet ik niet' })
+
+    expect(timeInput).toHaveValue('')
+    expect(checkbox).toBeChecked()
+  })
+
+  it('keeps input data on error for time input with a value', () => {
+    const formData = new FormData()
+
+    formData.append('time___timeInput', '10:30')
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData, systemError: 'Test error message' }, vi.fn()])
+
+    render(
+      <AdditionalQuestions
+        {...defaultProps}
+        formComponents={[{ ...textAreaComponent, key: 'timeInput', label: 'Time input', type: 'time' }]}
+      />,
+    )
+
+    const timeInput = screen.getByLabelText('Tijdstip')
+
+    expect(timeInput).toHaveValue('10:30')
+  })
+
+  it('falls back to the original component when it cannot be prefilled', () => {
+    const formData = new FormData()
+
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData, systemError: 'Test error message' }, vi.fn()])
+
+    render(<AdditionalQuestions {...defaultProps} formComponents={[{ ...textAreaComponent }]} />)
+
+    const input = screen.getByRole('textbox', { name: 'First question (niet verplicht)' })
+
+    expect(input).toHaveValue('')
+  })
+
   it('renders an Invalid Form Alert when there are validation errors', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
@@ -165,6 +215,24 @@ describe('AdditionalQuestions', () => {
 
     expect(checkbox1).toBeChecked()
     expect(checkbox2).not.toBeChecked()
+  })
+
+  it('prefills Time Inputs with a checked checkbox', () => {
+    const formData = new FormData()
+
+    formData.append('time___timeInput-unknown', 'on')
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+
+    render(
+      <AdditionalQuestions
+        {...defaultProps}
+        formComponents={[{ ...textAreaComponent, key: 'timeInput', label: 'Time input', type: 'time' }]}
+      />,
+    )
+
+    const checkbox = screen.getByRole('checkbox', { name: 'Weet ik niet' })
+
+    expect(checkbox).toBeChecked()
   })
 
   it('updates the document title when there is a system error', () => {
