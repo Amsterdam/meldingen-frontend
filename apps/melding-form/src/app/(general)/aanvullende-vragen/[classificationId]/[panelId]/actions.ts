@@ -5,14 +5,16 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
-import type { AnswersByKey, PanelComponentsConditions } from './_utils/navigationUtils'
+import type { AnswersByKey } from '../../../_utils/getAnswersByKey'
+import type { PanelComponentsConditions } from './_utils/navigationUtils'
 
 import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
+import { shouldRenderComponent } from '../../../_utils/shouldRenderComponent'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { categorizeFormEntries } from './_utils/categorizeFormEntries'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 import { mergeUnknownTimeAnswers } from './_utils/mergeUnknownTimeAnswers'
-import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, shouldRenderComponent } from './_utils/navigationUtils'
+import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath } from './_utils/navigationUtils'
 import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
