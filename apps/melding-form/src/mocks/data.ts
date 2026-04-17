@@ -178,7 +178,12 @@ export const melding: MeldingOutput = {
   city: 'Amsterdam',
   classification: {
     asset_type: {
-      arguments: { base_url: 'https://api.data.amsterdam.nl/v1/wfs/huishoudelijkafval' },
+      arguments: {
+        base_url: 'https://api.data.amsterdam.nl/v1/wfs/huishoudelijkafval',
+        filter: '<Filter>test</Filter>',
+        srs_name: 'EPSG:28992',
+        type_names: 'Type name',
+      },
       class_name: 'Container',
       created_at: '2025-07-15T09:43:46Z',
       id: 1,

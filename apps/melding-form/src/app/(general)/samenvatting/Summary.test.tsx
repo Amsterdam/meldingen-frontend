@@ -16,6 +16,7 @@ vi.mock('react', async (importOriginal) => {
 })
 
 const defaultProps = {
+  action: vi.fn(),
   additionalQuestions: [
     {
       description: 'Antwoord vraag 1',
