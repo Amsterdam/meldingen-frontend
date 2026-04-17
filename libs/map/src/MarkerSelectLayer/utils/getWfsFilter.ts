@@ -1,24 +1,22 @@
 import { Map } from 'leaflet'
 
-export const getWfsFilter = (mapInstance: Map) => {
-  const lowerCorner = mapInstance.getBounds().getSouthWest()
-  const upperCorner = mapInstance.getBounds().getNorthEast()
+export type GetWfsFilterArgs = {
+  filter: string
+  mapInstance: Map
+  srsName: string
+}
 
-  return `
-    <Filter>
-      <And>
-        <PropertyIsEqualTo>
-          <PropertyName>status</PropertyName>
-          <Literal>1</Literal>
-        </PropertyIsEqualTo>
+export const getWfsFilter = ({ filter, mapInstance, srsName }: GetWfsFilterArgs) => {
+  const bounds = mapInstance.getBounds()
+  const north = bounds.getNorth()
+  const south = bounds.getSouth()
+  const east = bounds.getEast()
+  const west = bounds.getWest()
 
-        <BBOX>
-          <gml:Envelope srsName="EPSG:4326">
-              <gml:lowerCorner>${lowerCorner.lng} ${lowerCorner.lat}</gml:lowerCorner>
-              <gml:upperCorner>${upperCorner.lng} ${upperCorner.lat}</gml:upperCorner>
-          </gml:Envelope>
-        </BBOX>
-      </And>
-    </Filter>
-  `
+  return filter
+    .replace('{west}', String(west))
+    .replace('{south}', String(south))
+    .replace('{east}', String(east))
+    .replace('{north}', String(north))
+    .replace('{srsName}', srsName)
 }

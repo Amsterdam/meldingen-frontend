@@ -11,30 +11,39 @@ import { useAddMarkersToMap } from './useAddMarkersToMap'
 import './cluster.css'
 import { getWfsFilter } from './utils/getWfsFilter'
 
-const classificationsWithAssets = ['container', 'Demo container is vol']
 export const ZOOM_THRESHOLD = 16
 
+export type WfsQuery = {
+  assetTypeId?: number
+  classification?: string
+  filter?: string
+  srsName?: string
+  typeNames?: string
+}
+
 export const fetchFeaturesOnMoveEnd = async (
-  classification: Props['classification'],
   map: Map,
   onFeaturesChange: Props['onFeaturesChange'],
   markerLayerRef: RefObject<Layer | null>,
+  wfsQuery: WfsQuery,
 ) => {
   // Don't fetch markers when map is hidden with display: none
   const size = map.getSize()
   const mapIsHidden = size.x === 0 && size.y === 0
 
-  if (!classification || !classificationsWithAssets.includes(classification) || mapIsHidden) return
+  const { assetTypeId, classification, filter, srsName, typeNames } = wfsQuery
+
+  if (!classification || !assetTypeId || !typeNames || !filter || !srsName || mapIsHidden) return
 
   const zoom = map.getZoom()
 
   // Has correct zoom level for markers
   if (zoom >= ZOOM_THRESHOLD) {
-    const filter = getWfsFilter(map)
+    const filterWithCoordinates = getWfsFilter({ filter, mapInstance: map, srsName })
 
     const { data, error } = await getAssetTypeByAssetTypeIdWfs({
-      path: { asset_type_id: 1 },
-      query: { filter },
+      path: { asset_type_id: assetTypeId },
+      query: { filter: filterWithCoordinates, type_names: typeNames },
     })
 
     if (error) {
@@ -53,7 +62,6 @@ export const fetchFeaturesOnMoveEnd = async (
 }
 
 export type Props = {
-  classification?: string
   features: Feature[]
   maxMarkers: number
   onFeaturesChange: (markers: Feature[]) => void
@@ -61,10 +69,10 @@ export type Props = {
   onSelectedMarkersChange: (selectedMarkers: Feature[]) => void
   selectedMarkers: Feature[]
   updateSelectedPoint: (point?: Coordinates) => void
+  wfsQuery: WfsQuery
 }
 
 export const MarkerSelectLayer = ({
-  classification,
   features,
   maxMarkers,
   onFeaturesChange,
@@ -72,16 +80,20 @@ export const MarkerSelectLayer = ({
   onSelectedMarkersChange,
   selectedMarkers,
   updateSelectedPoint,
+  wfsQuery,
 }: Props) => {
   const map = useContext(MapContext)
   const markerLayerRef = useRef<Layer | null>(null)
 
   useEffect(() => {
     if (!map) return
-    map.on('moveend', () => fetchFeaturesOnMoveEnd(classification, map, onFeaturesChange, markerLayerRef))
+
+    const handleMoveEnd = () => fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, wfsQuery)
+
+    map.on('moveend', handleMoveEnd)
 
     return () => {
-      map.off('moveend', () => fetchFeaturesOnMoveEnd(classification, map, onFeaturesChange, markerLayerRef))
+      map.off('moveend', handleMoveEnd)
     }
   }, [map])
 

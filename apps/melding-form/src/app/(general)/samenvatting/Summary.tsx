@@ -12,7 +12,6 @@ import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { AttachmentImage } from './_components/AttachmentImage'
-import { postSummaryForm } from './actions'
 import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { FormState } from 'apps/melding-form/src/types'
 
@@ -28,6 +27,7 @@ type File = {
 }
 
 type Props = {
+  action: (_: unknown, formData: FormData) => Promise<FormState>
   additionalQuestions: (GenericSummaryData & { link: string })[]
   attachments: Omit<GenericSummaryData, 'description'> & { files: File[] }
   contact?: Omit<GenericSummaryData, 'description'> & { description: string[] }
@@ -37,10 +37,10 @@ type Props = {
 
 const initialState: Pick<FormState, 'systemError'> = {}
 
-export const Summary = ({ additionalQuestions, attachments, contact, location, primaryForm }: Props) => {
+export const Summary = ({ action, additionalQuestions, attachments, contact, location, primaryForm }: Props) => {
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ systemError }, formAction] = useActionState(postSummaryForm, initialState)
+  const [{ systemError }, formAction] = useActionState(action, initialState)
 
   const t = useTranslations('summary')
   const tShared = useTranslations('shared')
