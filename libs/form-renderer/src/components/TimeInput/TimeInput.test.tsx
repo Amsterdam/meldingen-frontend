@@ -102,7 +102,7 @@ describe('TimeInput', () => {
     expect(onChange).toHaveBeenLastCalledWith('12:34')
   })
 
-  it('calls onChange with null when the Checkbox is checked', async () => {
+  it('calls onChange with an empty string when the Checkbox is checked', async () => {
     const user = userEvent.setup()
     const onChange = vi.fn()
 
@@ -112,7 +112,7 @@ describe('TimeInput', () => {
 
     await user.click(checkbox)
 
-    expect(onChange).toHaveBeenLastCalledWith(null)
+    expect(onChange).toHaveBeenLastCalledWith('')
   })
 
   it('restores the previous time value when the Checkbox is unchecked', async () => {
@@ -124,7 +124,7 @@ describe('TimeInput', () => {
     const checkbox = screen.getByRole('checkbox', { name: 'Weet ik niet' })
 
     await user.click(checkbox)
-    expect(onChange).toHaveBeenLastCalledWith(null)
+    expect(onChange).toHaveBeenLastCalledWith('')
 
     await user.click(checkbox)
     expect(onChange).toHaveBeenLastCalledWith('12:34')
