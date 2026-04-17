@@ -222,6 +222,7 @@ const nl: TranslationMessages = {
       fields: {
         'arguments.base_url': 'WFS url',
         'arguments.filter': 'Filter',
+        'arguments.icon_entry': 'Icon koppelcode',
         'arguments.srs_name': 'SRS name',
         'arguments.type_names': 'Typenames',
         max_assets: 'Maximaal aantal te selecteren',
