@@ -859,7 +859,6 @@ export type FormPanelComponentInput = {
      * Input
      */
     input?: boolean;
-    conditional?: FormIoConditional | null;
     /**
      * Components
      */
@@ -908,7 +907,6 @@ export type FormPanelComponentOutput = {
      * Position
      */
     position: number;
-    conditional?: FormIoConditional | null;
     /**
      * Components
      */
@@ -2503,7 +2501,6 @@ export type StaticFormPanelComponentOutput = {
      * Position
      */
     position: number;
-    conditional?: FormIoConditional | null;
     /**
      * Components
      */
@@ -2799,7 +2796,7 @@ export type TimeAnswerInput = {
     /**
      * Time
      */
-    time: string;
+    time: string | null;
     /**
      * Type
      */
@@ -2833,7 +2830,7 @@ export type TimeAnswerOutput = {
     /**
      * Time
      */
-    time: string;
+    time: string | null;
 };
 
 /**
@@ -2863,7 +2860,7 @@ export type TimeAnswerQuestionOutput = {
     /**
      * Time
      */
-    time: string;
+    time: string | null;
     question: QuestionOutput;
 };
 
