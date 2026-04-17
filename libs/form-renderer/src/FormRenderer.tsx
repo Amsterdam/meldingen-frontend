@@ -92,8 +92,8 @@ const getComponent = (
         errorMessage={errorMessage}
         hasHeading={hasOneFormComponent}
         id={key}
-        // React doesn't update the defaultValue of an input after the initial render,
-        // so we use the key prop to force a remount of the input element when defaultValue changes
+        // Include defaultValue in the key so TimeInput remounts and re-initializes
+        // its internal state when the component's defaultValue changes.
         key={`${key}-${component.defaultValue}`}
         onChange={onChangeString}
       />
