@@ -50,6 +50,24 @@ describe('postForm', () => {
     expect(redirect).toHaveBeenCalledWith(`/cookie-storing#${TOP_ANCHOR_ID}`)
   })
 
+  it('returns a validation error when a Time component has a time value and its corresponding "unknown" checkbox is checked', async () => {
+    const formData = new FormData()
+    formData.append('time___timeQuestion', '12:00')
+    formData.append('time___timeQuestion-unknown', 'on')
+
+    const result = await postForm(defaultArgs, null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [
+        {
+          key: 'timeQuestion',
+          message: 'Selecteer een tijd, of vink "Weet ik niet" aan.',
+        },
+      ],
+    })
+  })
+
   it('returns custom and fallback validation errors for missing required questions', async () => {
     const formData = new FormData()
 
