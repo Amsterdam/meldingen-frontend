@@ -44,6 +44,31 @@ describe('getAdditionalQuestionsData', () => {
     })
   })
 
+  it('returns "Weet ik niet" for additional time questions when time is null', async () => {
+    const additionalTimeQuestionWithNullTime = {
+      ...additionalTimeQuestion,
+      time: null,
+    }
+
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () =>
+        HttpResponse.json([additionalTimeQuestionWithNullTime]),
+      ),
+    )
+
+    const result = await getAdditionalQuestionsData(mockMeldingId)
+
+    expect(result).toEqual({
+      data: [
+        {
+          description: 'Weet ik niet',
+          key: additionalTimeQuestionWithNullTime.question.id.toString(),
+          term: additionalTimeQuestionWithNullTime.question.text,
+        },
+      ],
+    })
+  })
+
   it('returns correct additional value_label question data', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () => HttpResponse.json([additionalValueLabelQuestion])),

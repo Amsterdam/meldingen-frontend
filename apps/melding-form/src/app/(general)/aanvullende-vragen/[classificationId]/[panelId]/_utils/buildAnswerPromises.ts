@@ -18,17 +18,6 @@ const getCheckboxAnswerBody = (
   return { type: 'value_label', values_and_labels: selectedValuesAndLabels }
 }
 
-const getValueLabelAnswerBody = (
-  value: string,
-  valuesAndLabels?: ValueLabelObject[],
-): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
-  const selectedValueAndLabel = valuesAndLabels?.find((valAndLabel) => valAndLabel.value === value)
-
-  if (!selectedValueAndLabel) return undefined
-
-  return { type: 'value_label', values_and_labels: [selectedValueAndLabel] }
-}
-
 const getDateAnswerBody = (
   value: string,
   valuesAndLabels?: DateOptionValues[],
@@ -40,6 +29,25 @@ const getDateAnswerBody = (
   const { converted_date, label } = selectedValueAndLabel
 
   return { date: { converted_date, label, value }, type: 'date' }
+}
+
+const getTimeAnswerBody = (value: string): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
+  if (value === 'unknown') {
+    return { time: null, type: 'time' }
+  }
+
+  return { time: value, type: 'time' }
+}
+
+const getValueLabelAnswerBody = (
+  value: string,
+  valuesAndLabels?: ValueLabelObject[],
+): PostMeldingByMeldingIdQuestionByQuestionIdData['body'] | undefined => {
+  const selectedValueAndLabel = valuesAndLabels?.find((valAndLabel) => valAndLabel.value === value)
+
+  if (!selectedValueAndLabel) return undefined
+
+  return { type: 'value_label', values_and_labels: [selectedValueAndLabel] }
 }
 
 const getAnswerBody = (
@@ -62,7 +70,7 @@ const getAnswerBody = (
     case 'textfield':
       return { text: value, type: 'text' }
     case 'time':
-      return { time: value, type: 'time' }
+      return getTimeAnswerBody(value)
     default:
       return { text: value, type: 'text' }
   }

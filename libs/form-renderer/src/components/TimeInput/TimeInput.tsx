@@ -1,13 +1,15 @@
-import { TimeInput as ADSTimeInput, ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
+import { TimeInput as ADSTimeInput, Checkbox, Column, ErrorMessage } from '@amsterdam/design-system-react'
+import { useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
+import { FieldSet } from '@meldingen/ui'
 
 import { getAriaDescribedBy } from '../../utils'
 
 import styles from './TimeInput.module.css'
 
 export type Props = {
-  defaultValue?: string
+  defaultValue?: string | null
   description?: string
   errorMessage?: string
   hasHeading: boolean
@@ -27,30 +29,57 @@ export const TimeInput = ({
   onChange,
   validate,
 }: Props) => {
-  const labelComponent = (
-    <Label htmlFor={id} optional={!validate?.required}>
-      {label}
-    </Label>
-  )
+  const [isUnknown, setIsUnknown] = useState(defaultValue === null)
+  const [timeValue, setTimeValue] = useState<string>(defaultValue ?? '')
+
+  const handleTimeChange = (newValue: string) => {
+    setTimeValue(newValue)
+    if (newValue && isUnknown) {
+      setIsUnknown(false)
+    }
+    onChange(newValue)
+  }
+
+  const handleCheckboxChange = (isChecked: boolean) => {
+    setIsUnknown(isChecked)
+    onChange(isChecked ? '' : timeValue)
+  }
 
   return (
-    <Field invalid={Boolean(errorMessage)} key={id}>
-      {hasHeading ? <h1 className={styles.h1}>{labelComponent}</h1> : labelComponent}
+    <FieldSet
+      aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
+      hasHeading={hasHeading}
+      invalid={Boolean(errorMessage)}
+      legend={label}
+      optional={!validate?.required}
+    >
       {description && (
         <MarkdownToHtml id={`${id}-description`} type="description">
           {description}
         </MarkdownToHtml>
       )}
       {errorMessage && <ErrorMessage id={`${id}-error`}>{errorMessage}</ErrorMessage>}
-      <ADSTimeInput
-        aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
-        aria-required={validate?.required ? 'true' : undefined}
-        defaultValue={defaultValue}
-        id={id}
-        invalid={Boolean(errorMessage)}
-        name={id}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </Field>
+      <Column gap="small">
+        <label className="ams-visually-hidden" htmlFor={id}>
+          Tijdstip
+        </label>
+        <ADSTimeInput
+          aria-required={validate?.required ? 'true' : undefined}
+          className={styles.timeInput}
+          id={id}
+          invalid={Boolean(errorMessage)}
+          name={`time___${id}`}
+          onChange={(e) => handleTimeChange(e.target.value)}
+          value={isUnknown ? '' : timeValue}
+        />
+        <Checkbox
+          checked={isUnknown}
+          name={`time___${id}-unknown`}
+          onChange={(e) => handleCheckboxChange(e.target.checked)}
+        >
+          Weet ik niet
+        </Checkbox>
+      </Column>
+    </FieldSet>
   )
 }
