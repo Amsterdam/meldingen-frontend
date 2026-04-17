@@ -31,7 +31,6 @@ const getPrefilledFormComponents = (components: Component[], formData: FormData)
       if (typeof timeValue === 'string') {
         return { ...component, defaultValue: timeValue }
       }
-      return component
     }
 
     const formValue = formData.get(component.key)
