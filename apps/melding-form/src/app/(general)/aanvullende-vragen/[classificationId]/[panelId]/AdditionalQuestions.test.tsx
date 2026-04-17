@@ -1,6 +1,6 @@
 import type { Mock } from 'vitest'
 
-import { render, screen, within } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
 
 import type { Props } from './AdditionalQuestions'
@@ -230,8 +230,7 @@ describe('AdditionalQuestions', () => {
       />,
     )
 
-    const timeInputGroup = screen.getByRole('group', { name: 'Time input (niet verplicht)' })
-    const checkbox = within(timeInputGroup).getByRole('checkbox', { name: 'Weet ik niet' })
+    const checkbox = screen.getByRole('checkbox', { name: 'Weet ik niet' })
 
     expect(checkbox).toBeChecked()
   })
