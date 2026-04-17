@@ -1,6 +1,6 @@
 import { Feature } from '@meldingen/api-client'
 
-import { containerTypes, getContainerIcon } from './getContainerIcon'
+import { containerTypes, getContainerIcon } from './getAssetIcon'
 
 const makeFeature = (type: (typeof containerTypes)[number] | string) =>
   ({
