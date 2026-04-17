@@ -9,7 +9,13 @@ describe('AssetTypeEdit', () => {
     const dataProvider = testDataProvider({
       getOne: vi.fn().mockResolvedValueOnce({
         data: {
-          arguments: { filter: 'my-filter', icon_entry: 'my-icon', srs_name: 'EPSG:4326', type_names: 'bar' },
+          arguments: {
+            filter: 'my-filter',
+            icon_entry: 'my-icon',
+            icon_folder: 'my-folder',
+            srs_name: 'EPSG:4326',
+            type_names: 'bar',
+          },
           id: 1,
           max_assets: 5,
           name: 'foo',
@@ -27,6 +33,7 @@ describe('AssetTypeEdit', () => {
 
     const nameInput = await screen.findByRole('textbox', { name: /Naam/i })
     const iconEntryInput = await screen.findByRole('textbox', { name: /Icon koppelcode/i })
+    const iconFolderInput = await screen.findByRole('textbox', { name: /Icon folder/i })
     const typeNamesInput = await screen.findByRole('textbox', { name: /Typenames/i })
     const srsNameInput = await screen.findByRole('textbox', { name: /SRS name/i })
     const filterInput = await screen.findByRole('textbox', { name: /Filter/i })
@@ -36,6 +43,8 @@ describe('AssetTypeEdit', () => {
     expect(nameInput).toBeInTheDocument()
     expect(iconEntryInput).toBeInTheDocument()
     expect(iconEntryInput).toHaveValue('my-icon')
+    expect(iconFolderInput).toBeInTheDocument()
+    expect(iconFolderInput).toHaveValue('my-folder')
     expect(typeNamesInput).toBeInTheDocument()
     expect(typeNamesInput).toHaveValue('bar')
     expect(srsNameInput).toBeInTheDocument()

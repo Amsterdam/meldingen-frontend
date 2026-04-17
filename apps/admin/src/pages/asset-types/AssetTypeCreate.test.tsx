@@ -11,6 +11,7 @@ describe('transform function', () => {
         base_url: 'https://example.com/wfs',
         filter: 'my-filter',
         icon_entry: 'test-icon',
+        icon_folder: 'test-folder',
         srs_name: 'EPSG:4326',
         type_names: 'Type name',
       },
@@ -39,6 +40,7 @@ describe('AssetTypeCreate', () => {
 
     const nameInput = screen.getByRole('textbox', { name: /Naam/i })
     const iconEntryInput = screen.getByRole('textbox', { name: /Icon koppelcode/i })
+    const iconFolderInput = screen.getByRole('textbox', { name: /Icon folder/i })
     const typeNamesInput = screen.getByRole('textbox', { name: /Typenames/i })
     const srsNameInput = screen.getByRole('textbox', { name: /SRS name/i })
     const filterInput = screen.getByRole('textbox', { name: /Filter/i })
@@ -47,6 +49,7 @@ describe('AssetTypeCreate', () => {
 
     expect(nameInput).toBeInTheDocument()
     expect(iconEntryInput).toBeInTheDocument()
+    expect(iconFolderInput).toBeInTheDocument()
     expect(typeNamesInput).toBeInTheDocument()
     expect(srsNameInput).toBeInTheDocument()
     expect(filterInput).toBeInTheDocument()

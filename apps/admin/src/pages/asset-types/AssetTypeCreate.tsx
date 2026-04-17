@@ -15,6 +15,7 @@ type AssetTypeCreateData = {
     base_url: string
     filter: string
     icon_entry: string
+    icon_folder: string
     srs_name: string
     type_names: string
   }
@@ -42,6 +43,7 @@ export const AssetTypeCreate = () => (
     >
       <TextInput source="name" validate={required()} />
       <TextInput source="arguments.icon_entry" validate={required()} />
+      <TextInput source="arguments.icon_folder" validate={required()} />
       <TextInput source="arguments.type_names" validate={required()} />
       <TextInput source="arguments.srs_name" validate={required()} />
       <TextInput minRows={4} multiline source="arguments.filter" validate={required()} />
