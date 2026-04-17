@@ -8,16 +8,20 @@ vi.mock('./_components/OverviewMobile', () => ({
 vi.mock('./_components/OverviewDesktop', () => ({
   OverviewDesktop: () => <div>OverviewDesktop</div>,
 }))
+vi.mock('./_components/PageSizeSelect', () => ({
+  PageSizeSelect: () => <div>PageSizeSelect</div>,
+}))
 
 import { Overview } from './Overview'
 
 describe('Overview', () => {
   it('should render correctly', () => {
-    render(<Overview meldingen={[melding]} meldingenCount={10} totalPages={1} />)
+    render(<Overview meldingen={[melding]} meldingenCount={10} pageSize={10} totalPages={1} />)
 
     expect(screen.getByRole('heading', { level: 1, name: 'overview.title' })).toBeInTheDocument()
 
     expect(screen.getByText('OverviewMobile')).toBeInTheDocument()
     expect(screen.getByText('OverviewDesktop')).toBeInTheDocument()
+    expect(screen.getByText('PageSizeSelect')).toBeInTheDocument()
   })
 })

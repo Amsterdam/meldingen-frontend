@@ -1,0 +1,34 @@
+.wrapper {
+  @media screen and (min-width: 72.5rem) {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.description {
+  font-size: var(--ams-paragraph-small-font-size);
+  line-height: var(--ams-paragraph-small-line-height);
+  margin-block-end: var(--ams-space-s);
+
+  @media screen and (min-width: 72.5rem) {
+    display: none;
+  }
+}
+
+.pagination {
+  justify-content: flex-start;
+  margin-block-end: var(--ams-space-l);
+
+  @media screen and (min-width: 72.5rem) {
+    margin-block-end: 0;
+  }
+}
+
+.pagination ol {
+  display: none;
+
+  @media screen and (min-width: 72.5rem) {
+    display: flex;
+  }
+}
