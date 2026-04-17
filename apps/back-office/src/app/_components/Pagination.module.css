@@ -18,6 +18,11 @@
 
 .pagination {
   justify-content: flex-start;
+  margin-block-end: var(--ams-space-l);
+
+  @media screen and (min-width: 72.5rem) {
+    margin-block-end: 0;
+  }
 }
 
 .pagination ol {
