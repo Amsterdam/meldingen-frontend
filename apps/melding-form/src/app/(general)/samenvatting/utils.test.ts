@@ -97,6 +97,7 @@ describe('getAdditionalQuestionsSummary', () => {
             {
               components: [{ question: 35 }, { question: 36 }],
               key: 'page1',
+              type: 'panel',
             },
           ],
         }),
@@ -133,6 +134,7 @@ describe('getAdditionalQuestionsSummary', () => {
             {
               components: [{ question: 999 }, { question: 998 }],
               key: 'page1',
+              type: 'panel',
             },
           ],
         }),
@@ -182,7 +184,7 @@ describe('getAdditionalQuestionsSummary', () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({
-          components: [{ components: [{ question: 37 }], key: 'page1' }],
+          components: [{ components: [{ question: 37 }], key: 'page1', type: 'panel' }],
         }),
       ),
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
@@ -210,7 +212,7 @@ describe('getAdditionalQuestionsSummary', () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({
-          components: [{ components: [{ question: 37 }], key: 'page1' }],
+          components: [{ components: [{ question: 37 }], key: 'page1', type: 'panel' }],
         }),
       ),
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
@@ -242,7 +244,7 @@ describe('getAdditionalQuestionsSummary', () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({
-          components: [{ components: [{ question: 37 }], key: 'page1' }],
+          components: [{ components: [{ question: 37 }], key: 'page1', type: 'panel' }],
         }),
       ),
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
@@ -268,7 +270,7 @@ describe('getAdditionalQuestionsSummary', () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({
-          components: [{ components: [{ question: 38 }], key: 'page1' }],
+          components: [{ components: [{ question: 38 }], key: 'page1', type: 'panel' }],
         }),
       ),
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
@@ -303,7 +305,7 @@ describe('getAdditionalQuestionsSummary', () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({
-          components: [{ components: [{ question: 39 }], key: 'page1' }],
+          components: [{ components: [{ question: 39 }], key: 'page1', type: 'panel' }],
         }),
       ),
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
