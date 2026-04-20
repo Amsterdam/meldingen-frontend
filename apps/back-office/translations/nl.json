@@ -24,6 +24,13 @@
       "label": "Resultaten per pagina"
     }
   },
+  "melding-form": {
+    "metadata": {
+      "title": "Melding doorgeven - Gemeente Amsterdam"
+    },
+    "title": "Melden",
+    "submit-button": "Volgende vraag"
+  },
   "detail": {
     "attachments": {
       "title": "Bestanden",
@@ -102,6 +109,7 @@
   },
   "shared": {
     "menu": {
+      "melding-form": "Melden",
       "overview": "Overzicht"
     },
     "state": {
