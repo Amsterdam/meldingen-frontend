@@ -27,6 +27,8 @@ import type { FormState } from './actions'
 import { URGENCY_VALUES } from '../../constants'
 import { postMeldingForm } from './actions'
 
+import styles from './MeldingForm.module.css'
+
 type Props = {
   primaryTextArea: StaticFormTextAreaComponentOutput
 }
@@ -45,48 +47,52 @@ export const MeldingForm = ({ primaryTextArea }: Props) => {
   const tShared = useTranslations('shared')
 
   return (
-    <Grid as="main" className="ams-page__area--body" gapVertical="large">
+    <Grid as="main" className={`ams-page__area--body ${styles.main}`} gapVertical="large" paddingVertical="x-large">
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
         <Heading className="ams-mb-m" level={1}>
           {t('title')}
         </Heading>
         <Form action={formAction} noValidate>
-          <Field>
-            <Label htmlFor="primary">{label}</Label>
-            {description && (
-              <MarkdownToHtml id="primary-description" type="description">
-                {description}
-              </MarkdownToHtml>
-            )}
-            {validationErrors && <ErrorMessage>{validationErrors[0].message}</ErrorMessage>}
-            <TextArea
-              aria-describedby={getAriaDescribedBy('primary', description)}
-              aria-required="true"
-              defaultValue={(formData?.get('primary') as string) ?? ''} // TODO: prefill
-              id="primary"
-              name="primary"
-              onChange={() => setCharCount(ref.current?.value.length || 0)}
-              ref={ref}
-              rows={4}
-            />
-            {maxCharCount && <CharacterCount length={charCount} maxLength={maxCharCount} />}
-          </Field>
-          <FieldSet aria-required="true" legend={t('urgency-label')} role="radiogroup">
-            <Column gap="x-small">
-              {URGENCY_VALUES.map((urgency) => (
-                <Radio
-                  aria-required="true"
-                  defaultChecked={urgency === 0}
-                  key={urgency}
-                  name="urgency"
-                  value={String(urgency)}
-                >
-                  {tShared(`urgency.${urgency}`)}
-                </Radio>
-              ))}
-            </Column>
-          </FieldSet>
-          <Button type="submit">{t('submit-button')}</Button>
+          <Column>
+            <Field>
+              <Label htmlFor="primary">{label}</Label>
+              {description && (
+                <MarkdownToHtml id="primary-description" type="description">
+                  {description}
+                </MarkdownToHtml>
+              )}
+              {validationErrors && <ErrorMessage>{validationErrors[0].message}</ErrorMessage>}
+              <TextArea
+                aria-describedby={getAriaDescribedBy('primary', description)}
+                aria-required="true"
+                defaultValue={(formData?.get('primary') as string) ?? ''} // TODO: prefill
+                id="primary"
+                name="primary"
+                onChange={() => setCharCount(ref.current?.value.length || 0)}
+                ref={ref}
+                rows={4}
+              />
+              {maxCharCount && <CharacterCount length={charCount} maxLength={maxCharCount} />}
+            </Field>
+            <FieldSet aria-required="true" legend={t('urgency-label')} role="radiogroup">
+              <Column gap="x-small">
+                {URGENCY_VALUES.map((urgency) => (
+                  <Radio
+                    aria-required="true"
+                    defaultChecked={urgency === 0}
+                    key={urgency}
+                    name="urgency"
+                    value={String(urgency)}
+                  >
+                    {tShared(`urgency.${urgency}`)}
+                  </Radio>
+                ))}
+              </Column>
+            </FieldSet>
+            <Button className={styles.submit} type="submit">
+              {t('submit-button')}
+            </Button>
+          </Column>
         </Form>
       </Grid.Cell>
     </Grid>
