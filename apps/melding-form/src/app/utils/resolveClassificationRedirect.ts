@@ -1,6 +1,6 @@
 import { getFormClassificationByClassificationId, putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
-import { TOP_ANCHOR_ID } from '../constants'
+import { TOP_ANCHOR_ID } from '../../constants'
 
 type ClassificationRedirectResult = { type: 'redirect'; url: string } | { error: unknown; type: 'error' }
 

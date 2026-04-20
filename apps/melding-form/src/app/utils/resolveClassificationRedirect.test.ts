@@ -1,10 +1,10 @@
 import { http, HttpResponse } from 'msw'
 
-import { TOP_ANCHOR_ID } from '../constants'
-import { form } from '../mocks/data'
-import { ENDPOINTS } from '../mocks/endpoints'
-import { server } from '../mocks/node'
-import { resolveClassificationRedirect } from './utils'
+import { TOP_ANCHOR_ID } from '../../constants'
+import { form } from '../../mocks/data'
+import { ENDPOINTS } from '../../mocks/endpoints'
+import { server } from '../../mocks/node'
+import { resolveClassificationRedirect } from './resolveClassificationRedirect'
 
 describe('resolveClassificationRedirect', () => {
   it('returns an error when getFormClassificationByClassificationId returns an error', async () => {
