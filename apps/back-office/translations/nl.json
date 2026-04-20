@@ -29,6 +29,7 @@
       "title": "Melding doorgeven - Gemeente Amsterdam"
     },
     "title": "Melden",
+    "urgency-label": "Wat is de urgentie?",
     "submit-button": "Volgende vraag"
   },
   "detail": {

@@ -24,6 +24,7 @@ import { Column } from '@meldingen/ui'
 
 import type { FormState } from './actions'
 
+import { URGENCY_VALUES } from '../../constants'
 import { postMeldingForm } from './actions'
 
 type Props = {
@@ -41,6 +42,7 @@ export const MeldingForm = ({ primaryTextArea }: Props) => {
   const [{ formData, validationErrors }, formAction] = useActionState(postMeldingForm, initialState)
 
   const t = useTranslations('melding-form')
+  const tShared = useTranslations('shared')
 
   return (
     <Grid as="main" className="ams-page__area--body" gapVertical="large">
@@ -69,17 +71,19 @@ export const MeldingForm = ({ primaryTextArea }: Props) => {
             />
             {maxCharCount && <CharacterCount length={charCount} maxLength={maxCharCount} />}
           </Field>
-          <FieldSet aria-required="true" legend="Wat is de urgentie?" role="radiogroup">
+          <FieldSet aria-required="true" legend={t('urgency-label')} role="radiogroup">
             <Column gap="x-small">
-              <Radio aria-required="true" name="urgency" value="high">
-                Hoog
-              </Radio>
-              <Radio aria-required="true" name="urgency" value="medium">
-                Normaal
-              </Radio>
-              <Radio aria-required="true" name="urgency" value="low">
-                Laag
-              </Radio>
+              {URGENCY_VALUES.map((urgency) => (
+                <Radio
+                  aria-required="true"
+                  defaultChecked={urgency === 0}
+                  key={urgency}
+                  name="urgency"
+                  value={String(urgency)}
+                >
+                  {tShared(`urgency.${urgency}`)}
+                </Radio>
+              ))}
             </Column>
           </FieldSet>
           <Button type="submit">{t('submit-button')}</Button>
