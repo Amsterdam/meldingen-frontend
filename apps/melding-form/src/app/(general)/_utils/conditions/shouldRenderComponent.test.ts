@@ -15,7 +15,7 @@ describe('shouldRenderComponent', () => {
     expect(shouldRenderComponent(componentWithEmptyConditional, {})).toBe(true)
   })
 
-  it('evaluates conditionals against string values', () => {
+  it('evaluates conditions against string values', () => {
     const component = {
       ...textAreaComponent,
       conditional: { eq: 'yes', show: true, when: 'controller' },
@@ -25,7 +25,7 @@ describe('shouldRenderComponent', () => {
     expect(shouldRenderComponent(component, { controller: 'yes' })).toBe(true)
   })
 
-  it('evaluates conditionals against values that are an array of strings and inverts when show is false', () => {
+  it('evaluates conditions against values that are an array of strings and inverts when show is false', () => {
     const component = {
       ...textAreaComponent,
       conditional: { eq: 'one', show: false, when: 'boxes' },

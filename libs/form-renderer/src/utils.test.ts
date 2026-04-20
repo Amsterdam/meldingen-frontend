@@ -60,7 +60,7 @@ describe('shouldRender', () => {
     expect(shouldRender(componentWithEmptyConditional, {})).toBe(true)
   })
 
-  it('evaluates conditionals against string values', () => {
+  it('evaluates conditions against string values', () => {
     const component = {
       ...form.components[0].components[0],
       conditional: { eq: 'yes', show: true, when: 'controller' },
@@ -70,7 +70,7 @@ describe('shouldRender', () => {
     expect(shouldRender(component, { controller: 'yes' })).toBe(true)
   })
 
-  it('evaluates conditionals against values that are an array of strings and inverts when show is false', () => {
+  it('evaluates conditions against values that are an array of strings and inverts when show is false', () => {
     const component = {
       ...form.components[0].components[0],
       conditional: { eq: 'one', show: false, when: 'boxes' },
