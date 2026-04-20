@@ -8,10 +8,10 @@ import type { Component } from '@meldingen/form-renderer'
 import { FormRenderer, isSelectboxes, isTimeInput } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
+import type { AnswersByKey } from '../../../_utils/conditions/getFilteredAnswersByKey'
 import type { FormState, ValidationError } from 'apps/melding-form/src/types'
 
 import { SystemErrorAlert } from '../../../_components/SystemErrorAlert'
-import { AnswersByKey } from '../../../_utils/conditions/getFilteredAnswersByKey'
 import { getDocumentTitleOnError } from '../../../_utils/validation/getDocumentTitleOnError'
 import { BackLink } from 'apps/melding-form/src/app/_components'
 
