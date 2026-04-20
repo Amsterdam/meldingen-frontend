@@ -102,6 +102,7 @@ export const SelectLocation = ({
         )}
         <AssetList
           assetList={assetList}
+          assetTypeIconConfig={assetTypeIconConfig}
           maxAssets={maxAssets}
           selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
