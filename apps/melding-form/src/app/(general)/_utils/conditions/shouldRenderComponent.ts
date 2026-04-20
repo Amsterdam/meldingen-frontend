@@ -1,6 +1,6 @@
 import type { FormIoConditional } from '@meldingen/api-client'
 
-import type { AnswersByKey } from './getAnswersByKey'
+import type { AnswersByKey } from './getFilteredAnswersByKey'
 
 const isNullOrEmpty = (value: unknown) => value === null || value === ''
 

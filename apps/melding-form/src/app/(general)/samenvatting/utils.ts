@@ -12,7 +12,7 @@ import {
 } from '@meldingen/api-client'
 import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 
-import { getFilteredAnswersByKey } from '../_utils/getAnswersByKey'
+import { getFilteredAnswersByKey } from '../_utils/conditions/getFilteredAnswersByKey'
 import { getFullNLAddress } from '../_utils/getFullNLAddress'
 import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'

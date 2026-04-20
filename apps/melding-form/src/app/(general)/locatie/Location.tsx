@@ -13,7 +13,7 @@ import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 import type { FormState } from 'apps/melding-form/src/types'
 
 import { SystemErrorAlert } from '../_components/SystemErrorAlert'
-import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
+import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
 import { postLocationForm } from './actions'

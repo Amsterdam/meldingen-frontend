@@ -1,6 +1,6 @@
 import type { FormOutput, GetMeldingByMeldingIdAnswersMelderResponses } from '@meldingen/api-client'
 
-import { getFilteredAnswersByKey } from './getAnswersByKey'
+import { getFilteredAnswersByKey } from './getFilteredAnswersByKey'
 
 describe('getFilteredAnswersByKey', () => {
   const formData = {

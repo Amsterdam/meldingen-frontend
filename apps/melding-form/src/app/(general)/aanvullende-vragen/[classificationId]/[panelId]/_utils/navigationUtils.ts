@@ -1,8 +1,8 @@
 import type { FormIoConditional } from '@meldingen/api-client'
 
-import type { AnswersByKey } from 'apps/melding-form/src/app/(general)/_utils/getAnswersByKey'
+import type { AnswersByKey } from 'apps/melding-form/src/app/(general)/_utils/conditions/getFilteredAnswersByKey'
 
-import { shouldRenderComponent } from 'apps/melding-form/src/app/(general)/_utils/shouldRenderComponent'
+import { shouldRenderComponent } from 'apps/melding-form/src/app/(general)/_utils/conditions/shouldRenderComponent'
 import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 export type PanelComponentsConditions = {

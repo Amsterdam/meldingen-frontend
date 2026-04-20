@@ -5,11 +5,11 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
-import type { AnswersByKey } from '../../../_utils/getAnswersByKey'
+import type { AnswersByKey } from '../../../_utils/conditions/getFilteredAnswersByKey'
 import type { PanelComponentsConditions } from './_utils/navigationUtils'
 
-import { hasValidationErrors } from '../../../_utils/hasValidationErrors'
-import { shouldRenderComponent } from '../../../_utils/shouldRenderComponent'
+import { shouldRenderComponent } from '../../../_utils/conditions/shouldRenderComponent'
+import { hasValidationErrors } from '../../../_utils/validation/hasValidationErrors'
 import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { categorizeFormEntries } from './_utils/categorizeFormEntries'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
