@@ -232,6 +232,7 @@ const nl: TranslationMessages = {
     classification: {
       fields: {
         form: 'Vragenlijst',
+        instructions: 'Beschrijving',
         name: 'Naam',
       },
       name: 'Categorie |||| Categorieën',
