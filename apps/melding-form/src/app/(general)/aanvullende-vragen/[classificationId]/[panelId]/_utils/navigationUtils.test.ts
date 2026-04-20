@@ -45,7 +45,7 @@ describe('shouldLinkToPanel', () => {
     expect(shouldLinkToPanel(mockPanel('test', [renderWhenValueIsOne]), { questionKey: 'two' })).toBe(false)
   })
 
-  it('returns true when answer is missing (cannot evaluate conditional)', () => {
+  it('returns true when answer is missing (cannot evaluate condition)', () => {
     expect(shouldLinkToPanel(mockPanel('test', [doNotRenderWhenValueIsOne]), {})).toBe(true)
   })
 

@@ -2,7 +2,7 @@ import { shouldRenderComponent } from './shouldRenderComponent'
 import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
 
 describe('shouldRenderComponent', () => {
-  it('returns true when there is no usable conditional', () => {
+  it('returns true when there are no usable conditions', () => {
     const componentWithoutConditional = textAreaComponent
 
     expect(shouldRenderComponent(componentWithoutConditional, {})).toBe(true)
@@ -35,7 +35,7 @@ describe('shouldRenderComponent', () => {
     expect(shouldRenderComponent(component, { boxes: ['two'] })).toBe(true)
   })
 
-  it('returns false when the component key used in the conditional is not present in the values', () => {
+  it('returns false when the component key used in the condition is not present in the values', () => {
     const component = {
       ...textAreaComponent,
       conditional: { eq: 'yes', show: true, when: 'unknown-component-key' },

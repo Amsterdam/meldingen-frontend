@@ -47,7 +47,7 @@ describe('type guards', () => {
 })
 
 describe('shouldRender', () => {
-  it('returns true when there is no usable conditional', () => {
+  it('returns true when there is no usable condition', () => {
     const componentWithoutConditional = { ...form.components[0].components[0] }
 
     expect(shouldRender(componentWithoutConditional, {})).toBe(true)
@@ -80,7 +80,7 @@ describe('shouldRender', () => {
     expect(shouldRender(component, { boxes: ['two'] })).toBe(true)
   })
 
-  it('returns false when the component key used in the conditional is not present in the values', () => {
+  it('returns false when the component key used in the condition is not present in the values', () => {
     const component = {
       ...form.components[0].components[0],
       conditional: { eq: 'yes', show: true, when: 'unknown-component-key' },
