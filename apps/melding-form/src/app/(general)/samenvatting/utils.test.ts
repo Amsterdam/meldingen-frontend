@@ -180,6 +180,48 @@ describe('getAdditionalQuestionsSummary', () => {
     expect(result).toEqual({ data: [] })
   })
 
+  it('filters out answers with unmet conditions', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [
+            {
+              components: [
+                { key: 'question-35', question: 35 },
+                {
+                  conditional: { eq: 'Answer 35', show: false, when: 'question-35' },
+                  key: 'question-36',
+                  question: 36,
+                },
+              ],
+              key: 'page1',
+              type: 'panel',
+            },
+          ],
+        }),
+      ),
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+        HttpResponse.json([
+          { question: { id: 35, text: 'Question 35' }, text: 'Answer 35', type: 'text' },
+          { question: { id: 36, text: 'Question 36' }, text: 'Answer 36', type: 'text' },
+        ]),
+      ),
+    )
+
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
+
+    expect(result).toEqual({
+      data: [
+        {
+          description: 'Answer 35',
+          key: '35',
+          link: `/aanvullende-vragen/1/page1#${TOP_ANCHOR_ID}`,
+          term: 'Question 35',
+        },
+      ],
+    })
+  })
+
   it('supports the date answer type', async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
