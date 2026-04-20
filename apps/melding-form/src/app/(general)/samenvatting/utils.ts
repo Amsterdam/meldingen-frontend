@@ -12,9 +12,8 @@ import {
 } from '@meldingen/api-client'
 import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 
-import { getAnswersByKey } from '../_utils/getAnswersByKey'
+import { getFilteredAnswersByKey } from '../_utils/getAnswersByKey'
 import { getFullNLAddress } from '../_utils/getFullNLAddress'
-import { shouldRenderComponent } from '../_utils/shouldRenderComponent'
 import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
@@ -102,7 +101,7 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
   if (error) throw new Error('Failed to fetch additional questions data.')
 
   const panels = formComponents.components as FormPanelComponentOutput[]
-  const answersByKey = getAnswersByKey(formComponents, data)
+  const answersByKey = getFilteredAnswersByKey(formComponents, data)
 
   const componentByQuestionId = new Map(
     panels.flatMap((panel) => panel.components.map((component) => [component.question, component])),
@@ -110,9 +109,10 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
 
   return {
     data: data
+      // Do not return answers for questions that have an unmet condition
       .filter((answer) => {
         const component = componentByQuestionId.get(answer.question.id)
-        return component ? shouldRenderComponent(component, answersByKey) : true
+        return component ? component.key in answersByKey : true
       })
       .map((answer) => {
         const panelId = findPanelIdByQuestionId(panels, answer.question.id)

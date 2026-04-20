@@ -4,13 +4,15 @@ import type {
   GetMeldingByMeldingIdAnswersMelderResponses,
 } from '@meldingen/api-client'
 
+import { shouldRenderComponent } from './shouldRenderComponent'
+
 export type AnswersByKey = Record<string, string | string[] | null>
 
 export const isPanelComponentOutput = (
   component: FormOutput['components'][number],
 ): component is FormPanelComponentOutput => component.type === 'panel'
 
-export const getAnswersByKey = (
+export const getFilteredAnswersByKey = (
   formData: FormOutput,
   answers: GetMeldingByMeldingIdAnswersMelderResponses['200'] | undefined,
 ) => {
@@ -19,6 +21,11 @@ export const getAnswersByKey = (
   for (const panel of formData.components) {
     if (!isPanelComponentOutput(panel)) continue
     for (const component of panel.components) {
+      // Do not return answers for components that have an unmet condition
+      if (!shouldRenderComponent(component, result)) {
+        continue
+      }
+
       const answer = answers?.find((a) => a.question.id === component.question)
 
       if (!answer) {
