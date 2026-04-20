@@ -14,7 +14,7 @@ import { buildAnswerPromises } from './_utils/buildAnswerPromises'
 import { categorizeFormEntries } from './_utils/categorizeFormEntries'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 import { mergeUnknownTimeAnswers } from './_utils/mergeUnknownTimeAnswers'
-import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath } from './_utils/navigationUtils'
+import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, refilterAnswersByKey } from './_utils/navigationUtils'
 import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
@@ -102,7 +102,11 @@ export const postForm = async (
 
   // Merge previously submitted answers with the current panel's just-submitted answers.
   // Current panel answers take priority, enabling up-to-date conditional evaluation.
-  const allAnswersByKey = { ...previousAnswersByKey, ...Object.fromEntries(entries) }
+  // Re-filter to null out answers for conditions that are no longer met after the merge.
+  const allAnswersByKey = refilterAnswersByKey(panelComponentsConditions, {
+    ...previousAnswersByKey,
+    ...Object.fromEntries(entries),
+  })
 
   // Check if all required questions are answered
   const componentsConditions = panelComponentsConditions[currentPanelIndex].componentsConditions

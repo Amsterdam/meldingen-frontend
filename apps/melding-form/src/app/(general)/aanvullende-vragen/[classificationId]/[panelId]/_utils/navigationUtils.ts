@@ -45,3 +45,14 @@ export const getPreviousPanelPath = (
   }
   return BEFORE_ADDITIONAL_QUESTIONS_PATH
 }
+
+export const refilterAnswersByKey = (panels: PanelComponentsConditions[], answers: AnswersByKey): AnswersByKey => {
+  const result: AnswersByKey = {}
+  for (const { componentsConditions } of panels) {
+    for (const component of componentsConditions) {
+      if (!shouldRenderComponent(component, result)) continue
+      if (component.key in answers) result[component.key] = answers[component.key]
+    }
+  }
+  return result
+}
