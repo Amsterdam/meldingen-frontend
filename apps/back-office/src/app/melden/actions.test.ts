@@ -1,0 +1,97 @@
+import { http, HttpResponse } from 'msw'
+import { redirect } from 'next/navigation'
+import { vi } from 'vitest'
+
+import { ENDPOINTS } from '../../mocks/endpoints'
+import { server } from '../../mocks/node'
+import { postMeldingForm } from './actions'
+
+vi.mock('next/navigation', () => ({
+  redirect: vi.fn(),
+}))
+
+const formData = new FormData()
+
+describe('postMeldingForm', () => {
+  it('returns a custom validation error when primary question is not answered', async () => {
+    const result = await postMeldingForm(null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'primary', message: 'This field is required.' }],
+    })
+  })
+
+  it('returns a system error when postMelding returns an error', async () => {
+    server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json('Error message', { status: 404 })))
+
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+
+    const result = await postMeldingForm(null, formData)
+
+    expect(result).toEqual({ formData, systemError: 'Error message' })
+  })
+
+  it('returns a system error when urgency is invalid', async () => {
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+    formData.set('urgency', 'invalid')
+
+    const result = await postMeldingForm(null, formData)
+
+    expect(result).toEqual({
+      formData,
+      systemError: 'Invalid urgency: invalid',
+    })
+  })
+
+  it('returns a system error when patchMeldingByMeldingId returns an error', async () => {
+    server.use(
+      http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () => HttpResponse.json('Error message', { status: 404 })),
+    )
+
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+    formData.set('urgency', '1')
+
+    const result = await postMeldingForm(null, formData)
+
+    expect(result).toEqual({ formData, systemError: 'Error message' })
+  })
+
+  it('redirects to the correct URL when postMeldingForm is successful', async () => {
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+    formData.set('urgency', '1')
+
+    await postMeldingForm(null, formData)
+
+    expect(redirect).toHaveBeenCalledWith(
+      'undefined/back-office-entry?id=123&token=test-token&created_at=2025-05-26T11:56:34.081Z&public_id=B100AA&classification_id=2',
+    )
+  })
+
+  it('redirects to the correct URL without classification_id when classification is not returned', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING, () =>
+        HttpResponse.json({
+          created_at: '2025-05-26T11:56:34.081Z',
+          id: 123,
+          public_id: 'B100AA',
+          token: 'test-token',
+        }),
+      ),
+    )
+
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+    formData.set('urgency', '1')
+
+    await postMeldingForm(null, formData)
+
+    expect(redirect).toHaveBeenCalledWith(
+      'undefined/back-office-entry?id=123&token=test-token&created_at=2025-05-26T11:56:34.081Z&public_id=B100AA',
+    )
+  })
+})

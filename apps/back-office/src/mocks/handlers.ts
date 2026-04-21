@@ -22,6 +22,16 @@ export const handlers = [
 
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () => HttpResponse.json({})),
 
+  http.post(ENDPOINTS.POST_MELDING, () =>
+    HttpResponse.json({
+      classification: { id: 2, name: 'Test classification' },
+      created_at: '2025-05-26T11:56:34.081Z',
+      id: 123,
+      public_id: 'B100AA',
+      token: 'test-token',
+    }),
+  ),
+
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_CANCEL, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_COMPLETE, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_PLAN, () => new HttpResponse()),

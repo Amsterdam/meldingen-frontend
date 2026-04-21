@@ -2,8 +2,9 @@
 
 import { redirect } from 'next/navigation'
 
-import { postMelding } from '@meldingen/api-client'
+import { MeldingOutput, postMelding } from '@meldingen/api-client'
 
+import { URGENCY_VALUES } from '../../constants'
 import { patchMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
 
 export type FormState = {
@@ -12,16 +13,8 @@ export type FormState = {
   validationErrors?: { key: string; message: string }[]
 }
 
-const getUrgencyFromFormData = (formValue: 'high' | 'medium' | 'low') => {
-  switch (formValue) {
-    case 'high':
-      return 1
-    case 'low':
-      return -1
-    default:
-      return 0
-  }
-}
+const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
+  URGENCY_VALUES.includes(value as MeldingOutput['urgency'])
 
 export const postMeldingForm = async (_: unknown, formData: FormData): Promise<FormState> => {
   const formDataObj = Object.fromEntries(formData)
@@ -37,10 +30,18 @@ export const postMeldingForm = async (_: unknown, formData: FormData): Promise<F
 
   if (error) return { formData, systemError: error }
 
-  const urgency = getUrgencyFromFormData(formDataObj.urgency as 'high' | 'medium' | 'low')
+  const urgencyRaw = formDataObj.urgency
+  const urgencyNumber = Number(urgencyRaw)
+
+  if (!isValidUrgency(urgencyNumber)) {
+    return {
+      formData,
+      systemError: `Invalid urgency: ${urgencyRaw}`,
+    }
+  }
 
   const { error: urgencyError } = await patchMeldingByMeldingId({
-    body: { urgency },
+    body: { urgency: urgencyNumber },
     path: { melding_id: data.id },
   })
 

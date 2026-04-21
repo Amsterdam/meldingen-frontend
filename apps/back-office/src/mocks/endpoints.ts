@@ -11,6 +11,8 @@ export const ENDPOINTS = {
 
   PATCH_MELDING_BY_MELDING_ID: '/melding/:id',
 
+  POST_MELDING: '/melding',
+
   PUT_MELDING_BY_MELDING_ID_CANCEL: '/melding/:id/cancel',
   PUT_MELDING_BY_MELDING_ID_COMPLETE: '/melding/:id/complete',
   PUT_MELDING_BY_MELDING_ID_PLAN: '/melding/:id/plan',
