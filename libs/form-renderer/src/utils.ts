@@ -45,6 +45,19 @@ export const isTextfield = (component: Component): component is FormTextFieldInp
 
 export const isTimeInput = (component: Component): component is FormTimeComponent => component.type === 'time'
 
+export const refilterValues = (
+  components: Component[],
+  previousAnswersByKey: AnswersByKey,
+  current: AnswersByKey,
+): AnswersByKey => {
+  const result: AnswersByKey = { ...previousAnswersByKey }
+  for (const component of components) {
+    if (!shouldRender(component, result)) continue
+    result[component.key] = current[component.key]
+  }
+  return result
+}
+
 export const getAriaDescribedBy = (id: string, description?: string, errorMessage?: string) => {
   const ariaDescribedBy = []
 
