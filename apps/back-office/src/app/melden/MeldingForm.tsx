@@ -76,10 +76,11 @@ export const MeldingForm = ({ primaryTextArea }: Props) => {
             </Field>
             <FieldSet aria-required="true" legend={t('urgency-label')} role="radiogroup">
               <Column gap="x-small">
-                {URGENCY_VALUES.map((urgency) => (
+                {URGENCY_VALUES.map((urgency, index) => (
                   <Radio
                     aria-required="true"
                     defaultChecked={urgency === 0}
+                    id={index === 0 ? 'urgency' : undefined}
                     key={urgency}
                     name="urgency"
                     value={String(urgency)}

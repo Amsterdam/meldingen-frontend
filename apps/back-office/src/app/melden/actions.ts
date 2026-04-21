@@ -36,7 +36,7 @@ export const postMeldingForm = async (_: unknown, formData: FormData): Promise<F
   if (!isValidUrgency(urgencyNumber)) {
     return {
       formData,
-      systemError: `Invalid urgency: ${urgencyRaw}`,
+      validationErrors: [{ key: 'urgency', message: `Invalid urgency: ${urgencyRaw}` }],
     }
   }
 
