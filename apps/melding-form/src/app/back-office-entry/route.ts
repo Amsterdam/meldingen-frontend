@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 import { COOKIES } from '../../constants'
-import { resolveClassificationRedirect } from '../utils/resolveClassificationRedirect'
+import { resolveClassificationRedirect } from '../utils'
 
 export const GET = async (request: NextRequest) => {
   const { searchParams } = request.nextUrl

@@ -7,7 +7,7 @@ import { patchMeldingByMeldingIdMelder, postMelding } from '@meldingen/api-clien
 
 import { COOKIES } from '../../constants'
 import { handleApiError } from '../../handleApiError'
-import { resolveClassificationRedirect } from '../utils/resolveClassificationRedirect'
+import { resolveClassificationRedirect } from '../utils'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
 
 export type ArgsType = {
