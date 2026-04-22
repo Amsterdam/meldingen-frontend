@@ -39,9 +39,12 @@ export const MeldingForm = ({ primaryTextArea }: Props) => {
   const { description, label, maxCharCount } = primaryTextArea
 
   const ref = useRef<HTMLTextAreaElement>(null)
-  const [charCount, setCharCount] = useState(ref.current?.value.length || 0)
 
   const [{ formData, validationErrors }, formAction] = useActionState(postMeldingForm, initialState)
+
+  const primaryTextAreaDefaultValue = (formData?.get('primary') as string) ?? ''
+
+  const [charCount, setCharCount] = useState(primaryTextAreaDefaultValue.length)
 
   const t = useTranslations('melding-form')
   const tShared = useTranslations('shared')
@@ -65,7 +68,7 @@ export const MeldingForm = ({ primaryTextArea }: Props) => {
               <TextArea
                 aria-describedby={getAriaDescribedBy('primary', description)}
                 aria-required="true"
-                defaultValue={(formData?.get('primary') as string) ?? ''}
+                defaultValue={primaryTextAreaDefaultValue}
                 id="primary"
                 name="primary"
                 onChange={() => {
