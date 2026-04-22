@@ -1,10 +1,10 @@
-import {
+import type {
   FormTextAreaComponentOutput,
   MeldingOutput,
   TextAnswerQuestionOutput,
   TimeAnswerQuestionOutput,
   ValueLabelAnswerQuestionOutput,
-} from '../apiClientProxy'
+} from '@meldingen/api-client'
 
 export const melding: MeldingOutput = {
   city: 'Amsterdam',
