@@ -62,6 +62,8 @@ describe('postMeldingForm', () => {
   })
 
   it('redirects to the correct URL when postMeldingForm is successful', async () => {
+    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
+
     const formData = new FormData()
     formData.set('primary', 'Test')
     formData.set('urgency', '1')
@@ -76,10 +78,14 @@ describe('postMeldingForm', () => {
     })
     params.set('classification_id', '2')
 
-    expect(redirect).toHaveBeenCalledWith(`undefined/back-office-entry?${params}`)
+    expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
+
+    vi.unstubAllEnvs()
   })
 
   it('redirects to the correct URL without classification_id when classification is not returned', async () => {
+    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
+
     server.use(
       http.post(ENDPOINTS.POST_MELDING, () =>
         HttpResponse.json({
@@ -104,6 +110,8 @@ describe('postMeldingForm', () => {
       token: 'test-token',
     })
 
-    expect(redirect).toHaveBeenCalledWith(`undefined/back-office-entry?${params}`)
+    expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
+
+    vi.unstubAllEnvs()
   })
 })
