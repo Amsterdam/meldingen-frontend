@@ -2,7 +2,9 @@
 
 import { redirect } from 'next/navigation'
 
-import { MeldingOutput, postMelding } from '@meldingen/api-client'
+import type { MeldingOutput } from '@meldingen/api-client'
+
+import { postMelding } from '@meldingen/api-client'
 
 import { URGENCY_VALUES } from '../../constants'
 import { patchMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
