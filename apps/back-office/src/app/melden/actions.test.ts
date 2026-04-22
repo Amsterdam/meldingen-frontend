@@ -33,7 +33,7 @@ describe('postMeldingForm', () => {
     expect(result).toEqual({ formData, systemError: 'Error message' })
   })
 
-  it('returns a system error when urgency is invalid', async () => {
+  it('returns a validation error when urgency is invalid', async () => {
     const formData = new FormData()
     formData.set('primary', 'Test')
     formData.set('urgency', 'invalid')
@@ -42,7 +42,7 @@ describe('postMeldingForm', () => {
 
     expect(result).toEqual({
       formData,
-      systemError: 'Invalid urgency: invalid',
+      validationErrors: [{ key: 'urgency', message: 'Invalid urgency: invalid' }],
     })
   })
 
