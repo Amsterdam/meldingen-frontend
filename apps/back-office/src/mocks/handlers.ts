@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import { additionalQuestions, melding, meldingen } from './data'
+import { additionalQuestions, melding, meldingen, textAreaComponent } from './data'
 import { ENDPOINTS } from './endpoints'
 
 export const handlers = [
@@ -19,6 +19,15 @@ export const handlers = [
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NEXT_POSSIBLE_STATES, () =>
     HttpResponse.json({ states: ['processing_requested', 'completed'] }),
   ),
+
+  // Static form
+  http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json([{ id: '1', type: 'primary' }])),
+  http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, ({ params }) => {
+    // Primary
+    if (params.staticFormId === '1') {
+      return HttpResponse.json({ components: [textAreaComponent] })
+    }
+  }),
 
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () => HttpResponse.json({})),
 
