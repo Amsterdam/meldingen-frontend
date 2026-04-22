@@ -83,7 +83,7 @@ export const MeldingForm = ({ primaryTextArea }: Props) => {
                 {URGENCY_VALUES.map((urgency, index) => (
                   <Radio
                     aria-required="true"
-                    defaultChecked={urgency === 0}
+                    defaultChecked={formData?.get('urgency') === String(urgency) || urgency === 0}
                     id={index === 0 ? 'urgency' : undefined}
                     key={urgency}
                     name="urgency"
