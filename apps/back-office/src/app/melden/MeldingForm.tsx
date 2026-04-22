@@ -68,7 +68,11 @@ export const MeldingForm = ({ primaryTextArea }: Props) => {
                 defaultValue={(formData?.get('primary') as string) ?? ''} // TODO: prefill
                 id="primary"
                 name="primary"
-                onChange={() => setCharCount(ref.current?.value.length || 0)}
+                onChange={() => {
+                  if (typeof maxCharCount === 'number' && ref.current) {
+                    setCharCount(ref.current.value.length)
+                  }
+                }}
                 ref={ref}
                 rows={4}
               />
