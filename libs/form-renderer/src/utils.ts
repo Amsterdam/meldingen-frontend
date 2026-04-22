@@ -48,12 +48,13 @@ export const isTimeInput = (component: Component): component is FormTimeComponen
 export const refilterValues = (
   components: Component[],
   previousAnswersByKey: AnswersByKey,
-  current: AnswersByKey,
-): AnswersByKey => {
-  const result: AnswersByKey = { ...previousAnswersByKey }
+  currentAnswersByKey: AnswersByKey,
+) => {
+  const result: AnswersByKey = { ...previousAnswersByKey, ...currentAnswersByKey }
   for (const component of components) {
-    if (!shouldRender(component, result)) continue
-    result[component.key] = current[component.key]
+    if (!shouldRender(component, result)) {
+      delete result[component.key]
+    }
   }
   return result
 }
