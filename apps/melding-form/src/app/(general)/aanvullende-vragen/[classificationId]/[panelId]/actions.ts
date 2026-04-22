@@ -102,7 +102,7 @@ export const postForm = async (
 
   // Merge previously submitted answers with the current panel's just-submitted answers.
   // Current panel answers take priority, enabling up-to-date conditional evaluation.
-  // Re-filter to null out answers for conditions that are no longer met after the merge.
+  // Re-filter to omit answers for components whose conditions are no longer met after the merge.
   const allAnswersByKey = refilterAnswersByKey(panelComponentsConditions, {
     ...previousAnswersByKey,
     ...Object.fromEntries(entries),
