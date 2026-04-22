@@ -22,7 +22,7 @@
     "@meldingen/ui": "workspace:*",
     "@floating-ui/react-dom": "2.1.8",
     "@headlessui/react": "2.2.10",
-    "next": "16.2.3",
+    "next": "16.2.4",
     "next-intl": "4.9.1"
   }
 }
