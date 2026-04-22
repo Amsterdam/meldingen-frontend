@@ -4,10 +4,8 @@ import { redirect } from 'next/navigation'
 
 import type { MeldingOutput } from '@meldingen/api-client'
 
-import { postMelding } from '@meldingen/api-client'
-
+import { patchMeldingByMeldingId, postMelding } from '../../apiClientProxy'
 import { URGENCY_VALUES } from '../../constants'
-import { patchMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
 
 export type FormState = {
   formData?: FormData

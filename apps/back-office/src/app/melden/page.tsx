@@ -2,9 +2,7 @@ import { getTranslations } from 'next-intl/server'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
-// These API client functions are not authenticated, so we do not have to import them from the API client proxy.
-import { getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
-
+import { getStaticForm, getStaticFormByStaticFormId } from '../../apiClientProxy'
 import { MeldingForm } from './MeldingForm'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.

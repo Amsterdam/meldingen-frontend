@@ -3,8 +3,6 @@
 import '@testing-library/jest-dom/vitest'
 import { afterAll, afterEach, beforeAll } from 'vitest'
 
-import { client } from '@meldingen/api-client'
-
 import { server } from './src/mocks/node'
 
 // In our unit tests, we use the translation key instead of the real translation.
@@ -26,9 +24,6 @@ vi.mock('next-intl', async () => {
 vi.mock('next-intl/server', async () => ({
   getTranslations: () => (key: string) => key,
 }))
-
-// Configure the API client for the test environment.
-client.setConfig({ baseUrl: 'http://localhost:3000' })
 
 // We use getServerSession and redirect in our authentication setup, which is used in most of our server components.
 // Therefore, we globally mock them in the vitest setup file.
