@@ -40,6 +40,7 @@ describe('postMeldingForm', () => {
 
     const formData = new FormData()
     formData.set('primary', 'Test')
+    formData.set('urgency', '1')
 
     const result = await postMeldingForm(null, formData)
 
@@ -68,12 +69,12 @@ describe('postMeldingForm', () => {
     await postMeldingForm(null, formData)
 
     const params = new URLSearchParams({
-      classification_id: '2',
       created_at: '2025-05-26T11:56:34.081Z',
       id: '123',
       public_id: 'B100AA',
       token: 'test-token',
     })
+    params.set('classification_id', '2')
 
     expect(redirect).toHaveBeenCalledWith(`undefined/back-office-entry?${params}`)
   })
