@@ -1,16 +1,9 @@
-import type {
-  FormOutput,
-  FormPanelComponentOutput,
-  GetMeldingByMeldingIdAnswersMelderResponses,
-} from '@meldingen/api-client'
+import type { FormOutput, GetMeldingByMeldingIdAnswersMelderResponses } from '@meldingen/api-client'
 
+import { isPanelComponentOutput } from '../typeGuards'
 import { shouldRenderComponent } from './shouldRenderComponent'
 
 export type AnswersByKey = Record<string, string | string[] | null>
-
-export const isPanelComponentOutput = (
-  component: FormOutput['components'][number],
-): component is FormPanelComponentOutput => component.type === 'panel'
 
 export const getFilteredAnswersByKey = (
   formData: FormOutput,

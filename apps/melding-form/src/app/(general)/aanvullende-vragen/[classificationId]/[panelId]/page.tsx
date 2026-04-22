@@ -14,7 +14,8 @@ import type {
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
-import { getFilteredAnswersByKey, isPanelComponentOutput } from '../../../_utils/conditions/getFilteredAnswersByKey'
+import { getFilteredAnswersByKey } from '../../../_utils/conditions/getFilteredAnswersByKey'
+import { isPanelComponentOutput } from '../../../_utils/typeGuards'
 import { AFTER_ADDITIONAL_QUESTIONS_PATH, getPreviousPanelPath } from './_utils/navigationUtils'
 import { setDateComponentOptions } from './_utils/setDateComponentOptions'
 import { postForm } from './actions'
