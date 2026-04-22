@@ -10,27 +10,16 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
-const formData = new FormData()
-
 describe('postMeldingForm', () => {
   it('returns a custom validation error when primary question is not answered', async () => {
+    const formData = new FormData()
+
     const result = await postMeldingForm(null, formData)
 
     expect(result).toEqual({
       formData,
       validationErrors: [{ key: 'primary', message: 'This field is required.' }],
     })
-  })
-
-  it('returns a system error when postMelding returns an error', async () => {
-    server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json('Error message', { status: 404 })))
-
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-
-    const result = await postMeldingForm(null, formData)
-
-    expect(result).toEqual({ formData, systemError: 'Error message' })
   })
 
   it('returns a validation error when urgency is invalid', async () => {
@@ -44,6 +33,17 @@ describe('postMeldingForm', () => {
       formData,
       validationErrors: [{ key: 'urgency', message: 'Invalid urgency: invalid' }],
     })
+  })
+
+  it('returns a system error when postMelding returns an error', async () => {
+    server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json('Error message', { status: 404 })))
+
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+
+    const result = await postMeldingForm(null, formData)
+
+    expect(result).toEqual({ formData, systemError: 'Error message' })
   })
 
   it('returns a system error when patchMeldingByMeldingId returns an error', async () => {
@@ -67,9 +67,15 @@ describe('postMeldingForm', () => {
 
     await postMeldingForm(null, formData)
 
-    expect(redirect).toHaveBeenCalledWith(
-      'undefined/back-office-entry?id=123&token=test-token&created_at=2025-05-26T11:56:34.081Z&public_id=B100AA&classification_id=2',
-    )
+    const params = new URLSearchParams({
+      classification_id: '2',
+      created_at: '2025-05-26T11:56:34.081Z',
+      id: '123',
+      public_id: 'B100AA',
+      token: 'test-token',
+    })
+
+    expect(redirect).toHaveBeenCalledWith(`undefined/back-office-entry?${params}`)
   })
 
   it('redirects to the correct URL without classification_id when classification is not returned', async () => {
@@ -90,8 +96,13 @@ describe('postMeldingForm', () => {
 
     await postMeldingForm(null, formData)
 
-    expect(redirect).toHaveBeenCalledWith(
-      'undefined/back-office-entry?id=123&token=test-token&created_at=2025-05-26T11:56:34.081Z&public_id=B100AA',
-    )
+    const params = new URLSearchParams({
+      created_at: '2025-05-26T11:56:34.081Z',
+      id: '123',
+      public_id: 'B100AA',
+      token: 'test-token',
+    })
+
+    expect(redirect).toHaveBeenCalledWith(`undefined/back-office-entry?${params}`)
   })
 })
