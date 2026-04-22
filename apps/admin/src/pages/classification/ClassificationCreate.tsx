@@ -21,6 +21,7 @@ export const ClassificationCreate = () => (
       }
     >
       <TextInput source="name" validate={required()} />
+      <TextInput minRows={3} multiline source="instructions" />
       <ReferenceInput reference="asset-type" sort={{ field: 'name', order: 'ASC' }} source="asset_type" />
     </SimpleForm>
   </Create>
