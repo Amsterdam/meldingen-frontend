@@ -28,10 +28,6 @@ export const postMeldingForm = async (_: unknown, formData: FormData): Promise<F
     }
   }
 
-  const { data, error } = await postMelding({ body: { text: formDataObj.primary.toString() } })
-
-  if (error) return { formData, systemError: error }
-
   const urgencyRaw = formDataObj.urgency
   const urgencyNumber = Number(urgencyRaw)
 
@@ -41,6 +37,10 @@ export const postMeldingForm = async (_: unknown, formData: FormData): Promise<F
       validationErrors: [{ key: 'urgency', message: `Invalid urgency: ${urgencyRaw}` }],
     }
   }
+
+  const { data, error } = await postMelding({ body: { text: formDataObj.primary.toString() } })
+
+  if (error) return { formData, systemError: error }
 
   const { error: urgencyError } = await patchMeldingByMeldingId({
     body: { urgency: urgencyNumber },
@@ -52,7 +52,8 @@ export const postMeldingForm = async (_: unknown, formData: FormData): Promise<F
   const { classification, created_at, id, public_id, token } = data
   const meldingFormBaseUrl = process.env.NEXT_PUBLIC_MELDING_FORM_BASE_URL
 
-  redirect(
-    `${meldingFormBaseUrl}/back-office-entry?id=${id}&token=${token}&created_at=${created_at}&public_id=${public_id}${classification?.id ? `&classification_id=${classification.id}` : ''}`,
-  )
+  const params = new URLSearchParams({ created_at, id: String(id), public_id: String(public_id), token })
+  if (classification?.id) params.set('classification_id', String(classification.id))
+
+  redirect(`${meldingFormBaseUrl}/back-office-entry?${params}`)
 }
