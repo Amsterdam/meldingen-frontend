@@ -39,7 +39,7 @@ describe('MeldingForm', () => {
     expect(submitButton).toBeInTheDocument()
   })
 
-  it('initializes the character count to 0', () => {
+  it('initializes the character count with 0', () => {
     render(<MeldingForm {...defaultProps} />)
 
     expect(screen.getByText('0 van 500 tekens')).toBeInTheDocument()
@@ -70,7 +70,7 @@ describe('MeldingForm', () => {
     })
   })
 
-  it('defaults urgency 0 to be checked', () => {
+  it('checks "medium" urgency by default', () => {
     render(<MeldingForm {...defaultProps} />)
 
     expect(screen.getByRole('radio', { name: 'urgency.0' })).toBeChecked()
