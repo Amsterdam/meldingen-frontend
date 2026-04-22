@@ -65,7 +65,7 @@ export const MeldingForm = ({ primaryTextArea }: Props) => {
               <TextArea
                 aria-describedby={getAriaDescribedBy('primary', description)}
                 aria-required="true"
-                defaultValue={(formData?.get('primary') as string) ?? ''} // TODO: prefill
+                defaultValue={(formData?.get('primary') as string) ?? ''}
                 id="primary"
                 name="primary"
                 onChange={() => {
