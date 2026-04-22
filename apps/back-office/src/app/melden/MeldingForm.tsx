@@ -64,9 +64,9 @@ export const MeldingForm = ({ primaryTextArea }: Props) => {
                   {description}
                 </MarkdownToHtml>
               )}
-              {validationErrors && <ErrorMessage>{validationErrors[0].message}</ErrorMessage>}
+              {validationErrors && <ErrorMessage id="primary-error">{validationErrors[0].message}</ErrorMessage>}
               <TextArea
-                aria-describedby={getAriaDescribedBy('primary', description)}
+                aria-describedby={getAriaDescribedBy('primary', description, validationErrors?.[0]?.message)}
                 aria-required="true"
                 defaultValue={primaryTextAreaDefaultValue}
                 id="primary"
