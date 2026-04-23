@@ -11,7 +11,7 @@ const getAssetIconSVG = (
   const assetSubType = iconEntry ? (properties?.[iconEntry] as string) : undefined
 
   if (!iconFolder || !assetSubType) {
-    return '/happy.png'
+    return '/asset-fallback.svg'
   }
 
   return `/${iconFolder}/${assetSubType?.toLocaleLowerCase()}.svg`

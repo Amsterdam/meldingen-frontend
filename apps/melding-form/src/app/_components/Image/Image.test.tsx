@@ -17,7 +17,7 @@ describe('Image', () => {
     fireEvent.error(img)
 
     await waitFor(() => {
-      expect(img.getAttribute('src') ?? '').toContain('happy.png')
+      expect(img.getAttribute('src') ?? '').toContain('asset-fallback.svg')
     })
   })
 

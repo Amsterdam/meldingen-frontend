@@ -83,7 +83,7 @@ describe('useAddMarkersToMap', () => {
     expect(typeof mockMarkerLayerRef.current?.addTo).toBe('function')
   })
 
-  it('falls back to /happy.png when a marker icon fails to load', () => {
+  it('falls back to /asset-fallback.svg when a marker icon fails to load', () => {
     const img = document.createElement('img')
     img.src = '/container/rest.svg'
 
@@ -97,7 +97,7 @@ describe('useAddMarkersToMap', () => {
     firstMarker.fire('add')
     img.dispatchEvent(new Event('error'))
 
-    expect(img.src).toContain('/happy.png')
+    expect(img.src).toContain('/asset-fallback.svg')
 
     getElementSpy.mockRestore()
   })

@@ -41,20 +41,20 @@ describe('getAssetIcon', () => {
     expect(icon.options.className).toBe(styles.border)
   })
 
-  it('falls back to /happy.png when iconFolder is missing', () => {
+  it('falls back to /asset-fallback.svg when iconFolder is missing', () => {
     const feature = makeFeature({ icon_name: 'rest' } as Feature['properties'])
     const icon = getAssetIcon(feature, false, { iconEntry: 'icon_name' })
 
-    expect(icon.options.iconUrl).toBe('/happy.png')
+    expect(icon.options.iconUrl).toBe('/asset-fallback.svg')
   })
 
-  it('falls back to /happy.png when iconEntry is missing or property is absent', () => {
+  it('falls back to /asset-fallback.svg when iconEntry is missing or property is absent', () => {
     const featureWithoutEntry = makeFeature({ icon_name: 'rest' } as Feature['properties'])
     const iconWithoutEntry = getAssetIcon(featureWithoutEntry, false, {
       iconFolder: containerIconFolder,
     })
 
-    expect(iconWithoutEntry.options.iconUrl).toBe('/happy.png')
+    expect(iconWithoutEntry.options.iconUrl).toBe('/asset-fallback.svg')
 
     const featureWithoutProperties = makeFeature(undefined)
     const iconWithoutProperties = getAssetIcon(featureWithoutProperties, false, {
@@ -62,6 +62,6 @@ describe('getAssetIcon', () => {
       iconFolder: containerIconFolder,
     })
 
-    expect(iconWithoutProperties.options.iconUrl).toBe('/happy.png')
+    expect(iconWithoutProperties.options.iconUrl).toBe('/asset-fallback.svg')
   })
 })

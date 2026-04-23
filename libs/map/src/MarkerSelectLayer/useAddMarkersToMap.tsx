@@ -98,7 +98,7 @@ export const useAddMarkersToMap = ({
         if (!el) return
 
         el.addEventListener('error', () => {
-          el.src = '/happy.png'
+          el.src = '/asset-fallback.svg'
         })
       })
 

@@ -1,7 +1,7 @@
 import NextImage from 'next/image'
 import { useState } from 'react'
 
-const FALLBACK_SRC = '/happy.png'
+const FALLBACK_SRC = '/asset-fallback.svg'
 
 type Props = {
   alt: string
