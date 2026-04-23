@@ -97,9 +97,13 @@ export const useAddMarkersToMap = ({
         const el = marker.getElement() as HTMLImageElement | null
         if (!el) return
 
-        el.addEventListener('error', () => {
-          el.src = '/asset-fallback.svg'
-        })
+        el.addEventListener(
+          'error',
+          () => {
+            el.src = '/asset-fallback.svg'
+          },
+          { once: true },
+        )
       })
 
       markerClusterGroup.addLayer(marker)
@@ -112,5 +116,14 @@ export const useAddMarkersToMap = ({
       markerClusterGroup.clearLayers()
       markerLayerRef.current = null
     }
-  }, [map, features, selectedMarkers])
+  }, [
+    map,
+    features,
+    selectedMarkers,
+    assetTypeIconConfig,
+    maxMarkers,
+    onMaxMarkersReached,
+    onSelectedMarkersChange,
+    updateSelectedPoint,
+  ])
 }
