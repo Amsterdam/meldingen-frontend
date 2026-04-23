@@ -20,10 +20,7 @@ const getAssetIconSVG = (
 export const getAssetIcon = (
   feature: Feature,
   isSelected: boolean,
-  assetTypeIconConfig: {
-    iconEntry?: string
-    iconFolder?: string
-  },
+  assetTypeIconConfig: { iconEntry?: string; iconFolder?: string },
 ): L.Icon => {
   const icon = L.icon({
     iconAnchor: [22, 22],

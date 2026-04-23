@@ -1,38 +1,67 @@
-import { Feature } from '@meldingen/api-client'
+import type { Feature } from '@meldingen/api-client'
 
-import { containerTypes, getContainerIcon } from './getAssetIcon'
+import { getAssetIcon } from './getAssetIcon'
 
-const makeFeature = (type: (typeof containerTypes)[number] | string) =>
+import styles from './getAssetIcon.module.css'
+
+const makeFeature = (properties?: Feature['properties']): Feature =>
   ({
     geometry: {
       coordinates: [0, 0],
       type: 'Point',
     },
-    properties: {
-      fractie_omschrijving: type,
-    },
+    properties,
     type: 'Feature',
   }) as Feature
 
-describe('getContainerIcon', () => {
-  containerTypes.forEach((type) => {
-    it(`returns the correct icon for type ${type}`, () => {
-      const feature = makeFeature(type)
-      const icon = getContainerIcon(feature, false)
+const containerIconNames = ['rest', 'glas'] as const
+const containerIconFolder = 'container'
 
-      expect(icon.options.iconUrl).toBe(`/afval/${type.toLowerCase()}.svg`)
+describe('getAssetIcon', () => {
+  it.each(containerIconNames)('returns correct iconUrl for assets (unselected)', (name) => {
+    const feature = makeFeature({ icon_name: name.toUpperCase() } as Feature['properties'])
+
+    const icon = getAssetIcon(feature, false, {
+      iconEntry: 'icon_name',
+      iconFolder: containerIconFolder,
     })
+
+    expect(icon.options.iconUrl).toBe(`/container/${name}.svg`)
   })
 
-  containerTypes.forEach((type) => {
-    it(`returns the correct selected icon for type ${type}`, () => {
-      const feature = makeFeature(type)
-      const icon = getContainerIcon(feature, true)
+  it.each(containerIconNames)('returns correct iconUrl for assets (selected)', (name) => {
+    const feature = makeFeature({ icon_name: name.toUpperCase() } as Feature['properties'])
 
-      expect(icon.options.iconUrl).toBe(`/afval/${type.toLowerCase()}.svg`)
-      expect(icon.options.className).toContain('border')
-      expect(icon.options.iconSize).toEqual([60, 60])
-      expect(icon.options.iconAnchor).toEqual([34, 56])
+    const icon = getAssetIcon(feature, true, {
+      iconEntry: 'icon_name',
+      iconFolder: containerIconFolder,
     })
+
+    expect(icon.options.iconUrl).toBe(`/container/${name}.svg`)
+    expect(icon.options.className).toBe(styles.border)
+  })
+
+  it('falls back to /happy.png when iconFolder is missing', () => {
+    const feature = makeFeature({ icon_name: 'rest' } as Feature['properties'])
+    const icon = getAssetIcon(feature, false, { iconEntry: 'icon_name' })
+
+    expect(icon.options.iconUrl).toBe('/happy.png')
+  })
+
+  it('falls back to /happy.png when iconEntry is missing or property is absent', () => {
+    const featureWithoutEntry = makeFeature({ icon_name: 'rest' } as Feature['properties'])
+    const iconWithoutEntry = getAssetIcon(featureWithoutEntry, false, {
+      iconFolder: containerIconFolder,
+    })
+
+    expect(iconWithoutEntry.options.iconUrl).toBe('/happy.png')
+
+    const featureWithoutProperties = makeFeature(undefined)
+    const iconWithoutProperties = getAssetIcon(featureWithoutProperties, false, {
+      iconEntry: 'icon_name',
+      iconFolder: containerIconFolder,
+    })
+
+    expect(iconWithoutProperties.options.iconUrl).toBe('/happy.png')
   })
 })
