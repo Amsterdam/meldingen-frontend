@@ -23,6 +23,7 @@ export const ClassificationEdit = () => (
       }
     >
       <TextInput source="name" validate={required()} />
+      <TextInput minRows={3} multiline source="instructions" />
       <ReferenceInput reference="asset-type" sort={{ field: 'name', order: 'ASC' }} source="asset_type" />
       <TextInput readOnly source="form" />
     </SimpleForm>

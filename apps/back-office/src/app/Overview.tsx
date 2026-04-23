@@ -1,15 +1,13 @@
 import { useTranslations } from 'next-intl'
-import NextLink from 'next/link'
 
-import { Grid, Heading, Pagination } from '@meldingen/ui'
+import { Grid, Heading } from '@meldingen/ui'
 
 import type { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
 
 import { OverviewDesktop } from './_components/OverviewDesktop'
 import { OverviewMobile } from './_components/OverviewMobile'
+import { Pagination } from './_components/Pagination'
 import { getShortNLAddress } from './utils'
-
-import styles from './Overview.module.css'
 
 export type MeldingWithAddress = MeldingOutput & { address?: string }
 
@@ -17,6 +15,7 @@ type Props = {
   meldingen: MeldingOutput[]
   meldingenCount: number
   page?: number
+  pageSize: number
   totalPages: number
 }
 
@@ -26,7 +25,7 @@ const toMeldingenWithAddress = (meldingen: MeldingOutput[]): MeldingWithAddress[
     address: getShortNLAddress(melding),
   }))
 
-export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props) => {
+export const Overview = ({ meldingen, meldingenCount, page, pageSize, totalPages }: Props) => {
   const t = useTranslations()
 
   const meldingenWithAddress = toMeldingenWithAddress(meldingen)
@@ -39,13 +38,7 @@ export const Overview = ({ meldingen, meldingenCount, page, totalPages }: Props)
         </Heading>
         <OverviewMobile meldingen={meldingenWithAddress} />
         <OverviewDesktop meldingen={meldingenWithAddress} />
-        <Pagination
-          className={styles.pagination}
-          linkComponent={({ href = '/', ...props }) => <NextLink href={href} {...props} />}
-          linkTemplate={(page) => (page === 1 ? '/' : `/?pagina=${page}`)}
-          page={page}
-          totalPages={totalPages}
-        />
+        <Pagination page={page} pageSize={pageSize} totalPages={totalPages} />
       </Grid.Cell>
     </Grid>
   )

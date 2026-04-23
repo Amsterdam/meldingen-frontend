@@ -1,0 +1,10 @@
+.selector {
+  @media screen and (min-width: 72.5rem) {
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
+.selectorLabel {
+  font-size: var(--ams-paragraph-small-font-size);
+}

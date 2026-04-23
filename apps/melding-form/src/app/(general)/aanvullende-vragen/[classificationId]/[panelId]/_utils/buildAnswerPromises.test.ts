@@ -49,7 +49,7 @@ describe('buildAnswerPromises', () => {
     expect(await result[0]).toMatchObject({
       key: 'key1',
       value: {
-        data: expect.objectContaining({ id: 1, text: 'POST request' }),
+        data: { text: 'test', type: 'text' },
       },
     })
   })
@@ -70,7 +70,18 @@ describe('buildAnswerPromises', () => {
 
     const result = buildAnswerPromises({ ...defaultArgs, entries: [entry], questionMetadata })
 
-    expect(await result[0]).toMatchObject({ key: 'key1' })
+    expect(await result[0]).toMatchObject({
+      key: 'key1',
+      value: {
+        data: {
+          type: 'value_label',
+          values_and_labels: [
+            { label: 'Label 1', value: 'value1' },
+            { label: 'Label 2', value: 'value2' },
+          ],
+        },
+      },
+    })
   })
 
   it('handles date inputs', async () => {
@@ -92,7 +103,12 @@ describe('buildAnswerPromises', () => {
     ]
 
     const result = buildAnswerPromises({ ...defaultArgs, entries: [entry], questionMetadata })
-    expect(await result[0]).toMatchObject({ key: 'key1' })
+    expect(await result[0]).toMatchObject({
+      key: 'key1',
+      value: {
+        data: { date: { converted_date: '2026-03-11', label: '11 maart 2026', value: 'value1' }, type: 'date' },
+      },
+    })
   })
 
   it('handles radio inputs', async () => {
@@ -111,7 +127,15 @@ describe('buildAnswerPromises', () => {
 
     const result = buildAnswerPromises({ ...defaultArgs, entries: [entry], questionMetadata })
 
-    expect(await result[0]).toMatchObject({ key: 'key1' })
+    expect(await result[0]).toMatchObject({
+      key: 'key1',
+      value: {
+        data: {
+          type: 'value_label',
+          values_and_labels: [{ label: 'Label 1', value: 'value1' }],
+        },
+      },
+    })
   })
 
   it('handles select inputs', async () => {
@@ -130,7 +154,15 @@ describe('buildAnswerPromises', () => {
 
     const result = buildAnswerPromises({ ...defaultArgs, entries: [entry], questionMetadata })
 
-    expect(await result[0]).toMatchObject({ key: 'key1' })
+    expect(await result[0]).toMatchObject({
+      key: 'key1',
+      value: {
+        data: {
+          type: 'value_label',
+          values_and_labels: [{ label: 'Label 1', value: 'value1' }],
+        },
+      },
+    })
   })
 
   it('handles textarea inputs', async () => {
@@ -144,7 +176,7 @@ describe('buildAnswerPromises', () => {
 
     const result = buildAnswerPromises({ ...defaultArgs, questionMetadata })
 
-    expect(await result[0]).toMatchObject({ key: 'key1' })
+    expect(await result[0]).toMatchObject({ key: 'key1', value: { data: { text: 'test', type: 'text' } } })
   })
 
   it('handles time inputs', async () => {
@@ -158,7 +190,22 @@ describe('buildAnswerPromises', () => {
 
     const result = buildAnswerPromises({ ...defaultArgs, questionMetadata })
 
-    expect(await result[0]).toMatchObject({ key: 'key1' })
+    expect(await result[0]).toMatchObject({ key: 'key1', value: { data: { time: 'test', type: 'time' } } })
+  })
+
+  it('returns null for time inputs with value "unknown"', async () => {
+    const entry: [string, string] = ['key1', 'unknown']
+    const questionMetadata = [
+      {
+        id: 1,
+        key: 'key1',
+        type: 'time',
+      },
+    ]
+
+    const result = buildAnswerPromises({ ...defaultArgs, entries: [entry], questionMetadata })
+
+    expect(await result[0]).toMatchObject({ key: 'key1', value: { data: { time: null, type: 'time' } } })
   })
 
   it('returns type text for unknown question types', async () => {
@@ -172,7 +219,7 @@ describe('buildAnswerPromises', () => {
 
     const result = buildAnswerPromises({ ...defaultArgs, questionMetadata })
 
-    expect(await result[0]).toMatchObject({ key: 'key1' })
+    expect(await result[0]).toMatchObject({ key: 'key1', value: { data: { text: 'test', type: 'text' } } })
   })
 
   it('returns undefined for checkbox inputs with no matching valuesAndLabels', () => {
