@@ -7,7 +7,7 @@ import type { NotificationType } from '../../SelectLocation'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
 import { Image } from '../../../../../_components/Image/Image'
-import { getAssetIconSVG } from 'apps/melding-form/src/app/utils/getAssetIconSVG'
+import { getAssetIconSVG } from '../../../../../utils/getAssetIconSVG'
 
 import styles from './AssetList.module.css'
 
@@ -29,10 +29,7 @@ const getCheckboxLabel = (
   idNummer: string,
   assetTypeIconConfig: { iconEntry?: string; iconFolder?: string },
 ) => {
-  const icon = getAssetIconSVG(
-    assetTypeIconConfig.iconEntry ? (asset.properties?.[assetTypeIconConfig.iconEntry] as string) : undefined,
-    assetTypeIconConfig.iconFolder,
-  )
+  const icon = getAssetIconSVG(asset.properties, assetTypeIconConfig)
   const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
 
   return (
