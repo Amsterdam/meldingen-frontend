@@ -51,7 +51,7 @@ export const postCoordinatesAndAssets = async (
     for (const id of selectedAssetIds) {
       const { error } = await postMeldingByMeldingIdAsset({
         body: {
-          asset_type_id: asset_type_id ?? 0,
+          asset_type_id: Number(asset_type_id),
           external_id: String(id),
         },
         path: { melding_id: parseInt(meldingId, 10) },

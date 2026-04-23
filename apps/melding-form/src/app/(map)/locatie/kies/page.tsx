@@ -66,7 +66,7 @@ const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeI
       const filter = getFilter(asset.external_id)
 
       const { data, error } = await getAssetTypeByAssetTypeIdWfs({
-        path: { asset_type_id: assetTypeId ?? 1 },
+        path: { asset_type_id: Number(assetTypeId) },
         query: { filter },
       })
 
