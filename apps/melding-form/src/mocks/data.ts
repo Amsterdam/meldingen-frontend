@@ -181,6 +181,8 @@ export const melding: MeldingOutput = {
       arguments: {
         base_url: 'https://api.data.amsterdam.nl/v1/wfs/huishoudelijkafval',
         filter: '<Filter>test</Filter>',
+        icon_entry: 'fractie_omschrijving',
+        icon_folder: 'container',
         srs_name: 'EPSG:28992',
         type_names: 'Type name',
       },
