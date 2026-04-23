@@ -4,7 +4,7 @@ export default defineConfig({
   input: 'http://localhost:8000/openapi.json',
   output: {
     path: './libs/api-client/src',
-    postProcess: ['eslint', 'prettier'],
+    postProcess: ['prettier'],
   },
   plugins: [
     { exportFromIndex: true, name: '@hey-api/client-next' },
