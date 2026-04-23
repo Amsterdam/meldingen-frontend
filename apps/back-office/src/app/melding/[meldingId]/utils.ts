@@ -14,6 +14,10 @@ const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200
     case 'text':
       return answer.text
     case 'time':
+      // If the Time value is null, it means the melder selected 'do not know' for a question about time.
+      // In that case, we want to show "Weet ik niet" instead of an empty string.
+      if (answer.time === null) return 'Weet ik niet'
+
       return answer.time
     case 'value_label':
       return answer.values_and_labels.map((option: ValueLabelObject) => option.label).join(', ')

@@ -55,6 +55,8 @@ export const Select = ({
         defaultValue={defaultValue}
         id={id}
         invalid={Boolean(errorMessage)}
+        // React doesn't update the defaultValue of a select element after the initial render,
+        // so we use the key prop to force a remount of the select element when defaultValue changes
         key={defaultValue}
         name={id}
         onChange={(e) => onChange(e.target.value)}

@@ -20,6 +20,7 @@ const components = [
   { index: 2, name: 'CheckboxGroup', role: 'group' },
   { index: 3, name: 'Select', role: 'combobox' },
   { index: 4, name: 'RadioGroup', role: 'radiogroup' },
+  { index: 5, name: 'TimeInputGroup', role: 'group' },
 ]
 
 describe('FormRenderer', () => {
@@ -47,24 +48,6 @@ describe('FormRenderer', () => {
 
       expect(component).toBeInTheDocument()
     })
-  })
-
-  // Time does not have a role, so we need to test it separately
-  it('renders a form with a TimeInput component', () => {
-    const props: Props = {
-      ...defaultProps,
-      formComponents: [
-        {
-          ...form.components[0].components[5],
-        },
-      ],
-    }
-
-    render(<FormRenderer {...props} />)
-
-    const timeInput = screen.getByLabelText(form.components[0].components[5].label)
-
-    expect(timeInput).toBeInTheDocument()
   })
 
   it('renders nothing if an unsupported component is passed', () => {
@@ -142,6 +125,25 @@ describe('FormRenderer', () => {
         expect(components).toBeInTheDocument()
       })
     }
+  })
+
+  it('returns an empty string when the Checkbox in a TimeInput is clicked', async () => {
+    const user = userEvent.setup()
+
+    const timeInput = {
+      ...form.components[0].components[5],
+      defaultValue: '10:00',
+      key: 'time-input',
+      label: 'Time Input',
+    }
+
+    render(<FormRenderer {...defaultProps} formComponents={[timeInput]} />)
+
+    const input = screen.getByDisplayValue('10:00')
+
+    await user.click(screen.getByRole('checkbox', { name: 'Weet ik niet' }))
+
+    expect(input).toHaveValue('')
   })
 
   it('does not render a component when shouldRender returns false, and renders it after onChange updates values (string)', async () => {

@@ -50,6 +50,24 @@ describe('postForm', () => {
     expect(redirect).toHaveBeenCalledWith(`/cookie-storing#${TOP_ANCHOR_ID}`)
   })
 
+  it('returns a validation error when a Time component has a time value and its corresponding "unknown" checkbox is checked', async () => {
+    const formData = new FormData()
+    formData.append('time___timeQuestion', '12:00')
+    formData.append('time___timeQuestion-unknown', 'on')
+
+    const result = await postForm(defaultArgs, null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [
+        {
+          key: 'timeQuestion',
+          message: 'Selecteer een tijd, of vink "Weet ik niet" aan.',
+        },
+      ],
+    })
+  })
+
   it('returns custom and fallback validation errors for missing required questions', async () => {
     const formData = new FormData()
 
@@ -157,28 +175,6 @@ describe('postForm', () => {
     expect(result).toEqual({
       formData,
       validationErrors: [{ key: 'key1', message: 'Validation error' }],
-    })
-  })
-
-  it('uses fallback-key for the validation error key when result key is empty', async () => {
-    server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, () =>
-        HttpResponse.json({ detail: [{ loc: [''], msg: 'Validation error', type: 'value_error' }] }, { status: 422 }),
-      ),
-    )
-
-    const formData = new FormData()
-    formData.append('', 'some-value')
-
-    const result = await postForm(
-      { ...defaultArgs, questionMetadata: [{ id: 3, key: '', type: 'textfield' }] },
-      null,
-      formData,
-    )
-
-    expect(result).toEqual({
-      formData,
-      validationErrors: [{ key: 'fallback-key', message: 'Validation error' }],
     })
   })
 

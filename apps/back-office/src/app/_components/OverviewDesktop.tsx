@@ -28,7 +28,7 @@ export const OverviewDesktop = ({ meldingen }: Props) => {
   const t = useTranslations()
 
   return (
-    <Table className={`ams-mb-l ${styles.desktopOnly}`}>
+    <Table className={`ams-mb-l ${styles.desktopOnly} ${styles.table}`}>
       <Table.Header>
         <Table.Row>{renderTableHeaders(t)}</Table.Row>
       </Table.Header>

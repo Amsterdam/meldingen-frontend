@@ -5,7 +5,7 @@ import { useActionState, useEffect, useRef } from 'react'
 
 import type { Component } from '@meldingen/form-renderer'
 
-import { FormRenderer, isSelectboxes } from '@meldingen/form-renderer'
+import { FormRenderer, isSelectboxes, isTimeInput } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
 import type { AnswersByKey } from './_utils/navigationUtils'
@@ -21,6 +21,16 @@ const getPrefilledFormComponents = (components: Component[], formData: FormData)
       const defaultValues = component.values.map(({ value }) => formData.get(`checkbox___${component.key}___${value}`))
 
       return { ...component, defaultValues }
+    }
+
+    if (isTimeInput(component)) {
+      if (formData.get(`time___${component.key}-unknown`) === 'on') {
+        return { ...component, defaultValue: null }
+      }
+      const timeValue = formData.get(`time___${component.key}`)
+      if (typeof timeValue === 'string') {
+        return { ...component, defaultValue: timeValue }
+      }
     }
 
     const formValue = formData.get(component.key)

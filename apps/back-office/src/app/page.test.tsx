@@ -1,13 +1,18 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { vi } from 'vitest'
 
+import { COOKIES } from '../constants'
 import { meldingen } from '../mocks/data'
 import { ENDPOINTS } from '../mocks/endpoints'
 import { server } from '../mocks/node'
+import { mockCookies } from '../mocks/utils'
 import { Overview } from './Overview'
 import Page, { generateMetadata } from './page'
+
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('./Overview', () => ({
   Overview: vi.fn(() => <div>Overview Component</div>),
@@ -22,6 +27,14 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
+  beforeAll(() => {
+    const mockCookieStore = {
+      get: vi.fn().mockReturnValue(undefined),
+    } as unknown as Awaited<ReturnType<typeof cookies>>
+
+    vi.mocked(cookies).mockResolvedValue(mockCookieStore)
+  })
+
   it('renders the Overview component without a "pagina" search param', async () => {
     const searchParams = Promise.resolve({})
 
@@ -34,6 +47,7 @@ describe('Page', () => {
         meldingen: meldingen,
         meldingenCount: 40,
         page: undefined,
+        pageSize: 10,
         totalPages: 4,
       },
       undefined,
@@ -52,7 +66,30 @@ describe('Page', () => {
         meldingen: meldingen,
         meldingenCount: 40,
         page: 2,
+        pageSize: 10,
         totalPages: 4,
+      },
+      undefined,
+    )
+  })
+
+  it('uses the page size cookie when present and valid', async () => {
+    mockCookies({
+      [COOKIES.PAGE_SIZE]: '20',
+    })
+    const searchParams = Promise.resolve({})
+
+    const result = await Page({ searchParams })
+
+    render(result)
+
+    expect(Overview).toHaveBeenCalledWith(
+      {
+        meldingen: meldingen,
+        meldingenCount: 40,
+        page: undefined,
+        pageSize: 20,
+        totalPages: 2,
       },
       undefined,
     )

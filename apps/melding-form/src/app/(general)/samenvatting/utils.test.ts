@@ -232,6 +232,38 @@ describe('getAdditionalQuestionsSummary', () => {
     })
   })
 
+  it('returns "Weet ik niet" for time questions when time is null', async () => {
+    const additionalTimeQuestionWithNullTime = {
+      question: { id: 37, text: 'Time question' },
+      time: null,
+      type: 'time',
+    }
+
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [{ components: [{ question: 37 }], key: 'page1' }],
+        }),
+      ),
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+        HttpResponse.json([additionalTimeQuestionWithNullTime]),
+      ),
+    )
+
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
+
+    expect(result).toEqual({
+      data: [
+        {
+          description: 'Weet ik niet',
+          key: '37',
+          link: `/aanvullende-vragen/1/page1#${TOP_ANCHOR_ID}`,
+          term: 'Time question',
+        },
+      ],
+    })
+  })
+
   it('supports the value_label answer type', async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
