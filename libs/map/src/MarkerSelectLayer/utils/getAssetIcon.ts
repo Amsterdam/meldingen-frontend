@@ -4,6 +4,19 @@ import { Feature } from '@meldingen/api-client'
 
 import styles from './getAssetIcon.module.css'
 
+const getAssetIconSVG = (
+  properties: Feature['properties'],
+  { iconEntry, iconFolder }: { iconEntry?: string; iconFolder?: string },
+) => {
+  const assetTypeCategory = iconEntry ? (properties?.[iconEntry] as string) : undefined
+
+  if (!iconFolder || !assetTypeCategory) {
+    return '/happy.png'
+  }
+
+  return `/${iconFolder}/${assetTypeCategory?.toLocaleLowerCase()}.svg`
+}
+
 export const getAssetIcon = (
   feature: Feature,
   isSelected: boolean,
@@ -12,15 +25,10 @@ export const getAssetIcon = (
     iconFolder?: string
   },
 ): L.Icon => {
-  console.log('--- ~ iconEntry:', assetTypeIconConfig.iconEntry)
-  const assetTypeCategorie = assetTypeIconConfig.iconEntry
-    ? (feature.properties?.[assetTypeIconConfig.iconEntry] as string)
-    : undefined
-
   const icon = L.icon({
     iconAnchor: [22, 22],
     iconSize: [44, 44],
-    iconUrl: `/${assetTypeIconConfig.iconFolder}/${assetTypeCategorie?.toLocaleLowerCase()}.svg`,
+    iconUrl: getAssetIconSVG(feature.properties, assetTypeIconConfig),
   })
 
   if (isSelected) {
