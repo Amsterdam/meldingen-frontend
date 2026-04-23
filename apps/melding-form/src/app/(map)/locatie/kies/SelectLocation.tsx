@@ -29,6 +29,8 @@ const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) =>
   ssr: false,
 })
 
+export type FormState = { errorMessage?: string }
+
 export type Props = {
   coordinates?: Coordinates
   maxAssets: number
@@ -44,7 +46,7 @@ export type Props = {
 
 export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 
-const initialState: { errorMessage?: string } = {}
+const initialState: FormState = {}
 
 export const SelectLocation = ({
   coordinates: coordinatesFromServer,
@@ -58,7 +60,10 @@ export const SelectLocation = ({
   const [selectedAssets, setSelectedAssets] = useState<Feature[]>(selectedAssetsFromServer)
   const [showAssetList, setShowAssetList] = useState(false)
 
-  const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssets, initialState)
+  const postCoordinatesAndAssetsWithExtraArgs = postCoordinatesAndAssets.bind(null, {
+    asset_type_id: wfsQuery.assetTypeId,
+  })
+  const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssetsWithExtraArgs, initialState)
 
   const t = useTranslations('select-location')
   const isWideWindow = useIsAfterBreakpoint('wide')
