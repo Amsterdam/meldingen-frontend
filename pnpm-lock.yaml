@@ -193,29 +193,29 @@ importers:
         specifier: workspace:*
         version: link:../../libs/form-builder
       keycloak-js:
-        specifier: 26.2.3
-        version: 26.2.3
+        specifier: 26.2.4
+        version: 26.2.4
       ra-auth-msal:
         specifier: 3.1.0
         version: 3.1.0(@mui/system@7.3.10(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@mui/utils@7.3.10(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(csstype@3.2.3)(react-dom@19.2.5(react@19.2.5))(react-is@19.2.5)(react@19.2.5)
       ra-data-simple-rest:
-        specifier: 5.14.5
-        version: 5.14.5(ra-core@5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5))
+        specifier: 5.14.6
+        version: 5.14.6(ra-core@5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5))
       ra-i18n-polyglot:
-        specifier: 5.14.5
-        version: 5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
+        specifier: 5.14.6
+        version: 5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
       ra-keycloak:
         specifier: 2.0.0
-        version: 2.0.0(ra-core@5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5))
+        version: 2.0.0(ra-core@5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5))
       react-admin:
-        specifier: 5.14.5
-        version: 5.14.5(@mui/system@7.3.10(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@mui/utils@7.3.10(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(csstype@3.2.3)(react-dom@19.2.5(react@19.2.5))(react-is@19.2.5)(react@19.2.5)
+        specifier: 5.14.6
+        version: 5.14.6(@mui/system@7.3.10(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@mui/utils@7.3.10(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(csstype@3.2.3)(react-dom@19.2.5(react@19.2.5))(react-is@19.2.5)(react@19.2.5)
       react-hook-form:
         specifier: 7.73.1
         version: 7.73.1(react@19.2.5)
       react-router-dom:
-        specifier: 7.14.0
-        version: 7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+        specifier: 7.14.2
+        version: 7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       uber-json-schema-filter:
         specifier: 2.0.5
         version: 2.0.5
@@ -227,8 +227,8 @@ importers:
         specifier: 2.6.3
         version: 2.6.3
       ra-core:
-        specifier: 5.14.5
-        version: 5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
+        specifier: 5.14.6
+        version: 5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
 
   apps/back-office:
     dependencies:
@@ -437,10 +437,6 @@ packages:
 
   '@babel/helper-string-parser@7.27.1':
     resolution: {integrity: sha512-qMlSxKbpRlAridDExk92nSobyDdpPijUq2DW6oDnUqd0iOGxmQjyqhMIihI9+zv4LPyZdRje2cavWPbCbWm3eA==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helper-validator-identifier@7.27.1':
-    resolution: {integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-validator-identifier@7.28.5':
@@ -1772,11 +1768,11 @@ packages:
   '@swc/types@0.1.26':
     resolution: {integrity: sha512-lyMwd7WGgG79RS7EERZV3T8wMdmPq3xwyg+1nmAM64kIhx5yl+juO2PYIHb7vTiPgPCj8LYjsNV2T5wiQHUEaw==}
 
-  '@tanstack/query-core@5.99.0':
-    resolution: {integrity: sha512-3Jv3WQG0BCcH7G+7lf/bP8QyBfJOXeY+T08Rin3GZ1bshvwlbPt7NrDHMEzGdKIOmOzvIQmxjk28YEQX60k7pQ==}
+  '@tanstack/query-core@5.99.2':
+    resolution: {integrity: sha512-1HunU0bXVsR1ZJMZbcOPE6VtaBJxsW809RE9xPe4Gz7MlB0GWwQvuTPhMoEmQ/hIzFKJ/DWAuttIe7BOaWx0tA==}
 
-  '@tanstack/react-query@5.99.0':
-    resolution: {integrity: sha512-OY2bCqPemT1LlqJ8Y2CUau4KELnIhhG9Ol3ZndPbdnB095pRbPo1cHuXTndg8iIwtoHTgwZjyaDnQ0xD0mYwAw==}
+  '@tanstack/react-query@5.99.2':
+    resolution: {integrity: sha512-vM91UEe45QUS9ED6OklsVL15i8qKcRqNwpWzPTVWvRPRSEgDudDgHpvyTjcdlwHcrKNa80T+xXYcchT2noPnZA==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -2385,6 +2381,10 @@ packages:
     resolution: {integrity: sha512-oKlSFMcMwpUg2ednkhQ454wfWiU/ul3CkJe/PEHcTKuiX6RpbehUiFMXu13HalGZxfUwCQzZG747YXBn1im9ww==}
     engines: {node: '>= 0.4'}
 
+  call-bind@1.0.9:
+    resolution: {integrity: sha512-a/hy+pNsFUTR+Iz8TCJvXudKVLAnz/DyeSUo10I5yvFDQJBFU2s9uqQpoSrJlroHUKoKqzg+epxyP9lqFdzfBQ==}
+    engines: {node: '>= 0.4'}
+
   call-bound@1.0.4:
     resolution: {integrity: sha512-+ys997U96po4Kx/ABpBCqhA9EuxJaQWDQg7295H4hBphv3IZg0boBKuwYpt4YXp6MZ5AmZQnU/tyMTlRpaSejg==}
     engines: {node: '>= 0.4'}
@@ -2707,6 +2707,9 @@ packages:
 
   dompurify@3.3.3:
     resolution: {integrity: sha512-Oj6pzI2+RqBfFG+qOaOLbFXLQ90ARpcGG6UePL82bJLtdsa6CYJD7nmiU8MW9nQNOtCHV3lZ/Bzq1X0QYbBZCA==}
+
+  dompurify@3.4.1:
+    resolution: {integrity: sha512-JahakDAIg1gyOm7dlgWSDjV4n7Ip2PKR55NIT6jrMfIgLFgWo81vdr1/QGqWtFNRqXP9UV71oVePtjqS2ebnPw==}
 
   dotenv@17.4.2:
     resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
@@ -3202,6 +3205,10 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
+  hasown@2.0.3:
+    resolution: {integrity: sha512-ej4AhfhfL2Q2zpMmLo7U1Uv9+PyhIZpgQLGT1F9miIGmiCJIoCgSmczFdrc97mWT4kVY72KA+WnnhJ5pghSvSg==}
+    engines: {node: '>= 0.4'}
+
   hast-util-to-jsx-runtime@2.3.6:
     resolution: {integrity: sha512-zl6s8LwNyo1P9uw+XJGvZtdFF1GdAkOg8ujOw+4Pyb76874fLps4ueHXDhXWdk6YHQ6OgUtinliG7RsYvCbbBg==}
 
@@ -3551,8 +3558,8 @@ packages:
     resolution: {integrity: sha512-EkxoDTk8ufHqHlf9QxGwcxeLkWRR3iOuYfRpfORgYfqc8s13bgb+YtRY59NK5ZpRaCwq1kqA6a5lpX8C/eLphQ==}
     hasBin: true
 
-  keycloak-js@26.2.3:
-    resolution: {integrity: sha512-widjzw/9T6bHRgEp6H/Se3NCCarU7u5CwFKBcwtu7xfA1IfdZb+7Q7/KGusAnBo34Vtls8Oz9vzSqkQvQ7+b4Q==}
+  keycloak-js@26.2.4:
+    resolution: {integrity: sha512-PnXpR3ubETGOt0B/Qt2lxmPbkZr5bc3vlQsOqDoTPPQsZRp7JjhTKxlJ187uWh8qJhvBab6Gsjb06a8ayOPfuw==}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -4226,34 +4233,34 @@ packages:
   ra-auth-msal@3.1.0:
     resolution: {integrity: sha512-279ujc3S0Y25iMKE6+JwCBaW/mUxI2+8Cbmo+S27eM2rcHqqmuD+zMriU8CEBo39hCSY6AiPE/Qg5ZeMKWbTPg==}
 
-  ra-core@5.14.5:
-    resolution: {integrity: sha512-Ztis8Rb1f0XZbnT3ZQTP0W6dmpb26S/ml/IhtSKG299p6t7Pm70DE1N5QA1G+AM3gx3iz17LX5gJSv7+iuly2A==}
+  ra-core@5.14.6:
+    resolution: {integrity: sha512-/3LOanIhCLTLTpOd6Dma9rsLrksLhqpE5dq6GUW1Xe7jI46xPC/6O5WlqCDwUJqe3aDZG3kJRGu6U8iHb2OU/A==}
     peerDependencies:
       '@tanstack/react-query': ^5.83.0
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
-      react-hook-form: ^7.65.0
+      react-hook-form: ^7.72.0
       react-router: ^6.28.1 || ^7.1.1
       react-router-dom: ^6.28.1 || ^7.1.1
 
-  ra-data-simple-rest@5.14.5:
-    resolution: {integrity: sha512-raC0R0VfYkKf+TqnEZKOcAOBZCF/8OD1ssW4foxla0p6TV9+lIm8SPauLAoaSE0gk16hevAfuvIOOwOOCCsS/w==}
+  ra-data-simple-rest@5.14.6:
+    resolution: {integrity: sha512-ZPSNxD+EABZbQrhKgSwMpt5pDZ68AwVEurZFRg/L3N2e9WEKx6w6o4uK7fbE3/o9p12XSQ112M7Zbrz5u5GAwA==}
     peerDependencies:
       ra-core: ^5.0.0
 
-  ra-i18n-polyglot@5.14.5:
-    resolution: {integrity: sha512-qP/qxAgyoJgxGJBqWZdliHc5vCK8WZM7YL3Jkre8URnmru9hPZD3vilQH4LSW/W+5yLfYoLk81597Gig9g9euw==}
+  ra-i18n-polyglot@5.14.6:
+    resolution: {integrity: sha512-qUPMrurTj5Tr90nku6DSzdqWyoPLpjNQG8W3p09L7fII7KSeJ0uTvAJBZdNTibnr9Wxu9rSMQSgTp/oEGFUQ3Q==}
 
   ra-keycloak@2.0.0:
     resolution: {integrity: sha512-LO0VtZEpC4Qz8kCBn1OsiyLF5y5o5GeUxukDCzXsxlUO2NNLQw8lWDzKPM9FVCUtIi5A8vXritLIuLdBPZdNTg==}
     peerDependencies:
       ra-core: '*'
 
-  ra-language-english@5.14.5:
-    resolution: {integrity: sha512-5lB3O1/gNSgvKRDR1NA9yOEMSwGdrJYzv4etpLBaVVnAX268BHubZbm1pLmT7j4xEc9kvUQC58/rAnFDORqbiQ==}
+  ra-language-english@5.14.6:
+    resolution: {integrity: sha512-cxKXQsOvDY4m6i8KmDC3M931DK0QXeW/pUuZAPySXma9kzmNd17EMkv7ZGSDi3syFsyOhoe0N5+TUCbDMFFu+w==}
 
-  ra-ui-materialui@5.14.5:
-    resolution: {integrity: sha512-0FNrBL6k+Yu1PLRZOKAc6TDGcRk8ZAWBb0OnujlvdCOgYHgFKYtLa4nZ5L9a0EYsUsOogbmx4zKiETsJUYIfqg==}
+  ra-ui-materialui@5.14.6:
+    resolution: {integrity: sha512-OJMm0G/MKYyUXHZkvCCtS9Zrb+N1ghR9YlxiYumQg/0+LowM/yPxdacdUoP1TapY1sXNuHaiqM5V9X8ftFM1yQ==}
     peerDependencies:
       '@mui/icons-material': ^5.16.12 || ^6.0.0 || ^7.0.0
       '@mui/material': ^5.16.12 || ^6.0.0 || ^7.0.0
@@ -4272,8 +4279,8 @@ packages:
   rc9@3.0.1:
     resolution: {integrity: sha512-gMDyleLWVE+i6Sgtc0QbbY6pEKqYs97NGi6isHQPqYlLemPoO8dxQ3uGi0f4NiP98c+jMW6cG1Kx9dDwfvqARQ==}
 
-  react-admin@5.14.5:
-    resolution: {integrity: sha512-1XQxqL+ArkL3o5USs/AsC9fdQX4F/vzBJXwelq8jEXABcbx58d51Ug2WkXi+7WuxPrLZCOPW1kVD7l4+ahbeww==}
+  react-admin@5.14.6:
+    resolution: {integrity: sha512-5mCgrp84+HgBnh6/1gqrxO3WeemOMzubDqJDWZF29smf2X38sddS37NBGq/1O49zLVTfD+rGc25G4uZZjYtGEQ==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -4325,15 +4332,15 @@ packages:
     resolution: {integrity: sha512-QgT5//D3jfjJb6Gsjxv0Slpj23ip+HtOpnNgnb2S5zU3CB26G/IDPGoy4RJB42wzFE46DRsstbW6tKHoKbhAxw==}
     engines: {node: '>=0.10.0'}
 
-  react-router-dom@7.14.0:
-    resolution: {integrity: sha512-2G3ajSVSZMEtmTjIklRWlNvo8wICEpLihfD/0YMDxbWK2UyP5EGfnoIn9AIQGnF3G/FX0MRbHXdFcD+rL1ZreQ==}
+  react-router-dom@7.14.2:
+    resolution: {integrity: sha512-YZcM5ES8jJSM+KrJ9BdvHHqlnGTg5tH3sC5ChFRj4inosKctdyzBDhOyyHdGk597q2OT6NTrCA1OvB/YDwfekQ==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
 
-  react-router@7.14.0:
-    resolution: {integrity: sha512-m/xR9N4LQLmAS0ZhkY2nkPA1N7gQ5TUVa5n8TgANuDTARbn1gt+zLPXEm7W0XDTbrQ2AJSJKhoa6yx1D8BcpxQ==}
+  react-router@7.14.2:
+    resolution: {integrity: sha512-yCqNne6I8IB6rVCH7XUvlBK7/QKyqypBFGv+8dj4QBFJiiRX+FG7/nkdAvGElyvVZ/HQP5N19wzteuTARXi5Gw==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       react: '>=18'
@@ -5288,8 +5295,6 @@ snapshots:
 
   '@babel/helper-string-parser@7.27.1': {}
 
-  '@babel/helper-validator-identifier@7.27.1': {}
-
   '@babel/helper-validator-identifier@7.28.5': {}
 
   '@babel/helper-validator-option@7.27.1': {}
@@ -5301,7 +5306,7 @@ snapshots:
 
   '@babel/parser@7.28.0':
     dependencies:
-      '@babel/types': 7.28.0
+      '@babel/types': 7.29.0
 
   '@babel/parser@7.29.2':
     dependencies:
@@ -5344,7 +5349,7 @@ snapshots:
   '@babel/types@7.28.0':
     dependencies:
       '@babel/helper-string-parser': 7.27.1
-      '@babel/helper-validator-identifier': 7.27.1
+      '@babel/helper-validator-identifier': 7.28.5
 
   '@babel/types@7.29.0':
     dependencies:
@@ -6447,11 +6452,11 @@ snapshots:
     dependencies:
       '@swc/counter': 0.1.3
 
-  '@tanstack/query-core@5.99.0': {}
+  '@tanstack/query-core@5.99.2': {}
 
-  '@tanstack/react-query@5.99.0(react@19.2.5)':
+  '@tanstack/react-query@5.99.2(react@19.2.5)':
     dependencies:
-      '@tanstack/query-core': 5.99.0
+      '@tanstack/query-core': 5.99.2
       react: 19.2.5
 
   '@tanstack/react-virtual@3.13.23(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
@@ -7002,7 +7007,7 @@ snapshots:
   arraybuffer.prototype.slice@1.0.4:
     dependencies:
       array-buffer-byte-length: 1.0.2
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       define-properties: 1.2.1
       es-abstract: 1.24.0
       es-errors: 1.3.0
@@ -7122,6 +7127,13 @@ snapshots:
       function-bind: 1.1.2
 
   call-bind@1.0.8:
+    dependencies:
+      call-bind-apply-helpers: 1.0.2
+      es-define-property: 1.0.1
+      get-intrinsic: 1.3.0
+      set-function-length: 1.2.2
+
+  call-bind@1.0.9:
     dependencies:
       call-bind-apply-helpers: 1.0.2
       es-define-property: 1.0.1
@@ -7421,6 +7433,10 @@ snapshots:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
+  dompurify@3.4.1:
+    optionalDependencies:
+      '@types/trusted-types': 2.0.7
+
   dotenv@17.4.2: {}
 
   downloadjs@1.4.7: {}
@@ -7459,7 +7475,7 @@ snapshots:
       array-buffer-byte-length: 1.0.2
       arraybuffer.prototype.slice: 1.0.4
       available-typed-arrays: 1.0.7
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       data-view-buffer: 1.0.2
       data-view-byte-length: 1.0.2
@@ -7478,7 +7494,7 @@ snapshots:
       has-property-descriptors: 1.0.2
       has-proto: 1.2.0
       has-symbols: 1.1.0
-      hasown: 2.0.2
+      hasown: 2.0.3
       internal-slot: 1.1.0
       is-array-buffer: 3.0.5
       is-callable: 1.2.7
@@ -7513,7 +7529,7 @@ snapshots:
       array-buffer-byte-length: 1.0.2
       arraybuffer.prototype.slice: 1.0.4
       available-typed-arrays: 1.0.7
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       data-view-buffer: 1.0.2
       data-view-byte-length: 1.0.2
@@ -7532,7 +7548,7 @@ snapshots:
       has-property-descriptors: 1.0.2
       has-proto: 1.2.0
       has-symbols: 1.1.0
-      hasown: 2.0.2
+      hasown: 2.0.3
       internal-slot: 1.1.0
       is-array-buffer: 3.0.5
       is-callable: 1.2.7
@@ -7599,11 +7615,11 @@ snapshots:
       es-errors: 1.3.0
       get-intrinsic: 1.3.0
       has-tostringtag: 1.0.2
-      hasown: 2.0.2
+      hasown: 2.0.3
 
   es-shim-unscopables@1.1.0:
     dependencies:
-      hasown: 2.0.2
+      hasown: 2.0.3
 
   es-to-primitive@1.3.0:
     dependencies:
@@ -7983,11 +7999,11 @@ snapshots:
 
   function.prototype.name@1.1.8:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       define-properties: 1.2.1
       functions-have-names: 1.2.3
-      hasown: 2.0.2
+      hasown: 2.0.3
       is-callable: 1.2.7
 
   functions-have-names@1.2.3: {}
@@ -8010,7 +8026,7 @@ snapshots:
       get-proto: 1.0.1
       gopd: 1.2.0
       has-symbols: 1.1.0
-      hasown: 2.0.2
+      hasown: 2.0.3
       math-intrinsics: 1.1.0
 
   get-proto@1.0.1:
@@ -8112,6 +8128,10 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
+  hasown@2.0.3:
+    dependencies:
+      function-bind: 1.1.2
+
   hast-util-to-jsx-runtime@2.3.6:
     dependencies:
       '@types/estree': 1.0.8
@@ -8191,7 +8211,7 @@ snapshots:
   internal-slot@1.1.0:
     dependencies:
       es-errors: 1.3.0
-      hasown: 2.0.2
+      hasown: 2.0.3
       side-channel: 1.1.0
 
   intl-messageformat@11.2.0:
@@ -8209,7 +8229,7 @@ snapshots:
 
   is-array-buffer@3.0.5:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       get-intrinsic: 1.3.0
 
@@ -8242,7 +8262,7 @@ snapshots:
 
   is-core-module@2.16.1:
     dependencies:
-      hasown: 2.0.2
+      hasown: 2.0.3
 
   is-data-view@1.0.2:
     dependencies:
@@ -8314,7 +8334,7 @@ snapshots:
       call-bound: 1.0.4
       gopd: 1.2.0
       has-tostringtag: 1.0.2
-      hasown: 2.0.2
+      hasown: 2.0.3
 
   is-set@2.0.3: {}
 
@@ -8465,7 +8485,7 @@ snapshots:
     dependencies:
       commander: 8.3.0
 
-  keycloak-js@26.2.3: {}
+  keycloak-js@26.2.4: {}
 
   keyv@4.5.4:
     dependencies:
@@ -9131,7 +9151,7 @@ snapshots:
 
   node-polyglot@2.6.0:
     dependencies:
-      hasown: 2.0.2
+      hasown: 2.0.3
       object.entries: 1.1.9
       warning: 4.0.3
 
@@ -9153,7 +9173,7 @@ snapshots:
 
   object.assign@4.1.7:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
@@ -9162,7 +9182,7 @@ snapshots:
 
   object.entries@1.1.9:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
@@ -9404,7 +9424,7 @@ snapshots:
   ra-auth-msal@3.1.0(@mui/system@7.3.10(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@mui/utils@7.3.10(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(csstype@3.2.3)(react-dom@19.2.5(react@19.2.5))(react-is@19.2.5)(react@19.2.5):
     dependencies:
       '@azure/msal-browser': 3.23.0
-      react-admin: 5.14.5(@mui/system@7.3.10(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@mui/utils@7.3.10(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(csstype@3.2.3)(react-dom@19.2.5(react@19.2.5))(react-is@19.2.5)(react@19.2.5)
+      react-admin: 5.14.6(@mui/system@7.3.10(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@mui/utils@7.3.10(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(csstype@3.2.3)(react-dom@19.2.5(react@19.2.5))(react-is@19.2.5)(react@19.2.5)
     transitivePeerDependencies:
       - '@mui/material-pigment-css'
       - '@mui/system'
@@ -9416,9 +9436,9 @@ snapshots:
       - react-is
       - supports-color
 
-  ra-core@5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5):
+  ra-core@5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5):
     dependencies:
-      '@tanstack/react-query': 5.99.0(react@19.2.5)
+      '@tanstack/react-query': 5.99.2(react@19.2.5)
       date-fns: 3.6.0
       eventemitter3: 5.0.4
       inflection: 3.0.2
@@ -9430,18 +9450,18 @@ snapshots:
       react-error-boundary: 4.1.2(react@19.2.5)
       react-hook-form: 7.73.1(react@19.2.5)
       react-is: 19.2.5
-      react-router: 7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      react-router-dom: 7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      react-router: 7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      react-router-dom: 7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
 
-  ra-data-simple-rest@5.14.5(ra-core@5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)):
+  ra-data-simple-rest@5.14.6(ra-core@5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)):
     dependencies:
       query-string: 7.1.3
-      ra-core: 5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
+      ra-core: 5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
 
-  ra-i18n-polyglot@5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5):
+  ra-i18n-polyglot@5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5):
     dependencies:
       node-polyglot: 2.6.0
-      ra-core: 5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
+      ra-core: 5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
     transitivePeerDependencies:
       - '@tanstack/react-query'
       - react
@@ -9450,15 +9470,15 @@ snapshots:
       - react-router
       - react-router-dom
 
-  ra-keycloak@2.0.0(ra-core@5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)):
+  ra-keycloak@2.0.0(ra-core@5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)):
     dependencies:
       jwt-decode: 3.1.2
-      keycloak-js: 26.2.3
-      ra-core: 5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
+      keycloak-js: 26.2.4
+      ra-core: 5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
 
-  ra-language-english@5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5):
+  ra-language-english@5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5):
     dependencies:
-      ra-core: 5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
+      ra-core: 5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
     transitivePeerDependencies:
       - '@tanstack/react-query'
       - react
@@ -9467,24 +9487,24 @@ snapshots:
       - react-router
       - react-router-dom
 
-  ra-ui-materialui@5.14.5(1ef76504dd3a5a6f7bf938b27f06d2b3):
+  ra-ui-materialui@5.14.6(75f8cbd7ccb030de2582e92c407fc857):
     dependencies:
       '@mui/icons-material': 7.3.10(@mui/material@7.3.10(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
       '@mui/material': 7.3.10(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@mui/system': 7.3.10(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
       '@mui/utils': 7.3.10(@types/react@19.2.14)(react@19.2.5)
-      '@tanstack/react-query': 5.99.0(react@19.2.5)
+      '@tanstack/react-query': 5.99.2(react@19.2.5)
       autosuggest-highlight: 3.3.4
       clsx: 2.1.1
       css-mediaquery: 0.1.2
       csstype: 3.2.3
       diacritic: 0.0.2
-      dompurify: 3.3.3
+      dompurify: 3.4.1
       inflection: 3.0.2
       jsonexport: 3.2.0
       lodash: 4.18.1
       query-string: 7.1.3
-      ra-core: 5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
+      ra-core: 5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
       react-dropzone: 14.4.1(react@19.2.5)
@@ -9492,8 +9512,8 @@ snapshots:
       react-hook-form: 7.73.1(react@19.2.5)
       react-hotkeys-hook: 5.2.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       react-is: 19.2.5
-      react-router: 7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      react-router-dom: 7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      react-router: 7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      react-router-dom: 7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       react-transition-group: 4.4.5(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
 
   rc9@3.0.1:
@@ -9501,22 +9521,22 @@ snapshots:
       defu: 6.1.7
       destr: 2.0.5
 
-  react-admin@5.14.5(@mui/system@7.3.10(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@mui/utils@7.3.10(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(csstype@3.2.3)(react-dom@19.2.5(react@19.2.5))(react-is@19.2.5)(react@19.2.5):
+  react-admin@5.14.6(@mui/system@7.3.10(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@mui/utils@7.3.10(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(csstype@3.2.3)(react-dom@19.2.5(react@19.2.5))(react-is@19.2.5)(react@19.2.5):
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.2.14)(react@19.2.5)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
       '@mui/icons-material': 7.3.10(@mui/material@7.3.10(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
       '@mui/material': 7.3.10(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@tanstack/react-query': 5.99.0(react@19.2.5)
-      ra-core: 5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
-      ra-i18n-polyglot: 5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
-      ra-language-english: 5.14.5(@tanstack/react-query@5.99.0(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
-      ra-ui-materialui: 5.14.5(1ef76504dd3a5a6f7bf938b27f06d2b3)
+      '@tanstack/react-query': 5.99.2(react@19.2.5)
+      ra-core: 5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
+      ra-i18n-polyglot: 5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
+      ra-language-english: 5.14.6(@tanstack/react-query@5.99.2(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-hook-form@7.73.1(react@19.2.5))(react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
+      ra-ui-materialui: 5.14.6(75f8cbd7ccb030de2582e92c407fc857)
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
       react-hook-form: 7.73.1(react@19.2.5)
-      react-router: 7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      react-router-dom: 7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      react-router: 7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      react-router-dom: 7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
     transitivePeerDependencies:
       - '@mui/material-pigment-css'
       - '@mui/system'
@@ -9578,13 +9598,13 @@ snapshots:
 
   react-refresh@0.18.0: {}
 
-  react-router-dom@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
+  react-router-dom@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
     dependencies:
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
-      react-router: 7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      react-router: 7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
 
-  react-router@7.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
+  react-router@7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
     dependencies:
       cookie: 1.1.1
       react: 19.2.5
@@ -9612,7 +9632,7 @@ snapshots:
 
   reflect.getprototypeof@1.0.10:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       define-properties: 1.2.1
       es-abstract: 1.24.0
       es-errors: 1.3.0
@@ -9623,7 +9643,7 @@ snapshots:
 
   regexp.prototype.flags@1.5.4:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       define-properties: 1.2.1
       es-errors: 1.3.0
       get-proto: 1.0.1
@@ -9728,7 +9748,7 @@ snapshots:
 
   safe-array-concat@1.1.3:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       get-intrinsic: 1.3.0
       has-symbols: 1.1.0
@@ -9948,7 +9968,7 @@ snapshots:
 
   string.prototype.trim@1.2.10:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       define-data-property: 1.1.4
       define-properties: 1.2.1
@@ -9965,7 +9985,7 @@ snapshots:
 
   string.prototype.trimstart@1.0.8:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
 
@@ -10225,7 +10245,7 @@ snapshots:
 
   typed-array-byte-length@1.0.3:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       for-each: 0.3.5
       gopd: 1.2.0
       has-proto: 1.2.0
@@ -10234,7 +10254,7 @@ snapshots:
   typed-array-byte-offset@1.0.4:
     dependencies:
       available-typed-arrays: 1.0.7
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       for-each: 0.3.5
       gopd: 1.2.0
       has-proto: 1.2.0
@@ -10243,7 +10263,7 @@ snapshots:
 
   typed-array-length@1.0.7:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       for-each: 0.3.5
       gopd: 1.2.0
       is-typed-array: 1.1.15
@@ -10548,7 +10568,7 @@ snapshots:
   which-typed-array@1.1.19:
     dependencies:
       available-typed-arrays: 1.0.7
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       for-each: 0.3.5
       get-proto: 1.0.1
