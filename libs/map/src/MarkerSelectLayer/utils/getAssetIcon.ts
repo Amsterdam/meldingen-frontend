@@ -8,13 +8,13 @@ const getAssetIconSVG = (
   properties: Feature['properties'],
   { iconEntry, iconFolder }: { iconEntry?: string; iconFolder?: string },
 ) => {
-  const assetTypeCategory = iconEntry ? (properties?.[iconEntry] as string) : undefined
+  const assetSubType = iconEntry ? (properties?.[iconEntry] as string) : undefined
 
-  if (!iconFolder || !assetTypeCategory) {
+  if (!iconFolder || !assetSubType) {
     return '/happy.png'
   }
 
-  return `/${iconFolder}/${assetTypeCategory?.toLocaleLowerCase()}.svg`
+  return `/${iconFolder}/${assetSubType?.toLocaleLowerCase()}.svg`
 }
 
 export const getAssetIcon = (
