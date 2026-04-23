@@ -16,7 +16,7 @@
   "dependencies": {
     "@meldingen/api-client": "workspace:*",
     "@meldingen/form-builder": "workspace:*",
-    "@azure/msal-browser": "3.23.0",
+    "@azure/msal-browser": "5.8.0",
     "keycloak-js": "26.2.3",
     "ra-auth-msal": "3.1.0",
     "ra-data-simple-rest": "5.14.5",
