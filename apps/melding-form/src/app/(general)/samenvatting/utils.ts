@@ -12,7 +12,9 @@ import {
 } from '@meldingen/api-client'
 import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 
+import { getFilteredAnswersByKey } from '../_utils/conditions/getFilteredAnswersByKey'
 import { getFullNLAddress } from '../_utils/getFullNLAddress'
+import { isPanelComponentOutput } from '../_utils/typeGuards'
 import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 import { handleApiError } from 'apps/melding-form/src/handleApiError'
 
@@ -99,18 +101,30 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
 
   if (error) throw new Error('Failed to fetch additional questions data.')
 
-  return {
-    data: data.map((answer) => {
-      const panels = formComponents.components as FormPanelComponentOutput[]
-      const panelId = findPanelIdByQuestionId(panels, answer.question.id)
+  const panels = formComponents.components.filter(isPanelComponentOutput)
+  const answersByKey = getFilteredAnswersByKey(formComponents, data)
 
-      return {
-        description: getDescription(answer),
-        key: `${answer.question.id}`,
-        link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}#${TOP_ANCHOR_ID}` : `/#${TOP_ANCHOR_ID}`,
-        term: answer.question.text,
-      }
-    }),
+  const componentByQuestionId = new Map(
+    panels.flatMap((panel) => panel.components.map((component) => [component.question, component])),
+  )
+
+  return {
+    data: data
+      // Do not return answers for questions that have an unmet condition
+      .filter((answer) => {
+        const component = componentByQuestionId.get(answer.question.id)
+        return component ? component.key in answersByKey : true
+      })
+      .map((answer) => {
+        const panelId = findPanelIdByQuestionId(panels, answer.question.id)
+
+        return {
+          description: getDescription(answer),
+          key: `${answer.question.id}`,
+          link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}#${TOP_ANCHOR_ID}` : `/#${TOP_ANCHOR_ID}`,
+          term: answer.question.text,
+        }
+      }),
   }
 }
 

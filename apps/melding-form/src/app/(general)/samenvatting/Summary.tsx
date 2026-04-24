@@ -9,7 +9,7 @@ import { useActionState, useEffect, useRef } from 'react'
 import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
 import { SystemErrorAlert } from '../_components/SystemErrorAlert'
-import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
+import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
