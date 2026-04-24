@@ -53,7 +53,14 @@ export const handlers = [
 
   http.post(ENDPOINTS.POST_MELDING, () =>
     HttpResponse.json({
-      classification: { id: 2, name: 'Test classification' },
+      classification: {
+        asset_type: {
+          arguments: { type_names: 'some-type' },
+          id: 5,
+        },
+        id: 2,
+        name: 'Test classification',
+      },
       created_at: '2025-05-26T11:56:34.081Z',
       id: 123,
       public_id: 'B100AA',

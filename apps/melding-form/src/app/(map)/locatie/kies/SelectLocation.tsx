@@ -29,8 +29,6 @@ const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) =>
   ssr: false,
 })
 
-export type FormState = { errorMessage?: string }
-
 export type Props = {
   coordinates?: Coordinates
   maxAssets: number
@@ -46,7 +44,7 @@ export type Props = {
 
 export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 
-const initialState: FormState = {}
+const initialState: { errorMessage?: string } = {}
 
 export const SelectLocation = ({
   coordinates: coordinatesFromServer,

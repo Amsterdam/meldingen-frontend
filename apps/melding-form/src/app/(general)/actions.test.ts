@@ -79,6 +79,8 @@ describe('postPrimaryForm', () => {
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: 86400 })
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', { maxAge: 86400 })
     expect(mockCookies.delete).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
+    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.ASSET_TYPE_ID, '5', { maxAge: 86400 })
+    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TYPE_NAMES, 'some-type', { maxAge: 86400 })
   })
 
   it('uses a PATCH request when id and token are passed to postPrimaryForm', async () => {
