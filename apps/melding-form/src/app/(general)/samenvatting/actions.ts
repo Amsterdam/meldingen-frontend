@@ -33,7 +33,10 @@ export const postSummaryForm = async ({ created_at, public_id }: { created_at: s
   })
 
   const params = new URLSearchParams({ created_at, public_id })
-  if (source) params.set('source', source)
+  if (source) {
+    params.set('id', meldingId)
+    params.set('source', source)
+  }
 
   return redirect(`/bedankt?${params.toString()}#${TOP_ANCHOR_ID}`)
 }
