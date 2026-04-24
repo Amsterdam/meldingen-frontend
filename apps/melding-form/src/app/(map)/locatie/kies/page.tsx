@@ -28,7 +28,7 @@ const getFilter = (id: string) => `
 
 const MAX_ASSETS_FALLBACK = 3
 
-const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeId?: number) => {
+const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeId?: number, typeNames?: string) => {
   // Get existing assets for this melding
   const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
     path: {
@@ -67,7 +67,7 @@ const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeI
 
       const { data, error } = await getAssetTypeByAssetTypeIdWfs({
         path: { asset_type_id: Number(assetTypeId) },
-        query: { filter },
+        query: { filter, type_names: typeNames },
       })
 
       if (error) {
@@ -89,6 +89,7 @@ export default async () => {
   // We check for the existence of these cookies in our proxy, so non-null assertion is safe here.
   const meldingId = cookieStore.get(COOKIES.ID)!.value
   const token = cookieStore.get(COOKIES.TOKEN)!.value
+  const typeNames = cookieStore.get(COOKIES.TYPE_NAMES)?.value
 
   const { data, error } = await getMeldingByMeldingIdMelder({
     path: {
@@ -105,7 +106,7 @@ export default async () => {
 
   const assetTypeId = data?.classification?.asset_type?.id
 
-  const selectedAssets = await getAssetsFromMelding(meldingId, token, assetTypeId)
+  const selectedAssets = await getAssetsFromMelding(meldingId, token, assetTypeId, typeNames)
 
   const coordinates = data?.geo_location?.geometry?.coordinates && {
     lat: data.geo_location.geometry.coordinates[0],
