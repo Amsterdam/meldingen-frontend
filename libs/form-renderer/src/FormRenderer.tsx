@@ -6,7 +6,16 @@ import { Heading, SubmitButton } from '@meldingen/ui'
 import type { AnswersByKey, Component } from './types'
 
 import { Checkbox, Radio, Select, TextArea, TextInput, TimeInput } from './components'
-import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimeInput, shouldRender } from './utils'
+import {
+  isRadio,
+  isSelect,
+  isSelectboxes,
+  isTextarea,
+  isTextfield,
+  isTimeInput,
+  refilterValues,
+  shouldRender,
+} from './utils'
 
 import styles from './FormRenderer.module.css'
 
@@ -133,7 +142,7 @@ export const FormRenderer = ({
       formComponents.map((component) => [component.key, getValue(component)]),
     )
 
-    return { ...previousAnswersByKey, ...initialComponentValues }
+    return refilterValues(formComponents, previousAnswersByKey, initialComponentValues)
   })
 
   return (
@@ -154,7 +163,9 @@ export const FormRenderer = ({
           const errorMessage = validationErrors?.find((error) => error.key === component.key)?.message
 
           const onChange = (newValue: string | string[]) =>
-            setValues((prev) => ({ ...prev, [component.key]: newValue }))
+            setValues((prev) =>
+              refilterValues(formComponents, previousAnswersByKey, { ...prev, [component.key]: newValue }),
+            )
 
           return getComponent(component, hasOneFormComponent, onChange, errorMessage)
         })}
