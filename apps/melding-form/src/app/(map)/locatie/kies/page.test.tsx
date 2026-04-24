@@ -3,10 +3,11 @@ import { http, HttpResponse } from 'msw'
 
 import Page, { generateMetadata } from './page'
 import { SelectLocation } from './SelectLocation'
+import { COOKIES } from 'apps/melding-form/src/constants'
 import { containerAssets, melding } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
-import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+import { mockCookies, mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -77,6 +78,11 @@ describe('Page', () => {
   })
 
   it('passes filter, typeNames and srsName and assetTypeId when they exist', async () => {
+    mockCookies({
+      [COOKIES.ASSET_TYPE_ID]: String(melding.classification?.asset_type?.id),
+      [COOKIES.ID]: '123',
+      [COOKIES.TOKEN]: 'test-token',
+    })
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)))
 
     const PageComponent = await Page()
