@@ -3,11 +3,10 @@ import { http, HttpResponse } from 'msw'
 
 import Page, { generateMetadata } from './page'
 import { SelectLocation } from './SelectLocation'
-import { COOKIES } from 'apps/melding-form/src/constants'
 import { containerAssets, melding } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
-import { mockCookies } from 'apps/melding-form/src/mocks/utils'
+import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -25,11 +24,7 @@ describe('generateMetadata', () => {
 
 describe('Page', () => {
   beforeEach(() => {
-    mockCookies({
-      [COOKIES.ID]: '123',
-      [COOKIES.TOKEN]: 'test-token',
-      [COOKIES.TYPE_NAMES]: 'container',
-    })
+    mockIdAndTokenCookies()
   })
 
   it('renders the SelectLocation component', async () => {
@@ -55,15 +50,167 @@ describe('Page', () => {
     consoleSpy.mockRestore()
   })
 
-  it('passes coordinates to SelectLocation when they already exist', async () => {
+  it('returns empty selectedAssets when assetTypeId is not available', async () => {
+    const meldingWithoutAssetTypeId = {
+      ...melding,
+      classification: {
+        ...melding.classification,
+        asset_type: {
+          ...melding.classification?.asset_type,
+          id: undefined,
+        },
+      },
+    }
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(meldingWithoutAssetTypeId)))
+
     const PageComponent = await Page()
     render(PageComponent)
 
-    const [lat, lng] = melding.geo_location?.geometry?.coordinates || []
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
+  it('returns empty selectedAssets when typeNames is not available', async () => {
+    const meldingWithoutTypeNames = {
+      ...melding,
+      classification: {
+        ...melding.classification,
+        asset_type: {
+          ...melding.classification?.asset_type,
+          arguments: {
+            ...melding.classification?.asset_type?.arguments,
+            type_names: undefined,
+          },
+        },
+      },
+    }
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(meldingWithoutTypeNames)))
+
+    const PageComponent = await Page()
+    render(PageComponent)
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        coordinates: { lat, lng },
+        selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
+  it('logs an error and does not return assets when fetching assetIds from melding returns an error', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS_MELDER, () =>
+        HttpResponse.json('Test error', { status: 500 }),
+      ),
+    )
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(consoleSpy).toHaveBeenCalledWith('Test error')
+
+    consoleSpy.mockRestore()
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
+  it('logs an error when deleting assets from melding returns an error', async () => {
+    server.use(
+      http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, () =>
+        HttpResponse.json('Test error', { status: 500 }),
+      ),
+    )
+
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(consoleSpy).toHaveBeenCalledWith('Test error')
+
+    consoleSpy.mockRestore()
+  })
+
+  it('logs an error and does not return assets when the WFS endpoint returns an error', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json('Test error', { status: 500 })),
+    )
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(consoleSpy).toHaveBeenCalledWith('Test error')
+
+    consoleSpy.mockRestore()
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
+  it('deletes existing assets from melding', async () => {
+    const mockGetWfsByAssetTypeId = vi.fn()
+
+    server.use(http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, mockGetWfsByAssetTypeId))
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(mockGetWfsByAssetTypeId).toHaveBeenCalledTimes(2)
+  })
+
+  it('filters out assets when the WFS response has no features', async () => {
+    server.use(http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json({ features: [] })))
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
+  it('fetches assetIds from melding and passes assets to SelectLocation', async () => {
+    let callCount = 0
+    server.use(
+      http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => {
+        callCount += 1
+
+        if (callCount === 1) {
+          return HttpResponse.json({
+            features: [containerAssets[0]],
+          })
+        } else {
+          return HttpResponse.json({
+            features: [containerAssets[1]],
+          })
+        }
+      }),
+    )
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: containerAssets,
       }),
       undefined,
     )
@@ -122,143 +269,17 @@ describe('Page', () => {
     )
   })
 
-  it('returns empty selectedAssets when assetTypeId cookie is not set', async () => {
-    const meldingwithoutAssetTypeId = {
-      ...melding,
-      classification: {
-        ...melding.classification,
-        asset_type: null,
-      },
-    }
-    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(meldingwithoutAssetTypeId)))
-
+  it('passes coordinates to SelectLocation when they already exist', async () => {
     const PageComponent = await Page()
     render(PageComponent)
+
+    const [lat, lng] = melding.geo_location?.geometry?.coordinates || []
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        selectedAssets: [],
+        coordinates: { lat, lng },
       }),
       undefined,
     )
-  })
-
-  it('returns empty selectedAssets when typeNames cookie is not set', async () => {
-    mockCookies({
-      [COOKIES.ID]: '123',
-      [COOKIES.TOKEN]: 'test-token',
-      [COOKIES.TYPE_NAMES]: undefined,
-    })
-
-    const PageComponent = await Page()
-    render(PageComponent)
-
-    expect(SelectLocation).toHaveBeenCalledWith(
-      expect.objectContaining({
-        selectedAssets: [],
-      }),
-      undefined,
-    )
-  })
-
-  it('fetches assetIds from melding and passes assets to SelectLocation', async () => {
-    let callCount = 0
-    server.use(
-      http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => {
-        callCount += 1
-
-        if (callCount === 1) {
-          return HttpResponse.json({
-            features: [containerAssets[0]],
-          })
-        } else {
-          return HttpResponse.json({
-            features: [containerAssets[1]],
-          })
-        }
-      }),
-    )
-
-    const PageComponent = await Page()
-    render(PageComponent)
-
-    expect(SelectLocation).toHaveBeenCalledWith(
-      expect.objectContaining({
-        selectedAssets: containerAssets,
-      }),
-      undefined,
-    )
-  })
-
-  it('logs an error when fetching assetIds from melding fails', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS_MELDER, () =>
-        HttpResponse.json('Test error', { status: 500 }),
-      ),
-    )
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-
-    const PageComponent = await Page()
-    render(PageComponent)
-
-    expect(consoleSpy).toHaveBeenCalledWith('Test error')
-
-    consoleSpy.mockRestore()
-
-    expect(SelectLocation).toHaveBeenCalledWith(
-      expect.objectContaining({
-        selectedAssets: [],
-      }),
-      undefined,
-    )
-  })
-
-  it('logs an error when the wfs endpoint fails', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json('Test error', { status: 500 })),
-    )
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-
-    const PageComponent = await Page()
-    render(PageComponent)
-
-    expect(consoleSpy).toHaveBeenCalledWith('Test error')
-
-    consoleSpy.mockRestore()
-
-    expect(SelectLocation).toHaveBeenCalledWith(
-      expect.objectContaining({
-        selectedAssets: [],
-      }),
-      undefined,
-    )
-  })
-
-  it('deletes assets from melding', async () => {
-    const mockGetWfsByAssetTypeId = vi.fn()
-
-    server.use(http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, mockGetWfsByAssetTypeId))
-
-    const PageComponent = await Page()
-    render(PageComponent)
-
-    expect(mockGetWfsByAssetTypeId).toHaveBeenCalledTimes(2)
-  })
-
-  it('logs an error when delete assets from melding fails', async () => {
-    server.use(
-      http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, () =>
-        HttpResponse.json('Test error', { status: 500 }),
-      ),
-    )
-
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-
-    const PageComponent = await Page()
-    render(PageComponent)
-
-    expect(consoleSpy).toHaveBeenCalledWith('Test error')
-
-    consoleSpy.mockRestore()
   })
 })

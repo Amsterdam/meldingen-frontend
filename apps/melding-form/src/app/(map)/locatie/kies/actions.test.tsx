@@ -16,9 +16,12 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
+const mockArgs = {
+  asset_type_id: 123,
+}
+
 describe('postCoordinatesAndAssets', () => {
   const mockSetCookie = vi.fn()
-  const action = postCoordinatesAndAssets.bind(null, { asset_type_id: 123 })
 
   beforeEach(() => {
     mockCookies({ [COOKIES.ID]: '123', [COOKIES.TOKEN]: 'test-token' }, mockSetCookie)
@@ -29,7 +32,7 @@ describe('postCoordinatesAndAssets', () => {
     formData.set('address', 'Amstel 1, Amsterdam')
     formData.set('selectedAssetIds', 'invalid-json')
 
-    await action(undefined, formData)
+    await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
     expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
   })
@@ -38,11 +41,19 @@ describe('postCoordinatesAndAssets', () => {
     mockCookies({}) // No cookies
 
     const formData = new FormData()
-    formData.set('address', 'Amstel 1, Amsterdam')
 
-    await action(undefined, formData)
+    await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
     expect(redirect).toHaveBeenCalledWith(`/cookie-storing#${TOP_ANCHOR_ID}`)
+  })
+
+  it('returns an error message when there are selected assets but asset_type_id is not provided', async () => {
+    const formData = new FormData()
+    formData.set('selectedAssetIds', JSON.stringify([1, 2]))
+
+    const result = await postCoordinatesAndAssets({}, undefined, formData)
+
+    expect(result).toEqual({ errorMessage: 'errors.assets-post-failed' })
   })
 
   it('returns an error when postMeldingByMeldingIdAsset fails', async () => {
@@ -52,27 +63,10 @@ describe('postCoordinatesAndAssets', () => {
       ),
     )
 
-    const address = 'Oudezijds Voorburgwal 300, Amsterdam'
-    const coordinates = '{"lat":52.37065901,"lng":4.89367338}'
-
     const formData = new FormData()
-    formData.set('address', address)
-    formData.set('coordinates', coordinates)
     formData.set('selectedAssetIds', JSON.stringify(containerAssets))
 
-    const result = await action(undefined, formData)
-
-    expect(result).toEqual({ errorMessage: 'errors.assets-post-failed' })
-  })
-
-  it('returns an error when asset_type_id is not provided and assets are selected', async () => {
-    const actionWithoutAssetTypeId = postCoordinatesAndAssets.bind(null, {})
-
-    const formData = new FormData()
-    formData.set('address', 'Amstel 1, Amsterdam')
-    formData.set('selectedAssetIds', JSON.stringify([1]))
-
-    const result = await actionWithoutAssetTypeId(undefined, formData)
+    const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'errors.assets-post-failed' })
   })
@@ -91,7 +85,7 @@ describe('postCoordinatesAndAssets', () => {
     formData.set('address', 'Amstel 1, Amsterdam')
     formData.set('selectedAssetIds', JSON.stringify(containerAssets.map((asset) => asset.id)))
 
-    await action(undefined, formData)
+    await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
     expect(capturedBodies).toHaveLength(2)
     expect(capturedBodies[0]).toEqual({ asset_type_id: 123, external_id: 'container.1' })
@@ -102,7 +96,7 @@ describe('postCoordinatesAndAssets', () => {
   it('returns an error message if no address is provided', async () => {
     const formData = new FormData()
 
-    const result = await action(undefined, formData)
+    const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'errors.no-location' })
   })
@@ -113,7 +107,7 @@ describe('postCoordinatesAndAssets', () => {
     const formData = new FormData()
     formData.set('address', 'Amstel 1, Amsterdam')
 
-    const result = await action(undefined, formData)
+    const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'errors.pdok-failed' })
   })
@@ -132,7 +126,7 @@ describe('postCoordinatesAndAssets', () => {
     const formData = new FormData()
     formData.set('address', address)
 
-    const result = await action(undefined, formData)
+    const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'errors.pdok-no-address-found' })
   })
@@ -151,7 +145,7 @@ describe('postCoordinatesAndAssets', () => {
     const formData = new FormData()
     formData.set('address', address)
 
-    const result = await action(undefined, formData)
+    const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'errors.pdok-failed' })
   })
@@ -162,7 +156,7 @@ describe('postCoordinatesAndAssets', () => {
     const formData = new FormData()
     formData.set('address', address)
 
-    await action(undefined, formData)
+    await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
     expect(mockSetCookie).toHaveBeenCalledWith(COOKIES.ADDRESS, address, { maxAge: 86400 })
     expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
@@ -183,7 +177,7 @@ describe('postCoordinatesAndAssets', () => {
     formData.set('coordinates', coordinates)
     formData.set('selectedAssets', JSON.stringify(containerAssets))
 
-    const result = await action(undefined, formData)
+    const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
     expect(result).toEqual({ errorMessage: 'errors.location-patch-failed' })
   })
