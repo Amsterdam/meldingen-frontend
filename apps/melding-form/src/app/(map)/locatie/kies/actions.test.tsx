@@ -65,6 +65,18 @@ describe('postCoordinatesAndAssets', () => {
     expect(result).toEqual({ errorMessage: 'errors.assets-post-failed' })
   })
 
+  it('returns an error when asset_type_id is not provided and assets are selected', async () => {
+    const actionWithoutAssetTypeId = postCoordinatesAndAssets.bind(null, {})
+
+    const formData = new FormData()
+    formData.set('address', 'Amstel 1, Amsterdam')
+    formData.set('selectedAssetIds', JSON.stringify([1]))
+
+    const result = await actionWithoutAssetTypeId(undefined, formData)
+
+    expect(result).toEqual({ errorMessage: 'errors.assets-post-failed' })
+  })
+
   it('posts each selected asset with the correct body', async () => {
     const capturedBodies: unknown[] = []
 

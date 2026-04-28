@@ -48,7 +48,25 @@ describe('Page', () => {
     )
   })
 
+  it('returns empty selectedAssets when assetTypeId cookie is not set', async () => {
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(Location).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
   it('fetches and passes saved assets to Location component', async () => {
+    mockCookies({
+      [COOKIES.ASSET_TYPE_ID]: '1',
+      [COOKIES.ID]: '123',
+      [COOKIES.TOKEN]: 'test-token',
+    })
+
     let callCount = 0
     server.use(
       http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => {
@@ -74,6 +92,11 @@ describe('Page', () => {
   })
 
   it('returns empty selectedAssets when no assets are found', async () => {
+    mockCookies({
+      [COOKIES.ASSET_TYPE_ID]: '1',
+      [COOKIES.ID]: '123',
+      [COOKIES.TOKEN]: 'test-token',
+    })
     server.use(http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json({ features: [] })))
 
     const PageComponent = await Page()
@@ -111,6 +134,11 @@ describe('Page', () => {
   })
 
   it('logs an error when the wfs endpoint fails', async () => {
+    mockCookies({
+      [COOKIES.ASSET_TYPE_ID]: '1',
+      [COOKIES.ID]: '123',
+      [COOKIES.TOKEN]: 'test-token',
+    })
     server.use(
       http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json('Test error', { status: 500 })),
     )

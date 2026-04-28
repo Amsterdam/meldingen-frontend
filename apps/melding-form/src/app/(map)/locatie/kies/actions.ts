@@ -49,6 +49,10 @@ export const postCoordinatesAndAssets = async (
 
   if (selectedAssetIds.length > 0) {
     for (const id of selectedAssetIds) {
+      if (!asset_type_id) {
+        return { errorMessage: t('errors.assets-post-failed') }
+      }
+
       const { error } = await postMeldingByMeldingIdAsset({
         body: {
           asset_type_id: Number(asset_type_id),

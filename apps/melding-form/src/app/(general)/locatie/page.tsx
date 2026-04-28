@@ -31,6 +31,8 @@ const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeI
     assetIds.map(async (asset) => {
       const filter = getFilter(asset.external_id)
 
+      if (!assetTypeId) return null
+
       const { data, error } = await getAssetTypeByAssetTypeIdWfs({
         path: { asset_type_id: Number(assetTypeId) },
         query: { filter, type_names: typeNames },
