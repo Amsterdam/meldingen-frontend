@@ -67,9 +67,10 @@ describe('postSummaryForm', () => {
 
     await postSummaryForm(defaultArgs)
 
-    Object.values(COOKIES).forEach((cookie) => {
-      expect(deleteMock).toHaveBeenCalledWith(cookie)
+    Object.values(COOKIES).forEach((cookieName) => {
+      expect(deleteMock).toHaveBeenCalledWith(cookieName)
     })
+
     expect(redirect).toHaveBeenCalledWith(
       `/bedankt?created_at=${encodeURIComponent(defaultArgs.created_at)}&public_id=${defaultArgs.public_id}#${TOP_ANCHOR_ID}`,
     )

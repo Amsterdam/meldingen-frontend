@@ -28,12 +28,10 @@ const getFilter = (id: string) => `
 
 const MAX_ASSETS_FALLBACK = 3
 
-const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeId?: number, typeNames?: string) => {
+const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeId: number, typeNames: string) => {
   // Get existing assets for this melding
   const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
-    path: {
-      melding_id: parseInt(meldingId, 10),
-    },
+    path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
   })
 
@@ -65,8 +63,6 @@ const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeI
     assetIds.map(async (asset) => {
       const filter = getFilter(asset.external_id)
 
-      if (!assetTypeId || !typeNames) return null
-
       const { data, error } = await getAssetTypeByAssetTypeIdWfs({
         path: { asset_type_id: assetTypeId },
         query: { filter, type_names: typeNames },
@@ -91,7 +87,6 @@ export default async () => {
   // We check for the existence of these cookies in our proxy, so non-null assertion is safe here.
   const meldingId = cookieStore.get(COOKIES.ID)!.value
   const token = cookieStore.get(COOKIES.TOKEN)!.value
-  const typeNames = cookieStore.get(COOKIES.TYPE_NAMES)?.value
 
   const { data, error } = await getMeldingByMeldingIdMelder({
     path: {
@@ -107,7 +102,10 @@ export default async () => {
   }
 
   const assetTypeId = data?.classification?.asset_type?.id
-  const selectedAssets = await getAssetsFromMelding(meldingId, token, assetTypeId, typeNames)
+  const typeNames = data?.classification?.asset_type?.arguments?.type_names as string | undefined
+
+  const selectedAssets =
+    assetTypeId && typeNames ? await getAssetsFromMelding(meldingId, token, assetTypeId, typeNames) : []
 
   const coordinates = data?.geo_location?.geometry?.coordinates && {
     lat: data.geo_location.geometry.coordinates[0],
@@ -124,7 +122,7 @@ export default async () => {
         classification: data?.classification?.name,
         filter: data?.classification?.asset_type?.arguments?.filter as string | undefined,
         srsName: data?.classification?.asset_type?.arguments?.srs_name as string | undefined,
-        typeNames: data?.classification?.asset_type?.arguments?.type_names as string | undefined,
+        typeNames: typeNames,
       }}
     />
   )

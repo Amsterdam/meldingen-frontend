@@ -57,14 +57,12 @@ export const postPrimaryForm = async (
   if (error) return { formData, systemError: error }
 
   const { classification, id, token } = data
-  const typeNames = classification?.asset_type?.arguments?.type_names
 
   // Set session variables in cookies
   const cookieStore = await cookies()
   const oneDay = 24 * 60 * 60
   cookieStore.set(COOKIES.ID, id.toString(), { maxAge: oneDay })
   cookieStore.set(COOKIES.TOKEN, token, { maxAge: oneDay })
-  if (typeNames) cookieStore.set(COOKIES.TYPE_NAMES, typeNames.toString(), { maxAge: oneDay })
 
   // The LAST_PANEL_PATH cookie might be populated by earlier additional questions.
   // Delete it here in case a reclassification occurs.

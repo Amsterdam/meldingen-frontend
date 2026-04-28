@@ -79,28 +79,6 @@ describe('postPrimaryForm', () => {
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: 86400 })
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', { maxAge: 86400 })
     expect(mockCookies.delete).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
-    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TYPE_NAMES, 'some-type', { maxAge: 86400 })
-  })
-
-  it('does not set typeNames cookies when absent from response', async () => {
-    server.use(
-      http.post(ENDPOINTS.POST_MELDING, () =>
-        HttpResponse.json({
-          classification: { id: 2, name: 'Test classification' },
-          created_at: '2025-05-26T11:56:34.081Z',
-          id: 123,
-          public_id: 'B100AA',
-          token: 'test-token',
-        }),
-      ),
-    )
-
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-
-    await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
-
-    expect(mockCookies.set).not.toHaveBeenCalledWith(COOKIES.TYPE_NAMES, expect.anything(), expect.anything())
   })
 
   it('uses a PATCH request when id and token are passed to postPrimaryForm', async () => {

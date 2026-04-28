@@ -23,12 +23,8 @@ const safeJsonParse = <T>(value: unknown, fallback: T): T => {
   }
 }
 
-export type PostCoordinatesAndAssetsExtraArgs = {
-  asset_type_id?: number
-}
-
 export const postCoordinatesAndAssets = async (
-  { asset_type_id }: PostCoordinatesAndAssetsExtraArgs,
+  { asset_type_id }: { asset_type_id?: number },
   _: unknown,
   formData: FormData,
 ) => {
@@ -55,7 +51,7 @@ export const postCoordinatesAndAssets = async (
 
       const { error } = await postMeldingByMeldingIdAsset({
         body: {
-          asset_type_id: Number(asset_type_id),
+          asset_type_id: asset_type_id,
           external_id: String(id),
         },
         path: { melding_id: parseInt(meldingId, 10) },
