@@ -53,14 +53,7 @@ export const handlers = [
 
   http.post(ENDPOINTS.POST_MELDING, () =>
     HttpResponse.json({
-      classification: {
-        asset_type: {
-          arguments: { type_names: 'some-type' },
-          id: 5,
-        },
-        id: 2,
-        name: 'Test classification',
-      },
+      classification: { id: 2, name: 'Test classification' },
       created_at: '2025-05-26T11:56:34.081Z',
       id: 123,
       public_id: 'B100AA',
@@ -106,16 +99,12 @@ export const handlers = [
     if (params.staticFormId === '3') {
       return HttpResponse.json({ components: contact })
     }
-    return undefined
   }),
 
   // Asset type
-  http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, ({ params }) => {
-    if (params.asset_type_id === '1') {
-      return HttpResponse.json({
-        features: containerAssets,
-      })
-    }
-    return HttpResponse.json({ message: 'Something went wrong' }, { status: 500 })
-  }),
+  http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () =>
+    HttpResponse.json({
+      features: containerAssets,
+    }),
+  ),
 ]
