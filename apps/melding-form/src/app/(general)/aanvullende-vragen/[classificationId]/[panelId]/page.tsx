@@ -14,12 +14,9 @@ import type {
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
-import {
-  AFTER_ADDITIONAL_QUESTIONS_PATH,
-  getPreviousAnswersByKey,
-  getPreviousPanelPath,
-  isPanelComponentOutput,
-} from './_utils/navigationUtils'
+import { getFilteredAnswersByKey } from '../../../_utils/conditions/getFilteredAnswersByKey'
+import { isPanelComponentOutput } from '../../../_utils/typeGuards'
+import { AFTER_ADDITIONAL_QUESTIONS_PATH, getPreviousPanelPath } from './_utils/navigationUtils'
 import { setDateComponentOptions } from './_utils/setDateComponentOptions'
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
@@ -154,7 +151,7 @@ export default async ({ params }: { params: Params }) => {
     key,
   }))
 
-  const previousAnswersByKey = getPreviousAnswersByKey(data, answers)
+  const previousAnswersByKey = getFilteredAnswersByKey(data, answers)
 
   const extraArgs = {
     classificationId,
