@@ -49,7 +49,7 @@ describe('postSummaryForm', () => {
     expect(result).toEqual({ systemError: 'Error message' })
   })
 
-  it('deletes address, token, lastPanelPath, id, and source cookies and redirects to /bedankt', async () => {
+  it('deletes all cookies and redirects to /bedankt', async () => {
     const deleteMock = vi.fn()
 
     ;(cookies as Mock).mockReturnValue({
@@ -67,11 +67,10 @@ describe('postSummaryForm', () => {
 
     await postSummaryForm(defaultArgs)
 
-    expect(deleteMock).toHaveBeenCalledWith(COOKIES.ADDRESS)
-    expect(deleteMock).toHaveBeenCalledWith(COOKIES.TOKEN)
-    expect(deleteMock).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
-    expect(deleteMock).toHaveBeenCalledWith(COOKIES.ID)
-    expect(deleteMock).toHaveBeenCalledWith(COOKIES.SOURCE)
+    Object.values(COOKIES).forEach((cookieName) => {
+      expect(deleteMock).toHaveBeenCalledWith(cookieName)
+    })
+
     expect(redirect).toHaveBeenCalledWith(
       `/bedankt?created_at=${encodeURIComponent(defaultArgs.created_at)}&public_id=${defaultArgs.public_id}#${TOP_ANCHOR_ID}`,
     )
