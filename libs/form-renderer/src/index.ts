@@ -1,4 +1,4 @@
 export * from './FormRenderer'
 export * from './types'
 
-export { isSelectboxes, isTimeInput } from './utils'
+export { getAriaDescribedBy, isSelectboxes, isTimeInput } from './utils'

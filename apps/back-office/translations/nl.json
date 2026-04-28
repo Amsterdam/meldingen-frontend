@@ -24,6 +24,14 @@
       "label": "Resultaten per pagina"
     }
   },
+  "melding-form": {
+    "metadata": {
+      "title": "Melden - Gemeente Amsterdam"
+    },
+    "title": "Melden",
+    "urgency-label": "Wat is de urgentie?",
+    "submit-button": "Volgende vraag"
+  },
   "detail": {
     "attachments": {
       "title": "Bestanden",
@@ -102,6 +110,7 @@
   },
   "shared": {
     "menu": {
+      "melding-form": "Melden",
       "overview": "Overzicht"
     },
     "state": {

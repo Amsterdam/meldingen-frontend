@@ -30,9 +30,12 @@ describe('RootLayout', () => {
   it('renders a Menu with Menu.Links', async () => {
     render(await RootLayout({ children: <p>Test</p> }))
 
-    const menuLinks = screen.getAllByRole('link', { name: 'menu.overview' })
+    const overviewLinks = screen.getAllByRole('link', { name: 'menu.overview' })
+    const meldingFormLinks = screen.getAllByRole('link', { name: 'menu.melding-form' })
 
-    expect(menuLinks[0]).toBeInTheDocument()
-    expect(menuLinks[1]).toBeInTheDocument()
+    expect(overviewLinks[0]).toBeInTheDocument()
+    expect(overviewLinks[1]).toBeInTheDocument()
+    expect(meldingFormLinks[0]).toBeInTheDocument()
+    expect(meldingFormLinks[1]).toBeInTheDocument()
   })
 })
