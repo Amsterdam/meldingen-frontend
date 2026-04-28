@@ -15,40 +15,29 @@ const getFilter = (id: string) => `
   </Filter>
 `
 
-const getAssetsFromMelding = async (meldingId: string, token: string, typeNames?: string) => {
-  // Get existing assets for this melding
-  const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
-    path: {
-      melding_id: parseInt(meldingId, 10),
-    },
-    query: { token },
-  })
+const getAssetsFromMelding = async (meldingId: string, token: string) => {
+  const meldingIdInt = parseInt(meldingId, 10)
 
-  if (error) {
+  const [{ data: assetIds, error: assetIdError }, { data: melding, error: meldingError }] = await Promise.all([
+    getMeldingByMeldingIdAssetsMelder({ path: { melding_id: meldingIdInt }, query: { token } }),
+    getMeldingByMeldingIdMelder({ path: { melding_id: meldingIdInt }, query: { token } }),
+  ])
+
+  if (assetIdError || meldingError) {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
-    console.error(error)
+    console.error(assetIdError ?? meldingError)
     return []
   }
 
-  const { data: melderData, error: melderError } = await getMeldingByMeldingIdMelder({
-    path: { melding_id: parseInt(meldingId, 10) },
-    query: { token },
-  })
+  const assetTypeId = melding.classification?.asset_type?.id
+  const typeNames = melding.classification?.asset_type?.arguments?.type_names as string | undefined
 
-  if (melderError) {
-    // TODO: Log the error to an error reporting service
-    // eslint-disable-next-line no-console
-    console.error(melderError)
-    return []
-  }
-  const assetTypeId = melderData.classification?.asset_type?.id
+  if (!assetTypeId || !typeNames) return []
 
   const assets = await Promise.all(
     assetIds.map(async (asset) => {
       const filter = getFilter(asset.external_id)
-
-      if (!assetTypeId) return null
 
       const { data, error } = await getAssetTypeByAssetTypeIdWfs({
         path: { asset_type_id: assetTypeId },
@@ -74,12 +63,11 @@ export default async () => {
   // We check for the existence of these cookies in our proxy, so non-null assertion is safe here.
   const meldingId = cookieStore.get(COOKIES.ID)!.value
   const token = cookieStore.get(COOKIES.TOKEN)!.value
-  const typeNames = cookieStore.get(COOKIES.TYPE_NAMES)?.value
 
   const address = cookieStore.get(COOKIES.ADDRESS)?.value
   const prevPage = cookieStore.get(COOKIES.LAST_PANEL_PATH)
 
-  const assets = await getAssetsFromMelding(meldingId, token, typeNames)
+  const assets = await getAssetsFromMelding(meldingId, token)
 
   return <Location address={address} prevPage={prevPage ? prevPage.value : '/'} selectedAssets={assets} />
 }

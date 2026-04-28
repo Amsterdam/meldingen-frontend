@@ -48,7 +48,51 @@ describe('Page', () => {
     )
   })
 
-  it('returns empty selectedAssets when assetTypeId is not set', async () => {
+  it('returns an empty array of selectedAssets and logs an error when fetching assets fails', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS_MELDER, () =>
+        HttpResponse.json('Test error', { status: 500 }),
+      ),
+    )
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(consoleSpy).toHaveBeenCalledWith('Test error')
+
+    consoleSpy.mockRestore()
+
+    expect(Location).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
+  it('returns an empty array of selectedAssets and logs an error when fetching melding fails', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json('Test error', { status: 500 })),
+    )
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(consoleSpy).toHaveBeenCalledWith('Test error')
+
+    consoleSpy.mockRestore()
+
+    expect(Location).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
+  it('returns an empty array of selectedAssets when assetTypeId is not set', async () => {
     const meldingwithoutAssetTypeId = {
       ...melding,
       classification: {
@@ -69,13 +113,35 @@ describe('Page', () => {
     )
   })
 
-  it('logs an error when melderData fetch fails', async () => {
+  it('returns an empty array of selectedAssets when typeNames is not set', async () => {
+    const meldingwithoutTypeNames = {
+      ...melding,
+      classification: {
+        ...melding.classification,
+        asset_type: {
+          ...melding.classification?.asset_type,
+          arguments: {
+            type_names: null,
+          },
+        },
+      },
+    }
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(meldingwithoutTypeNames)))
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(Location).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
+  it('logs an error and does not return assets when the WFS endpoint returns an error', async () => {
     server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () =>
-        HttpResponse.json('Test error', {
-          status: 500,
-        }),
-      ),
+      http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json('Test error', { status: 500 })),
     )
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
@@ -119,55 +185,11 @@ describe('Page', () => {
     expect(Location).toHaveBeenCalledWith(expect.objectContaining({ selectedAssets: containerAssets }), undefined)
   })
 
-  it('returns empty selectedAssets when no assets are found', async () => {
+  it('does not return assets when no assets are found', async () => {
     server.use(http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json({ features: [] })))
 
     const PageComponent = await Page()
     render(PageComponent)
-
-    expect(Location).toHaveBeenCalledWith(
-      expect.objectContaining({
-        selectedAssets: [],
-      }),
-      undefined,
-    )
-  })
-
-  it('logs an error when fetches assetIds from melding fails', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS_MELDER, () =>
-        HttpResponse.json('Test error', { status: 500 }),
-      ),
-    )
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-
-    const PageComponent = await Page()
-    render(PageComponent)
-
-    expect(consoleSpy).toHaveBeenCalledWith('Test error')
-
-    consoleSpy.mockRestore()
-
-    expect(Location).toHaveBeenCalledWith(
-      expect.objectContaining({
-        selectedAssets: [],
-      }),
-      undefined,
-    )
-  })
-
-  it('logs an error when the wfs endpoint fails', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json('Test error', { status: 500 })),
-    )
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-
-    const PageComponent = await Page()
-    render(PageComponent)
-
-    expect(consoleSpy).toHaveBeenCalledWith('Test error')
-
-    consoleSpy.mockRestore()
 
     expect(Location).toHaveBeenCalledWith(
       expect.objectContaining({
