@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { AdminContext, ResourceContextProvider } from 'react-admin'
 
-import { i18nProvider } from '../../app/providers/i18nProvider'
 import { AssetTypeCreate, transform } from './AssetTypeCreate'
 
 describe('transform function', () => {
@@ -31,21 +30,21 @@ describe('transform function', () => {
 describe('AssetTypeCreate', () => {
   it('should render all inputs', () => {
     render(
-      <AdminContext i18nProvider={i18nProvider}>
+      <AdminContext>
         <ResourceContextProvider value="asset-type">
           <AssetTypeCreate />
         </ResourceContextProvider>
       </AdminContext>,
     )
 
-    const nameInput = screen.getByRole('textbox', { name: /Naam/i })
-    const iconEntryInput = screen.getByRole('textbox', { name: /Icon koppelcode/i })
-    const iconFolderInput = screen.getByRole('textbox', { name: /Icon folder/i })
-    const typeNamesInput = screen.getByRole('textbox', { name: /Typenames/i })
-    const srsNameInput = screen.getByRole('textbox', { name: /SRS name/i })
-    const filterInput = screen.getByRole('textbox', { name: /Filter/i })
-    const baseUrlInput = screen.getByRole('textbox', { name: /WFS url/i })
-    const maxAssetsInput = screen.getByRole('spinbutton', { name: /Maximaal aantal te selecteren/i })
+    const nameInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.name' })
+    const iconEntryInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.icon_entry' })
+    const iconFolderInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.icon_folder' })
+    const typeNamesInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.type_names' })
+    const srsNameInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.srs_name' })
+    const filterInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.filter' })
+    const baseUrlInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.base_url' })
+    const maxAssetsInput = screen.getByRole('spinbutton', { name: 'resources.asset-type.fields.max_assets' })
 
     expect(nameInput).toBeInTheDocument()
     expect(iconEntryInput).toBeInTheDocument()

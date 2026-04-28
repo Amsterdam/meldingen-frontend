@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { AdminContext, ResourceContextProvider, testDataProvider } from 'react-admin'
 
-import { i18nProvider } from '../../app/providers/i18nProvider'
 import { AssetTypeEdit } from './AssetTypeEdit'
 
 describe('AssetTypeEdit', () => {
@@ -24,21 +23,27 @@ describe('AssetTypeEdit', () => {
     })
 
     render(
-      <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+      <AdminContext dataProvider={dataProvider}>
         <ResourceContextProvider value="asset-type">
           <AssetTypeEdit id={1} />
         </ResourceContextProvider>
       </AdminContext>,
     )
 
-    const nameInput = await screen.findByRole('textbox', { name: /Naam/i })
-    const iconEntryInput = await screen.findByRole('textbox', { name: /Icon koppelcode/i })
-    const iconFolderInput = await screen.findByRole('textbox', { name: /Icon folder/i })
-    const typeNamesInput = await screen.findByRole('textbox', { name: /Typenames/i })
-    const srsNameInput = await screen.findByRole('textbox', { name: /SRS name/i })
-    const filterInput = await screen.findByRole('textbox', { name: /Filter/i })
-    const baseUrlInput = await screen.findByRole('textbox', { name: /WFS url/i })
-    const maxAssetsInput = await screen.findByRole('spinbutton', { name: /Maximaal aantal te selecteren/i })
+    const nameInput = await screen.findByRole('textbox', { name: 'resources.asset-type.fields.name' })
+    const iconEntryInput = await screen.findByRole('textbox', {
+      name: 'resources.asset-type.fields.arguments.icon_entry',
+    })
+    const iconFolderInput = await screen.findByRole('textbox', {
+      name: 'resources.asset-type.fields.arguments.icon_folder',
+    })
+    const typeNamesInput = await screen.findByRole('textbox', {
+      name: 'resources.asset-type.fields.arguments.type_names',
+    })
+    const srsNameInput = await screen.findByRole('textbox', { name: 'resources.asset-type.fields.arguments.srs_name' })
+    const filterInput = await screen.findByRole('textbox', { name: 'resources.asset-type.fields.arguments.filter' })
+    const baseUrlInput = await screen.findByRole('textbox', { name: 'resources.asset-type.fields.arguments.base_url' })
+    const maxAssetsInput = await screen.findByRole('spinbutton', { name: 'resources.asset-type.fields.max_assets' })
 
     expect(nameInput).toBeInTheDocument()
     expect(iconEntryInput).toBeInTheDocument()
