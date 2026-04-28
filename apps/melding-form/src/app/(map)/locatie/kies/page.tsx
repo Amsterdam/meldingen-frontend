@@ -28,7 +28,7 @@ const getFilter = (id: string) => `
 
 const MAX_ASSETS_FALLBACK = 3
 
-const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeId?: number, typeNames?: string) => {
+const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeId?: string, typeNames?: string) => {
   // Get existing assets for this melding
   const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
     path: {
@@ -64,6 +64,8 @@ const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeI
   const assets = await Promise.all(
     assetIds.map(async (asset) => {
       const filter = getFilter(asset.external_id)
+
+      if (!assetTypeId || !typeNames) return null
 
       const { data, error } = await getAssetTypeByAssetTypeIdWfs({
         path: { asset_type_id: Number(assetTypeId) },
@@ -105,7 +107,7 @@ export default async () => {
     console.error(error)
   }
 
-  const selectedAssets = await getAssetsFromMelding(meldingId, token, Number(assetTypeId), typeNames)
+  const selectedAssets = await getAssetsFromMelding(meldingId, token, assetTypeId, typeNames)
 
   const coordinates = data?.geo_location?.geometry?.coordinates && {
     lat: data.geo_location.geometry.coordinates[0],
@@ -118,7 +120,7 @@ export default async () => {
       maxAssets={data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK}
       selectedAssets={selectedAssets}
       wfsQuery={{
-        assetTypeId: Number(assetTypeId),
+        assetTypeId: assetTypeId ? Number(assetTypeId) : undefined,
         classification: data?.classification?.name,
         filter: data?.classification?.asset_type?.arguments?.filter as string | undefined,
         srsName: data?.classification?.asset_type?.arguments?.srs_name as string | undefined,

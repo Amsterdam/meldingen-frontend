@@ -111,7 +111,7 @@ export const handlers = [
 
   // Asset type
   http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, ({ params }) => {
-    if (params.name === 'container') {
+    if (params.asset_type_id === '1') {
       return HttpResponse.json({
         features: containerAssets,
       })

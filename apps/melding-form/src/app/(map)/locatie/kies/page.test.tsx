@@ -7,7 +7,7 @@ import { COOKIES } from 'apps/melding-form/src/constants'
 import { containerAssets, melding } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
-import { mockCookies, mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+import { mockCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -25,7 +25,12 @@ describe('generateMetadata', () => {
 
 describe('Page', () => {
   beforeEach(() => {
-    mockIdAndTokenCookies()
+    mockCookies({
+      [COOKIES.ASSET_TYPE_ID]: '1',
+      [COOKIES.ID]: '123',
+      [COOKIES.TOKEN]: 'test-token',
+      [COOKIES.TYPE_NAMES]: 'container',
+    })
   })
 
   it('renders the SelectLocation component', async () => {
@@ -118,6 +123,44 @@ describe('Page', () => {
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
         maxAssets: 3,
+      }),
+      undefined,
+    )
+  })
+
+  it('returns empty selectedAssets when assetTypeId cookie is not set', async () => {
+    mockCookies({
+      [COOKIES.ASSET_TYPE_ID]: undefined,
+      [COOKIES.ID]: '123',
+      [COOKIES.TOKEN]: 'test-token',
+      [COOKIES.TYPE_NAMES]: 'container',
+    })
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
+  it('returns empty selectedAssets when typeNames cookie is not set', async () => {
+    mockCookies({
+      [COOKIES.ASSET_TYPE_ID]: '1',
+      [COOKIES.ID]: '123',
+      [COOKIES.TOKEN]: 'test-token',
+      [COOKIES.TYPE_NAMES]: undefined,
+    })
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: [],
       }),
       undefined,
     )
