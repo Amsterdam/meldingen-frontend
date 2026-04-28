@@ -44,14 +44,14 @@ export const postCoordinatesAndAssets = async (
   /** Post assets */
 
   if (selectedAssetIds.length > 0) {
-    for (const id of selectedAssetIds) {
-      if (!asset_type_id) {
-        return { errorMessage: t('errors.assets-post-failed') }
-      }
+    if (!asset_type_id) {
+      return { errorMessage: t('errors.assets-post-failed') }
+    }
 
+    for (const id of selectedAssetIds) {
       const { error } = await postMeldingByMeldingIdAsset({
         body: {
-          asset_type_id: asset_type_id,
+          asset_type_id,
           external_id: String(id),
         },
         path: { melding_id: parseInt(meldingId, 10) },
