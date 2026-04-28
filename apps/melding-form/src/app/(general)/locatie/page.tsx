@@ -1,6 +1,10 @@
 import { cookies } from 'next/headers'
 
-import { getAssetTypeByAssetTypeIdWfs, getMeldingByMeldingIdAssetsMelder } from '@meldingen/api-client'
+import {
+  getAssetTypeByAssetTypeIdWfs,
+  getMeldingByMeldingIdAssetsMelder,
+  getMeldingByMeldingIdMelder,
+} from '@meldingen/api-client'
 
 import { Location } from './Location'
 import { COOKIES } from 'apps/melding-form/src/constants'
@@ -11,7 +15,7 @@ const getFilter = (id: string) => `
   </Filter>
 `
 
-const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeId?: string, typeNames?: string) => {
+const getAssetsFromMelding = async (meldingId: string, token: string, typeNames?: string) => {
   // Get existing assets for this melding
   const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
     path: {
@@ -27,6 +31,19 @@ const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeI
     return []
   }
 
+  const { data: melderData, error: melderError } = await getMeldingByMeldingIdMelder({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (melderError) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(melderError)
+    return []
+  }
+  const assetTypeId = melderData.classification?.asset_type?.id
+
   const assets = await Promise.all(
     assetIds.map(async (asset) => {
       const filter = getFilter(asset.external_id)
@@ -34,7 +51,7 @@ const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeI
       if (!assetTypeId) return null
 
       const { data, error } = await getAssetTypeByAssetTypeIdWfs({
-        path: { asset_type_id: Number(assetTypeId) },
+        path: { asset_type_id: assetTypeId },
         query: { filter, type_names: typeNames },
       })
 
@@ -57,13 +74,12 @@ export default async () => {
   // We check for the existence of these cookies in our proxy, so non-null assertion is safe here.
   const meldingId = cookieStore.get(COOKIES.ID)!.value
   const token = cookieStore.get(COOKIES.TOKEN)!.value
-  const assetTypeId = cookieStore.get(COOKIES.ASSET_TYPE_ID)?.value
   const typeNames = cookieStore.get(COOKIES.TYPE_NAMES)?.value
 
   const address = cookieStore.get(COOKIES.ADDRESS)?.value
   const prevPage = cookieStore.get(COOKIES.LAST_PANEL_PATH)
 
-  const assets = await getAssetsFromMelding(meldingId, token, assetTypeId, typeNames)
+  const assets = await getAssetsFromMelding(meldingId, token, typeNames)
 
   return <Location address={address} prevPage={prevPage ? prevPage.value : '/'} selectedAssets={assets} />
 }

@@ -4,7 +4,7 @@ import { http, HttpResponse } from 'msw'
 import { Location } from './Location'
 import Page from './page'
 import { COOKIES } from 'apps/melding-form/src/constants'
-import { containerAssets } from 'apps/melding-form/src/mocks/data'
+import { containerAssets, melding } from 'apps/melding-form/src/mocks/data'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 import { mockCookies, mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
@@ -48,7 +48,16 @@ describe('Page', () => {
     )
   })
 
-  it('returns empty selectedAssets when assetTypeId cookie is not set', async () => {
+  it('returns empty selectedAssets when assetTypeId is not set', async () => {
+    const meldingwithoutAssetTypeId = {
+      ...melding,
+      classification: {
+        ...melding.classification,
+        asset_type: null,
+      },
+    }
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(meldingwithoutAssetTypeId)))
+
     const PageComponent = await Page()
     render(PageComponent)
 
@@ -60,13 +69,32 @@ describe('Page', () => {
     )
   })
 
-  it('fetches and passes saved assets to Location component', async () => {
-    mockCookies({
-      [COOKIES.ASSET_TYPE_ID]: '1',
-      [COOKIES.ID]: '123',
-      [COOKIES.TOKEN]: 'test-token',
-    })
+  it('logs an error when melderData fetch fails', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () =>
+        HttpResponse.json('Test error', {
+          status: 500,
+        }),
+      ),
+    )
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(consoleSpy).toHaveBeenCalledWith('Test error')
+
+    consoleSpy.mockRestore()
+
+    expect(Location).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
+  it('fetches and passes saved assets to Location component', async () => {
     let callCount = 0
     server.use(
       http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => {
@@ -92,11 +120,6 @@ describe('Page', () => {
   })
 
   it('returns empty selectedAssets when no assets are found', async () => {
-    mockCookies({
-      [COOKIES.ASSET_TYPE_ID]: '1',
-      [COOKIES.ID]: '123',
-      [COOKIES.TOKEN]: 'test-token',
-    })
     server.use(http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json({ features: [] })))
 
     const PageComponent = await Page()
@@ -134,11 +157,6 @@ describe('Page', () => {
   })
 
   it('logs an error when the wfs endpoint fails', async () => {
-    mockCookies({
-      [COOKIES.ASSET_TYPE_ID]: '1',
-      [COOKIES.ID]: '123',
-      [COOKIES.TOKEN]: 'test-token',
-    })
     server.use(
       http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json('Test error', { status: 500 })),
     )
