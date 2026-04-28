@@ -6,7 +6,7 @@ import { Feature } from '@meldingen/api-client'
 import type { NotificationType } from '../../SelectLocation'
 import type { Coordinates } from 'apps/melding-form/src/types'
 
-import { Image } from '../../../../../_components/Image/Image'
+import { AssetIcon } from '../../../../../_components/AssetIcon/AssetIcon'
 import { getAssetIconSVG } from '../../../../../utils/getAssetIconSVG'
 
 import styles from './AssetList.module.css'
@@ -34,7 +34,7 @@ const getCheckboxLabel = (
 
   return (
     <span className={styles.label}>
-      <Image alt={altText} height={32} src={icon} width={32} />
+      <AssetIcon alt={altText} height={32} src={icon} width={32} />
       <span>{idNummer}</span>
     </span>
   )

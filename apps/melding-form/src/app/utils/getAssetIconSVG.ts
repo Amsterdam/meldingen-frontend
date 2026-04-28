@@ -1,5 +1,7 @@
 import { Feature } from '@meldingen/api-client'
 
+import { FALLBACK_SRC } from '../../constants'
+
 export const getAssetIconSVG = (
   properties: Feature['properties'],
   { iconEntry, iconFolder }: { iconEntry?: string; iconFolder?: string },
@@ -7,7 +9,7 @@ export const getAssetIconSVG = (
   const assetSubType = iconEntry ? (properties?.[iconEntry] as string) : undefined
 
   if (!iconFolder || !assetSubType) {
-    return '/asset-fallback.svg'
+    return FALLBACK_SRC
   }
 
   return `/${iconFolder}/${assetSubType?.toLocaleLowerCase()}.svg`
