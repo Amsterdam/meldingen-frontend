@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation'
 
-import { URGENCY_VALUES } from './constants'
+import { URGENCY_VALUES } from '../../../../constants'
 import { MeldingOutput, patchMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
 
 type MeldingIdParam = {

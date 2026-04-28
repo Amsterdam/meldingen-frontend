@@ -1,0 +1,7 @@
+.main {
+  background-color: var(--ams-color-background);
+}
+
+.submit {
+  inline-size: fit-content;
+}

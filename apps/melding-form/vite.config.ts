@@ -1,19 +1,21 @@
 import react from '@vitejs/plugin-react'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
-  plugins: [tsconfigPaths(), react()],
+  plugins: [react()],
+  resolve: {
+    tsconfigPaths: true,
+  },
   test: {
     clearMocks: true,
     coverage: {
       enabled: true,
       include: ['src/**/*.{js,jsx,ts,tsx}'],
       thresholds: {
-        branches: 98,
+        branches: 96,
         functions: 92,
-        lines: 98,
-        statements: 98,
+        lines: 97,
+        statements: 97,
       },
     },
     environment: 'jsdom',

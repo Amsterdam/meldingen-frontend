@@ -28,12 +28,10 @@ const getFilter = (id: string) => `
 
 const MAX_ASSETS_FALLBACK = 3
 
-const getAssetsFromMelding = async (meldingId: string, token: string) => {
+const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeId: number, typeNames: string) => {
   // Get existing assets for this melding
   const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
-    path: {
-      melding_id: parseInt(meldingId, 10),
-    },
+    path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
   })
 
@@ -65,7 +63,10 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
     assetIds.map(async (asset) => {
       const filter = getFilter(asset.external_id)
 
-      const { data, error } = await getAssetTypeByAssetTypeIdWfs({ path: { asset_type_id: 1 }, query: { filter } })
+      const { data, error } = await getAssetTypeByAssetTypeIdWfs({
+        path: { asset_type_id: assetTypeId },
+        query: { filter, type_names: typeNames },
+      })
 
       if (error) {
         // TODO: Log the error to an error reporting service
@@ -100,7 +101,11 @@ export default async () => {
     console.error(error)
   }
 
-  const selectedAssets = await getAssetsFromMelding(meldingId, token)
+  const assetTypeId = data?.classification?.asset_type?.id
+  const typeNames = data?.classification?.asset_type?.arguments?.type_names as string | undefined
+
+  const selectedAssets =
+    assetTypeId && typeNames ? await getAssetsFromMelding(meldingId, token, assetTypeId, typeNames) : []
 
   const coordinates = data?.geo_location?.geometry?.coordinates && {
     lat: data.geo_location.geometry.coordinates[0],
@@ -117,11 +122,11 @@ export default async () => {
       maxAssets={data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK}
       selectedAssets={selectedAssets}
       wfsQuery={{
-        assetTypeId: data?.classification?.asset_type?.id,
+        assetTypeId: assetTypeId,
         classification: data?.classification?.name,
         filter: data?.classification?.asset_type?.arguments?.filter as string | undefined,
         srsName: data?.classification?.asset_type?.arguments?.srs_name as string | undefined,
-        typeNames: data?.classification?.asset_type?.arguments?.type_names as string | undefined,
+        typeNames: typeNames,
       }}
     />
   )

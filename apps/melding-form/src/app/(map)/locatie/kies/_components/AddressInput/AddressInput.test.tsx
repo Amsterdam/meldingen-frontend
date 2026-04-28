@@ -8,11 +8,14 @@ import { AddressInput } from './AddressInput'
 import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
 import { server } from 'apps/melding-form/src/mocks/node'
 
-global.ResizeObserver = vi.fn().mockImplementation(() => ({
-  disconnect: vi.fn(),
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-}))
+vi.stubGlobal(
+  'ResizeObserver',
+  class {
+    disconnect = vi.fn()
+    observe = vi.fn()
+    unobserve = vi.fn()
+  },
+)
 
 const defaultProps: Props = {
   setCoordinates: vi.fn(),

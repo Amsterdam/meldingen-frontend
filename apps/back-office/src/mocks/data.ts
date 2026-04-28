@@ -1,9 +1,10 @@
-import {
+import type {
+  FormTextAreaComponentOutput,
   MeldingOutput,
   TextAnswerQuestionOutput,
   TimeAnswerQuestionOutput,
   ValueLabelAnswerQuestionOutput,
-} from '../apiClientProxy'
+} from '@meldingen/api-client'
 
 export const melding: MeldingOutput = {
   city: 'Amsterdam',
@@ -68,6 +69,18 @@ export const meldingen: MeldingOutput[] = [
     urgency: 0,
   },
 ]
+
+export const textAreaComponent: FormTextAreaComponentOutput = {
+  autoExpand: false,
+  description: '',
+  input: true,
+  key: 'textArea1',
+  label: 'First question',
+  maxCharCount: 0,
+  position: 1,
+  question: 1,
+  type: 'textarea',
+}
 
 export const additionalQuestions: TextAnswerQuestionOutput[] = [
   {

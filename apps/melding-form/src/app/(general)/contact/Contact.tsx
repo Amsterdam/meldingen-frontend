@@ -11,7 +11,7 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
 
 import { SystemErrorAlert } from '../_components/SystemErrorAlert'
-import { getDocumentTitleOnError } from '../_utils/getDocumentTitleOnError'
+import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { postContactForm } from './actions'
 import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
