@@ -1,4 +1,6 @@
-import L from 'leaflet'
+import type { Icon } from 'leaflet'
+
+import { icon as LeafletIcon } from 'leaflet'
 
 import { Feature } from '@meldingen/api-client'
 
@@ -21,15 +23,15 @@ export const getAssetIcon = (
   feature: Feature,
   isSelected: boolean,
   assetTypeIconConfig: { iconEntry?: string; iconFolder?: string },
-): L.Icon => {
-  const icon = L.icon({
+): Icon => {
+  const icon = LeafletIcon({
     iconAnchor: [22, 22],
     iconSize: [44, 44],
     iconUrl: getAssetIconSVG(feature.properties, assetTypeIconConfig),
   })
 
   if (isSelected) {
-    return L.icon({
+    return LeafletIcon({
       ...icon.options,
       className: styles.border,
       iconAnchor: [34, 34],

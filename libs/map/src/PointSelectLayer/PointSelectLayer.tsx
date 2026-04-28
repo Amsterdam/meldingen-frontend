@@ -1,5 +1,5 @@
 import { latLng, LeafletKeyboardEvent, LeafletMouseEvent, marker, Marker } from 'leaflet'
-import L from 'leaflet'
+import { icon } from 'leaflet'
 import { useContext, useEffect, useRef } from 'react'
 
 import { MapContext } from '../Map/Map'
@@ -8,7 +8,7 @@ import { Crosshair } from './Crosshair'
 
 export const FLY_TO_MIN_ZOOM = 18
 
-const defaultIcon = L.icon({
+const defaultIcon = icon({
   iconAnchor: [15, 40],
   iconSize: [30, 40],
   iconUrl: '/icon-select-marker.svg',
