@@ -1,6 +1,10 @@
 import { cookies } from 'next/headers'
 
-import { getAssetTypeByAssetTypeIdWfs, getMeldingByMeldingIdAssetsMelder } from '@meldingen/api-client'
+import {
+  getAssetTypeByAssetTypeIdWfs,
+  getMeldingByMeldingIdAssetsMelder,
+  getMeldingByMeldingIdMelder,
+} from '@meldingen/api-client'
 
 import { Location } from './Location'
 import { COOKIES } from 'apps/melding-form/src/constants'
@@ -12,26 +16,33 @@ const getFilter = (id: string) => `
 `
 
 const getAssetsFromMelding = async (meldingId: string, token: string) => {
-  // Get existing assets for this melding
-  const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
-    path: {
-      melding_id: parseInt(meldingId, 10),
-    },
-    query: { token },
-  })
+  const meldingIdInt = parseInt(meldingId, 10)
 
-  if (error) {
+  const [{ data: assetIds, error: assetIdError }, { data: melding, error: meldingError }] = await Promise.all([
+    getMeldingByMeldingIdAssetsMelder({ path: { melding_id: meldingIdInt }, query: { token } }),
+    getMeldingByMeldingIdMelder({ path: { melding_id: meldingIdInt }, query: { token } }),
+  ])
+
+  if (assetIdError || meldingError) {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
-    console.error(error)
+    console.error(assetIdError ?? meldingError)
     return []
   }
+
+  const assetTypeId = melding.classification?.asset_type?.id
+  const typeNames = melding.classification?.asset_type?.arguments?.type_names as string | undefined
+
+  if (!assetTypeId || !typeNames) return []
 
   const assets = await Promise.all(
     assetIds.map(async (asset) => {
       const filter = getFilter(asset.external_id)
 
-      const { data, error } = await getAssetTypeByAssetTypeIdWfs({ path: { asset_type_id: 1 }, query: { filter } })
+      const { data, error } = await getAssetTypeByAssetTypeIdWfs({
+        path: { asset_type_id: assetTypeId },
+        query: { filter, type_names: typeNames },
+      })
 
       if (error) {
         // TODO: Log the error to an error reporting service

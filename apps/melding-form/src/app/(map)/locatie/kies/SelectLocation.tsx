@@ -58,7 +58,10 @@ export const SelectLocation = ({
   const [selectedAssets, setSelectedAssets] = useState<Feature[]>(selectedAssetsFromServer)
   const [showAssetList, setShowAssetList] = useState(false)
 
-  const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssets, initialState)
+  const postCoordinatesAndAssetsWithExtraArgs = postCoordinatesAndAssets.bind(null, {
+    asset_type_id: wfsQuery.assetTypeId,
+  })
+  const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssetsWithExtraArgs, initialState)
 
   const t = useTranslations('select-location')
   const isWideWindow = useIsAfterBreakpoint('wide')
