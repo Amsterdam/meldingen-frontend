@@ -86,10 +86,10 @@ describe('AssetList', () => {
       .fill(containerAssets[0])
       .map((asset, index) => ({
         ...asset,
-        id: (index + 1).toString(),
+        id: index,
         properties: {
           ...asset.properties,
-          id_nummer: `Container-${(index + 1).toString().padStart(3, '0')}`,
+          id_nummer: index,
         },
       }))
 
