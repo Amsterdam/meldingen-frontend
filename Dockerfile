@@ -50,11 +50,13 @@ FROM base AS melding_form_meldingen
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Set the backend URL to a runtime environment variable
+# Set runtime environment variables
 ARG NEXT_INTERNAL_BACKEND_BASE_URL
 ARG NEXT_PUBLIC_BACKEND_BASE_URL
+ARG NEXT_PUBLIC_BACK_OFFICE_BASE_URL
 ENV NEXT_INTERNAL_BACKEND_BASE_URL=$NEXT_INTERNAL_BACKEND_BASE_URL
 ENV NEXT_PUBLIC_BACKEND_BASE_URL=$NEXT_PUBLIC_BACKEND_BASE_URL
+ENV NEXT_PUBLIC_BACK_OFFICE_BASE_URL=$NEXT_PUBLIC_BACK_OFFICE_BASE_URL
 
 ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
@@ -91,9 +93,11 @@ FROM base AS back_office_meldingen
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Set the backend URL to a runtime environment variable
+# Set runtime environment variables
 ARG NEXT_INTERNAL_BACKEND_BASE_URL
+ARG NEXT_PUBLIC_MELDING_FORM_BASE_URL
 ENV NEXT_INTERNAL_BACKEND_BASE_URL=$NEXT_INTERNAL_BACKEND_BASE_URL
+ENV NEXT_PUBLIC_MELDING_FORM_BASE_URL=$NEXT_PUBLIC_MELDING_FORM_BASE_URL
 
 ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
