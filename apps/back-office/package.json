@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@meldingen/api-client": "workspace:*",
+    "@meldingen/form-renderer": "workspace:*",
+    "@meldingen/markdown-to-html": "workspace:*",
     "@meldingen/ui": "workspace:*",
     "next": "16.2.4",
     "next-auth": "4.24.14",
