@@ -77,7 +77,7 @@ describe('postSummaryForm', () => {
     )
   })
 
-  it('includes source query param in redirect URL if source cookie is present', async () => {
+  it('includes source and id query params in redirect URL if source cookie is present', async () => {
     const deleteMock = vi.fn()
 
     ;(cookies as Mock).mockReturnValue({
@@ -99,7 +99,7 @@ describe('postSummaryForm', () => {
     await postSummaryForm(defaultArgs)
 
     expect(redirect).toHaveBeenCalledWith(
-      `/bedankt?created_at=${encodeURIComponent(defaultArgs.created_at)}&public_id=${defaultArgs.public_id}&source=test-source#${TOP_ANCHOR_ID}`,
+      `/bedankt?created_at=${encodeURIComponent(defaultArgs.created_at)}&public_id=${defaultArgs.public_id}&id=123&source=test-source#${TOP_ANCHOR_ID}`,
     )
   })
 })

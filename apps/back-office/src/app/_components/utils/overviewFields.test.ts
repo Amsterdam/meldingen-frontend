@@ -1,5 +1,5 @@
+import { URGENCY_VALUES } from '../../../constants'
 import { melding } from '../../../mocks/data'
-import { URGENCY_VALUES } from '../../melding/[meldingId]/wijzig-urgentie/constants'
 import { formatValue, getMeldingDetailHref, OverviewField } from './overviewFields'
 
 describe('overviewFields utils', () => {

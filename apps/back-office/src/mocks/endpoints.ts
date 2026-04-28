@@ -9,7 +9,13 @@ export const ENDPOINTS = {
   GET_MELDING_BY_MELDING_ID_ATTACHMENTS: '/melding/:id/attachments',
   GET_MELDING_BY_MELDING_ID_NEXT_POSSIBLE_STATES: '/melding/:id/next_possible_states',
 
+  // Static form
+  GET_STATIC_FORM: '/static-form',
+  GET_STATIC_FORM_BY_STATIC_FORM_ID: '/static-form/:staticFormId',
+
   PATCH_MELDING_BY_MELDING_ID: '/melding/:id',
+
+  POST_MELDING: '/melding',
 
   PUT_MELDING_BY_MELDING_ID_CANCEL: '/melding/:id/cancel',
   PUT_MELDING_BY_MELDING_ID_COMPLETE: '/melding/:id/complete',
