@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import { additionalQuestions, melding, meldingen } from './data'
+import { additionalQuestions, melding, meldingen, textAreaComponent } from './data'
 import { ENDPOINTS } from './endpoints'
 
 export const handlers = [
@@ -20,7 +20,26 @@ export const handlers = [
     HttpResponse.json({ states: ['processing_requested', 'completed'] }),
   ),
 
+  // Static form
+  http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json([{ id: '1', type: 'primary' }])),
+  http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, ({ params }) => {
+    // Primary
+    if (params.staticFormId === '1') {
+      return HttpResponse.json({ components: [textAreaComponent] })
+    }
+  }),
+
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () => HttpResponse.json({})),
+
+  http.post(ENDPOINTS.POST_MELDING, () =>
+    HttpResponse.json({
+      classification: { id: 2, name: 'Test classification' },
+      created_at: '2025-05-26T11:56:34.081Z',
+      id: 123,
+      public_id: 'B100AA',
+      token: 'test-token',
+    }),
+  ),
 
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_CANCEL, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_COMPLETE, () => new HttpResponse()),

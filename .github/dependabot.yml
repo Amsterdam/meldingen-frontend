@@ -7,19 +7,32 @@ updates:
       interval: 'weekly'
     cooldown:
       default-days: 1 # Wait for one day after release before updating a dependency
+
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
       interval: 'weekly'
     cooldown:
       default-days: 1 # Wait for one day after release before updating a dependency
+
     groups:
+      amsterdam-design-system:
+        applies-to: 'version-updates'
+        patterns:
+          - '@amsterdam/design-system-*'
+        update-types:
+          - 'major'
+          - 'minor'
+          - 'patch'
+
       patch-and-minor-dependencies:
         applies-to: 'version-updates'
         exclude-patterns:
+          - '@amsterdam/design-system-*'
           - '@hey-api/openapi-ts'
         update-types:
           - 'patch'
           - 'minor'
+
     versioning-strategy: 'increase-if-necessary'
     open-pull-requests-limit: 20
