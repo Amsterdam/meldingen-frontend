@@ -7,7 +7,6 @@
 }
 
 .description {
-  font-size: var(--ams-paragraph-small-font-size);
   line-height: var(--ams-paragraph-small-line-height);
   margin-block-end: var(--ams-space-s);
 

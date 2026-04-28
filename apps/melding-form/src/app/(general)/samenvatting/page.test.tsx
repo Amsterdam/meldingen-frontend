@@ -24,6 +24,7 @@ describe('Page', () => {
             {
               components: [{ question: 35 }, { question: 36 }],
               key: 'page1',
+              type: 'panel',
             },
           ],
         }),

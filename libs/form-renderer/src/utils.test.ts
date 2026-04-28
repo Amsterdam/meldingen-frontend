@@ -3,7 +3,16 @@ import { describe, expect, it } from 'vitest'
 import type { Component } from './types'
 
 import { form } from './mocks/data'
-import { isRadio, isSelect, isSelectboxes, isTextarea, isTextfield, isTimeInput, shouldRender } from './utils'
+import {
+  isRadio,
+  isSelect,
+  isSelectboxes,
+  isTextarea,
+  isTextfield,
+  isTimeInput,
+  refilterValues,
+  shouldRender,
+} from './utils'
 
 describe('type guards', () => {
   it('isTimeInput should return true for type "time"', () => {
@@ -47,7 +56,7 @@ describe('type guards', () => {
 })
 
 describe('shouldRender', () => {
-  it('returns true when there is no usable conditional', () => {
+  it('returns true when there is no usable condition', () => {
     const componentWithoutConditional = { ...form.components[0].components[0] }
 
     expect(shouldRender(componentWithoutConditional, {})).toBe(true)
@@ -60,7 +69,7 @@ describe('shouldRender', () => {
     expect(shouldRender(componentWithEmptyConditional, {})).toBe(true)
   })
 
-  it('evaluates conditionals against string values', () => {
+  it('evaluates conditions against string values', () => {
     const component = {
       ...form.components[0].components[0],
       conditional: { eq: 'yes', show: true, when: 'controller' },
@@ -70,7 +79,7 @@ describe('shouldRender', () => {
     expect(shouldRender(component, { controller: 'yes' })).toBe(true)
   })
 
-  it('evaluates conditionals against values that are an array of strings and inverts when show is false', () => {
+  it('evaluates conditions against values that are an array of strings and inverts when show is false', () => {
     const component = {
       ...form.components[0].components[0],
       conditional: { eq: 'one', show: false, when: 'boxes' },
@@ -80,12 +89,50 @@ describe('shouldRender', () => {
     expect(shouldRender(component, { boxes: ['two'] })).toBe(true)
   })
 
-  it('returns false when the component key used in the conditional is not present in the values', () => {
+  it('returns false when the component key used in the condition is not present in the values', () => {
     const component = {
       ...form.components[0].components[0],
       conditional: { eq: 'yes', show: true, when: 'unknown-component-key' },
     }
 
     expect(shouldRender(component, {})).toBe(false)
+  })
+})
+
+describe('refilterValues', () => {
+  it('returns values for components that should render, and omits values for those that should not', () => {
+    const components = form.components[0].components.slice(0, 3).map((component, index) => ({
+      ...component,
+      conditional: index === 2 ? { eq: 'yes', show: true, when: 'component-0' } : undefined,
+      key: `component-${index}`,
+    }))
+
+    const previousAnswersByKey = {
+      'component-0': 'no',
+      'component-1': 'previous value 1',
+      'component-2': 'previous value 2',
+    }
+
+    const current = {
+      'component-0': 'yes',
+      'component-1': 'current value 1',
+      'component-2': 'current value 2',
+    }
+
+    const result = refilterValues(components, previousAnswersByKey, current)
+
+    expect(result['component-0']).toBe('yes') // No condition, should take current value
+    expect(result['component-1']).toBe('current value 1') // No condition, should take current value
+    expect(result['component-2']).toBe('current value 2') // Condition met, should take current value
+
+    // If we change component-0 to a value that doesn't meet the condition for component-2, component-2 should return undefined
+    const currentWithUnmetCondition = {
+      ...current,
+      'component-0': 'no',
+    }
+
+    const resultWithUnmetCondition = refilterValues(components, previousAnswersByKey, currentWithUnmetCondition)
+
+    expect(resultWithUnmetCondition['component-2']).toBe(undefined) // Condition not met, should return undefined
   })
 })
