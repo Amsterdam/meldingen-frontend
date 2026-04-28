@@ -30,6 +30,10 @@ const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) =>
 })
 
 export type Props = {
+  assetTypeIconConfig: {
+    iconEntry?: string
+    iconFolder?: string
+  }
   coordinates?: Coordinates
   maxAssets: number
   selectedAssets: Feature[]
@@ -47,6 +51,7 @@ export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 const initialState: { errorMessage?: string } = {}
 
 export const SelectLocation = ({
+  assetTypeIconConfig,
   coordinates: coordinatesFromServer,
   maxAssets,
   selectedAssets: selectedAssetsFromServer,
@@ -100,6 +105,7 @@ export const SelectLocation = ({
         )}
         <AssetList
           assetList={assetList}
+          assetTypeIconConfig={assetTypeIconConfig}
           maxAssets={maxAssets}
           selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
@@ -122,6 +128,7 @@ export const SelectLocation = ({
             selectedPoint={coordinates}
           />
           <MarkerSelectLayer
+            assetTypeIconConfig={assetTypeIconConfig}
             features={assetList}
             maxMarkers={maxAssets}
             onFeaturesChange={setAssetList}

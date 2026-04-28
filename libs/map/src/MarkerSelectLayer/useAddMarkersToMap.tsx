@@ -5,7 +5,7 @@ import { RefObject, useEffect } from 'react'
 import { Feature } from '@meldingen/api-client'
 
 import { Coordinates } from '../types'
-import { getContainerIcon } from './utils/getContainerIcon'
+import { getAssetIcon } from './utils/getAssetIcon'
 
 export const createClusterIcon = (cluster: MarkerCluster) => {
   // Cluster markers should not be keyboard accessible
@@ -20,6 +20,10 @@ export const createClusterIcon = (cluster: MarkerCluster) => {
 }
 
 export type Props = {
+  assetTypeIconConfig: {
+    iconEntry?: string
+    iconFolder?: string
+  }
   features: Feature[]
   map?: Map
   markerLayerRef: RefObject<Layer | null>
@@ -31,6 +35,7 @@ export type Props = {
 }
 
 export const useAddMarkersToMap = ({
+  assetTypeIconConfig,
   features,
   map,
   markerLayerRef,
@@ -59,7 +64,7 @@ export const useAddMarkersToMap = ({
       const isSelected = selectedMarkers.some((a) => a.id === feature.id)
 
       const marker = new Marker(latlng, {
-        icon: getContainerIcon(feature, isSelected),
+        icon: getAssetIcon(feature, isSelected, assetTypeIconConfig),
         keyboard: false,
       })
 
@@ -87,6 +92,20 @@ export const useAddMarkersToMap = ({
         }
       })
 
+      // Load fallback whe icon fails to load (e.g. due to missing icon for a specific asset type)
+      marker.on('add', () => {
+        const el = marker.getElement() as HTMLImageElement | null
+        if (!el) return
+
+        el.addEventListener(
+          'error',
+          () => {
+            el.src = '/asset-fallback.svg'
+          },
+          { once: true },
+        )
+      })
+
       markerClusterGroup.addLayer(marker)
     })
 
@@ -97,5 +116,14 @@ export const useAddMarkersToMap = ({
       markerClusterGroup.clearLayers()
       markerLayerRef.current = null
     }
-  }, [map, features, selectedMarkers])
+  }, [
+    map,
+    features,
+    selectedMarkers,
+    assetTypeIconConfig,
+    maxMarkers,
+    onMaxMarkersReached,
+    onSelectedMarkersChange,
+    updateSelectedPoint,
+  ])
 }

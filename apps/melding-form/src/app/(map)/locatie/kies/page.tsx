@@ -114,6 +114,10 @@ export default async () => {
 
   return (
     <SelectLocation
+      assetTypeIconConfig={{
+        iconEntry: data?.classification?.asset_type?.arguments?.icon_entry as string | undefined,
+        iconFolder: data?.classification?.asset_type?.arguments?.icon_folder as string | undefined,
+      }}
       coordinates={coordinates}
       maxAssets={data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK}
       selectedAssets={selectedAssets}

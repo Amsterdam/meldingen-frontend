@@ -9,6 +9,10 @@ import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 const defaultProps: Props = {
   assetList: containerAssets,
+  assetTypeIconConfig: {
+    iconEntry: 'fractie_omschrijving',
+    iconFolder: 'container',
+  },
   maxAssets: 5,
   selectedAssets: [],
   setCoordinates: vi.fn(),
@@ -28,6 +32,12 @@ describe('AssetList', () => {
 
     expect(screen.getByText('Container-001')).toBeInTheDocument()
     expect(screen.getByText('Container-002')).toBeInTheDocument()
+
+    const restIcon = screen.getByAltText('Restafval icon') as HTMLImageElement
+    const glasIcon = screen.getByAltText('Glas icon') as HTMLImageElement
+
+    expect(restIcon.getAttribute('src')).toContain('/container/restafval.svg')
+    expect(glasIcon.getAttribute('src')).toContain('/container/glas.svg')
   })
 
   it('renders correct number of list items', () => {
@@ -74,7 +84,14 @@ describe('AssetList', () => {
   it('sets notification when max selected assets is reached', async () => {
     const maxAssets = Array(5)
       .fill(containerAssets[0])
-      .map((asset, index) => ({ ...asset, id: (index + 1).toString() }))
+      .map((asset, index) => ({
+        ...asset,
+        id: index,
+        properties: {
+          ...asset.properties,
+          id_nummer: index,
+        },
+      }))
 
     const user = userEvent.setup()
     render(<AssetList {...defaultProps} selectedAssets={maxAssets} />)

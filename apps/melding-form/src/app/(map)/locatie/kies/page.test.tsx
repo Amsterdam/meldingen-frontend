@@ -247,6 +247,23 @@ describe('Page', () => {
     )
   })
 
+  it('passes assetTypeIconConfig when it exists', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)))
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        assetTypeIconConfig: {
+          iconEntry: 'fractie_omschrijving',
+          iconFolder: 'container',
+        },
+      }),
+      undefined,
+    )
+  })
+
   it('falls back to maxAssets=3 when the API does not provide it', async () => {
     const meldingWithAssetType = {
       ...melding,
