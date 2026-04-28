@@ -99,16 +99,12 @@ export const handlers = [
     if (params.staticFormId === '3') {
       return HttpResponse.json({ components: contact })
     }
-    return undefined
   }),
 
   // Asset type
-  http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, ({ params }) => {
-    if (params.name === 'container') {
-      return HttpResponse.json({
-        features: containerAssets,
-      })
-    }
-    return HttpResponse.json({ message: 'Something went wrong' }, { status: 500 })
-  }),
+  http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () =>
+    HttpResponse.json({
+      features: containerAssets,
+    }),
+  ),
 ]
