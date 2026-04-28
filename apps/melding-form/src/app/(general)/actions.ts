@@ -58,7 +58,7 @@ export const postPrimaryForm = async (
 
   const { classification, id, token } = data
   const assetTypeId = classification?.asset_type?.id
-  const typeNames = classification?.asset_type?.arguments.type_names
+  const typeNames = classification?.asset_type?.arguments?.type_names
 
   // Set session variables in cookies
   const cookieStore = await cookies()
