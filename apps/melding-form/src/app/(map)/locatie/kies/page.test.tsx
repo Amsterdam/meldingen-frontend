@@ -26,7 +26,6 @@ describe('generateMetadata', () => {
 describe('Page', () => {
   beforeEach(() => {
     mockCookies({
-      [COOKIES.ASSET_TYPE_ID]: '1',
       [COOKIES.ID]: '123',
       [COOKIES.TOKEN]: 'test-token',
       [COOKIES.TYPE_NAMES]: 'container',
@@ -82,12 +81,7 @@ describe('Page', () => {
     )
   })
 
-  it('passes filter, typeNames and srsName and assetTypeId when they exist', async () => {
-    mockCookies({
-      [COOKIES.ASSET_TYPE_ID]: String(melding.classification?.asset_type?.id),
-      [COOKIES.ID]: '123',
-      [COOKIES.TOKEN]: 'test-token',
-    })
+  it('passes filter, typeNames and srsName when they exist', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)))
 
     const PageComponent = await Page()
@@ -129,12 +123,14 @@ describe('Page', () => {
   })
 
   it('returns empty selectedAssets when assetTypeId cookie is not set', async () => {
-    mockCookies({
-      [COOKIES.ASSET_TYPE_ID]: undefined,
-      [COOKIES.ID]: '123',
-      [COOKIES.TOKEN]: 'test-token',
-      [COOKIES.TYPE_NAMES]: 'container',
-    })
+    const meldingwithoutAssetTypeId = {
+      ...melding,
+      classification: {
+        ...melding.classification,
+        asset_type: null,
+      },
+    }
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(meldingwithoutAssetTypeId)))
 
     const PageComponent = await Page()
     render(PageComponent)
@@ -149,7 +145,6 @@ describe('Page', () => {
 
   it('returns empty selectedAssets when typeNames cookie is not set', async () => {
     mockCookies({
-      [COOKIES.ASSET_TYPE_ID]: '1',
       [COOKIES.ID]: '123',
       [COOKIES.TOKEN]: 'test-token',
       [COOKIES.TYPE_NAMES]: undefined,

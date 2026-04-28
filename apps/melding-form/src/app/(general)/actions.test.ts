@@ -79,11 +79,10 @@ describe('postPrimaryForm', () => {
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: 86400 })
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', { maxAge: 86400 })
     expect(mockCookies.delete).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
-    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.ASSET_TYPE_ID, '5', { maxAge: 86400 })
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TYPE_NAMES, 'some-type', { maxAge: 86400 })
   })
 
-  it('does not set assetTypeId and typeNames cookies when absent from response', async () => {
+  it('does not set typeNames cookies when absent from response', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING, () =>
         HttpResponse.json({
@@ -101,7 +100,6 @@ describe('postPrimaryForm', () => {
 
     await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
-    expect(mockCookies.set).not.toHaveBeenCalledWith(COOKIES.ASSET_TYPE_ID, expect.anything(), expect.anything())
     expect(mockCookies.set).not.toHaveBeenCalledWith(COOKIES.TYPE_NAMES, expect.anything(), expect.anything())
   })
 

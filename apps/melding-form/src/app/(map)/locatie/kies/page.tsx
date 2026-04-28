@@ -28,7 +28,7 @@ const getFilter = (id: string) => `
 
 const MAX_ASSETS_FALLBACK = 3
 
-const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeId?: string, typeNames?: string) => {
+const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeId?: number, typeNames?: string) => {
   // Get existing assets for this melding
   const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
     path: {
@@ -68,7 +68,7 @@ const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeI
       if (!assetTypeId || !typeNames) return null
 
       const { data, error } = await getAssetTypeByAssetTypeIdWfs({
-        path: { asset_type_id: Number(assetTypeId) },
+        path: { asset_type_id: assetTypeId },
         query: { filter, type_names: typeNames },
       })
 
@@ -92,7 +92,6 @@ export default async () => {
   const meldingId = cookieStore.get(COOKIES.ID)!.value
   const token = cookieStore.get(COOKIES.TOKEN)!.value
   const typeNames = cookieStore.get(COOKIES.TYPE_NAMES)?.value
-  const assetTypeId = cookieStore.get(COOKIES.ASSET_TYPE_ID)?.value
 
   const { data, error } = await getMeldingByMeldingIdMelder({
     path: {
@@ -107,6 +106,7 @@ export default async () => {
     console.error(error)
   }
 
+  const assetTypeId = data?.classification?.asset_type?.id
   const selectedAssets = await getAssetsFromMelding(meldingId, token, assetTypeId, typeNames)
 
   const coordinates = data?.geo_location?.geometry?.coordinates && {
@@ -120,7 +120,7 @@ export default async () => {
       maxAssets={data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK}
       selectedAssets={selectedAssets}
       wfsQuery={{
-        assetTypeId: assetTypeId ? Number(assetTypeId) : undefined,
+        assetTypeId: assetTypeId,
         classification: data?.classification?.name,
         filter: data?.classification?.asset_type?.arguments?.filter as string | undefined,
         srsName: data?.classification?.asset_type?.arguments?.srs_name as string | undefined,
