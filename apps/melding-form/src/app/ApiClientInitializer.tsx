@@ -8,7 +8,7 @@ export const ApiClientInitializer = () => {
   }
 
   // Configure the API client for client requests.
-  // Server requests are configured in instrumentation.ts.
+  // Server requests are configured in layout.tsx.
   client.setConfig({
     baseUrl: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
   })
