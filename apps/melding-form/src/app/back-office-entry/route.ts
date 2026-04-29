@@ -21,9 +21,12 @@ export const GET = async (request: NextRequest) => {
   const id = searchParams.get('id')
   const token = searchParams.get('token')
 
+  // request.nextUrl.origin returns the internal server address, not the public URL, so we use an env var instead.
+  const origin = process.env.NEXT_PUBLIC_MELDING_FORM_BASE_URL ?? request.nextUrl.origin
+
   // If id or token is missing, redirect to the home page
   if (!id || !token) {
-    return NextResponse.redirect(new URL('/', request.url))
+    return NextResponse.redirect(new URL('/', origin))
   }
 
   // Set session variables in cookies
@@ -43,8 +46,8 @@ export const GET = async (request: NextRequest) => {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
     console.error(result.error)
-    return NextResponse.redirect(new URL('/', request.url))
+    return NextResponse.redirect(new URL('/', origin))
   }
 
-  return NextResponse.redirect(new URL(result.url, request.url))
+  return NextResponse.redirect(new URL(result.url, origin))
 }
