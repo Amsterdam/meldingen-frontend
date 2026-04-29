@@ -63,7 +63,7 @@ describe('GET', () => {
 
     const response = await GET(createRequest(requiredParams))
 
-    expect(response.headers.get('location')).toContain(new URL('http://not-url-from-env-var.com').host)
+    expect(response.headers.get('location')).toContain('not-url-from-env-var.com')
   })
 
   it('redirects to Home and logs error when an API error occurs', async () => {
