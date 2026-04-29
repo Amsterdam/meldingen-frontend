@@ -3,8 +3,17 @@ import type { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
+import { client } from '@meldingen/api-client'
+
 import { COOKIES } from '../../constants'
 import { resolveClassificationRedirect } from '../utils'
+
+// Configure the API client here, because a route handler does not pass layout.tsx.
+// All server requests that pass through layout.tsx are configured in layout.tsx itself.
+// Client requests are configured in ApiClientInitializer.
+client.setConfig({
+  baseUrl: process.env.NEXT_INTERNAL_BACKEND_BASE_URL,
+})
 
 export const GET = async (request: NextRequest) => {
   const { searchParams } = request.nextUrl

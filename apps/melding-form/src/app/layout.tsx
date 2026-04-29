@@ -16,7 +16,8 @@ export const generateMetadata = async () => {
   }
 }
 
-// Configure the API client for server requests.
+// Configure the API client for server requests that pass layout.tsx.
+// Server requests that pass through route.ts are configured in the route handlers themselves.
 // Client requests are configured in ApiClientInitializer.
 client.setConfig({
   baseUrl: process.env.NEXT_INTERNAL_BACKEND_BASE_URL,
