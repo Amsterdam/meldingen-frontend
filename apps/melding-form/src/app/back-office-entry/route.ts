@@ -21,9 +21,15 @@ export const GET = async (request: NextRequest) => {
   const id = searchParams.get('id')
   const token = searchParams.get('token')
 
+  // Determine public address using x-forwarded headers, or fallback to the request's URL if headers are not present
+  // This is necessary because the Melding Form is behind a reverse proxy.
+  const host = request.headers.get('x-forwarded-host') ?? request.nextUrl.host
+  const proto = request.headers.get('x-forwarded-proto') ?? request.nextUrl.protocol.replace(':', '')
+  const origin = `${proto}://${host}`
+
   // If id or token is missing, redirect to the home page
   if (!id || !token) {
-    return NextResponse.redirect(new URL('/', request.url))
+    return NextResponse.redirect(new URL('/', origin))
   }
 
   // Set session variables in cookies
@@ -43,8 +49,8 @@ export const GET = async (request: NextRequest) => {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
     console.error(result.error)
-    return NextResponse.redirect(new URL('/', request.url))
+    return NextResponse.redirect(new URL('/', origin))
   }
 
-  return NextResponse.redirect(new URL(result.url, request.url))
+  return NextResponse.redirect(new URL(result.url, origin))
 }
