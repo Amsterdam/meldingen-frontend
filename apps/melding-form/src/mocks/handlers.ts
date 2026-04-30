@@ -1,3 +1,6 @@
+import { http, HttpResponse } from 'msw'
+
+import { ENDPOINTS } from './endpoints'
 import {
   additionalQuestions,
   contact,
@@ -9,9 +12,6 @@ import {
   PDOKReverse,
   PDOKSuggest,
 } from '~/mocks/data'
-import { http, HttpResponse } from 'msw'
-
-import { ENDPOINTS } from './endpoints'
 
 export const handlers = [
   // Form

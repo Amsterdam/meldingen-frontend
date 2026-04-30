@@ -1,5 +1,3 @@
-import { COOKIES } from '~/constants'
-import { isTypeTextAreaComponent } from '~/typeguards'
 import { cookies } from 'next/headers'
 
 import {
@@ -10,6 +8,8 @@ import {
 } from '@meldingen/api-client'
 
 import { Attachments } from './Attachments'
+import { COOKIES } from '~/constants'
+import { isTypeTextAreaComponent } from '~/typeguards'
 
 export type ExistingFileType = {
   blob?: Blob

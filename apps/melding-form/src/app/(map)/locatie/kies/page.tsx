@@ -1,4 +1,3 @@
-import { COOKIES } from '~/constants'
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 
@@ -10,6 +9,7 @@ import {
 } from '@meldingen/api-client'
 
 import { SelectLocation } from './SelectLocation'
+import { COOKIES } from '~/constants'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('select-location')

@@ -1,5 +1,8 @@
 'use server'
 
+import { redirect } from 'next/navigation'
+
+import { STATES, STATES_LIST } from './constants'
 import {
   putMeldingByMeldingIdCancel,
   putMeldingByMeldingIdComplete,
@@ -10,9 +13,6 @@ import {
   putMeldingByMeldingIdRequestReopen,
   putMeldingByMeldingIdSubmit,
 } from '~/apiClientProxy'
-import { redirect } from 'next/navigation'
-
-import { STATES, STATES_LIST } from './constants'
 
 type State = (typeof STATES)[keyof typeof STATES]
 

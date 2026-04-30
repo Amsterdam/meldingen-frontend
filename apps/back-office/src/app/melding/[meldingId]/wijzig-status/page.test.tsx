@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react'
-import { ENDPOINTS } from '~/mocks/endpoints'
-import { server } from '~/mocks/node'
 import { http, HttpResponse } from 'msw'
 import { vi } from 'vitest'
 
 import Page from './page'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 vi.mock('./ChangeState', () => ({
   ChangeState: vi.fn(() => <div>ChangeState Component</div>),

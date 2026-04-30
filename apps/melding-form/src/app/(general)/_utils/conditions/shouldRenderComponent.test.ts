@@ -1,6 +1,5 @@
-import { textAreaComponent } from '~/mocks/data'
-
 import { shouldRenderComponent } from './shouldRenderComponent'
+import { textAreaComponent } from '~/mocks/data'
 
 describe('shouldRenderComponent', () => {
   it('returns true when there are no usable conditions', () => {

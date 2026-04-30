@@ -1,7 +1,3 @@
-import { TOP_ANCHOR_ID } from '~/constants'
-import { additionalQuestions, melding } from '~/mocks/data'
-import { ENDPOINTS } from '~/mocks/endpoints'
-import { server } from '~/mocks/node'
 import { http, HttpResponse } from 'msw'
 
 import type { MeldingOutput } from '@meldingen/api-client'
@@ -14,6 +10,10 @@ import {
   getMeldingData,
   getPrimaryFormSummary,
 } from './utils'
+import { TOP_ANCHOR_ID } from '~/constants'
+import { additionalQuestions, melding } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 const mockMeldingId = '88'
 const mockToken = 'test-token'

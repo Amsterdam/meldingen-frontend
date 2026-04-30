@@ -1,12 +1,12 @@
 import type { Mock } from 'vitest'
 
 import { render, screen } from '@testing-library/react'
-import { checkboxComponent, textAreaComponent } from '~/mocks/data'
 import { useActionState } from 'react'
 
 import type { Props } from './AdditionalQuestions'
 
 import { AdditionalQuestions } from './AdditionalQuestions'
+import { checkboxComponent, textAreaComponent } from '~/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()

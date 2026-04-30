@@ -1,4 +1,3 @@
-import { MeldingOutput } from '~/apiClientProxy'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import { Fragment } from 'react'
@@ -8,6 +7,7 @@ import { DescriptionList, Grid, Heading, Paragraph } from '@meldingen/ui'
 import { AmsNextLink } from '../../_components/AmsNextLink'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { BackLink } from './_components/BackLink'
+import { MeldingOutput } from '~/apiClientProxy'
 
 import styles from './Detail.module.css'
 

@@ -1,12 +1,12 @@
+import { http, HttpResponse } from 'msw'
+import { redirect } from 'next/navigation'
+
+import { postCoordinatesAndAssets } from './actions'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 import { containerAssets } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 import { mockCookies } from '~/mocks/utils'
-import { http, HttpResponse } from 'msw'
-import { redirect } from 'next/navigation'
-
-import { postCoordinatesAndAssets } from './actions'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),

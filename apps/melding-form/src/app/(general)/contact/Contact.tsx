@@ -1,8 +1,6 @@
 'use client'
 
 import { ErrorMessage, Field, Heading, Label } from '@amsterdam/design-system-react'
-import { TOP_ANCHOR_ID } from '~/constants'
-import { FormState } from '~/types'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
@@ -17,6 +15,8 @@ import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { postContactForm } from './actions'
+import { TOP_ANCHOR_ID } from '~/constants'
+import { FormState } from '~/types'
 
 const initialState: FormState = {}
 

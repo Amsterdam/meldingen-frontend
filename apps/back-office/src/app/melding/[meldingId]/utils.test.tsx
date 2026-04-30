@@ -1,7 +1,3 @@
-import { additionalTimeQuestion, additionalValueLabelQuestion, melding } from '~/mocks/data'
-import { additionalQuestions } from '~/mocks/data'
-import { ENDPOINTS } from '~/mocks/endpoints'
-import { server } from '~/mocks/node'
 import { http, HttpResponse } from 'msw'
 
 import { getFullNLAddress } from '../../utils'
@@ -12,6 +8,10 @@ import {
   getLocationData,
   getMeldingData,
 } from './utils'
+import { additionalTimeQuestion, additionalValueLabelQuestion, melding } from '~/mocks/data'
+import { additionalQuestions } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 const mockMeldingId = 88
 

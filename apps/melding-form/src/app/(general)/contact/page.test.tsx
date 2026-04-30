@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react'
-import { melding } from '~/mocks/data'
-import { ENDPOINTS } from '~/mocks/endpoints'
-import { server } from '~/mocks/node'
-import { mockIdAndTokenCookies } from '~/mocks/utils'
 import { http, HttpResponse } from 'msw'
 
 import { Contact } from './Contact'
 import Page from './page'
+import { melding } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
+import { mockIdAndTokenCookies } from '~/mocks/utils'
 
 vi.mock('./Contact', () => ({
   Contact: vi.fn(() => <div>Contact Component</div>),

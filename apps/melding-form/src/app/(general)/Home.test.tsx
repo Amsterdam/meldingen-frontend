@@ -1,10 +1,10 @@
 import type { Mock } from 'vitest'
 
 import { render, screen } from '@testing-library/react'
-import { textAreaComponent } from '~/mocks/data'
 import { useActionState } from 'react'
 
 import { Home } from './Home'
+import { textAreaComponent } from '~/mocks/data'
 
 const mockQuestionText = /What is it about?/ // This is a regex to account for the label text being dynamic
 

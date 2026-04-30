@@ -1,12 +1,12 @@
 import { render } from '@testing-library/react'
-import { additionalQuestions, melding } from '~/mocks/data'
-import { ENDPOINTS } from '~/mocks/endpoints'
-import { server } from '~/mocks/node'
 import { http, HttpResponse } from 'msw'
 
 import { getFullNLAddress } from '../../utils'
 import { Detail } from './Detail'
 import Page, { generateMetadata } from './page'
+import { additionalQuestions, melding } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 vi.mock('./Detail', () => ({
   Detail: vi.fn(() => <div>Detail Component</div>),

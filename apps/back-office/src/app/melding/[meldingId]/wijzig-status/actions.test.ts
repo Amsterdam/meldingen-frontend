@@ -1,10 +1,10 @@
-import { ENDPOINTS } from '~/mocks/endpoints'
-import { server } from '~/mocks/node'
 import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
 import { postChangeStateForm } from './actions'
 import { STATES_LIST } from './constants'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 const defaultArgs = { currentState: '', meldingId: 123 }
 

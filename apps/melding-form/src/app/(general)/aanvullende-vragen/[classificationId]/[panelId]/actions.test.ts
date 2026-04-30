@@ -1,9 +1,5 @@
 import type { Mock } from 'vitest'
 
-import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
-import { ENDPOINTS } from '~/mocks/endpoints'
-import { server } from '~/mocks/node'
-import { mockIdAndTokenCookies } from '~/mocks/utils'
 import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -11,6 +7,10 @@ import { redirect } from 'next/navigation'
 import type { ArgsType } from './actions'
 
 import { postForm } from './actions'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
+import { mockIdAndTokenCookies } from '~/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 

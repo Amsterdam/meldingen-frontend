@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 
-import { TOP_ANCHOR_ID } from '~/constants'
-
 import { Page } from '@meldingen/ui'
+
+import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './layout.module.css'
 

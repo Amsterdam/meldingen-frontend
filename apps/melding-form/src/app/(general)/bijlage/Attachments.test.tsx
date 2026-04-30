@@ -1,8 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { textAreaComponent } from '~/mocks/data'
-import { ENDPOINTS } from '~/mocks/endpoints'
-import { server } from '~/mocks/node'
 import { http, HttpResponse } from 'msw'
 import { useActionState } from 'react'
 import { Mock } from 'vitest'
@@ -14,6 +11,9 @@ import { Attachments } from './Attachments'
 import { MAX_UPLOAD_ATTEMPTS } from './Attachments'
 import { ExistingFileType } from './page'
 import { startUpload } from './utils'
+import { textAreaComponent } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 const defaultProps: Props = {
   files: [],

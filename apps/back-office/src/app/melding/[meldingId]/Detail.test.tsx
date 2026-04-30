@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
-import { melding } from '~/mocks/data'
 
 import { getFullNLAddress } from '../../utils'
 import { Detail } from './Detail'
+import { melding } from '~/mocks/data'
 
 vi.mock('./_components/AttachmentImage', () => ({
   AttachmentImage: vi.fn(() => <div>AttachmentsImage</div>),

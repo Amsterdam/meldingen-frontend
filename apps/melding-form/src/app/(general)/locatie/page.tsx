@@ -1,4 +1,3 @@
-import { COOKIES } from '~/constants'
 import { cookies } from 'next/headers'
 
 import {
@@ -8,6 +7,7 @@ import {
 } from '@meldingen/api-client'
 
 import { Location } from './Location'
+import { COOKIES } from '~/constants'
 
 const getFilter = (id: string) => `
   <Filter>

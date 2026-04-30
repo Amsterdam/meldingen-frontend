@@ -1,9 +1,10 @@
-import { TOP_ANCHOR_ID } from '~/constants'
 import { getTranslations } from 'next-intl/server'
 import NextLink from 'next/link'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Heading, StandaloneLink } from '@meldingen/ui'
+
+import { TOP_ANCHOR_ID } from '~/constants'
 
 // The "description" translation also accepts undefined values for conditional rendering
 type TWithUndefined = (key: string, values?: Record<string, string | number | Date | undefined>) => string

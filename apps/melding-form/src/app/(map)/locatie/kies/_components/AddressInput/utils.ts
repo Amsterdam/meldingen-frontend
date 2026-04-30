@@ -1,7 +1,7 @@
-import { Coordinates } from '~/types'
 import { useTranslations } from 'next-intl'
 
 import { PDOKItem } from './types'
+import { Coordinates } from '~/types'
 
 const pdokQueryParams =
   'fq=bron:BAG&fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=id,weergavenaam,centroide_ll&rows=7'

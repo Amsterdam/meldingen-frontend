@@ -1,7 +1,5 @@
 'use server'
 
-import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
-import { isApiErrorArray } from '~/handleApiError'
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -9,6 +7,8 @@ import { redirect } from 'next/navigation'
 import { patchMeldingByMeldingIdContact, putMeldingByMeldingIdAddContactInfo } from '@meldingen/api-client'
 
 import { hasValidationErrors } from '../_utils/validation/hasValidationErrors'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { isApiErrorArray } from '~/handleApiError'
 
 export const postContactForm = async (_: unknown, formData: FormData) => {
   const t = await getTranslations('contact.errors')

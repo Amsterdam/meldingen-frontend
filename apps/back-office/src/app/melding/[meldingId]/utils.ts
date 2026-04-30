@@ -1,3 +1,4 @@
+import { getFullNLAddress } from '../../utils'
 import {
   getAttachmentById,
   getMeldingByMeldingIdAnswers,
@@ -7,8 +8,6 @@ import {
   ValueLabelObject,
 } from '~/apiClientProxy'
 import { handleApiError } from '~/handleApiError'
-
-import { getFullNLAddress } from '../../utils'
 
 const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
   switch (answer.type) {

@@ -1,13 +1,13 @@
 import { render, screen } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
+
+import Page from './page'
+import { Summary } from './Summary'
 import { TOP_ANCHOR_ID } from '~/constants'
 import { additionalQuestions, melding, textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 import { mockIdAndTokenCookies } from '~/mocks/utils'
-import { http, HttpResponse } from 'msw'
-
-import Page from './page'
-import { Summary } from './Summary'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 

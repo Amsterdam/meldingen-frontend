@@ -1,8 +1,6 @@
 'use client'
 
 import { Heading, Paragraph } from '@amsterdam/design-system-react'
-import { TOP_ANCHOR_ID } from '~/constants'
-import { FormState } from '~/types'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import NextLink from 'next/link'
@@ -14,6 +12,8 @@ import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { AttachmentImage } from './_components/AttachmentImage'
+import { TOP_ANCHOR_ID } from '~/constants'
+import { FormState } from '~/types'
 
 type GenericSummaryData = {
   description: string

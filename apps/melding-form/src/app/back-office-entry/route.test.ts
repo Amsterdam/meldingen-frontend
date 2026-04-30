@@ -1,14 +1,14 @@
 import type { Mock } from 'vitest'
 
-import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
-import { ENDPOINTS } from '~/mocks/endpoints'
-import { server } from '~/mocks/node'
 import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
 import { vi } from 'vitest'
 
 import { GET } from './route'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),

@@ -1,4 +1,3 @@
-import { getMeldingByMeldingId } from '~/apiClientProxy'
 import { getTranslations } from 'next-intl/server'
 
 import { Detail } from './Detail'
@@ -9,6 +8,7 @@ import {
   getLocationData,
   getMeldingData,
 } from './utils'
+import { getMeldingByMeldingId } from '~/apiClientProxy'
 
 export const generateMetadata = async ({ searchParams }: { searchParams: Promise<{ id: string }> }) => {
   const { id } = await searchParams

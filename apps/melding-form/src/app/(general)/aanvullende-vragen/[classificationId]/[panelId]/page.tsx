@@ -1,4 +1,3 @@
-import { COOKIES } from '~/constants'
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -21,6 +20,7 @@ import { AFTER_ADDITIONAL_QUESTIONS_PATH, getPreviousPanelPath } from './_utils/
 import { setDateComponentOptions } from './_utils/setDateComponentOptions'
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
+import { COOKIES } from '~/constants'
 
 export const dynamic = 'force-dynamic'
 
