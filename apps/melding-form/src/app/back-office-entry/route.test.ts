@@ -17,7 +17,7 @@ vi.mock('next/headers', () => ({
 const BASE_URL = 'http://localhost:3000'
 
 const createRequest = (params: Record<string, string>) => {
-  const url = new URL('/back-office-entry', BASE_URL)
+  const url = new URL('/back-office-entry', 'http://not-url-from-env-var.com')
   Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value))
   return new NextRequest(url)
 }
@@ -32,6 +32,11 @@ describe('GET', () => {
 
   beforeEach(() => {
     ;(cookies as Mock).mockReturnValue(mockCookieStore)
+    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', BASE_URL)
+  })
+
+  afterEach(() => {
+    vi.unstubAllEnvs()
   })
 
   it('redirects to Home when id or token is missing', async () => {
@@ -51,6 +56,14 @@ describe('GET', () => {
     expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: oneDay })
     expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', { maxAge: oneDay })
     expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.SOURCE, 'back-office', { maxAge: oneDay })
+  })
+
+  it('falls back to request host as origin when NEXT_PUBLIC_MELDING_FORM_BASE_URL is not set', async () => {
+    vi.unstubAllEnvs()
+
+    const response = await GET(createRequest(requiredParams))
+
+    expect(response.headers.get('location')).toContain('not-url-from-env-var.com')
   })
 
   it('redirects to Home and logs error when an API error occurs', async () => {
