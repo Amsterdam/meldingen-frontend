@@ -4,7 +4,7 @@ trigger:
       - '*'
   branches:
     include:
-      - '*'
+      - main
 
 pr: none
 
@@ -31,7 +31,7 @@ parameters:
 
 steps:
   - bash: |
-      az pipelines run --project ${{parameters.project}} --id ${{parameters.pipelineId}} --branch ${{parameters.buildPipelineBranch}} --org ${{parameters.organization}} --parameters applicationBranch=$(Build.SourceBranch) triggeredByScript=true
+      az pipelines run --project ${{parameters.project}} --id ${{parameters.pipelineId}} --branch ${{parameters.buildPipelineBranch}} --org ${{parameters.organization}} --parameters applicationBranch=$(Build.SourceBranch)
     displayName: 'Trigger Meldingen Frontend application pipeline for branch $(Build.SourceBranch)'
     env:
       AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
