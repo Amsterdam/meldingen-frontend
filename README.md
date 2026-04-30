@@ -2,8 +2,6 @@
 
 Hi and welcome to the Meldingen front-end repository!
 
-This monorepo houses three separate front-ends:
-
 - Melding Form: where the general public can create and view nuisance reports.
 - Back Office: where professionals can handle these reports.
 - Admin: where admins can manage the Melding Form and Back Office apps.
