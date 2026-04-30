@@ -1,12 +1,11 @@
 'use server'
 
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdSubmitLocation } from '@meldingen/api-client'
-
-import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 export const postLocationForm = async () => {
   const cookieStore = await cookies()

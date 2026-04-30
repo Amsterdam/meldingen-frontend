@@ -1,12 +1,15 @@
 'use client'
 
 import { ErrorMessage, Field, Heading, Label } from '@amsterdam/design-system-react'
+import { TOP_ANCHOR_ID } from '~/constants'
+import { FormState } from '~/types'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
 
 import type { StaticFormTextAreaComponent } from '@meldingen/form-renderer'
 
+import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
 
@@ -14,9 +17,6 @@ import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { postContactForm } from './actions'
-import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
-import { FormState } from 'apps/melding-form/src/types'
-import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
 
 const initialState: FormState = {}
 

@@ -1,3 +1,5 @@
+import type { Coordinates } from '~/types'
+
 import { Checkbox } from '@amsterdam/design-system-react'
 import Image from 'next/image'
 import { Dispatch, SetStateAction } from 'react'
@@ -5,7 +7,6 @@ import { Dispatch, SetStateAction } from 'react'
 import { Feature } from '@meldingen/api-client'
 
 import type { NotificationType } from '../../SelectLocation'
-import type { Coordinates } from 'apps/melding-form/src/types'
 
 import { getContainerAssetIconSVG } from './getContainerAssetIconSVG'
 

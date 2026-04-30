@@ -1,5 +1,7 @@
 'use client'
 
+import type { Coordinates } from '~/types'
+
 import { Button } from '@amsterdam/design-system-react'
 import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import { clsx } from 'clsx'
@@ -9,8 +11,6 @@ import Form from 'next/form'
 import { useActionState, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
-
-import type { Coordinates } from 'apps/melding-form/src/types'
 
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'

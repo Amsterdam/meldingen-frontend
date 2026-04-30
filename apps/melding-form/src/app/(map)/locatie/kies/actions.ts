@@ -1,15 +1,15 @@
 'use server'
 
+import type { Coordinates } from '~/types'
+
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
 
-import type { Coordinates } from 'apps/melding-form/src/types'
-
 import { convertWktPointToCoordinates } from './utils'
-import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 

@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react'
+import { textAreaComponent } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 import { http, HttpResponse } from 'msw'
 
 import { MeldingForm } from './MeldingForm'
 import Page, { generateMetadata } from './page'
-import { textAreaComponent } from 'apps/back-office/src/mocks/data'
-import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
-import { server } from 'apps/back-office/src/mocks/node'
 
 vi.mock('./MeldingForm', () => ({
   MeldingForm: vi.fn(() => <div>MeldingForm Component</div>),

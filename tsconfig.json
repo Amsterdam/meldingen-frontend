@@ -12,16 +12,7 @@
     "module": "esnext",
     "lib": ["esnext", "dom", "dom.iterable"],
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@meldingen/api-client": ["libs/api-client/src/index.ts"],
-      "@meldingen/form-builder": ["libs/form-builder/src/index.ts"],
-      "@meldingen/form-renderer": ["libs/form-renderer/src/index.ts"],
-      "@meldingen/map": ["libs/map/src/index.ts"],
-      "@meldingen/markdown-to-html": ["libs/markdown-to-html/src/index.ts"],
-      "@meldingen/ui": ["libs/ui/src/index.ts"]
-    }
+    "skipDefaultLibCheck": true
   },
   "exclude": ["node_modules", "tmp"]
 }

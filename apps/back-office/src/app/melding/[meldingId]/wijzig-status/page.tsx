@@ -1,5 +1,6 @@
+import { getMeldingByMeldingId, getMeldingByMeldingIdNextPossibleStates } from '~/apiClientProxy'
+
 import { ChangeState } from './ChangeState'
-import { getMeldingByMeldingId, getMeldingByMeldingIdNextPossibleStates } from 'apps/back-office/src/apiClientProxy'
 
 type Params = {
   params: Promise<{ meldingId: number }>

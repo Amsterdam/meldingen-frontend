@@ -1,12 +1,12 @@
+import { PDOKReverse, PDOKSuggest } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 import { http, HttpResponse } from 'msw'
 import { useTranslations } from 'next-intl'
 
 import type { AddressArgType, AddressListArgType } from './utils'
 
 import { fetchAddressList, fetchAndSetAddress } from './utils'
-import { PDOKReverse, PDOKSuggest } from 'apps/melding-form/src/mocks/data'
-import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-import { server } from 'apps/melding-form/src/mocks/node'
 
 const defaultAddressArgs: AddressArgType = {
   coordinates: { lat: 52.37239126063553, lng: 4.900905743712159 },

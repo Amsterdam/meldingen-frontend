@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react'
+import { melding, textAreaComponent } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
+import { mockIdAndTokenCookies } from '~/mocks/utils'
 import { http, HttpResponse } from 'msw'
 import { Mock } from 'vitest'
 
 import * as actionsModule from './actions'
 import { Home } from './Home'
 import Page from './page'
-import { melding, textAreaComponent } from 'apps/melding-form/src/mocks/data'
-import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-import { server } from 'apps/melding-form/src/mocks/node'
-import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn().mockReturnValue({

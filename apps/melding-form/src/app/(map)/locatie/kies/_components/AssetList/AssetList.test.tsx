@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { containerAssets } from '~/mocks/data'
 import { describe, expect, it } from 'vitest'
 
 import type { Props } from './AssetList'
 
 import { AssetList } from './AssetList'
-import { containerAssets } from 'apps/melding-form/src/mocks/data'
 
 const defaultProps: Props = {
   assetList: containerAssets,

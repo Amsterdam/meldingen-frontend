@@ -1,11 +1,10 @@
 'use server'
 
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdSubmitMelder } from '@meldingen/api-client'
-
-import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 export const postSummaryForm = async ({ created_at, public_id }: { created_at: string; public_id: string }) => {
   const cookieStore = await cookies()

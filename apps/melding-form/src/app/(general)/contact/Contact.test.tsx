@@ -1,10 +1,10 @@
 import type { Mock } from 'vitest'
 
 import { render, screen } from '@testing-library/react'
+import { contact as contactFormData } from '~/mocks/data'
 import { useActionState } from 'react'
 
 import { Contact } from './Contact'
-import { contact as contactFormData } from 'apps/melding-form/src/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()

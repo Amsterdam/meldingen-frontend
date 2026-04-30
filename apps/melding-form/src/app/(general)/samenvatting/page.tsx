@@ -1,3 +1,4 @@
+import { COOKIES } from '~/constants'
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 
@@ -11,7 +12,6 @@ import {
   getMeldingData,
   getPrimaryFormSummary,
 } from './utils'
-import { COOKIES } from 'apps/melding-form/src/constants'
 
 export default async () => {
   const cookieStore = await cookies()

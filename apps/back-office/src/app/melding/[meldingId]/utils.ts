@@ -1,4 +1,3 @@
-import { getFullNLAddress } from '../../utils'
 import {
   getAttachmentById,
   getMeldingByMeldingIdAnswers,
@@ -6,8 +5,10 @@ import {
   getMeldingByMeldingIdAttachments,
   MeldingOutput,
   ValueLabelObject,
-} from 'apps/back-office/src/apiClientProxy'
-import { handleApiError } from 'apps/back-office/src/handleApiError'
+} from '~/apiClientProxy'
+import { handleApiError } from '~/handleApiError'
+
+import { getFullNLAddress } from '../../utils'
 
 const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
   switch (answer.type) {

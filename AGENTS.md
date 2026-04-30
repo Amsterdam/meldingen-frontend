@@ -394,10 +394,10 @@ All form submissions in melding-form and back-office use Next.js Server Actions.
 // apps/melding-form/src/app/(general)/contact/actions.ts
 'use server'
 
+import { handleApiError, hasValidationErrors, isApiErrorArray } from '~/handleApiError'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { patchMeldingByMeldingIdContact } from '@meldingen/api-client'
-import { handleApiError, hasValidationErrors, isApiErrorArray } from 'apps/melding-form/src/handleApiError'
 
 export const postContactForm = async (_: FormState, formData: FormData): Promise<FormState> => {
   const cookieStore = await cookies()
@@ -526,7 +526,7 @@ describe('FileUpload', () => {
 
 ```typescript
 // apps/melding-form/src/app/(general)/contact/actions.test.ts
-import { server } from 'apps/melding-form/src/mocks/node'
+import { server } from '~/mocks/node'
 
 beforeEach(() => {
   mockIdAndTokenCookies()

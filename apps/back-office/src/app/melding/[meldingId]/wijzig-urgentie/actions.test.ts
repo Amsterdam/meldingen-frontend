@@ -1,11 +1,11 @@
+import * as apiClientProxy from '~/apiClientProxy'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
 import { URGENCY_VALUES } from '../../../../constants'
 import { postChangeUrgencyForm } from './actions'
-import * as apiClientProxy from 'apps/back-office/src/apiClientProxy'
-import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
-import { server } from 'apps/back-office/src/mocks/node'
 
 describe('postChangeUrgencyForm', () => {
   const defaultArgs = { currentUrgency: 0 as const, meldingId: 123 }

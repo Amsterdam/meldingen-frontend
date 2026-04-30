@@ -1,11 +1,10 @@
 'use server'
 
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAddAttachments } from '@meldingen/api-client'
-
-import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 export const submitAttachmentsForm = async () => {
   const cookieStore = await cookies()

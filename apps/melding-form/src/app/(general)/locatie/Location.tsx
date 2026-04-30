@@ -1,6 +1,9 @@
 'use client'
 
+import type { FormState } from '~/types'
+
 import { ErrorMessage, Field, Heading, Paragraph, StandaloneLink, UnorderedList } from '@amsterdam/design-system-react'
+import { TOP_ANCHOR_ID } from '~/constants'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import Image from 'next/image'
@@ -10,14 +13,11 @@ import { useActionState, useEffect, useRef } from 'react'
 import { Feature } from '@meldingen/api-client'
 import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
-import type { FormState } from 'apps/melding-form/src/types'
-
 import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
 import { postLocationForm } from './actions'
-import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 import styles from './Location.module.css'
 

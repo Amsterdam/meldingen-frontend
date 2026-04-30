@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "Converts Markdown strings to HTML elements",
   "license": "EUPL-1.2",
-  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "type": "module",
   "scripts": {
     "test": "vitest",
@@ -13,5 +15,6 @@
   "dependencies": {
     "@meldingen/ui": "workspace:*",
     "react-markdown": "10.1.0"
-  }
+  },
+  "private": true
 }

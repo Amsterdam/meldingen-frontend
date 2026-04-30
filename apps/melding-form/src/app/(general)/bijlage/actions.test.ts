@@ -1,14 +1,14 @@
 import type { Mock } from 'vitest'
 
+import { TOP_ANCHOR_ID } from '~/constants'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
+import { mockIdAndTokenCookies } from '~/mocks/utils'
 import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { submitAttachmentsForm } from './actions'
-import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
-import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-import { server } from 'apps/melding-form/src/mocks/node'
-import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),

@@ -1,13 +1,13 @@
 import { render, screen } from '@testing-library/react'
+import { COOKIES } from '~/constants'
+import { containerAssets, melding } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
+import { mockCookies, mockIdAndTokenCookies } from '~/mocks/utils'
 import { http, HttpResponse } from 'msw'
 
 import { Location } from './Location'
 import Page from './page'
-import { COOKIES } from 'apps/melding-form/src/constants'
-import { containerAssets, melding } from 'apps/melding-form/src/mocks/data'
-import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-import { server } from 'apps/melding-form/src/mocks/node'
-import { mockCookies, mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 

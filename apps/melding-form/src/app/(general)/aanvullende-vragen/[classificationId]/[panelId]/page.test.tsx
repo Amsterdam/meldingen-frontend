@@ -1,4 +1,9 @@
 import { render, screen } from '@testing-library/react'
+import { TOP_ANCHOR_ID } from '~/constants'
+import { additionalQuestions, selectAdditionalQuestion } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
+import { mockIdAndTokenCookies } from '~/mocks/utils'
 import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 import { Mock } from 'vitest'
@@ -6,11 +11,6 @@ import { Mock } from 'vitest'
 import * as actionsModule from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 import Page from './page'
-import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
-import { additionalQuestions, selectAdditionalQuestion } from 'apps/melding-form/src/mocks/data'
-import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-import { server } from 'apps/melding-form/src/mocks/node'
-import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 

@@ -1,9 +1,8 @@
 import { Heading, Paragraph } from '@amsterdam/design-system-react'
+import { BackLink } from '~/app/_components'
+import { TOP_ANCHOR_ID } from '~/constants'
 import { useTranslations } from 'next-intl'
 import { PropsWithChildren } from 'react'
-
-import { BackLink } from 'apps/melding-form/src/app/_components'
-import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
 
 import styles from './SideBarTop.module.css'
 

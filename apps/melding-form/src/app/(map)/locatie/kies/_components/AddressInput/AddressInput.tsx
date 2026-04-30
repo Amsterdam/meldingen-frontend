@@ -1,3 +1,5 @@
+import type { Coordinates } from '~/types'
+
 import { ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
 import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
 import {
@@ -14,8 +16,6 @@ import { ChangeEvent, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 import { ListBox, TextInput } from '@meldingen/ui'
-
-import type { Coordinates } from 'apps/melding-form/src/types'
 
 import { convertWktPointToCoordinates } from '../../utils'
 import { PDOKItem } from './types'

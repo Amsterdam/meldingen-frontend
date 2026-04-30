@@ -1,3 +1,4 @@
+import { getMelding } from '~/apiClientProxy'
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -5,7 +6,6 @@ import { redirect } from 'next/navigation'
 import { COOKIES, DEFAULT_PAGE_SIZE, SORT } from '../constants'
 import { handleApiError } from '../handleApiError'
 import { Overview } from './Overview'
-import { getMelding } from 'apps/back-office/src/apiClientProxy'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('overview')

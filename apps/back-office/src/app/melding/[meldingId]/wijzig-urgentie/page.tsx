@@ -1,5 +1,6 @@
+import { getMeldingByMeldingId } from '~/apiClientProxy'
+
 import { ChangeUrgency } from './ChangeUrgency'
-import { getMeldingByMeldingId } from 'apps/back-office/src/apiClientProxy'
 
 type Params = {
   params: Promise<{ meldingId: number }>
