@@ -3,7 +3,6 @@
   "compilerOptions": {
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": false,
     "jsx": "react-jsx",
     "paths": {
       "~/*": ["./src/*"]
