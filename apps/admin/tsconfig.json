@@ -5,12 +5,12 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": false,
     "jsx": "react-jsx",
-    "resolveJsonModule": true,
-    "types": ["vite/client", "vitest/globals", "node"],
-    "strict": true,
     "paths": {
       "~/*": ["./src/*"]
-    }
+    },
+    "resolveJsonModule": true,
+    "strict": true,
+    "types": ["vite/client", "vitest/globals", "node"]
   },
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx", "./vite.config.ts", "./vitest.setup.ts"]
 }
