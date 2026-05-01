@@ -32,10 +32,10 @@ export const getAssetIcon = (
 
   if (isSelected) {
     return LeafletIcon({
-      ...icon.options,
       className: styles.border,
       iconAnchor: [34, 34],
       iconSize: [60, 60],
+      iconUrl: icon.options.iconUrl,
     })
   }
 
