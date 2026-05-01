@@ -245,7 +245,7 @@ describe('Page', () => {
 
     // Call the bound action
     if (capturedAction) {
-      capturedAction({}, undefined, new FormData())
+      capturedAction({}, new FormData())
     }
 
     expect(actionsModule.postMeldingForm).toHaveBeenCalled()
@@ -278,7 +278,7 @@ describe('Page', () => {
 
     // Call the bound action
     if (capturedAction) {
-      capturedAction({}, undefined, new FormData())
+      capturedAction({}, new FormData())
     }
 
     expect(actionsModule.postMeldingForm).toHaveBeenCalled()
