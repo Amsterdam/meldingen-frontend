@@ -9,7 +9,6 @@
       "~/*": ["./src/*"]
     },
     "plugins": [{ "name": "next" }],
-    "strict": true,
     "target": "ES2017",
     "types": ["vitest/globals"]
   },
