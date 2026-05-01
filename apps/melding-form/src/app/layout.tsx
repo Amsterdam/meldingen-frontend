@@ -5,8 +5,9 @@ import { getLocale, getTranslations } from 'next-intl/server'
 
 import { client } from '@meldingen/api-client'
 
-import './global.css'
 import { ApiClientInitializer } from './ApiClientInitializer'
+
+import './global.css'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('metadata')

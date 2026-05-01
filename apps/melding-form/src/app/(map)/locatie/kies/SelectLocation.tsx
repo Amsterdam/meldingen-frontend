@@ -10,7 +10,7 @@ import { useActionState, useEffect, useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import type { Coordinates } from 'apps/melding-form/src/types'
+import type { Coordinates } from '~/types'
 
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'

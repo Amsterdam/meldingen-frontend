@@ -6,10 +6,10 @@ import { redirect } from 'next/navigation'
 
 import { patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
 
-import type { Coordinates } from 'apps/melding-form/src/types'
+import type { Coordinates } from '~/types'
 
 import { convertWktPointToCoordinates } from './utils'
-import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 

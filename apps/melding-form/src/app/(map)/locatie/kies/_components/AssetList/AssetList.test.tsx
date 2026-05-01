@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 import type { Props } from './AssetList'
 
 import { AssetList } from './AssetList'
-import { containerAssets } from 'apps/melding-form/src/mocks/data'
+import { containerAssets } from '~/mocks/data'
 
 const defaultProps: Props = {
   assetList: containerAssets,

@@ -2,9 +2,9 @@ import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 import { vi } from 'vitest'
 
-import { ENDPOINTS } from '../../mocks/endpoints'
-import { server } from '../../mocks/node'
 import { postMeldingForm } from './actions'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 vi.mock('next/navigation', () => ({
   redirect: vi.fn(),

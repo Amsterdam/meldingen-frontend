@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
 
 import { Location } from './Location'
-import { containerAssets } from 'apps/melding-form/src/mocks/data'
+import { containerAssets } from '~/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()

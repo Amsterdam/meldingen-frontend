@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
 
 import { Home } from './Home'
-import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
+import { textAreaComponent } from '~/mocks/data'
 
 const mockQuestionText = /What is it about?/ // This is a regex to account for the label text being dynamic
 

@@ -11,20 +11,20 @@ import { useActionState, useEffect, useRef, useState } from 'react'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
+import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Column, FileList, FileUpload, Heading, InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
 import type { ExistingFileType } from './page'
 import type { FileUpload as FileUploadType, PendingFileUpload } from './utils'
-import type { FormState } from 'apps/melding-form/src/types'
+import type { FormState } from '~/types'
 
 import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { submitAttachmentsForm } from './actions'
 import { startUpload } from './utils'
-import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
-import { getAriaDescribedBy } from 'libs/form-renderer/src/utils'
+import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './Attachments.module.css'
 

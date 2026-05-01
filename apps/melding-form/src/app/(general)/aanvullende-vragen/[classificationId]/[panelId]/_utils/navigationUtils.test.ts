@@ -8,7 +8,7 @@ import {
   refilterAnswersByKey,
   shouldLinkToPanel,
 } from './navigationUtils'
-import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
+import { TOP_ANCHOR_ID } from '~/constants'
 
 const mockPanel = (key: string, conditions: PanelComponentsConditions['componentsConditions'] = []) => ({
   componentsConditions: conditions,

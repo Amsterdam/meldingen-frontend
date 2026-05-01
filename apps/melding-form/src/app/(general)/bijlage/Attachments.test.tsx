@@ -11,9 +11,9 @@ import { Attachments } from './Attachments'
 import { MAX_UPLOAD_ATTEMPTS } from './Attachments'
 import { ExistingFileType } from './page'
 import { startUpload } from './utils'
-import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
-import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-import { server } from 'apps/melding-form/src/mocks/node'
+import { textAreaComponent } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 const defaultProps: Props = {
   files: [],

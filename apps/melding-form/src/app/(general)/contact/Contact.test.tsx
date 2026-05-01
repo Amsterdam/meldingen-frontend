@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
 
 import { Contact } from './Contact'
-import { contact as contactFormData } from 'apps/melding-form/src/mocks/data'
+import { contact as contactFormData } from '~/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()

@@ -9,11 +9,11 @@ import { FormRenderer, isSelectboxes, isTimeInput } from '@meldingen/form-render
 import { InvalidFormAlert } from '@meldingen/ui'
 
 import type { AnswersByKey } from '../../../_utils/conditions/getFilteredAnswersByKey'
-import type { FormState, ValidationError } from 'apps/melding-form/src/types'
+import type { FormState, ValidationError } from '~/types'
 
 import { SystemErrorAlert } from '../../../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../../../_utils/validation/getDocumentTitleOnError'
-import { BackLink } from 'apps/melding-form/src/app/_components'
+import { BackLink } from '~/app/_components'
 
 const getPrefilledFormComponents = (components: Component[], formData: FormData): Component[] =>
   components.map((component) => {

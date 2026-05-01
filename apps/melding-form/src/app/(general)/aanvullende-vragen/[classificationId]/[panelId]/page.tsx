@@ -20,7 +20,7 @@ import { AFTER_ADDITIONAL_QUESTIONS_PATH, getPreviousPanelPath } from './_utils/
 import { setDateComponentOptions } from './_utils/setDateComponentOptions'
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES } from '~/constants'
 
 export const dynamic = 'force-dynamic'
 

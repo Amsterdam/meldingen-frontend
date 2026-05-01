@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "A plugin to create forms.",
   "license": "EUPL-1.2",
-  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "type": "module",
   "scripts": {
     "test": "vitest",
@@ -15,5 +17,6 @@
   },
   "devDependencies": {
     "@formio/core": "2.6.3"
-  }
+  },
+  "private": true
 }

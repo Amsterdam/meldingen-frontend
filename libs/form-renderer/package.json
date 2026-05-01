@@ -2,18 +2,21 @@
   "name": "@meldingen/form-renderer",
   "version": "0.1.0",
   "description": "Form renderer for the Meldingen applications",
+  "license": "EUPL-1.2",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "type": "module",
   "scripts": {
     "test": "vitest",
     "test:watch": "vitest watch",
     "type-check": "tsc --project ./tsconfig.json --noEmit"
   },
-  "license": "EUPL-1.2",
-  "private": true,
-  "type": "module",
   "dependencies": {
     "@meldingen/api-client": "workspace:*",
     "@meldingen/markdown-to-html": "workspace:*",
     "@meldingen/ui": "workspace:*",
     "next": "16.2.4"
-  }
+  },
+  "private": true
 }

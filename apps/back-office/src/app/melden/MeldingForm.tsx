@@ -24,8 +24,8 @@ import { Column } from '@meldingen/ui'
 
 import type { FormState } from './actions'
 
-import { URGENCY_VALUES } from '../../constants'
 import { postMeldingForm } from './actions'
+import { URGENCY_VALUES } from '~/constants'
 
 import styles from './MeldingForm.module.css'
 

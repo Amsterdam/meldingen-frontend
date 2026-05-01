@@ -5,8 +5,8 @@ import { http, HttpResponse } from 'msw'
 import type { Props } from './AddressInput'
 
 import { AddressInput } from './AddressInput'
-import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-import { server } from 'apps/melding-form/src/mocks/node'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 vi.stubGlobal(
   'ResizeObserver',

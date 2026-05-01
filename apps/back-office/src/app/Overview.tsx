@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl'
 
 import { Grid, Heading } from '@meldingen/ui'
 
-import type { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
+import type { MeldingOutput } from '~/apiClientProxy'
 
 import { OverviewDesktop } from './_components/OverviewDesktop'
 import { OverviewMobile } from './_components/OverviewMobile'

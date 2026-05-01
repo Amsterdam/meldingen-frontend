@@ -3,7 +3,7 @@ import NextLink from 'next/link'
 
 import { Heading, Paragraph, StandaloneLink } from '@meldingen/ui'
 
-import { TOP_ANCHOR_ID } from '../../../constants'
+import { TOP_ANCHOR_ID } from '~/constants'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('cookie-storing')

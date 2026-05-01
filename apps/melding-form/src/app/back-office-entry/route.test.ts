@@ -6,9 +6,9 @@ import { NextRequest } from 'next/server'
 import { vi } from 'vitest'
 
 import { GET } from './route'
-import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
-import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-import { server } from 'apps/melding-form/src/mocks/node'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),

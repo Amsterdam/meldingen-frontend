@@ -9,7 +9,7 @@ import {
 } from '@meldingen/api-client'
 
 import { SelectLocation } from './SelectLocation'
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES } from '~/constants'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('select-location')

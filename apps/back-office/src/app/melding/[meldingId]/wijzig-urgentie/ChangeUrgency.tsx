@@ -10,8 +10,8 @@ import { MeldingOutput } from '@meldingen/api-client'
 
 import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
-import { URGENCY_VALUES } from '../../../../constants'
 import { postChangeUrgencyForm } from './actions'
+import { URGENCY_VALUES } from '~/constants'
 
 import styles from './ChangeUrgency.module.css'
 

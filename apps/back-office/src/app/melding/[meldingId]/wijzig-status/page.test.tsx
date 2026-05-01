@@ -3,8 +3,8 @@ import { http, HttpResponse } from 'msw'
 import { vi } from 'vitest'
 
 import Page from './page'
-import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
-import { server } from 'apps/back-office/src/mocks/node'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 vi.mock('./ChangeState', () => ({
   ChangeState: vi.fn(() => <div>ChangeState Component</div>),

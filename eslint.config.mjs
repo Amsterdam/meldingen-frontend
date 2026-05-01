@@ -19,12 +19,12 @@ import globals from 'globals'
 const perfectionistImportGroups = {
   customGroups: [
     {
-      elementNamePattern: ['^apps/', '^libs/'],
+      elementNamePattern: ['^~'],
       groupName: 'type-parent',
       selector: 'type',
     },
     {
-      elementNamePattern: ['^apps/', '^libs/'],
+      elementNamePattern: ['^~'],
       groupName: 'value-parent',
     },
     {

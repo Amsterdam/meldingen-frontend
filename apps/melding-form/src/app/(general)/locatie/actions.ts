@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdSubmitLocation } from '@meldingen/api-client'
 
-import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
 export const postLocationForm = async () => {
   const cookieStore = await cookies()

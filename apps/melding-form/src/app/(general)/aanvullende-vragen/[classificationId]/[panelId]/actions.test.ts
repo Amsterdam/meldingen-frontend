@@ -7,10 +7,10 @@ import { redirect } from 'next/navigation'
 import type { ArgsType } from './actions'
 
 import { postForm } from './actions'
-import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
-import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-import { server } from 'apps/melding-form/src/mocks/node'
-import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
+import { mockIdAndTokenCookies } from '~/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 

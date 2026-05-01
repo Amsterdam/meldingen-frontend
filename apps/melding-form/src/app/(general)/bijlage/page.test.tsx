@@ -3,10 +3,10 @@ import { http, HttpResponse } from 'msw'
 
 import { Attachments } from './Attachments'
 import Page from './page'
-import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
-import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-import { server } from 'apps/melding-form/src/mocks/node'
-import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+import { textAreaComponent } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
+import { mockIdAndTokenCookies } from '~/mocks/utils'
 
 vi.mock('./Attachments', () => ({
   Attachments: vi.fn(() => <div>Attachments Component</div>),

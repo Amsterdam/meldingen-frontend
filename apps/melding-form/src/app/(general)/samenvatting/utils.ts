@@ -15,8 +15,8 @@ import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 import { getFilteredAnswersByKey } from '../_utils/conditions/getFilteredAnswersByKey'
 import { getFullNLAddress } from '../_utils/getFullNLAddress'
 import { isPanelComponentOutput } from '../_utils/typeGuards'
-import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
-import { handleApiError } from 'apps/melding-form/src/handleApiError'
+import { TOP_ANCHOR_ID } from '~/constants'
+import { handleApiError } from '~/handleApiError'
 
 export const getMeldingData = async (meldingId: string, token: string) => {
   const { data, error } = await getMeldingByMeldingIdMelder({

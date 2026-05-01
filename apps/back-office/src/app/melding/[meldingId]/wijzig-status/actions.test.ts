@@ -3,8 +3,8 @@ import { redirect } from 'next/navigation'
 
 import { postChangeStateForm } from './actions'
 import { STATES_LIST } from './constants'
-import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
-import { server } from 'apps/back-office/src/mocks/node'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 const defaultArgs = { currentState: '', meldingId: 123 }
 

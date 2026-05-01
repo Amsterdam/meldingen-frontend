@@ -8,8 +8,8 @@ import {
 } from '@meldingen/api-client'
 
 import { Attachments } from './Attachments'
-import { COOKIES } from 'apps/melding-form/src/constants'
-import { isTypeTextAreaComponent } from 'apps/melding-form/src/typeguards'
+import { COOKIES } from '~/constants'
+import { isTypeTextAreaComponent } from '~/typeguards'
 
 export type ExistingFileType = {
   blob?: Blob

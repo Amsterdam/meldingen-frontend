@@ -1,5 +1,5 @@
 import { shouldRenderComponent } from './shouldRenderComponent'
-import { textAreaComponent } from 'apps/melding-form/src/mocks/data'
+import { textAreaComponent } from '~/mocks/data'
 
 describe('shouldRenderComponent', () => {
   it('returns true when there are no usable conditions', () => {

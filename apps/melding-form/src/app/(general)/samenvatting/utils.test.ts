@@ -10,10 +10,10 @@ import {
   getMeldingData,
   getPrimaryFormSummary,
 } from './utils'
-import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
-import { additionalQuestions, melding } from 'apps/melding-form/src/mocks/data'
-import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-import { server } from 'apps/melding-form/src/mocks/node'
+import { TOP_ANCHOR_ID } from '~/constants'
+import { additionalQuestions, melding } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 const mockMeldingId = '88'
 const mockToken = 'test-token'

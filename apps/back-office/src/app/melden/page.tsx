@@ -2,8 +2,8 @@ import { getTranslations } from 'next-intl/server'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
-import { getStaticForm, getStaticFormByStaticFormId } from '../../apiClientProxy'
 import { MeldingForm } from './MeldingForm'
+import { getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.

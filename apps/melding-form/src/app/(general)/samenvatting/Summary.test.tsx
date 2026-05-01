@@ -5,7 +5,7 @@ import { useActionState } from 'react'
 import { vi } from 'vitest'
 
 import { Summary } from './Summary'
-import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
+import { TOP_ANCHOR_ID } from '~/constants'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()

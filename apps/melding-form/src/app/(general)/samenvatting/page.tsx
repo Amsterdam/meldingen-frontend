@@ -11,7 +11,7 @@ import {
   getMeldingData,
   getPrimaryFormSummary,
 } from './utils'
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES } from '~/constants'
 
 export default async () => {
   const cookieStore = await cookies()

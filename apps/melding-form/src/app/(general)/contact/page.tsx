@@ -3,8 +3,8 @@ import { cookies } from 'next/headers'
 import { getMeldingByMeldingIdMelder, getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
 
 import { Contact } from './Contact'
-import { COOKIES } from 'apps/melding-form/src/constants'
-import { isTypeTextAreaComponent } from 'apps/melding-form/src/typeguards'
+import { COOKIES } from '~/constants'
+import { isTypeTextAreaComponent } from '~/typeguards'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.

@@ -12,7 +12,7 @@ import {
   putMeldingByMeldingIdRequestProcessing,
   putMeldingByMeldingIdRequestReopen,
   putMeldingByMeldingIdSubmit,
-} from 'apps/back-office/src/apiClientProxy'
+} from '~/apiClientProxy'
 
 type State = (typeof STATES)[keyof typeof STATES]
 

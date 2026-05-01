@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { Page } from '@meldingen/ui'
 
-import { TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
+import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './layout.module.css'
 

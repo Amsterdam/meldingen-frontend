@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAddAttachments } from '@meldingen/api-client'
 
-import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
 export const submitAttachmentsForm = async () => {
   const cookieStore = await cookies()

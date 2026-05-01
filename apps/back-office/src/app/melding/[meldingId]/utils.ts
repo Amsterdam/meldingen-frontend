@@ -6,8 +6,8 @@ import {
   getMeldingByMeldingIdAttachments,
   MeldingOutput,
   ValueLabelObject,
-} from 'apps/back-office/src/apiClientProxy'
-import { handleApiError } from 'apps/back-office/src/handleApiError'
+} from '~/apiClientProxy'
+import { handleApiError } from '~/handleApiError'
 
 const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
   switch (answer.type) {

@@ -7,7 +7,7 @@ import {
 } from '@meldingen/api-client'
 
 import { Location } from './Location'
-import { COOKIES } from 'apps/melding-form/src/constants'
+import { COOKIES } from '~/constants'
 
 const getFilter = (id: string) => `
   <Filter>

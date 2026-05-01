@@ -2,7 +2,7 @@ import type { AnchorHTMLAttributes } from 'react'
 
 import { clsx } from 'clsx'
 
-import { AmsNextLink } from '../../../_components/AmsNextLink'
+import { AmsNextLink } from '~/app/_components/AmsNextLink'
 
 import styles from './CancelLink.module.css'
 

@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { Grid, Page } from '@meldingen/ui'
 
 import { Footer, Header } from '../_components/'
-import { TOP_ANCHOR_ID } from '../../constants'
+import { TOP_ANCHOR_ID } from '~/constants'
 
 const GeneralLayout = ({ children }: { children: ReactNode }) => (
   <Page id={TOP_ANCHOR_ID}>

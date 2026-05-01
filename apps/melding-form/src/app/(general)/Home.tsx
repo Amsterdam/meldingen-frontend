@@ -6,7 +6,7 @@ import { useActionState, useEffect, useRef } from 'react'
 import { FormRenderer, StaticFormTextAreaComponent } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
-import type { FormState } from '../../types'
+import type { FormState } from '~/types'
 
 import { SystemErrorAlert } from './_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from './_utils/validation/getDocumentTitleOnError'

@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
-import { melding } from '../../mocks/data'
 import { OverviewDesktop } from './OverviewDesktop'
 import { getMeldingDetailHref, OVERVIEW_FIELDS } from './utils/overviewFields'
+import { melding } from '~/mocks/data'
 
 describe('OverviewDesktop', () => {
   it('renders column headers and values for the default fields', () => {

@@ -4,9 +4,9 @@ import { Dispatch, SetStateAction } from 'react'
 import { Feature } from '@meldingen/api-client'
 
 import type { NotificationType } from '../../SelectLocation'
-import type { Coordinates } from 'apps/melding-form/src/types'
+import type { Coordinates } from '~/types'
 
-import { AssetIcon } from '../../../../../_components/AssetIcon/AssetIcon'
+import { AssetIcon } from '~/app/_components/AssetIcon/AssetIcon'
 
 import styles from './AssetList.module.css'
 

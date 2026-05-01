@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdSubmitMelder } from '@meldingen/api-client'
 
-import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
 export const postSummaryForm = async ({ created_at, public_id }: { created_at: string; public_id: string }) => {
   const cookieStore = await cookies()

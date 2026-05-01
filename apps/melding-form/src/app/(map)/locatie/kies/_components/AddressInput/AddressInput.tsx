@@ -15,7 +15,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { Feature } from '@meldingen/api-client'
 import { ListBox, TextInput } from '@meldingen/ui'
 
-import type { Coordinates } from 'apps/melding-form/src/types'
+import type { Coordinates } from '~/types'
 
 import { convertWktPointToCoordinates } from '../../utils'
 import { PDOKItem } from './types'

@@ -6,7 +6,7 @@ import { useActionState } from 'react'
 import type { Props } from './AdditionalQuestions'
 
 import { AdditionalQuestions } from './AdditionalQuestions'
-import { checkboxComponent, textAreaComponent } from 'apps/melding-form/src/mocks/data'
+import { checkboxComponent, textAreaComponent } from '~/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()

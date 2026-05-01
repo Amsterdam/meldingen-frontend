@@ -3,10 +3,10 @@ import { http, HttpResponse } from 'msw'
 
 import { Contact } from './Contact'
 import Page from './page'
-import { melding } from 'apps/melding-form/src/mocks/data'
-import { ENDPOINTS } from 'apps/melding-form/src/mocks/endpoints'
-import { server } from 'apps/melding-form/src/mocks/node'
-import { mockIdAndTokenCookies } from 'apps/melding-form/src/mocks/utils'
+import { melding } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
+import { mockIdAndTokenCookies } from '~/mocks/utils'
 
 vi.mock('./Contact', () => ({
   Contact: vi.fn(() => <div>Contact Component</div>),

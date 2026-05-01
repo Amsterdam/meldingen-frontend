@@ -15,8 +15,8 @@ import { categorizeFormEntries } from './_utils/categorizeFormEntries'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 import { mergeUnknownTimeAnswers } from './_utils/mergeUnknownTimeAnswers'
 import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, refilterAnswersByKey } from './_utils/navigationUtils'
-import { COOKIES, TOP_ANCHOR_ID } from 'apps/melding-form/src/constants'
-import { handleApiError } from 'apps/melding-form/src/handleApiError'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { handleApiError } from '~/handleApiError'
 
 type RequiredQuestionErrorMessage = { key: string; requiredErrorMessage: string }
 

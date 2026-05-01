@@ -8,10 +8,10 @@ import {
   getLocationData,
   getMeldingData,
 } from './utils'
-import { additionalTimeQuestion, additionalValueLabelQuestion, melding } from 'apps/back-office/src/mocks/data'
-import { additionalQuestions } from 'apps/back-office/src/mocks/data'
-import { ENDPOINTS } from 'apps/back-office/src/mocks/endpoints'
-import { server } from 'apps/back-office/src/mocks/node'
+import { additionalTimeQuestion, additionalValueLabelQuestion, melding } from '~/mocks/data'
+import { additionalQuestions } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 const mockMeldingId = 88
 

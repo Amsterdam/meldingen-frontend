@@ -7,7 +7,7 @@ import { DescriptionList, Grid, Heading, Paragraph } from '@meldingen/ui'
 import { AmsNextLink } from '../../_components/AmsNextLink'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { BackLink } from './_components/BackLink'
-import { MeldingOutput } from 'apps/back-office/src/apiClientProxy'
+import { MeldingOutput } from '~/apiClientProxy'
 
 import styles from './Detail.module.css'
 
