@@ -1,14 +1,23 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
+import { Mock } from 'vitest'
 
+import * as actionsModule from './actions'
 import { MeldingForm } from './MeldingForm'
 import Page, { generateMetadata } from './page'
 import { textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
+vi.mock('./actions', () => ({ postMeldingForm: vi.fn() }))
+
+let capturedAction: ((argsObj: unknown, _: unknown, formData: FormData) => void) | null = null
+
 vi.mock('./MeldingForm', () => ({
-  MeldingForm: vi.fn(() => <div>MeldingForm Component</div>),
+  MeldingForm: vi.fn((props: { action: () => void }) => {
+    capturedAction = props.action
+    return <div>MeldingForm Component</div>
+  }),
 }))
 
 describe('generateMetadata', () => {
@@ -20,15 +29,6 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  it('renders the MeldingForm component with form components', async () => {
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    expect(screen.getByText('MeldingForm Component')).toBeInTheDocument()
-    expect(MeldingForm).toHaveBeenCalledWith({ primaryTextArea: textAreaComponent }, undefined)
-  })
-
   it('throws an error if list of static forms cannot be fetched', async () => {
     server.use(http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json(null, { status: 500 })))
 
@@ -73,5 +73,67 @@ describe('Page', () => {
     )
 
     await expect(Page()).rejects.toThrowError('Primary form textarea not found.')
+  })
+
+  it('renders the MeldingForm component with form components', async () => {
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    expect(screen.getByText('MeldingForm Component')).toBeInTheDocument()
+    expect(MeldingForm).toHaveBeenCalledWith(
+      { action: expect.any(Function), primaryTextArea: textAreaComponent },
+      undefined,
+    )
+  })
+
+  it('passes postPrimaryForm with the correct bounded args to Home', async () => {
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    // Call the bound action
+    if (capturedAction) {
+      capturedAction({}, undefined, new FormData())
+    }
+
+    expect(actionsModule.postMeldingForm).toHaveBeenCalled()
+
+    const [extraArgs] = (actionsModule.postMeldingForm as Mock).mock.calls[0]
+
+    expect(extraArgs).toMatchObject({ requiredErrorMessage: 'required-error-message-fallback' })
+  })
+
+  it('passes a custom required error message when it is set', async () => {
+    const primaryFormWithCustomErrorMessage = {
+      components: [
+        {
+          ...textAreaComponent,
+          key: 'primary',
+          validate: {
+            required: true,
+            required_error_message: 'Custom error message',
+          },
+        },
+      ],
+    }
+    server.use(
+      http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(primaryFormWithCustomErrorMessage)),
+    )
+
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    // Call the bound action
+    if (capturedAction) {
+      capturedAction({}, undefined, new FormData())
+    }
+
+    expect(actionsModule.postMeldingForm).toHaveBeenCalled()
+
+    const [extraArgs] = (actionsModule.postMeldingForm as Mock).mock.calls[0]
+
+    expect(extraArgs).toMatchObject({ requiredErrorMessage: 'Custom error message' })
   })
 })
