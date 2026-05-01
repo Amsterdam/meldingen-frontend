@@ -1,16 +1,13 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "allowJs": false,
-    "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
     "noEmit": true,
     "paths": {
       "~/*": ["./src/*"]
     },
-    "resolveJsonModule": true,
     "strict": true,
     "types": ["vite/client", "vitest/globals"]
   },
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx", "./vite.config.ts", "./vitest.setup.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "./vite.config.ts", "./vitest.setup.ts"]
 }

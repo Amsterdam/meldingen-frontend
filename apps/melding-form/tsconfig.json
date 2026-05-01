@@ -1,8 +1,6 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,
-    "esModuleInterop": true,
     "incremental": true,
     "isolatedModules": true,
     "jsx": "preserve",
