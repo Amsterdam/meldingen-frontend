@@ -27,7 +27,7 @@ type Props = Omit<ImageProps, 'src'> & {
 }
 
 export const AssetIcon = ({ assetTypeIconConfig, properties, ...rest }: Props) => {
-  const src = getAssetIconSVG(properties, assetTypeIconConfig ?? {})
+  const src = getAssetIconSVG(properties, assetTypeIconConfig)
   const [imgSrc, setImgSrc] = useState(src)
 
   return (
