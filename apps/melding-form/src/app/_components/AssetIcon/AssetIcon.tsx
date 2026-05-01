@@ -15,7 +15,7 @@ const getAssetIconSVG = (
     return FALLBACK_SRC
   }
 
-  return `/${iconFolder}/${assetSubType?.toLocaleLowerCase()}.svg`
+  return `/${iconFolder}/${assetSubType.toLowerCase()}.svg`
 }
 
 type Props = Omit<ImageProps, 'src'> & {
