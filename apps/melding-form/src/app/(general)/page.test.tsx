@@ -18,7 +18,7 @@ vi.mock('next/headers', () => ({
 
 vi.mock('./actions', () => ({ postPrimaryForm: vi.fn() }))
 
-let capturedAction: ((argsObj: unknown, _: unknown, formData: FormData) => void) | null = null
+let capturedAction: ((prevState: unknown, formData: FormData) => void) | null = null
 
 vi.mock('./Home', () => ({
   Home: vi.fn((props: { action: () => void }) => {
@@ -46,7 +46,7 @@ describe('Page', () => {
 
     // Call the bound action
     if (capturedAction) {
-      capturedAction({}, undefined, new FormData())
+      capturedAction({}, new FormData())
     }
 
     expect(actionsModule.postPrimaryForm).toHaveBeenCalled()
@@ -85,7 +85,7 @@ describe('Page', () => {
 
     // Call the bound action
     if (capturedAction) {
-      capturedAction({}, undefined, new FormData())
+      capturedAction({}, new FormData())
     }
 
     expect(actionsModule.postPrimaryForm).toHaveBeenCalled()

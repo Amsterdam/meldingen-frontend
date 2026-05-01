@@ -14,24 +14,46 @@ describe('postMeldingForm', () => {
   it('returns a custom validation error when primary question is not answered', async () => {
     const formData = new FormData()
 
-    const result = await postMeldingForm(null, formData)
+    const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'primary', message: 'This field is required.' }],
+      validationErrors: [{ key: 'primary', message: 'Dit veld is verplicht.' }],
     })
   })
 
-  it('returns a validation error when urgency is invalid', async () => {
+  it('returns a system error when urgency is invalid', async () => {
     const formData = new FormData()
     formData.set('primary', 'Test')
     formData.set('urgency', 'invalid')
 
-    const result = await postMeldingForm(null, formData)
+    const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'urgency', message: 'Invalid urgency: invalid' }],
+      systemError: 'Invalid urgency value: invalid',
+    })
+  })
+
+  it('returns validation errors for other invalid answers', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING, () =>
+        HttpResponse.json(
+          { detail: [{ loc: ['primary'], msg: 'Validation error', type: 'value_error' }] },
+          { status: 422 },
+        ),
+      ),
+    )
+
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+    formData.set('urgency', '1')
+
+    const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'primary', message: 'Validation error' }],
     })
   })
 
@@ -42,7 +64,7 @@ describe('postMeldingForm', () => {
     formData.set('primary', 'Test')
     formData.set('urgency', '1')
 
-    const result = await postMeldingForm(null, formData)
+    const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     expect(result).toEqual({ formData, systemError: 'Error message' })
   })
@@ -56,7 +78,7 @@ describe('postMeldingForm', () => {
     formData.set('primary', 'Test')
     formData.set('urgency', '1')
 
-    const result = await postMeldingForm(null, formData)
+    const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     expect(result).toEqual({ formData, systemError: 'Error message' })
   })
@@ -68,7 +90,7 @@ describe('postMeldingForm', () => {
     formData.set('primary', 'Test')
     formData.set('urgency', '1')
 
-    await postMeldingForm(null, formData)
+    await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     const params = new URLSearchParams({
       created_at: '2025-05-26T11:56:34.081Z',
@@ -101,7 +123,7 @@ describe('postMeldingForm', () => {
     formData.set('primary', 'Test')
     formData.set('urgency', '1')
 
-    await postMeldingForm(null, formData)
+    await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     const params = new URLSearchParams({
       created_at: '2025-05-26T11:56:34.081Z',

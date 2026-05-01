@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
+import { postMeldingForm } from './actions'
 import { MeldingForm } from './MeldingForm'
 import { getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
 
@@ -18,6 +19,8 @@ export const generateMetadata = async () => {
 }
 
 export default async () => {
+  const t = await getTranslations('melding-form.errors')
+
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
   if (staticFormsError) throw new Error('Failed to fetch static forms.')
@@ -38,5 +41,9 @@ export default async () => {
 
   if (!primaryTextArea) throw new Error('Primary form textarea not found.')
 
-  return <MeldingForm primaryTextArea={primaryTextArea} />
+  const requiredErrorMessage = primaryTextArea.validate?.required_error_message || t('required-error-message-fallback')
+
+  const action = postMeldingForm.bind(null, { requiredErrorMessage })
+
+  return <MeldingForm action={action} primaryTextArea={primaryTextArea} />
 }
