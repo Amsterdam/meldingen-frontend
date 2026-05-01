@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { Feature } from '@meldingen/api-client'
 
 import { AssetIcon } from './AssetIcon'
-import { FALLBACK_SRC } from 'apps/melding-form/src/constants'
+import { FALLBACK_SRC } from '~/constants'
 
 describe('AssetIcon', () => {
   it('renders an icon with the provided alt text', () => {

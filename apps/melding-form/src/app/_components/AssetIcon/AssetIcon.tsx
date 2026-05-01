@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import { Feature } from '@meldingen/api-client'
 
-import { FALLBACK_SRC } from '../../../constants'
+import { FALLBACK_SRC } from '~/constants'
 
 const getAssetIconSVG = (
   properties: Feature['properties'],
