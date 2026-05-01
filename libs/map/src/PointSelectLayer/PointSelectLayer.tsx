@@ -1,5 +1,4 @@
-import { latLng, LeafletKeyboardEvent, LeafletMouseEvent, marker, Marker } from 'leaflet'
-import { icon } from 'leaflet'
+import { icon, latLng, LeafletKeyboardEvent, LeafletMouseEvent, marker, Marker } from 'leaflet'
 import { useContext, useEffect, useRef } from 'react'
 
 import { MapContext } from '../Map/Map'
