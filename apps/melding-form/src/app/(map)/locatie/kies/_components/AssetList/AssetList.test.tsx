@@ -33,8 +33,8 @@ describe('AssetList', () => {
     expect(screen.getByText('Container-001')).toBeInTheDocument()
     expect(screen.getByText('Container-002')).toBeInTheDocument()
 
-    const restIcon = screen.getByAltText('Restafval icon') as HTMLImageElement
-    const glasIcon = screen.getByAltText('Glas icon') as HTMLImageElement
+    const restIcon = screen.getByAltText('Restafval icon')
+    const glasIcon = screen.getByAltText('Glas icon')
 
     expect(restIcon.getAttribute('src')).toContain('/container/restafval.svg')
     expect(glasIcon.getAttribute('src')).toContain('/container/glas.svg')
