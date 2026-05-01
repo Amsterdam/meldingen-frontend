@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl'
-import { RefObject } from 'react'
+import type { RefObject } from 'react'
 
 import { InvalidFormAlert as UIInvalidFormAlert } from '@meldingen/ui'
 
