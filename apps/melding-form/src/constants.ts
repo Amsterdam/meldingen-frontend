@@ -7,3 +7,5 @@ export const COOKIES = {
 } as const
 
 export const TOP_ANCHOR_ID = 'top'
+
+export const FALLBACK_SRC = '/asset-fallback.svg'
