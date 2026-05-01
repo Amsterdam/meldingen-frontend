@@ -5,10 +5,10 @@ import { Components, FormBuilder as FormioFormBuilder } from '@formio/js'
 import { useEffect, useRef } from 'react'
 
 import { Date, Panel, Radio, Select, SelectBoxes, Textarea, Textfield, Time } from './components'
+import nl from './translations/nl.json'
 
 import '@formio/js/dist/formio.builder.min.css'
 import './visually-hidden.css' // This class is set by Form.io, but not included in the builder CSS, so we add it ourselves
-import nl from './translations/nl.json'
 
 type ExtendedFormBuilderOptions = FormBuilderProps['options'] & {
   i18n?: {

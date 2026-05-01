@@ -7,9 +7,9 @@ import { Feature, getAssetTypeByAssetTypeIdWfs } from '@meldingen/api-client'
 import { MapContext } from '../Map/Map'
 import { Coordinates } from '../types'
 import { useAddMarkersToMap } from './useAddMarkersToMap'
+import { getWfsFilter } from './utils/getWfsFilter'
 
 import './cluster.css'
-import { getWfsFilter } from './utils/getWfsFilter'
 
 export const ZOOM_THRESHOLD = 16
 
