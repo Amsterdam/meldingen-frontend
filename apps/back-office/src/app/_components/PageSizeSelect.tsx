@@ -6,7 +6,7 @@ import { Field, Label, Select } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
-import { ALLOWED_PAGE_SIZES, COOKIES } from '../../constants'
+import { ALLOWED_PAGE_SIZES, COOKIES } from '~/constants'
 
 import styles from './PageSizeSelect.module.css'
 

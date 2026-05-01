@@ -5,10 +5,10 @@ import { redirect } from 'next/navigation'
 
 import { patchMeldingByMeldingIdMelder, postMelding } from '@meldingen/api-client'
 
-import { COOKIES } from '../../constants'
-import { handleApiError } from '../../handleApiError'
 import { resolveClassificationRedirect } from '../utils'
 import { hasValidationErrors } from './_utils/validation/hasValidationErrors'
+import { COOKIES } from '~/constants'
+import { handleApiError } from '~/handleApiError'
 
 export type ArgsType = {
   existingId?: string

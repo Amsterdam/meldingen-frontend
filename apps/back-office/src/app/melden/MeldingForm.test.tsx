@@ -5,8 +5,8 @@ import { Mock } from 'vitest'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
-import { URGENCY_VALUES } from '../../constants'
 import { MeldingForm } from './MeldingForm'
+import { URGENCY_VALUES } from '~/constants'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()

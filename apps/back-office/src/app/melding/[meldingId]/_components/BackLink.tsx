@@ -3,7 +3,7 @@ import type { AnchorHTMLAttributes } from 'react'
 import { ChevronBackwardIcon } from '@amsterdam/design-system-react-icons'
 import { clsx } from 'clsx'
 
-import { AmsNextLink } from '../../../_components/AmsNextLink'
+import { AmsNextLink } from '~/app/_components/AmsNextLink'
 
 import styles from './BackLink.module.css'
 

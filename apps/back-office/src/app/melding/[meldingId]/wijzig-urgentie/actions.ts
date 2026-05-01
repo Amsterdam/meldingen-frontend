@@ -2,8 +2,8 @@
 
 import { redirect } from 'next/navigation'
 
-import { URGENCY_VALUES } from '../../../../constants'
 import { MeldingOutput, patchMeldingByMeldingId } from '~/apiClientProxy'
+import { URGENCY_VALUES } from '~/constants'
 
 type MeldingIdParam = {
   currentUrgency: MeldingOutput['urgency']

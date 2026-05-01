@@ -6,9 +6,9 @@ import { Mock } from 'vitest'
 
 import type { Props } from './SelectLocation'
 
-import { containerAssets } from '../../../../mocks/data'
 import { AssetList } from './_components'
 import { SelectLocation } from './SelectLocation'
+import { containerAssets } from '~/mocks/data'
 
 vi.mock('./_components/AssetList/AssetList', () => ({
   AssetList: vi.fn(),

@@ -5,8 +5,8 @@ import { NextResponse } from 'next/server'
 
 import { client } from '@meldingen/api-client'
 
-import { COOKIES } from '../../constants'
 import { resolveClassificationRedirect } from '../utils'
+import { COOKIES } from '~/constants'
 
 // Configure the API client here, because a route handler does not pass layout.tsx.
 // All server requests that pass through layout.tsx are configured in layout.tsx itself.

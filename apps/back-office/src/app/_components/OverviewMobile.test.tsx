@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
-import { melding } from '../../mocks/data'
 import { OverviewMobile } from './OverviewMobile'
 import { getMeldingDetailHref, OVERVIEW_FIELDS } from './utils/overviewFields'
+import { melding } from '~/mocks/data'
 
 describe('OverviewMobile', () => {
   it('renders labels, values, and a detail link for each melding', () => {

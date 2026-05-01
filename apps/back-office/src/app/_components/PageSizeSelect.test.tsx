@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 
-import { COOKIES } from '../../constants'
 import { PageSizeSelect } from './PageSizeSelect'
+import { COOKIES } from '~/constants'
 
 const router = {
   push: vi.fn(),

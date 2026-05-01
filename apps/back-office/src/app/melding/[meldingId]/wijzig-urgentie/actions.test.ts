@@ -1,9 +1,9 @@
 import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
-import { URGENCY_VALUES } from '../../../../constants'
 import { postChangeUrgencyForm } from './actions'
 import * as apiClientProxy from '~/apiClientProxy'
+import { URGENCY_VALUES } from '~/constants'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
