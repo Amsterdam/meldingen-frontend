@@ -16,7 +16,7 @@ const getAssetIconSVG = (
     return '/asset-fallback.svg'
   }
 
-  return `/${iconFolder}/${assetSubType?.toLowerCase()}.svg`
+  return `/${iconFolder}/${assetSubType.toLowerCase()}.svg`
 }
 
 export const getAssetIcon = (
