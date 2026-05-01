@@ -27,6 +27,6 @@ describe('getContainerAssetIconSVG', () => {
     const feature = { geometry: { coordinates: [0, 0], type: 'Point' }, type: 'Feature' } as Feature
     const svg = getContainerAssetIconSVG(feature)
 
-    expect(svg).toBe('/afval/rest.svg')
+    expect(svg).toBe('/container/rest.svg')
   })
 })

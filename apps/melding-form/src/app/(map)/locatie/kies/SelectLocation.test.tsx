@@ -33,6 +33,7 @@ const setInternalState = <T,>(setter: (value: T) => void, value: T) => {
 }
 
 const defaultProps: Props = {
+  assetTypeIconConfig: {},
   maxAssets: 3,
   selectedAssets: [],
   wfsQuery: {

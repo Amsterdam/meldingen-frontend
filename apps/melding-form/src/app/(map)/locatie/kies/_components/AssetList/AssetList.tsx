@@ -1,5 +1,4 @@
 import { Checkbox } from '@amsterdam/design-system-react'
-import Image from 'next/image'
 import { Dispatch, SetStateAction } from 'react'
 
 import { Feature } from '@meldingen/api-client'
@@ -7,12 +6,16 @@ import { Feature } from '@meldingen/api-client'
 import type { NotificationType } from '../../SelectLocation'
 import type { Coordinates } from '~/types'
 
-import { getContainerAssetIconSVG } from './getContainerAssetIconSVG'
+import { AssetIcon } from '../../../../../_components/AssetIcon/AssetIcon'
 
 import styles from './AssetList.module.css'
 
 export type Props = {
   assetList: Feature[]
+  assetTypeIconConfig: {
+    iconEntry?: string
+    iconFolder?: string
+  }
   maxAssets: number
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
@@ -20,13 +23,22 @@ export type Props = {
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
-const getCheckboxLabel = (asset: Feature, idNummer: string) => {
-  const icon = getContainerAssetIconSVG(asset)
+const getCheckboxLabel = (
+  asset: Feature,
+  idNummer: string,
+  assetTypeIconConfig: { iconEntry?: string; iconFolder?: string },
+) => {
   const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
 
   return (
     <span className={styles.label}>
-      <Image alt={altText} height={32} src={icon} width={32} />
+      <AssetIcon
+        alt={altText}
+        assetTypeIconConfig={assetTypeIconConfig}
+        height={32}
+        properties={asset.properties}
+        width={32}
+      />
       <span>{idNummer}</span>
     </span>
   )
@@ -34,6 +46,7 @@ const getCheckboxLabel = (asset: Feature, idNummer: string) => {
 
 export const AssetList = ({
   assetList,
+  assetTypeIconConfig,
   maxAssets,
   selectedAssets,
   setCoordinates,
@@ -80,7 +93,7 @@ export const AssetList = ({
       {selectedAssets.map((asset) => {
         // @ts-expect-error id_nummer always exists on asset properties
         const publicId = asset.properties.id_nummer as string
-        const label = getCheckboxLabel(asset, publicId)
+        const label = getCheckboxLabel(asset, publicId, assetTypeIconConfig)
 
         return (
           <li key={publicId}>
@@ -93,7 +106,7 @@ export const AssetList = ({
       {filteredList.map((asset) => {
         // @ts-expect-error id_nummer always exists on asset properties
         const publicId = asset.properties.id_nummer as string
-        const label = getCheckboxLabel(asset, publicId)
+        const label = getCheckboxLabel(asset, publicId, assetTypeIconConfig)
 
         return (
           <li key={publicId}>

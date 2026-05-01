@@ -20,6 +20,7 @@ const mockMapInstance = {
 const mockMarkerLayerRef = { current: null } as unknown as RefObject<Layer | null>
 
 const defaultProps: Props = {
+  assetTypeIconConfig: {},
   features: [],
   map: mockMapInstance,
   markerLayerRef: mockMarkerLayerRef,
@@ -80,6 +81,38 @@ describe('useAddMarkersToMap', () => {
     expect(mockMarkerLayerRef.current).not.toBeNull()
     // Should be a marker cluster group
     expect(typeof mockMarkerLayerRef.current?.addTo).toBe('function')
+  })
+
+  it('falls back to /asset-fallback.svg when a marker icon fails to load', () => {
+    const img = document.createElement('img')
+    img.src = '/container/rest.svg'
+
+    const getElementSpy = vi.spyOn(L.Marker.prototype, 'getElement').mockReturnValue(img)
+
+    renderHook(() => useAddMarkersToMap({ ...defaultProps, features: containerAssets }))
+
+    const markers = (mockMarkerLayerRef.current as unknown as MarkerClusterGroup).getLayers() as unknown as L.Marker[]
+    const firstMarker = markers[0]
+
+    firstMarker.fire('add')
+    img.dispatchEvent(new Event('error'))
+
+    expect(img.src).toContain('/asset-fallback.svg')
+
+    getElementSpy.mockRestore()
+  })
+
+  it('does nothing on add when marker element is missing', () => {
+    const getElementSpy = vi.spyOn(L.Marker.prototype, 'getElement').mockReturnValue(undefined)
+
+    renderHook(() => useAddMarkersToMap({ ...defaultProps, features: containerAssets }))
+
+    const markers = (mockMarkerLayerRef.current as unknown as MarkerClusterGroup).getLayers() as unknown as L.Marker[]
+    const firstMarker = markers[0]
+
+    expect(() => firstMarker.fire('add')).not.toThrow()
+
+    getElementSpy.mockRestore()
   })
 
   it('handles clicking a selected marker', () => {

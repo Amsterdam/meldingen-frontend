@@ -24,6 +24,8 @@ export const AssetTypeEdit = ({ id }: { id?: number }) => (
       }
     >
       <TextInput source="name" validate={required()} />
+      <TextInput source="arguments.icon_entry" validate={required()} />
+      <TextInput source="arguments.icon_folder" validate={required()} />
       <TextInput source="arguments.type_names" validate={required()} />
       <TextInput source="arguments.srs_name" validate={required()} />
       <TextInput minRows={4} multiline source="arguments.filter" validate={required()} />
