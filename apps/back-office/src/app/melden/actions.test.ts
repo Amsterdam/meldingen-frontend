@@ -35,6 +35,28 @@ describe('postMeldingForm', () => {
     })
   })
 
+  it('returns validation errors for other invalid answers', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING, () =>
+        HttpResponse.json(
+          { detail: [{ loc: ['primary'], msg: 'Validation error', type: 'value_error' }] },
+          { status: 422 },
+        ),
+      ),
+    )
+
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+    formData.set('urgency', '1')
+
+    const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'primary', message: 'Validation error' }],
+    })
+  })
+
   it('returns a system error when postMelding returns an error', async () => {
     server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json('Error message', { status: 404 })))
 

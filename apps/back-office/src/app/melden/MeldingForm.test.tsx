@@ -62,6 +62,7 @@ describe('MeldingForm', () => {
 
   it('updates the character count when the user types in the textarea', async () => {
     const user = userEvent.setup()
+
     render(<MeldingForm {...defaultProps} />)
 
     await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello')
@@ -73,6 +74,16 @@ describe('MeldingForm', () => {
     render(<MeldingForm action={vi.fn()} primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
 
     expect(screen.queryByText(/500/)).not.toBeInTheDocument()
+  })
+
+  it('does not update the character count when maxCharCount is not provided and the user types', async () => {
+    const user = userEvent.setup()
+
+    render(<MeldingForm action={vi.fn()} primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
+
+    await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello')
+
+    expect(screen.queryByText(/tekens/)).not.toBeInTheDocument()
   })
 
   it('renders all urgency radio options', () => {
@@ -90,19 +101,6 @@ describe('MeldingForm', () => {
 
     expect(screen.getByRole('radio', { name: 'urgency.0' })).toBeChecked()
   })
-
-  // it('shows a validation error message when the action returns validation errors', () => {
-  //   ;(useActionState as Mock).mockReturnValue([
-  //     { validationErrors: [{ key: 'primary', message: 'This field is required.' }] },
-  //     vi.fn(),
-  //   ])
-
-  //   render(<MeldingForm {...defaultProps} />)
-
-  //   const errorMessage = screen.queryByText('This field is required.')[1]
-
-  //   expect(errorMessage).toBeInTheDocument()
-  // })
 
   it('prefills the textarea from formData when the action returns formData', () => {
     const formData = new FormData()
@@ -124,5 +122,28 @@ describe('MeldingForm', () => {
     await user.click(screen.getByRole('button', { name: 'submit-button' }))
 
     expect(mockFormAction).toHaveBeenCalled()
+  })
+
+  it('sets focus on InvalidFormAlert when there are validation errors', () => {
+    ;(useActionState as Mock).mockReturnValue([
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      vi.fn(),
+    ])
+
+    const { container } = render(<MeldingForm {...defaultProps} />)
+
+    const alert = container.querySelector('.ams-alert')
+
+    expect(alert).toHaveFocus()
+  })
+
+  it('sets focus on SystemErrorAlert when there is a system error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveFocus()
   })
 })
