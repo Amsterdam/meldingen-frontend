@@ -11,7 +11,7 @@ import { server } from '~/mocks/node'
 
 vi.mock('./actions', () => ({ postMeldingForm: vi.fn() }))
 
-let capturedAction: ((argsObj: unknown, _: unknown, formData: FormData) => void) | null = null
+let capturedAction: ((prevState: unknown, formData: FormData) => void) | null = null
 
 vi.mock('./MeldingForm', () => ({
   MeldingForm: vi.fn((props: { action: () => void }) => {
@@ -94,7 +94,7 @@ describe('Page', () => {
 
     // Call the bound action
     if (capturedAction) {
-      capturedAction({}, undefined, new FormData())
+      capturedAction({}, new FormData())
     }
 
     expect(actionsModule.postMeldingForm).toHaveBeenCalled()
@@ -127,7 +127,7 @@ describe('Page', () => {
 
     // Call the bound action
     if (capturedAction) {
-      capturedAction({}, undefined, new FormData())
+      capturedAction({}, new FormData())
     }
 
     expect(actionsModule.postMeldingForm).toHaveBeenCalled()
