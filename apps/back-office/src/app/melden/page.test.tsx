@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { Mock } from 'vitest'
+import type { Mock } from 'vitest'
 
 import * as actionsModule from './actions'
 import { MeldingForm } from './MeldingForm'
