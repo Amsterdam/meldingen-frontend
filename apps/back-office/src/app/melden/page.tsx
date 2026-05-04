@@ -20,6 +20,28 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 }
 
+const getPrefilledPrimaryTextArea = async (
+  meldingId: string,
+  token: string,
+  primaryTextArea: StaticFormTextAreaComponentOutput,
+) => {
+  const { data, error } = await getMeldingByMeldingIdMelder({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (error) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(error)
+  }
+
+  return {
+    ...primaryTextArea,
+    defaultValue: data?.text,
+  }
+}
+
 export default async ({ searchParams }: { searchParams: Promise<{ id?: string; token?: string }> }) => {
   const t = await getTranslations('melding-form.errors')
 
