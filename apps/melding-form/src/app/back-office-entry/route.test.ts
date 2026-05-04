@@ -28,7 +28,7 @@ const requiredParams = {
 }
 
 describe('GET', () => {
-  const mockCookieStore = { set: vi.fn() }
+  const mockCookieStore = { delete: vi.fn(), set: vi.fn() }
 
   beforeEach(() => {
     ;(cookies as Mock).mockReturnValue(mockCookieStore)
@@ -56,6 +56,12 @@ describe('GET', () => {
     expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: oneDay })
     expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', { maxAge: oneDay })
     expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.SOURCE, 'back-office', { maxAge: oneDay })
+  })
+
+  it('deletes LAST_PANEL_PATH cookie', async () => {
+    await GET(createRequest(requiredParams))
+
+    expect(mockCookieStore.delete).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
   })
 
   it('falls back to request host as origin when NEXT_PUBLIC_MELDING_FORM_BASE_URL is not set', async () => {
