@@ -32,7 +32,7 @@ import styles from './MeldingForm.module.css'
 
 type Props = {
   action: (_: unknown, formData: FormData) => Promise<FormState>
-  primaryTextArea: StaticFormTextAreaComponentOutput
+  primaryTextArea: StaticFormTextAreaComponentOutput & { defaultValue?: string }
 }
 
 const initialState: FormState = {}
@@ -47,7 +47,12 @@ export const MeldingForm = ({ action, primaryTextArea }: Props) => {
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
 
-  const primaryTextAreaDefaultValue = (formData?.get('primary') as string) ?? ''
+  /**
+   * Form components can be prefilled on load on the server, where we fill in existing answers from the backend,
+   * or in case of an error, where we use the form data provided.
+   * If there is form data, it should take priority over the prefilled components from the server.
+   */
+  const primaryTextAreaDefaultValue = (formData?.get('primary') as string) ?? primaryTextArea.defaultValue ?? ''
 
   const [charCount, setCharCount] = useState(primaryTextAreaDefaultValue.length)
 
