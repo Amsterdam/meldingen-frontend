@@ -16,7 +16,11 @@ import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMe
 
 import { getFilteredAnswersByKey } from '../../../_utils/conditions/getFilteredAnswersByKey'
 import { isPanelComponentOutput } from '../../../_utils/typeGuards'
-import { AFTER_ADDITIONAL_QUESTIONS_PATH, getPreviousPanelPath } from './_utils/navigationUtils'
+import {
+  AFTER_ADDITIONAL_QUESTIONS_PATH,
+  BEFORE_ADDITIONAL_QUESTIONS_PATH,
+  getPreviousPanelPath,
+} from './_utils/navigationUtils'
 import { setDateComponentOptions } from './_utils/setDateComponentOptions'
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
@@ -166,12 +170,20 @@ export default async ({ params }: { params: Params }) => {
   // Pass extra arguments to the postForm action
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)
 
+  const source = cookieStore.get(COOKIES.SOURCE)?.value
+
+  const beforeAdditionalQuestionsPath =
+    source === 'back-office'
+      ? `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?id=${meldingId}&token=${token}`
+      : BEFORE_ADDITIONAL_QUESTIONS_PATH
+
   // Pass previous panel path to the Aanvullende vragen component
   const previousPanelPath = getPreviousPanelPath(
     classificationId,
     currentPanelIndex,
     panelComponentsConditions,
     previousAnswersByKey,
+    beforeAdditionalQuestionsPath,
   )
 
   const prefilledFormComponents = prefillFormComponents(formComponentsWithDateOptions, answers)
