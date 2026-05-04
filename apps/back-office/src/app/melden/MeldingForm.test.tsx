@@ -118,7 +118,7 @@ describe('MeldingForm', () => {
     expect(screen.getByRole('textbox')).toHaveValue('')
   })
 
-  it('prefills the urgency from formData when the action returns formData', () => {
+  it('prefills urgency from formData when the action returns formData', () => {
     const formData = new FormData()
     formData.set('urgency', '1')
     ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
@@ -128,7 +128,7 @@ describe('MeldingForm', () => {
     expect(screen.getByRole('radio', { name: 'urgency.1' })).toBeChecked()
   })
 
-  it('prefills the urgency from defaultValues when provided and there is no formData', () => {
+  it('prefills urgency from defaultValues when provided and there is no formData', () => {
     render(<MeldingForm {...defaultProps} defaultValues={{ urgency: -1 }} />)
 
     expect(screen.getByRole('radio', { name: 'urgency.-1' })).toBeChecked()
