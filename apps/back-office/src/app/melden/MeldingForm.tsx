@@ -48,11 +48,9 @@ export const MeldingForm = ({ action, defaultValues, primaryTextArea }: Props) =
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
 
-  /**
-   * Form components can be prefilled on load on the server, where we fill in existing answers from the backend,
-   * or in case of an error, where we use the form data provided.
-   * If there is form data, it should take priority over the prefilled components from the server.
-   */
+  // Form components can be prefilled on load on the server, where we fill in existing answers from the backend,
+  // or in case of an error, where we use the form data provided.
+  // If there is form data, it should take priority over the prefilled components from the server.
   const primaryTextAreaDefaultValue = (formData?.get('primary') as string | null) ?? defaultValues?.primary ?? ''
   const urgencyDefaultValue = (formData?.get('urgency') as string | null) ?? defaultValues?.urgency ?? 0
 
