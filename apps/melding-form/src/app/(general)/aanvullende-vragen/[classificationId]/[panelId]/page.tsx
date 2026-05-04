@@ -171,10 +171,10 @@ export default async ({ params }: { params: Params }) => {
   const postFormWithExtraArgs = postForm.bind(null, extraArgs)
 
   const source = cookieStore.get(COOKIES.SOURCE)?.value
-
+  const beforeLinkParams = new URLSearchParams({ id: meldingId, token })
   const beforeAdditionalQuestionsPath =
     source === 'back-office'
-      ? `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?id=${meldingId}&token=${token}`
+      ? `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?${beforeLinkParams}`
       : BEFORE_ADDITIONAL_QUESTIONS_PATH
 
   // Pass previous panel path to the Aanvullende vragen component

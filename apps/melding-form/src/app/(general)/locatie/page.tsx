@@ -69,7 +69,8 @@ const getPreviousPagePath = ({ lastPanelPath, meldingId, source, token }: Args) 
   if (lastPanelPath) return lastPanelPath
 
   if (source === 'back-office') {
-    return `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?id=${meldingId}&token=${token}`
+    const params = new URLSearchParams({ id: meldingId, token })
+    return `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?${params}`
   }
 
   return `/#${TOP_ANCHOR_ID}`

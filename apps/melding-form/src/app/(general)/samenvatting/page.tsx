@@ -34,11 +34,9 @@ export default async () => {
   const postSummaryFormWithExtraArgs = postSummaryForm.bind(null, { created_at, public_id })
 
   const source = cookieStore.get(COOKIES.SOURCE)?.value
-
+  const params = new URLSearchParams({ id: meldingId, token })
   const primaryFormLink =
-    source === 'back-office'
-      ? `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?id=${meldingId}&token=${token}`
-      : `/#${TOP_ANCHOR_ID}`
+    source === 'back-office' ? `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?${params}` : `/#${TOP_ANCHOR_ID}`
 
   return (
     <Summary
