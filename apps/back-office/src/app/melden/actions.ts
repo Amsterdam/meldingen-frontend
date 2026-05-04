@@ -50,14 +50,16 @@ export const postMeldingForm = async (
   }
 
   const isExistingMelding = existingId && existingToken
+  const isValidId = Number.isFinite(Number(existingId))
 
-  const { data, error, response } = isExistingMelding
-    ? await patchMeldingByMeldingIdMelder({
-        body: { text: formDataObj.primary.toString() },
-        path: { melding_id: parseInt(existingId, 10) },
-        query: { token: existingToken },
-      })
-    : await postMelding({ body: { text: formDataObj.primary.toString() } })
+  const { data, error, response } =
+    isExistingMelding && isValidId
+      ? await patchMeldingByMeldingIdMelder({
+          body: { text: formDataObj.primary.toString() },
+          path: { melding_id: parseInt(existingId, 10) },
+          query: { token: existingToken },
+        })
+      : await postMelding({ body: { text: formDataObj.primary.toString() } })
 
   // Return other validation errors if there are any
   if (hasValidationErrors(response, error)) {
