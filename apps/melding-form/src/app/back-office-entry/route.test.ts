@@ -28,7 +28,7 @@ const requiredParams = {
 }
 
 describe('GET', () => {
-  let mockCookieStore: { delete: ReturnType<typeof vi.fn>; set: ReturnType<typeof vi.fn> }
+  let mockCookieStore: { delete: Mock; set: Mock }
 
   beforeEach(() => {
     mockCookieStore = { delete: vi.fn(), set: vi.fn() }
