@@ -35,7 +35,7 @@ describe('GET', () => {
     vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', BASE_URL)
   })
 
-  afterEach(() => {
+  afterAll(() => {
     vi.unstubAllEnvs()
   })
 

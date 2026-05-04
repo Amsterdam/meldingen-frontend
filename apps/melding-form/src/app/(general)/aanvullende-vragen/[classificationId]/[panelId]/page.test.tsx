@@ -6,11 +6,11 @@ import { Mock } from 'vitest'
 import * as actionsModule from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 import Page from './page'
-import { TOP_ANCHOR_ID } from '~/constants'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 import { additionalQuestions, selectAdditionalQuestion } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
-import { mockIdAndTokenCookies } from '~/mocks/utils'
+import { mockCookies, mockIdAndTokenCookies } from '~/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -456,6 +456,39 @@ describe('Page', () => {
     expect(consoleSpy).toHaveBeenCalledWith('Test error')
 
     consoleSpy.mockRestore()
+  })
+
+  it('passes the correct previousPanelPath to AdditionalQuestions when coming from the back office', async () => {
+    vi.stubEnv('NEXT_PUBLIC_BACK_OFFICE_BASE_URL', 'http://back-office.example.com')
+
+    mockCookies({
+      [COOKIES.ID]: '123',
+      [COOKIES.SOURCE]: 'back-office',
+      [COOKIES.TOKEN]: 'abc',
+    })
+
+    const formData = {
+      components: [
+        { components: [{ key: 'question-1', question: 'q1' }], key: 'panel-1', title: 'Panel 1', type: 'panel' },
+      ],
+    }
+
+    server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
+
+    const PageComponent = await Page({
+      params: Promise.resolve({ classificationId: 1, panelId: 'panel-1' }),
+    })
+
+    render(PageComponent)
+
+    expect(AdditionalQuestions).toHaveBeenCalledWith(
+      expect.objectContaining({
+        previousPanelPath: `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?id=123&token=abc`,
+      }),
+      undefined,
+    )
+
+    vi.unstubAllEnvs()
   })
 
   it('passes postForm with the correct bounded args to AdditionalQuestions', async () => {
