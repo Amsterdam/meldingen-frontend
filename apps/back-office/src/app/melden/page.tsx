@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { getTranslations } from 'next-intl/server'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
@@ -10,7 +12,7 @@ import { getMeldingByMeldingId, getStaticForm, getStaticFormByStaticFormId } fro
 // We can remove this when the api is deployed.
 export const dynamic = 'force-dynamic'
 
-export const generateMetadata = async () => {
+export const generateMetadata = async (): Promise<Metadata> => {
   const t = await getTranslations('melding-form')
 
   return {
@@ -48,20 +50,18 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: string; t
   const action = postMeldingForm.bind(null, { existingId: id, existingToken: token, requiredErrorMessage })
 
   // Prefill form
-  const isExistingMelding = id && token
+  const result = id && token ? await getMeldingByMeldingId({ path: { melding_id: Number(id) } }) : undefined
 
-  const { data: meldingData, error: meldingError } = await getMeldingByMeldingId({ path: { melding_id: id } })
-
-  if (meldingError) {
+  if (result?.error) {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
-    console.error(meldingError)
+    console.error(result.error)
   }
 
-  const defaultValues = isExistingMelding
+  const defaultValues = result?.data
     ? {
-        primary: meldingData?.text ?? '',
-        urgency: meldingData?.urgency ?? 0,
+        primary: result.data.text,
+        urgency: result.data.urgency,
       }
     : {}
 
