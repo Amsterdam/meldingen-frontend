@@ -3,11 +3,11 @@ import { http, HttpResponse } from 'msw'
 
 import Page from './page'
 import { Summary } from './Summary'
-import { TOP_ANCHOR_ID } from '~/constants'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 import { additionalQuestions, melding, textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
-import { mockIdAndTokenCookies } from '~/mocks/utils'
+import { mockCookies, mockIdAndTokenCookies } from '~/mocks/utils'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -102,5 +102,42 @@ describe('Page', () => {
     )
 
     await expect(Page()).rejects.toThrowError('Primary form id not found')
+  })
+
+  it('passes a link to the Back Office if the source cookie is set to back-office', async () => {
+    vi.stubEnv('NEXT_PUBLIC_BACK_OFFICE_BASE_URL', 'https://backoffice.example.com')
+
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [
+            {
+              components: [{ question: 35 }, { question: 36 }],
+              key: 'page1',
+              type: 'panel',
+            },
+          ],
+        }),
+      ),
+    )
+
+    mockCookies({
+      [COOKIES.ID]: '123',
+      [COOKIES.SOURCE]: 'back-office',
+      [COOKIES.TOKEN]: 'abc',
+    })
+
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    expect(Summary).toHaveBeenCalledWith(
+      expect.objectContaining({
+        primaryFormLink: 'https://backoffice.example.com/melden?id=123&token=abc',
+      }),
+      undefined,
+    )
+
+    vi.unstubAllEnvs()
   })
 })

@@ -48,6 +48,30 @@ describe('Page', () => {
     )
   })
 
+  it('renders Location component with back-office URL as prevPage when source cookie is set to back-office and lastPanelPath cookie is not set', async () => {
+    vi.stubEnv('NEXT_PUBLIC_BACK_OFFICE_BASE_URL', 'https://backoffice.example.com')
+
+    mockCookies({
+      [COOKIES.ID]: '123',
+      [COOKIES.SOURCE]: 'back-office',
+      [COOKIES.TOKEN]: 'test-token',
+    })
+
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    expect(screen.getByText('Location Component')).toBeInTheDocument()
+    expect(Location).toHaveBeenCalledWith(
+      expect.objectContaining({
+        prevPage: `https://backoffice.example.com/melden?id=123&token=test-token`,
+      }),
+      undefined,
+    )
+
+    vi.unstubAllEnvs()
+  })
+
   it('returns an empty array of selectedAssets and logs an error when fetching assets fails', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS_MELDER, () =>
