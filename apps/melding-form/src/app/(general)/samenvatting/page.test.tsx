@@ -81,6 +81,7 @@ describe('Page', () => {
           term: 'location-label',
         },
         primaryForm: primaryForm,
+        primaryFormLink: `/#${TOP_ANCHOR_ID}`,
       },
       undefined,
     )

@@ -26,7 +26,7 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(screen.getByText('Location Component')).toBeInTheDocument()
-    expect(Location).toHaveBeenCalledWith(expect.objectContaining({ address: undefined, prevPage: '/' }), undefined)
+    expect(Location).toHaveBeenCalledWith(expect.objectContaining({ address: undefined, prevPage: '/#top' }), undefined)
   })
 
   it('renders Location component with props from cookies', async () => {
