@@ -33,11 +33,20 @@ type Props = {
   contact?: Omit<GenericSummaryData, 'description'> & { description: string[] }
   location: GenericSummaryData
   primaryForm: GenericSummaryData
+  primaryFormLink: string
 }
 
 const initialState: Pick<FormState, 'systemError'> = {}
 
-export const Summary = ({ action, additionalQuestions, attachments, contact, location, primaryForm }: Props) => {
+export const Summary = ({
+  action,
+  additionalQuestions,
+  attachments,
+  contact,
+  location,
+  primaryForm,
+  primaryFormLink,
+}: Props) => {
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ systemError }, formAction] = useActionState(action, initialState)
@@ -84,7 +93,7 @@ export const Summary = ({ action, additionalQuestions, attachments, contact, loc
             <SummaryList.Term>{primaryForm.term}</SummaryList.Term>
             <SummaryList.Description>{primaryForm.description}</SummaryList.Description>
             <SummaryList.Description>
-              <NextLink href={`/#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
+              <NextLink href={primaryFormLink} legacyBehavior passHref>
                 <Link>{t('change-links.primary')}</Link>
               </NextLink>
             </SummaryList.Description>

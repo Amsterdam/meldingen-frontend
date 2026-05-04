@@ -11,7 +11,7 @@ import {
   getMeldingData,
   getPrimaryFormSummary,
 } from './utils'
-import { COOKIES } from '~/constants'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
 export default async () => {
   const cookieStore = await cookies()
@@ -33,6 +33,13 @@ export default async () => {
   // Pass extra arguments to the postSummaryForm action
   const postSummaryFormWithExtraArgs = postSummaryForm.bind(null, { created_at, public_id })
 
+  const source = cookieStore.get(COOKIES.SOURCE)?.value
+
+  const primaryFormLink =
+    source === 'back-office'
+      ? `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?id=${meldingId}&token=${token}`
+      : `/#${TOP_ANCHOR_ID}`
+
   return (
     <Summary
       action={postSummaryFormWithExtraArgs}
@@ -41,6 +48,7 @@ export default async () => {
       contact={contact}
       location={location}
       primaryForm={primaryForm.data}
+      primaryFormLink={primaryFormLink}
     />
   )
 }
