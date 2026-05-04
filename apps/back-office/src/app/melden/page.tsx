@@ -4,7 +4,7 @@ import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { postMeldingForm } from './actions'
 import { MeldingForm } from './MeldingForm'
-import { getMeldingByMeldingIdMelder, getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
+import { getMeldingByMeldingId, getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.
@@ -15,28 +15,6 @@ export const generateMetadata = async () => {
 
   return {
     title: t('metadata.title'),
-  }
-}
-
-const getPrefilledPrimaryTextArea = async (
-  meldingId: string,
-  token: string,
-  primaryTextArea: StaticFormTextAreaComponentOutput,
-) => {
-  const { data, error } = await getMeldingByMeldingIdMelder({
-    path: { melding_id: parseInt(meldingId, 10) },
-    query: { token },
-  })
-
-  if (error) {
-    // TODO: Log the error to an error reporting service
-    // eslint-disable-next-line no-console
-    console.error(error)
-  }
-
-  return {
-    ...primaryTextArea,
-    defaultValue: data?.text,
   }
 }
 
@@ -69,11 +47,23 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: string; t
 
   const action = postMeldingForm.bind(null, { existingId: id, existingToken: token, requiredErrorMessage })
 
+  // Prefill form
   const isExistingMelding = id && token
 
-  const prefilledPrimaryTextArea = isExistingMelding
-    ? await getPrefilledPrimaryTextArea(id, token, primaryTextArea)
-    : primaryTextArea
+  const { data: meldingData, error: meldingError } = await getMeldingByMeldingId({ path: { melding_id: id } })
 
-  return <MeldingForm action={action} primaryTextArea={prefilledPrimaryTextArea} />
+  if (meldingError) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(meldingError)
+  }
+
+  const defaultValues = isExistingMelding
+    ? {
+        primary: meldingData?.text ?? '',
+        urgency: meldingData?.urgency ?? 0,
+      }
+    : {}
+
+  return <MeldingForm action={action} defaultValues={defaultValues} primaryTextArea={primaryTextArea} />
 }
