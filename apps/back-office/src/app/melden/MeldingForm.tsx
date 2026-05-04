@@ -54,7 +54,7 @@ export const MeldingForm = ({ action, defaultValues, primaryTextArea }: Props) =
    * If there is form data, it should take priority over the prefilled components from the server.
    */
   const primaryTextAreaDefaultValue = (formData?.get('primary') as string | null) ?? defaultValues?.primary ?? ''
-  const urgencyDefaultValue = (formData?.get('urgency') as number | null) ?? defaultValues?.urgency ?? 0
+  const urgencyDefaultValue = (formData?.get('urgency') as string | null) ?? defaultValues?.urgency ?? 0
 
   const [charCount, setCharCount] = useState(primaryTextAreaDefaultValue.length)
 
@@ -119,7 +119,7 @@ export const MeldingForm = ({ action, defaultValues, primaryTextArea }: Props) =
                 {URGENCY_VALUES.map((urgency) => (
                   <Radio
                     aria-required="true"
-                    defaultChecked={urgency === urgencyDefaultValue}
+                    defaultChecked={urgency === Number(urgencyDefaultValue)}
                     key={urgency}
                     name="urgency"
                     value={String(urgency)}
