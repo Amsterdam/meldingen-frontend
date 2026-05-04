@@ -18,7 +18,7 @@ export const generateMetadata = async () => {
   }
 }
 
-export default async () => {
+export default async ({ searchParams }: { searchParams: Promise<{ id?: string; token?: string }> }) => {
   const t = await getTranslations('melding-form.errors')
 
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
@@ -43,7 +43,9 @@ export default async () => {
 
   const requiredErrorMessage = primaryTextArea.validate?.required_error_message || t('required-error-message-fallback')
 
-  const action = postMeldingForm.bind(null, { requiredErrorMessage })
+  const { id, token } = await searchParams
+
+  const action = postMeldingForm.bind(null, { existingId: id, existingToken: token, requiredErrorMessage })
 
   return <MeldingForm action={action} primaryTextArea={primaryTextArea} />
 }

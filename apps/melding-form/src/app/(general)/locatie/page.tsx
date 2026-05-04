@@ -7,7 +7,7 @@ import {
 } from '@meldingen/api-client'
 
 import { Location } from './Location'
-import { COOKIES } from '~/constants'
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
 const getFilter = (id: string) => `
   <Filter>
@@ -58,6 +58,23 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
   return assets.filter((asset) => asset !== null)
 }
 
+type Args = {
+  lastPanelPath: string | undefined
+  meldingId: string
+  source: string | undefined
+  token: string
+}
+
+const getPreviousPagePath = ({ lastPanelPath, meldingId, source, token }: Args) => {
+  if (lastPanelPath) return lastPanelPath
+
+  if (source === 'back-office') {
+    return `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?id=${meldingId}&token=${token}`
+  }
+
+  return `/#${TOP_ANCHOR_ID}`
+}
+
 export default async () => {
   const cookieStore = await cookies()
   // We check for the existence of these cookies in our proxy, so non-null assertion is safe here.
@@ -65,9 +82,12 @@ export default async () => {
   const token = cookieStore.get(COOKIES.TOKEN)!.value
 
   const address = cookieStore.get(COOKIES.ADDRESS)?.value
-  const prevPage = cookieStore.get(COOKIES.LAST_PANEL_PATH)
+  const lastPanelPath = cookieStore.get(COOKIES.LAST_PANEL_PATH)?.value
+  const source = cookieStore.get(COOKIES.SOURCE)?.value
+
+  const previousPagePath = getPreviousPagePath({ lastPanelPath, meldingId, source, token })
 
   const assets = await getAssetsFromMelding(meldingId, token)
 
-  return <Location address={address} prevPage={prevPage ? prevPage.value : '/'} selectedAssets={assets} />
+  return <Location address={address} prevPage={previousPagePath} selectedAssets={assets} />
 }

@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 import type { MeldingOutput } from '@meldingen/api-client'
 
 import { hasValidationErrors } from './_utils/hasValidationErrors'
-import { patchMeldingByMeldingId, postMelding } from '~/apiClientProxy'
+import { patchMeldingByMeldingId, patchMeldingByMeldingIdMelder, postMelding } from '~/apiClientProxy'
 import { URGENCY_VALUES } from '~/constants'
 import { handleApiError } from '~/handleApiError'
 
@@ -18,8 +18,14 @@ export type FormState = {
 const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
   URGENCY_VALUES.includes(value as MeldingOutput['urgency'])
 
+export type ArgsType = {
+  existingId?: string
+  existingToken?: string
+  requiredErrorMessage: string
+}
+
 export const postMeldingForm = async (
-  { requiredErrorMessage }: { requiredErrorMessage: string },
+  { existingId, existingToken, requiredErrorMessage }: ArgsType,
   _: unknown,
   formData: FormData,
 ): Promise<FormState> => {
@@ -43,7 +49,15 @@ export const postMeldingForm = async (
     }
   }
 
-  const { data, error, response } = await postMelding({ body: { text: formDataObj.primary.toString() } })
+  const isExistingMelding = existingId && existingToken
+
+  const { data, error, response } = isExistingMelding
+    ? await patchMeldingByMeldingIdMelder({
+        body: { text: formDataObj.primary.toString() },
+        path: { melding_id: parseInt(existingId, 10) },
+        query: { token: existingToken },
+      })
+    : await postMelding({ body: { text: formDataObj.primary.toString() } })
 
   // Return other validation errors if there are any
   if (hasValidationErrors(response, error)) {
