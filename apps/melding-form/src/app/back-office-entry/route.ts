@@ -36,6 +36,10 @@ export const GET = async (request: NextRequest) => {
   cookieStore.set(COOKIES.TOKEN, token, { maxAge: oneDay })
   cookieStore.set(COOKIES.SOURCE, 'back-office', { maxAge: oneDay })
 
+  // The LAST_PANEL_PATH cookie might be populated by earlier additional questions.
+  // Delete it here in case a reclassification occurs.
+  cookieStore.delete(COOKIES.LAST_PANEL_PATH)
+
   const result = await resolveClassificationRedirect(
     parseInt(id, 10),
     token,

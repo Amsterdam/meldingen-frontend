@@ -4,7 +4,7 @@ import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { postMeldingForm } from './actions'
 import { MeldingForm } from './MeldingForm'
-import { getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
+import { getMeldingByMeldingIdMelder, getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.
@@ -15,6 +15,28 @@ export const generateMetadata = async () => {
 
   return {
     title: t('metadata.title'),
+  }
+}
+
+const getPrefilledPrimaryTextArea = async (
+  meldingId: string,
+  token: string,
+  primaryTextArea: StaticFormTextAreaComponentOutput,
+) => {
+  const { data, error } = await getMeldingByMeldingIdMelder({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (error) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(error)
+  }
+
+  return {
+    ...primaryTextArea,
+    defaultValue: data?.text,
   }
 }
 
@@ -47,5 +69,11 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: string; t
 
   const action = postMeldingForm.bind(null, { existingId: id, existingToken: token, requiredErrorMessage })
 
-  return <MeldingForm action={action} primaryTextArea={primaryTextArea} />
+  const isExistingMelding = id && token
+
+  const prefilledPrimaryTextArea = isExistingMelding
+    ? await getPrefilledPrimaryTextArea(id, token, primaryTextArea)
+    : primaryTextArea
+
+  return <MeldingForm action={action} primaryTextArea={prefilledPrimaryTextArea} />
 }
