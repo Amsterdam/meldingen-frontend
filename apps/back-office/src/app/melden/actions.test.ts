@@ -105,6 +105,32 @@ describe('postMeldingForm', () => {
     vi.unstubAllEnvs()
   })
 
+  it('uses a PATCH request when id and token are passed to postMeldingForm', async () => {
+    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
+
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+    formData.set('urgency', '1')
+
+    await postMeldingForm(
+      { existingId: '123', existingToken: 'test-token', requiredErrorMessage: 'Dit veld is verplicht.' },
+      null,
+      formData,
+    )
+
+    const params = new URLSearchParams({
+      created_at: '2025-05-26T11:56:34.081Z',
+      id: '123',
+      public_id: 'B100AA',
+      token: 'PATCH request',
+    })
+    params.set('classification_id', '2')
+
+    expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
+
+    vi.unstubAllEnvs()
+  })
+
   it('redirects to the correct URL without classification_id when classification is not returned', async () => {
     vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
 

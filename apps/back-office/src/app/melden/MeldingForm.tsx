@@ -32,12 +32,13 @@ import styles from './MeldingForm.module.css'
 
 type Props = {
   action: (_: unknown, formData: FormData) => Promise<FormState>
+  defaultValues?: { primary?: string; urgency?: number }
   primaryTextArea: StaticFormTextAreaComponentOutput
 }
 
 const initialState: FormState = {}
 
-export const MeldingForm = ({ action, primaryTextArea }: Props) => {
+export const MeldingForm = ({ action, defaultValues, primaryTextArea }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
@@ -47,7 +48,11 @@ export const MeldingForm = ({ action, primaryTextArea }: Props) => {
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
 
-  const primaryTextAreaDefaultValue = (formData?.get('primary') as string) ?? ''
+  // Form components can be prefilled on load on the server, where we fill in existing answers from the backend,
+  // or in case of an error, where we use the form data provided.
+  // If there is form data, it should take priority over the prefilled components from the server.
+  const primaryTextAreaDefaultValue = (formData?.get('primary') as string | null) ?? defaultValues?.primary ?? ''
+  const urgencyDefaultValue = (formData?.get('urgency') as string | null) ?? defaultValues?.urgency ?? 0
 
   const [charCount, setCharCount] = useState(primaryTextAreaDefaultValue.length)
 
@@ -112,7 +117,7 @@ export const MeldingForm = ({ action, primaryTextArea }: Props) => {
                 {URGENCY_VALUES.map((urgency) => (
                   <Radio
                     aria-required="true"
-                    defaultChecked={formData ? formData.get('urgency') === String(urgency) : urgency === 0}
+                    defaultChecked={urgency === Number(urgencyDefaultValue)}
                     key={urgency}
                     name="urgency"
                     value={String(urgency)}

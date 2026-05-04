@@ -41,7 +41,7 @@ describe('MeldingForm', () => {
   })
 
   it('renders an Invalid Form Alert when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
     ])
@@ -96,20 +96,48 @@ describe('MeldingForm', () => {
     })
   })
 
-  it('checks "medium" urgency by default', () => {
-    render(<MeldingForm {...defaultProps} />)
-
-    expect(screen.getByRole('radio', { name: 'urgency.0' })).toBeChecked()
-  })
-
-  it('prefills the textarea from formData when the action returns formData', () => {
+  it('prefills the text area from formData when the action returns formData', () => {
     const formData = new FormData()
     formData.set('primary', 'Prefilled text')
-    ;(useActionState as Mock).mockReturnValue([{ formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
 
     render(<MeldingForm {...defaultProps} />)
 
     expect(screen.getByRole('textbox')).toHaveValue('Prefilled text')
+  })
+
+  it('prefills the text area from defaultValues when provided and there is no formData', () => {
+    render(<MeldingForm {...defaultProps} defaultValues={{ primary: 'Default value' }} />)
+
+    expect(screen.getByRole('textbox')).toHaveValue('Default value')
+  })
+
+  it('falls back to an empty text area when there is no formData and no defaultValues', () => {
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(screen.getByRole('textbox')).toHaveValue('')
+  })
+
+  it('prefills urgency from formData when the action returns formData', () => {
+    const formData = new FormData()
+    formData.set('urgency', '1')
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(screen.getByRole('radio', { name: 'urgency.1' })).toBeChecked()
+  })
+
+  it('prefills urgency from defaultValues when provided and there is no formData', () => {
+    render(<MeldingForm {...defaultProps} defaultValues={{ urgency: -1 }} />)
+
+    expect(screen.getByRole('radio', { name: 'urgency.-1' })).toBeChecked()
+  })
+
+  it('falls back to "medium" urgency when there is no formData and no defaultValues', () => {
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(screen.getByRole('radio', { name: 'urgency.0' })).toBeChecked()
   })
 
   it('submits the form when the submit button is clicked', async () => {
