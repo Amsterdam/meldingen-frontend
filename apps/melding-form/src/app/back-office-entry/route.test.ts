@@ -28,9 +28,10 @@ const requiredParams = {
 }
 
 describe('GET', () => {
-  const mockCookieStore = { delete: vi.fn(), set: vi.fn() }
+  let mockCookieStore: { delete: ReturnType<typeof vi.fn>; set: ReturnType<typeof vi.fn> }
 
   beforeEach(() => {
+    mockCookieStore = { delete: vi.fn(), set: vi.fn() }
     ;(cookies as Mock).mockReturnValue(mockCookieStore)
     vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', BASE_URL)
   })
