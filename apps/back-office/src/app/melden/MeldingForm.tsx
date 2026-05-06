@@ -29,6 +29,7 @@ import type { FormState } from './actions'
 
 import { InvalidFormAlert } from './_components/InvalidFormAlert'
 import { SystemErrorAlert } from './_components/SystemErrorAlert'
+import { postMeldingForm } from './actions'
 import { URGENCY_VALUES } from '~/constants'
 
 import styles from './MeldingForm.module.css'
@@ -43,10 +44,9 @@ type PrefetchedMelding = {
 }
 
 type Props = {
-  action: (_: unknown, formData: FormData) => Promise<FormState>
   defaultPrefetchedMelding?: PrefetchedMelding
   defaultValues?: { primary?: string; urgency?: number }
-  existingId?: string
+  existingId?: number
   existingToken?: string
   primaryTextArea: StaticFormTextAreaComponentOutput
 }
@@ -54,7 +54,6 @@ type Props = {
 const initialState: FormState = {}
 
 export const MeldingForm = ({
-  action,
   defaultPrefetchedMelding,
   defaultValues,
   existingId,
@@ -67,6 +66,13 @@ export const MeldingForm = ({
   const { description, label, maxCharCount } = primaryTextArea
 
   const ref = useRef<HTMLTextAreaElement>(null)
+
+  const t = useTranslations('melding-form')
+  const tShared = useTranslations('shared')
+
+  const requiredErrorMessage =
+    primaryTextArea.validate?.required_error_message ?? t('errors.required-error-message-fallback')
+  const action = postMeldingForm.bind(null, { existingId, existingToken, requiredErrorMessage })
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
   const [, startTransition] = useTransition()
@@ -82,9 +88,6 @@ export const MeldingForm = ({
 
   // Track the last text sent to the backend to avoid redundant blur calls
   const lastSubmittedTextRef = useRef(primaryTextAreaDefaultValue)
-
-  const t = useTranslations('melding-form')
-  const tShared = useTranslations('shared')
 
   // Set focus on InvalidFormAlert when there are validation errors
   // and on SystemErrorAlert when there is a system error
@@ -109,29 +112,28 @@ export const MeldingForm = ({
 
     startTransition(async () => {
       try {
+        const id = prefetchedMelding?.id ?? existingId
+        const token = prefetchedMelding?.token ?? existingToken
+
         const { data, error } =
-          existingId && existingToken
+          id && token
             ? await patchMeldingByMeldingIdMelder({
                 body: { text },
-                path: { melding_id: parseInt(existingId, 10) },
-                query: { token: existingToken },
+                path: { melding_id: id },
+                query: { token },
               })
-            : prefetchedMelding
-              ? await patchMeldingByMeldingIdMelder({
-                  body: { text },
-                  path: { melding_id: prefetchedMelding.id },
-                  query: { token: prefetchedMelding.token },
-                })
-              : await postMelding({ body: { text } })
+            : await postMelding({ body: { text } })
 
         if (!error && data) {
+          const { classification, created_at, id, public_id, token } = data
+
           setPrefetchedMelding({
-            classificationId: data.classification?.id,
-            classificationName: data.classification?.name,
-            createdAt: data.created_at,
-            id: data.id,
-            publicId: data.public_id,
-            token: data.token,
+            classificationId: classification?.id,
+            classificationName: classification?.name,
+            createdAt: created_at,
+            id: id,
+            publicId: public_id,
+            token: token,
           })
           lastSubmittedTextRef.current = text
         }

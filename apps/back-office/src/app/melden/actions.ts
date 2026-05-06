@@ -16,7 +16,7 @@ export type FormState = {
 }
 
 export type ArgsType = {
-  existingId?: string
+  existingId?: number
   existingToken?: string
   requiredErrorMessage: string
 }
@@ -68,7 +68,6 @@ export const postMeldingForm = async (
   }
 
   const isExistingMelding = existingId && existingToken
-  const isValidId = Number.isFinite(Number(existingId))
 
   let meldingData: MeldingData | undefined
 
@@ -78,14 +77,13 @@ export const postMeldingForm = async (
   }
 
   if (!meldingData) {
-    const { data, error, response } =
-      isExistingMelding && isValidId
-        ? await patchMeldingByMeldingIdMelder({
-            body: { text: formDataObj.primary.toString() },
-            path: { melding_id: parseInt(existingId, 10) },
-            query: { token: existingToken },
-          })
-        : await postMelding({ body: { text: formDataObj.primary.toString() } })
+    const { data, error, response } = isExistingMelding
+      ? await patchMeldingByMeldingIdMelder({
+          body: { text: formDataObj.primary.toString() },
+          path: { melding_id: existingId },
+          query: { token: existingToken },
+        })
+      : await postMelding({ body: { text: formDataObj.primary.toString() } })
 
     if (hasValidationErrors(response, error)) {
       return {
@@ -96,12 +94,14 @@ export const postMeldingForm = async (
 
     if (error) return { formData, systemError: error }
 
+    const { classification, created_at, id, public_id, token } = data
+
     meldingData = {
-      classificationId: data.classification?.id,
-      createdAt: data.created_at,
-      id: data.id,
-      publicId: data.public_id,
-      token: data.token,
+      classificationId: classification?.id,
+      createdAt: created_at,
+      id,
+      publicId: public_id,
+      token,
     }
   }
 
@@ -112,13 +112,15 @@ export const postMeldingForm = async (
 
   if (urgencyError) return { formData, systemError: urgencyError }
 
+  const { classificationId, createdAt, id, publicId, token } = meldingData
+
   const params = new URLSearchParams({
-    created_at: meldingData.createdAt,
-    id: String(meldingData.id),
-    public_id: meldingData.publicId,
-    token: meldingData.token,
+    created_at: createdAt,
+    id: String(id),
+    public_id: publicId,
+    token: token,
   })
-  if (meldingData.classificationId) params.set('classification_id', String(meldingData.classificationId))
+  if (classificationId) params.set('classification_id', String(classificationId))
 
   redirect(`${process.env.NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`)
 }
