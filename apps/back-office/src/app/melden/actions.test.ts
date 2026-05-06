@@ -142,7 +142,7 @@ describe('postMeldingForm', () => {
     formData.set('urgency', '1')
 
     await postMeldingForm(
-      { existingId: '123', existingToken: 'test-token', requiredErrorMessage: 'Dit veld is verplicht.' },
+      { existingId: 123, existingToken: 'test-token', requiredErrorMessage: 'Dit veld is verplicht.' },
       null,
       formData,
     )

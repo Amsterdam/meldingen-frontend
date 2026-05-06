@@ -71,7 +71,7 @@ describe('MeldingForm', () => {
   })
 
   it('does not render the character count when maxCharCount is not provided', () => {
-    render(<MeldingForm action={vi.fn()} primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
+    render(<MeldingForm primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
 
     expect(screen.queryByText(/500/)).not.toBeInTheDocument()
   })
@@ -79,7 +79,7 @@ describe('MeldingForm', () => {
   it('does not update the character count when maxCharCount is not provided and the user types', async () => {
     const user = userEvent.setup()
 
-    render(<MeldingForm action={vi.fn()} primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
+    render(<MeldingForm primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
 
     await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello')
 

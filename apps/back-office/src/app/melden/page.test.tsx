@@ -1,8 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
-import type { MeldingOutput } from '@meldingen/api-client'
-
 import { MeldingForm } from './MeldingForm'
 import Page, { generateMetadata } from './page'
 import { melding, textAreaComponent } from '~/mocks/data'
@@ -87,7 +85,7 @@ describe('Page', () => {
   })
 
   it('renders the MeldingForm component with default values when id and token are provided and melding exists', async () => {
-    const meldingData: MeldingOutput = {
+    const meldingData = {
       classification: melding.classification,
       created_at: melding.created_at,
       id: melding.id,
@@ -106,22 +104,22 @@ describe('Page', () => {
       ),
     )
 
-    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: 'valid-token' }) })
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
 
     render(PageComponent)
 
     expect(MeldingForm).toHaveBeenCalledWith(
       {
         defaultPrefetchedMelding: {
-          classificationId: melding.classification.id,
-          classificationName: melding.classification.name,
+          classificationId: melding.classification?.id,
+          classificationName: melding.classification?.name,
           createdAt: melding.created_at,
           id: melding.id,
           publicId: melding.public_id,
           token: 'valid-token',
         },
         defaultValues: { primary: 'Prefilled text', urgency: -1 },
-        existingId: '1',
+        existingId: 1,
         existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
       },
@@ -142,7 +140,7 @@ describe('Page', () => {
       ),
     )
 
-    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: 'valid-token' }) })
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
 
     render(PageComponent)
 
@@ -174,7 +172,7 @@ describe('Page', () => {
       ),
     )
 
-    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: 'valid-token' }) })
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
 
     render(PageComponent)
 
