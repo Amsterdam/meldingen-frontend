@@ -8,6 +8,7 @@ import { Menu, Page } from '@meldingen/ui'
 
 import { AmsNextLink } from './_components/AmsNextLink'
 import { Header } from './_components/Header'
+import { ApiClientInitializer } from './ApiClientInitializer'
 
 import './global.css'
 
@@ -28,6 +29,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
     <html dir="ltr" lang={locale}>
       <NextIntlClientProvider>
         <body>
+          <ApiClientInitializer />
           <Page withMenu>
             <Header>
               <Menu>

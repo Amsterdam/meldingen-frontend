@@ -1,5 +1,7 @@
 'use client'
 
+import type { FocusEvent } from 'react'
+
 import {
   Button,
   CharacterCount,
@@ -14,13 +16,14 @@ import {
 } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useRef, useState } from 'react'
+import { useActionState, useEffect, useRef, useState, useTransition } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
+import { patchMeldingByMeldingIdMelder, postMelding } from '@meldingen/api-client'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Column } from '@meldingen/ui'
+import { Column, Paragraph } from '@meldingen/ui'
 
 import type { FormState } from './actions'
 
@@ -30,15 +33,34 @@ import { URGENCY_VALUES } from '~/constants'
 
 import styles from './MeldingForm.module.css'
 
+type PrefetchedMelding = {
+  classificationId?: number
+  classificationName?: string
+  createdAt: string
+  id: number
+  publicId: string
+  token: string
+}
+
 type Props = {
   action: (_: unknown, formData: FormData) => Promise<FormState>
+  defaultPrefetchedMelding?: PrefetchedMelding
   defaultValues?: { primary?: string; urgency?: number }
+  existingId?: string
+  existingToken?: string
   primaryTextArea: StaticFormTextAreaComponentOutput
 }
 
 const initialState: FormState = {}
 
-export const MeldingForm = ({ action, defaultValues, primaryTextArea }: Props) => {
+export const MeldingForm = ({
+  action,
+  defaultPrefetchedMelding,
+  defaultValues,
+  existingId,
+  existingToken,
+  primaryTextArea,
+}: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
@@ -47,6 +69,8 @@ export const MeldingForm = ({ action, defaultValues, primaryTextArea }: Props) =
   const ref = useRef<HTMLTextAreaElement>(null)
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
+  const [, startTransition] = useTransition()
+  const [prefetchedMelding, setPrefetchedMelding] = useState<PrefetchedMelding | null>(defaultPrefetchedMelding ?? null)
 
   // Form components can be prefilled on load on the server, where we fill in existing answers from the backend,
   // or in case of an error, where we use the form data provided.
@@ -55,6 +79,9 @@ export const MeldingForm = ({ action, defaultValues, primaryTextArea }: Props) =
   const urgencyDefaultValue = (formData?.get('urgency') as string | null) ?? defaultValues?.urgency ?? 0
 
   const [charCount, setCharCount] = useState(primaryTextAreaDefaultValue.length)
+
+  // Track the last text sent to the backend to avoid redundant blur calls
+  const lastSubmittedTextRef = useRef(primaryTextAreaDefaultValue)
 
   const t = useTranslations('melding-form')
   const tShared = useTranslations('shared')
@@ -76,6 +103,43 @@ export const MeldingForm = ({ action, defaultValues, primaryTextArea }: Props) =
       console.error(systemError)
     }
   }, [systemError])
+
+  const handleBlur = ({ target: { value: text } }: FocusEvent<HTMLTextAreaElement>) => {
+    if (!text || text === lastSubmittedTextRef.current) return
+
+    startTransition(async () => {
+      try {
+        const { data, error } =
+          existingId && existingToken
+            ? await patchMeldingByMeldingIdMelder({
+                body: { text },
+                path: { melding_id: parseInt(existingId, 10) },
+                query: { token: existingToken },
+              })
+            : prefetchedMelding
+              ? await patchMeldingByMeldingIdMelder({
+                  body: { text },
+                  path: { melding_id: prefetchedMelding.id },
+                  query: { token: prefetchedMelding.token },
+                })
+              : await postMelding({ body: { text } })
+
+        if (!error && data) {
+          setPrefetchedMelding({
+            classificationId: data.classification?.id,
+            classificationName: data.classification?.name,
+            createdAt: data.created_at,
+            id: data.id,
+            publicId: data.public_id,
+            token: data.token,
+          })
+          lastSubmittedTextRef.current = text
+        }
+      } catch {
+        // Silently swallow errors — submit action fallback handles it
+      }
+    })
+  }
 
   return (
     <Grid as="main" className={`ams-page__area--body ${styles.main}`} gapVertical="large" paddingVertical="x-large">
@@ -102,6 +166,7 @@ export const MeldingForm = ({ action, defaultValues, primaryTextArea }: Props) =
                 id="primary"
                 invalid={Boolean(validationErrors?.length)}
                 name="primary"
+                onBlur={handleBlur}
                 onChange={() => {
                   if (typeof maxCharCount === 'number' && ref.current) {
                     setCharCount(ref.current.value.length)
@@ -112,6 +177,12 @@ export const MeldingForm = ({ action, defaultValues, primaryTextArea }: Props) =
               />
               {maxCharCount && <CharacterCount length={charCount} maxLength={maxCharCount} />}
             </Field>
+            {prefetchedMelding?.classificationName && (
+              <Paragraph>De categorie van de melding is: {prefetchedMelding.classificationName}</Paragraph>
+            )}
+            {prefetchedMelding && (
+              <input name="prefetchedMelding" type="hidden" value={JSON.stringify(prefetchedMelding)} />
+            )}
             <FieldSet aria-required="true" legend={t('urgency-label')} role="radiogroup">
               <Column gap="x-small">
                 {URGENCY_VALUES.map((urgency) => (
