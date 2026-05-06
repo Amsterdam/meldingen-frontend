@@ -15,13 +15,31 @@ export type FormState = {
   validationErrors?: { key: string; message: string }[]
 }
 
-const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
-  URGENCY_VALUES.includes(value as MeldingOutput['urgency'])
-
 export type ArgsType = {
   existingId?: string
   existingToken?: string
   requiredErrorMessage: string
+}
+
+type MeldingData = {
+  classificationId?: number
+  createdAt: string
+  id: number
+  publicId: string
+  token: string
+}
+
+const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
+  URGENCY_VALUES.includes(value as MeldingOutput['urgency'])
+
+const safeJSONParse = (jsonString?: string) => {
+  if (!jsonString) return undefined
+
+  try {
+    return JSON.parse(jsonString)
+  } catch {
+    return undefined
+  }
 }
 
 export const postMeldingForm = async (
@@ -52,37 +70,55 @@ export const postMeldingForm = async (
   const isExistingMelding = existingId && existingToken
   const isValidId = Number.isFinite(Number(existingId))
 
-  const { data, error, response } =
-    isExistingMelding && isValidId
-      ? await patchMeldingByMeldingIdMelder({
-          body: { text: formDataObj.primary.toString() },
-          path: { melding_id: parseInt(existingId, 10) },
-          query: { token: existingToken },
-        })
-      : await postMelding({ body: { text: formDataObj.primary.toString() } })
+  let meldingData: MeldingData | undefined
 
-  // Return other validation errors if there are any
-  if (hasValidationErrors(response, error)) {
-    return {
-      formData,
-      validationErrors: [{ key: 'primary', message: handleApiError(error) }],
+  const prefetchedMeldingRaw = formDataObj.prefetchedMelding as string | undefined
+  if (prefetchedMeldingRaw) {
+    meldingData = safeJSONParse(prefetchedMeldingRaw)
+  }
+
+  if (!meldingData) {
+    const { data, error, response } =
+      isExistingMelding && isValidId
+        ? await patchMeldingByMeldingIdMelder({
+            body: { text: formDataObj.primary.toString() },
+            path: { melding_id: parseInt(existingId, 10) },
+            query: { token: existingToken },
+          })
+        : await postMelding({ body: { text: formDataObj.primary.toString() } })
+
+    if (hasValidationErrors(response, error)) {
+      return {
+        formData,
+        validationErrors: [{ key: 'primary', message: handleApiError(error) }],
+      }
+    }
+
+    if (error) return { formData, systemError: error }
+
+    meldingData = {
+      classificationId: data.classification?.id,
+      createdAt: data.created_at,
+      id: data.id,
+      publicId: data.public_id,
+      token: data.token,
     }
   }
 
-  if (error) return { formData, systemError: error }
-
   const { error: urgencyError } = await patchMeldingByMeldingId({
     body: { urgency: urgencyNumber },
-    path: { melding_id: data.id },
+    path: { melding_id: meldingData.id },
   })
 
   if (urgencyError) return { formData, systemError: urgencyError }
 
-  const { classification, created_at, id, public_id, token } = data
-  const meldingFormBaseUrl = process.env.NEXT_PUBLIC_MELDING_FORM_BASE_URL
+  const params = new URLSearchParams({
+    created_at: meldingData.createdAt,
+    id: String(meldingData.id),
+    public_id: meldingData.publicId,
+    token: meldingData.token,
+  })
+  if (meldingData.classificationId) params.set('classification_id', String(meldingData.classificationId))
 
-  const params = new URLSearchParams({ created_at, id: String(id), public_id: String(public_id), token })
-  if (classification?.id) params.set('classification_id', String(classification.id))
-
-  redirect(`${meldingFormBaseUrl}/back-office-entry?${params}`)
+  redirect(`${process.env.NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`)
 }
