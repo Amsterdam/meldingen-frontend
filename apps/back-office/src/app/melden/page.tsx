@@ -58,16 +58,17 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
       }
     : {}
 
-  const defaultPrefetchedMelding = result?.data
-    ? {
-        classificationId: result.data.classification?.id,
-        classificationName: result.data.classification?.name,
-        createdAt: result.data.created_at,
-        id: result.data.id,
-        publicId: result.data.public_id,
-        token: token!,
-      }
-    : undefined
+  const defaultPrefetchedMelding =
+    token && result?.data
+      ? {
+          classificationId: result.data.classification?.id,
+          classificationName: result.data.classification?.name,
+          createdAt: result.data.created_at,
+          id: result.data.id,
+          publicId: result.data.public_id,
+          token: token,
+        }
+      : undefined
 
   return (
     <MeldingForm
