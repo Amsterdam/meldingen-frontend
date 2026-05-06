@@ -136,9 +136,15 @@ export const MeldingForm = ({
             token: token,
           })
           lastSubmittedTextRef.current = text
+        } else if (error) {
+          // TODO: Log the error to an error reporting service
+          // eslint-disable-next-line no-console
+          console.error(error)
         }
-      } catch {
-        // Silently swallow errors — submit action fallback handles it
+      } catch (error) {
+        // TODO: Log the error to an error reporting service
+        // eslint-disable-next-line no-console
+        console.error(error)
       }
     })
   }
