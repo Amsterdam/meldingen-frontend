@@ -35,6 +35,35 @@ describe('postMeldingForm', () => {
     })
   })
 
+  it('uses melding data from form when available', async () => {
+    const meldingData = {
+      classificationId: 10,
+      createdAt: '2026-05-26T11:56:34.081Z',
+      id: 876,
+      publicId: 'A123AA',
+      token: 'prefetched-data-token',
+    }
+
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+    formData.set('urgency', '1')
+    formData.set('prefetchedMelding', JSON.stringify(meldingData))
+
+    await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
+
+    const params = new URLSearchParams({
+      created_at: meldingData.createdAt,
+      id: String(meldingData.id),
+      public_id: meldingData.publicId,
+      token: meldingData.token,
+    })
+    params.set('classification_id', String(meldingData.classificationId))
+
+    expect(redirect).toHaveBeenCalledWith(
+      `${process.env.NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`,
+    )
+  })
+
   it('returns validation errors for other invalid answers', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING, () =>

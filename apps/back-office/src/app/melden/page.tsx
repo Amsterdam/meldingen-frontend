@@ -59,7 +59,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
     : {}
 
   const defaultPrefetchedMelding =
-    token && result?.data
+    token && result?.data?.id
       ? {
           classificationId: result.data.classification?.id,
           classificationName: result.data.classification?.name,

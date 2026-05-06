@@ -1,24 +1,16 @@
-import type { Mock } from 'vitest'
-
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
-import * as actionsModule from './actions'
+import type { MeldingOutput } from '@meldingen/api-client'
+
 import { MeldingForm } from './MeldingForm'
 import Page, { generateMetadata } from './page'
-import { textAreaComponent } from '~/mocks/data'
+import { melding, textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
-vi.mock('./actions', () => ({ postMeldingForm: vi.fn() }))
-
-let capturedAction: ((prevState: unknown, formData: FormData) => void) | null = null
-
 vi.mock('./MeldingForm', () => ({
-  MeldingForm: vi.fn((props: { action: () => void }) => {
-    capturedAction = props.action
-    return <div>MeldingForm Component</div>
-  }),
+  MeldingForm: vi.fn(() => <div>MeldingForm Component</div>),
 }))
 
 describe('generateMetadata', () => {
@@ -83,13 +75,26 @@ describe('Page', () => {
 
     expect(screen.getByText('MeldingForm Component')).toBeInTheDocument()
     expect(MeldingForm).toHaveBeenCalledWith(
-      { action: expect.any(Function), defaultValues: {}, primaryTextArea: textAreaComponent },
+      {
+        defaultPrefetchedMelding: undefined,
+        defaultValues: {},
+        existingId: undefined,
+        existingToken: undefined,
+        primaryTextArea: textAreaComponent,
+      },
       undefined,
     )
   })
 
   it('renders the MeldingForm component with default values when id and token are provided and melding exists', async () => {
-    const meldingData = { text: 'Prefilled text', urgency: -1 }
+    const meldingData: MeldingOutput = {
+      classification: melding.classification,
+      created_at: melding.created_at,
+      id: melding.id,
+      public_id: melding.public_id,
+      text: 'Prefilled text',
+      urgency: -1,
+    }
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json(meldingData)),
       http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
@@ -107,8 +112,17 @@ describe('Page', () => {
 
     expect(MeldingForm).toHaveBeenCalledWith(
       {
-        action: expect.any(Function),
+        defaultPrefetchedMelding: {
+          classificationId: melding.classification.id,
+          classificationName: melding.classification.name,
+          createdAt: melding.created_at,
+          id: melding.id,
+          publicId: melding.public_id,
+          token: 'valid-token',
+        },
         defaultValues: { primary: 'Prefilled text', urgency: -1 },
+        existingId: '1',
+        existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
       },
       undefined,
@@ -136,8 +150,10 @@ describe('Page', () => {
 
     expect(MeldingForm).toHaveBeenCalledWith(
       {
-        action: expect.any(Function),
+        defaultPrefetchedMelding: undefined,
         defaultValues: {},
+        existingId: '1',
+        existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
       },
       undefined,
@@ -164,11 +180,13 @@ describe('Page', () => {
 
     expect(MeldingForm).toHaveBeenCalledWith(
       {
-        action: expect.any(Function),
+        defaultPrefetchedMelding: undefined,
         defaultValues: {
           primary: undefined,
           urgency: undefined,
         },
+        existingId: '1',
+        existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
       },
       undefined,
