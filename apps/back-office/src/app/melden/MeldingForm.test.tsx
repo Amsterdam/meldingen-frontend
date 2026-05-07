@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { http, HttpResponse } from 'msw'
 import { useActionState } from 'react'
 import { Mock } from 'vitest'
 
@@ -7,6 +8,8 @@ import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { MeldingForm } from './MeldingForm'
 import { URGENCY_VALUES } from '~/constants'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -173,5 +176,147 @@ describe('MeldingForm', () => {
     const alert = screen.getByRole('alert')
 
     expect(alert).toHaveFocus()
+  })
+
+  describe('handleBlur', () => {
+    it('returns early when the textarea is empty', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      const user = userEvent.setup()
+
+      const { container } = render(<MeldingForm {...defaultProps} />)
+
+      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]')
+
+      await user.click(screen.getByRole('textbox', { name: 'Some label' }))
+      await user.tab()
+
+      await waitFor(() => {
+        expect(consoleSpy).not.toHaveBeenCalledWith('some error')
+      })
+
+      expect(hiddenInput).toBeNull()
+
+      consoleSpy.mockRestore()
+    })
+
+    it('returns early when the text matches the initial value', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      const user = userEvent.setup()
+
+      const { container } = render(<MeldingForm {...defaultProps} defaultValues={{ primary: 'existing text' }} />)
+
+      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]')
+
+      await user.click(screen.getByRole('textbox', { name: 'Some label' }))
+      await user.tab()
+
+      await waitFor(() => {
+        expect(consoleSpy).not.toHaveBeenCalledWith('some error')
+      })
+
+      expect(hiddenInput).toBeNull()
+
+      consoleSpy.mockRestore()
+    })
+
+    it('uses a PATCH request when existingId and existingToken are provided', async () => {
+      const user = userEvent.setup()
+
+      const { container } = render(<MeldingForm {...defaultProps} existingId={1} existingToken="token123" />)
+
+      await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
+      await user.tab()
+
+      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]') as HTMLInputElement
+      const decodedValue = JSON.parse(hiddenInput.value)
+
+      expect(decodedValue.token).toBe('PATCH request')
+    })
+
+    it('uses a PATCH request when defaultPrefetchedMelding id and token are provided', async () => {
+      const user = userEvent.setup()
+
+      const { container } = render(
+        <MeldingForm
+          {...defaultProps}
+          defaultPrefetchedMelding={{ createdAt: '2024-01-01', id: 99, publicId: 'xyz', token: 'prefetched-token' }}
+        />,
+      )
+
+      await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
+      await user.tab()
+
+      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]') as HTMLInputElement
+      const decodedValue = JSON.parse(hiddenInput.value)
+
+      expect(decodedValue.token).toBe('PATCH request')
+    })
+
+    it('uses a POST request when there is no existing id or token', async () => {
+      const user = userEvent.setup()
+
+      const { container } = render(<MeldingForm {...defaultProps} />)
+
+      await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
+      await user.tab()
+
+      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]') as HTMLInputElement
+      const decodedValue = JSON.parse(hiddenInput.value)
+
+      expect(decodedValue.token).toBe('test-token')
+    })
+
+    it('logs an error to the console when the API returns an error', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json('some error', { status: 400 })))
+
+      const user = userEvent.setup()
+
+      render(<MeldingForm {...defaultProps} />)
+
+      await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
+      await user.tab()
+
+      await waitFor(() => {
+        expect(consoleSpy).toHaveBeenCalledWith('some error')
+      })
+
+      consoleSpy.mockRestore()
+    })
+
+    it('logs an error when the API call throws', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.error()))
+
+      const user = userEvent.setup()
+
+      render(<MeldingForm {...defaultProps} />)
+
+      await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
+      await user.tab()
+
+      await waitFor(() => {
+        expect(consoleSpy).toHaveBeenCalledWith(expect.any(TypeError))
+      })
+
+      consoleSpy.mockRestore()
+    })
+
+    it('shows the classification name after a successful API call', async () => {
+      const user = userEvent.setup()
+
+      render(<MeldingForm {...defaultProps} />)
+
+      await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
+      await user.tab()
+
+      await waitFor(() => {
+        expect(screen.getByText('De categorie van de melding is: Test classification')).toBeInTheDocument()
+      })
+    })
   })
 })
