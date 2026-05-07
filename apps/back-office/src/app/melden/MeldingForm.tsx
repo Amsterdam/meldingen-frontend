@@ -124,23 +124,18 @@ export const MeldingForm = ({
               })
             : await postMelding({ body: { text } })
 
-        if (!error && data) {
-          const { classification, created_at, id, public_id, token } = data
+        if (error) throw error
 
-          setPrefetchedMelding({
-            classificationId: classification?.id,
-            classificationName: classification?.name,
-            createdAt: created_at,
-            id: id,
-            publicId: public_id,
-            token: token,
-          })
-          lastSubmittedTextRef.current = text
-        } else if (error) {
-          // TODO: Log the error to an error reporting service
-          // eslint-disable-next-line no-console
-          console.error(error)
-        }
+        setPrefetchedMelding({
+          classificationId: data.classification?.id,
+          classificationName: data.classification?.name,
+          createdAt: data.created_at,
+          id: data.id,
+          publicId: data.public_id,
+          token: data.token,
+        })
+
+        lastSubmittedTextRef.current = text
       } catch (error) {
         // TODO: Log the error to an error reporting service
         // eslint-disable-next-line no-console
