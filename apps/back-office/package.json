@@ -21,6 +21,6 @@
     "@meldingen/ui": "workspace:*",
     "next": "16.2.4",
     "next-auth": "4.24.14",
-    "next-intl": "4.9.1"
+    "next-intl": "4.11.0"
   }
 }
