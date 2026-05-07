@@ -35,6 +35,29 @@ describe('postMeldingForm', () => {
     })
   })
 
+  it('falls back to a POST call when prefetchedMelding contains invalid JSON', async () => {
+    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
+
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+    formData.set('urgency', '1')
+    formData.set('prefetchedMelding', 'not-valid-json')
+
+    await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
+
+    const params = new URLSearchParams({
+      created_at: '2025-05-26T11:56:34.081Z',
+      id: '123',
+      public_id: 'B100AA',
+      token: 'test-token',
+    })
+    params.set('classification_id', '2')
+
+    expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
+
+    vi.unstubAllEnvs()
+  })
+
   it('uses melding data from form when available', async () => {
     const meldingData = {
       classificationId: 10,
