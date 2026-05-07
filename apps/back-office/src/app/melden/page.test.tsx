@@ -150,7 +150,7 @@ describe('Page', () => {
       {
         defaultPrefetchedMelding: undefined,
         defaultValues: {},
-        existingId: '1',
+        existingId: 1,
         existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
       },
@@ -183,7 +183,7 @@ describe('Page', () => {
           primary: undefined,
           urgency: undefined,
         },
-        existingId: '1',
+        existingId: 1,
         existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
       },
