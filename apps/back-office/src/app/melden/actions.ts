@@ -32,9 +32,7 @@ type MeldingData = {
 const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
   URGENCY_VALUES.includes(value as MeldingOutput['urgency'])
 
-const safeJSONParse = (jsonString?: string) => {
-  if (!jsonString) return undefined
-
+const safeJSONParse = (jsonString: string) => {
   try {
     return JSON.parse(jsonString)
   } catch {
