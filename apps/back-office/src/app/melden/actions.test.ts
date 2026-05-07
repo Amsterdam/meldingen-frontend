@@ -58,33 +58,27 @@ describe('postMeldingForm', () => {
     vi.unstubAllEnvs()
   })
 
-  it('uses melding data from form when available', async () => {
-    const meldingData = {
-      classificationId: 10,
-      createdAt: '2026-05-26T11:56:34.081Z',
-      id: 876,
-      publicId: 'A123AA',
-      token: 'prefetched-data-token',
-    }
+  it('falls back to a POST call when prefetchedMelding contains valid JSON that does not conform to the expected structure', async () => {
+    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
 
     const formData = new FormData()
     formData.set('primary', 'Test')
     formData.set('urgency', '1')
-    formData.set('prefetchedMelding', JSON.stringify(meldingData))
+    formData.set('prefetchedMelding', JSON.stringify({ invalid: 'structure' }))
 
     await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     const params = new URLSearchParams({
-      created_at: meldingData.createdAt,
-      id: String(meldingData.id),
-      public_id: meldingData.publicId,
-      token: meldingData.token,
+      created_at: '2025-05-26T11:56:34.081Z',
+      id: '123',
+      public_id: 'B100AA',
+      token: 'test-token',
     })
-    params.set('classification_id', String(meldingData.classificationId))
+    params.set('classification_id', '2')
 
-    expect(redirect).toHaveBeenCalledWith(
-      `${process.env.NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`,
-    )
+    expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
+
+    vi.unstubAllEnvs()
   })
 
   it('returns validation errors for other invalid answers', async () => {
@@ -169,6 +163,38 @@ describe('postMeldingForm', () => {
       null,
       formData,
     )
+
+    const params = new URLSearchParams({
+      created_at: '2025-05-26T11:56:34.081Z',
+      id: '123',
+      public_id: 'B100AA',
+      token: 'PATCH request',
+    })
+    params.set('classification_id', '2')
+
+    expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
+
+    vi.unstubAllEnvs()
+  })
+
+  it('uses a PATCH request when prefetchedMelding contains valid melding data', async () => {
+    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
+
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+    formData.set('urgency', '1')
+    formData.set(
+      'prefetchedMelding',
+      JSON.stringify({
+        classificationId: 2,
+        createdAt: '2025-05-26T11:56:34.081Z',
+        id: 123,
+        publicId: 'B100AA',
+        token: 'test-token',
+      }),
+    )
+
+    await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     const params = new URLSearchParams({
       created_at: '2025-05-26T11:56:34.081Z',
