@@ -32,6 +32,14 @@ type MeldingData = {
 const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
   URGENCY_VALUES.includes(value as MeldingOutput['urgency'])
 
+const isMeldingData = (value: unknown): value is MeldingData =>
+  typeof value === 'object' &&
+  value !== null &&
+  typeof (value as MeldingData).id === 'number' &&
+  typeof (value as MeldingData).token === 'string' &&
+  typeof (value as MeldingData).publicId === 'string' &&
+  typeof (value as MeldingData).createdAt === 'string'
+
 const safeJSONParse = (jsonString: string) => {
   try {
     return JSON.parse(jsonString)
@@ -65,14 +73,18 @@ export const postMeldingForm = async (
     }
   }
 
-  const isExistingMelding = existingId && existingToken
-
-  let meldingData: MeldingData | undefined
-
   const prefetchedMeldingRaw = formDataObj.prefetchedMelding as string | undefined
+
+  let meldingData
+
   if (prefetchedMeldingRaw) {
-    meldingData = safeJSONParse(prefetchedMeldingRaw)
+    const prefetchedMelding = safeJSONParse(prefetchedMeldingRaw)
+    if (isMeldingData(prefetchedMelding)) {
+      meldingData = prefetchedMelding
+    }
   }
+
+  const isExistingMelding = existingId && existingToken
 
   if (!meldingData) {
     const { data, error, response } = isExistingMelding

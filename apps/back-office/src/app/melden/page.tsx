@@ -43,7 +43,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
   const { id, token } = await searchParams
 
   // Prefill form
-  const result = id && token ? await getMeldingByMeldingId({ path: { melding_id: Number(id) } }) : undefined
+  const result = id && token ? await getMeldingByMeldingId({ path: { melding_id: id } }) : undefined
 
   if (result?.error) {
     // TODO: Log the error to an error reporting service
