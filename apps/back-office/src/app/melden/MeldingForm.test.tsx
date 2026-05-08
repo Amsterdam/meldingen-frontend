@@ -42,6 +42,16 @@ describe('MeldingForm', () => {
     expect(submitButton).toBeInTheDocument()
   })
 
+  it('sets focus on SystemErrorAlert when there is a system error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveFocus()
+  })
+
   it('renders an Invalid Form Alert when there are validation errors', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
@@ -54,6 +64,41 @@ describe('MeldingForm', () => {
 
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', '#key1')
+  })
+
+  it('sets focus on InvalidFormAlert when there are validation errors', () => {
+    ;(useActionState as Mock).mockReturnValue([
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      vi.fn(),
+    ])
+
+    const { container } = render(<MeldingForm {...defaultProps} />)
+
+    const alert = container.querySelector('.ams-alert')
+
+    expect(alert).toHaveFocus()
+  })
+
+  it('prefills the text area from formData when the action returns formData', () => {
+    const formData = new FormData()
+    formData.set('primary', 'Prefilled text')
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(screen.getByRole('textbox')).toHaveValue('Prefilled text')
+  })
+
+  it('prefills the text area from defaultValues when provided and there is no formData', () => {
+    render(<MeldingForm {...defaultProps} defaultValues={{ primary: 'Default value' }} />)
+
+    expect(screen.getByRole('textbox')).toHaveValue('Default value')
+  })
+
+  it('falls back to an empty text area when there is no formData and no defaultValues', () => {
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(screen.getByRole('textbox')).toHaveValue('')
   })
 
   it('initializes the character count with 0', () => {
@@ -98,28 +143,6 @@ describe('MeldingForm', () => {
     })
   })
 
-  it('prefills the text area from formData when the action returns formData', () => {
-    const formData = new FormData()
-    formData.set('primary', 'Prefilled text')
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
-
-    render(<MeldingForm {...defaultProps} />)
-
-    expect(screen.getByRole('textbox')).toHaveValue('Prefilled text')
-  })
-
-  it('prefills the text area from defaultValues when provided and there is no formData', () => {
-    render(<MeldingForm {...defaultProps} defaultValues={{ primary: 'Default value' }} />)
-
-    expect(screen.getByRole('textbox')).toHaveValue('Default value')
-  })
-
-  it('falls back to an empty text area when there is no formData and no defaultValues', () => {
-    render(<MeldingForm {...defaultProps} />)
-
-    expect(screen.getByRole('textbox')).toHaveValue('')
-  })
-
   it('prefills urgency from formData when the action returns formData', () => {
     const formData = new FormData()
     formData.set('urgency', '1')
@@ -152,29 +175,6 @@ describe('MeldingForm', () => {
     await user.click(screen.getByRole('button', { name: 'submit-button' }))
 
     expect(mockFormAction).toHaveBeenCalled()
-  })
-
-  it('sets focus on InvalidFormAlert when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
-      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
-      vi.fn(),
-    ])
-
-    const { container } = render(<MeldingForm {...defaultProps} />)
-
-    const alert = container.querySelector('.ams-alert')
-
-    expect(alert).toHaveFocus()
-  })
-
-  it('sets focus on SystemErrorAlert when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
-
-    render(<MeldingForm {...defaultProps} />)
-
-    const alert = screen.getByRole('alert')
-
-    expect(alert).toHaveFocus()
   })
 
   describe('handleBlur', () => {
