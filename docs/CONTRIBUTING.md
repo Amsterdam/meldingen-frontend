@@ -32,13 +32,13 @@ The ID lets you quickly find the branch belonging to a given Story/PBI. Jira als
 
 We squash-merge all PRs, which means the PR title becomes the commit message in `main`’s history. When you trace a specific line of code years from now, a well-written title makes it immediately clear what exactly was changed.
 
-A good PR title should complete the sentence _"If applied, this commit will…"_:
+A good PR title should complete the sentence _“If applied, this commit will…”_:
 
-1. Use the imperative mood (example: "Update spacing values")
+1. Use the imperative mood (example: “Update spacing values”)
 2. Capitalize the first word
 3. Do not end with a period
 
-All together, a good PR title looks like this: _"Filter conditional answers from Summary page"_
+All together, a good PR title looks like this: _“Filter conditional answers from Summary page”_
 
 For more information, see [How to Write a Git Commit Message](https://cbea.ms/git-commit/).
 
