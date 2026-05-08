@@ -185,14 +185,14 @@ describe('MeldingForm', () => {
 
       const { container } = render(<MeldingForm {...defaultProps} />)
 
-      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]')
-
       await user.click(screen.getByRole('textbox', { name: 'Some label' }))
       await user.tab()
 
       await waitFor(() => {
         expect(consoleSpy).not.toHaveBeenCalledWith('some error')
       })
+
+      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]')
 
       expect(hiddenInput).toBeNull()
 
@@ -206,14 +206,14 @@ describe('MeldingForm', () => {
 
       const { container } = render(<MeldingForm {...defaultProps} defaultValues={{ primary: 'existing text' }} />)
 
-      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]')
-
       await user.click(screen.getByRole('textbox', { name: 'Some label' }))
       await user.tab()
 
       await waitFor(() => {
         expect(consoleSpy).not.toHaveBeenCalledWith('some error')
       })
+
+      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]')
 
       expect(hiddenInput).toBeNull()
 
