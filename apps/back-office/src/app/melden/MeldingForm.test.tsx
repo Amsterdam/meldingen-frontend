@@ -20,7 +20,6 @@ vi.mock('react', async (importOriginal) => {
 })
 
 const defaultProps = {
-  action: vi.fn(),
   primaryTextArea: {
     description: 'Some description',
     label: 'Some label',
