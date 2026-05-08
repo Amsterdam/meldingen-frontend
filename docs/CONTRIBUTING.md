@@ -8,7 +8,7 @@ Please read this document before opening your first pull request.
 
 ## Git Workflow
 
-Our code is open source and used by dozens of municipalities. This context makes it vital to keep our code clean, its history clear, and our decisions transparent. A clear version control strategy helps reach these goals.
+Our code is open source and used by dozens of municipalities. This context makes it vital to keep our decisions and change history transparent. A clear version control strategy helps with this.
 
 We follow [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow): all work happens on short-lived feature branches that are branched from `main` and merged back into `main` via a pull request.
 
@@ -38,7 +38,7 @@ A good PR title should complete the sentence _“If applied, this commit will…
 2. Capitalize the first word
 3. Do not end with a period
 
-All together, a good PR title looks like this: _“Filter conditional answers from Summary page”_
+All together, a good PR title looks like this: _“Filter conditional answers on Summary page”_
 
 For more information, see [How to Write a Git Commit Message](https://cbea.ms/git-commit/).
 
@@ -79,8 +79,6 @@ Your colleague has worked in good faith; make sure you communicate openly. Ask q
 Call each other if that is more convenient. And write a compliment if you come across some quality work.
 
 Use GitHub’s **suggestion** feature to propose specific changes inline. The author can apply them with one click, which is clearer and faster than describing a change in prose.
-
-Use **Start a review** to batch your comments so the author receives a single notification rather than one per comment.
 
 #### Resolving comments
 
