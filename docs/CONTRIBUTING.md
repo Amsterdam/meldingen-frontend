@@ -62,7 +62,7 @@ If you need early feedback — a sanity check on the approach, a look at the dif
 - **Resolve AI-generated review comments yourself** before requesting a human review.
 - **The author merges** once the PR is approved.
 
-See the [PR template](.github/PULL_REQUEST_TEMPLATE.md) for a quality checklist.
+See the [PR template](../.github/PULL_REQUEST_TEMPLATE.md) for a quality checklist.
 
 ### Reviewing
 
