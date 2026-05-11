@@ -58,7 +58,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
       }
     : {}
 
-  const defaultPrefetchedMelding =
+  const existingMelding =
     token && result?.data?.id
       ? {
           classificationId: result.data.classification?.id,
@@ -72,9 +72,9 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
 
   return (
     <MeldingForm
-      defaultPrefetchedMelding={defaultPrefetchedMelding}
       defaultValues={defaultValues}
       existingId={id}
+      existingMelding={existingMelding}
       existingToken={token}
       primaryTextArea={primaryTextArea}
     />
