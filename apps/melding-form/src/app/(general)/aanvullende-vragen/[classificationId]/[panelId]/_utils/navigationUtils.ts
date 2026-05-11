@@ -37,13 +37,14 @@ export const getPreviousPanelPath = (
   currentPanelIndex: number,
   panels: PanelComponentsConditions[],
   answersByKey: AnswersByKey,
+  beforePath: string,
 ) => {
   for (let i = currentPanelIndex - 1; i >= 0; i--) {
     if (shouldLinkToPanel(panels[i], answersByKey)) {
       return `/aanvullende-vragen/${classificationId}/${panels[i].key}#${TOP_ANCHOR_ID}`
     }
   }
-  return BEFORE_ADDITIONAL_QUESTIONS_PATH
+  return beforePath
 }
 
 export const refilterAnswersByKey = (panels: PanelComponentsConditions[], answers: AnswersByKey): AnswersByKey => {
