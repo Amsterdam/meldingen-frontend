@@ -33,7 +33,7 @@ Use a zero-padded number prefix followed by a present-tense imperative verb phra
 `0001-use-next-js-as-front-end-framework.md`
 `0002-store-sessions-in-redis.md`
 
-The number makes ADRs referenceable from code comments and PRs. The imperative verb phrase means a reader scanning the list immediately knows what was decided, not just what was evaluated.
+The number makes ADRs referenceable from code comments and PRs, and keeps them ordered from oldest to newest. The imperative verb phrase means a reader scanning the list immediately knows what was decided, not just what was evaluated.
 
 ## Template
 
