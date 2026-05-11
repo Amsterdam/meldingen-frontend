@@ -234,13 +234,13 @@ describe('MeldingForm', () => {
       expect(decodedValue.token).toBe('PATCH request')
     })
 
-    it('uses a PATCH request when defaultPrefetchedMelding id and token are provided', async () => {
+    it('uses a PATCH request when existingMelding id and token are provided', async () => {
       const user = userEvent.setup()
 
       const { container } = render(
         <MeldingForm
           {...defaultProps}
-          defaultPrefetchedMelding={{ createdAt: '2024-01-01', id: 99, publicId: 'xyz', token: 'prefetched-token' }}
+          existingMelding={{ createdAt: '2024-01-01', id: 99, publicId: 'xyz', token: 'prefetched-token' }}
         />,
       )
 

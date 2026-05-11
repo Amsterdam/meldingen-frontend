@@ -44,22 +44,16 @@ type PrefetchedMelding = {
 }
 
 type Props = {
-  defaultPrefetchedMelding?: PrefetchedMelding
   defaultValues?: { primary?: string; urgency?: number }
   existingId?: number
+  existingMelding?: PrefetchedMelding
   existingToken?: string
   primaryTextArea: StaticFormTextAreaComponentOutput
 }
 
 const initialState: FormState = {}
 
-export const MeldingForm = ({
-  defaultPrefetchedMelding,
-  defaultValues,
-  existingId,
-  existingToken,
-  primaryTextArea,
-}: Props) => {
+export const MeldingForm = ({ defaultValues, existingId, existingMelding, existingToken, primaryTextArea }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
@@ -76,7 +70,7 @@ export const MeldingForm = ({
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
   const [, startTransition] = useTransition()
-  const [prefetchedMelding, setPrefetchedMelding] = useState<PrefetchedMelding | null>(defaultPrefetchedMelding ?? null)
+  const [prefetchedMelding, setPrefetchedMelding] = useState<PrefetchedMelding | null>(existingMelding ?? null)
 
   // Form components can be prefilled on load on the server, where we fill in existing answers from the backend,
   // or in case of an error, where we use the form data provided.

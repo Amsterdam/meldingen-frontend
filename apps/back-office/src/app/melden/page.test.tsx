@@ -74,9 +74,9 @@ describe('Page', () => {
     expect(screen.getByText('MeldingForm Component')).toBeInTheDocument()
     expect(MeldingForm).toHaveBeenCalledWith(
       {
-        defaultPrefetchedMelding: undefined,
         defaultValues: {},
         existingId: undefined,
+        existingMelding: undefined,
         existingToken: undefined,
         primaryTextArea: textAreaComponent,
       },
@@ -110,7 +110,9 @@ describe('Page', () => {
 
     expect(MeldingForm).toHaveBeenCalledWith(
       {
-        defaultPrefetchedMelding: {
+        defaultValues: { primary: 'Prefilled text', urgency: -1 },
+        existingId: 1,
+        existingMelding: {
           classificationId: melding.classification?.id,
           classificationName: melding.classification?.name,
           createdAt: melding.created_at,
@@ -118,8 +120,6 @@ describe('Page', () => {
           publicId: melding.public_id,
           token: 'valid-token',
         },
-        defaultValues: { primary: 'Prefilled text', urgency: -1 },
-        existingId: 1,
         existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
       },
@@ -148,9 +148,9 @@ describe('Page', () => {
 
     expect(MeldingForm).toHaveBeenCalledWith(
       {
-        defaultPrefetchedMelding: undefined,
         defaultValues: {},
         existingId: 1,
+        existingMelding: undefined,
         existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
       },
@@ -178,12 +178,12 @@ describe('Page', () => {
 
     expect(MeldingForm).toHaveBeenCalledWith(
       {
-        defaultPrefetchedMelding: undefined,
         defaultValues: {
           primary: undefined,
           urgency: undefined,
         },
         existingId: 1,
+        existingMelding: undefined,
         existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
       },
