@@ -26,6 +26,8 @@ import type { FormState } from './actions'
 
 import { InvalidFormAlert } from './_components/InvalidFormAlert'
 import { SystemErrorAlert } from './_components/SystemErrorAlert'
+import { postMeldingForm } from './actions'
+import { MeldingData } from './types'
 import { URGENCY_VALUES } from '~/constants'
 
 import styles from './MeldingForm.module.css'
@@ -33,6 +35,9 @@ import styles from './MeldingForm.module.css'
 type Props = {
   action: (_: unknown, formData: FormData) => Promise<FormState>
   defaultValues?: { primary?: string; urgency?: number }
+  existingId?: number
+  existingMelding?: MeldingData
+  existingToken?: string
   primaryTextArea: StaticFormTextAreaComponentOutput
 }
 
@@ -47,6 +52,8 @@ export const MeldingForm = ({ action, defaultValues, primaryTextArea }: Props) =
   const ref = useRef<HTMLTextAreaElement>(null)
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
+  const [, startTransition] = useTransition()
+  const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
   // Form components can be prefilled on load on the server, where we fill in existing answers from the backend,
   // or in case of an error, where we use the form data provided.
