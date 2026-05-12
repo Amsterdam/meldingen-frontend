@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import type { MeldingOutput } from '@meldingen/api-client'
 
 import { hasValidationErrors } from './_utils/hasValidationErrors'
+import { MeldingData } from './types'
 import { patchMeldingByMeldingId, patchMeldingByMeldingIdMelder, postMelding } from '~/apiClientProxy'
 import { URGENCY_VALUES } from '~/constants'
 import { handleApiError } from '~/handleApiError'
@@ -19,14 +20,6 @@ export type ArgsType = {
   existingId?: number
   existingToken?: string
   requiredErrorMessage: string
-}
-
-type MeldingData = {
-  classificationId?: number
-  createdAt: string
-  id: number
-  publicId: string
-  token: string
 }
 
 const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
