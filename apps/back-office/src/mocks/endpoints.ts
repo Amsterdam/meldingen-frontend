@@ -14,6 +14,7 @@ export const ENDPOINTS = {
   GET_STATIC_FORM_BY_STATIC_FORM_ID: '/static-form/:staticFormId',
 
   PATCH_MELDING_BY_MELDING_ID: '/melding/:id',
+  PATCH_MELDING_BY_MELDING_ID_MELDER: '/melding/:id/melder',
 
   POST_MELDING: '/melding',
 

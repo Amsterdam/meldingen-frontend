@@ -27,10 +27,9 @@ export default async ({ searchParams }: { searchParams: Promise<{ [key: string]:
   const time = createdAtDate?.toLocaleTimeString('nl-NL', { timeStyle: 'short' })
 
   const backOfficeBaseUrl = process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL
-
   const publicIdLinkOrText =
     source === 'back-office' && publicId && id && backOfficeBaseUrl
-      ? `[${publicId}](${backOfficeBaseUrl}/melding/${id}?id=${publicId})`
+      ? `[${publicId}](${backOfficeBaseUrl}/melding/${id}?id=${encodeURIComponent(publicId)})`
       : publicId
 
   const description = t('description', { date, publicId: publicIdLinkOrText, time })

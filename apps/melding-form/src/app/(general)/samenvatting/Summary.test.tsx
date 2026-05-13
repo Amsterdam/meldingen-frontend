@@ -57,6 +57,7 @@ const defaultProps = {
     key: 'primary',
     term: 'Wat wilt u melden?',
   },
+  primaryFormLink: `/#${TOP_ANCHOR_ID}`,
 }
 
 global.URL.createObjectURL = vi.fn(() => 'blob:http://localhost/uploaded-file-1')

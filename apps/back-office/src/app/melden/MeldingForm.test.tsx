@@ -17,6 +17,7 @@ vi.mock('react', async (importOriginal) => {
 })
 
 const defaultProps = {
+  action: vi.fn(),
   primaryTextArea: {
     description: 'Some description',
     label: 'Some label',
@@ -39,6 +40,20 @@ describe('MeldingForm', () => {
     expect(submitButton).toBeInTheDocument()
   })
 
+  it('renders an Invalid Form Alert when there are validation errors', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      vi.fn(),
+    ])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    const link = screen.getByRole('link', { name: 'Test error message' })
+
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '#key1')
+  })
+
   it('initializes the character count with 0', () => {
     render(<MeldingForm {...defaultProps} />)
 
@@ -47,6 +62,7 @@ describe('MeldingForm', () => {
 
   it('updates the character count when the user types in the textarea', async () => {
     const user = userEvent.setup()
+
     render(<MeldingForm {...defaultProps} />)
 
     await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello')
@@ -55,9 +71,19 @@ describe('MeldingForm', () => {
   })
 
   it('does not render the character count when maxCharCount is not provided', () => {
-    render(<MeldingForm primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
+    render(<MeldingForm action={vi.fn()} primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
 
     expect(screen.queryByText(/500/)).not.toBeInTheDocument()
+  })
+
+  it('does not update the character count when maxCharCount is not provided and the user types', async () => {
+    const user = userEvent.setup()
+
+    render(<MeldingForm action={vi.fn()} primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
+
+    await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello')
+
+    expect(screen.queryByText(/tekens/)).not.toBeInTheDocument()
   })
 
   it('renders all urgency radio options', () => {
@@ -70,31 +96,48 @@ describe('MeldingForm', () => {
     })
   })
 
-  it('checks "medium" urgency by default', () => {
-    render(<MeldingForm {...defaultProps} />)
-
-    expect(screen.getByRole('radio', { name: 'urgency.0' })).toBeChecked()
-  })
-
-  it('shows a validation error message when the action returns validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
-      { validationErrors: [{ key: 'primary', message: 'This field is required.' }] },
-      vi.fn(),
-    ])
-
-    render(<MeldingForm {...defaultProps} />)
-
-    expect(screen.getByText('This field is required.')).toBeInTheDocument()
-  })
-
-  it('prefills the textarea from formData when the action returns formData', () => {
+  it('prefills the text area from formData when the action returns formData', () => {
     const formData = new FormData()
     formData.set('primary', 'Prefilled text')
-    ;(useActionState as Mock).mockReturnValue([{ formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
 
     render(<MeldingForm {...defaultProps} />)
 
     expect(screen.getByRole('textbox')).toHaveValue('Prefilled text')
+  })
+
+  it('prefills the text area from defaultValues when provided and there is no formData', () => {
+    render(<MeldingForm {...defaultProps} defaultValues={{ primary: 'Default value' }} />)
+
+    expect(screen.getByRole('textbox')).toHaveValue('Default value')
+  })
+
+  it('falls back to an empty text area when there is no formData and no defaultValues', () => {
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(screen.getByRole('textbox')).toHaveValue('')
+  })
+
+  it('prefills urgency from formData when the action returns formData', () => {
+    const formData = new FormData()
+    formData.set('urgency', '1')
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(screen.getByRole('radio', { name: 'urgency.1' })).toBeChecked()
+  })
+
+  it('prefills urgency from defaultValues when provided and there is no formData', () => {
+    render(<MeldingForm {...defaultProps} defaultValues={{ urgency: -1 }} />)
+
+    expect(screen.getByRole('radio', { name: 'urgency.-1' })).toBeChecked()
+  })
+
+  it('falls back to "medium" urgency when there is no formData and no defaultValues', () => {
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(screen.getByRole('radio', { name: 'urgency.0' })).toBeChecked()
   })
 
   it('submits the form when the submit button is clicked', async () => {
@@ -107,5 +150,28 @@ describe('MeldingForm', () => {
     await user.click(screen.getByRole('button', { name: 'submit-button' }))
 
     expect(mockFormAction).toHaveBeenCalled()
+  })
+
+  it('sets focus on InvalidFormAlert when there are validation errors', () => {
+    ;(useActionState as Mock).mockReturnValue([
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      vi.fn(),
+    ])
+
+    const { container } = render(<MeldingForm {...defaultProps} />)
+
+    const alert = container.querySelector('.ams-alert')
+
+    expect(alert).toHaveFocus()
+  })
+
+  it('sets focus on SystemErrorAlert when there is a system error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    const alert = screen.getByRole('alert')
+
+    expect(alert).toHaveFocus()
   })
 })

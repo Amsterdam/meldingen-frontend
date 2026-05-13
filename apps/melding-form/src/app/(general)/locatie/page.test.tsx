@@ -26,7 +26,7 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(screen.getByText('Location Component')).toBeInTheDocument()
-    expect(Location).toHaveBeenCalledWith(expect.objectContaining({ address: undefined, prevPage: '/' }), undefined)
+    expect(Location).toHaveBeenCalledWith(expect.objectContaining({ address: undefined, prevPage: '/#top' }), undefined)
   })
 
   it('renders Location component with props from cookies', async () => {
@@ -46,6 +46,30 @@ describe('Page', () => {
       expect.objectContaining({ address: 'Oudezijds Voorburgwal 300, 1012GL Amsterdam', prevPage: '/previous' }),
       undefined,
     )
+  })
+
+  it('renders Location component with back-office URL as prevPage when source cookie is set to back-office and lastPanelPath cookie is not set', async () => {
+    vi.stubEnv('NEXT_PUBLIC_BACK_OFFICE_BASE_URL', 'https://backoffice.example.com')
+
+    mockCookies({
+      [COOKIES.ID]: '123',
+      [COOKIES.SOURCE]: 'back-office',
+      [COOKIES.TOKEN]: 'test-token',
+    })
+
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    expect(screen.getByText('Location Component')).toBeInTheDocument()
+    expect(Location).toHaveBeenCalledWith(
+      expect.objectContaining({
+        prevPage: `https://backoffice.example.com/melden?id=123&token=test-token`,
+      }),
+      undefined,
+    )
+
+    vi.unstubAllEnvs()
   })
 
   it('returns an empty array of selectedAssets and logs an error when fetching assets fails', async () => {

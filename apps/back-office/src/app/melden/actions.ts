@@ -4,8 +4,10 @@ import { redirect } from 'next/navigation'
 
 import type { MeldingOutput } from '@meldingen/api-client'
 
-import { patchMeldingByMeldingId, postMelding } from '~/apiClientProxy'
+import { hasValidationErrors } from './_utils/hasValidationErrors'
+import { patchMeldingByMeldingId, patchMeldingByMeldingIdMelder, postMelding } from '~/apiClientProxy'
 import { URGENCY_VALUES } from '~/constants'
+import { handleApiError } from '~/handleApiError'
 
 export type FormState = {
   formData?: FormData
@@ -16,13 +18,24 @@ export type FormState = {
 const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
   URGENCY_VALUES.includes(value as MeldingOutput['urgency'])
 
-export const postMeldingForm = async (_: unknown, formData: FormData): Promise<FormState> => {
+export type ArgsType = {
+  existingId?: string
+  existingToken?: string
+  requiredErrorMessage: string
+}
+
+export const postMeldingForm = async (
+  { existingId, existingToken, requiredErrorMessage }: ArgsType,
+  _: unknown,
+  formData: FormData,
+): Promise<FormState> => {
   const formDataObj = Object.fromEntries(formData)
 
+  // Return validation error if primary question is not answered
   if (!formDataObj.primary) {
     return {
       formData,
-      validationErrors: [{ key: 'primary', message: 'This field is required.' }],
+      validationErrors: [{ key: 'primary', message: requiredErrorMessage }],
     }
   }
 
@@ -32,11 +45,29 @@ export const postMeldingForm = async (_: unknown, formData: FormData): Promise<F
   if (!isValidUrgency(urgencyNumber)) {
     return {
       formData,
-      validationErrors: [{ key: 'urgency', message: `Invalid urgency: ${urgencyRaw}` }],
+      systemError: `Invalid urgency value: ${urgencyRaw}`,
     }
   }
 
-  const { data, error } = await postMelding({ body: { text: formDataObj.primary.toString() } })
+  const isExistingMelding = existingId && existingToken
+  const isValidId = Number.isFinite(Number(existingId))
+
+  const { data, error, response } =
+    isExistingMelding && isValidId
+      ? await patchMeldingByMeldingIdMelder({
+          body: { text: formDataObj.primary.toString() },
+          path: { melding_id: parseInt(existingId, 10) },
+          query: { token: existingToken },
+        })
+      : await postMelding({ body: { text: formDataObj.primary.toString() } })
+
+  // Return other validation errors if there are any
+  if (hasValidationErrors(response, error)) {
+    return {
+      formData,
+      validationErrors: [{ key: 'primary', message: handleApiError(error) }],
+    }
+  }
 
   if (error) return { formData, systemError: error }
 
