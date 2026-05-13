@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted on 21-3-2024
+Accepted on 21-03-2024
 
 ## Context
 
