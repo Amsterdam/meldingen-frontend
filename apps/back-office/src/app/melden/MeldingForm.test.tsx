@@ -23,6 +23,10 @@ const defaultProps = {
     label: 'Some label',
     maxCharCount: 500,
   } as StaticFormTextAreaComponentOutput,
+  sources: [
+    { created_at: '2024-01-01', id: 1, name: 'Source 1', updated_at: '2024-01-01' },
+    { created_at: '2024-01-02', id: 2, name: 'Source 2', updated_at: '2024-01-02' },
+  ],
 }
 
 describe('MeldingForm', () => {
@@ -96,6 +100,19 @@ describe('MeldingForm', () => {
     })
   })
 
+  it('renders an error message connected to the primary text area when there is a validation error for the primary field', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([
+      { validationErrors: [{ key: 'primary', message: 'Primary field error' }] },
+      vi.fn(),
+    ])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    const input = screen.getByRole('textbox', { name: 'Some label' })
+
+    expect(input).toHaveAccessibleDescription('Some description Invoerfout:Primary field error')
+  })
+
   it('prefills the text area from formData when the action returns formData', () => {
     const formData = new FormData()
     formData.set('primary', 'Prefilled text')
@@ -116,6 +133,94 @@ describe('MeldingForm', () => {
     render(<MeldingForm {...defaultProps} />)
 
     expect(screen.getByRole('textbox')).toHaveValue('')
+  })
+
+  it('initializes the character count with 0', () => {
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(screen.getByText('0 van 500 tekens')).toBeInTheDocument()
+  })
+
+  it('updates the character count when the user types in the textarea', async () => {
+    const user = userEvent.setup()
+
+    render(<MeldingForm {...defaultProps} />)
+
+    await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello')
+
+    expect(screen.getByText('5 van 500 tekens')).toBeInTheDocument()
+  })
+
+  it('does not render the character count when maxCharCount is not provided', () => {
+    render(<MeldingForm {...defaultProps} primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
+
+    expect(screen.queryByText(/500/)).not.toBeInTheDocument()
+  })
+
+  it('does not update the character count when maxCharCount is not provided and the user types', async () => {
+    const user = userEvent.setup()
+
+    render(<MeldingForm {...defaultProps} primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
+
+    await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello')
+
+    expect(screen.queryByText(/tekens/)).not.toBeInTheDocument()
+  })
+
+  it('renders an error message connected to the source select input when there is a validation error for the source field', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([
+      { validationErrors: [{ key: 'source', message: 'Source field error' }] },
+      vi.fn(),
+    ])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    const input = screen.getByRole('combobox', { name: 'source.label' })
+
+    expect(input).toHaveAccessibleDescription('Invoerfout:Source field error')
+  })
+
+  it('renders the source select input with options', () => {
+    render(<MeldingForm {...defaultProps} />)
+
+    const select = screen.getByRole('combobox', { name: 'source.label' })
+
+    expect(select).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'source.default' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'Source 1' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'Source 2' })).toBeInTheDocument()
+  })
+
+  it('prefills the source select input from formData when the action returns formData', () => {
+    const formData = new FormData()
+    formData.set('source', '2')
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(screen.getByRole('combobox', { name: 'source.label' })).toHaveValue('2')
+  })
+
+  it('prefills the source select input from defaultValues when provided and there is no formData', () => {
+    render(<MeldingForm {...defaultProps} defaultValues={{ source: '1' }} />)
+
+    expect(screen.getByRole('combobox', { name: 'source.label' })).toHaveValue('1')
+  })
+
+  it('falls back to an empty source select input when there is no formData and no defaultValues', () => {
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(screen.getByRole('combobox', { name: 'source.label' })).toHaveValue('')
+  })
+
+  it('renders all urgency radio options', () => {
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(screen.getByRole('radiogroup', { name: 'urgency-label' })).toBeInTheDocument()
+
+    URGENCY_VALUES.forEach((urgency) => {
+      expect(screen.getByRole('radio', { name: `urgency.${urgency}` })).toBeInTheDocument()
+    })
   })
 
   it('prefills urgency from formData when the action returns formData', () => {

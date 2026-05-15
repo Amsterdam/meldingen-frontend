@@ -76,6 +76,12 @@ describe('Page', () => {
     await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Primary form textarea not found.')
   })
 
+  it('throws an error if sources cannot be fetched', async () => {
+    server.use(http.get(ENDPOINTS.GET_SOURCE, () => HttpResponse.json(null, { status: 500 })))
+
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Failed to fetch sources.')
+  })
+
   it('renders the MeldingForm component with form components', async () => {
     const PageComponent = await Page({ searchParams: Promise.resolve({}) })
 
@@ -83,13 +89,32 @@ describe('Page', () => {
 
     expect(screen.getByText('MeldingForm Component')).toBeInTheDocument()
     expect(MeldingForm).toHaveBeenCalledWith(
-      { action: expect.any(Function), defaultValues: {}, primaryTextArea: textAreaComponent },
+      {
+        defaultValues: {},
+        existingId: undefined,
+        existingMelding: undefined,
+        existingToken: undefined,
+        primaryTextArea: textAreaComponent,
+        sources: [
+          { id: 1, name: 'Brievenbus' },
+          { id: 2, name: 'E-mail' },
+          { id: 3, name: 'Telefoon' },
+        ],
+      },
       undefined,
     )
   })
 
   it('renders the MeldingForm component with default values when id and token are provided and melding exists', async () => {
-    const meldingData = { text: 'Prefilled text', urgency: -1 }
+    const meldingData = {
+      classification: melding.classification,
+      created_at: melding.created_at,
+      id: melding.id,
+      public_id: melding.public_id,
+      source: melding.source,
+      text: 'Prefilled text',
+      urgency: -1,
+    }
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json(meldingData)),
       http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
@@ -107,9 +132,23 @@ describe('Page', () => {
 
     expect(MeldingForm).toHaveBeenCalledWith(
       {
-        action: expect.any(Function),
-        defaultValues: { primary: 'Prefilled text', urgency: -1 },
+        defaultValues: { primary: 'Prefilled text', source: String(melding.source?.id), urgency: -1 },
+        existingId: 1,
+        existingMelding: {
+          classificationId: melding.classification?.id,
+          classificationName: melding.classification?.name,
+          createdAt: melding.created_at,
+          id: melding.id,
+          publicId: melding.public_id,
+          token: 'valid-token',
+        },
+        existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
+        sources: [
+          { id: 1, name: 'Brievenbus' },
+          { id: 2, name: 'E-mail' },
+          { id: 3, name: 'Telefoon' },
+        ],
       },
       undefined,
     )
@@ -139,6 +178,11 @@ describe('Page', () => {
         action: expect.any(Function),
         defaultValues: {},
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
+        sources: [
+          { id: 1, name: 'Brievenbus' },
+          { id: 2, name: 'E-mail' },
+          { id: 3, name: 'Telefoon' },
+        ],
       },
       undefined,
     )
@@ -167,9 +211,15 @@ describe('Page', () => {
         action: expect.any(Function),
         defaultValues: {
           primary: undefined,
+          source: undefined,
           urgency: undefined,
         },
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
+        sources: [
+          { id: 1, name: 'Brievenbus' },
+          { id: 2, name: 'E-mail' },
+          { id: 3, name: 'Telefoon' },
+        ],
       },
       undefined,
     )
