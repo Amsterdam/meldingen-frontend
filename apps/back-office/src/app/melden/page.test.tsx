@@ -30,6 +30,12 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
+  const sources = [
+    { id: 1, name: 'Brievenbus' },
+    { id: 2, name: 'E-mail' },
+    { id: 3, name: 'Telefoon' },
+  ]
+
   it('throws an error if list of static forms cannot be fetched', async () => {
     server.use(http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json(null, { status: 500 })))
 
@@ -95,11 +101,7 @@ describe('Page', () => {
         existingMelding: undefined,
         existingToken: undefined,
         primaryTextArea: textAreaComponent,
-        sources: [
-          { id: 1, name: 'Brievenbus' },
-          { id: 2, name: 'E-mail' },
-          { id: 3, name: 'Telefoon' },
-        ],
+        sources,
       },
       undefined,
     )
@@ -144,11 +146,7 @@ describe('Page', () => {
         },
         existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
-        sources: [
-          { id: 1, name: 'Brievenbus' },
-          { id: 2, name: 'E-mail' },
-          { id: 3, name: 'Telefoon' },
-        ],
+        sources,
       },
       undefined,
     )
@@ -178,11 +176,7 @@ describe('Page', () => {
         action: expect.any(Function),
         defaultValues: {},
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
-        sources: [
-          { id: 1, name: 'Brievenbus' },
-          { id: 2, name: 'E-mail' },
-          { id: 3, name: 'Telefoon' },
-        ],
+        sources,
       },
       undefined,
     )
@@ -215,11 +209,7 @@ describe('Page', () => {
           urgency: undefined,
         },
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
-        sources: [
-          { id: 1, name: 'Brievenbus' },
-          { id: 2, name: 'E-mail' },
-          { id: 3, name: 'Telefoon' },
-        ],
+        sources,
       },
       undefined,
     )
