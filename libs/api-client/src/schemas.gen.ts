@@ -3512,115 +3512,7 @@ export const FormTimeComponentOutputSchema = {
     title: 'FormTimeComponentOutput'
 } as const;
 
-export const GeoJson_InputSchema = {
-    properties: {
-        bbox: {
-            anyOf: [
-                {
-                    prefixItems: [
-                        {
-                            type: 'number'
-                        },
-                        {
-                            type: 'number'
-                        },
-                        {
-                            type: 'number'
-                        },
-                        {
-                            type: 'number'
-                        }
-                    ],
-                    type: 'array',
-                    maxItems: 4,
-                    minItems: 4
-                },
-                {
-                    prefixItems: [
-                        {
-                            type: 'number'
-                        },
-                        {
-                            type: 'number'
-                        },
-                        {
-                            type: 'number'
-                        },
-                        {
-                            type: 'number'
-                        },
-                        {
-                            type: 'number'
-                        },
-                        {
-                            type: 'number'
-                        }
-                    ],
-                    type: 'array',
-                    maxItems: 6,
-                    minItems: 6
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Bbox'
-        },
-        type: {
-            type: 'string',
-            const: 'Feature',
-            title: 'Type'
-        },
-        geometry: {
-            anyOf: [
-                {
-                    $ref: '#/components/schemas/Point'
-                },
-                {
-                    type: 'null'
-                }
-            ]
-        },
-        properties: {
-            anyOf: [
-                {
-                    additionalProperties: true,
-                    type: 'object'
-                },
-                {
-                    $ref: '#/components/schemas/BaseModel'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Properties'
-        },
-        id: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Id'
-        }
-    },
-    type: 'object',
-    required: [
-        'type',
-        'geometry',
-        'properties'
-    ],
-    title: 'GeoJson'
-} as const;
-
-export const GeoJson_OutputSchema = {
+export const GeoJsonSchema = {
     properties: {
         bbox: {
             anyOf: [
@@ -4267,6 +4159,35 @@ export const In_OutputSchema = {
     title: 'In'
 } as const;
 
+export const LabelOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        name: {
+            type: 'string',
+            title: 'Name'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'name'
+    ],
+    title: 'LabelOutput'
+} as const;
+
 export const LengthSchema = {
     properties: {
         length: {
@@ -4563,6 +4484,164 @@ export const LineStringSchema = {
     ],
     title: 'LineString',
     description: 'LineString Model'
+} as const;
+
+export const LlmEvalClassificationInputSchema = {
+    properties: {
+        name: {
+            type: 'string',
+            minLength: 1,
+            title: 'Name'
+        },
+        instructions: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Instructions'
+        }
+    },
+    type: 'object',
+    required: [
+        'name'
+    ],
+    title: 'LlmEvalClassificationInput'
+} as const;
+
+export const LlmEvalRunInputSchema = {
+    properties: {
+        classifications: {
+            items: {
+                $ref: '#/components/schemas/LlmEvalClassificationInput'
+            },
+            type: 'array',
+            minItems: 1,
+            title: 'Classifications'
+        },
+        test_cases: {
+            items: {
+                $ref: '#/components/schemas/LlmEvalTestCaseInput'
+            },
+            type: 'array',
+            minItems: 1,
+            title: 'Test Cases'
+        }
+    },
+    type: 'object',
+    required: [
+        'classifications',
+        'test_cases'
+    ],
+    title: 'LlmEvalRunInput'
+} as const;
+
+export const LlmEvalRunOutputSchema = {
+    properties: {
+        total: {
+            type: 'integer',
+            title: 'Total'
+        },
+        passed: {
+            type: 'integer',
+            title: 'Passed'
+        },
+        failed: {
+            type: 'integer',
+            title: 'Failed'
+        },
+        errored: {
+            type: 'integer',
+            title: 'Errored'
+        },
+        results: {
+            items: {
+                $ref: '#/components/schemas/LlmEvalTestCaseResult'
+            },
+            type: 'array',
+            title: 'Results'
+        }
+    },
+    type: 'object',
+    required: [
+        'total',
+        'passed',
+        'failed',
+        'errored',
+        'results'
+    ],
+    title: 'LlmEvalRunOutput'
+} as const;
+
+export const LlmEvalTestCaseInputSchema = {
+    properties: {
+        text: {
+            type: 'string',
+            minLength: 1,
+            title: 'Text'
+        },
+        expected: {
+            type: 'string',
+            minLength: 1,
+            title: 'Expected'
+        }
+    },
+    type: 'object',
+    required: [
+        'text',
+        'expected'
+    ],
+    title: 'LlmEvalTestCaseInput'
+} as const;
+
+export const LlmEvalTestCaseResultSchema = {
+    properties: {
+        text: {
+            type: 'string',
+            title: 'Text'
+        },
+        expected: {
+            type: 'string',
+            title: 'Expected'
+        },
+        actual: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Actual'
+        },
+        passed: {
+            type: 'boolean',
+            title: 'Passed'
+        },
+        error: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Error'
+        }
+    },
+    type: 'object',
+    required: [
+        'text',
+        'expected',
+        'actual',
+        'passed'
+    ],
+    title: 'LlmEvalTestCaseResult'
 } as const;
 
 export const LogSchema = {
@@ -5069,7 +5148,7 @@ export const MeldingCreateOutputSchema = {
         geo_location: {
             anyOf: [
                 {
-                    $ref: '#/components/schemas/GeoJson-Output'
+                    $ref: '#/components/schemas/GeoJson'
                 },
                 {
                     type: 'null'
@@ -5154,6 +5233,23 @@ export const MeldingCreateOutputSchema = {
                 }
             ],
             title: 'Phone'
+        },
+        labels: {
+            items: {
+                $ref: '#/components/schemas/LabelOutput'
+            },
+            type: 'array',
+            title: 'Labels'
+        },
+        source: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/SourceOutput'
+                },
+                {
+                    type: 'null'
+                }
+            ]
         },
         token: {
             type: 'string',
@@ -5238,7 +5334,7 @@ export const MeldingOutputSchema = {
         geo_location: {
             anyOf: [
                 {
-                    $ref: '#/components/schemas/GeoJson-Output'
+                    $ref: '#/components/schemas/GeoJson'
                 },
                 {
                     type: 'null'
@@ -5323,6 +5419,23 @@ export const MeldingOutputSchema = {
                 }
             ],
             title: 'Phone'
+        },
+        labels: {
+            items: {
+                $ref: '#/components/schemas/LabelOutput'
+            },
+            type: 'array',
+            title: 'Labels'
+        },
+        source: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/SourceOutput'
+                },
+                {
+                    type: 'null'
+                }
+            ]
         }
     },
     type: 'object',
@@ -5341,19 +5454,48 @@ export const MeldingOutputSchema = {
 export const MeldingUpdateInputSchema = {
     properties: {
         urgency: {
-            type: 'integer',
-            enum: [
-                -1,
-                0,
-                1
+            anyOf: [
+                {
+                    type: 'integer',
+                    enum: [
+                        -1,
+                        0,
+                        1
+                    ]
+                },
+                {
+                    type: 'null'
+                }
             ],
             title: 'Urgency'
+        },
+        label_ids: {
+            anyOf: [
+                {
+                    items: {
+                        type: 'integer'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Label Ids'
+        },
+        source_id: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Source Id'
         }
     },
     type: 'object',
-    required: [
-        'urgency'
-    ],
     title: 'MeldingUpdateInput'
 } as const;
 
@@ -5405,7 +5547,7 @@ export const MeldingUpdateOutputSchema = {
         geo_location: {
             anyOf: [
                 {
-                    $ref: '#/components/schemas/GeoJson-Output'
+                    $ref: '#/components/schemas/GeoJson'
                 },
                 {
                     type: 'null'
@@ -5490,6 +5632,23 @@ export const MeldingUpdateOutputSchema = {
                 }
             ],
             title: 'Phone'
+        },
+        labels: {
+            items: {
+                $ref: '#/components/schemas/LabelOutput'
+            },
+            type: 'array',
+            title: 'Labels'
+        },
+        source: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/SourceOutput'
+                },
+                {
+                    type: 'null'
+                }
+            ]
         },
         token: {
             type: 'string',
@@ -7673,6 +7832,35 @@ export const Some_OutputSchema = {
         'some'
     ],
     title: 'Some'
+} as const;
+
+export const SourceOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        name: {
+            type: 'string',
+            title: 'Name'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'name'
+    ],
+    title: 'SourceOutput'
 } as const;
 
 export const StatesOutputSchema = {

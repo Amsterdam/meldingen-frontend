@@ -1298,44 +1298,7 @@ export type FormTimeComponentOutput = {
 /**
  * GeoJson
  */
-export type GeoJsonInput = {
-    /**
-     * Bbox
-     */
-    bbox?: [
-        number,
-        number,
-        number,
-        number
-    ] | [
-        number,
-        number,
-        number,
-        number,
-        number,
-        number
-    ] | null;
-    /**
-     * Type
-     */
-    type: 'Feature';
-    geometry: Point | null;
-    /**
-     * Properties
-     */
-    properties: {
-        [key: string]: unknown;
-    } | BaseModel | null;
-    /**
-     * Id
-     */
-    id?: number | string | null;
-};
-
-/**
- * GeoJson
- */
-export type GeoJsonOutput = {
+export type GeoJson = {
     /**
      * Bbox
      */
@@ -1488,6 +1451,28 @@ export type InOutput = {
 };
 
 /**
+ * LabelOutput
+ */
+export type LabelOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Name
+     */
+    name: string;
+};
+
+/**
  * Length
  */
 export type Length = {
@@ -1563,6 +1548,100 @@ export type LineString = {
      * Coordinates
      */
     coordinates: Array<Position2d | Position3d>;
+};
+
+/**
+ * LlmEvalClassificationInput
+ */
+export type LlmEvalClassificationInput = {
+    /**
+     * Name
+     */
+    name: string;
+    /**
+     * Instructions
+     */
+    instructions?: string | null;
+};
+
+/**
+ * LlmEvalRunInput
+ */
+export type LlmEvalRunInput = {
+    /**
+     * Classifications
+     */
+    classifications: Array<LlmEvalClassificationInput>;
+    /**
+     * Test Cases
+     */
+    test_cases: Array<LlmEvalTestCaseInput>;
+};
+
+/**
+ * LlmEvalRunOutput
+ */
+export type LlmEvalRunOutput = {
+    /**
+     * Total
+     */
+    total: number;
+    /**
+     * Passed
+     */
+    passed: number;
+    /**
+     * Failed
+     */
+    failed: number;
+    /**
+     * Errored
+     */
+    errored: number;
+    /**
+     * Results
+     */
+    results: Array<LlmEvalTestCaseResult>;
+};
+
+/**
+ * LlmEvalTestCaseInput
+ */
+export type LlmEvalTestCaseInput = {
+    /**
+     * Text
+     */
+    text: string;
+    /**
+     * Expected
+     */
+    expected: string;
+};
+
+/**
+ * LlmEvalTestCaseResult
+ */
+export type LlmEvalTestCaseResult = {
+    /**
+     * Text
+     */
+    text: string;
+    /**
+     * Expected
+     */
+    expected: string;
+    /**
+     * Actual
+     */
+    actual: string | null;
+    /**
+     * Passed
+     */
+    passed: boolean;
+    /**
+     * Error
+     */
+    error?: string | null;
 };
 
 /**
@@ -1690,7 +1769,7 @@ export type MeldingCreateOutput = {
      */
     urgency: -1 | 0 | 1;
     classification?: SimpleClassificationOutput | null;
-    geo_location?: GeoJsonOutput | null;
+    geo_location?: GeoJson | null;
     /**
      * Street
      */
@@ -1719,6 +1798,11 @@ export type MeldingCreateOutput = {
      * Phone
      */
     phone?: string | null;
+    /**
+     * Labels
+     */
+    labels?: Array<LabelOutput>;
+    source?: SourceOutput | null;
     /**
      * Token
      */
@@ -1768,7 +1852,7 @@ export type MeldingOutput = {
      */
     urgency: -1 | 0 | 1;
     classification?: SimpleClassificationOutput | null;
-    geo_location?: GeoJsonOutput | null;
+    geo_location?: GeoJson | null;
     /**
      * Street
      */
@@ -1797,6 +1881,11 @@ export type MeldingOutput = {
      * Phone
      */
     phone?: string | null;
+    /**
+     * Labels
+     */
+    labels?: Array<LabelOutput>;
+    source?: SourceOutput | null;
 };
 
 /**
@@ -1806,7 +1895,15 @@ export type MeldingUpdateInput = {
     /**
      * Urgency
      */
-    urgency: -1 | 0 | 1;
+    urgency?: -1 | 0 | 1 | null;
+    /**
+     * Label Ids
+     */
+    label_ids?: Array<number> | null;
+    /**
+     * Source Id
+     */
+    source_id?: number | null;
 };
 
 /**
@@ -1842,7 +1939,7 @@ export type MeldingUpdateOutput = {
      */
     urgency: -1 | 0 | 1;
     classification?: SimpleClassificationOutput | null;
-    geo_location?: GeoJsonOutput | null;
+    geo_location?: GeoJson | null;
     /**
      * Street
      */
@@ -1871,6 +1968,11 @@ export type MeldingUpdateOutput = {
      * Phone
      */
     phone?: string | null;
+    /**
+     * Labels
+     */
+    labels?: Array<LabelOutput>;
+    source?: SourceOutput | null;
     /**
      * Token
      */
@@ -2360,6 +2462,28 @@ export type SomeOutput = {
         Array<unknown> | Var | Missing | MissingSome | If | Merge | FilterOutput | MapOutput,
         boolean | Add | AllOutput | AndOutput | Cat | Divide | Equals | FilterOutput | GreaterThan | GreaterThanOrEqual | If | InOutput | LessThan | LessThanOrEqual | Log | MapOutput | Max | Merge | Min | Missing | MissingSome | Modulo | Multiply | NoneOutput | Not | NotEquals | NotNot | OrOutput | ReduceOutput | SomeOutput | StrictEquals | StrictNotEquals | Substr | Subtract | Var | Length
     ];
+};
+
+/**
+ * SourceOutput
+ */
+export type SourceOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Name
+     */
+    name: string;
 };
 
 /**
@@ -4646,6 +4770,71 @@ export type PostMeldingByMeldingIdQuestionByQuestionIdResponses = {
 
 export type PostMeldingByMeldingIdQuestionByQuestionIdResponse = PostMeldingByMeldingIdQuestionByQuestionIdResponses[keyof PostMeldingByMeldingIdQuestionByQuestionIdResponses];
 
+export type DeleteMeldingByMeldingIdAnswerByAnswerIdData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+        /**
+         * Answer Id
+         *
+         * The id of the answer.
+         */
+        answer_id: number;
+    };
+    query: {
+        /**
+         * Token
+         *
+         * The token of the melding.
+         */
+        token: string;
+    };
+    url: '/melding/{melding_id}/answer/{answer_id}';
+};
+
+export type DeleteMeldingByMeldingIdAnswerByAnswerIdErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type DeleteMeldingByMeldingIdAnswerByAnswerIdError = DeleteMeldingByMeldingIdAnswerByAnswerIdErrors[keyof DeleteMeldingByMeldingIdAnswerByAnswerIdErrors];
+
+export type DeleteMeldingByMeldingIdAnswerByAnswerIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
 export type PatchMeldingByMeldingIdAnswerByAnswerIdData = {
     /**
      * Answer Input
@@ -5063,7 +5252,7 @@ export type DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponses = {
 };
 
 export type PatchMeldingByMeldingIdLocationData = {
-    body: GeoJsonInput;
+    body: GeoJson;
     path: {
         /**
          * Melding Id
@@ -6764,6 +6953,116 @@ export type GetAssetTypeByAssetTypeIdWfsResponses = {
 
 export type GetAssetTypeByAssetTypeIdWfsResponse = GetAssetTypeByAssetTypeIdWfsResponses[keyof GetAssetTypeByAssetTypeIdWfsResponses];
 
+export type GetLabelData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * The limit
+         */
+        limit?: number;
+        /**
+         * The offset of the page
+         */
+        offset?: number | null;
+        /**
+         * Sort
+         */
+        sort?: string;
+        /**
+         * Filter
+         */
+        filter?: string | null;
+    };
+    url: '/label/';
+};
+
+export type GetLabelErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetLabelError = GetLabelErrors[keyof GetLabelErrors];
+
+export type GetLabelResponses = {
+    /**
+     * Response Label List Label  Get
+     *
+     * Successful Response
+     */
+    200: Array<LabelOutput>;
+};
+
+export type GetLabelResponse = GetLabelResponses[keyof GetLabelResponses];
+
+export type GetSourceData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * The limit
+         */
+        limit?: number;
+        /**
+         * The offset of the page
+         */
+        offset?: number | null;
+        /**
+         * Sort
+         */
+        sort?: string;
+        /**
+         * Filter
+         */
+        filter?: string | null;
+    };
+    url: '/source/';
+};
+
+export type GetSourceErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetSourceError = GetSourceErrors[keyof GetSourceErrors];
+
+export type GetSourceResponses = {
+    /**
+     * Response Source List Source  Get
+     *
+     * Successful Response
+     */
+    200: Array<SourceOutput>;
+};
+
+export type GetSourceResponse = GetSourceResponses[keyof GetSourceResponses];
+
 export type GetDocsData = {
     body?: never;
     path?: never;
@@ -6779,3 +7078,43 @@ export type GetDocsResponses = {
 };
 
 export type GetDocsResponse = GetDocsResponses[keyof GetDocsResponses];
+
+export type PostLlmEvalRunData = {
+    body: LlmEvalRunInput;
+    path?: never;
+    query?: never;
+    url: '/llm-eval/run';
+};
+
+export type PostLlmEvalRunErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * LLM is not enabled or not configured.
+     */
+    503: unknown;
+};
+
+export type PostLlmEvalRunError = PostLlmEvalRunErrors[keyof PostLlmEvalRunErrors];
+
+export type PostLlmEvalRunResponses = {
+    /**
+     * Successful Response
+     */
+    200: LlmEvalRunOutput;
+};
+
+export type PostLlmEvalRunResponse = PostLlmEvalRunResponses[keyof PostLlmEvalRunResponses];

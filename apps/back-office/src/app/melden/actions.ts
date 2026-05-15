@@ -38,12 +38,13 @@ export const postMeldingForm = async (
 ): Promise<FormState> => {
   const formDataObj = Object.fromEntries(formData)
 
-  // Return validation error if primary question is not answered
-  if (!formDataObj.primary) {
-    return {
-      formData,
-      validationErrors: [{ key: 'primary', message: requiredErrorMessage }],
-    }
+  // Return validation errors if required fields are missing
+  const validationErrors = [
+    ...(!formDataObj.primary ? [{ key: 'primary', message: requiredErrorMessage }] : []),
+    ...(!formDataObj.source ? [{ key: 'source', message: 'Vul in wat de bron van de melding is.' }] : []),
+  ]
+  if (validationErrors.length > 0) {
+    return { formData, validationErrors }
   }
 
   const urgencyRaw = formDataObj.urgency
@@ -78,12 +79,22 @@ export const postMeldingForm = async (
 
   if (error) return { formData, systemError: error }
 
-  const { error: urgencyError } = await patchMeldingByMeldingId({
-    body: { urgency: urgencyNumber },
-    path: { melding_id: data.id },
+  const { classification, created_at, id, public_id, token } = data
+
+  const meldingData = {
+    classificationId: classification?.id,
+    createdAt: created_at,
+    id,
+    publicId: public_id,
+    token,
+  }
+
+  const { error: updateMeldingError } = await patchMeldingByMeldingId({
+    body: { source_id: Number(formDataObj.source), urgency: urgencyNumber },
+    path: { melding_id: meldingData.id },
   })
 
-  if (urgencyError) return { formData, systemError: urgencyError }
+  if (updateMeldingError) return { formData, systemError: updateMeldingError }
 
   const { classification, created_at, id, public_id, token } = data
   const meldingFormBaseUrl = process.env.NEXT_PUBLIC_MELDING_FORM_BASE_URL

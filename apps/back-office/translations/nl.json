@@ -29,6 +29,8 @@
       "title": "Melden - Gemeente Amsterdam"
     },
     "title": "Melden",
+    "source-label": "Wat is de bron van de melding?",
+    "source-default": "--Kies een bron--",
     "urgency-label": "Wat is de urgentie?",
     "submit-button": "Volgende vraag",
     "errors": {

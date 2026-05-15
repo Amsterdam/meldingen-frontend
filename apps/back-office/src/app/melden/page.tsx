@@ -6,7 +6,7 @@ import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { postMeldingForm } from './actions'
 import { MeldingForm } from './MeldingForm'
-import { getMeldingByMeldingId, getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
+import { getMeldingByMeldingId, getSource, getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.
@@ -43,7 +43,9 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: string; t
 
   if (!primaryTextArea) throw new Error('Primary form textarea not found.')
 
-  const requiredErrorMessage = primaryTextArea.validate?.required_error_message || t('required-error-message-fallback')
+  const { data: sources, error: sourcesError } = await getSource()
+
+  if (sourcesError || !sources) throw new Error('Failed to fetch sources.')
 
   const { id, token } = await searchParams
 
@@ -61,9 +63,31 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: string; t
   const defaultValues = result?.data
     ? {
         primary: result.data.text,
+        source: result.data.source?.id ? String(result.data.source.id) : '',
         urgency: result.data.urgency,
       }
     : {}
 
-  return <MeldingForm action={action} defaultValues={defaultValues} primaryTextArea={primaryTextArea} />
+  const existingMelding =
+    token && result?.data?.id
+      ? {
+          classificationId: result.data.classification?.id,
+          classificationName: result.data.classification?.name,
+          createdAt: result.data.created_at,
+          id: result.data.id,
+          publicId: result.data.public_id,
+          token: token,
+        }
+      : undefined
+
+  return (
+    <MeldingForm
+      defaultValues={defaultValues}
+      existingId={id}
+      existingMelding={existingMelding}
+      existingToken={token}
+      primaryTextArea={primaryTextArea}
+      sources={sources}
+    />
+  )
 }
