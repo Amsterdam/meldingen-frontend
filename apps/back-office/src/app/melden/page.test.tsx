@@ -78,6 +78,12 @@ describe('Page', () => {
     await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Failed to fetch sources.')
   })
 
+  it('throws an error if sources list is empty', async () => {
+    server.use(http.get(ENDPOINTS.GET_SOURCE, () => HttpResponse.json([])))
+
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('No sources found.')
+  })
+
   it('renders the MeldingForm component with form components', async () => {
     const PageComponent = await Page({ searchParams: Promise.resolve({}) })
 
