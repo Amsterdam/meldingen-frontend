@@ -58,7 +58,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
   const defaultValues = result?.data
     ? {
         primary: result.data.text,
-        source: result.data.source?.id ? String(result.data.source.id) : '',
+        source: result.data.source?.id ? String(result.data.source.id) : undefined,
         urgency: result.data.urgency,
       }
     : {}

@@ -13,6 +13,7 @@ vi.mock('next/navigation', () => ({
 describe('postMeldingForm', () => {
   it('returns a custom validation error when primary question is not answered', async () => {
     const formData = new FormData()
+    formData.set('source', 'Test')
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -22,9 +23,36 @@ describe('postMeldingForm', () => {
     })
   })
 
+  it('returns a validation error when source question is not answered', async () => {
+    const formData = new FormData()
+    formData.set('primary', 'Test')
+
+    const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'source', message: 'source.error' }],
+    })
+  })
+
+  it('returns 2 validation errors when both primary and source questions are not answered', async () => {
+    const formData = new FormData()
+
+    const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [
+        { key: 'primary', message: 'Dit veld is verplicht.' },
+        { key: 'source', message: 'source.error' },
+      ],
+    })
+  })
+
   it('returns a system error when urgency is invalid', async () => {
     const formData = new FormData()
     formData.set('primary', 'Test')
+    formData.set('source', 'Test')
     formData.set('urgency', 'invalid')
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
@@ -40,6 +68,7 @@ describe('postMeldingForm', () => {
 
     const formData = new FormData()
     formData.set('primary', 'Test')
+    formData.set('source', 'Test')
     formData.set('urgency', '1')
     formData.set('prefetchedMelding', 'not-valid-json')
 
@@ -63,6 +92,7 @@ describe('postMeldingForm', () => {
 
     const formData = new FormData()
     formData.set('primary', 'Test')
+    formData.set('source', 'Test')
     formData.set('urgency', '1')
     formData.set('prefetchedMelding', JSON.stringify({ invalid: 'structure' }))
 
@@ -93,6 +123,7 @@ describe('postMeldingForm', () => {
 
     const formData = new FormData()
     formData.set('primary', 'Test')
+    formData.set('source', 'Test')
     formData.set('urgency', '1')
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
@@ -108,6 +139,7 @@ describe('postMeldingForm', () => {
 
     const formData = new FormData()
     formData.set('primary', 'Test')
+    formData.set('source', 'Test')
     formData.set('urgency', '1')
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
@@ -122,6 +154,7 @@ describe('postMeldingForm', () => {
 
     const formData = new FormData()
     formData.set('primary', 'Test')
+    formData.set('source', 'Test')
     formData.set('urgency', '1')
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
@@ -134,6 +167,7 @@ describe('postMeldingForm', () => {
 
     const formData = new FormData()
     formData.set('primary', 'Test')
+    formData.set('source', 'Test')
     formData.set('urgency', '1')
 
     await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
@@ -156,6 +190,7 @@ describe('postMeldingForm', () => {
 
     const formData = new FormData()
     formData.set('primary', 'Test')
+    formData.set('source', 'Test')
     formData.set('urgency', '1')
 
     await postMeldingForm(
@@ -182,6 +217,7 @@ describe('postMeldingForm', () => {
 
     const formData = new FormData()
     formData.set('primary', 'Test')
+    formData.set('source', 'Test')
     formData.set('urgency', '1')
     formData.set(
       'prefetchedMelding',
@@ -225,6 +261,7 @@ describe('postMeldingForm', () => {
 
     const formData = new FormData()
     formData.set('primary', 'Test')
+    formData.set('source', 'Test')
     formData.set('urgency', '1')
 
     await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
