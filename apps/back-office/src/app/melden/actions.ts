@@ -1,5 +1,6 @@
 'use server'
 
+import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
 
 import type { MeldingOutput } from '@meldingen/api-client'
@@ -36,12 +37,14 @@ export const postMeldingForm = async (
   _: unknown,
   formData: FormData,
 ): Promise<FormState> => {
+  const t = await getTranslations('melding-form')
+
   const formDataObj = Object.fromEntries(formData)
 
   // Return validation errors if required fields are missing
   const validationErrors = [
     ...(!formDataObj.primary ? [{ key: 'primary', message: requiredErrorMessage }] : []),
-    ...(!formDataObj.source ? [{ key: 'source', message: 'Vul in wat de bron van de melding is.' }] : []),
+    ...(!formDataObj.source ? [{ key: 'source', message: t('source.error') }] : []),
   ]
   if (validationErrors.length > 0) {
     return { formData, validationErrors }
