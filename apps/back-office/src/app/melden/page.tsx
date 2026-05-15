@@ -45,7 +45,8 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: string; t
 
   const { data: sources, error: sourcesError } = await getSource()
 
-  if (sourcesError || sources.length === 0) throw new Error('Failed to fetch sources.')
+  if (sourcesError) throw new Error('Failed to fetch sources.')
+  if (sources.length === 0) throw new Error('No sources found.')
 
   const { id, token } = await searchParams
 
