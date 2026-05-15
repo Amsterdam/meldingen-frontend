@@ -194,7 +194,7 @@ export const MeldingForm = ({
               <input name="prefetchedMelding" type="hidden" value={JSON.stringify(prefetchedMelding)} />
             )}
             <Field invalid={hasSourceError}>
-              <Label htmlFor="source">{t('source-label')}</Label>
+              <Label htmlFor="source">{t('source.label')}</Label>
               {hasSourceError && (
                 <ErrorMessage id="source-error">
                   {validationErrors?.find((error) => error.key === 'source')?.message}
@@ -214,7 +214,7 @@ export const MeldingForm = ({
                 key={sourceDefaultValue}
                 name="source"
               >
-                <Select.Option value="">{t('source-default')}</Select.Option>
+                <Select.Option value="">{t('source.default')}</Select.Option>
                 {sources.map((source) => (
                   <Select.Option key={source.id} value={String(source.id)}>
                     {source.name}
