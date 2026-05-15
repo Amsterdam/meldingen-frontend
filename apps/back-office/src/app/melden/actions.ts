@@ -48,12 +48,13 @@ export const postMeldingForm = async (
 ): Promise<FormState> => {
   const formDataObj = Object.fromEntries(formData)
 
-  // Return validation error if primary question is not answered
-  if (!formDataObj.primary) {
-    return {
-      formData,
-      validationErrors: [{ key: 'primary', message: requiredErrorMessage }],
-    }
+  // Return validation errors if required fields are missing
+  const validationErrors = [
+    ...(!formDataObj.primary ? [{ key: 'primary', message: requiredErrorMessage }] : []),
+    ...(!formDataObj.source ? [{ key: 'source', message: 'Vul in wat de bron van de melding is.' }] : []),
+  ]
+  if (validationErrors.length > 0) {
+    return { formData, validationErrors }
   }
 
   const urgencyRaw = formDataObj.urgency
@@ -101,12 +102,12 @@ export const postMeldingForm = async (
     token,
   }
 
-  const { error: urgencyError } = await patchMeldingByMeldingId({
-    body: { urgency: urgencyNumber },
+  const { error: updateMeldingError } = await patchMeldingByMeldingId({
+    body: { source_id: Number(formDataObj.source), urgency: urgencyNumber },
     path: { melding_id: meldingData.id },
   })
 
-  if (urgencyError) return { formData, systemError: urgencyError }
+  if (updateMeldingError) return { formData, systemError: updateMeldingError }
 
   const params = new URLSearchParams({
     created_at: meldingData.createdAt,

@@ -5,7 +5,7 @@ import { getTranslations } from 'next-intl/server'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { MeldingForm } from './MeldingForm'
-import { getMeldingByMeldingId, getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
+import { getMeldingByMeldingId, getSource, getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.
@@ -40,6 +40,10 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
 
   if (!primaryTextArea) throw new Error('Primary form textarea not found.')
 
+  const { data: sources, error: sourcesError } = await getSource()
+
+  if (sourcesError || !sources) throw new Error('Failed to fetch sources.')
+
   const { id, token } = await searchParams
 
   // Prefill form
@@ -54,6 +58,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
   const defaultValues = result?.data
     ? {
         primary: result.data.text,
+        source: result.data.source?.id ? String(result.data.source.id) : '',
         urgency: result.data.urgency,
       }
     : {}
@@ -77,6 +82,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
       existingMelding={existingMelding}
       existingToken={token}
       primaryTextArea={primaryTextArea}
+      sources={sources}
     />
   )
 }
