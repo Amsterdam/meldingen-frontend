@@ -10,6 +10,20 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
+const createFormData = (fields: Record<string, string> = {}): FormData => {
+  const formData = new FormData()
+
+  // Set default values for required fields
+  formData.set('primary', 'Test')
+  formData.set('source', 'Test')
+  formData.set('urgency', '1')
+
+  for (const [key, value] of Object.entries(fields)) {
+    formData.set(key, value)
+  }
+  return formData
+}
+
 describe('postMeldingForm', () => {
   it('returns a custom validation error when primary question is not answered', async () => {
     const formData = new FormData()
@@ -50,10 +64,7 @@ describe('postMeldingForm', () => {
   })
 
   it('returns a system error when urgency is invalid', async () => {
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-    formData.set('source', 'Test')
-    formData.set('urgency', 'invalid')
+    const formData = createFormData({ urgency: 'invalid' })
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -66,11 +77,7 @@ describe('postMeldingForm', () => {
   it('falls back to a POST call when prefetchedMelding contains invalid JSON', async () => {
     vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
 
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-    formData.set('source', 'Test')
-    formData.set('urgency', '1')
-    formData.set('prefetchedMelding', 'not-valid-json')
+    const formData = createFormData({ prefetchedMelding: 'not-valid-json' })
 
     await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -90,11 +97,7 @@ describe('postMeldingForm', () => {
   it('falls back to a POST call when prefetchedMelding contains valid JSON that does not conform to the expected structure', async () => {
     vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
 
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-    formData.set('source', 'Test')
-    formData.set('urgency', '1')
-    formData.set('prefetchedMelding', JSON.stringify({ invalid: 'structure' }))
+    const formData = createFormData({ prefetchedMelding: JSON.stringify({ invalid: 'structure' }) })
 
     await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -121,10 +124,7 @@ describe('postMeldingForm', () => {
       ),
     )
 
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-    formData.set('source', 'Test')
-    formData.set('urgency', '1')
+    const formData = createFormData()
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -137,10 +137,7 @@ describe('postMeldingForm', () => {
   it('returns a system error when postMelding returns an error', async () => {
     server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json('Error message', { status: 404 })))
 
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-    formData.set('source', 'Test')
-    formData.set('urgency', '1')
+    const formData = createFormData()
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -152,10 +149,7 @@ describe('postMeldingForm', () => {
       http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () => HttpResponse.json('Error message', { status: 404 })),
     )
 
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-    formData.set('source', 'Test')
-    formData.set('urgency', '1')
+    const formData = createFormData()
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -165,10 +159,7 @@ describe('postMeldingForm', () => {
   it('redirects to the correct URL when postMeldingForm is successful', async () => {
     vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
 
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-    formData.set('source', 'Test')
-    formData.set('urgency', '1')
+    const formData = createFormData()
 
     await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -188,10 +179,7 @@ describe('postMeldingForm', () => {
   it('uses a PATCH request when id and token are passed to postMeldingForm', async () => {
     vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
 
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-    formData.set('source', 'Test')
-    formData.set('urgency', '1')
+    const formData = createFormData()
 
     await postMeldingForm(
       { existingId: 123, existingToken: 'test-token', requiredErrorMessage: 'Dit veld is verplicht.' },
@@ -215,20 +203,15 @@ describe('postMeldingForm', () => {
   it('uses a PATCH request when prefetchedMelding contains valid melding data', async () => {
     vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
 
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-    formData.set('source', 'Test')
-    formData.set('urgency', '1')
-    formData.set(
-      'prefetchedMelding',
-      JSON.stringify({
+    const formData = createFormData({
+      prefetchedMelding: JSON.stringify({
         classificationId: 2,
         createdAt: '2025-05-26T11:56:34.081Z',
         id: 123,
         publicId: 'B100AA',
         token: 'test-token',
       }),
-    )
+    })
 
     await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -259,10 +242,7 @@ describe('postMeldingForm', () => {
       ),
     )
 
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-    formData.set('source', 'Test')
-    formData.set('urgency', '1')
+    const formData = createFormData()
 
     await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
