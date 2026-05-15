@@ -206,6 +206,7 @@ export const MeldingForm = ({
                   undefined,
                   validationErrors?.find((error) => error.key === 'source')?.message,
                 )}
+                aria-required="true"
                 defaultValue={sourceDefaultValue}
                 id="source"
                 invalid={hasSourceError}
