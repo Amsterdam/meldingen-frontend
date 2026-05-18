@@ -33,10 +33,10 @@
   },
   "dependencies": {
     "@amsterdam/design-system-assets": "2.3.0",
-    "@amsterdam/design-system-css": "3.0.0",
-    "@amsterdam/design-system-react": "3.0.0",
+    "@amsterdam/design-system-css": "4.1.0",
+    "@amsterdam/design-system-react": "4.1.0",
     "@amsterdam/design-system-react-icons": "2.0.0",
-    "@amsterdam/design-system-tokens": "3.0.0",
+    "@amsterdam/design-system-tokens": "4.0.1",
     "clsx": "2.1.1",
     "react": "19.2.6",
     "react-dom": "19.2.6",
