@@ -1,5 +1,7 @@
 'use client'
 
+import type { FocusEvent } from 'react'
+
 import {
   Button,
   CharacterCount,
@@ -15,13 +17,14 @@ import {
 } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useRef, useState } from 'react'
+import { useActionState, useEffect, useRef, useState, useTransition } from 'react'
 
 import type { SourceOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
+import { patchMeldingByMeldingIdMelder, postMelding } from '@meldingen/api-client'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Column } from '@meldingen/ui'
+import { Column, Paragraph } from '@meldingen/ui'
 
 import type { FormState } from './actions'
 
@@ -59,6 +62,13 @@ export const MeldingForm = ({
 
   const ref = useRef<HTMLTextAreaElement>(null)
 
+  const t = useTranslations('melding-form')
+  const tShared = useTranslations('shared')
+
+  const requiredErrorMessage =
+    primaryTextArea.validate?.required_error_message ?? t('errors.required-error-message-fallback')
+  const action = postMeldingForm.bind(null, { existingId, existingToken, requiredErrorMessage })
+
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
   const [, startTransition] = useTransition()
   const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
@@ -72,8 +82,8 @@ export const MeldingForm = ({
 
   const [charCount, setCharCount] = useState(primaryTextAreaDefaultValue.length)
 
-  const t = useTranslations('melding-form')
-  const tShared = useTranslations('shared')
+  // Track the last text sent to the backend to avoid redundant blur calls
+  const lastSubmittedTextRef = useRef(primaryTextAreaDefaultValue)
 
   // Set focus on InvalidFormAlert when there are validation errors
   // and on SystemErrorAlert when there is a system error
@@ -166,6 +176,7 @@ export const MeldingForm = ({
                 id="primary"
                 invalid={hasPrimaryError}
                 name="primary"
+                onBlur={handleBlur}
                 onChange={() => {
                   if (typeof maxCharCount === 'number' && ref.current) {
                     setCharCount(ref.current.value.length)

@@ -182,7 +182,7 @@ describe('postMeldingForm', () => {
     const formData = createFormData()
 
     await postMeldingForm(
-      { existingId: '123', existingToken: 'test-token', requiredErrorMessage: 'Dit veld is verplicht.' },
+      { existingId: 123, existingToken: 'test-token', requiredErrorMessage: 'Dit veld is verplicht.' },
       null,
       formData,
     )

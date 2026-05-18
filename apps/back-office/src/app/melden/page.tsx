@@ -4,7 +4,6 @@ import { getTranslations } from 'next-intl/server'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
-import { postMeldingForm } from './actions'
 import { MeldingForm } from './MeldingForm'
 import { getMeldingByMeldingId, getSource, getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
 
@@ -20,9 +19,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 }
 
-export default async ({ searchParams }: { searchParams: Promise<{ id?: string; token?: string }> }) => {
-  const t = await getTranslations('melding-form.errors')
-
+export default async ({ searchParams }: { searchParams: Promise<{ id?: number; token?: string }> }) => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
   if (staticFormsError) throw new Error('Failed to fetch static forms.')
@@ -50,10 +47,8 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: string; t
 
   const { id, token } = await searchParams
 
-  const action = postMeldingForm.bind(null, { existingId: id, existingToken: token, requiredErrorMessage })
-
   // Prefill form
-  const result = id && token ? await getMeldingByMeldingId({ path: { melding_id: Number(id) } }) : undefined
+  const result = id && token ? await getMeldingByMeldingId({ path: { melding_id: id } }) : undefined
 
   if (result?.error) {
     // TODO: Log the error to an error reporting service

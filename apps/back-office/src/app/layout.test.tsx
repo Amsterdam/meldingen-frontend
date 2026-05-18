@@ -28,6 +28,8 @@ describe('generateMetadata', () => {
 
 describe('RootLayout', () => {
   it('renders a Menu with Menu.Links', async () => {
+    vi.stubEnv('NEXT_PUBLIC_BACKEND_BASE_URL', 'testBaseUrl')
+
     render(await RootLayout({ children: <p>Test</p> }))
 
     const overviewLinks = screen.getAllByRole('link', { name: 'menu.overview' })
@@ -37,5 +39,7 @@ describe('RootLayout', () => {
     expect(overviewLinks[1]).toBeInTheDocument()
     expect(meldingFormLinks[0]).toBeInTheDocument()
     expect(meldingFormLinks[1]).toBeInTheDocument()
+
+    vi.unstubAllEnvs()
   })
 })
