@@ -4,6 +4,7 @@
 @import url('@amsterdam/design-system-tokens/dist/compact.css') layer(amsterdam-design-system); /* This should be last, it overrides the default tokens */
 
 body {
+  font-family: 'Amsterdam Sans', Arial, sans-serif;
   margin-block: 0;
   margin-inline: 0;
 }
