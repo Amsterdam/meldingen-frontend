@@ -32,11 +32,11 @@
     "test:watch": "pnpm -r --no-bail test:watch"
   },
   "dependencies": {
-    "@amsterdam/design-system-assets": "1.1.0",
-    "@amsterdam/design-system-css": "2.2.0",
-    "@amsterdam/design-system-react": "2.2.0",
+    "@amsterdam/design-system-assets": "2.3.0",
+    "@amsterdam/design-system-css": "3.0.0",
+    "@amsterdam/design-system-react": "3.0.0",
     "@amsterdam/design-system-react-icons": "2.0.0",
-    "@amsterdam/design-system-tokens": "2.2.0",
+    "@amsterdam/design-system-tokens": "3.0.0",
     "clsx": "2.1.1",
     "react": "19.2.6",
     "react-dom": "19.2.6",
