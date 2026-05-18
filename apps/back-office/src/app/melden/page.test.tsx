@@ -1,24 +1,14 @@
-import type { Mock } from 'vitest'
-
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
-import * as actionsModule from './actions'
 import { MeldingForm } from './MeldingForm'
 import Page, { generateMetadata } from './page'
-import { textAreaComponent } from '~/mocks/data'
+import { melding, textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
-vi.mock('./actions', () => ({ postMeldingForm: vi.fn() }))
-
-let capturedAction: ((prevState: unknown, formData: FormData) => void) | null = null
-
 vi.mock('./MeldingForm', () => ({
-  MeldingForm: vi.fn((props: { action: () => void }) => {
-    capturedAction = props.action
-    return <div>MeldingForm Component</div>
-  }),
+  MeldingForm: vi.fn(() => <div>MeldingForm Component</div>),
 }))
 
 describe('generateMetadata', () => {
@@ -83,13 +73,26 @@ describe('Page', () => {
 
     expect(screen.getByText('MeldingForm Component')).toBeInTheDocument()
     expect(MeldingForm).toHaveBeenCalledWith(
-      { action: expect.any(Function), defaultValues: {}, primaryTextArea: textAreaComponent },
+      {
+        defaultValues: {},
+        existingId: undefined,
+        existingMelding: undefined,
+        existingToken: undefined,
+        primaryTextArea: textAreaComponent,
+      },
       undefined,
     )
   })
 
   it('renders the MeldingForm component with default values when id and token are provided and melding exists', async () => {
-    const meldingData = { text: 'Prefilled text', urgency: -1 }
+    const meldingData = {
+      classification: melding.classification,
+      created_at: melding.created_at,
+      id: melding.id,
+      public_id: melding.public_id,
+      text: 'Prefilled text',
+      urgency: -1,
+    }
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json(meldingData)),
       http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
@@ -101,14 +104,23 @@ describe('Page', () => {
       ),
     )
 
-    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: 'valid-token' }) })
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
 
     render(PageComponent)
 
     expect(MeldingForm).toHaveBeenCalledWith(
       {
-        action: expect.any(Function),
         defaultValues: { primary: 'Prefilled text', urgency: -1 },
+        existingId: 1,
+        existingMelding: {
+          classificationId: melding.classification?.id,
+          classificationName: melding.classification?.name,
+          createdAt: melding.created_at,
+          id: melding.id,
+          publicId: melding.public_id,
+          token: 'valid-token',
+        },
+        existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
       },
       undefined,
@@ -128,7 +140,7 @@ describe('Page', () => {
       ),
     )
 
-    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: 'valid-token' }) })
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
 
     render(PageComponent)
 
@@ -136,8 +148,10 @@ describe('Page', () => {
 
     expect(MeldingForm).toHaveBeenCalledWith(
       {
-        action: expect.any(Function),
         defaultValues: {},
+        existingId: 1,
+        existingMelding: undefined,
+        existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
       },
       undefined,
@@ -158,70 +172,22 @@ describe('Page', () => {
       ),
     )
 
-    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: 'valid-token' }) })
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
 
     render(PageComponent)
 
     expect(MeldingForm).toHaveBeenCalledWith(
       {
-        action: expect.any(Function),
         defaultValues: {
           primary: undefined,
           urgency: undefined,
         },
+        existingId: 1,
+        existingMelding: undefined,
+        existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
       },
       undefined,
     )
-  })
-
-  it('passes postPrimaryForm with the correct bounded args to Home', async () => {
-    const PageComponent = await Page({ searchParams: Promise.resolve({}) })
-
-    render(PageComponent)
-
-    // Call the bound action
-    if (capturedAction) {
-      capturedAction({}, new FormData())
-    }
-
-    expect(actionsModule.postMeldingForm).toHaveBeenCalled()
-
-    const [extraArgs] = (actionsModule.postMeldingForm as Mock).mock.calls[0]
-
-    expect(extraArgs).toMatchObject({ requiredErrorMessage: 'required-error-message-fallback' })
-  })
-
-  it('passes a custom required error message when it is set', async () => {
-    const primaryFormWithCustomErrorMessage = {
-      components: [
-        {
-          ...textAreaComponent,
-          key: 'primary',
-          validate: {
-            required: true,
-            required_error_message: 'Custom error message',
-          },
-        },
-      ],
-    }
-    server.use(
-      http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(primaryFormWithCustomErrorMessage)),
-    )
-
-    const PageComponent = await Page({ searchParams: Promise.resolve({}) })
-
-    render(PageComponent)
-
-    // Call the bound action
-    if (capturedAction) {
-      capturedAction({}, new FormData())
-    }
-
-    expect(actionsModule.postMeldingForm).toHaveBeenCalled()
-
-    const [extraArgs] = (actionsModule.postMeldingForm as Mock).mock.calls[0]
-
-    expect(extraArgs).toMatchObject({ requiredErrorMessage: 'Custom error message' })
   })
 })
