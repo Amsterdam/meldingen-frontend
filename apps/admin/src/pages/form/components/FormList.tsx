@@ -1,7 +1,7 @@
 import { Datagrid, List, TextField } from 'react-admin'
 
 export const FormList = () => (
-  <List>
+  <List resource="form">
     <Datagrid rowClick="edit">
       <TextField source="id" />
       <TextField source="title" />

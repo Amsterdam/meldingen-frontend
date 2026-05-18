@@ -13,10 +13,10 @@ export default defineConfig({
     coverage: {
       enabled: true,
       thresholds: {
-        branches: 45,
-        functions: 42,
-        lines: 63,
-        statements: 62,
+        branches: 48,
+        functions: 48,
+        lines: 65,
+        statements: 64,
       },
     },
     environment: 'jsdom',
