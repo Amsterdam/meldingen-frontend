@@ -1,4 +1,3 @@
-export { FieldSet } from './FieldSet/FieldSet'
 export { FileList } from './FileList/FileList'
 export { FileUpload } from './FileUpload/FileUpload'
 export { InvalidFormAlert } from './InvalidFormAlert/InvalidFormAlert'
