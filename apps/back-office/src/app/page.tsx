@@ -41,7 +41,7 @@ export default async ({ searchParams }: Props) => {
     query: { limit: pageSize, offset: page ? (page - 1) * pageSize : 0, sort: SORT },
   })
 
-  const meldingenCountString = response.headers.get('Content-Range')?.split('/')[1]
+  const meldingenCountString = response?.headers.get('Content-Range')?.split('/')[1]
 
   if (error || !meldingenCountString) return handleApiError(error)
 
