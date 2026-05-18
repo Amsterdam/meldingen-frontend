@@ -29,8 +29,7 @@
     "prettier": "prettier --check .",
     "prettier-fix": "prettier --write .",
     "test": "pnpm -r --no-bail --sequential test",
-    "test:watch": "pnpm -r --no-bail test:watch",
-    "update-minor": "npm-check-updates --target minor --upgrade && pnpm install"
+    "test:watch": "pnpm -r --no-bail test:watch"
   },
   "dependencies": {
     "@amsterdam/design-system-assets": "1.1.0",
@@ -73,7 +72,6 @@
     "jsdom": "29.1.1",
     "lint-staged": "16.4.0",
     "msw": "2.14.6",
-    "npm-check-updates": "21.0.3",
     "prettier": "3.8.3",
     "stylelint": "16.26.1",
     "stylelint-config-css-modules": "4.6.0",
