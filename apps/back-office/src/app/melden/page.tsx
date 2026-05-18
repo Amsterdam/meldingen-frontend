@@ -4,7 +4,6 @@ import { getTranslations } from 'next-intl/server'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
-import { postMeldingForm } from './actions'
 import { MeldingForm } from './MeldingForm'
 import { getMeldingByMeldingId, getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
 
@@ -20,9 +19,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 }
 
-export default async ({ searchParams }: { searchParams: Promise<{ id?: string; token?: string }> }) => {
-  const t = await getTranslations('melding-form.errors')
-
+export default async ({ searchParams }: { searchParams: Promise<{ id?: number; token?: string }> }) => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
   if (staticFormsError) throw new Error('Failed to fetch static forms.')
@@ -43,14 +40,10 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: string; t
 
   if (!primaryTextArea) throw new Error('Primary form textarea not found.')
 
-  const requiredErrorMessage = primaryTextArea.validate?.required_error_message || t('required-error-message-fallback')
-
   const { id, token } = await searchParams
 
-  const action = postMeldingForm.bind(null, { existingId: id, existingToken: token, requiredErrorMessage })
-
   // Prefill form
-  const result = id && token ? await getMeldingByMeldingId({ path: { melding_id: Number(id) } }) : undefined
+  const result = id && token ? await getMeldingByMeldingId({ path: { melding_id: id } }) : undefined
 
   if (result?.error) {
     // TODO: Log the error to an error reporting service
@@ -65,5 +58,25 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: string; t
       }
     : {}
 
-  return <MeldingForm action={action} defaultValues={defaultValues} primaryTextArea={primaryTextArea} />
+  const existingMelding =
+    token && result?.data?.id
+      ? {
+          classificationId: result.data.classification?.id,
+          classificationName: result.data.classification?.name,
+          createdAt: result.data.created_at,
+          id: result.data.id,
+          publicId: result.data.public_id,
+          token: token,
+        }
+      : undefined
+
+  return (
+    <MeldingForm
+      defaultValues={defaultValues}
+      existingId={id}
+      existingMelding={existingMelding}
+      existingToken={token}
+      primaryTextArea={primaryTextArea}
+    />
+  )
 }
