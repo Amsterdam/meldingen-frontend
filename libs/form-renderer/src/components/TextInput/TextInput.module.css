@@ -1,5 +1,5 @@
 .h1 {
   font-size: var(--ams-label-font-size);
-  margin-block: 0;
+  margin-block: 0 var(--ams-space-xs);
   text-wrap: var(--ams-label-text-wrap);
 }
