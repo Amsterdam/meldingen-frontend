@@ -8,12 +8,13 @@ import { useActionState, useEffect, useRef } from 'react'
 
 import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
+import type { FormState } from '~/types'
+
 import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { TOP_ANCHOR_ID } from '~/constants'
-import { FormState } from '~/types'
 
 type GenericSummaryData = {
   description: string

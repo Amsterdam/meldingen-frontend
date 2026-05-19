@@ -7,7 +7,8 @@ import Image from 'next/image'
 import NextLink from 'next/link'
 import { useActionState, useEffect, useRef } from 'react'
 
-import { Feature } from '@meldingen/api-client'
+import type { Feature } from '@meldingen/api-client'
+
 import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
 import type { FormState } from '~/types'

@@ -11,12 +11,13 @@ import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
 
+import type { FormState } from '~/types'
+
 import { SystemErrorAlert } from '../_components/SystemErrorAlert'
 import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { postContactForm } from './actions'
 import { TOP_ANCHOR_ID } from '~/constants'
-import { FormState } from '~/types'
 
 const initialState: FormState = {}
 

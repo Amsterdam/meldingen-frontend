@@ -1,11 +1,15 @@
+import type { Layer, Map } from 'leaflet'
+import type { Mock } from 'vitest'
+
 import { render, waitFor } from '@testing-library/react'
-import { Layer, Map } from 'leaflet'
-import { Mock, vi } from 'vitest'
+import { vi } from 'vitest'
 
 import { getAssetTypeByAssetTypeIdWfs } from '@meldingen/api-client'
 
+import type { Props } from './MarkerSelectLayer'
+
 import { MapComponent } from '../Map/Map'
-import { fetchFeaturesOnMoveEnd, MarkerSelectLayer, Props } from './MarkerSelectLayer'
+import { fetchFeaturesOnMoveEnd, MarkerSelectLayer } from './MarkerSelectLayer'
 
 const defaultProps: Props = {
   assetTypeIconConfig: {},

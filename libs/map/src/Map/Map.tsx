@@ -1,6 +1,8 @@
+import type { PropsWithChildren } from 'react'
+
 import { clsx } from 'clsx'
 import { latLng, Map, tileLayer } from 'leaflet'
-import { createContext, PropsWithChildren, useEffect, useRef, useState } from 'react'
+import { createContext, useEffect, useRef, useState } from 'react'
 
 import 'leaflet/dist/leaflet.css'
 import styles from './Map.module.css'

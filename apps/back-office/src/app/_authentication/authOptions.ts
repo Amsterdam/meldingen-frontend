@@ -1,6 +1,6 @@
+import type { AuthOptions } from 'next-auth'
 import type { JWT } from 'next-auth/jwt'
 
-import { AuthOptions } from 'next-auth'
 import AzureAD from 'next-auth/providers/azure-ad'
 import KeycloakProvider from 'next-auth/providers/keycloak'
 

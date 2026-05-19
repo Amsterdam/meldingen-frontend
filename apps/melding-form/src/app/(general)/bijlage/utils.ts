@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
 export const safeJSONParse = (jsonString?: string) => {
   if (!jsonString) return undefined

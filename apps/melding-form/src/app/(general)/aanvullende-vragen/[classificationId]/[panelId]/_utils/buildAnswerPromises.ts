@@ -1,8 +1,8 @@
+import type { PostMeldingByMeldingIdQuestionByQuestionIdData, ValueLabelObject } from '@meldingen/api-client'
+
 import {
   patchMeldingByMeldingIdAnswerByAnswerId,
   postMeldingByMeldingIdQuestionByQuestionId,
-  PostMeldingByMeldingIdQuestionByQuestionIdData,
-  ValueLabelObject,
 } from '@meldingen/api-client'
 
 import type { DateOptionValues } from '../page'

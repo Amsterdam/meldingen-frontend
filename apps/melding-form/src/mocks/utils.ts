@@ -1,5 +1,6 @@
+import type { Mock } from 'vitest'
+
 import { cookies } from 'next/headers'
-import { Mock } from 'vitest'
 import { vi } from 'vitest'
 
 import { COOKIES } from '../constants'

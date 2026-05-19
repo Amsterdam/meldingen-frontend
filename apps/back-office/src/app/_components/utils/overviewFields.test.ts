@@ -1,4 +1,6 @@
-import { formatValue, getMeldingDetailHref, OverviewField } from './overviewFields'
+import type { OverviewField } from './overviewFields'
+
+import { formatValue, getMeldingDetailHref } from './overviewFields'
 import { URGENCY_VALUES } from '~/constants'
 import { melding } from '~/mocks/data'
 

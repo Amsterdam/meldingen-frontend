@@ -1,11 +1,17 @@
-import { Layer, Map } from 'leaflet'
-import 'leaflet.markercluster'
-import { RefObject, useContext, useEffect, useRef } from 'react'
+import type { Layer, Map } from 'leaflet'
 
-import { Feature, getAssetTypeByAssetTypeIdWfs } from '@meldingen/api-client'
+import 'leaflet.markercluster'
+import type { RefObject } from 'react'
+
+import { useContext, useEffect, useRef } from 'react'
+
+import type { Feature } from '@meldingen/api-client'
+
+import { getAssetTypeByAssetTypeIdWfs } from '@meldingen/api-client'
+
+import type { Coordinates } from '../types'
 
 import { MapContext } from '../Map/Map'
-import { Coordinates } from '../types'
 import { useAddMarkersToMap } from './useAddMarkersToMap'
 import { getWfsFilter } from './utils/getWfsFilter'
 

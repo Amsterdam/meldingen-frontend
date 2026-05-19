@@ -2,8 +2,9 @@
 // - https://github.com/formio/formio.js/tree/main/src/components/_classes/component/editForm
 // - https://github.com/formio/formio.js/tree/main/src/components/textfield/editForm
 
+import type { Context } from '../types'
+
 import { conditionalTab } from '../shared'
-import { Context } from '../types'
 import {
   getJsonLogicValue,
   getMaxLengthErrorMessageValue,

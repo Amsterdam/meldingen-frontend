@@ -1,7 +1,9 @@
 'use client'
 
+import type { DragEvent, InputHTMLAttributes, RefObject } from 'react'
+
 import { clsx } from 'clsx'
-import { DragEvent, InputHTMLAttributes, RefObject, useImperativeHandle, useRef } from 'react'
+import { useImperativeHandle, useRef } from 'react'
 
 import styles from './FileUpload.module.css'
 

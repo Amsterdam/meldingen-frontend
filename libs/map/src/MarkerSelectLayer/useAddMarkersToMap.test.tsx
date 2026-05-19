@@ -1,9 +1,10 @@
+import type { Layer, Map, MarkerClusterGroup } from 'leaflet'
 import type { RefObject } from 'react'
 
 import { renderHook } from '@testing-library/react'
-import L, { Layer, Map, MarkerClusterGroup } from 'leaflet'
+import L from 'leaflet'
 
-import { Feature } from '@meldingen/api-client'
+import type { Feature } from '@meldingen/api-client'
 
 import type { Props } from './useAddMarkersToMap'
 

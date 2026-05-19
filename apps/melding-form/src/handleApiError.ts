@@ -1,4 +1,4 @@
-import { ValidationError } from '@meldingen/api-client'
+import type { ValidationError } from '@meldingen/api-client'
 
 // Our API client doesn't strongly type errors, so we need to check if the error is a simple error or an array of errors.
 const isSimpleApiError = (error: unknown): error is { detail: string } =>

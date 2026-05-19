@@ -1,8 +1,9 @@
+import type { Mock } from 'vitest'
+
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { useActionState } from 'react'
-import { Mock } from 'vitest'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 

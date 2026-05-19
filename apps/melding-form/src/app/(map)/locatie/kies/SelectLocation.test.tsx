@@ -1,8 +1,9 @@
+import type { Mock } from 'vitest'
+
 import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useEffect } from 'react'
-import { Mock } from 'vitest'
 
 import type { Props } from './SelectLocation'
 

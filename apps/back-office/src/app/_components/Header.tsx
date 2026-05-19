@@ -1,8 +1,9 @@
 'use client'
 
+import type { PropsWithChildren } from 'react'
+
 import { PageHeader } from '@amsterdam/design-system-react'
 import NextLink from 'next/link'
-import { PropsWithChildren } from 'react'
 
 export const Header = ({ children }: PropsWithChildren) => (
   <PageHeader

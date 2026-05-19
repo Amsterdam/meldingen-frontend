@@ -16,7 +16,7 @@ import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
 
-import { MeldingOutput, StatesOutput } from '@meldingen/api-client'
+import type { MeldingOutput, StatesOutput } from '@meldingen/api-client'
 
 import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'

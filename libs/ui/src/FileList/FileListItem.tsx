@@ -1,8 +1,9 @@
+import type { HTMLAttributes } from 'react'
+
 import { WarningIcon } from '@amsterdam/design-system-react-icons'
 import { Button } from '@amsterdam/design-system-react/dist/Button'
 import { Icon } from '@amsterdam/design-system-react/dist/Icon'
 import { clsx } from 'clsx'
-import { HTMLAttributes } from 'react'
 
 import { FileListImage } from './FileListImage'
 

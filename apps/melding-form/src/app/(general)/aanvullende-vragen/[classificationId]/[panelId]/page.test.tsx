@@ -1,7 +1,8 @@
+import type { Mock } from 'vitest'
+
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
-import { Mock } from 'vitest'
 
 import * as actionsModule from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
