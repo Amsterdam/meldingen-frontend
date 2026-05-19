@@ -129,7 +129,7 @@ export default defineConfig(
       'import/no-named-as-default': 'error',
 
       // ESLint
-      'no-console': 'warn',
+      'no-console': 'error',
       'no-unused-vars': 'off', // Handled by @typescript-eslint/no-unused-vars
       'prefer-arrow-functions/prefer-arrow-functions': 'error',
 
