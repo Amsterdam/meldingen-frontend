@@ -60,7 +60,7 @@ export const getContactData = (data: MeldingOutput, t: (key: string) => string) 
 }
 
 export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) => {
-  const { classification, created_at, id, state, urgency } = data
+  const { classification, created_at, id, labels, state, urgency } = data
 
   return [
     {
@@ -90,6 +90,15 @@ export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) 
         label: t('detail.melding-data.urgency.link'),
       },
       term: t('detail.melding-data.urgency.term'),
+    },
+    {
+      description: labels && labels.length > 0 ? labels.map((label) => label.name).join(', ') : t('detail.no-labels'),
+      key: 'labels',
+      link: {
+        href: `/melding/${id}/wijzig-labels`,
+        label: t('detail.melding-data.labels.link'),
+      },
+      term: t('detail.melding-data.labels.term'),
     },
   ]
 }
