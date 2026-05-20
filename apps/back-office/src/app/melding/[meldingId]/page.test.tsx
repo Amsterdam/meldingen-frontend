@@ -29,7 +29,7 @@ describe('Page', () => {
 
     const { getByText } = render(result)
 
-    expect(getByText('errors.melding-not-found')).toBeInTheDocument()
+    expect(getByText('detail.errors.melding-not-found')).toBeInTheDocument()
   })
 
   it('returns an error message when getMeldingByMeldingIdAnswers returns an error', async () => {
@@ -129,6 +129,15 @@ describe('Page', () => {
           label: 'detail.melding-data.urgency.link',
         },
         term: 'detail.melding-data.urgency.term',
+      },
+      {
+        description: 'Label 1, Label 2',
+        key: 'labels',
+        link: {
+          href: `/melding/${id}/wijzig-labels`,
+          label: 'detail.melding-data.labels.link',
+        },
+        term: 'detail.melding-data.labels.term',
       },
     ]
 

@@ -20,6 +20,10 @@ export const melding: MeldingOutput = {
   house_number: 202,
   house_number_addition: 'A',
   id: 123,
+  labels: [
+    { id: 0, name: 'Label 1' },
+    { id: 1, name: 'Label 2' },
+  ],
   phone: '0612345678',
   postal_code: '1016BS',
   public_id: 'ABC',

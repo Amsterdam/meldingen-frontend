@@ -79,22 +79,18 @@
     "no-classification": "Geen categorie",
     "no-labels": "Geen labels"
   },
-  "change-urgency": {
+  "change-labels": {
     "metadata": {
-      "title": "Wijzig urgentie - Gemeente Amsterdam"
+      "title": "Wijzig labels - Gemeente Amsterdam"
     },
     "back-link": "Meldingdetails",
-    "title": "Wijzig urgentie melding {publicId}",
-    "label": "Wijzig urgentie",
-    "submit-button": "Wijzig urgentie",
+    "title": "Wijzig labels melding {publicId}",
+    "label": "Wijzig labels",
+    "submit-button": "Wijzig labels",
     "cancel-link": "Annuleer",
     "errors": {
-      "invalid-urgency": {
-        "heading": "Er is iets misgegaan",
-        "description": "Probeer het later opnieuw."
-      },
-      "urgency-change-failed": {
-        "heading": "De urgentie kan niet worden gewijzigd",
+      "labels-change-failed": {
+        "heading": "De labels kunnen niet worden gewijzigd",
         "description": "Probeer het later opnieuw."
       }
     }
@@ -116,6 +112,26 @@
       "state-change-failed": {
         "heading": "De status kan niet worden gewijzigd",
         "description": "Het kan zijn dat de status al is aangepast door een andere behandelaar."
+      }
+    }
+  },
+  "change-urgency": {
+    "metadata": {
+      "title": "Wijzig urgentie - Gemeente Amsterdam"
+    },
+    "back-link": "Meldingdetails",
+    "title": "Wijzig urgentie melding {publicId}",
+    "label": "Wijzig urgentie",
+    "submit-button": "Wijzig urgentie",
+    "cancel-link": "Annuleer",
+    "errors": {
+      "invalid-urgency": {
+        "heading": "Er is iets misgegaan",
+        "description": "Probeer het later opnieuw."
+      },
+      "urgency-change-failed": {
+        "heading": "De urgentie kan niet worden gewijzigd",
+        "description": "Probeer het later opnieuw."
       }
     }
   },
