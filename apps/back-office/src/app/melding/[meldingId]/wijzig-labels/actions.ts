@@ -11,6 +11,12 @@ type MeldingIdParam = {
 
 const extractLabelIdsFromFormData = (formData: FormData) => formData.getAll('labels').map(Number)
 
+const sameLabels = (a: number[], b: number[]) => {
+  const setA = new Set(a)
+  const setB = new Set(b)
+  return setA.size === setB.size && [...setA].every((id) => setB.has(id))
+}
+
 export const postChangeLabelsForm = async (
   { currentLabelIds, meldingId }: MeldingIdParam,
   _: { error?: unknown; labelIdsFromAction?: number[] } | null,
@@ -18,12 +24,6 @@ export const postChangeLabelsForm = async (
 ) => {
   const labelIdsFromForm = extractLabelIdsFromFormData(formData)
   const redirectPath = `/melding/${meldingId}`
-
-  const sameLabels = (a: number[], b: number[]) => {
-    const setA = new Set(a)
-    const setB = new Set(b)
-    return setA.size === setB.size && [...setA].every((id) => setB.has(id))
-  }
 
   // If the selected labels are the same as the current labels,
   // we simply redirect without calling the API
