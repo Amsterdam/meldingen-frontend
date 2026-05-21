@@ -1,4 +1,4 @@
-import { Feature } from '@meldingen/api-client'
+import type { Feature } from '@meldingen/api-client'
 
 export const containerAssets: Feature[] = [
   {

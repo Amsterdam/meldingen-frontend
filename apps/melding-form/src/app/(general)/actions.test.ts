@@ -1,7 +1,9 @@
+import type { Mock } from 'vitest'
+
 import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { Mock, vi } from 'vitest'
+import { vi } from 'vitest'
 
 import { postPrimaryForm } from './actions'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'

@@ -1,5 +1,7 @@
+import type { ChangeEvent } from 'react'
+
 import { TextArea as ADSTextArea, CharacterCount, ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
-import { ChangeEvent, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 

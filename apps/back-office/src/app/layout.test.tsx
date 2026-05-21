@@ -1,5 +1,7 @@
+import type { PropsWithChildren } from 'react'
+
 import { render, screen } from '@testing-library/react'
-import { Fragment, PropsWithChildren } from 'react'
+import { Fragment } from 'react'
 
 import RootLayout, { generateMetadata } from './layout'
 

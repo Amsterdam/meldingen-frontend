@@ -1,8 +1,11 @@
-import { icon, latLng, LeafletKeyboardEvent, LeafletMouseEvent, marker, Marker } from 'leaflet'
+import type { LeafletKeyboardEvent, LeafletMouseEvent, Marker } from 'leaflet'
+
+import { icon, latLng, marker } from 'leaflet'
 import { useContext, useEffect, useRef } from 'react'
 
+import type { Coordinates } from '../types'
+
 import { MapContext } from '../Map/Map'
-import { Coordinates } from '../types'
 import { Crosshair } from './Crosshair'
 
 export const FLY_TO_MIN_ZOOM = 18

@@ -1,7 +1,8 @@
-import { Checkbox } from '@amsterdam/design-system-react'
-import { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
-import { Feature } from '@meldingen/api-client'
+import { Checkbox } from '@amsterdam/design-system-react'
+
+import type { Feature } from '@meldingen/api-client'
 
 import type { NotificationType } from '../../SelectLocation'
 import type { Coordinates } from '~/types'

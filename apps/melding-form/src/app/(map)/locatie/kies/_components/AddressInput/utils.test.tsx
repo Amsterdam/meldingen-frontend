@@ -1,5 +1,6 @@
+import type { useTranslations } from 'next-intl'
+
 import { http, HttpResponse } from 'msw'
-import { useTranslations } from 'next-intl'
 
 import type { AddressArgType, AddressListArgType } from './utils'
 

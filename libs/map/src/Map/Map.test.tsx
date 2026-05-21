@@ -1,7 +1,8 @@
+import type { Map } from 'leaflet'
+import type { Mock } from 'vitest'
+
 import { render } from '@testing-library/react'
-import { Map } from 'leaflet'
 import { useRef } from 'react'
-import { Mock } from 'vitest'
 
 import { MapComponent } from './Map'
 

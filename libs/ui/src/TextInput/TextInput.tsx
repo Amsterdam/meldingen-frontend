@@ -1,6 +1,9 @@
-import { TextInput as ADSTextInput, TextInputProps } from '@amsterdam/design-system-react/dist/TextInput'
+import type { TextInputProps } from '@amsterdam/design-system-react/dist/TextInput'
+import type { ForwardedRef } from 'react'
+
+import { TextInput as ADSTextInput } from '@amsterdam/design-system-react/dist/TextInput'
 import { clsx } from 'clsx'
-import { ForwardedRef, forwardRef } from 'react'
+import { forwardRef } from 'react'
 
 import styles from './TextInput.module.css'
 

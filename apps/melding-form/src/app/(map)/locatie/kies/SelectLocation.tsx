@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic'
 import Form from 'next/form'
 import { useActionState, useEffect, useState } from 'react'
 
-import { Feature } from '@meldingen/api-client'
+import type { Feature } from '@meldingen/api-client'
 
 import type { Coordinates } from '~/types'
 

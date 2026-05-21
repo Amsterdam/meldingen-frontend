@@ -1,6 +1,6 @@
 import { getContextComponents } from '@formio/js/utils'
 
-import { Context } from './types'
+import type { Context } from './types'
 
 export const convertEmptyStringToNull = (context: Context) => {
   const data = context?.data

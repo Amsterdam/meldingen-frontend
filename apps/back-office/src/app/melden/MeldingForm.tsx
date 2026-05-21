@@ -27,11 +27,11 @@ import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Column, Paragraph } from '@meldingen/ui'
 
 import type { FormState } from './actions'
+import type { MeldingData } from './types'
 
 import { InvalidFormAlert } from './_components/InvalidFormAlert'
 import { SystemErrorAlert } from './_components/SystemErrorAlert'
 import { postMeldingForm } from './actions'
-import { MeldingData } from './types'
 import { URGENCY_VALUES } from '~/constants'
 
 import styles from './MeldingForm.module.css'

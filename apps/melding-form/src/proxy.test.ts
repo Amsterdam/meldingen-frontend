@@ -1,10 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+import { NextResponse } from 'next/server'
 
 import { COOKIES } from './constants'
 import { proxy } from './proxy'
 
 vi.mock('next/server', async () => {
-  const actual = await vi.importActual<typeof import('next/server')>('next/server')
+  const actual = await vi.importActual('next/server')
   return {
     ...actual,
     NextResponse: {

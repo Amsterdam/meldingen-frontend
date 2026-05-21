@@ -1,4 +1,5 @@
-import { FormDateComponentOutputWithValues, FormOutputWithoutPanelComponents } from '../page'
+import type { FormDateComponentOutputWithValues, FormOutputWithoutPanelComponents } from '../page'
+
 import { setDateComponentOptions } from './setDateComponentOptions'
 
 const MOCK_DATE = new Date('2026-03-03T12:00:00.000Z')

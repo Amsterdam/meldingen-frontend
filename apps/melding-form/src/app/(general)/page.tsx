@@ -1,12 +1,9 @@
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 
-import {
-  getMeldingByMeldingIdMelder,
-  getStaticForm,
-  getStaticFormByStaticFormId,
-  StaticFormTextAreaComponentOutput,
-} from '@meldingen/api-client'
+import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+
+import { getMeldingByMeldingIdMelder, getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
 
 import { postPrimaryForm } from './actions'
 import { Home } from './Home'

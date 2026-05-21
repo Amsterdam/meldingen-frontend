@@ -1,6 +1,7 @@
+import type { PropsWithChildren } from 'react'
+
 import { Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
-import { PropsWithChildren } from 'react'
 
 import { BackLink } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'

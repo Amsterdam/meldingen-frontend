@@ -1,7 +1,8 @@
 import { getContextComponents } from '@formio/js/utils'
 
+import type { Context } from './types'
+
 import { conditionalTab, convertEmptyStringToNull } from './shared'
-import { Context } from './types'
 
 vi.mock('@formio/js/utils', () => ({
   getContextComponents: vi.fn(),

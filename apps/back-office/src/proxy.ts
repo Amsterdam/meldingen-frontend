@@ -1,4 +1,6 @@
-import NextAuthMiddleware, { NextRequestWithAuth } from 'next-auth/middleware'
+import type { NextRequestWithAuth } from 'next-auth/middleware'
+
+import NextAuthMiddleware from 'next-auth/middleware'
 import { NextResponse } from 'next/server'
 
 export default function proxy(request: NextRequestWithAuth) {

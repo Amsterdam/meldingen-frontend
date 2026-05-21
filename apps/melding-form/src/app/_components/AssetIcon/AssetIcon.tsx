@@ -1,7 +1,9 @@
-import NextImage, { ImageProps } from 'next/image'
+import type { ImageProps } from 'next/image'
+
+import NextImage from 'next/image'
 import { useState } from 'react'
 
-import { Feature } from '@meldingen/api-client'
+import type { Feature } from '@meldingen/api-client'
 
 import { FALLBACK_SRC } from '~/constants'
 

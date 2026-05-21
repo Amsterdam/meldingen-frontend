@@ -1,4 +1,4 @@
-import { FormDateComponentOutput } from '@meldingen/api-client'
+import type { FormDateComponentOutput } from '@meldingen/api-client'
 
 import type { FormOutputWithoutPanelComponents } from '../page'
 

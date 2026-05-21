@@ -5,8 +5,9 @@ import { redirect } from 'next/navigation'
 
 import type { MeldingOutput } from '@meldingen/api-client'
 
+import type { MeldingData } from './types'
+
 import { hasValidationErrors } from './_utils/hasValidationErrors'
-import { MeldingData } from './types'
 import { patchMeldingByMeldingId, patchMeldingByMeldingIdMelder, postMelding } from '~/apiClientProxy'
 import { URGENCY_VALUES } from '~/constants'
 import { handleApiError } from '~/handleApiError'

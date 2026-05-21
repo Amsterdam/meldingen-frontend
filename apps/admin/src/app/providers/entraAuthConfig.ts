@@ -1,4 +1,4 @@
-import { Configuration } from '@azure/msal-browser'
+import type { Configuration } from '@azure/msal-browser'
 
 export const entraAuthConfig: Configuration = {
   auth: {

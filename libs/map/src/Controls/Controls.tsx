@@ -1,6 +1,8 @@
+import type { PropsWithChildren } from 'react'
+
 import { Button } from '@amsterdam/design-system-react'
 import { MinusIcon, PlusIcon } from '@amsterdam/design-system-react-icons'
-import { PropsWithChildren, useContext } from 'react'
+import { useContext } from 'react'
 
 import type { Coordinates } from '../types'
 
