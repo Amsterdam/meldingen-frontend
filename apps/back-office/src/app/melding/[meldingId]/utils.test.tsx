@@ -186,7 +186,7 @@ describe('getMeldingData', () => {
   it('returns correct melding summary', () => {
     const result = getMeldingData(melding, (key: string) => key)
 
-    const { classification, created_at, id } = melding
+    const { classification, created_at, id, labels, source } = melding
 
     expect(result).toEqual([
       {
@@ -200,7 +200,7 @@ describe('getMeldingData', () => {
         term: 'detail.melding-data.classification.term',
       },
       {
-        description: 'shared.state.questions_answered',
+        description: `shared.state.${melding.state}`,
         key: 'state',
         link: {
           href: `/melding/${id}/wijzig-status`,
@@ -209,7 +209,7 @@ describe('getMeldingData', () => {
         term: 'detail.melding-data.state.term',
       },
       {
-        description: 'shared.urgency.0',
+        description: `shared.urgency.${melding.urgency}`,
         key: 'urgency',
         link: {
           href: `/melding/${id}/wijzig-urgentie`,
@@ -218,7 +218,7 @@ describe('getMeldingData', () => {
         term: 'detail.melding-data.urgency.term',
       },
       {
-        description: 'Label 1, Label 2',
+        description: labels?.map((label) => label.name).join(', '),
         key: 'labels',
         link: {
           href: `/melding/${id}/wijzig-labels`,
@@ -227,7 +227,7 @@ describe('getMeldingData', () => {
         term: 'detail.melding-data.labels.term',
       },
       {
-        description: 'Bron',
+        description: source?.name,
         key: 'source',
         term: 'detail.melding-data.source.term',
       },
