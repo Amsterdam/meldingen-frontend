@@ -9,5 +9,6 @@
 }
 
 .table {
+  background-color: var(--ams-color-background);
   width: 100%;
 }

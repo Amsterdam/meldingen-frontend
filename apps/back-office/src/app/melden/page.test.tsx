@@ -20,6 +20,12 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
+  const sources = [
+    { id: 1, name: 'Brievenbus' },
+    { id: 2, name: 'E-mail' },
+    { id: 3, name: 'Telefoon' },
+  ]
+
   it('throws an error if list of static forms cannot be fetched', async () => {
     server.use(http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json(null, { status: 500 })))
 
@@ -66,6 +72,18 @@ describe('Page', () => {
     await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Primary form textarea not found.')
   })
 
+  it('throws an error if sources cannot be fetched', async () => {
+    server.use(http.get(ENDPOINTS.GET_SOURCE, () => HttpResponse.json(null, { status: 500 })))
+
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Failed to fetch sources.')
+  })
+
+  it('throws an error if sources list is empty', async () => {
+    server.use(http.get(ENDPOINTS.GET_SOURCE, () => HttpResponse.json([])))
+
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('No sources found.')
+  })
+
   it('renders the MeldingForm component with form components', async () => {
     const PageComponent = await Page({ searchParams: Promise.resolve({}) })
 
@@ -79,6 +97,7 @@ describe('Page', () => {
         existingMelding: undefined,
         existingToken: undefined,
         primaryTextArea: textAreaComponent,
+        sources,
       },
       undefined,
     )
@@ -90,6 +109,7 @@ describe('Page', () => {
       created_at: melding.created_at,
       id: melding.id,
       public_id: melding.public_id,
+      source: melding.source,
       text: 'Prefilled text',
       urgency: -1,
     }
@@ -110,7 +130,7 @@ describe('Page', () => {
 
     expect(MeldingForm).toHaveBeenCalledWith(
       {
-        defaultValues: { primary: 'Prefilled text', urgency: -1 },
+        defaultValues: { primary: 'Prefilled text', source: String(melding.source?.id), urgency: -1 },
         existingId: 1,
         existingMelding: {
           classificationId: melding.classification?.id,
@@ -122,6 +142,7 @@ describe('Page', () => {
         },
         existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
+        sources,
       },
       undefined,
     )
@@ -153,6 +174,7 @@ describe('Page', () => {
         existingMelding: undefined,
         existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
+        sources,
       },
       undefined,
     )
@@ -180,12 +202,14 @@ describe('Page', () => {
       {
         defaultValues: {
           primary: undefined,
+          source: undefined,
           urgency: undefined,
         },
         existingId: 1,
         existingMelding: undefined,
         existingToken: 'valid-token',
         primaryTextArea: { ...textAreaComponent, key: 'primary' },
+        sources,
       },
       undefined,
     )

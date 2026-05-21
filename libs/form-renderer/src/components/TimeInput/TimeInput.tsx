@@ -1,8 +1,7 @@
-import { TimeInput as ADSTimeInput, Checkbox, Column, ErrorMessage } from '@amsterdam/design-system-react'
+import { TimeInput as ADSTimeInput, Checkbox, Column, ErrorMessage, FieldSet } from '@amsterdam/design-system-react'
 import { useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { FieldSet } from '@meldingen/ui'
 
 import { getAriaDescribedBy } from '../../utils'
 
@@ -48,9 +47,9 @@ export const TimeInput = ({
   return (
     <FieldSet
       aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
-      hasHeading={hasHeading}
       invalid={Boolean(errorMessage)}
       legend={label}
+      legendIsPageHeading={hasHeading}
       optional={!validate?.required}
     >
       {description && (

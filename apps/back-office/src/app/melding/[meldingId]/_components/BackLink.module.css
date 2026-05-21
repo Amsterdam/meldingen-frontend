@@ -7,10 +7,10 @@
   padding-block: var(--ams-space-s);
 
   @media screen and (min-width: 37.5rem) {
-    margin-inline: var(--ams-grid-medium-padding-inline);
+    margin-inline: var(--ams-grid-vi-medium-padding-inline);
   }
 
   @media screen and (min-width: 72.5rem) {
-    margin-inline: var(--ams-grid-wide-padding-inline);
+    margin-inline: var(--ams-grid-vi-wide-padding-inline);
   }
 }
