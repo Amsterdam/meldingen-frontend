@@ -133,8 +133,8 @@ export const authOptions: AuthOptions = {
         return refreshAccessToken(token)
       }
 
-      // We have no refresh token. Throwing an error forces sign in again
-      throw new Error('Token has expired')
+      // We have no valid access token. Return an error so apiClientProxy redirects to sign in
+      return { ...token, error: 'AccessTokenExpired' }
     },
     redirect: async ({ baseUrl, url }) => {
       // Use callback url

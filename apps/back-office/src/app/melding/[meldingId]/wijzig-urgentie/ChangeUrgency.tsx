@@ -79,7 +79,7 @@ export const ChangeUrgency = ({ currentUrgency, meldingId, publicId }: Props) =>
       <title>{documentTitle}</title>
       <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
       <Grid as="main" gapVertical="large">
-        <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
+        <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
           {error && (
             <Alert
               className={clsx('ams-mb-m', styles.alert)}

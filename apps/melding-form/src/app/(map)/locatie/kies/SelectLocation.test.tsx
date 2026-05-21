@@ -1,6 +1,6 @@
 import type { Mock } from 'vitest'
 
-import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
+import useViewportHasMinWidth from '@amsterdam/design-system-react/dist/common/useViewportHasMinWidth'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useEffect } from 'react'
@@ -22,7 +22,7 @@ vi.mock('@meldingen/map', () => ({
   PointSelectLayer: vi.fn(),
 }))
 
-vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
+vi.mock('@amsterdam/design-system-react/dist/common/useViewportHasMinWidth', () => ({
   default: vi.fn(),
 }))
 
@@ -65,7 +65,7 @@ describe('SelectLocation', () => {
     ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) =>
       setInternalState(setSelectedAssets, [{ id: '1' }]),
     )
-    ;(useIsAfterBreakpoint as Mock).mockImplementationOnce(() => true)
+    ;(useViewportHasMinWidth as Mock).mockImplementationOnce(() => true)
 
     const { container } = render(<SelectLocation {...defaultProps} />)
 

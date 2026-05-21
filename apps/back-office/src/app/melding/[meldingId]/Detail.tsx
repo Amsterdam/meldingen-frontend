@@ -51,7 +51,7 @@ export const Detail = ({
     <div className="ams-page__area--body">
       <BackLink href={`/`}>{t('back-link')}</BackLink>
       <Grid as="main">
-        <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
+        <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
           <Heading className="ams-mb-m" level={1}>
             {t('title', { publicId })}
           </Heading>
