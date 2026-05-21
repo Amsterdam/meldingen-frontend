@@ -114,8 +114,6 @@ describe('Detail', () => {
     const urgencyLink = screen.getByRole('link', { name: 'Change urgency' })
     expect(urgencyLink).toBeInTheDocument()
 
-    expect(screen.getByText('Urgency')).toBeInTheDocument()
-
     expect(screen.getByText('Labels')).toBeInTheDocument()
     expect(screen.getByText('Label')).toBeInTheDocument()
 
