@@ -35,10 +35,6 @@ window.crypto.randomUUID = vi.fn(() => 'test-id') as unknown as typeof window.cr
 global.URL.createObjectURL = vi.fn()
 global.URL.revokeObjectURL = vi.fn()
 
-vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
-  default: vi.fn(),
-}))
-
 vi.mock('./utils', () => ({
   startUpload: vi.fn(),
 }))

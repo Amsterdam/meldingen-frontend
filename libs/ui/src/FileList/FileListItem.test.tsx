@@ -14,10 +14,6 @@ const createObjectURLMock = vi.fn().mockImplementation((file: File) => {
 global.URL.createObjectURL = createObjectURLMock
 global.URL.revokeObjectURL = vi.fn()
 
-vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
-  default: vi.fn(),
-}))
-
 const defaultProps: FileListItemProps = {
   deleteButtonId: 'test-id',
   file,

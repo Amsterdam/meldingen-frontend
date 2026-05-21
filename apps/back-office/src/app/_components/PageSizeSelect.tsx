@@ -2,7 +2,7 @@
 
 import type { ChangeEventHandler } from 'react'
 
-import { Field, Label, Select } from '@amsterdam/design-system-react'
+import { Label, Select } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
@@ -38,7 +38,7 @@ export const PageSizeSelect = ({ page, pageSize }: Props) => {
   }
 
   return (
-    <Field className={styles.selector}>
+    <div className={styles.selector}>
       <Label className={styles.selectorLabel} htmlFor="page-size">
         {t('label')}
       </Label>
@@ -49,6 +49,6 @@ export const PageSizeSelect = ({ page, pageSize }: Props) => {
           </Select.Option>
         ))}
       </Select>
-    </Field>
+    </div>
   )
 }

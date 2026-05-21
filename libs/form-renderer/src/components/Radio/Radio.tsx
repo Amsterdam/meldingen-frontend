@@ -1,7 +1,6 @@
-import { Radio as ADSRadio, Column, ErrorMessage } from '@amsterdam/design-system-react'
+import { Radio as ADSRadio, Column, ErrorMessage, FieldSet } from '@amsterdam/design-system-react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { FieldSet } from '@meldingen/ui'
 
 import { getAriaDescribedBy } from '../../utils'
 
@@ -34,9 +33,9 @@ export const Radio = ({
   <FieldSet
     aria-describedby={getAriaDescribedBy(id, description, errorMessage)}
     aria-required={validate?.required ? 'true' : undefined}
-    hasHeading={hasHeading}
     invalid={Boolean(errorMessage)}
     legend={label}
+    legendIsPageHeading={hasHeading}
     optional={!validate?.required}
     role="radiogroup"
   >
