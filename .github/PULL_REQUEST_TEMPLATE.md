@@ -1,4 +1,10 @@
-# Meldingen
+## What
+
+(Brief description of the change)
+
+## Why
+
+(What problem does this solve? Link to ADR if applicable)
 
 Ticket: [SIG-1234](https://gemeente-amsterdam.atlassian.net/browse/SIG-1234)
 
