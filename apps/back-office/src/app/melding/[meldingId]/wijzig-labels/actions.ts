@@ -19,7 +19,11 @@ export const postChangeLabelsForm = async (
   const labelIdsFromForm = extractLabelIdsFromFormData(formData)
   const redirectPath = `/melding/${meldingId}`
 
-  const sameLabels = (a: number[], b: number[]) => a.length === b.length && a.every((id) => b.includes(id))
+  const sameLabels = (a: number[], b: number[]) => {
+    const setA = new Set(a)
+    const setB = new Set(b)
+    return setA.size === setB.size && [...setA].every((id) => setB.has(id))
+  }
 
   // If the selected labels are the same as the current labels,
   // we simply redirect without calling the API
