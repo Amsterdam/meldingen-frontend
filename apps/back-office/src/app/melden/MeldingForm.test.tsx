@@ -96,19 +96,6 @@ describe('MeldingForm', () => {
     expect(input).toHaveAccessibleDescription('Some description Invoerfout:Primary field error')
   })
 
-  it('renders an error message connected to the primary text area when there is a validation error for the primary field', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([
-      { validationErrors: [{ key: 'primary', message: 'Primary field error' }] },
-      vi.fn(),
-    ])
-
-    render(<MeldingForm {...defaultProps} />)
-
-    const input = screen.getByRole('textbox', { name: 'Some label' })
-
-    expect(input).toHaveAccessibleDescription('Some description Invoerfout:Primary field error')
-  })
-
   it('prefills the text area from formData when the action returns formData', () => {
     const formData = new FormData()
     formData.set('primary', 'Prefilled text')
