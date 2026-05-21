@@ -18,9 +18,9 @@ vi.mock('react', async (importOriginal) => {
 const defaultProps: Props = {
   currentLabelIds: [0, 1],
   labels: [
-    { id: 0, name: 'Label 1' },
-    { id: 1, name: 'Label 2' },
-    { id: 2, name: 'Label 3' },
+    { created_at: '2024-01-01T00:00:00Z', id: 0, name: 'Label 1', updated_at: '2024-01-01T00:00:00Z' },
+    { created_at: '2024-01-01T00:00:00Z', id: 1, name: 'Label 2', updated_at: '2024-01-01T00:00:00Z' },
+    { created_at: '2024-01-01T00:00:00Z', id: 2, name: 'Label 3', updated_at: '2024-01-01T00:00:00Z' },
   ],
   meldingId: 123,
   publicId: 'ABC',
