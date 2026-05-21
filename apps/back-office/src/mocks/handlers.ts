@@ -31,15 +31,6 @@ export const handlers = [
     HttpResponse.json({ states: ['processing_requested', 'completed'] }),
   ),
 
-  // Static form
-  http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json([{ id: '1', type: 'primary' }])),
-  http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, ({ params }) => {
-    // Primary
-    if (params.staticFormId === '1') {
-      return HttpResponse.json({ components: [textAreaComponent] })
-    }
-  }),
-
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () => HttpResponse.json({})),
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_MELDER, () =>
     HttpResponse.json({
@@ -69,4 +60,22 @@ export const handlers = [
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_REQUEST_PROCESSING, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_REQUEST_REOPEN, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT, () => new HttpResponse()),
+
+  // Source
+  http.get(ENDPOINTS.GET_SOURCE, () =>
+    HttpResponse.json([
+      { id: 1, name: 'Brievenbus' },
+      { id: 2, name: 'E-mail' },
+      { id: 3, name: 'Telefoon' },
+    ]),
+  ),
+
+  // Static form
+  http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json([{ id: '1', type: 'primary' }])),
+  http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, ({ params }) => {
+    // Primary
+    if (params.staticFormId === '1') {
+      return HttpResponse.json({ components: [textAreaComponent] })
+    }
+  }),
 ]

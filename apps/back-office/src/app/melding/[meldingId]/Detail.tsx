@@ -4,10 +4,11 @@ import { Fragment } from 'react'
 
 import { DescriptionList, Grid, Heading, Paragraph } from '@meldingen/ui'
 
+import type { MeldingOutput } from '~/apiClientProxy'
+
 import { AmsNextLink } from '../../_components/AmsNextLink'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { BackLink } from './_components/BackLink'
-import { MeldingOutput } from '~/apiClientProxy'
 
 import styles from './Detail.module.css'
 
@@ -50,7 +51,7 @@ export const Detail = ({
     <div className="ams-page__area--body">
       <BackLink href={`/`}>{t('back-link')}</BackLink>
       <Grid as="main">
-        <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
+        <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
           <Heading className="ams-mb-m" level={1}>
             {t('title', { publicId })}
           </Heading>

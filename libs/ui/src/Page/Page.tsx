@@ -1,6 +1,8 @@
 'use client'
 
-import { Page as ADSPage, PageProps } from '@amsterdam/design-system-react/dist/Page'
+import type { PageProps } from '@amsterdam/design-system-react/dist/Page'
+
+import { Page as ADSPage } from '@amsterdam/design-system-react/dist/Page'
 import { useEffect } from 'react'
 
 export const Page = (props: PageProps) => {

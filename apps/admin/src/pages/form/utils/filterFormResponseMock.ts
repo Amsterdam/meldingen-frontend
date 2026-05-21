@@ -1,4 +1,4 @@
-import { AdditionalQuestionsForm } from '../../types'
+import type { AdditionalQuestionsForm } from '../../types'
 
 const mockPanels = [
   {

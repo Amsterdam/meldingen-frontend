@@ -2,7 +2,9 @@
 
 import { redirect } from 'next/navigation'
 
-import { MeldingOutput, patchMeldingByMeldingId } from '~/apiClientProxy'
+import type { MeldingOutput } from '~/apiClientProxy'
+
+import { patchMeldingByMeldingId } from '~/apiClientProxy'
 import { URGENCY_VALUES } from '~/constants'
 
 type MeldingIdParam = {

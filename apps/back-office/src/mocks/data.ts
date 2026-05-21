@@ -27,7 +27,12 @@ export const melding: MeldingOutput = {
   phone: '0612345678',
   postal_code: '1016BS',
   public_id: 'ABC',
-  source: { created_at: '2025-02-18T10:34:29.103642', id: 1, name: 'Bron', updated_at: '2025-02-18T10:34:40.730569' },
+  source: {
+    created_at: '2025-02-18T10:34:29.103642',
+    id: 2,
+    name: 'E-mail',
+    updated_at: '2025-02-18T10:34:40.730569',
+  },
   state: 'questions_answered',
   street: 'Herengracht',
   text: 'Alles',

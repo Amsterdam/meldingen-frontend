@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
 
-import { MeldingOutput } from '@meldingen/api-client'
+import type { MeldingOutput } from '@meldingen/api-client'
 
 import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
@@ -79,7 +79,7 @@ export const ChangeUrgency = ({ currentUrgency, meldingId, publicId }: Props) =>
       <title>{documentTitle}</title>
       <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
       <Grid as="main" gapVertical="large">
-        <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
+        <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
           {error && (
             <Alert
               className={clsx('ams-mb-m', styles.alert)}

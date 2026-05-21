@@ -1,4 +1,5 @@
-import L from 'leaflet'
+import type L from 'leaflet'
+
 import { describe, expect, it, vi } from 'vitest'
 
 import { getWfsFilter } from './getWfsFilter'

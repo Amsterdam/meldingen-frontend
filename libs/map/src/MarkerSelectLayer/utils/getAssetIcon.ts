@@ -2,7 +2,7 @@ import type { Icon } from 'leaflet'
 
 import { icon as LeafletIcon } from 'leaflet'
 
-import { Feature } from '@meldingen/api-client'
+import type { Feature } from '@meldingen/api-client'
 
 import styles from './getAssetIcon.module.css'
 

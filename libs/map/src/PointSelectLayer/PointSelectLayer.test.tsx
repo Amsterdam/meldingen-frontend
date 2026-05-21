@@ -1,6 +1,8 @@
+import type { Map } from 'leaflet'
+import type { Mock } from 'vitest'
+
 import { render } from '@testing-library/react'
-import { Map } from 'leaflet'
-import { Mock, vi } from 'vitest'
+import { vi } from 'vitest'
 
 import { MapComponent } from '../Map/Map'
 import { FLY_TO_MIN_ZOOM, PointSelectLayer } from './PointSelectLayer'

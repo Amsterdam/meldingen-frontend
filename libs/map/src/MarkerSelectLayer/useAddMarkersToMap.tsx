@@ -1,10 +1,14 @@
-import L, { divIcon, latLng, Layer, Map, Marker, MarkerCluster } from 'leaflet'
+import type { Layer, Map, MarkerCluster } from 'leaflet'
+import type { RefObject } from 'react'
+
 import 'leaflet.markercluster'
-import { RefObject, useEffect } from 'react'
+import L, { divIcon, latLng, Marker } from 'leaflet'
+import { useEffect } from 'react'
 
-import { Feature } from '@meldingen/api-client'
+import type { Feature } from '@meldingen/api-client'
 
-import { Coordinates } from '../types'
+import type { Coordinates } from '../types'
+
 import { getAssetIcon } from './utils/getAssetIcon'
 
 export const createClusterIcon = (cluster: MarkerCluster) => {

@@ -1,11 +1,13 @@
 'use server'
 
+import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
 
 import type { MeldingOutput } from '@meldingen/api-client'
 
+import type { MeldingData } from './types'
+
 import { hasValidationErrors } from './_utils/hasValidationErrors'
-import { MeldingData } from './types'
 import { patchMeldingByMeldingId, patchMeldingByMeldingIdMelder, postMelding } from '~/apiClientProxy'
 import { URGENCY_VALUES } from '~/constants'
 import { handleApiError } from '~/handleApiError'
@@ -46,14 +48,17 @@ export const postMeldingForm = async (
   _: unknown,
   formData: FormData,
 ): Promise<FormState> => {
+  const t = await getTranslations('melding-form')
+
   const formDataObj = Object.fromEntries(formData)
 
-  // Return validation error if primary question is not answered
-  if (!formDataObj.primary) {
-    return {
-      formData,
-      validationErrors: [{ key: 'primary', message: requiredErrorMessage }],
-    }
+  // Return validation errors if required fields are missing
+  const validationErrors = [
+    ...(!formDataObj.primary ? [{ key: 'primary', message: requiredErrorMessage }] : []),
+    ...(!formDataObj.source ? [{ key: 'source', message: t('source.error') }] : []),
+  ]
+  if (validationErrors.length > 0) {
+    return { formData, validationErrors }
   }
 
   const urgencyRaw = formDataObj.urgency
@@ -101,12 +106,12 @@ export const postMeldingForm = async (
     token,
   }
 
-  const { error: urgencyError } = await patchMeldingByMeldingId({
-    body: { urgency: urgencyNumber },
+  const { error: updateMeldingError } = await patchMeldingByMeldingId({
+    body: { source_id: Number(formDataObj.source), urgency: urgencyNumber },
     path: { melding_id: meldingData.id },
   })
 
-  if (urgencyError) return { formData, systemError: urgencyError }
+  if (updateMeldingError) return { formData, systemError: updateMeldingError }
 
   const params = new URLSearchParams({
     created_at: meldingData.createdAt,

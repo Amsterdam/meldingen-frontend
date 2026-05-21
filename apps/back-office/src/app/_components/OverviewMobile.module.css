@@ -11,8 +11,9 @@
 }
 
 .descriptionList {
+  column-gap: var(--ams-description-list-vi-medium-column-gap);
+  display: grid;
   grid-template-columns: auto 1fr;
-  row-gap: var(--ams-space-m);
 }
 
 .descriptionList dd {

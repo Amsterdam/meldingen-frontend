@@ -1,15 +1,16 @@
+import type { Mock } from 'vitest'
+
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { useActionState } from 'react'
-import { Mock } from 'vitest'
 
 import type { Props } from './Attachments'
+import type { ExistingFileType } from './page'
 import type { FileUpload } from './utils'
 
 import { Attachments } from './Attachments'
 import { MAX_UPLOAD_ATTEMPTS } from './Attachments'
-import { ExistingFileType } from './page'
 import { startUpload } from './utils'
 import { textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
@@ -34,10 +35,6 @@ window.crypto.randomUUID = vi.fn(() => 'test-id') as unknown as typeof window.cr
 
 global.URL.createObjectURL = vi.fn()
 global.URL.revokeObjectURL = vi.fn()
-
-vi.mock('@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint', () => ({
-  default: vi.fn(),
-}))
 
 vi.mock('./utils', () => ({
   startUpload: vi.fn(),

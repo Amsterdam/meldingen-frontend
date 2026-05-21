@@ -1,4 +1,4 @@
-import { MeldingOutput } from '~/apiClientProxy'
+import type { MeldingOutput } from '~/apiClientProxy'
 
 type ShortAddressInput = Pick<MeldingOutput, 'street' | 'house_number' | 'house_number_addition'>
 type FullAddressInput = Pick<

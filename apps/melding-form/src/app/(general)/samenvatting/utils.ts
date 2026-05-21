@@ -1,14 +1,17 @@
-import {
+import type {
   FormPanelComponentOutput,
+  GetMeldingByMeldingIdAnswersMelderResponses,
+  MeldingOutput,
+  ValueLabelObject,
+} from '@meldingen/api-client'
+
+import {
   getFormClassificationByClassificationId,
   getMeldingByMeldingIdAnswersMelder,
-  GetMeldingByMeldingIdAnswersMelderResponses,
   getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
   getMeldingByMeldingIdAttachmentsMelder,
   getStaticForm,
   getStaticFormByStaticFormId,
-  MeldingOutput,
-  ValueLabelObject,
 } from '@meldingen/api-client'
 import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 

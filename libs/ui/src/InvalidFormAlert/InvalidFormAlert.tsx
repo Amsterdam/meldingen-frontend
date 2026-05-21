@@ -1,6 +1,8 @@
 'use client'
 
-import { Alert, InvalidFormAlertProps, LinkList } from '@amsterdam/design-system-react'
+import type { InvalidFormAlertProps } from '@amsterdam/design-system-react'
+
+import { Alert, LinkList } from '@amsterdam/design-system-react'
 import { forwardRef, useImperativeHandle, useRef } from 'react'
 
 import styles from './InvalidFormAlert.module.css'

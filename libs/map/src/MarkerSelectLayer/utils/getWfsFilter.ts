@@ -1,4 +1,4 @@
-import { Map } from 'leaflet'
+import type { Map } from 'leaflet'
 
 export type GetWfsFilterArgs = {
   filter: string

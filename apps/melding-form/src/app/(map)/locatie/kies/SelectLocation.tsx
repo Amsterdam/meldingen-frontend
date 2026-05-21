@@ -1,14 +1,14 @@
 'use client'
 
 import { Button } from '@amsterdam/design-system-react'
-import useIsAfterBreakpoint from '@amsterdam/design-system-react/dist/common/useIsAfterBreakpoint'
+import useViewportHasMinWidth from '@amsterdam/design-system-react/dist/common/useViewportHasMinWidth'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import dynamic from 'next/dynamic'
 import Form from 'next/form'
 import { useActionState, useEffect, useState } from 'react'
 
-import { Feature } from '@meldingen/api-client'
+import type { Feature } from '@meldingen/api-client'
 
 import type { Coordinates } from '~/types'
 
@@ -69,7 +69,7 @@ export const SelectLocation = ({
   const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssetsWithExtraArgs, initialState)
 
   const t = useTranslations('select-location')
-  const isWideWindow = useIsAfterBreakpoint('wide')
+  const isWideWindow = useViewportHasMinWidth('wide')
   const controlsTexts = {
     currentLocation: t('controls-overlay.current-location-button'),
     zoomIn: t('controls-overlay.zoom-in'),

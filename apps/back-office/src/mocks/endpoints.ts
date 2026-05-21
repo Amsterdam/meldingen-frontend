@@ -1,3 +1,5 @@
+/* eslint-disable perfectionist/sort-objects */
+
 export const ENDPOINTS = {
   // Attachments
   GET_ATTACHMENT_BY_ID: '/attachment/:id',
@@ -12,10 +14,6 @@ export const ENDPOINTS = {
   GET_MELDING_BY_MELDING_ID_ATTACHMENTS: '/melding/:id/attachments',
   GET_MELDING_BY_MELDING_ID_NEXT_POSSIBLE_STATES: '/melding/:id/next_possible_states',
 
-  // Static form
-  GET_STATIC_FORM: '/static-form',
-  GET_STATIC_FORM_BY_STATIC_FORM_ID: '/static-form/:staticFormId',
-
   PATCH_MELDING_BY_MELDING_ID: '/melding/:id',
   PATCH_MELDING_BY_MELDING_ID_MELDER: '/melding/:id/melder',
 
@@ -29,4 +27,11 @@ export const ENDPOINTS = {
   PUT_MELDING_BY_MELDING_ID_REQUEST_PROCESSING: '/melding/:id/request_processing',
   PUT_MELDING_BY_MELDING_ID_REQUEST_REOPEN: '/melding/:id/request_reopen',
   PUT_MELDING_BY_MELDING_ID_SUBMIT: '/melding/:id/submit',
+
+  // Source
+  GET_SOURCE: '/source',
+
+  // Static form
+  GET_STATIC_FORM: '/static-form',
+  GET_STATIC_FORM_BY_STATIC_FORM_ID: '/static-form/:staticFormId',
 }

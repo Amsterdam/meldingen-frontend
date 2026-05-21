@@ -1,4 +1,5 @@
-import { Context } from '../types'
+import type { Context } from '../types'
+
 import { convertEmptyStringToNull, editForm, getMaxCharCountValue } from './editForm'
 
 describe('getMaxCharCountValue', () => {

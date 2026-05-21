@@ -1,3 +1,5 @@
+import type { ChangeEvent } from 'react'
+
 import { ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
 import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
 import {
@@ -10,15 +12,16 @@ import {
   Label as HUILabel,
 } from '@headlessui/react'
 import { useTranslations } from 'next-intl'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { Feature } from '@meldingen/api-client'
+import type { Feature } from '@meldingen/api-client'
+
 import { ListBox, TextInput } from '@meldingen/ui'
 
+import type { PDOKItem } from './types'
 import type { Coordinates } from '~/types'
 
 import { convertWktPointToCoordinates } from '../../utils'
-import { PDOKItem } from './types'
 import { debounce, fetchAddressList, fetchAndSetAddress } from './utils'
 
 import styles from './AddressInput.module.css'

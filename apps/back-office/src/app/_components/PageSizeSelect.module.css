@@ -1,6 +1,8 @@
 .selector {
   @media screen and (min-width: 72.5rem) {
     align-items: center;
+    column-gap: var(--ams-space-s);
+    display: flex;
     flex-direction: row;
   }
 }
