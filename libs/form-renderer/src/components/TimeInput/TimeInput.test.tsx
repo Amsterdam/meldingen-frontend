@@ -22,6 +22,14 @@ describe('TimeInput', () => {
     expect(fieldSet).toBeInTheDocument()
   })
 
+  it('renders a heading when hasHeading is true', () => {
+    render(<TimeInput {...defaultProps} hasHeading={true} />)
+
+    const heading = screen.getByRole('heading', { name: defaultProps.label })
+
+    expect(heading).toBeInTheDocument()
+  })
+
   it('renders optional label when not required', () => {
     render(<TimeInput {...defaultProps} validate={{ required: false }} />)
 

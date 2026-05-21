@@ -26,6 +26,14 @@ describe('Radio Component', () => {
     expect(radio).toBeInTheDocument()
   })
 
+  it('renders a heading when hasHeading is true', () => {
+    render(<Radio {...defaultProps} hasHeading={true} />)
+
+    const heading = screen.getByRole('heading', { name: defaultProps.label })
+
+    expect(heading).toBeInTheDocument()
+  })
+
   it('renders a description', () => {
     render(<Radio {...defaultProps} description="Test description" />)
 

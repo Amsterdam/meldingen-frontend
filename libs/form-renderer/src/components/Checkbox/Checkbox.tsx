@@ -1,8 +1,7 @@
-import { Checkbox as ADSCheckbox, Column, ErrorMessage } from '@amsterdam/design-system-react'
+import { Checkbox as ADSCheckbox, Column, ErrorMessage, FieldSet } from '@amsterdam/design-system-react'
 import { useState } from 'react'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { FieldSet } from '@meldingen/ui'
 
 import { getAriaDescribedBy } from '../../utils'
 
@@ -40,10 +39,10 @@ export const Checkbox = ({
       // Because of an NVDA bug, we need to add the description and error to the label (https://github.com/nvaccess/nvda/issues/12718)
       // For more information, see https://designsystem.amsterdam/?path=/docs/components-forms-field-set--docs#checkbox-group
       aria-labelledby={`${id}-fieldset${ariaDescribedBy ? ` ${ariaDescribedBy}` : ''}`}
-      hasHeading={hasHeading}
       id={`${id}-fieldset`}
       invalid={Boolean(errorMessage)}
       legend={label}
+      legendIsPageHeading={hasHeading}
       optional={!validate?.required}
     >
       {description && (

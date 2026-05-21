@@ -26,6 +26,14 @@ describe('Checkbox Component', () => {
     expect(checkbox).toBeInTheDocument()
   })
 
+  it('renders a heading when hasHeading is true', () => {
+    render(<Checkbox {...defaultProps} hasHeading={true} />)
+
+    const heading = screen.getByRole('heading', { name: defaultProps.label })
+
+    expect(heading).toBeInTheDocument()
+  })
+
   it('adds the description to the label', () => {
     // Because of an NVDA bug, we need to add the description and error to the label
     render(<Checkbox {...defaultProps} description="Test description" />)

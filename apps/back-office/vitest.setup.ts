@@ -35,6 +35,15 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
+// We mock matchMedia here because it is used in the Amsterdam Design System Header component
+// We do not really use most of the matchMedia functionality, so we use a simple mock.
+Object.defineProperty(window, 'matchMedia', {
+  value: vi.fn().mockImplementation(() => ({
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  })),
+})
+
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())

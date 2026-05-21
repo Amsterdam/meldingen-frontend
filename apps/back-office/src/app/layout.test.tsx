@@ -12,12 +12,6 @@ vi.mock('next-intl/server', () => ({
   getTranslations: () => Promise.resolve((key: string) => key),
 }))
 
-// We have to mock matchMedia here, because it is used in the Amsterdam Design System Header component
-// We do not really use the matchMedia functionality, so we use a simple mock.
-Object.defineProperty(window, 'matchMedia', {
-  value: vi.fn().mockImplementation(() => ({})),
-})
-
 describe('generateMetadata', () => {
   it('returns the correct metadata description', async () => {
     const metadata = await generateMetadata()
