@@ -32,7 +32,7 @@ export const Overview = ({ meldingen, meldingenCount, page, pageSize, totalPages
 
   return (
     <Grid as="main" className="ams-page__area--body" paddingVertical="x-large">
-      <Grid.Cell span="all">
+      <Grid.Cell appearance="transparent" span="all">
         <Heading className="ams-mb-m" level={1}>
           {t('overview.title', { meldingenCount })}
         </Heading>
