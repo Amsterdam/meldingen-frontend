@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw'
 
 import { MeldingForm } from './MeldingForm'
 import Page, { generateMetadata } from './page'
-import { textAreaComponent } from '~/mocks/data'
+import { melding, textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -20,19 +20,10 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  it('renders the MeldingForm component with form components', async () => {
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    expect(screen.getByText('MeldingForm Component')).toBeInTheDocument()
-    expect(MeldingForm).toHaveBeenCalledWith({ primaryTextArea: textAreaComponent }, undefined)
-  })
-
   it('throws an error if list of static forms cannot be fetched', async () => {
     server.use(http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json(null, { status: 500 })))
 
-    await expect(Page()).rejects.toThrowError('Failed to fetch static forms.')
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Failed to fetch static forms.')
   })
 
   it('throws an error if list of static forms does not contain a form with type "primary"', async () => {
@@ -47,13 +38,13 @@ describe('Page', () => {
       ),
     )
 
-    await expect(Page()).rejects.toThrowError('Primary form id not found.')
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Primary form id not found.')
   })
 
   it('throws an error if primary form data cannot be fetched', async () => {
     server.use(http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(null, { status: 500 })))
 
-    await expect(Page()).rejects.toThrowError('Failed to fetch primary form data.')
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Failed to fetch primary form data.')
   })
 
   it('throws an error if primary form does not contain a textarea component', async () => {
@@ -72,6 +63,131 @@ describe('Page', () => {
       ),
     )
 
-    await expect(Page()).rejects.toThrowError('Primary form textarea not found.')
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Primary form textarea not found.')
+  })
+
+  it('renders the MeldingForm component with form components', async () => {
+    const PageComponent = await Page({ searchParams: Promise.resolve({}) })
+
+    render(PageComponent)
+
+    expect(screen.getByText('MeldingForm Component')).toBeInTheDocument()
+    expect(MeldingForm).toHaveBeenCalledWith(
+      {
+        defaultValues: {},
+        existingId: undefined,
+        existingMelding: undefined,
+        existingToken: undefined,
+        primaryTextArea: textAreaComponent,
+      },
+      undefined,
+    )
+  })
+
+  it('renders the MeldingForm component with default values when id and token are provided and melding exists', async () => {
+    const meldingData = {
+      classification: melding.classification,
+      created_at: melding.created_at,
+      id: melding.id,
+      public_id: melding.public_id,
+      text: 'Prefilled text',
+      urgency: -1,
+    }
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json(meldingData)),
+      http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
+        HttpResponse.json({
+          components: [{ ...textAreaComponent, key: 'primary' }],
+          id: '123',
+          type: 'primary',
+        }),
+      ),
+    )
+
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
+
+    render(PageComponent)
+
+    expect(MeldingForm).toHaveBeenCalledWith(
+      {
+        defaultValues: { primary: 'Prefilled text', urgency: -1 },
+        existingId: 1,
+        existingMelding: {
+          classificationId: melding.classification?.id,
+          classificationName: melding.classification?.name,
+          createdAt: melding.created_at,
+          id: melding.id,
+          publicId: melding.public_id,
+          token: 'valid-token',
+        },
+        existingToken: 'valid-token',
+        primaryTextArea: { ...textAreaComponent, key: 'primary' },
+      },
+      undefined,
+    )
+  })
+
+  it('logs an error and renders the MeldingForm component with empty default values when fetching melding data fails', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json('Test error', { status: 500 })),
+      http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
+        HttpResponse.json({
+          components: [{ ...textAreaComponent, key: 'primary' }],
+          id: '123',
+          type: 'primary',
+        }),
+      ),
+    )
+
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
+
+    render(PageComponent)
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Test error')
+
+    expect(MeldingForm).toHaveBeenCalledWith(
+      {
+        defaultValues: {},
+        existingId: 1,
+        existingMelding: undefined,
+        existingToken: 'valid-token',
+        primaryTextArea: { ...textAreaComponent, key: 'primary' },
+      },
+      undefined,
+    )
+
+    consoleErrorSpy.mockRestore()
+  })
+
+  it('renders the MeldingForm component with undefined default values when id and token are provided but melding does not have necessary data', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({})),
+      http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
+        HttpResponse.json({
+          components: [{ ...textAreaComponent, key: 'primary' }],
+          id: '123',
+          type: 'primary',
+        }),
+      ),
+    )
+
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
+
+    render(PageComponent)
+
+    expect(MeldingForm).toHaveBeenCalledWith(
+      {
+        defaultValues: {
+          primary: undefined,
+          urgency: undefined,
+        },
+        existingId: 1,
+        existingMelding: undefined,
+        existingToken: 'valid-token',
+        primaryTextArea: { ...textAreaComponent, key: 'primary' },
+      },
+      undefined,
+    )
   })
 })
