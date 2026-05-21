@@ -68,7 +68,7 @@ describe('Page', () => {
 
     render(result)
 
-    const { classification, created_at, email, id, phone, public_id } = melding
+    const { classification, created_at, email, id, labels, phone, public_id, source } = melding
 
     const additionalQuestionsWithMeldingText = [
       {
@@ -110,7 +110,7 @@ describe('Page', () => {
       {
         description: classification!.name,
         key: 'classification',
-        term: 'detail.melding-data.classification',
+        term: 'detail.melding-data.classification.term',
       },
       {
         description: 'shared.state.questions_answered',
@@ -131,13 +131,18 @@ describe('Page', () => {
         term: 'detail.melding-data.urgency.term',
       },
       {
-        description: 'Label 1, Label 2',
+        description: labels?.map((label) => label.name).join(', '),
         key: 'labels',
         link: {
           href: `/melding/${id}/wijzig-labels`,
           label: 'detail.melding-data.labels.link',
         },
         term: 'detail.melding-data.labels.term',
+      },
+      {
+        description: source?.name,
+        key: 'source',
+        term: 'detail.melding-data.source.term',
       },
     ]
 

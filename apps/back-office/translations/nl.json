@@ -59,10 +59,18 @@
     },
     "melding-data": {
       "created_at": "Gemeld op",
-      "classification": "Categorie",
+      "classification": {
+        "term": "Categorie",
+        "no-data": "Geen categorie"
+      },
       "labels": {
         "term": "Labels",
-        "link": "Wijzig labels"
+        "link": "Wijzig labels",
+        "no-data": "Geen labels"
+      },
+      "source": {
+        "term": "Bron",
+        "no-data": "Geen bron"
       },
       "state": {
         "term": "Status",
@@ -75,9 +83,7 @@
     },
     "errors": {
       "melding-not-found": "An error occurred"
-    },
-    "no-classification": "Geen categorie",
-    "no-labels": "Geen labels"
+    }
   },
   "change-labels": {
     "metadata": {

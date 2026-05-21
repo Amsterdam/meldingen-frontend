@@ -197,7 +197,7 @@ describe('getMeldingData', () => {
       {
         description: classification!.name,
         key: 'classification',
-        term: 'detail.melding-data.classification',
+        term: 'detail.melding-data.classification.term',
       },
       {
         description: 'shared.state.questions_answered',
@@ -226,7 +226,25 @@ describe('getMeldingData', () => {
         },
         term: 'detail.melding-data.labels.term',
       },
+      {
+        description: 'Bron',
+        key: 'source',
+        term: 'detail.melding-data.source.term',
+      },
     ])
+  })
+
+  it('returns fallback label when classification is null', () => {
+    const meldingDataWithoutClassification = {
+      ...melding,
+      classification: null,
+    }
+
+    const result = getMeldingData(meldingDataWithoutClassification, (key: string) => key)
+
+    const classificationEntry = result.find((item) => item.key === 'classification')
+
+    expect(classificationEntry?.description).toBe('detail.melding-data.classification.no-data')
   })
 
   it('returns fallback label when labels is empty', () => {
@@ -238,56 +256,19 @@ describe('getMeldingData', () => {
     const result = getMeldingData(meldingDataWithoutLabels, (key: string) => key)
 
     const labelsEntry = result.find((item) => item.key === 'labels')
-    expect(labelsEntry?.description).toBe('detail.no-labels')
+    expect(labelsEntry?.description).toBe('detail.melding-data.labels.no-data')
   })
 
-  it('returns correct melding summary when classification is null', () => {
-    const meldingDataWithoutClassification = {
+  it('returns fallback label when source is null', () => {
+    const meldingDataWithoutSource = {
       ...melding,
-      classification: null,
+      source: null,
     }
 
-    const result = getMeldingData(meldingDataWithoutClassification, (key: string) => key)
+    const result = getMeldingData(meldingDataWithoutSource, (key: string) => key)
 
-    expect(result).toEqual([
-      {
-        description: new Date(melding.created_at).toLocaleDateString('nl-NL'),
-        key: 'created_at',
-        term: 'detail.melding-data.created_at',
-      },
-      {
-        description: 'detail.no-classification',
-        key: 'classification',
-        term: 'detail.melding-data.classification',
-      },
-      {
-        description: 'shared.state.questions_answered',
-        key: 'state',
-        link: {
-          href: `/melding/${melding.id}/wijzig-status`,
-          label: 'detail.melding-data.state.link',
-        },
-        term: 'detail.melding-data.state.term',
-      },
-      {
-        description: 'shared.urgency.0',
-        key: 'urgency',
-        link: {
-          href: `/melding/${melding.id}/wijzig-urgentie`,
-          label: 'detail.melding-data.urgency.link',
-        },
-        term: 'detail.melding-data.urgency.term',
-      },
-      {
-        description: 'Label 1, Label 2',
-        key: 'labels',
-        link: {
-          href: `/melding/${melding.id}/wijzig-labels`,
-          label: 'detail.melding-data.labels.link',
-        },
-        term: 'detail.melding-data.labels.term',
-      },
-    ])
+    const sourceEntry = result.find((item) => item.key === 'source')
+    expect(sourceEntry?.description).toBe('detail.melding-data.source.no-data')
   })
 })
 
