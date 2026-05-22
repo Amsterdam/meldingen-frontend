@@ -19,7 +19,7 @@ import type { ExistingFileType } from './page'
 import type { FileUpload as FileUploadType, PendingFileUpload } from './utils'
 import type { FormState } from '~/types'
 
-import { SystemErrorAlert } from '../_components/SystemErrorAlert'
+import { SystemErrorAlert } from '../_components'
 import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { submitAttachmentsForm } from './actions'
