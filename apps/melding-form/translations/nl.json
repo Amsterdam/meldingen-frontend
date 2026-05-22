@@ -184,6 +184,10 @@
     "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
     "organisation-name": "Gemeente Amsterdam",
     "system-error-alert-description": "Probeer opnieuw naar de volgende vraag te gaan.",
-    "system-error-alert-title": "Er is iets misgegaan"
+    "system-error-alert-title": "Er is iets misgegaan",
+    "back-office-menu": {
+      "overview": "Overzicht",
+      "melding-form": "Melden"
+    }
   }
 }

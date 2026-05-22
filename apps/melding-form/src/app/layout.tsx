@@ -31,7 +31,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
     <html dir="ltr" lang={locale}>
       <ApiClientInitializer />
       <NextIntlClientProvider>
-        <body>{children}</body>
+        <body className="ams-theme">{children}</body>
       </NextIntlClientProvider>
     </html>
   )

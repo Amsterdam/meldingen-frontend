@@ -1,20 +1,16 @@
 import type { ReactNode } from 'react'
 
-import { Grid, Page } from '@meldingen/ui'
+import { cookies } from 'next/headers'
 
-import { Footer, Header } from '../_components/'
-import { TOP_ANCHOR_ID } from '~/constants'
+import { BackOfficeLayout } from './_components'
+import { RegularLayout } from './_components'
+import { COOKIES } from '~/constants'
 
-const GeneralLayout = ({ children }: { children: ReactNode }) => (
-  <Page id={TOP_ANCHOR_ID}>
-    <Header />
-    <Grid paddingBottom="x-large">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
-        {children}
-      </Grid.Cell>
-    </Grid>
-    <Footer />
-  </Page>
-)
+const GeneralLayout = async ({ children }: { children: ReactNode }) => {
+  const cookieStore = await cookies()
+  const isBackOffice = cookieStore.get(COOKIES.SOURCE)?.value === 'back-office'
+
+  return isBackOffice ? <BackOfficeLayout>{children}</BackOfficeLayout> : <RegularLayout>{children}</RegularLayout>
+}
 
 export default GeneralLayout
