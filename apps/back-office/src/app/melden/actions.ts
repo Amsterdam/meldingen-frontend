@@ -57,6 +57,7 @@ export const postMeldingForm = async (
     ...(!formDataObj.primary ? [{ key: 'primary', message: requiredErrorMessage }] : []),
     ...(!formDataObj.source ? [{ key: 'source', message: t('source.error') }] : []),
   ]
+
   if (validationErrors.length > 0) {
     return { formData, validationErrors }
   }
@@ -107,7 +108,11 @@ export const postMeldingForm = async (
   }
 
   const { error: updateMeldingError } = await patchMeldingByMeldingId({
-    body: { source_id: Number(formDataObj.source), urgency: urgencyNumber },
+    body: {
+      label_ids: formData.getAll('labels').map((label) => Number(label)),
+      source_id: Number(formDataObj.source),
+      urgency: urgencyNumber,
+    },
     path: { melding_id: meldingData.id },
   })
 
@@ -119,6 +124,7 @@ export const postMeldingForm = async (
     public_id: meldingData.publicId,
     token: meldingData.token,
   })
+
   if (meldingData.classificationId) params.set('classification_id', String(meldingData.classificationId))
 
   redirect(`${process.env.NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`)
