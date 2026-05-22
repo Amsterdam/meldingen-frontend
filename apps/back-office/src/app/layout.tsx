@@ -21,6 +21,8 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 }
 
+// These menu items are duplicated in the Melding Form Back Office layout (apps/melding-form/src/app/(general)/_components/BackOfficeLayout/BackOfficeLayout.tsx)
+// When you update the menu items here, make sure to update them in the Melding Form as well.
 const MenuItems = async () => {
   const t = await getTranslations('shared')
 

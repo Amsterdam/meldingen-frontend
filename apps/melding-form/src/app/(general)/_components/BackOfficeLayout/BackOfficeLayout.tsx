@@ -11,6 +11,8 @@ import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './BackOfficeLayout.module.css'
 
+// These menu items are duplicated from the Back Office (apps/back-office/src/app/layout.tsx)
+// When you update the menu items here, make sure to update them in the Back Office as well.
 const MenuItems = async () => {
   const t = await getTranslations('shared.back-office-menu')
 
