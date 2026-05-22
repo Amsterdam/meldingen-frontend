@@ -241,9 +241,7 @@ describe('postMeldingForm', () => {
 
     expect(spy).toHaveBeenCalledWith(
       expect.objectContaining({
-        body: expect.objectContaining({
-          label_ids: [1, 2, 3],
-        }),
+        body: expect.objectContaining({ label_ids: [1, 2, 3] }),
       }),
     )
 
