@@ -1,18 +1,12 @@
 'use client'
 
-import type { PageHeaderProps } from '@amsterdam/design-system-react'
-
 import { PageHeader } from '@amsterdam/design-system-react'
 import NextLink from 'next/link'
 
-export const Header = (props: PageHeaderProps) => (
+export const Header = () => (
   <PageHeader
-    {...props}
-    // brandName="Melding openbare ruimte"
-    brandName="Meldingen"
-    // ams-mb-l
-    className="ams-page__area--header"
+    brandName="Melding openbare ruimte"
+    className="ams-mb-l"
     logoLinkComponent={({ href = '/', ...props }) => <NextLink href={href} {...props} />}
-    noMenuButtonOnWideWindow
   />
 )
