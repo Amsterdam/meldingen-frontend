@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { vi } from 'vitest'
 
 import { postMeldingForm } from './actions'
+import * as apiClientProxy from '~/apiClientProxy'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -226,6 +227,27 @@ describe('postMeldingForm', () => {
     expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
 
     vi.unstubAllEnvs()
+  })
+
+  it('sends an array of label ids in the PATCH Melding request body', async () => {
+    const spy = vi.spyOn(apiClientProxy, 'patchMeldingByMeldingId')
+
+    const formData = createFormData()
+    formData.append('labels', '1')
+    formData.append('labels', '2')
+    formData.append('labels', '3')
+
+    await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        body: expect.objectContaining({
+          label_ids: [1, 2, 3],
+        }),
+      }),
+    )
+
+    spy.mockRestore()
   })
 
   it('redirects to the correct URL without classification_id when classification is not returned', async () => {

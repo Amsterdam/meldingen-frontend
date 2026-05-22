@@ -84,6 +84,18 @@ describe('Page', () => {
     await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('No sources found.')
   })
 
+  it('throws an error if labels cannot be fetched', async () => {
+    server.use(http.get(ENDPOINTS.GET_LABEL, () => HttpResponse.json(null, { status: 500 })))
+
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Failed to fetch labels.')
+  })
+
+  it('throws an error if labels list is empty', async () => {
+    server.use(http.get(ENDPOINTS.GET_LABEL, () => HttpResponse.json([])))
+
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('No labels found.')
+  })
+
   it('renders the MeldingForm component with form components', async () => {
     const PageComponent = await Page({ searchParams: Promise.resolve({}) })
 

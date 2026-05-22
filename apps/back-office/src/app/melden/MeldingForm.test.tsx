@@ -233,6 +233,38 @@ describe('MeldingForm', () => {
     expect(screen.getByRole('radio', { name: 'urgency.0' })).toBeChecked()
   })
 
+  it('renders all labels options', () => {
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(screen.getByRole('group', { name: 'labels-label' })).toBeInTheDocument()
+
+    defaultProps.labels.forEach((label) => {
+      expect(screen.getByRole('checkbox', { name: label.name })).toBeInTheDocument()
+    })
+  })
+
+  it('prefills labels from formData when the action returns formData', () => {
+    const formData = new FormData()
+    formData.append('labels', '1')
+    formData.append('labels', '2')
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    const option1 = screen.getByRole('checkbox', { name: 'Label 1' })
+    const option2 = screen.getByRole('checkbox', { name: 'Label 2' })
+
+    expect(option1).toBeChecked()
+    expect(option2).toBeChecked()
+  })
+
+  it('prefills labels from defaultValues when provided and there is no formData', () => {
+    render(<MeldingForm {...defaultProps} defaultValues={{ labels: [1] }} />)
+
+    expect(screen.getByRole('checkbox', { name: 'Label 1' })).toBeChecked()
+    expect(screen.getByRole('checkbox', { name: 'Label 2' })).not.toBeChecked()
+  })
+
   it('submits the form when the submit button is clicked', async () => {
     const user = userEvent.setup()
     const mockFormAction = vi.fn()
