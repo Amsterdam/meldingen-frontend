@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import type { PropsWithChildren } from 'react'
 
 import { HouseFillIcon, PlusCircleFillIcon } from '@amsterdam/design-system-react-icons'
@@ -12,7 +13,7 @@ import { ApiClientInitializer } from './ApiClientInitializer'
 
 import './global.css'
 
-export const generateMetadata = async () => {
+export const generateMetadata = async (): Promise<Metadata> => {
   const t = await getTranslations('metadata')
 
   return {
@@ -20,10 +21,25 @@ export const generateMetadata = async () => {
   }
 }
 
+const MenuItems = async () => {
+  const t = await getTranslations('shared')
+
+  return [
+    <li key="overview">
+      <AmsNextLink href="/" icon={<HouseFillIcon />} variant="menu-link">
+        {t('menu.overview')}
+      </AmsNextLink>
+    </li>,
+    <li key="melding-form">
+      <AmsNextLink href="/melden" icon={<PlusCircleFillIcon />} variant="menu-link">
+        {t('menu.melding-form')}
+      </AmsNextLink>
+    </li>,
+  ]
+}
+
 const RootLayout = async ({ children }: PropsWithChildren) => {
   const locale = await getLocale()
-
-  const t = await getTranslations('shared')
 
   return (
     <html dir="ltr" lang={locale}>
@@ -33,29 +49,11 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
           <Page withMenu>
             <Header>
               <Menu>
-                <li>
-                  <AmsNextLink href="/" icon={<HouseFillIcon />} variant="menu-link">
-                    {t('menu.overview')}
-                  </AmsNextLink>
-                </li>
-                <li>
-                  <AmsNextLink href="/melden" icon={<PlusCircleFillIcon />} variant="menu-link">
-                    {t('menu.melding-form')}
-                  </AmsNextLink>
-                </li>
+                <MenuItems />
               </Menu>
             </Header>
             <Menu className="ams-page__area--menu" inWideWindow>
-              <li>
-                <AmsNextLink href="/" icon={<HouseFillIcon />} variant="menu-link">
-                  {t('menu.overview')}
-                </AmsNextLink>
-              </li>
-              <li>
-                <AmsNextLink href="/melden" icon={<PlusCircleFillIcon />} variant="menu-link">
-                  {t('menu.melding-form')}
-                </AmsNextLink>
-              </li>
+              <MenuItems />
             </Menu>
             {children}
           </Page>
