@@ -21,6 +21,10 @@ vi.mock('react', async (importOriginal) => {
 })
 
 const defaultProps = {
+  labels: [
+    { created_at: '2024-01-01', id: 1, name: 'Label 1', updated_at: '2024-01-01' },
+    { created_at: '2024-01-02', id: 2, name: 'Label 2', updated_at: '2024-01-02' },
+  ],
   primaryTextArea: {
     description: 'Some description',
     label: 'Some label',

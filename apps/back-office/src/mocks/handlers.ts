@@ -4,6 +4,15 @@ import { additionalQuestions, melding, meldingen, textAreaComponent } from './da
 import { ENDPOINTS } from './endpoints'
 
 export const handlers = [
+  // Labels
+  http.get(ENDPOINTS.GET_LABEL, () =>
+    HttpResponse.json([
+      { id: 0, name: 'Label 1' },
+      { id: 1, name: 'Label 2' },
+      { id: 2, name: 'Label 3' },
+    ]),
+  ),
+
   // Melding
   http.get(ENDPOINTS.GET_MELDING, () => HttpResponse.json(meldingen, { headers: { 'Content-Range': '0/40' } })),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json(melding)),
