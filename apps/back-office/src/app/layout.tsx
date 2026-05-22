@@ -44,7 +44,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
   return (
     <html dir="ltr" lang={locale}>
       <NextIntlClientProvider>
-        <body>
+        <body className="ams-theme ams-theme--compact">
           <ApiClientInitializer />
           <Page withMenu>
             <Header>

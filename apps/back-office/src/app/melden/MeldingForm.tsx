@@ -144,11 +144,16 @@ export const MeldingForm = ({
   const hasSourceError = validationErrors?.some((error) => error.key === 'source')
 
   return (
-    <Grid as="main" className={`ams-page__area--body ${styles.main}`} gapVertical="large" paddingVertical="x-large">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
+    <Grid
+      as="main"
+      className={`ams-theme ams-page__area--body ${styles.main}`}
+      gapVertical="large"
+      paddingVertical="x-large"
+    >
+      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
         {validationErrors && <InvalidFormAlert ref={invalidFormAlertRef} validationErrors={validationErrors} />}
-        <Heading className="ams-mb-m" level={1}>
+        <Heading className="ams-mb-m ams-visually-hidden" level={1}>
           {t('title')}
         </Heading>
         <Form action={formAction} noValidate>
