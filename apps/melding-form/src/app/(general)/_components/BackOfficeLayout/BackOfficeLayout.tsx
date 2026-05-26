@@ -49,7 +49,7 @@ export const BackOfficeLayout = ({ children }: PropsWithChildren) => (
       <MenuItems />
     </Menu>
     <Grid className="ams-theme ams-page__area--body" paddingBottom="x-large" paddingTop="large">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 3 }}>
+      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         {children}
       </Grid.Cell>
     </Grid>
