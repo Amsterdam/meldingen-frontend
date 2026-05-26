@@ -8,7 +8,7 @@ export const ENDPOINTS = {
   GET_LABEL: '/label',
 
   // Melding
-  GET_MELDING: '/melding/',
+  GET_MELDING: '/melding',
   GET_MELDING_BY_MELDING_ID: '/melding/:id',
   GET_MELDING_BY_MELDING_ID_ANSWERS: '/melding/:id/answers',
   GET_MELDING_BY_MELDING_ID_ATTACHMENTS: '/melding/:id/attachments',
