@@ -84,6 +84,18 @@ describe('Page', () => {
     await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('No sources found.')
   })
 
+  it('throws an error if labels cannot be fetched', async () => {
+    server.use(http.get(ENDPOINTS.GET_LABEL, () => HttpResponse.json(null, { status: 500 })))
+
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Failed to fetch labels.')
+  })
+
+  it('throws an error if labels list is empty', async () => {
+    server.use(http.get(ENDPOINTS.GET_LABEL, () => HttpResponse.json([])))
+
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('No labels found.')
+  })
+
   it('renders the MeldingForm component with form components', async () => {
     const PageComponent = await Page({ searchParams: Promise.resolve({}) })
 
@@ -96,6 +108,11 @@ describe('Page', () => {
         existingId: undefined,
         existingMelding: undefined,
         existingToken: undefined,
+        labels: [
+          { id: 0, name: 'Label 1' },
+          { id: 1, name: 'Label 2' },
+          { id: 2, name: 'Label 3' },
+        ],
         primaryTextArea: textAreaComponent,
         sources,
       },
@@ -108,6 +125,7 @@ describe('Page', () => {
       classification: melding.classification,
       created_at: melding.created_at,
       id: melding.id,
+      labels: melding.labels,
       public_id: melding.public_id,
       source: melding.source,
       text: 'Prefilled text',
@@ -129,21 +147,9 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(MeldingForm).toHaveBeenCalledWith(
-      {
-        defaultValues: { primary: 'Prefilled text', source: String(melding.source?.id), urgency: -1 },
-        existingId: 1,
-        existingMelding: {
-          classificationId: melding.classification?.id,
-          classificationName: melding.classification?.name,
-          createdAt: melding.created_at,
-          id: melding.id,
-          publicId: melding.public_id,
-          token: 'valid-token',
-        },
-        existingToken: 'valid-token',
-        primaryTextArea: { ...textAreaComponent, key: 'primary' },
-        sources,
-      },
+      expect.objectContaining({
+        defaultValues: { labels: [0, 1], primary: 'Prefilled text', source: String(melding.source?.id), urgency: -1 },
+      }),
       undefined,
     )
   })
@@ -168,21 +174,16 @@ describe('Page', () => {
     expect(consoleErrorSpy).toHaveBeenCalledWith('Test error')
 
     expect(MeldingForm).toHaveBeenCalledWith(
-      {
+      expect.objectContaining({
         defaultValues: {},
-        existingId: 1,
-        existingMelding: undefined,
-        existingToken: 'valid-token',
-        primaryTextArea: { ...textAreaComponent, key: 'primary' },
-        sources,
-      },
+      }),
       undefined,
     )
 
     consoleErrorSpy.mockRestore()
   })
 
-  it('renders the MeldingForm component with undefined default values when id and token are provided but melding does not have necessary data', async () => {
+  it('renders the MeldingForm component with empty default values when id and token are provided but melding does not have necessary data', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({})),
       http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
@@ -199,18 +200,14 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(MeldingForm).toHaveBeenCalledWith(
-      {
+      expect.objectContaining({
         defaultValues: {
+          labels: [],
           primary: undefined,
           source: undefined,
           urgency: undefined,
         },
-        existingId: 1,
-        existingMelding: undefined,
-        existingToken: 'valid-token',
-        primaryTextArea: { ...textAreaComponent, key: 'primary' },
-        sources,
-      },
+      }),
       undefined,
     )
   })

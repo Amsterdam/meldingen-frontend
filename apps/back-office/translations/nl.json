@@ -35,6 +35,7 @@
       "error": "Vul in wat de bron van de melding is."
     },
     "urgency-label": "Wat is de urgentie?",
+    "labels-label": "Wat is het label?",
     "submit-button": "Volgende vraag",
     "errors": {
       "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
