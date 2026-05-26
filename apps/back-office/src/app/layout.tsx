@@ -21,12 +21,14 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 }
 
-// These menu items are duplicated in the Melding Form Back Office layout (apps/melding-form/src/app/(general)/_components/BackOfficeLayout/BackOfficeLayout.tsx)
-// When you update the menu items here, make sure to update them in the Melding Form as well.
-const MenuItems = async () => {
+const RootLayout = async ({ children }: PropsWithChildren) => {
+  const locale = await getLocale()
+
   const t = await getTranslations('shared')
 
-  return [
+  // These menu items are duplicated in the Melding Form Back Office layout (apps/melding-form/src/app/(general)/_components/BackOfficeLayout/BackOfficeLayout.tsx)
+  // When you update the menu items here, make sure to update them in the Melding Form as well.
+  const menuItems = [
     <li key="overview">
       <AmsNextLink href="/" icon={<HouseFillIcon />} variant="menu-link">
         {t('menu.overview')}
@@ -38,10 +40,6 @@ const MenuItems = async () => {
       </AmsNextLink>
     </li>,
   ]
-}
-
-const RootLayout = async ({ children }: PropsWithChildren) => {
-  const locale = await getLocale()
 
   return (
     <html dir="ltr" lang={locale}>
@@ -50,12 +48,10 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
           <ApiClientInitializer />
           <Page withMenu>
             <Header>
-              <Menu>
-                <MenuItems />
-              </Menu>
+              <Menu>{menuItems}</Menu>
             </Header>
             <Menu className="ams-page__area--menu" inWideWindow>
-              <MenuItems />
+              {menuItems}
             </Menu>
             {children}
           </Page>
