@@ -55,7 +55,7 @@ export const getContactData = (data: MeldingOutput, t: (key: string) => string) 
 }
 
 export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) => {
-  const { classification, created_at, id, state, urgency } = data
+  const { classification, created_at, id, labels, source, state, urgency } = data
 
   return [
     {
@@ -64,9 +64,9 @@ export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) 
       term: t('detail.melding-data.created_at'),
     },
     {
-      description: classification ? classification.name : t('detail.no-classification'),
+      description: classification ? classification.name : t('detail.melding-data.classification.no-data'),
       key: 'classification',
-      term: t('detail.melding-data.classification'),
+      term: t('detail.melding-data.classification.term'),
     },
     {
       description: t(`shared.state.${state}`),
@@ -85,6 +85,22 @@ export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) 
         label: t('detail.melding-data.urgency.link'),
       },
       term: t('detail.melding-data.urgency.term'),
+    },
+    {
+      description: labels?.length
+        ? labels.map((label) => label.name).join(', ')
+        : t('detail.melding-data.labels.no-data'),
+      key: 'labels',
+      link: {
+        href: `/melding/${id}/wijzig-labels`,
+        label: t('detail.melding-data.labels.link'),
+      },
+      term: t('detail.melding-data.labels.term'),
+    },
+    {
+      description: source ? source.name : t('detail.melding-data.source.no-data'),
+      key: 'source',
+      term: t('detail.melding-data.source.term'),
     },
   ]
 }
