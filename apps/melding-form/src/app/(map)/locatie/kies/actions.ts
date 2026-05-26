@@ -121,5 +121,7 @@ export const postCoordinatesAndAssets = async (
 
   if (stateError) return { errorMessage: t('errors.state-change-failed') }
 
-  return redirect(`/locatie#${TOP_ANCHOR_ID}`)
+  const source = cookieStore.get(COOKIES.SOURCE)?.value
+
+  return redirect(source === 'back-office' ? `/bijlage#${TOP_ANCHOR_ID}` : `/locatie#${TOP_ANCHOR_ID}`)
 }
