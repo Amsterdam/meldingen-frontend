@@ -26,7 +26,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
 
   const t = await getTranslations('shared')
 
-  // These menu items are duplicated in the Melding Form Back Office layout (apps/melding-form/src/app/(general)/_components/BackOfficeLayout/BackOfficeLayout.tsx)
+  // These menu items are duplicated in the Melding Form Back Office layout (apps/melding-form/src/app/_components/BackOfficeLayout/BackOfficeLayout.tsx)
   // When you update the menu items here, make sure to update them in the Melding Form as well.
   const menuItems = [
     <li key="overview">

@@ -2,8 +2,7 @@ import type { PropsWithChildren } from 'react'
 
 import { cookies } from 'next/headers'
 
-import { BackOfficeLayout } from './_components'
-import { RegularLayout } from './_components'
+import { BackOfficeLayout, RegularLayout } from '../_components'
 import { COOKIES } from '~/constants'
 
 const GeneralLayout = async ({ children }: PropsWithChildren) => {

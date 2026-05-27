@@ -6,7 +6,7 @@ import NextLink from 'next/link'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Heading, StandaloneLink } from '@meldingen/ui'
 
-import { BackOfficeLayout, RegularLayout } from '../(general)/_components'
+import { BackOfficeLayout, RegularLayout } from '../_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 // The "description" translation also accepts undefined values for conditional rendering

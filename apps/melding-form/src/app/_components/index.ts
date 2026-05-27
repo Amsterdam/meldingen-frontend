@@ -1,4 +1,6 @@
 export { AmsNextLink } from './AmsNextLink/AmsNextLink'
 export { BackLink } from './BackLink/BackLink'
+export { BackOfficeLayout } from './BackOfficeLayout/BackOfficeLayout'
 export { Footer } from './Footer/Footer'
 export { Header } from './Header/Header'
+export { RegularLayout } from './RegularLayout/RegularLayout'
