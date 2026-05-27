@@ -12,7 +12,7 @@ vi.mock('next/headers', () => ({
 
 describe('Layout', () => {
   it('renders the regular layout by default', async () => {
-    const LayoutComponent = await Layout({ children: <div>Test</div> })
+    const LayoutComponent = await Layout({ children: 'Test' })
 
     render(LayoutComponent)
 
@@ -24,7 +24,7 @@ describe('Layout', () => {
   it('renders the BackOfficeLayout when the source cookie is set to back-office', async () => {
     mockCookies({ [COOKIES.SOURCE]: 'back-office' })
 
-    const LayoutComponent = await Layout({ children: <div>Test</div> })
+    const LayoutComponent = await Layout({ children: 'Test' })
 
     render(LayoutComponent)
 
