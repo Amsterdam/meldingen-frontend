@@ -28,7 +28,7 @@
     "metadata": {
       "title": "Melden - Gemeente Amsterdam"
     },
-    "title": "Melden",
+    "visually-hidden-title": "Melden",
     "source": {
       "label": "Wat is de bron van de melding?",
       "default": "--Kies een bron--",

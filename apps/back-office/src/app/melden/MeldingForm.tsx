@@ -154,7 +154,7 @@ export const MeldingForm = ({
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
         {validationErrors && <InvalidFormAlert ref={invalidFormAlertRef} validationErrors={validationErrors} />}
         <Heading className="ams-mb-m ams-visually-hidden" level={1}>
-          {t('title')}
+          {t('visually-hidden-title')}
         </Heading>
         <Form action={formAction} noValidate>
           <Column>
