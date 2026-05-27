@@ -1,5 +1,3 @@
-'use client'
-
 import type { PageHeaderProps } from '@amsterdam/design-system-react'
 
 import { PageHeader } from '@amsterdam/design-system-react'
