@@ -5,7 +5,13 @@ import { getTranslations } from 'next-intl/server'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { MeldingForm } from './MeldingForm'
-import { getMeldingByMeldingId, getSource, getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
+import {
+  getLabel,
+  getMeldingByMeldingId,
+  getSource,
+  getStaticForm,
+  getStaticFormByStaticFormId,
+} from '~/apiClientProxy'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.
@@ -45,6 +51,11 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
   if (sourcesError) throw new Error('Failed to fetch sources.')
   if (sources.length === 0) throw new Error('No sources found.')
 
+  const { data: labels, error: labelsError } = await getLabel()
+
+  if (labelsError) throw new Error('Failed to fetch labels.')
+  if (labels.length === 0) throw new Error('No labels found.')
+
   const { id, token } = await searchParams
 
   // Prefill form
@@ -58,6 +69,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
 
   const defaultValues = result?.data
     ? {
+        labels: result.data.labels?.map((label) => label.id) ?? [],
         primary: result.data.text,
         source: result.data.source?.id ? String(result.data.source.id) : undefined,
         urgency: result.data.urgency,
@@ -82,6 +94,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
       existingId={id}
       existingMelding={existingMelding}
       existingToken={token}
+      labels={labels}
       primaryTextArea={primaryTextArea}
       sources={sources}
     />

@@ -5,6 +5,7 @@ import type { FocusEvent } from 'react'
 import {
   Button,
   CharacterCount,
+  Checkbox,
   ErrorMessage,
   Field,
   FieldSet,
@@ -19,7 +20,7 @@ import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef, useState, useTransition } from 'react'
 
-import type { SourceOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+import type { LabelOutput, SourceOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { patchMeldingByMeldingIdMelder, postMelding } from '@meldingen/api-client'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
@@ -37,10 +38,11 @@ import { URGENCY_VALUES } from '~/constants'
 import styles from './MeldingForm.module.css'
 
 type Props = {
-  defaultValues?: { primary?: string; source?: string; urgency?: number }
+  defaultValues?: { labels?: number[]; primary?: string; source?: string; urgency?: number }
   existingId?: number
   existingMelding?: MeldingData
   existingToken?: string
+  labels: LabelOutput[]
   primaryTextArea: StaticFormTextAreaComponentOutput
   sources: SourceOutput[]
 }
@@ -52,6 +54,7 @@ export const MeldingForm = ({
   existingId,
   existingMelding,
   existingToken,
+  labels,
   primaryTextArea,
   sources,
 }: Props) => {
@@ -79,6 +82,7 @@ export const MeldingForm = ({
   const primaryTextAreaDefaultValue = (formData?.get('primary') as string | null) ?? defaultValues?.primary ?? ''
   const sourceDefaultValue = (formData?.get('source') as string | null) ?? defaultValues?.source ?? ''
   const urgencyDefaultValue = (formData?.get('urgency') as string | null) ?? defaultValues?.urgency ?? 0
+  const labelsDefaultValue = formData?.getAll('labels').map((label) => Number(label)) ?? defaultValues?.labels ?? []
 
   const [charCount, setCharCount] = useState(primaryTextAreaDefaultValue.length)
 
@@ -242,6 +246,16 @@ export const MeldingForm = ({
                   </Radio>
                 ))}
               </Column>
+            </FieldSet>
+            <FieldSet legend={t('labels-label')}>
+              {labels.map(({ id, name }) => {
+                const isChecked = labelsDefaultValue.includes(id)
+                return (
+                  <Checkbox defaultChecked={isChecked} key={id} name="labels" value={String(id)}>
+                    {name}
+                  </Checkbox>
+                )
+              })}
             </FieldSet>
             <Button className={styles.submit} type="submit">
               {t('submit-button')}
