@@ -11,7 +11,7 @@ vi.mock('next/headers', () => ({
 }))
 
 describe('Layout', () => {
-  it('should render the regular layout by default', async () => {
+  it('renders the regular layout by default', async () => {
     const LayoutComponent = await Layout({ children: <div>Test</div> })
 
     render(LayoutComponent)
@@ -21,7 +21,7 @@ describe('Layout', () => {
     expect(screen.queryByRole('heading', { name: 'Hoofdmenu' })).not.toBeInTheDocument()
   })
 
-  it('should render the BackOfficeLayout when the source cookie is set to back-office', async () => {
+  it('renders the BackOfficeLayout when the source cookie is set to back-office', async () => {
     mockCookies({ [COOKIES.SOURCE]: 'back-office' })
 
     const LayoutComponent = await Layout({ children: <div>Test</div> })
