@@ -25,11 +25,7 @@ const defaultProps = {
     { created_at: '2024-01-01', id: 1, name: 'Label 1', updated_at: '2024-01-01' },
     { created_at: '2024-01-02', id: 2, name: 'Label 2', updated_at: '2024-01-02' },
   ],
-  primaryTextArea: {
-    description: 'Some description',
-    label: 'Some label',
-    maxCharCount: 500,
-  } as StaticFormTextAreaComponentOutput,
+  primaryTextArea: { description: 'Some description', label: 'Some label' } as StaticFormTextAreaComponentOutput,
   sources: [
     { created_at: '2024-01-01', id: 1, name: 'Source 1', updated_at: '2024-01-01' },
     { created_at: '2024-01-02', id: 2, name: 'Source 2', updated_at: '2024-01-02' },
@@ -121,38 +117,6 @@ describe('MeldingForm', () => {
     render(<MeldingForm {...defaultProps} />)
 
     expect(screen.getByRole('textbox')).toHaveValue('')
-  })
-
-  it('initializes the character count with 0', () => {
-    render(<MeldingForm {...defaultProps} />)
-
-    expect(screen.getByText('0 van 500 tekens')).toBeInTheDocument()
-  })
-
-  it('updates the character count when the user types in the textarea', async () => {
-    const user = userEvent.setup()
-
-    render(<MeldingForm {...defaultProps} />)
-
-    await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello')
-
-    expect(screen.getByText('5 van 500 tekens')).toBeInTheDocument()
-  })
-
-  it('does not render the character count when maxCharCount is not provided', () => {
-    render(<MeldingForm {...defaultProps} primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
-
-    expect(screen.queryByText(/500/)).not.toBeInTheDocument()
-  })
-
-  it('does not update the character count when maxCharCount is not provided and the user types', async () => {
-    const user = userEvent.setup()
-
-    render(<MeldingForm {...defaultProps} primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
-
-    await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello')
-
-    expect(screen.queryByText(/tekens/)).not.toBeInTheDocument()
   })
 
   it('renders an error message connected to the source select input when there is a validation error for the source field', () => {
