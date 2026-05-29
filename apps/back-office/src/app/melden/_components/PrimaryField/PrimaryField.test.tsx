@@ -13,7 +13,6 @@ const defaultProps = {
   config: textAreaComponent,
   defaultValue: '',
   onMeldingPrefetched: vi.fn(),
-  prefetchedMelding: null,
 }
 
 describe('PrimaryField', () => {
@@ -167,13 +166,15 @@ describe('PrimaryField', () => {
     it('calls onMeldingPrefetched with the correct data when the API call is successful', async () => {
       const user = userEvent.setup()
 
-      render(<PrimaryField {...defaultProps} />)
+      const onMeldingPrefetchedMock = vi.fn()
+
+      render(<PrimaryField {...defaultProps} onMeldingPrefetched={onMeldingPrefetchedMock} />)
 
       await user.type(screen.getByRole('textbox', { name: textAreaComponent.label }), 'Hello world')
       await user.tab()
 
       await waitFor(() => {
-        expect(defaultProps.onMeldingPrefetched).toHaveBeenCalledWith({
+        expect(onMeldingPrefetchedMock).toHaveBeenCalledWith({
           classificationId: 2,
           classificationName: 'Test classification',
           createdAt: '2025-05-26T11:56:34.081Z',
