@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Checkbox, FieldSet, Grid, Heading } from '@amsterdam/design-system-react'
+import { Button, Grid, Heading } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef, useState } from 'react'
@@ -12,7 +12,7 @@ import { Column, Paragraph } from '@meldingen/ui'
 import type { FormState } from './actions'
 import type { MeldingData } from './types'
 
-import { InvalidFormAlert, PrimaryField, SourceField, SystemErrorAlert, UrgencyField } from './_components'
+import { InvalidFormAlert, LabelsField, PrimaryField, SourceField, SystemErrorAlert, UrgencyField } from './_components'
 import { postMeldingForm } from './actions'
 
 import styles from './MeldingForm.module.css'
@@ -58,7 +58,7 @@ export const MeldingForm = ({
   const rawUrgency = formData?.get('urgency')
   const urgencyDefaultValue =
     rawUrgency !== null && rawUrgency !== undefined ? Number(rawUrgency) : (defaultValues?.urgency ?? 0)
-  const labelsDefaultValue = formData?.getAll('labels').map((label) => Number(label)) ?? defaultValues?.labels ?? []
+  const labelsDefaultValues = formData?.getAll('labels').map((label) => Number(label)) ?? defaultValues?.labels ?? []
 
   // Set focus on InvalidFormAlert when there are validation errors
   // and on SystemErrorAlert when there is a system error
@@ -108,16 +108,7 @@ export const MeldingForm = ({
             )}
             <SourceField defaultValue={sourceDefaultValue} errorMessage={sourceErrorMessage} sources={sources} />
             <UrgencyField defaultValue={urgencyDefaultValue} />
-            <FieldSet legend={t('labels-label')}>
-              {labels.map(({ id, name }) => {
-                const isChecked = labelsDefaultValue.includes(id)
-                return (
-                  <Checkbox defaultChecked={isChecked} key={id} name="labels" value={String(id)}>
-                    {name}
-                  </Checkbox>
-                )
-              })}
-            </FieldSet>
+            <LabelsField defaultValues={labelsDefaultValues} labels={labels} />
             <Button className={styles.submit} type="submit">
               {t('submit-button')}
             </Button>

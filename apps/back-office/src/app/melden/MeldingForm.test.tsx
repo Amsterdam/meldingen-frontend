@@ -175,16 +175,6 @@ describe('MeldingForm', () => {
     expect(screen.getByRole('radio', { name: 'urgency.0' })).toBeChecked()
   })
 
-  it('renders all labels options', () => {
-    render(<MeldingForm {...defaultProps} />)
-
-    expect(screen.getByRole('group', { name: 'labels-label' })).toBeInTheDocument()
-
-    defaultProps.labels.forEach((label) => {
-      expect(screen.getByRole('checkbox', { name: label.name })).toBeInTheDocument()
-    })
-  })
-
   it('prefills labels from formData when the action returns formData', () => {
     const formData = new FormData()
     formData.append('labels', '1')
