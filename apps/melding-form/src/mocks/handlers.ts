@@ -18,6 +18,7 @@ export const handlers = [
   http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => new HttpResponse()),
 
   // Melding
+  http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID, () => new HttpResponse()),
   http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID, () => new HttpResponse()),
   http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, () => new HttpResponse()),
 
