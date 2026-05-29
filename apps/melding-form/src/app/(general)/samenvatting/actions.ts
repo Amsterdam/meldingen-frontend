@@ -3,11 +3,19 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { putMeldingByMeldingIdSubmitMelder } from '@meldingen/api-client'
+import { deleteMeldingByMeldingIdAnswerByAnswerId, putMeldingByMeldingIdSubmitMelder } from '@meldingen/api-client'
 
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
-export const postSummaryForm = async ({ created_at, public_id }: { created_at: string; public_id: string }) => {
+export const postSummaryForm = async ({
+  created_at,
+  public_id,
+  staleAnswerIds,
+}: {
+  created_at: string
+  public_id: string
+  staleAnswerIds: number[]
+}) => {
   const cookieStore = await cookies()
 
   const meldingId = cookieStore.get(COOKIES.ID)?.value
@@ -16,6 +24,21 @@ export const postSummaryForm = async ({ created_at, public_id }: { created_at: s
   if (!meldingId || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
 
   const source = cookieStore.get(COOKIES.SOURCE)?.value
+
+  // Remove answers for questions that no longer meet their conditions
+  const deletionResults = await Promise.all(
+    staleAnswerIds.map((answerId) =>
+      deleteMeldingByMeldingIdAnswerByAnswerId({
+        path: { answer_id: answerId, melding_id: parseInt(meldingId, 10) },
+        query: { token },
+      }),
+    ),
+  )
+
+  const deletionError = deletionResults.find((result) => result.error)?.error
+  if (deletionError) {
+    return { systemError: deletionError }
+  }
 
   // Set melding state to 'submitted'
   const { error } = await putMeldingByMeldingIdSubmitMelder({

@@ -31,7 +31,11 @@ export default async () => {
   const contact = getContactSummary(t('contact-label'), email, phone)
 
   // Pass extra arguments to the postSummaryForm action
-  const postSummaryFormWithExtraArgs = postSummaryForm.bind(null, { created_at, public_id })
+  const postSummaryFormWithExtraArgs = postSummaryForm.bind(null, {
+    created_at,
+    public_id,
+    staleAnswerIds: additionalQuestions.staleAnswerIds,
+  })
 
   const source = cookieStore.get(COOKIES.SOURCE)?.value
   const params = new URLSearchParams({ id: meldingId, token })
