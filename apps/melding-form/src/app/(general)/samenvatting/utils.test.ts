@@ -183,7 +183,7 @@ describe('getAdditionalQuestionsSummary', () => {
     })
   })
 
-  it("logs and returns undefined staleAnswerIds when the answers fetch fails after a 'Not Found'", async () => {
+  it("logs and returns empty staleAnswerIds when the answers fetch fails after a 'Not Found'", async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({ detail: 'Not Found' }, { status: 500 }),
@@ -198,7 +198,7 @@ describe('getAdditionalQuestionsSummary', () => {
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
 
     expect(consoleErrorSpy).toHaveBeenCalledWith('Answers fetch failed')
-    expect(result).toEqual({ data: [], staleAnswerIds: undefined })
+    expect(result).toEqual({ data: [], staleAnswerIds: [] })
 
     consoleErrorSpy.mockRestore()
   })

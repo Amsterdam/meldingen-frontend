@@ -95,7 +95,7 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
     // Not Found error is returned when the classification does not have additional questions
     if (handleApiError(formError) === 'Not Found') {
       // Reclassification can leave orphaned answers — mark them stale.
-      const { data, error } = await getMeldingByMeldingIdAnswersMelder({
+      const { data = [], error } = await getMeldingByMeldingIdAnswersMelder({
         path: { melding_id: parseInt(meldingId, 10) },
         query: { token },
       })
@@ -104,7 +104,7 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
         // eslint-disable-next-line no-console
         console.error(error)
       }
-      return { data: [], staleAnswerIds: data?.map((answer) => answer.id) }
+      return { data: [], staleAnswerIds: data.map((answer) => answer.id) }
     }
     throw new Error('Failed to fetch form by classification.')
   }
