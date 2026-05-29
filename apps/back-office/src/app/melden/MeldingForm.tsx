@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Checkbox, FieldSet, Grid, Heading, Radio } from '@amsterdam/design-system-react'
+import { Button, Checkbox, FieldSet, Grid, Heading } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef, useState } from 'react'
@@ -12,9 +12,8 @@ import { Column, Paragraph } from '@meldingen/ui'
 import type { FormState } from './actions'
 import type { MeldingData } from './types'
 
-import { InvalidFormAlert, PrimaryField, SourceField, SystemErrorAlert } from './_components'
+import { InvalidFormAlert, PrimaryField, SourceField, SystemErrorAlert, UrgencyField } from './_components'
 import { postMeldingForm } from './actions'
-import { URGENCY_VALUES } from '~/constants'
 
 import styles from './MeldingForm.module.css'
 
@@ -43,7 +42,6 @@ export const MeldingForm = ({
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const t = useTranslations('melding-form')
-  const tShared = useTranslations('shared')
 
   const requiredErrorMessage =
     primaryTextArea.validate?.required_error_message ?? t('errors.required-error-message-fallback')
@@ -57,7 +55,9 @@ export const MeldingForm = ({
   // If there is form data, it should take priority over the prefilled components from the server.
   const primaryTextAreaDefaultValue = (formData?.get('primary') as string | null) ?? defaultValues?.primary ?? ''
   const sourceDefaultValue = (formData?.get('source') as string | null) ?? defaultValues?.source ?? ''
-  const urgencyDefaultValue = (formData?.get('urgency') as string | null) ?? defaultValues?.urgency ?? 0
+  const rawUrgency = formData?.get('urgency')
+  const urgencyDefaultValue =
+    rawUrgency !== null && rawUrgency !== undefined ? Number(rawUrgency) : (defaultValues?.urgency ?? 0)
   const labelsDefaultValue = formData?.getAll('labels').map((label) => Number(label)) ?? defaultValues?.labels ?? []
 
   // Set focus on InvalidFormAlert when there are validation errors
@@ -107,21 +107,7 @@ export const MeldingForm = ({
               <input name="prefetchedMelding" type="hidden" value={JSON.stringify(prefetchedMelding)} />
             )}
             <SourceField defaultValue={sourceDefaultValue} errorMessage={sourceErrorMessage} sources={sources} />
-            <FieldSet aria-required="true" legend={t('urgency-label')} role="radiogroup">
-              <Column gap="x-small">
-                {URGENCY_VALUES.map((urgency) => (
-                  <Radio
-                    aria-required="true"
-                    defaultChecked={urgency === Number(urgencyDefaultValue)}
-                    key={urgency}
-                    name="urgency"
-                    value={String(urgency)}
-                  >
-                    {tShared(`urgency.${urgency}`)}
-                  </Radio>
-                ))}
-              </Column>
-            </FieldSet>
+            <UrgencyField defaultValue={urgencyDefaultValue} />
             <FieldSet legend={t('labels-label')}>
               {labels.map(({ id, name }) => {
                 const isChecked = labelsDefaultValue.includes(id)

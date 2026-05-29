@@ -8,7 +8,6 @@ import { useActionState } from 'react'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { MeldingForm } from './MeldingForm'
-import { URGENCY_VALUES } from '~/constants'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -152,16 +151,6 @@ describe('MeldingForm', () => {
     render(<MeldingForm {...defaultProps} />)
 
     expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('')
-  })
-
-  it('renders all urgency radio options', () => {
-    render(<MeldingForm {...defaultProps} />)
-
-    expect(screen.getByRole('radiogroup', { name: 'urgency-label' })).toBeInTheDocument()
-
-    URGENCY_VALUES.forEach((urgency) => {
-      expect(screen.getByRole('radio', { name: `urgency.${urgency}` })).toBeInTheDocument()
-    })
   })
 
   it('prefills urgency from formData when the action returns formData', () => {
