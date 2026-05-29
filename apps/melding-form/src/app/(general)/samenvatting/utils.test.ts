@@ -112,7 +112,7 @@ describe('getAdditionalQuestionsSummary', () => {
       term: item.question.text,
     }))
 
-    expect(result).toEqual({ data: additionalQuestionsSummary })
+    expect(result).toEqual({ data: additionalQuestionsSummary, staleAnswerIds: [] })
   })
 
   it('returns an error message when error is returned', async () => {
@@ -149,13 +149,13 @@ describe('getAdditionalQuestionsSummary', () => {
       term: item.question.text,
     }))
 
-    expect(result).toEqual({ data: additionalQuestionsSummary })
+    expect(result).toEqual({ data: additionalQuestionsSummary, staleAnswerIds: [] })
   })
 
   it('returns an empty array when classificationId is not provided', async () => {
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
 
-    expect(result).toEqual({ data: [] })
+    expect(result).toEqual({ data: [], staleAnswerIds: [] })
   })
 
   it('returns an error message when getFormClassificationByClassificationId returns an error', async () => {
@@ -177,7 +177,7 @@ describe('getAdditionalQuestionsSummary', () => {
     )
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
 
-    expect(result).toEqual({ data: [] })
+    expect(result).toEqual({ data: [], staleAnswerIds: [] })
   })
 
   it('filters out answers with unmet conditions', async () => {
@@ -202,8 +202,8 @@ describe('getAdditionalQuestionsSummary', () => {
       ),
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
         HttpResponse.json([
-          { question: { id: 35, text: 'Question 35' }, text: 'Answer 35', type: 'text' },
-          { question: { id: 36, text: 'Question 36' }, text: 'Answer 36', type: 'text' },
+          { id: 100, question: { id: 35, text: 'Question 35' }, text: 'Answer 35', type: 'text' },
+          { id: 101, question: { id: 36, text: 'Question 36' }, text: 'Answer 36', type: 'text' },
         ]),
       ),
     )
@@ -219,6 +219,7 @@ describe('getAdditionalQuestionsSummary', () => {
           term: 'Question 35',
         },
       ],
+      staleAnswerIds: [101],
     })
   })
 
@@ -247,6 +248,7 @@ describe('getAdditionalQuestionsSummary', () => {
           term: 'Date question',
         },
       ],
+      staleAnswerIds: [],
     })
   })
 
@@ -273,6 +275,7 @@ describe('getAdditionalQuestionsSummary', () => {
           term: 'Time question',
         },
       ],
+      staleAnswerIds: [],
     })
   })
 
@@ -305,6 +308,7 @@ describe('getAdditionalQuestionsSummary', () => {
           term: 'Time question',
         },
       ],
+      staleAnswerIds: [],
     })
   })
 
@@ -340,6 +344,7 @@ describe('getAdditionalQuestionsSummary', () => {
           term: 'Value label question',
         },
       ],
+      staleAnswerIds: [],
     })
   })
 
@@ -366,7 +371,48 @@ describe('getAdditionalQuestionsSummary', () => {
           term: 'Unsupported question',
         },
       ],
+      staleAnswerIds: [],
     })
+  })
+
+  it('collects ids of every answer whose question condition is unmet', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [
+            {
+              components: [
+                { key: 'question-35', question: 35 },
+                {
+                  conditional: { eq: 'Answer 35', show: false, when: 'question-35' },
+                  key: 'question-36',
+                  question: 36,
+                },
+                {
+                  conditional: { eq: 'Answer 35', show: false, when: 'question-35' },
+                  key: 'question-37',
+                  question: 37,
+                },
+              ],
+              key: 'page1',
+              type: 'panel',
+            },
+          ],
+        }),
+      ),
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+        HttpResponse.json([
+          { id: 200, question: { id: 35, text: 'Question 35' }, text: 'Answer 35', type: 'text' },
+          { id: 201, question: { id: 36, text: 'Question 36' }, text: 'Answer 36', type: 'text' },
+          { id: 202, question: { id: 37, text: 'Question 37' }, text: 'Answer 37', type: 'text' },
+        ]),
+      ),
+    )
+
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
+
+    expect(result.staleAnswerIds).toEqual([201, 202])
+    expect(result.data).toHaveLength(1)
   })
 })
 
