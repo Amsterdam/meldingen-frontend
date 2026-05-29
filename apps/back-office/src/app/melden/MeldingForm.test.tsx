@@ -127,20 +127,9 @@ describe('MeldingForm', () => {
 
     render(<MeldingForm {...defaultProps} />)
 
-    const input = screen.getByRole('combobox', { name: 'source.label' })
+    const input = screen.getByRole('combobox', { name: 'label' })
 
     expect(input).toHaveAccessibleDescription('Invoerfout:Source field error')
-  })
-
-  it('renders the source select input with options', () => {
-    render(<MeldingForm {...defaultProps} />)
-
-    const select = screen.getByRole('combobox', { name: 'source.label' })
-
-    expect(select).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'source.default' })).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'Source 1' })).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'Source 2' })).toBeInTheDocument()
   })
 
   it('prefills the source select input from formData when the action returns formData', () => {
@@ -150,19 +139,19 @@ describe('MeldingForm', () => {
 
     render(<MeldingForm {...defaultProps} />)
 
-    expect(screen.getByRole('combobox', { name: 'source.label' })).toHaveValue('2')
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('2')
   })
 
   it('prefills the source select input from defaultValues when provided and there is no formData', () => {
     render(<MeldingForm {...defaultProps} defaultValues={{ source: '1' }} />)
 
-    expect(screen.getByRole('combobox', { name: 'source.label' })).toHaveValue('1')
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('1')
   })
 
   it('falls back to an empty source select input when there is no formData and no defaultValues', () => {
     render(<MeldingForm {...defaultProps} />)
 
-    expect(screen.getByRole('combobox', { name: 'source.label' })).toHaveValue('')
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('')
   })
 
   it('renders all urgency radio options', () => {

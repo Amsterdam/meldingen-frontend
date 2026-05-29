@@ -1,24 +1,12 @@
 'use client'
 
-import {
-  Button,
-  Checkbox,
-  ErrorMessage,
-  Field,
-  FieldSet,
-  Grid,
-  Heading,
-  Label,
-  Radio,
-  Select,
-} from '@amsterdam/design-system-react'
+import { Button, Checkbox, FieldSet, Grid, Heading, Radio } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef, useState } from 'react'
 
 import type { LabelOutput, SourceOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
-import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { Column, Paragraph } from '@meldingen/ui'
 
 import type { FormState } from './actions'
@@ -26,6 +14,7 @@ import type { MeldingData } from './types'
 
 import { InvalidFormAlert } from './_components/InvalidFormAlert'
 import { PrimaryField } from './_components/PrimaryField/PrimaryField'
+import { SourceField } from './_components/SourceField/SourceField'
 import { SystemErrorAlert } from './_components/SystemErrorAlert'
 import { postMeldingForm } from './actions'
 import { URGENCY_VALUES } from '~/constants'
@@ -93,7 +82,7 @@ export const MeldingForm = ({
   }, [systemError])
 
   const primaryErrorMessage = validationErrors?.find((error) => error.key === 'primary')?.message
-  const hasSourceError = validationErrors?.some((error) => error.key === 'source')
+  const sourceErrorMessage = validationErrors?.find((error) => error.key === 'source')?.message
 
   return (
     <Grid as="main" className={`ams-page__area--body ${styles.main}`} gapVertical="large" paddingVertical="x-large">
@@ -120,36 +109,7 @@ export const MeldingForm = ({
             {prefetchedMelding && (
               <input name="prefetchedMelding" type="hidden" value={JSON.stringify(prefetchedMelding)} />
             )}
-            <Field invalid={hasSourceError}>
-              <Label htmlFor="source">{t('source.label')}</Label>
-              {hasSourceError && (
-                <ErrorMessage id="source-error">
-                  {validationErrors?.find((error) => error.key === 'source')?.message}
-                </ErrorMessage>
-              )}
-              <Select
-                aria-describedby={getAriaDescribedBy(
-                  'source',
-                  undefined,
-                  validationErrors?.find((error) => error.key === 'source')?.message,
-                )}
-                aria-required="true"
-                defaultValue={sourceDefaultValue}
-                id="source"
-                invalid={hasSourceError}
-                // React doesn't update the defaultValue of a select element after the initial render,
-                // so we use the key prop to force a remount of the select element when sourceDefaultValue changes
-                key={sourceDefaultValue}
-                name="source"
-              >
-                <Select.Option value="">{t('source.default')}</Select.Option>
-                {sources.map((source) => (
-                  <Select.Option key={source.id} value={String(source.id)}>
-                    {source.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Field>
+            <SourceField defaultValue={sourceDefaultValue} errorMessage={sourceErrorMessage} sources={sources} />
             <FieldSet aria-required="true" legend={t('urgency-label')} role="radiogroup">
               <Column gap="x-small">
                 {URGENCY_VALUES.map((urgency) => (
