@@ -1,14 +1,19 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { http, HttpResponse } from 'msw'
+
+import * as apiClient from '@meldingen/api-client'
 
 import { PrimaryField } from './PrimaryField'
 import { textAreaComponent } from '~/mocks/data'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 const defaultProps = {
   config: textAreaComponent,
   defaultValue: '',
+  onMeldingPrefetched: vi.fn(),
   prefetchedMelding: null,
-  setPrefetchedMelding: vi.fn(),
 }
 
 describe('PrimaryField', () => {
@@ -71,5 +76,131 @@ describe('PrimaryField', () => {
 
     const input = screen.getByRole('textbox', { name: textAreaComponent.label })
     expect(input).toHaveAttribute('aria-invalid', 'true')
+  })
+
+  describe('handleBlur', () => {
+    it('returns early when the textarea is empty', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      const user = userEvent.setup()
+
+      const { container } = render(<PrimaryField {...defaultProps} />)
+
+      await user.click(screen.getByRole('textbox', { name: textAreaComponent.label }))
+      await user.tab()
+
+      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]')
+
+      expect(hiddenInput).toBeNull()
+      expect(consoleSpy).not.toHaveBeenCalled()
+
+      consoleSpy.mockRestore()
+    })
+
+    it('returns early when the text matches the initial value', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      const user = userEvent.setup()
+
+      const { container } = render(<PrimaryField {...defaultProps} defaultValue="existing text" />)
+
+      await user.click(screen.getByRole('textbox', { name: textAreaComponent.label }))
+      await user.tab()
+
+      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]')
+
+      expect(hiddenInput).toBeNull()
+      expect(consoleSpy).not.toHaveBeenCalled()
+
+      consoleSpy.mockRestore()
+    })
+
+    it('uses a PATCH request when existingId and existingToken are provided', async () => {
+      const spy = vi.spyOn(apiClient, 'patchMeldingByMeldingIdMelder')
+
+      const user = userEvent.setup()
+
+      render(<PrimaryField {...defaultProps} existingId={1} existingToken="token123" />)
+
+      await user.type(screen.getByRole('textbox', { name: textAreaComponent.label }), 'Hello world')
+      await user.tab()
+
+      expect(spy).toHaveBeenCalled()
+
+      spy.mockRestore()
+    })
+
+    it('uses a POST request when there is no existing id or token', async () => {
+      const spy = vi.spyOn(apiClient, 'postMelding')
+
+      const user = userEvent.setup()
+
+      render(<PrimaryField {...defaultProps} />)
+
+      await user.type(screen.getByRole('textbox', { name: textAreaComponent.label }), 'Hello world')
+      await user.tab()
+
+      expect(spy).toHaveBeenCalled()
+
+      spy.mockRestore()
+    })
+
+    it('logs an error to the console when the API returns an error', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json('some error', { status: 400 })))
+
+      const user = userEvent.setup()
+
+      render(<PrimaryField {...defaultProps} />)
+
+      await user.type(screen.getByRole('textbox', { name: textAreaComponent.label }), 'Hello world')
+      await user.tab()
+
+      await waitFor(() => {
+        expect(consoleSpy).toHaveBeenCalledWith('some error')
+      })
+
+      consoleSpy.mockRestore()
+    })
+
+    it('calls onMeldingPrefetched with the correct data when the API call is successful', async () => {
+      const user = userEvent.setup()
+
+      render(<PrimaryField {...defaultProps} />)
+
+      await user.type(screen.getByRole('textbox', { name: textAreaComponent.label }), 'Hello world')
+      await user.tab()
+
+      await waitFor(() => {
+        expect(defaultProps.onMeldingPrefetched).toHaveBeenCalledWith({
+          classificationId: 2,
+          classificationName: 'Test classification',
+          createdAt: '2025-05-26T11:56:34.081Z',
+          id: 123,
+          publicId: 'B100AA',
+          token: 'test-token',
+        })
+      })
+    })
+
+    it('logs an error when the API call throws', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.error()))
+
+      const user = userEvent.setup()
+
+      render(<PrimaryField {...defaultProps} />)
+
+      await user.type(screen.getByRole('textbox', { name: textAreaComponent.label }), 'Hello world')
+      await user.tab()
+
+      await waitFor(() => {
+        expect(consoleSpy).toHaveBeenCalledWith(expect.any(TypeError))
+      })
+
+      consoleSpy.mockRestore()
+    })
   })
 })

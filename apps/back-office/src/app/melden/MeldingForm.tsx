@@ -91,10 +91,9 @@ export const MeldingForm = ({
               config={primaryTextArea}
               defaultValue={primaryDefaultValue}
               errorMessage={primaryErrorMessage}
-              existingId={existingId}
-              existingToken={existingToken}
-              prefetchedMelding={prefetchedMelding}
-              setPrefetchedMelding={setPrefetchedMelding}
+              existingId={prefetchedMelding?.id ?? existingId}
+              existingToken={prefetchedMelding?.token ?? existingToken}
+              onMeldingPrefetched={setPrefetchedMelding}
             />
             {prefetchedMelding?.classificationName && (
               <Paragraph>De categorie van de melding is: {prefetchedMelding.classificationName}</Paragraph>

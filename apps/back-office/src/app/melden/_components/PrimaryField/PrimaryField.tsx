@@ -1,4 +1,4 @@
-import type { Dispatch, FocusEvent, SetStateAction } from 'react'
+import type { FocusEvent } from 'react'
 
 import { CharacterCount, ErrorMessage, Field, Label, TextArea } from '@amsterdam/design-system-react'
 import { startTransition, useRef, useState } from 'react'
@@ -17,8 +17,7 @@ type Props = {
   errorMessage?: string
   existingId?: number
   existingToken?: string
-  prefetchedMelding: MeldingData | null
-  setPrefetchedMelding: Dispatch<SetStateAction<Props['prefetchedMelding']>>
+  onMeldingPrefetched: (melding: MeldingData) => void
 }
 
 export const PrimaryField = ({
@@ -27,8 +26,7 @@ export const PrimaryField = ({
   errorMessage,
   existingId,
   existingToken,
-  prefetchedMelding,
-  setPrefetchedMelding,
+  onMeldingPrefetched,
 }: Props) => {
   const { description, label, maxCharCount } = config
 
@@ -44,21 +42,18 @@ export const PrimaryField = ({
 
     startTransition(async () => {
       try {
-        const id = prefetchedMelding?.id ?? existingId
-        const token = prefetchedMelding?.token ?? existingToken
-
         const { data, error } =
-          id && token
+          existingId && existingToken
             ? await patchMeldingByMeldingIdMelder({
                 body: { text },
-                path: { melding_id: id },
-                query: { token },
+                path: { melding_id: existingId },
+                query: { token: existingToken },
               })
             : await postMelding({ body: { text } })
 
         if (error) throw error
 
-        setPrefetchedMelding({
+        onMeldingPrefetched({
           classificationId: data.classification?.id,
           classificationName: data.classification?.name,
           createdAt: data.created_at,

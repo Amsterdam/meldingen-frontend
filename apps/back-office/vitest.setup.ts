@@ -3,6 +3,8 @@
 import '@testing-library/jest-dom/vitest'
 import { afterAll, afterEach, beforeAll } from 'vitest'
 
+import { client } from '@meldingen/api-client'
+
 import { server } from './src/mocks/node'
 
 // In our unit tests, we use the translation key instead of the real translation.
@@ -43,6 +45,9 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: vi.fn(),
   })),
 })
+
+// Configure the API client for the test environment.
+client.setConfig({ baseUrl: 'http://localhost:3000' })
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
