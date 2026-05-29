@@ -52,4 +52,24 @@ describe('PrimaryField', () => {
 
     expect(screen.queryByText(/tekens/)).not.toBeInTheDocument()
   })
+
+  it('renders an error message when there is one', () => {
+    render(<PrimaryField {...defaultProps} errorMessage="Test error message" />)
+    const textAreaWithErrorMessage = screen.getByRole('textbox', {
+      description: 'Invoerfout:Test error message',
+      name: textAreaComponent.label,
+    })
+
+    expect(textAreaWithErrorMessage).toBeInTheDocument()
+  })
+
+  it('marks the Field and input as invalid when there is an error message', () => {
+    const { container } = render(<PrimaryField {...defaultProps} errorMessage="Test error message" />)
+
+    const field = container.firstChild
+    expect(field).toHaveClass('ams-field--invalid')
+
+    const input = screen.getByRole('textbox', { name: textAreaComponent.label })
+    expect(input).toHaveAttribute('aria-invalid', 'true')
+  })
 })
