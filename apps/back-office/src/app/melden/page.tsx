@@ -96,9 +96,9 @@ const toExistingMeldingData = (melding?: MeldingOutput, token?: string) => {
     classificationId: classification?.id,
     classificationName: classification?.name,
     createdAt: created_at,
-    id: id,
+    id,
     publicId: public_id,
-    token: token,
+    token,
   }
 }
 
