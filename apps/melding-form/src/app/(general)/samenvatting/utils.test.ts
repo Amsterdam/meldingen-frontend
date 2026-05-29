@@ -169,7 +169,7 @@ describe('getAdditionalQuestionsSummary', () => {
     await expect(testFunction).rejects.toThrowError('Failed to fetch form by classification.')
   })
 
-  it("returns an empty array when the error is 'Not Found'", async () => {
+  it("returns any previously-answered questions as stale when the error is 'Not Found'", async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({ detail: 'Not Found' }, { status: 500 }),
@@ -177,7 +177,30 @@ describe('getAdditionalQuestionsSummary', () => {
     )
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
 
-    expect(result).toEqual({ data: [], staleAnswerIds: [] })
+    expect(result).toEqual({
+      data: [],
+      staleAnswerIds: additionalQuestions.map((answer) => answer.id),
+    })
+  })
+
+  it("logs and returns undefined staleAnswerIds when the answers fetch fails after a 'Not Found'", async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({ detail: 'Not Found' }, { status: 500 }),
+      ),
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
+        HttpResponse.json('Answers fetch failed', { status: 500 }),
+      ),
+    )
+
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Answers fetch failed')
+    expect(result).toEqual({ data: [], staleAnswerIds: undefined })
+
+    consoleErrorSpy.mockRestore()
   })
 
   it('filters out answers with unmet conditions', async () => {
