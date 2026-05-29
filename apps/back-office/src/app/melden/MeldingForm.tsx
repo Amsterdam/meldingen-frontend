@@ -13,11 +13,12 @@ import type { FormState } from './actions'
 import type { MeldingData } from './types'
 
 import { InvalidFormAlert, LabelsField, PrimaryField, SourceField, SystemErrorAlert, UrgencyField } from './_components'
+import { calculateDefaultValues } from './_utils/calculateDefaultValues'
 import { postMeldingForm } from './actions'
 
 import styles from './MeldingForm.module.css'
 
-type Props = {
+export type Props = {
   defaultValues?: { labels?: number[]; primary?: string; source?: string; urgency?: number }
   existingId?: number
   existingMelding?: MeldingData
@@ -50,15 +51,10 @@ export const MeldingForm = ({
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
   const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
-  // Form components can be prefilled on load on the server, where we fill in existing answers from the backend,
-  // or in case of an error, where we use the form data provided.
-  // If there is form data, it should take priority over the prefilled components from the server.
-  const primaryTextAreaDefaultValue = (formData?.get('primary') as string | null) ?? defaultValues?.primary ?? ''
-  const sourceDefaultValue = (formData?.get('source') as string | null) ?? defaultValues?.source ?? ''
-  const rawUrgency = formData?.get('urgency')
-  const urgencyDefaultValue =
-    rawUrgency !== null && rawUrgency !== undefined ? Number(rawUrgency) : (defaultValues?.urgency ?? 0)
-  const labelsDefaultValues = formData?.getAll('labels').map((label) => Number(label)) ?? defaultValues?.labels ?? []
+  const { labelsDefaultValues, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } = calculateDefaultValues(
+    formData,
+    defaultValues,
+  )
 
   // Set focus on InvalidFormAlert when there are validation errors
   // and on SystemErrorAlert when there is a system error
@@ -93,7 +89,7 @@ export const MeldingForm = ({
           <Column>
             <PrimaryField
               config={primaryTextArea}
-              defaultValue={primaryTextAreaDefaultValue}
+              defaultValue={primaryDefaultValue}
               errorMessage={primaryErrorMessage}
               existingId={existingId}
               existingToken={existingToken}
