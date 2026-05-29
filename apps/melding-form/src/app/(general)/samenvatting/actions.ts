@@ -37,7 +37,9 @@ export const postSummaryForm = async ({
 
   const deletionError = deletionResults.find((result) => result.error)?.error
   if (deletionError) {
-    return { systemError: deletionError }
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(deletionError)
   }
 
   // Set melding state to 'submitted'

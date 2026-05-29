@@ -127,8 +127,15 @@ describe('postSummaryForm', () => {
     expect(deletedAnswerIds).toHaveLength(3)
   })
 
-  it('returns a systemError and does not submit the melding when deleting a stale answer fails', async () => {
-    mockIdAndTokenCookies()
+  it('logs the error but still submits the melding when deleting a stale answer fails', async () => {
+    ;(cookies as Mock).mockReturnValue({
+      delete: vi.fn(),
+      get: (name: string) => {
+        if (name === COOKIES.ID) return { value: '123' }
+        if (name === COOKIES.TOKEN) return { value: 'test-token' }
+        return undefined
+      },
+    })
 
     const submitMock = vi.fn(() => new HttpResponse())
     server.use(
@@ -138,10 +145,14 @@ describe('postSummaryForm', () => {
       http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_MELDER, submitMock),
     )
 
-    const result = await postSummaryForm({ ...defaultArgs, staleAnswerIds: [101] })
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-    expect(result).toEqual({ systemError: 'Delete failed' })
-    expect(submitMock).not.toHaveBeenCalled()
-    expect(redirect).not.toHaveBeenCalledWith(expect.stringContaining('/bedankt'))
+    await postSummaryForm({ ...defaultArgs, staleAnswerIds: [101] })
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Delete failed')
+    expect(submitMock).toHaveBeenCalled()
+    expect(redirect).toHaveBeenCalledWith(expect.stringContaining('/bedankt'))
+
+    consoleErrorSpy.mockRestore()
   })
 })
