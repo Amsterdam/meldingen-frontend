@@ -12,10 +12,7 @@ import { Column, Paragraph } from '@meldingen/ui'
 import type { FormState } from './actions'
 import type { MeldingData } from './types'
 
-import { InvalidFormAlert } from './_components/InvalidFormAlert'
-import { PrimaryField } from './_components/PrimaryField/PrimaryField'
-import { SourceField } from './_components/SourceField/SourceField'
-import { SystemErrorAlert } from './_components/SystemErrorAlert'
+import { InvalidFormAlert, PrimaryField, SourceField, SystemErrorAlert } from './_components'
 import { postMeldingForm } from './actions'
 import { URGENCY_VALUES } from '~/constants'
 
