@@ -181,30 +181,4 @@ describe('postCoordinatesAndAssets', () => {
 
     expect(result).toEqual({ errorMessage: 'errors.location-patch-failed' })
   })
-
-  it('returns an error message if an error occurs when changing melding state', async () => {
-    server.use(
-      http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_LOCATION, () =>
-        HttpResponse.json('Error message', { status: 500 }),
-      ),
-    )
-
-    const formData = new FormData()
-    formData.set('address', 'Amstel 1, Amsterdam')
-
-    const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
-
-    expect(result).toEqual({ errorMessage: 'errors.state-change-failed' })
-  })
-
-  it('redirects to /bijlage when source is back office', async () => {
-    mockCookies({ [COOKIES.ID]: '123', [COOKIES.SOURCE]: 'back-office', [COOKIES.TOKEN]: 'test-token' }, mockSetCookie)
-
-    const formData = new FormData()
-    formData.set('address', 'Amstel 1, Amsterdam')
-
-    await postCoordinatesAndAssets(mockArgs, undefined, formData)
-
-    expect(redirect).toHaveBeenCalledWith(`/bijlage#${TOP_ANCHOR_ID}`)
-  })
 })

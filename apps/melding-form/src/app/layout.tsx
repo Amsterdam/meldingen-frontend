@@ -1,5 +1,4 @@
-import type { Metadata } from 'next'
-import type { PropsWithChildren } from 'react'
+import type { ReactNode } from 'react'
 
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
@@ -10,7 +9,7 @@ import { ApiClientInitializer } from './ApiClientInitializer'
 
 import './global.css'
 
-export const generateMetadata = async (): Promise<Metadata> => {
+export const generateMetadata = async () => {
   const t = await getTranslations('metadata')
 
   return {
@@ -25,14 +24,14 @@ client.setConfig({
   baseUrl: process.env.NEXT_INTERNAL_BACKEND_BASE_URL,
 })
 
-const RootLayout = async ({ children }: PropsWithChildren) => {
+const RootLayout = async ({ children }: { children: ReactNode }) => {
   const locale = await getLocale()
 
   return (
     <html dir="ltr" lang={locale}>
       <ApiClientInitializer />
       <NextIntlClientProvider>
-        <body className="ams-theme">{children}</body>
+        <body>{children}</body>
       </NextIntlClientProvider>
     </html>
   )

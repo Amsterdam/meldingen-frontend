@@ -1,9 +1,6 @@
-@layer amsterdam-design-system, amsterdam-design-system-compact;
-
 @import url('@amsterdam/design-system-assets/font/index.css') layer(amsterdam-design-system);
 @import url('@amsterdam/design-system-css/dist/index.css') layer(amsterdam-design-system);
-@import url('@amsterdam/design-system-tokens/dist/compact.theme.css') layer(amsterdam-design-system-compact);
-@import url('@amsterdam/design-system-tokens/dist/index.theme.css') layer(amsterdam-design-system);
+@import url('@amsterdam/design-system-tokens/dist/index.css') layer(amsterdam-design-system);
 
 body {
   font-family: 'Amsterdam Sans', Arial, sans-serif;

@@ -1,4 +1,3 @@
-import type { Metadata } from 'next'
 import type { PropsWithChildren } from 'react'
 
 import { HouseFillIcon, PlusCircleFillIcon } from '@amsterdam/design-system-react-icons'
@@ -13,7 +12,7 @@ import { ApiClientInitializer } from './ApiClientInitializer'
 
 import './global.css'
 
-export const generateMetadata = async (): Promise<Metadata> => {
+export const generateMetadata = async () => {
   const t = await getTranslations('metadata')
 
   return {
@@ -26,32 +25,37 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
 
   const t = await getTranslations('shared')
 
-  // These menu items are duplicated in the Melding Form Back Office layout (apps/melding-form/src/app/_components/BackOfficeLayout/BackOfficeLayout.tsx)
-  // When you update the menu items here, make sure to update them in the Melding Form as well.
-  const menuItems = [
-    <li key="overview">
-      <AmsNextLink href="/" icon={<HouseFillIcon />} variant="menu-link">
-        {t('menu.overview')}
-      </AmsNextLink>
-    </li>,
-    <li key="melding-form">
-      <AmsNextLink href="/melden" icon={<PlusCircleFillIcon />} variant="menu-link">
-        {t('menu.melding-form')}
-      </AmsNextLink>
-    </li>,
-  ]
-
   return (
     <html dir="ltr" lang={locale}>
       <NextIntlClientProvider>
-        <body className="ams-theme ams-theme--compact">
+        <body>
           <ApiClientInitializer />
           <Page withMenu>
             <Header>
-              <Menu>{menuItems}</Menu>
+              <Menu>
+                <li>
+                  <AmsNextLink href="/" icon={<HouseFillIcon />} variant="menu-link">
+                    {t('menu.overview')}
+                  </AmsNextLink>
+                </li>
+                <li>
+                  <AmsNextLink href="/melden" icon={<PlusCircleFillIcon />} variant="menu-link">
+                    {t('menu.melding-form')}
+                  </AmsNextLink>
+                </li>
+              </Menu>
             </Header>
             <Menu className="ams-page__area--menu" inWideWindow>
-              {menuItems}
+              <li>
+                <AmsNextLink href="/" icon={<HouseFillIcon />} variant="menu-link">
+                  {t('menu.overview')}
+                </AmsNextLink>
+              </li>
+              <li>
+                <AmsNextLink href="/melden" icon={<PlusCircleFillIcon />} variant="menu-link">
+                  {t('menu.melding-form')}
+                </AmsNextLink>
+              </li>
             </Menu>
             {children}
           </Page>

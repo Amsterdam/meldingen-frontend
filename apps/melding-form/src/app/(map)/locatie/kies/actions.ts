@@ -4,11 +4,7 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import {
-  patchMeldingByMeldingIdLocation,
-  postMeldingByMeldingIdAsset,
-  putMeldingByMeldingIdSubmitLocation,
-} from '@meldingen/api-client'
+import { patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
 
 import type { Coordinates } from '~/types'
 
@@ -113,15 +109,5 @@ export const postCoordinatesAndAssets = async (
     return { errorMessage: t('errors.location-patch-failed') }
   }
 
-  // Set melding state to 'location_submitted'
-  const { error: stateError } = await putMeldingByMeldingIdSubmitLocation({
-    path: { melding_id: parseInt(meldingId, 10) },
-    query: { token },
-  })
-
-  if (stateError) return { errorMessage: t('errors.state-change-failed') }
-
-  const source = cookieStore.get(COOKIES.SOURCE)?.value
-
-  return redirect(source === 'back-office' ? `/bijlage#${TOP_ANCHOR_ID}` : `/locatie#${TOP_ANCHOR_ID}`)
+  return redirect(`/locatie#${TOP_ANCHOR_ID}`)
 }
