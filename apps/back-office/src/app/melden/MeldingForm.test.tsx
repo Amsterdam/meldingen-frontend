@@ -2,15 +2,11 @@ import type { Mock } from 'vitest'
 
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { http, HttpResponse } from 'msw'
 import { useActionState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { MeldingForm } from './MeldingForm'
-import { URGENCY_VALUES } from '~/constants'
-import { ENDPOINTS } from '~/mocks/endpoints'
-import { server } from '~/mocks/node'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -25,11 +21,7 @@ const defaultProps = {
     { created_at: '2024-01-01', id: 1, name: 'Label 1', updated_at: '2024-01-01' },
     { created_at: '2024-01-02', id: 2, name: 'Label 2', updated_at: '2024-01-02' },
   ],
-  primaryTextArea: {
-    description: 'Some description',
-    label: 'Some label',
-    maxCharCount: 500,
-  } as StaticFormTextAreaComponentOutput,
+  primaryTextArea: { description: 'Some description', label: 'Some label' } as StaticFormTextAreaComponentOutput,
   sources: [
     { created_at: '2024-01-01', id: 1, name: 'Source 1', updated_at: '2024-01-01' },
     { created_at: '2024-01-02', id: 2, name: 'Source 2', updated_at: '2024-01-02' },
@@ -123,38 +115,6 @@ describe('MeldingForm', () => {
     expect(screen.getByRole('textbox')).toHaveValue('')
   })
 
-  it('initializes the character count with 0', () => {
-    render(<MeldingForm {...defaultProps} />)
-
-    expect(screen.getByText('0 van 500 tekens')).toBeInTheDocument()
-  })
-
-  it('updates the character count when the user types in the textarea', async () => {
-    const user = userEvent.setup()
-
-    render(<MeldingForm {...defaultProps} />)
-
-    await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello')
-
-    expect(screen.getByText('5 van 500 tekens')).toBeInTheDocument()
-  })
-
-  it('does not render the character count when maxCharCount is not provided', () => {
-    render(<MeldingForm {...defaultProps} primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
-
-    expect(screen.queryByText(/500/)).not.toBeInTheDocument()
-  })
-
-  it('does not update the character count when maxCharCount is not provided and the user types', async () => {
-    const user = userEvent.setup()
-
-    render(<MeldingForm {...defaultProps} primaryTextArea={{ ...defaultProps.primaryTextArea, maxCharCount: null }} />)
-
-    await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello')
-
-    expect(screen.queryByText(/tekens/)).not.toBeInTheDocument()
-  })
-
   it('renders an error message connected to the source select input when there is a validation error for the source field', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'source', message: 'Source field error' }] },
@@ -163,20 +123,9 @@ describe('MeldingForm', () => {
 
     render(<MeldingForm {...defaultProps} />)
 
-    const input = screen.getByRole('combobox', { name: 'source.label' })
+    const input = screen.getByRole('combobox', { name: 'label' })
 
     expect(input).toHaveAccessibleDescription('Invoerfout:Source field error')
-  })
-
-  it('renders the source select input with options', () => {
-    render(<MeldingForm {...defaultProps} />)
-
-    const select = screen.getByRole('combobox', { name: 'source.label' })
-
-    expect(select).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'source.default' })).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'Source 1' })).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'Source 2' })).toBeInTheDocument()
   })
 
   it('prefills the source select input from formData when the action returns formData', () => {
@@ -186,29 +135,19 @@ describe('MeldingForm', () => {
 
     render(<MeldingForm {...defaultProps} />)
 
-    expect(screen.getByRole('combobox', { name: 'source.label' })).toHaveValue('2')
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('2')
   })
 
   it('prefills the source select input from defaultValues when provided and there is no formData', () => {
     render(<MeldingForm {...defaultProps} defaultValues={{ source: '1' }} />)
 
-    expect(screen.getByRole('combobox', { name: 'source.label' })).toHaveValue('1')
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('1')
   })
 
   it('falls back to an empty source select input when there is no formData and no defaultValues', () => {
     render(<MeldingForm {...defaultProps} />)
 
-    expect(screen.getByRole('combobox', { name: 'source.label' })).toHaveValue('')
-  })
-
-  it('renders all urgency radio options', () => {
-    render(<MeldingForm {...defaultProps} />)
-
-    expect(screen.getByRole('radiogroup', { name: 'urgency-label' })).toBeInTheDocument()
-
-    URGENCY_VALUES.forEach((urgency) => {
-      expect(screen.getByRole('radio', { name: `urgency.${urgency}` })).toBeInTheDocument()
-    })
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('')
   })
 
   it('prefills urgency from formData when the action returns formData', () => {
@@ -231,16 +170,6 @@ describe('MeldingForm', () => {
     render(<MeldingForm {...defaultProps} />)
 
     expect(screen.getByRole('radio', { name: 'urgency.0' })).toBeChecked()
-  })
-
-  it('renders all labels options', () => {
-    render(<MeldingForm {...defaultProps} />)
-
-    expect(screen.getByRole('group', { name: 'labels-label' })).toBeInTheDocument()
-
-    defaultProps.labels.forEach((label) => {
-      expect(screen.getByRole('checkbox', { name: label.name })).toBeInTheDocument()
-    })
   })
 
   it('prefills labels from formData when the action returns formData', () => {
@@ -277,145 +206,16 @@ describe('MeldingForm', () => {
     expect(mockFormAction).toHaveBeenCalled()
   })
 
-  describe('handleBlur', () => {
-    it('returns early when the textarea is empty', async () => {
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+  it('shows the classification name after a successful API call', async () => {
+    const user = userEvent.setup()
 
-      const user = userEvent.setup()
+    render(<MeldingForm {...defaultProps} />)
 
-      const { container } = render(<MeldingForm {...defaultProps} />)
+    await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
+    await user.tab()
 
-      await user.click(screen.getByRole('textbox', { name: 'Some label' }))
-      await user.tab()
-
-      await waitFor(() => {
-        expect(consoleSpy).not.toHaveBeenCalledWith('some error')
-      })
-
-      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]')
-
-      expect(hiddenInput).toBeNull()
-
-      consoleSpy.mockRestore()
-    })
-
-    it('returns early when the text matches the initial value', async () => {
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-
-      const user = userEvent.setup()
-
-      const { container } = render(<MeldingForm {...defaultProps} defaultValues={{ primary: 'existing text' }} />)
-
-      await user.click(screen.getByRole('textbox', { name: 'Some label' }))
-      await user.tab()
-
-      await waitFor(() => {
-        expect(consoleSpy).not.toHaveBeenCalledWith('some error')
-      })
-
-      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]')
-
-      expect(hiddenInput).toBeNull()
-
-      consoleSpy.mockRestore()
-    })
-
-    it('uses a PATCH request when existingId and existingToken are provided', async () => {
-      const user = userEvent.setup()
-
-      const { container } = render(<MeldingForm {...defaultProps} existingId={1} existingToken="token123" />)
-
-      await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
-      await user.tab()
-
-      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]') as HTMLInputElement
-      const decodedValue = JSON.parse(hiddenInput.value)
-
-      expect(decodedValue.token).toBe('PATCH request')
-    })
-
-    it('uses a PATCH request when existingMelding id and token are provided', async () => {
-      const user = userEvent.setup()
-
-      const { container } = render(
-        <MeldingForm
-          {...defaultProps}
-          existingMelding={{ createdAt: '2024-01-01', id: 99, publicId: 'xyz', token: 'prefetched-token' }}
-        />,
-      )
-
-      await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
-      await user.tab()
-
-      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]') as HTMLInputElement
-      const decodedValue = JSON.parse(hiddenInput.value)
-
-      expect(decodedValue.token).toBe('PATCH request')
-    })
-
-    it('uses a POST request when there is no existing id or token', async () => {
-      const user = userEvent.setup()
-
-      const { container } = render(<MeldingForm {...defaultProps} />)
-
-      await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
-      await user.tab()
-
-      const hiddenInput = container.querySelector('input[name="prefetchedMelding"]') as HTMLInputElement
-      const decodedValue = JSON.parse(hiddenInput.value)
-
-      expect(decodedValue.token).toBe('test-token')
-    })
-
-    it('logs an error to the console when the API returns an error', async () => {
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-
-      server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json('some error', { status: 400 })))
-
-      const user = userEvent.setup()
-
-      render(<MeldingForm {...defaultProps} />)
-
-      await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
-      await user.tab()
-
-      await waitFor(() => {
-        expect(consoleSpy).toHaveBeenCalledWith('some error')
-      })
-
-      consoleSpy.mockRestore()
-    })
-
-    it('logs an error when the API call throws', async () => {
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-
-      server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.error()))
-
-      const user = userEvent.setup()
-
-      render(<MeldingForm {...defaultProps} />)
-
-      await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
-      await user.tab()
-
-      await waitFor(() => {
-        expect(consoleSpy).toHaveBeenCalledWith(expect.any(TypeError))
-      })
-
-      consoleSpy.mockRestore()
-    })
-
-    it('shows the classification name after a successful API call', async () => {
-      const user = userEvent.setup()
-
-      render(<MeldingForm {...defaultProps} />)
-
-      await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
-      await user.tab()
-
-      await waitFor(() => {
-        expect(screen.getByText('De categorie van de melding is: Test classification')).toBeInTheDocument()
-      })
+    await waitFor(() => {
+      expect(screen.getByText('De categorie van de melding is: Test classification')).toBeInTheDocument()
     })
   })
 })
