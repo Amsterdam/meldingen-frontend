@@ -5,6 +5,7 @@ export const ENDPOINTS = {
   GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID: '/form/classification/:id',
 
   // Melding
+  DELETE_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID: '/melding/:id/answer/:answerId',
   DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID: '/melding/:id/attachment/:attachmentId',
   DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID: '/melding/:melding_id/asset/:asset_id',
 

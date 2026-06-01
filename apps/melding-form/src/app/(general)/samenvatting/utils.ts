@@ -85,7 +85,7 @@ const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200
 }
 
 export const getAdditionalQuestionsSummary = async (meldingId: string, token: string, classificationId?: number) => {
-  if (!classificationId) return { data: [] }
+  if (!classificationId) return { data: [], staleAnswerIds: [] }
 
   const { data: formComponents, error: formError } = await getFormClassificationByClassificationId({
     path: { classification_id: classificationId },
@@ -93,7 +93,8 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
 
   if (formError) {
     // Not Found error is returned when the classification does not have additional questions
-    if (handleApiError(formError) === 'Not Found') return { data: [] }
+    if (handleApiError(formError) === 'Not Found') return { data: [], staleAnswerIds: [] }
+
     throw new Error('Failed to fetch form by classification.')
   }
 
@@ -111,23 +112,28 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
     panels.flatMap((panel) => panel.components.map((component) => [component.question, component])),
   )
 
-  return {
-    data: data
-      // Do not return answers for questions that have an unmet condition
-      .filter((answer) => {
-        const component = componentByQuestionId.get(answer.question.id)
-        return component ? component.key in answersByKey : true
-      })
-      .map((answer) => {
-        const panelId = findPanelIdByQuestionId(panels, answer.question.id)
+  const meetsCondition = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
+    const component = componentByQuestionId.get(answer.question.id)
+    return component ? component.key in answersByKey : true
+  }
 
-        return {
-          description: getDescription(answer),
-          key: `${answer.question.id}`,
-          link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}#${TOP_ANCHOR_ID}` : `/#${TOP_ANCHOR_ID}`,
-          term: answer.question.text,
-        }
-      }),
+  const toSummaryItem = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
+    const panelId = findPanelIdByQuestionId(panels, answer.question.id)
+
+    return {
+      description: getDescription(answer),
+      key: `${answer.question.id}`,
+      link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}#${TOP_ANCHOR_ID}` : `/#${TOP_ANCHOR_ID}`,
+      term: answer.question.text,
+    }
+  }
+
+  const includedAnswers = data.filter(meetsCondition).map(toSummaryItem)
+  const staleAnswerIds = data.filter((answer) => !meetsCondition(answer)).map((answer) => answer.id)
+
+  return {
+    data: includedAnswers,
+    staleAnswerIds,
   }
 }
 
