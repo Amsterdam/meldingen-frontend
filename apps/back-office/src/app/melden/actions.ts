@@ -43,6 +43,18 @@ const safeJSONParse = (jsonString: string) => {
   }
 }
 
+const createOrUpdateMelding = async (text: string, id?: number, token?: string) => {
+  if (id && token) {
+    return await patchMeldingByMeldingIdMelder({
+      body: { text },
+      path: { melding_id: id },
+      query: { token },
+    })
+  } else {
+    return await postMelding({ body: { text } })
+  }
+}
+
 export const postMeldingForm = async (
   { existingId, existingToken, requiredErrorMessage }: ArgsType,
   _: unknown,
@@ -57,6 +69,7 @@ export const postMeldingForm = async (
     ...(!formDataObj.primary ? [{ key: 'primary', message: requiredErrorMessage }] : []),
     ...(!formDataObj.source ? [{ key: 'source', message: t('source.error') }] : []),
   ]
+
   if (validationErrors.length > 0) {
     return { formData, validationErrors }
   }
@@ -78,14 +91,11 @@ export const postMeldingForm = async (
   const meldingIdForPatch = validPrefetchedMelding?.id ?? existingId
   const meldingTokenForPatch = validPrefetchedMelding?.token ?? existingToken
 
-  const { data, error, response } =
-    meldingIdForPatch && meldingTokenForPatch
-      ? await patchMeldingByMeldingIdMelder({
-          body: { text: formDataObj.primary.toString() },
-          path: { melding_id: meldingIdForPatch },
-          query: { token: meldingTokenForPatch },
-        })
-      : await postMelding({ body: { text: formDataObj.primary.toString() } })
+  const { data, error, response } = await createOrUpdateMelding(
+    formDataObj.primary.toString(),
+    meldingIdForPatch,
+    meldingTokenForPatch,
+  )
 
   if (hasValidationErrors(response, error)) {
     return {
@@ -107,7 +117,11 @@ export const postMeldingForm = async (
   }
 
   const { error: updateMeldingError } = await patchMeldingByMeldingId({
-    body: { source_id: Number(formDataObj.source), urgency: urgencyNumber },
+    body: {
+      label_ids: formData.getAll('labels').map((label) => Number(label)),
+      source_id: Number(formDataObj.source),
+      urgency: urgencyNumber,
+    },
     path: { melding_id: meldingData.id },
   })
 
@@ -119,6 +133,7 @@ export const postMeldingForm = async (
     public_id: meldingData.publicId,
     token: meldingData.token,
   })
+
   if (meldingData.classificationId) params.set('classification_id', String(meldingData.classificationId))
 
   redirect(`${process.env.NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`)

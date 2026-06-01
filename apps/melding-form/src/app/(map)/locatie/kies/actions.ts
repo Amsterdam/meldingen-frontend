@@ -4,7 +4,11 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { patchMeldingByMeldingIdLocation, postMeldingByMeldingIdAsset } from '@meldingen/api-client'
+import {
+  patchMeldingByMeldingIdLocation,
+  postMeldingByMeldingIdAsset,
+  putMeldingByMeldingIdSubmitLocation,
+} from '@meldingen/api-client'
 
 import type { Coordinates } from '~/types'
 
@@ -109,5 +113,18 @@ export const postCoordinatesAndAssets = async (
     return { errorMessage: t('errors.location-patch-failed') }
   }
 
-  return redirect(`/locatie#${TOP_ANCHOR_ID}`)
+  const source = cookieStore.get(COOKIES.SOURCE)?.value
+
+  // For users coming from the Back Office, the second visit to /locatie is skipped.
+  // Normally, we would set the melding state to 'location_submitted' there, but for those users we do it here.
+  if (source === 'back-office') {
+    const { error: stateError } = await putMeldingByMeldingIdSubmitLocation({
+      path: { melding_id: parseInt(meldingId, 10) },
+      query: { token },
+    })
+
+    if (stateError) return { errorMessage: t('errors.state-change-failed') }
+  }
+
+  return redirect(source === 'back-office' ? `/bijlage#${TOP_ANCHOR_ID}` : `/locatie#${TOP_ANCHOR_ID}`)
 }

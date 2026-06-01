@@ -60,7 +60,8 @@
       },
       "no-location": "Vul een adres in.",
       "pdok-no-address-found": "Geen adres gevonden. Vul een adres in als Amstel 1, Amsterdam.",
-      "pdok-failed": "Er is iets mis gegaan. Probeer het opnieuw of herlaad de pagina."
+      "pdok-failed": "Er is iets mis gegaan. Probeer het opnieuw of herlaad de pagina.",
+      "state-change-failed": "Er is iets mis gegaan. Probeer het opnieuw of herlaad de pagina."
     },
     "notifications": {
       "too-many-assets": {
@@ -184,6 +185,10 @@
     "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
     "organisation-name": "Gemeente Amsterdam",
     "system-error-alert-description": "Probeer opnieuw naar de volgende vraag te gaan.",
-    "system-error-alert-title": "Er is iets misgegaan"
+    "system-error-alert-title": "Er is iets misgegaan",
+    "back-office-menu": {
+      "overview": "Overzicht",
+      "melding-form": "Melden"
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
+import { postSummaryForm } from './actions'
 import Page from './page'
 import { Summary } from './Summary'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
@@ -13,6 +14,10 @@ vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('./Summary', () => ({
   Summary: vi.fn(() => <div>Summary Component</div>),
+}))
+
+vi.mock('./actions', () => ({
+  postSummaryForm: vi.fn(),
 }))
 
 describe('Page', () => {
@@ -139,5 +144,42 @@ describe('Page', () => {
     )
 
     vi.unstubAllEnvs()
+  })
+
+  it('binds staleAnswerIds into the action passed to Summary', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
+        HttpResponse.json({
+          components: [
+            {
+              components: [
+                { key: 'question-35', question: 35 },
+                {
+                  conditional: { eq: 'q1', show: false, when: 'question-35' },
+                  key: 'question-36',
+                  question: 36,
+                },
+              ],
+              key: 'page1',
+              type: 'panel',
+            },
+          ],
+        }),
+      ),
+    )
+
+    mockIdAndTokenCookies()
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    const action = vi.mocked(Summary).mock.calls[0][0].action
+    await action(undefined, new FormData())
+
+    expect(postSummaryForm).toHaveBeenCalledWith(
+      expect.objectContaining({ staleAnswerIds: [additionalQuestions[1].id] }),
+      undefined,
+      expect.any(FormData),
+    )
   })
 })

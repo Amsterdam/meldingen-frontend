@@ -22,6 +22,7 @@ vi.mock('next/navigation', () => ({
 const defaultArgs = {
   created_at: '2024-01-01T00:00:00Z',
   public_id: 'abc123',
+  staleAnswerIds: [],
 }
 
 describe('postSummaryForm', () => {
@@ -100,5 +101,58 @@ describe('postSummaryForm', () => {
     expect(redirect).toHaveBeenCalledWith(
       `/bedankt?created_at=${encodeURIComponent(defaultArgs.created_at)}&public_id=${defaultArgs.public_id}&id=123&source=test-source#${TOP_ANCHOR_ID}`,
     )
+  })
+
+  it('deletes every stale answer before submitting the melding', async () => {
+    ;(cookies as Mock).mockReturnValue({
+      delete: vi.fn(),
+      get: (name: string) => {
+        if (name === COOKIES.ID) return { value: '123' }
+        if (name === COOKIES.TOKEN) return { value: 'test-token' }
+        return undefined
+      },
+    })
+
+    const deletedAnswerIds: string[] = []
+    server.use(
+      http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID, ({ params }) => {
+        deletedAnswerIds.push(params.answerId as string)
+        return new HttpResponse()
+      }),
+    )
+
+    await postSummaryForm({ ...defaultArgs, staleAnswerIds: [101, 202, 303] })
+
+    expect(deletedAnswerIds).toEqual(expect.arrayContaining(['101', '202', '303']))
+    expect(deletedAnswerIds).toHaveLength(3)
+  })
+
+  it('logs the error but still submits the melding when deleting a stale answer fails', async () => {
+    ;(cookies as Mock).mockReturnValue({
+      delete: vi.fn(),
+      get: (name: string) => {
+        if (name === COOKIES.ID) return { value: '123' }
+        if (name === COOKIES.TOKEN) return { value: 'test-token' }
+        return undefined
+      },
+    })
+
+    const submitMock = vi.fn(() => new HttpResponse())
+    server.use(
+      http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID, () =>
+        HttpResponse.json('Delete failed', { status: 500 }),
+      ),
+      http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_MELDER, submitMock),
+    )
+
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    await postSummaryForm({ ...defaultArgs, staleAnswerIds: [101] })
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Delete failed')
+    expect(submitMock).toHaveBeenCalled()
+    expect(redirect).toHaveBeenCalledWith(expect.stringContaining('/bedankt'))
+
+    consoleErrorSpy.mockRestore()
   })
 })

@@ -2,10 +2,16 @@ import type { Metadata } from 'next'
 
 import { getTranslations } from 'next-intl/server'
 
-import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+import type { MeldingOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { MeldingForm } from './MeldingForm'
-import { getMeldingByMeldingId, getSource, getStaticForm, getStaticFormByStaticFormId } from '~/apiClientProxy'
+import {
+  getLabel,
+  getMeldingByMeldingId,
+  getSource,
+  getStaticForm,
+  getStaticFormByStaticFormId,
+} from '~/apiClientProxy'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.
@@ -19,7 +25,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 }
 
-export default async ({ searchParams }: { searchParams: Promise<{ id?: number; token?: string }> }) => {
+const fetchPrimaryTextArea = async () => {
   const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
 
   if (staticFormsError) throw new Error('Failed to fetch static forms.')
@@ -40,48 +46,81 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
 
   if (!primaryTextArea) throw new Error('Primary form textarea not found.')
 
-  const { data: sources, error: sourcesError } = await getSource()
+  return primaryTextArea
+}
+
+const fetchSourcesAndLabels = async () => {
+  const [{ data: sources, error: sourcesError }, { data: labels, error: labelsError }] = await Promise.all([
+    getSource(),
+    getLabel(),
+  ])
 
   if (sourcesError) throw new Error('Failed to fetch sources.')
   if (sources.length === 0) throw new Error('No sources found.')
 
-  const { id, token } = await searchParams
+  if (labelsError) throw new Error('Failed to fetch labels.')
+  if (labels.length === 0) throw new Error('No labels found.')
 
-  // Prefill form
-  const result = id && token ? await getMeldingByMeldingId({ path: { melding_id: id } }) : undefined
+  return { labels, sources }
+}
 
-  if (result?.error) {
+const fetchExistingMelding = async (id: number) => {
+  const { data: existingMelding, error } = await getMeldingByMeldingId({ path: { melding_id: id } })
+
+  if (error) {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
-    console.error(result.error)
+    console.error(error)
   }
 
-  const defaultValues = result?.data
-    ? {
-        primary: result.data.text,
-        source: result.data.source?.id ? String(result.data.source.id) : undefined,
-        urgency: result.data.urgency,
-      }
-    : {}
+  return existingMelding
+}
 
-  const existingMelding =
-    token && result?.data?.id
-      ? {
-          classificationId: result.data.classification?.id,
-          classificationName: result.data.classification?.name,
-          createdAt: result.data.created_at,
-          id: result.data.id,
-          publicId: result.data.public_id,
-          token: token,
-        }
-      : undefined
+const toDefaultValues = (melding?: MeldingOutput) => {
+  if (!melding) return {}
+
+  return {
+    labels: melding.labels?.map((label) => label.id) ?? [],
+    primary: melding.text,
+    source: melding.source?.id ? String(melding.source.id) : undefined,
+    urgency: melding.urgency,
+  }
+}
+
+const toExistingMeldingData = (melding?: MeldingOutput, token?: string) => {
+  if (!melding?.id || !token) return undefined
+
+  const { classification, created_at, id, public_id } = melding
+
+  return {
+    classificationId: classification?.id,
+    classificationName: classification?.name,
+    createdAt: created_at,
+    id,
+    publicId: public_id,
+    token,
+  }
+}
+
+export default async ({ searchParams }: { searchParams: Promise<{ id?: number; token?: string }> }) => {
+  const { id, token } = await searchParams
+
+  const [primaryTextArea, { labels, sources }, existingMelding] = await Promise.all([
+    fetchPrimaryTextArea(),
+    fetchSourcesAndLabels(),
+    id && token ? fetchExistingMelding(id) : Promise.resolve(undefined),
+  ])
+
+  const defaultValues = toDefaultValues(existingMelding)
+  const existingMeldingData = toExistingMeldingData(existingMelding, token)
 
   return (
     <MeldingForm
       defaultValues={defaultValues}
       existingId={id}
-      existingMelding={existingMelding}
+      existingMelding={existingMeldingData}
       existingToken={token}
+      labels={labels}
       primaryTextArea={primaryTextArea}
       sources={sources}
     />
