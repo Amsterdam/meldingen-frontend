@@ -128,20 +128,8 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
     }
   }
 
-  const { data: includedAnswers, staleAnswerIds } = data.reduce<{
-    data: ReturnType<typeof toSummaryItem>[]
-    staleAnswerIds: number[]
-  }>(
-    (acc, answer) => {
-      if (meetsCondition(answer)) {
-        acc.data.push(toSummaryItem(answer))
-      } else {
-        acc.staleAnswerIds.push(answer.id)
-      }
-      return acc
-    },
-    { data: [], staleAnswerIds: [] },
-  )
+  const includedAnswers = data.filter(meetsCondition).map(toSummaryItem)
+  const staleAnswerIds = data.filter((answer) => !meetsCondition(answer)).map((answer) => answer.id)
 
   return {
     data: includedAnswers,
