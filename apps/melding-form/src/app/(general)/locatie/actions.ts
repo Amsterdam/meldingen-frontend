@@ -4,6 +4,8 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
+import { putMeldingByMeldingIdSubmitLocation } from '@meldingen/api-client'
+
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
 export const postLocationForm = async () => {
@@ -28,6 +30,14 @@ export const postLocationForm = async () => {
       ],
     }
   }
+
+  // Set melding state to 'location_submitted'
+  const { error } = await putMeldingByMeldingIdSubmitLocation({
+    path: { melding_id: parseInt(meldingId, 10) },
+    query: { token },
+  })
+
+  if (error) return { systemError: error }
 
   return redirect(`/bijlage#${TOP_ANCHOR_ID}`)
 }

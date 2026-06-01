@@ -183,6 +183,8 @@ describe('postCoordinatesAndAssets', () => {
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
+    mockCookies({ [COOKIES.ID]: '123', [COOKIES.SOURCE]: 'back-office', [COOKIES.TOKEN]: 'test-token' }, mockSetCookie)
+
     server.use(
       http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_LOCATION, () =>
         HttpResponse.json('Error message', { status: 500 }),

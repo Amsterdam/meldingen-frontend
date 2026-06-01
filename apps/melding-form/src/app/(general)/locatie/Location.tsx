@@ -13,6 +13,7 @@ import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
+import { SystemErrorAlert } from '../_components'
 import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
 import { BackLink } from '../../_components'
 import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
@@ -21,7 +22,7 @@ import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './Location.module.css'
 
-const initialState: Pick<FormState, 'validationErrors'> = {}
+const initialState: Pick<FormState, 'systemError' | 'validationErrors'> = {}
 
 type Props = {
   address?: string
@@ -44,26 +45,38 @@ const getAssetElement = (asset: Feature) => {
 
 export const Location = ({ address, prevPage, selectedAssets }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
+  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ validationErrors }, formAction] = useActionState(postLocationForm, initialState)
+  const [{ systemError, validationErrors }, formAction] = useActionState(postLocationForm, initialState)
 
   const t = useTranslations('location')
   const tShared = useTranslations('shared')
 
-  // Update document title when there are validation errors
+  // Update document title when there are system or validation errors
   const documentTitle = getDocumentTitleOnError({
-    hasSystemError: false,
+    hasSystemError: Boolean(systemError),
     originalDocTitle: `${t('question')} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors?.length,
   })
 
   // Set focus on InvalidFormAlert when there are validation errors
+  // and on SystemErrorAlert when there is a system error
   useEffect(() => {
     if (validationErrors && invalidFormAlertRef.current) {
       invalidFormAlertRef.current.focus()
+    } else if (systemError && systemErrorAlertRef.current) {
+      systemErrorAlertRef.current.focus()
     }
-  }, [validationErrors])
+  }, [validationErrors, systemError])
+
+  useEffect(() => {
+    if (systemError) {
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(systemError)
+    }
+  }, [systemError])
 
   return (
     <>
@@ -72,6 +85,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
         {t('back-link')}
       </BackLink>
       <main>
+        {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
         {validationErrors && (
           <InvalidFormAlert
             className="ams-mb-m"
