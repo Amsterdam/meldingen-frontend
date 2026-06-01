@@ -354,7 +354,15 @@ export type DateAnswerOutput = {
     /**
      * Original Question Text
      */
-    original_question_text: string;
+    original_question_text?: string | null;
+    /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
     date: DateAnswerObject;
 };
 
@@ -381,7 +389,15 @@ export type DateAnswerQuestionOutput = {
     /**
      * Original Question Text
      */
-    original_question_text: string;
+    original_question_text?: string | null;
+    /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
     date: DateAnswerObject;
     question: QuestionOutput;
 };
@@ -2875,7 +2891,15 @@ export type TextAnswerOutput = {
     /**
      * Original Question Text
      */
-    original_question_text: string;
+    original_question_text?: string | null;
+    /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
     /**
      * Text
      */
@@ -2905,7 +2929,15 @@ export type TextAnswerQuestionOutput = {
     /**
      * Original Question Text
      */
-    original_question_text: string;
+    original_question_text?: string | null;
+    /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
     /**
      * Text
      */
@@ -2950,7 +2982,15 @@ export type TimeAnswerOutput = {
     /**
      * Original Question Text
      */
-    original_question_text: string;
+    original_question_text?: string | null;
+    /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
     /**
      * Time
      */
@@ -2980,7 +3020,15 @@ export type TimeAnswerQuestionOutput = {
     /**
      * Original Question Text
      */
-    original_question_text: string;
+    original_question_text?: string | null;
+    /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
     /**
      * Time
      */
@@ -3107,7 +3155,15 @@ export type ValueLabelAnswerOutput = {
     /**
      * Original Question Text
      */
-    original_question_text: string;
+    original_question_text?: string | null;
+    /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
     /**
      * Values And Labels
      */
@@ -3137,7 +3193,15 @@ export type ValueLabelAnswerQuestionOutput = {
     /**
      * Original Question Text
      */
-    original_question_text: string;
+    original_question_text?: string | null;
+    /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
     /**
      * Values And Labels
      */
