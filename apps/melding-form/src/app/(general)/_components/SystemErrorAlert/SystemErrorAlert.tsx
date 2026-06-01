@@ -1,6 +1,6 @@
 import type { Ref } from 'react'
 
-import { Alert } from '@amsterdam/design-system-react'
+import { Alert } from '@amsterdam/design-system-react/dist/Alert'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 
