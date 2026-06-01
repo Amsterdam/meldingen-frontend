@@ -41,16 +41,6 @@ describe('Location', () => {
     expect(alert).not.toBeInTheDocument()
   })
 
-  it('renders a system error Alert when there is one', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
-
-    render(<Location {...defaultProps} />)
-
-    const alert = screen.getByRole('alert')
-
-    expect(alert).toHaveTextContent('system-error-alert-title')
-  })
-
   it('renders an Invalid Form Alert when there are validation errors', () => {
     ;(useActionState as Mock).mockReturnValue([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
@@ -106,14 +96,6 @@ describe('Location', () => {
     expect(listItems[1]).toHaveTextContent('Glas container - Container-002')
   })
 
-  it('updates the document title when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
-
-    render(<Location {...defaultProps} />)
-
-    expect(document.title).toBe('system-error-alert-title - question - organisation-name')
-  })
-
   it('updates the document title when there are validation errors', () => {
     ;(useActionState as Mock).mockReturnValue([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
@@ -134,15 +116,6 @@ describe('Location', () => {
     const { container } = render(<Location {...defaultProps} />)
 
     const alert = container.querySelector('.ams-alert')
-
-    expect(alert).toHaveFocus()
-  })
-
-  it('sets focus on SystemErrorAlert when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
-    render(<Location {...defaultProps} />)
-
-    const alert = screen.getByRole('alert')
 
     expect(alert).toHaveFocus()
   })

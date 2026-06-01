@@ -43,6 +43,18 @@ const safeJSONParse = (jsonString: string) => {
   }
 }
 
+const createOrUpdateMelding = async (text: string, id?: number, token?: string) => {
+  if (id && token) {
+    return await patchMeldingByMeldingIdMelder({
+      body: { text },
+      path: { melding_id: id },
+      query: { token },
+    })
+  } else {
+    return await postMelding({ body: { text } })
+  }
+}
+
 export const postMeldingForm = async (
   { existingId, existingToken, requiredErrorMessage }: ArgsType,
   _: unknown,
@@ -79,14 +91,11 @@ export const postMeldingForm = async (
   const meldingIdForPatch = validPrefetchedMelding?.id ?? existingId
   const meldingTokenForPatch = validPrefetchedMelding?.token ?? existingToken
 
-  const { data, error, response } =
-    meldingIdForPatch && meldingTokenForPatch
-      ? await patchMeldingByMeldingIdMelder({
-          body: { text: formDataObj.primary.toString() },
-          path: { melding_id: meldingIdForPatch },
-          query: { token: meldingTokenForPatch },
-        })
-      : await postMelding({ body: { text: formDataObj.primary.toString() } })
+  const { data, error, response } = await createOrUpdateMelding(
+    formDataObj.primary.toString(),
+    meldingIdForPatch,
+    meldingTokenForPatch,
+  )
 
   if (hasValidationErrors(response, error)) {
     return {

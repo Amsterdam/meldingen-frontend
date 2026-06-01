@@ -1,39 +1,19 @@
 'use client'
 
-import type { FocusEvent } from 'react'
-
-import {
-  Button,
-  CharacterCount,
-  Checkbox,
-  ErrorMessage,
-  Field,
-  FieldSet,
-  Grid,
-  Heading,
-  Label,
-  Radio,
-  Select,
-  TextArea,
-} from '@amsterdam/design-system-react'
+import { Button, Grid, Heading } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useRef, useState, useTransition } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 
 import type { LabelOutput, SourceOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
-import { patchMeldingByMeldingIdMelder, postMelding } from '@meldingen/api-client'
-import { getAriaDescribedBy } from '@meldingen/form-renderer'
-import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Column, Paragraph } from '@meldingen/ui'
 
 import type { FormState } from './actions'
 import type { MeldingData } from './types'
 
-import { InvalidFormAlert } from './_components/InvalidFormAlert'
-import { SystemErrorAlert } from './_components/SystemErrorAlert'
+import { InvalidFormAlert, LabelsField, PrimaryField, SourceField, SystemErrorAlert, UrgencyField } from './_components'
 import { postMeldingForm } from './actions'
-import { URGENCY_VALUES } from '~/constants'
 
 import styles from './MeldingForm.module.css'
 
@@ -45,6 +25,20 @@ type Props = {
   labels: LabelOutput[]
   primaryTextArea: StaticFormTextAreaComponentOutput
   sources: SourceOutput[]
+}
+
+// Form components can be prefilled on load on the server, where we fill in existing answers from the backend,
+// or in case of an error, where we use the form data provided.
+// If there is form data, it should take priority over the prefilled components from the server.
+const calculateDefaultValues = (formData?: FormData, defaultValues?: Props['defaultValues']) => {
+  const primaryDefaultValue = (formData?.get('primary') as string | null) ?? defaultValues?.primary ?? ''
+  const sourceDefaultValue = (formData?.get('source') as string | null) ?? defaultValues?.source ?? ''
+  const labelsDefaultValues = formData?.getAll('labels').map((label) => Number(label)) ?? defaultValues?.labels ?? []
+  const rawUrgency = formData?.get('urgency')
+  const urgencyDefaultValue =
+    rawUrgency !== null && rawUrgency !== undefined ? Number(rawUrgency) : (defaultValues?.urgency ?? 0)
+
+  return { labelsDefaultValues, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue }
 }
 
 const initialState: FormState = {}
@@ -61,33 +55,19 @@ export const MeldingForm = ({
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
-  const { description, label, maxCharCount } = primaryTextArea
-
-  const ref = useRef<HTMLTextAreaElement>(null)
-
   const t = useTranslations('melding-form')
-  const tShared = useTranslations('shared')
 
   const requiredErrorMessage =
     primaryTextArea.validate?.required_error_message ?? t('errors.required-error-message-fallback')
   const action = postMeldingForm.bind(null, { existingId, existingToken, requiredErrorMessage })
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
-  const [, startTransition] = useTransition()
   const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
-  // Form components can be prefilled on load on the server, where we fill in existing answers from the backend,
-  // or in case of an error, where we use the form data provided.
-  // If there is form data, it should take priority over the prefilled components from the server.
-  const primaryTextAreaDefaultValue = (formData?.get('primary') as string | null) ?? defaultValues?.primary ?? ''
-  const sourceDefaultValue = (formData?.get('source') as string | null) ?? defaultValues?.source ?? ''
-  const urgencyDefaultValue = (formData?.get('urgency') as string | null) ?? defaultValues?.urgency ?? 0
-  const labelsDefaultValue = formData?.getAll('labels').map((label) => Number(label)) ?? defaultValues?.labels ?? []
-
-  const [charCount, setCharCount] = useState(primaryTextAreaDefaultValue.length)
-
-  // Track the last text sent to the backend to avoid redundant blur calls
-  const lastSubmittedTextRef = useRef(primaryTextAreaDefaultValue)
+  const { labelsDefaultValues, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } = calculateDefaultValues(
+    formData,
+    defaultValues,
+  )
 
   // Set focus on InvalidFormAlert when there are validation errors
   // and on SystemErrorAlert when there is a system error
@@ -107,151 +87,41 @@ export const MeldingForm = ({
     }
   }, [systemError])
 
-  const handleBlur = ({ target: { value: text } }: FocusEvent<HTMLTextAreaElement>) => {
-    if (!text || text === lastSubmittedTextRef.current) return
-
-    startTransition(async () => {
-      try {
-        const id = prefetchedMelding?.id ?? existingId
-        const token = prefetchedMelding?.token ?? existingToken
-
-        const { data, error } =
-          id && token
-            ? await patchMeldingByMeldingIdMelder({
-                body: { text },
-                path: { melding_id: id },
-                query: { token },
-              })
-            : await postMelding({ body: { text } })
-
-        if (error) throw error
-
-        setPrefetchedMelding({
-          classificationId: data.classification?.id,
-          classificationName: data.classification?.name,
-          createdAt: data.created_at,
-          id: data.id,
-          publicId: data.public_id,
-          token: data.token,
-        })
-
-        lastSubmittedTextRef.current = text
-      } catch (error) {
-        // TODO: Log the error to an error reporting service
-        // eslint-disable-next-line no-console
-        console.error(error)
-      }
-    })
-  }
-
-  const hasPrimaryError = validationErrors?.some((error) => error.key === 'primary')
-  const hasSourceError = validationErrors?.some((error) => error.key === 'source')
+  const primaryErrorMessage = validationErrors?.find((error) => error.key === 'primary')?.message
+  const sourceErrorMessage = validationErrors?.find((error) => error.key === 'source')?.message
 
   return (
-    <Grid as="main" className={`ams-page__area--body ${styles.main}`} gapVertical="large" paddingVertical="x-large">
-      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
+    <Grid
+      as="main"
+      className={`ams-theme ams-page__area--body ${styles.main}`}
+      gapVertical="large"
+      paddingVertical="x-large"
+    >
+      <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
         {validationErrors && <InvalidFormAlert ref={invalidFormAlertRef} validationErrors={validationErrors} />}
-        <Heading className="ams-mb-m" level={1}>
-          {t('title')}
+        <Heading className="ams-mb-m ams-visually-hidden" level={1}>
+          {t('visually-hidden-title')}
         </Heading>
         <Form action={formAction} noValidate>
           <Column>
-            <Field invalid={hasPrimaryError}>
-              <Label htmlFor="primary">{label}</Label>
-              {description && (
-                <MarkdownToHtml id="primary-description" type="description">
-                  {description}
-                </MarkdownToHtml>
-              )}
-              {hasPrimaryError && (
-                <ErrorMessage id="primary-error">
-                  {validationErrors?.find((error) => error.key === 'primary')?.message}
-                </ErrorMessage>
-              )}
-              <TextArea
-                aria-describedby={getAriaDescribedBy(
-                  'primary',
-                  description,
-                  validationErrors?.find((error) => error.key === 'primary')?.message,
-                )}
-                aria-required="true"
-                defaultValue={primaryTextAreaDefaultValue}
-                id="primary"
-                invalid={hasPrimaryError}
-                name="primary"
-                onBlur={handleBlur}
-                onChange={() => {
-                  if (typeof maxCharCount === 'number' && ref.current) {
-                    setCharCount(ref.current.value.length)
-                  }
-                }}
-                ref={ref}
-                rows={4}
-              />
-              {maxCharCount && <CharacterCount length={charCount} maxLength={maxCharCount} />}
-            </Field>
+            <PrimaryField
+              config={primaryTextArea}
+              defaultValue={primaryDefaultValue}
+              errorMessage={primaryErrorMessage}
+              existingId={prefetchedMelding?.id ?? existingId}
+              existingToken={prefetchedMelding?.token ?? existingToken}
+              onMeldingPrefetched={setPrefetchedMelding}
+            />
             {prefetchedMelding?.classificationName && (
               <Paragraph>De categorie van de melding is: {prefetchedMelding.classificationName}</Paragraph>
             )}
             {prefetchedMelding && (
               <input name="prefetchedMelding" type="hidden" value={JSON.stringify(prefetchedMelding)} />
             )}
-            <Field invalid={hasSourceError}>
-              <Label htmlFor="source">{t('source.label')}</Label>
-              {hasSourceError && (
-                <ErrorMessage id="source-error">
-                  {validationErrors?.find((error) => error.key === 'source')?.message}
-                </ErrorMessage>
-              )}
-              <Select
-                aria-describedby={getAriaDescribedBy(
-                  'source',
-                  undefined,
-                  validationErrors?.find((error) => error.key === 'source')?.message,
-                )}
-                aria-required="true"
-                defaultValue={sourceDefaultValue}
-                id="source"
-                invalid={hasSourceError}
-                // React doesn't update the defaultValue of a select element after the initial render,
-                // so we use the key prop to force a remount of the select element when sourceDefaultValue changes
-                key={sourceDefaultValue}
-                name="source"
-              >
-                <Select.Option value="">{t('source.default')}</Select.Option>
-                {sources.map((source) => (
-                  <Select.Option key={source.id} value={String(source.id)}>
-                    {source.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Field>
-            <FieldSet aria-required="true" legend={t('urgency-label')} role="radiogroup">
-              <Column gap="x-small">
-                {URGENCY_VALUES.map((urgency) => (
-                  <Radio
-                    aria-required="true"
-                    defaultChecked={urgency === Number(urgencyDefaultValue)}
-                    key={urgency}
-                    name="urgency"
-                    value={String(urgency)}
-                  >
-                    {tShared(`urgency.${urgency}`)}
-                  </Radio>
-                ))}
-              </Column>
-            </FieldSet>
-            <FieldSet legend={t('labels-label')}>
-              {labels.map(({ id, name }) => {
-                const isChecked = labelsDefaultValue.includes(id)
-                return (
-                  <Checkbox defaultChecked={isChecked} key={id} name="labels" value={String(id)}>
-                    {name}
-                  </Checkbox>
-                )
-              })}
-            </FieldSet>
+            <SourceField defaultValue={sourceDefaultValue} errorMessage={sourceErrorMessage} sources={sources} />
+            <UrgencyField defaultValue={urgencyDefaultValue} />
+            <LabelsField defaultValues={labelsDefaultValues} labels={labels} />
             <Button className={styles.submit} type="submit">
               {t('submit-button')}
             </Button>
