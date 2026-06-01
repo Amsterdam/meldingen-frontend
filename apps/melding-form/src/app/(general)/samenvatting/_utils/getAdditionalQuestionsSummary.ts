@@ -1,58 +1,15 @@
 import type {
   FormPanelComponentOutput,
   GetMeldingByMeldingIdAnswersMelderResponses,
-  MeldingOutput,
   ValueLabelObject,
 } from '@meldingen/api-client'
 
-import {
-  getFormClassificationByClassificationId,
-  getMeldingByMeldingIdAnswersMelder,
-  getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
-  getMeldingByMeldingIdAttachmentsMelder,
-  getStaticForm,
-  getStaticFormByStaticFormId,
-} from '@meldingen/api-client'
-import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
+import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
-import { getFilteredAnswersByKey } from '../_utils/conditions/getFilteredAnswersByKey'
-import { getFullNLAddress } from '../_utils/getFullNLAddress'
-import { isPanelComponentOutput } from '../_utils/typeGuards'
+import { getFilteredAnswersByKey } from '../../_utils/conditions/getFilteredAnswersByKey'
+import { isPanelComponentOutput } from '../../_utils/typeGuards'
 import { TOP_ANCHOR_ID } from '~/constants'
 import { handleApiError } from '~/handleApiError'
-
-export const getMeldingData = async (meldingId: string, token: string) => {
-  const { data, error } = await getMeldingByMeldingIdMelder({
-    path: { melding_id: parseInt(meldingId, 10) },
-    query: { token },
-  })
-
-  if (error) throw new Error('Failed to fetch melding data.')
-
-  return data
-}
-
-export const getPrimaryFormSummary = async (description: string) => {
-  const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
-
-  if (staticFormsError) throw new Error('Failed to fetch static forms.')
-
-  const primaryFormId = staticFormsData.find((form) => form.type === 'primary')?.id
-
-  if (!primaryFormId) throw new Error('Primary form id not found.')
-
-  const { data: primaryFormData, error: primaryFormError } = await getStaticFormByStaticFormId({
-    path: { static_form_id: primaryFormId },
-  })
-
-  if (primaryFormError) throw new Error('Failed to fetch primary form data.')
-
-  const primaryForm = primaryFormData.components[0]
-
-  return {
-    data: { description, key: 'primary', term: primaryForm.label },
-  }
-}
 
 const findPanelIdByQuestionId = (panels: FormPanelComponentOutput[], id: number) => {
   for (const panel of panels) {
@@ -134,54 +91,5 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
   return {
     data: includedAnswers,
     staleAnswerIds,
-  }
-}
-
-export const getAttachmentsSummary = async (label: string, meldingId: string, token: string) => {
-  const { data, error } = await getMeldingByMeldingIdAttachmentsMelder({
-    path: { melding_id: parseInt(meldingId, 10) },
-    query: { token },
-  })
-
-  if (error) throw new Error('Failed to fetch attachments data.')
-
-  const attachments = await Promise.all(
-    data.map(async ({ id, original_filename }) => {
-      const { data, error } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
-        path: { attachment_id: id, melding_id: parseInt(meldingId, 10) },
-
-        query: { token, type: 'thumbnail' },
-      })
-
-      if (error) throw new Error('Failed to fetch attachment download.')
-
-      // Returning blob instead of File since the File api is not available in Node.js
-      return {
-        blob: data as Blob,
-        fileName: original_filename,
-      }
-    }),
-  )
-
-  return { files: attachments, key: 'attachments', term: label }
-}
-
-export const getLocationSummary = (t: (key: string) => string, meldingData: MeldingOutput) => {
-  const address = getFullNLAddress(meldingData) || t('errors.no-location')
-
-  return {
-    description: address,
-    key: 'location',
-    term: t('location-label'),
-  }
-}
-
-export const getContactSummary = (label: string, email?: string | null, phone?: string | null) => {
-  if (!email && !phone) return undefined
-
-  return {
-    description: [email, phone].filter((item) => item !== undefined && item !== null), // Filter out undefined or null items
-    key: 'contact',
-    term: label,
   }
 }
