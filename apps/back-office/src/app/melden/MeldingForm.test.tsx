@@ -32,7 +32,7 @@ describe('MeldingForm', () => {
   it('renders', () => {
     render(<MeldingForm {...defaultProps} />)
 
-    const heading = screen.getByRole('heading', { name: 'title' })
+    const heading = screen.getByRole('heading', { name: 'visually-hidden-title' })
     const input = screen.getByRole('textbox', { name: 'Some label' })
     const description = screen.getByText('Some description')
     const submitButton = screen.getByRole('button', { name: 'submit-button' })
