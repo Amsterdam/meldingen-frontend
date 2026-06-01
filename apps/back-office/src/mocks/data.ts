@@ -86,7 +86,7 @@ export const textAreaComponent: FormTextAreaComponentOutput = {
   input: true,
   key: 'textArea1',
   label: 'First question',
-  maxCharCount: 0,
+  maxCharCount: 100,
   position: 1,
   question: 1,
   type: 'textarea',
