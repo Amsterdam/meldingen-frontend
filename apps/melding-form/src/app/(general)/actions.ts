@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { patchMeldingByMeldingIdMelder, postMelding } from '@meldingen/api-client'
 
-import { resolveClassificationRedirect } from '../utils'
+import { resolveClassificationRedirect } from '../_utils/resolveClassificationRedirect'
 import { hasValidationErrors } from './_utils/validation/hasValidationErrors'
 import { COOKIES } from '~/constants'
 import { handleApiError } from '~/handleApiError'

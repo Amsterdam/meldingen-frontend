@@ -1,8 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 
-import { postSummaryForm } from './actions'
-import { Summary } from './Summary'
 import {
   getAdditionalQuestionsSummary,
   getAttachmentsSummary,
@@ -10,7 +8,9 @@ import {
   getLocationSummary,
   getMeldingData,
   getPrimaryFormSummary,
-} from './utils'
+} from './_utils'
+import { postSummaryForm } from './actions'
+import { Summary } from './Summary'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
 export default async () => {

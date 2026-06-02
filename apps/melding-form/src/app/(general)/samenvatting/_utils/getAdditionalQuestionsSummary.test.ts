@@ -1,92 +1,14 @@
 import { http, HttpResponse } from 'msw'
 
-import type { MeldingOutput } from '@meldingen/api-client'
-
-import {
-  getAdditionalQuestionsSummary,
-  getAttachmentsSummary,
-  getContactSummary,
-  getLocationSummary,
-  getMeldingData,
-  getPrimaryFormSummary,
-} from './utils'
+import { getAdditionalQuestionsSummary } from './getAdditionalQuestionsSummary'
 import { TOP_ANCHOR_ID } from '~/constants'
-import { additionalQuestions, melding } from '~/mocks/data'
+import { additionalQuestions } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
 const mockMeldingId = '88'
 const mockToken = 'test-token'
 const mockClassificationId = 1
-
-describe('getMeldingData', () => {
-  it('should return correct melding summary', async () => {
-    const result = await getMeldingData(mockMeldingId, mockToken)
-
-    expect(result).toEqual(melding)
-  })
-
-  it('should return an error message when error is returned', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json('Error message', { status: 500 })),
-    )
-
-    const testFunction = async () => await getMeldingData(mockMeldingId, mockToken)
-
-    await expect(testFunction).rejects.toThrowError('Failed to fetch melding data.')
-  })
-})
-
-describe('getPrimaryFormSummary', () => {
-  it('returns correct primary form summary', async () => {
-    const result = await getPrimaryFormSummary('Er ligt hier veel afval op straat.')
-
-    expect(result).toEqual({
-      data: {
-        description: 'Er ligt hier veel afval op straat.',
-        key: 'primary',
-        term: 'First question',
-      },
-    })
-  })
-
-  it('returns an error message when getStaticForm returns an error', async () => {
-    server.use(http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json('Error message', { status: 500 })))
-
-    const testFunction = async () => await getPrimaryFormSummary('')
-
-    await expect(testFunction).rejects.toThrowError('Failed to fetch static forms.')
-  })
-
-  it('returns an error message when primary form id is not found', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_STATIC_FORM, () =>
-        HttpResponse.json([
-          {
-            id: '123',
-            type: 'not-primary',
-          },
-        ]),
-      ),
-    )
-
-    const testFunction = async () => await getPrimaryFormSummary('')
-
-    await expect(testFunction).rejects.toThrowError('Primary form id not found.')
-  })
-
-  it('returns an error message when getStaticFormByStaticFormId returns an error', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
-      ),
-    )
-
-    const testFunction = async () => await getPrimaryFormSummary('')
-
-    await expect(testFunction).rejects.toThrowError('Failed to fetch primary form data.')
-  })
-})
 
 describe('getAdditionalQuestionsSummary', () => {
   it('returns correct additional questions summary', async () => {
@@ -413,86 +335,5 @@ describe('getAdditionalQuestionsSummary', () => {
 
     expect(result.staleAnswerIds).toEqual([201, 202])
     expect(result.data).toHaveLength(1)
-  })
-})
-
-describe('getAttachmentSummary', () => {
-  it('returns correct attachment summary', async () => {
-    const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
-
-    expect(result).toMatchObject({
-      files: [
-        {
-          blob: expect.any(Blob),
-          fileName: 'IMG_0815.jpg',
-        },
-      ],
-      key: 'attachments',
-      term: "Foto's",
-    })
-  })
-
-  it('returns an error message when getMeldingByMeldingIdAttachmentsMelder returns an error', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS_MELDER, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
-      ),
-    )
-
-    const testFunction = async () => await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
-
-    await expect(testFunction).rejects.toThrowError('Failed to fetch attachments data.')
-  })
-
-  it('returns an error message when getMeldingByMeldingIdAttachmentByAttachmentIdDownload returns an error', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
-      ),
-    )
-
-    const testFunction = async () => await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
-
-    await expect(testFunction).rejects.toThrowError('Failed to fetch attachment download.')
-  })
-})
-
-describe('getLocationSummary', () => {
-  it('returns correct location summary', () => {
-    const result = getLocationSummary((key) => key, melding)
-
-    expect(result).toEqual({
-      description: 'Oudezijds Voorburgwal 300A, 1012GL Amsterdam',
-      key: 'location',
-      term: 'location-label',
-    })
-  })
-
-  it('returns error message when melding does not have an address', () => {
-    const result = getLocationSummary((key) => key, {} as MeldingOutput)
-
-    expect(result).toEqual({
-      description: 'errors.no-location',
-      key: 'location',
-      term: 'location-label',
-    })
-  })
-})
-
-describe('getContactSummary', () => {
-  it('returns correct contact summary', () => {
-    const result = getContactSummary('Wat zijn uw contactgegevens?', 'test@test.com', '+31612345678')
-
-    expect(result).toEqual({
-      description: ['test@test.com', '+31612345678'],
-      key: 'contact',
-      term: 'Wat zijn uw contactgegevens?',
-    })
-  })
-
-  it('returns undefined when contact details are not filled in', () => {
-    const result = getContactSummary('Wat zijn uw contactgegevens?')
-
-    expect(result).toEqual(undefined)
   })
 })
