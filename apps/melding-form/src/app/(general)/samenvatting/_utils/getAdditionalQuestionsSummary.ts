@@ -1,8 +1,4 @@
-import type {
-  FormPanelComponentOutput,
-  GetMeldingByMeldingIdAnswersMelderResponses,
-  ValueLabelObject,
-} from '@meldingen/api-client'
+import type { GetMeldingByMeldingIdAnswersMelderResponses, ValueLabelObject } from '@meldingen/api-client'
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
@@ -10,17 +6,6 @@ import { getFilteredAnswersByKey } from '../../_utils/conditions/getFilteredAnsw
 import { isPanelComponentOutput } from '../../_utils/typeGuards'
 import { TOP_ANCHOR_ID } from '~/constants'
 import { handleApiError } from '~/handleApiError'
-
-const findPanelIdByQuestionId = (panels: FormPanelComponentOutput[], id: number) => {
-  for (const panel of panels) {
-    for (const component of panel.components) {
-      if (component.question === id) {
-        return panel.key
-      }
-    }
-  }
-  return undefined
-}
 
 const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
   switch (answer.type) {
@@ -74,8 +59,12 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
     return component ? component.key in answersByKey : true
   }
 
+  const panelIdByQuestionId = new Map(
+    panels.flatMap((panel) => panel.components.map((component) => [component.question, panel.key])),
+  )
+
   const toSummaryItem = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
-    const panelId = findPanelIdByQuestionId(panels, answer.question.id)
+    const panelId = panelIdByQuestionId.get(answer.question.id)
 
     return {
       description: getDescription(answer),
