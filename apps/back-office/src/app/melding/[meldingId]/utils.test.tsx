@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import { getFullNLAddress } from '../../utils'
+import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import {
   getAdditionalQuestionsData,
   getAttachmentsData,

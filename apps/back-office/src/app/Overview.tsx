@@ -7,7 +7,7 @@ import type { MeldingOutput } from '~/apiClientProxy'
 import { OverviewDesktop } from './_components/OverviewDesktop'
 import { OverviewMobile } from './_components/OverviewMobile'
 import { Pagination } from './_components/Pagination'
-import { getShortNLAddress } from './utils'
+import { getShortNLAddress } from './_utils/getShortNLAddress'
 
 export type MeldingWithAddress = MeldingOutput & { address?: string }
 

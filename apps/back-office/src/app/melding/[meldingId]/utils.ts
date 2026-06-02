@@ -1,6 +1,6 @@
 import type { GetMeldingByMeldingIdAnswersMelderResponses, MeldingOutput, ValueLabelObject } from '~/apiClientProxy'
 
-import { getFullNLAddress } from '../../utils'
+import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { getAttachmentById, getMeldingByMeldingIdAnswers, getMeldingByMeldingIdAttachments } from '~/apiClientProxy'
 import { handleApiError } from '~/handleApiError'
 
