@@ -37,7 +37,9 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
     // Not Found error is returned when the classification does not have additional questions
     if (handleApiError(formError) === 'Not Found') return { data: [], staleAnswerIds: [] }
 
-    throw new Error('Failed to fetch form by classification.')
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(formError)
   }
 
   const { data, error } = await getMeldingByMeldingIdAnswersMelder({
@@ -47,11 +49,11 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
 
   if (error) throw new Error('Failed to fetch additional questions data.')
 
-  const panels = formComponents.components.filter(isPanelComponentOutput)
-  const answersByKey = getFilteredAnswersByKey(formComponents, data)
+  const panels = formComponents?.components.filter(isPanelComponentOutput)
+  const answersByKey = formComponents ? getFilteredAnswersByKey(formComponents, data) : {}
 
   const componentByQuestionId = new Map(
-    panels.flatMap((panel) => panel.components.map((component) => [component.question, component])),
+    panels?.flatMap((panel) => panel.components.map((component) => [component.question, component])),
   )
 
   const meetsCondition = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
@@ -60,7 +62,7 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
   }
 
   const panelIdByQuestionId = new Map(
-    panels.flatMap((panel) => panel.components.map((component) => [component.question, panel.key])),
+    panels?.flatMap((panel) => panel.components.map((component) => [component.question, panel.key])),
   )
 
   const toSummaryItem = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
