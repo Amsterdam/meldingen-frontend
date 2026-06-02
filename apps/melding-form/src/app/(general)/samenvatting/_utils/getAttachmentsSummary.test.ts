@@ -7,7 +7,7 @@ import { server } from '~/mocks/node'
 const mockMeldingId = '88'
 const mockToken = 'test-token'
 
-describe('getAttachmentSummary', () => {
+describe('getAttachmentsSummary', () => {
   it('returns correct attachment summary', async () => {
     const result = await getAttachmentsSummary("Foto's", mockMeldingId, mockToken)
 
