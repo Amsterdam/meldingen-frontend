@@ -8,8 +8,8 @@ import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMe
 
 import { getFilteredAnswersByKey } from '../../_utils/conditions/getFilteredAnswersByKey'
 import { isPanelComponentOutput } from '../../_utils/typeGuards'
+import { handleApiError } from '~/app/_utils/handleApiError'
 import { TOP_ANCHOR_ID } from '~/constants'
-import { handleApiError } from '~/handleApiError'
 
 const findPanelIdByQuestionId = (panels: FormPanelComponentOutput[], id: number) => {
   for (const panel of panels) {

@@ -7,8 +7,8 @@ import { getMeldingByMeldingIdMelder, getStaticForm, getStaticFormByStaticFormId
 
 import { postPrimaryForm } from './actions'
 import { Home } from './Home'
+import { isTypeTextAreaComponent } from '~/app/_utils/isTypeTextAreaComponent'
 import { COOKIES } from '~/constants'
-import { isTypeTextAreaComponent } from '~/typeguards'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.

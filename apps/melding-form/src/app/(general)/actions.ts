@@ -7,8 +7,8 @@ import { patchMeldingByMeldingIdMelder, postMelding } from '@meldingen/api-clien
 
 import { resolveClassificationRedirect } from '../_utils/resolveClassificationRedirect'
 import { hasValidationErrors } from './_utils/validation/hasValidationErrors'
+import { handleApiError } from '~/app/_utils/handleApiError'
 import { COOKIES } from '~/constants'
-import { handleApiError } from '~/handleApiError'
 
 export type ArgsType = {
   existingId?: string

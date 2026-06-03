@@ -15,8 +15,8 @@ import { categorizeFormEntries } from './_utils/categorizeFormEntries'
 import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
 import { mergeUnknownTimeAnswers } from './_utils/mergeUnknownTimeAnswers'
 import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, refilterAnswersByKey } from './_utils/navigationUtils'
+import { handleApiError } from '~/app/_utils/handleApiError'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
-import { handleApiError } from '~/handleApiError'
 
 type RequiredQuestionErrorMessage = { key: string; requiredErrorMessage: string }
 

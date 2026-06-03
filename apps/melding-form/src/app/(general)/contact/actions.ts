@@ -7,8 +7,8 @@ import { redirect } from 'next/navigation'
 import { patchMeldingByMeldingIdContact, putMeldingByMeldingIdAddContactInfo } from '@meldingen/api-client'
 
 import { hasValidationErrors } from '../_utils/validation/hasValidationErrors'
+import { isApiErrorArray } from '~/app/_utils/handleApiError'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
-import { isApiErrorArray } from '~/handleApiError'
 
 export const postContactForm = async (_: unknown, formData: FormData) => {
   const t = await getTranslations('contact.errors')

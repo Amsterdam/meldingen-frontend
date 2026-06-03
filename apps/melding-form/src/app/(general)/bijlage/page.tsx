@@ -8,8 +8,8 @@ import {
 } from '@meldingen/api-client'
 
 import { Attachments } from './Attachments'
+import { isTypeTextAreaComponent } from '~/app/_utils/isTypeTextAreaComponent'
 import { COOKIES } from '~/constants'
-import { isTypeTextAreaComponent } from '~/typeguards'
 
 export type ExistingFileType = {
   blob?: Blob
