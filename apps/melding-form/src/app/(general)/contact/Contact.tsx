@@ -14,7 +14,7 @@ import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
 import type { FormState } from '~/types'
 
 import { SystemErrorAlert } from '../_components'
-import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
+import { getDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { postContactForm } from './actions'
 import { TOP_ANCHOR_ID } from '~/constants'

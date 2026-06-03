@@ -20,7 +20,7 @@ import type { ExistingFileType } from './page'
 import type { FormState } from '~/types'
 
 import { SystemErrorAlert } from '../_components'
-import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
+import { getDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { startUpload } from './_utils/startUpload'
 import { submitAttachmentsForm } from './actions'

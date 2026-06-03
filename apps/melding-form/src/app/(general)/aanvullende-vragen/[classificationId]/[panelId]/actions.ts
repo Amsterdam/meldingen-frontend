@@ -5,16 +5,14 @@ import { redirect } from 'next/navigation'
 
 import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
-import type { AnswersByKey } from '../../../_utils/conditions/getFilteredAnswersByKey'
-import type { PanelComponentsConditions } from './_utils/navigationUtils'
+import type { AnswersByKey } from '../../../_utils/conditions'
+import type { PanelComponentsConditions } from './_utils/navigation'
 
-import { shouldRenderComponent } from '../../../_utils/conditions/shouldRenderComponent'
-import { hasValidationErrors } from '../../../_utils/validation/hasValidationErrors'
-import { buildAnswerPromises } from './_utils/buildAnswerPromises'
-import { categorizeFormEntries } from './_utils/categorizeFormEntries'
-import { mergeCheckboxAnswers } from './_utils/mergeCheckboxAnswers'
-import { mergeUnknownTimeAnswers } from './_utils/mergeUnknownTimeAnswers'
-import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, refilterAnswersByKey } from './_utils/navigationUtils'
+import { shouldRenderComponent } from '../../../_utils/conditions'
+import { hasValidationErrors } from '../../../_utils/validation'
+import { buildAnswerPromises } from './_utils'
+import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, refilterAnswersByKey } from './_utils/navigation'
+import { categorizeFormEntries, mergeCheckboxAnswers, mergeUnknownTimeAnswers } from './_utils/processEntries'
 import { handleApiError } from '~/app/_utils/handleApiError'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 

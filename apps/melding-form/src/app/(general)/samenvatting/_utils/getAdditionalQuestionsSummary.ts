@@ -6,8 +6,8 @@ import type {
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
-import { getFilteredAnswersByKey } from '../../_utils/conditions/getFilteredAnswersByKey'
-import { isPanelComponentOutput } from '../../_utils/typeGuards'
+import { isPanelComponentOutput } from '../../_utils'
+import { getFilteredAnswersByKey } from '../../_utils/conditions'
 import { handleApiError } from '~/app/_utils/handleApiError'
 import { TOP_ANCHOR_ID } from '~/constants'
 

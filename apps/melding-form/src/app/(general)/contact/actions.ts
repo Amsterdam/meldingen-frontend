@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 
 import { patchMeldingByMeldingIdContact, putMeldingByMeldingIdAddContactInfo } from '@meldingen/api-client'
 
-import { hasValidationErrors } from '../_utils/validation/hasValidationErrors'
+import { hasValidationErrors } from '../_utils/validation'
 import { isApiErrorArray } from '~/app/_utils/handleApiError'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
