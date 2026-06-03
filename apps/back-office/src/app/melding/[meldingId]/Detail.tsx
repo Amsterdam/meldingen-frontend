@@ -4,7 +4,7 @@ import { Fragment } from 'react'
 
 import { DescriptionList, Grid, Heading, Paragraph } from '@meldingen/ui'
 
-import type { MeldingOutput } from '~/apiClientProxy'
+import type { MeldingOutput } from '~/app/_api-client/proxy'
 
 import { AmsNextLink } from '../../_components/AmsNextLink'
 import { AttachmentImage } from './_components/AttachmentImage'

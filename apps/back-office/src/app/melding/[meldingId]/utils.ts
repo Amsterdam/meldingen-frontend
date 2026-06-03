@@ -1,8 +1,16 @@
-import type { GetMeldingByMeldingIdAnswersMelderResponses, MeldingOutput, ValueLabelObject } from '~/apiClientProxy'
+import type {
+  GetMeldingByMeldingIdAnswersMelderResponses,
+  MeldingOutput,
+  ValueLabelObject,
+} from '~/app/_api-client/proxy'
 
 import { getFullNLAddress } from '../../_utils/getFullNLAddress'
-import { getAttachmentById, getMeldingByMeldingIdAnswers, getMeldingByMeldingIdAttachments } from '~/apiClientProxy'
-import { handleApiError } from '~/handleApiError'
+import {
+  getAttachmentById,
+  getMeldingByMeldingIdAnswers,
+  getMeldingByMeldingIdAttachments,
+} from '~/app/_api-client/proxy'
+import { handleApiError } from '~/app/_utils/handleApiError'
 
 const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
   switch (answer.type) {

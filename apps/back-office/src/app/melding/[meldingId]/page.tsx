@@ -8,7 +8,7 @@ import {
   getLocationData,
   getMeldingData,
 } from './utils'
-import { getMeldingByMeldingId } from '~/apiClientProxy'
+import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
 export const generateMetadata = async ({ searchParams }: { searchParams: Promise<{ id: string }> }) => {
   const { id } = await searchParams

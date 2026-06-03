@@ -1,4 +1,4 @@
-import type { MeldingOutput } from '~/apiClientProxy'
+import type { MeldingOutput } from '~/app/_api-client/proxy'
 
 import { getShortNLAddress } from './getShortNLAddress'
 

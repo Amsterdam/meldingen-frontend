@@ -3,9 +3,9 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { COOKIES, DEFAULT_PAGE_SIZE, SORT } from '../constants'
-import { handleApiError } from '../handleApiError'
+import { handleApiError } from './_utils/handleApiError'
 import { Overview } from './Overview'
-import { getMelding } from '~/apiClientProxy'
+import { getMelding } from '~/app/_api-client/proxy'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('overview')

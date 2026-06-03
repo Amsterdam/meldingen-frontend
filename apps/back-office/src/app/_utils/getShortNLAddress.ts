@@ -1,4 +1,4 @@
-import type { MeldingOutput } from '~/apiClientProxy'
+import type { MeldingOutput } from '~/app/_api-client/proxy'
 
 type ShortAddressInput = Pick<MeldingOutput, 'street' | 'house_number' | 'house_number_addition'>
 

@@ -1,4 +1,4 @@
-import { isApiErrorArray } from '~/handleApiError'
+import { isApiErrorArray } from '~/app/_utils/handleApiError'
 
 export const hasValidationErrors = (response?: Response, error?: unknown) =>
   response?.status === 422 &&

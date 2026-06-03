@@ -8,9 +8,9 @@ import type { MeldingOutput } from '@meldingen/api-client'
 import type { MeldingData } from './types'
 
 import { hasValidationErrors } from './_utils/hasValidationErrors'
-import { patchMeldingByMeldingId, patchMeldingByMeldingIdMelder, postMelding } from '~/apiClientProxy'
+import { patchMeldingByMeldingId, patchMeldingByMeldingIdMelder, postMelding } from '~/app/_api-client/proxy'
+import { handleApiError } from '~/app/_utils/handleApiError'
 import { URGENCY_VALUES } from '~/constants'
-import { handleApiError } from '~/handleApiError'
 
 export type FormState = {
   formData?: FormData

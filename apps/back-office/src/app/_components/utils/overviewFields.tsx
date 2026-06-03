@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 import type { MeldingWithAddress } from '../../Overview'
-import type { MeldingOutput } from '~/apiClientProxy'
+import type { MeldingOutput } from '~/app/_api-client/proxy'
 
 import { AmsNextLink } from '../AmsNextLink'
 
