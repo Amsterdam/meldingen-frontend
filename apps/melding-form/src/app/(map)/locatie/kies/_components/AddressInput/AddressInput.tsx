@@ -21,7 +21,7 @@ import { ListBox, TextInput } from '@meldingen/ui'
 import type { PDOKItem } from './types'
 import type { Coordinates } from '~/types'
 
-import { convertWktPointToCoordinates } from '../../utils'
+import { convertWktPointToCoordinates } from '../../_utils/convertWktPointToCoordinates'
 import { debounce } from './_utils/debounce'
 import { fetchAddressList } from './_utils/fetchAddressList'
 import { fetchAndSetAddress } from './_utils/fetchAndSetAddress'

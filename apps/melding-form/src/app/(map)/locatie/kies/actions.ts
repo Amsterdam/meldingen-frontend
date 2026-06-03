@@ -12,7 +12,7 @@ import {
 
 import type { Coordinates } from '~/types'
 
-import { convertWktPointToCoordinates } from './utils'
+import { convertWktPointToCoordinates } from './_utils/convertWktPointToCoordinates'
 import { safeJSONParse } from '~/app/_utils/safeJSONParse'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
