@@ -1,6 +1,6 @@
-import type { PendingFileUpload } from './utils'
+import type { PendingFileUpload } from './startUpload'
 
-import { getValidationErrorMessageTranslationKey, safeJSONParse, startUpload } from './utils'
+import { startUpload } from './startUpload'
 
 const xhrMock = {
   response: JSON.stringify({ id: 123 }),
@@ -23,20 +23,6 @@ const otherFileUpload: PendingFileUpload = {
 }
 
 const setFileUploadsMock = vi.fn()
-
-describe('safeJSONParse', () => {
-  it('returns undefined for undefined input', () => {
-    expect(safeJSONParse()).toBeUndefined()
-  })
-
-  it('returns undefined for invalid JSON', () => {
-    expect(safeJSONParse('invalid')).toBeUndefined()
-  })
-
-  it('parses valid JSON', () => {
-    expect(safeJSONParse('{"key":"value"}')).toEqual({ key: 'value' })
-  })
-})
 
 describe('startUpload', () => {
   it("sets status to 'success' and updates serverId on 200", () => {
@@ -170,27 +156,5 @@ describe('startUpload', () => {
     const result = updater([otherFileUpload])
 
     expect(result[0]).toBe(otherFileUpload)
-  })
-})
-
-describe('getValidationErrorMessageTranslationKey', () => {
-  it('returns the correct translation key for known errors', () => {
-    expect(getValidationErrorMessageTranslationKey('Allowed content size exceeded')).toBe(
-      'validation-errors.file-too-large',
-    )
-    expect(getValidationErrorMessageTranslationKey('Attachment not allowed')).toBe(
-      'validation-errors.invalid-file-type',
-    )
-    expect(getValidationErrorMessageTranslationKey('Media type of data does not match provided media type')).toBe(
-      'validation-errors.invalid-file-extension',
-    )
-  })
-
-  it('returns the default translation key for unknown errors', () => {
-    expect(getValidationErrorMessageTranslationKey('Unknown error')).toBe('validation-errors.failed-upload')
-  })
-
-  it('returns the default translation key for undefined error', () => {
-    expect(getValidationErrorMessageTranslationKey()).toBe('validation-errors.failed-upload')
   })
 })
