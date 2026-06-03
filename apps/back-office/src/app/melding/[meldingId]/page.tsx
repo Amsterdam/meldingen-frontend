@@ -1,13 +1,13 @@
 import { getTranslations } from 'next-intl/server'
 
-import { Detail } from './Detail'
 import {
   getAdditionalQuestionsData,
   getAttachmentsData,
   getContactData,
   getLocationData,
   getMeldingData,
-} from './utils'
+} from './_utils'
+import { Detail } from './Detail'
 import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
 export const generateMetadata = async ({ searchParams }: { searchParams: Promise<{ id: string }> }) => {
