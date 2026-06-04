@@ -99,7 +99,7 @@
   display: grid;
   gap: var(--ams-space-l);
 
-  @media screen and (min-width: 72.5rem) {
+  @media screen and (min-width: 37.5rem) {
     grid-template-columns: 1fr 1fr;
   }
 }
