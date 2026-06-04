@@ -1,5 +1,6 @@
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
+import { Fragment } from 'react'
 
 import { Column, Grid, Heading, Paragraph } from '@meldingen/ui'
 
@@ -55,7 +56,7 @@ export const Detail = ({
             {t('title', { publicId })}
           </Heading>
           <div className={styles.cardGrid}>
-            <dl className={clsx(styles.descriptionList, styles.cardWide)}>
+            <dl className={clsx(styles.metadataDescriptionList, styles.cardWide)}>
               {additionalQuestionsWithMeldingText.map(({ description, key, term }) => (
                 <Column gap="x-small" key={key}>
                   <dt className={styles.term}>{term}</dt>
@@ -64,52 +65,55 @@ export const Detail = ({
               ))}
             </dl>
             {location && (
-              <dl className={clsx(styles.descriptionList, styles.card)}>
+              <dl className={clsx(styles.horizontalDescriptionList, styles.card)}>
                 {location.map(({ description, key, term }) => (
-                  <Column gap="x-small" key={key}>
+                  <Fragment key={key}>
                     <dt className={styles.term}>{term}</dt>
-                    <dd className={styles.description}>{description}</dd>
-                  </Column>
+                    <dd className={styles.horizontalDescription}>{description}</dd>
+                  </Fragment>
                 ))}
               </dl>
             )}
             {contact && (
-              <dl className={clsx(styles.descriptionList, styles.card)}>
+              <dl className={clsx(styles.horizontalDescriptionList, styles.card)}>
                 {contact.map(({ description, key, term }) => (
-                  <Column gap="x-small" key={key}>
+                  <Fragment key={key}>
                     <dt className={styles.term}>{term}</dt>
-                    <dd className={styles.description}>{description}</dd>
-                  </Column>
+                    <dd className={styles.horizontalDescription}>{description}</dd>
+                  </Fragment>
                 ))}
               </dl>
             )}
-            <dl className={clsx(styles.descriptionList, styles.cardTall)}>
+            <dl className={clsx(styles.horizontalDescriptionList, styles.cardTall)}>
               {meldingData.map(({ description, key, link, term }) => (
-                <Column gap="x-small" key={key}>
+                <Fragment key={key}>
                   <dt className={styles.term}>{term}</dt>
-                  <dd className={styles.description}>{description}</dd>
+                  <dd className={styles.horizontalDescription}>{description}</dd>
                   {link && (
-                    <dd className={styles.description}>
+                    <dd className={styles.horizontalLink}>
                       <AmsNextLink href={link.href} variant="link">
                         {link.label}
                       </AmsNextLink>
                     </dd>
                   )}
-                </Column>
+                </Fragment>
               ))}
             </dl>
-            <dl className={clsx(styles.descriptionList, styles.cardWide)}>
+            <dl className={clsx(styles.horizontalDescriptionList, styles.cardWide)}>
               <dt className={styles.term}>{t('attachments.title')}</dt>
               {hasAttachments ? (
                 <div className={styles.attachmentsGrid}>
                   {attachments.files.map((file) => (
-                    <dd className={clsx(styles.description, styles.attachmentsDescription)} key={file.fileName}>
+                    <dd
+                      className={clsx(styles.horizontalDescription, styles.attachmentsDescription)}
+                      key={file.fileName}
+                    >
                       <AttachmentImage blob={file.blob} fileName={file.fileName} />
                     </dd>
                   ))}
                 </div>
               ) : (
-                <dd className={styles.description}>
+                <dd className={styles.horizontalDescription}>
                   <Paragraph>{t('attachments.no-data')}</Paragraph>
                 </dd>
               )}

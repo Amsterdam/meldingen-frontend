@@ -33,7 +33,7 @@
   }
 }
 
-.descriptionList {
+.metadataDescriptionList {
   display: grid;
   gap: var(--ams-space-m);
   margin-block: 0;
@@ -50,7 +50,49 @@
 .description {
   display: block;
   font-weight: var(--ams-description-list-description-font-weight);
+  hyphens: auto;
   margin-inline: 0;
+  overflow-wrap: anywhere;
+}
+
+.horizontalDescriptionList {
+  align-items: start;
+  column-gap: var(--ams-space-l);
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  margin-block: 0;
+
+  @media screen and (min-width: 72.5rem) {
+    grid-template-columns: 1fr;
+
+    & > :not(:last-child) {
+      margin-block-end: var(--ams-space-xs);
+    }
+  }
+}
+
+.horizontalDescription {
+  composes: description;
+
+  &:not(:last-child) {
+    margin-block-end: var(--ams-space-m);
+  }
+
+  @media screen and (min-width: 72.5rem) {
+    &:has(+ .horizontalLink) {
+      margin-block-end: var(--ams-space-xs);
+    }
+  }
+}
+
+.horizontalLink {
+  /* stylelint-disable-next-line value-keyword-case */
+  composes: description horizontalDescription;
+  grid-column: span 2;
+
+  @media screen and (min-width: 72.5rem) {
+    grid-column: auto;
+  }
 }
 
 .attachmentsGrid {
