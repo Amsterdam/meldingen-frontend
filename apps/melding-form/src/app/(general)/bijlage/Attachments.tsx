@@ -15,15 +15,15 @@ import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Column, FileList, FileUpload, Heading, InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
+import type { FileUpload as FileUploadType, PendingFileUpload } from './_utils/startUpload'
 import type { ExistingFileType } from './page'
-import type { FileUpload as FileUploadType, PendingFileUpload } from './utils'
 import type { FormState } from '~/types'
 
 import { SystemErrorAlert } from '../_components'
-import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
+import { getDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
+import { startUpload } from './_utils/startUpload'
 import { submitAttachmentsForm } from './actions'
-import { startUpload } from './utils'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './Attachments.module.css'

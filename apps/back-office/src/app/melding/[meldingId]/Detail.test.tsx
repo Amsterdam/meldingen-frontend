@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { getFullNLAddress } from '../../utils'
+import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
 import { melding } from '~/mocks/data'
 

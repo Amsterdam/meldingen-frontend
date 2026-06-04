@@ -8,11 +8,11 @@ import type { Component } from '@meldingen/form-renderer'
 import { FormRenderer, isSelectboxes, isTimeInput } from '@meldingen/form-renderer'
 import { InvalidFormAlert } from '@meldingen/ui'
 
-import type { AnswersByKey } from '../../../_utils/conditions/getFilteredAnswersByKey'
+import type { AnswersByKey } from '../../../_utils/conditions'
 import type { FormState, ValidationError } from '~/types'
 
 import { SystemErrorAlert } from '../../../_components'
-import { getDocumentTitleOnError } from '../../../_utils/validation/getDocumentTitleOnError'
+import { getDocumentTitleOnError } from '../../../_utils/validation'
 import { BackLink } from '~/app/_components'
 
 const getPrefilledFormComponents = (components: Component[], formData: FormData): Component[] =>

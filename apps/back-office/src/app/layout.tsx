@@ -7,9 +7,9 @@ import { getLocale, getTranslations } from 'next-intl/server'
 
 import { Menu, Page } from '@meldingen/ui'
 
+import { ApiClientInitializer } from './_api-client/ApiClientInitializer'
 import { AmsNextLink } from './_components/AmsNextLink'
 import { Header } from './_components/Header'
-import { ApiClientInitializer } from './ApiClientInitializer'
 
 import './global.css'
 
