@@ -32,7 +32,9 @@ At this point the Melding already exists in the database with all Back Office me
 
 ### 3. Melding Form pages
 
-From here the Behandelaar follows the same steps as a regular Melder: additional questions (if any), location, etc. The `(general)` layout reads the `source` cookie and renders `BackOfficeLayout` instead of `RegularLayout` when the value is `back-office`. This affects the header and shows a menu.
+From here the Behandelaar follows the same flow as a regular Melder — additional questions (if any), location, and so on — with one exception: on `/locatie/kies`, confirming a location redirects the Behandelaar straight to `/bijlage`, whereas a Melder is sent back to `/locatie` first to review the chosen location.
+
+The `(general)` layout reads the `source` cookie and renders `BackOfficeLayout` instead of `RegularLayout` when the value is `back-office`. This affects the header and shows a menu.
 
 The back-navigation links that would normally send the user back to the root now send the user back to Back Office `/melden` with URL parameters, so the Back Office form can be pre-filled with the existing Melding.
 
