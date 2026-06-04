@@ -5,7 +5,8 @@ import { DescriptionList, UnorderedList } from '@meldingen/ui'
 
 import type { MeldingWithAddress } from '../Overview'
 
-import { getOverviewFieldLabel, OVERVIEW_FIELDS, renderOverviewFieldValue } from './utils/overviewFields'
+import { OVERVIEW_FIELDS } from '../constants'
+import { getOverviewFieldLabel, renderOverviewFieldValue } from './_utils'
 
 import styles from './OverviewMobile.module.css'
 

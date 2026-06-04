@@ -1,7 +1,7 @@
-import type { LabelOutput } from '~/apiClientProxy'
+import type { LabelOutput } from '~/app/_api-client/proxy'
 
 import { ChangeLabels } from './ChangeLabels'
-import { getLabel, getMeldingByMeldingId } from '~/apiClientProxy'
+import { getLabel, getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
 type Params = {
   params: Promise<{ meldingId: number }>

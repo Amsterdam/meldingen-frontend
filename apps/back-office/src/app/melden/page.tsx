@@ -11,7 +11,7 @@ import {
   getSource,
   getStaticForm,
   getStaticFormByStaticFormId,
-} from '~/apiClientProxy'
+} from '~/app/_api-client/proxy'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
 // We can remove this when the api is deployed.
