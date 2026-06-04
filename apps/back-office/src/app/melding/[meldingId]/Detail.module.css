@@ -59,8 +59,12 @@
   align-items: start;
   column-gap: var(--ams-space-l);
   display: grid;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 1fr 1fr;
   margin-block: 0;
+
+  @media screen and (min-width: 37.5rem) {
+    grid-template-columns: 1fr 4fr;
+  }
 
   @media screen and (min-width: 72.5rem) {
     grid-template-columns: 1fr;
