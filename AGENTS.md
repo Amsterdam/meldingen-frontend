@@ -579,7 +579,7 @@ it('returns validation error for invalid email', async () => {
 ## Documentation References
 
 - [docs/README.md](docs/README.md): Architecture diagram
-- [docs/0004-styling.md](docs/0004-styling.md): Styling conventions
+- [docs/code-conventions/styling.md](docs/code-conventions/styling.md): Styling conventions
 - [docs/0006-monorepo-tooling.md](docs/0006-monorepo-tooling.md): PNPM workspaces
 - [docs/0009-directory-structure.md](docs/0009-directory-structure.md): File conventions
 - [docs/0011-error-handling.md](docs/0011-error-handling.md): Error patterns
