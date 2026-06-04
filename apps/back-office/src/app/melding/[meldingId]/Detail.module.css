@@ -33,7 +33,7 @@
   }
 }
 
-.metadataDescriptionList {
+.descriptionList {
   display: grid;
   gap: var(--ams-space-m);
   margin-block: 0;

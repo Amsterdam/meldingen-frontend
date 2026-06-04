@@ -56,7 +56,7 @@ export const Detail = ({
             {t('title', { publicId })}
           </Heading>
           <div className={styles.cardGrid}>
-            <dl className={clsx(styles.metadataDescriptionList, styles.cardWide)}>
+            <dl className={clsx(styles.descriptionList, styles.cardWide)}>
               {additionalQuestionsWithMeldingText.map(({ description, key, term }) => (
                 <Column gap="x-small" key={key}>
                   <dt className={styles.term}>{term}</dt>
@@ -100,7 +100,7 @@ export const Detail = ({
               ))}
             </dl>
             <dl className={clsx(styles.descriptionList, styles.cardWide)}>
-              <dt className={clsx(styles.term, 'ams-mb-m')}>{t('attachments.title')}</dt>
+              <dt className={styles.term}>{t('attachments.title')}</dt>
               {hasAttachments ? (
                 <div className={styles.attachmentsGrid}>
                   {attachments.files.map((file) => (
