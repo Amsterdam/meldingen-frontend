@@ -1,13 +1,32 @@
-.attachmentsDescriptionList {
-  grid-template-columns: unset;
-}
-
-.attachmentsGrid {
+.cardGrid {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr 1fr;
+  gap: var(--ams-space-l);
+
+  @media screen and (min-width: 72.5rem) {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
-.attachmentsDescription {
-  grid-column-start: unset;
+.card {
+  align-content: start;
+  background-color: var(--ams-color-background);
+  padding-block: var(--ams-grid-cell-padding-block);
+  padding-inline: var(--ams-grid-cell-padding-inline);
+}
+
+.cardWide {
+  composes: card;
+
+  @media screen and (min-width: 72.5rem) {
+    grid-column: span 2;
+  }
+}
+
+.cardTall {
+  composes: card;
+
+  @media screen and (min-width: 72.5rem) {
+    grid-column: 2;
+    grid-row: 2 / span 2;
+  }
 }

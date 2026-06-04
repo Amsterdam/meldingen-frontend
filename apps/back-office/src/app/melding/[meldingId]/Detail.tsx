@@ -1,4 +1,3 @@
-import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import { Fragment } from 'react'
 
@@ -55,65 +54,67 @@ export const Detail = ({
           <Heading className="ams-mb-m" level={1}>
             {t('title', { publicId })}
           </Heading>
-          <DescriptionList className="ams-mb-l">
-            {additionalQuestionsWithMeldingText.map(({ description, key, term }) => (
-              <Fragment key={key}>
-                <DescriptionList.Term>{term}</DescriptionList.Term>
-                <DescriptionList.Description>{description}</DescriptionList.Description>
-              </Fragment>
-            ))}
-          </DescriptionList>
-          {location && (
-            <DescriptionList className="ams-mb-l">
-              {location.map(({ description, key, term }) => (
+          <div className={styles.cardGrid}>
+            <DescriptionList className={styles.cardWide}>
+              {additionalQuestionsWithMeldingText.map(({ description, key, term }) => (
                 <Fragment key={key}>
                   <DescriptionList.Term>{term}</DescriptionList.Term>
                   <DescriptionList.Description>{description}</DescriptionList.Description>
                 </Fragment>
               ))}
             </DescriptionList>
-          )}
-          <DescriptionList className="ams-mb-l">
-            {meldingData.map(({ description, key, link, term }) => (
-              <Fragment key={key}>
-                <DescriptionList.Term>{term}</DescriptionList.Term>
-                <DescriptionList.Description>{description}</DescriptionList.Description>
-                {link && (
-                  <DescriptionList.Description>
-                    <AmsNextLink href={link.href} variant="link">
-                      {link.label}
-                    </AmsNextLink>
-                  </DescriptionList.Description>
-                )}
-              </Fragment>
-            ))}
-          </DescriptionList>
-          {contact && (
-            <DescriptionList className="ams-mb-l">
-              {contact.map(({ description, key, term }) => (
-                <Fragment key={key}>
-                  <DescriptionList.Term>{term}</DescriptionList.Term>
-                  <DescriptionList.Description>{description}</DescriptionList.Description>
-                </Fragment>
-              ))}
-            </DescriptionList>
-          )}
-          <DescriptionList className={clsx(hasAttachments && styles.attachmentsDescriptionList)}>
-            <DescriptionList.Term>{t('attachments.title')}</DescriptionList.Term>
-            {hasAttachments ? (
-              <div className={clsx(styles.attachmentsGrid, 'ams-mb-l')}>
-                {attachments.files.map((file) => (
-                  <DescriptionList.Description className={styles.attachmentsDescription} key={file.fileName}>
-                    <AttachmentImage blob={file.blob} fileName={file.fileName} />
-                  </DescriptionList.Description>
+            {location && (
+              <DescriptionList className={styles.card}>
+                {location.map(({ description, key, term }) => (
+                  <Fragment key={key}>
+                    <DescriptionList.Term>{term}</DescriptionList.Term>
+                    <DescriptionList.Description>{description}</DescriptionList.Description>
+                  </Fragment>
                 ))}
-              </div>
-            ) : (
-              <DescriptionList.Description>
-                <Paragraph>{t('attachments.no-data')}</Paragraph>
-              </DescriptionList.Description>
+              </DescriptionList>
             )}
-          </DescriptionList>
+            {contact && (
+              <DescriptionList className={styles.card}>
+                {contact.map(({ description, key, term }) => (
+                  <Fragment key={key}>
+                    <DescriptionList.Term>{term}</DescriptionList.Term>
+                    <DescriptionList.Description>{description}</DescriptionList.Description>
+                  </Fragment>
+                ))}
+              </DescriptionList>
+            )}
+            <DescriptionList className={styles.cardTall}>
+              {meldingData.map(({ description, key, link, term }) => (
+                <Fragment key={key}>
+                  <DescriptionList.Term>{term}</DescriptionList.Term>
+                  <DescriptionList.Description>{description}</DescriptionList.Description>
+                  {link && (
+                    <DescriptionList.Description>
+                      <AmsNextLink href={link.href} variant="link">
+                        {link.label}
+                      </AmsNextLink>
+                    </DescriptionList.Description>
+                  )}
+                </Fragment>
+              ))}
+            </DescriptionList>
+            <DescriptionList className={styles.cardWide}>
+              <DescriptionList.Term>{t('attachments.title')}</DescriptionList.Term>
+              {hasAttachments ? (
+                <div>
+                  {attachments.files.map((file) => (
+                    <DescriptionList.Description className={styles.attachmentsDescription} key={file.fileName}>
+                      <AttachmentImage blob={file.blob} fileName={file.fileName} />
+                    </DescriptionList.Description>
+                  ))}
+                </div>
+              ) : (
+                <DescriptionList.Description>
+                  <Paragraph>{t('attachments.no-data')}</Paragraph>
+                </DescriptionList.Description>
+              )}
+            </DescriptionList>
+          </div>
         </Grid.Cell>
       </Grid>
     </div>
