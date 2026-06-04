@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation'
 
-import { patchMeldingByMeldingId } from '~/apiClientProxy'
+import { patchMeldingByMeldingId } from '~/app/_api-client/proxy'
 
 type MeldingIdParam = {
   currentLabelIds?: number[]

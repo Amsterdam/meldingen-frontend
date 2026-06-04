@@ -5,13 +5,13 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { useActionState } from 'react'
 
+import type { FileUpload } from './_utils/startUpload'
 import type { Props } from './Attachments'
 import type { ExistingFileType } from './page'
-import type { FileUpload } from './utils'
 
+import { startUpload } from './_utils/startUpload'
 import { Attachments } from './Attachments'
 import { MAX_UPLOAD_ATTEMPTS } from './Attachments'
-import { startUpload } from './utils'
 import { textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
@@ -36,7 +36,7 @@ window.crypto.randomUUID = vi.fn(() => 'test-id') as unknown as typeof window.cr
 global.URL.createObjectURL = vi.fn()
 global.URL.revokeObjectURL = vi.fn()
 
-vi.mock('./utils', () => ({
+vi.mock('./_utils/startUpload', () => ({
   startUpload: vi.fn(),
 }))
 

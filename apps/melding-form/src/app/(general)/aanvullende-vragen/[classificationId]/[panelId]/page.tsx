@@ -14,14 +14,14 @@ import type {
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
-import { getFilteredAnswersByKey } from '../../../_utils/conditions/getFilteredAnswersByKey'
-import { isPanelComponentOutput } from '../../../_utils/typeGuards'
+import { isPanelComponentOutput } from '../../../_utils'
+import { getFilteredAnswersByKey } from '../../../_utils/conditions'
+import { setDateComponentOptions } from './_utils'
 import {
   AFTER_ADDITIONAL_QUESTIONS_PATH,
   BEFORE_ADDITIONAL_QUESTIONS_PATH,
   getPreviousPanelPath,
-} from './_utils/navigationUtils'
-import { setDateComponentOptions } from './_utils/setDateComponentOptions'
+} from './_utils/navigation'
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 import { COOKIES } from '~/constants'

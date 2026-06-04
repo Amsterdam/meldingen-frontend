@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
+import { OVERVIEW_FIELDS } from '../constants'
+import { getMeldingDetailHref } from './_utils'
 import { OverviewMobile } from './OverviewMobile'
-import { getMeldingDetailHref, OVERVIEW_FIELDS } from './utils/overviewFields'
 import { melding } from '~/mocks/data'
 
 describe('OverviewMobile', () => {
