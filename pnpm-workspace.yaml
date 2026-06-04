@@ -4,3 +4,4 @@ packages:
 minimumReleaseAge: 1440 # Delay installing a newly published version of a package for 1440 minutes (1 day)
 overrides:
   postcss@<8.5.10: '>=8.5.10'
+  uuid@<11.1.1: '>=11.1.1'
