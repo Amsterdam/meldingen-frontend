@@ -104,10 +104,7 @@ export const Detail = ({
               {hasAttachments ? (
                 <div className={styles.attachmentsGrid}>
                   {attachments.files.map((file) => (
-                    <dd
-                      className={clsx(styles.horizontalDescription, styles.attachmentsDescription)}
-                      key={file.fileName}
-                    >
+                    <dd className={styles.horizontalDescription} key={file.fileName}>
                       <AttachmentImage blob={file.blob} fileName={file.fileName} />
                     </dd>
                   ))}
