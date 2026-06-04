@@ -5,11 +5,12 @@
 
   @media screen and (min-width: 72.5rem) {
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto 1fr;
   }
 }
 
 .card {
-  align-content: start;
+  align-self: start;
   background-color: var(--ams-color-background);
   padding-block: var(--ams-grid-cell-padding-block);
   padding-inline: var(--ams-grid-cell-padding-inline);
@@ -50,4 +51,13 @@
   display: block;
   font-weight: var(--ams-description-list-description-font-weight);
   margin-inline: 0;
+}
+
+.attachmentsGrid {
+  display: grid;
+  gap: var(--ams-space-l);
+
+  @media screen and (min-width: 72.5rem) {
+    grid-template-columns: 1fr 1fr;
+  }
 }

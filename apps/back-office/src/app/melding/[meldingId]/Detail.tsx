@@ -57,7 +57,7 @@ export const Detail = ({
           <div className={styles.cardGrid}>
             <dl className={clsx(styles.descriptionList, styles.cardWide)}>
               {additionalQuestionsWithMeldingText.map(({ description, key, term }) => (
-                <Column gap="small" key={key}>
+                <Column gap="x-small" key={key}>
                   <dt className={styles.term}>{term}</dt>
                   <dd className={styles.description}>{description}</dd>
                 </Column>
@@ -66,7 +66,7 @@ export const Detail = ({
             {location && (
               <dl className={clsx(styles.descriptionList, styles.card)}>
                 {location.map(({ description, key, term }) => (
-                  <Column gap="small" key={key}>
+                  <Column gap="x-small" key={key}>
                     <dt className={styles.term}>{term}</dt>
                     <dd className={styles.description}>{description}</dd>
                   </Column>
@@ -76,7 +76,7 @@ export const Detail = ({
             {contact && (
               <dl className={clsx(styles.descriptionList, styles.card)}>
                 {contact.map(({ description, key, term }) => (
-                  <Column gap="small" key={key}>
+                  <Column gap="x-small" key={key}>
                     <dt className={styles.term}>{term}</dt>
                     <dd className={styles.description}>{description}</dd>
                   </Column>
@@ -85,7 +85,7 @@ export const Detail = ({
             )}
             <dl className={clsx(styles.descriptionList, styles.cardTall)}>
               {meldingData.map(({ description, key, link, term }) => (
-                <Column gap="small" key={key}>
+                <Column gap="x-small" key={key}>
                   <dt className={styles.term}>{term}</dt>
                   <dd className={styles.description}>{description}</dd>
                   {link && (
@@ -101,7 +101,7 @@ export const Detail = ({
             <dl className={clsx(styles.descriptionList, styles.cardWide)}>
               <dt className={styles.term}>{t('attachments.title')}</dt>
               {hasAttachments ? (
-                <div>
+                <div className={styles.attachmentsGrid}>
                   {attachments.files.map((file) => (
                     <dd className={clsx(styles.description, styles.attachmentsDescription)} key={file.fileName}>
                       <AttachmentImage blob={file.blob} fileName={file.fileName} />
