@@ -99,18 +99,16 @@ export const Detail = ({
                 </Fragment>
               ))}
             </dl>
-            <dl className={clsx(styles.descriptionList, styles.cardWide)}>
-              <dt className={styles.term}>{t('attachments.title')}</dt>
+            <dl className={clsx(styles.descriptionList, styles.cardWide, styles.attachmentsGrid)}>
+              <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
               {hasAttachments ? (
-                <div className={styles.attachmentsGrid}>
-                  {attachments.files.map((file) => (
-                    <dd className={styles.horizontalDescription} key={file.fileName}>
-                      <AttachmentImage blob={file.blob} fileName={file.fileName} />
-                    </dd>
-                  ))}
-                </div>
+                attachments.files.map((file) => (
+                  <dd className={styles.description} key={file.fileName}>
+                    <AttachmentImage blob={file.blob} fileName={file.fileName} />
+                  </dd>
+                ))
               ) : (
-                <dd className={styles.horizontalDescription}>
+                <dd className={styles.attachmentsFallBackDescription}>
                   <Paragraph>{t('attachments.no-data')}</Paragraph>
                 </dd>
               )}
