@@ -31,7 +31,7 @@ export const getAdditionalQuestionsData = async (meldingId: number) => {
     data: data.map((answer) => ({
       description: getDescription(answer),
       key: String(answer.question.id),
-      term: answer.question.text,
+      term: answer.original_question_text,
     })),
   }
 }

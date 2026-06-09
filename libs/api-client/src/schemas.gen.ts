@@ -1117,37 +1117,8 @@ export const DateAnswerOutputSchema = {
             title: 'Type'
         },
         original_question_text: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
+            type: 'string',
             title: 'Original Question Text'
-        },
-        component_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Component Position'
-        },
-        panel_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Panel Position'
         },
         date: {
             $ref: '#/components/schemas/DateAnswerObject'
@@ -1159,6 +1130,7 @@ export const DateAnswerOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'date'
     ],
     title: 'DateAnswerOutput'
@@ -1184,37 +1156,8 @@ export const DateAnswerQuestionOutputSchema = {
             title: 'Type'
         },
         original_question_text: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
+            type: 'string',
             title: 'Original Question Text'
-        },
-        component_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Component Position'
-        },
-        panel_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Panel Position'
         },
         date: {
             $ref: '#/components/schemas/DateAnswerObject'
@@ -1229,6 +1172,7 @@ export const DateAnswerQuestionOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'date',
         'question'
     ],
@@ -8665,37 +8609,8 @@ export const TextAnswerOutputSchema = {
             title: 'Type'
         },
         original_question_text: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
+            type: 'string',
             title: 'Original Question Text'
-        },
-        component_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Component Position'
-        },
-        panel_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Panel Position'
         },
         text: {
             type: 'string',
@@ -8708,6 +8623,7 @@ export const TextAnswerOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'text'
     ],
     title: 'TextAnswerOutput'
@@ -8733,37 +8649,8 @@ export const TextAnswerQuestionOutputSchema = {
             title: 'Type'
         },
         original_question_text: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
+            type: 'string',
             title: 'Original Question Text'
-        },
-        component_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Component Position'
-        },
-        panel_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Panel Position'
         },
         text: {
             type: 'string',
@@ -8779,6 +8666,7 @@ export const TextAnswerQuestionOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'text',
         'question'
     ],
@@ -8833,37 +8721,8 @@ export const TimeAnswerOutputSchema = {
             title: 'Type'
         },
         original_question_text: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
+            type: 'string',
             title: 'Original Question Text'
-        },
-        component_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Component Position'
-        },
-        panel_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Panel Position'
         },
         time: {
             anyOf: [
@@ -8883,6 +8742,7 @@ export const TimeAnswerOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'time'
     ],
     title: 'TimeAnswerOutput'
@@ -8908,37 +8768,8 @@ export const TimeAnswerQuestionOutputSchema = {
             title: 'Type'
         },
         original_question_text: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
+            type: 'string',
             title: 'Original Question Text'
-        },
-        component_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Component Position'
-        },
-        panel_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Panel Position'
         },
         time: {
             anyOf: [
@@ -8961,6 +8792,7 @@ export const TimeAnswerQuestionOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'time',
         'question'
     ],
@@ -9137,37 +8969,8 @@ export const ValueLabelAnswerOutputSchema = {
             title: 'Type'
         },
         original_question_text: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
+            type: 'string',
             title: 'Original Question Text'
-        },
-        component_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Component Position'
-        },
-        panel_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Panel Position'
         },
         values_and_labels: {
             items: {
@@ -9183,6 +8986,7 @@ export const ValueLabelAnswerOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'values_and_labels'
     ],
     title: 'ValueLabelAnswerOutput'
@@ -9208,37 +9012,8 @@ export const ValueLabelAnswerQuestionOutputSchema = {
             title: 'Type'
         },
         original_question_text: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
+            type: 'string',
             title: 'Original Question Text'
-        },
-        component_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Component Position'
-        },
-        panel_position: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Panel Position'
         },
         values_and_labels: {
             items: {
@@ -9257,6 +9032,7 @@ export const ValueLabelAnswerQuestionOutputSchema = {
         'created_at',
         'updated_at',
         'type',
+        'original_question_text',
         'values_and_labels',
         'question'
     ],
