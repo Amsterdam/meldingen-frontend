@@ -2,12 +2,12 @@ import { useTranslations } from 'next-intl'
 
 import { Grid, Heading } from '@meldingen/ui'
 
-import type { MeldingOutput } from '~/apiClientProxy'
+import type { MeldingOutput } from '~/app/_api-client/proxy'
 
 import { OverviewDesktop } from './_components/OverviewDesktop'
 import { OverviewMobile } from './_components/OverviewMobile'
 import { Pagination } from './_components/Pagination'
-import { getShortNLAddress } from './utils'
+import { getShortNLAddress } from './_utils/getShortNLAddress'
 
 export type MeldingWithAddress = MeldingOutput & { address?: string }
 

@@ -12,7 +12,7 @@ import {
   putMeldingByMeldingIdRequestProcessing,
   putMeldingByMeldingIdRequestReopen,
   putMeldingByMeldingIdSubmit,
-} from '~/apiClientProxy'
+} from '~/app/_api-client/proxy'
 
 type State = (typeof STATES)[keyof typeof STATES]
 

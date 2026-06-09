@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
-import { getFullNLAddress } from '../../utils'
+import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
 import Page, { generateMetadata } from './page'
 import { additionalQuestions, melding } from '~/mocks/data'
