@@ -31,7 +31,7 @@ describe('getAdditionalQuestionsSummary', () => {
       description: item.text,
       key: item.question.id.toString(),
       link: `/aanvullende-vragen/1/page1#${TOP_ANCHOR_ID}`,
-      term: item.question.text,
+      term: item.original_question_text,
     }))
 
     expect(result).toEqual({ data: additionalQuestionsSummary, staleAnswerIds: [] })
@@ -68,30 +68,35 @@ describe('getAdditionalQuestionsSummary', () => {
       description: item.text,
       key: item.question.id.toString(),
       link: `/#${TOP_ANCHOR_ID}`,
-      term: item.question.text,
+      term: item.original_question_text,
     }))
 
     expect(result).toEqual({ data: additionalQuestionsSummary, staleAnswerIds: [] })
   })
 
-  it('returns an empty array when classificationId is not provided', async () => {
+  it('returns empty data and staleAnswerIds arrays when classificationId is not provided', async () => {
     const result = await getAdditionalQuestionsSummary(mockMeldingId, mockToken)
 
     expect(result).toEqual({ data: [], staleAnswerIds: [] })
   })
 
-  it('returns an error message when getFormClassificationByClassificationId returns an error', async () => {
+  it('logs an error message when getFormClassificationByClassificationId returns an error', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
-    const testFunction = async () => await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
 
-    await expect(testFunction).rejects.toThrowError('Failed to fetch form by classification.')
+    await getAdditionalQuestionsSummary(mockMeldingId, mockToken, mockClassificationId)
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith({ detail: 'Error message' })
+
+    consoleErrorSpy.mockRestore()
   })
 
-  it("returns an empty array when the error is 'Not Found'", async () => {
+  it("returns empty data and staleAnswerIds arrays when the error is 'Not Found'", async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({ detail: 'Not Found' }, { status: 500 }),
@@ -124,8 +129,20 @@ describe('getAdditionalQuestionsSummary', () => {
       ),
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
         HttpResponse.json([
-          { id: 100, question: { id: 35, text: 'Question 35' }, text: 'Answer 35', type: 'text' },
-          { id: 101, question: { id: 36, text: 'Question 36' }, text: 'Answer 36', type: 'text' },
+          {
+            id: 100,
+            original_question_text: 'Question 35',
+            question: { id: 35, text: 'Question 35' },
+            text: 'Answer 35',
+            type: 'text',
+          },
+          {
+            id: 101,
+            original_question_text: 'Question 36',
+            question: { id: 36, text: 'Question 36' },
+            text: 'Answer 36',
+            type: 'text',
+          },
         ]),
       ),
     )
@@ -154,7 +171,12 @@ describe('getAdditionalQuestionsSummary', () => {
       ),
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
         HttpResponse.json([
-          { date: { label: '2024-06-01' }, question: { id: 37, text: 'Date question' }, type: 'date' },
+          {
+            date: { label: '2024-06-01' },
+            original_question_text: 'Date question',
+            question: { id: 37, text: 'Date question' },
+            type: 'date',
+          },
         ]),
       ),
     )
@@ -182,7 +204,14 @@ describe('getAdditionalQuestionsSummary', () => {
         }),
       ),
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
-        HttpResponse.json([{ question: { id: 37, text: 'Time question' }, time: '14:30', type: 'time' }]),
+        HttpResponse.json([
+          {
+            original_question_text: 'Time question',
+            question: { id: 37, text: 'Time question' },
+            time: '14:30',
+            type: 'time',
+          },
+        ]),
       ),
     )
 
@@ -203,6 +232,7 @@ describe('getAdditionalQuestionsSummary', () => {
 
   it('returns "Weet ik niet" for time questions when time is null', async () => {
     const additionalTimeQuestionWithNullTime = {
+      original_question_text: 'Time question',
       question: { id: 37, text: 'Time question' },
       time: null,
       type: 'time',
@@ -244,6 +274,7 @@ describe('getAdditionalQuestionsSummary', () => {
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
         HttpResponse.json([
           {
+            original_question_text: 'Value label question',
             question: { id: 38, text: 'Value label question' },
             type: 'value_label',
             values_and_labels: [
@@ -278,7 +309,13 @@ describe('getAdditionalQuestionsSummary', () => {
         }),
       ),
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () =>
-        HttpResponse.json([{ question: { id: 39, text: 'Unsupported question' }, type: 'unsupported_type' }]),
+        HttpResponse.json([
+          {
+            original_question_text: 'Unsupported question',
+            question: { id: 39, text: 'Unsupported question' },
+            type: 'unsupported_type',
+          },
+        ]),
       ),
     )
 
