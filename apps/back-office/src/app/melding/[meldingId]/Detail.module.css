@@ -34,14 +34,25 @@
 }
 
 .descriptionList {
+  color: var(--ams-description-list-color);
   display: grid;
+  font-family: var(--ams-description-list-font-family);
+  font-size: var(--ams-description-list-font-size);
   gap: var(--ams-space-m);
+  hyphens: auto;
+  line-height: var(--ams-description-list-line-height);
   margin-block: 0;
+  overflow-wrap: break-word;
+  text-rendering: optimizelegibility;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-text-size-adjust: none;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -moz-text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 .term {
   display: block;
-  font-size: var(--ams-description-list-term-font-size);
   font-weight: var(--ams-description-list-term-font-weight);
   line-height: var(--ams-description-list-term-line-height);
   text-wrap: var(--ams-description-list-term-text-wrap);
@@ -50,17 +61,16 @@
 .description {
   display: block;
   font-weight: var(--ams-description-list-description-font-weight);
-  hyphens: auto;
   margin-inline: 0;
   overflow-wrap: anywhere;
 }
 
 .horizontalDescriptionList {
+  /* stylelint-disable-next-line value-keyword-case */
+  composes: descriptionList;
   align-items: start;
-  column-gap: var(--ams-space-l);
-  display: grid;
+  gap: 0 var(--ams-space-l);
   grid-template-columns: 1fr 1fr;
-  margin-block: 0;
 
   @media screen and (min-width: 37.5rem) {
     grid-template-columns: 1fr 4fr;
