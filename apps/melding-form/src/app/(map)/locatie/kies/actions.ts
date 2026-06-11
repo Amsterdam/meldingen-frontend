@@ -27,10 +27,12 @@ export const postCoordinatesAndAssets = async (
   const selectedAssetIds = safeJSONParse<number[], number[]>(selectedAssetIdsRaw, [])
   const cookieStore = await cookies()
 
-  const meldingId = cookieStore.get(COOKIES.ID)?.value
+  const meldingIdString = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
-  if (!meldingId || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
+  if (!meldingIdString || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
+
+  const meldingId = parseInt(meldingIdString, 10)
 
   const addressFormData = formData.get('address')
   const coordinatesFormData = formData.get('coordinates')
@@ -47,7 +49,7 @@ export const postCoordinatesAndAssets = async (
       selectedAssetIds.map((id) =>
         postMeldingByMeldingIdAsset({
           body: { asset_type_id, external_id: String(id) },
-          path: { melding_id: parseInt(meldingId, 10) },
+          path: { melding_id: meldingId },
           query: { token },
         }),
       ),
@@ -95,7 +97,7 @@ export const postCoordinatesAndAssets = async (
       properties: {},
       type: 'Feature',
     },
-    path: { melding_id: parseInt(meldingId, 10) },
+    path: { melding_id: meldingId },
     query: { token },
   })
 
@@ -109,7 +111,7 @@ export const postCoordinatesAndAssets = async (
   // Normally, we would set the melding state to 'location_submitted' there, but for those users we do it here.
   if (source === 'back-office') {
     const { error: stateError } = await putMeldingByMeldingIdSubmitLocation({
-      path: { melding_id: parseInt(meldingId, 10) },
+      path: { melding_id: meldingId },
       query: { token },
     })
 
