@@ -15,7 +15,7 @@ const getFilter = (id: string) => `
   </Filter>
 `
 
-const getAssetsFromMelding = async (meldingId: string, token: string) => {
+const getMeldingAssetsAndIconConfig = async (meldingId: string, token: string) => {
   const meldingIdInt = parseInt(meldingId, 10)
 
   const [{ data: assetIds, error: assetIdError }, { data: melding, error: meldingError }] = await Promise.all([
@@ -27,13 +27,13 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
     console.error(assetIdError ?? meldingError)
-    return []
+    return { assets: [], assetTypeIconConfig: {} }
   }
 
   const assetTypeId = melding.classification?.asset_type?.id
   const typeNames = melding.classification?.asset_type?.arguments?.type_names as string | undefined
 
-  if (!assetTypeId || !typeNames) return []
+  if (!assetTypeId || !typeNames) return { assets: [], assetTypeIconConfig: {} }
 
   const assets = await Promise.all(
     assetIds.map(async (asset) => {
@@ -55,7 +55,13 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
     }),
   )
 
-  return assets.filter((asset) => asset !== null)
+  return {
+    assets: assets.filter((asset) => asset !== null),
+    assetTypeIconConfig: {
+      iconEntry: melding?.classification?.asset_type?.arguments?.icon_entry as string | undefined,
+      iconFolder: melding?.classification?.asset_type?.arguments?.icon_folder as string | undefined,
+    },
+  }
 }
 
 type Args = {
@@ -88,7 +94,14 @@ export default async () => {
 
   const previousPagePath = getPreviousPagePath({ lastPanelPath, meldingId, source, token })
 
-  const assets = await getAssetsFromMelding(meldingId, token)
+  const { assets, assetTypeIconConfig } = await getMeldingAssetsAndIconConfig(meldingId, token)
 
-  return <Location address={address} prevPage={previousPagePath} selectedAssets={assets} />
+  return (
+    <Location
+      address={address}
+      assetTypeIconConfig={assetTypeIconConfig}
+      prevPage={previousPagePath}
+      selectedAssets={assets}
+    />
+  )
 }

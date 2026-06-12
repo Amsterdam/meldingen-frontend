@@ -2,8 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import type { Feature } from '@meldingen/api-client'
 
-import { AssetIcon } from './AssetIcon'
-import { FALLBACK_SRC } from '~/constants'
+import { AssetIcon, FALLBACK_SRC } from './AssetIcon'
 
 describe('AssetIcon', () => {
   it('renders an icon with the provided alt text', () => {
@@ -90,7 +89,7 @@ describe('AssetIcon', () => {
     fireEvent.error(img)
 
     await waitFor(() => {
-      expect(img.getAttribute('src')).toContain('asset-fallback.svg')
+      expect(img.getAttribute('src')).toContain(FALLBACK_SRC)
     })
   })
 })

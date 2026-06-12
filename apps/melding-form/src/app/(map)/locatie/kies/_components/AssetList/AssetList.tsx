@@ -5,7 +5,7 @@ import { Checkbox } from '@amsterdam/design-system-react'
 import type { Feature } from '@meldingen/api-client'
 
 import type { NotificationType } from '../../SelectLocation'
-import type { Coordinates } from '~/types'
+import type { AssetTypeIconConfig, Coordinates } from '~/types'
 
 import { AssetIcon } from '~/app/_components/AssetIcon/AssetIcon'
 
@@ -13,10 +13,7 @@ import styles from './AssetList.module.css'
 
 export type Props = {
   assetList: Feature[]
-  assetTypeIconConfig: {
-    iconEntry?: string
-    iconFolder?: string
-  }
+  assetTypeIconConfig: AssetTypeIconConfig
   maxAssets: number
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
@@ -24,11 +21,7 @@ export type Props = {
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
-const getCheckboxLabel = (
-  asset: Feature,
-  idNummer: string,
-  assetTypeIconConfig: { iconEntry?: string; iconFolder?: string },
-) => {
+const getCheckboxLabel = (asset: Feature, idNummer: string, assetTypeIconConfig: AssetTypeIconConfig) => {
   const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
 
   return (

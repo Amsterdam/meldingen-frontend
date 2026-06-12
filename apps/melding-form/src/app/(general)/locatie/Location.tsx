@@ -3,7 +3,6 @@
 import { ErrorMessage, Field, Heading, Paragraph, StandaloneLink, UnorderedList } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import Image from 'next/image'
 import NextLink from 'next/link'
 import { useActionState, useEffect, useRef } from 'react'
 
@@ -11,13 +10,13 @@ import type { Feature } from '@meldingen/api-client'
 
 import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 
-import type { FormState } from '~/types'
+import type { AssetTypeIconConfig, FormState } from '~/types'
 
 import { SystemErrorAlert } from '../_components'
 import { getDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
-import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
 import { postLocationForm } from './actions'
+import { AssetIcon } from '~/app/_components/AssetIcon/AssetIcon'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './Location.module.css'
@@ -26,24 +25,30 @@ const initialState: Pick<FormState, 'systemError' | 'validationErrors'> = {}
 
 type Props = {
   address?: string
+  assetTypeIconConfig: AssetTypeIconConfig
   prevPage: string
   selectedAssets: Feature[]
 }
 
-const getAssetElement = (asset: Feature) => {
-  const icon = getContainerAssetIconSVG(asset)
+const getAssetElement = (asset: Feature, assetTypeIconConfig: AssetTypeIconConfig) => {
   // TODO: use assetType instead of "container" when available
   const label = `${asset.properties?.fractie_omschrijving ?? ''} container - ${asset.properties?.id_nummer}`
 
   return (
     <UnorderedList.Item className={styles.label} key={asset.id}>
-      <Image alt="" height={32} src={icon} width={32} />
+      <AssetIcon
+        alt=""
+        assetTypeIconConfig={assetTypeIconConfig}
+        height={32}
+        properties={asset.properties}
+        width={32}
+      />
       <Paragraph>{label}</Paragraph>
     </UnorderedList.Item>
   )
 }
 
-export const Location = ({ address, prevPage, selectedAssets }: Props) => {
+export const Location = ({ address, assetTypeIconConfig, prevPage, selectedAssets }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
@@ -105,7 +110,9 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
           </Heading>
           <Paragraph>{address ?? t('description')}</Paragraph>
           {selectedAssets.length > 0 && (
-            <UnorderedList markers={false}>{selectedAssets.map((asset) => getAssetElement(asset))}</UnorderedList>
+            <UnorderedList markers={false}>
+              {selectedAssets.map((asset) => getAssetElement(asset, assetTypeIconConfig))}
+            </UnorderedList>
           )}
 
           {validationErrors &&

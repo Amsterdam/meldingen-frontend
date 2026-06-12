@@ -5,12 +5,11 @@ import { useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
-import { FALLBACK_SRC } from '~/constants'
+import type { AssetTypeIconConfig } from '~/types'
 
-const getAssetIconSVG = (
-  properties: Feature['properties'],
-  { iconEntry, iconFolder }: { iconEntry?: string; iconFolder?: string },
-) => {
+export const FALLBACK_SRC = '/asset-fallback.svg'
+
+const getAssetIconSVG = (properties: Feature['properties'], { iconEntry, iconFolder }: AssetTypeIconConfig) => {
   const assetSubType = iconEntry ? (properties?.[iconEntry] as string) : undefined
 
   if (!iconFolder || !assetSubType) {
@@ -21,10 +20,7 @@ const getAssetIconSVG = (
 }
 
 type Props = Omit<ImageProps, 'src'> & {
-  assetTypeIconConfig: {
-    iconEntry?: string
-    iconFolder?: string
-  }
+  assetTypeIconConfig: AssetTypeIconConfig
   properties: Feature['properties']
 }
 
