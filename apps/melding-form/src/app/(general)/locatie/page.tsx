@@ -15,7 +15,7 @@ const getFilter = (id: string) => `
   </Filter>
 `
 
-const getAssetsFromMelding = async (meldingId: string, token: string) => {
+const getMeldingAssetsAndIconConfig = async (meldingId: string, token: string) => {
   const meldingIdInt = parseInt(meldingId, 10)
 
   const [{ data: assetIds, error: assetIdError }, { data: melding, error: meldingError }] = await Promise.all([
@@ -94,7 +94,7 @@ export default async () => {
 
   const previousPagePath = getPreviousPagePath({ lastPanelPath, meldingId, source, token })
 
-  const { assets, assetTypeIconConfig } = await getAssetsFromMelding(meldingId, token)
+  const { assets, assetTypeIconConfig } = await getMeldingAssetsAndIconConfig(meldingId, token)
 
   return (
     <Location
