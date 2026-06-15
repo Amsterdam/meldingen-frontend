@@ -68,6 +68,26 @@ describe('AssetList', () => {
     expect(checkboxes).toHaveLength(containerAssets.length)
   })
 
+  it('defaults to using the asset id as label when labelConfig is not provided', () => {
+    render(<AssetList {...defaultProps} labelConfig={undefined} />)
+
+    const asset1 = screen.getByRole('checkbox', { name: 'container.1' })
+    const asset2 = screen.getByRole('checkbox', { name: 'container.2' })
+
+    expect(asset1).toBeInTheDocument()
+    expect(asset2).toBeInTheDocument()
+  })
+
+  it('defaults to using the asset id as label when labelConfig only references non-existing properties', () => {
+    render(<AssetList {...defaultProps} labelConfig="{{non_existing_property_1}} {{non_existing_property_2}}" />)
+
+    const asset1 = screen.getByRole('checkbox', { name: 'container.1' })
+    const asset2 = screen.getByRole('checkbox', { name: 'container.2' })
+
+    expect(asset1).toBeInTheDocument()
+    expect(asset2).toBeInTheDocument()
+  })
+
   it('sets coordinates and update selected assets when asset in list is clicked', async () => {
     const user = userEvent.setup()
     render(<AssetList {...defaultProps} />)
