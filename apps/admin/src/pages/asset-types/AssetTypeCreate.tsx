@@ -16,7 +16,7 @@ type AssetTypeCreateData = {
     filter: string
     icon_entry: string
     icon_folder: string
-    label: string
+    label?: string
     srs_name: string
     type_names: string
   }
