@@ -583,7 +583,7 @@ it('returns validation error for invalid email', async () => {
 - [docs/0006-monorepo-tooling.md](docs/0006-monorepo-tooling.md): PNPM workspaces
 - [docs/0009-directory-structure.md](docs/0009-directory-structure.md): File conventions
 - [docs/0011-error-handling.md](docs/0011-error-handling.md): Error patterns
-- [docs/additional-questions-form-wizard.md](docs/additional-questions-form-wizard.md): Multi-step wizard for additional questions (panels, answers, conditional navigation)
+- [docs/guides/additional-questions-form-wizard.md](docs/guides/additional-questions-form-wizard.md): Multi-step wizard for additional questions (panels, answers, conditional navigation)
 
 ---
 
