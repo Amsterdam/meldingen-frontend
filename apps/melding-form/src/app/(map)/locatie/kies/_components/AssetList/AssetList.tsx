@@ -63,7 +63,7 @@ const AssetListItem = ({
           properties={asset.properties}
           width={32}
         />
-        <span>{getLabelText(asset, labelConfig)}</span>
+        {getLabelText(asset, labelConfig)}
       </span>
     </Checkbox>
   </li>
