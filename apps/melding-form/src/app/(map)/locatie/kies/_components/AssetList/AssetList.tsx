@@ -108,12 +108,12 @@ export const AssetList = ({
   return (
     <ul className={styles.container}>
       {selectedAssets.map((asset) => {
-        // @ts-expect-error id_nummer always exists on asset properties
-        const publicId = asset.properties.id_nummer as string
+        // `id` always exists on WFS layers from the City of Amsterdam
+        const id = asset.id as number | string
         const label = getCheckboxLabel(asset, assetTypeIconConfig, labelConfig)
 
         return (
-          <li key={publicId}>
+          <li key={id}>
             <Checkbox checked className={styles.checkbox} onChange={() => handleDeselectAsset(asset)}>
               {label}
             </Checkbox>
@@ -121,12 +121,12 @@ export const AssetList = ({
         )
       })}
       {filteredList.map((asset) => {
-        // @ts-expect-error id_nummer always exists on asset properties
-        const publicId = asset.properties.id_nummer as string
+        // `id` always exists on WFS layers from the City of Amsterdam
+        const id = asset.id as number | string
         const label = getCheckboxLabel(asset, assetTypeIconConfig, labelConfig)
 
         return (
-          <li key={publicId}>
+          <li key={id}>
             <Checkbox checked={false} className={styles.checkbox} onChange={() => handleSelectAsset(asset)}>
               {label}
             </Checkbox>
