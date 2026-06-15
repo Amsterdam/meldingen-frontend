@@ -45,19 +45,18 @@ export const postCoordinatesAndAssets = async (
       return { errorMessage: t('errors.assets-post-failed') }
     }
 
-    for (const id of selectedAssetIds) {
-      const { error } = await postMeldingByMeldingIdAsset({
-        body: {
-          asset_type_id,
-          external_id: String(id),
-        },
-        path: { melding_id: meldingId },
-        query: { token },
-      })
+    const results = await Promise.all(
+      selectedAssetIds.map((id) =>
+        postMeldingByMeldingIdAsset({
+          body: { asset_type_id, external_id: String(id) },
+          path: { melding_id: meldingId },
+          query: { token },
+        }),
+      ),
+    )
 
-      if (error) {
-        return { errorMessage: t('errors.assets-post-failed') }
-      }
+    if (results.some(({ error }) => error)) {
+      return { errorMessage: t('errors.assets-post-failed') }
     }
   }
 
