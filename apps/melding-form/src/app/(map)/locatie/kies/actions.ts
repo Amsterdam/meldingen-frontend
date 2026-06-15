@@ -24,7 +24,7 @@ export const postCoordinatesAndAssets = async (
   formData: FormData,
 ) => {
   const selectedAssetIdsRaw = formData.get('selectedAssetIds')
-  const selectedAssetIds = safeJSONParse<number[], number[]>(selectedAssetIdsRaw, [])
+  const selectedAssetIds = safeJSONParse<Array<string | number>, number[]>(selectedAssetIdsRaw, [])
   const cookieStore = await cookies()
 
   const meldingIdString = cookieStore.get(COOKIES.ID)?.value
