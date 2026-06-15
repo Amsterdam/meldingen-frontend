@@ -4,7 +4,9 @@ These guidelines exist to keep our codebase consistent, our history readable, an
 
 Please read this document before opening your first pull request.
 
-<!-- ## Getting Started -->
+## Getting Started
+
+You can find our getting started guide [here](guides/getting-started.md).
 
 ## Git Workflow
 
@@ -97,6 +99,10 @@ For everything the tooling does not cover — naming, structure, patterns — fo
 
 Code is read far more often than it is written. Prefer clarity over cleverness; add a comment only when the reasoning behind the code is not obvious.
 
-<!-- Link to code-patterns-and-conventions.md -->
+See our [styling conventions](code-conventions/styling.md) and [testing conventions](code-conventions/testing.md).
 
-<!-- ADR section -->
+## Architectural decision records
+
+We use ADRs (Architectural Decision Records) to document important architectural decisions.
+
+You can read more about these [here](decisions/README.md).

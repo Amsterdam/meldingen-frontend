@@ -10,29 +10,9 @@ This monorepo houses three separate front-ends:
 
 [Read the docs](./docs/README.md) for more information on the project architecture and plug-in choices.
 
-## Local development
+## Getting started
 
-### In a local Node environment
-
-To run these front-ends in a local Node environment, you need [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/).
-The required versions of these are defined [here](https://github.com/Amsterdam/meldingen-frontend/blob/main/package.json#L8).
-
-If you have those, you can:
-
-- Install all dependencies with `pnpm install`
-- Start all applications in development mode with `npm run dev`
-- Build all applications for production using `npm run build`
-
-### In a Docker container
-
-You can run production builds of the applications in Docker containers.
-Make sure you have [the back-end](https://github.com/amsterdam/meldingen) running in a container before running the front-ends.
-The back-end Dockerfile is responsible for creating the Docker network necessary for use in the front-ends.
-
-When you do, you can:
-
-- Build the containers with `docker compose build`
-- Start a production build of all applications with `docker compose up -d`
+New to the project? The [getting started guide](docs/guides/getting-started.md) covers local Node and Docker setup.
 
 ## Code of Conduct
 
