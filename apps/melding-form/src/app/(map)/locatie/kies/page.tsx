@@ -43,21 +43,23 @@ const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeI
   }
 
   // Delete all assets to avoid conflicts with previously selected assets
-  assetIds.forEach(async (asset) => {
-    const { error } = await deleteMeldingByMeldingIdAssetByAssetId({
-      path: {
-        asset_id: asset.id,
-        melding_id: parseInt(meldingId, 10),
-      },
-      query: { token },
-    })
+  await Promise.all(
+    assetIds.map(async (asset) => {
+      const { error } = await deleteMeldingByMeldingIdAssetByAssetId({
+        path: {
+          asset_id: asset.id,
+          melding_id: parseInt(meldingId, 10),
+        },
+        query: { token },
+      })
 
-    if (error) {
-      // TODO: Log the error to an error reporting service
-      // eslint-disable-next-line no-console
-      console.error(error)
-    }
-  })
+      if (error) {
+        // TODO: Log the error to an error reporting service
+        // eslint-disable-next-line no-console
+        console.error(error)
+      }
+    }),
+  )
 
   const assets = await Promise.all(
     assetIds.map(async (asset) => {
