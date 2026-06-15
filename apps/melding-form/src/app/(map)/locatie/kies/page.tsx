@@ -1,15 +1,12 @@
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 
-import type { AssetOutput, MeldingOutput } from '@meldingen/api-client'
+import type { MeldingOutput } from '@meldingen/api-client'
 
-import {
-  deleteMeldingByMeldingIdAssetByAssetId,
-  getAssetTypeByAssetTypeIdWfs,
-  getMeldingByMeldingIdAssetsMelder,
-  getMeldingByMeldingIdMelder,
-} from '@meldingen/api-client'
+import { getMeldingByMeldingIdAssetsMelder, getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 
+import { deleteExistingAssets } from './_utils/deleteExistingAssets'
+import { fetchAssetFeatures } from './_utils/fetchAssetFeatures'
 import { SelectLocation } from './SelectLocation'
 import { COOKIES } from '~/constants'
 
@@ -38,57 +35,7 @@ const getAssetTypeConfig = (data?: MeldingOutput) => {
   }
 }
 
-const getFilter = (id: string) => `
-  <Filter>
-    <ResourceId rid="${id}" />
-  </Filter>
-`
-
-const fetchAssetFeatures = async (assetTypeId: number, typeNames: string, assetIds: AssetOutput[]) => {
-  const assets = await Promise.all(
-    assetIds.map(async (asset) => {
-      const filter = getFilter(asset.external_id)
-
-      const { data, error } = await getAssetTypeByAssetTypeIdWfs({
-        path: { asset_type_id: assetTypeId },
-        query: { filter, type_names: typeNames },
-      })
-
-      if (error) {
-        // TODO: Log the error to an error reporting service
-        // eslint-disable-next-line no-console
-        console.error(error)
-        return null
-      }
-
-      return data.features[0] ?? null
-    }),
-  )
-
-  return assets.filter((asset) => asset !== null)
-}
-
-const deleteExistingAssets = async (meldingId: number, token: string, assetIds: AssetOutput[]) => {
-  await Promise.all(
-    assetIds.map(async (asset) => {
-      const { error } = await deleteMeldingByMeldingIdAssetByAssetId({
-        path: {
-          asset_id: asset.id,
-          melding_id: meldingId,
-        },
-        query: { token },
-      })
-
-      if (error) {
-        // TODO: Log the error to an error reporting service
-        // eslint-disable-next-line no-console
-        console.error(error)
-      }
-    }),
-  )
-}
-
-const getAssetsFromMelding = async (meldingId: number, token: string, assetTypeId: number, typeNames: string) => {
+const clearAndFetchAssets = async (meldingId: number, token: string, assetTypeId: number, typeNames: string) => {
   // Get existing assets for this melding
   const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
     path: { melding_id: meldingId },
@@ -130,7 +77,7 @@ export default async () => {
   const { typeNames } = assetTypeConfig
 
   const selectedAssets =
-    assetTypeId && typeNames ? await getAssetsFromMelding(meldingId, token, assetTypeId, typeNames) : []
+    assetTypeId && typeNames ? await clearAndFetchAssets(meldingId, token, assetTypeId, typeNames) : []
 
   const coordinates = data?.geo_location?.geometry?.coordinates && {
     lat: data.geo_location.geometry.coordinates[0],
