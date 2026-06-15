@@ -5,7 +5,7 @@ import { Checkbox } from '@amsterdam/design-system-react'
 import type { Feature } from '@meldingen/api-client'
 
 import type { NotificationType } from '../../SelectLocation'
-import type { Coordinates } from '~/types'
+import type { AssetTypeIconConfig, Coordinates } from '~/types'
 
 import { AssetIcon } from '~/app/_components/AssetIcon/AssetIcon'
 
@@ -13,10 +13,7 @@ import styles from './AssetList.module.css'
 
 export type Props = {
   assetList: Feature[]
-  assetTypeIconConfig: {
-    iconEntry?: string
-    iconFolder?: string
-  }
+  assetTypeIconConfig: AssetTypeIconConfig
   labelConfig?: string
   maxAssets: number
   selectedAssets: Feature[]
@@ -41,24 +38,36 @@ const getLabelText = (asset: Feature, labelConfig?: string) => {
   return label || asset.id
 }
 
-const getCheckboxLabel = (
-  asset: Feature,
-  assetTypeIconConfig: { iconEntry?: string; iconFolder?: string },
-  labelConfig?: string,
-) => {
-  return (
-    <span className={styles.label}>
-      <AssetIcon
-        alt=""
-        assetTypeIconConfig={assetTypeIconConfig}
-        height={32}
-        properties={asset.properties}
-        width={32}
-      />
-      <span>{getLabelText(asset, labelConfig)}</span>
-    </span>
-  )
+type AssetListItemProps = {
+  asset: Feature
+  assetTypeIconConfig: AssetTypeIconConfig
+  isChecked?: boolean
+  labelConfig?: string
+  onChange: () => void
 }
+
+const AssetListItem = ({
+  asset,
+  assetTypeIconConfig,
+  isChecked = false,
+  labelConfig,
+  onChange,
+}: AssetListItemProps) => (
+  <li>
+    <Checkbox checked={isChecked} className={styles.checkbox} onChange={onChange}>
+      <span className={styles.label}>
+        <AssetIcon
+          alt=""
+          assetTypeIconConfig={assetTypeIconConfig}
+          height={32}
+          properties={asset.properties}
+          width={32}
+        />
+        <span>{getLabelText(asset, labelConfig)}</span>
+      </span>
+    </Checkbox>
+  </li>
+)
 
 export const AssetList = ({
   assetList,
@@ -107,32 +116,25 @@ export const AssetList = ({
 
   return (
     <ul className={styles.container}>
-      {selectedAssets.map((asset) => {
-        // `id` always exists on WFS layers from the City of Amsterdam
-        const id = asset.id as number | string
-        const label = getCheckboxLabel(asset, assetTypeIconConfig, labelConfig)
-
-        return (
-          <li key={id}>
-            <Checkbox checked className={styles.checkbox} onChange={() => handleDeselectAsset(asset)}>
-              {label}
-            </Checkbox>
-          </li>
-        )
-      })}
-      {filteredList.map((asset) => {
-        // `id` always exists on WFS layers from the City of Amsterdam
-        const id = asset.id as number | string
-        const label = getCheckboxLabel(asset, assetTypeIconConfig, labelConfig)
-
-        return (
-          <li key={id}>
-            <Checkbox checked={false} className={styles.checkbox} onChange={() => handleSelectAsset(asset)}>
-              {label}
-            </Checkbox>
-          </li>
-        )
-      })}
+      {selectedAssets.map((asset) => (
+        <AssetListItem
+          asset={asset}
+          assetTypeIconConfig={assetTypeIconConfig}
+          isChecked
+          key={asset.id}
+          labelConfig={labelConfig}
+          onChange={() => handleDeselectAsset(asset)}
+        />
+      ))}
+      {filteredList.map((asset) => (
+        <AssetListItem
+          asset={asset}
+          assetTypeIconConfig={assetTypeIconConfig}
+          key={asset.id}
+          labelConfig={labelConfig}
+          onChange={() => handleSelectAsset(asset)}
+        />
+      ))}
     </ul>
   )
 }
