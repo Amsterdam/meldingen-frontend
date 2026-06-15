@@ -35,6 +35,7 @@ export type Props = {
     iconFolder?: string
   }
   coordinates?: Coordinates
+  labelConfig?: string
   maxAssets: number
   selectedAssets: Feature[]
   wfsQuery: {
@@ -53,6 +54,7 @@ const initialState: { errorMessage?: string } = {}
 export const SelectLocation = ({
   assetTypeIconConfig,
   coordinates: coordinatesFromServer,
+  labelConfig,
   maxAssets,
   selectedAssets: selectedAssetsFromServer,
   wfsQuery,
@@ -106,6 +108,7 @@ export const SelectLocation = ({
         <AssetList
           assetList={assetList}
           assetTypeIconConfig={assetTypeIconConfig}
+          labelConfig={labelConfig}
           maxAssets={maxAssets}
           selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}

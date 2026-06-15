@@ -13,6 +13,7 @@ const defaultProps: Props = {
     iconEntry: 'fractie_omschrijving',
     iconFolder: 'container',
   },
+  labelConfig: '{{fractie_omschrijving}} {{id_nummer}}',
   maxAssets: 5,
   selectedAssets: [],
   setCoordinates: vi.fn(),
@@ -30,14 +31,17 @@ describe('AssetList', () => {
   it('renders a list of assets', () => {
     render(<AssetList {...defaultProps} />)
 
-    expect(screen.getByText('Container-001')).toBeInTheDocument()
-    expect(screen.getByText('Container-002')).toBeInTheDocument()
+    const asset1 = screen.getByRole('checkbox', { name: 'Restafval Container-001' })
+    const asset2 = screen.getByRole('checkbox', { name: 'Glas Container-002' })
 
-    const restIcon = screen.getByAltText('Restafval icon')
-    const glasIcon = screen.getByAltText('Glas icon')
+    expect(asset1).toBeInTheDocument()
+    expect(asset2).toBeInTheDocument()
 
-    expect(restIcon.getAttribute('src')).toContain('/container/restafval.svg')
-    expect(glasIcon.getAttribute('src')).toContain('/container/glas.svg')
+    const restIcon = asset1.closest('li')?.querySelector('img')
+    const glasIcon = asset2.closest('li')?.querySelector('img')
+
+    expect(restIcon?.getAttribute('src')).toContain('/container/restafval.svg')
+    expect(glasIcon?.getAttribute('src')).toContain('/container/glas.svg')
   })
 
   it('renders correct number of list items', () => {
@@ -53,7 +57,7 @@ describe('AssetList', () => {
 
     const checkboxes = screen.getAllByRole('checkbox')
 
-    expect(checkboxes[0]).toHaveAccessibleName(/Container-002/)
+    expect(checkboxes[0]).toHaveAccessibleName('Glas Container-002')
   })
 
   it('renders no duplicated assets', () => {
@@ -68,7 +72,7 @@ describe('AssetList', () => {
     const user = userEvent.setup()
     render(<AssetList {...defaultProps} />)
 
-    const checkbox = screen.getByRole('checkbox', { name: /Container-001/ })
+    const checkbox = screen.getByRole('checkbox', { name: 'Restafval Container-001' })
 
     expect(checkbox).not.toBeChecked()
 
@@ -84,14 +88,7 @@ describe('AssetList', () => {
   it('sets notification when max selected assets is reached', async () => {
     const maxAssets = Array(5)
       .fill(containerAssets[0])
-      .map((asset, index) => ({
-        ...asset,
-        id: index,
-        properties: {
-          ...asset.properties,
-          id_nummer: index,
-        },
-      }))
+      .map((asset, index) => ({ ...asset, id: index }))
 
     const user = userEvent.setup()
     render(<AssetList {...defaultProps} selectedAssets={maxAssets} />)
@@ -107,7 +104,7 @@ describe('AssetList', () => {
     const user = userEvent.setup()
     render(<AssetList {...defaultProps} selectedAssets={[containerAssets[0]]} />)
 
-    const checkbox = screen.getByRole('checkbox', { name: /Container-001/ })
+    const checkbox = screen.getByRole('checkbox', { name: 'Restafval Container-001' })
 
     await user.click(checkbox)
 
@@ -119,7 +116,7 @@ describe('AssetList', () => {
     const user = userEvent.setup()
     render(<AssetList {...defaultProps} selectedAssets={[containerAssets[0]]} />)
 
-    const checkbox = screen.getByRole('checkbox', { name: /Container-001/ })
+    const checkbox = screen.getByRole('checkbox', { name: 'Restafval Container-001' })
 
     await user.click(checkbox)
 
@@ -132,7 +129,7 @@ describe('AssetList', () => {
     const user = userEvent.setup()
     render(<AssetList {...defaultProps} selectedAssets={containerAssets} />)
 
-    const checkbox = screen.getByRole('checkbox', { name: /Container-001/ })
+    const checkbox = screen.getByRole('checkbox', { name: 'Restafval Container-001' })
 
     await user.click(checkbox)
 
@@ -147,7 +144,7 @@ describe('AssetList', () => {
     const user = userEvent.setup()
     render(<AssetList {...defaultProps} selectedAssets={containerAssets} />)
 
-    const checkbox = screen.getByRole('checkbox', { name: /Container-002/ })
+    const checkbox = screen.getByRole('checkbox', { name: 'Glas Container-002' })
 
     await user.click(checkbox)
 

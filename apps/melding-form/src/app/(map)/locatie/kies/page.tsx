@@ -112,6 +112,8 @@ export default async () => {
     lng: data.geo_location.geometry.coordinates[1],
   }
 
+  const labelConfig = data?.classification?.asset_type?.arguments?.label as string | undefined
+
   return (
     <SelectLocation
       assetTypeIconConfig={{
@@ -119,6 +121,7 @@ export default async () => {
         iconFolder: data?.classification?.asset_type?.arguments?.icon_folder as string | undefined,
       }}
       coordinates={coordinates}
+      labelConfig={labelConfig}
       maxAssets={data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK}
       selectedAssets={selectedAssets}
       wfsQuery={{
