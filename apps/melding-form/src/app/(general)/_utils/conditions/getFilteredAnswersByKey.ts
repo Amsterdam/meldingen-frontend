@@ -1,6 +1,6 @@
 import type { FormOutput, GetMeldingByMeldingIdAnswersMelderResponses } from '@meldingen/api-client'
 
-import { isPanelComponentOutput } from '../typeGuards'
+import { isPanelComponentOutput } from '../isPanelComponentOutput'
 import { shouldRenderComponent } from './shouldRenderComponent'
 
 export type AnswersByKey = Record<string, string | string[] | null>

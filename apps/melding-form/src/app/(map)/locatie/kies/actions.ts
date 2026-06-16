@@ -12,20 +12,11 @@ import {
 
 import type { Coordinates } from '~/types'
 
-import { convertWktPointToCoordinates } from './utils'
+import { convertWktPointToCoordinates } from './_utils/convertWktPointToCoordinates'
+import { safeJSONParse } from '~/app/_utils/safeJSONParse'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
-
-const safeJsonParse = <T>(value: unknown, fallback: T): T => {
-  if (!value || typeof value !== 'string') return fallback
-
-  try {
-    return JSON.parse(value)
-  } catch {
-    return fallback
-  }
-}
 
 export const postCoordinatesAndAssets = async (
   { asset_type_id }: { asset_type_id?: number },
@@ -33,7 +24,7 @@ export const postCoordinatesAndAssets = async (
   formData: FormData,
 ) => {
   const selectedAssetIdsRaw = formData.get('selectedAssetIds')
-  const selectedAssetIds = safeJsonParse<number[]>(selectedAssetIdsRaw, [])
+  const selectedAssetIds = safeJSONParse<number[], number[]>(selectedAssetIdsRaw, [])
   const cookieStore = await cookies()
 
   const meldingId = cookieStore.get(COOKIES.ID)?.value
@@ -71,7 +62,7 @@ export const postCoordinatesAndAssets = async (
   /** Fetch coordinates from PDOK */
 
   let address = addressFormData as string
-  let coordinates: Coordinates | null = safeJsonParse(coordinatesFormData, null)
+  let coordinates = safeJSONParse<Coordinates, null>(coordinatesFormData, null)
 
   if (!address) {
     return { errorMessage: t('errors.no-location') }

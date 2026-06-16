@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { vi } from 'vitest'
 
 import { postMeldingForm } from './actions'
-import * as apiClientProxy from '~/apiClientProxy'
+import * as apiClientProxy from '~/app/_api-client/proxy'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 

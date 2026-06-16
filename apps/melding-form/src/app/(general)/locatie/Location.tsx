@@ -14,7 +14,7 @@ import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
 import type { FormState } from '~/types'
 
 import { SystemErrorAlert } from '../_components'
-import { getDocumentTitleOnError } from '../_utils/validation/getDocumentTitleOnError'
+import { getDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
 import { postLocationForm } from './actions'
