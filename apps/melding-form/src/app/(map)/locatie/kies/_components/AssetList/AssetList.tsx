@@ -5,7 +5,7 @@ import { Checkbox } from '@amsterdam/design-system-react'
 import type { Feature } from '@meldingen/api-client'
 
 import type { NotificationType } from '../../SelectLocation'
-import type { Coordinates } from '~/types'
+import type { AssetTypeIconConfig, Coordinates } from '~/types'
 
 import { AssetIcon } from '~/app/_components/AssetIcon/AssetIcon'
 
@@ -13,10 +13,8 @@ import styles from './AssetList.module.css'
 
 export type Props = {
   assetList: Feature[]
-  assetTypeIconConfig: {
-    iconEntry?: string
-    iconFolder?: string
-  }
+  assetTypeIconConfig: AssetTypeIconConfig
+  labelConfig?: string
   maxAssets: number
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
@@ -24,30 +22,57 @@ export type Props = {
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
-const getCheckboxLabel = (
-  asset: Feature,
-  idNummer: string,
-  assetTypeIconConfig: { iconEntry?: string; iconFolder?: string },
-) => {
-  const altText = `${asset.properties?.fractie_omschrijving ?? ''} icon`.trim()
+const getLabelText = (asset: Feature, labelConfig?: string) => {
+  // `id` always exists on WFS layers from the City of Amsterdam
+  if (!labelConfig) return asset.id
 
-  return (
-    <span className={styles.label}>
-      <AssetIcon
-        alt={altText}
-        assetTypeIconConfig={assetTypeIconConfig}
-        height={32}
-        properties={asset.properties}
-        width={32}
-      />
-      <span>{idNummer}</span>
-    </span>
-  )
+  const label = labelConfig
+    // Replace each {{field_name}} placeholder with the matching value from asset.properties
+    // For example, '{{fractie_omschrijving}} container - {{id_nummer}}' will become 'Papier container - 12345'
+    .replace(/\{\{(\w+)\}\}/g, (_, key) => {
+      const value = asset.properties?.[key]
+      return value !== undefined && value !== null ? String(value) : ''
+    })
+    .trim()
+
+  return label || asset.id
 }
+
+type AssetListItemProps = {
+  asset: Feature
+  assetTypeIconConfig: AssetTypeIconConfig
+  isChecked?: boolean
+  labelConfig?: string
+  onChange: () => void
+}
+
+const AssetListItem = ({
+  asset,
+  assetTypeIconConfig,
+  isChecked = false,
+  labelConfig,
+  onChange,
+}: AssetListItemProps) => (
+  <li>
+    <Checkbox checked={isChecked} className={styles.checkbox} onChange={onChange}>
+      <span className={styles.label}>
+        <AssetIcon
+          alt=""
+          assetTypeIconConfig={assetTypeIconConfig}
+          height={32}
+          properties={asset.properties}
+          width={32}
+        />
+        {getLabelText(asset, labelConfig)}
+      </span>
+    </Checkbox>
+  </li>
+)
 
 export const AssetList = ({
   assetList,
   assetTypeIconConfig,
+  labelConfig,
   maxAssets,
   selectedAssets,
   setCoordinates,
@@ -91,32 +116,25 @@ export const AssetList = ({
 
   return (
     <ul className={styles.container}>
-      {selectedAssets.map((asset) => {
-        // @ts-expect-error id_nummer always exists on asset properties
-        const publicId = asset.properties.id_nummer as string
-        const label = getCheckboxLabel(asset, publicId, assetTypeIconConfig)
-
-        return (
-          <li key={publicId}>
-            <Checkbox checked className={styles.checkbox} onChange={() => handleDeselectAsset(asset)}>
-              {label}
-            </Checkbox>
-          </li>
-        )
-      })}
-      {filteredList.map((asset) => {
-        // @ts-expect-error id_nummer always exists on asset properties
-        const publicId = asset.properties.id_nummer as string
-        const label = getCheckboxLabel(asset, publicId, assetTypeIconConfig)
-
-        return (
-          <li key={publicId}>
-            <Checkbox checked={false} className={styles.checkbox} onChange={() => handleSelectAsset(asset)}>
-              {label}
-            </Checkbox>
-          </li>
-        )
-      })}
+      {selectedAssets.map((asset) => (
+        <AssetListItem
+          asset={asset}
+          assetTypeIconConfig={assetTypeIconConfig}
+          isChecked
+          key={asset.id}
+          labelConfig={labelConfig}
+          onChange={() => handleDeselectAsset(asset)}
+        />
+      ))}
+      {filteredList.map((asset) => (
+        <AssetListItem
+          asset={asset}
+          assetTypeIconConfig={assetTypeIconConfig}
+          key={asset.id}
+          labelConfig={labelConfig}
+          onChange={() => handleSelectAsset(asset)}
+        />
+      ))}
     </ul>
   )
 }

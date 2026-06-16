@@ -224,6 +224,7 @@ const nl: TranslationMessages = {
         'arguments.filter': 'Filter',
         'arguments.icon_entry': 'Icon koppelcode',
         'arguments.icon_folder': 'Icon folder',
+        'arguments.label': 'Label',
         'arguments.srs_name': 'SRS name',
         'arguments.type_names': 'Typenames',
         max_assets: 'Maximaal aantal te selecteren',
