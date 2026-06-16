@@ -26,7 +26,18 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(screen.getByText('Location Component')).toBeInTheDocument()
-    expect(Location).toHaveBeenCalledWith(expect.objectContaining({ address: undefined, prevPage: '/#top' }), undefined)
+    expect(Location).toHaveBeenCalledWith(
+      expect.objectContaining({
+        address: undefined,
+        pageConfig: {
+          description: undefined,
+          label: undefined,
+          requiredError: undefined,
+        },
+        prevPage: '/#top',
+      }),
+      undefined,
+    )
   })
 
   it('renders Location component with props from cookies', async () => {
@@ -218,6 +229,43 @@ describe('Page', () => {
     expect(Location).toHaveBeenCalledWith(
       expect.objectContaining({
         selectedAssets: [],
+      }),
+      undefined,
+    )
+  })
+
+  it('fetches and passes pageConfig to Location component', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () =>
+        HttpResponse.json({
+          ...melding,
+          classification: {
+            ...melding.classification,
+            asset_type: {
+              ...melding.classification?.asset_type,
+              arguments: {
+                ...melding.classification?.asset_type?.arguments,
+                location_description: 'Test description',
+                location_label: 'Test label',
+                location_required_error: 'Test required error',
+              },
+            },
+          },
+        }),
+      ),
+    )
+
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    expect(Location).toHaveBeenCalledWith(
+      expect.objectContaining({
+        pageConfig: {
+          description: 'Test description',
+          label: 'Test label',
+          requiredError: 'Test required error',
+        },
       }),
       undefined,
     )
