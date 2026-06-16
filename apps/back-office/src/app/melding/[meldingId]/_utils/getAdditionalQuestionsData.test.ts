@@ -84,7 +84,13 @@ describe('getAdditionalQuestionsData', () => {
   it('returns an empty description for unsupported question types', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () =>
-        HttpResponse.json([{ question: { id: 3, text: 'Unsupported question type' }, type: 'unsupported_type' }]),
+        HttpResponse.json([
+          {
+            original_question_text: 'Unsupported question type',
+            question: { id: 3, text: 'Unsupported question type' },
+            type: 'unsupported_type',
+          },
+        ]),
       ),
     )
 

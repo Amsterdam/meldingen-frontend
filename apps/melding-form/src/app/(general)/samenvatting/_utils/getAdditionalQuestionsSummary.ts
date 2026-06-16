@@ -1,8 +1,4 @@
-import type {
-  FormPanelComponentOutput,
-  GetMeldingByMeldingIdAnswersMelderResponses,
-  ValueLabelObject,
-} from '@meldingen/api-client'
+import type { GetMeldingByMeldingIdAnswersMelderResponses, ValueLabelObject } from '@meldingen/api-client'
 
 import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
 
@@ -10,17 +6,6 @@ import { isPanelComponentOutput } from '../../_utils'
 import { getFilteredAnswersByKey } from '../../_utils/conditions'
 import { handleApiError } from '~/app/_utils/handleApiError'
 import { TOP_ANCHOR_ID } from '~/constants'
-
-const findPanelIdByQuestionId = (panels: FormPanelComponentOutput[], id: number) => {
-  for (const panel of panels) {
-    for (const component of panel.components) {
-      if (component.question === id) {
-        return panel.key
-      }
-    }
-  }
-  return undefined
-}
 
 const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
   switch (answer.type) {
@@ -52,7 +37,9 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
     // Not Found error is returned when the classification does not have additional questions
     if (handleApiError(formError) === 'Not Found') return { data: [], staleAnswerIds: [] }
 
-    throw new Error('Failed to fetch form by classification.')
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(formError)
   }
 
   const { data, error } = await getMeldingByMeldingIdAnswersMelder({
@@ -62,11 +49,11 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
 
   if (error) throw new Error('Failed to fetch additional questions data.')
 
-  const panels = formComponents.components.filter(isPanelComponentOutput)
-  const answersByKey = getFilteredAnswersByKey(formComponents, data)
+  const panels = formComponents?.components.filter(isPanelComponentOutput)
+  const answersByKey = formComponents ? getFilteredAnswersByKey(formComponents, data) : {}
 
   const componentByQuestionId = new Map(
-    panels.flatMap((panel) => panel.components.map((component) => [component.question, component])),
+    panels?.flatMap((panel) => panel.components.map((component) => [component.question, component])),
   )
 
   const meetsCondition = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
@@ -74,14 +61,18 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
     return component ? component.key in answersByKey : true
   }
 
+  const panelIdByQuestionId = new Map(
+    panels?.flatMap((panel) => panel.components.map((component) => [component.question, panel.key])),
+  )
+
   const toSummaryItem = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
-    const panelId = findPanelIdByQuestionId(panels, answer.question.id)
+    const panelId = panelIdByQuestionId.get(answer.question.id)
 
     return {
       description: getDescription(answer),
       key: `${answer.question.id}`,
       link: panelId ? `/aanvullende-vragen/${classificationId}/${panelId}#${TOP_ANCHOR_ID}` : `/#${TOP_ANCHOR_ID}`,
-      term: answer.question.text,
+      term: answer.original_question_text,
     }
   }
 
