@@ -164,8 +164,8 @@ importers:
   apps/admin:
     dependencies:
       '@azure/msal-browser':
-        specifier: 3.23.0
-        version: 3.23.0
+        specifier: 5.13.0
+        version: 5.13.0
       '@meldingen/api-client':
         specifier: workspace:*
         version: link:../../libs/api-client
@@ -373,8 +373,16 @@ packages:
     resolution: {integrity: sha512-+QgdMvaeEpdtgRTD7AHHq9aw8uga7mXVHV1KshO1RQ2uI5B55xJ4aEpGlg/ga3H+0arEVcRfT4ZVmX7QLXiCVw==}
     engines: {node: '>=0.8.0'}
 
+  '@azure/msal-browser@5.13.0':
+    resolution: {integrity: sha512-Ea23x0U8XNFY+qJ9T44zO2BbY+AHdb+WdjmYnx36OhJ/KO+PGU5pmsNHf1DCElYX+6wyVRJz1HFeCPC/cHbRug==}
+    engines: {node: '>=0.8.0'}
+
   '@azure/msal-common@14.14.2':
     resolution: {integrity: sha512-XV0P5kSNwDwCA/SjIxTe9mEAsKB0NqGNSuaVrkCCE2lAyBr/D6YtD80Vkdp4tjWnPFwjzkwldjr1xU/facOJog==}
+    engines: {node: '>=0.8.0'}
+
+  '@azure/msal-common@16.8.0':
+    resolution: {integrity: sha512-5S4RHOcInL2Nu2U217tDZbWGI6StMfcWCrA7TWvWdJmXQ+cYrrIqr84AsN62fGh2MDBysiBJPt6CfWceJfloEA==}
     engines: {node: '>=0.8.0'}
 
   '@babel/code-frame@7.29.7':
@@ -5127,7 +5135,13 @@ snapshots:
     dependencies:
       '@azure/msal-common': 14.14.2
 
+  '@azure/msal-browser@5.13.0':
+    dependencies:
+      '@azure/msal-common': 16.8.0
+
   '@azure/msal-common@14.14.2': {}
+
+  '@azure/msal-common@16.8.0': {}
 
   '@babel/code-frame@7.29.7':
     dependencies:
