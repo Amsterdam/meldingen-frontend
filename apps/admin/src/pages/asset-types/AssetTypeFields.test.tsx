@@ -44,6 +44,7 @@ describe('AssetTypeFields', () => {
     expect(screen.getByRole('spinbutton', { name: 'resources.asset-type.fields.max_assets' })).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.singular' })).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.plural' })).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.term' })).toBeInTheDocument()
   })
 
   it('should prefill inputs from the record', () => {
@@ -60,6 +61,7 @@ describe('AssetTypeFields', () => {
         plural: 'Test plural',
         singular: 'Test singular',
         srs_name: 'EPSG:4326',
+        term: 'Test term',
         type_names: 'Type name',
       },
       max_assets: 5,
@@ -104,5 +106,6 @@ describe('AssetTypeFields', () => {
     expect(screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.plural' })).toHaveValue(
       'Test plural',
     )
+    expect(screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.term' })).toHaveValue('Test term')
   })
 })

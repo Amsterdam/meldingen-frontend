@@ -36,5 +36,10 @@ export const AssetTypeFields = () => (
     <NumberInput defaultValue={3} source="max_assets" validate={[required(), minValue(1)]} />
     <TextInput source="arguments.singular" />
     <TextInput source="arguments.plural" />
+
+    <span>
+      <strong>Back Office</strong>
+    </span>
+    <TextInput source="arguments.term" />
   </>
 )
