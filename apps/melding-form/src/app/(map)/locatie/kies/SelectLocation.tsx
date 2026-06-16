@@ -35,6 +35,10 @@ export type Props = {
   labelConfig?: string
   maxAssets: number
   selectedAssets: Feature[]
+  validationAssetName: {
+    plural: string
+    singular: string
+  }
   wfsQuery: {
     assetTypeId?: number
     classification?: string
@@ -54,6 +58,7 @@ export const SelectLocation = ({
   labelConfig,
   maxAssets,
   selectedAssets: selectedAssetsFromServer,
+  validationAssetName,
   wfsQuery,
 }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
@@ -100,7 +105,12 @@ export const SelectLocation = ({
       </SideBarTop>
       <SideBarBottom isHidden={!showAssetList}>
         {notificationType === 'too-many-assets' && !isWideWindow && (
-          <Notification maxAssets={maxAssets} onClose={() => setNotificationType(null)} type={notificationType} />
+          <Notification
+            maxAssets={maxAssets}
+            onClose={() => setNotificationType(null)}
+            type={notificationType}
+            validationAssetName={validationAssetName}
+          />
         )}
         <AssetList
           assetList={assetList}
@@ -144,7 +154,12 @@ export const SelectLocation = ({
             updateSelectedPoint={setCoordinates}
           >
             {notificationType && (
-              <Notification maxAssets={maxAssets} onClose={() => setNotificationType(null)} type={notificationType} />
+              <Notification
+                maxAssets={maxAssets}
+                onClose={() => setNotificationType(null)}
+                type={notificationType}
+                validationAssetName={validationAssetName}
+              />
             )}
           </Controls>
         </Map>

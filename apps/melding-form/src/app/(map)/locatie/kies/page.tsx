@@ -19,6 +19,8 @@ export const generateMetadata = async () => {
   }
 }
 
+const ASSET_NAME_SINGULAR_FALLBACK = 'object'
+const ASSET_NAME_PLURAL_FALLBACK = 'objecten'
 const MAX_ASSETS_FALLBACK = 3
 
 const getAssetTypeConfig = (data?: MeldingOutput) => {
@@ -32,6 +34,10 @@ const getAssetTypeConfig = (data?: MeldingOutput) => {
     maxAssets: data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK,
     srsName: args?.srs_name as string | undefined,
     typeNames: args?.type_names as string | undefined,
+    validationAssetName: {
+      plural: (args?.plural as string | undefined) ?? ASSET_NAME_PLURAL_FALLBACK,
+      singular: (args?.singular as string | undefined) ?? ASSET_NAME_SINGULAR_FALLBACK,
+    },
   }
 }
 
@@ -94,6 +100,7 @@ export default async () => {
       labelConfig={assetTypeConfig.label}
       maxAssets={assetTypeConfig.maxAssets}
       selectedAssets={selectedAssets}
+      validationAssetName={assetTypeConfig.validationAssetName}
       wfsQuery={{
         assetTypeId,
         classification: data?.classification?.name,
