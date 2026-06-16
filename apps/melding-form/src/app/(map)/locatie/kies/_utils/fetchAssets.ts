@@ -8,7 +8,7 @@ const getFilter = (id: string) => `
   </Filter>
 `
 
-export const fetchAssetFeatures = async (assetTypeId: number, typeNames: string, assetIds: AssetOutput[]) => {
+export const fetchAssets = async (assetTypeId: number, typeNames: string, assetIds: AssetOutput[]) => {
   const assets = await Promise.all(
     assetIds.map(async (asset) => {
       const filter = getFilter(asset.external_id)

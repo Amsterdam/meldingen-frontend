@@ -6,7 +6,7 @@ import type { MeldingOutput } from '@meldingen/api-client'
 import { getMeldingByMeldingIdAssetsMelder, getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 
 import { deleteExistingAssets } from './_utils/deleteExistingAssets'
-import { fetchAssetFeatures } from './_utils/fetchAssetFeatures'
+import { fetchAssets } from './_utils/fetchAssets'
 import { SelectLocation } from './SelectLocation'
 import { COOKIES } from '~/constants'
 
@@ -52,7 +52,7 @@ const clearAndFetchAssets = async (meldingId: number, token: string, assetTypeId
   // Delete all assets to avoid conflicts with previously selected assets
   await deleteExistingAssets(meldingId, token, assetIds)
 
-  return await fetchAssetFeatures(assetTypeId, typeNames, assetIds)
+  return await fetchAssets(assetTypeId, typeNames, assetIds)
 }
 
 export default async () => {

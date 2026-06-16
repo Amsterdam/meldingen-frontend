@@ -1,11 +1,11 @@
 import { http, HttpResponse } from 'msw'
 
-import { fetchAssetFeatures } from './fetchAssetFeatures'
+import { fetchAssets } from './fetchAssets'
 import { containerAssetIds, containerAssets } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
-describe('fetchAssetFeatures', () => {
+describe('fetchAssets', () => {
   it('returns features for each asset', async () => {
     let callCount = 0
     server.use(
@@ -16,13 +16,13 @@ describe('fetchAssetFeatures', () => {
       }),
     )
 
-    const result = await fetchAssetFeatures(1, 'container', containerAssetIds)
+    const result = await fetchAssets(1, 'container', containerAssetIds)
 
     expect(result).toEqual(containerAssets)
   })
 
   it('returns an empty array when the asset list is empty', async () => {
-    const result = await fetchAssetFeatures(1, 'container', [])
+    const result = await fetchAssets(1, 'container', [])
 
     expect(result).toEqual([])
   })
@@ -34,7 +34,7 @@ describe('fetchAssetFeatures', () => {
 
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-    const result = await fetchAssetFeatures(1, 'container', containerAssetIds)
+    const result = await fetchAssets(1, 'container', containerAssetIds)
 
     expect(consoleSpy).toHaveBeenCalledWith('Test error')
     expect(result).toEqual([])
@@ -45,7 +45,7 @@ describe('fetchAssetFeatures', () => {
   it('filters out assets when the WFS response has no features', async () => {
     server.use(http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json({ features: [] })))
 
-    const result = await fetchAssetFeatures(1, 'container', containerAssetIds)
+    const result = await fetchAssets(1, 'container', containerAssetIds)
 
     expect(result).toEqual([])
   })
@@ -62,7 +62,7 @@ describe('fetchAssetFeatures', () => {
 
     vi.spyOn(console, 'error').mockImplementation(() => {})
 
-    const result = await fetchAssetFeatures(1, 'container', containerAssetIds)
+    const result = await fetchAssets(1, 'container', containerAssetIds)
 
     expect(result).toEqual([containerAssets[1]])
   })
