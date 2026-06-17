@@ -4,7 +4,7 @@ import { http, HttpResponse } from 'msw'
 import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
 import Page, { generateMetadata } from './page'
-import { additionalQuestions, melding } from '~/mocks/data'
+import { additionalQuestions, asset, melding } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -160,6 +160,7 @@ describe('Page', () => {
     expect(Detail).toHaveBeenCalledWith(
       {
         additionalQuestionsWithMeldingText: additionalQuestionsWithMeldingText,
+        assets: [asset],
         attachments: attachments,
         contact: contact,
         location: location,
