@@ -34,6 +34,10 @@ const setInternalState = <T,>(setter: (value: T) => void, value: T) => {
 }
 
 const defaultProps: Props = {
+  assetNames: {
+    plural: 'assets',
+    singular: 'asset',
+  },
   assetTypeIconConfig: {},
   maxAssets: 3,
   selectedAssets: [],

@@ -264,6 +264,40 @@ describe('Page', () => {
     )
   })
 
+  it('passes assetNames when they exist', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () =>
+        HttpResponse.json({
+          ...melding,
+          classification: {
+            ...melding.classification,
+            asset_type: {
+              ...melding.classification?.asset_type,
+              arguments: {
+                ...melding.classification?.asset_type?.arguments,
+                plural: 'containers',
+                singular: 'container',
+              },
+            },
+          },
+        }),
+      ),
+    )
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        assetNames: {
+          plural: 'containers',
+          singular: 'container',
+        },
+      }),
+      undefined,
+    )
+  })
+
   it('falls back to maxAssets=3 when the API does not provide it', async () => {
     const meldingWithAssetType = {
       ...melding,

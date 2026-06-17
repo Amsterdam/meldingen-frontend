@@ -27,6 +27,10 @@ const getAssetTypeConfig = (data?: MeldingOutput) => {
   const args = data?.classification?.asset_type?.arguments
 
   return {
+    assetNames: {
+      plural: (args?.plural as string | undefined) ?? ASSET_NAME_PLURAL_FALLBACK,
+      singular: (args?.singular as string | undefined) ?? ASSET_NAME_SINGULAR_FALLBACK,
+    },
     filter: args?.filter as string | undefined,
     iconEntry: args?.icon_entry as string | undefined,
     iconFolder: args?.icon_folder as string | undefined,
@@ -34,10 +38,6 @@ const getAssetTypeConfig = (data?: MeldingOutput) => {
     maxAssets: data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK,
     srsName: args?.srs_name as string | undefined,
     typeNames: args?.type_names as string | undefined,
-    validationAssetName: {
-      plural: (args?.plural as string | undefined) ?? ASSET_NAME_PLURAL_FALLBACK,
-      singular: (args?.singular as string | undefined) ?? ASSET_NAME_SINGULAR_FALLBACK,
-    },
   }
 }
 
@@ -92,6 +92,7 @@ export default async () => {
 
   return (
     <SelectLocation
+      assetNames={assetTypeConfig.assetNames}
       assetTypeIconConfig={{
         iconEntry: assetTypeConfig.iconEntry,
         iconFolder: assetTypeConfig.iconFolder,
@@ -100,7 +101,6 @@ export default async () => {
       labelConfig={assetTypeConfig.label}
       maxAssets={assetTypeConfig.maxAssets}
       selectedAssets={selectedAssets}
-      validationAssetName={assetTypeConfig.validationAssetName}
       wfsQuery={{
         assetTypeId,
         classification: data?.classification?.name,

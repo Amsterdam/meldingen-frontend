@@ -66,7 +66,7 @@
     "notifications": {
       "too-many-assets": {
         "close-button": "Sluiten",
-        "title": "U kunt maximaal {maxAssets, plural, =1 {{maxAssets} {validationAssetNameSingular}} other {{maxAssets} {validationAssetNamePlural}}} kiezen"
+        "title": "U kunt maximaal {maxAssets, plural, =1 {{maxAssets} {assetNamesSingular}} other {{maxAssets} {assetNamesPlural}}} kiezen"
       },
       "location-service-disabled": {
         "close-button": "Sluiten",

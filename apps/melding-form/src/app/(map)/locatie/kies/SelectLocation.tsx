@@ -30,15 +30,15 @@ const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) =>
 })
 
 export type Props = {
+  assetNames: {
+    plural: string
+    singular: string
+  }
   assetTypeIconConfig: AssetTypeIconConfig
   coordinates?: Coordinates
   labelConfig?: string
   maxAssets: number
   selectedAssets: Feature[]
-  validationAssetName: {
-    plural: string
-    singular: string
-  }
   wfsQuery: {
     assetTypeId?: number
     classification?: string
@@ -53,12 +53,12 @@ export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 const initialState: { errorMessage?: string } = {}
 
 export const SelectLocation = ({
+  assetNames,
   assetTypeIconConfig,
   coordinates: coordinatesFromServer,
   labelConfig,
   maxAssets,
   selectedAssets: selectedAssetsFromServer,
-  validationAssetName,
   wfsQuery,
 }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
@@ -106,10 +106,10 @@ export const SelectLocation = ({
       <SideBarBottom isHidden={!showAssetList}>
         {notificationType === 'too-many-assets' && !isWideWindow && (
           <Notification
+            assetNames={assetNames}
             maxAssets={maxAssets}
             onClose={() => setNotificationType(null)}
             type={notificationType}
-            validationAssetName={validationAssetName}
           />
         )}
         <AssetList
@@ -155,10 +155,10 @@ export const SelectLocation = ({
           >
             {notificationType && (
               <Notification
+                assetNames={assetNames}
                 maxAssets={maxAssets}
                 onClose={() => setNotificationType(null)}
                 type={notificationType}
-                validationAssetName={validationAssetName}
               />
             )}
           </Controls>

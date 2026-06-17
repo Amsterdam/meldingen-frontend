@@ -8,12 +8,9 @@ import type { NotificationType } from '../../SelectLocation'
 import styles from './Notification.module.css'
 
 const getTexts = (
-  t: (
-    key: string,
-    options?: { maxAssets: number; validationAssetNamePlural: string; validationAssetNameSingular: string },
-  ) => string,
+  t: (key: string, options?: { assetNamesPlural: string; assetNamesSingular: string; maxAssets: number }) => string,
   maxAssets: number,
-  validationAssetName: { plural: string; singular: string },
+  assetNames: { plural: string; singular: string },
 ) => ({
   'location-service-disabled': {
     closeButton: t('location-service-disabled.close-button'),
@@ -25,22 +22,22 @@ const getTexts = (
     closeButton: t('too-many-assets.close-button'),
     severity: undefined,
     title: t('too-many-assets.title', {
+      assetNamesPlural: assetNames.plural,
+      assetNamesSingular: assetNames.singular,
       maxAssets,
-      validationAssetNamePlural: validationAssetName.plural,
-      validationAssetNameSingular: validationAssetName.singular,
     }),
   },
 })
 
 export type Props = Omit<AlertProps, 'heading' | 'headingLevel'> & {
+  assetNames: { plural: string; singular: string }
   maxAssets: number
   type: NotificationType
-  validationAssetName: { plural: string; singular: string }
 }
 
-export const Notification = ({ maxAssets, type, validationAssetName, ...restProps }: Props) => {
+export const Notification = ({ assetNames, maxAssets, type, ...restProps }: Props) => {
   const t = useTranslations('select-location.notifications')
-  const texts = getTexts(t, maxAssets, validationAssetName)
+  const texts = getTexts(t, maxAssets, assetNames)
 
   return (
     <Alert
