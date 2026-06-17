@@ -12,10 +12,8 @@ import { AssetIcon } from '~/app/_components/AssetIcon/AssetIcon'
 import styles from './AssetList.module.css'
 
 export type Props = {
+  assetConfig: Pick<SelectLocationProps['assetConfig'], 'icon' | 'label' | 'maxCount'>
   assetList: Feature[]
-  assetTypeIconConfig: SelectLocationProps['assetConfig']['icon']
-  labelConfig?: SelectLocationProps['assetConfig']['label']
-  maxAssets: SelectLocationProps['assetConfig']['maxCount']
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
   setNotificationType: (notificationType: NotificationType | null) => void
@@ -40,40 +38,25 @@ const getLabelText = (asset: Feature, labelConfig?: SelectLocationProps['assetCo
 
 type AssetListItemProps = {
   asset: Feature
-  assetTypeIconConfig: SelectLocationProps['assetConfig']['icon']
+  assetConfig: Pick<SelectLocationProps['assetConfig'], 'icon' | 'label'>
   isChecked?: boolean
-  labelConfig?: SelectLocationProps['assetConfig']['label']
   onChange: () => void
 }
 
-const AssetListItem = ({
-  asset,
-  assetTypeIconConfig,
-  isChecked = false,
-  labelConfig,
-  onChange,
-}: AssetListItemProps) => (
+const AssetListItem = ({ asset, assetConfig, isChecked = false, onChange }: AssetListItemProps) => (
   <li>
     <Checkbox checked={isChecked} className={styles.checkbox} onChange={onChange}>
       <span className={styles.label}>
-        <AssetIcon
-          alt=""
-          assetTypeIconConfig={assetTypeIconConfig}
-          height={32}
-          properties={asset.properties}
-          width={32}
-        />
-        {getLabelText(asset, labelConfig)}
+        <AssetIcon alt="" assetTypeIconConfig={assetConfig.icon} height={32} properties={asset.properties} width={32} />
+        {getLabelText(asset, assetConfig.label)}
       </span>
     </Checkbox>
   </li>
 )
 
 export const AssetList = ({
+  assetConfig,
   assetList,
-  assetTypeIconConfig,
-  labelConfig,
-  maxAssets,
   selectedAssets,
   setCoordinates,
   setNotificationType,
@@ -102,7 +85,7 @@ export const AssetList = ({
   }
 
   const handleSelectAsset = (asset: Feature) => {
-    if (selectedAssets.length >= maxAssets) {
+    if (selectedAssets.length >= assetConfig.maxCount) {
       setNotificationType('too-many-assets')
       return
     }
@@ -119,19 +102,17 @@ export const AssetList = ({
       {selectedAssets.map((asset) => (
         <AssetListItem
           asset={asset}
-          assetTypeIconConfig={assetTypeIconConfig}
+          assetConfig={assetConfig}
           isChecked
           key={asset.id}
-          labelConfig={labelConfig}
           onChange={() => handleDeselectAsset(asset)}
         />
       ))}
       {filteredList.map((asset) => (
         <AssetListItem
           asset={asset}
-          assetTypeIconConfig={assetTypeIconConfig}
+          assetConfig={assetConfig}
           key={asset.id}
-          labelConfig={labelConfig}
           onChange={() => handleSelectAsset(asset)}
         />
       ))}

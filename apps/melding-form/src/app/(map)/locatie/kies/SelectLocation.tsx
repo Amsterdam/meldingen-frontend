@@ -114,10 +114,8 @@ export const SelectLocation = ({
           />
         )}
         <AssetList
+          assetConfig={assetConfig}
           assetList={assetList}
-          assetTypeIconConfig={assetConfig.icon}
-          labelConfig={assetConfig.label}
-          maxAssets={assetConfig.maxCount}
           selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
           setNotificationType={setNotificationType}

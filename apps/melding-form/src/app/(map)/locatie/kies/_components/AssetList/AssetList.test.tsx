@@ -8,13 +8,15 @@ import { AssetList } from './AssetList'
 import { containerAssets } from '~/mocks/data'
 
 const defaultProps: Props = {
-  assetList: containerAssets,
-  assetTypeIconConfig: {
-    entry: 'fractie_omschrijving',
-    folder: 'container',
+  assetConfig: {
+    icon: {
+      entry: 'fractie_omschrijving',
+      folder: 'container',
+    },
+    label: '{{fractie_omschrijving}} {{id_nummer}}',
+    maxCount: 5,
   },
-  labelConfig: '{{fractie_omschrijving}} {{id_nummer}}',
-  maxAssets: 5,
+  assetList: containerAssets,
   selectedAssets: [],
   setCoordinates: vi.fn(),
   setNotificationType: vi.fn(),
@@ -69,7 +71,12 @@ describe('AssetList', () => {
   })
 
   it('defaults to using the asset id as label when labelConfig is not provided', () => {
-    render(<AssetList {...defaultProps} labelConfig={undefined} />)
+    render(
+      <AssetList
+        {...defaultProps}
+        assetConfig={{ icon: defaultProps.assetConfig.icon, maxCount: defaultProps.assetConfig.maxCount }}
+      />,
+    )
 
     const asset1 = screen.getByRole('checkbox', { name: 'container.1' })
     const asset2 = screen.getByRole('checkbox', { name: 'container.2' })
@@ -79,7 +86,16 @@ describe('AssetList', () => {
   })
 
   it('defaults to using the asset id as label when labelConfig only references non-existing properties', () => {
-    render(<AssetList {...defaultProps} labelConfig="{{non_existing_property_1}} {{non_existing_property_2}}" />)
+    render(
+      <AssetList
+        {...defaultProps}
+        assetConfig={{
+          icon: defaultProps.assetConfig.icon,
+          label: '{{non_existing_property_1}} {{non_existing_property_2}}',
+          maxCount: defaultProps.assetConfig.maxCount,
+        }}
+      />,
+    )
 
     const asset1 = screen.getByRole('checkbox', { name: 'container.1' })
     const asset2 = screen.getByRole('checkbox', { name: 'container.2' })
