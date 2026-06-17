@@ -27,13 +27,13 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
     console.error(assetIdError ?? meldingError)
-    return { assets: [] }
+    return { assets: [], pageConfig: undefined }
   }
 
   const assetTypeId = melding.classification?.asset_type?.id
   const typeNames = melding.classification?.asset_type?.arguments?.type_names as string | undefined
 
-  if (!assetTypeId || !typeNames) return { assets: [] }
+  if (!assetTypeId || !typeNames) return { assets: [], pageConfig: undefined }
 
   const assets = await Promise.all(
     assetIds.map(async (asset) => {
