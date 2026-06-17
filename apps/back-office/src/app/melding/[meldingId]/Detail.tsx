@@ -28,7 +28,7 @@ type File = {
 
 type Props = {
   additionalQuestionsWithMeldingText: DescriptionListItem[]
-  assets: never[] | AssetOutput[]
+  assets: AssetOutput[]
   assetsTerm?: string
   attachments: Omit<DescriptionListItem, 'description'> & { files: File[] }
   contact?: DescriptionListItem[]
