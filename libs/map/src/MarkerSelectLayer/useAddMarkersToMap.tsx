@@ -24,11 +24,11 @@ export const createClusterIcon = (cluster: MarkerCluster) => {
 }
 
 export type Props = {
-  assetTypeIconConfig: {
+  features: Feature[]
+  iconConfig: {
     entry?: string
     folder?: string
   }
-  features: Feature[]
   map?: Map
   markerLayerRef: RefObject<Layer | null>
   maxMarkers: number
@@ -39,8 +39,8 @@ export type Props = {
 }
 
 export const useAddMarkersToMap = ({
-  assetTypeIconConfig,
   features,
+  iconConfig,
   map,
   markerLayerRef,
   maxMarkers,
@@ -68,7 +68,7 @@ export const useAddMarkersToMap = ({
       const isSelected = selectedMarkers.some((a) => a.id === feature.id)
 
       const marker = new Marker(latlng, {
-        icon: getAssetIcon(feature, isSelected, assetTypeIconConfig),
+        icon: getAssetIcon(feature, isSelected, iconConfig),
         keyboard: false,
       })
 
@@ -124,7 +124,7 @@ export const useAddMarkersToMap = ({
     map,
     features,
     selectedMarkers,
-    assetTypeIconConfig,
+    iconConfig,
     maxMarkers,
     onMaxMarkersReached,
     onSelectedMarkersChange,

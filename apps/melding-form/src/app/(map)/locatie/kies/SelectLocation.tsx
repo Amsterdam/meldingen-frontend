@@ -137,8 +137,8 @@ export const SelectLocation = ({
             selectedPoint={coordinates}
           />
           <MarkerSelectLayer
-            assetTypeIconConfig={assetConfig.icon}
             features={assetList}
+            iconConfig={assetConfig.icon}
             maxMarkers={assetConfig.maxCount}
             onFeaturesChange={setAssetList}
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}

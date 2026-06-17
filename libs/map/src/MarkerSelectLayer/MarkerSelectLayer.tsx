@@ -68,11 +68,11 @@ export const fetchFeaturesOnMoveEnd = async (
 }
 
 export type Props = {
-  assetTypeIconConfig: {
+  features: Feature[]
+  iconConfig: {
     entry?: string
     folder?: string
   }
-  features: Feature[]
   maxMarkers: number
   onFeaturesChange: (markers: Feature[]) => void
   onMaxMarkersReached: (maxReached: boolean) => void
@@ -83,8 +83,8 @@ export type Props = {
 }
 
 export const MarkerSelectLayer = ({
-  assetTypeIconConfig,
   features,
+  iconConfig,
   maxMarkers,
   onFeaturesChange,
   onMaxMarkersReached,
@@ -109,8 +109,8 @@ export const MarkerSelectLayer = ({
   }, [map])
 
   useAddMarkersToMap({
-    assetTypeIconConfig,
     features,
+    iconConfig,
     map,
     markerLayerRef,
     maxMarkers,
