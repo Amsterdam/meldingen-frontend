@@ -8,14 +8,14 @@ import type { Feature } from '@meldingen/api-client'
 import { FALLBACK_SRC } from '~/constants'
 
 type Props = Omit<ImageProps, 'src'> & {
-  assetTypeIconConfig: {
+  iconConfig: {
     entry?: string
     folder?: string
   }
   properties: Feature['properties']
 }
 
-const getAssetIconSVG = (properties: Feature['properties'], { entry, folder }: Props['assetTypeIconConfig']) => {
+const getAssetIconSVG = (properties: Feature['properties'], { entry, folder }: Props['iconConfig']) => {
   const assetSubType = entry ? (properties?.[entry] as string) : undefined
 
   if (!folder || !assetSubType) {
@@ -25,8 +25,8 @@ const getAssetIconSVG = (properties: Feature['properties'], { entry, folder }: P
   return `/${folder}/${assetSubType.toLowerCase()}.svg`
 }
 
-export const AssetIcon = ({ assetTypeIconConfig, properties, ...rest }: Props) => {
-  const src = getAssetIconSVG(properties, assetTypeIconConfig)
+export const AssetIcon = ({ iconConfig, properties, ...rest }: Props) => {
+  const src = getAssetIconSVG(properties, iconConfig)
   const [imgSrc, setImgSrc] = useState(src)
 
   return (

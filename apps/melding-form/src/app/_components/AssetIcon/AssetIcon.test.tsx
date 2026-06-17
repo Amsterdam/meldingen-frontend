@@ -10,8 +10,8 @@ describe('AssetIcon', () => {
     render(
       <AssetIcon
         alt="Test icon"
-        assetTypeIconConfig={{ entry: 'icon_name', folder: 'container' }}
         height={10}
+        iconConfig={{ entry: 'icon_name', folder: 'container' }}
         properties={{ icon_name: 'rest' } as Feature['properties']}
         width={20}
       />,
@@ -24,8 +24,8 @@ describe('AssetIcon', () => {
     render(
       <AssetIcon
         alt="Test icon"
-        assetTypeIconConfig={{ entry: 'icon_name', folder: 'container' }}
         height={10}
+        iconConfig={{ entry: 'icon_name', folder: 'container' }}
         properties={{ icon_name: name } as Feature['properties']}
         width={20}
       />,
@@ -38,8 +38,8 @@ describe('AssetIcon', () => {
     render(
       <AssetIcon
         alt="Test icon"
-        assetTypeIconConfig={{ entry: 'icon_name' }}
         height={10}
+        iconConfig={{ entry: 'icon_name' }}
         properties={{ icon_name: 'rest' } as Feature['properties']}
         width={20}
       />,
@@ -52,8 +52,8 @@ describe('AssetIcon', () => {
     const { rerender } = render(
       <AssetIcon
         alt="Test icon"
-        assetTypeIconConfig={{ folder: 'container' }}
         height={10}
+        iconConfig={{ folder: 'container' }}
         properties={{ icon_name: 'rest' } as Feature['properties']}
         width={20}
       />,
@@ -64,8 +64,8 @@ describe('AssetIcon', () => {
     rerender(
       <AssetIcon
         alt="Test icon"
-        assetTypeIconConfig={{ entry: 'icon_name', folder: 'container' }}
         height={10}
+        iconConfig={{ entry: 'icon_name', folder: 'container' }}
         properties={null}
         width={20}
       />,
@@ -78,8 +78,8 @@ describe('AssetIcon', () => {
     render(
       <AssetIcon
         alt="Test icon"
-        assetTypeIconConfig={{ entry: 'icon_name', folder: 'container' }}
         height={10}
+        iconConfig={{ entry: 'icon_name', folder: 'container' }}
         properties={{ icon_name: 'broken' } as Feature['properties']}
         width={20}
       />,

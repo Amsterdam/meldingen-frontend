@@ -47,7 +47,7 @@ const AssetListItem = ({ asset, assetConfig, isChecked = false, onChange }: Asse
   <li>
     <Checkbox checked={isChecked} className={styles.checkbox} onChange={onChange}>
       <span className={styles.label}>
-        <AssetIcon alt="" assetTypeIconConfig={assetConfig.icon} height={32} properties={asset.properties} width={32} />
+        <AssetIcon alt="" height={32} iconConfig={assetConfig.icon} properties={asset.properties} width={32} />
         {getLabelText(asset, assetConfig.label)}
       </span>
     </Checkbox>

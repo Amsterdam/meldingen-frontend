@@ -251,7 +251,7 @@ describe('Page', () => {
     )
   })
 
-  it('passes assetTypeIconConfig when it exists', async () => {
+  it('passes icon config when it exists', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)))
 
     const PageComponent = await Page()
