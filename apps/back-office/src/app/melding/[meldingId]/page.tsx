@@ -47,13 +47,13 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   const contact = getContactData(data, t)
   const location = getLocationData(data, t)
   const meldingData = getMeldingData(data, t)
-  const { assets, assetTerm } = await getAssetsData(data, meldingId)
+  const { assets, assetsTerm } = await getAssetsData(data, meldingId)
 
   return (
     <Detail
       additionalQuestionsWithMeldingText={additionalQuestionsWithMeldingText}
       assets={assets}
-      assetTerm={assetTerm}
+      assetsTerm={assetsTerm}
       attachments={attachments}
       contact={contact}
       location={location}

@@ -16,6 +16,6 @@ export const getAssetsData = async (data: MeldingOutput, meldingId: number) => {
 
   return {
     assets: assetIds,
-    assetTerm: data.classification?.asset_type?.arguments?.term as string | undefined,
+    assetsTerm: data.classification?.asset_type?.arguments?.term as string | undefined,
   }
 }

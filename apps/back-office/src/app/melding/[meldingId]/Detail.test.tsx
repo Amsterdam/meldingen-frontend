@@ -99,7 +99,7 @@ describe('Detail', () => {
     render(
       <Detail
         {...defaultProps}
-        assetTerm="Objecten"
+        assetsTerm="Objecten"
         location={[{ description: getFullNLAddress(melding)!, key: 'address', term: 'location.address' }]}
       />,
     )
@@ -112,7 +112,7 @@ describe('Detail', () => {
     render(
       <Detail
         {...defaultProps}
-        assetTerm={undefined}
+        assetsTerm={undefined}
         location={[{ description: getFullNLAddress(melding)!, key: 'address', term: 'location.address' }]}
       />,
     )

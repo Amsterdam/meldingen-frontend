@@ -29,7 +29,7 @@ type File = {
 type Props = {
   additionalQuestionsWithMeldingText: DescriptionListItem[]
   assets: never[] | AssetOutput[]
-  assetTerm?: string
+  assetsTerm?: string
   attachments: Omit<DescriptionListItem, 'description'> & { files: File[] }
   contact?: DescriptionListItem[]
   location?: DescriptionListItem[]
@@ -40,7 +40,7 @@ type Props = {
 export const Detail = ({
   additionalQuestionsWithMeldingText,
   assets,
-  assetTerm,
+  assetsTerm,
   attachments,
   contact,
   location,
@@ -78,7 +78,7 @@ export const Detail = ({
                 ))}
                 {assets.length > 0 && (
                   <>
-                    <dt className={styles.term}>{assetTerm ?? t('assets.term')}</dt>
+                    <dt className={styles.term}>{assetsTerm ?? t('assets.term')}</dt>
                     {assets.map((asset) => (
                       <dd className={styles.assetsDescription} key={asset.id}>
                         {asset.external_id}

@@ -8,7 +8,7 @@ import { server } from '~/mocks/node'
 const mockMeldingId = 123
 
 describe('getAssetsData', () => {
-  it('returns assets and assetTerm when classification has an asset_type with a term', async () => {
+  it('returns assets and assetsTerm when classification has an asset_type with a term', async () => {
     const meldingWithTerm = {
       ...melding,
       classification: {
@@ -29,16 +29,16 @@ describe('getAssetsData', () => {
 
     expect(result).toEqual({
       assets: [asset],
-      assetTerm: 'Klokken',
+      assetsTerm: 'Klokken',
     })
   })
 
-  it('returns assets with undefined assetTerm when classification has no asset_type', async () => {
+  it('returns assets with undefined assetsTerm when classification has no asset_type', async () => {
     const result = await getAssetsData(melding, mockMeldingId)
 
     expect(result).toEqual({
       assets: [asset],
-      assetTerm: undefined,
+      assetsTerm: undefined,
     })
   })
 
