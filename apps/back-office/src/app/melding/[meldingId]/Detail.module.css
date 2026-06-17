@@ -109,6 +109,15 @@
   }
 }
 
+.assetsDescription {
+  composes: description;
+  grid-column: 2;
+
+  @media screen and (min-width: 72.5rem) {
+    grid-column: auto;
+  }
+}
+
 .attachmentsGrid {
   column-gap: var(--ams-space-l);
 
