@@ -69,8 +69,8 @@ export const fetchFeaturesOnMoveEnd = async (
 
 export type Props = {
   assetTypeIconConfig: {
-    iconEntry?: string
-    iconFolder?: string
+    entry?: string
+    folder?: string
   }
   features: Feature[]
   maxMarkers: number

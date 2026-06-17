@@ -222,7 +222,9 @@ describe('Page', () => {
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        maxAssets: 5,
+        assetConfig: expect.objectContaining({
+          maxCount: 5,
+        }),
       }),
       undefined,
     )
@@ -236,11 +238,13 @@ describe('Page', () => {
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        wfsQuery: expect.objectContaining({
-          assetTypeId: melding.classification?.asset_type?.id,
-          filter: melding.classification?.asset_type?.arguments?.filter,
-          srsName: melding.classification?.asset_type?.arguments?.srs_name,
-          typeNames: melding.classification?.asset_type?.arguments?.type_names,
+        assetConfig: expect.objectContaining({
+          wfsQuery: expect.objectContaining({
+            assetTypeId: melding.classification?.asset_type?.id,
+            filter: melding.classification?.asset_type?.arguments?.filter,
+            srsName: melding.classification?.asset_type?.arguments?.srs_name,
+            typeNames: melding.classification?.asset_type?.arguments?.type_names,
+          }),
         }),
       }),
       undefined,
@@ -255,10 +259,12 @@ describe('Page', () => {
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        assetTypeIconConfig: {
-          iconEntry: 'fractie_omschrijving',
-          iconFolder: 'container',
-        },
+        assetConfig: expect.objectContaining({
+          icon: {
+            entry: 'fractie_omschrijving',
+            folder: 'container',
+          },
+        }),
       }),
       undefined,
     )
@@ -289,10 +295,12 @@ describe('Page', () => {
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        assetNames: {
-          plural: 'containers',
-          singular: 'container',
-        },
+        assetConfig: expect.objectContaining({
+          names: {
+            plural: 'containers',
+            singular: 'container',
+          },
+        }),
       }),
       undefined,
     )
@@ -314,7 +322,9 @@ describe('Page', () => {
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        maxAssets: 3,
+        assetConfig: expect.objectContaining({
+          maxCount: 3,
+        }),
       }),
       undefined,
     )

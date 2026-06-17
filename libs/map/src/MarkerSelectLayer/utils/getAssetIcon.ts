@@ -6,23 +6,20 @@ import type { Feature } from '@meldingen/api-client'
 
 import styles from './getAssetIcon.module.css'
 
-const getAssetIconSVG = (
-  properties: Feature['properties'],
-  { iconEntry, iconFolder }: { iconEntry?: string; iconFolder?: string },
-) => {
-  const assetSubType = iconEntry ? (properties?.[iconEntry] as string) : undefined
+const getAssetIconSVG = (properties: Feature['properties'], { entry, folder }: { entry?: string; folder?: string }) => {
+  const assetSubType = entry ? (properties?.[entry] as string) : undefined
 
-  if (!iconFolder || !assetSubType) {
+  if (!folder || !assetSubType) {
     return '/asset-fallback.svg'
   }
 
-  return `/${iconFolder}/${assetSubType.toLowerCase()}.svg`
+  return `/${folder}/${assetSubType.toLowerCase()}.svg`
 }
 
 export const getAssetIcon = (
   feature: Feature,
   isSelected: boolean,
-  assetTypeIconConfig: { iconEntry?: string; iconFolder?: string },
+  assetTypeIconConfig: { entry?: string; folder?: string },
 ): Icon => {
   const icon = LeafletIcon({
     iconAnchor: [22, 22],

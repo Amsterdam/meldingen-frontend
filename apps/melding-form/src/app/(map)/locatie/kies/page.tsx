@@ -23,21 +23,27 @@ const ASSET_NAME_SINGULAR_FALLBACK = 'object'
 const ASSET_NAME_PLURAL_FALLBACK = 'objecten'
 const MAX_ASSETS_FALLBACK = 3
 
-const getAssetTypeConfig = (data?: MeldingOutput) => {
+const getAssetConfig = (data?: MeldingOutput) => {
   const args = data?.classification?.asset_type?.arguments
 
   return {
-    assetNames: {
+    icon: {
+      entry: args?.icon_entry as string | undefined,
+      folder: args?.icon_folder as string | undefined,
+    },
+    label: args?.label as string | undefined,
+    maxCount: data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK,
+    names: {
       plural: (args?.plural as string | undefined) ?? ASSET_NAME_PLURAL_FALLBACK,
       singular: (args?.singular as string | undefined) ?? ASSET_NAME_SINGULAR_FALLBACK,
     },
-    filter: args?.filter as string | undefined,
-    iconEntry: args?.icon_entry as string | undefined,
-    iconFolder: args?.icon_folder as string | undefined,
-    label: args?.label as string | undefined,
-    maxAssets: data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK,
-    srsName: args?.srs_name as string | undefined,
-    typeNames: args?.type_names as string | undefined,
+    wfsQuery: {
+      assetTypeId: data?.classification?.asset_type?.id,
+      classification: data?.classification?.name,
+      filter: args?.filter as string | undefined,
+      srsName: args?.srs_name as string | undefined,
+      typeNames: args?.type_names as string | undefined,
+    },
   }
 }
 
@@ -79,8 +85,10 @@ export default async () => {
   }
 
   const assetTypeId = data?.classification?.asset_type?.id
-  const assetTypeConfig = getAssetTypeConfig(data)
-  const { typeNames } = assetTypeConfig
+  const assetConfig = getAssetConfig(data)
+  const {
+    wfsQuery: { typeNames },
+  } = assetConfig
 
   const selectedAssets =
     assetTypeId && typeNames ? await clearAndFetchAssets(meldingId, token, assetTypeId, typeNames) : []
@@ -90,24 +98,5 @@ export default async () => {
     lng: data.geo_location.geometry.coordinates[1],
   }
 
-  return (
-    <SelectLocation
-      assetNames={assetTypeConfig.assetNames}
-      assetTypeIconConfig={{
-        iconEntry: assetTypeConfig.iconEntry,
-        iconFolder: assetTypeConfig.iconFolder,
-      }}
-      coordinates={coordinates}
-      labelConfig={assetTypeConfig.label}
-      maxAssets={assetTypeConfig.maxAssets}
-      selectedAssets={selectedAssets}
-      wfsQuery={{
-        assetTypeId,
-        classification: data?.classification?.name,
-        filter: assetTypeConfig.filter,
-        srsName: assetTypeConfig.srsName,
-        typeNames: assetTypeConfig.typeNames,
-      }}
-    />
-  )
+  return <SelectLocation assetConfig={assetConfig} coordinates={coordinates} selectedAssets={selectedAssets} />
 }

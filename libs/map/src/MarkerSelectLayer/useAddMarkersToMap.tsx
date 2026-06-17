@@ -25,8 +25,8 @@ export const createClusterIcon = (cluster: MarkerCluster) => {
 
 export type Props = {
   assetTypeIconConfig: {
-    iconEntry?: string
-    iconFolder?: string
+    entry?: string
+    folder?: string
   }
   features: Feature[]
   map?: Map

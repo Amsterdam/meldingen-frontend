@@ -10,8 +10,8 @@ import { containerAssets } from '~/mocks/data'
 const defaultProps: Props = {
   assetList: containerAssets,
   assetTypeIconConfig: {
-    iconEntry: 'fractie_omschrijving',
-    iconFolder: 'container',
+    entry: 'fractie_omschrijving',
+    folder: 'container',
   },
   labelConfig: '{{fractie_omschrijving}} {{id_nummer}}',
   maxAssets: 5,

@@ -4,8 +4,8 @@ import { Checkbox } from '@amsterdam/design-system-react'
 
 import type { Feature } from '@meldingen/api-client'
 
-import type { NotificationType } from '../../SelectLocation'
-import type { AssetTypeIconConfig, Coordinates } from '~/types'
+import type { NotificationType, Props as SelectLocationProps } from '../../SelectLocation'
+import type { Coordinates } from '~/types'
 
 import { AssetIcon } from '~/app/_components/AssetIcon/AssetIcon'
 
@@ -13,16 +13,16 @@ import styles from './AssetList.module.css'
 
 export type Props = {
   assetList: Feature[]
-  assetTypeIconConfig: AssetTypeIconConfig
-  labelConfig?: string
-  maxAssets: number
+  assetTypeIconConfig: SelectLocationProps['assetConfig']['icon']
+  labelConfig?: SelectLocationProps['assetConfig']['label']
+  maxAssets: SelectLocationProps['assetConfig']['maxCount']
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
   setNotificationType: (notificationType: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
-const getLabelText = (asset: Feature, labelConfig?: string) => {
+const getLabelText = (asset: Feature, labelConfig?: SelectLocationProps['assetConfig']['label']) => {
   // `id` always exists on WFS layers from the City of Amsterdam
   if (!labelConfig) return asset.id
 
@@ -40,9 +40,9 @@ const getLabelText = (asset: Feature, labelConfig?: string) => {
 
 type AssetListItemProps = {
   asset: Feature
-  assetTypeIconConfig: AssetTypeIconConfig
+  assetTypeIconConfig: SelectLocationProps['assetConfig']['icon']
   isChecked?: boolean
-  labelConfig?: string
+  labelConfig?: SelectLocationProps['assetConfig']['label']
   onChange: () => void
 }
 
