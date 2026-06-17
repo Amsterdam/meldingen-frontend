@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import { additionalQuestions, melding, meldingen, textAreaComponent } from './data'
+import { additionalQuestions, asset, melding, meldingen, textAreaComponent } from './data'
 import { ENDPOINTS } from './endpoints'
 
 export const handlers = [
@@ -24,16 +24,7 @@ export const handlers = [
   http.get(ENDPOINTS.GET_MELDING, () => HttpResponse.json(meldingen, { headers: { 'Content-Range': '0/40' } })),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json(melding)),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () => HttpResponse.json(additionalQuestions)),
-  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS, () =>
-    HttpResponse.json([
-      {
-        created_at: '2025-02-18T10:34:29.103642',
-        external_id: 'ext-1',
-        id: 1,
-        updated_at: '2025-02-18T10:34:40.730569',
-      },
-    ]),
-  ),
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS, () => HttpResponse.json([asset])),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
     HttpResponse.json([{ id: 42, original_filename: 'IMG_0815.jpg' }]),
   ),
