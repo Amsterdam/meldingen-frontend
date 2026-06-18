@@ -12,6 +12,7 @@ describe('AssetTypeEdit', () => {
             filter: 'my-filter',
             icon_entry: 'my-icon',
             icon_folder: 'my-folder',
+            label: 'Test Label',
             srs_name: 'EPSG:4326',
             type_names: 'bar',
           },
@@ -37,6 +38,7 @@ describe('AssetTypeEdit', () => {
     const iconFolderInput = await screen.findByRole('textbox', {
       name: 'resources.asset-type.fields.arguments.icon_folder',
     })
+    const labelInput = await screen.findByRole('textbox', { name: 'resources.asset-type.fields.arguments.label' })
     const typeNamesInput = await screen.findByRole('textbox', {
       name: 'resources.asset-type.fields.arguments.type_names',
     })
@@ -50,6 +52,7 @@ describe('AssetTypeEdit', () => {
     expect(iconEntryInput).toHaveValue('my-icon')
     expect(iconFolderInput).toBeInTheDocument()
     expect(iconFolderInput).toHaveValue('my-folder')
+    expect(labelInput).toHaveValue('Test Label')
     expect(typeNamesInput).toBeInTheDocument()
     expect(typeNamesInput).toHaveValue('bar')
     expect(srsNameInput).toBeInTheDocument()

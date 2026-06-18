@@ -10,7 +10,7 @@ import { useActionState, useEffect, useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
-import type { Coordinates } from '~/types'
+import type { AssetTypeIconConfig, Coordinates } from '~/types'
 
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
@@ -30,11 +30,9 @@ const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) =>
 })
 
 export type Props = {
-  assetTypeIconConfig: {
-    iconEntry?: string
-    iconFolder?: string
-  }
+  assetTypeIconConfig: AssetTypeIconConfig
   coordinates?: Coordinates
+  labelConfig?: string
   maxAssets: number
   selectedAssets: Feature[]
   wfsQuery: {
@@ -53,6 +51,7 @@ const initialState: { errorMessage?: string } = {}
 export const SelectLocation = ({
   assetTypeIconConfig,
   coordinates: coordinatesFromServer,
+  labelConfig,
   maxAssets,
   selectedAssets: selectedAssetsFromServer,
   wfsQuery,
@@ -106,6 +105,7 @@ export const SelectLocation = ({
         <AssetList
           assetList={assetList}
           assetTypeIconConfig={assetTypeIconConfig}
+          labelConfig={labelConfig}
           maxAssets={maxAssets}
           selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
