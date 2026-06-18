@@ -105,3 +105,16 @@ docker compose up -d
 ```
 
 The apps are available on the same ports as in local development (see table above).
+
+## Repository layout
+
+This repository is a monorepo.
+
+- Applications live in `/apps`
+- Shared frontend packages live in `/libs`
+
+Local packages are imported through the `@meldingen/*` workspace scope. For example:
+
+```ts
+import { Heading } from '@meldingen/ui'
+```
