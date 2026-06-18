@@ -6,6 +6,9 @@ Meldingen is an application with three separate front-ends:
 - Back Office: where professionals can handle these reports.
 - Admin: where admins can manage the Melding Form and Back Office apps.
 
+Within this repository, the applications live in `/apps` and shared frontend packages live in `/libs`.
+Contributor setup is documented in `docs/guides/getting-started.md`.
+
 ```mermaid
 graph TD
     DB[("Database")] <-->|Data| BE["Back-end"]
