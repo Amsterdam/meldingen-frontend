@@ -11,6 +11,7 @@ describe('transform function', () => {
         filter: 'my-filter',
         icon_entry: 'test-icon',
         icon_folder: 'test-folder',
+        label: 'Test Label',
         srs_name: 'EPSG:4326',
         type_names: 'Type name',
       },
@@ -40,6 +41,7 @@ describe('AssetTypeCreate', () => {
     const nameInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.name' })
     const iconEntryInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.icon_entry' })
     const iconFolderInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.icon_folder' })
+    const labelInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.label' })
     const typeNamesInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.type_names' })
     const srsNameInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.srs_name' })
     const filterInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.filter' })
@@ -49,6 +51,7 @@ describe('AssetTypeCreate', () => {
     expect(nameInput).toBeInTheDocument()
     expect(iconEntryInput).toBeInTheDocument()
     expect(iconFolderInput).toBeInTheDocument()
+    expect(labelInput).toBeInTheDocument()
     expect(typeNamesInput).toBeInTheDocument()
     expect(srsNameInput).toBeInTheDocument()
     expect(filterInput).toBeInTheDocument()

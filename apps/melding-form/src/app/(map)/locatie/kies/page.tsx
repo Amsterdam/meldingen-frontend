@@ -1,13 +1,12 @@
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 
-import {
-  deleteMeldingByMeldingIdAssetByAssetId,
-  getAssetTypeByAssetTypeIdWfs,
-  getMeldingByMeldingIdAssetsMelder,
-  getMeldingByMeldingIdMelder,
-} from '@meldingen/api-client'
+import type { MeldingOutput } from '@meldingen/api-client'
 
+import { getMeldingByMeldingIdAssetsMelder, getMeldingByMeldingIdMelder } from '@meldingen/api-client'
+
+import { deleteExistingAssets } from './_utils/deleteExistingAssets'
+import { fetchAssets } from './_utils/fetchAssets'
 import { SelectLocation } from './SelectLocation'
 import { COOKIES } from '~/constants'
 
@@ -20,18 +19,26 @@ export const generateMetadata = async () => {
   }
 }
 
-const getFilter = (id: string) => `
-  <Filter>
-    <ResourceId rid="${id}" />
-  </Filter>
-`
-
 const MAX_ASSETS_FALLBACK = 3
 
-const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeId: number, typeNames: string) => {
+const getAssetTypeConfig = (data?: MeldingOutput) => {
+  const args = data?.classification?.asset_type?.arguments
+
+  return {
+    filter: args?.filter as string | undefined,
+    iconEntry: args?.icon_entry as string | undefined,
+    iconFolder: args?.icon_folder as string | undefined,
+    label: args?.label as string | undefined,
+    maxAssets: data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK,
+    srsName: args?.srs_name as string | undefined,
+    typeNames: args?.type_names as string | undefined,
+  }
+}
+
+const clearAndFetchAssets = async (meldingId: number, token: string, assetTypeId: number, typeNames: string) => {
   // Get existing assets for this melding
   const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
-    path: { melding_id: parseInt(meldingId, 10) },
+    path: { melding_id: meldingId },
     query: { token },
   })
 
@@ -43,55 +50,19 @@ const getAssetsFromMelding = async (meldingId: string, token: string, assetTypeI
   }
 
   // Delete all assets to avoid conflicts with previously selected assets
-  assetIds.forEach(async (asset) => {
-    const { error } = await deleteMeldingByMeldingIdAssetByAssetId({
-      path: {
-        asset_id: asset.id,
-        melding_id: parseInt(meldingId, 10),
-      },
-      query: { token },
-    })
+  await deleteExistingAssets(meldingId, token, assetIds)
 
-    if (error) {
-      // TODO: Log the error to an error reporting service
-      // eslint-disable-next-line no-console
-      console.error(error)
-    }
-  })
-
-  const assets = await Promise.all(
-    assetIds.map(async (asset) => {
-      const filter = getFilter(asset.external_id)
-
-      const { data, error } = await getAssetTypeByAssetTypeIdWfs({
-        path: { asset_type_id: assetTypeId },
-        query: { filter, type_names: typeNames },
-      })
-
-      if (error) {
-        // TODO: Log the error to an error reporting service
-        // eslint-disable-next-line no-console
-        console.error(error)
-        return null
-      }
-
-      return data.features[0] ?? null
-    }),
-  )
-
-  return assets.filter((asset) => asset !== null)
+  return await fetchAssets(assetTypeId, typeNames, assetIds)
 }
 
 export default async () => {
   const cookieStore = await cookies()
   // We check for the existence of these cookies in our proxy, so non-null assertion is safe here.
-  const meldingId = cookieStore.get(COOKIES.ID)!.value
+  const meldingId = parseInt(cookieStore.get(COOKIES.ID)!.value, 10)
   const token = cookieStore.get(COOKIES.TOKEN)!.value
 
   const { data, error } = await getMeldingByMeldingIdMelder({
-    path: {
-      melding_id: parseInt(meldingId, 10),
-    },
+    path: { melding_id: meldingId },
     query: { token },
   })
 
@@ -102,10 +73,11 @@ export default async () => {
   }
 
   const assetTypeId = data?.classification?.asset_type?.id
-  const typeNames = data?.classification?.asset_type?.arguments?.type_names as string | undefined
+  const assetTypeConfig = getAssetTypeConfig(data)
+  const { typeNames } = assetTypeConfig
 
   const selectedAssets =
-    assetTypeId && typeNames ? await getAssetsFromMelding(meldingId, token, assetTypeId, typeNames) : []
+    assetTypeId && typeNames ? await clearAndFetchAssets(meldingId, token, assetTypeId, typeNames) : []
 
   const coordinates = data?.geo_location?.geometry?.coordinates && {
     lat: data.geo_location.geometry.coordinates[0],
@@ -115,18 +87,19 @@ export default async () => {
   return (
     <SelectLocation
       assetTypeIconConfig={{
-        iconEntry: data?.classification?.asset_type?.arguments?.icon_entry as string | undefined,
-        iconFolder: data?.classification?.asset_type?.arguments?.icon_folder as string | undefined,
+        iconEntry: assetTypeConfig.iconEntry,
+        iconFolder: assetTypeConfig.iconFolder,
       }}
       coordinates={coordinates}
-      maxAssets={data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK}
+      labelConfig={assetTypeConfig.label}
+      maxAssets={assetTypeConfig.maxAssets}
       selectedAssets={selectedAssets}
       wfsQuery={{
-        assetTypeId: assetTypeId,
+        assetTypeId,
         classification: data?.classification?.name,
-        filter: data?.classification?.asset_type?.arguments?.filter as string | undefined,
-        srsName: data?.classification?.asset_type?.arguments?.srs_name as string | undefined,
-        typeNames: typeNames,
+        filter: assetTypeConfig.filter,
+        srsName: assetTypeConfig.srsName,
+        typeNames: assetTypeConfig.typeNames,
       }}
     />
   )
