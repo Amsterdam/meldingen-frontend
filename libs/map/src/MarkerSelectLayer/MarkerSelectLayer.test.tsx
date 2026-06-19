@@ -12,8 +12,8 @@ import { MapComponent } from '../Map/Map'
 import { fetchFeaturesOnMoveEnd, MarkerSelectLayer } from './MarkerSelectLayer'
 
 const defaultProps: Props = {
-  assetTypeIconConfig: {},
   features: [],
+  iconConfig: {},
   maxMarkers: 5,
   onFeaturesChange: vi.fn(),
   onMaxMarkersReached: vi.fn(),

@@ -21,8 +21,8 @@ const mockMapInstance = {
 const mockMarkerLayerRef = { current: null } as unknown as RefObject<Layer | null>
 
 const defaultProps: Props = {
-  assetTypeIconConfig: {},
   features: [],
+  iconConfig: {},
   map: mockMapInstance,
   markerLayerRef: mockMarkerLayerRef,
   maxMarkers: 5,

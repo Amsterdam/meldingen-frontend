@@ -63,6 +63,9 @@
     "location": {
       "address": "Adres"
     },
+    "assets": {
+      "term": "Objecten"
+    },
     "melding-data": {
       "created_at": "Gemeld op",
       "classification": {
