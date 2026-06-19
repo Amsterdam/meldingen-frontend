@@ -19,12 +19,12 @@ export const generateMetadata = async () => {
   }
 }
 
-const ASSET_NAME_SINGULAR_FALLBACK = 'object'
-const ASSET_NAME_PLURAL_FALLBACK = 'objecten'
 const MAX_ASSETS_FALLBACK = 3
 
-const getAssetConfig = (data?: MeldingOutput) => {
+const getAssetConfig = async (data?: MeldingOutput) => {
   const args = data?.classification?.asset_type?.arguments
+
+  const t = await getTranslations('select-location.notifications.too-many-assets')
 
   return {
     icon: {
@@ -34,8 +34,8 @@ const getAssetConfig = (data?: MeldingOutput) => {
     label: args?.label as string | undefined,
     maxCount: data?.classification?.asset_type?.max_assets ?? MAX_ASSETS_FALLBACK,
     names: {
-      plural: (args?.plural as string | undefined) ?? ASSET_NAME_PLURAL_FALLBACK,
-      singular: (args?.singular as string | undefined) ?? ASSET_NAME_SINGULAR_FALLBACK,
+      plural: (args?.plural as string | undefined) ?? t('fallback-asset-names.plural'),
+      singular: (args?.singular as string | undefined) ?? t('fallback-asset-names.singular'),
     },
     wfsQuery: {
       assetTypeId: data?.classification?.asset_type?.id,
@@ -85,7 +85,7 @@ export default async () => {
   }
 
   const assetTypeId = data?.classification?.asset_type?.id
-  const assetConfig = getAssetConfig(data)
+  const assetConfig = await getAssetConfig(data)
   const {
     wfsQuery: { typeNames },
   } = assetConfig

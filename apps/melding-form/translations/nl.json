@@ -65,6 +65,10 @@
     },
     "notifications": {
       "too-many-assets": {
+        "fallback-asset-names": {
+          "singular": "object",
+          "plural": "objecten"
+        },
         "close-button": "Sluiten",
         "title": "U kunt maximaal {maxAssets, plural, =1 {{maxAssets} {assetNamesSingular}} other {{maxAssets} {assetNamesPlural}}} kiezen"
       },
