@@ -113,6 +113,8 @@ This repository is a monorepo.
 - Applications live in `/apps`
 - Shared frontend packages live in `/libs`
 
+This structure treats large internal modules like external packages, which enforces cleaner boundaries and a more deliberate public interface.
+
 Local packages are imported through the `@meldingen/*` workspace scope. For example:
 
 ```ts
