@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 
 import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
-import { melding } from '~/mocks/data'
+import { asset, melding } from '~/mocks/data'
 
 vi.mock('./_components/AttachmentImage', () => ({
   AttachmentImage: vi.fn(() => <div>AttachmentsImage</div>),
@@ -15,6 +15,7 @@ const defaultProps = {
     { description: 'Description 2', key: '2', term: 'Term 2' },
     { description: 'Description 3', key: '3', term: 'Term 3' },
   ],
+  assets: [asset],
   attachments: {
     files: [{ blob: new Blob(['test-blob'], { type: 'image/jpeg' }), fileName: 'IMG_0815.jpg' }],
     key: 'attachments',
@@ -92,6 +93,32 @@ describe('Detail', () => {
 
     expect(screen.getByText('location.address')).toBeInTheDocument()
     expect(screen.getByText(getFullNLAddress(melding)!)).toBeInTheDocument()
+  })
+
+  it('renders the asset data', () => {
+    render(
+      <Detail
+        {...defaultProps}
+        assetsTerm="Objecten"
+        location={[{ description: getFullNLAddress(melding)!, key: 'address', term: 'location.address' }]}
+      />,
+    )
+
+    expect(screen.getByText('Objecten')).toBeInTheDocument()
+    expect(screen.getByText(asset.external_id)).toBeInTheDocument()
+  })
+
+  it('falls back to a default term when asset term is not provided', () => {
+    render(
+      <Detail
+        {...defaultProps}
+        assetsTerm={undefined}
+        location={[{ description: getFullNLAddress(melding)!, key: 'address', term: 'location.address' }]}
+      />,
+    )
+
+    expect(screen.getByText('assets.term')).toBeInTheDocument()
+    expect(screen.getByText(asset.external_id)).toBeInTheDocument()
   })
 
   it('renders the melding data', () => {

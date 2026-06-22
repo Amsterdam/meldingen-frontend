@@ -27,13 +27,13 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
     console.error(assetIdError ?? meldingError)
-    return []
+    return { assets: [], pageConfig: undefined }
   }
 
   const assetTypeId = melding.classification?.asset_type?.id
   const typeNames = melding.classification?.asset_type?.arguments?.type_names as string | undefined
 
-  if (!assetTypeId || !typeNames) return []
+  if (!assetTypeId || !typeNames) return { assets: [], pageConfig: undefined }
 
   const assets = await Promise.all(
     assetIds.map(async (asset) => {
@@ -55,7 +55,14 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
     }),
   )
 
-  return assets.filter((asset) => asset !== null)
+  return {
+    assets: assets.filter((asset) => asset !== null),
+    pageConfig: {
+      description: melding.classification?.asset_type?.arguments?.location_description as string | undefined,
+      label: melding.classification?.asset_type?.arguments?.location_label as string | undefined,
+      requiredError: melding.classification?.asset_type?.arguments?.location_required_error as string | undefined,
+    },
+  }
 }
 
 type Args = {
@@ -88,7 +95,7 @@ export default async () => {
 
   const previousPagePath = getPreviousPagePath({ lastPanelPath, meldingId, source, token })
 
-  const assets = await getAssetsFromMelding(meldingId, token)
+  const { assets, pageConfig } = await getAssetsFromMelding(meldingId, token)
 
-  return <Location address={address} prevPage={previousPagePath} selectedAssets={assets} />
+  return <Location address={address} pageConfig={pageConfig} prevPage={previousPagePath} selectedAssets={assets} />
 }

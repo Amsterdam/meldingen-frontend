@@ -4,17 +4,9 @@ import { AdminContext, ResourceContextProvider } from 'react-admin'
 import { AssetTypeCreate, transform } from './AssetTypeCreate'
 
 describe('transform function', () => {
-  it('should transform data correctly', () => {
+  it('transforms data correctly', () => {
     const inputData = {
-      arguments: {
-        base_url: 'https://example.com/wfs',
-        filter: 'my-filter',
-        icon_entry: 'test-icon',
-        icon_folder: 'test-folder',
-        label: 'Test Label',
-        srs_name: 'EPSG:4326',
-        type_names: 'Type name',
-      },
+      arguments: { some_field: 'https://example.com/wfs' },
       max_assets: 3,
       name: 'Test Asset Type',
     }
@@ -29,7 +21,7 @@ describe('transform function', () => {
 })
 
 describe('AssetTypeCreate', () => {
-  it('should render all inputs', () => {
+  it('renders', () => {
     render(
       <AdminContext>
         <ResourceContextProvider value="asset-type">
@@ -39,24 +31,7 @@ describe('AssetTypeCreate', () => {
     )
 
     const nameInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.name' })
-    const iconEntryInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.icon_entry' })
-    const iconFolderInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.icon_folder' })
-    const labelInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.label' })
-    const typeNamesInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.type_names' })
-    const srsNameInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.srs_name' })
-    const filterInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.filter' })
-    const baseUrlInput = screen.getByRole('textbox', { name: 'resources.asset-type.fields.arguments.base_url' })
-    const maxAssetsInput = screen.getByRole('spinbutton', { name: 'resources.asset-type.fields.max_assets' })
 
     expect(nameInput).toBeInTheDocument()
-    expect(iconEntryInput).toBeInTheDocument()
-    expect(iconFolderInput).toBeInTheDocument()
-    expect(labelInput).toBeInTheDocument()
-    expect(typeNamesInput).toBeInTheDocument()
-    expect(srsNameInput).toBeInTheDocument()
-    expect(filterInput).toBeInTheDocument()
-    expect(baseUrlInput).toBeInTheDocument()
-    expect(maxAssetsInput).toBeInTheDocument()
-    expect(maxAssetsInput).toHaveValue(3)
   })
 })

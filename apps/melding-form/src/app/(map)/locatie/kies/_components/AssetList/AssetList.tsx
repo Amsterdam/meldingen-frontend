@@ -4,25 +4,23 @@ import { Checkbox } from '@amsterdam/design-system-react'
 
 import type { Feature } from '@meldingen/api-client'
 
-import type { NotificationType } from '../../SelectLocation'
-import type { AssetTypeIconConfig, Coordinates } from '~/types'
+import type { NotificationType, Props as SelectLocationProps } from '../../SelectLocation'
+import type { Coordinates } from '~/types'
 
 import { AssetIcon } from '~/app/_components/AssetIcon/AssetIcon'
 
 import styles from './AssetList.module.css'
 
 export type Props = {
+  assetConfig: Pick<SelectLocationProps['assetConfig'], 'icon' | 'label' | 'maxCount'>
   assetList: Feature[]
-  assetTypeIconConfig: AssetTypeIconConfig
-  labelConfig?: string
-  maxAssets: number
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
   setNotificationType: (notificationType: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
 }
 
-const getLabelText = (asset: Feature, labelConfig?: string) => {
+const getLabelText = (asset: Feature, labelConfig?: SelectLocationProps['assetConfig']['label']) => {
   // `id` always exists on WFS layers from the City of Amsterdam
   if (!labelConfig) return asset.id
 
@@ -40,40 +38,25 @@ const getLabelText = (asset: Feature, labelConfig?: string) => {
 
 type AssetListItemProps = {
   asset: Feature
-  assetTypeIconConfig: AssetTypeIconConfig
+  assetConfig: Pick<SelectLocationProps['assetConfig'], 'icon' | 'label'>
   isChecked?: boolean
-  labelConfig?: string
   onChange: () => void
 }
 
-const AssetListItem = ({
-  asset,
-  assetTypeIconConfig,
-  isChecked = false,
-  labelConfig,
-  onChange,
-}: AssetListItemProps) => (
+const AssetListItem = ({ asset, assetConfig, isChecked = false, onChange }: AssetListItemProps) => (
   <li>
     <Checkbox checked={isChecked} className={styles.checkbox} onChange={onChange}>
       <span className={styles.label}>
-        <AssetIcon
-          alt=""
-          assetTypeIconConfig={assetTypeIconConfig}
-          height={32}
-          properties={asset.properties}
-          width={32}
-        />
-        {getLabelText(asset, labelConfig)}
+        <AssetIcon alt="" height={32} iconConfig={assetConfig.icon} properties={asset.properties} width={32} />
+        {getLabelText(asset, assetConfig.label)}
       </span>
     </Checkbox>
   </li>
 )
 
 export const AssetList = ({
+  assetConfig,
   assetList,
-  assetTypeIconConfig,
-  labelConfig,
-  maxAssets,
   selectedAssets,
   setCoordinates,
   setNotificationType,
@@ -102,7 +85,7 @@ export const AssetList = ({
   }
 
   const handleSelectAsset = (asset: Feature) => {
-    if (selectedAssets.length >= maxAssets) {
+    if (selectedAssets.length >= assetConfig.maxCount) {
       setNotificationType('too-many-assets')
       return
     }
@@ -119,19 +102,17 @@ export const AssetList = ({
       {selectedAssets.map((asset) => (
         <AssetListItem
           asset={asset}
-          assetTypeIconConfig={assetTypeIconConfig}
+          assetConfig={assetConfig}
           isChecked
           key={asset.id}
-          labelConfig={labelConfig}
           onChange={() => handleDeselectAsset(asset)}
         />
       ))}
       {filteredList.map((asset) => (
         <AssetListItem
           asset={asset}
-          assetTypeIconConfig={assetTypeIconConfig}
+          assetConfig={assetConfig}
           key={asset.id}
-          labelConfig={labelConfig}
           onChange={() => handleSelectAsset(asset)}
         />
       ))}

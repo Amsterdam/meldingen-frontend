@@ -5,27 +5,28 @@ import { useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
-import type { AssetTypeIconConfig } from '~/types'
-
 import { FALLBACK_SRC } from '~/constants'
 
-const getAssetIconSVG = (properties: Feature['properties'], { iconEntry, iconFolder }: AssetTypeIconConfig) => {
-  const assetSubType = iconEntry ? (properties?.[iconEntry] as string) : undefined
-
-  if (!iconFolder || !assetSubType) {
-    return FALLBACK_SRC
-  }
-
-  return `/${iconFolder}/${assetSubType.toLowerCase()}.svg`
-}
-
 type Props = Omit<ImageProps, 'src'> & {
-  assetTypeIconConfig: AssetTypeIconConfig
+  iconConfig: {
+    entry?: string
+    folder?: string
+  }
   properties: Feature['properties']
 }
 
-export const AssetIcon = ({ assetTypeIconConfig, properties, ...rest }: Props) => {
-  const src = getAssetIconSVG(properties, assetTypeIconConfig)
+const getAssetIconSVG = (properties: Feature['properties'], { entry, folder }: Props['iconConfig']) => {
+  const assetSubType = entry ? (properties?.[entry] as string) : undefined
+
+  if (!folder || !assetSubType) {
+    return FALLBACK_SRC
+  }
+
+  return `/${folder}/${assetSubType.toLowerCase()}.svg`
+}
+
+export const AssetIcon = ({ iconConfig, properties, ...rest }: Props) => {
+  const src = getAssetIconSVG(properties, iconConfig)
   const [imgSrc, setImgSrc] = useState(src)
 
   return (

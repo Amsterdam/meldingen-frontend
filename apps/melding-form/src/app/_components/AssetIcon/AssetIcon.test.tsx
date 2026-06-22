@@ -10,8 +10,8 @@ describe('AssetIcon', () => {
     render(
       <AssetIcon
         alt="Test icon"
-        assetTypeIconConfig={{ iconEntry: 'icon_name', iconFolder: 'container' }}
         height={10}
+        iconConfig={{ entry: 'icon_name', folder: 'container' }}
         properties={{ icon_name: 'rest' } as Feature['properties']}
         width={20}
       />,
@@ -24,8 +24,8 @@ describe('AssetIcon', () => {
     render(
       <AssetIcon
         alt="Test icon"
-        assetTypeIconConfig={{ iconEntry: 'icon_name', iconFolder: 'container' }}
         height={10}
+        iconConfig={{ entry: 'icon_name', folder: 'container' }}
         properties={{ icon_name: name } as Feature['properties']}
         width={20}
       />,
@@ -34,12 +34,12 @@ describe('AssetIcon', () => {
     expect(screen.getByRole('img', { name: 'Test icon' }).getAttribute('src')).toContain(`/container/${name}.svg`)
   })
 
-  it('falls back to fallback src when iconFolder is missing', () => {
+  it('falls back to fallback src when folder is missing', () => {
     render(
       <AssetIcon
         alt="Test icon"
-        assetTypeIconConfig={{ iconEntry: 'icon_name' }}
         height={10}
+        iconConfig={{ entry: 'icon_name' }}
         properties={{ icon_name: 'rest' } as Feature['properties']}
         width={20}
       />,
@@ -48,12 +48,12 @@ describe('AssetIcon', () => {
     expect(screen.getByRole('img', { name: 'Test icon' }).getAttribute('src')).toContain(FALLBACK_SRC)
   })
 
-  it('falls back to fallback src when iconEntry is missing or property is absent', () => {
+  it('falls back to fallback src when entry is missing or property is absent', () => {
     const { rerender } = render(
       <AssetIcon
         alt="Test icon"
-        assetTypeIconConfig={{ iconFolder: 'container' }}
         height={10}
+        iconConfig={{ folder: 'container' }}
         properties={{ icon_name: 'rest' } as Feature['properties']}
         width={20}
       />,
@@ -64,8 +64,8 @@ describe('AssetIcon', () => {
     rerender(
       <AssetIcon
         alt="Test icon"
-        assetTypeIconConfig={{ iconEntry: 'icon_name', iconFolder: 'container' }}
         height={10}
+        iconConfig={{ entry: 'icon_name', folder: 'container' }}
         properties={null}
         width={20}
       />,
@@ -78,8 +78,8 @@ describe('AssetIcon', () => {
     render(
       <AssetIcon
         alt="Test icon"
-        assetTypeIconConfig={{ iconEntry: 'icon_name', iconFolder: 'container' }}
         height={10}
+        iconConfig={{ entry: 'icon_name', folder: 'container' }}
         properties={{ icon_name: 'broken' } as Feature['properties']}
         width={20}
       />,

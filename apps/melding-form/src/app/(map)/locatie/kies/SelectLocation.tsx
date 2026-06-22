@@ -10,7 +10,7 @@ import { useActionState, useEffect, useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
-import type { AssetTypeIconConfig, Coordinates } from '~/types'
+import type { Coordinates } from '~/types'
 
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
@@ -30,18 +30,27 @@ const PointSelectLayer = dynamic(() => import('@meldingen/map').then((module) =>
 })
 
 export type Props = {
-  assetTypeIconConfig: AssetTypeIconConfig
-  coordinates?: Coordinates
-  labelConfig?: string
-  maxAssets: number
-  selectedAssets: Feature[]
-  wfsQuery: {
-    assetTypeId?: number
-    classification?: string
-    filter?: string
-    srsName?: string
-    typeNames?: string
+  assetConfig: {
+    icon: {
+      entry?: string
+      folder?: string
+    }
+    label?: string
+    maxCount: number
+    names: {
+      plural: string
+      singular: string
+    }
+    wfsQuery: {
+      assetTypeId?: number
+      classification?: string
+      filter?: string
+      srsName?: string
+      typeNames?: string
+    }
   }
+  coordinates?: Coordinates
+  selectedAssets: Feature[]
 }
 
 export type NotificationType = 'too-many-assets' | 'location-service-disabled'
@@ -49,12 +58,9 @@ export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 const initialState: { errorMessage?: string } = {}
 
 export const SelectLocation = ({
-  assetTypeIconConfig,
+  assetConfig,
   coordinates: coordinatesFromServer,
-  labelConfig,
-  maxAssets,
   selectedAssets: selectedAssetsFromServer,
-  wfsQuery,
 }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
@@ -63,7 +69,7 @@ export const SelectLocation = ({
   const [showAssetList, setShowAssetList] = useState(false)
 
   const postCoordinatesAndAssetsWithExtraArgs = postCoordinatesAndAssets.bind(null, {
-    asset_type_id: wfsQuery.assetTypeId,
+    asset_type_id: assetConfig.wfsQuery.assetTypeId,
   })
   const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssetsWithExtraArgs, initialState)
 
@@ -100,13 +106,16 @@ export const SelectLocation = ({
       </SideBarTop>
       <SideBarBottom isHidden={!showAssetList}>
         {notificationType === 'too-many-assets' && !isWideWindow && (
-          <Notification maxAssets={maxAssets} onClose={() => setNotificationType(null)} type={notificationType} />
+          <Notification
+            assetNames={assetConfig.names}
+            maxAssets={assetConfig.maxCount}
+            onClose={() => setNotificationType(null)}
+            type={notificationType}
+          />
         )}
         <AssetList
+          assetConfig={assetConfig}
           assetList={assetList}
-          assetTypeIconConfig={assetTypeIconConfig}
-          labelConfig={labelConfig}
-          maxAssets={maxAssets}
           selectedAssets={selectedAssets}
           setCoordinates={setCoordinates}
           setNotificationType={setNotificationType}
@@ -128,15 +137,15 @@ export const SelectLocation = ({
             selectedPoint={coordinates}
           />
           <MarkerSelectLayer
-            assetTypeIconConfig={assetTypeIconConfig}
             features={assetList}
-            maxMarkers={maxAssets}
+            iconConfig={assetConfig.icon}
+            maxMarkers={assetConfig.maxCount}
             onFeaturesChange={setAssetList}
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
             onSelectedMarkersChange={setSelectedAssets}
             selectedMarkers={selectedAssets}
             updateSelectedPoint={setCoordinates}
-            wfsQuery={wfsQuery}
+            wfsQuery={assetConfig.wfsQuery}
           />
           <Controls
             onCurrentLocationError={() => setNotificationType('location-service-disabled')}
@@ -144,7 +153,12 @@ export const SelectLocation = ({
             updateSelectedPoint={setCoordinates}
           >
             {notificationType && (
-              <Notification maxAssets={maxAssets} onClose={() => setNotificationType(null)} type={notificationType} />
+              <Notification
+                assetNames={assetConfig.names}
+                maxAssets={assetConfig.maxCount}
+                onClose={() => setNotificationType(null)}
+                type={notificationType}
+              />
             )}
           </Controls>
         </Map>

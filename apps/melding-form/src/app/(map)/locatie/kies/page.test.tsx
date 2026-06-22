@@ -222,7 +222,9 @@ describe('Page', () => {
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        maxAssets: 5,
+        assetConfig: expect.objectContaining({
+          maxCount: 5,
+        }),
       }),
       undefined,
     )
@@ -236,18 +238,20 @@ describe('Page', () => {
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        wfsQuery: expect.objectContaining({
-          assetTypeId: melding.classification?.asset_type?.id,
-          filter: melding.classification?.asset_type?.arguments?.filter,
-          srsName: melding.classification?.asset_type?.arguments?.srs_name,
-          typeNames: melding.classification?.asset_type?.arguments?.type_names,
+        assetConfig: expect.objectContaining({
+          wfsQuery: expect.objectContaining({
+            assetTypeId: melding.classification?.asset_type?.id,
+            filter: melding.classification?.asset_type?.arguments?.filter,
+            srsName: melding.classification?.asset_type?.arguments?.srs_name,
+            typeNames: melding.classification?.asset_type?.arguments?.type_names,
+          }),
         }),
       }),
       undefined,
     )
   })
 
-  it('passes assetTypeIconConfig when it exists', async () => {
+  it('passes icon config when it exists', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)))
 
     const PageComponent = await Page()
@@ -255,10 +259,48 @@ describe('Page', () => {
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        assetTypeIconConfig: {
-          iconEntry: 'fractie_omschrijving',
-          iconFolder: 'container',
-        },
+        assetConfig: expect.objectContaining({
+          icon: {
+            entry: 'fractie_omschrijving',
+            folder: 'container',
+          },
+        }),
+      }),
+      undefined,
+    )
+  })
+
+  it('passes assetNames when they exist', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () =>
+        HttpResponse.json({
+          ...melding,
+          classification: {
+            ...melding.classification,
+            asset_type: {
+              ...melding.classification?.asset_type,
+              arguments: {
+                ...melding.classification?.asset_type?.arguments,
+                plural: 'containers',
+                singular: 'container',
+              },
+            },
+          },
+        }),
+      ),
+    )
+
+    const PageComponent = await Page()
+    render(PageComponent)
+
+    expect(SelectLocation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        assetConfig: expect.objectContaining({
+          names: {
+            plural: 'containers',
+            singular: 'container',
+          },
+        }),
       }),
       undefined,
     )
@@ -280,7 +322,9 @@ describe('Page', () => {
 
     expect(SelectLocation).toHaveBeenCalledWith(
       expect.objectContaining({
-        maxAssets: 3,
+        assetConfig: expect.objectContaining({
+          maxCount: 3,
+        }),
       }),
       undefined,
     )
