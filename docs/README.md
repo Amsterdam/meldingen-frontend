@@ -7,7 +7,7 @@ Meldingen is an application with three separate front-ends:
 - Admin: where admins can manage the Melding Form and Back Office apps.
 
 Within this repository, the applications live in `/apps` and shared frontend packages live in `/libs`.
-Contributor setup is documented in `docs/getting-started.md`.
+Contributor setup is documented in [our Getting Started docs](./getting-started.md).
 
 ```mermaid
 graph TD
