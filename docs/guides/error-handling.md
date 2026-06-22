@@ -20,7 +20,7 @@ There are a few exceptions, which are detailed below.
   In such cases, we display the current page with an [Alert](https://designsystem.amsterdam/?path=/docs/components-feedback-alert--docs) at the top of the `main` container.
 - Form validation is also done by the back end.
   If a user’s responses fail validation, the back end returns an error.
-  We handle those errors differently from others; refer to [the forms documentation](./0007-forms.md) for further details.
+  We handle those errors differently from others; refer to [the form validation documentation](./form-validation.md) for further details.
 - If session tokens are missing when executing an action, we redirect to `/cookie-storing`.
   From there, a user can start the form flow again.
   Directly redirecting to the first page would be too abrupt, hence the intermediate page.
