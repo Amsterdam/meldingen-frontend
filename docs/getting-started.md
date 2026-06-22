@@ -121,6 +121,8 @@ Local packages are imported through the `@meldingen/*` workspace scope. For exam
 import { Heading } from '@meldingen/ui'
 ```
 
+To add a new library, copy an existing one and remove what you don't need. Update the `name` field in its `package.json`, then add that name to the `dependencies` of any app that will use it.
+
 ## Linting
 
 We use linters for JavaScript / TypeScript, Markdown, JSON and style files.
