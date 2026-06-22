@@ -2,7 +2,7 @@
 
 A Behandelaar creates a Melding by starting in the Back Office app and continuing in the Melding Form app. The two apps communicate through URL parameters and a session cookie. This document describes how the flow works and where the non-obvious parts are.
 
-See [XXXX-link-back-office-to-melding-form-to-create-melding-as-behandelaar.md](decisions/XXXX-link-back-office-to-melding-form-to-create-melding-as-behandelaar.md) for why this architecture was chosen.
+See [ADR 0008: Link Back Office to Melding Form to create Melding as Behandelaar](../decisions/0008-link-back-office-to-melding-form-to-create-melding-as-behandelaar.md) for why this architecture was chosen.
 
 ---
 
