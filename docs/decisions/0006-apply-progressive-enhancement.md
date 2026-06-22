@@ -30,4 +30,5 @@ We use progressive enhancement in the Melding Form and Back Office apps, with di
 
 ## References
 
-- [Progressive enhancement guide](../guides/progressive-enhancement.md)
+- [Why we use progressive enhancement to build GOV.UK](https://technology.blog.gov.uk/2016/09/19/why-we-use-progressive-enhancement-to-build-gov-uk/)
+- [JavaScript isn't always available and it's not the user's fault — Adam Silver](https://adamsilver.io/blog/javascript-isnt-always-available-and-its-not-the-users-fault/)
