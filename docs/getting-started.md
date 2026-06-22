@@ -123,25 +123,17 @@ import { Heading } from '@meldingen/ui'
 
 ## Linting
 
-We use linters and code formatters in our project, for a number of reasons:
+We use linters for JavaScript / TypeScript, Markdown, JSON and style files.
 
-- They help you catch errors early in the development process, when they are easier and cheaper to fix.
-- They can help promote coding standards and best practices within a development team,
-  ensuring that code is consistent and maintainable.
-- They can help you identify potential security vulnerabilities in your code, reducing the risk of a breach.
-
-We use linters for JavaScript / TypeScript files, style files and Markdown files.
-
-For JavaScript / TypeScript we use ESLint and the TypeScript compiler itself.
+For JavaScript / TypeScript, Markdown and JSON files we use ESLint and the TypeScript compiler itself.
 For style files we use Stylelint.
-
 We use Prettier for code formatting of all these files.
 
-These linters and formatters are run:
+These linters and formatters run:
 
 - on save (requiring some configuration by developers, see below)
 - pre-commit
-- on a push to `main` or `develop`
+- on a push to `main`
 - when opening a PR
 
 ### Setting up linting and formatting on save
