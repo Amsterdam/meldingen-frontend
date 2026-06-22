@@ -7,7 +7,11 @@ import type { NotificationType } from '../../SelectLocation'
 
 import styles from './Notification.module.css'
 
-const getTexts = (t: (key: string, options?: { maxAssets: number }) => string, maxAssets: number) => ({
+const getTexts = (
+  t: (key: string, options?: { assetNamesPlural: string; assetNamesSingular: string; maxAssets: number }) => string,
+  maxAssets: number,
+  assetNames: { plural: string; singular: string },
+) => ({
   'location-service-disabled': {
     closeButton: t('location-service-disabled.close-button'),
     description: t('location-service-disabled.description'),
@@ -17,15 +21,23 @@ const getTexts = (t: (key: string, options?: { maxAssets: number }) => string, m
   'too-many-assets': {
     closeButton: t('too-many-assets.close-button'),
     severity: undefined,
-    title: t('too-many-assets.title', { maxAssets }),
+    title: t('too-many-assets.title', {
+      assetNamesPlural: assetNames.plural,
+      assetNamesSingular: assetNames.singular,
+      maxAssets,
+    }),
   },
 })
 
-export type Props = Omit<AlertProps, 'heading' | 'headingLevel'> & { maxAssets: number; type: NotificationType }
+export type Props = Omit<AlertProps, 'heading' | 'headingLevel'> & {
+  assetNames: { plural: string; singular: string }
+  maxAssets: number
+  type: NotificationType
+}
 
-export const Notification = ({ maxAssets, type, ...restProps }: Props) => {
+export const Notification = ({ assetNames, maxAssets, type, ...restProps }: Props) => {
   const t = useTranslations('select-location.notifications')
-  const texts = getTexts(t, maxAssets)
+  const texts = getTexts(t, maxAssets, assetNames)
 
   return (
     <Alert

@@ -146,4 +146,36 @@ describe('Location', () => {
 
     expect(alert).toHaveFocus()
   })
+
+  it('uses the pageConfig label and description when provided', () => {
+    const pageConfig = {
+      description: 'Custom Description',
+      label: 'Custom Label',
+    }
+
+    render(<Location {...defaultProps} pageConfig={pageConfig} />)
+
+    const heading = screen.getByRole('heading', { level: 1 })
+    const paragraph = screen.getByText('Custom Description')
+
+    expect(heading).toHaveTextContent('Custom Label')
+    expect(paragraph).toBeInTheDocument()
+  })
+
+  it('uses the pageConfig requiredError when provided', () => {
+    ;(useActionState as Mock).mockReturnValue([
+      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+      vi.fn(),
+    ])
+
+    const pageConfig = {
+      requiredError: 'Custom Required Error',
+    }
+
+    const { container } = render(<Location {...defaultProps} pageConfig={pageConfig} />)
+
+    const alert = container.querySelector('.ams-alert')
+
+    expect(alert).toHaveTextContent('Custom Required Error')
+  })
 })

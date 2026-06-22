@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server'
 
 import {
   getAdditionalQuestionsData,
+  getAssetsData,
   getAttachmentsData,
   getContactData,
   getLocationData,
@@ -46,10 +47,13 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   const contact = getContactData(data, t)
   const location = getLocationData(data, t)
   const meldingData = getMeldingData(data, t)
+  const { assets, assetsTerm } = await getAssetsData(data, meldingId)
 
   return (
     <Detail
       additionalQuestionsWithMeldingText={additionalQuestionsWithMeldingText}
+      assets={assets}
+      assetsTerm={assetsTerm}
       attachments={attachments}
       contact={contact}
       location={location}

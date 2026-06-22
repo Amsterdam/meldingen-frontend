@@ -1,4 +1,5 @@
 export { getAdditionalQuestionsData } from './getAdditionalQuestionsData'
+export { getAssetsData } from './getAssetsData'
 export { getAttachmentsData } from './getAttachmentsData'
 export { getContactData } from './getContactData'
 export { getLocationData } from './getLocationData'

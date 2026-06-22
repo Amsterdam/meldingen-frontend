@@ -34,16 +34,22 @@ const setInternalState = <T,>(setter: (value: T) => void, value: T) => {
 }
 
 const defaultProps: Props = {
-  assetTypeIconConfig: {},
-  maxAssets: 3,
-  selectedAssets: [],
-  wfsQuery: {
-    assetTypeId: 1,
-    classification: 'container',
-    filter: 'my-filter',
-    srsName: 'EPSG:4326',
-    typeNames: 'Type name',
+  assetConfig: {
+    icon: {},
+    maxCount: 3,
+    names: {
+      plural: 'assets',
+      singular: 'asset',
+    },
+    wfsQuery: {
+      assetTypeId: 1,
+      classification: 'container',
+      filter: 'my-filter',
+      srsName: 'EPSG:4326',
+      typeNames: 'Type name',
+    },
   },
+  selectedAssets: [],
 }
 
 describe('SelectLocation', () => {

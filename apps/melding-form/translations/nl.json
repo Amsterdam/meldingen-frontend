@@ -65,8 +65,12 @@
     },
     "notifications": {
       "too-many-assets": {
+        "fallback-asset-names": {
+          "singular": "object",
+          "plural": "objecten"
+        },
         "close-button": "Sluiten",
-        "title": "U kunt maximaal {maxAssets, plural, =1 {{maxAssets} container} other {{maxAssets} containers}} kiezen"
+        "title": "U kunt maximaal {maxAssets, plural, =1 {{maxAssets} {assetNamesSingular}} other {{maxAssets} {assetNamesPlural}}} kiezen"
       },
       "location-service-disabled": {
         "close-button": "Sluiten",

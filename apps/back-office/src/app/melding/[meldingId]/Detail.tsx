@@ -4,7 +4,7 @@ import { Fragment } from 'react'
 
 import { Column, Grid, Heading, Paragraph } from '@meldingen/ui'
 
-import type { MeldingOutput } from '~/app/_api-client/proxy'
+import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
 import { AmsNextLink } from '../../_components/AmsNextLink'
 import { AttachmentImage } from './_components/AttachmentImage'
@@ -28,6 +28,8 @@ type File = {
 
 type Props = {
   additionalQuestionsWithMeldingText: DescriptionListItem[]
+  assets: AssetOutput[]
+  assetsTerm?: string
   attachments: Omit<DescriptionListItem, 'description'> & { files: File[] }
   contact?: DescriptionListItem[]
   location?: DescriptionListItem[]
@@ -37,6 +39,8 @@ type Props = {
 
 export const Detail = ({
   additionalQuestionsWithMeldingText,
+  assets,
+  assetsTerm,
   attachments,
   contact,
   location,
@@ -72,6 +76,16 @@ export const Detail = ({
                     <dd className={styles.horizontalDescription}>{description}</dd>
                   </Fragment>
                 ))}
+                {assets.length > 0 && (
+                  <>
+                    <dt className={styles.term}>{assetsTerm ?? t('assets.term')}</dt>
+                    {assets.map((asset) => (
+                      <dd className={styles.assetsDescription} key={asset.id}>
+                        {asset.external_id}
+                      </dd>
+                    ))}
+                  </>
+                )}
               </dl>
             )}
             {contact && (

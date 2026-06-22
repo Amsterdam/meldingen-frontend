@@ -26,6 +26,11 @@ const initialState: Pick<FormState, 'systemError' | 'validationErrors'> = {}
 
 type Props = {
   address?: string
+  pageConfig?: {
+    description?: string
+    label?: string
+    requiredError?: string
+  }
   prevPage: string
   selectedAssets: Feature[]
 }
@@ -43,7 +48,7 @@ const getAssetElement = (asset: Feature) => {
   )
 }
 
-export const Location = ({ address, prevPage, selectedAssets }: Props) => {
+export const Location = ({ address, pageConfig, prevPage, selectedAssets }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
@@ -55,7 +60,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
   // Update document title when there are system or validation errors
   const documentTitle = getDocumentTitleOnError({
     hasSystemError: Boolean(systemError),
-    originalDocTitle: `${t('question')} - ${tShared('organisation-name')}`,
+    originalDocTitle: `${pageConfig?.label ?? t('question')} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors?.length,
   })
@@ -91,7 +96,7 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
             className="ams-mb-m"
             errors={validationErrors.map((error) => ({
               id: `#${error.key}`,
-              label: error.message,
+              label: pageConfig?.requiredError ?? error.message,
             }))}
             heading={tShared('invalid-form-alert-title')}
             headingLevel={2}
@@ -101,15 +106,17 @@ export const Location = ({ address, prevPage, selectedAssets }: Props) => {
 
         <Field className="ams-mb-l" invalid={Boolean(validationErrors)}>
           <Heading level={1} size="level-3">
-            {t('question')}
+            {pageConfig?.label ?? t('question')}
           </Heading>
-          <Paragraph>{address ?? t('description')}</Paragraph>
+          <Paragraph>{address ?? pageConfig?.description ?? t('description')}</Paragraph>
           {selectedAssets.length > 0 && (
             <UnorderedList markers={false}>{selectedAssets.map((asset) => getAssetElement(asset))}</UnorderedList>
           )}
 
           {validationErrors &&
-            validationErrors.map(({ key, message }) => <ErrorMessage key={key}>{message}</ErrorMessage>)}
+            validationErrors.map(({ key, message }) => (
+              <ErrorMessage key={key}>{pageConfig?.requiredError ?? message}</ErrorMessage>
+            ))}
 
           <NextLink href={`/locatie/kies#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
             <StandaloneLink id="location-link">
