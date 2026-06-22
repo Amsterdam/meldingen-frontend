@@ -16,7 +16,7 @@ Forms are central to Meldingen: the Admin app lets admins create and update form
 
 ## Decision
 
-We use the Form.io JSON schema and Form.io's Builder in the Admin app. We tried to use Form.io's Renderer in the Melding Form app, but it didn't integrate well with Next.js and server-side rendering, so we built [our own renderer](/libs/form-renderer) that uses the same schema.
+We use the Form.io JSON schema and Form.io's Builder in the Admin app. We tried to use Form.io's Renderer in the Melding Form app, but it didn't integrate well with Next.js and server-side rendering, so we built [our own renderer](../../libs/form-renderer/README.md) that uses the same schema.
 
 ## Consequences
 
