@@ -1,5 +1,3 @@
-<!-- @license CC0-1.0 -->
-
 # Meldingen front-end architecture
 
 Meldingen is an application with three separate front-ends:
