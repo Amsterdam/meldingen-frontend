@@ -105,3 +105,58 @@ docker compose up -d
 ```
 
 The apps are available on the same ports as in local development (see table above).
+
+## Repository layout
+
+This repository is a monorepo.
+
+- Applications live in `/apps`
+- Shared frontend packages live in `/libs`
+
+This structure treats large internal modules like external packages, which enforces cleaner boundaries and a more deliberate public interface.
+
+Local packages are imported through the `@meldingen/*` workspace scope. For example:
+
+```ts
+import { Heading } from '@meldingen/ui'
+```
+
+To add a new library, copy an existing one and remove what you don't need. Update the `name` field in its `package.json`, then add that name to the `dependencies` of any app that will use it.
+
+## Linting
+
+We use linters for JavaScript / TypeScript, Markdown, JSON and style files.
+
+For JavaScript / TypeScript, Markdown and JSON files we use ESLint and the TypeScript compiler itself.
+For style files we use Stylelint.
+We use Prettier for code formatting of all these files.
+
+These linters and formatters run:
+
+- on save (requiring some configuration by developers, see below)
+- pre-commit
+- on a push to `main`
+- when opening a PR
+
+### Setting up linting and formatting on save
+
+If you use [Visual Studio Code](https://code.visualstudio.com/),
+you can use the following extensions for automatic linting and formatting:
+
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [stylelint](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint)
+
+To enable correct validation and to fix lint/style errors on save, add this to your VSCode `settings.json`:
+
+```json
+  "css.validate": false,
+  "scss.validate": false,
+  "stylelint.validate": ["css", "scss"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true,
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+```

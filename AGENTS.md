@@ -580,10 +580,10 @@ it('returns validation error for invalid email', async () => {
 
 - [docs/README.md](docs/README.md): Architecture diagram
 - [docs/code-conventions/styling.md](docs/code-conventions/styling.md): Styling conventions
-- [docs/0006-monorepo-tooling.md](docs/0006-monorepo-tooling.md): PNPM workspaces
-- [docs/0009-directory-structure.md](docs/0009-directory-structure.md): File conventions
-- [docs/0011-error-handling.md](docs/0011-error-handling.md): Error patterns
-- [docs/guides/additional-questions-form-wizard.md](docs/guides/additional-questions-form-wizard.md): Multi-step wizard for additional questions (panels, answers, conditional navigation)
+- [docs/getting-started.md](docs/getting-started.md): contributor setup, monorepo layout, and workspace usage
+- [docs/code-conventions/directory-structure.md](docs/code-conventions/directory-structure.md): File conventions
+- [docs/patterns/error-handling.md](docs/patterns/error-handling.md): Error patterns
+- [docs/patterns/additional-questions-form-wizard.md](docs/patterns/additional-questions-form-wizard.md): Multi-step wizard for additional questions (panels, answers, conditional navigation)
 
 ---
 

@@ -6,7 +6,7 @@ Please read this document before opening your first pull request.
 
 ## Getting Started
 
-You can find our getting started guide [here](guides/getting-started.md).
+You can find our getting started guide [here](./getting-started.md).
 
 ## Git Workflow
 
