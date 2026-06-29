@@ -1120,6 +1120,28 @@ export const DateAnswerOutputSchema = {
             type: 'string',
             title: 'Original Question Text'
         },
+        component_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Component Position'
+        },
+        panel_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Panel Position'
+        },
         date: {
             $ref: '#/components/schemas/DateAnswerObject'
         }
@@ -1158,6 +1180,28 @@ export const DateAnswerQuestionOutputSchema = {
         original_question_text: {
             type: 'string',
             title: 'Original Question Text'
+        },
+        component_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Component Position'
+        },
+        panel_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Panel Position'
         },
         date: {
             $ref: '#/components/schemas/DateAnswerObject'
@@ -6554,6 +6598,98 @@ export const NotNotSchema = {
     title: 'NotNot'
 } as const;
 
+export const NoteInputSchema = {
+    properties: {
+        text: {
+            type: 'string',
+            minLength: 1,
+            title: 'Text'
+        }
+    },
+    type: 'object',
+    required: [
+        'text'
+    ],
+    title: 'NoteInput'
+} as const;
+
+export const NoteOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        text: {
+            type: 'string',
+            title: 'Text'
+        },
+        melding_id: {
+            type: 'integer',
+            title: 'Melding Id'
+        },
+        user_id: {
+            type: 'integer',
+            title: 'User Id'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'text',
+        'melding_id',
+        'user_id'
+    ],
+    title: 'NoteOutput'
+} as const;
+
+export const NoteRetrieveOutputSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        text: {
+            type: 'string',
+            title: 'Text'
+        },
+        melding_id: {
+            type: 'integer',
+            title: 'Melding Id'
+        },
+        user: {
+            $ref: '#/components/schemas/UserOutput'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'text',
+        'melding_id',
+        'user'
+    ],
+    title: 'NoteRetrieveOutput'
+} as const;
+
 export const Or_InputSchema = {
     properties: {
         or: {
@@ -8612,6 +8748,28 @@ export const TextAnswerOutputSchema = {
             type: 'string',
             title: 'Original Question Text'
         },
+        component_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Component Position'
+        },
+        panel_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Panel Position'
+        },
         text: {
             type: 'string',
             title: 'Text'
@@ -8651,6 +8809,28 @@ export const TextAnswerQuestionOutputSchema = {
         original_question_text: {
             type: 'string',
             title: 'Original Question Text'
+        },
+        component_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Component Position'
+        },
+        panel_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Panel Position'
         },
         text: {
             type: 'string',
@@ -8724,6 +8904,28 @@ export const TimeAnswerOutputSchema = {
             type: 'string',
             title: 'Original Question Text'
         },
+        component_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Component Position'
+        },
+        panel_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Panel Position'
+        },
         time: {
             anyOf: [
                 {
@@ -8770,6 +8972,28 @@ export const TimeAnswerQuestionOutputSchema = {
         original_question_text: {
             type: 'string',
             title: 'Original Question Text'
+        },
+        component_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Component Position'
+        },
+        panel_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Panel Position'
         },
         time: {
             anyOf: [
@@ -8972,6 +9196,28 @@ export const ValueLabelAnswerOutputSchema = {
             type: 'string',
             title: 'Original Question Text'
         },
+        component_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Component Position'
+        },
+        panel_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Panel Position'
+        },
         values_and_labels: {
             items: {
                 $ref: '#/components/schemas/ValueLabelObject'
@@ -9014,6 +9260,28 @@ export const ValueLabelAnswerQuestionOutputSchema = {
         original_question_text: {
             type: 'string',
             title: 'Original Question Text'
+        },
+        component_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Component Position'
+        },
+        panel_position: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Panel Position'
         },
         values_and_labels: {
             items: {
