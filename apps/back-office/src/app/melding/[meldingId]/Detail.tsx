@@ -99,6 +99,7 @@ export const Detail = ({
               </dl>
             )}
             <dl className={clsx(styles.horizontalDescriptionList, styles.cardTall)}>
+              <AmsNextLink href={`/melding/${publicId}/notities/toevoegen`}>Voeg notitie toe</AmsNextLink>
               {meldingData.map(({ description, key, link, term }) => (
                 <Fragment key={key}>
                   <dt className={styles.term}>{term}</dt>

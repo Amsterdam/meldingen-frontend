@@ -150,6 +150,27 @@
       }
     }
   },
+  "add-note": {
+    "metadata": {
+      "title": "Notitie toevoegen - Gemeente Amsterdam"
+    },
+    "back-link": "Meldingdetails",
+    "title": "Voeg notitie toe",
+    "label": "Notitie",
+    "submit-button": "Voeg notitie toe",
+    "cancel-link": "Annuleer",
+    "errors": {
+      "validation": {
+        "heading": "Verbeter de fouten voor u verder gaat",
+        "required": "Vul een notitie in.",
+        "max-length": "Een notitie mag maximaal 3000 tekens bevatten."
+      },
+      "system": {
+        "heading": "De notitie kan niet worden toegevoegd",
+        "description": "Probeer het later opnieuw."
+      }
+    }
+  },
   "shared": {
     "menu": {
       "melding-form": "Melden",

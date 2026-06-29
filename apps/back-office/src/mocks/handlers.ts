@@ -52,6 +52,15 @@ export const handlers = [
       token: 'test-token',
     }),
   ),
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_NOTE, () =>
+    HttpResponse.json(
+      {
+        created_at: '2025-05-26T11:56:34.081Z',
+        id: 1,
+      },
+      { status: 201 },
+    ),
+  ),
 
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_CANCEL, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_COMPLETE, () => new HttpResponse()),
