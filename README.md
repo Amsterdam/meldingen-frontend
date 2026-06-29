@@ -12,7 +12,7 @@ This monorepo houses three separate front-ends:
 
 ## Getting started
 
-New to the project? The [getting started guide](./docs/guides/getting-started.md) covers local Node and Docker setup.
+New to the project? The [getting started guide](./docs/getting-started.md) covers local Node and Docker setup.
 
 ## Code of Conduct
 
