@@ -22,8 +22,7 @@ import type { FormState } from '~/types'
 import { BackLink } from '../../_components/BackLink'
 import { CancelLink } from '../../_components/CancelLink'
 import { postAddNoteForm } from './actions'
-import { InvalidFormAlert } from '~/app/melden/_components/InvalidFormAlert'
-import { SystemErrorAlert } from '~/app/melden/_components/SystemErrorAlert/SystemErrorAlert'
+import { InvalidFormAlert, SystemErrorAlert } from '~/app/_components'
 
 import styles from './AddNote.module.css'
 
