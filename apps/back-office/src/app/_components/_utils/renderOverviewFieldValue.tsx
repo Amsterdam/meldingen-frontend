@@ -5,7 +5,6 @@ import type { OverviewField } from './getOverviewFieldLabel'
 
 import { AmsNextLink } from '../AmsNextLink'
 import { formatValue } from './formatValue'
-import { getMeldingDetailHref } from './getMeldingDetailHref'
 
 export const renderOverviewFieldValue = (
   melding: MeldingWithAddress,
@@ -14,7 +13,7 @@ export const renderOverviewFieldValue = (
 ): ReactNode => {
   if (field.key === 'public_id') {
     return (
-      <AmsNextLink href={getMeldingDetailHref(melding)} variant="link">
+      <AmsNextLink href={`/melding/${melding.id}`} variant="link">
         {melding.public_id}
       </AmsNextLink>
     )

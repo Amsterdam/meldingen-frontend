@@ -14,7 +14,7 @@ vi.mock('./Detail', () => ({
 
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
-    const metadata = await generateMetadata({ searchParams: Promise.resolve({ id: 'AA123B' }) })
+    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: 123 }) })
 
     expect(metadata).toEqual({ title: 'metadata.title' })
   })
