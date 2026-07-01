@@ -161,7 +161,7 @@
     "cancel-link": "Annuleer",
     "errors": {
       "required": "Vul een notitie in.",
-      "maxLength": "De notitie mag niet langer zijn dan 3000 tekens."
+      "maxLength": "De notitie mag niet langer zijn dan {max} tekens."
     }
   },
   "shared": {
