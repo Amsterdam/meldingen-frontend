@@ -43,6 +43,8 @@ export const handlers = [
     }),
   ),
 
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_NOTE, () => new HttpResponse()),
+
   http.post(ENDPOINTS.POST_MELDING, () =>
     HttpResponse.json({
       classification: { id: 2, name: 'Test classification' },
