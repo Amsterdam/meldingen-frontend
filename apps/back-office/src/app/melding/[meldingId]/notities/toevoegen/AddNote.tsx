@@ -17,7 +17,7 @@ import { useActionState, useEffect, useRef } from 'react'
 
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 
-import type { FormState } from '~/app/melden/actions'
+import type { FormState } from '~/types'
 
 import { BackLink } from '../../_components/BackLink'
 import { CancelLink } from '../../_components/CancelLink'
