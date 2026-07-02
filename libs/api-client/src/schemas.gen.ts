@@ -6690,6 +6690,20 @@ export const NoteRetrieveOutputSchema = {
     title: 'NoteRetrieveOutput'
 } as const;
 
+export const NoteUpdateInputSchema = {
+    properties: {
+        text: {
+            type: 'string',
+            title: 'Text'
+        }
+    },
+    type: 'object',
+    required: [
+        'text'
+    ],
+    title: 'NoteUpdateInput'
+} as const;
+
 export const Or_InputSchema = {
     properties: {
         or: {
