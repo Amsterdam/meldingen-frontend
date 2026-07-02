@@ -5956,6 +5956,62 @@ export type DeleteMeldingByMeldingIdAssetByAssetIdResponses = {
     200: unknown;
 };
 
+export type GetMeldingByMeldingIdNoteData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/note';
+};
+
+export type GetMeldingByMeldingIdNoteErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetMeldingByMeldingIdNoteError = GetMeldingByMeldingIdNoteErrors[keyof GetMeldingByMeldingIdNoteErrors];
+
+export type GetMeldingByMeldingIdNoteResponses = {
+    /**
+     * Response Melding Notes Melding  Melding Id  Note Get
+     *
+     * Successful Response
+     */
+    200: Array<NoteRetrieveOutput>;
+};
+
+export type GetMeldingByMeldingIdNoteResponse = GetMeldingByMeldingIdNoteResponses[keyof GetMeldingByMeldingIdNoteResponses];
+
 export type PostMeldingByMeldingIdNoteData = {
     body: NoteInput;
     path: {
