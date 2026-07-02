@@ -8,6 +8,7 @@ import type { MeldingOutput } from '@meldingen/api-client'
 import type { MeldingData } from './types'
 import type { FormState } from '~/types'
 
+import { MAX_NOTE_LENGTH } from '../constants'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
 import {
   patchMeldingByMeldingId,
@@ -68,7 +69,9 @@ export const postMeldingForm = async (
   const validationErrors = [
     ...(!formDataObj.primary ? [{ key: 'primary', message: requiredErrorMessage }] : []),
     ...(!formDataObj.source ? [{ key: 'source', message: t('source.error') }] : []),
-    // TODO: hier toevoegen als note meer dan 3000 tekens heeft
+    ...(formDataObj.addNote && formDataObj.addNote.toString().length > MAX_NOTE_LENGTH
+      ? [{ key: 'addNote', message: t('note.error', { max: MAX_NOTE_LENGTH }) }]
+      : []),
   ]
 
   if (validationErrors.length > 0) {
@@ -129,6 +132,7 @@ export const postMeldingForm = async (
   if (updateMeldingError) return { formData, systemError: updateMeldingError }
 
   const { error: postNoteError } = await postMeldingByMeldingIdNote({
+    // TODO: dit zou post of patch moeten zijn
     body: { text: formDataObj.addNote.toString() },
     path: { melding_id: meldingData.id },
   })

@@ -38,7 +38,7 @@ const calculateDefaultValues = (formData?: FormData, defaultValues?: Props['defa
   const rawUrgency = formData?.get('urgency')
   const urgencyDefaultValue =
     rawUrgency !== null && rawUrgency !== undefined ? Number(rawUrgency) : (defaultValues?.urgency ?? 0)
-  const noteDefaultValue = (formData?.get('note') as string | null) ?? defaultValues?.note ?? ''
+  const noteDefaultValue = (formData?.get('addNote') as string | null) ?? defaultValues?.note ?? ''
 
   return { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue }
 }

@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
 import { postAddNoteForm } from './actions'
+import { MAX_NOTE_LENGTH } from '~/app/constants'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -22,7 +23,7 @@ describe('postAddNoteForm', () => {
 
   it('returns a validation error when addNote exceeds the maximum length', async () => {
     const formData = new FormData()
-    formData.append('addNote', 'a'.repeat(3001))
+    formData.append('addNote', 'a'.repeat(MAX_NOTE_LENGTH + 1))
 
     const result = await postAddNoteForm(defaultArgs, null, formData)
 
@@ -63,7 +64,7 @@ describe('postAddNoteForm', () => {
 
   it('accepts a note at exactly the maximum length', async () => {
     const formData = new FormData()
-    formData.append('addNote', 'a'.repeat(3000))
+    formData.append('addNote', 'a'.repeat(MAX_NOTE_LENGTH))
 
     await postAddNoteForm(defaultArgs, null, formData)
 

@@ -9,12 +9,12 @@ type Props = {
 }
 
 export const NoteField = ({ defaultValue, errorMessage }: Props) => {
-  const t = useTranslations('melding-form')
+  const t = useTranslations('melding-form.note')
 
   return (
     <Field invalid={Boolean(errorMessage)}>
       <Label htmlFor="addNote" optional>
-        {t('note-label')}
+        {t('label')}
       </Label>
       {errorMessage && <ErrorMessage id="addNote-error">{errorMessage}</ErrorMessage>}
       <TextArea
