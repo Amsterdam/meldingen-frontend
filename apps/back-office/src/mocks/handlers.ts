@@ -31,7 +31,7 @@ export const handlers = [
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NEXT_POSSIBLE_STATES, () =>
     HttpResponse.json({ states: ['processing_requested', 'completed'] }),
   ),
-  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => new HttpResponse()),
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json([])),
 
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () => new HttpResponse()),
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_MELDER, () =>
