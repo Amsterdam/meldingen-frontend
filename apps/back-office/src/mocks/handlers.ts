@@ -31,6 +31,13 @@ export const handlers = [
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NEXT_POSSIBLE_STATES, () =>
     HttpResponse.json({ states: ['processing_requested', 'completed'] }),
   ),
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () =>
+    HttpResponse.json({
+      id: 1,
+      melding_id: 123,
+      text: 'This is a test note for the melding.',
+    }),
+  ),
 
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () => HttpResponse.json({})),
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_MELDER, () =>
@@ -42,6 +49,7 @@ export const handlers = [
       token: 'PATCH request',
     }),
   ),
+  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_NOTE, () => new HttpResponse()),
 
   http.post(ENDPOINTS.POST_MELDING, () =>
     HttpResponse.json({
