@@ -19,6 +19,7 @@ const createFormData = (fields: Record<string, string> = {}): FormData => {
   formData.set('primary', 'Test')
   formData.set('source', 'Test')
   formData.set('urgency', '1')
+  formData.set('addNote', '')
 
   for (const [key, value] of Object.entries(fields)) {
     formData.set(key, value)
@@ -315,6 +316,26 @@ describe('postMeldingForm', () => {
         melding_id: 123,
       },
     })
+
+    spy.mockRestore()
+  })
+
+  it('does not create a new note when existingNoteId is not passed and the note text is empty', async () => {
+    const spy = vi.spyOn(apiClientProxy, 'postMeldingByMeldingIdNote')
+
+    const formData = createFormData()
+
+    await postMeldingForm(
+      {
+        existingId: 123,
+        existingToken: 'test-token',
+        requiredErrorMessage: 'Dit veld is verplicht.',
+      },
+      null,
+      formData,
+    )
+
+    expect(spy).not.toHaveBeenCalled()
 
     spy.mockRestore()
   })

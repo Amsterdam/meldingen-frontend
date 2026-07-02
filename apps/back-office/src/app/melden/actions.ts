@@ -64,7 +64,11 @@ const createOrUpdateNote = async (text: string, id: number, noteId?: number) => 
       body: { text },
       path: { melding_id: id, note_id: noteId },
     })
-  } else {
+  }
+
+  // If the note text is empty, we don't want to create a new note
+  // It is allowed to update an existing note with empty text
+  if (text.trim() !== '') {
     return await postMeldingByMeldingIdNote({
       body: { text },
       path: { melding_id: id },
@@ -147,15 +151,9 @@ export const postMeldingForm = async (
 
   if (updateMeldingError) return { formData, systemError: updateMeldingError }
 
-  if (formDataObj.addNote !== undefined) {
-    const { error: postNoteError } = await createOrUpdateNote(
-      formDataObj.addNote.toString(),
-      meldingData.id,
-      existingNoteId,
-    )
+  const result = await createOrUpdateNote(formDataObj.addNote.toString(), meldingData.id, existingNoteId)
 
-    if (postNoteError) return { formData, systemError: postNoteError }
-  }
+  if (result?.error) return { formData, systemError: result.error }
 
   const params = new URLSearchParams({
     created_at: meldingData.createdAt,
