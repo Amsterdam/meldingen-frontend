@@ -12,7 +12,7 @@ import { Column, Paragraph } from '@meldingen/ui'
 import type { MeldingData } from './types'
 import type { FormState } from '~/types'
 
-import { LabelsField, PrimaryField, SourceField, UrgencyField } from './_components'
+import { LabelsField, NoteField, PrimaryField, SourceField, UrgencyField } from './_components'
 import { postMeldingForm } from './actions'
 import { InvalidFormAlert, SystemErrorAlert } from '~/app/_components'
 
@@ -90,6 +90,7 @@ export const MeldingForm = ({
 
   const primaryErrorMessage = validationErrors?.find((error) => error.key === 'primary')?.message
   const sourceErrorMessage = validationErrors?.find((error) => error.key === 'source')?.message
+  const noteErrorMessage = validationErrors?.find((error) => error.key === 'addNote')?.message
 
   return (
     <Grid
@@ -123,6 +124,7 @@ export const MeldingForm = ({
             <SourceField defaultValue={sourceDefaultValue} errorMessage={sourceErrorMessage} sources={sources} />
             <UrgencyField defaultValue={urgencyDefaultValue} />
             <LabelsField defaultValues={labelsDefaultValues} labels={labels} />
+            <NoteField defaultValue={formData?.get('addNote')?.toString() || ''} errorMessage={noteErrorMessage} />
             <Button className={styles.submit} type="submit">
               {t('submit-button')}
             </Button>

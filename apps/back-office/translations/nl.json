@@ -36,6 +36,7 @@
     },
     "urgency-label": "Wat is de urgentie?",
     "labels-label": "Wat is het label?",
+    "note-label": "Notitie toevoegen",
     "submit-button": "Volgende vraag",
     "errors": {
       "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",

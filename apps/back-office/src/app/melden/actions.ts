@@ -9,7 +9,12 @@ import type { MeldingData } from './types'
 import type { FormState } from '~/types'
 
 import { hasValidationErrors } from './_utils/hasValidationErrors'
-import { patchMeldingByMeldingId, patchMeldingByMeldingIdMelder, postMelding } from '~/app/_api-client/proxy'
+import {
+  patchMeldingByMeldingId,
+  patchMeldingByMeldingIdMelder,
+  postMelding,
+  postMeldingByMeldingIdNote,
+} from '~/app/_api-client/proxy'
 import { handleApiError } from '~/app/_utils/handleApiError'
 import { URGENCY_VALUES } from '~/constants'
 
@@ -63,6 +68,7 @@ export const postMeldingForm = async (
   const validationErrors = [
     ...(!formDataObj.primary ? [{ key: 'primary', message: requiredErrorMessage }] : []),
     ...(!formDataObj.source ? [{ key: 'source', message: t('source.error') }] : []),
+    // TODO: hier toevoegen als note meer dan 3000 tekens heeft
   ]
 
   if (validationErrors.length > 0) {
@@ -121,6 +127,13 @@ export const postMeldingForm = async (
   })
 
   if (updateMeldingError) return { formData, systemError: updateMeldingError }
+
+  const { error: postNoteError } = await postMeldingByMeldingIdNote({
+    body: { text: formDataObj.addNote.toString() },
+    path: { melding_id: meldingData.id },
+  })
+
+  if (postNoteError) return { formData, systemError: postNoteError }
 
   const params = new URLSearchParams({
     created_at: meldingData.createdAt,

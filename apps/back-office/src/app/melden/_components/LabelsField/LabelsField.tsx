@@ -12,7 +12,7 @@ export const LabelsField = ({ defaultValues, labels }: Props) => {
   const t = useTranslations('melding-form')
 
   return (
-    <FieldSet legend={t('labels-label')}>
+    <FieldSet legend={t('labels-label')} optional>
       {labels.map(({ id, name }) => {
         const isChecked = defaultValues?.includes(id)
         return (
