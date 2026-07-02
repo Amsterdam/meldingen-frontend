@@ -8,6 +8,7 @@ import { MeldingForm } from './MeldingForm'
 import {
   getLabel,
   getMeldingByMeldingId,
+  getMeldingByMeldingIdNote,
   getSource,
   getStaticForm,
   getStaticFormByStaticFormId,
@@ -76,11 +77,24 @@ const fetchExistingMelding = async (id: number) => {
   return existingMelding
 }
 
-const toDefaultValues = (melding?: MeldingOutput) => {
+const fetchNote = async (id: number) => {
+  const { data: notes, error: notesError } = await getMeldingByMeldingIdNote({ path: { melding_id: id } })
+
+  if (notesError) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(notesError)
+  }
+
+  return notes?.[0]?.text ?? ''
+}
+
+const toDefaultValues = (melding?: MeldingOutput, note?: string) => {
   if (!melding) return {}
 
   return {
     labels: melding.labels?.map((label) => label.id) ?? [],
+    note,
     primary: melding.text,
     source: melding.source?.id ? String(melding.source.id) : undefined,
     urgency: melding.urgency,
@@ -105,13 +119,14 @@ const toExistingMeldingData = (melding?: MeldingOutput, token?: string) => {
 export default async ({ searchParams }: { searchParams: Promise<{ id?: number; token?: string }> }) => {
   const { id, token } = await searchParams
 
-  const [primaryTextArea, { labels, sources }, existingMelding] = await Promise.all([
+  const [primaryTextArea, { labels, sources }, existingMelding, note] = await Promise.all([
     fetchPrimaryTextArea(),
     fetchSourcesAndLabels(),
     id && token ? fetchExistingMelding(id) : Promise.resolve(undefined),
+    id && token ? fetchNote(id) : Promise.resolve(''),
   ])
 
-  const defaultValues = toDefaultValues(existingMelding)
+  const defaultValues = toDefaultValues(existingMelding, note)
   const existingMeldingData = toExistingMeldingData(existingMelding, token)
 
   return (

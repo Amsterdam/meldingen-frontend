@@ -19,7 +19,7 @@ import { InvalidFormAlert, SystemErrorAlert } from '~/app/_components'
 import styles from './MeldingForm.module.css'
 
 type Props = {
-  defaultValues?: { labels?: number[]; primary?: string; source?: string; urgency?: number }
+  defaultValues?: { labels?: number[]; note?: string; primary?: string; source?: string; urgency?: number }
   existingId?: number
   existingMelding?: MeldingData
   existingToken?: string
@@ -38,8 +38,9 @@ const calculateDefaultValues = (formData?: FormData, defaultValues?: Props['defa
   const rawUrgency = formData?.get('urgency')
   const urgencyDefaultValue =
     rawUrgency !== null && rawUrgency !== undefined ? Number(rawUrgency) : (defaultValues?.urgency ?? 0)
+  const noteDefaultValue = (formData?.get('note') as string | null) ?? defaultValues?.note ?? ''
 
-  return { labelsDefaultValues, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue }
+  return { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue }
 }
 
 const initialState: FormState = {}
@@ -65,10 +66,8 @@ export const MeldingForm = ({
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
   const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
-  const { labelsDefaultValues, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } = calculateDefaultValues(
-    formData,
-    defaultValues,
-  )
+  const { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } =
+    calculateDefaultValues(formData, defaultValues)
 
   // Set focus on InvalidFormAlert when there are validation errors
   // and on SystemErrorAlert when there is a system error
@@ -124,7 +123,7 @@ export const MeldingForm = ({
             <SourceField defaultValue={sourceDefaultValue} errorMessage={sourceErrorMessage} sources={sources} />
             <UrgencyField defaultValue={urgencyDefaultValue} />
             <LabelsField defaultValues={labelsDefaultValues} labels={labels} />
-            <NoteField defaultValue={formData?.get('addNote')?.toString() || ''} errorMessage={noteErrorMessage} />
+            <NoteField defaultValue={noteDefaultValue} errorMessage={noteErrorMessage} />
             <Button className={styles.submit} type="submit">
               {t('submit-button')}
             </Button>
