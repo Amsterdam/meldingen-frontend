@@ -6,17 +6,12 @@ import { redirect } from 'next/navigation'
 import type { MeldingOutput } from '@meldingen/api-client'
 
 import type { MeldingData } from './types'
+import type { FormState } from '~/types'
 
 import { hasValidationErrors } from './_utils/hasValidationErrors'
 import { patchMeldingByMeldingId, patchMeldingByMeldingIdMelder, postMelding } from '~/app/_api-client/proxy'
 import { handleApiError } from '~/app/_utils/handleApiError'
 import { URGENCY_VALUES } from '~/constants'
-
-export type FormState = {
-  formData?: FormData
-  systemError?: unknown
-  validationErrors?: { key: string; message: string }[]
-}
 
 export type ArgsType = {
   existingId?: number

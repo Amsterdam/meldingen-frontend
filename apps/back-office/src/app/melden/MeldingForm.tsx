@@ -9,11 +9,12 @@ import type { LabelOutput, SourceOutput, StaticFormTextAreaComponentOutput } fro
 
 import { Column, Paragraph } from '@meldingen/ui'
 
-import type { FormState } from './actions'
 import type { MeldingData } from './types'
+import type { FormState } from '~/types'
 
-import { InvalidFormAlert, LabelsField, PrimaryField, SourceField, SystemErrorAlert, UrgencyField } from './_components'
+import { LabelsField, PrimaryField, SourceField, UrgencyField } from './_components'
 import { postMeldingForm } from './actions'
+import { InvalidFormAlert, SystemErrorAlert } from '~/app/_components'
 
 import styles from './MeldingForm.module.css'
 
