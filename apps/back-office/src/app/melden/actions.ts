@@ -147,13 +147,15 @@ export const postMeldingForm = async (
 
   if (updateMeldingError) return { formData, systemError: updateMeldingError }
 
-  const { error: postNoteError } = await createOrUpdateNote(
-    formDataObj.addNote.toString(),
-    meldingData.id,
-    existingNoteId,
-  )
+  if (formDataObj.addNote !== undefined) {
+    const { error: postNoteError } = await createOrUpdateNote(
+      formDataObj.addNote.toString(),
+      meldingData.id,
+      existingNoteId,
+    )
 
-  if (postNoteError) return { formData, systemError: postNoteError }
+    if (postNoteError) return { formData, systemError: postNoteError }
+  }
 
   const params = new URLSearchParams({
     created_at: meldingData.createdAt,

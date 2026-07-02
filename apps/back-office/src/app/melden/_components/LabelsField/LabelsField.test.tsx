@@ -14,7 +14,7 @@ describe('LabelsField', () => {
   it('renders all labels options', () => {
     render(<LabelsField {...defaultProps} />)
 
-    expect(screen.getByRole('group', { name: 'labels-label' })).toBeInTheDocument()
+    expect(screen.getByRole('group', { name: 'labels-label (niet verplicht)' })).toBeInTheDocument()
 
     defaultProps.labels.forEach((label) => {
       expect(screen.getByRole('checkbox', { name: label.name })).toBeInTheDocument()

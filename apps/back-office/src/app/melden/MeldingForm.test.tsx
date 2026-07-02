@@ -88,9 +88,12 @@ describe('MeldingForm', () => {
 
     render(<MeldingForm {...defaultProps} />)
 
-    const input = screen.getByRole('textbox', { name: 'Some label' })
+    const input = screen.getByRole('textbox', {
+      description: 'Some description Invoerfout:Primary field error',
+      name: 'Some label',
+    })
 
-    expect(input).toHaveAccessibleDescription('Some description Invoerfout:Primary field error')
+    expect(input).toBeInTheDocument()
   })
 
   it('prefills the text area from formData when the action returns formData', () => {
@@ -100,19 +103,23 @@ describe('MeldingForm', () => {
 
     render(<MeldingForm {...defaultProps} />)
 
-    expect(screen.getByRole('textbox')).toHaveValue('Prefilled text')
+    expect(screen.getByRole('textbox', { description: 'Some description', name: 'Some label' })).toHaveValue(
+      'Prefilled text',
+    )
   })
 
   it('prefills the text area from defaultValues when provided and there is no formData', () => {
     render(<MeldingForm {...defaultProps} defaultValues={{ primary: 'Default value' }} />)
 
-    expect(screen.getByRole('textbox')).toHaveValue('Default value')
+    expect(screen.getByRole('textbox', { description: 'Some description', name: 'Some label' })).toHaveValue(
+      'Default value',
+    )
   })
 
   it('falls back to an empty text area when there is no formData and no defaultValues', () => {
     render(<MeldingForm {...defaultProps} />)
 
-    expect(screen.getByRole('textbox')).toHaveValue('')
+    expect(screen.getByRole('textbox', { description: 'Some description', name: 'Some label' })).toHaveValue('')
   })
 
   it('renders an error message connected to the source select input when there is a validation error for the source field', () => {
