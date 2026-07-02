@@ -108,13 +108,17 @@ describe('MeldingForm', () => {
   it('prefills the text area from defaultValues when provided and there is no formData', () => {
     render(<MeldingForm {...defaultProps} defaultValues={{ primary: 'Default value' }} />)
 
-    expect(screen.getByRole('textbox', { name: 'Some label' })).toHaveValue('Default value')
+    const input = screen.getByRole('textbox', { name: 'Some label' })
+
+    expect(input).toHaveValue('Default value')
   })
 
   it('falls back to an empty text area when there is no formData and no defaultValues', () => {
     render(<MeldingForm {...defaultProps} />)
 
-    expect(screen.getByRole('textbox', { name: 'Some label' })).toHaveValue('')
+    const input = screen.getByRole('textbox', { name: 'Some label' })
+
+    expect(input).toHaveValue('')
   })
 
   it('renders an error message connected to the source select input when there is a validation error for the source field', () => {
