@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { getTranslations } from 'next-intl/server'
 
-import type { MeldingOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+import type { MeldingOutput, NoteRetrieveOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { MeldingForm } from './MeldingForm'
 import {
@@ -89,11 +89,12 @@ const fetchNote = async (id: number) => {
   return notes?.[0]
 }
 
-const toDefaultValues = (melding?: MeldingOutput) => {
+const toDefaultValues = (melding?: MeldingOutput, note?: NoteRetrieveOutput) => {
   if (!melding) return {}
 
   return {
     labels: melding.labels?.map((label) => label.id) ?? [],
+    note: note?.text,
     primary: melding.text,
     source: melding.source?.id ? String(melding.source.id) : undefined,
     urgency: melding.urgency,
@@ -125,7 +126,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
     id && token ? fetchNote(id) : Promise.resolve(undefined),
   ])
 
-  const defaultValues = toDefaultValues(existingMelding)
+  const defaultValues = toDefaultValues(existingMelding, note)
   const existingMeldingData = toExistingMeldingData(existingMelding, token)
 
   return (
@@ -133,7 +134,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
       defaultValues={defaultValues}
       existingId={id}
       existingMelding={existingMeldingData}
-      existingNote={note}
+      existingNoteId={note?.id}
       existingToken={token}
       labels={labels}
       primaryTextArea={primaryTextArea}
