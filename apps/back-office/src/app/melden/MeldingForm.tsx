@@ -5,7 +5,12 @@ import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef, useState } from 'react'
 
-import type { LabelOutput, SourceOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+import type {
+  LabelOutput,
+  NoteRetrieveOutput,
+  SourceOutput,
+  StaticFormTextAreaComponentOutput,
+} from '@meldingen/api-client'
 
 import { Column, Paragraph } from '@meldingen/ui'
 
@@ -22,6 +27,7 @@ type Props = {
   defaultValues?: { labels?: number[]; note?: string; primary?: string; source?: string; urgency?: number }
   existingId?: number
   existingMelding?: MeldingData
+  existingNote?: NoteRetrieveOutput
   existingToken?: string
   labels: LabelOutput[]
   primaryTextArea: StaticFormTextAreaComponentOutput
@@ -38,9 +44,8 @@ const calculateDefaultValues = (formData?: FormData, defaultValues?: Props['defa
   const rawUrgency = formData?.get('urgency')
   const urgencyDefaultValue =
     rawUrgency !== null && rawUrgency !== undefined ? Number(rawUrgency) : (defaultValues?.urgency ?? 0)
-  const noteDefaultValue = (formData?.get('addNote') as string | null) ?? defaultValues?.note ?? ''
 
-  return { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue }
+  return { labelsDefaultValues, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue }
 }
 
 const initialState: FormState = {}
@@ -49,6 +54,7 @@ export const MeldingForm = ({
   defaultValues,
   existingId,
   existingMelding,
+  existingNote,
   existingToken,
   labels,
   primaryTextArea,
@@ -61,13 +67,21 @@ export const MeldingForm = ({
 
   const requiredErrorMessage =
     primaryTextArea.validate?.required_error_message ?? t('errors.required-error-message-fallback')
-  const action = postMeldingForm.bind(null, { existingId, existingToken, requiredErrorMessage })
+  const action = postMeldingForm.bind(null, {
+    existingId,
+    existingNoteId: existingNote?.id,
+    existingToken,
+    requiredErrorMessage,
+  })
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
   const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
-  const { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } =
-    calculateDefaultValues(formData, defaultValues)
+  const { labelsDefaultValues, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } = calculateDefaultValues(
+    formData,
+    defaultValues,
+  )
+  const noteDefaultValue = (formData?.get('addNote') as string | null) ?? existingNote?.text ?? ''
 
   // Set focus on InvalidFormAlert when there are validation errors
   // and on SystemErrorAlert when there is a system error

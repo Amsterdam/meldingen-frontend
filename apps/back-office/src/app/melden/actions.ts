@@ -13,6 +13,7 @@ import { hasValidationErrors } from './_utils/hasValidationErrors'
 import {
   patchMeldingByMeldingId,
   patchMeldingByMeldingIdMelder,
+  patchMeldingByMeldingIdNoteByNoteId,
   postMelding,
   postMeldingByMeldingIdNote,
 } from '~/app/_api-client/proxy'
@@ -21,6 +22,7 @@ import { URGENCY_VALUES } from '~/constants'
 
 export type ArgsType = {
   existingId?: number
+  existingNoteId?: number
   existingToken?: string
   requiredErrorMessage: string
 }
@@ -56,8 +58,22 @@ const createOrUpdateMelding = async (text: string, id?: number, token?: string) 
   }
 }
 
+const createOrUpdateNote = async (text: string, id: number, noteId?: number) => {
+  if (noteId) {
+    return await patchMeldingByMeldingIdNoteByNoteId({
+      body: { text },
+      path: { melding_id: id, note_id: noteId },
+    })
+  } else {
+    return await postMeldingByMeldingIdNote({
+      body: { text },
+      path: { melding_id: id },
+    })
+  }
+}
+
 export const postMeldingForm = async (
-  { existingId, existingToken, requiredErrorMessage }: ArgsType,
+  { existingId, existingNoteId, existingToken, requiredErrorMessage }: ArgsType,
   _: unknown,
   formData: FormData,
 ): Promise<FormState> => {
@@ -131,11 +147,11 @@ export const postMeldingForm = async (
 
   if (updateMeldingError) return { formData, systemError: updateMeldingError }
 
-  const { error: postNoteError } = await postMeldingByMeldingIdNote({
-    // TODO: dit zou post of patch moeten zijn
-    body: { text: formDataObj.addNote.toString() },
-    path: { melding_id: meldingData.id },
-  })
+  const { error: postNoteError } = await createOrUpdateNote(
+    formDataObj.addNote.toString(),
+    meldingData.id,
+    existingNoteId,
+  )
 
   if (postNoteError) return { formData, systemError: postNoteError }
 

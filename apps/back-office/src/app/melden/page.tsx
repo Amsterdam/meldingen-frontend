@@ -86,15 +86,14 @@ const fetchNote = async (id: number) => {
     console.error(notesError)
   }
 
-  return notes?.[0]?.text ?? ''
+  return notes?.[0]
 }
 
-const toDefaultValues = (melding?: MeldingOutput, note?: string) => {
+const toDefaultValues = (melding?: MeldingOutput) => {
   if (!melding) return {}
 
   return {
     labels: melding.labels?.map((label) => label.id) ?? [],
-    note,
     primary: melding.text,
     source: melding.source?.id ? String(melding.source.id) : undefined,
     urgency: melding.urgency,
@@ -123,10 +122,10 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
     fetchPrimaryTextArea(),
     fetchSourcesAndLabels(),
     id && token ? fetchExistingMelding(id) : Promise.resolve(undefined),
-    id && token ? fetchNote(id) : Promise.resolve(''),
+    id && token ? fetchNote(id) : Promise.resolve(undefined),
   ])
 
-  const defaultValues = toDefaultValues(existingMelding, note)
+  const defaultValues = toDefaultValues(existingMelding)
   const existingMeldingData = toExistingMeldingData(existingMelding, token)
 
   return (
@@ -134,6 +133,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
       defaultValues={defaultValues}
       existingId={id}
       existingMelding={existingMeldingData}
+      existingNote={note}
       existingToken={token}
       labels={labels}
       primaryTextArea={primaryTextArea}
