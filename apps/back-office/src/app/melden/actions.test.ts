@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 import { vi } from 'vitest'
 
+import { MAX_NOTE_LENGTH } from '../constants'
 import { postMeldingForm } from './actions'
 import * as apiClientProxy from '~/app/_api-client/proxy'
 import { ENDPOINTS } from '~/mocks/endpoints'
@@ -50,8 +51,23 @@ describe('postMeldingForm', () => {
     })
   })
 
-  it('returns 2 validation errors when both primary and source questions are not answered', async () => {
+  it('returns a validation error when note is more than the max amount of characters', async () => {
     const formData = new FormData()
+    formData.set('primary', 'Test')
+    formData.set('source', 'Test')
+    formData.set('addNote', 'a'.repeat(MAX_NOTE_LENGTH + 1))
+
+    const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'addNote', message: 'note.error' }],
+    })
+  })
+
+  it('returns 3 validation errors when primary and source questions are not answered and note is too long', async () => {
+    const formData = new FormData()
+    formData.set('addNote', 'a'.repeat(MAX_NOTE_LENGTH + 1))
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -60,6 +76,7 @@ describe('postMeldingForm', () => {
       validationErrors: [
         { key: 'primary', message: 'Dit veld is verplicht.' },
         { key: 'source', message: 'source.error' },
+        { key: 'addNote', message: 'note.error' },
       ],
     })
   })
@@ -246,6 +263,84 @@ describe('postMeldingForm', () => {
     )
 
     spy.mockRestore()
+  })
+
+  it('does a PATCH request when existingNoteId is passed to postMeldingForm', async () => {
+    const spy = vi.spyOn(apiClientProxy, 'patchMeldingByMeldingIdNoteByNoteId')
+
+    const formData = createFormData()
+    formData.set('addNote', 'Test note')
+
+    await postMeldingForm(
+      {
+        existingId: 123,
+        existingNoteId: 456,
+        existingToken: 'test-token',
+        requiredErrorMessage: 'Dit veld is verplicht.',
+      },
+      null,
+      formData,
+    )
+
+    expect(spy).toHaveBeenCalledWith({
+      body: { text: 'Test note' },
+      path: {
+        melding_id: 123,
+        note_id: 456,
+      },
+    })
+
+    spy.mockRestore()
+  })
+
+  it('does a POST request when existingNoteId is not passed to postMeldingForm', async () => {
+    const spy = vi.spyOn(apiClientProxy, 'postMeldingByMeldingIdNote')
+
+    const formData = createFormData()
+    formData.set('addNote', 'Test note')
+
+    await postMeldingForm(
+      {
+        existingId: 123,
+        existingToken: 'test-token',
+        requiredErrorMessage: 'Dit veld is verplicht.',
+      },
+      null,
+      formData,
+    )
+
+    expect(spy).toHaveBeenCalledWith({
+      body: { text: 'Test note' },
+      path: {
+        melding_id: 123,
+      },
+    })
+
+    spy.mockRestore()
+  })
+
+  it('returns a system error when patchMeldingByMeldingIdNoteByNoteId returns an error', async () => {
+    server.use(
+      http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID, () =>
+        HttpResponse.json('Error message', { status: 404 }),
+      ),
+    )
+
+    const formData = createFormData()
+    formData.set('addNote', 'Test note')
+
+    const result = await postMeldingForm(
+      {
+        existingId: 123,
+        existingNoteId: 456,
+        existingToken: 'test-token',
+        requiredErrorMessage: 'Dit veld is verplicht.',
+      },
+      null,
+      formData,
+    )
+
+    expect(result).toEqual({ formData, systemError: 'Error message' })
   })
 
   it('redirects to the correct URL without classification_id when classification is not returned', async () => {

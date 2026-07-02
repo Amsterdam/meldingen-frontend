@@ -43,7 +43,7 @@ export const handlers = [
       token: 'PATCH request',
     }),
   ),
-  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_NOTE, () => new HttpResponse()),
+  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID, () => new HttpResponse()),
 
   http.post(ENDPOINTS.POST_MELDING, () =>
     HttpResponse.json({

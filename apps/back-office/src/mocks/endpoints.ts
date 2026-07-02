@@ -18,7 +18,7 @@ export const ENDPOINTS = {
 
   PATCH_MELDING_BY_MELDING_ID: '/melding/:id',
   PATCH_MELDING_BY_MELDING_ID_MELDER: '/melding/:id/melder',
-  PATCH_MELDING_BY_MELDING_ID_NOTE: '/melding/:id/note',
+  PATCH_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID: '/melding/:id/note/:noteId',
 
   POST_MELDING: '/melding',
   POST_MELDING_BY_MELDING_ID_NOTE: '/melding/:id/note',
