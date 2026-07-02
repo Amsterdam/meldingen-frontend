@@ -10,7 +10,6 @@ import {
   Label,
   TextArea,
 } from '@amsterdam/design-system-react'
-import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
@@ -73,19 +72,21 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
             {t('title')}
           </Heading>
           <Form action={formAction} noValidate>
-            <Field className={clsx(styles.whiteField, 'ams-mb-m')} invalid={Boolean(errorMessage)}>
-              <Label htmlFor="addNote">{t('label')}</Label>
-              {errorMessage && <ErrorMessage id="addNote-error">{errorMessage}</ErrorMessage>}
-              <TextArea
-                aria-describedby={getAriaDescribedBy('addNote', undefined, errorMessage)}
-                aria-required="true"
-                defaultValue={defaultValue}
-                id="addNote"
-                invalid={Boolean(errorMessage)}
-                name="addNote"
-                rows={4}
-              />
-            </Field>
+            <div className={styles.whiteField}>
+              <Field invalid={Boolean(errorMessage)}>
+                <Label htmlFor="addNote">{t('label')}</Label>
+                {errorMessage && <ErrorMessage id="addNote-error">{errorMessage}</ErrorMessage>}
+                <TextArea
+                  aria-describedby={getAriaDescribedBy('addNote', undefined, errorMessage)}
+                  aria-required="true"
+                  defaultValue={defaultValue}
+                  id="addNote"
+                  invalid={Boolean(errorMessage)}
+                  name="addNote"
+                  rows={4}
+                />
+              </Field>
+            </div>
             <ActionGroup>
               <Button type="submit">{t('submit-button')}</Button>
               <CancelLink href={`/melding/${meldingId}`}>{t('cancel-link')}</CancelLink>

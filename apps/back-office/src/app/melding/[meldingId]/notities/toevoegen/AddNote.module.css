@@ -1,5 +1,6 @@
 .whiteField {
   background-color: var(--ams-color-background);
+  margin-block-end: var(--ams-space-m);
   padding-block: var(--ams-space-l);
   padding-inline: var(--ams-space-l);
 }
