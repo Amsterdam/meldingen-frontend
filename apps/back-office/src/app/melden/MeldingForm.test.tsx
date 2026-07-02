@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 
-import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+import type { NoteRetrieveOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { MeldingForm } from './MeldingForm'
 
@@ -198,6 +198,39 @@ describe('MeldingForm', () => {
 
     expect(screen.getByRole('checkbox', { name: 'Label 1' })).toBeChecked()
     expect(screen.getByRole('checkbox', { name: 'Label 2' })).not.toBeChecked()
+  })
+
+  it('prefills note from formData when the action returns formData', () => {
+    const formData = new FormData()
+    formData.set('addNote', 'Prefilled note')
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    const noteInput = screen.getByRole('textbox', { name: 'label (niet verplicht)' })
+
+    expect(noteInput).toHaveValue('Prefilled note')
+  })
+
+  it('prefills note from existingNote when provided and there is no formData', () => {
+    render(<MeldingForm {...defaultProps} existingNote={{ text: 'Existing note' } as NoteRetrieveOutput} />)
+
+    const noteInput = screen.getByRole('textbox', { name: 'label (niet verplicht)' })
+
+    expect(noteInput).toHaveValue('Existing note')
+  })
+
+  it('renders an error message connected to the note text area when there is a validation error for the note field', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([
+      { validationErrors: [{ key: 'addNote', message: 'Note error' }] },
+      vi.fn(),
+    ])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    const input = screen.getByRole('textbox', { name: 'label (niet verplicht)' })
+
+    expect(input).toHaveAccessibleDescription('Invoerfout:Note error')
   })
 
   it('submits the form when the submit button is clicked', async () => {

@@ -202,6 +202,7 @@ describe('Page', () => {
 
   it('logs an error and renders the MeldingForm component with undefined existingNote when fetching note data fails', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json('Test error', { status: 500 })),
     )
