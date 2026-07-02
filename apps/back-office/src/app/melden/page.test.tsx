@@ -184,11 +184,8 @@ describe('Page', () => {
   })
 
   it('passes the existing note to the MeldingForm component when it exists', async () => {
-    const noteData = {
-      id: 1,
-      melding_id: 1,
-      text: 'Existing note text',
-    }
+    const noteData = { id: 1, melding_id: 1, text: 'Existing note text' }
+
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json([noteData])))
 
     const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
