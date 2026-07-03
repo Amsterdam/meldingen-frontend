@@ -11,13 +11,15 @@ import {
 import { Detail } from './Detail'
 import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
-export const generateMetadata = async ({ searchParams }: { searchParams: Promise<{ id: string }> }) => {
-  const { id } = await searchParams
+export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
+  const { meldingId } = await params
 
   const t = await getTranslations('detail')
 
+  const { data } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
+
   return {
-    title: t('metadata.title', { publicId: id }),
+    title: t('metadata.title', { publicId: data?.public_id ?? '' }),
   }
 }
 
