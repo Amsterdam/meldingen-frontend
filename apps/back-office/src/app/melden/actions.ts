@@ -58,11 +58,11 @@ const createOrUpdateMelding = async (text: string, id?: number, token?: string) 
   }
 }
 
-const createOrUpdateNote = async (text: string, id: number, noteId?: number) => {
+const createOrUpdateNote = async (text: string, meldingId: number, noteId?: number) => {
   if (noteId) {
     return await patchMeldingByMeldingIdNoteByNoteId({
       body: { text },
-      path: { melding_id: id, note_id: noteId },
+      path: { melding_id: meldingId, note_id: noteId },
     })
   }
 
@@ -71,7 +71,7 @@ const createOrUpdateNote = async (text: string, id: number, noteId?: number) => 
   if (text.trim() !== '') {
     return await postMeldingByMeldingIdNote({
       body: { text },
-      path: { melding_id: id },
+      path: { melding_id: meldingId },
     })
   }
 }

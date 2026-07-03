@@ -77,8 +77,8 @@ const fetchExistingMelding = async (id: number) => {
   return existingMelding
 }
 
-const fetchNote = async (id: number) => {
-  const { data: notes, error: notesError } = await getMeldingByMeldingIdNote({ path: { melding_id: id } })
+const fetchNote = async (meldingId: number) => {
+  const { data: notes, error: notesError } = await getMeldingByMeldingIdNote({ path: { melding_id: meldingId } })
 
   if (notesError) {
     // TODO: Log the error to an error reporting service
