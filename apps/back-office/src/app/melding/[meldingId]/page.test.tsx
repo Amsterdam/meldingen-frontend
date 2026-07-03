@@ -12,11 +12,16 @@ vi.mock('./Detail', () => ({
   Detail: vi.fn(() => <div>Detail Component</div>),
 }))
 
+vi.mock('next-intl/server', async () => ({
+  getTranslations: () =>
+    vi.fn().mockImplementation((key, params) => (params ? `${key}: ${JSON.stringify(params)}` : key)),
+}))
+
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
     const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: 123 }) })
 
-    expect(metadata).toEqual({ title: 'metadata.title' })
+    expect(metadata).toEqual({ title: 'metadata.title: {"publicId":"ABC"}' })
   })
 })
 
