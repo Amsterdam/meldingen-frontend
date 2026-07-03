@@ -68,6 +68,8 @@ const createOrUpdateNote = async (text: string, meldingId: number, noteId?: numb
 
   // If the note text is empty, we don't want to create a new note
   // It is allowed to update an existing note with empty text
+  // TODO: this check will become unreliable when we implement the WYSIWYG editor, because empty text can contain Markdown operators
+  // (e.g. `*` or `_`). Revisit this check at that point.
   if (text.trim() !== '') {
     return await postMeldingByMeldingIdNote({
       body: { text },
