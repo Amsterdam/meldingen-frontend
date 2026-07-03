@@ -183,7 +183,7 @@ describe('Page', () => {
     consoleErrorSpy.mockRestore()
   })
 
-  it('passes the existing note to the MeldingForm component when it exists', async () => {
+  it('passes the existing note id to the MeldingForm component when it exists', async () => {
     const noteData = { id: 1, melding_id: 1, text: 'Existing note text' }
 
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json([noteData])))
@@ -194,13 +194,13 @@ describe('Page', () => {
 
     expect(MeldingForm).toHaveBeenCalledWith(
       expect.objectContaining({
-        existingNote: noteData,
+        existingNoteId: noteData.id,
       }),
       undefined,
     )
   })
 
-  it('logs an error and renders the MeldingForm component with undefined existingNote when fetching note data fails', async () => {
+  it('logs an error and renders the MeldingForm component with undefined existingNoteId when fetching note data fails', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     server.use(
@@ -215,7 +215,7 @@ describe('Page', () => {
 
     expect(MeldingForm).toHaveBeenCalledWith(
       expect.objectContaining({
-        existingNote: undefined,
+        existingNoteId: undefined,
       }),
       undefined,
     )

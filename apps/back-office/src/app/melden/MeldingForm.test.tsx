@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 
-import type { NoteRetrieveOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { MeldingForm } from './MeldingForm'
 
@@ -212,8 +212,8 @@ describe('MeldingForm', () => {
     expect(noteInput).toHaveValue('Prefilled note')
   })
 
-  it('prefills note from existingNote when provided and there is no formData', () => {
-    render(<MeldingForm {...defaultProps} existingNote={{ text: 'Existing note' } as NoteRetrieveOutput} />)
+  it('prefills note from defaultValues when provided and there is no formData', () => {
+    render(<MeldingForm {...defaultProps} defaultValues={{ note: 'Existing note' }} />)
 
     const noteInput = screen.getByRole('textbox', { name: 'label (niet verplicht)' })
 
