@@ -67,7 +67,13 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
       <Grid as="main" gapVertical="large">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
           {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-          {validationErrors && <InvalidFormAlert ref={invalidFormAlertRef} validationErrors={validationErrors} />}
+          {validationErrors && (
+            <InvalidFormAlert
+              ref={invalidFormAlertRef}
+              title={t('invalid-form-alert-title')}
+              validationErrors={validationErrors}
+            />
+          )}
           <Heading className="ams-mb-m" level={1}>
             {t('title')}
           </Heading>

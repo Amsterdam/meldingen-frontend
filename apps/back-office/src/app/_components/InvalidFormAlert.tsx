@@ -6,10 +6,11 @@ import { InvalidFormAlert as UIInvalidFormAlert } from '@meldingen/ui'
 
 type Props = {
   ref: RefObject<HTMLDivElement | null>
+  title?: string
   validationErrors: { key: string; message: string }[]
 }
 
-export const InvalidFormAlert = ({ ref, validationErrors }: Props) => {
+export const InvalidFormAlert = ({ ref, title, validationErrors }: Props) => {
   const t = useTranslations('melding-form.errors')
 
   return (
@@ -19,7 +20,7 @@ export const InvalidFormAlert = ({ ref, validationErrors }: Props) => {
         id: `#${error.key}`,
         label: error.message,
       }))}
-      heading={t('invalid-form-alert-title')}
+      heading={title || t('invalid-form-alert-title')}
       headingLevel={2}
       ref={ref}
     />
