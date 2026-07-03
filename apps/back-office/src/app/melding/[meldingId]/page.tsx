@@ -60,6 +60,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
       contact={contact}
       location={location}
       meldingData={meldingData}
+      meldingId={meldingId}
       publicId={data.public_id}
     />
   )

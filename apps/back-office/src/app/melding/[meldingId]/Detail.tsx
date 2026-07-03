@@ -34,6 +34,7 @@ type Props = {
   contact?: DescriptionListItem[]
   location?: DescriptionListItem[]
   meldingData: MeldingDataItem[]
+  meldingId: number
   publicId: MeldingOutput['public_id']
 }
 
@@ -45,6 +46,7 @@ export const Detail = ({
   contact,
   location,
   meldingData,
+  meldingId,
   publicId,
 }: Props) => {
   const t = useTranslations('detail')
@@ -68,6 +70,10 @@ export const Detail = ({
                 </Column>
               ))}
             </dl>
+
+            {/* TODO: temp link to test adding notes. Remove when notes overview has been added */}
+            <AmsNextLink href={`/melding/${meldingId}/notities/toevoegen`}>Maak notitie aan</AmsNextLink>
+
             {location && (
               <dl className={clsx(styles.horizontalDescriptionList, styles.card)}>
                 {location.map(({ description, key, term }) => (
