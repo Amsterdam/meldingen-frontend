@@ -4,8 +4,7 @@ import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
 
 import { postMeldingByMeldingIdNote } from '~/app/_api-client/proxy'
-
-const MAX_NOTE_LENGTH = 3000
+import { MAX_NOTE_LENGTH } from '~/constants'
 
 export const postAddNoteForm = async ({ meldingId }: { meldingId: number }, _: unknown, formData: FormData) => {
   const t = await getTranslations('add-note')
