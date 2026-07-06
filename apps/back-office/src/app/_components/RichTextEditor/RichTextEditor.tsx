@@ -17,6 +17,8 @@ import { useState } from 'react'
 import { Toolbar } from './Toolbar'
 import { MAX_NOTE_LENGTH } from '~/constants'
 
+import styles from './RichTextEditor.module.css'
+
 type Props = {
   'aria-describedby'?: string
   'aria-labelledby': string
@@ -45,6 +47,7 @@ export const RichTextEditor = ({
         'aria-describedby': ariaDescribedBy ?? '',
         'aria-labelledby': ariaLabelledBy,
         'aria-required': ariaRequired ?? 'false',
+        class: styles.editor,
         id,
         role: 'textbox',
       },
