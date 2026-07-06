@@ -1,4 +1,5 @@
 import type { Editor, EditorStateSnapshot } from '@tiptap/react'
+import type { RefObject } from 'react'
 
 import { IconButton } from '@amsterdam/design-system-react'
 import {
@@ -35,7 +36,7 @@ export const Toolbar = ({ editor, id }: Props) => {
     selector: toolbarStateSelector,
   })
 
-  const { keyDown } = useKeyboardFocus(ref, {
+  const { keyDown } = useKeyboardFocus(ref as RefObject<HTMLDivElement>, {
     focusableElements: ['.ams-icon-button:not([disabled])'],
     horizontally: true,
     rotating: true,
