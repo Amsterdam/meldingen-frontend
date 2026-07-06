@@ -54,15 +54,21 @@ export const RichTextEditor = ({
     },
     extensions: [
       Document,
-      Paragraph,
+      Paragraph.configure({
+        HTMLAttributes: { class: 'ams-paragraph' },
+      }),
       Text,
       Bold,
       Italic,
       Underline,
       Markdown,
       CharacterCount,
-      BulletList,
-      ListItem,
+      BulletList.configure({
+        HTMLAttributes: { class: 'ams-unordered-list' },
+      }),
+      ListItem.configure({
+        HTMLAttributes: { class: 'ams-unordered-list__item' },
+      }),
       UndoRedo,
     ],
     immediatelyRender: false, // Don't render immediately on the server to avoid SSR issues
