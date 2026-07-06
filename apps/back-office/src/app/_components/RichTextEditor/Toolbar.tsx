@@ -10,20 +10,15 @@ import {
 } from '@amsterdam/design-system-react-icons'
 import { useEditorState } from '@tiptap/react'
 
-/* eslint-disable perfectionist/sort-objects */
 const toolbarStateSelector = (ctx: EditorStateSnapshot<Editor>) => {
   return {
-    canBold: ctx.editor.can().chain().toggleBold().run() ?? false,
-    isBold: ctx.editor.isActive('bold') ?? false,
-    canItalic: ctx.editor.can().chain().toggleItalic().run() ?? false,
-    isItalic: ctx.editor.isActive('italic') ?? false,
-    canUnderline: ctx.editor.can().chain().toggleUnderline().run() ?? false,
-    isUnderline: ctx.editor.isActive('underline') ?? false,
-    isBulletList: ctx.editor.isActive('bulletList') ?? false,
     canUndo: ctx.editor.can().chain().undo().run() ?? false,
+    isBold: ctx.editor.isActive('bold') ?? false,
+    isBulletList: ctx.editor.isActive('bulletList') ?? false,
+    isItalic: ctx.editor.isActive('italic') ?? false,
+    isUnderline: ctx.editor.isActive('underline') ?? false,
   }
 }
-/* eslint-enable perfectionist/sort-objects */
 
 type Props = {
   editor: Editor
