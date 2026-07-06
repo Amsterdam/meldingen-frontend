@@ -8,7 +8,9 @@ import {
   ListIcon,
   UndoIcon,
 } from '@amsterdam/design-system-react-icons'
+import { useKeyboardFocus } from '@amsterdam/design-system-react/dist/common/useKeyboardFocus'
 import { useEditorState } from '@tiptap/react'
+import { useRef } from 'react'
 
 const toolbarStateSelector = (ctx: EditorStateSnapshot<Editor>) => {
   return {
@@ -26,13 +28,21 @@ type Props = {
 }
 
 export const Toolbar = ({ editor, id }: Props) => {
+  const ref = useRef<HTMLDivElement>(null)
+
   const editorState = useEditorState({
     editor,
     selector: toolbarStateSelector,
   })
 
+  const { keyDown } = useKeyboardFocus(ref, {
+    focusableElements: ['.ams-icon-button:not([disabled])'],
+    horizontally: true,
+    rotating: true,
+  })
+
   return (
-    <div aria-controls={id} aria-label="Opmaak" role="toolbar">
+    <div aria-controls={id} aria-label="Opmaak" onKeyDown={keyDown} ref={ref} role="toolbar">
       <IconButton
         aria-pressed={editorState.isBold}
         label="Bold"
