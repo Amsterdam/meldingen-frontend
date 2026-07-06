@@ -19,9 +19,13 @@ import styles from './AddNote.module.css'
 const initialState: FormState = {}
 
 const tempDefaultValue = `
-# Welcome to the Markdown Demo
-
 This demo showcases **bidirectional** markdown support in Tiptap with extended features.
+
+- One
+- Two
+
+Test
+
 `
 
 export const AddNote = ({ meldingId }: { meldingId: number }) => {
