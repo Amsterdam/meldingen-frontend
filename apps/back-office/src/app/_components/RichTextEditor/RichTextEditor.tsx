@@ -9,6 +9,7 @@ import { Text } from '@tiptap/extension-text'
 import { Underline } from '@tiptap/extension-underline'
 import { Markdown } from '@tiptap/markdown'
 import { EditorContent, useEditor } from '@tiptap/react'
+import { useState } from 'react'
 
 type Props = {
   'aria-labelledby': string
@@ -18,16 +19,24 @@ type Props = {
 }
 
 export const RichTextEditor = ({ 'aria-labelledby': ariaLabelledBy, defaultValue, id, name }: Props) => {
+  const [content, setContent] = useState(defaultValue)
+
   const editor = useEditor({
     content: defaultValue,
     contentType: 'markdown',
     editorProps: {
-      attributes: { 'aria-labelledby': ariaLabelledBy, id, name, role: 'textbox' },
+      attributes: { 'aria-labelledby': ariaLabelledBy, id, role: 'textbox' },
     },
     extensions: [Document, Paragraph, Text, Bold, Italic, Underline, Heading, Markdown],
     // Don't render immediately on the server to avoid SSR issues
     immediatelyRender: false,
+    onUpdate: ({ editor: updatedEditor }) => setContent(updatedEditor.getMarkdown()),
   })
 
-  return <EditorContent editor={editor} />
+  return (
+    <>
+      <EditorContent editor={editor} />
+      <input name={name} type="hidden" value={content} />
+    </>
+  )
 }

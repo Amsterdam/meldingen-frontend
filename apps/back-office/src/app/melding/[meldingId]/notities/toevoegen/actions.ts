@@ -12,6 +12,8 @@ export const postAddNoteForm = async ({ meldingId }: { meldingId: number }, _: u
 
   const formDataObj = Object.fromEntries(formData)
 
+  // TODO: this check doesn't work well anymore, seeing as markdown can generate a lot of characters.
+  // We should probably check the length of the text after stripping out markdown formatting.
   if (!formDataObj.addNote) {
     return {
       formData,
