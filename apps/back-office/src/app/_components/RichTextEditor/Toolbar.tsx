@@ -11,7 +11,7 @@ import {
 } from '@amsterdam/design-system-react-icons'
 import { useKeyboardFocus } from '@amsterdam/design-system-react/dist/common/useKeyboardFocus'
 import { useEditorState } from '@tiptap/react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 const toolbarStateSelector = (ctx: EditorStateSnapshot<Editor>) => {
   return {
@@ -28,8 +28,12 @@ type Props = {
   id: string
 }
 
+type ToolbarButton = 'bold' | 'bulletList' | 'italic' | 'underline' | 'undo'
+
 export const Toolbar = ({ editor, id }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
+
+  const [activeButton, setActiveButton] = useState<ToolbarButton>('bold')
 
   const editorState = useEditorState({
     editor,
@@ -42,37 +46,49 @@ export const Toolbar = ({ editor, id }: Props) => {
     rotating: true,
   })
 
+  const getTabIndex = (button: ToolbarButton) => (activeButton === button ? 0 : -1)
+
   return (
     <div aria-controls={id} aria-label="Opmaak" onKeyDown={keyDown} ref={ref} role="toolbar">
       <IconButton
         aria-pressed={editorState.isBold}
         label="Bold"
         onClick={() => editor.chain().focus().toggleBold().run()}
+        onFocus={() => setActiveButton('bold')}
         svg={FormattingBoldIcon}
+        tabIndex={getTabIndex('bold')}
       />
       <IconButton
         aria-pressed={editorState.isItalic}
         label="Italic"
         onClick={() => editor.chain().focus().toggleItalic().run()}
+        onFocus={() => setActiveButton('italic')}
         svg={FormattingItalicIcon}
+        tabIndex={getTabIndex('italic')}
       />
       <IconButton
         aria-pressed={editorState.isUnderline}
         label="Underline"
         onClick={() => editor.chain().focus().toggleUnderline().run()}
+        onFocus={() => setActiveButton('underline')}
         svg={FormattingUnderlineIcon}
+        tabIndex={getTabIndex('underline')}
       />
       <IconButton
         aria-pressed={editorState.isBulletList}
         label="Unordered list"
         onClick={() => editor.chain().focus().toggleBulletList().run()}
+        onFocus={() => setActiveButton('bulletList')}
         svg={ListIcon}
+        tabIndex={getTabIndex('bulletList')}
       />
       <IconButton
         aria-disabled={!editorState.canUndo}
         label="Undo"
         onClick={() => editor.chain().focus().undo().run()}
+        onFocus={() => setActiveButton('undo')}
         svg={UndoIcon}
+        tabIndex={getTabIndex('undo')}
       />
     </div>
   )
