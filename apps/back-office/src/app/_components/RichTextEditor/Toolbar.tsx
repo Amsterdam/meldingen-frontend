@@ -13,6 +13,8 @@ import { useKeyboardFocus } from '@amsterdam/design-system-react/dist/common/use
 import { useEditorState } from '@tiptap/react'
 import { useRef, useState } from 'react'
 
+import styles from './Toolbar.module.css'
+
 const toolbarStateSelector = (ctx: EditorStateSnapshot<Editor>) => {
   return {
     canUndo: ctx.editor.can().chain().undo().run() ?? false,
@@ -49,9 +51,10 @@ export const Toolbar = ({ editor, id }: Props) => {
   const getTabIndex = (button: ToolbarButton) => (activeButton === button ? 0 : -1)
 
   return (
-    <div aria-controls={id} aria-label="Opmaak" onKeyDown={keyDown} ref={ref} role="toolbar">
+    <div aria-controls={id} aria-label="Opmaak" className={styles.toolbar} onKeyDown={keyDown} ref={ref} role="toolbar">
       <IconButton
         aria-pressed={editorState.isBold}
+        className={styles.button}
         label="Bold"
         onClick={() => editor.chain().focus().toggleBold().run()}
         onFocus={() => setActiveButton('bold')}
@@ -60,6 +63,7 @@ export const Toolbar = ({ editor, id }: Props) => {
       />
       <IconButton
         aria-pressed={editorState.isItalic}
+        className={styles.button}
         label="Italic"
         onClick={() => editor.chain().focus().toggleItalic().run()}
         onFocus={() => setActiveButton('italic')}
@@ -68,6 +72,7 @@ export const Toolbar = ({ editor, id }: Props) => {
       />
       <IconButton
         aria-pressed={editorState.isUnderline}
+        className={styles.button}
         label="Underline"
         onClick={() => editor.chain().focus().toggleUnderline().run()}
         onFocus={() => setActiveButton('underline')}
@@ -76,6 +81,7 @@ export const Toolbar = ({ editor, id }: Props) => {
       />
       <IconButton
         aria-pressed={editorState.isBulletList}
+        className={styles.button}
         label="Unordered list"
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         onFocus={() => setActiveButton('bulletList')}
@@ -84,6 +90,7 @@ export const Toolbar = ({ editor, id }: Props) => {
       />
       <IconButton
         aria-disabled={!editorState.canUndo}
+        className={styles.button}
         label="Undo"
         onClick={() => editor.chain().focus().undo().run()}
         onFocus={() => setActiveButton('undo')}
