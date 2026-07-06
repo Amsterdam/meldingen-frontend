@@ -12,20 +12,35 @@ import { EditorContent, useEditor } from '@tiptap/react'
 import { useState } from 'react'
 
 type Props = {
+  'aria-describedby'?: string
   'aria-labelledby': string
+  'aria-required'?: string
   defaultValue: string
   id: string
   name: string
 }
 
-export const RichTextEditor = ({ 'aria-labelledby': ariaLabelledBy, defaultValue, id, name }: Props) => {
+export const RichTextEditor = ({
+  'aria-describedby': ariaDescribedBy,
+  'aria-labelledby': ariaLabelledBy,
+  'aria-required': ariaRequired,
+  defaultValue,
+  id,
+  name,
+}: Props) => {
   const [content, setContent] = useState(defaultValue)
 
   const editor = useEditor({
     content: defaultValue,
     contentType: 'markdown',
     editorProps: {
-      attributes: { 'aria-labelledby': ariaLabelledBy, id, role: 'textbox' },
+      attributes: {
+        'aria-describedby': ariaDescribedBy ?? '',
+        'aria-labelledby': ariaLabelledBy,
+        'aria-required': ariaRequired ?? 'false',
+        id,
+        role: 'textbox',
+      },
     },
     extensions: [Document, Paragraph, Text, Bold, Italic, Underline, Heading, Markdown],
     // Don't render immediately on the server to avoid SSR issues

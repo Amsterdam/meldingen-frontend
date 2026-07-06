@@ -5,7 +5,8 @@ import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
 
-// import { getAriaDescribedBy } from '@meldingen/form-renderer'
+import { getAriaDescribedBy } from '@meldingen/form-renderer'
+
 import type { FormState } from '~/types'
 
 import { BackLink } from '../../_components/BackLink'
@@ -80,20 +81,14 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
                 <Label id="addNote-label">{t('label')}</Label>
                 {errorMessage && <ErrorMessage id="addNote-error">{errorMessage}</ErrorMessage>}
                 <RichTextEditor
+                  aria-describedby={getAriaDescribedBy('addNote', undefined, errorMessage)}
                   aria-labelledby="addNote-label"
+                  aria-required="true"
                   defaultValue={tempDefaultValue}
                   id="addNote"
+                  // invalid={Boolean(errorMessage)}
                   name="addNote"
                 />
-                {/* <TextArea
-                  aria-describedby={getAriaDescribedBy('addNote', undefined, errorMessage)}
-                  aria-required="true"
-                  defaultValue={defaultValue}
-                  id="addNote"
-                  invalid={Boolean(errorMessage)}
-                  name="addNote"
-                  rows={4}
-                /> */}
               </Field>
             </div>
             <ActionGroup>
