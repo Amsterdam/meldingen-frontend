@@ -1,31 +1,27 @@
 'use client'
 
-import {
-  ActionGroup,
-  Button,
-  ErrorMessage,
-  Field,
-  Grid,
-  Heading,
-  Label,
-  TextArea,
-} from '@amsterdam/design-system-react'
+import { ActionGroup, Button, ErrorMessage, Field, Grid, Heading, Label } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
 
-import { getAriaDescribedBy } from '@meldingen/form-renderer'
-
+// import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import type { FormState } from '~/types'
 
 import { BackLink } from '../../_components/BackLink'
 import { CancelLink } from '../../_components/CancelLink'
 import { postAddNoteForm } from './actions'
-import { InvalidFormAlert, SystemErrorAlert } from '~/app/_components'
+import { InvalidFormAlert, RichTextEditor, SystemErrorAlert } from '~/app/_components'
 
 import styles from './AddNote.module.css'
 
 const initialState: FormState = {}
+
+const tempDefaultValue = `
+# Welcome to the Markdown Demo
+
+This demo showcases **bidirectional** markdown support in Tiptap with extended features.
+`
 
 export const AddNote = ({ meldingId }: { meldingId: number }) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
@@ -33,7 +29,8 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
 
   const postAddNoteFormWithMeldingId = postAddNoteForm.bind(null, { meldingId })
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(
+  const [{ systemError, validationErrors }, formAction] = useActionState(
+    // formData,
     postAddNoteFormWithMeldingId,
     initialState,
   )
@@ -58,7 +55,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
     }
   }, [systemError])
 
-  const defaultValue = formData?.get('addNote')?.toString() || ''
+  // const defaultValue = formData?.get('addNote')?.toString() || ''
   const errorMessage = validationErrors?.find((error) => error.key === 'addNote')?.message
 
   return (
@@ -80,9 +77,15 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
           <Form action={formAction} noValidate>
             <div className={styles.whiteField}>
               <Field invalid={Boolean(errorMessage)}>
-                <Label htmlFor="addNote">{t('label')}</Label>
+                <Label id="addNote-label">{t('label')}</Label>
                 {errorMessage && <ErrorMessage id="addNote-error">{errorMessage}</ErrorMessage>}
-                <TextArea
+                <RichTextEditor
+                  aria-labelledby="addNote-label"
+                  defaultValue={tempDefaultValue}
+                  id="addNote"
+                  name="addNote"
+                />
+                {/* <TextArea
                   aria-describedby={getAriaDescribedBy('addNote', undefined, errorMessage)}
                   aria-required="true"
                   defaultValue={defaultValue}
@@ -90,7 +93,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
                   invalid={Boolean(errorMessage)}
                   name="addNote"
                   rows={4}
-                />
+                /> */}
               </Field>
             </div>
             <ActionGroup>
