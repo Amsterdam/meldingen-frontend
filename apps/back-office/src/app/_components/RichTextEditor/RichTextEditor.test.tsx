@@ -18,17 +18,7 @@ describe('RichTextEditor', () => {
   beforeAll(() => {
     document.elementFromPoint = () => null
 
-    const rect: DOMRect = {
-      bottom: 0,
-      height: 0,
-      left: 0,
-      right: 0,
-      toJSON: () => {},
-      top: 0,
-      width: 0,
-      x: 0,
-      y: 0,
-    }
+    const rect = {} as DOMRect
 
     Range.prototype.getClientRects = () => [rect] as unknown as DOMRectList
     Range.prototype.getBoundingClientRect = () => rect
