@@ -90,7 +90,9 @@ export const RichTextEditor = ({
     <>
       <Toolbar editor={editor} id={id} />
       <EditorContent editor={editor} />
-      {charactersCount !== undefined && <ADSCharacterCount length={charactersCount} maxLength={MAX_NOTE_LENGTH} />}
+      {charactersCount !== undefined && (
+        <ADSCharacterCount className={styles.characterCount} length={charactersCount} maxLength={MAX_NOTE_LENGTH} />
+      )}
       <input name={name} type="hidden" value={content} />
     </>
   )

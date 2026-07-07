@@ -1,6 +1,7 @@
 .toolbar {
   border: var(--ams-border-width-m) solid var(--ams-color-interactive);
   display: flex;
+  flex-wrap: wrap;
   gap: var(--ams-space-m);
   inline-size: fit-content;
 }

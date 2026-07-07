@@ -31,3 +31,7 @@
     box-shadow: var(--ams-text-area-invalid-hover-box-shadow);
   }
 }
+
+.characterCount {
+  margin-block-end: 0;
+}
