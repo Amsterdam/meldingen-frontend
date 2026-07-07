@@ -183,8 +183,8 @@ describe('Page', () => {
     consoleErrorSpy.mockRestore()
   })
 
-  it('passes the existing note id to the MeldingForm component when it exists', async () => {
-    const noteData = { id: 1, melding_id: 1, text: 'Existing note text' }
+  it('passes the existing note id to the MeldingForm component when it exists and belongs to the current user', async () => {
+    const noteData = { id: 1, melding_id: 1, text: 'Existing note text', user: { id: 1 } }
 
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json([noteData])))
 
@@ -200,12 +200,50 @@ describe('Page', () => {
     )
   })
 
+  it('does not pass the existing note id to the MeldingForm component when it does not belong to the current user', async () => {
+    const noteData = { id: 1, melding_id: 1, text: 'Existing note text', user: { id: 2 } }
+
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json([noteData])))
+
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
+
+    render(PageComponent)
+
+    expect(MeldingForm).toHaveBeenCalledWith(
+      expect.objectContaining({
+        existingNoteId: undefined,
+      }),
+      undefined,
+    )
+  })
+
   it('logs an error and renders the MeldingForm component with undefined existingNoteId when fetching note data fails', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json('Test error', { status: 500 })),
     )
+
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
+
+    render(PageComponent)
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Test error')
+
+    expect(MeldingForm).toHaveBeenCalledWith(
+      expect.objectContaining({
+        existingNoteId: undefined,
+      }),
+      undefined,
+    )
+
+    consoleErrorSpy.mockRestore()
+  })
+
+  it('logs an error and renders the MeldingForm component with undefined existingNoteId when fetching current user data fails', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    server.use(http.get(ENDPOINTS.GET_USER_ME, () => HttpResponse.json('Test error', { status: 500 })))
 
     const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
 

@@ -38,4 +38,7 @@ export const ENDPOINTS = {
   // Static form
   GET_STATIC_FORM: '/static-form',
   GET_STATIC_FORM_BY_STATIC_FORM_ID: '/static-form/:staticFormId',
+
+  // User
+  GET_USER_ME: '/user/me',
 }

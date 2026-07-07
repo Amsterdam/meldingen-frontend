@@ -12,6 +12,7 @@ import {
   getSource,
   getStaticForm,
   getStaticFormByStaticFormId,
+  getUserMe,
 } from '~/app/_api-client/proxy'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
@@ -86,7 +87,19 @@ const fetchNote = async (meldingId: number) => {
     console.error(notesError)
   }
 
-  return notes?.[0]
+  const { data: currentUser, error: currentUserError } = await getUserMe()
+
+  if (currentUserError) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(currentUserError)
+  }
+
+  // Only return the note that belongs to the current user, if any
+  // This prevents returning other users' notes, which the current user is not allowed to update
+  const userNotes = notes?.filter((note) => note.user.id === currentUser?.id)
+
+  return userNotes?.[0]
 }
 
 const toDefaultValues = (melding?: MeldingOutput, note?: NoteRetrieveOutput) => {

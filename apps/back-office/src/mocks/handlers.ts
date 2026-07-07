@@ -82,4 +82,12 @@ export const handlers = [
       return HttpResponse.json({ components: [textAreaComponent] })
     }
   }),
+
+  // User
+  http.get(ENDPOINTS.GET_USER_ME, () =>
+    HttpResponse.json({
+      email: 'user@example.com',
+      id: 1,
+    }),
+  ),
 ]
