@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
 import { OVERVIEW_FIELDS } from '../constants'
-import { getMeldingDetailHref } from './_utils'
 import { OverviewMobile } from './OverviewMobile'
 import { melding } from '~/mocks/data'
 
@@ -19,7 +18,7 @@ describe('OverviewMobile', () => {
     })
 
     const detailLink = screen.getByRole('link', { name: meldingWithAddress.public_id })
-    expect(detailLink).toHaveAttribute('href', getMeldingDetailHref(meldingWithAddress))
+    expect(detailLink).toHaveAttribute('href', `/melding/${meldingWithAddress.id}`)
 
     expect(screen.getByText(createdAt)).toBeInTheDocument()
     expect(screen.getByText(classificationText)).toBeInTheDocument()

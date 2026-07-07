@@ -159,6 +159,7 @@
       "title": "Notitie toevoegen - Gemeente Amsterdam"
     },
     "back-link": "Meldingdetails",
+    "invalid-form-alert-title": "Verbeter de fouten om uw notitie toe te voegen",
     "title": "Notitie toevoegen",
     "label": "Notitie toevoegen",
     "submit-button": "Notitie toevoegen",
