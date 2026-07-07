@@ -31,8 +31,10 @@ describe('AddNote', () => {
     expect(screen.getByRole('heading', { name: 'title' })).toBeInTheDocument()
   })
 
-  it('renders the text area', () => {
+  it('renders the rich text editor', async () => {
     render(<AddNote {...defaultProps} />)
+
+    expect(await screen.findByRole('toolbar')).toBeInTheDocument()
 
     expect(screen.getByRole('textbox', { name: 'label' })).toBeInTheDocument()
   })
@@ -53,7 +55,7 @@ describe('AddNote', () => {
     expect(screen.getByRole('alert')).toBeInTheDocument()
   })
 
-  it('displays an invalid form alert when there are validation errors', () => {
+  it('displays an invalid form alert when there are validation errors', async () => {
     const formData = new FormData()
     formData.append('addNote', 'Some note text')
     ;(useActionState as Mock).mockReturnValueOnce([
@@ -63,8 +65,10 @@ describe('AddNote', () => {
 
     render(<AddNote {...defaultProps} />)
 
+    expect(await screen.findByRole('toolbar')).toBeInTheDocument()
+
     expect(screen.getByRole('link', { name: 'Error message' })).toBeInTheDocument()
-    expect(screen.getByRole('textbox', { name: 'label' })).toHaveValue('Some note text')
+    expect(screen.getByRole('textbox', { name: 'label' })).toHaveTextContent('Some note text')
   })
 
   it('submits the form when the submit button is clicked', async () => {
