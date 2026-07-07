@@ -56,7 +56,7 @@
   animation-iteration-count: infinite;
   animation-name: loading;
   animation-timing-function: ease-in-out;
-  block-size: calc(2.125rem + var(--ams-space-xs) + 8rem + var(--ams-space-xs) + 1.125rem);
+  block-size: calc(2.25rem + var(--ams-space-xs) + 8rem + var(--ams-space-xs) + 1.125rem);
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
