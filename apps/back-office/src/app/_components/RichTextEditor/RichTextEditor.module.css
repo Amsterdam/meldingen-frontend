@@ -10,9 +10,7 @@
   font-weight: var(--ams-text-area-font-weight);
   inline-size: 100%;
   line-height: var(--ams-text-area-line-height);
-  max-inline-size: 100%;
-  min-block-size: var(--ams-text-area-min-block-size);
-  min-height: 8rem;
+  min-block-size: 8rem;
   outline-offset: var(--ams-text-area-outline-offset);
   padding-block: var(--ams-text-area-padding-block);
   padding-inline: var(--ams-text-area-padding-inline);
