@@ -40,6 +40,7 @@ export const RichTextEditor = ({
 }: Props) => {
   const [content, setContent] = useState(defaultValue)
   const [charactersCount, setCharactersCount] = useState<number>()
+  const [hasLoaded, setHasLoaded] = useState(false)
 
   const editor = useEditor({
     content: defaultValue,
@@ -75,15 +76,18 @@ export const RichTextEditor = ({
       UndoRedo,
     ],
     immediatelyRender: false, // Don't render immediately on the server to avoid SSR issues
-    onCreate: ({ editor: createdEditor }) => setCharactersCount(createdEditor.storage.characterCount.characters()),
+    onCreate: ({ editor: createdEditor }) => {
+      setCharactersCount(createdEditor.storage.characterCount.characters())
+      setHasLoaded(true)
+    },
     onUpdate: ({ editor: updatedEditor }) => {
       setContent(updatedEditor.getMarkdown())
       setCharactersCount(updatedEditor.storage.characterCount.characters())
     },
   })
 
-  if (!editor) {
-    return null
+  if (!editor || !hasLoaded) {
+    return <div className={styles.loader} />
   }
 
   return (
