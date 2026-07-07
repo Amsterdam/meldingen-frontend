@@ -1,4 +1,5 @@
 export { LabelsField } from './LabelsField/LabelsField'
+export { NoteField } from './NoteField/NoteField'
 export { PrimaryField } from './PrimaryField/PrimaryField'
 export { SourceField } from './SourceField/SourceField'
 export { UrgencyField } from './UrgencyField/UrgencyField'

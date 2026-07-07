@@ -12,16 +12,17 @@ import { Column, Paragraph } from '@meldingen/ui'
 import type { MeldingData } from './types'
 import type { FormState } from '~/types'
 
-import { LabelsField, PrimaryField, SourceField, UrgencyField } from './_components'
+import { LabelsField, NoteField, PrimaryField, SourceField, UrgencyField } from './_components'
 import { postMeldingForm } from './actions'
 import { InvalidFormAlert, SystemErrorAlert } from '~/app/_components'
 
 import styles from './MeldingForm.module.css'
 
 type Props = {
-  defaultValues?: { labels?: number[]; primary?: string; source?: string; urgency?: number }
+  defaultValues?: { labels?: number[]; note?: string; primary?: string; source?: string; urgency?: number }
   existingId?: number
   existingMelding?: MeldingData
+  existingNoteId?: number
   existingToken?: string
   labels: LabelOutput[]
   primaryTextArea: StaticFormTextAreaComponentOutput
@@ -38,8 +39,9 @@ const calculateDefaultValues = (formData?: FormData, defaultValues?: Props['defa
   const rawUrgency = formData?.get('urgency')
   const urgencyDefaultValue =
     rawUrgency !== null && rawUrgency !== undefined ? Number(rawUrgency) : (defaultValues?.urgency ?? 0)
+  const noteDefaultValue = (formData?.get('addNote') as string | null) ?? defaultValues?.note ?? ''
 
-  return { labelsDefaultValues, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue }
+  return { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue }
 }
 
 const initialState: FormState = {}
@@ -48,6 +50,7 @@ export const MeldingForm = ({
   defaultValues,
   existingId,
   existingMelding,
+  existingNoteId,
   existingToken,
   labels,
   primaryTextArea,
@@ -60,15 +63,18 @@ export const MeldingForm = ({
 
   const requiredErrorMessage =
     primaryTextArea.validate?.required_error_message ?? t('errors.required-error-message-fallback')
-  const action = postMeldingForm.bind(null, { existingId, existingToken, requiredErrorMessage })
+  const action = postMeldingForm.bind(null, {
+    existingId,
+    existingNoteId,
+    existingToken,
+    requiredErrorMessage,
+  })
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
   const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
-  const { labelsDefaultValues, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } = calculateDefaultValues(
-    formData,
-    defaultValues,
-  )
+  const { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } =
+    calculateDefaultValues(formData, defaultValues)
 
   // Set focus on InvalidFormAlert when there are validation errors
   // and on SystemErrorAlert when there is a system error
@@ -90,6 +96,7 @@ export const MeldingForm = ({
 
   const primaryErrorMessage = validationErrors?.find((error) => error.key === 'primary')?.message
   const sourceErrorMessage = validationErrors?.find((error) => error.key === 'source')?.message
+  const noteErrorMessage = validationErrors?.find((error) => error.key === 'addNote')?.message
 
   return (
     <Grid
@@ -123,6 +130,7 @@ export const MeldingForm = ({
             <SourceField defaultValue={sourceDefaultValue} errorMessage={sourceErrorMessage} sources={sources} />
             <UrgencyField defaultValue={urgencyDefaultValue} />
             <LabelsField defaultValues={labelsDefaultValues} labels={labels} />
+            <NoteField defaultValue={noteDefaultValue} errorMessage={noteErrorMessage} />
             <Button className={styles.submit} type="submit">
               {t('submit-button')}
             </Button>

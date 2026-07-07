@@ -9,12 +9,20 @@ import type { MeldingData } from './types'
 import type { FormState } from '~/types'
 
 import { hasValidationErrors } from './_utils/hasValidationErrors'
-import { patchMeldingByMeldingId, patchMeldingByMeldingIdMelder, postMelding } from '~/app/_api-client/proxy'
+import {
+  patchMeldingByMeldingId,
+  patchMeldingByMeldingIdMelder,
+  patchMeldingByMeldingIdNoteByNoteId,
+  postMelding,
+  postMeldingByMeldingIdNote,
+} from '~/app/_api-client/proxy'
 import { handleApiError } from '~/app/_utils/handleApiError'
+import { MAX_NOTE_LENGTH } from '~/constants'
 import { URGENCY_VALUES } from '~/constants'
 
 export type ArgsType = {
   existingId?: number
+  existingNoteId?: number
   existingToken?: string
   requiredErrorMessage: string
 }
@@ -50,8 +58,28 @@ const createOrUpdateMelding = async (text: string, id?: number, token?: string) 
   }
 }
 
+const createOrUpdateNote = async (text: string, meldingId: number, noteId?: number) => {
+  if (noteId) {
+    return await patchMeldingByMeldingIdNoteByNoteId({
+      body: { text },
+      path: { melding_id: meldingId, note_id: noteId },
+    })
+  }
+
+  // If the note text is empty, we don't want to create a new note
+  // It is allowed to update an existing note with empty text
+  // TODO: this check will become unreliable when we implement the WYSIWYG editor, because empty text can contain Markdown operators
+  // (e.g. `*` or `_`). Revisit this check at that point.
+  if (text.trim() !== '') {
+    return await postMeldingByMeldingIdNote({
+      body: { text },
+      path: { melding_id: meldingId },
+    })
+  }
+}
+
 export const postMeldingForm = async (
-  { existingId, existingToken, requiredErrorMessage }: ArgsType,
+  { existingId, existingNoteId, existingToken, requiredErrorMessage }: ArgsType,
   _: unknown,
   formData: FormData,
 ): Promise<FormState> => {
@@ -63,6 +91,9 @@ export const postMeldingForm = async (
   const validationErrors = [
     ...(!formDataObj.primary ? [{ key: 'primary', message: requiredErrorMessage }] : []),
     ...(!formDataObj.source ? [{ key: 'source', message: t('source.error') }] : []),
+    ...(formDataObj.addNote && formDataObj.addNote.toString().length > MAX_NOTE_LENGTH
+      ? [{ key: 'addNote', message: t('note.error', { max: MAX_NOTE_LENGTH }) }]
+      : []),
   ]
 
   if (validationErrors.length > 0) {
@@ -121,6 +152,10 @@ export const postMeldingForm = async (
   })
 
   if (updateMeldingError) return { formData, systemError: updateMeldingError }
+
+  const result = await createOrUpdateNote(formDataObj.addNote.toString(), meldingData.id, existingNoteId)
+
+  if (result?.error) return { formData, systemError: result.error }
 
   const params = new URLSearchParams({
     created_at: meldingData.createdAt,
