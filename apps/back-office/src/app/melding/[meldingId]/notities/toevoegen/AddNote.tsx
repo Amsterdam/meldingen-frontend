@@ -18,24 +18,13 @@ import styles from './AddNote.module.css'
 
 const initialState: FormState = {}
 
-const tempDefaultValue = `
-This demo showcases **bidirectional** markdown support in Tiptap with extended features.
-
-- One
-- Two
-
-Test
-
-`
-
 export const AddNote = ({ meldingId }: { meldingId: number }) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const postAddNoteFormWithMeldingId = postAddNoteForm.bind(null, { meldingId })
 
-  const [{ systemError, validationErrors }, formAction] = useActionState(
-    // formData,
+  const [{ formData, systemError, validationErrors }, formAction] = useActionState(
     postAddNoteFormWithMeldingId,
     initialState,
   )
@@ -60,7 +49,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
     }
   }, [systemError])
 
-  // const defaultValue = formData?.get('addNote')?.toString() || ''
+  const defaultValue = formData?.get('addNote')?.toString() || ''
   const errorMessage = validationErrors?.find((error) => error.key === 'addNote')?.message
 
   return (
@@ -88,7 +77,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
                   aria-describedby={getAriaDescribedBy('addNote', undefined, errorMessage)}
                   aria-labelledby="addNote-label"
                   aria-required="true"
-                  defaultValue={tempDefaultValue}
+                  defaultValue={defaultValue}
                   id="addNote"
                   invalid={Boolean(errorMessage)}
                   name="addNote"
