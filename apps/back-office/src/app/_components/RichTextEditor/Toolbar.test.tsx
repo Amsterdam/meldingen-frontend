@@ -1,6 +1,6 @@
 import type { Editor } from '@tiptap/react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Bold } from '@tiptap/extension-bold'
 import { Document } from '@tiptap/extension-document'
@@ -14,33 +14,22 @@ import { useEditor } from '@tiptap/react'
 
 import { Toolbar } from './Toolbar'
 
-const Harness = ({ onReady }: { onReady: (editor: Editor) => void }) => {
-  const editor = useEditor({
-    content: '<p>Hello</p>',
-    extensions: [Document, Paragraph, Text, Bold, Italic, Underline, BulletList, ListItem, UndoRedo],
-    immediatelyRender: false,
-    onCreate: ({ editor: createdEditor }) => onReady(createdEditor),
-  })
-
-  if (!editor) return null
-
-  return <Toolbar editor={editor} id="editor" />
-}
-
 const renderToolbar = async () => {
-  let editor: Editor | undefined
-
-  render(
-    <Harness
-      onReady={(createdEditor) => {
-        editor = createdEditor
-      }}
-    />,
+  const { result } = renderHook(() =>
+    useEditor({
+      content: '<p>Hello</p>',
+      extensions: [Document, Paragraph, Text, Bold, Italic, Underline, BulletList, ListItem, UndoRedo],
+      immediatelyRender: false,
+    }),
   )
 
-  await screen.findByRole('toolbar')
+  await waitFor(() => expect(result.current).not.toBeNull())
 
-  return editor as Editor
+  const editor = result.current as Editor
+
+  render(<Toolbar editor={editor} id="editor" />)
+
+  return editor
 }
 
 describe('Toolbar', () => {
