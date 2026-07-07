@@ -11,6 +11,7 @@ import {
 } from '@amsterdam/design-system-react-icons'
 import { useKeyboardFocus } from '@amsterdam/design-system-react/dist/common/useKeyboardFocus'
 import { useEditorState } from '@tiptap/react'
+import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 
 import styles from './Toolbar.module.css'
@@ -33,6 +34,8 @@ type Props = {
 type ToolbarButton = 'bold' | 'bulletList' | 'italic' | 'underline' | 'undo'
 
 export const Toolbar = ({ editor, id }: Props) => {
+  const t = useTranslations('shared.rich-text-editor')
+
   const ref = useRef<HTMLDivElement>(null)
 
   const [activeButton, setActiveButton] = useState<ToolbarButton>('bold')
@@ -51,11 +54,18 @@ export const Toolbar = ({ editor, id }: Props) => {
   const getTabIndex = (button: ToolbarButton) => (activeButton === button ? 0 : -1)
 
   return (
-    <div aria-controls={id} aria-label="Opmaak" className={styles.toolbar} onKeyDown={keyDown} ref={ref} role="toolbar">
+    <div
+      aria-controls={id}
+      aria-label={t('toolbar')}
+      className={styles.toolbar}
+      onKeyDown={keyDown}
+      ref={ref}
+      role="toolbar"
+    >
       <IconButton
         aria-pressed={editorState.isBold}
         className={styles.button}
-        label="Bold"
+        label={t('bold')}
         onClick={() => editor.chain().focus().toggleBold().run()}
         onFocus={() => setActiveButton('bold')}
         svg={FormattingBoldIcon}
@@ -64,7 +74,7 @@ export const Toolbar = ({ editor, id }: Props) => {
       <IconButton
         aria-pressed={editorState.isItalic}
         className={styles.button}
-        label="Italic"
+        label={t('italic')}
         onClick={() => editor.chain().focus().toggleItalic().run()}
         onFocus={() => setActiveButton('italic')}
         svg={FormattingItalicIcon}
@@ -73,7 +83,7 @@ export const Toolbar = ({ editor, id }: Props) => {
       <IconButton
         aria-pressed={editorState.isUnderline}
         className={styles.button}
-        label="Underline"
+        label={t('underline')}
         onClick={() => editor.chain().focus().toggleUnderline().run()}
         onFocus={() => setActiveButton('underline')}
         svg={FormattingUnderlineIcon}
@@ -82,7 +92,7 @@ export const Toolbar = ({ editor, id }: Props) => {
       <IconButton
         aria-pressed={editorState.isBulletList}
         className={styles.button}
-        label="Unordered list"
+        label={t('unordered-list')}
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         onFocus={() => setActiveButton('bulletList')}
         svg={ListIcon}
@@ -91,7 +101,7 @@ export const Toolbar = ({ editor, id }: Props) => {
       <IconButton
         aria-disabled={!editorState.canUndo}
         className={styles.button}
-        label="Undo"
+        label={t('undo')}
         onClick={() => editor.chain().focus().undo().run()}
         onFocus={() => setActiveButton('undo')}
         svg={UndoIcon}
