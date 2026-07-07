@@ -17,8 +17,17 @@
   padding-block: var(--ams-text-area-padding-block);
   padding-inline: var(--ams-text-area-padding-inline);
   touch-action: manipulation;
+
+  &[aria-invalid='true'] {
+    border-color: var(--ams-text-area-invalid-border-color);
+  }
 }
 
 .editor:hover {
   box-shadow: var(--ams-text-area-hover-box-shadow);
+
+  &[aria-invalid='true'] {
+    border-color: var(--ams-text-area-invalid-hover-border-color);
+    box-shadow: var(--ams-text-area-invalid-hover-box-shadow);
+  }
 }

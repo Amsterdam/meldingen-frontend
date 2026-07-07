@@ -90,7 +90,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
                   aria-required="true"
                   defaultValue={tempDefaultValue}
                   id="addNote"
-                  // invalid={Boolean(errorMessage)}
+                  invalid={Boolean(errorMessage)}
                   name="addNote"
                 />
               </Field>

@@ -25,6 +25,7 @@ type Props = {
   'aria-required'?: string
   defaultValue: string
   id: string
+  invalid: boolean
   name: string
 }
 
@@ -34,6 +35,7 @@ export const RichTextEditor = ({
   'aria-required': ariaRequired,
   defaultValue,
   id,
+  invalid,
   name,
 }: Props) => {
   const [content, setContent] = useState(defaultValue)
@@ -45,6 +47,7 @@ export const RichTextEditor = ({
     editorProps: {
       attributes: {
         'aria-describedby': ariaDescribedBy ?? '',
+        'aria-invalid': invalid ? 'true' : 'false',
         'aria-labelledby': ariaLabelledBy,
         'aria-required': ariaRequired ?? 'false',
         class: styles.editor,
