@@ -31,8 +31,9 @@ export const handlers = [
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NEXT_POSSIBLE_STATES, () =>
     HttpResponse.json({ states: ['processing_requested', 'completed'] }),
   ),
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json([])),
 
-  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () => HttpResponse.json({})),
+  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () => new HttpResponse()),
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_MELDER, () =>
     HttpResponse.json({
       classification: { id: 2, name: 'Test classification' },
@@ -42,6 +43,7 @@ export const handlers = [
       token: 'PATCH request',
     }),
   ),
+  http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID, () => new HttpResponse()),
 
   http.post(ENDPOINTS.POST_MELDING, () =>
     HttpResponse.json({
@@ -80,4 +82,12 @@ export const handlers = [
       return HttpResponse.json({ components: [textAreaComponent] })
     }
   }),
+
+  // User
+  http.get(ENDPOINTS.GET_USER_ME, () =>
+    HttpResponse.json({
+      email: 'user@example.com',
+      id: 1,
+    }),
+  ),
 ]
