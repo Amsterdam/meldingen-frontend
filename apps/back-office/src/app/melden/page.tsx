@@ -79,7 +79,10 @@ const fetchExistingMelding = async (id: number) => {
 }
 
 const fetchNote = async (meldingId: number) => {
-  const { data: notes, error: notesError } = await getMeldingByMeldingIdNote({ path: { melding_id: meldingId } })
+  const [{ data: notes, error: notesError }, { data: currentUser, error: currentUserError }] = await Promise.all([
+    getMeldingByMeldingIdNote({ path: { melding_id: meldingId } }),
+    getUserMe(),
+  ])
 
   if (notesError) {
     // TODO: Log the error to an error reporting service
@@ -87,19 +90,15 @@ const fetchNote = async (meldingId: number) => {
     console.error(notesError)
   }
 
-  const { data: currentUser, error: currentUserError } = await getUserMe()
-
   if (currentUserError) {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
     console.error(currentUserError)
   }
 
-  // Only return the note that belongs to the current user, if any
+  // Return the first note that belongs to the current user, if any
   // This prevents returning other users' notes, which the current user is not allowed to update
-  const userNotes = notes?.filter((note) => note.user.id === currentUser?.id)
-
-  return userNotes?.[0]
+  return notes?.find((note) => note.user.id === currentUser?.id)
 }
 
 const toDefaultValues = (melding?: MeldingOutput, note?: NoteRetrieveOutput) => {
