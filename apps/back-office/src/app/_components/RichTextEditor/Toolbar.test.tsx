@@ -2,23 +2,17 @@ import type { Editor } from '@tiptap/react'
 
 import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Bold } from '@tiptap/extension-bold'
-import { Document } from '@tiptap/extension-document'
-import { Italic } from '@tiptap/extension-italic'
-import { BulletList, ListItem } from '@tiptap/extension-list'
-import { Paragraph } from '@tiptap/extension-paragraph'
-import { Text } from '@tiptap/extension-text'
-import { Underline } from '@tiptap/extension-underline'
 import { UndoRedo } from '@tiptap/extensions'
 import { useEditor } from '@tiptap/react'
 
+import { richTextExtensions } from './extensions'
 import { Toolbar } from './Toolbar'
 
 const renderToolbar = async () => {
   const { result } = renderHook(() =>
     useEditor({
       content: '<p>Hello</p>',
-      extensions: [Document, Paragraph, Text, Bold, Italic, Underline, BulletList, ListItem, UndoRedo],
+      extensions: [...richTextExtensions, UndoRedo],
       immediatelyRender: false,
     }),
   )
