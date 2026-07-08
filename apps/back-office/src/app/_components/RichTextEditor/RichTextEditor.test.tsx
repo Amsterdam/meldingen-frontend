@@ -39,7 +39,7 @@ describe('RichTextEditor', () => {
     expect(screen.getByText('11 van 3000 tekens')).toBeInTheDocument()
   })
 
-  it('renders a hidden input with the given name and the markdown content', async () => {
+  it('renders a hidden input with the given name and the document as JSON', async () => {
     render(<RichTextEditor {...defaultProps} defaultValue="Hello world" name="addNote" />)
 
     await screen.findByRole('textbox')
@@ -48,7 +48,10 @@ describe('RichTextEditor', () => {
 
     expect(input).not.toBeNull()
     expect(input.type).toBe('hidden')
-    expect(input.value).toBe('Hello world')
+    expect(JSON.parse(input.value)).toEqual({
+      content: [{ content: [{ text: 'Hello world', type: 'text' }], type: 'paragraph' }],
+      type: 'doc',
+    })
   })
 
   it('sets the aria attributes on the editable element based on the given props', async () => {
@@ -89,6 +92,9 @@ describe('RichTextEditor', () => {
 
     const input = document.querySelector('input[name="note"]') as HTMLInputElement
 
-    expect(input.value).toBe('Hi')
+    expect(JSON.parse(input.value)).toEqual({
+      content: [{ content: [{ text: 'Hi', type: 'text' }], type: 'paragraph' }],
+      type: 'doc',
+    })
   })
 })

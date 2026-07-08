@@ -1,19 +1,12 @@
 'use client'
 
 import { CharacterCount as ADSCharacterCount } from '@amsterdam/design-system-react'
-import { Bold } from '@tiptap/extension-bold'
-import { Document } from '@tiptap/extension-document'
-import { Italic } from '@tiptap/extension-italic'
-import { BulletList, ListItem } from '@tiptap/extension-list'
-import { Paragraph } from '@tiptap/extension-paragraph'
-import { Text } from '@tiptap/extension-text'
-import { Underline } from '@tiptap/extension-underline'
 import { CharacterCount } from '@tiptap/extensions'
 import { UndoRedo } from '@tiptap/extensions'
-import { Markdown } from '@tiptap/markdown'
 import { EditorContent, useEditor } from '@tiptap/react'
 import { useState } from 'react'
 
+import { richTextExtensions } from './extensions'
 import { Toolbar } from './Toolbar'
 import { MAX_NOTE_LENGTH } from '~/constants'
 
@@ -38,7 +31,7 @@ export const RichTextEditor = ({
   invalid,
   name,
 }: Props) => {
-  const [content, setContent] = useState(defaultValue)
+  const [content, setContent] = useState('')
   const [charactersCount, setCharactersCount] = useState<number>()
   const [hasLoaded, setHasLoaded] = useState(false)
 
@@ -56,32 +49,15 @@ export const RichTextEditor = ({
         role: 'textbox',
       },
     },
-    extensions: [
-      Document,
-      Paragraph.configure({
-        HTMLAttributes: { class: 'ams-paragraph' },
-      }),
-      Text,
-      Bold,
-      Italic,
-      Underline,
-      Markdown,
-      CharacterCount,
-      BulletList.configure({
-        HTMLAttributes: { class: 'ams-unordered-list' },
-      }),
-      ListItem.configure({
-        HTMLAttributes: { class: 'ams-unordered-list__item' },
-      }),
-      UndoRedo,
-    ],
+    extensions: [...richTextExtensions, CharacterCount, UndoRedo],
     immediatelyRender: false, // Don't render immediately on the server to avoid SSR issues
     onCreate: ({ editor: createdEditor }) => {
+      setContent(JSON.stringify(createdEditor.getJSON()))
       setCharactersCount(createdEditor.storage.characterCount.characters())
       setHasLoaded(true)
     },
     onUpdate: ({ editor: updatedEditor }) => {
-      setContent(updatedEditor.getMarkdown())
+      setContent(JSON.stringify(updatedEditor.getJSON()))
       setCharactersCount(updatedEditor.storage.characterCount.characters())
     },
   })

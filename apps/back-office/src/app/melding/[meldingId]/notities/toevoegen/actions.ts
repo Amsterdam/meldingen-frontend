@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
 
 import { postMeldingByMeldingIdNote } from '~/app/_api-client/proxy'
+import { parseNoteDocument } from '~/app/_utils/parseNoteDocument'
 import { MAX_NOTE_LENGTH } from '~/constants'
 
 export const postAddNoteForm = async ({ meldingId }: { meldingId: number }, _: unknown, formData: FormData) => {
@@ -11,16 +12,20 @@ export const postAddNoteForm = async ({ meldingId }: { meldingId: number }, _: u
 
   const formDataObj = Object.fromEntries(formData)
 
-  // TODO: this check doesn't work well anymore, seeing as markdown can generate a lot of characters.
-  // We should probably check the length of the text after stripping out markdown formatting.
-  if (!formDataObj.addNote) {
+  const { characterCount, markdown } = parseNoteDocument(formDataObj.addNote)
+
+  // Replace the submitted JSON with the derived markdown, so RichTextEditor can reload it as
+  // its `defaultValue` (via contentType: 'markdown') if the form is redisplayed after an error.
+  formData.set('addNote', markdown)
+
+  if (characterCount === 0) {
     return {
       formData,
       validationErrors: [{ key: 'addNote', message: t('errors.required') }],
     }
   }
 
-  if (formDataObj.addNote.toString().length > MAX_NOTE_LENGTH) {
+  if (characterCount > MAX_NOTE_LENGTH) {
     return {
       formData,
       validationErrors: [{ key: 'addNote', message: t('errors.maxLength', { max: MAX_NOTE_LENGTH }) }],
@@ -28,7 +33,7 @@ export const postAddNoteForm = async ({ meldingId }: { meldingId: number }, _: u
   }
 
   const { error } = await postMeldingByMeldingIdNote({
-    body: { text: formDataObj.addNote.toString() },
+    body: { text: markdown },
     path: { melding_id: meldingId },
   })
 

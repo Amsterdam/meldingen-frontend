@@ -8,6 +8,14 @@ import { server } from '~/mocks/node'
 
 const defaultArgs = { meldingId: 123 }
 
+// RichTextEditor submits the ProseMirror doc as JSON, so tests build that same shape here
+// instead of appending plain markdown/text.
+const noteDoc = (text: string) =>
+  JSON.stringify({
+    content: [{ content: text ? [{ text, type: 'text' }] : [], type: 'paragraph' }],
+    type: 'doc',
+  })
+
 describe('postAddNoteForm', () => {
   it('returns a validation error when addNote is empty', async () => {
     const formData = new FormData()
@@ -23,7 +31,7 @@ describe('postAddNoteForm', () => {
 
   it('returns a validation error when addNote exceeds the maximum length', async () => {
     const formData = new FormData()
-    formData.append('addNote', 'a'.repeat(MAX_NOTE_LENGTH + 1))
+    formData.append('addNote', noteDoc('a'.repeat(MAX_NOTE_LENGTH + 1)))
 
     const result = await postAddNoteForm(defaultArgs, null, formData)
 
@@ -42,7 +50,7 @@ describe('postAddNoteForm', () => {
     )
 
     const formData = new FormData()
-    formData.append('addNote', 'Some note text')
+    formData.append('addNote', noteDoc('Some note text'))
 
     const result = await postAddNoteForm(defaultArgs, null, formData)
 
@@ -55,7 +63,7 @@ describe('postAddNoteForm', () => {
 
   it('redirects on success', async () => {
     const formData = new FormData()
-    formData.append('addNote', 'Some note text')
+    formData.append('addNote', noteDoc('Some note text'))
 
     await postAddNoteForm(defaultArgs, null, formData)
 
@@ -64,7 +72,16 @@ describe('postAddNoteForm', () => {
 
   it('accepts a note at exactly the maximum length', async () => {
     const formData = new FormData()
-    formData.append('addNote', 'a'.repeat(MAX_NOTE_LENGTH))
+    formData.append('addNote', noteDoc('a'.repeat(MAX_NOTE_LENGTH)))
+
+    await postAddNoteForm(defaultArgs, null, formData)
+
+    expect(redirect).toHaveBeenCalledWith('/melding/123')
+  })
+
+  it('accepts whitespace-only content, matching the live character count', async () => {
+    const formData = new FormData()
+    formData.append('addNote', noteDoc(' '))
 
     await postAddNoteForm(defaultArgs, null, formData)
 

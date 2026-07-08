@@ -19,6 +19,7 @@
     "@meldingen/form-renderer": "workspace:*",
     "@meldingen/markdown-to-html": "workspace:*",
     "@meldingen/ui": "workspace:*",
+    "@tiptap/core": "3.27.1",
     "@tiptap/extension-bold": "3.27.1",
     "@tiptap/extension-document": "3.27.1",
     "@tiptap/extension-italic": "3.27.1",
