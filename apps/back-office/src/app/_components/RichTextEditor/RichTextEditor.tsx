@@ -43,6 +43,7 @@ export const RichTextEditor = ({
         'aria-describedby': ariaDescribedBy ?? '',
         'aria-invalid': invalid ? 'true' : 'false',
         'aria-labelledby': ariaLabelledBy,
+        'aria-multiline': 'true',
         'aria-required': ariaRequired ?? 'false',
         class: styles.editor,
         id,
