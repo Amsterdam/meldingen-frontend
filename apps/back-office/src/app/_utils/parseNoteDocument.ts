@@ -8,6 +8,10 @@ import { richTextExtensions } from '~/app/_components/RichTextEditor/extensions'
 const schema = getSchema(richTextExtensions)
 const markdownManager = new MarkdownManager({ extensions: richTextExtensions })
 
+// Lets RichTextEditor seed its hidden input with valid JSON before the editor itself has
+// mounted, so a submit during that window carries the real defaultValue instead of nothing.
+export const markdownToJSON = (markdown: string) => JSON.stringify(markdownManager.parse(markdown))
+
 export type ParsedNoteDocument = {
   characterCount: number
   isEmpty: boolean

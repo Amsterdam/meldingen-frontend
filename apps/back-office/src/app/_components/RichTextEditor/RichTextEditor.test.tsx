@@ -31,6 +31,21 @@ describe('RichTextEditor', () => {
     expect(screen.queryByRole('toolbar')).not.toBeInTheDocument()
   })
 
+  it('renders a hidden input with the default value as JSON before the editor has loaded', () => {
+    render(<RichTextEditor {...defaultProps} defaultValue="Hello world" name="addNote" />)
+
+    expect(screen.queryByRole('toolbar')).not.toBeInTheDocument()
+
+    const input = document.querySelector('input[name="addNote"]') as HTMLInputElement
+
+    expect(input).not.toBeNull()
+    expect(input.type).toBe('hidden')
+    expect(JSON.parse(input.value)).toEqual({
+      content: [{ content: [{ text: 'Hello world', type: 'text' }], type: 'paragraph' }],
+      type: 'doc',
+    })
+  })
+
   it('renders the toolbar, editable content, and character count once loaded', async () => {
     render(<RichTextEditor {...defaultProps} defaultValue="Hello world" />)
 

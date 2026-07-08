@@ -8,6 +8,7 @@ import { useState } from 'react'
 
 import { richTextExtensions } from './extensions'
 import { Toolbar } from './Toolbar'
+import { markdownToJSON } from '~/app/_utils/parseNoteDocument'
 import { MAX_NOTE_LENGTH } from '~/constants'
 
 import styles from './RichTextEditor.module.css'
@@ -31,7 +32,7 @@ export const RichTextEditor = ({
   invalid,
   name,
 }: Props) => {
-  const [content, setContent] = useState('')
+  const [content, setContent] = useState(() => markdownToJSON(defaultValue))
   const [charactersCount, setCharactersCount] = useState<number>()
   const [hasLoaded, setHasLoaded] = useState(false)
 
@@ -66,7 +67,12 @@ export const RichTextEditor = ({
   })
 
   if (!editor || !hasLoaded) {
-    return <div className={styles.loader} />
+    return (
+      <>
+        <div className={styles.loader} />
+        <input name={name} type="hidden" value={content} />
+      </>
+    )
   }
 
   return (
