@@ -4,6 +4,7 @@ import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library
 import userEvent from '@testing-library/user-event'
 import { UndoRedo } from '@tiptap/extensions'
 import { useEditor } from '@tiptap/react'
+import { vi } from 'vitest'
 
 import { richTextExtensions } from './extensions'
 import { Toolbar } from './Toolbar'
@@ -147,6 +148,24 @@ describe('Toolbar', () => {
     await user.click(screen.getByRole('button', { name: 'undo' }))
 
     expect(editor.isActive('bold')).toBe(false)
+  })
+
+  it('does not invoke the undo command when the undo button is clicked while disabled', async () => {
+    const user = userEvent.setup()
+    const run = vi.fn()
+    const editor = {
+      can: () => ({ chain: () => ({ undo: () => ({ run: () => false }) }) }),
+      chain: () => ({ focus: () => ({ undo: () => ({ run }) }) }),
+      isActive: () => false,
+      off: () => {},
+      on: () => {},
+    } as unknown as Editor
+
+    render(<Toolbar editor={editor} id="editor" />)
+
+    await user.click(screen.getByRole('button', { name: 'undo' }))
+
+    expect(run).not.toHaveBeenCalled()
   })
 
   it('falls back to false for every state value when the editor reports nullish state', () => {

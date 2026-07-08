@@ -102,7 +102,7 @@ export const Toolbar = ({ editor, id }: Props) => {
         aria-disabled={!editorState.canUndo}
         className={styles.button}
         label={t('undo')}
-        onClick={() => editor.chain().focus().undo().run()}
+        onClick={() => editorState.canUndo && editor.chain().focus().undo().run()}
         onFocus={() => setActiveButton('undo')}
         svg={UndoIcon}
         tabIndex={getTabIndex('undo')}
