@@ -79,12 +79,16 @@ describe('postAddNoteForm', () => {
     expect(redirect).toHaveBeenCalledWith('/melding/123')
   })
 
-  it('accepts whitespace-only content, matching the live character count', async () => {
+  it('treats whitespace-only content as empty, even though its character count is non-zero', async () => {
     const formData = new FormData()
     formData.append('addNote', noteDoc(' '))
 
-    await postAddNoteForm(defaultArgs, null, formData)
+    const result = await postAddNoteForm(defaultArgs, null, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/melding/123')
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'addNote', message: 'errors.required' }],
+    })
+    expect(redirect).not.toHaveBeenCalled()
   })
 })

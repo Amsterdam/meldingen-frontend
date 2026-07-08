@@ -52,6 +52,8 @@ export const RichTextEditor = ({
     extensions: [...richTextExtensions, CharacterCount, UndoRedo],
     immediatelyRender: false, // Don't render immediately on the server to avoid SSR issues
     onCreate: ({ editor: createdEditor }) => {
+      // Pass around JSON rather than markdown so we can count characters more precisely on the server side
+      // (markdown serialization can lose information, e.g. whitespace-only content).
       setContent(JSON.stringify(createdEditor.getJSON()))
       setCharactersCount(createdEditor.storage.characterCount.characters())
       setHasLoaded(true)

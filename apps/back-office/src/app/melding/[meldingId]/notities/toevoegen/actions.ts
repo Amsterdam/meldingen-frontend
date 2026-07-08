@@ -12,13 +12,13 @@ export const postAddNoteForm = async ({ meldingId }: { meldingId: number }, _: u
 
   const formDataObj = Object.fromEntries(formData)
 
-  const { characterCount, markdown } = parseNoteDocument(formDataObj.addNote)
+  const { characterCount, isEmpty, markdown } = parseNoteDocument(formDataObj.addNote)
 
   // Replace the submitted JSON with the derived markdown, so RichTextEditor can reload it as
   // its `defaultValue` (via contentType: 'markdown') if the form is redisplayed after an error.
   formData.set('addNote', markdown)
 
-  if (characterCount === 0) {
+  if (isEmpty) {
     return {
       formData,
       validationErrors: [{ key: 'addNote', message: t('errors.required') }],
