@@ -31,12 +31,24 @@ describe('parseNoteDocument', () => {
     expect(result.markdown).toContain('Hello world')
   })
 
-  it('treats a document containing only whitespace as empty', () => {
-    const value = doc([{ content: [{ text: '   ', type: 'text' }], type: 'paragraph' }])
+  it('treats a document containing only (formatted) whitespace as empty', () => {
+    const value = doc([
+      {
+        content: [
+          { text: '   ', type: 'text' }, // Regular whitespace
+          { marks: [{ type: 'bold' }], text: '   ', type: 'text' }, // Bold whitespace
+          { marks: [{ type: 'italic' }], text: '   ', type: 'text' }, // Italic whitespace
+          { marks: [{ type: 'underline' }], text: '   ', type: 'text' }, // Underlined whitespace
+          { marks: [{ type: 'bold' }, { type: 'italic' }, { type: 'underline' }], text: '   ', type: 'text' }, // Bold, italic, and underlined whitespace
+        ],
+        type: 'paragraph',
+      },
+      { content: [{ content: [{ type: 'paragraph' }], type: 'listItem' }], type: 'bulletList' }, // List item with empty paragraph
+    ])
 
     const result = parseNoteDocument(value)
 
-    expect(result.characterCount).toBe(3)
+    expect(result.characterCount).toBe(15)
     expect(result.isEmpty).toBe(true)
   })
 
