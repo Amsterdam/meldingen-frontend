@@ -19,8 +19,8 @@
     "@meldingen/form-renderer": "workspace:*",
     "@meldingen/markdown-to-html": "workspace:*",
     "@meldingen/ui": "workspace:*",
-    "next": "16.2.9",
+    "next": "16.2.10",
     "next-auth": "4.24.14",
-    "next-intl": "4.13.0"
+    "next-intl": "4.13.1"
   }
 }
