@@ -2,7 +2,7 @@ import { getSchema } from '@tiptap/core'
 import { MarkdownManager } from '@tiptap/markdown'
 import { Node } from '@tiptap/pm/model'
 
-import { richTextExtensions } from '~/app/_components/RichTextEditor/extensions'
+import { richTextExtensions } from '~/app/_utils/richTextExtensions'
 
 // Reuses the same schema and markdown parsing rules as RichTextEditor.
 const schema = getSchema(richTextExtensions)

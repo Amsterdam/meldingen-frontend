@@ -6,9 +6,9 @@ import { UndoRedo } from '@tiptap/extensions'
 import { EditorContent, useEditor } from '@tiptap/react'
 import { useState } from 'react'
 
-import { richTextExtensions } from './extensions'
 import { Toolbar } from './Toolbar'
 import { markdownToJSON } from '~/app/_utils/parseNoteDocument'
+import { richTextExtensions } from '~/app/_utils/richTextExtensions'
 import { MAX_NOTE_LENGTH } from '~/constants'
 
 import styles from './RichTextEditor.module.css'

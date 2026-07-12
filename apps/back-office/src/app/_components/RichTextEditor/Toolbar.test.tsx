@@ -6,8 +6,8 @@ import { UndoRedo } from '@tiptap/extensions'
 import { useEditor } from '@tiptap/react'
 import { vi } from 'vitest'
 
-import { richTextExtensions } from './extensions'
 import { Toolbar } from './Toolbar'
+import { richTextExtensions } from '~/app/_utils/richTextExtensions'
 
 const renderToolbar = async () => {
   const { result } = renderHook(() =>
