@@ -1,8 +1,7 @@
 'use client'
 
 import { CharacterCount as ADSCharacterCount } from '@amsterdam/design-system-react'
-import { CharacterCount } from '@tiptap/extensions'
-import { UndoRedo } from '@tiptap/extensions'
+import { CharacterCount, UndoRedo } from '@tiptap/extensions'
 import { EditorContent, useEditor } from '@tiptap/react'
 import { useState } from 'react'
 
