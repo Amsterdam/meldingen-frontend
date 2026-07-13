@@ -4,6 +4,7 @@ import { NotesOverview } from './NotesOverview'
 
 const defaultProps = {
   meldingId: 123,
+  notes: [],
   publicId: 'B100AA',
 }
 

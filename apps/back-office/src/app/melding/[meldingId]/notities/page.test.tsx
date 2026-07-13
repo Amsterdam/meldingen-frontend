@@ -33,15 +33,20 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  it('returns an error message when getMeldingByMeldingId return an error or no data', async () => {
+  it('throws an error when getMeldingByMeldingId returns an error or no data', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 500 })))
 
     const params = Promise.resolve({ meldingId: 123 })
-    const result = await Page({ params })
 
-    const { getByText } = render(result)
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch melding data.')
+  })
 
-    expect(getByText('detail.errors.melding-not-found')).toBeInTheDocument()
+  it('throws an error when getMeldingByMeldingIdNote returns an error', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json({}, { status: 500 })))
+
+    const params = Promise.resolve({ meldingId: 123 })
+
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch notes data.')
   })
 
   it('calls the NotesOverview component with the correct data', async () => {
@@ -50,6 +55,6 @@ describe('Page', () => {
 
     render(result)
 
-    expect(NotesOverview).toHaveBeenCalledWith({ meldingId: 123, publicId: melding.public_id }, undefined)
+    expect(NotesOverview).toHaveBeenCalledWith({ meldingId: 123, notes: [], publicId: melding.public_id }, undefined)
   })
 })
