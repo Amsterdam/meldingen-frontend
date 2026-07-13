@@ -95,7 +95,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
             </div>
             <ActionGroup>
               <Button type="submit">{t('submit-button')}</Button>
-              <CancelLink href={`/melding/${meldingId}`}>{t('cancel-link')}</CancelLink>
+              <CancelLink href={`/melding/${meldingId}/notities`}>{t('cancel-link')}</CancelLink>
             </ActionGroup>
           </Form>
         </Grid.Cell>

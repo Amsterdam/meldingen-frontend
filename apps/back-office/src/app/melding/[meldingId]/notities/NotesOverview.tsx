@@ -1,3 +1,4 @@
+import { StandaloneLink } from '@amsterdam/design-system-react/dist/StandaloneLink'
 import { useTranslations } from 'next-intl'
 
 import { Grid, Heading, TabNavigation } from '@meldingen/ui'
@@ -31,6 +32,9 @@ export const NotesOverview = ({ meldingId, publicId }: Props) => {
               </TabNavigation.Link>
             </TabNavigation.List>
           </TabNavigation>
+          <StandaloneLink href={`/melding/${meldingId}/notities/toevoegen`} linkComponent={NextLink}>
+            {t('add-note-link')}
+          </StandaloneLink>
         </Grid.Cell>
       </Grid>
     </div>

@@ -42,7 +42,7 @@ describe('AddNote', () => {
 
     const cancelLink = screen.getByRole('link', { name: 'cancel-link' })
     expect(cancelLink).toBeInTheDocument()
-    expect(cancelLink).toHaveAttribute('href', '/melding/123')
+    expect(cancelLink).toHaveAttribute('href', '/melding/123/notities')
   })
 
   it('displays a system error alert when there is one', () => {

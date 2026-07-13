@@ -167,7 +167,8 @@
     "tab-navigation": {
       "detail": "Melding",
       "notes": "Notities"
-    }
+    },
+    "add-note-link": "Notitie toevoegen"
   },
   "add-note": {
     "metadata": {
