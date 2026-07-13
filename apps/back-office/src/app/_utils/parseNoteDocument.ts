@@ -12,7 +12,7 @@ const markdownManager = new MarkdownManager({ extensions: richTextExtensions })
 // mounted, so a submit during that window carries the real defaultValue instead of nothing.
 export const markdownToJSON = (markdown: string) => JSON.stringify(markdownManager.parse(markdown))
 
-export type ParsedNoteDocument = {
+type ParsedNoteDocument = {
   characterCount: number
   isEmpty: boolean
   markdown: string
