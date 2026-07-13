@@ -1,6 +1,49 @@
-import { parseNoteDocument } from './parseNoteDocument'
+import { markdownToJSON, parseNoteDocument } from './parseNoteDocument'
 
 const doc = (content: unknown) => JSON.stringify({ content, type: 'doc' })
+
+describe('markdownToJSON', () => {
+  it('returns a JSON string representing the parsed document', () => {
+    const result = markdownToJSON('Hello world')
+
+    expect(() => JSON.parse(result)).not.toThrow()
+    expect(JSON.parse(result)).toMatchObject({
+      content: [{ content: [{ text: 'Hello world', type: 'text' }], type: 'paragraph' }],
+      type: 'doc',
+    })
+  })
+
+  it('parses markdown formatting syntax into marks', () => {
+    const json = markdownToJSON('**Bold**')
+
+    const parsed = JSON.parse(json)
+
+    expect(parsed).toMatchObject({
+      content: [
+        {
+          content: [{ marks: [{ type: 'bold' }], text: 'Bold', type: 'text' }],
+          type: 'paragraph',
+        },
+      ],
+      type: 'doc',
+    })
+  })
+
+  it('produces output that parseNoteDocument can consume to recover the original text', () => {
+    const json = markdownToJSON('++Hello world++')
+
+    const result = parseNoteDocument(json)
+
+    expect(result.characterCount).toBe(11)
+    expect(result.isEmpty).toBe(false)
+  })
+
+  it('returns an empty doc for an empty string', () => {
+    const result = parseNoteDocument(markdownToJSON(''))
+
+    expect(result).toEqual({ characterCount: 0, isEmpty: true, markdown: '' })
+  })
+})
 
 describe('parseNoteDocument', () => {
   it('returns an empty result when value is undefined', () => {
