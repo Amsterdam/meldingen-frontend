@@ -22,7 +22,7 @@ describe('AddNote', () => {
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
     expect(backLink).toBeInTheDocument()
-    expect(backLink).toHaveAttribute('href', '/melding/123')
+    expect(backLink).toHaveAttribute('href', '/melding/123/notities')
   })
 
   it('renders the correct title', () => {

@@ -49,10 +49,6 @@
     }
   },
   "detail": {
-    "attachments": {
-      "title": "Bestanden",
-      "no-data": "Geen bestanden toegevoegd"
-    },
     "metadata": {
       "title": "Melding {publicId} - Gemeente Amsterdam"
     },
@@ -97,6 +93,10 @@
         "term": "Urgentie",
         "link": "Wijzig urgentie"
       }
+    },
+    "attachments": {
+      "title": "Bestanden",
+      "no-data": "Geen bestanden toegevoegd"
     },
     "errors": {
       "melding-not-found": "An error occurred"
@@ -156,6 +156,17 @@
         "heading": "De urgentie kan niet worden gewijzigd",
         "description": "Probeer het later opnieuw."
       }
+    }
+  },
+  "notes-overview": {
+    "metadata": {
+      "title": "Melding {publicId} - Gemeente Amsterdam"
+    },
+    "back-link": "Overzicht meldingen",
+    "title": "Melding {publicId}",
+    "tab-navigation": {
+      "detail": "Melding",
+      "notes": "Notities"
     }
   },
   "add-note": {
