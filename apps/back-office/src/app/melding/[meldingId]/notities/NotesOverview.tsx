@@ -3,10 +3,12 @@ import { useTranslations } from 'next-intl'
 
 import type { NoteRetrieveOutput } from '@meldingen/api-client'
 
-import { Grid, Heading, TabNavigation } from '@meldingen/ui'
+import { Grid, Heading, OrderedList, Paragraph, TabNavigation } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
 import { NextLink } from '~/app/_components'
+
+import styles from './NotesOverview.module.css'
 
 type Props = {
   meldingId: number
@@ -45,21 +47,27 @@ export const NotesOverview = ({ meldingId, notes, publicId }: Props) => {
             </TabNavigation.List>
           </TabNavigation>
           {notes.length > 0 && (
-            <ol>
+            <OrderedList className={styles.list} markers={false}>
               {notes.map(({ created_at, id, text, user }) => (
-                <li key={id}>
-                  <p>
-                    <span>Aangemaakt op: </span>
-                    <time dateTime={created_at}>{formatDateTime(created_at)}</time>
-                    <span> door: </span>
+                <OrderedList.Item className={styles.note} key={id}>
+                  <Paragraph className={styles.metadata}>
+                    <span className="ams-visually-hidden">{t('visually-hidden-texts.created-at')}</span>
+                    <time className={styles.time} dateTime={created_at}>
+                      {formatDateTime(created_at)}
+                    </time>
+                    <span className="ams-visually-hidden">{t('visually-hidden-texts.by')}</span>
                     <span>{user.email}</span>
-                  </p>
-                  <p>{text}</p>
-                </li>
+                  </Paragraph>
+                  <Paragraph>{text}</Paragraph>
+                </OrderedList.Item>
               ))}
-            </ol>
+            </OrderedList>
           )}
-          <StandaloneLink href={`/melding/${meldingId}/notities/toevoegen`} linkComponent={NextLink}>
+          <StandaloneLink
+            className="ams-mb-m"
+            href={`/melding/${meldingId}/notities/toevoegen`}
+            linkComponent={NextLink}
+          >
             {t('add-note-link')}
           </StandaloneLink>
         </Grid.Cell>

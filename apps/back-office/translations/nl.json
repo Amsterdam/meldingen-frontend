@@ -168,6 +168,10 @@
       "detail": "Melding",
       "notes": "Notities"
     },
+    "visually-hidden-texts": {
+      "created-at": "Aangemaakt op: ",
+      "by": " door: "
+    },
     "add-note-link": "Notitie toevoegen"
   },
   "add-note": {
