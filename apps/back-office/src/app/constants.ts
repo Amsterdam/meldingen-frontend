@@ -7,5 +7,3 @@ export const OVERVIEW_FIELDS = [
   { key: 'address', labelKey: 'column-header.address' },
   { key: 'postal_code', labelKey: 'column-header.postal_code' },
 ] as const
-
-export const MAX_NOTE_LENGTH = 3000

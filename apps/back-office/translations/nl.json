@@ -194,6 +194,14 @@
       "melding-form": "Melden",
       "overview": "Overzicht"
     },
+    "rich-text-editor": {
+      "bold": "Vetgedrukt",
+      "italic": "Cursief",
+      "toolbar": "Werkbalk tekstopmaak",
+      "underline": "Onderstreept",
+      "unordered-list": "Opsommingslijst",
+      "undo": "Ongedaan maken"
+    },
     "state": {
       "canceled": "Geannuleerd",
       "completed": "Afgehandeld",

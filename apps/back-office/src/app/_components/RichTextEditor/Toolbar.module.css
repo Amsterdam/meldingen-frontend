@@ -1,0 +1,25 @@
+.toolbar {
+  border: var(--ams-border-width-m) solid var(--ams-color-interactive);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ams-space-m);
+  inline-size: fit-content;
+}
+
+.button {
+  padding-block: 0.25rem;
+  padding-inline: 0.25rem;
+
+  &[aria-pressed='true'] {
+    box-shadow: inset 0 calc(-1 * var(--ams-border-width-l)) 0 0 currentcolor;
+  }
+
+  &[aria-disabled='true'] {
+    color: var(--ams-color-interactive-disabled);
+    cursor: not-allowed;
+  }
+
+  &[aria-disabled='true']:hover {
+    background-color: transparent;
+  }
+}

@@ -8,7 +8,6 @@ import type { MeldingOutput } from '@meldingen/api-client'
 import type { MeldingData } from './types'
 import type { FormState } from '~/types'
 
-import { MAX_NOTE_LENGTH } from '../constants'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
 import {
   patchMeldingByMeldingId,
@@ -18,6 +17,7 @@ import {
   postMeldingByMeldingIdNote,
 } from '~/app/_api-client/proxy'
 import { handleApiError } from '~/app/_utils/handleApiError'
+import { MAX_NOTE_LENGTH } from '~/constants'
 import { URGENCY_VALUES } from '~/constants'
 
 export type ArgsType = {
