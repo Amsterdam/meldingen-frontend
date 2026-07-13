@@ -1,15 +1,6 @@
 'use client'
 
-import {
-  ActionGroup,
-  Button,
-  ErrorMessage,
-  Field,
-  Grid,
-  Heading,
-  Label,
-  TextArea,
-} from '@amsterdam/design-system-react'
+import { ActionGroup, Button, ErrorMessage, Field, Grid, Heading, Label } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
@@ -21,7 +12,7 @@ import type { FormState } from '~/types'
 import { BackLink } from '../../_components/BackLink'
 import { CancelLink } from '../../_components/CancelLink'
 import { postAddNoteForm } from './actions'
-import { InvalidFormAlert, SystemErrorAlert } from '~/app/_components'
+import { InvalidFormAlert, RichTextEditor, SystemErrorAlert } from '~/app/_components'
 
 import styles from './AddNote.module.css'
 
@@ -80,16 +71,16 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
           <Form action={formAction} noValidate>
             <div className={styles.whiteField}>
               <Field invalid={Boolean(errorMessage)}>
-                <Label htmlFor="addNote">{t('label')}</Label>
+                <Label id="addNote-label">{t('label')}</Label>
                 {errorMessage && <ErrorMessage id="addNote-error">{errorMessage}</ErrorMessage>}
-                <TextArea
+                <RichTextEditor
                   aria-describedby={getAriaDescribedBy('addNote', undefined, errorMessage)}
+                  aria-labelledby="addNote-label"
                   aria-required="true"
                   defaultValue={defaultValue}
                   id="addNote"
                   invalid={Boolean(errorMessage)}
                   name="addNote"
-                  rows={4}
                 />
               </Field>
             </div>
