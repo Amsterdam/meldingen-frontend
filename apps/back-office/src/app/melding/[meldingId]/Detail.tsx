@@ -2,7 +2,7 @@ import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import { Fragment } from 'react'
 
-import { Column, Grid, Heading, Paragraph } from '@meldingen/ui'
+import { Column, Grid, Heading, Paragraph, TabNavigation } from '@meldingen/ui'
 
 import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
@@ -58,9 +58,20 @@ export const Detail = ({
       <BackLink href={`/`}>{t('back-link')}</BackLink>
       <Grid as="main">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
-          <Heading className="ams-mb-m" level={1}>
+          <Heading className="ams-mb-l" level={1}>
             {t('title', { publicId })}
           </Heading>
+          <TabNavigation className="ams-mb-l">
+            <TabNavigation.List>
+              {/* TODO: use linkComponent with a Next link here when it's available */}
+              <TabNavigation.Link aria-current="page" href={`/melding/${meldingId}`}>
+                {t('tab-navigation.detail')}
+              </TabNavigation.Link>
+              <TabNavigation.Link href={`/melding/${meldingId}/notities`}>
+                {t('tab-navigation.notes')}
+              </TabNavigation.Link>
+            </TabNavigation.List>
+          </TabNavigation>
           <div className={styles.cardGrid}>
             <dl className={clsx(styles.descriptionList, styles.cardWide)}>
               {additionalQuestionsWithMeldingText.map(({ description, key, term }) => (
@@ -70,10 +81,6 @@ export const Detail = ({
                 </Column>
               ))}
             </dl>
-
-            {/* TODO: temp link to test adding notes. Remove when notes overview has been added */}
-            <AmsNextLink href={`/melding/${meldingId}/notities/toevoegen`}>Maak notitie aan</AmsNextLink>
-
             {location && (
               <dl className={clsx(styles.horizontalDescriptionList, styles.card)}>
                 {location.map(({ description, key, term }) => (

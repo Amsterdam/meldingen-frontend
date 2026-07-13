@@ -58,6 +58,10 @@
     },
     "back-link": "Overzicht meldingen",
     "title": "Melding {publicId}",
+    "tab-navigation": {
+      "detail": "Melding",
+      "notes": "Notities"
+    },
     "melding-text": "Meldtekst",
     "contact": {
       "email": "E-mail melder",
