@@ -9,6 +9,7 @@ import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 import { AmsNextLink } from '../../_components/AmsNextLink'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { BackLink } from './_components/BackLink'
+import { NextLink } from '~/app/_components'
 
 import styles from './Detail.module.css'
 
@@ -63,11 +64,10 @@ export const Detail = ({
           </Heading>
           <TabNavigation className="ams-mb-l">
             <TabNavigation.List>
-              {/* TODO: use linkComponent with a Next link here when it's available */}
-              <TabNavigation.Link aria-current="page" href={`/melding/${meldingId}`}>
+              <TabNavigation.Link aria-current="page" href={`/melding/${meldingId}`} linkComponent={NextLink}>
                 {t('tab-navigation.detail')}
               </TabNavigation.Link>
-              <TabNavigation.Link href={`/melding/${meldingId}/notities`}>
+              <TabNavigation.Link href={`/melding/${meldingId}/notities`} linkComponent={NextLink}>
                 {t('tab-navigation.notes')}
               </TabNavigation.Link>
             </TabNavigation.List>

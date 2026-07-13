@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl'
 import { Grid, Heading, TabNavigation } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
+import { NextLink } from '~/app/_components'
 
 type Props = {
   meldingId: number
@@ -22,9 +23,10 @@ export const NotesOverview = ({ meldingId, publicId }: Props) => {
           </Heading>
           <TabNavigation className="ams-mb-l">
             <TabNavigation.List>
-              {/* TODO: use linkComponent with a Next link here when it's available */}
-              <TabNavigation.Link href={`/melding/${meldingId}`}>{t('tab-navigation.detail')}</TabNavigation.Link>
-              <TabNavigation.Link aria-current="page" href={`/melding/${meldingId}/notities`}>
+              <TabNavigation.Link href={`/melding/${meldingId}`} linkComponent={NextLink}>
+                {t('tab-navigation.detail')}
+              </TabNavigation.Link>
+              <TabNavigation.Link aria-current="page" href={`/melding/${meldingId}/notities`} linkComponent={NextLink}>
                 {t('tab-navigation.notes')}
               </TabNavigation.Link>
             </TabNavigation.List>
