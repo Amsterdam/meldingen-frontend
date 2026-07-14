@@ -6,6 +6,7 @@ import type { NoteRetrieveOutput } from '@meldingen/api-client'
 import { Grid, Heading, OrderedList, Paragraph, TabNavigation } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
+import { TipTapMarkdownToHtml } from './_components/TipTapMarkdownToHtml'
 import { NextLink } from '~/app/_components'
 
 import styles from './NotesOverview.module.css'
@@ -58,7 +59,7 @@ export const NotesOverview = ({ meldingId, notes, publicId }: Props) => {
                     <span className="ams-visually-hidden">{t('visually-hidden-texts.by')}</span>
                     <span>{user.email}</span>
                   </Paragraph>
-                  <Paragraph>{text}</Paragraph>
+                  <TipTapMarkdownToHtml markdown={text} />
                 </OrderedList.Item>
               ))}
             </OrderedList>

@@ -12,6 +12,10 @@ const markdownManager = new MarkdownManager({ extensions: richTextExtensions })
 // mounted, so a submit during that window carries the real defaultValue instead of nothing.
 export const markdownToJSON = (markdown: string) => JSON.stringify(markdownManager.parse(markdown))
 
+// Reused by NoteContent to render a note's markdown as React elements without going through
+// generateHTML, which needs a browser DOM and can't run during Next's server render.
+export const parseNoteMarkdown = (markdown: string) => markdownManager.parse(markdown)
+
 type ParsedNoteDocument = {
   characterCount: number
   isEmpty: boolean
