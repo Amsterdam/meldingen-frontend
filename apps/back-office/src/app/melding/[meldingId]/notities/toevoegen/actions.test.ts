@@ -67,7 +67,7 @@ describe('postAddNoteForm', () => {
 
     await postAddNoteForm(defaultArgs, null, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/melding/123')
+    expect(redirect).toHaveBeenCalledWith('/melding/123/notities')
   })
 
   it('accepts a note at exactly the maximum length', async () => {
@@ -76,7 +76,7 @@ describe('postAddNoteForm', () => {
 
     await postAddNoteForm(defaultArgs, null, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/melding/123')
+    expect(redirect).toHaveBeenCalledWith('/melding/123/notities')
   })
 
   it('treats whitespace-only content as empty, even though its character count is non-zero', async () => {
