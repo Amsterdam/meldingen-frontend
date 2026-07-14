@@ -20,8 +20,11 @@ describe('NotesOverview', () => {
   it('renders the component', () => {
     render(<NotesOverview {...defaultProps} />)
 
-    expect(screen.getByText('back-link')).toBeInTheDocument()
-    expect(screen.getByText('title')).toBeInTheDocument()
+    const link = screen.getByRole('link', { name: 'back-link' })
+    const title = screen.getByRole('heading', { level: 1, name: 'title' })
+
+    expect(link).toBeInTheDocument()
+    expect(title).toBeInTheDocument()
   })
 
   it('renders notes when provided', () => {
