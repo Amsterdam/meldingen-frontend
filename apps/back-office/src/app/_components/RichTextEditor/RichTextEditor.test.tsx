@@ -32,7 +32,7 @@ describe('RichTextEditor', () => {
   })
 
   it('renders a hidden input with the default value as JSON before the editor has loaded', () => {
-    render(<RichTextEditor {...defaultProps} defaultValue="Hello world" name="addNote" />)
+    render(<RichTextEditor {...defaultProps} defaultValue="**Hello world**" name="addNote" />)
 
     expect(screen.queryByRole('toolbar')).not.toBeInTheDocument()
 
@@ -41,7 +41,18 @@ describe('RichTextEditor', () => {
     expect(input).not.toBeNull()
     expect(input.type).toBe('hidden')
     expect(JSON.parse(input.value)).toEqual({
-      content: [{ content: [{ text: 'Hello world', type: 'text' }], type: 'paragraph' }],
+      content: [
+        {
+          content: [
+            {
+              marks: [{ type: 'bold' }],
+              text: 'Hello world',
+              type: 'text',
+            },
+          ],
+          type: 'paragraph',
+        },
+      ],
       type: 'doc',
     })
   })

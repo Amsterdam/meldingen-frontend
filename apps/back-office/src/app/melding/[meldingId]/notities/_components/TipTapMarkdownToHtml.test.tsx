@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
 import { TipTapMarkdownToHtml } from './TipTapMarkdownToHtml'
-import * as parseNoteDocument from '~/app/_utils/parseNoteDocument'
+import { markdownManager } from '~/app/_utils/parseNoteDocument'
 
 import styles from './TipTapMarkdownToHtml.module.css'
 
@@ -43,7 +43,7 @@ describe('TipTapMarkdownToHtml', () => {
   })
 
   it('ignores unsupported marks and keeps the text content', () => {
-    vi.spyOn(parseNoteDocument, 'parseNoteMarkdown').mockReturnValueOnce({
+    vi.spyOn(markdownManager, 'parse').mockReturnValueOnce({
       content: [
         {
           content: [{ marks: [{ type: 'strike' }], text: 'Unsupported mark', type: 'text' }],
@@ -101,7 +101,7 @@ describe('TipTapMarkdownToHtml', () => {
   })
 
   it('renders an empty string when a text node has no text value', () => {
-    vi.spyOn(parseNoteDocument, 'parseNoteMarkdown').mockReturnValueOnce({
+    vi.spyOn(markdownManager, 'parse').mockReturnValueOnce({
       content: [{ content: [{ type: 'text' }], type: 'paragraph' }],
       type: 'doc',
     })
@@ -112,7 +112,7 @@ describe('TipTapMarkdownToHtml', () => {
   })
 
   it('ignores unsupported node types', () => {
-    vi.spyOn(parseNoteDocument, 'parseNoteMarkdown').mockReturnValueOnce({
+    vi.spyOn(markdownManager, 'parse').mockReturnValueOnce({
       content: [{ attrs: { level: 1 }, content: [{ text: 'Ignored heading', type: 'text' }], type: 'heading' }],
       type: 'doc',
     })

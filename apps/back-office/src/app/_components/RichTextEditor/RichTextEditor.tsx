@@ -6,7 +6,7 @@ import { EditorContent, useEditor } from '@tiptap/react'
 import { useState } from 'react'
 
 import { Toolbar } from './Toolbar'
-import { markdownToJSON } from '~/app/_utils/parseNoteDocument'
+import { markdownManager } from '~/app/_utils/parseNoteDocument'
 import { richTextExtensions } from '~/app/_utils/richTextExtensions'
 import { MAX_NOTE_LENGTH } from '~/constants'
 
@@ -31,7 +31,9 @@ export const RichTextEditor = ({
   invalid,
   name,
 }: Props) => {
-  const [content, setContent] = useState(() => markdownToJSON(defaultValue))
+  // Seeds the hidden input with valid JSON before the editor itself has mounted, so a submit
+  // during that window carries the real defaultValue instead of nothing.
+  const [content, setContent] = useState(() => JSON.stringify(markdownManager.parse(defaultValue)))
   const [characterCount, setCharacterCount] = useState<number>()
   const [hasLoaded, setHasLoaded] = useState(false)
 

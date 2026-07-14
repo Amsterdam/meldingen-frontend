@@ -5,7 +5,7 @@ import { Fragment } from 'react'
 
 import { Paragraph, UnorderedList } from '@meldingen/ui'
 
-import { parseNoteMarkdown } from '~/app/_utils/parseNoteDocument'
+import { markdownManager } from '~/app/_utils/parseNoteDocument'
 
 import styles from './TipTapMarkdownToHtml.module.css'
 
@@ -37,6 +37,8 @@ const renderNodes = (nodes: JSONContent[] = []): ReactNode =>
     }
   })
 
+// Renders a note's markdown as React elements without going through generateHTML, which needs a
+// browser DOM and can't run during Next's server render.
 export const TipTapMarkdownToHtml = ({ markdown }: { markdown: string }) => (
-  <div className={styles.content}>{renderNodes(parseNoteMarkdown(markdown).content)}</div>
+  <div className={styles.content}>{renderNodes(markdownManager.parse(markdown).content)}</div>
 )
