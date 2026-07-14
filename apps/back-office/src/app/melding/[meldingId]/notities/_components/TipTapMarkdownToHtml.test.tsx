@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
 import { TipTapMarkdownToHtml } from './TipTapMarkdownToHtml'
+import * as parseNoteDocument from '~/app/_utils/parseNoteDocument'
 
 import styles from './TipTapMarkdownToHtml.module.css'
 
@@ -41,6 +42,25 @@ describe('TipTapMarkdownToHtml', () => {
     expect(screen.getByText('Underline').tagName).toBe('U')
   })
 
+  it('ignores unsupported marks and keeps the text content', () => {
+    vi.spyOn(parseNoteDocument, 'parseNoteMarkdown').mockReturnValueOnce({
+      content: [
+        {
+          content: [{ marks: [{ type: 'strike' }], text: 'Unsupported mark', type: 'text' }],
+          type: 'paragraph',
+        },
+      ],
+      type: 'doc',
+    })
+
+    render(<TipTapMarkdownToHtml markdown="ignored by mock" />)
+
+    const paragraph = screen.getByRole('paragraph')
+
+    expect(paragraph).toHaveTextContent('Unsupported mark')
+    expect(paragraph.querySelector('strong, em, u')).toBeNull()
+  })
+
   it('nests multiple marks on the same text', () => {
     render(<TipTapMarkdownToHtml markdown="***Both***" />)
 
@@ -71,6 +91,36 @@ describe('TipTapMarkdownToHtml', () => {
     expect(paragraphs).toHaveLength(2)
     expect(paragraphs[0]).toHaveTextContent('First')
     expect(paragraphs[1]).toHaveTextContent('Second')
+  })
+
+  it('renders an empty paragraph node as a line break', () => {
+    const { container } = render(<TipTapMarkdownToHtml markdown={'\n\n'} />)
+
+    expect(container.querySelector('br')).toBeInTheDocument()
+    expect(screen.queryByRole('paragraph')).not.toBeInTheDocument()
+  })
+
+  it('renders an empty string when a text node has no text value', () => {
+    vi.spyOn(parseNoteDocument, 'parseNoteMarkdown').mockReturnValueOnce({
+      content: [{ content: [{ type: 'text' }], type: 'paragraph' }],
+      type: 'doc',
+    })
+
+    render(<TipTapMarkdownToHtml markdown="ignored by mock" />)
+
+    expect(screen.getByRole('paragraph')).toBeEmptyDOMElement()
+  })
+
+  it('ignores unsupported node types', () => {
+    vi.spyOn(parseNoteDocument, 'parseNoteMarkdown').mockReturnValueOnce({
+      content: [{ attrs: { level: 1 }, content: [{ text: 'Ignored heading', type: 'text' }], type: 'heading' }],
+      type: 'doc',
+    })
+
+    const { container } = render(<TipTapMarkdownToHtml markdown="ignored by mock" />)
+
+    expect(container.firstChild).toBeEmptyDOMElement()
+    expect(screen.queryByText('Ignored heading')).not.toBeInTheDocument()
   })
 
   it('renders an empty div for markdown with no content', () => {
