@@ -4,6 +4,12 @@ import type { NoteRetrieveOutput } from '@meldingen/api-client'
 
 import { formatDateTime, NotesOverview } from './NotesOverview'
 
+describe('formatDateTime', () => {
+  it('formats a date string correctly', () => {
+    expect(formatDateTime('2024-03-05T14:07:00Z')).toBe('05-03-2024 15:07')
+  })
+})
+
 const defaultProps = {
   meldingId: 123,
   notes: [],
@@ -38,11 +44,5 @@ describe('NotesOverview', () => {
     expect(screen.getByText('This is another test note.')).toBeInTheDocument()
     expect(screen.getByText('another@example.com')).toBeInTheDocument()
     expect(screen.getByText('05-03-2024 16:07')).toBeInTheDocument()
-  })
-})
-
-describe('formatDateTime', () => {
-  it('formats a date string correctly', () => {
-    expect(formatDateTime('2024-03-05T14:07:00Z')).toBe('05-03-2024 15:07')
   })
 })
