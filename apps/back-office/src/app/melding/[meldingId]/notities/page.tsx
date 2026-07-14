@@ -6,7 +6,7 @@ import { getMeldingByMeldingId, getMeldingByMeldingIdNote } from '~/app/_api-cli
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
 
-  const t = await getTranslations('detail')
+  const t = await getTranslations('notes-overview')
 
   const { data } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
