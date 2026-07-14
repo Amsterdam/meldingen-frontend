@@ -8,8 +8,8 @@ import { Text } from '@tiptap/extension-text'
 import { Underline } from '@tiptap/extension-underline'
 import { Markdown } from '@tiptap/markdown'
 
-// We don't allow headings in notes, but if a user types `# Heading` in the editor,
-// TipTap interprets that as a heading and throws an error. This extension intercepts this and just returns `# Heading`.
+// We don't allow headings in notes, but if a user types '# Heading' in the editor,
+// TipTap interprets that as a heading and throws an error. This extension intercepts this and just returns '# Heading'.
 const HeadingAsText = Extension.create({
   markdownTokenName: 'heading',
   name: 'headingAsText',
