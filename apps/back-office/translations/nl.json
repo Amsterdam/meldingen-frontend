@@ -170,11 +170,13 @@
     },
     "visually-hidden-texts": {
       "created-at": "Aangemaakt op: ",
-      "by": " door: "
+      "by": " door: ",
+      "edited": " en later gewijzigd"
     },
-    "add-note-link": "Notitie toevoegen",
+    "edited": "(gewijzigd)",
     "edit-link": "Wijzig notitie",
-    "deleted-note": "Deze notitie is verwijderd."
+    "deleted-note": "Deze notitie is verwijderd.",
+    "add-note-link": "Notitie toevoegen"
   },
   "add-note": {
     "metadata": {

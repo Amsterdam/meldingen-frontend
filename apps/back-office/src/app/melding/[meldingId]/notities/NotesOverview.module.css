@@ -21,6 +21,12 @@
   font-weight: var(--ams-typography-body-text-bold-font-weight);
 }
 
+.editedVisualText {
+  color: var(--ams-color-text-secondary);
+  display: inline-block;
+  font-weight: var(--ams-typography-body-text-bold-font-weight);
+}
+
 .link {
   inline-size: fit-content;
 }
