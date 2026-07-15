@@ -6,7 +6,7 @@ import { formatDateTime, NotesOverview } from './NotesOverview'
 
 describe('formatDateTime', () => {
   it('formats a date string correctly', () => {
-    expect(formatDateTime('2024-03-05T14:07:00Z')).toBe('05-03-2024 15:07')
+    expect(formatDateTime('2024-03-05T08:09:00Z')).toBe('05-03-2024 09:09')
   })
 })
 
