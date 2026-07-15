@@ -54,7 +54,7 @@ export const UpdateNote = ({ meldingId, note, noteId }: Props) => {
     }
   }, [systemError])
 
-  const defaultValue = formData?.get('updateNote')?.toString() ?? note?.text ?? ''
+  const defaultValue = formData?.get('updateNote')?.toString() ?? note.text
   const errorMessage = validationErrors?.find((error) => error.key === 'updateNote')?.message
 
   return (
