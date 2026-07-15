@@ -303,12 +303,16 @@ export const containerAssetIds: AssetOutput[] = [
     created_at: '2025-12-08T14:14:33Z',
     external_id: 'container.1',
     id: 69,
+    label: 'Asset 1',
+    subtype: 'containers',
     updated_at: '2025-12-08T14:14:33Z',
   },
   {
     created_at: '2025-12-08T14:14:33Z',
     external_id: 'container.2',
     id: 70,
+    label: 'Asset 2',
+    subtype: 'containers',
     updated_at: '2025-12-08T14:14:33Z',
   },
 ]
