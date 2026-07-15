@@ -48,4 +48,14 @@ describe('NotesOverview', () => {
     expect(screen.getByText('another@example.com')).toBeInTheDocument()
     expect(screen.getByText('05-03-2024 16:07')).toBeInTheDocument()
   })
+
+  it('shows a deleted note message when the note text is empty', () => {
+    const notes = [
+      { created_at: '2024-03-05T14:07:00Z', id: 1, text: '', user: { email: 'test@example.com' } },
+    ] as NoteRetrieveOutput[]
+
+    render(<NotesOverview {...defaultProps} notes={notes} />)
+
+    expect(screen.getByText('deleted-note')).toBeInTheDocument()
+  })
 })
