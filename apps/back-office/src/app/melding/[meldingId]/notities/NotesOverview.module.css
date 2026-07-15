@@ -5,6 +5,9 @@
 
 .note {
   background-color: var(--ams-color-background);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ams-space-s);
   padding-block: var(--ams-space-m);
   padding-inline: var(--ams-space-m);
 }
@@ -12,9 +15,12 @@
 .metadata {
   display: flex;
   flex-direction: column;
-  margin-block-end: var(--ams-space-s);
 }
 
 .time {
   font-weight: var(--ams-typography-body-text-bold-font-weight);
+}
+
+.link {
+  inline-size: fit-content;
 }
