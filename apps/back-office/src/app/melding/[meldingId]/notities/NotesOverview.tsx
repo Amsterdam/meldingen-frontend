@@ -69,6 +69,9 @@ export const NotesOverview = ({ meldingId, notes, publicId }: Props) => {
                     <span>{user.email}</span>
                   </Paragraph>
                   <TipTapMarkdownToHtml markdown={text} />
+                  <StandaloneLink href={`/melding/${meldingId}/notities/wijzigen/${id}`} linkComponent={NextLink}>
+                    {t('edit-link')}
+                  </StandaloneLink>
                 </OrderedList.Item>
               ))}
             </OrderedList>

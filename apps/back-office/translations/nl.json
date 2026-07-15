@@ -172,7 +172,8 @@
       "created-at": "Aangemaakt op: ",
       "by": " door: "
     },
-    "add-note-link": "Notitie toevoegen"
+    "add-note-link": "Notitie toevoegen",
+    "edit-link": "Wijzig notitie"
   },
   "add-note": {
     "metadata": {
@@ -186,6 +187,20 @@
     "cancel-link": "Annuleer",
     "errors": {
       "required": "Vul een notitie in.",
+      "maxLength": "De notitie mag niet langer zijn dan {max} tekens."
+    }
+  },
+  "update-note": {
+    "metadata": {
+      "title": "Wijzig notitie - Gemeente Amsterdam"
+    },
+    "back-link": "Meldingdetails",
+    "invalid-form-alert-title": "Verbeter de fouten om uw notitie te wijzigen",
+    "title": "Wijzig notitie",
+    "label": "Wijzig notitie",
+    "submit-button": "Wijzig notitie",
+    "cancel-link": "Annuleer",
+    "errors": {
       "maxLength": "De notitie mag niet langer zijn dan {max} tekens."
     }
   },
