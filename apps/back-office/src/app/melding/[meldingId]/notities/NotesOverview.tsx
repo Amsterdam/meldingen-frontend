@@ -11,12 +11,6 @@ import { NextLink } from '~/app/_components'
 
 import styles from './NotesOverview.module.css'
 
-type Props = {
-  meldingId: number
-  notes: NoteRetrieveOutput[]
-  publicId: string
-}
-
 export const formatDateTime = (dateString: string) => {
   const date = new Date(dateString)
 
@@ -35,7 +29,14 @@ export const formatDateTime = (dateString: string) => {
   return `${formattedDate} ${formattedTime}`
 }
 
-export const NotesOverview = ({ meldingId, notes, publicId }: Props) => {
+type Props = {
+  currentUserId: number
+  meldingId: number
+  notes: NoteRetrieveOutput[]
+  publicId: string
+}
+
+export const NotesOverview = ({ currentUserId, meldingId, notes, publicId }: Props) => {
   const t = useTranslations('notes-overview')
 
   return (
@@ -69,13 +70,16 @@ export const NotesOverview = ({ meldingId, notes, publicId }: Props) => {
                     <span>{user.email}</span>
                   </Paragraph>
                   {text === '' ? <Paragraph>{t('deleted-note')}</Paragraph> : <TipTapMarkdownToHtml markdown={text} />}
-                  <StandaloneLink
-                    className={styles.link}
-                    href={`/melding/${meldingId}/notities/wijzigen/${id}`}
-                    linkComponent={NextLink}
-                  >
-                    {t('edit-link')}
-                  </StandaloneLink>
+                  {/* Only show the edit link if the current user is the author of the note */}
+                  {currentUserId === user.id && (
+                    <StandaloneLink
+                      className={styles.link}
+                      href={`/melding/${meldingId}/notities/wijzigen/${id}`}
+                      linkComponent={NextLink}
+                    >
+                      {t('edit-link')}
+                    </StandaloneLink>
+                  )}
                 </OrderedList.Item>
               ))}
             </OrderedList>

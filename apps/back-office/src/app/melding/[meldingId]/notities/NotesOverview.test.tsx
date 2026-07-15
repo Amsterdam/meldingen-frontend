@@ -11,6 +11,7 @@ describe('formatDateTime', () => {
 })
 
 const defaultProps = {
+  currentUserId: 1,
   meldingId: 123,
   notes: [],
   publicId: 'B100AA',
@@ -47,6 +48,40 @@ describe('NotesOverview', () => {
     expect(screen.getByText('This is another test note.')).toBeInTheDocument()
     expect(screen.getByText('another@example.com')).toBeInTheDocument()
     expect(screen.getByText('05-03-2024 16:07')).toBeInTheDocument()
+  })
+
+  it('does not show an edit link for notes that do not belong to the current user', () => {
+    const notes = [
+      {
+        created_at: '2024-03-05T14:07:00Z',
+        id: 1,
+        text: 'This is a test note.',
+        user: { email: 'test@example.com', id: 2 },
+      },
+    ] as NoteRetrieveOutput[]
+
+    render(<NotesOverview {...defaultProps} notes={notes} />)
+
+    const editLink = screen.queryByRole('link', { name: 'edit-link' })
+
+    expect(editLink).not.toBeInTheDocument()
+  })
+
+  it('shows an edit link for notes that belong to the current user', () => {
+    const notes = [
+      {
+        created_at: '2024-03-05T14:07:00Z',
+        id: 1,
+        text: 'This is a test note.',
+        user: { email: 'test@example.com', id: 1 },
+      },
+    ] as NoteRetrieveOutput[]
+
+    render(<NotesOverview {...defaultProps} notes={notes} />)
+
+    const editLink = screen.getByRole('link', { name: 'edit-link' })
+
+    expect(editLink).toBeInTheDocument()
   })
 
   it('shows a deleted note message when the note text is empty', () => {
