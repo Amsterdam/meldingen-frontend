@@ -22,7 +22,10 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   if (error) throw new Error('Failed to fetch melding data.')
 
-  const { data: notes, error: notesError } = await getMeldingByMeldingIdNote({ path: { melding_id: meldingId } })
+  const { data: notes, error: notesError } = await getMeldingByMeldingIdNote({
+    path: { melding_id: meldingId },
+    query: { sort: '["created_at","DESC"]' },
+  })
 
   if (notesError) throw new Error('Failed to fetch notes data.')
 
