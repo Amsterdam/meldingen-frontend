@@ -88,8 +88,18 @@ describe('postCoordinatesAndAssets', () => {
     await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
     expect(capturedBodies).toHaveLength(2)
-    expect(capturedBodies[0]).toEqual({ asset_type_id: 123, external_id: 'container.1' })
-    expect(capturedBodies[1]).toEqual({ asset_type_id: 123, external_id: 'container.2' })
+    expect(capturedBodies[0]).toEqual({
+      asset_type_id: 123,
+      external_id: 'container.1',
+      label: 'Temp',
+      subtype: 'temp',
+    })
+    expect(capturedBodies[1]).toEqual({
+      asset_type_id: 123,
+      external_id: 'container.2',
+      label: 'Temp',
+      subtype: 'temp',
+    })
     expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
   })
 
