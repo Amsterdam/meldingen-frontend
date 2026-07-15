@@ -162,5 +162,7 @@ export const asset: AssetOutput = {
   created_at: '2025-02-18T10:34:29.103642',
   external_id: 'ext-1',
   id: 1,
+  label: 'Asset 1',
+  subtype: 'containers',
   updated_at: '2025-02-18T10:34:40.730569',
 }
