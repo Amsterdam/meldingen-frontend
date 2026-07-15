@@ -22,7 +22,7 @@ describe('AddNote', () => {
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
     expect(backLink).toBeInTheDocument()
-    expect(backLink).toHaveAttribute('href', '/melding/123')
+    expect(backLink).toHaveAttribute('href', '/melding/123/notities')
   })
 
   it('renders the correct title', () => {
@@ -44,7 +44,7 @@ describe('AddNote', () => {
 
     const cancelLink = screen.getByRole('link', { name: 'cancel-link' })
     expect(cancelLink).toBeInTheDocument()
-    expect(cancelLink).toHaveAttribute('href', '/melding/123')
+    expect(cancelLink).toHaveAttribute('href', '/melding/123/notities')
   })
 
   it('displays a system error alert when there is one', () => {

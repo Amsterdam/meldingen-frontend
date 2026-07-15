@@ -49,15 +49,15 @@
     }
   },
   "detail": {
-    "attachments": {
-      "title": "Bestanden",
-      "no-data": "Geen bestanden toegevoegd"
-    },
     "metadata": {
       "title": "Melding {publicId} - Gemeente Amsterdam"
     },
     "back-link": "Overzicht meldingen",
     "title": "Melding {publicId}",
+    "tab-navigation": {
+      "detail": "Melding",
+      "notes": "Notities"
+    },
     "melding-text": "Meldtekst",
     "contact": {
       "email": "E-mail melder",
@@ -93,6 +93,10 @@
         "term": "Urgentie",
         "link": "Wijzig urgentie"
       }
+    },
+    "attachments": {
+      "title": "Bestanden",
+      "no-data": "Geen bestanden toegevoegd"
     },
     "errors": {
       "melding-not-found": "An error occurred"
@@ -153,6 +157,22 @@
         "description": "Probeer het later opnieuw."
       }
     }
+  },
+  "notes-overview": {
+    "metadata": {
+      "title": "Melding {publicId} - Gemeente Amsterdam"
+    },
+    "back-link": "Overzicht meldingen",
+    "title": "Melding {publicId}",
+    "tab-navigation": {
+      "detail": "Melding",
+      "notes": "Notities"
+    },
+    "visually-hidden-texts": {
+      "created-at": "Aangemaakt op: ",
+      "by": " door: "
+    },
+    "add-note-link": "Notitie toevoegen"
   },
   "add-note": {
     "metadata": {

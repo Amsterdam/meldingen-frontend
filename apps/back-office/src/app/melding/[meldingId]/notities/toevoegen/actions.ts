@@ -39,5 +39,5 @@ export const postAddNoteForm = async ({ meldingId }: { meldingId: number }, _: u
 
   if (error) return { formData, systemError: error }
 
-  return redirect(`/melding/${meldingId}`)
+  return redirect(`/melding/${meldingId}/notities`)
 }

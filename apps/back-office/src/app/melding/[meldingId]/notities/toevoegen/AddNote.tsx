@@ -54,7 +54,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
 
   return (
     <div className="ams-page__area--body">
-      <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
+      <BackLink href={`/melding/${meldingId}/notities`}>{t('back-link')}</BackLink>
       <Grid as="main" gapVertical="large">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
           {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
@@ -86,7 +86,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
             </div>
             <ActionGroup>
               <Button type="submit">{t('submit-button')}</Button>
-              <CancelLink href={`/melding/${meldingId}`}>{t('cancel-link')}</CancelLink>
+              <CancelLink href={`/melding/${meldingId}/notities`}>{t('cancel-link')}</CancelLink>
             </ActionGroup>
           </Form>
         </Grid.Cell>

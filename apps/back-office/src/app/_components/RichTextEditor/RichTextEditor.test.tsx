@@ -32,7 +32,7 @@ describe('RichTextEditor', () => {
   })
 
   it('renders a hidden input with the default value as JSON before the editor has loaded', () => {
-    render(<RichTextEditor {...defaultProps} defaultValue="Hello world" name="addNote" />)
+    render(<RichTextEditor {...defaultProps} defaultValue="**Hello world**" name="addNote" />)
 
     expect(screen.queryByRole('toolbar')).not.toBeInTheDocument()
 
@@ -41,7 +41,18 @@ describe('RichTextEditor', () => {
     expect(input).not.toBeNull()
     expect(input.type).toBe('hidden')
     expect(JSON.parse(input.value)).toEqual({
-      content: [{ content: [{ text: 'Hello world', type: 'text' }], type: 'paragraph' }],
+      content: [
+        {
+          content: [
+            {
+              marks: [{ type: 'bold' }],
+              text: 'Hello world',
+              type: 'text',
+            },
+          ],
+          type: 'paragraph',
+        },
+      ],
       type: 'doc',
     })
   })
@@ -51,7 +62,7 @@ describe('RichTextEditor', () => {
 
     expect(await screen.findByRole('toolbar')).toBeInTheDocument()
     expect(screen.getByRole('textbox')).toBeInTheDocument()
-    expect(screen.getByText('11 van 3000 tekens')).toBeInTheDocument()
+    expect(screen.getByText('11 van 1000 tekens')).toBeInTheDocument()
   })
 
   it('renders a hidden input with the given name and the document as JSON', async () => {
@@ -102,7 +113,7 @@ describe('RichTextEditor', () => {
     await user.type(textbox, 'Hi')
 
     await waitFor(() => {
-      expect(screen.getByText('2 van 3000 tekens')).toBeInTheDocument()
+      expect(screen.getByText('2 van 1000 tekens')).toBeInTheDocument()
     })
 
     const input = document.querySelector('input[name="note"]') as HTMLInputElement
