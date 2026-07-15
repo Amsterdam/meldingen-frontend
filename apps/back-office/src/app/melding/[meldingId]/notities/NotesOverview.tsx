@@ -68,7 +68,7 @@ export const NotesOverview = ({ meldingId, notes, publicId }: Props) => {
                     <span className="ams-visually-hidden">{t('visually-hidden-texts.by')}</span>
                     <span>{user.email}</span>
                   </Paragraph>
-                  <TipTapMarkdownToHtml markdown={text} />
+                  {text === '' ? <Paragraph>{t('deleted-note')}</Paragraph> : <TipTapMarkdownToHtml markdown={text} />}
                   <StandaloneLink
                     className={styles.link}
                     href={`/melding/${meldingId}/notities/wijzigen/${id}`}

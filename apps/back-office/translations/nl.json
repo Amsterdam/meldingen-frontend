@@ -173,7 +173,8 @@
       "by": " door: "
     },
     "add-note-link": "Notitie toevoegen",
-    "edit-link": "Wijzig notitie"
+    "edit-link": "Wijzig notitie",
+    "deleted-note": "Deze notitie is verwijderd."
   },
   "add-note": {
     "metadata": {
