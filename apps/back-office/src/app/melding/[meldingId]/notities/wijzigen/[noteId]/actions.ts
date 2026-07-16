@@ -17,7 +17,7 @@ export const postUpdateNoteForm = async ({ meldingId, noteId }: Args, _: unknown
 
   const formDataObj = Object.fromEntries(formData)
 
-  const { characterCount, markdown } = parseNoteDocument(formDataObj.updateNote)
+  const { characterCount, isEmpty, markdown } = parseNoteDocument(formDataObj.updateNote)
 
   // Replace the submitted JSON with the derived markdown, so RichTextEditor can reload it as
   // its `defaultValue` (via contentType: 'markdown') if the form is redisplayed after an error.
@@ -31,7 +31,7 @@ export const postUpdateNoteForm = async ({ meldingId, noteId }: Args, _: unknown
   }
 
   const { error } = await patchMeldingByMeldingIdNoteByNoteId({
-    body: { text: markdown },
+    body: { text: isEmpty ? '' : markdown },
     path: { melding_id: meldingId, note_id: noteId },
   })
 

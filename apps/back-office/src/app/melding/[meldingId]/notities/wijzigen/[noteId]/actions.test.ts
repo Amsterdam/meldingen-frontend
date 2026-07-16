@@ -66,4 +66,35 @@ describe('postUpdateNoteForm', () => {
 
     expect(redirect).toHaveBeenCalledWith('/melding/123/notities')
   })
+
+  it('posts an empty string when the editor only contains whitespace, even when it has markup', async () => {
+    let requestBody: { text?: string } | undefined
+
+    server.use(
+      http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID, async ({ request }) => {
+        requestBody = (await request.json()) as { text?: string }
+        return HttpResponse.json({}, { status: 200 })
+      }),
+    )
+
+    const markedUpWhitespace = JSON.stringify({
+      content: [
+        {
+          content: [
+            { marks: [{ type: 'bold' }, { type: 'italic' }, { type: 'underline' }], text: '   ', type: 'text' },
+          ],
+          type: 'paragraph',
+        },
+      ],
+      type: 'doc',
+    })
+
+    const formData = new FormData()
+    formData.append('updateNote', markedUpWhitespace)
+
+    await postUpdateNoteForm(defaultArgs, null, formData)
+
+    expect(requestBody).toEqual({ text: '' })
+    expect(redirect).toHaveBeenCalledWith('/melding/123/notities')
+  })
 })
