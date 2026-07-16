@@ -3,31 +3,13 @@ import { useTranslations } from 'next-intl'
 
 import type { NoteRetrieveOutput } from '@meldingen/api-client'
 
-import { Grid, Heading, OrderedList, Paragraph, TabNavigation } from '@meldingen/ui'
+import { Grid, Heading, OrderedList, TabNavigation } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
-import { TipTapMarkdownToHtml } from './_components/TipTapMarkdownToHtml'
+import { Note } from './_components/Note/Note'
 import { NextLink } from '~/app/_components'
 
 import styles from './NotesOverview.module.css'
-
-export const formatDateTime = (dateString: string) => {
-  const date = new Date(dateString)
-
-  const formattedDate = date.toLocaleDateString('nl-NL', {
-    day: '2-digit',
-    month: '2-digit',
-    timeZone: 'Europe/Amsterdam',
-    year: 'numeric',
-  })
-  const formattedTime = date.toLocaleTimeString('nl-NL', {
-    hour: 'numeric',
-    minute: 'numeric',
-    timeZone: 'Europe/Amsterdam',
-  })
-
-  return `${formattedDate} ${formattedTime}`
-}
 
 type Props = {
   currentUserId: number
@@ -59,48 +41,9 @@ export const NotesOverview = ({ currentUserId, meldingId, notes, publicId }: Pro
           </TabNavigation>
           {notes.length > 0 && (
             <OrderedList className={styles.list} markers={false}>
-              {notes.map(({ created_at, id, text, updated_at, user }) => {
-                const wasEdited = new Date(updated_at) > new Date(created_at)
-
-                return (
-                  <OrderedList.Item className={styles.note} key={id}>
-                    <Paragraph className={styles.metadata}>
-                      <span className="ams-visually-hidden">{t('visually-hidden-texts.created-at')}</span>
-                      <span>
-                        <time className={styles.time} dateTime={created_at}>
-                          {formatDateTime(created_at)}
-                        </time>
-                        {wasEdited && (
-                          <>
-                            {' '}
-                            <span className={styles.editedVisualText} hidden>
-                              {t('edited')}
-                            </span>
-                          </>
-                        )}
-                      </span>
-                      <span className="ams-visually-hidden">{t('visually-hidden-texts.by')}</span>
-                      <span>{user.email}</span>
-                      {wasEdited && <span className="ams-visually-hidden">{t('visually-hidden-texts.edited')}</span>}
-                    </Paragraph>
-                    {text === '' ? (
-                      <Paragraph>{t('deleted-note')}</Paragraph>
-                    ) : (
-                      <TipTapMarkdownToHtml markdown={text} />
-                    )}
-                    {/* Only show the edit link if the current user is the author of the note */}
-                    {currentUserId === user.id && (
-                      <StandaloneLink
-                        className={styles.link}
-                        href={`/melding/${meldingId}/notities/wijzigen/${id}`}
-                        linkComponent={NextLink}
-                      >
-                        {t('edit-link')}
-                      </StandaloneLink>
-                    )}
-                  </OrderedList.Item>
-                )
-              })}
+              {notes.map((note) => (
+                <Note currentUserId={currentUserId} key={note.id} meldingId={meldingId} note={note} />
+              ))}
             </OrderedList>
           )}
           <StandaloneLink

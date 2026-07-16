@@ -2,31 +2,3 @@
   gap: var(--ams-space-m);
   margin-block-end: var(--ams-space-m);
 }
-
-.note {
-  background-color: var(--ams-color-background);
-  display: flex;
-  flex-direction: column;
-  gap: var(--ams-space-s);
-  padding-block: var(--ams-space-m);
-  padding-inline: var(--ams-space-m);
-}
-
-.metadata {
-  display: flex;
-  flex-direction: column;
-}
-
-.time {
-  font-weight: var(--ams-typography-body-text-bold-font-weight);
-}
-
-.editedVisualText {
-  color: var(--ams-color-text-secondary);
-  display: inline-block;
-  font-weight: var(--ams-typography-body-text-bold-font-weight);
-}
-
-.link {
-  inline-size: fit-content;
-}
