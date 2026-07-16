@@ -93,4 +93,31 @@ describe('NotesOverview', () => {
 
     expect(screen.getByText('deleted-note')).toBeInTheDocument()
   })
+
+  it('lets a user know when a note was edited', () => {
+    const notes = [
+      {
+        created_at: '2024-03-05T14:07:00Z',
+        id: 1,
+        text: 'This is an edited test note.',
+        updated_at: '2024-03-05T15:07:00Z',
+        user: { email: 'test@example.com', id: 2 },
+      },
+      {
+        created_at: '2024-03-05T16:07:00Z',
+        id: 2,
+        text: 'This note was not edited.',
+        updated_at: '2024-03-05T16:07:00Z',
+        user: { email: 'another@example.com', id: 3 },
+      },
+    ] as NoteRetrieveOutput[]
+
+    render(<NotesOverview {...defaultProps} notes={notes} />)
+
+    const visualOnlyEditedText = screen.getByText('edited', { exact: true, selector: 'span' })
+    const visuallyHiddenEditedText = screen.getByText('visually-hidden-texts.edited')
+
+    expect(visualOnlyEditedText).toBeInTheDocument()
+    expect(visuallyHiddenEditedText).toBeInTheDocument()
+  })
 })
