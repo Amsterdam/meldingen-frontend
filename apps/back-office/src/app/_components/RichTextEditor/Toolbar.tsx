@@ -9,10 +9,11 @@ import {
   ListIcon,
   UndoIcon,
 } from '@amsterdam/design-system-react-icons'
-import { useKeyboardFocus } from '@amsterdam/design-system-react/dist/common/useKeyboardFocus'
 import { useEditorState } from '@tiptap/react'
 import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
+
+import { useKeyboardFocus } from './useKeyboardFocus'
 
 import styles from './Toolbar.module.css'
 
@@ -45,11 +46,7 @@ export const Toolbar = ({ editor, id }: Props) => {
     selector: toolbarStateSelector,
   })
 
-  const { keyDown } = useKeyboardFocus(ref as RefObject<HTMLDivElement>, {
-    focusableElements: ['.ams-icon-button:not([disabled])'],
-    horizontally: true,
-    rotating: true,
-  })
+  const { keyDown } = useKeyboardFocus(ref as RefObject<HTMLDivElement>)
 
   const getTabIndex = (button: ToolbarButton) => (activeButton === button ? 0 : -1)
 
