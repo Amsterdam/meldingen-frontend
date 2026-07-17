@@ -196,10 +196,10 @@
     },
     "rich-text-editor": {
       "bold": "Vetgedrukt",
-      "italic": "Cursief",
-      "toolbar": "Werkbalk tekstopmaak",
+      "italic": "Schuingedrukt",
+      "toolbar": "Tekst opmaken",
       "underline": "Onderstreept",
-      "unordered-list": "Opsommingslijst",
+      "unordered-list": "Opsomming",
       "undo": "Ongedaan maken"
     },
     "state": {
