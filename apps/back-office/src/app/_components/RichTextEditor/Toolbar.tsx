@@ -2,17 +2,13 @@ import type { Editor, EditorStateSnapshot } from '@tiptap/react'
 import type { RefObject } from 'react'
 
 import { IconButton } from '@amsterdam/design-system-react'
-import {
-  FormattingBoldIcon,
-  FormattingItalicIcon,
-  FormattingUnderlineIcon,
-  ListIcon,
-  UndoIcon,
-} from '@amsterdam/design-system-react-icons'
+import { FormattingBoldIcon, FormattingItalicIcon, FormattingUnderlineIcon } from '@amsterdam/design-system-react-icons'
 import { useEditorState } from '@tiptap/react'
 import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 
+import { ListIcon } from './ListIcon'
+import { UndoIcon } from './UndoIcon'
 import { useKeyboardFocus } from './useKeyboardFocus'
 
 import styles from './Toolbar.module.css'
@@ -92,6 +88,7 @@ export const Toolbar = ({ editor, id }: Props) => {
         label={t('unordered-list')}
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         onFocus={() => setActiveButton('bulletList')}
+        size="heading-3"
         svg={ListIcon}
         tabIndex={getTabIndex('bulletList')}
       />
@@ -101,6 +98,7 @@ export const Toolbar = ({ editor, id }: Props) => {
         label={t('undo')}
         onClick={() => editorState.canUndo && editor.chain().focus().undo().run()}
         onFocus={() => setActiveButton('undo')}
+        size="heading-3"
         svg={UndoIcon}
         tabIndex={getTabIndex('undo')}
       />
