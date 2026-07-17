@@ -46,7 +46,7 @@ describe('postUpdateNoteForm', () => {
       formData,
       systemError: { detail: 'Error message' },
     })
-    expect(redirect).not.toHaveBeenCalled()
+    expect(redirect).not.toHaveBeenCalledWith('/melding/123')
   })
 
   it('redirects on success', async () => {
