@@ -21,7 +21,7 @@ const mockNote = {
 } as NoteRetrieveOutput
 
 describe('Note', () => {
-  it('renders the note text and user email', () => {
+  it('renders the note', () => {
     render(<Note currentUserId={1} meldingId={123} note={mockNote} />)
 
     expect(screen.getByText('This is a test note.')).toBeInTheDocument()
@@ -30,12 +30,12 @@ describe('Note', () => {
   })
 
   it('does not show an edit link for a note that does not belong to the current user', () => {
-    const someonesNote = {
+    const noteFromSomeoneElse = {
       ...mockNote,
       user: { email: 'test@example.com', id: 2 },
     } as NoteRetrieveOutput
 
-    render(<Note currentUserId={1} meldingId={123} note={someonesNote} />)
+    render(<Note currentUserId={1} meldingId={123} note={noteFromSomeoneElse} />)
 
     const editLink = screen.queryByRole('link', { name: 'edit-link' })
 
