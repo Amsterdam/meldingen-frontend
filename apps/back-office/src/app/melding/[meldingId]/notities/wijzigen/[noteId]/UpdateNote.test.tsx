@@ -22,7 +22,6 @@ const defaultProps = {
     id: 456,
     text: 'This is a note.',
   } as NoteRetrieveOutput,
-  noteId: 456,
 }
 
 describe('UpdateNote', () => {

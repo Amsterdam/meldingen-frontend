@@ -22,5 +22,5 @@ export default async ({ params }: Params) => {
 
   if (error) throw new Error('Failed to fetch note.')
 
-  return <UpdateNote meldingId={meldingId} note={data} noteId={noteId} />
+  return <UpdateNote meldingId={meldingId} note={data} />
 }

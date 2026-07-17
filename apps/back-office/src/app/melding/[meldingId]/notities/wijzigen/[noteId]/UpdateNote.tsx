@@ -23,14 +23,13 @@ const initialState: FormState = {}
 type Props = {
   meldingId: number
   note: NoteRetrieveOutput
-  noteId: number
 }
 
-export const UpdateNote = ({ meldingId, note, noteId }: Props) => {
+export const UpdateNote = ({ meldingId, note }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
-  const action = postUpdateNoteForm.bind(null, { meldingId, noteId })
+  const action = postUpdateNoteForm.bind(null, { meldingId, noteId: note.id })
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
 
