@@ -42,7 +42,7 @@ export const Note = ({ currentUserId, meldingId, note }: Props) => {
   const wasEdited = new Date(updated_at) > new Date(created_at)
 
   return (
-    <UnorderedList.Item className={styles.item} key={id}>
+    <UnorderedList.Item className={styles.item}>
       <Paragraph className={styles.metadata}>
         <span className="ams-visually-hidden">{t('visually-hidden-texts.created-at')}</span>
         <span>
