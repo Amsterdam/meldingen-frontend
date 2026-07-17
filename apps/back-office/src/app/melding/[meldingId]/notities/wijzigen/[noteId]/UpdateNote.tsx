@@ -81,7 +81,6 @@ export const UpdateNote = ({ meldingId, note, noteId }: Props) => {
                 <RichTextEditor
                   aria-describedby={getAriaDescribedBy('updateNote', undefined, errorMessage)}
                   aria-labelledby="updateNote-label"
-                  aria-required="true"
                   defaultValue={defaultValue}
                   id="updateNote"
                   invalid={Boolean(errorMessage)}
