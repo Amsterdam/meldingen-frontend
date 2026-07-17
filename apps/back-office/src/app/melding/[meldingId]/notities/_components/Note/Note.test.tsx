@@ -53,6 +53,7 @@ describe('Note', () => {
     const editLink = screen.getByRole('link', { name: 'edit-link' })
 
     expect(editLink).toBeInTheDocument()
+    expect(editLink).toHaveAttribute('href', '/melding/123/notities/wijzigen/1')
   })
 
   it('shows a deleted note message when the note text is empty', () => {
