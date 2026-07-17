@@ -76,7 +76,9 @@ export const UpdateNote = ({ meldingId, note, noteId }: Props) => {
           <Form action={formAction} noValidate>
             <div className={styles.whiteField}>
               <Field invalid={Boolean(errorMessage)}>
-                <Label id="updateNote-label">{t('label')}</Label>
+                <Label className="ams-mb-s" id="updateNote-label">
+                  {t('label')}
+                </Label>
                 {errorMessage && <ErrorMessage id="updateNote-error">{errorMessage}</ErrorMessage>}
                 <RichTextEditor
                   aria-describedby={getAriaDescribedBy('updateNote', undefined, errorMessage)}
