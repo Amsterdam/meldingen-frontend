@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl'
 
 import type { NoteRetrieveOutput } from '@meldingen/api-client'
 
-import { OrderedList, Paragraph } from '@meldingen/ui'
+import { Paragraph, UnorderedList } from '@meldingen/ui'
 
 import { TipTapMarkdownToHtml } from '../TipTapMarkdownToHtml'
 import { NextLink } from '~/app/_components'
@@ -42,7 +42,7 @@ export const Note = ({ currentUserId, meldingId, note }: Props) => {
   const wasEdited = new Date(updated_at) > new Date(created_at)
 
   return (
-    <OrderedList.Item className={styles.item} key={id}>
+    <UnorderedList.Item className={styles.item} key={id}>
       <Paragraph className={styles.metadata}>
         <span className="ams-visually-hidden">{t('visually-hidden-texts.created-at')}</span>
         <span>
@@ -73,6 +73,6 @@ export const Note = ({ currentUserId, meldingId, note }: Props) => {
           {t('edit-link')}
         </StandaloneLink>
       )}
-    </OrderedList.Item>
+    </UnorderedList.Item>
   )
 }

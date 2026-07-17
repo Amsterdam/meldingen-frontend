@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl'
 
 import type { NoteRetrieveOutput } from '@meldingen/api-client'
 
-import { Grid, Heading, OrderedList, TabNavigation } from '@meldingen/ui'
+import { Grid, Heading, TabNavigation, UnorderedList } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
 import { Note } from './_components/Note/Note'
@@ -40,11 +40,11 @@ export const NotesOverview = ({ currentUserId, meldingId, notes, publicId }: Pro
             </TabNavigation.List>
           </TabNavigation>
           {notes.length > 0 && (
-            <OrderedList className={styles.list} markers={false}>
+            <UnorderedList className={styles.list} markers={false}>
               {notes.map((note) => (
                 <Note currentUserId={currentUserId} key={note.id} meldingId={meldingId} note={note} />
               ))}
-            </OrderedList>
+            </UnorderedList>
           )}
           <StandaloneLink
             className="ams-mb-m"
