@@ -1,13 +1,11 @@
 'use client'
 
-import { ActionGroup, Button, ErrorMessage, Field, Grid, Heading, Label } from '@amsterdam/design-system-react'
+import { ActionGroup, Button, Grid, Heading } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
 
 import type { NoteRetrieveOutput } from '@meldingen/api-client'
-
-import { getAriaDescribedBy } from '@meldingen/form-renderer'
 
 import type { FormState } from '~/types'
 
@@ -74,20 +72,14 @@ export const UpdateNote = ({ meldingId, note }: Props) => {
           </Heading>
           <Form action={formAction} noValidate>
             <div className={styles.whiteField}>
-              <Field invalid={Boolean(errorMessage)}>
-                <Label className="ams-mb-s" id="updateNote-label">
-                  {t('label')}
-                </Label>
-                {errorMessage && <ErrorMessage id="updateNote-error">{errorMessage}</ErrorMessage>}
-                <RichTextEditor
-                  aria-describedby={getAriaDescribedBy('updateNote', undefined, errorMessage)}
-                  aria-labelledby="updateNote-label"
-                  defaultValue={defaultValue}
-                  id="updateNote"
-                  invalid={Boolean(errorMessage)}
-                  name="updateNote"
-                />
-              </Field>
+              <RichTextEditor
+                defaultValue={defaultValue}
+                errorMessage={errorMessage}
+                id="updateNote"
+                label={t('label')}
+                labelClassName="ams-mb-s"
+                name="updateNote"
+              />
             </div>
             <ActionGroup>
               <Button type="submit">{t('submit-button')}</Button>

@@ -26,16 +26,4 @@ describe('NoteField', () => {
 
     expect(textAreaWithErrorMessage).toBeInTheDocument()
   })
-
-  it('marks the Field and textarea as invalid when there is an error message', async () => {
-    const { container } = render(<NoteField defaultValue="" errorMessage="Test error message" />)
-
-    expect(await screen.findByRole('toolbar')).toBeInTheDocument()
-
-    const field = container.firstChild
-    expect(field).toHaveClass('ams-field--invalid')
-
-    const textArea = screen.getByRole('textbox', { name: 'label (niet verplicht)' })
-    expect(textArea).toHaveAttribute('aria-invalid', 'true')
-  })
 })

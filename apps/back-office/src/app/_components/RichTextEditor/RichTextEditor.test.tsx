@@ -5,10 +5,9 @@ import { beforeAll } from 'vitest'
 import { RichTextEditor } from './RichTextEditor'
 
 const defaultProps = {
-  'aria-labelledby': 'label-id',
   defaultValue: '',
   id: 'editor',
-  invalid: false,
+  label: 'Label',
   name: 'note',
 }
 
@@ -24,10 +23,10 @@ describe('RichTextEditor', () => {
     Range.prototype.getBoundingClientRect = () => rect
   })
 
-  it('renders a loader before the editor has finished initializing', () => {
-    const { container } = render(<RichTextEditor {...defaultProps} />)
+  it('renders the label before the editor has finished initializing', () => {
+    render(<RichTextEditor {...defaultProps} />)
 
-    expect(container.querySelector('div')).toBeInTheDocument()
+    expect(screen.getByText('Label')).toBeInTheDocument()
     expect(screen.queryByRole('toolbar')).not.toBeInTheDocument()
   })
 
@@ -81,13 +80,13 @@ describe('RichTextEditor', () => {
   })
 
   it('sets the aria attributes on the editable element based on the given props', async () => {
-    render(<RichTextEditor {...defaultProps} aria-describedby="described-by-id" aria-required="true" invalid />)
+    render(<RichTextEditor {...defaultProps} errorMessage="Something is wrong" required />)
 
     const textbox = await screen.findByRole('textbox')
 
     expect(textbox).toHaveAttribute('id', 'editor')
-    expect(textbox).toHaveAttribute('aria-describedby', 'described-by-id')
-    expect(textbox).toHaveAttribute('aria-labelledby', 'label-id')
+    expect(textbox).toHaveAttribute('aria-describedby', 'editor-error')
+    expect(textbox).toHaveAttribute('aria-labelledby', 'editor-label')
     expect(textbox).toHaveAttribute('aria-required', 'true')
     expect(textbox).toHaveAttribute('aria-invalid', 'true')
   })
@@ -100,6 +99,36 @@ describe('RichTextEditor', () => {
     expect(textbox).toHaveAttribute('aria-describedby', '')
     expect(textbox).toHaveAttribute('aria-required', 'false')
     expect(textbox).toHaveAttribute('aria-invalid', 'false')
+  })
+
+  it('renders an error message and marks the field as invalid when an errorMessage is given', async () => {
+    const { container } = render(<RichTextEditor {...defaultProps} errorMessage="Something is wrong" />)
+
+    const textbox = await screen.findByRole('textbox')
+
+    expect(textbox).toHaveAccessibleDescription('Invoerfout:Something is wrong')
+    expect(container.firstChild).toHaveClass('ams-field--invalid')
+  })
+
+  it('shows an "optional" hint on the label when optional is set', () => {
+    render(<RichTextEditor {...defaultProps} optional />)
+
+    expect(document.getElementById('editor-label')).toHaveTextContent('Label (niet verplicht)')
+  })
+
+  it('focuses the editor when the label is clicked', async () => {
+    const user = userEvent.setup()
+
+    render(<RichTextEditor {...defaultProps} />)
+
+    const textbox = await screen.findByRole('textbox')
+    expect(textbox).not.toHaveFocus()
+
+    await user.click(screen.getByText('Label'))
+
+    await waitFor(() => {
+      expect(textbox).toHaveFocus()
+    })
   })
 
   it('updates the character count and hidden input when the user types', async () => {
