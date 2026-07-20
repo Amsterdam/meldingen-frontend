@@ -32,6 +32,13 @@ export const handlers = [
     HttpResponse.json({ states: ['processing_requested', 'completed'] }),
   ),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json([])),
+  http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID, () =>
+    HttpResponse.json({
+      created_at: '2025-05-26T11:56:34.081Z',
+      id: 456,
+      text: 'This is a note.',
+    }),
+  ),
 
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () => new HttpResponse()),
   http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_MELDER, () =>
