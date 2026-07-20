@@ -67,7 +67,7 @@ export const Note = ({ currentUserId, meldingId, note }: Props) => {
       {currentUserId === user.id && (
         <StandaloneLink
           className={styles.link}
-          href={`/melding/${meldingId}/notities/wijzigen/${id}`}
+          href={`/melding/${meldingId}/notities/${id}/wijzigen`}
           linkComponent={NextLink}
         >
           {t('edit-link')}
