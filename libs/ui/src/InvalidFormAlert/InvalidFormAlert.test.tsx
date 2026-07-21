@@ -71,4 +71,17 @@ describe('Invalid Form Alert', () => {
 
     expect(ref.current).toBe(component)
   })
+
+  //   it('sets focus on InvalidFormAlert when there are validation errors', () => {
+  //   ;(useActionState as Mock).mockReturnValue([
+  //     { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
+  //     vi.fn(),
+  //   ])
+
+  //   const { container } = render(<Home {...defaultProps} />)
+
+  //   const alert = container.querySelector('.ams-alert')
+
+  //   expect(alert).toHaveFocus()
+  // })
 })

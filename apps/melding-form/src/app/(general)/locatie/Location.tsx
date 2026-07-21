@@ -9,7 +9,7 @@ import { useActionState, useEffect, useRef } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
-import { InvalidFormAlert, SubmitButton } from '@meldingen/ui'
+import { SubmitButton } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
@@ -18,6 +18,7 @@ import { getDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
 import { postLocationForm } from './actions'
+import { InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './Location.module.css'
@@ -49,7 +50,6 @@ const getAssetElement = (asset: Feature) => {
 }
 
 export const Location = ({ address, pageConfig, prevPage, selectedAssets }: Props) => {
-  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ systemError, validationErrors }, formAction] = useActionState(postLocationForm, initialState)
@@ -65,12 +65,9 @@ export const Location = ({ address, pageConfig, prevPage, selectedAssets }: Prop
     validationErrorCount: validationErrors?.length,
   })
 
-  // Set focus on InvalidFormAlert when there are validation errors
-  // and on SystemErrorAlert when there is a system error
+  // Set focus on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (validationErrors && invalidFormAlertRef.current) {
-      invalidFormAlertRef.current.focus()
-    } else if (systemError && systemErrorAlertRef.current) {
+    if (systemError && systemErrorAlertRef.current) {
       systemErrorAlertRef.current.focus()
     }
   }, [validationErrors, systemError])
@@ -83,6 +80,19 @@ export const Location = ({ address, pageConfig, prevPage, selectedAssets }: Prop
     }
   }, [systemError])
 
+  //  {validationErrors && (
+  //    <InvalidFormAlert
+  //      className="ams-mb-m"
+  //      errors={validationErrors.map((error) => ({
+  //        id: `#${error.key}`,
+  //        label: pageConfig?.requiredError ?? error.message,
+  //      }))}
+  //      heading={tShared('invalid-form-alert-title')}
+  //      headingLevel={2}
+  //      ref={invalidFormAlertRef}
+  //    />
+  //  )}
+
   return (
     <>
       <title>{documentTitle}</title>
@@ -91,19 +101,7 @@ export const Location = ({ address, pageConfig, prevPage, selectedAssets }: Prop
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-        {validationErrors && (
-          <InvalidFormAlert
-            className="ams-mb-m"
-            errors={validationErrors.map((error) => ({
-              id: `#${error.key}`,
-              label: pageConfig?.requiredError ?? error.message,
-            }))}
-            heading={tShared('invalid-form-alert-title')}
-            headingLevel={2}
-            ref={invalidFormAlertRef}
-          />
-        )}
-
+        {validationErrors && <InvalidFormAlert errors={validationErrors} />}
         <Field className="ams-mb-l" invalid={Boolean(validationErrors)}>
           <Heading level={1} size="level-3">
             {pageConfig?.label ?? t('question')}
@@ -112,19 +110,16 @@ export const Location = ({ address, pageConfig, prevPage, selectedAssets }: Prop
           {selectedAssets.length > 0 && (
             <UnorderedList markers={false}>{selectedAssets.map((asset) => getAssetElement(asset))}</UnorderedList>
           )}
-
           {validationErrors &&
             validationErrors.map(({ key, message }) => (
               <ErrorMessage key={key}>{pageConfig?.requiredError ?? message}</ErrorMessage>
             ))}
-
           <NextLink href={`/locatie/kies#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
             <StandaloneLink id="location-link">
               {address ? t('link.with-location') : t('link.without-location')}
             </StandaloneLink>
           </NextLink>
         </Field>
-
         <Form action={formAction} noValidate>
           <SubmitButton>{t('submit-button')}</SubmitButton>
         </Form>

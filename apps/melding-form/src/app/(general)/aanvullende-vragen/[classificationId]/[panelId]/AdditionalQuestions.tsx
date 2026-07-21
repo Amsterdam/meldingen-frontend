@@ -6,13 +6,13 @@ import { useActionState, useEffect, useRef } from 'react'
 import type { Component } from '@meldingen/form-renderer'
 
 import { FormRenderer, isSelectboxes, isTimeInput } from '@meldingen/form-renderer'
-import { InvalidFormAlert } from '@meldingen/ui'
 
 import type { AnswersByKey } from '../../../_utils/conditions'
-import type { FormState, ValidationError } from '~/types'
+import type { FormState } from '~/types'
 
 import { SystemErrorAlert } from '../../../_components'
 import { getDocumentTitleOnError } from '../../../_utils/validation'
+import { InvalidFormAlert } from '~/app/_components'
 import { BackLink } from '~/app/_components'
 
 const getPrefilledFormComponents = (components: Component[], formData: FormData): Component[] =>
@@ -42,12 +42,6 @@ const getPrefilledFormComponents = (components: Component[], formData: FormData)
     return component
   })
 
-const mapValidationErrors = (errors: ValidationError[]) =>
-  errors.map((validationError) => ({
-    id: `#${validationError.key}`,
-    label: validationError.message,
-  }))
-
 export type Props = {
   action: (_: unknown, formData: FormData) => Promise<FormState>
   formComponents: Component[]
@@ -73,7 +67,6 @@ export const AdditionalQuestions = ({
   previousAnswersByKey,
   previousPanelPath,
 }: Props) => {
-  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
@@ -101,9 +94,7 @@ export const AdditionalQuestions = ({
   // Set focus on InvalidFormAlert when there are validation errors
   // and on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (validationErrors && invalidFormAlertRef.current) {
-      invalidFormAlertRef.current.focus()
-    } else if (systemError && systemErrorAlertRef.current) {
+    if (systemError && systemErrorAlertRef.current) {
       systemErrorAlertRef.current.focus()
     }
   }, [validationErrors, systemError])
@@ -124,15 +115,7 @@ export const AdditionalQuestions = ({
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-        {validationErrors && (
-          <InvalidFormAlert
-            className="ams-mb-m"
-            errors={mapValidationErrors(validationErrors)}
-            heading={tShared('invalid-form-alert-title')}
-            headingLevel={2}
-            ref={invalidFormAlertRef}
-          />
-        )}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} />}
         <FormRenderer
           action={formAction}
           formComponents={formComponents}
