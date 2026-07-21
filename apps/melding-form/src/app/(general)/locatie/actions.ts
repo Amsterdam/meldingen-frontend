@@ -8,7 +8,7 @@ import { putMeldingByMeldingIdSubmitLocation } from '@meldingen/api-client'
 
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
-export const postLocationForm = async () => {
+export const postLocationForm = async (requiredErrorMessage: string | undefined, _: unknown, _formData: FormData) => {
   const cookieStore = await cookies()
 
   const meldingId = cookieStore.get(COOKIES.ID)?.value
@@ -25,7 +25,7 @@ export const postLocationForm = async () => {
       validationErrors: [
         {
           key: 'location-link',
-          message: t('errors.no-location'),
+          message: requiredErrorMessage ?? t('errors.no-address'),
         },
       ],
     }

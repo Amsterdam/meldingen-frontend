@@ -1,3 +1,5 @@
+import type { Mock } from 'vitest'
+
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
@@ -32,7 +34,6 @@ describe('Page', () => {
         pageConfig: {
           description: undefined,
           label: undefined,
-          requiredError: undefined,
         },
         prevPage: '/#top',
       }),
@@ -264,10 +265,38 @@ describe('Page', () => {
         pageConfig: {
           description: 'Test description',
           label: 'Test label',
-          requiredError: 'Test required error',
         },
       }),
       undefined,
     )
+  })
+
+  it('binds the requiredError from pageConfig to the action passed to Location', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () =>
+        HttpResponse.json({
+          ...melding,
+          classification: {
+            ...melding.classification,
+            asset_type: {
+              ...melding.classification?.asset_type,
+              arguments: {
+                ...melding.classification?.asset_type?.arguments,
+                location_required_error: 'Test required error',
+              },
+            },
+          },
+        }),
+      ),
+    )
+
+    const PageComponent = await Page()
+
+    render(PageComponent)
+
+    const { action } = (Location as Mock).mock.calls[0][0]
+    const result = await action()
+
+    expect(result).toEqual({ validationErrors: [{ key: 'location-link', message: 'Test required error' }] })
   })
 })

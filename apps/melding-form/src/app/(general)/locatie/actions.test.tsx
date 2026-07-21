@@ -16,6 +16,8 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
+const formData = new FormData()
+
 describe('postLocationForm', () => {
   beforeEach(() => {
     mockIdAndTokenCookies()
@@ -27,15 +29,21 @@ describe('postLocationForm', () => {
       get: () => undefined,
     })
 
-    await postLocationForm()
+    await postLocationForm(undefined, null, formData)
 
     expect(redirect).toHaveBeenCalledWith(`/cookie-storing#${TOP_ANCHOR_ID}`)
   })
 
   it('returns a validation error when address is missing', async () => {
-    const result = await postLocationForm()
+    const result = await postLocationForm(undefined, null, formData)
 
     expect(result).toEqual({ validationErrors: [{ key: 'location-link', message: 'errors.no-location' }] })
+  })
+
+  it('uses the provided requiredError as the validation message when address is missing', async () => {
+    const result = await postLocationForm('Custom required error', null, formData)
+
+    expect(result).toEqual({ validationErrors: [{ key: 'location-link', message: 'Custom required error' }] })
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
@@ -50,7 +58,7 @@ describe('postLocationForm', () => {
       [COOKIES.TOKEN]: 'test-token',
     })
 
-    const result = await postLocationForm()
+    const result = await postLocationForm(undefined, null, formData)
 
     expect(result).toEqual({ systemError: 'Error message' })
   })
@@ -62,7 +70,7 @@ describe('postLocationForm', () => {
       [COOKIES.TOKEN]: 'test-token',
     })
 
-    await postLocationForm()
+    await postLocationForm(undefined, null, formData)
 
     expect(redirect).toHaveBeenCalledWith(`/bijlage#${TOP_ANCHOR_ID}`)
   })

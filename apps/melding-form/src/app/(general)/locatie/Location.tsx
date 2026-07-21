@@ -17,7 +17,6 @@ import { SystemErrorAlert } from '../_components'
 import { getDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
-import { postLocationForm } from './actions'
 import { InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
@@ -26,11 +25,11 @@ import styles from './Location.module.css'
 const initialState: Pick<FormState, 'systemError' | 'validationErrors'> = {}
 
 type Props = {
+  action: (_: unknown, formData: FormData) => Promise<Pick<FormState, 'systemError' | 'validationErrors'>>
   address?: string
   pageConfig?: {
     description?: string
     label?: string
-    requiredError?: string
   }
   prevPage: string
   selectedAssets: Feature[]
@@ -49,10 +48,10 @@ const getAssetElement = (asset: Feature) => {
   )
 }
 
-export const Location = ({ address, pageConfig, prevPage, selectedAssets }: Props) => {
+export const Location = ({ action, address, pageConfig, prevPage, selectedAssets }: Props) => {
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ systemError, validationErrors }, formAction] = useActionState(postLocationForm, initialState)
+  const [{ systemError, validationErrors }, formAction] = useActionState(action, initialState)
 
   const t = useTranslations('location')
   const tShared = useTranslations('shared')
@@ -80,19 +79,6 @@ export const Location = ({ address, pageConfig, prevPage, selectedAssets }: Prop
     }
   }, [systemError])
 
-  //  {validationErrors && (
-  //    <InvalidFormAlert
-  //      className="ams-mb-m"
-  //      errors={validationErrors.map((error) => ({
-  //        id: `#${error.key}`,
-  //        label: pageConfig?.requiredError ?? error.message,
-  //      }))}
-  //      heading={tShared('invalid-form-alert-title')}
-  //      headingLevel={2}
-  //      ref={invalidFormAlertRef}
-  //    />
-  //  )}
-
   return (
     <>
       <title>{documentTitle}</title>
@@ -111,9 +97,7 @@ export const Location = ({ address, pageConfig, prevPage, selectedAssets }: Prop
             <UnorderedList markers={false}>{selectedAssets.map((asset) => getAssetElement(asset))}</UnorderedList>
           )}
           {validationErrors &&
-            validationErrors.map(({ key, message }) => (
-              <ErrorMessage key={key}>{pageConfig?.requiredError ?? message}</ErrorMessage>
-            ))}
+            validationErrors.map(({ key, message }) => <ErrorMessage key={key}>{message}</ErrorMessage>)}
           <NextLink href={`/locatie/kies#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
             <StandaloneLink id="location-link">
               {address ? t('link.with-location') : t('link.without-location')}

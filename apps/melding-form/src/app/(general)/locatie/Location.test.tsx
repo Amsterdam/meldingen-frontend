@@ -15,6 +15,7 @@ vi.mock('react', async (importOriginal) => {
 })
 
 const defaultProps = {
+  action: vi.fn(),
   prevPage: '/previous',
   selectedAssets: [],
 }
@@ -125,19 +126,6 @@ describe('Location', () => {
     expect(document.title).toBe('error-count-label question - organisation-name')
   })
 
-  it('sets focus on InvalidFormAlert when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
-      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
-      vi.fn(),
-    ])
-
-    const { container } = render(<Location {...defaultProps} />)
-
-    const alert = container.querySelector('.ams-alert')
-
-    expect(alert).toHaveFocus()
-  })
-
   it('sets focus on SystemErrorAlert when there is a system error', () => {
     ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
     render(<Location {...defaultProps} />)
@@ -160,22 +148,5 @@ describe('Location', () => {
 
     expect(heading).toHaveTextContent('Custom Label')
     expect(paragraph).toBeInTheDocument()
-  })
-
-  it('uses the pageConfig requiredError when provided', () => {
-    ;(useActionState as Mock).mockReturnValue([
-      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
-      vi.fn(),
-    ])
-
-    const pageConfig = {
-      requiredError: 'Custom Required Error',
-    }
-
-    const { container } = render(<Location {...defaultProps} pageConfig={pageConfig} />)
-
-    const alert = container.querySelector('.ams-alert')
-
-    expect(alert).toHaveTextContent('Custom Required Error')
   })
 })
