@@ -72,7 +72,7 @@ describe('postPrimaryForm', () => {
     expect(redirect).not.toHaveBeenCalled()
   })
 
-  it('should set correct cookies', async () => {
+  it('sets correct cookies', async () => {
     const formData = new FormData()
     formData.set('primary', 'Test')
 
