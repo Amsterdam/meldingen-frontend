@@ -42,14 +42,14 @@ describe('Location', () => {
     expect(alert).not.toBeInTheDocument()
   })
 
-  it('renders a system error Alert when there is one', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+  it('renders an API error Alert when there is one', () => {
+    ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message' }, vi.fn()])
 
     render(<Location {...defaultProps} />)
 
     const alert = screen.getByRole('alert')
 
-    expect(alert).toHaveTextContent('system-error-alert-title')
+    expect(alert).toHaveTextContent('heading')
   })
 
   it('renders an Invalid Form Alert when there are validation errors', () => {
@@ -107,8 +107,8 @@ describe('Location', () => {
     expect(listItems[1]).toHaveTextContent('Glas container - Container-002')
   })
 
-  it('updates the document title when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+  it('updates the document title when there is an API error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message' }, vi.fn()])
 
     render(<Location {...defaultProps} />)
 
@@ -124,15 +124,6 @@ describe('Location', () => {
     render(<Location {...defaultProps} />)
 
     expect(document.title).toBe('error-count-label question - organisation-name')
-  })
-
-  it('sets focus on SystemErrorAlert when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
-    render(<Location {...defaultProps} />)
-
-    const alert = screen.getByRole('alert')
-
-    expect(alert).toHaveFocus()
   })
 
   it('uses the pageConfig label and description when provided', () => {

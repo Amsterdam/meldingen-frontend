@@ -137,7 +137,7 @@ describe('postContactForm', () => {
 
     const result = await postContactForm(null, formData)
 
-    expect(result).toEqual({ formData, systemError: 'Error message' })
+    expect(result).toEqual({ apiError: 'Error message', formData })
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
@@ -150,6 +150,6 @@ describe('postContactForm', () => {
     const formData = new FormData()
     const result = await postContactForm(null, formData)
 
-    expect(result).toEqual({ formData, systemError: 'Error message' })
+    expect(result).toEqual({ apiError: 'Error message', formData })
   })
 })

@@ -60,7 +60,7 @@ describe('postLocationForm', () => {
 
     const result = await postLocationForm(undefined, null, formData)
 
-    expect(result).toEqual({ systemError: 'Error message' })
+    expect(result).toEqual({ apiError: 'Error message' })
   })
 
   it('redirects to /bijlage when the form is submitted successfully', async () => {

@@ -40,7 +40,7 @@ describe('submitAttachmentsForm', () => {
 
     const result = await submitAttachmentsForm()
 
-    expect(result).toEqual({ systemError: 'Error message' })
+    expect(result).toEqual({ apiError: 'Error message' })
   })
 
   it('redirects to /contact page on success', async () => {
