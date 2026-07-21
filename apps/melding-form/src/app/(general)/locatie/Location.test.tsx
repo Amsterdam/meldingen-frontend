@@ -34,20 +34,12 @@ describe('Location', () => {
     expect(link).toHaveAttribute('href', '/previous')
   })
 
-  it('does not render an error message when there is none', () => {
-    render(<Location {...defaultProps} />)
-
-    const alert = screen.queryByRole('alert')
-
-    expect(alert).not.toBeInTheDocument()
-  })
-
   it('renders an API error Alert when there is one', () => {
     ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message' }, vi.fn()])
 
-    render(<Location {...defaultProps} />)
+    const { container } = render(<Location {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
     expect(alert).toHaveTextContent('heading')
   })

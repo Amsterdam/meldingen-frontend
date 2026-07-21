@@ -396,9 +396,9 @@ describe('Attachments', () => {
   it('renders an API error Alert when there is one', () => {
     ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message' }, vi.fn()])
 
-    render(<Attachments {...defaultProps} />)
+    const { container } = render(<Attachments {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
     expect(alert).toHaveTextContent('heading')
   })

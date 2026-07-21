@@ -57,9 +57,9 @@ describe('AdditionalQuestions', () => {
     formData.append('textArea1', 'Er staan blowende jongeren')
     ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message', formData }, vi.fn()])
 
-    render(<AdditionalQuestions {...defaultProps} />)
+    const { container } = render(<AdditionalQuestions {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
     expect(alert).toHaveTextContent('heading')
 
@@ -74,9 +74,9 @@ describe('AdditionalQuestions', () => {
     formData.append('checkbox___selectBoxes___one', 'one')
     ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message', formData }, vi.fn()])
 
-    render(<AdditionalQuestions {...defaultProps} formComponents={[checkboxComponent]} />)
+    const { container } = render(<AdditionalQuestions {...defaultProps} formComponents={[checkboxComponent]} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
     expect(alert).toHaveTextContent('heading')
 
