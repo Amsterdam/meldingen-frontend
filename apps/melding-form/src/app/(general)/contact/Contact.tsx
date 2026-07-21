@@ -9,7 +9,7 @@ import type { StaticFormTextAreaComponent } from '@meldingen/form-renderer'
 
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
+import { SubmitButton, TextInput } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
@@ -17,12 +17,12 @@ import { SystemErrorAlert } from '../_components'
 import { getDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { postContactForm } from './actions'
+import { InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 const initialState: FormState = {}
 
 export const Contact = ({ formComponents }: { formComponents: StaticFormTextAreaComponent[] }) => {
-  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const [{ formData, systemError, validationErrors }, formAction] = useActionState(postContactForm, initialState)
@@ -48,12 +48,9 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
     validationErrorCount: validationErrors?.length,
   })
 
-  // Set focus on InvalidFormAlert when there are validation errors
-  // and on SystemErrorAlert when there is a system error
+  // Set focus on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (validationErrors && invalidFormAlertRef.current) {
-      invalidFormAlertRef.current.focus()
-    } else if (systemError && systemErrorAlertRef.current) {
+    if (systemError && systemErrorAlertRef.current) {
       systemErrorAlertRef.current.focus()
     }
   }, [validationErrors, systemError])
@@ -74,18 +71,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-        {validationErrors && (
-          <InvalidFormAlert
-            className="ams-mb-m"
-            errors={validationErrors.map((error) => ({
-              id: `#${error.key}`,
-              label: error.message,
-            }))}
-            heading={tShared('invalid-form-alert-title')}
-            headingLevel={2}
-            ref={invalidFormAlertRef}
-          />
-        )}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} />}
         <Heading className="ams-mb-s" level={1} size="level-3">
           {t('question')}
         </Heading>
