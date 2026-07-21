@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useRef } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import type { Component } from '@meldingen/form-renderer'
 
@@ -10,9 +10,8 @@ import { FormRenderer, isSelectboxes, isTimeInput } from '@meldingen/form-render
 import type { AnswersByKey } from '../../../_utils/conditions'
 import type { FormState } from '~/types'
 
-import { SystemErrorAlert } from '../../../_components'
 import { getDocumentTitleOnError } from '../../../_utils/validation'
-import { InvalidFormAlert } from '~/app/_components'
+import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { BackLink } from '~/app/_components'
 
 const getPrefilledFormComponents = (components: Component[], formData: FormData): Component[] =>
@@ -67,9 +66,7 @@ export const AdditionalQuestions = ({
   previousAnswersByKey,
   previousPanelPath,
 }: Props) => {
-  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
-
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
+  const [{ apiError, formData, validationErrors }, formAction, isPending] = useActionState(action, initialState)
 
   const t = useTranslations('additional-questions')
   const tShared = useTranslations('shared')
@@ -83,29 +80,21 @@ export const AdditionalQuestions = ({
     ? getPrefilledFormComponents(formComponentsFromServer, formData)
     : formComponentsFromServer
 
-  // Update document title when there are system or validation errors
+  // Update document title when there are API or validation errors
   const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(systemError),
+    hasSystemError: Boolean(apiError),
     originalDocTitle: `${getPrimaryHeading(formComponents, panelTitle)} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors?.length,
   })
 
-  // Set focus on InvalidFormAlert when there are validation errors
-  // and on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (systemError && systemErrorAlertRef.current) {
-      systemErrorAlertRef.current.focus()
-    }
-  }, [validationErrors, systemError])
-
-  useEffect(() => {
-    if (systemError) {
+    if (apiError) {
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
-      console.error(systemError)
+      console.error(apiError)
     }
-  }, [systemError])
+  }, [apiError])
 
   return (
     <>
@@ -114,7 +103,7 @@ export const AdditionalQuestions = ({
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
+        {Boolean(apiError) && <ApiErrorAlert shouldRefocus={!isPending} />}
         {validationErrors && <InvalidFormAlert errors={validationErrors} />}
         <FormRenderer
           action={formAction}
