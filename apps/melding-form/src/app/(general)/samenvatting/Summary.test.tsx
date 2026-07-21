@@ -126,9 +126,9 @@ describe('Summary', () => {
   it('renders the Summary component with an error message', () => {
     ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message' }, vi.fn()])
 
-    render(<Summary {...defaultProps} />)
+    const { container } = render(<Summary {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
     expect(alert).toHaveTextContent('heading')
   })
