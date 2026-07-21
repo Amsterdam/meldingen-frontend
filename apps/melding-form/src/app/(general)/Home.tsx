@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useRef } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import type { StaticFormTextAreaComponent } from '@meldingen/form-renderer'
 
@@ -9,9 +9,8 @@ import { FormRenderer } from '@meldingen/form-renderer'
 
 import type { FormState } from '~/types'
 
-import { SystemErrorAlert } from './_components'
 import { getDocumentTitleOnError } from './_utils/validation'
-import { InvalidFormAlert } from '~/app/_components'
+import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 
 const initialState: FormState = {}
 
@@ -21,9 +20,7 @@ type Props = {
 }
 
 export const Home = ({ action, formComponents: formComponentsFromServer }: Props) => {
-  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
-
-  const [{ formData, systemError, validationErrors }, formAction, isPending] = useActionState(action, initialState)
+  const [{ apiError, formData, validationErrors }, formAction, isPending] = useActionState(action, initialState)
 
   const t = useTranslations('homepage')
   const tShared = useTranslations('shared')
@@ -47,31 +44,24 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
 
   // Update document title when there are system or validation errors
   const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(systemError),
+    hasSystemError: Boolean(apiError),
     originalDocTitle: `${formComponents[0].label} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors?.length,
   })
 
-  // Set focus on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (systemError && systemErrorAlertRef.current) {
-      systemErrorAlertRef.current.focus()
-    }
-  }, [validationErrors, systemError])
-
-  useEffect(() => {
-    if (systemError) {
+    if (apiError) {
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
-      console.error(systemError)
+      console.error(apiError)
     }
-  }, [systemError])
+  }, [apiError])
 
   return (
     <main>
       <title>{documentTitle}</title>
-      {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
+      {Boolean(apiError) && <ApiErrorAlert shouldRefocus={!isPending} />}
       {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
       <FormRenderer
         action={formAction}
