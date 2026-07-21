@@ -47,7 +47,7 @@ describe('postSummaryForm', () => {
 
     const result = await postSummaryForm(defaultArgs)
 
-    expect(result).toEqual({ systemError: 'Error message' })
+    expect(result).toEqual({ apiError: 'Error message' })
   })
 
   it('deletes all cookies and redirects to /bedankt', async () => {

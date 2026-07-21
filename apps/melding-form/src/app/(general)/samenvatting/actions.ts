@@ -49,7 +49,7 @@ export const postSummaryForm = async ({
   })
 
   if (error) {
-    return { systemError: error }
+    return { apiError: error }
   }
 
   // Delete all session cookies

@@ -42,7 +42,7 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
       })
     : formComponentsFromServer
 
-  // Update document title when there are system or validation errors
+  // Update document title when there are API or validation errors
   const documentTitle = getDocumentTitleOnError({
     hasSystemError: Boolean(apiError),
     originalDocTitle: `${formComponents[0].label} - ${tShared('organisation-name')}`,
