@@ -22,7 +22,7 @@ export const InvalidFormAlert = ({
   className,
   errors,
   heading = 'Verbeter de fouten voor u verder gaat',
-  ...restProps
+  headingLevel,
 }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
 
@@ -37,12 +37,12 @@ export const InvalidFormAlert = ({
 
   return (
     <Alert
-      {...restProps}
       className={clsx(styles.alert, className)}
       heading={heading}
       // Remove the default label for the Alert.
       // Otherwise, focusing on the Alert causes NVDA to read the label twice.
       headingId={null}
+      headingLevel={headingLevel}
       ref={ref}
       severity="error"
       tabIndex={-1}
