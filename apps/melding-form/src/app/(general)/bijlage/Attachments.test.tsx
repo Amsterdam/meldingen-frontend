@@ -518,10 +518,6 @@ describe('Attachments', () => {
     expect(alert).toHaveFocus()
   })
 
-  it.skip('sets focus on InvalidFormAlert when there are validation errors', async () => {
-    // TODO: Fix this test
-  })
-
   it.skip('sets focus on the generic error Alert when there is a generic error', async () => {
     // TODO: Fix this test
   })
