@@ -21,9 +21,9 @@ describe('Contact', () => {
     formData.append('email', 'test@example.com')
     ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message', formData }, vi.fn()])
 
-    render(<Contact formComponents={contactFormData} />)
+    const { container } = render(<Contact formComponents={contactFormData} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
     expect(alert).toHaveTextContent('heading')
 

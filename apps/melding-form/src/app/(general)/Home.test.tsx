@@ -34,9 +34,9 @@ describe('Page', () => {
     formData.append('textArea1', 'Er staan blowende jongeren')
     ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message', formData }, vi.fn()])
 
-    render(<Home {...defaultProps} />)
+    const { container } = render(<Home {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
     expect(alert).toHaveTextContent('heading')
 
