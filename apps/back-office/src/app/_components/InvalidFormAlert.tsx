@@ -1,28 +1,23 @@
-import type { RefObject } from 'react'
+import type { InvalidFormAlertProps } from '@amsterdam/design-system-react'
 
 import { useTranslations } from 'next-intl'
 
 import { InvalidFormAlert as UIInvalidFormAlert } from '@meldingen/ui'
 
 type Props = {
-  ref: RefObject<HTMLDivElement | null>
-  title?: string
-  validationErrors: { key: string; message: string }[]
+  errors: { key: string; message: string }[]
+  heading?: InvalidFormAlertProps['heading']
 }
 
-export const InvalidFormAlert = ({ ref, title, validationErrors }: Props) => {
-  const t = useTranslations('melding-form.errors')
+export const InvalidFormAlert = ({ errors, heading }: Props) => {
+  const t = useTranslations('shared')
 
   return (
     <UIInvalidFormAlert
       className="ams-mb-m"
-      errors={validationErrors.map((error) => ({
-        id: `#${error.key}`,
-        label: error.message,
-      }))}
-      heading={title || t('invalid-form-alert-title')}
+      errors={errors}
+      heading={heading ?? t('invalid-form-alert-title')}
       headingLevel={2}
-      ref={ref}
     />
   )
 }

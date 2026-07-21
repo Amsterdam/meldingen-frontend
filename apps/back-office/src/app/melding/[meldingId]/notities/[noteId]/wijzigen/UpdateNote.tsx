@@ -24,7 +24,6 @@ type Props = {
 }
 
 export const UpdateNote = ({ meldingId, note }: Props) => {
-  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const action = postUpdateNoteForm.bind(null, { meldingId, noteId: note.id })
@@ -36,9 +35,7 @@ export const UpdateNote = ({ meldingId, note }: Props) => {
   // Set focus on InvalidFormAlert when there are validation errors
   // and on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (validationErrors && invalidFormAlertRef.current) {
-      invalidFormAlertRef.current.focus()
-    } else if (systemError && systemErrorAlertRef.current) {
+    if (systemError && systemErrorAlertRef.current) {
       systemErrorAlertRef.current.focus()
     }
   }, [validationErrors, systemError])
@@ -60,13 +57,7 @@ export const UpdateNote = ({ meldingId, note }: Props) => {
       <Grid as="main" gapVertical="large">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
           {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-          {validationErrors && (
-            <InvalidFormAlert
-              ref={invalidFormAlertRef}
-              title={t('invalid-form-alert-title')}
-              validationErrors={validationErrors}
-            />
-          )}
+          {validationErrors && <InvalidFormAlert errors={validationErrors} heading={t('invalid-form-alert-title')} />}
           <Heading className="ams-mb-m" level={1}>
             {t('title')}
           </Heading>

@@ -208,6 +208,7 @@
     }
   },
   "shared": {
+    "invalid-form-alert-title": "Verbeter de fouten om verder te gaan",
     "menu": {
       "melding-form": "Melden",
       "overview": "Overzicht"
