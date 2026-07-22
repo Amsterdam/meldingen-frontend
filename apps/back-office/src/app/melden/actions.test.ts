@@ -12,6 +12,14 @@ vi.mock('next/navigation', () => ({
   redirect: vi.fn(),
 }))
 
+// RichTextEditor submits the ProseMirror doc as JSON, so tests build that same shape here
+// instead of appending plain markdown/text.
+const noteDoc = (text: string) =>
+  JSON.stringify({
+    content: [{ content: text ? [{ text, type: 'text' }] : [], type: 'paragraph' }],
+    type: 'doc',
+  })
+
 const createFormData = (fields: Record<string, string> = {}): FormData => {
   const formData = new FormData()
 
@@ -56,7 +64,7 @@ describe('postMeldingForm', () => {
     const formData = new FormData()
     formData.set('primary', 'Test')
     formData.set('source', 'Test')
-    formData.set('addNote', 'a'.repeat(MAX_NOTE_LENGTH + 1))
+    formData.set('addNote', noteDoc('a'.repeat(MAX_NOTE_LENGTH + 1)))
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -68,7 +76,7 @@ describe('postMeldingForm', () => {
 
   it('returns 3 validation errors when primary and source questions are not answered and note is too long', async () => {
     const formData = new FormData()
-    formData.set('addNote', 'a'.repeat(MAX_NOTE_LENGTH + 1))
+    formData.set('addNote', noteDoc('a'.repeat(MAX_NOTE_LENGTH + 1)))
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -270,7 +278,7 @@ describe('postMeldingForm', () => {
     const spy = vi.spyOn(apiClientProxy, 'patchMeldingByMeldingIdNoteByNoteId')
 
     const formData = createFormData()
-    formData.set('addNote', 'Test note')
+    formData.set('addNote', noteDoc('Test note'))
 
     await postMeldingForm(
       {
@@ -298,7 +306,7 @@ describe('postMeldingForm', () => {
     const spy = vi.spyOn(apiClientProxy, 'postMeldingByMeldingIdNote')
 
     const formData = createFormData()
-    formData.set('addNote', 'Test note')
+    formData.set('addNote', noteDoc('Test note'))
 
     await postMeldingForm(
       {
@@ -348,7 +356,7 @@ describe('postMeldingForm', () => {
     )
 
     const formData = createFormData()
-    formData.set('addNote', 'Test note')
+    formData.set('addNote', noteDoc('Test note'))
 
     const result = await postMeldingForm(
       {

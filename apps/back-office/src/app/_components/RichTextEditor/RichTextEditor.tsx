@@ -1,9 +1,11 @@
 'use client'
 
-import { CharacterCount as ADSCharacterCount } from '@amsterdam/design-system-react'
+import { CharacterCount as ADSCharacterCount, ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
 import { CharacterCount as TipTapCharacterCount, UndoRedo } from '@tiptap/extensions'
 import { EditorContent, useEditor } from '@tiptap/react'
 import { useState } from 'react'
+
+import { getAriaDescribedBy } from '@meldingen/form-renderer'
 
 import { Toolbar } from './Toolbar'
 import { markdownManager } from '~/app/_utils/parseNoteDocument'
@@ -13,24 +15,30 @@ import { MAX_NOTE_LENGTH } from '~/constants'
 import styles from './RichTextEditor.module.css'
 
 type Props = {
-  'aria-describedby'?: string
-  'aria-labelledby': string
-  'aria-required'?: string
   defaultValue: string
+  errorMessage?: string
   id: string
-  invalid: boolean
+  label: string
+  labelClassName?: string
   name: string
+  optional?: boolean
+  required?: boolean
 }
 
 export const RichTextEditor = ({
-  'aria-describedby': ariaDescribedBy,
-  'aria-labelledby': ariaLabelledBy,
-  'aria-required': ariaRequired,
   defaultValue,
+  errorMessage,
   id,
-  invalid,
+  label,
+  labelClassName,
   name,
+  optional,
+  required,
 }: Props) => {
+  const isInvalid = Boolean(errorMessage)
+  const labelId = `${id}-label`
+  const errorId = `${id}-error`
+
   // Seeds the hidden input with valid JSON before the editor itself has mounted, so a submit
   // during that window carries the real defaultValue instead of nothing.
   const [content, setContent] = useState(() => JSON.stringify(markdownManager.parse(defaultValue)))
@@ -42,11 +50,11 @@ export const RichTextEditor = ({
     contentType: 'markdown',
     editorProps: {
       attributes: {
-        'aria-describedby': ariaDescribedBy ?? '',
-        'aria-invalid': invalid ? 'true' : 'false',
-        'aria-labelledby': ariaLabelledBy,
+        'aria-describedby': getAriaDescribedBy(id, undefined, errorMessage) ?? '',
+        'aria-invalid': isInvalid ? 'true' : 'false',
+        'aria-labelledby': labelId,
         'aria-multiline': 'true',
-        'aria-required': ariaRequired ?? 'false',
+        'aria-required': required ? 'true' : 'false',
         class: styles.editor,
         id,
         role: 'textbox',
@@ -67,23 +75,24 @@ export const RichTextEditor = ({
     },
   })
 
-  if (!editor || !hasLoaded) {
-    return (
-      <>
-        <div className={styles.loader} />
-        <input name={name} type="hidden" value={content} />
-      </>
-    )
-  }
-
   return (
-    <>
-      <Toolbar editor={editor} id={id} />
-      <EditorContent editor={editor} />
-      {characterCount !== undefined && (
-        <ADSCharacterCount className={styles.characterCount} length={characterCount} maxLength={MAX_NOTE_LENGTH} />
+    <Field invalid={isInvalid}>
+      <Label className={labelClassName} id={labelId} onClick={() => editor?.commands.focus()} optional={optional}>
+        {label}
+      </Label>
+      {errorMessage && <ErrorMessage id={errorId}>{errorMessage}</ErrorMessage>}
+      {!editor || !hasLoaded ? (
+        <div className={styles.loader} />
+      ) : (
+        <>
+          <Toolbar editor={editor} id={id} />
+          <EditorContent editor={editor} />
+          {characterCount !== undefined && (
+            <ADSCharacterCount className={styles.characterCount} length={characterCount} maxLength={MAX_NOTE_LENGTH} />
+          )}
+        </>
       )}
       <input name={name} type="hidden" value={content} />
-    </>
+    </Field>
   )
 }

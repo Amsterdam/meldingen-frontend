@@ -55,6 +55,9 @@ describe('Page', () => {
 
     render(result)
 
-    expect(NotesOverview).toHaveBeenCalledWith({ meldingId: 123, notes: [], publicId: melding.public_id }, undefined)
+    expect(NotesOverview).toHaveBeenCalledWith(
+      { currentUserId: 1, meldingId: 123, notes: [], publicId: melding.public_id },
+      undefined,
+    )
   })
 })
