@@ -413,7 +413,7 @@ export const postContactForm = async (_: FormState, formData: FormData): Promise
   if (hasValidationErrors(error) && isApiErrorArray(error)) {
     return { validationErrors: error.detail.map((e) => ({ key: e.loc[1], message: e.msg })) }
   }
-  if (error) return { systemError: handleApiError(error) }
+  if (error) return { apiError: handleApiError(error) }
 
   redirect('/samenvatting')
 }
@@ -422,7 +422,7 @@ export const postContactForm = async (_: FormState, formData: FormData): Promise
 **Key rules:**
 
 - Always retrieve `id` and `token` from cookies for melding-form endpoints
-- Return `FormState` with either `validationErrors` or `systemError`
+- Return `FormState` with either `validationErrors` or `apiError`
 - Use `redirect()` for navigation on success (throws, so must be last)
 
 ---
