@@ -2,15 +2,13 @@
  * Notes are rendered in a list. This causes a list in a note to be styled as nested, which is not what we want.
  * This CSS overrides that for the outermost list within a note. Subsequent lists in the note will still correctly be styled as nested.
  */
-.content > :global(.ams-unordered-list):not(:global(.ams-unordered-list) :global(.ams-unordered-list)) {
+.content > :global(.ams-unordered-list) {
   gap: var(--ams-unordered-list-gap);
   list-style-type: var(--ams-unordered-list-list-style-type);
   padding-block: 0;
 }
 
-.content
-  > :global(.ams-unordered-list):not(:global(.ams-unordered-list) :global(.ams-unordered-list))
-  > :global(.ams-unordered-list__item) {
+.content > :global(.ams-unordered-list) > :global(.ams-unordered-list__item) {
   margin-inline-start: var(--ams-unordered-list-item-margin-inline-start);
   padding-inline-start: var(--ams-unordered-list-item-padding-inline-start);
 }

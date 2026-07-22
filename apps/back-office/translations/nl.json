@@ -170,8 +170,12 @@
     },
     "visually-hidden-texts": {
       "created-at": "Aangemaakt op: ",
-      "by": " door: "
+      "by": " door: ",
+      "edited": " en later gewijzigd"
     },
+    "edited": "(gewijzigd)",
+    "deleted-note": "Deze notitie is verwijderd.",
+    "edit-link": "Wijzig notitie",
     "add-note-link": "Notitie toevoegen"
   },
   "add-note": {
@@ -189,6 +193,20 @@
       "maxLength": "De notitie mag niet langer zijn dan {max} tekens."
     }
   },
+  "update-note": {
+    "metadata": {
+      "title": "Wijzig notitie - Gemeente Amsterdam"
+    },
+    "back-link": "Meldingdetails",
+    "invalid-form-alert-title": "Verbeter de fouten om uw notitie te wijzigen",
+    "title": "Wijzig notitie",
+    "label": "Wijzig notitie",
+    "submit-button": "Wijzig notitie",
+    "cancel-link": "Annuleer",
+    "errors": {
+      "maxLength": "De notitie mag niet langer zijn dan {max} tekens."
+    }
+  },
   "shared": {
     "menu": {
       "melding-form": "Melden",
@@ -196,10 +214,10 @@
     },
     "rich-text-editor": {
       "bold": "Vetgedrukt",
-      "italic": "Cursief",
-      "toolbar": "Werkbalk tekstopmaak",
+      "italic": "Schuingedrukt",
+      "toolbar": "Tekst opmaken",
       "underline": "Onderstreept",
-      "unordered-list": "Opsommingslijst",
+      "unordered-list": "Opsomming",
       "undo": "Ongedaan maken"
     },
     "state": {

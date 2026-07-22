@@ -4,6 +4,7 @@
   flex-wrap: wrap;
   gap: var(--ams-space-m);
   inline-size: fit-content;
+  margin-block-end: var(--ams-space-s);
 }
 
 .button {

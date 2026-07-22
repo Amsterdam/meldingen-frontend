@@ -3,39 +3,22 @@ import { useTranslations } from 'next-intl'
 
 import type { NoteRetrieveOutput } from '@meldingen/api-client'
 
-import { Grid, Heading, OrderedList, Paragraph, TabNavigation } from '@meldingen/ui'
+import { Grid, Heading, TabNavigation, UnorderedList } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
-import { TipTapMarkdownToHtml } from './_components/TipTapMarkdownToHtml'
+import { Note } from './_components/Note/Note'
 import { NextLink } from '~/app/_components'
 
 import styles from './NotesOverview.module.css'
 
 type Props = {
+  currentUserId: number
   meldingId: number
   notes: NoteRetrieveOutput[]
   publicId: string
 }
 
-export const formatDateTime = (dateString: string) => {
-  const date = new Date(dateString)
-
-  const formattedDate = date.toLocaleDateString('nl-NL', {
-    day: '2-digit',
-    month: '2-digit',
-    timeZone: 'Europe/Amsterdam',
-    year: 'numeric',
-  })
-  const formattedTime = date.toLocaleTimeString('nl-NL', {
-    hour: 'numeric',
-    minute: 'numeric',
-    timeZone: 'Europe/Amsterdam',
-  })
-
-  return `${formattedDate} ${formattedTime}`
-}
-
-export const NotesOverview = ({ meldingId, notes, publicId }: Props) => {
+export const NotesOverview = ({ currentUserId, meldingId, notes, publicId }: Props) => {
   const t = useTranslations('notes-overview')
 
   return (
@@ -57,21 +40,11 @@ export const NotesOverview = ({ meldingId, notes, publicId }: Props) => {
             </TabNavigation.List>
           </TabNavigation>
           {notes.length > 0 && (
-            <OrderedList className={styles.list} markers={false}>
-              {notes.map(({ created_at, id, text, user }) => (
-                <OrderedList.Item className={styles.note} key={id}>
-                  <Paragraph className={styles.metadata}>
-                    <span className="ams-visually-hidden">{t('visually-hidden-texts.created-at')}</span>
-                    <time className={styles.time} dateTime={created_at}>
-                      {formatDateTime(created_at)}
-                    </time>
-                    <span className="ams-visually-hidden">{t('visually-hidden-texts.by')}</span>
-                    <span>{user.email}</span>
-                  </Paragraph>
-                  <TipTapMarkdownToHtml markdown={text} />
-                </OrderedList.Item>
+            <UnorderedList className={styles.list} markers={false}>
+              {notes.map((note) => (
+                <Note currentUserId={currentUserId} key={note.id} meldingId={meldingId} note={note} />
               ))}
-            </OrderedList>
+            </UnorderedList>
           )}
           <StandaloneLink
             className="ams-mb-m"

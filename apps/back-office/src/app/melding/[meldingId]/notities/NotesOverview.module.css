@@ -2,19 +2,3 @@
   gap: var(--ams-space-m);
   margin-block-end: var(--ams-space-m);
 }
-
-.note {
-  background-color: var(--ams-color-background);
-  padding-block: var(--ams-space-m);
-  padding-inline: var(--ams-space-m);
-}
-
-.metadata {
-  display: flex;
-  flex-direction: column;
-  margin-block-end: var(--ams-space-s);
-}
-
-.time {
-  font-weight: var(--ams-typography-body-text-bold-font-weight);
-}

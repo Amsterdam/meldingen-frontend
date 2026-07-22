@@ -5,29 +5,33 @@ import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
 
+import type { NoteRetrieveOutput } from '@meldingen/api-client'
+
 import type { FormState } from '~/types'
 
-import { BackLink } from '../../_components/BackLink'
-import { CancelLink } from '../../_components/CancelLink'
-import { postAddNoteForm } from './actions'
+import { BackLink } from '../../../_components/BackLink'
+import { CancelLink } from '../../../_components/CancelLink'
+import { postUpdateNoteForm } from './actions'
 import { InvalidFormAlert, RichTextEditor, SystemErrorAlert } from '~/app/_components'
 
-import styles from './AddNote.module.css'
+import styles from './UpdateNote.module.css'
 
 const initialState: FormState = {}
 
-export const AddNote = ({ meldingId }: { meldingId: number }) => {
+type Props = {
+  meldingId: number
+  note: NoteRetrieveOutput
+}
+
+export const UpdateNote = ({ meldingId, note }: Props) => {
   const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
-  const postAddNoteFormWithMeldingId = postAddNoteForm.bind(null, { meldingId })
+  const action = postUpdateNoteForm.bind(null, { meldingId, noteId: note.id })
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(
-    postAddNoteFormWithMeldingId,
-    initialState,
-  )
+  const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
 
-  const t = useTranslations('add-note')
+  const t = useTranslations('update-note')
 
   // Set focus on InvalidFormAlert when there are validation errors
   // and on SystemErrorAlert when there is a system error
@@ -47,8 +51,8 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
     }
   }, [systemError])
 
-  const defaultValue = formData?.get('addNote')?.toString() || ''
-  const errorMessage = validationErrors?.find((error) => error.key === 'addNote')?.message
+  const defaultValue = formData?.get('updateNote')?.toString() ?? note.text
+  const errorMessage = validationErrors?.find((error) => error.key === 'updateNote')?.message
 
   return (
     <div className="ams-page__area--body">
@@ -71,11 +75,10 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
               <RichTextEditor
                 defaultValue={defaultValue}
                 errorMessage={errorMessage}
-                id="addNote"
+                id="updateNote"
                 label={t('label')}
                 labelClassName="ams-mb-s"
-                name="addNote"
-                required
+                name="updateNote"
               />
             </div>
             <ActionGroup>

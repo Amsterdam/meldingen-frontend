@@ -200,33 +200,39 @@ describe('MeldingForm', () => {
     expect(screen.getByRole('checkbox', { name: 'Label 2' })).not.toBeChecked()
   })
 
-  it('prefills note from formData when the action returns formData', () => {
+  it('prefills note from formData when the action returns formData', async () => {
     const formData = new FormData()
     formData.set('addNote', 'Prefilled note')
     ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
 
     render(<MeldingForm {...defaultProps} />)
 
+    expect(await screen.findByRole('toolbar')).toBeInTheDocument()
+
     const noteInput = screen.getByRole('textbox', { name: 'label (niet verplicht)' })
 
-    expect(noteInput).toHaveValue('Prefilled note')
+    expect(noteInput).toHaveTextContent('Prefilled note')
   })
 
-  it('prefills note from defaultValues when provided and there is no formData', () => {
+  it('prefills note from defaultValues when provided and there is no formData', async () => {
     render(<MeldingForm {...defaultProps} defaultValues={{ note: 'Existing note' }} />)
 
+    expect(await screen.findByRole('toolbar')).toBeInTheDocument()
+
     const noteInput = screen.getByRole('textbox', { name: 'label (niet verplicht)' })
 
-    expect(noteInput).toHaveValue('Existing note')
+    expect(noteInput).toHaveTextContent('Existing note')
   })
 
-  it('renders an error message connected to the note text area when there is a validation error for the note field', () => {
+  it('renders an error message connected to the note text area when there is a validation error for the note field', async () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'addNote', message: 'Note error' }] },
       vi.fn(),
     ])
 
     render(<MeldingForm {...defaultProps} />)
+
+    expect(await screen.findByRole('toolbar')).toBeInTheDocument()
 
     const input = screen.getByRole('textbox', { name: 'label (niet verplicht)' })
 
