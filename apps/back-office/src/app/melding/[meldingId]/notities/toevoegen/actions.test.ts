@@ -42,7 +42,7 @@ describe('postAddNoteForm', () => {
     expect(redirect).not.toHaveBeenCalled()
   })
 
-  it('returns a system error when the API returns an error', async () => {
+  it('returns an API error when the API returns an error', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_NOTE, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -55,8 +55,8 @@ describe('postAddNoteForm', () => {
     const result = await postAddNoteForm(defaultArgs, null, formData)
 
     expect(result).toEqual({
+      apiError: { detail: 'Error message' },
       formData,
-      systemError: { detail: 'Error message' },
     })
     expect(redirect).not.toHaveBeenCalledWith('/melding/123')
   })
