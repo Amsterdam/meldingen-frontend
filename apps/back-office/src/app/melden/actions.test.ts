@@ -90,14 +90,14 @@ describe('postMeldingForm', () => {
     })
   })
 
-  it('returns a system error when urgency is invalid', async () => {
+  it('returns an API error when urgency is invalid', async () => {
     const formData = createFormData({ urgency: 'invalid' })
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     expect(result).toEqual({
+      apiError: 'Invalid urgency value: invalid',
       formData,
-      systemError: 'Invalid urgency value: invalid',
     })
   })
 
@@ -161,17 +161,17 @@ describe('postMeldingForm', () => {
     })
   })
 
-  it('returns a system error when postMelding returns an error', async () => {
+  it('returns an API error when postMelding returns an error', async () => {
     server.use(http.post(ENDPOINTS.POST_MELDING, () => HttpResponse.json('Error message', { status: 404 })))
 
     const formData = createFormData()
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
-    expect(result).toEqual({ formData, systemError: 'Error message' })
+    expect(result).toEqual({ apiError: 'Error message', formData })
   })
 
-  it('returns a system error when patchMeldingByMeldingId returns an error', async () => {
+  it('returns an API error when patchMeldingByMeldingId returns an error', async () => {
     server.use(
       http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () => HttpResponse.json('Error message', { status: 404 })),
     )
@@ -180,7 +180,7 @@ describe('postMeldingForm', () => {
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
-    expect(result).toEqual({ formData, systemError: 'Error message' })
+    expect(result).toEqual({ apiError: 'Error message', formData })
   })
 
   it('redirects to the correct URL when postMeldingForm is successful', async () => {
@@ -348,7 +348,7 @@ describe('postMeldingForm', () => {
     spy.mockRestore()
   })
 
-  it('returns a system error when patchMeldingByMeldingIdNoteByNoteId returns an error', async () => {
+  it('returns an API error when patchMeldingByMeldingIdNoteByNoteId returns an error', async () => {
     server.use(
       http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID, () =>
         HttpResponse.json('Error message', { status: 404 }),
@@ -369,7 +369,7 @@ describe('postMeldingForm', () => {
       formData,
     )
 
-    expect(result).toEqual({ formData, systemError: 'Error message' })
+    expect(result).toEqual({ apiError: 'Error message', formData })
   })
 
   it('redirects to the correct URL without classification_id when classification is not returned', async () => {
