@@ -271,7 +271,7 @@ describe('Page', () => {
     )
   })
 
-  it('binds the requiredError from pageConfig to the action passed to Location', async () => {
+  it('binds a custom error message to the action passed to Location', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () =>
         HttpResponse.json({
