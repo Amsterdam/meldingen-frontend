@@ -110,8 +110,8 @@ export const postMeldingForm = async (
 
   if (!isValidUrgency(urgencyNumber)) {
     return {
+      apiError: `Invalid urgency value: ${urgencyRaw}`,
       formData,
-      systemError: `Invalid urgency value: ${urgencyRaw}`,
     }
   }
 
@@ -135,7 +135,7 @@ export const postMeldingForm = async (
     }
   }
 
-  if (error) return { formData, systemError: error }
+  if (error) return { apiError: error, formData }
 
   const { classification, created_at, id, public_id, token } = data
 
@@ -156,11 +156,11 @@ export const postMeldingForm = async (
     path: { melding_id: meldingData.id },
   })
 
-  if (updateMeldingError) return { formData, systemError: updateMeldingError }
+  if (updateMeldingError) return { apiError: updateMeldingError, formData }
 
   const result = await createOrUpdateNote(isEmpty, markdown, meldingData.id, existingNoteId)
 
-  if (result?.error) return { formData, systemError: result.error }
+  if (result?.error) return { apiError: result.error, formData }
 
   const params = new URLSearchParams({
     created_at: meldingData.createdAt,

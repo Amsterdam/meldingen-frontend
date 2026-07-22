@@ -47,12 +47,14 @@ describe('AddNote', () => {
     expect(cancelLink).toHaveAttribute('href', '/melding/123')
   })
 
-  it('displays a system error alert when there is one', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([{ systemError: { detail: 'Something went wrong' } }, vi.fn()])
+  it('displays an API error alert when there is one', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: { detail: 'Something went wrong' } }, vi.fn()])
 
-    render(<AddNote {...defaultProps} />)
+    const { container } = render(<AddNote {...defaultProps} />)
 
-    expect(screen.getByRole('alert')).toBeInTheDocument()
+    const alert = container.querySelector('.ams-alert')
+
+    expect(alert).toBeInTheDocument()
   })
 
   it('displays an invalid form alert when there are validation errors', async () => {

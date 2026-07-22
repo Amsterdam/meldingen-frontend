@@ -3,45 +3,36 @@
 import { ActionGroup, Button, Grid, Heading } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useRef } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import type { FormState } from '~/types'
 
 import { BackLink } from '../../_components/BackLink'
 import { CancelLink } from '../../_components/CancelLink'
 import { postAddNoteForm } from './actions'
-import { InvalidFormAlert, RichTextEditor, SystemErrorAlert } from '~/app/_components'
+import { ApiErrorAlert, InvalidFormAlert, RichTextEditor } from '~/app/_components'
 
 import styles from './AddNote.module.css'
 
 const initialState: FormState = {}
 
 export const AddNote = ({ meldingId }: { meldingId: number }) => {
-  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
-
   const postAddNoteFormWithMeldingId = postAddNoteForm.bind(null, { meldingId })
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(
+  const [{ apiError, formData, validationErrors }, formAction, isPending] = useActionState(
     postAddNoteFormWithMeldingId,
     initialState,
   )
 
   const t = useTranslations('add-note')
 
-  // Set focus on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (systemError && systemErrorAlertRef.current) {
-      systemErrorAlertRef.current.focus()
-    }
-  }, [validationErrors, systemError])
-
-  useEffect(() => {
-    if (systemError) {
+    if (apiError) {
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
-      console.error(systemError)
+      console.error(apiError)
     }
-  }, [systemError])
+  }, [apiError])
 
   const defaultValue = formData?.get('addNote')?.toString() || ''
   const errorMessage = validationErrors?.find((error) => error.key === 'addNote')?.message
@@ -51,7 +42,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
       <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
       <Grid as="main" gapVertical="large">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
-          {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
+          {Boolean(apiError) && <ApiErrorAlert shouldRefocus={!isPending} />}
           {validationErrors && <InvalidFormAlert errors={validationErrors} heading={t('invalid-form-alert-title')} />}
           <Heading className="ams-mb-m" level={1}>
             {t('title')}
