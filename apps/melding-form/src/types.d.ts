@@ -10,8 +10,3 @@ export type FormState = {
   systemError?: unknown
   validationErrors?: ValidationError[]
 }
-
-export type AssetTypeIconConfig = {
-  iconEntry?: string
-  iconFolder?: string
-}

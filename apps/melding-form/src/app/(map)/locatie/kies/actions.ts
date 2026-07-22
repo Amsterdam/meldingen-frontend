@@ -48,7 +48,8 @@ export const postCoordinatesAndAssets = async (
     const results = await Promise.all(
       selectedAssetIds.map((id) =>
         postMeldingByMeldingIdAsset({
-          body: { asset_type_id, external_id: String(id) },
+          // TODO: Remove the 'Temp' label and 'temp' subtype
+          body: { asset_type_id, external_id: String(id), label: 'Temp', subtype: 'temp' },
           path: { melding_id: meldingId },
           query: { token },
         }),

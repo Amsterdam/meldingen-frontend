@@ -2,13 +2,14 @@ import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import { Fragment } from 'react'
 
-import { Column, Grid, Heading, Paragraph } from '@meldingen/ui'
+import { Column, Grid, Heading, Paragraph, TabNavigation } from '@meldingen/ui'
 
-import type { MeldingOutput } from '~/app/_api-client/proxy'
+import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
 import { AmsNextLink } from '../../_components/AmsNextLink'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { BackLink } from './_components/BackLink'
+import { NextLink } from '~/app/_components'
 
 import styles from './Detail.module.css'
 
@@ -28,19 +29,25 @@ type File = {
 
 type Props = {
   additionalQuestionsWithMeldingText: DescriptionListItem[]
+  assets: AssetOutput[]
+  assetsTerm?: string
   attachments: Omit<DescriptionListItem, 'description'> & { files: File[] }
   contact?: DescriptionListItem[]
   location?: DescriptionListItem[]
   meldingData: MeldingDataItem[]
+  meldingId: number
   publicId: MeldingOutput['public_id']
 }
 
 export const Detail = ({
   additionalQuestionsWithMeldingText,
+  assets,
+  assetsTerm,
   attachments,
   contact,
   location,
   meldingData,
+  meldingId,
   publicId,
 }: Props) => {
   const t = useTranslations('detail')
@@ -52,9 +59,19 @@ export const Detail = ({
       <BackLink href={`/`}>{t('back-link')}</BackLink>
       <Grid as="main">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
-          <Heading className="ams-mb-m" level={1}>
+          <Heading className="ams-mb-l" level={1}>
             {t('title', { publicId })}
           </Heading>
+          <TabNavigation className="ams-mb-l">
+            <TabNavigation.List>
+              <TabNavigation.Link aria-current="page" href={`/melding/${meldingId}`} linkComponent={NextLink}>
+                {t('tab-navigation.detail')}
+              </TabNavigation.Link>
+              <TabNavigation.Link href={`/melding/${meldingId}/notities`} linkComponent={NextLink}>
+                {t('tab-navigation.notes')}
+              </TabNavigation.Link>
+            </TabNavigation.List>
+          </TabNavigation>
           <div className={styles.cardGrid}>
             <dl className={clsx(styles.descriptionList, styles.cardWide)}>
               {additionalQuestionsWithMeldingText.map(({ description, key, term }) => (
@@ -72,6 +89,16 @@ export const Detail = ({
                     <dd className={styles.horizontalDescription}>{description}</dd>
                   </Fragment>
                 ))}
+                {assets.length > 0 && (
+                  <>
+                    <dt className={styles.term}>{assetsTerm ?? t('assets.term')}</dt>
+                    {assets.map((asset) => (
+                      <dd className={styles.assetsDescription} key={asset.id}>
+                        {asset.external_id}
+                      </dd>
+                    ))}
+                  </>
+                )}
               </dl>
             )}
             {contact && (

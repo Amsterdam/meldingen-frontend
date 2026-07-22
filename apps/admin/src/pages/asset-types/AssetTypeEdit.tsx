@@ -1,15 +1,6 @@
-import {
-  DeleteWithConfirmButton,
-  Edit,
-  minValue,
-  NumberInput,
-  required,
-  SaveButton,
-  SimpleForm,
-  TextInput,
-  Toolbar,
-  ToolbarClasses,
-} from 'react-admin'
+import { DeleteWithConfirmButton, Edit, SaveButton, SimpleForm, Toolbar, ToolbarClasses } from 'react-admin'
+
+import { AssetTypeFields } from './AssetTypeFields'
 
 export const AssetTypeEdit = ({ id }: { id?: number }) => (
   <Edit id={id} resource="asset-type">
@@ -23,15 +14,7 @@ export const AssetTypeEdit = ({ id }: { id?: number }) => (
         </Toolbar>
       }
     >
-      <TextInput source="name" validate={required()} />
-      <TextInput source="arguments.icon_entry" validate={required()} />
-      <TextInput source="arguments.icon_folder" validate={required()} />
-      <TextInput source="arguments.label" />
-      <TextInput source="arguments.type_names" validate={required()} />
-      <TextInput source="arguments.srs_name" validate={required()} />
-      <TextInput minRows={4} multiline source="arguments.filter" validate={required()} />
-      <TextInput source="arguments.base_url" validate={required()} />
-      <NumberInput source="max_assets" validate={[required(), minValue(1)]} />
+      <AssetTypeFields />
     </SimpleForm>
   </Edit>
 )

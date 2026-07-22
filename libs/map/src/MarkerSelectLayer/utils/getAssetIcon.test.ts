@@ -22,8 +22,8 @@ describe('getAssetIcon', () => {
     const feature = makeFeature({ icon_name: name.toUpperCase() } as Feature['properties'])
 
     const icon = getAssetIcon(feature, false, {
-      iconEntry: 'icon_name',
-      iconFolder: containerIconFolder,
+      entry: 'icon_name',
+      folder: containerIconFolder,
     })
 
     expect(icon.options.iconUrl).toBe(`/container/${name}.svg`)
@@ -33,33 +33,33 @@ describe('getAssetIcon', () => {
     const feature = makeFeature({ icon_name: name.toUpperCase() } as Feature['properties'])
 
     const icon = getAssetIcon(feature, true, {
-      iconEntry: 'icon_name',
-      iconFolder: containerIconFolder,
+      entry: 'icon_name',
+      folder: containerIconFolder,
     })
 
     expect(icon.options.iconUrl).toBe(`/container/${name}.svg`)
     expect(icon.options.className).toBe(styles.border)
   })
 
-  it('falls back to /asset-fallback.svg when iconFolder is missing', () => {
+  it('falls back to /asset-fallback.svg when folder is missing', () => {
     const feature = makeFeature({ icon_name: 'rest' } as Feature['properties'])
-    const icon = getAssetIcon(feature, false, { iconEntry: 'icon_name' })
+    const icon = getAssetIcon(feature, false, { entry: 'icon_name' })
 
     expect(icon.options.iconUrl).toBe('/asset-fallback.svg')
   })
 
-  it('falls back to /asset-fallback.svg when iconEntry is missing or property is absent', () => {
+  it('falls back to /asset-fallback.svg when entry is missing or property is absent', () => {
     const featureWithoutEntry = makeFeature({ icon_name: 'rest' } as Feature['properties'])
     const iconWithoutEntry = getAssetIcon(featureWithoutEntry, false, {
-      iconFolder: containerIconFolder,
+      folder: containerIconFolder,
     })
 
     expect(iconWithoutEntry.options.iconUrl).toBe('/asset-fallback.svg')
 
     const featureWithoutProperties = makeFeature(undefined)
     const iconWithoutProperties = getAssetIcon(featureWithoutProperties, false, {
-      iconEntry: 'icon_name',
-      iconFolder: containerIconFolder,
+      entry: 'icon_name',
+      folder: containerIconFolder,
     })
 
     expect(iconWithoutProperties.options.iconUrl).toBe('/asset-fallback.svg')

@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server'
 
 import {
   getAdditionalQuestionsData,
+  getAssetsData,
   getAttachmentsData,
   getContactData,
   getLocationData,
@@ -10,13 +11,15 @@ import {
 import { Detail } from './Detail'
 import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
-export const generateMetadata = async ({ searchParams }: { searchParams: Promise<{ id: string }> }) => {
-  const { id } = await searchParams
+export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
+  const { meldingId } = await params
 
   const t = await getTranslations('detail')
 
+  const { data } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
+
   return {
-    title: t('metadata.title', { publicId: id }),
+    title: t('metadata.title', { publicId: data?.public_id ?? '' }),
   }
 }
 
@@ -46,14 +49,18 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   const contact = getContactData(data, t)
   const location = getLocationData(data, t)
   const meldingData = getMeldingData(data, t)
+  const { assets, assetsTerm } = await getAssetsData(data, meldingId)
 
   return (
     <Detail
       additionalQuestionsWithMeldingText={additionalQuestionsWithMeldingText}
+      assets={assets}
+      assetsTerm={assetsTerm}
       attachments={attachments}
       contact={contact}
       location={location}
       meldingData={meldingData}
+      meldingId={meldingId}
       publicId={data.public_id}
     />
   )

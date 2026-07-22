@@ -80,6 +80,14 @@ export type AssetOutput = {
      * External Id
      */
     external_id: string;
+    /**
+     * Label
+     */
+    label: string;
+    /**
+     * Subtype
+     */
+    subtype: string;
 };
 
 /**
@@ -355,6 +363,14 @@ export type DateAnswerOutput = {
      * Original Question Text
      */
     original_question_text: string;
+    /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
     date: DateAnswerObject;
 };
 
@@ -382,6 +398,14 @@ export type DateAnswerQuestionOutput = {
      * Original Question Text
      */
     original_question_text: string;
+    /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
     date: DateAnswerObject;
     question: QuestionOutput;
 };
@@ -1720,6 +1744,14 @@ export type MeldingAssetInput = {
      * Asset Type Id
      */
     asset_type_id: number;
+    /**
+     * Label
+     */
+    label: string;
+    /**
+     * Subtype
+     */
+    subtype: string;
 };
 
 /**
@@ -2204,6 +2236,83 @@ export type NotNot = {
     '!!': [
         number | number | string | Array<null> | boolean
     ] | number | number | string | boolean;
+};
+
+/**
+ * NoteInput
+ */
+export type NoteInput = {
+    /**
+     * Text
+     */
+    text: string;
+};
+
+/**
+ * NoteOutput
+ */
+export type NoteOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Text
+     */
+    text: string;
+    /**
+     * Melding Id
+     */
+    melding_id: number;
+    /**
+     * User Id
+     */
+    user_id: number;
+};
+
+/**
+ * NoteRetrieveOutput
+ */
+export type NoteRetrieveOutput = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Text
+     */
+    text: string;
+    /**
+     * Melding Id
+     */
+    melding_id: number;
+    user: UserOutput;
+};
+
+/**
+ * NoteUpdateInput
+ */
+export type NoteUpdateInput = {
+    /**
+     * Text
+     */
+    text: string;
 };
 
 /**
@@ -2877,6 +2986,14 @@ export type TextAnswerOutput = {
      */
     original_question_text: string;
     /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
+    /**
      * Text
      */
     text: string;
@@ -2906,6 +3023,14 @@ export type TextAnswerQuestionOutput = {
      * Original Question Text
      */
     original_question_text: string;
+    /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
     /**
      * Text
      */
@@ -2952,6 +3077,14 @@ export type TimeAnswerOutput = {
      */
     original_question_text: string;
     /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
+    /**
      * Time
      */
     time: string | null;
@@ -2981,6 +3114,14 @@ export type TimeAnswerQuestionOutput = {
      * Original Question Text
      */
     original_question_text: string;
+    /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
     /**
      * Time
      */
@@ -3109,6 +3250,14 @@ export type ValueLabelAnswerOutput = {
      */
     original_question_text: string;
     /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
+    /**
      * Values And Labels
      */
     values_and_labels: Array<ValueLabelObject>;
@@ -3138,6 +3287,14 @@ export type ValueLabelAnswerQuestionOutput = {
      * Original Question Text
      */
     original_question_text: string;
+    /**
+     * Component Position
+     */
+    component_position?: number | null;
+    /**
+     * Panel Position
+     */
+    panel_position?: number | null;
     /**
      * Values And Labels
      */
@@ -5825,6 +5982,252 @@ export type DeleteMeldingByMeldingIdAssetByAssetIdResponses = {
     200: unknown;
 };
 
+export type GetMeldingByMeldingIdNoteData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: {
+        /**
+         * Sort
+         */
+        sort?: string | null;
+    };
+    url: '/melding/{melding_id}/note';
+};
+
+export type GetMeldingByMeldingIdNoteErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetMeldingByMeldingIdNoteError = GetMeldingByMeldingIdNoteErrors[keyof GetMeldingByMeldingIdNoteErrors];
+
+export type GetMeldingByMeldingIdNoteResponses = {
+    /**
+     * Response Melding Notes Melding  Melding Id  Note Get
+     *
+     * Successful Response
+     */
+    200: Array<NoteRetrieveOutput>;
+};
+
+export type GetMeldingByMeldingIdNoteResponse = GetMeldingByMeldingIdNoteResponses[keyof GetMeldingByMeldingIdNoteResponses];
+
+export type PostMeldingByMeldingIdNoteData = {
+    body: NoteInput;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/note';
+};
+
+export type PostMeldingByMeldingIdNoteErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type PostMeldingByMeldingIdNoteError = PostMeldingByMeldingIdNoteErrors[keyof PostMeldingByMeldingIdNoteErrors];
+
+export type PostMeldingByMeldingIdNoteResponses = {
+    /**
+     * Successful Response
+     */
+    201: NoteOutput;
+};
+
+export type PostMeldingByMeldingIdNoteResponse = PostMeldingByMeldingIdNoteResponses[keyof PostMeldingByMeldingIdNoteResponses];
+
+export type GetMeldingByMeldingIdNoteByNoteIdData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+        /**
+         * Note Id
+         *
+         * The id of the note.
+         */
+        note_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/note/{note_id}';
+};
+
+export type GetMeldingByMeldingIdNoteByNoteIdErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetMeldingByMeldingIdNoteByNoteIdError = GetMeldingByMeldingIdNoteByNoteIdErrors[keyof GetMeldingByMeldingIdNoteByNoteIdErrors];
+
+export type GetMeldingByMeldingIdNoteByNoteIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: NoteRetrieveOutput;
+};
+
+export type GetMeldingByMeldingIdNoteByNoteIdResponse = GetMeldingByMeldingIdNoteByNoteIdResponses[keyof GetMeldingByMeldingIdNoteByNoteIdResponses];
+
+export type PatchMeldingByMeldingIdNoteByNoteIdData = {
+    body: NoteUpdateInput;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+        /**
+         * Note Id
+         *
+         * The id of the note.
+         */
+        note_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/note/{note_id}';
+};
+
+export type PatchMeldingByMeldingIdNoteByNoteIdErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Forbidden, the authenticated user is not allowed to perform this action.
+     */
+    403: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type PatchMeldingByMeldingIdNoteByNoteIdError = PatchMeldingByMeldingIdNoteByNoteIdErrors[keyof PatchMeldingByMeldingIdNoteByNoteIdErrors];
+
+export type PatchMeldingByMeldingIdNoteByNoteIdResponses = {
+    /**
+     * Successful Response
+     */
+    200: NoteRetrieveOutput;
+};
+
+export type PatchMeldingByMeldingIdNoteByNoteIdResponse = PatchMeldingByMeldingIdNoteByNoteIdResponses[keyof PatchMeldingByMeldingIdNoteByNoteIdResponses];
+
 export type GetMeldingByMeldingIdNextPossibleStatesData = {
     body?: never;
     path: {
@@ -5878,6 +6281,49 @@ export type GetMeldingByMeldingIdNextPossibleStatesResponses = {
 };
 
 export type GetMeldingByMeldingIdNextPossibleStatesResponse = GetMeldingByMeldingIdNextPossibleStatesResponses[keyof GetMeldingByMeldingIdNextPossibleStatesResponses];
+
+export type GetUserMeData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/user/me';
+};
+
+export type GetUserMeErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+};
+
+export type GetUserMeError = GetUserMeErrors[keyof GetUserMeErrors];
+
+export type GetUserMeResponses = {
+    /**
+     * Successful Response
+     */
+    200: UserOutput;
+};
+
+export type GetUserMeResponse = GetUserMeResponses[keyof GetUserMeResponses];
 
 export type GetUserData = {
     body?: never;

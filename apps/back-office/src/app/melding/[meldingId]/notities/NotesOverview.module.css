@@ -1,0 +1,4 @@
+.list {
+  gap: var(--ams-space-m);
+  margin-block-end: var(--ams-space-m);
+}

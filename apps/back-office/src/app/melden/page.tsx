@@ -2,15 +2,17 @@ import type { Metadata } from 'next'
 
 import { getTranslations } from 'next-intl/server'
 
-import type { MeldingOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+import type { MeldingOutput, NoteRetrieveOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { MeldingForm } from './MeldingForm'
 import {
   getLabel,
   getMeldingByMeldingId,
+  getMeldingByMeldingIdNote,
   getSource,
   getStaticForm,
   getStaticFormByStaticFormId,
+  getUserMe,
 } from '~/app/_api-client/proxy'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
@@ -76,11 +78,35 @@ const fetchExistingMelding = async (id: number) => {
   return existingMelding
 }
 
-const toDefaultValues = (melding?: MeldingOutput) => {
+const fetchNote = async (meldingId: number) => {
+  const [{ data: notes, error: notesError }, { data: currentUser, error: currentUserError }] = await Promise.all([
+    getMeldingByMeldingIdNote({ path: { melding_id: meldingId } }),
+    getUserMe(),
+  ])
+
+  if (notesError) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(notesError)
+  }
+
+  if (currentUserError) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(currentUserError)
+  }
+
+  // Return the first note that belongs to the current user, if any
+  // This prevents returning other users' notes, which the current user is not allowed to update
+  return notes?.find((note) => note.user.id === currentUser?.id)
+}
+
+const toDefaultValues = (melding?: MeldingOutput, note?: NoteRetrieveOutput) => {
   if (!melding) return {}
 
   return {
     labels: melding.labels?.map((label) => label.id) ?? [],
+    note: note?.text,
     primary: melding.text,
     source: melding.source?.id ? String(melding.source.id) : undefined,
     urgency: melding.urgency,
@@ -105,13 +131,14 @@ const toExistingMeldingData = (melding?: MeldingOutput, token?: string) => {
 export default async ({ searchParams }: { searchParams: Promise<{ id?: number; token?: string }> }) => {
   const { id, token } = await searchParams
 
-  const [primaryTextArea, { labels, sources }, existingMelding] = await Promise.all([
+  const [primaryTextArea, { labels, sources }, existingMelding, note] = await Promise.all([
     fetchPrimaryTextArea(),
     fetchSourcesAndLabels(),
     id && token ? fetchExistingMelding(id) : Promise.resolve(undefined),
+    id && token ? fetchNote(id) : Promise.resolve(undefined),
   ])
 
-  const defaultValues = toDefaultValues(existingMelding)
+  const defaultValues = toDefaultValues(existingMelding, note)
   const existingMeldingData = toExistingMeldingData(existingMelding, token)
 
   return (
@@ -119,6 +146,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
       defaultValues={defaultValues}
       existingId={id}
       existingMelding={existingMeldingData}
+      existingNoteId={note?.id}
       existingToken={token}
       labels={labels}
       primaryTextArea={primaryTextArea}

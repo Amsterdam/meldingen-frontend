@@ -1,5 +1,3 @@
-<!-- @license CC0-1.0 -->
-
 # Meldingen front-end architecture
 
 Meldingen is an application with three separate front-ends:
@@ -7,6 +5,9 @@ Meldingen is an application with three separate front-ends:
 - Melding Form: where the general public can create nuisance reports.
 - Back Office: where professionals can handle these reports.
 - Admin: where admins can manage the Melding Form and Back Office apps.
+
+Within this repository, the applications live in `/apps` and shared frontend packages live in `/libs`.
+Contributor setup is documented in [our Getting Started docs](./getting-started.md).
 
 ```mermaid
 graph TD

@@ -4,7 +4,7 @@ import { http, HttpResponse } from 'msw'
 import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
 import Page, { generateMetadata } from './page'
-import { additionalQuestions, melding } from '~/mocks/data'
+import { additionalQuestions, asset, melding } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -12,11 +12,24 @@ vi.mock('./Detail', () => ({
   Detail: vi.fn(() => <div>Detail Component</div>),
 }))
 
+vi.mock('next-intl/server', async () => ({
+  getTranslations: () =>
+    vi.fn().mockImplementation((key, params) => (params ? `${key}: ${JSON.stringify(params)}` : key)),
+}))
+
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
-    const metadata = await generateMetadata({ searchParams: Promise.resolve({ id: 'AA123B' }) })
+    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: 123 }) })
 
-    expect(metadata).toEqual({ title: 'metadata.title' })
+    expect(metadata).toEqual({ title: 'metadata.title: {"publicId":"ABC"}' })
+  })
+
+  it('returns a fallback title when public id is not available', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({ data: { public_id: null } })))
+
+    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: 123 }) })
+
+    expect(metadata).toEqual({ title: 'metadata.title: {"publicId":""}' })
   })
 })
 
@@ -160,10 +173,12 @@ describe('Page', () => {
     expect(Detail).toHaveBeenCalledWith(
       {
         additionalQuestionsWithMeldingText: additionalQuestionsWithMeldingText,
+        assets: [asset],
         attachments: attachments,
         contact: contact,
         location: location,
         meldingData: meldingData,
+        meldingId: 123,
         publicId: public_id,
       },
       undefined,

@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
 import { OVERVIEW_FIELDS } from '../constants'
-import { getMeldingDetailHref } from './_utils'
 import { OverviewDesktop } from './OverviewDesktop'
 import { melding } from '~/mocks/data'
 
@@ -18,7 +17,7 @@ describe('OverviewDesktop', () => {
 
     const detailLink = screen.getByRole('link', { name: melding.public_id })
 
-    expect(detailLink).toHaveAttribute('href', getMeldingDetailHref(melding))
+    expect(detailLink).toHaveAttribute('href', `/melding/${melding.id}`)
 
     expect(
       screen.getByRole('cell', { name: new Date(melding.created_at).toLocaleDateString('nl-NL') }),

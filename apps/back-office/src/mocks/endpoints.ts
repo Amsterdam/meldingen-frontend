@@ -11,13 +11,18 @@ export const ENDPOINTS = {
   GET_MELDING: '/melding',
   GET_MELDING_BY_MELDING_ID: '/melding/:id',
   GET_MELDING_BY_MELDING_ID_ANSWERS: '/melding/:id/answers',
+  GET_MELDING_BY_MELDING_ID_ASSETS: '/melding/:id/assets',
   GET_MELDING_BY_MELDING_ID_ATTACHMENTS: '/melding/:id/attachments',
   GET_MELDING_BY_MELDING_ID_NEXT_POSSIBLE_STATES: '/melding/:id/next_possible_states',
+  GET_MELDING_BY_MELDING_ID_NOTE: '/melding/:id/note',
+  GET_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID: '/melding/:id/note/:noteId',
 
   PATCH_MELDING_BY_MELDING_ID: '/melding/:id',
   PATCH_MELDING_BY_MELDING_ID_MELDER: '/melding/:id/melder',
+  PATCH_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID: '/melding/:id/note/:noteId',
 
   POST_MELDING: '/melding',
+  POST_MELDING_BY_MELDING_ID_NOTE: '/melding/:id/note',
 
   PUT_MELDING_BY_MELDING_ID_CANCEL: '/melding/:id/cancel',
   PUT_MELDING_BY_MELDING_ID_COMPLETE: '/melding/:id/complete',
@@ -34,4 +39,7 @@ export const ENDPOINTS = {
   // Static form
   GET_STATIC_FORM: '/static-form',
   GET_STATIC_FORM_BY_STATIC_FORM_ID: '/static-form/:staticFormId',
+
+  // User
+  GET_USER_ME: '/user/me',
 }

@@ -36,6 +36,10 @@
     },
     "urgency-label": "Wat is de urgentie?",
     "labels-label": "Wat is het label?",
+    "note": {
+      "label": "Notitie toevoegen",
+      "error": "De notitie mag niet langer zijn dan {max} tekens."
+    },
     "submit-button": "Volgende vraag",
     "errors": {
       "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
@@ -45,15 +49,15 @@
     }
   },
   "detail": {
-    "attachments": {
-      "title": "Bestanden",
-      "no-data": "Geen bestanden toegevoegd"
-    },
     "metadata": {
       "title": "Melding {publicId} - Gemeente Amsterdam"
     },
     "back-link": "Overzicht meldingen",
     "title": "Melding {publicId}",
+    "tab-navigation": {
+      "detail": "Melding",
+      "notes": "Notities"
+    },
     "melding-text": "Meldtekst",
     "contact": {
       "email": "E-mail melder",
@@ -62,6 +66,9 @@
     },
     "location": {
       "address": "Adres"
+    },
+    "assets": {
+      "term": "Objecten"
     },
     "melding-data": {
       "created_at": "Gemeld op",
@@ -86,6 +93,10 @@
         "term": "Urgentie",
         "link": "Wijzig urgentie"
       }
+    },
+    "attachments": {
+      "title": "Bestanden",
+      "no-data": "Geen bestanden toegevoegd"
     },
     "errors": {
       "melding-not-found": "An error occurred"
@@ -147,10 +158,67 @@
       }
     }
   },
+  "notes-overview": {
+    "metadata": {
+      "title": "Melding {publicId} - Gemeente Amsterdam"
+    },
+    "back-link": "Overzicht meldingen",
+    "title": "Melding {publicId}",
+    "tab-navigation": {
+      "detail": "Melding",
+      "notes": "Notities"
+    },
+    "visually-hidden-texts": {
+      "created-at": "Aangemaakt op: ",
+      "by": " door: ",
+      "edited": " en later gewijzigd"
+    },
+    "edited": "(gewijzigd)",
+    "deleted-note": "Deze notitie is verwijderd.",
+    "edit-link": "Wijzig notitie",
+    "add-note-link": "Notitie toevoegen"
+  },
+  "add-note": {
+    "metadata": {
+      "title": "Notitie toevoegen - Gemeente Amsterdam"
+    },
+    "back-link": "Meldingdetails",
+    "invalid-form-alert-title": "Verbeter de fouten om uw notitie toe te voegen",
+    "title": "Notitie toevoegen",
+    "label": "Notitie toevoegen",
+    "submit-button": "Notitie toevoegen",
+    "cancel-link": "Annuleer",
+    "errors": {
+      "required": "Vul een notitie in.",
+      "maxLength": "De notitie mag niet langer zijn dan {max} tekens."
+    }
+  },
+  "update-note": {
+    "metadata": {
+      "title": "Wijzig notitie - Gemeente Amsterdam"
+    },
+    "back-link": "Meldingdetails",
+    "invalid-form-alert-title": "Verbeter de fouten om uw notitie te wijzigen",
+    "title": "Wijzig notitie",
+    "label": "Wijzig notitie",
+    "submit-button": "Wijzig notitie",
+    "cancel-link": "Annuleer",
+    "errors": {
+      "maxLength": "De notitie mag niet langer zijn dan {max} tekens."
+    }
+  },
   "shared": {
     "menu": {
       "melding-form": "Melden",
       "overview": "Overzicht"
+    },
+    "rich-text-editor": {
+      "bold": "Vetgedrukt",
+      "italic": "Schuingedrukt",
+      "toolbar": "Tekst opmaken",
+      "underline": "Onderstreept",
+      "unordered-list": "Opsomming",
+      "undo": "Ongedaan maken"
     },
     "state": {
       "canceled": "Geannuleerd",
