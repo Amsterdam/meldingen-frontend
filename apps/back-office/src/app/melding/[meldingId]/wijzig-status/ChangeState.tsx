@@ -1,26 +1,17 @@
 'use client'
 
-import {
-  ActionGroup,
-  Alert,
-  Button,
-  Field,
-  Grid,
-  Heading,
-  Label,
-  Paragraph,
-  Select,
-} from '@amsterdam/design-system-react'
+import { ActionGroup, Button, Field, Grid, Heading, Label, Select } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useRef } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import type { MeldingOutput, StatesOutput } from '@meldingen/api-client'
 
 import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
 import { postChangeStateForm } from './actions'
+import { ApiErrorAlert } from '~/app/_components'
 
 import styles from './ChangeState.module.css'
 
@@ -32,7 +23,7 @@ type Props = {
 }
 
 const initialState: {
-  error?: {
+  apiError?: {
     message: unknown
     type: 'invalid-state' | 'state-change-failed'
   }
@@ -54,33 +45,29 @@ const getDocumentTitleOnError = ({ errorMessage, hasError, originalDocTitle }: A
 }
 
 export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId }: Props) => {
-  const errorAlertRef = useRef<HTMLDivElement>(null)
-
   const postChangeStateFormWithMeldingId = postChangeStateForm.bind(null, { currentState: meldingState, meldingId })
 
-  const [{ error, meldingStateFromAction }, formAction] = useActionState(postChangeStateFormWithMeldingId, initialState)
+  const [{ apiError, meldingStateFromAction }, formAction, isPending] = useActionState(
+    postChangeStateFormWithMeldingId,
+    initialState,
+  )
 
   const t = useTranslations('change-state')
   const tShared = useTranslations('shared')
 
   const documentTitle = getDocumentTitleOnError({
-    errorMessage: error ? t(`errors.${error.type}.heading`) : '',
-    hasError: Boolean(error),
+    errorMessage: apiError ? t(`errors.${apiError.type}.heading`) : '',
+    hasError: Boolean(apiError),
     originalDocTitle: t('metadata.title'),
   })
 
   useEffect(() => {
-    if (error) {
+    if (apiError) {
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
-      console.error(error.message)
-
-      // Set focus on Alert when there is an error
-      if (errorAlertRef.current) {
-        errorAlertRef.current.focus()
-      }
+      console.error(apiError)
     }
-  }, [error])
+  }, [apiError])
 
   const stateToDisplay = meldingStateFromAction ?? meldingState
 
@@ -90,18 +77,12 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
       <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
       <Grid as="main" gapVertical="large">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
-          {error && (
-            <Alert
-              className={clsx('ams-mb-m', styles.alert)}
-              heading={t(`errors.${error.type}.heading`)}
-              headingLevel={2}
-              ref={errorAlertRef}
-              role="alert"
-              severity="error"
-              tabIndex={-1}
-            >
-              <Paragraph>{t(`errors.${error.type}.description`)}</Paragraph>
-            </Alert>
+          {apiError && (
+            <ApiErrorAlert
+              description={t(`errors.${apiError.type}.description`)}
+              heading={t(`errors.${apiError.type}.heading`)}
+              shouldRefocus={!isPending}
+            />
           )}
           <Heading className="ams-mb-m" level={1}>
             {t('title', { publicId })}

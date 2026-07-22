@@ -1,6 +1,6 @@
 import type { Mock } from 'vitest'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 
@@ -62,29 +62,36 @@ describe('ChangeUrgency', () => {
   })
 
   it('displays the correct error message and selected urgency when action returns invalid-urgency', () => {
-    ;(useActionState as Mock).mockReturnValue([{ error: { type: 'invalid-urgency' }, urgencyFromAction: '1' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([
+      { apiError: { type: 'invalid-urgency' }, urgencyFromAction: '1' },
+      vi.fn(),
+    ])
 
-    render(<ChangeUrgency {...defaultProps} />)
+    const { container } = render(<ChangeUrgency {...defaultProps} />)
 
-    const alert = screen.getByRole('alert', { name: 'errors.invalid-urgency.heading' })
+    const alert = container.querySelector('.ams-alert')
+    const heading = within(alert as HTMLElement).getByRole('heading', { name: 'errors.invalid-urgency.heading' })
+
     expect(alert).toBeInTheDocument()
+    expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.invalid-urgency.description')
-
     expect(screen.getByRole('radio', { name: 'urgency.1' })).toBeChecked()
   })
 
   it('displays the correct error message and selected urgency when action returns urgency-change-failed', () => {
     ;(useActionState as Mock).mockReturnValue([
-      { error: { type: 'urgency-change-failed' }, urgencyFromAction: '-1' },
+      { apiError: { type: 'urgency-change-failed' }, urgencyFromAction: '-1' },
       vi.fn(),
     ])
 
-    render(<ChangeUrgency {...defaultProps} />)
+    const { container } = render(<ChangeUrgency {...defaultProps} />)
 
-    const alert = screen.getByRole('alert', { name: 'errors.urgency-change-failed.heading' })
+    const alert = container.querySelector('.ams-alert')
+    const heading = within(alert as HTMLElement).getByRole('heading', { name: 'errors.urgency-change-failed.heading' })
+
     expect(alert).toBeInTheDocument()
+    expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.urgency-change-failed.description')
-
     expect(screen.getByRole('radio', { name: 'urgency.-1' })).toBeChecked()
   })
 

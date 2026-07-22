@@ -24,20 +24,20 @@ describe('postChangeUrgencyForm', () => {
     spy.mockRestore()
   })
 
-  it('returns an error message for an invalid urgency', async () => {
+  it('returns an API error message for an invalid urgency', async () => {
     const formData = new FormData()
     formData.append('urgency', '999')
 
     const result = await postChangeUrgencyForm(defaultArgs, null, formData)
 
     expect(result).toEqual({
-      error: { message: 'Invalid urgency: 999', type: 'invalid-urgency' },
+      apiError: { message: 'Invalid urgency: 999', type: 'invalid-urgency' },
       urgencyFromAction: '999',
     })
     expect(redirect).not.toHaveBeenCalledWith('/melding/123')
   })
 
-  it('returns an error message when API returns an error', async () => {
+  it('returns an API error message when API returns an error', async () => {
     server.use(
       http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -50,7 +50,7 @@ describe('postChangeUrgencyForm', () => {
     const result = await postChangeUrgencyForm(defaultArgs, null, formData)
 
     expect(result).toEqual({
-      error: { message: { detail: 'Error message' }, type: 'urgency-change-failed' },
+      apiError: { message: { detail: 'Error message' }, type: 'urgency-change-failed' },
       urgencyFromAction: '1',
     })
     expect(redirect).not.toHaveBeenCalledWith('/melding/123')

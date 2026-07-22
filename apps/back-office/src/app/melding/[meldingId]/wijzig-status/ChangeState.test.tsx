@@ -1,6 +1,6 @@
 import type { Mock } from 'vitest'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 
@@ -62,32 +62,36 @@ describe('ChangeState', () => {
 
   it('displays the correct error message and default value when the action returns an error with type invalid-state', () => {
     ;(useActionState as Mock).mockReturnValue([
-      { error: { type: 'invalid-state' }, meldingStateFromAction: 'completed' },
+      { apiError: { type: 'invalid-state' }, meldingStateFromAction: 'completed' },
       vi.fn(),
     ])
 
-    render(<ChangeState {...defaultProps} />)
+    const { container } = render(<ChangeState {...defaultProps} />)
 
     const select = screen.getByRole('combobox', { name: 'label' })
-    const alert = screen.getByRole('alert', { name: 'errors.invalid-state.heading' })
+    const alert = container.querySelector('.ams-alert')
+    const heading = within(alert as HTMLElement).getByRole('heading', { name: 'errors.invalid-state.heading' })
 
     expect(alert).toBeInTheDocument()
+    expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.invalid-state.description')
     expect(select).toHaveValue('completed')
   })
 
   it('displays the correct error message and default value when the action returns an error with type state-change-failed', () => {
     ;(useActionState as Mock).mockReturnValue([
-      { error: { type: 'state-change-failed' }, meldingStateFromAction: 'completed' },
+      { apiError: { type: 'state-change-failed' }, meldingStateFromAction: 'completed' },
       vi.fn(),
     ])
 
-    render(<ChangeState {...defaultProps} />)
+    const { container } = render(<ChangeState {...defaultProps} />)
 
     const select = screen.getByRole('combobox', { name: 'label' })
-    const alert = screen.getByRole('alert', { name: 'errors.state-change-failed.heading' })
+    const alert = container.querySelector('.ams-alert')
+    const heading = within(alert as HTMLElement).getByRole('heading', { name: 'errors.state-change-failed.heading' })
 
     expect(alert).toBeInTheDocument()
+    expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.state-change-failed.description')
     expect(select).toHaveValue('completed')
   })
