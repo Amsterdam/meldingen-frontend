@@ -56,7 +56,7 @@ export const postChangeStateForm = async (
 
   if (!STATES_LIST.includes(state)) {
     return {
-      error: { message: `Invalid state: ${state}`, type: 'invalid-state' as const },
+      apiError: { message: `Invalid state: ${state}`, type: 'invalid-state' as const },
       meldingStateFromAction: state,
     }
   }
@@ -68,7 +68,7 @@ export const postChangeStateForm = async (
 
   if (error)
     return {
-      error: { message: error, type: 'state-change-failed' as const },
+      apiError: { message: error, type: 'state-change-failed' as const },
       meldingStateFromAction: state,
     }
 

@@ -36,7 +36,7 @@ describe('postChangeLabelsForm', () => {
     spy.mockRestore()
   })
 
-  it('returns an error message when API returns an error', async () => {
+  it('returns an API error when API returns an error', async () => {
     server.use(
       http.patch(ENDPOINTS.PATCH_MELDING_BY_MELDING_ID, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -49,7 +49,7 @@ describe('postChangeLabelsForm', () => {
     const result = await postChangeLabelsForm(defaultArgs, null, formData)
 
     expect(result).toEqual({
-      error: { detail: 'Error message' },
+      apiError: { detail: 'Error message' },
       labelIdsFromAction: [1],
     })
     expect(redirect).not.toHaveBeenCalledWith('/melding/123')

@@ -21,20 +21,20 @@ describe('postChangeStateForm', () => {
     expect(redirect).toHaveBeenCalledWith('/melding/123')
   })
 
-  it('returns an error message for an invalid state', async () => {
+  it('returns an API error message for an invalid state', async () => {
     const formData = new FormData()
     formData.append('state', 'invalid')
 
     const result = await postChangeStateForm(defaultArgs, null, formData)
 
     expect(result).toEqual({
-      error: { message: 'Invalid state: invalid', type: 'invalid-state' },
+      apiError: { message: 'Invalid state: invalid', type: 'invalid-state' },
       meldingStateFromAction: 'invalid',
     })
     expect(redirect).not.toHaveBeenCalledWith('/melding/123')
   })
 
-  it('returns an error message when API returns an error', async () => {
+  it('returns an API error message when API returns an error', async () => {
     server.use(
       http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_PROCESS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -47,7 +47,7 @@ describe('postChangeStateForm', () => {
     const result = await postChangeStateForm(defaultArgs, null, formData)
 
     expect(result).toEqual({
-      error: { message: { detail: 'Error message' }, type: 'state-change-failed' },
+      apiError: { message: { detail: 'Error message' }, type: 'state-change-failed' },
       meldingStateFromAction: 'processing',
     })
     expect(redirect).not.toHaveBeenCalledWith('/melding/123')
