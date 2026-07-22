@@ -110,10 +110,7 @@
     "submit-button": "Wijzig labels",
     "cancel-link": "Annuleer",
     "errors": {
-      "labels-change-failed": {
-        "heading": "De labels kunnen niet worden gewijzigd",
-        "description": "Probeer het later opnieuw."
-      }
+      "labels-change-failed-heading": "De labels kunnen niet worden gewijzigd"
     }
   },
   "change-state": {

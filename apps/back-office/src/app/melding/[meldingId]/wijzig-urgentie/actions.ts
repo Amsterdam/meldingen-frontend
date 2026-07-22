@@ -34,7 +34,7 @@ export const postChangeUrgencyForm = async (
 
   if (!isValidUrgency(urgencyNumber)) {
     return {
-      error: { message: `Invalid urgency: ${urgencyRaw}`, type: 'invalid-urgency' as const },
+      apiError: { message: `Invalid urgency: ${urgencyRaw}`, type: 'invalid-urgency' as const },
       urgencyFromAction: urgencyRaw,
     }
   }
@@ -46,7 +46,7 @@ export const postChangeUrgencyForm = async (
 
   if (error) {
     return {
-      error: { message: error, type: 'urgency-change-failed' as const },
+      apiError: { message: error, type: 'urgency-change-failed' as const },
       urgencyFromAction: urgencyRaw,
     }
   }

@@ -19,7 +19,7 @@ const sameLabels = (a: number[], b: number[]) => {
 
 export const postChangeLabelsForm = async (
   { currentLabelIds, meldingId }: MeldingIdParam,
-  _: { error?: unknown; labelIdsFromAction?: number[] } | null,
+  _: { apiError?: unknown; labelIdsFromAction?: number[] } | null,
   formData: FormData,
 ) => {
   const labelIdsFromForm = extractLabelIdsFromFormData(formData)
@@ -36,7 +36,7 @@ export const postChangeLabelsForm = async (
 
   if (error) {
     return {
-      error: error,
+      apiError: error,
       labelIdsFromAction: labelIdsFromForm,
     }
   }
