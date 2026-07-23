@@ -1,0 +1,63 @@
+.editor {
+  background-color: var(--ams-text-area-background-color);
+  border-color: var(--ams-text-area-border-color);
+  border-style: var(--ams-text-area-border-style);
+  border-width: var(--ams-text-area-border-width);
+  box-sizing: border-box;
+  color: var(--ams-text-area-color);
+  font-family: var(--ams-text-area-font-family);
+  font-size: var(--ams-text-area-font-size);
+  font-weight: var(--ams-text-area-font-weight);
+  inline-size: 100%;
+  line-height: var(--ams-text-area-line-height);
+  min-block-size: 8rem;
+  outline-offset: var(--ams-text-area-outline-offset);
+  padding-block: var(--ams-text-area-padding-block);
+  padding-inline: var(--ams-text-area-padding-inline);
+  touch-action: manipulation;
+
+  &[aria-invalid='true'] {
+    border-color: var(--ams-text-area-invalid-border-color);
+  }
+}
+
+.editor:hover {
+  box-shadow: var(--ams-text-area-hover-box-shadow);
+
+  &[aria-invalid='true'] {
+    border-color: var(--ams-text-area-invalid-hover-border-color);
+    box-shadow: var(--ams-text-area-invalid-hover-box-shadow);
+  }
+}
+
+.characterCount {
+  margin-block-end: 0;
+}
+
+@keyframes loading {
+  0% {
+    background-color: var(--ams-color-background);
+  }
+
+  50% {
+    background-color: var(--ams-color-separator);
+  }
+
+  100% {
+    background-color: var(--ams-color-background);
+  }
+}
+
+.loader {
+  animation-delay: 0.3s;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-name: loading;
+  animation-timing-function: ease-in-out;
+  block-size: calc(2.25rem + var(--ams-space-xs) + 8rem + var(--ams-space-xs) + 1.125rem);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    background-color: var(--ams-color-separator);
+  }
+}

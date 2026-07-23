@@ -647,6 +647,14 @@ export const AssetOutputSchema = {
         external_id: {
             type: 'string',
             title: 'External Id'
+        },
+        label: {
+            type: 'string',
+            title: 'Label'
+        },
+        subtype: {
+            type: 'string',
+            title: 'Subtype'
         }
     },
     type: 'object',
@@ -654,7 +662,9 @@ export const AssetOutputSchema = {
         'id',
         'created_at',
         'updated_at',
-        'external_id'
+        'external_id',
+        'label',
+        'subtype'
     ],
     title: 'AssetOutput'
 } as const;
@@ -5103,12 +5113,22 @@ export const MeldingAssetInputSchema = {
         asset_type_id: {
             type: 'integer',
             title: 'Asset Type Id'
+        },
+        label: {
+            type: 'string',
+            title: 'Label'
+        },
+        subtype: {
+            type: 'string',
+            title: 'Subtype'
         }
     },
     type: 'object',
     required: [
         'external_id',
-        'asset_type_id'
+        'asset_type_id',
+        'label',
+        'subtype'
     ],
     title: 'MeldingAssetInput'
 } as const;

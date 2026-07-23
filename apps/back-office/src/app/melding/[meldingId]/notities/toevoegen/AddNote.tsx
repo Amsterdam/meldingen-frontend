@@ -1,27 +1,16 @@
 'use client'
 
-import {
-  ActionGroup,
-  Button,
-  ErrorMessage,
-  Field,
-  Grid,
-  Heading,
-  Label,
-  TextArea,
-} from '@amsterdam/design-system-react'
+import { ActionGroup, Button, Grid, Heading } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useRef } from 'react'
-
-import { getAriaDescribedBy } from '@meldingen/form-renderer'
 
 import type { FormState } from '~/types'
 
 import { BackLink } from '../../_components/BackLink'
 import { CancelLink } from '../../_components/CancelLink'
 import { postAddNoteForm } from './actions'
-import { InvalidFormAlert, SystemErrorAlert } from '~/app/_components'
+import { InvalidFormAlert, RichTextEditor, SystemErrorAlert } from '~/app/_components'
 
 import styles from './AddNote.module.css'
 
@@ -79,19 +68,15 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
           </Heading>
           <Form action={formAction} noValidate>
             <div className={styles.whiteField}>
-              <Field invalid={Boolean(errorMessage)}>
-                <Label htmlFor="addNote">{t('label')}</Label>
-                {errorMessage && <ErrorMessage id="addNote-error">{errorMessage}</ErrorMessage>}
-                <TextArea
-                  aria-describedby={getAriaDescribedBy('addNote', undefined, errorMessage)}
-                  aria-required="true"
-                  defaultValue={defaultValue}
-                  id="addNote"
-                  invalid={Boolean(errorMessage)}
-                  name="addNote"
-                  rows={4}
-                />
-              </Field>
+              <RichTextEditor
+                defaultValue={defaultValue}
+                errorMessage={errorMessage}
+                id="addNote"
+                label={t('label')}
+                labelClassName="ams-mb-s"
+                name="addNote"
+                required
+              />
             </div>
             <ActionGroup>
               <Button type="submit">{t('submit-button')}</Button>

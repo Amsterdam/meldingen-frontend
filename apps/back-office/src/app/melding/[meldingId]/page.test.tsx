@@ -23,6 +23,14 @@ describe('generateMetadata', () => {
 
     expect(metadata).toEqual({ title: 'metadata.title: {"publicId":"ABC"}' })
   })
+
+  it('returns a fallback title when public id is not available', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({ data: { public_id: null } })))
+
+    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: 123 }) })
+
+    expect(metadata).toEqual({ title: 'metadata.title: {"publicId":""}' })
+  })
 })
 
 describe('Page', () => {

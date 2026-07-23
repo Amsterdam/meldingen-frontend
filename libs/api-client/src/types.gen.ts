@@ -80,6 +80,14 @@ export type AssetOutput = {
      * External Id
      */
     external_id: string;
+    /**
+     * Label
+     */
+    label: string;
+    /**
+     * Subtype
+     */
+    subtype: string;
 };
 
 /**
@@ -1736,6 +1744,14 @@ export type MeldingAssetInput = {
      * Asset Type Id
      */
     asset_type_id: number;
+    /**
+     * Label
+     */
+    label: string;
+    /**
+     * Subtype
+     */
+    subtype: string;
 };
 
 /**
@@ -5976,7 +5992,12 @@ export type GetMeldingByMeldingIdNoteData = {
          */
         melding_id: number;
     };
-    query?: never;
+    query?: {
+        /**
+         * Sort
+         */
+        sort?: string | null;
+    };
     url: '/melding/{melding_id}/note';
 };
 
