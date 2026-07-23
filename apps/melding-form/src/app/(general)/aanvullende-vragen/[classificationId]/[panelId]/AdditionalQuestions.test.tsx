@@ -254,19 +254,6 @@ describe('AdditionalQuestions', () => {
     expect(document.title).toBe(`error-count-label ${textAreaComponent.label} - organisation-name`)
   })
 
-  it('sets focus on InvalidFormAlert when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([
-      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
-      vi.fn(),
-    ])
-
-    const { container } = render(<AdditionalQuestions {...defaultProps} />)
-
-    const alert = container.querySelector('.ams-alert')
-
-    expect(alert).toHaveFocus()
-  })
-
   it('sets focus on SystemErrorAlert when there is a system error', () => {
     ;(useActionState as Mock).mockReturnValueOnce([{ systemError: 'Test error message' }, vi.fn()])
     render(<AdditionalQuestions {...defaultProps} />)

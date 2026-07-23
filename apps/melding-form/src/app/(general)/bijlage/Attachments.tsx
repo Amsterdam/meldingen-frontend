@@ -13,7 +13,7 @@ import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Column, FileList, FileUpload, Heading, InvalidFormAlert, SubmitButton } from '@meldingen/ui'
+import { Column, FileList, FileUpload, Heading, SubmitButton } from '@meldingen/ui'
 
 import type { FileUpload as FileUploadType, PendingFileUpload } from './_utils/startUpload'
 import type { ExistingFileType } from './page'
@@ -24,6 +24,7 @@ import { getDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { startUpload } from './_utils/startUpload'
 import { submitAttachmentsForm } from './actions'
+import { InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './Attachments.module.css'
@@ -76,7 +77,6 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const uploadIdCounter = useRef(files.length)
 
   const genericErrorAlertRef = useRef<HTMLDivElement>(null)
-  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const t = useTranslations('attachments')
@@ -87,12 +87,16 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
   const [genericError, setGenericError] = useState<GenericErrorMessage>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
+  const [shouldFocusAlert, setShouldFocusAlert] = useState(false)
 
   const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
 
-  const validationErrors = fileUploads
-    .filter((upload) => upload.status === 'error')
-    .map((upload) => ({ key: upload.id, message: upload.errorMessage || '' }))
+  const erroredFileUploads = fileUploads.filter(({ status }) => status === 'error')
+  const erroredFileUploadsKey = erroredFileUploads.map(({ id }) => id).join(',')
+  const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
+    key: id,
+    message: errorMessage ? t(errorMessage) : '',
+  }))
 
   const { description, label } = formData[0]
 
@@ -103,6 +107,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
   const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
     setGenericError(undefined)
+    setShouldFocusAlert(false)
 
     if (!event.currentTarget.files) return
 
@@ -211,14 +216,17 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
   // Set focus on alerts when there are errors
   useEffect(() => {
-    if (validationErrors && invalidFormAlertRef.current) {
-      invalidFormAlertRef.current.focus()
-    } else if (systemError && systemErrorAlertRef.current) {
+    if (systemError && systemErrorAlertRef.current) {
       systemErrorAlertRef.current.focus()
     } else if (genericError && genericErrorAlertRef.current) {
       genericErrorAlertRef.current.focus()
     }
-  }, [validationErrors, systemError, genericError])
+  }, [systemError, genericError])
+
+  // Set shouldFocusAlert to true when the list of validation errors changes
+  useEffect(() => {
+    if (erroredFileUploadsKey) setShouldFocusAlert(true)
+  }, [erroredFileUploadsKey])
 
   useEffect(() => {
     // TODO: Log the error to an error reporting service
@@ -234,18 +242,11 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-        {validationErrors.length > 0 && (
-          <InvalidFormAlert
-            className="ams-mb-m"
-            errors={validationErrors.map((error) => ({
-              id: `#${error.key}`,
-              label: t(error.message),
-            }))}
-            heading={t('validation-errors.alert-title', { count: validationErrors.length })}
-            headingLevel={2}
-            ref={invalidFormAlertRef}
-          />
-        )}
+        <InvalidFormAlert
+          errors={validationErrors}
+          heading={t('validation-errors.alert-title', { count: validationErrors.length })}
+          shouldFocus={shouldFocusAlert}
+        />
         {genericError && (
           <Alert
             className={clsx(styles.genericErrorAlert, 'ams-mb-m')}

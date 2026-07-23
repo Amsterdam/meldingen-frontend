@@ -67,19 +67,6 @@ describe('MeldingForm', () => {
     expect(link).toHaveAttribute('href', '#key1')
   })
 
-  it('sets focus on InvalidFormAlert when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
-      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
-      vi.fn(),
-    ])
-
-    const { container } = render(<MeldingForm {...defaultProps} />)
-
-    const alert = container.querySelector('.ams-alert')
-
-    expect(alert).toHaveFocus()
-  })
-
   it('renders an error message connected to the primary text area when there is a validation error for the primary field', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'primary', message: 'Primary field error' }] },

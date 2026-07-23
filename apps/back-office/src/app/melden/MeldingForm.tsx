@@ -56,7 +56,6 @@ export const MeldingForm = ({
   primaryTextArea,
   sources,
 }: Props) => {
-  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const t = useTranslations('melding-form')
@@ -70,18 +69,15 @@ export const MeldingForm = ({
     requiredErrorMessage,
   })
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
+  const [{ formData, systemError, validationErrors }, formAction, isPending] = useActionState(action, initialState)
   const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
   const { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } =
     calculateDefaultValues(formData, defaultValues)
 
-  // Set focus on InvalidFormAlert when there are validation errors
-  // and on SystemErrorAlert when there is a system error
+  // Set focus on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (validationErrors && invalidFormAlertRef.current) {
-      invalidFormAlertRef.current.focus()
-    } else if (systemError && systemErrorAlertRef.current) {
+    if (systemError && systemErrorAlertRef.current) {
       systemErrorAlertRef.current.focus()
     }
   }, [validationErrors, systemError])
@@ -107,7 +103,7 @@ export const MeldingForm = ({
     >
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-        {validationErrors && <InvalidFormAlert ref={invalidFormAlertRef} validationErrors={validationErrors} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
         <Heading className="ams-mb-m ams-visually-hidden" level={1}>
           {t('visually-hidden-title')}
         </Heading>

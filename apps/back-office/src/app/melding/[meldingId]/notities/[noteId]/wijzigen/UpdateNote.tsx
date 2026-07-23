@@ -24,21 +24,18 @@ type Props = {
 }
 
 export const UpdateNote = ({ meldingId, note }: Props) => {
-  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const action = postUpdateNoteForm.bind(null, { meldingId, noteId: note.id })
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
+  const [{ formData, systemError, validationErrors }, formAction, isPending] = useActionState(action, initialState)
 
   const t = useTranslations('update-note')
 
   // Set focus on InvalidFormAlert when there are validation errors
   // and on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (validationErrors && invalidFormAlertRef.current) {
-      invalidFormAlertRef.current.focus()
-    } else if (systemError && systemErrorAlertRef.current) {
+    if (systemError && systemErrorAlertRef.current) {
       systemErrorAlertRef.current.focus()
     }
   }, [validationErrors, systemError])
@@ -62,9 +59,9 @@ export const UpdateNote = ({ meldingId, note }: Props) => {
           {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
           {validationErrors && (
             <InvalidFormAlert
-              ref={invalidFormAlertRef}
-              title={t('invalid-form-alert-title')}
-              validationErrors={validationErrors}
+              errors={validationErrors}
+              heading={t('invalid-form-alert-title')}
+              shouldFocus={!isPending}
             />
           )}
           <Heading className="ams-mb-m" level={1}>

@@ -17,24 +17,20 @@ import styles from './AddNote.module.css'
 const initialState: FormState = {}
 
 export const AddNote = ({ meldingId }: { meldingId: number }) => {
-  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const postAddNoteFormWithMeldingId = postAddNoteForm.bind(null, { meldingId })
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(
+  const [{ formData, systemError, validationErrors }, formAction, isPending] = useActionState(
     postAddNoteFormWithMeldingId,
     initialState,
   )
 
   const t = useTranslations('add-note')
 
-  // Set focus on InvalidFormAlert when there are validation errors
-  // and on SystemErrorAlert when there is a system error
+  // Set focus on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (validationErrors && invalidFormAlertRef.current) {
-      invalidFormAlertRef.current.focus()
-    } else if (systemError && systemErrorAlertRef.current) {
+    if (systemError && systemErrorAlertRef.current) {
       systemErrorAlertRef.current.focus()
     }
   }, [validationErrors, systemError])
@@ -58,9 +54,9 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
           {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
           {validationErrors && (
             <InvalidFormAlert
-              ref={invalidFormAlertRef}
-              title={t('invalid-form-alert-title')}
-              validationErrors={validationErrors}
+              errors={validationErrors}
+              heading={t('invalid-form-alert-title')}
+              shouldFocus={!isPending}
             />
           )}
           <Heading className="ams-mb-m" level={1}>
