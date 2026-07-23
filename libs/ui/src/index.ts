@@ -1,6 +1,7 @@
 export { FileList } from './FileList/FileList'
 export { FileUpload } from './FileUpload/FileUpload'
-export { InvalidFormAlert, InvalidFormAlertProps } from './InvalidFormAlert/InvalidFormAlert'
+export { InvalidFormAlert } from './InvalidFormAlert/InvalidFormAlert'
+export type { InvalidFormAlertProps } from './InvalidFormAlert/InvalidFormAlert'
 export { Link } from './Link/Link'
 export { ListBox } from './ListBox/ListBox'
 export { Page } from './Page/Page'
