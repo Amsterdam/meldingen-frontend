@@ -43,8 +43,6 @@
     "submit-button": "Volgende vraag",
     "errors": {
       "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
-      "system-error-alert-title": "Er is iets misgegaan",
-      "system-error-alert-description": "Probeer het later opnieuw.",
       "required-error-message-fallback": "Vul in wat u wilt melden."
     }
   },
@@ -112,10 +110,7 @@
     "submit-button": "Wijzig labels",
     "cancel-link": "Annuleer",
     "errors": {
-      "labels-change-failed": {
-        "heading": "De labels kunnen niet worden gewijzigd",
-        "description": "Probeer het later opnieuw."
-      }
+      "labels-change-failed-heading": "De labels kunnen niet worden gewijzigd"
     }
   },
   "change-state": {
@@ -208,6 +203,11 @@
     }
   },
   "shared": {
+    "api-error-alert": {
+      "heading": "Er is iets misgegaan",
+      "description": "Probeer het later opnieuw."
+    },
+    "invalid-form-alert-title": "Verbeter de fouten om verder te gaan",
     "menu": {
       "melding-form": "Melden",
       "overview": "Overzicht"

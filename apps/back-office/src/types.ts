@@ -1,5 +1,5 @@
 export type FormState = {
+  apiError?: unknown
   formData?: FormData
-  systemError?: unknown
   validationErrors?: { key: string; message: string }[]
 }

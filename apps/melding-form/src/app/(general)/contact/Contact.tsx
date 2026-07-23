@@ -3,29 +3,29 @@
 import { ErrorMessage, Field, Heading, Label } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useRef } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import type { StaticFormTextAreaComponent } from '@meldingen/form-renderer'
 
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { InvalidFormAlert, SubmitButton, TextInput } from '@meldingen/ui'
+import { SubmitButton, TextInput } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
-import { SystemErrorAlert } from '../_components'
 import { getDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { postContactForm } from './actions'
+import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 const initialState: FormState = {}
 
 export const Contact = ({ formComponents }: { formComponents: StaticFormTextAreaComponent[] }) => {
-  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
-  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
-
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(postContactForm, initialState)
+  const [{ apiError, formData, validationErrors }, formAction, isPending] = useActionState(
+    postContactForm,
+    initialState,
+  )
 
   const t = useTranslations('contact')
   const tShared = useTranslations('shared')
@@ -40,31 +40,21 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   const telDefaultValue = (formData?.get('phone') as string | undefined) || formComponents[1].defaultValue
   const telErrorMessage = validationErrors?.find((error) => error.key === 'tel-input')?.message
 
-  // Update document title when there are system or validation errors
+  // Update document title when there are API or validation errors
   const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(systemError),
+    hasSystemError: Boolean(apiError),
     originalDocTitle: `${t('question')} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors?.length,
   })
 
-  // Set focus on InvalidFormAlert when there are validation errors
-  // and on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (validationErrors && invalidFormAlertRef.current) {
-      invalidFormAlertRef.current.focus()
-    } else if (systemError && systemErrorAlertRef.current) {
-      systemErrorAlertRef.current.focus()
-    }
-  }, [validationErrors, systemError])
-
-  useEffect(() => {
-    if (systemError) {
+    if (apiError) {
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
-      console.error(systemError)
+      console.error(apiError)
     }
-  }, [systemError])
+  }, [apiError])
 
   return (
     <>
@@ -73,19 +63,8 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-        {validationErrors && (
-          <InvalidFormAlert
-            className="ams-mb-m"
-            errors={validationErrors.map((error) => ({
-              id: `#${error.key}`,
-              label: error.message,
-            }))}
-            heading={tShared('invalid-form-alert-title')}
-            headingLevel={2}
-            ref={invalidFormAlertRef}
-          />
-        )}
+        {Boolean(apiError) && <ApiErrorAlert shouldRefocus={!isPending} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} />}
         <Heading className="ams-mb-s" level={1} size="level-3">
           {t('question')}
         </Heading>

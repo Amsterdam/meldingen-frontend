@@ -43,14 +43,14 @@ describe('MeldingForm', () => {
     expect(submitButton).toBeInTheDocument()
   })
 
-  it('sets focus on SystemErrorAlert when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+  it('renders an API error alert when there is one', () => {
+    ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message' }, vi.fn()])
 
-    render(<MeldingForm {...defaultProps} />)
+    const { container } = render(<MeldingForm {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
-    expect(alert).toHaveFocus()
+    expect(alert).toBeInTheDocument()
   })
 
   it('renders an Invalid Form Alert when there are validation errors', () => {
@@ -65,19 +65,6 @@ describe('MeldingForm', () => {
 
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', '#key1')
-  })
-
-  it('sets focus on InvalidFormAlert when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
-      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
-      vi.fn(),
-    ])
-
-    const { container } = render(<MeldingForm {...defaultProps} />)
-
-    const alert = container.querySelector('.ams-alert')
-
-    expect(alert).toHaveFocus()
   })
 
   it('renders an error message connected to the primary text area when there is a validation error for the primary field', () => {

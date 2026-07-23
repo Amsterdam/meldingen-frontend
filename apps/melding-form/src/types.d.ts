@@ -6,7 +6,7 @@ export type ValidationError = {
 }
 
 export type FormState = {
+  apiError?: unknown
   formData?: FormData
-  systemError?: unknown
   validationErrors?: ValidationError[]
 }

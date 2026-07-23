@@ -3,7 +3,7 @@
 import { Button, Grid, Heading } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useRef, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import type { LabelOutput, SourceOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
@@ -14,7 +14,7 @@ import type { FormState } from '~/types'
 
 import { LabelsField, NoteField, PrimaryField, SourceField, UrgencyField } from './_components'
 import { postMeldingForm } from './actions'
-import { InvalidFormAlert, SystemErrorAlert } from '~/app/_components'
+import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 
 import styles from './MeldingForm.module.css'
 
@@ -56,9 +56,6 @@ export const MeldingForm = ({
   primaryTextArea,
   sources,
 }: Props) => {
-  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
-  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
-
   const t = useTranslations('melding-form')
 
   const requiredErrorMessage =
@@ -70,29 +67,19 @@ export const MeldingForm = ({
     requiredErrorMessage,
   })
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
+  const [{ apiError, formData, validationErrors }, formAction, isPending] = useActionState(action, initialState)
   const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
   const { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } =
     calculateDefaultValues(formData, defaultValues)
 
-  // Set focus on InvalidFormAlert when there are validation errors
-  // and on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (validationErrors && invalidFormAlertRef.current) {
-      invalidFormAlertRef.current.focus()
-    } else if (systemError && systemErrorAlertRef.current) {
-      systemErrorAlertRef.current.focus()
-    }
-  }, [validationErrors, systemError])
-
-  useEffect(() => {
-    if (systemError) {
+    if (apiError) {
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
-      console.error(systemError)
+      console.error(apiError)
     }
-  }, [systemError])
+  }, [apiError])
 
   const primaryErrorMessage = validationErrors?.find((error) => error.key === 'primary')?.message
   const sourceErrorMessage = validationErrors?.find((error) => error.key === 'source')?.message
@@ -106,8 +93,8 @@ export const MeldingForm = ({
       paddingVertical="x-large"
     >
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
-        {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-        {validationErrors && <InvalidFormAlert ref={invalidFormAlertRef} validationErrors={validationErrors} />}
+        {Boolean(apiError) && <ApiErrorAlert shouldRefocus={!isPending} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} />}
         <Heading className="ams-mb-m ams-visually-hidden" level={1}>
           {t('visually-hidden-title')}
         </Heading>

@@ -1,6 +1,8 @@
 export { AmsNextLink } from './AmsNextLink/AmsNextLink'
+export { ApiErrorAlert } from './ApiErrorAlert/ApiErrorAlert'
 export { BackLink } from './BackLink/BackLink'
 export { BackOfficeLayout } from './BackOfficeLayout/BackOfficeLayout'
 export { Footer } from './Footer/Footer'
 export { Header } from './Header/Header'
+export { InvalidFormAlert } from './InvalidFormAlert/InvalidFormAlert'
 export { RegularLayout } from './RegularLayout/RegularLayout'

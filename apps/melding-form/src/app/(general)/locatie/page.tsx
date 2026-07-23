@@ -6,6 +6,7 @@ import {
   getMeldingByMeldingIdMelder,
 } from '@meldingen/api-client'
 
+import { postLocationForm } from './actions'
 import { Location } from './Location'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
@@ -27,13 +28,13 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
     console.error(assetIdError ?? meldingError)
-    return { assets: [], pageConfig: undefined }
+    return { assets: [], pageConfig: undefined, requiredErrorMessage: undefined }
   }
 
   const assetTypeId = melding.classification?.asset_type?.id
   const typeNames = melding.classification?.asset_type?.arguments?.type_names as string | undefined
 
-  if (!assetTypeId || !typeNames) return { assets: [], pageConfig: undefined }
+  if (!assetTypeId || !typeNames) return { assets: [], pageConfig: undefined, requiredErrorMessage: undefined }
 
   const assets = await Promise.all(
     assetIds.map(async (asset) => {
@@ -60,8 +61,8 @@ const getAssetsFromMelding = async (meldingId: string, token: string) => {
     pageConfig: {
       description: melding.classification?.asset_type?.arguments?.location_description as string | undefined,
       label: melding.classification?.asset_type?.arguments?.location_label as string | undefined,
-      requiredError: melding.classification?.asset_type?.arguments?.location_required_error as string | undefined,
     },
+    requiredErrorMessage: melding.classification?.asset_type?.arguments?.location_required_error as string | undefined,
   }
 }
 
@@ -95,7 +96,17 @@ export default async () => {
 
   const previousPagePath = getPreviousPagePath({ lastPanelPath, meldingId, source, token })
 
-  const { assets, pageConfig } = await getAssetsFromMelding(meldingId, token)
+  const { assets, pageConfig, requiredErrorMessage } = await getAssetsFromMelding(meldingId, token)
 
-  return <Location address={address} pageConfig={pageConfig} prevPage={previousPagePath} selectedAssets={assets} />
+  const action = postLocationForm.bind(null, requiredErrorMessage)
+
+  return (
+    <Location
+      action={action}
+      address={address}
+      pageConfig={pageConfig}
+      prevPage={previousPagePath}
+      selectedAssets={assets}
+    />
+  )
 }

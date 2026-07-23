@@ -1,25 +1,17 @@
 'use client'
 
-import {
-  ActionGroup,
-  Alert,
-  Button,
-  Checkbox,
-  FieldSet,
-  Grid,
-  Heading,
-  Paragraph,
-} from '@amsterdam/design-system-react'
+import { ActionGroup, Button, Checkbox, FieldSet, Grid, Heading } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useRef } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import type { LabelOutput, MeldingOutput } from '@meldingen/api-client'
 
 import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
 import { postChangeLabelsForm } from './actions'
+import { ApiErrorAlert } from '~/app/_components'
 
 import styles from './ChangeLabels.module.css'
 
@@ -31,14 +23,12 @@ export type Props = {
 }
 
 const initialState: {
-  error?: unknown
+  apiError?: unknown
   labelIdsFromAction?: number[]
 } = {}
 
 export const ChangeLabels = ({ currentLabelIds, labels, meldingId, publicId }: Props) => {
-  const errorAlertRef = useRef<HTMLDivElement>(null)
-
-  const [{ error, labelIdsFromAction }, formAction] = useActionState(
+  const [{ apiError, labelIdsFromAction }, formAction, isPending] = useActionState(
     postChangeLabelsForm.bind(null, { currentLabelIds, meldingId }),
     initialState,
   )
@@ -46,19 +36,15 @@ export const ChangeLabels = ({ currentLabelIds, labels, meldingId, publicId }: P
   const t = useTranslations('change-labels')
 
   const baseTitle = t('metadata.title')
-  const documentTitle = error ? `${t('errors.labels-change-failed.heading')} - ${baseTitle}` : baseTitle
+  const documentTitle = apiError ? `${t('errors.labels-change-failed-heading')} - ${baseTitle}` : baseTitle
 
   useEffect(() => {
-    if (!error) return
-
-    // TODO: Log the error to an error reporting service
-    // eslint-disable-next-line no-console
-    console.error(error)
-
-    if (errorAlertRef.current) {
-      errorAlertRef.current.focus()
+    if (apiError) {
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(apiError)
     }
-  }, [error])
+  }, [apiError])
 
   return (
     <div className="ams-page__area--body">
@@ -66,18 +52,8 @@ export const ChangeLabels = ({ currentLabelIds, labels, meldingId, publicId }: P
       <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
       <Grid as="main" gapVertical="large">
         <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
-          {Boolean(error) && (
-            <Alert
-              className={clsx('ams-mb-m', styles.alert)}
-              heading={t('errors.labels-change-failed.heading')}
-              headingLevel={2}
-              ref={errorAlertRef}
-              role="alert"
-              severity="error"
-              tabIndex={-1}
-            >
-              <Paragraph>{t('errors.labels-change-failed.description')}</Paragraph>
-            </Alert>
+          {Boolean(apiError) && (
+            <ApiErrorAlert heading={t('errors.labels-change-failed-heading')} shouldRefocus={!isPending} />
           )}
           <Heading className="ams-mb-m" level={1}>
             {t('title', { publicId })}
