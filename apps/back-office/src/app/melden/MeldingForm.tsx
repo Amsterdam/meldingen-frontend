@@ -69,7 +69,7 @@ export const MeldingForm = ({
     requiredErrorMessage,
   })
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
+  const [{ formData, systemError, validationErrors }, formAction, isPending] = useActionState(action, initialState)
   const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
   const { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } =
@@ -103,7 +103,7 @@ export const MeldingForm = ({
     >
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-        {validationErrors && <InvalidFormAlert errors={validationErrors} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
         <Heading className="ams-mb-m ams-visually-hidden" level={1}>
           {t('visually-hidden-title')}
         </Heading>

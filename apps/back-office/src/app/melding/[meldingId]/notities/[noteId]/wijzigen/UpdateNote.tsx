@@ -28,7 +28,7 @@ export const UpdateNote = ({ meldingId, note }: Props) => {
 
   const action = postUpdateNoteForm.bind(null, { meldingId, noteId: note.id })
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
+  const [{ formData, systemError, validationErrors }, formAction, isPending] = useActionState(action, initialState)
 
   const t = useTranslations('update-note')
 
@@ -57,7 +57,13 @@ export const UpdateNote = ({ meldingId, note }: Props) => {
       <Grid as="main" gapVertical="large">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
           {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-          {validationErrors && <InvalidFormAlert errors={validationErrors} heading={t('invalid-form-alert-title')} />}
+          {validationErrors && (
+            <InvalidFormAlert
+              errors={validationErrors}
+              heading={t('invalid-form-alert-title')}
+              shouldFocus={!isPending}
+            />
+          )}
           <Heading className="ams-mb-m" level={1}>
             {t('title')}
           </Heading>

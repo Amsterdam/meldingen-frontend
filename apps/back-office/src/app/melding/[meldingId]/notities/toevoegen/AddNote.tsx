@@ -21,7 +21,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
 
   const postAddNoteFormWithMeldingId = postAddNoteForm.bind(null, { meldingId })
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(
+  const [{ formData, systemError, validationErrors }, formAction, isPending] = useActionState(
     postAddNoteFormWithMeldingId,
     initialState,
   )
@@ -52,7 +52,13 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
       <Grid as="main" gapVertical="large">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
           {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-          {validationErrors && <InvalidFormAlert errors={validationErrors} heading={t('invalid-form-alert-title')} />}
+          {validationErrors && (
+            <InvalidFormAlert
+              errors={validationErrors}
+              heading={t('invalid-form-alert-title')}
+              shouldFocus={!isPending}
+            />
+          )}
           <Heading className="ams-mb-m" level={1}>
             {t('title')}
           </Heading>
