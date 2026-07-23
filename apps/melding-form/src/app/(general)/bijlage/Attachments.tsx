@@ -6,7 +6,7 @@ import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useMemo, useRef, useState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
@@ -87,18 +87,16 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
   const [genericError, setGenericError] = useState<GenericErrorMessage>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
+  const [shouldFocusAlert, setShouldFocusAlert] = useState(false)
 
   const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
 
   const erroredFileUploads = fileUploads.filter(({ status }) => status === 'error')
   const erroredFileUploadsKey = erroredFileUploads.map(({ id }) => id).join(',')
-
-  // Memoize on the errored uploads' content instead of fileUploads itself,
-  // so the alert isn't refocused on every rerender.
-  const validationErrors = useMemo(
-    () => erroredFileUploads.map(({ errorMessage, id }) => ({ key: id, message: errorMessage ? t(errorMessage) : '' })),
-    [erroredFileUploadsKey],
-  )
+  const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
+    key: id,
+    message: errorMessage ? t(errorMessage) : '',
+  }))
 
   const { description, label } = formData[0]
 
@@ -109,6 +107,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
   const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
     setGenericError(undefined)
+    setShouldFocusAlert(false)
 
     if (!event.currentTarget.files) return
 
@@ -222,7 +221,12 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     } else if (genericError && genericErrorAlertRef.current) {
       genericErrorAlertRef.current.focus()
     }
-  }, [validationErrors, systemError, genericError])
+  }, [systemError, genericError])
+
+  // Set shouldFocusAlert to true when the list of validation errors changes
+  useEffect(() => {
+    if (erroredFileUploadsKey) setShouldFocusAlert(true)
+  }, [erroredFileUploadsKey])
 
   useEffect(() => {
     // TODO: Log the error to an error reporting service
@@ -241,6 +245,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         <InvalidFormAlert
           errors={validationErrors}
           heading={t('validation-errors.alert-title', { count: validationErrors.length })}
+          shouldFocus={shouldFocusAlert}
         />
         {genericError && (
           <Alert
