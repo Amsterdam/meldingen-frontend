@@ -23,7 +23,7 @@ type Props = {
 export const Home = ({ action, formComponents: formComponentsFromServer }: Props) => {
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
+  const [{ formData, systemError, validationErrors }, formAction, isPending] = useActionState(action, initialState)
 
   const t = useTranslations('homepage')
   const tShared = useTranslations('shared')
@@ -72,7 +72,7 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
     <main>
       <title>{documentTitle}</title>
       {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-      {validationErrors && <InvalidFormAlert errors={validationErrors} />}
+      {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
       <FormRenderer
         action={formAction}
         formComponents={formComponents}

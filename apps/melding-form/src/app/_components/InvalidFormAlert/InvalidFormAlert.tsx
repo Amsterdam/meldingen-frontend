@@ -1,15 +1,12 @@
-import type { InvalidFormAlertProps } from '@amsterdam/design-system-react'
-
 import { useTranslations } from 'next-intl'
+
+import type { InvalidFormAlertProps } from '@meldingen/ui'
 
 import { InvalidFormAlert as UIInvalidFormAlert } from '@meldingen/ui'
 
-type Props = {
-  errors: { key: string; message: string }[]
-  heading?: InvalidFormAlertProps['heading']
-}
+type Props = Pick<InvalidFormAlertProps, 'errors' | 'heading' | 'shouldFocus'>
 
-export const InvalidFormAlert = ({ errors, heading }: Props) => {
+export const InvalidFormAlert = ({ errors, heading, shouldFocus }: Props) => {
   const t = useTranslations('shared')
 
   return (
@@ -18,6 +15,7 @@ export const InvalidFormAlert = ({ errors, heading }: Props) => {
       errors={errors}
       heading={heading ?? t('invalid-form-alert-title')}
       headingLevel={2}
+      shouldFocus={shouldFocus}
     />
   )
 }
