@@ -69,7 +69,7 @@ export const AdditionalQuestions = ({
 }: Props) => {
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
+  const [{ formData, systemError, validationErrors }, formAction, isPending] = useActionState(action, initialState)
 
   const t = useTranslations('additional-questions')
   const tShared = useTranslations('shared')
@@ -115,7 +115,7 @@ export const AdditionalQuestions = ({
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-        {validationErrors && <InvalidFormAlert errors={validationErrors} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
         <FormRenderer
           action={formAction}
           formComponents={formComponents}

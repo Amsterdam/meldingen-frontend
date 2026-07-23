@@ -51,7 +51,7 @@ const getAssetElement = (asset: Feature) => {
 export const Location = ({ action, address, pageConfig, prevPage, selectedAssets }: Props) => {
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ systemError, validationErrors }, formAction] = useActionState(action, initialState)
+  const [{ systemError, validationErrors }, formAction, isPending] = useActionState(action, initialState)
 
   const t = useTranslations('location')
   const tShared = useTranslations('shared')
@@ -87,7 +87,7 @@ export const Location = ({ action, address, pageConfig, prevPage, selectedAssets
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-        {validationErrors && <InvalidFormAlert errors={validationErrors} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
         <Field className="ams-mb-l" invalid={Boolean(validationErrors)}>
           <Heading level={1} size="level-3">
             {pageConfig?.label ?? t('question')}

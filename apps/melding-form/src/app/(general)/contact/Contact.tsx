@@ -25,7 +25,10 @@ const initialState: FormState = {}
 export const Contact = ({ formComponents }: { formComponents: StaticFormTextAreaComponent[] }) => {
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(postContactForm, initialState)
+  const [{ formData, systemError, validationErrors }, formAction, isPending] = useActionState(
+    postContactForm,
+    initialState,
+  )
 
   const t = useTranslations('contact')
   const tShared = useTranslations('shared')
@@ -71,7 +74,7 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
       </BackLink>
       <main>
         {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-        {validationErrors && <InvalidFormAlert errors={validationErrors} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
         <Heading className="ams-mb-s" level={1} size="level-3">
           {t('question')}
         </Heading>
