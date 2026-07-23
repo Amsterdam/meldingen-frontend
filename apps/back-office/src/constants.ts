@@ -11,3 +11,5 @@ export const DEFAULT_PAGE_SIZE = 10
 export const SORT = '["created_at","DESC"]'
 
 export const URGENCY_VALUES: readonly MeldingOutput['urgency'][] = [-1, 0, 1]
+
+export const MAX_NOTE_LENGTH = 1000

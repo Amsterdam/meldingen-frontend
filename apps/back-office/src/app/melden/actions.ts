@@ -8,7 +8,7 @@ import type { MeldingOutput } from '@meldingen/api-client'
 import type { MeldingData } from './types'
 import type { FormState } from '~/types'
 
-import { MAX_NOTE_LENGTH } from '../constants'
+import { parseNoteDocument } from '../_utils/parseNoteDocument'
 import { hasValidationErrors } from './_utils/hasValidationErrors'
 import {
   patchMeldingByMeldingId,
@@ -18,6 +18,7 @@ import {
   postMeldingByMeldingIdNote,
 } from '~/app/_api-client/proxy'
 import { handleApiError } from '~/app/_utils/handleApiError'
+import { MAX_NOTE_LENGTH } from '~/constants'
 import { URGENCY_VALUES } from '~/constants'
 
 export type ArgsType = {
@@ -58,21 +59,19 @@ const createOrUpdateMelding = async (text: string, id?: number, token?: string) 
   }
 }
 
-const createOrUpdateNote = async (text: string, meldingId: number, noteId?: number) => {
+const createOrUpdateNote = async (isEmpty: boolean, markdown: string, meldingId: number, noteId?: number) => {
   if (noteId) {
     return await patchMeldingByMeldingIdNoteByNoteId({
-      body: { text },
+      body: { text: markdown },
       path: { melding_id: meldingId, note_id: noteId },
     })
   }
 
   // If the note text is empty, we don't want to create a new note
   // It is allowed to update an existing note with empty text
-  // TODO: this check will become unreliable when we implement the WYSIWYG editor, because empty text can contain Markdown operators
-  // (e.g. `*` or `_`). Revisit this check at that point.
-  if (text.trim() !== '') {
+  if (!isEmpty) {
     return await postMeldingByMeldingIdNote({
-      body: { text },
+      body: { text: markdown },
       path: { melding_id: meldingId },
     })
   }
@@ -87,11 +86,17 @@ export const postMeldingForm = async (
 
   const formDataObj = Object.fromEntries(formData)
 
+  const { characterCount, isEmpty, markdown } = parseNoteDocument(formDataObj.addNote)
+
+  // Replace the submitted JSON with the derived markdown, so RichTextEditor can reload it as
+  // its `defaultValue` (via contentType: 'markdown') if the form is redisplayed after an error.
+  formData.set('addNote', markdown)
+
   // Return validation errors if required fields are missing
   const validationErrors = [
     ...(!formDataObj.primary ? [{ key: 'primary', message: requiredErrorMessage }] : []),
     ...(!formDataObj.source ? [{ key: 'source', message: t('source.error') }] : []),
-    ...(formDataObj.addNote && formDataObj.addNote.toString().length > MAX_NOTE_LENGTH
+    ...(characterCount > MAX_NOTE_LENGTH
       ? [{ key: 'addNote', message: t('note.error', { max: MAX_NOTE_LENGTH }) }]
       : []),
   ]
@@ -153,7 +158,7 @@ export const postMeldingForm = async (
 
   if (updateMeldingError) return { formData, systemError: updateMeldingError }
 
-  const result = await createOrUpdateNote(formDataObj.addNote.toString(), meldingData.id, existingNoteId)
+  const result = await createOrUpdateNote(isEmpty, markdown, meldingData.id, existingNoteId)
 
   if (result?.error) return { formData, systemError: result.error }
 

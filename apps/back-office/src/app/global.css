@@ -10,3 +10,11 @@ body {
   margin-block: 0;
   margin-inline: 0;
 }
+
+/*
+ * Override ADS paragraph overflow behavior, allowing long words to break correctly
+ * TODO: Notify Amsterdam Design System team about this override and remove it once the issue is fixed
+ */
+.ams-paragraph {
+  overflow-wrap: anywhere;
+}

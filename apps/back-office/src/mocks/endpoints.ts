@@ -15,6 +15,7 @@ export const ENDPOINTS = {
   GET_MELDING_BY_MELDING_ID_ATTACHMENTS: '/melding/:id/attachments',
   GET_MELDING_BY_MELDING_ID_NEXT_POSSIBLE_STATES: '/melding/:id/next_possible_states',
   GET_MELDING_BY_MELDING_ID_NOTE: '/melding/:id/note',
+  GET_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID: '/melding/:id/note/:noteId',
 
   PATCH_MELDING_BY_MELDING_ID: '/melding/:id',
   PATCH_MELDING_BY_MELDING_ID_MELDER: '/melding/:id/melder',
