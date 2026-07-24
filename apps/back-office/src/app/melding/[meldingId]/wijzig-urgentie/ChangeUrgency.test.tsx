@@ -12,7 +12,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
 
@@ -62,9 +62,10 @@ describe('ChangeUrgency', () => {
   })
 
   it('displays the correct error message and selected urgency when action returns invalid-urgency', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { apiError: { type: 'invalid-urgency' }, urgencyFromAction: '1' },
       vi.fn(),
+      false,
     ])
 
     const { container } = render(<ChangeUrgency {...defaultProps} />)
@@ -79,9 +80,10 @@ describe('ChangeUrgency', () => {
   })
 
   it('displays the correct error message and selected urgency when action returns urgency-change-failed', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { apiError: { type: 'urgency-change-failed' }, urgencyFromAction: '-1' },
       vi.fn(),
+      false,
     ])
 
     const { container } = render(<ChangeUrgency {...defaultProps} />)
@@ -99,7 +101,7 @@ describe('ChangeUrgency', () => {
     const user = userEvent.setup()
 
     const mockFormAction = vi.fn()
-    ;(useActionState as Mock).mockReturnValue([{}, mockFormAction])
+    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<ChangeUrgency {...defaultProps} />)
 

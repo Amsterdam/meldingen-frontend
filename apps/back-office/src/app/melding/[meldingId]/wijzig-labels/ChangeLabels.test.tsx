@@ -12,7 +12,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
 
@@ -72,7 +72,11 @@ describe('ChangeLabels', () => {
   })
 
   it('displays an API error Alert and last selected labels when action returns an API error', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error', labelIdsFromAction: [0, 2] }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([
+      { apiError: 'Test error', labelIdsFromAction: [0, 2] },
+      vi.fn(),
+      false,
+    ])
 
     const { container } = render(<ChangeLabels {...defaultProps} />)
 
@@ -87,7 +91,7 @@ describe('ChangeLabels', () => {
 
   it('uses labelIdsFromAction over currentLabelIds when both are present', () => {
     // currentLabelIds has labels 1 and 2, but the action returned only label 3
-    ;(useActionState as Mock).mockReturnValueOnce([{ labelIdsFromAction: [2] }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ labelIdsFromAction: [2] }, vi.fn(), false])
 
     render(<ChangeLabels {...defaultProps} />)
 
@@ -107,7 +111,7 @@ describe('ChangeLabels', () => {
     const user = userEvent.setup()
 
     const mockFormAction = vi.fn()
-    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction])
+    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<ChangeLabels {...defaultProps} />)
 
