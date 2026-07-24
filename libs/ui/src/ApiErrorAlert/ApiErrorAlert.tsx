@@ -1,7 +1,6 @@
 'use client'
 
 import type { AlertProps } from '@amsterdam/design-system-react'
-import type { HTMLAttributes } from 'react'
 
 import { Alert } from '@amsterdam/design-system-react/dist/Alert'
 import { Paragraph } from '@amsterdam/design-system-react/dist/Paragraph'
@@ -11,6 +10,7 @@ import { useEffect, useRef } from 'react'
 import styles from './ApiErrorAlert.module.css'
 
 export type ApiErrorAlertProps = {
+  className?: string
   description: string
   heading: string
   headingLevel: AlertProps['headingLevel']
@@ -20,7 +20,7 @@ export type ApiErrorAlertProps = {
    * Without `useActionState`, manage it yourself via a state variable: set it to `false` on submit and back to `true` on response.
    */
   shouldFocus: boolean
-} & HTMLAttributes<HTMLDivElement>
+}
 
 export const ApiErrorAlert = ({ className, description, heading, headingLevel, shouldFocus }: ApiErrorAlertProps) => {
   const ref = useRef<HTMLDivElement>(null)
