@@ -10,7 +10,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
 
@@ -21,10 +21,6 @@ const defaultProps = {
 }
 
 describe('Location', () => {
-  beforeEach(() => {
-    ;(useActionState as Mock).mockReturnValue([{}, vi.fn()])
-  })
-
   it('renders the back link', () => {
     render(<Location {...defaultProps} />)
 
@@ -35,7 +31,7 @@ describe('Location', () => {
   })
 
   it('renders an API error Alert when there is one', () => {
-    ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
 
     const { container } = render(<Location {...defaultProps} />)
 
@@ -45,9 +41,10 @@ describe('Location', () => {
   })
 
   it('renders an Invalid Form Alert when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
+      false,
     ])
 
     render(<Location {...defaultProps} />)
@@ -100,7 +97,7 @@ describe('Location', () => {
   })
 
   it('updates the document title when there is an API error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
 
     render(<Location {...defaultProps} />)
 
@@ -108,9 +105,10 @@ describe('Location', () => {
   })
 
   it('updates the document title when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
+      false,
     ])
 
     render(<Location {...defaultProps} />)
