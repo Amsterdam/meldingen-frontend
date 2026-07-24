@@ -157,7 +157,7 @@ describe('Contact', () => {
 
     render(<Contact formComponents={contactFormData} />)
 
-    expect(document.title).toBe('system-error-alert-title - question - organisation-name')
+    expect(document.title).toBe('api-error-alert.heading - question - organisation-name')
   })
 
   it('updates the document title when there are validation errors', () => {
