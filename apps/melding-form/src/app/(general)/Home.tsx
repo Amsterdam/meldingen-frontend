@@ -6,12 +6,12 @@ import { useActionState, useEffect, useRef } from 'react'
 import type { StaticFormTextAreaComponent } from '@meldingen/form-renderer'
 
 import { FormRenderer } from '@meldingen/form-renderer'
-import { InvalidFormAlert } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
 import { SystemErrorAlert } from './_components'
 import { getDocumentTitleOnError } from './_utils/validation'
+import { InvalidFormAlert } from '~/app/_components'
 
 const initialState: FormState = {}
 
@@ -21,10 +21,9 @@ type Props = {
 }
 
 export const Home = ({ action, formComponents: formComponentsFromServer }: Props) => {
-  const invalidFormAlertRef = useRef<HTMLDivElement>(null)
   const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
-  const [{ formData, systemError, validationErrors }, formAction] = useActionState(action, initialState)
+  const [{ formData, systemError, validationErrors }, formAction, isPending] = useActionState(action, initialState)
 
   const t = useTranslations('homepage')
   const tShared = useTranslations('shared')
@@ -54,12 +53,9 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
     validationErrorCount: validationErrors?.length,
   })
 
-  // Set focus on InvalidFormAlert when there are validation errors
-  // and on SystemErrorAlert when there is a system error
+  // Set focus on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (validationErrors && invalidFormAlertRef.current) {
-      invalidFormAlertRef.current.focus()
-    } else if (systemError && systemErrorAlertRef.current) {
+    if (systemError && systemErrorAlertRef.current) {
       systemErrorAlertRef.current.focus()
     }
   }, [validationErrors, systemError])
@@ -76,18 +72,7 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
     <main>
       <title>{documentTitle}</title>
       {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
-      {validationErrors && (
-        <InvalidFormAlert
-          className="ams-mb-m"
-          errors={validationErrors.map((error) => ({
-            id: `#${error.key}`,
-            label: error.message,
-          }))}
-          heading={tShared('invalid-form-alert-title')}
-          headingLevel={2}
-          ref={invalidFormAlertRef}
-        />
-      )}
+      {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
       <FormRenderer
         action={formAction}
         formComponents={formComponents}

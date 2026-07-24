@@ -49,6 +49,14 @@ describe('Page', () => {
     await expect(Page({ params })).rejects.toThrow('Failed to fetch notes data.')
   })
 
+  it('throws an error when getUserMe returns an error', async () => {
+    server.use(http.get(ENDPOINTS.GET_USER_ME, () => HttpResponse.json({}, { status: 500 })))
+
+    const params = Promise.resolve({ meldingId: 123 })
+
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch current user data.')
+  })
+
   it('calls the NotesOverview component with the correct data', async () => {
     const params = Promise.resolve({ meldingId: 123 })
     const result = await Page({ params })

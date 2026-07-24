@@ -25,7 +25,7 @@
     },
     "submit-button": "Volgende vraag",
     "errors": {
-      "no-location": "Vul een adres in."
+      "no-address": "Vul een adres in."
     }
   },
   "select-location": {

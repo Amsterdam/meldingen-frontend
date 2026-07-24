@@ -171,19 +171,6 @@ describe('Contact', () => {
     expect(document.title).toBe('error-count-label question - organisation-name')
   })
 
-  it('sets focus on InvalidFormAlert when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
-      { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
-      vi.fn(),
-    ])
-
-    const { container } = render(<Contact formComponents={contactFormData} />)
-
-    const alert = container.querySelector('.ams-alert')
-
-    expect(alert).toHaveFocus()
-  })
-
   it('sets focus on SystemErrorAlert when there is a system error', () => {
     ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
     render(<Contact formComponents={contactFormData} />)

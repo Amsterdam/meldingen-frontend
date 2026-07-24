@@ -128,9 +128,7 @@ describe('Attachments', () => {
     expect(loadingIndicator).toBeInTheDocument()
   })
 
-  it('renders an Invalid Form Alert when an upload has an error', async () => {
-    const user = userEvent.setup()
-
+  it('renders an Invalid Form Alert and focuses it when an upload has an error', () => {
     ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
@@ -139,16 +137,22 @@ describe('Attachments', () => {
       )
     })
 
-    render(<Attachments {...defaultProps} />)
+    const { container } = render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText('File input')
 
-    await user.upload(fileInput, [mockFile])
+    // Using fireEvent instead of userEvent.upload here, because userEvent simulates the browser
+    // restoring focus to the file input once the (simulated) file picker closes. That happens
+    // after our change handler runs, so it would overwrite the focus we set on the alert and mask
+    // the behaviour under test.
+    fireEvent.change(fileInput, { target: { files: [mockFile] } })
 
     const link = screen.getByRole('link', { name: 'Upload failed' })
+    const alert = container.querySelector('.ams-alert')
 
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', '#file-upload.id-prefix-1')
+    expect(alert).toHaveFocus()
   })
 
   it('renders an empty error message when an upload has an error without a message', async () => {
@@ -516,10 +520,6 @@ describe('Attachments', () => {
     const alert = screen.getByRole('alert')
 
     expect(alert).toHaveFocus()
-  })
-
-  it.skip('sets focus on InvalidFormAlert when there are validation errors', async () => {
-    // TODO: Fix this test
   })
 
   it.skip('sets focus on the generic error Alert when there is a generic error', async () => {
