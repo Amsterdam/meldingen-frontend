@@ -12,7 +12,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
 
@@ -56,7 +56,7 @@ describe('UpdateNote', () => {
   })
 
   it('displays an API error alert when there is one', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: { detail: 'Something went wrong' } }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: { detail: 'Something went wrong' } }, vi.fn(), false])
 
     const { container } = render(<UpdateNote {...defaultProps} />)
 
@@ -71,6 +71,7 @@ describe('UpdateNote', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { formData, validationErrors: [{ key: 'updateNote', message: 'Error message' }] },
       vi.fn(),
+      false,
     ])
 
     render(<UpdateNote {...defaultProps} />)
@@ -93,7 +94,7 @@ describe('UpdateNote', () => {
     const user = userEvent.setup()
 
     const mockFormAction = vi.fn()
-    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction])
+    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<UpdateNote {...defaultProps} />)
 

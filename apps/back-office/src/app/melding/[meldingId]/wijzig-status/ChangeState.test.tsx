@@ -10,7 +10,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
 
@@ -61,9 +61,10 @@ describe('ChangeState', () => {
   })
 
   it('displays the correct error message and default value when the action returns an error with type invalid-state', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { apiError: { type: 'invalid-state' }, meldingStateFromAction: 'completed' },
       vi.fn(),
+      false,
     ])
 
     const { container } = render(<ChangeState {...defaultProps} />)
@@ -79,9 +80,10 @@ describe('ChangeState', () => {
   })
 
   it('displays the correct error message and default value when the action returns an error with type state-change-failed', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { apiError: { type: 'state-change-failed' }, meldingStateFromAction: 'completed' },
       vi.fn(),
+      false,
     ])
 
     const { container } = render(<ChangeState {...defaultProps} />)
@@ -100,7 +102,7 @@ describe('ChangeState', () => {
     const user = userEvent.setup()
 
     const mockFormAction = vi.fn()
-    ;(useActionState as Mock).mockReturnValue([{}, mockFormAction])
+    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<ChangeState {...defaultProps} />)
 
