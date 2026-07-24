@@ -53,7 +53,7 @@ export const ChangeLabels = ({ currentLabelIds, labels, meldingId, publicId }: P
       <Grid as="main" gapVertical="large">
         <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
           {Boolean(apiError) && (
-            <ApiErrorAlert heading={t('errors.labels-change-failed-heading')} shouldRefocus={!isPending} />
+            <ApiErrorAlert heading={t('errors.labels-change-failed-heading')} shouldFocus={!isPending} />
           )}
           <Heading className="ams-mb-m" level={1}>
             {t('title', { publicId })}

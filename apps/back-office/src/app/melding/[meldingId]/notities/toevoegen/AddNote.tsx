@@ -42,7 +42,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
       <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
       <Grid as="main" gapVertical="large">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
-          {Boolean(apiError) && <ApiErrorAlert shouldRefocus={!isPending} />}
+          {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
           {validationErrors && (
             <InvalidFormAlert
               errors={validationErrors}
