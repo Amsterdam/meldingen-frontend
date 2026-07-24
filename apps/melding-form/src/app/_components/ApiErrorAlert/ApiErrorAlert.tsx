@@ -1,8 +1,12 @@
 import { useTranslations } from 'next-intl'
 
+import type { ApiErrorAlertProps } from '@meldingen/ui'
+
 import { ApiErrorAlert as UIApiErrorAlert } from '@meldingen/ui'
 
-export const ApiErrorAlert = ({ shouldRefocus }: { shouldRefocus: boolean }) => {
+type Props = Pick<ApiErrorAlertProps, 'shouldFocus'>
+
+export const ApiErrorAlert = ({ shouldFocus }: Props) => {
   const t = useTranslations('shared.api-error-alert')
 
   return (
@@ -11,7 +15,7 @@ export const ApiErrorAlert = ({ shouldRefocus }: { shouldRefocus: boolean }) => 
       description={t('description')}
       heading={t('heading')}
       headingLevel={2}
-      shouldRefocus={shouldRefocus}
+      shouldFocus={shouldFocus}
     />
   )
 }

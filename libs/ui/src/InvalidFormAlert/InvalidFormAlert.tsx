@@ -30,7 +30,6 @@ export const InvalidFormAlert = ({
   heading = 'Verbeter de fouten voor u verder gaat',
   headingLevel,
   shouldFocus,
-  ...restProps
 }: InvalidFormAlertProps) => {
   const ref = useRef<HTMLDivElement>(null)
 

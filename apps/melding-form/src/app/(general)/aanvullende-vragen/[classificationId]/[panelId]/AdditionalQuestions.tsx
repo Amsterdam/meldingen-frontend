@@ -103,7 +103,7 @@ export const AdditionalQuestions = ({
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(apiError) && <ApiErrorAlert shouldRefocus={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
         {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
         <FormRenderer
           action={formAction}

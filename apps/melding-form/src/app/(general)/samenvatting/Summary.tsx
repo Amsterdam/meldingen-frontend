@@ -75,7 +75,7 @@ export const Summary = ({
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(apiError) && <ApiErrorAlert shouldRefocus={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
         <Heading className="ams-mb-s" level={1} size="level-3">
           {t('main-title')}
         </Heading>

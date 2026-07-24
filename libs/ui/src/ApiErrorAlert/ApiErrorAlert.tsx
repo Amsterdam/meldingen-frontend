@@ -10,21 +10,24 @@ import { useEffect, useRef } from 'react'
 
 import styles from './ApiErrorAlert.module.css'
 
-export type ApiErrorAlertProps = HTMLAttributes<HTMLDivElement> & {
+export type ApiErrorAlertProps = {
   description: string
   heading: string
   headingLevel: AlertProps['headingLevel']
-  // Pass !isPending from this alert's useActionState call. Refocuses whenever
-  // this flips to true, i.e. whenever the server action has just settled.
-  shouldRefocus: boolean
-}
+  /**
+   * Pass a value that changes to `true` to trigger focus on the alert.
+   * With `useActionState`, `!isPending` works well — it is `false` on submit and `true` when the response arrives.
+   * Without `useActionState`, manage it yourself via a state variable: set it to `false` on submit and back to `true` on response.
+   */
+  shouldFocus: boolean
+} & HTMLAttributes<HTMLDivElement>
 
-export const ApiErrorAlert = ({ className, description, heading, headingLevel, shouldRefocus }: ApiErrorAlertProps) => {
+export const ApiErrorAlert = ({ className, description, heading, headingLevel, shouldFocus }: ApiErrorAlertProps) => {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (shouldRefocus) ref.current?.focus()
-  }, [shouldRefocus])
+    if (shouldFocus) ref.current?.focus()
+  }, [shouldFocus])
 
   return (
     <Alert

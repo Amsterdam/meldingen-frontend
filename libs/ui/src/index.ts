@@ -1,4 +1,5 @@
 export { ApiErrorAlert } from './ApiErrorAlert/ApiErrorAlert'
+export type { ApiErrorAlertProps } from './ApiErrorAlert/ApiErrorAlert'
 export { FileList } from './FileList/FileList'
 export { FileUpload } from './FileUpload/FileUpload'
 export { InvalidFormAlert } from './InvalidFormAlert/InvalidFormAlert'

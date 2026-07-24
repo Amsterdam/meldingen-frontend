@@ -237,7 +237,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(apiError) && <ApiErrorAlert shouldRefocus={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
         <InvalidFormAlert
           errors={validationErrors}
           heading={t('validation-errors.alert-title', { count: validationErrors.length })}
