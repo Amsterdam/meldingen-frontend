@@ -6,7 +6,7 @@ const defaultProps = {
   description: 'Test description',
   heading: 'Test heading',
   headingLevel: 2,
-  shouldRefocus: false,
+  shouldFocus: false,
 } as const
 
 describe('Api Error Alert', () => {
@@ -42,8 +42,8 @@ describe('Api Error Alert', () => {
     expect(heading).toBeInTheDocument()
   })
 
-  it('sets focus on the alert when shouldRefocus is true', () => {
-    render(<ApiErrorAlert {...defaultProps} shouldRefocus />)
+  it('sets focus on the alert when shouldFocus is true', () => {
+    render(<ApiErrorAlert {...defaultProps} shouldFocus />)
 
     const heading = screen.getByRole('heading', { name: 'Test heading' })
     const alert = heading.closest('section')
@@ -51,7 +51,7 @@ describe('Api Error Alert', () => {
     expect(alert).toHaveFocus()
   })
 
-  it('does not set focus on the alert when shouldRefocus is false', () => {
+  it('does not set focus on the alert when shouldFocus is false', () => {
     render(<ApiErrorAlert {...defaultProps} />)
 
     const heading = screen.getByRole('heading', { name: 'Test heading' })
