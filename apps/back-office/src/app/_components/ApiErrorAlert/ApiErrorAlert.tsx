@@ -1,11 +1,12 @@
 import { useTranslations } from 'next-intl'
 
+import type { ApiErrorAlertProps } from '@meldingen/ui'
+
 import { ApiErrorAlert as UIApiErrorAlert } from '@meldingen/ui'
 
-type Props = {
+type Props = Pick<ApiErrorAlertProps, 'shouldFocus'> & {
   description?: string
   heading?: string
-  shouldFocus: boolean
 }
 
 export const ApiErrorAlert = ({ description, heading, shouldFocus }: Props) => {
