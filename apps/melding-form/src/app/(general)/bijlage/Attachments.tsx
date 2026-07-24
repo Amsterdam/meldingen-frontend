@@ -19,12 +19,11 @@ import type { FileUpload as FileUploadType, PendingFileUpload } from './_utils/s
 import type { ExistingFileType } from './page'
 import type { FormState } from '~/types'
 
-import { SystemErrorAlert } from '../_components'
 import { getDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { startUpload } from './_utils/startUpload'
 import { submitAttachmentsForm } from './actions'
-import { InvalidFormAlert } from '~/app/_components'
+import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './Attachments.module.css'
@@ -45,7 +44,7 @@ export type Props = {
   token: string
 }
 
-const initialState: Pick<FormState, 'systemError'> = {}
+const initialState: Pick<FormState, 'apiError'> = {}
 
 const createDuplicatedUploadError = (file: File, errorMessage: string, id: string): FileUploadType => ({
   errorMessage,
@@ -77,7 +76,6 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const uploadIdCounter = useRef(files.length)
 
   const genericErrorAlertRef = useRef<HTMLDivElement>(null)
-  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const t = useTranslations('attachments')
   const tShared = useTranslations('shared')
@@ -89,7 +87,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const [deletedFileName, setDeletedFileName] = useState<string>()
   const [shouldFocusAlert, setShouldFocusAlert] = useState(false)
 
-  const [{ systemError }, formAction] = useActionState(submitAttachmentsForm, initialState)
+  const [{ apiError }, formAction, isPending] = useActionState(submitAttachmentsForm, initialState)
 
   const erroredFileUploads = fileUploads.filter(({ status }) => status === 'error')
   const erroredFileUploadsKey = erroredFileUploads.map(({ id }) => id).join(',')
@@ -206,22 +204,20 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     }
   }
 
-  // Update document title when there are system, validation or generic errors
+  // Update document title when there are API, validation or generic errors
   const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(systemError) || Boolean(genericError),
+    hasSystemError: Boolean(apiError) || Boolean(genericError),
     originalDocTitle: `${label} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors.length,
   })
 
-  // Set focus on alerts when there are errors
+  // Set focus on generic Alert when there is a generic error
   useEffect(() => {
-    if (systemError && systemErrorAlertRef.current) {
-      systemErrorAlertRef.current.focus()
-    } else if (genericError && genericErrorAlertRef.current) {
+    if (genericError && genericErrorAlertRef.current) {
       genericErrorAlertRef.current.focus()
     }
-  }, [systemError, genericError])
+  }, [genericError])
 
   // Set shouldFocusAlert to true when the list of validation errors changes
   useEffect(() => {
@@ -231,8 +227,8 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   useEffect(() => {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
-    if (systemError) console.error(systemError)
-  }, [systemError])
+    if (apiError) console.error(apiError)
+  }, [apiError])
 
   return (
     <>
@@ -241,7 +237,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
+        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
         <InvalidFormAlert
           errors={validationErrors}
           heading={t('validation-errors.alert-title', { count: validationErrors.length })}

@@ -68,11 +68,11 @@ describe('postPrimaryForm', () => {
 
     const result = await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
-    expect(result).toEqual({ formData, systemError: 'Error message' })
+    expect(result).toEqual({ apiError: 'Error message', formData })
     expect(redirect).not.toHaveBeenCalled()
   })
 
-  it('should set correct cookies', async () => {
+  it('sets correct cookies', async () => {
     const formData = new FormData()
     formData.set('primary', 'Test')
 
@@ -96,7 +96,7 @@ describe('postPrimaryForm', () => {
     expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'PATCH request', { maxAge: 86400 })
   })
 
-  it('returns a system error when resolveClassificationRedirect returns an error', async () => {
+  it('returns an API error when resolveClassificationRedirect returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json('Error message', { status: 500 }),
@@ -108,7 +108,7 @@ describe('postPrimaryForm', () => {
 
     const result = await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
-    expect(result).toEqual({ formData, systemError: 'Error message' })
+    expect(result).toEqual({ apiError: 'Error message', formData })
     expect(redirect).not.toHaveBeenCalled()
   })
 

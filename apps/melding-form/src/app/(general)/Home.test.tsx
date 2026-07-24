@@ -32,13 +32,13 @@ describe('Page', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Er staan blowende jongeren')
-    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message', formData }, vi.fn()])
 
-    render(<Home {...defaultProps} />)
+    const { container } = render(<Home {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
-    expect(alert).toHaveTextContent('system-error-alert-title')
+    expect(alert).toHaveTextContent('heading')
 
     const input = screen.getByRole('textbox')
 
@@ -91,8 +91,8 @@ describe('Page', () => {
     expect(input).toHaveValue('Form data from action')
   })
 
-  it('updates the document title when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+  it('updates the document title when there is an API error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message' }, vi.fn()])
 
     render(<Home {...defaultProps} />)
 
@@ -108,14 +108,5 @@ describe('Page', () => {
     render(<Home {...defaultProps} />)
 
     expect(document.title).toBe(`error-count-label ${mockQuestionText.source} - organisation-name`)
-  })
-
-  it('sets focus on SystemErrorAlert when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
-    render(<Home {...defaultProps} />)
-
-    const alert = screen.getByRole('alert')
-
-    expect(alert).toHaveFocus()
   })
 })

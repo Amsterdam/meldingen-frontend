@@ -190,7 +190,7 @@ describe('postForm', () => {
 
     const result = await postForm(defaultArgs, null, formData)
 
-    expect(result).toEqual({ formData, systemError: ['Error message'] })
+    expect(result).toEqual({ apiError: ['Error message'], formData })
   })
 
   it('returns a merged error message if multiple errors occur when posting multiple answers', async () => {
@@ -206,7 +206,7 @@ describe('postForm', () => {
 
     const result = await postForm(defaultArgs, null, formData)
 
-    expect(result).toEqual({ formData, systemError: ['Error message', 'Error message'] })
+    expect(result).toEqual({ apiError: ['Error message', 'Error message'], formData })
   })
 
   it('returns an error message if an error occurs when changing melding state', async () => {
@@ -220,7 +220,7 @@ describe('postForm', () => {
 
     const result = await postForm(defaultArgs, null, formData)
 
-    expect(result).toEqual({ formData, systemError: 'Error message' })
+    expect(result).toEqual({ apiError: 'Error message', formData })
   })
 
   it('sets lastPanelPath in cookies when on last page', async () => {

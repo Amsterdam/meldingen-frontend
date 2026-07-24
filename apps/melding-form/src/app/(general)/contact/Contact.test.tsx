@@ -19,13 +19,13 @@ describe('Contact', () => {
     const formData = new FormData()
 
     formData.append('email', 'test@example.com')
-    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message', formData }, vi.fn()])
 
-    render(<Contact formComponents={contactFormData} />)
+    const { container } = render(<Contact formComponents={contactFormData} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
-    expect(alert).toHaveTextContent('system-error-alert-title')
+    expect(alert).toHaveTextContent('heading')
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
 
@@ -152,8 +152,8 @@ describe('Contact', () => {
     expect(telInput).toHaveValue('Phone data from action')
   })
 
-  it('updates the document title when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+  it('updates the document title when there is an API error', () => {
+    ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message' }, vi.fn()])
 
     render(<Contact formComponents={contactFormData} />)
 
@@ -169,14 +169,5 @@ describe('Contact', () => {
     render(<Contact formComponents={contactFormData} />)
 
     expect(document.title).toBe('error-count-label question - organisation-name')
-  })
-
-  it('sets focus on SystemErrorAlert when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
-    render(<Contact formComponents={contactFormData} />)
-
-    const alert = screen.getByRole('alert')
-
-    expect(alert).toHaveFocus()
   })
 })
