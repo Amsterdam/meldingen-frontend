@@ -5,10 +5,10 @@ import { ApiErrorAlert as UIApiErrorAlert } from '@meldingen/ui'
 type Props = {
   description?: string
   heading?: string
-  shouldRefocus: boolean
+  shouldFocus: boolean
 }
 
-export const ApiErrorAlert = ({ description, heading, shouldRefocus }: Props) => {
+export const ApiErrorAlert = ({ description, heading, shouldFocus }: Props) => {
   const t = useTranslations('shared.api-error-alert')
 
   return (
@@ -17,7 +17,7 @@ export const ApiErrorAlert = ({ description, heading, shouldRefocus }: Props) =>
       description={description ?? t('description')}
       heading={heading ?? t('heading')}
       headingLevel={2}
-      shouldRefocus={shouldRefocus}
+      shouldFocus={shouldFocus}
     />
   )
 }

@@ -82,7 +82,7 @@ export const ChangeUrgency = ({ currentUrgency, meldingId, publicId }: Props) =>
             <ApiErrorAlert
               description={t(`errors.${apiError.type}.description`)}
               heading={t(`errors.${apiError.type}.heading`)}
-              shouldRefocus={!isPending}
+              shouldFocus={!isPending}
             />
           )}
           <Heading className="ams-mb-m" level={1}>
