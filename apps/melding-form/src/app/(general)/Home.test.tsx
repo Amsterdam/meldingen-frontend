@@ -96,7 +96,7 @@ describe('Page', () => {
 
     render(<Home {...defaultProps} />)
 
-    expect(document.title).toBe(`system-error-alert-title - ${mockQuestionText.source} - organisation-name`)
+    expect(document.title).toBe(`api-error-alert.heading - ${mockQuestionText.source} - organisation-name`)
   })
 
   it('updates the document title when there are validation errors', () => {

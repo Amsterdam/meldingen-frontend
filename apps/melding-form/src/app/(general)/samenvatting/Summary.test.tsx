@@ -138,6 +138,6 @@ describe('Summary', () => {
 
     render(<Summary {...defaultProps} />)
 
-    expect(document.title).toBe('system-error-alert-title - main-title - organisation-name')
+    expect(document.title).toBe('api-error-alert.heading - main-title - organisation-name')
   })
 })

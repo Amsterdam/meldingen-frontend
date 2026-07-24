@@ -240,7 +240,7 @@ describe('AdditionalQuestions', () => {
 
     render(<AdditionalQuestions {...defaultProps} />)
 
-    expect(document.title).toBe(`system-error-alert-title - ${textAreaComponent.label} - organisation-name`)
+    expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
   })
 
   it('updates the document title when there are validation errors', () => {

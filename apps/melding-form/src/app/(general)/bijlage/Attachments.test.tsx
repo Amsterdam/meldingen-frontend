@@ -480,7 +480,7 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} />)
 
-    expect(document.title).toBe(`system-error-alert-title - ${textAreaComponent.label} - organisation-name`)
+    expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
   })
 
   it('updates the document title when there are validation errors', async () => {
@@ -510,7 +510,7 @@ describe('Attachments', () => {
       Array.from({ length: MAX_UPLOAD_ATTEMPTS + 1 }, () => mockFile),
     )
 
-    expect(document.title).toBe(`system-error-alert-title - ${textAreaComponent.label} - organisation-name`)
+    expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
   })
 
   it.skip('sets focus on the generic error Alert when there is a generic error', async () => {
