@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
 import { MeldingForm } from './MeldingForm'
-import Page, { generateMetadata } from './page'
+import Page from './page'
 import { melding, textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
@@ -10,14 +10,6 @@ import { server } from '~/mocks/node'
 vi.mock('./MeldingForm', () => ({
   MeldingForm: vi.fn(() => <div>MeldingForm Component</div>),
 }))
-
-describe('generateMetadata', () => {
-  it('returns the correct metadata title', async () => {
-    const metadata = await generateMetadata()
-
-    expect(metadata).toEqual({ title: 'metadata.title' })
-  })
-})
 
 describe('Page', () => {
   const sources = [

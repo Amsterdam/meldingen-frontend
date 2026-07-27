@@ -28,6 +28,12 @@ const defaultProps: Props = {
 }
 
 describe('ChangeLabels', () => {
+  it('renders the component with the correct document title', () => {
+    render(<ChangeLabels {...defaultProps} />)
+
+    expect(document.title).toBe('metadata.title')
+  })
+
   it('renders the backlink', () => {
     render(<ChangeLabels {...defaultProps} />)
 
@@ -71,7 +77,7 @@ describe('ChangeLabels', () => {
     expect(screen.getByRole('checkbox', { name: 'Label 3' })).not.toBeChecked()
   })
 
-  it('displays an API error Alert and last selected labels when action returns an API error', () => {
+  it('displays an API error Alert with the correct document title and last selected labels when action returns an API error', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { apiError: 'Test error', labelIdsFromAction: [0, 2] },
       vi.fn(),
@@ -80,11 +86,16 @@ describe('ChangeLabels', () => {
 
     const { container } = render(<ChangeLabels {...defaultProps} />)
 
+    // Alert
     const alert = container.querySelector('.ams-alert')
     expect(alert).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.labels-change-failed-heading')
     expect(alert).toHaveTextContent('description')
 
+    // Doc title
+    expect(document.title).toBe('errors.labels-change-failed-heading - metadata.title')
+
+    // Checkboxes
     expect(screen.getByRole('checkbox', { name: 'Label 1' })).toBeChecked()
     expect(screen.getByRole('checkbox', { name: 'Label 3' })).toBeChecked()
   })

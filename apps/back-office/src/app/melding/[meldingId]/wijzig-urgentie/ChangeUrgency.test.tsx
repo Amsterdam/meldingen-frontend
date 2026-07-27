@@ -23,6 +23,12 @@ const defaultProps: Props = {
 }
 
 describe('ChangeUrgency', () => {
+  it('renders the component with the correct document title', () => {
+    render(<ChangeUrgency {...defaultProps} />)
+
+    expect(document.title).toBe('metadata.title')
+  })
+
   it('renders the backlink', () => {
     render(<ChangeUrgency {...defaultProps} />)
 
@@ -61,7 +67,7 @@ describe('ChangeUrgency', () => {
     expect(screen.getByRole('radio', { name: 'urgency.0' })).toBeChecked()
   })
 
-  it('displays the correct error message and selected urgency when action returns invalid-urgency', () => {
+  it('displays the correct error message, document title and selected urgency when action returns invalid-urgency', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { apiError: { type: 'invalid-urgency' }, urgencyFromAction: '1' },
       vi.fn(),
@@ -73,13 +79,19 @@ describe('ChangeUrgency', () => {
     const alert = container.querySelector('.ams-alert')
     const heading = within(alert as HTMLElement).getByRole('heading', { name: 'errors.invalid-urgency.heading' })
 
+    // Alert
     expect(alert).toBeInTheDocument()
     expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.invalid-urgency.description')
+
+    // Doc title
+    expect(document.title).toBe('errors.invalid-urgency.heading - metadata.title')
+
+    // Radio
     expect(screen.getByRole('radio', { name: 'urgency.1' })).toBeChecked()
   })
 
-  it('displays the correct error message and selected urgency when action returns urgency-change-failed', () => {
+  it('displays the correct error message, document title and selected urgency when action returns urgency-change-failed', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { apiError: { type: 'urgency-change-failed' }, urgencyFromAction: '-1' },
       vi.fn(),
@@ -91,9 +103,15 @@ describe('ChangeUrgency', () => {
     const alert = container.querySelector('.ams-alert')
     const heading = within(alert as HTMLElement).getByRole('heading', { name: 'errors.urgency-change-failed.heading' })
 
+    // Alert
     expect(alert).toBeInTheDocument()
     expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.urgency-change-failed.description')
+
+    // Doc title
+    expect(document.title).toBe('errors.urgency-change-failed.heading - metadata.title')
+
+    // Radio
     expect(screen.getByRole('radio', { name: 'urgency.-1' })).toBeChecked()
   })
 

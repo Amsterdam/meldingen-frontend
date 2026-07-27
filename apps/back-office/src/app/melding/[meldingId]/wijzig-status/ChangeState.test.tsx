@@ -22,6 +22,12 @@ const defaultProps = {
 }
 
 describe('ChangeState', () => {
+  it('renders the component with the correct document title', () => {
+    render(<ChangeState {...defaultProps} />)
+
+    expect(document.title).toBe('metadata.title')
+  })
+
   it('renders the back link', () => {
     render(<ChangeState {...defaultProps} />)
 
@@ -60,7 +66,7 @@ describe('ChangeState', () => {
     expect(select).toHaveValue('processing')
   })
 
-  it('displays the correct error message and default value when the action returns an error with type invalid-state', () => {
+  it('displays the correct error message, document title and default value when the action returns an error with type invalid-state', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { apiError: { type: 'invalid-state' }, meldingStateFromAction: 'completed' },
       vi.fn(),
@@ -73,13 +79,19 @@ describe('ChangeState', () => {
     const alert = container.querySelector('.ams-alert')
     const heading = within(alert as HTMLElement).getByRole('heading', { name: 'errors.invalid-state.heading' })
 
+    // Alert
     expect(alert).toBeInTheDocument()
     expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.invalid-state.description')
+
+    // Doc title
+    expect(document.title).toBe('errors.invalid-state.heading - metadata.title')
+
+    // Select
     expect(select).toHaveValue('completed')
   })
 
-  it('displays the correct error message and default value when the action returns an error with type state-change-failed', () => {
+  it('displays the correct error message, document title and default value when the action returns an error with type state-change-failed', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { apiError: { type: 'state-change-failed' }, meldingStateFromAction: 'completed' },
       vi.fn(),
@@ -92,9 +104,15 @@ describe('ChangeState', () => {
     const alert = container.querySelector('.ams-alert')
     const heading = within(alert as HTMLElement).getByRole('heading', { name: 'errors.state-change-failed.heading' })
 
+    // Alert
     expect(alert).toBeInTheDocument()
     expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.state-change-failed.description')
+
+    // Doc title
+    expect(document.title).toBe('errors.state-change-failed.heading - metadata.title')
+
+    // Select
     expect(select).toHaveValue('completed')
   })
 

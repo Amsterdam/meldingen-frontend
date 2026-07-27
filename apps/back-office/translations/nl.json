@@ -203,6 +203,7 @@
     }
   },
   "shared": {
+    "document-title-error-count-prefix": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",
     "api-error-alert": {
       "heading": "Er is iets misgegaan",
       "description": "Probeer het later opnieuw."

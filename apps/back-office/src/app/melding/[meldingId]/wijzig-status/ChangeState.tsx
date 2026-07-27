@@ -12,6 +12,7 @@ import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
 import { postChangeStateForm } from './actions'
 import { ApiErrorAlert } from '~/app/_components'
+import { useDocumentTitleOnError } from '~/app/_utils/useDocumentTitleOnError'
 
 import styles from './ChangeState.module.css'
 
@@ -30,20 +31,6 @@ const initialState: {
   meldingStateFromAction?: string
 } = {}
 
-type ArgsType = {
-  errorMessage: string
-  hasError: boolean
-  originalDocTitle: string
-}
-
-const getDocumentTitleOnError = ({ errorMessage, hasError, originalDocTitle }: ArgsType) => {
-  if (hasError) {
-    return `${errorMessage} - ${originalDocTitle}`
-  }
-
-  return originalDocTitle
-}
-
 export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId }: Props) => {
   const postChangeStateFormWithMeldingId = postChangeStateForm.bind(null, { currentState: meldingState, meldingId })
 
@@ -55,10 +42,11 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
   const t = useTranslations('change-state')
   const tShared = useTranslations('shared')
 
-  const documentTitle = getDocumentTitleOnError({
-    errorMessage: apiError ? t(`errors.${apiError.type}.heading`) : '',
-    hasError: Boolean(apiError),
-    originalDocTitle: t('metadata.title'),
+  // Update document title when there is an API error
+  const documentTitle = useDocumentTitleOnError({
+    apiErrorMessage: apiError ? t(`errors.${apiError.type}.heading`) : undefined,
+    baseDocumentTitle: t('metadata.title'),
+    hasApiError: Boolean(apiError),
   })
 
   useEffect(() => {
