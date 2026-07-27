@@ -1,2 +1,2 @@
-export { getDocumentTitleOnError } from './getDocumentTitleOnError'
 export { hasValidationErrors } from './hasValidationErrors'
+export { useDocumentTitleOnError } from './useDocumentTitleOnError'

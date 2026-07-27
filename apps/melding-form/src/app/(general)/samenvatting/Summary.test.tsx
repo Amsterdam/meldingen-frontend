@@ -64,6 +64,12 @@ global.URL.createObjectURL = vi.fn(() => 'blob:http://localhost/uploaded-file-1'
 global.URL.revokeObjectURL = vi.fn()
 
 describe('Summary', () => {
+  it('renders the component with the correct document title', () => {
+    render(<Summary {...defaultProps} />)
+
+    expect(document.title).toBe(`main-title - organisation-name`)
+  })
+
   it('renders the back link', () => {
     render(<Summary {...defaultProps} />)
 

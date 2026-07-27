@@ -43,6 +43,12 @@ vi.mock('./_utils/startUpload', () => ({
 const mockFile = new File(['dummy content'], 'example.png', { type: 'image/png' })
 
 describe('Attachments', () => {
+  it('renders the component with the correct document title', () => {
+    render(<Attachments {...defaultProps} />)
+
+    expect(document.title).toBe('First question - organisation-name')
+  })
+
   it('renders correctly', () => {
     render(<Attachments {...defaultProps} />)
 
@@ -495,7 +501,7 @@ describe('Attachments', () => {
     await user.upload(fileInput, [file])
     await user.upload(fileInput, [file])
 
-    expect(document.title).toBe(`error-count-label ${textAreaComponent.label} - organisation-name`)
+    expect(document.title).toBe(`document-title-error-count-prefix ${textAreaComponent.label} - organisation-name`)
   })
 
   it('updates the document title when there is a generic error', async () => {

@@ -15,6 +15,12 @@ vi.mock('react', async (importOriginal) => {
 })
 
 describe('Contact', () => {
+  it('renders the component with the correct document title', () => {
+    render(<Contact formComponents={contactFormData} />)
+
+    expect(document.title).toBe('question - organisation-name')
+  })
+
   it('renders an Alert and keeps input data when there is an error message', () => {
     const formData = new FormData()
 
@@ -167,6 +173,6 @@ describe('Contact', () => {
 
     render(<Contact formComponents={contactFormData} />)
 
-    expect(document.title).toBe('error-count-label question - organisation-name')
+    expect(document.title).toBe('document-title-error-count-prefix question - organisation-name')
   })
 })

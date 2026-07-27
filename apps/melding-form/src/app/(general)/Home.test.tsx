@@ -28,6 +28,12 @@ vi.mock('react', async (importOriginal) => {
 })
 
 describe('Page', () => {
+  it('renders the component with the correct document title', () => {
+    render(<Home {...defaultProps} />)
+
+    expect(document.title).toBe(`${mockQuestionText.source} - organisation-name`)
+  })
+
   it('renders an error message and keeps input data', () => {
     const formData = new FormData()
 
@@ -109,6 +115,6 @@ describe('Page', () => {
 
     render(<Home {...defaultProps} />)
 
-    expect(document.title).toBe(`error-count-label ${mockQuestionText.source} - organisation-name`)
+    expect(document.title).toBe(`document-title-error-count-prefix ${mockQuestionText.source} - organisation-name`)
   })
 })

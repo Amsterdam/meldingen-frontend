@@ -10,7 +10,7 @@ import { FormRenderer, isSelectboxes, isTimeInput } from '@meldingen/form-render
 import type { AnswersByKey } from '../../../_utils/conditions'
 import type { FormState } from '~/types'
 
-import { getDocumentTitleOnError } from '../../../_utils/validation'
+import { useDocumentTitleOnError } from '../../../_utils/validation'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { BackLink } from '~/app/_components'
 
@@ -81,10 +81,10 @@ export const AdditionalQuestions = ({
     : formComponentsFromServer
 
   // Update document title when there are API or validation errors
-  const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(apiError),
-    originalDocTitle: `${getPrimaryHeading(formComponents, panelTitle)} - ${tShared('organisation-name')}`,
-    translateFunction: tShared,
+  const baseDocumentTitle = `${getPrimaryHeading(formComponents, panelTitle)} - ${tShared('organisation-name')}`
+  const documentTitle = useDocumentTitleOnError({
+    baseDocumentTitle,
+    hasApiError: Boolean(apiError),
     validationErrorCount: validationErrors?.length,
   })
 

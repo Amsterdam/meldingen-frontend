@@ -9,7 +9,7 @@ import { FormRenderer } from '@meldingen/form-renderer'
 
 import type { FormState } from '~/types'
 
-import { getDocumentTitleOnError } from './_utils/validation'
+import { useDocumentTitleOnError } from './_utils/validation'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 
 const initialState: FormState = {}
@@ -43,10 +43,10 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
     : formComponentsFromServer
 
   // Update document title when there are API or validation errors
-  const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(apiError),
-    originalDocTitle: `${formComponents[0].label} - ${tShared('organisation-name')}`,
-    translateFunction: tShared,
+  const baseDocumentTitle = `${formComponents[0].label} - ${tShared('organisation-name')}`
+  const documentTitle = useDocumentTitleOnError({
+    baseDocumentTitle,
+    hasApiError: Boolean(apiError),
     validationErrorCount: validationErrors?.length,
   })
 

@@ -253,6 +253,6 @@ describe('AdditionalQuestions', () => {
 
     render(<AdditionalQuestions {...defaultProps} />)
 
-    expect(document.title).toBe(`error-count-label ${textAreaComponent.label} - organisation-name`)
+    expect(document.title).toBe(`document-title-error-count-prefix ${textAreaComponent.label} - organisation-name`)
   })
 })
