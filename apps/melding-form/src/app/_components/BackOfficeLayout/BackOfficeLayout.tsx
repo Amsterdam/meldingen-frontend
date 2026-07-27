@@ -4,11 +4,11 @@ import type { PropsWithChildren } from 'react'
 
 import { HouseFillIcon, PlusCircleFillIcon } from '@amsterdam/design-system-react-icons'
 import { useTranslations } from 'next-intl'
+import NextLink from 'next/link'
 
 import { Grid, Menu, Page } from '@meldingen/ui'
 
 import { Header } from './Header'
-import { AmsNextLink } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './BackOfficeLayout.module.css'
@@ -19,24 +19,22 @@ const MenuItems = () => {
   const t = useTranslations('shared.back-office-menu')
 
   return [
-    <li key="overview">
-      <AmsNextLink
-        href={`${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/`}
-        icon={<HouseFillIcon />}
-        variant="menu-link"
-      >
-        {t('overview')}
-      </AmsNextLink>
-    </li>,
-    <li key="melding-form">
-      <AmsNextLink
-        href={`${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden`}
-        icon={<PlusCircleFillIcon />}
-        variant="menu-link"
-      >
-        {t('melding-form')}
-      </AmsNextLink>
-    </li>,
+    <Menu.Link
+      href={`${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/`}
+      icon={<HouseFillIcon />}
+      key="overview"
+      linkComponent={NextLink}
+    >
+      {t('overview')}
+    </Menu.Link>,
+    <Menu.Link
+      href={`${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden`}
+      icon={<PlusCircleFillIcon />}
+      key="melding-form"
+      linkComponent={NextLink}
+    >
+      {t('melding-form')}
+    </Menu.Link>,
   ]
 }
 

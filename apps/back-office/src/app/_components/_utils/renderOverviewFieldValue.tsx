@@ -1,9 +1,12 @@
 import type { ReactNode } from 'react'
 
+import NextLink from 'next/link'
+
+import { Link } from '@meldingen/ui'
+
 import type { MeldingWithAddress } from '../../Overview'
 import type { OverviewField } from './getOverviewFieldLabel'
 
-import { AmsNextLink } from '../AmsNextLink'
 import { formatValue } from './formatValue'
 
 export const renderOverviewFieldValue = (
@@ -13,9 +16,9 @@ export const renderOverviewFieldValue = (
 ): ReactNode => {
   if (field.key === 'public_id') {
     return (
-      <AmsNextLink href={`/melding/${melding.id}`} variant="link">
+      <Link href={`/melding/${melding.id}`} linkComponent={NextLink}>
         {melding.public_id}
-      </AmsNextLink>
+      </Link>
     )
   }
 

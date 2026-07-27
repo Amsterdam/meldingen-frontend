@@ -1,15 +1,14 @@
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
+import NextLink from 'next/link'
 import { Fragment } from 'react'
 
-import { Column, Grid, Heading, Paragraph, TabNavigation } from '@meldingen/ui'
+import { Column, Grid, Heading, Link, Paragraph, TabNavigation } from '@meldingen/ui'
 
 import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
-import { AmsNextLink } from '../../_components/AmsNextLink'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { BackLink } from './_components/BackLink'
-import { NextLink } from '~/app/_components'
 
 import styles from './Detail.module.css'
 
@@ -118,9 +117,9 @@ export const Detail = ({
                   <dd className={styles.horizontalDescription}>{description}</dd>
                   {link && (
                     <dd className={styles.horizontalLink}>
-                      <AmsNextLink href={link.href} variant="link">
+                      <Link href={link.href} linkComponent={NextLink}>
                         {link.label}
-                      </AmsNextLink>
+                      </Link>
                     </dd>
                   )}
                 </Fragment>

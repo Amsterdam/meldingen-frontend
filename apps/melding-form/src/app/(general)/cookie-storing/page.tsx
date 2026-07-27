@@ -21,9 +21,9 @@ export default async () => {
       <Heading className="ams-mb-m" level={1}>
         {t('title')}
       </Heading>
-      <NextLink href={`/#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
-        <StandaloneLink className="ams-mb-m">{t('link')}</StandaloneLink>
-      </NextLink>
+      <StandaloneLink className="ams-mb-m" href={`/#${TOP_ANCHOR_ID}`} linkComponent={NextLink}>
+        {t('link')}
+      </StandaloneLink>
       <Paragraph>{t('description')}</Paragraph>
     </main>
   )

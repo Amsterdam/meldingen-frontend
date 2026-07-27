@@ -1,4 +1,3 @@
-export { AmsNextLink } from './AmsNextLink/AmsNextLink'
 export { ApiErrorAlert } from './ApiErrorAlert/ApiErrorAlert'
 export { BackLink } from './BackLink/BackLink'
 export { BackOfficeLayout } from './BackOfficeLayout/BackOfficeLayout'
