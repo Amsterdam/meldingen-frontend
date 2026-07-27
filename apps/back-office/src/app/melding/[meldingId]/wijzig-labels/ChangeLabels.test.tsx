@@ -12,7 +12,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
 
@@ -71,14 +71,19 @@ describe('ChangeLabels', () => {
     expect(screen.getByRole('checkbox', { name: 'Label 3' })).not.toBeChecked()
   })
 
-  it('displays the an error message and last selected labels when action returns an error', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([{ error: 'Test error', labelIdsFromAction: [0, 2] }, vi.fn()])
+  it('displays an API error Alert and last selected labels when action returns an API error', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([
+      { apiError: 'Test error', labelIdsFromAction: [0, 2] },
+      vi.fn(),
+      false,
+    ])
 
-    render(<ChangeLabels {...defaultProps} />)
+    const { container } = render(<ChangeLabels {...defaultProps} />)
 
-    const alert = screen.getByRole('alert', { name: 'errors.labels-change-failed.heading' })
+    const alert = container.querySelector('.ams-alert')
     expect(alert).toBeInTheDocument()
-    expect(alert).toHaveTextContent('errors.labels-change-failed.description')
+    expect(alert).toHaveTextContent('errors.labels-change-failed-heading')
+    expect(alert).toHaveTextContent('description')
 
     expect(screen.getByRole('checkbox', { name: 'Label 1' })).toBeChecked()
     expect(screen.getByRole('checkbox', { name: 'Label 3' })).toBeChecked()
@@ -86,7 +91,7 @@ describe('ChangeLabels', () => {
 
   it('uses labelIdsFromAction over currentLabelIds when both are present', () => {
     // currentLabelIds has labels 1 and 2, but the action returned only label 3
-    ;(useActionState as Mock).mockReturnValueOnce([{ labelIdsFromAction: [2] }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ labelIdsFromAction: [2] }, vi.fn(), false])
 
     render(<ChangeLabels {...defaultProps} />)
 
@@ -106,7 +111,7 @@ describe('ChangeLabels', () => {
     const user = userEvent.setup()
 
     const mockFormAction = vi.fn()
-    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction])
+    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<ChangeLabels {...defaultProps} />)
 

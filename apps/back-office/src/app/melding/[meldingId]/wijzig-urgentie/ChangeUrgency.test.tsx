@@ -1,6 +1,6 @@
 import type { Mock } from 'vitest'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 
@@ -12,7 +12,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
 
@@ -62,29 +62,38 @@ describe('ChangeUrgency', () => {
   })
 
   it('displays the correct error message and selected urgency when action returns invalid-urgency', () => {
-    ;(useActionState as Mock).mockReturnValue([{ error: { type: 'invalid-urgency' }, urgencyFromAction: '1' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([
+      { apiError: { type: 'invalid-urgency' }, urgencyFromAction: '1' },
+      vi.fn(),
+      false,
+    ])
 
-    render(<ChangeUrgency {...defaultProps} />)
+    const { container } = render(<ChangeUrgency {...defaultProps} />)
 
-    const alert = screen.getByRole('alert', { name: 'errors.invalid-urgency.heading' })
+    const alert = container.querySelector('.ams-alert')
+    const heading = within(alert as HTMLElement).getByRole('heading', { name: 'errors.invalid-urgency.heading' })
+
     expect(alert).toBeInTheDocument()
+    expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.invalid-urgency.description')
-
     expect(screen.getByRole('radio', { name: 'urgency.1' })).toBeChecked()
   })
 
   it('displays the correct error message and selected urgency when action returns urgency-change-failed', () => {
-    ;(useActionState as Mock).mockReturnValue([
-      { error: { type: 'urgency-change-failed' }, urgencyFromAction: '-1' },
+    ;(useActionState as Mock).mockReturnValueOnce([
+      { apiError: { type: 'urgency-change-failed' }, urgencyFromAction: '-1' },
       vi.fn(),
+      false,
     ])
 
-    render(<ChangeUrgency {...defaultProps} />)
+    const { container } = render(<ChangeUrgency {...defaultProps} />)
 
-    const alert = screen.getByRole('alert', { name: 'errors.urgency-change-failed.heading' })
+    const alert = container.querySelector('.ams-alert')
+    const heading = within(alert as HTMLElement).getByRole('heading', { name: 'errors.urgency-change-failed.heading' })
+
     expect(alert).toBeInTheDocument()
+    expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.urgency-change-failed.description')
-
     expect(screen.getByRole('radio', { name: 'urgency.-1' })).toBeChecked()
   })
 
@@ -92,7 +101,7 @@ describe('ChangeUrgency', () => {
     const user = userEvent.setup()
 
     const mockFormAction = vi.fn()
-    ;(useActionState as Mock).mockReturnValue([{}, mockFormAction])
+    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<ChangeUrgency {...defaultProps} />)
 

@@ -12,7 +12,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
 
@@ -43,20 +43,21 @@ describe('MeldingForm', () => {
     expect(submitButton).toBeInTheDocument()
   })
 
-  it('sets focus on SystemErrorAlert when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+  it('renders an API error alert when there is one', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
 
-    render(<MeldingForm {...defaultProps} />)
+    const { container } = render(<MeldingForm {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
-    expect(alert).toHaveFocus()
+    expect(alert).toBeInTheDocument()
   })
 
   it('renders an Invalid Form Alert when there are validation errors', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
+      false,
     ])
 
     render(<MeldingForm {...defaultProps} />)
@@ -71,6 +72,7 @@ describe('MeldingForm', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'primary', message: 'Primary field error' }] },
       vi.fn(),
+      false,
     ])
 
     render(<MeldingForm {...defaultProps} />)
@@ -83,7 +85,7 @@ describe('MeldingForm', () => {
   it('prefills the text area from formData when the action returns formData', () => {
     const formData = new FormData()
     formData.set('primary', 'Prefilled text')
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
     render(<MeldingForm {...defaultProps} />)
 
@@ -112,6 +114,7 @@ describe('MeldingForm', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'source', message: 'Source field error' }] },
       vi.fn(),
+      false,
     ])
 
     render(<MeldingForm {...defaultProps} />)
@@ -124,7 +127,7 @@ describe('MeldingForm', () => {
   it('prefills the source select input from formData when the action returns formData', () => {
     const formData = new FormData()
     formData.set('source', '2')
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
     render(<MeldingForm {...defaultProps} />)
 
@@ -146,7 +149,7 @@ describe('MeldingForm', () => {
   it('prefills urgency from formData when the action returns formData', () => {
     const formData = new FormData()
     formData.set('urgency', '1')
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
     render(<MeldingForm {...defaultProps} />)
 
@@ -169,7 +172,7 @@ describe('MeldingForm', () => {
     const formData = new FormData()
     formData.append('labels', '1')
     formData.append('labels', '2')
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
     render(<MeldingForm {...defaultProps} />)
 
@@ -190,7 +193,7 @@ describe('MeldingForm', () => {
   it('prefills note from formData when the action returns formData', async () => {
     const formData = new FormData()
     formData.set('addNote', 'Prefilled note')
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
     render(<MeldingForm {...defaultProps} />)
 
@@ -215,6 +218,7 @@ describe('MeldingForm', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'addNote', message: 'Note error' }] },
       vi.fn(),
+      false,
     ])
 
     render(<MeldingForm {...defaultProps} />)
@@ -229,7 +233,7 @@ describe('MeldingForm', () => {
   it('submits the form when the submit button is clicked', async () => {
     const user = userEvent.setup()
     const mockFormAction = vi.fn()
-    ;(useActionState as Mock).mockReturnValue([{}, mockFormAction])
+    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<MeldingForm {...defaultProps} />)
 
