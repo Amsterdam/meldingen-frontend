@@ -12,6 +12,7 @@ import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
 import { postChangeLabelsForm } from './actions'
 import { ApiErrorAlert } from '~/app/_components'
+import { useDocumentTitleOnError } from '~/app/_utils/useDocumentTitleOnError'
 
 import styles from './ChangeLabels.module.css'
 
@@ -35,8 +36,12 @@ export const ChangeLabels = ({ currentLabelIds, labels, meldingId, publicId }: P
 
   const t = useTranslations('change-labels')
 
-  const baseTitle = t('metadata.title')
-  const documentTitle = apiError ? `${t('errors.labels-change-failed-heading')} - ${baseTitle}` : baseTitle
+  // Update document title when there is an API error
+  const documentTitle = useDocumentTitleOnError({
+    apiErrorMessage: apiError ? t('errors.labels-change-failed-heading') : undefined,
+    baseDocumentTitle: t('metadata.title'),
+    hasApiError: Boolean(apiError),
+  })
 
   useEffect(() => {
     if (apiError) {

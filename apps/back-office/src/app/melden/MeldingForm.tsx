@@ -12,6 +12,7 @@ import { Column, Paragraph } from '@meldingen/ui'
 import type { MeldingData } from './types'
 import type { FormState } from '~/types'
 
+import { useDocumentTitleOnError } from '../_utils/useDocumentTitleOnError'
 import { LabelsField, NoteField, PrimaryField, SourceField, UrgencyField } from './_components'
 import { postMeldingForm } from './actions'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
@@ -73,6 +74,13 @@ export const MeldingForm = ({
   const { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } =
     calculateDefaultValues(formData, defaultValues)
 
+  // Update document title when there are validation errors or an API error
+  const documentTitle = useDocumentTitleOnError({
+    baseDocumentTitle: t('metadata.title'),
+    hasApiError: Boolean(apiError),
+    validationErrorCount: validationErrors?.length ?? undefined,
+  })
+
   useEffect(() => {
     if (apiError) {
       // TODO: Log the error to an error reporting service
@@ -92,6 +100,7 @@ export const MeldingForm = ({
       gapVertical="large"
       paddingVertical="x-large"
     >
+      <title>{documentTitle}</title>
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
         {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}

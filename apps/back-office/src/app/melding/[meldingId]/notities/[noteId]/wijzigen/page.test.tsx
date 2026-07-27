@@ -2,21 +2,13 @@ import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { vi } from 'vitest'
 
-import Page, { generateMetadata } from './page'
+import Page from './page'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
 vi.mock('./UpdateNote', () => ({
   UpdateNote: vi.fn(() => <div>UpdateNote Component</div>),
 }))
-
-describe('generateMetadata', () => {
-  it('returns the correct metadata title', async () => {
-    const metadata = await generateMetadata()
-
-    expect(metadata).toEqual({ title: 'metadata.title' })
-  })
-})
 
 describe('Page', () => {
   it('renders', async () => {

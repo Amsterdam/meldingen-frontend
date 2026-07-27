@@ -12,6 +12,7 @@ import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
 import { postChangeUrgencyForm } from './actions'
 import { ApiErrorAlert } from '~/app/_components'
+import { useDocumentTitleOnError } from '~/app/_utils/useDocumentTitleOnError'
 import { URGENCY_VALUES } from '~/constants'
 
 import styles from './ChangeUrgency.module.css'
@@ -30,18 +31,6 @@ const initialState: {
   urgencyFromAction?: string
 } = {}
 
-type DocumentTitleArgs = {
-  errorMessage: string
-  hasError: boolean
-  originalDocTitle: string
-}
-
-const getDocumentTitleOnError = ({ errorMessage, hasError, originalDocTitle }: DocumentTitleArgs) => {
-  if (hasError) return `${errorMessage} - ${originalDocTitle}`
-
-  return originalDocTitle
-}
-
 export const ChangeUrgency = ({ currentUrgency, meldingId, publicId }: Props) => {
   const postChangeUrgencyFormWithMeldingId = postChangeUrgencyForm.bind(null, {
     currentUrgency,
@@ -56,10 +45,11 @@ export const ChangeUrgency = ({ currentUrgency, meldingId, publicId }: Props) =>
   const t = useTranslations('change-urgency')
   const tShared = useTranslations('shared')
 
-  const documentTitle = getDocumentTitleOnError({
-    errorMessage: apiError ? t(`errors.${apiError.type}.heading`) : '',
-    hasError: Boolean(apiError),
-    originalDocTitle: t('metadata.title'),
+  // Update document title when there is an API error
+  const documentTitle = useDocumentTitleOnError({
+    apiErrorMessage: apiError ? t(`errors.${apiError.type}.heading`) : undefined,
+    baseDocumentTitle: t('metadata.title'),
+    hasApiError: Boolean(apiError),
   })
 
   useEffect(() => {

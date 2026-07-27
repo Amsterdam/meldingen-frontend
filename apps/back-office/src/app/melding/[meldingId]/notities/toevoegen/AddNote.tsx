@@ -11,6 +11,7 @@ import { BackLink } from '../../_components/BackLink'
 import { CancelLink } from '../../_components/CancelLink'
 import { postAddNoteForm } from './actions'
 import { ApiErrorAlert, InvalidFormAlert, RichTextEditor } from '~/app/_components'
+import { useDocumentTitleOnError } from '~/app/_utils/useDocumentTitleOnError'
 
 import styles from './AddNote.module.css'
 
@@ -26,6 +27,13 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
 
   const t = useTranslations('add-note')
 
+  // Update document title when there are validation errors or an API error
+  const documentTitle = useDocumentTitleOnError({
+    baseDocumentTitle: t('metadata.title'),
+    hasApiError: Boolean(apiError),
+    validationErrorCount: validationErrors?.length ?? undefined,
+  })
+
   useEffect(() => {
     if (apiError) {
       // TODO: Log the error to an error reporting service
@@ -39,6 +47,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
 
   return (
     <div className="ams-page__area--body">
+      <title>{documentTitle}</title>
       <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
       <Grid as="main" gapVertical="large">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>

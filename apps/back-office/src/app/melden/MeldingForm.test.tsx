@@ -41,9 +41,10 @@ describe('MeldingForm', () => {
     expect(input).toBeInTheDocument()
     expect(description).toBeInTheDocument()
     expect(submitButton).toBeInTheDocument()
+    expect(document.title).toBe('metadata.title')
   })
 
-  it('renders an API error alert when there is one', () => {
+  it('renders an API error alert with the correct document title when there is an API error', () => {
     ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
 
     const { container } = render(<MeldingForm {...defaultProps} />)
@@ -51,9 +52,10 @@ describe('MeldingForm', () => {
     const alert = container.querySelector('.ams-alert')
 
     expect(alert).toBeInTheDocument()
+    expect(document.title).toBe('api-error-alert.heading - metadata.title')
   })
 
-  it('renders an Invalid Form Alert when there are validation errors', () => {
+  it('renders an Invalid Form Alert with the correct document title when there are validation errors', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
@@ -66,6 +68,7 @@ describe('MeldingForm', () => {
 
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', '#key1')
+    expect(document.title).toBe('document-title-error-count-prefix metadata.title')
   })
 
   it('renders an error message connected to the primary text area when there is a validation error for the primary field', () => {

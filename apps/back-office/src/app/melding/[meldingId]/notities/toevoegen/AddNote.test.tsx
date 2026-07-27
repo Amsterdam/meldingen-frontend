@@ -17,6 +17,12 @@ vi.mock('react', async (importOriginal) => {
 const defaultProps = { meldingId: 123 }
 
 describe('AddNote', () => {
+  it('renders the component with the correct document title', () => {
+    render(<AddNote {...defaultProps} />)
+
+    expect(document.title).toBe('metadata.title')
+  })
+
   it('renders the back link', () => {
     render(<AddNote {...defaultProps} />)
 
@@ -47,7 +53,7 @@ describe('AddNote', () => {
     expect(cancelLink).toHaveAttribute('href', '/melding/123')
   })
 
-  it('displays an API error alert when there is one', () => {
+  it('displays an API error alert with the correct document title when there is an API error', () => {
     ;(useActionState as Mock).mockReturnValueOnce([{ apiError: { detail: 'Something went wrong' } }, vi.fn(), false])
 
     const { container } = render(<AddNote {...defaultProps} />)
@@ -55,9 +61,10 @@ describe('AddNote', () => {
     const alert = container.querySelector('.ams-alert')
 
     expect(alert).toBeInTheDocument()
+    expect(document.title).toBe('api-error-alert.heading - metadata.title')
   })
 
-  it('displays an invalid form alert when there are validation errors', async () => {
+  it('displays an invalid form alert with the correct document title when there are validation errors', async () => {
     const formData = new FormData()
     formData.append('addNote', 'Some note text')
     ;(useActionState as Mock).mockReturnValueOnce([
@@ -72,6 +79,8 @@ describe('AddNote', () => {
 
     expect(screen.getByRole('link', { name: 'Error message' })).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: 'label' })).toHaveTextContent('Some note text')
+
+    expect(document.title).toBe('document-title-error-count-prefix metadata.title')
   })
 
   it('submits the form when the submit button is clicked', async () => {
