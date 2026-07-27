@@ -11,7 +11,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
 
@@ -124,7 +124,7 @@ describe('Summary', () => {
   })
 
   it('renders the Summary component with an error message', () => {
-    ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
 
     const { container } = render(<Summary {...defaultProps} />)
 
@@ -134,7 +134,7 @@ describe('Summary', () => {
   })
 
   it('updates the document title when there is an API error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
 
     render(<Summary {...defaultProps} />)
 

@@ -23,7 +23,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{ formData, message: '' }, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{ formData, message: '' }, vi.fn(), false]),
   }
 })
 
@@ -32,7 +32,7 @@ describe('Page', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Er staan blowende jongeren')
-    ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message', formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message', formData }, vi.fn(), false])
 
     const { container } = render(<Home {...defaultProps} />)
 
@@ -46,9 +46,10 @@ describe('Page', () => {
   })
 
   it('renders an Invalid Form Alert when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
+      false,
     ])
 
     render(<Home {...defaultProps} />)
@@ -80,7 +81,7 @@ describe('Page', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Form data from action')
-    ;(useActionState as Mock).mockReturnValue([{ formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
     render(
       <Home {...defaultProps} formComponents={[{ ...textAreaComponent, defaultValue: 'Default value from server' }]} />,
@@ -92,7 +93,7 @@ describe('Page', () => {
   })
 
   it('updates the document title when there is an API error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ apiError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
 
     render(<Home {...defaultProps} />)
 
@@ -100,9 +101,10 @@ describe('Page', () => {
   })
 
   it('updates the document title when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
+      false,
     ])
 
     render(<Home {...defaultProps} />)

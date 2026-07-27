@@ -16,7 +16,7 @@
     "@meldingen/api-client": "workspace:*",
     "@meldingen/markdown-to-html": "workspace:*",
     "@meldingen/ui": "workspace:*",
-    "next": "16.2.10"
+    "next": "16.2.11"
   },
   "private": true
 }
