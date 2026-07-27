@@ -48,9 +48,9 @@ export default async ({ searchParams }: { searchParams: Promise<{ [key: string]:
           {t('title')}
         </Heading>
         <MarkdownToHtml className="ams-mb-s">{description}</MarkdownToHtml>
-        <NextLink href={returnLink} legacyBehavior passHref>
-          <StandaloneLink href="dummy-href">{t('link')}</StandaloneLink>
-        </NextLink>
+        <StandaloneLink href={returnLink} linkComponent={NextLink}>
+          {t('link')}
+        </StandaloneLink>
       </main>
     </Layout>
   )

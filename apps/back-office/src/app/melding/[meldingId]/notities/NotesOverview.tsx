@@ -1,5 +1,6 @@
 import { StandaloneLink } from '@amsterdam/design-system-react/dist/StandaloneLink'
 import { useTranslations } from 'next-intl'
+import NextLink from 'next/link'
 
 import type { NoteRetrieveOutput } from '@meldingen/api-client'
 
@@ -7,7 +8,6 @@ import { Grid, Heading, TabNavigation, UnorderedList } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
 import { Note } from './_components/Note/Note'
-import { NextLink } from '~/app/_components'
 
 import styles from './NotesOverview.module.css'
 

@@ -88,11 +88,9 @@ export const Location = ({ action, address, pageConfig, prevPage, selectedAssets
           )}
           {validationErrors &&
             validationErrors.map(({ key, message }) => <ErrorMessage key={key}>{message}</ErrorMessage>)}
-          <NextLink href={`/locatie/kies#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
-            <StandaloneLink id="location-link">
-              {address ? t('link.with-location') : t('link.without-location')}
-            </StandaloneLink>
-          </NextLink>
+          <StandaloneLink href={`/locatie/kies#${TOP_ANCHOR_ID}`} id="location-link" linkComponent={NextLink}>
+            {address ? t('link.with-location') : t('link.without-location')}
+          </StandaloneLink>
         </Field>
         <Form action={formAction} noValidate>
           <SubmitButton>{t('submit-button')}</SubmitButton>

@@ -28,9 +28,9 @@ export default async function NotFound() {
               {t('title')}
             </Heading>
             <MarkdownToHtml className="ams-mb-s">{t('description')}</MarkdownToHtml>
-            <NextLink href={`/#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
-              <StandaloneLink>{t('link')}</StandaloneLink>
-            </NextLink>
+            <StandaloneLink href={`/#${TOP_ANCHOR_ID}`} linkComponent={NextLink}>
+              {t('link')}
+            </StandaloneLink>
           </main>
         </Grid.Cell>
       </Grid>
