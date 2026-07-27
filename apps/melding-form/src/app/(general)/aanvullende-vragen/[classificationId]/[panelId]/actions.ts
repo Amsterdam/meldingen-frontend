@@ -154,8 +154,8 @@ export const postForm = async (
 
   if (erroredResults.length > 0) {
     return {
+      apiError: erroredResults.map(({ value }) => value.error),
       formData,
-      systemError: erroredResults.map(({ value }) => value.error),
     }
   }
 
@@ -175,7 +175,7 @@ export const postForm = async (
       query: { token },
     })
 
-    if (error) return { formData, systemError: error }
+    if (error) return { apiError: error, formData }
 
     // Set current panel path as last panel path in cookies,
     // so that the user can be redirected back to it from AFTER_ADDITIONAL_QUESTIONS_PATH

@@ -27,7 +27,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
 
@@ -397,14 +397,14 @@ describe('Attachments', () => {
     expect(screen.queryByText('example4.png')).not.toBeInTheDocument()
   })
 
-  it('renders a system error Alert when there is one', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+  it('renders an API error Alert when there is one', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
 
-    render(<Attachments {...defaultProps} />)
+    const { container } = render(<Attachments {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
-    expect(alert).toHaveTextContent('system-error-alert-title')
+    expect(alert).toHaveTextContent('heading')
   })
 
   it('marks a file as duplicate when the same file is uploaded twice and renders an error message', async () => {
@@ -475,12 +475,12 @@ describe('Attachments', () => {
     expect(errorMessageDescription).toBeInTheDocument()
   })
 
-  it('updates the document title when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+  it('updates the document title when there is an API error', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
 
     render(<Attachments {...defaultProps} />)
 
-    expect(document.title).toBe(`system-error-alert-title - ${textAreaComponent.label} - organisation-name`)
+    expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
   })
 
   it('updates the document title when there are validation errors', async () => {
@@ -510,16 +510,7 @@ describe('Attachments', () => {
       Array.from({ length: MAX_UPLOAD_ATTEMPTS + 1 }, () => mockFile),
     )
 
-    expect(document.title).toBe(`system-error-alert-title - ${textAreaComponent.label} - organisation-name`)
-  })
-
-  it('sets focus on SystemErrorAlert when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
-    render(<Attachments {...defaultProps} />)
-
-    const alert = screen.getByRole('alert')
-
-    expect(alert).toHaveFocus()
+    expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
   })
 
   it.skip('sets focus on the generic error Alert when there is a generic error', async () => {

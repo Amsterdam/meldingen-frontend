@@ -23,7 +23,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{ formData, message: '' }, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{ formData, message: '' }, vi.fn(), false]),
   }
 })
 
@@ -32,13 +32,13 @@ describe('Page', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Er staan blowende jongeren')
-    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message', formData }, vi.fn(), false])
 
-    render(<Home {...defaultProps} />)
+    const { container } = render(<Home {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
-    expect(alert).toHaveTextContent('system-error-alert-title')
+    expect(alert).toHaveTextContent('heading')
 
     const input = screen.getByRole('textbox')
 
@@ -46,9 +46,10 @@ describe('Page', () => {
   })
 
   it('renders an Invalid Form Alert when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
+      false,
     ])
 
     render(<Home {...defaultProps} />)
@@ -80,7 +81,7 @@ describe('Page', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Form data from action')
-    ;(useActionState as Mock).mockReturnValue([{ formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
     render(
       <Home {...defaultProps} formComponents={[{ ...textAreaComponent, defaultValue: 'Default value from server' }]} />,
@@ -91,31 +92,23 @@ describe('Page', () => {
     expect(input).toHaveValue('Form data from action')
   })
 
-  it('updates the document title when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+  it('updates the document title when there is an API error', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
 
     render(<Home {...defaultProps} />)
 
-    expect(document.title).toBe(`system-error-alert-title - ${mockQuestionText.source} - organisation-name`)
+    expect(document.title).toBe(`api-error-alert.heading - ${mockQuestionText.source} - organisation-name`)
   })
 
   it('updates the document title when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
+      false,
     ])
 
     render(<Home {...defaultProps} />)
 
     expect(document.title).toBe(`error-count-label ${mockQuestionText.source} - organisation-name`)
-  })
-
-  it('sets focus on SystemErrorAlert when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
-    render(<Home {...defaultProps} />)
-
-    const alert = screen.getByRole('alert')
-
-    expect(alert).toHaveFocus()
   })
 })

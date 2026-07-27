@@ -12,7 +12,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
 
@@ -55,13 +55,13 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Er staan blowende jongeren')
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message', formData }, vi.fn(), false])
 
-    render(<AdditionalQuestions {...defaultProps} />)
+    const { container } = render(<AdditionalQuestions {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
-    expect(alert).toHaveTextContent('system-error-alert-title')
+    expect(alert).toHaveTextContent('heading')
 
     const input = screen.getByRole('textbox')
 
@@ -72,13 +72,13 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('checkbox___selectBoxes___one', 'one')
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message', formData }, vi.fn(), false])
 
-    render(<AdditionalQuestions {...defaultProps} formComponents={[checkboxComponent]} />)
+    const { container } = render(<AdditionalQuestions {...defaultProps} formComponents={[checkboxComponent]} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
-    expect(alert).toHaveTextContent('system-error-alert-title')
+    expect(alert).toHaveTextContent('heading')
 
     const checkbox = screen.getByRole('checkbox', { name: 'One' })
 
@@ -89,7 +89,7 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('time___timeInput-unknown', 'on')
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message', formData }, vi.fn(), false])
 
     render(
       <AdditionalQuestions
@@ -109,7 +109,7 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('time___timeInput', '10:30')
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message', formData }, vi.fn(), false])
 
     render(
       <AdditionalQuestions
@@ -126,7 +126,7 @@ describe('AdditionalQuestions', () => {
   it('falls back to the original component when it cannot be prefilled', () => {
     const formData = new FormData()
 
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message', formData }, vi.fn(), false])
 
     render(<AdditionalQuestions {...defaultProps} formComponents={[{ ...textAreaComponent }]} />)
 
@@ -139,6 +139,7 @@ describe('AdditionalQuestions', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
+      false,
     ])
 
     render(<AdditionalQuestions {...defaultProps} />)
@@ -186,7 +187,7 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('textArea1', 'Form data from action')
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
     render(
       <AdditionalQuestions
@@ -204,7 +205,7 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('checkbox___selectBoxes___one', 'one')
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message', formData }, vi.fn(), false])
 
     render(
       <AdditionalQuestions {...defaultProps} formComponents={[{ ...checkboxComponent, defaultValues: ['two'] }]} />,
@@ -221,7 +222,7 @@ describe('AdditionalQuestions', () => {
     const formData = new FormData()
 
     formData.append('time___timeInput-unknown', 'on')
-    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
     render(
       <AdditionalQuestions
@@ -235,31 +236,23 @@ describe('AdditionalQuestions', () => {
     expect(checkbox).toBeChecked()
   })
 
-  it('updates the document title when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([{ systemError: 'Test error message' }, vi.fn()])
+  it('updates the document title when there is an API error', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
 
     render(<AdditionalQuestions {...defaultProps} />)
 
-    expect(document.title).toBe(`system-error-alert-title - ${textAreaComponent.label} - organisation-name`)
+    expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
   })
 
   it('updates the document title when there are validation errors', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
+      false,
     ])
 
     render(<AdditionalQuestions {...defaultProps} />)
 
     expect(document.title).toBe(`error-count-label ${textAreaComponent.label} - organisation-name`)
-  })
-
-  it('sets focus on SystemErrorAlert when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([{ systemError: 'Test error message' }, vi.fn()])
-    render(<AdditionalQuestions {...defaultProps} />)
-
-    const alert = screen.getByRole('alert')
-
-    expect(alert).toHaveFocus()
   })
 })

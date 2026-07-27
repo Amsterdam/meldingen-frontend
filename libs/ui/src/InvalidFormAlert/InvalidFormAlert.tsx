@@ -1,7 +1,6 @@
 'use client'
 
 import type { InvalidFormAlertProps as ADSInvalidFormAlertProps } from '@amsterdam/design-system-react'
-import type { HTMLAttributes } from 'react'
 
 import { Alert, LinkList } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
@@ -13,6 +12,7 @@ import styles from './InvalidFormAlert.module.css'
 // Replace with ADS component when they've fixed that.
 
 export type InvalidFormAlertProps = {
+  className?: string
   errors: { key: string; message: string }[]
   heading?: ADSInvalidFormAlertProps['heading']
   headingLevel: ADSInvalidFormAlertProps['headingLevel']
@@ -22,14 +22,14 @@ export type InvalidFormAlertProps = {
    * Without `useActionState`, manage it yourself via a state variable: set it to `false` on submit and back to `true` on response.
    */
   shouldFocus: boolean
-} & HTMLAttributes<HTMLDivElement>
+}
 
 export const InvalidFormAlert = ({
   className,
   errors,
   heading = 'Verbeter de fouten voor u verder gaat',
+  headingLevel,
   shouldFocus,
-  ...restProps
 }: InvalidFormAlertProps) => {
   const ref = useRef<HTMLDivElement>(null)
 
@@ -46,12 +46,12 @@ export const InvalidFormAlert = ({
 
   return (
     <Alert
-      {...restProps}
       className={clsx(styles.alert, className)}
       heading={heading}
       // Remove the default label for the Alert.
       // Otherwise, focusing on the Alert causes NVDA to read the label twice.
       headingId={null}
+      headingLevel={headingLevel}
       ref={ref}
       severity="error"
       tabIndex={-1}

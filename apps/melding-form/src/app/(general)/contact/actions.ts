@@ -49,7 +49,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
     }
   }
 
-  if (error) return { formData, systemError: error }
+  if (error) return { apiError: error, formData }
 
   // Set melding state to 'contact_info_added'
   const { error: stateChangeError } = await putMeldingByMeldingIdAddContactInfo({
@@ -57,7 +57,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
     query: { token },
   })
 
-  if (stateChangeError) return { formData, systemError: stateChangeError }
+  if (stateChangeError) return { apiError: stateChangeError, formData }
 
   return redirect(`/samenvatting#${TOP_ANCHOR_ID}`)
 }

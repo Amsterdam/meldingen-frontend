@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import { useActionState, useEffect, useRef } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
@@ -13,19 +13,18 @@ import { SubmitButton } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
-import { SystemErrorAlert } from '../_components'
 import { getDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
-import { InvalidFormAlert } from '~/app/_components'
+import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './Location.module.css'
 
-const initialState: Pick<FormState, 'systemError' | 'validationErrors'> = {}
+const initialState: Pick<FormState, 'apiError' | 'validationErrors'> = {}
 
 type Props = {
-  action: (_: unknown, formData: FormData) => Promise<Pick<FormState, 'systemError' | 'validationErrors'>>
+  action: (_: unknown, formData: FormData) => Promise<Pick<FormState, 'apiError' | 'validationErrors'>>
   address?: string
   pageConfig?: {
     description?: string
@@ -49,35 +48,26 @@ const getAssetElement = (asset: Feature) => {
 }
 
 export const Location = ({ action, address, pageConfig, prevPage, selectedAssets }: Props) => {
-  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
-
-  const [{ systemError, validationErrors }, formAction, isPending] = useActionState(action, initialState)
+  const [{ apiError, validationErrors }, formAction, isPending] = useActionState(action, initialState)
 
   const t = useTranslations('location')
   const tShared = useTranslations('shared')
 
-  // Update document title when there are system or validation errors
+  // Update document title when there are API or validation errors
   const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(systemError),
+    hasSystemError: Boolean(apiError),
     originalDocTitle: `${pageConfig?.label ?? t('question')} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
     validationErrorCount: validationErrors?.length,
   })
 
-  // Set focus on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (systemError && systemErrorAlertRef.current) {
-      systemErrorAlertRef.current.focus()
-    }
-  }, [validationErrors, systemError])
-
-  useEffect(() => {
-    if (systemError) {
+    if (apiError) {
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
-      console.error(systemError)
+      console.error(apiError)
     }
-  }, [systemError])
+  }, [apiError])
 
   return (
     <>
@@ -86,7 +76,7 @@ export const Location = ({ action, address, pageConfig, prevPage, selectedAssets
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
+        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
         {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
         <Field className="ams-mb-l" invalid={Boolean(validationErrors)}>
           <Heading level={1} size="level-3">

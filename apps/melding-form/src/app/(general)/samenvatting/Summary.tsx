@@ -4,16 +4,16 @@ import { Heading, Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import NextLink from 'next/link'
-import { useActionState, useEffect, useRef } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
-import { SystemErrorAlert } from '../_components'
 import { getDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { AttachmentImage } from './_components/AttachmentImage'
+import { ApiErrorAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 type GenericSummaryData = {
@@ -37,7 +37,7 @@ type Props = {
   primaryFormLink: string
 }
 
-const initialState: Pick<FormState, 'systemError'> = {}
+const initialState: Pick<FormState, 'apiError'> = {}
 
 export const Summary = ({
   action,
@@ -48,34 +48,25 @@ export const Summary = ({
   primaryForm,
   primaryFormLink,
 }: Props) => {
-  const systemErrorAlertRef = useRef<HTMLDivElement>(null)
-
-  const [{ systemError }, formAction] = useActionState(action, initialState)
+  const [{ apiError }, formAction, isPending] = useActionState(action, initialState)
 
   const t = useTranslations('summary')
   const tShared = useTranslations('shared')
 
   // Update document title when there are system or validation errors
   const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(systemError),
+    hasSystemError: Boolean(apiError),
     originalDocTitle: `${t('main-title')} - ${tShared('organisation-name')}`,
     translateFunction: tShared,
   })
 
-  // Set focus on SystemErrorAlert when there is a system error
   useEffect(() => {
-    if (systemError && systemErrorAlertRef.current) {
-      systemErrorAlertRef.current.focus()
-    }
-  }, [systemError])
-
-  useEffect(() => {
-    if (systemError) {
+    if (apiError) {
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
-      console.error(systemError)
+      console.error(apiError)
     }
-  }, [systemError])
+  }, [apiError])
 
   return (
     <>
@@ -84,7 +75,7 @@ export const Summary = ({
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(systemError) && <SystemErrorAlert ref={systemErrorAlertRef} />}
+        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
         <Heading className="ams-mb-s" level={1} size="level-3">
           {t('main-title')}
         </Heading>

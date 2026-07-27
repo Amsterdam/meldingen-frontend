@@ -54,7 +54,7 @@ export const postPrimaryForm = async (
     }
   }
 
-  if (error) return { formData, systemError: error }
+  if (error) return { apiError: error, formData }
 
   const { classification, id, token } = data
 
@@ -70,7 +70,7 @@ export const postPrimaryForm = async (
 
   const result = await resolveClassificationRedirect(id, token, classification?.id)
 
-  if (result.type === 'error') return { formData, systemError: result.error }
+  if (result.type === 'error') return { apiError: result.error, formData }
 
   return redirect(result.url)
 }

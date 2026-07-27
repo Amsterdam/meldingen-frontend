@@ -15,7 +15,7 @@ export const getDocumentTitleOnError = ({
     return `${t('error-count-label', { count: validationErrorCount })} ${originalDocTitle}`
   }
   if (hasSystemError) {
-    return `${t('system-error-alert-title')} - ${originalDocTitle}`
+    return `${t('api-error-alert.heading')} - ${originalDocTitle}`
   }
 
   return originalDocTitle

@@ -10,7 +10,7 @@ vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn()]),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
 
@@ -19,13 +19,13 @@ describe('Contact', () => {
     const formData = new FormData()
 
     formData.append('email', 'test@example.com')
-    ;(useActionState as Mock).mockReturnValue([{ formData, systemError: 'Test error message' }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message', formData }, vi.fn(), false])
 
-    render(<Contact formComponents={contactFormData} />)
+    const { container } = render(<Contact formComponents={contactFormData} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
-    expect(alert).toHaveTextContent('system-error-alert-title')
+    expect(alert).toHaveTextContent('heading')
 
     const emailInput = screen.getByRole('textbox', { name: 'Wat is uw e-mailadres? (niet verplicht)' })
 
@@ -33,7 +33,7 @@ describe('Contact', () => {
   })
 
   it('renders an Invalid Form Alert when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       {
         validationErrors: [
           { key: 'email-input', message: 'Test email error message' },
@@ -41,6 +41,7 @@ describe('Contact', () => {
         ],
       },
       vi.fn(),
+      false,
     ])
 
     render(<Contact formComponents={contactFormData} />)
@@ -52,9 +53,6 @@ describe('Contact', () => {
     expect(emailLink).toHaveAttribute('href', '#email-input')
     expect(telLink).toBeInTheDocument()
     expect(telLink).toHaveAttribute('href', '#tel-input')
-
-    // Reset the mock to its initial state
-    ;(useActionState as Mock).mockReturnValue([{}, vi.fn()])
   })
 
   it('renders page and form', async () => {
@@ -130,7 +128,7 @@ describe('Contact', () => {
 
     formData.append('email', 'Email data from action')
     formData.append('phone', 'Phone data from action')
-    ;(useActionState as Mock).mockReturnValue([{ formData }, vi.fn()])
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
     const contactFormDataWithDefaultValues = [
       {
@@ -152,31 +150,23 @@ describe('Contact', () => {
     expect(telInput).toHaveValue('Phone data from action')
   })
 
-  it('updates the document title when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
+  it('updates the document title when there is an API error', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
 
     render(<Contact formComponents={contactFormData} />)
 
-    expect(document.title).toBe('system-error-alert-title - question - organisation-name')
+    expect(document.title).toBe('api-error-alert.heading - question - organisation-name')
   })
 
   it('updates the document title when there are validation errors', () => {
-    ;(useActionState as Mock).mockReturnValue([
+    ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'key1', message: 'Test error message' }] },
       vi.fn(),
+      false,
     ])
 
     render(<Contact formComponents={contactFormData} />)
 
     expect(document.title).toBe('error-count-label question - organisation-name')
-  })
-
-  it('sets focus on SystemErrorAlert when there is a system error', () => {
-    ;(useActionState as Mock).mockReturnValue([{ systemError: 'Test error message' }, vi.fn()])
-    render(<Contact formComponents={contactFormData} />)
-
-    const alert = screen.getByRole('alert')
-
-    expect(alert).toHaveFocus()
   })
 })

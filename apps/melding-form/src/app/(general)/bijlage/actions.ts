@@ -21,7 +21,7 @@ export const submitAttachmentsForm = async () => {
     query: { token },
   })
 
-  if (error) return { systemError: error }
+  if (error) return { apiError: error }
 
   return redirect(`/contact#${TOP_ANCHOR_ID}`)
 }

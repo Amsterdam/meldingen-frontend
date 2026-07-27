@@ -37,7 +37,7 @@ export const postLocationForm = async (requiredErrorMessage: string | undefined,
     query: { token },
   })
 
-  if (error) return { systemError: error }
+  if (error) return { apiError: error }
 
   return redirect(`/bijlage#${TOP_ANCHOR_ID}`)
 }
