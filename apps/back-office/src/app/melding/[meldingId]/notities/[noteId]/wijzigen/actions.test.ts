@@ -80,9 +80,7 @@ describe('postUpdateNoteForm', () => {
     const markedUpWhitespace = JSON.stringify({
       content: [
         {
-          content: [
-            { marks: [{ type: 'bold' }, { type: 'italic' }, { type: 'underline' }], text: '   ', type: 'text' },
-          ],
+          content: [{ marks: [{ type: 'bold' }, { type: 'italic' }], text: '   ', type: 'text' }],
           type: 'paragraph',
         },
       ],

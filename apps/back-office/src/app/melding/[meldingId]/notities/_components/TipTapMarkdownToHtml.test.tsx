@@ -20,12 +20,11 @@ describe('TipTapMarkdownToHtml', () => {
     expect(paragraph).toHaveClass('ams-paragraph')
   })
 
-  it('renders bold, italic, and underlined text with their respective tags', () => {
-    render(<TipTapMarkdownToHtml markdown={'**Bold** *Italic* ++Underline++'} />)
+  it('renders bold and italic text with their respective tags', () => {
+    render(<TipTapMarkdownToHtml markdown={'**Bold** *Italic*'} />)
 
     expect(screen.getByRole('strong')).toHaveTextContent('Bold')
     expect(screen.getByRole('emphasis')).toHaveTextContent('Italic')
-    expect(screen.getByText('Underline').tagName).toBe('U')
   })
 
   it('renders a bullet list as <ul> with <li> items', () => {

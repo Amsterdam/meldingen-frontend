@@ -2,7 +2,7 @@ import type { Editor, EditorStateSnapshot } from '@tiptap/react'
 import type { RefObject } from 'react'
 
 import { IconButton } from '@amsterdam/design-system-react'
-import { FormattingBoldIcon, FormattingItalicIcon, FormattingUnderlineIcon } from '@amsterdam/design-system-react-icons'
+import { FormattingBoldIcon, FormattingItalicIcon } from '@amsterdam/design-system-react-icons'
 import { useEditorState } from '@tiptap/react'
 import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
@@ -19,7 +19,6 @@ const toolbarStateSelector = (ctx: EditorStateSnapshot<Editor>) => {
     isBold: ctx.editor.isActive('bold') ?? false,
     isBulletList: ctx.editor.isActive('bulletList') ?? false,
     isItalic: ctx.editor.isActive('italic') ?? false,
-    isUnderline: ctx.editor.isActive('underline') ?? false,
   }
 }
 
@@ -28,7 +27,7 @@ type Props = {
   id: string
 }
 
-type ToolbarButton = 'bold' | 'bulletList' | 'italic' | 'underline' | 'undo'
+type ToolbarButton = 'bold' | 'bulletList' | 'italic' | 'undo'
 
 export const Toolbar = ({ editor, id }: Props) => {
   const t = useTranslations('shared.rich-text-editor')
@@ -72,15 +71,6 @@ export const Toolbar = ({ editor, id }: Props) => {
         onFocus={() => setActiveButton('italic')}
         svg={FormattingItalicIcon}
         tabIndex={getTabIndex('italic')}
-      />
-      <IconButton
-        aria-pressed={editorState.isUnderline}
-        className={styles.button}
-        label={t('underline')}
-        onClick={() => editor.chain().focus().toggleUnderline().run()}
-        onFocus={() => setActiveButton('underline')}
-        svg={FormattingUnderlineIcon}
-        tabIndex={getTabIndex('underline')}
       />
       <IconButton
         aria-pressed={editorState.isBulletList}

@@ -5,7 +5,6 @@ import { Italic } from '@tiptap/extension-italic'
 import { BulletList, ListItem } from '@tiptap/extension-list'
 import { Paragraph } from '@tiptap/extension-paragraph'
 import { Text } from '@tiptap/extension-text'
-import { Underline } from '@tiptap/extension-underline'
 import { Markdown } from '@tiptap/markdown'
 
 // We don't allow headings in notes, but if a user types '# Heading' in the editor,
@@ -27,7 +26,6 @@ export const richTextExtensions = [
   Text,
   Bold,
   Italic,
-  Underline,
   Markdown,
   HeadingAsText,
   BulletList.configure({ HTMLAttributes: { class: 'ams-unordered-list' } }),
