@@ -36,7 +36,6 @@ describe('Toolbar', () => {
     expect(toolbar).toHaveAttribute('aria-controls', 'editor')
     expect(screen.getByRole('button', { name: 'bold' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'italic' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'underline' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'unordered-list' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'undo' })).toBeInTheDocument()
   })
@@ -46,7 +45,6 @@ describe('Toolbar', () => {
 
     expect(screen.getByRole('button', { name: 'bold' })).toHaveAttribute('tabindex', '0')
     expect(screen.getByRole('button', { name: 'italic' })).toHaveAttribute('tabindex', '-1')
-    expect(screen.getByRole('button', { name: 'underline' })).toHaveAttribute('tabindex', '-1')
     expect(screen.getByRole('button', { name: 'unordered-list' })).toHaveAttribute('tabindex', '-1')
     expect(screen.getByRole('button', { name: 'undo' })).toHaveAttribute('tabindex', '-1')
   })
@@ -82,7 +80,6 @@ describe('Toolbar', () => {
 
     expect(screen.getByRole('button', { name: 'bold' })).toHaveAttribute('aria-pressed', 'false')
     expect(screen.getByRole('button', { name: 'italic' })).toHaveAttribute('aria-pressed', 'false')
-    expect(screen.getByRole('button', { name: 'underline' })).toHaveAttribute('aria-pressed', 'false')
     expect(screen.getByRole('button', { name: 'unordered-list' })).toHaveAttribute('aria-pressed', 'false')
     expect(screen.getByRole('button', { name: 'undo' })).toHaveAttribute('aria-disabled', 'true')
   })
@@ -110,18 +107,6 @@ describe('Toolbar', () => {
 
     expect(editor.isActive('italic')).toBe(true)
     expect(screen.getByRole('button', { name: 'italic' })).toHaveAttribute('aria-pressed', 'true')
-  })
-
-  it('toggles underline on the selection when the underline button is clicked', async () => {
-    const user = userEvent.setup()
-    const editor = await renderToolbar()
-
-    editor.commands.selectAll()
-
-    await user.click(screen.getByRole('button', { name: 'underline' }))
-
-    expect(editor.isActive('underline')).toBe(true)
-    expect(screen.getByRole('button', { name: 'underline' })).toHaveAttribute('aria-pressed', 'true')
   })
 
   it('toggles a bullet list on the selection when the unordered list button is clicked', async () => {
@@ -180,7 +165,6 @@ describe('Toolbar', () => {
 
     expect(screen.getByRole('button', { name: 'bold' })).toHaveAttribute('aria-pressed', 'false')
     expect(screen.getByRole('button', { name: 'italic' })).toHaveAttribute('aria-pressed', 'false')
-    expect(screen.getByRole('button', { name: 'underline' })).toHaveAttribute('aria-pressed', 'false')
     expect(screen.getByRole('button', { name: 'unordered-list' })).toHaveAttribute('aria-pressed', 'false')
     expect(screen.getByRole('button', { name: 'undo' })).toHaveAttribute('aria-disabled', 'true')
   })

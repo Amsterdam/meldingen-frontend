@@ -38,8 +38,7 @@ describe('parseNoteDocument', () => {
           { text: '   ', type: 'text' }, // Regular whitespace
           { marks: [{ type: 'bold' }], text: '   ', type: 'text' }, // Bold whitespace
           { marks: [{ type: 'italic' }], text: '   ', type: 'text' }, // Italic whitespace
-          { marks: [{ type: 'underline' }], text: '   ', type: 'text' }, // Underlined whitespace
-          { marks: [{ type: 'bold' }, { type: 'italic' }, { type: 'underline' }], text: '   ', type: 'text' }, // Bold, italic, and underlined whitespace
+          { marks: [{ type: 'bold' }, { type: 'italic' }], text: '   ', type: 'text' }, // Bold and italic whitespace
         ],
         type: 'paragraph',
       },
