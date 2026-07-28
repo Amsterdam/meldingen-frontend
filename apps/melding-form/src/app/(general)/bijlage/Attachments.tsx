@@ -1,6 +1,6 @@
 'use client'
 
-import type { ChangeEvent, FormEvent } from 'react'
+import type { ChangeEvent } from 'react'
 
 import { Alert, Paragraph } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
@@ -15,27 +15,20 @@ import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Column, FileList, FileUpload, Heading, SubmitButton } from '@meldingen/ui'
 
-import type { FileUpload as FileUploadType, PendingFileUpload } from './_utils/startUpload'
 import type { ExistingFileType } from './page'
 import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
-import { startUpload } from './_utils/startUpload'
+import { MAX_SUCCESSFUL_UPLOADS, MAX_UPLOAD_ATTEMPTS, useFileUploads } from './_utils/useFileUploads'
 import { submitAttachmentsForm } from './actions'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './Attachments.module.css'
 
-const MAX_SUCCESSFUL_UPLOADS = 3
-export const MAX_UPLOAD_ATTEMPTS = 10
-
-type GenericErrorMessage = {
-  description?: string
-  options?: Record<string, string | number>
-  title: string
-}
+// TODO: why is this necessary?
+export { MAX_UPLOAD_ATTEMPTS }
 
 export type Props = {
   files: ExistingFileType[]
@@ -44,164 +37,49 @@ export type Props = {
   token: string
 }
 
+const deleteAttachment = async (meldingId: number, token: string, serverId: number) => {
+  const { error } = await deleteMeldingByMeldingIdAttachmentByAttachmentId({
+    path: {
+      attachment_id: serverId,
+      melding_id: meldingId,
+    },
+    query: { token },
+  })
+
+  return { error: Boolean(error) }
+}
+
 const initialState: Pick<FormState, 'apiError'> = {}
-
-const createDuplicatedUploadError = (file: File, errorMessage: string, id: string): FileUploadType => ({
-  errorMessage,
-  file,
-  id,
-  progress: 0,
-  status: 'error',
-})
-
-const createFileUpload = (file: File, id: string): PendingFileUpload => ({
-  file,
-  id,
-  progress: 0,
-  status: 'pending',
-  xhr: new XMLHttpRequest(),
-})
-
-const mapExistingFilesToUploads = (files: ExistingFileType[], idPrefix: string): FileUploadType[] =>
-  files.map(({ blob, fileName, serverId }, index) => ({
-    file: blob ? new File([blob], fileName) : { name: fileName },
-    id: `${idPrefix}-${index + 1}`,
-    progress: 100,
-    serverId,
-    status: 'success',
-  }))
 
 export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const uploadIdCounter = useRef(files.length)
 
   const genericErrorAlertRef = useRef<HTMLDivElement>(null)
 
   const t = useTranslations('attachments')
   const tShared = useTranslations('shared')
 
-  const existingFileUploads = mapExistingFilesToUploads(files, t('file-upload.id-prefix'))
-
-  const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
-  const [genericError, setGenericError] = useState<GenericErrorMessage>()
-  const [deletedFileName, setDeletedFileName] = useState<string>()
   const [shouldFocusAlert, setShouldFocusAlert] = useState(false)
 
   const [{ apiError }, formAction, isPending] = useActionState(submitAttachmentsForm, initialState)
 
-  const erroredFileUploads = fileUploads.filter(({ status }) => status === 'error')
-  const erroredFileUploadsKey = erroredFileUploads.map(({ id }) => id).join(',')
-  const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
-    key: id,
-    message: errorMessage ? t(errorMessage) : '',
-  }))
+  const { deletedFileName, fileUploads, genericError, handleDelete, handleSubmit, handleUpload, validationErrors } =
+    useFileUploads({
+      deleteAttachment: (serverId: number) => deleteAttachment(meldingId, token, serverId),
+      existingFiles: files,
+      idPrefix: t('file-upload.id-prefix'),
+      inputRef,
+      t,
+      uploadUrl: `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`,
+    })
+
+  const erroredFileUploadsKey = validationErrors.map(({ key }) => key).join(',')
 
   const { description, label } = formData[0]
 
-  const getNextUploadId = () => {
-    uploadIdCounter.current += 1
-    return `${t('file-upload.id-prefix')}-${uploadIdCounter.current}`
-  }
-
-  const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    setGenericError(undefined)
+  const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
     setShouldFocusAlert(false)
-
-    if (!event.currentTarget.files) return
-
-    const newFiles = Array.from(event.currentTarget.files)
-
-    if (newFiles.length + fileUploads.length > MAX_UPLOAD_ATTEMPTS) {
-      setGenericError({
-        description: 'errors.too-many-attempts.description',
-        title: 'errors.too-many-attempts.title',
-      })
-      return
-    }
-
-    if (newFiles.length + fileUploads.filter((file) => file.status !== 'error').length > MAX_SUCCESSFUL_UPLOADS) {
-      setGenericError({
-        options: { maxFiles: MAX_SUCCESSFUL_UPLOADS },
-        title: 'errors.too-many-files.title',
-      })
-      return
-    }
-
-    const newFileUploads = newFiles.map((newFile) => {
-      if (fileUploads.find((f) => f.file.name === newFile.name)) {
-        return createDuplicatedUploadError(newFile, 'validation-errors.duplicate-upload', getNextUploadId())
-      }
-
-      return createFileUpload(newFile, getNextUploadId())
-    })
-
-    setFileUploads((prev) => [...prev, ...newFileUploads])
-    const validFileUploads = newFileUploads.filter((upload) => upload.status === 'pending')
-
-    validFileUploads.forEach((upload) => {
-      const xhr = upload.xhr
-
-      xhr.open(
-        'POST',
-        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`,
-      )
-
-      startUpload(xhr, upload, setFileUploads)
-    })
-
-    // Clear the file input after starting the upload, so it is empty for the next selection.
-    if (inputRef.current) {
-      inputRef.current.value = ''
-    }
-  }
-
-  const handleDelete = async (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => {
-    setGenericError(undefined)
-
-    // Abort upload if in progress
-    if (xhr && xhr.readyState !== XMLHttpRequest.DONE) {
-      xhr.abort()
-      setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.id !== id))
-      setDeletedFileName(fileName)
-      return
-    }
-
-    // If the file upload does not have a server id (because the server returned an error for example)
-    // simply remove it from the list
-    if (!serverId) {
-      setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.id !== id))
-      setDeletedFileName(fileName)
-      return
-    }
-
-    const { error } = await deleteMeldingByMeldingIdAttachmentByAttachmentId({
-      path: {
-        attachment_id: serverId,
-        melding_id: meldingId,
-      },
-      query: { token },
-    })
-
-    if (error) {
-      setGenericError({
-        description: 'errors.delete-failed.description',
-        title: 'errors.delete-failed.title',
-      })
-      return
-    }
-
-    setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.serverId !== serverId))
-    setDeletedFileName(fileName)
-  }
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    if (fileUploads.some((u) => u.status === 'uploading')) {
-      e.preventDefault()
-      setGenericError({
-        description: 'errors.upload-in-progress.description',
-        title: 'errors.upload-in-progress.title',
-      })
-    }
+    handleUpload(event)
   }
 
   // Update document title when there are API, validation or generic errors
@@ -284,7 +162,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
               dropAreaText={t('file-upload.drop-area')}
               id="file-upload"
               multiple
-              onChange={handleUpload}
+              onChange={onUpload}
               ref={inputRef}
             />
 
