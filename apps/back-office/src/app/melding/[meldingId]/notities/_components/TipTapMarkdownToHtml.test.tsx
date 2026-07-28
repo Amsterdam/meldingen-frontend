@@ -20,7 +20,7 @@ describe('TipTapMarkdownToHtml', () => {
     expect(paragraph).toHaveClass('ams-paragraph')
   })
 
-  it('renders bold, and italic text with their respective tags', () => {
+  it('renders bold and italic text with their respective tags', () => {
     render(<TipTapMarkdownToHtml markdown={'**Bold** *Italic*'} />)
 
     expect(screen.getByRole('strong')).toHaveTextContent('Bold')
