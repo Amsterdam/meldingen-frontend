@@ -25,7 +25,7 @@ export const Pagination = ({ page, pageSize, totalPages }: Props) => {
       )}
       <ADSPagination
         className={styles.pagination}
-        linkComponent={({ href = '/', ...props }) => <NextLink href={href} {...props} />}
+        linkComponent={NextLink}
         linkTemplate={(page) => (page === 1 ? '/' : `/?pagina=${page}`)}
         nextLabel={t('next')}
         page={page}

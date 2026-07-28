@@ -1,12 +1,12 @@
 import { StandaloneLink } from '@amsterdam/design-system-react/dist/StandaloneLink'
 import { useTranslations } from 'next-intl'
+import NextLink from 'next/link'
 
 import type { NoteRetrieveOutput } from '@meldingen/api-client'
 
 import { Paragraph, UnorderedList } from '@meldingen/ui'
 
 import { TipTapMarkdownToHtml } from '../TipTapMarkdownToHtml'
-import { NextLink } from '~/app/_components'
 
 import styles from './Note.module.css'
 

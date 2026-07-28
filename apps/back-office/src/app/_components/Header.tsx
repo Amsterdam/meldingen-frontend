@@ -9,7 +9,7 @@ export const Header = ({ children }: PropsWithChildren) => (
   <PageHeader
     brandName="Meldingen"
     className="ams-page__area--header"
-    logoLinkComponent={({ href = '/', ...props }) => <NextLink href={href} {...props} />}
+    logoLinkComponent={NextLink}
     noMenuButtonOnWideWindow
   >
     {children}

@@ -85,9 +85,9 @@ export const Summary = ({
             <SummaryList.Term>{primaryForm.term}</SummaryList.Term>
             <SummaryList.Description>{primaryForm.description}</SummaryList.Description>
             <SummaryList.Description>
-              <NextLink href={primaryFormLink} legacyBehavior passHref>
-                <Link>{t('change-links.primary')}</Link>
-              </NextLink>
+              <Link href={primaryFormLink} linkComponent={NextLink}>
+                {t('change-links.primary')}
+              </Link>
             </SummaryList.Description>
           </SummaryList.Item>
 
@@ -97,9 +97,9 @@ export const Summary = ({
                 <SummaryList.Term>{term}</SummaryList.Term>
                 <SummaryList.Description>{description}</SummaryList.Description>
                 <SummaryList.Description>
-                  <NextLink href={link} legacyBehavior passHref>
-                    <Link>{t('change-links.additional')}</Link>
-                  </NextLink>
+                  <Link href={link} linkComponent={NextLink}>
+                    {t('change-links.additional')}
+                  </Link>
                 </SummaryList.Description>
               </SummaryList.Item>
             ))}
@@ -108,9 +108,9 @@ export const Summary = ({
             <SummaryList.Term>{location.term}</SummaryList.Term>
             <SummaryList.Description>{location.description}</SummaryList.Description>
             <SummaryList.Description>
-              <NextLink href={`/locatie#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
-                <Link>{t('change-links.location')}</Link>
-              </NextLink>
+              <Link href={`/locatie#${TOP_ANCHOR_ID}`} linkComponent={NextLink}>
+                {t('change-links.location')}
+              </Link>
             </SummaryList.Description>
           </SummaryList.Item>
 
@@ -127,9 +127,9 @@ export const Summary = ({
                 </UnorderedList>
               </SummaryList.Description>
               <SummaryList.Description>
-                <NextLink href={`/bijlage#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
-                  <Link>{t('change-links.attachments')}</Link>
-                </NextLink>
+                <Link href={`/bijlage#${TOP_ANCHOR_ID}`} linkComponent={NextLink}>
+                  {t('change-links.attachments')}
+                </Link>
               </SummaryList.Description>
             </SummaryList.Item>
           )}
@@ -141,9 +141,9 @@ export const Summary = ({
                 <SummaryList.Description key={item}>{item}</SummaryList.Description>
               ))}
               <SummaryList.Description>
-                <NextLink href={`/contact#${TOP_ANCHOR_ID}`} legacyBehavior passHref>
-                  <Link>{t('change-links.contact')}</Link>
-                </NextLink>
+                <Link href={`/contact#${TOP_ANCHOR_ID}`} linkComponent={NextLink}>
+                  {t('change-links.contact')}
+                </Link>
               </SummaryList.Description>
             </SummaryList.Item>
           )}

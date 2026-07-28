@@ -8,7 +8,7 @@ export const Header = (props: PageHeaderProps) => (
     {...props}
     brandName="Meldingen"
     className="ams-page__area--header"
-    logoLinkComponent={({ href = '/', ...props }) => <NextLink href={href} {...props} />}
+    logoLinkComponent={NextLink}
     noMenuButtonOnWideWindow
   />
 )

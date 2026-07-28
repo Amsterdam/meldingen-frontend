@@ -1,13 +1,12 @@
-import type { AnchorHTMLAttributes } from 'react'
+import type { LinkProps } from '@amsterdam/design-system-react'
 
 import { clsx } from 'clsx'
+import NextLink from 'next/link'
 
-import { AmsNextLink } from '~/app/_components/AmsNextLink'
+import { Link } from '@meldingen/ui'
 
 import styles from './CancelLink.module.css'
 
-type Props = AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }
-
-export const CancelLink = ({ className, href, ...restProps }: Props) => (
-  <AmsNextLink className={clsx(className, styles.link)} href={href} variant="link" {...restProps} />
+export const CancelLink = ({ className, ...restProps }: LinkProps) => (
+  <Link {...restProps} className={clsx(className, styles.link)} linkComponent={NextLink} />
 )
