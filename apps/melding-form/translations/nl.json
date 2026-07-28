@@ -185,7 +185,7 @@
     "button": "Probeer het opnieuw"
   },
   "shared": {
-    "error-count-label": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",
+    "document-title-error-count-prefix": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",
     "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
     "organisation-name": "Gemeente Amsterdam",
     "api-error-alert": {

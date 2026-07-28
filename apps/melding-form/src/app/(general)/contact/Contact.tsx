@@ -13,7 +13,7 @@ import { SubmitButton, TextInput } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
-import { getDocumentTitleOnError } from '../_utils/validation'
+import { useDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { postContactForm } from './actions'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
@@ -41,10 +41,10 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
   const telErrorMessage = validationErrors?.find((error) => error.key === 'tel-input')?.message
 
   // Update document title when there are API or validation errors
-  const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(apiError),
-    originalDocTitle: `${t('question')} - ${tShared('organisation-name')}`,
-    translateFunction: tShared,
+  const baseDocumentTitle = `${t('question')} - ${tShared('organisation-name')}`
+  const documentTitle = useDocumentTitleOnError({
+    baseDocumentTitle,
+    hasApiError: Boolean(apiError),
     validationErrorCount: validationErrors?.length,
   })
 

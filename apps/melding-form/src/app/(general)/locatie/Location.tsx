@@ -13,7 +13,7 @@ import { SubmitButton } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
-import { getDocumentTitleOnError } from '../_utils/validation'
+import { useDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
@@ -54,10 +54,10 @@ export const Location = ({ action, address, pageConfig, prevPage, selectedAssets
   const tShared = useTranslations('shared')
 
   // Update document title when there are API or validation errors
-  const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(apiError),
-    originalDocTitle: `${pageConfig?.label ?? t('question')} - ${tShared('organisation-name')}`,
-    translateFunction: tShared,
+  const baseDocumentTitle = `${pageConfig?.label ?? t('question')} - ${tShared('organisation-name')}`
+  const documentTitle = useDocumentTitleOnError({
+    baseDocumentTitle,
+    hasApiError: Boolean(apiError),
     validationErrorCount: validationErrors?.length,
   })
 

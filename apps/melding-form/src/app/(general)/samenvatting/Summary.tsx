@@ -10,7 +10,7 @@ import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
-import { getDocumentTitleOnError } from '../_utils/validation'
+import { useDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { ApiErrorAlert } from '~/app/_components'
@@ -53,11 +53,11 @@ export const Summary = ({
   const t = useTranslations('summary')
   const tShared = useTranslations('shared')
 
-  // Update document title when there are system or validation errors
-  const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(apiError),
-    originalDocTitle: `${t('main-title')} - ${tShared('organisation-name')}`,
-    translateFunction: tShared,
+  // Update document title when there is an API error
+  const baseDocumentTitle = `${t('main-title')} - ${tShared('organisation-name')}`
+  const documentTitle = useDocumentTitleOnError({
+    baseDocumentTitle,
+    hasApiError: Boolean(apiError),
   })
 
   useEffect(() => {

@@ -21,6 +21,12 @@ const defaultProps = {
 }
 
 describe('Location', () => {
+  it('renders the component with the correct document title', () => {
+    render(<Location {...defaultProps} />)
+
+    expect(document.title).toBe('question - organisation-name')
+  })
+
   it('renders the back link', () => {
     render(<Location {...defaultProps} />)
 
@@ -113,7 +119,7 @@ describe('Location', () => {
 
     render(<Location {...defaultProps} />)
 
-    expect(document.title).toBe('error-count-label question - organisation-name')
+    expect(document.title).toBe('document-title-error-count-prefix question - organisation-name')
   })
 
   it('uses the pageConfig label and description when provided', () => {

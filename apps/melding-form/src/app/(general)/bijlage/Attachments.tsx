@@ -19,7 +19,7 @@ import type { FileUpload as FileUploadType, PendingFileUpload } from './_utils/s
 import type { ExistingFileType } from './page'
 import type { FormState } from '~/types'
 
-import { getDocumentTitleOnError } from '../_utils/validation'
+import { useDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { startUpload } from './_utils/startUpload'
 import { submitAttachmentsForm } from './actions'
@@ -205,10 +205,10 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   }
 
   // Update document title when there are API, validation or generic errors
-  const documentTitle = getDocumentTitleOnError({
-    hasSystemError: Boolean(apiError) || Boolean(genericError),
-    originalDocTitle: `${label} - ${tShared('organisation-name')}`,
-    translateFunction: tShared,
+  const baseDocumentTitle = `${label} - ${tShared('organisation-name')}`
+  const documentTitle = useDocumentTitleOnError({
+    baseDocumentTitle,
+    hasApiError: Boolean(apiError) || Boolean(genericError),
     validationErrorCount: validationErrors.length,
   })
 
