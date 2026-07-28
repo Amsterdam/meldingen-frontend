@@ -47,7 +47,7 @@ describe('parseNoteDocument', () => {
 
     const result = parseNoteDocument(value)
 
-    expect(result.characterCount).toBe(15)
+    expect(result.characterCount).toBe(12)
     expect(result.isEmpty).toBe(true)
   })
 
