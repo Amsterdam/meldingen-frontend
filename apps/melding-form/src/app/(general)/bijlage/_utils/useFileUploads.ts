@@ -7,18 +7,11 @@ import type { FileUpload as FileUploadType, PendingFileUpload } from './startUpl
 
 import { startUpload } from './startUpload'
 
-export const MAX_SUCCESSFUL_UPLOADS = 3
-export const MAX_UPLOAD_ATTEMPTS = 10
-
 type GenericErrorMessage = {
   description?: string
   options?: Record<string, string | number>
   title: string
 }
-
-// Kept structurally compatible with next-intl's `t`, but defined locally so this hook
-// doesn't depend on next-intl directly - callers (any app) pass in their own translator.
-type Translate = (key: string, values?: Record<string, string | number>) => string
 
 const createDuplicatedUploadError = (file: File, errorMessage: string, id: string): FileUploadType => ({
   errorMessage,
@@ -52,7 +45,9 @@ type UseFileUploadsParams = {
   existingFiles: ExistingFileType[]
   idPrefix: string
   inputRef: RefObject<HTMLInputElement | null>
-  t: Translate
+  maxSuccessfulUploads: number
+  maxUploadAttempts: number
+  t: (key: string) => string
   // Full URL to POST the upload to, built by the caller (e.g. including a token query param,
   // or a same-origin path that relies on cookies).
   uploadUrl: string
@@ -63,6 +58,8 @@ export const useFileUploads = ({
   existingFiles,
   idPrefix,
   inputRef,
+  maxSuccessfulUploads,
+  maxUploadAttempts,
   t,
   uploadUrl,
 }: UseFileUploadsParams) => {
@@ -93,7 +90,7 @@ export const useFileUploads = ({
 
     const newFiles = Array.from(event.currentTarget.files)
 
-    if (newFiles.length + fileUploads.length > MAX_UPLOAD_ATTEMPTS) {
+    if (newFiles.length + fileUploads.length > maxUploadAttempts) {
       setGenericError({
         description: 'errors.too-many-attempts.description',
         title: 'errors.too-many-attempts.title',
@@ -101,9 +98,9 @@ export const useFileUploads = ({
       return
     }
 
-    if (newFiles.length + fileUploads.filter((file) => file.status !== 'error').length > MAX_SUCCESSFUL_UPLOADS) {
+    if (newFiles.length + fileUploads.filter((file) => file.status !== 'error').length > maxSuccessfulUploads) {
       setGenericError({
-        options: { maxFiles: MAX_SUCCESSFUL_UPLOADS },
+        options: { maxFiles: maxSuccessfulUploads },
         title: 'errors.too-many-files.title',
       })
       return

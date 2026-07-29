@@ -20,15 +20,15 @@ import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
-import { MAX_SUCCESSFUL_UPLOADS, MAX_UPLOAD_ATTEMPTS, useFileUploads } from './_utils/useFileUploads'
+import { useFileUploads } from './_utils/useFileUploads'
 import { submitAttachmentsForm } from './actions'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 import styles from './Attachments.module.css'
 
-// TODO: why is this necessary?
-export { MAX_UPLOAD_ATTEMPTS }
+const MAX_SUCCESSFUL_UPLOADS = 3
+export const MAX_UPLOAD_ATTEMPTS = 10
 
 export type Props = {
   files: ExistingFileType[]
@@ -69,6 +69,8 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
       existingFiles: files,
       idPrefix: t('file-upload.id-prefix'),
       inputRef,
+      maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
+      maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
       t,
       uploadUrl: `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`,
     })
