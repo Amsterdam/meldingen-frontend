@@ -122,9 +122,8 @@ export const useFileUploads = ({
     startPendingUploads(newFileUploads, uploadUrl, setFileUploads)
 
     // Clear the file input after starting the upload, so it is empty for the next selection.
-    if (inputRef.current) {
-      inputRef.current.value = ''
-    }
+    // Non-null assertion is safe here because handleUpload is only called when the input and Attachments are mounted
+    inputRef.current!.value = ''
   }
 
   const removeLocalUpload = (id: string, fileName: string) => {
