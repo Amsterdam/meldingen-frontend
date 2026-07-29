@@ -122,25 +122,17 @@ export const useFileUploads = ({
     }
   }
 
-  const handleDelete = async (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => {
-    setGenericError(undefined)
+  const removeLocalUpload = (id: string, fileName: string) => {
+    setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.id !== id))
+    setDeletedFileName(fileName)
+  }
 
-    // Abort upload if in progress
-    if (xhr && xhr.readyState !== XMLHttpRequest.DONE) {
-      xhr.abort()
-      setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.id !== id))
-      setDeletedFileName(fileName)
-      return
-    }
+  const abortInProgressUpload = (id: string, fileName: string, xhr: XMLHttpRequest) => {
+    xhr.abort()
+    removeLocalUpload(id, fileName)
+  }
 
-    // If the file upload does not have a server id (because the server returned an error for example)
-    // simply remove it from the list
-    if (!serverId) {
-      setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.id !== id))
-      setDeletedFileName(fileName)
-      return
-    }
-
+  const deleteUploadFromServer = async (id: string, serverId: number, fileName: string) => {
     const { error } = await deleteAttachment(serverId)
 
     if (error) {
@@ -151,8 +143,25 @@ export const useFileUploads = ({
       return
     }
 
-    setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.serverId !== serverId))
-    setDeletedFileName(fileName)
+    removeLocalUpload(id, fileName)
+  }
+
+  const handleDelete = async (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => {
+    setGenericError(undefined)
+
+    if (xhr && xhr.readyState !== XMLHttpRequest.DONE) {
+      abortInProgressUpload(id, fileName, xhr)
+      return
+    }
+
+    // If the file upload does not have a server id (because the server returned an error for example)
+    // simply remove it from the list
+    if (!serverId) {
+      removeLocalUpload(id, fileName)
+      return
+    }
+
+    await deleteUploadFromServer(id, serverId, fileName)
   }
 
   const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
