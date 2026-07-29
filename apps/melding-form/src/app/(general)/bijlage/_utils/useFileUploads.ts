@@ -1,4 +1,4 @@
-import type { ChangeEvent, RefObject, SubmitEvent } from 'react'
+import type { ChangeEvent, Dispatch, RefObject, SetStateAction, SubmitEvent } from 'react'
 
 import { useRef, useState } from 'react'
 
@@ -40,6 +40,17 @@ const mapExistingFilesToUploads = (files: ExistingFileType[], idPrefix: string):
 
 const isPendingUpload = (upload: FileUploadState): upload is PendingFileUpload => upload.status === 'pending'
 
+const startPendingUploads = (
+  uploads: FileUploadState[],
+  uploadUrl: string,
+  setFileUploads: Dispatch<SetStateAction<FileUploadState[]>>,
+) => {
+  uploads.filter(isPendingUpload).forEach((upload) => {
+    upload.xhr.open('POST', uploadUrl)
+    startUpload(upload, setFileUploads)
+  })
+}
+
 type UseFileUploadsParams = {
   // Deletes the attachment on the server; how it authenticates (token query param, cookies, ...)
   // is entirely up to the caller.
@@ -76,14 +87,6 @@ export const useFileUploads = ({
     return `${idPrefix}-${uploadIdCounter.current}`
   }
 
-  const startPendingUploads = (uploads: FileUploadState[]) => {
-    // TODO: if we pass setFileUploads here, we can extract this as a pure function
-    uploads.filter(isPendingUpload).forEach((upload) => {
-      upload.xhr.open('POST', uploadUrl)
-      startUpload(upload, setFileUploads)
-    })
-  }
-
   const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
     setGenericError(undefined)
 
@@ -116,7 +119,7 @@ export const useFileUploads = ({
     })
 
     setFileUploads((prev) => [...prev, ...newFileUploads])
-    startPendingUploads(newFileUploads)
+    startPendingUploads(newFileUploads, uploadUrl, setFileUploads)
 
     // Clear the file input after starting the upload, so it is empty for the next selection.
     if (inputRef.current) {
