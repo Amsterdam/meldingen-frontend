@@ -31,10 +31,11 @@ const getValidationErrorMessageTranslationKey = (error?: string): string =>
 // We're using XMLHttpRequest instead of fetch here,
 // because fetch does not allow you to track the upload progress.
 export const startUpload = (
-  xhr: XMLHttpRequest, // TODO: can we remove this? a PendingFileUpload already has an xhr property
   fileUpload: PendingFileUpload,
   setFileUploads: Dispatch<SetStateAction<FileUploadState[]>>,
 ) => {
+  const xhr = fileUpload.xhr
+
   xhr.upload.onprogress = (event) => {
     if (event.lengthComputable) {
       setFileUploads((prev) =>

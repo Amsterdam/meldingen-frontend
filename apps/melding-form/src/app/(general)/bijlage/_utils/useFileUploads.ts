@@ -80,7 +80,7 @@ export const useFileUploads = ({
     // TODO: if we pass setFileUploads here, we can extract this as a pure function
     uploads.filter(isPendingUpload).forEach((upload) => {
       upload.xhr.open('POST', uploadUrl)
-      startUpload(upload.xhr, upload, setFileUploads)
+      startUpload(upload, setFileUploads)
     })
   }
 

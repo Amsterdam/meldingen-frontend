@@ -26,7 +26,7 @@ const setFileUploadsMock = vi.fn()
 
 describe('startUpload', () => {
   it("sets status to 'success' and updates serverId on 200", () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(fileUpload, setFileUploadsMock)
 
     // Simulate onload event
     xhrMock.onload?.(new ProgressEvent('load'))
@@ -48,7 +48,9 @@ describe('startUpload', () => {
       upload: {} as XMLHttpRequestUpload,
     } as unknown as XMLHttpRequest
 
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    const failingFileUpload: PendingFileUpload = { ...fileUpload, xhr: xhrMock }
+
+    startUpload(failingFileUpload, setFileUploadsMock)
 
     // Simulate onload event
     xhrMock.onload?.(new ProgressEvent('load'))
@@ -65,7 +67,7 @@ describe('startUpload', () => {
   it('sets status to uploading when upload starts', () => {
     const setFileUploadsMock = vi.fn()
 
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(fileUpload, setFileUploadsMock)
 
     expect(setFileUploadsMock).toHaveBeenCalled()
 
@@ -76,7 +78,7 @@ describe('startUpload', () => {
   })
 
   it('updates progress on upload progress event', () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(fileUpload, setFileUploadsMock)
 
     const event = { lengthComputable: true, loaded: 50, total: 100 } as ProgressEvent<EventTarget>
 
@@ -94,7 +96,7 @@ describe('startUpload', () => {
   })
 
   it("sets status to 'error' on network error", () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(fileUpload, setFileUploadsMock)
 
     // Simulate onerror event
     xhrMock.onerror?.(new ProgressEvent('error'))
@@ -109,7 +111,7 @@ describe('startUpload', () => {
   })
 
   it('returns the original file object if id does not match on load', () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(fileUpload, setFileUploadsMock)
 
     // Simulate onload event
     xhrMock.onload?.(new ProgressEvent('load'))
@@ -121,7 +123,7 @@ describe('startUpload', () => {
   })
 
   it('returns the original file object if id does not match on progress', () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(fileUpload, setFileUploadsMock)
 
     const event = { lengthComputable: true, loaded: 50, total: 100 } as ProgressEvent<EventTarget>
 
@@ -136,7 +138,7 @@ describe('startUpload', () => {
   })
 
   it('returns the original file object if id does not match on error', () => {
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(fileUpload, setFileUploadsMock)
 
     // Simulate onerror event
     xhrMock.onerror?.(new ProgressEvent('error'))
@@ -150,7 +152,7 @@ describe('startUpload', () => {
   it('returns the original file object if id does not match on upload start', () => {
     const setFileUploadsMock = vi.fn()
 
-    startUpload(xhrMock, fileUpload, setFileUploadsMock)
+    startUpload(fileUpload, setFileUploadsMock)
 
     const updater = setFileUploadsMock.mock.calls[0][0]
     const result = updater([otherFileUpload])

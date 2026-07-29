@@ -135,7 +135,7 @@ describe('Attachments', () => {
   })
 
   it('renders an Invalid Form Alert and focuses it when an upload has an error', () => {
-    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id ? { ...upload, errorMessage: 'Upload failed', status: 'error' } : upload,
@@ -164,7 +164,7 @@ describe('Attachments', () => {
   it('renders an empty error message when an upload has an error without a message', async () => {
     const user = userEvent.setup()
 
-    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) => (upload.id === fileUpload.id ? { ...upload, status: 'error' } : upload)),
       )
@@ -196,7 +196,7 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
 
-    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id
@@ -226,7 +226,7 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
 
-    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id
@@ -285,7 +285,7 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { abort: abortMock, readyState: XMLHttpRequest.OPENED }
 
-    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id
@@ -316,7 +316,7 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
 
-    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id
@@ -353,7 +353,7 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
 
-    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id
@@ -454,7 +454,7 @@ describe('Attachments', () => {
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.LOADING }
 
-    ;(startUpload as Mock).mockImplementationOnce((_xhr, fileUpload, setFileUploads) => {
+    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
           upload.id === fileUpload.id
