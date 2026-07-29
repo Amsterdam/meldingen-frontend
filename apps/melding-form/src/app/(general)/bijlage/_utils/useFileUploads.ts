@@ -123,7 +123,7 @@ export const useFileUploads = ({
   }
 
   const removeLocalUpload = (id: string, fileName: string) => {
-    setFileUploads((fileUploads) => fileUploads.filter((upload) => upload.id !== id))
+    setFileUploads((prev) => prev.filter((upload) => upload.id !== id))
     setDeletedFileName(fileName)
   }
 
