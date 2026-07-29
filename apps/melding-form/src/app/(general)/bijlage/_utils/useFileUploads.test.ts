@@ -223,7 +223,7 @@ describe('useFileUploads', () => {
     })
 
     it('calls deleteAttachment and removes the upload on success', async () => {
-      deleteAttachmentMock.mockResolvedValueOnce({ error: false })
+      deleteAttachmentMock.mockResolvedValueOnce({ error: undefined })
 
       const existingFiles: ExistingFileType[] = [{ blob: undefined, fileName: 'test.png', serverId: 42 }]
       const { result } = renderHook(() =>
@@ -241,7 +241,7 @@ describe('useFileUploads', () => {
 
     it('sets a delete-failed generic error, logs the error to the console and keeps the upload when deleteAttachment fails', async () => {
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      deleteAttachmentMock.mockResolvedValueOnce({ error: true })
+      deleteAttachmentMock.mockResolvedValueOnce({ error: 'API error' })
 
       const existingFiles: ExistingFileType[] = [{ blob: undefined, fileName: 'test.png', serverId: 42 }]
       const { result } = renderHook(() =>
@@ -256,7 +256,7 @@ describe('useFileUploads', () => {
         description: 'errors.delete-failed.description',
         title: 'errors.delete-failed.title',
       })
-      expect(consoleErrorSpy).toHaveBeenCalled()
+      expect(consoleErrorSpy).toHaveBeenCalledWith('API error')
       expect(result.current.fileUploads).toHaveLength(1)
 
       consoleErrorSpy.mockRestore()
