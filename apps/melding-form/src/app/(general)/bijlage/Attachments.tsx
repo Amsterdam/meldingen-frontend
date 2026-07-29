@@ -63,19 +63,22 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
   const [{ apiError }, formAction, isPending] = useActionState(submitAttachmentsForm, initialState)
 
-  const { deletedFileName, fileUploads, genericError, handleDelete, handleSubmit, handleUpload, validationErrors } =
-    useFileUploads({
-      deleteAttachment: (serverId: number) => deleteAttachment(meldingId, token, serverId),
-      existingFiles: files,
-      idPrefix: t('file-upload.id-prefix'),
-      inputRef,
-      maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
-      maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
-      t,
-      uploadUrl: `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`,
-    })
+  const { deletedFileName, fileUploads, genericError, handleDelete, handleSubmit, handleUpload } = useFileUploads({
+    deleteAttachment: (serverId: number) => deleteAttachment(meldingId, token, serverId),
+    existingFiles: files,
+    idPrefix: t('file-upload.id-prefix'),
+    inputRef,
+    maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
+    maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
+    uploadUrl: `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`,
+  })
 
-  const erroredFileUploadsKey = validationErrors.map(({ key }) => key).join(',')
+  const erroredFileUploads = fileUploads.filter(({ status }) => status === 'error')
+  const erroredFileUploadsKey = erroredFileUploads.map(({ id }) => id).join(',')
+  const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
+    key: id,
+    message: errorMessage ? t(errorMessage) : '',
+  }))
 
   const { description, label } = formData[0]
 

@@ -1,4 +1,4 @@
-import type { ChangeEvent, FormEvent, RefObject } from 'react'
+import type { ChangeEvent, RefObject, SubmitEvent } from 'react'
 
 import { useRef, useState } from 'react'
 
@@ -47,7 +47,6 @@ type UseFileUploadsParams = {
   inputRef: RefObject<HTMLInputElement | null>
   maxSuccessfulUploads: number
   maxUploadAttempts: number
-  t: (key: string) => string
   // Full URL to POST the upload to, built by the caller (e.g. including a token query param,
   // or a same-origin path that relies on cookies).
   uploadUrl: string
@@ -60,7 +59,6 @@ export const useFileUploads = ({
   inputRef,
   maxSuccessfulUploads,
   maxUploadAttempts,
-  t,
   uploadUrl,
 }: UseFileUploadsParams) => {
   const uploadIdCounter = useRef(existingFiles.length)
@@ -70,13 +68,6 @@ export const useFileUploads = ({
   const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
   const [genericError, setGenericError] = useState<GenericErrorMessage>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
-
-  const validationErrors = fileUploads
-    .filter(({ status }) => status === 'error')
-    .map(({ errorMessage, id }) => ({
-      key: id,
-      message: errorMessage ? t(errorMessage) : '',
-    }))
 
   const getNextUploadId = () => {
     uploadIdCounter.current += 1
@@ -164,7 +155,7 @@ export const useFileUploads = ({
     setDeletedFileName(fileName)
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     if (fileUploads.some((u) => u.status === 'uploading')) {
       e.preventDefault()
       setGenericError({
@@ -174,5 +165,5 @@ export const useFileUploads = ({
     }
   }
 
-  return { deletedFileName, fileUploads, genericError, handleDelete, handleSubmit, handleUpload, validationErrors }
+  return { deletedFileName, fileUploads, genericError, handleDelete, handleSubmit, handleUpload }
 }
