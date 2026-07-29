@@ -46,7 +46,7 @@ const deleteAttachment = async (meldingId: number, token: string, serverId: numb
     query: { token },
   })
 
-  return { error: Boolean(error) }
+  return { error }
 }
 
 const initialState: Pick<FormState, 'apiError'> = {}

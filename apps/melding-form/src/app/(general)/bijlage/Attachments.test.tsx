@@ -245,7 +245,7 @@ describe('Attachments', () => {
     expect(abortMock).toHaveBeenCalled()
   })
 
-  it('throws an error when delete request fails', async () => {
+  it('shows a generic error Alert when delete request fails', async () => {
     server.use(
       http.delete(
         ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID,
@@ -267,7 +267,7 @@ describe('Attachments', () => {
       )
     })
 
-    render(<Attachments {...defaultProps} />)
+    const { container } = render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText('File input')
 
@@ -277,11 +277,9 @@ describe('Attachments', () => {
 
     await user.click(deleteButton)
 
-    const fileName = screen.getAllByText(mockFile.name)[0]
-    const errorMessageTitle = screen.getByText('errors.delete-failed.title')
+    const alert = container.querySelector('.ams-alert')
 
-    expect(fileName).toBeInTheDocument()
-    expect(errorMessageTitle).toBeInTheDocument()
+    expect(alert).toHaveTextContent('errors.delete-failed.title')
   })
 
   it('shows a generic error Alert when trying to navigate to the next page while an upload is in progress', async () => {

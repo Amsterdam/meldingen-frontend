@@ -239,7 +239,8 @@ describe('useFileUploads', () => {
       expect(result.current.deletedFileName).toBe('test.png')
     })
 
-    it('sets a delete-failed generic error and keeps the upload when deleteAttachment fails', async () => {
+    it('sets a delete-failed generic error, logs the error to the console and keeps the upload when deleteAttachment fails', async () => {
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
       deleteAttachmentMock.mockResolvedValueOnce({ error: true })
 
       const existingFiles: ExistingFileType[] = [{ blob: undefined, fileName: 'test.png', serverId: 42 }]
@@ -255,7 +256,10 @@ describe('useFileUploads', () => {
         description: 'errors.delete-failed.description',
         title: 'errors.delete-failed.title',
       })
+      expect(consoleErrorSpy).toHaveBeenCalled()
       expect(result.current.fileUploads).toHaveLength(1)
+
+      consoleErrorSpy.mockRestore()
     })
   })
 

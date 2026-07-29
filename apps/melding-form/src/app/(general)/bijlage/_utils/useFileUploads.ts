@@ -54,7 +54,7 @@ const startPendingUploads = (
 type UseFileUploadsParams = {
   // Deletes the attachment on the server; how it authenticates (token query param, cookies, ...)
   // is entirely up to the caller.
-  deleteAttachment: (serverId: number) => Promise<{ error: boolean }>
+  deleteAttachment: (serverId: number) => Promise<{ error: unknown }>
   existingFiles: ExistingFileType[]
   idPrefix: string
   inputRef: RefObject<HTMLInputElement | null>
@@ -145,6 +145,10 @@ export const useFileUploads = ({
         description: 'errors.delete-failed.description',
         title: 'errors.delete-failed.title',
       })
+
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(error)
       return
     }
 
