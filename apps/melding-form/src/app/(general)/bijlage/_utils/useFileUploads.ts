@@ -3,7 +3,7 @@ import type { ChangeEvent, RefObject, SubmitEvent } from 'react'
 import { useRef, useState } from 'react'
 
 import type { ExistingFileType } from '../page'
-import type { FileUpload as FileUploadType, PendingFileUpload } from './startUpload'
+import type { FileUploadState, FileUpload as FileUploadType, PendingFileUpload } from './startUpload'
 
 import { startUpload } from './startUpload'
 
@@ -65,7 +65,7 @@ export const useFileUploads = ({
 
   const existingFileUploads = mapExistingFilesToUploads(existingFiles, idPrefix)
 
-  const [fileUploads, setFileUploads] = useState<(FileUploadType | PendingFileUpload)[]>(existingFileUploads)
+  const [fileUploads, setFileUploads] = useState<FileUploadState[]>(existingFileUploads)
   const [genericError, setGenericError] = useState<GenericErrorMessage>()
   const [deletedFileName, setDeletedFileName] = useState<string>()
 

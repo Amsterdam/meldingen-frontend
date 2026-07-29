@@ -17,6 +17,8 @@ export type PendingFileUpload = Omit<FileUpload, 'status'> & {
   xhr: XMLHttpRequest
 }
 
+export type FileUploadState = FileUpload | PendingFileUpload
+
 export const VALIDATION_ERROR_MESSAGES_TRANSLATION_KEYS: Record<string, string> = {
   'Allowed content size exceeded': 'validation-errors.file-too-large',
   'Attachment not allowed': 'validation-errors.invalid-file-type',
@@ -31,12 +33,12 @@ const getValidationErrorMessageTranslationKey = (error?: string): string =>
 export const startUpload = (
   xhr: XMLHttpRequest,
   fileUpload: PendingFileUpload,
-  setFileUploads: Dispatch<SetStateAction<(FileUpload | PendingFileUpload)[]>>,
+  setFileUploads: Dispatch<SetStateAction<FileUploadState[]>>,
 ) => {
   xhr.upload.onprogress = (event) => {
     if (event.lengthComputable) {
       setFileUploads((prev) =>
-        prev.map((upload): FileUpload | PendingFileUpload =>
+        prev.map((upload): FileUploadState =>
           upload.id === fileUpload.id ? { ...upload, progress: (event.loaded / event.total) * 100 } : upload,
         ),
       )
@@ -50,7 +52,7 @@ export const startUpload = (
     const isOk = xhr.status >= 200 && xhr.status < 300
 
     setFileUploads((prev) =>
-      prev.map((upload): FileUpload | PendingFileUpload =>
+      prev.map((upload): FileUploadState =>
         upload.id === fileUpload.id
           ? {
               ...upload,
@@ -65,7 +67,7 @@ export const startUpload = (
 
   xhr.onerror = () => {
     setFileUploads((prev) =>
-      prev.map((upload): FileUpload | PendingFileUpload =>
+      prev.map((upload): FileUploadState =>
         upload.id === fileUpload.id
           ? {
               ...upload,
@@ -78,9 +80,7 @@ export const startUpload = (
   }
 
   setFileUploads((prev) =>
-    prev.map((upload): FileUpload | PendingFileUpload =>
-      upload.id === fileUpload.id ? { ...upload, status: 'uploading' } : upload,
-    ),
+    prev.map((upload): FileUploadState => (upload.id === fileUpload.id ? { ...upload, status: 'uploading' } : upload)),
   )
 
   const formData = new FormData()
