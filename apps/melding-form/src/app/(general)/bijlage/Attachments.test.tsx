@@ -7,11 +7,9 @@ import { useActionState } from 'react'
 
 import type { FileUpload } from './_utils/startUpload'
 import type { Props } from './Attachments'
-import type { ExistingFileType } from './page'
 
 import { startUpload } from './_utils/startUpload'
 import { Attachments } from './Attachments'
-import { MAX_UPLOAD_ATTEMPTS } from './Attachments'
 import { textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
@@ -68,6 +66,7 @@ describe('Attachments', () => {
   })
 
   it('shows file names when a file is uploaded', async () => {
+    // This is more or less an integration test, to make sure the useFileUploads hook is wired up correctly.
     const user = userEvent.setup()
 
     render(<Attachments {...defaultProps} />)
@@ -86,55 +85,20 @@ describe('Attachments', () => {
     expect(fileName2).toBeInTheDocument()
   })
 
-  it('does not upload files when there are no files to upload', () => {
-    render(<Attachments {...defaultProps} />)
+  it('renders an API error Alert, focuses it and updates the document title when there is an API error', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
 
-    const fileInput = screen.getByLabelText('File input')
+    const { container } = render(<Attachments {...defaultProps} />)
 
-    fireEvent.change(fileInput, { target: { files: null } })
+    const alert = container.querySelector('.ams-alert')
 
-    const fileList = screen.queryByRole('list')
+    expect(alert).toHaveTextContent('heading')
+    expect(alert).toHaveFocus()
 
-    expect(fileList).not.toBeInTheDocument()
+    expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
   })
 
-  it('shows initial uploads when provided', () => {
-    const mockFileName = 'IMG_SERVER_TEST.jpg'
-    const initialUploads: ExistingFileType[] = [
-      {
-        blob: { size: 4326, type: 'image/webp' } as Blob,
-        fileName: mockFileName,
-        serverId: 1,
-      },
-    ]
-
-    render(<Attachments {...defaultProps} files={initialUploads} />)
-
-    const fileName = screen.getAllByText(mockFileName)[0]
-
-    expect(fileName).toBeInTheDocument()
-  })
-
-  it('shows initial uploads without image if download is not yet ready', () => {
-    const mockFileName = 'IMG_SERVER_TEST.jpg'
-    const initialUploads: ExistingFileType[] = [
-      {
-        blob: undefined,
-        fileName: mockFileName,
-        serverId: 1,
-      },
-    ]
-
-    const { container } = render(<Attachments {...defaultProps} files={initialUploads} />)
-
-    const fileName = screen.getAllByText(mockFileName)[0]
-    const loadingIndicator = container.querySelector('[class*="_loading"]')
-
-    expect(fileName).toBeInTheDocument()
-    expect(loadingIndicator).toBeInTheDocument()
-  })
-
-  it('renders an Invalid Form Alert and focuses it when an upload has an error', () => {
+  it('renders an Invalid Form Alert, focuses it and updates the document title when there are validation errors', () => {
     ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
       setFileUploads((prev: FileUpload[]) =>
         prev.map((upload) =>
@@ -159,6 +123,32 @@ describe('Attachments', () => {
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', '#file-upload.id-prefix-1')
     expect(alert).toHaveFocus()
+
+    expect(document.title).toBe(`document-title-error-count-prefix ${textAreaComponent.label} - organisation-name`)
+  })
+
+  it('renders a generic error Alert, focuses it and updates the document title when there is a generic error', () => {
+    const { container } = render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+
+    const file = new File(['dummy content'], 'example.png', { type: 'image/png' })
+    const file2 = new File(['dummy content two'], 'example2.png', { type: 'image/png' })
+    const file3 = new File(['dummy content three'], 'example3.png', { type: 'image/png' })
+    const file4 = new File(['dummy content four'], 'example4.png', { type: 'image/png' })
+
+    // Using fireEvent instead of userEvent.upload here, because userEvent simulates the browser
+    // restoring focus to the file input once the (simulated) file picker closes. That happens
+    // after our change handler runs, so it would overwrite the focus we set on the alert and mask
+    // the behaviour under test.
+    fireEvent.change(fileInput, { target: { files: [file, file2, file3, file4] } })
+
+    const alert = container.querySelector('.ams-alert')
+
+    expect(alert).toHaveTextContent('errors.too-many-files.title')
+    expect(alert).toHaveFocus()
+
+    expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
   })
 
   it('renders an empty error message when an upload has an error without a message', async () => {
@@ -221,64 +211,8 @@ describe('Attachments', () => {
     expect(liveRegion).toBeInTheDocument()
   })
 
-  it('deletes a succesfully uploaded file with the delete button', async () => {
-    const user = userEvent.setup()
-
-    const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
-
-    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
-      setFileUploads((prev: FileUpload[]) =>
-        prev.map((upload) =>
-          upload.id === fileUpload.id
-            ? { ...upload, progress: 100, serverId: 123, status: 'success', xhr: xhrMock as XMLHttpRequest }
-            : upload,
-        ),
-      )
-    })
-
-    render(<Attachments {...defaultProps} />)
-
-    const fileInput = screen.getByLabelText('File input')
-
-    await user.upload(fileInput, [mockFile])
-
-    const fileName1 = screen.getAllByText(mockFile.name)[0]
-
-    expect(fileName1).toBeInTheDocument()
-
-    const deleteButton = screen.getByRole('button', { name: `file-upload.action-button-delete ${mockFile.name}` })
-
-    await user.click(deleteButton)
-
-    const file1SecondRender = screen.queryByText(mockFile.name)
-
-    expect(file1SecondRender).not.toBeInTheDocument()
-  })
-
-  it('deletes a prefilled attachment succesfully', async () => {
-    const user = userEvent.setup()
-
-    const mockFileName = 'IMG_SERVER_TEST.jpg'
-    const initialUploads: ExistingFileType[] = [
-      {
-        blob: { size: 4326, type: 'image/webp' } as Blob,
-        fileName: mockFileName,
-        serverId: 1,
-      },
-    ]
-
-    render(<Attachments {...defaultProps} files={initialUploads} />)
-
-    const deleteButton = screen.getByRole('button', { name: `file-upload.action-button-delete ${mockFileName}` })
-
-    await user.click(deleteButton)
-
-    const file1SecondRender = screen.queryByText(mockFileName)
-
-    expect(file1SecondRender).not.toBeInTheDocument()
-  })
-
   it('cancels an in-progress upload and removes it from the file list with the cancel button', async () => {
+    // This is more or less an integration test, to make sure the XHR reference from fileUploads is passed back to handleDelete correctly
     const user = userEvent.setup()
 
     const abortMock = vi.fn()
@@ -309,36 +243,6 @@ describe('Attachments', () => {
 
     expect(fileName).not.toBeInTheDocument()
     expect(abortMock).toHaveBeenCalled()
-  })
-
-  it('removes a failed upload from the file list with the delete button', async () => {
-    const user = userEvent.setup()
-
-    const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
-
-    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
-      setFileUploads((prev: FileUpload[]) =>
-        prev.map((upload) =>
-          upload.id === fileUpload.id
-            ? { ...upload, progress: 0, serverId: undefined, status: 'error', xhr: xhrMock as XMLHttpRequest }
-            : upload,
-        ),
-      )
-    })
-
-    render(<Attachments {...defaultProps} />)
-
-    const fileInput = screen.getByLabelText('File input')
-
-    await user.upload(fileInput, [mockFile])
-
-    const deleteButton = screen.getByRole('button', { name: `file-upload.action-button-delete ${mockFile.name}` })
-
-    await user.click(deleteButton)
-
-    const fileName = screen.queryByText(mockFile.name)
-
-    expect(fileName).not.toBeInTheDocument()
   })
 
   it('throws an error when delete request fails', async () => {
@@ -380,76 +284,7 @@ describe('Attachments', () => {
     expect(errorMessageTitle).toBeInTheDocument()
   })
 
-  it('shows an error when attempting to upload too many files', async () => {
-    const user = userEvent.setup()
-
-    render(<Attachments {...defaultProps} />)
-
-    const fileInput = screen.getByLabelText('File input')
-
-    const file = new File(['dummy content'], 'example.png', { type: 'image/png' })
-    const file2 = new File(['dummy content two'], 'example2.png', { type: 'image/png' })
-    const file3 = new File(['dummy content three'], 'example3.png', { type: 'image/png' })
-    const file4 = new File(['dummy content four'], 'example4.png', { type: 'image/png' })
-
-    await user.upload(fileInput, [file, file2, file3, file4])
-
-    const errorMessageHeading = screen.getByText('errors.too-many-files.title')
-
-    expect(errorMessageHeading).toBeInTheDocument()
-    expect(screen.queryByText('example.png')).not.toBeInTheDocument()
-    expect(screen.queryByText('example2.png')).not.toBeInTheDocument()
-    expect(screen.queryByText('example3.png')).not.toBeInTheDocument()
-    expect(screen.queryByText('example4.png')).not.toBeInTheDocument()
-  })
-
-  it('renders an API error Alert when there is one', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
-
-    const { container } = render(<Attachments {...defaultProps} />)
-
-    const alert = container.querySelector('.ams-alert')
-
-    expect(alert).toHaveTextContent('heading')
-  })
-
-  it('marks a file as duplicate when the same file is uploaded twice and renders an error message', async () => {
-    const user = userEvent.setup()
-
-    render(<Attachments {...defaultProps} />)
-
-    const fileInput = screen.getByLabelText('File input')
-
-    const file = mockFile
-
-    await user.upload(fileInput, [file])
-    await user.upload(fileInput, [file])
-
-    const errorMessage = screen.getAllByText('validation-errors.duplicate-upload')
-
-    expect(errorMessage[0]).toBeInTheDocument()
-  })
-
-  it('shows an error when there are too many files in the file list', async () => {
-    const user = userEvent.setup()
-
-    render(<Attachments {...defaultProps} />)
-
-    const fileInput = screen.getByLabelText('File input')
-
-    await user.upload(
-      fileInput,
-      Array.from({ length: MAX_UPLOAD_ATTEMPTS + 1 }, () => mockFile),
-    )
-
-    const errorMessageHeading = screen.getByText('errors.too-many-attempts.title')
-    const errorMessageDescription = screen.getByText('errors.too-many-attempts.description')
-
-    expect(errorMessageHeading).toBeInTheDocument()
-    expect(errorMessageDescription).toBeInTheDocument()
-  })
-
-  it('shows an error when trying to navigate to the next page while an upload is in progress', async () => {
+  it('shows a generic error Alert when trying to navigate to the next page while an upload is in progress', async () => {
     const user = userEvent.setup()
 
     const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.LOADING }
@@ -464,7 +299,7 @@ describe('Attachments', () => {
       )
     })
 
-    render(<Attachments {...defaultProps} />)
+    const { container } = render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText('File input')
 
@@ -474,52 +309,9 @@ describe('Attachments', () => {
 
     await user.click(submitButton)
 
-    const errorMessageHeading = screen.getByText('errors.upload-in-progress.title')
-    const errorMessageDescription = screen.getByText('errors.upload-in-progress.description')
+    const alert = container.querySelector('.ams-alert')
 
-    expect(errorMessageHeading).toBeInTheDocument()
-    expect(errorMessageDescription).toBeInTheDocument()
-  })
-
-  it('updates the document title when there is an API error', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
-
-    render(<Attachments {...defaultProps} />)
-
-    expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
-  })
-
-  it('updates the document title when there are validation errors', async () => {
-    const user = userEvent.setup()
-
-    render(<Attachments {...defaultProps} />)
-
-    const fileInput = screen.getByLabelText('File input')
-
-    const file = mockFile
-
-    await user.upload(fileInput, [file])
-    await user.upload(fileInput, [file])
-
-    expect(document.title).toBe(`document-title-error-count-prefix ${textAreaComponent.label} - organisation-name`)
-  })
-
-  it('updates the document title when there is a generic error', async () => {
-    const user = userEvent.setup()
-
-    render(<Attachments {...defaultProps} />)
-
-    const fileInput = screen.getByLabelText('File input')
-
-    await user.upload(
-      fileInput,
-      Array.from({ length: MAX_UPLOAD_ATTEMPTS + 1 }, () => mockFile),
-    )
-
-    expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
-  })
-
-  it.skip('sets focus on the generic error Alert when there is a generic error', async () => {
-    // TODO: Fix this test
+    expect(alert).toHaveTextContent('errors.upload-in-progress.title')
+    expect(alert).toHaveTextContent('errors.upload-in-progress.description')
   })
 })
