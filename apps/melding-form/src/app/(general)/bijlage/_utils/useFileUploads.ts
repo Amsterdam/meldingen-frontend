@@ -38,6 +38,8 @@ const mapExistingFilesToUploads = (files: ExistingFileType[], idPrefix: string):
     status: 'success',
   }))
 
+const isPendingUpload = (upload: FileUploadState): upload is PendingFileUpload => upload.status === 'pending'
+
 type UseFileUploadsParams = {
   // Deletes the attachment on the server; how it authenticates (token query param, cookies, ...)
   // is entirely up to the caller.
@@ -74,6 +76,14 @@ export const useFileUploads = ({
     return `${idPrefix}-${uploadIdCounter.current}`
   }
 
+  const startPendingUploads = (uploads: FileUploadState[]) => {
+    // TODO: if we pass setFileUploads here, we can extract this as a pure function
+    uploads.filter(isPendingUpload).forEach((upload) => {
+      upload.xhr.open('POST', uploadUrl)
+      startUpload(upload.xhr, upload, setFileUploads)
+    })
+  }
+
   const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
     setGenericError(undefined)
 
@@ -98,7 +108,7 @@ export const useFileUploads = ({
     }
 
     const newFileUploads = newFiles.map((newFile) => {
-      if (fileUploads.find((f) => f.file.name === newFile.name)) {
+      if (fileUploads.find((upload) => upload.file.name === newFile.name)) {
         return createDuplicatedUploadError(newFile, 'validation-errors.duplicate-upload', getNextUploadId())
       }
 
@@ -106,15 +116,7 @@ export const useFileUploads = ({
     })
 
     setFileUploads((prev) => [...prev, ...newFileUploads])
-    const validFileUploads = newFileUploads.filter((upload) => upload.status === 'pending')
-
-    validFileUploads.forEach((upload) => {
-      const xhr = upload.xhr
-
-      xhr.open('POST', uploadUrl)
-
-      startUpload(xhr, upload, setFileUploads)
-    })
+    startPendingUploads(newFileUploads)
 
     // Clear the file input after starting the upload, so it is empty for the next selection.
     if (inputRef.current) {
