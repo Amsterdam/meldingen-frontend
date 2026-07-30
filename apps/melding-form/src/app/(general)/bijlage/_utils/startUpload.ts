@@ -12,7 +12,8 @@ export type FileUpload = {
   xhr?: XMLHttpRequest
 }
 
-export type PendingFileUpload = Omit<FileUpload, 'status'> & {
+export type PendingFileUpload = Omit<FileUpload, 'file' | 'status'> & {
+  file: File
   status: 'pending'
   xhr: XMLHttpRequest
 }
@@ -86,9 +87,7 @@ export const startUpload = (
 
   const formData = new FormData()
 
-  if (fileUpload.file instanceof File) {
-    formData.append('file', fileUpload.file)
-  }
+  formData.append('file', fileUpload.file)
 
   xhr.send(formData)
 }
