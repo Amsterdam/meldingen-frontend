@@ -28,7 +28,7 @@ import { TOP_ANCHOR_ID } from '~/constants'
 import styles from './Attachments.module.css'
 
 const MAX_SUCCESSFUL_UPLOADS = 3
-export const MAX_UPLOAD_ATTEMPTS = 10
+const MAX_UPLOAD_ATTEMPTS = 10
 
 export type Props = {
   files: ExistingFileType[]
