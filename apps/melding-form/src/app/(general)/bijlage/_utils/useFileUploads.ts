@@ -52,16 +52,20 @@ const startPendingUploads = (
 }
 
 type UseFileUploadsParams = {
-  // Deletes the attachment on the server; how it authenticates (token query param, cookies, ...)
-  // is entirely up to the caller.
+  /**
+   * Function to delete the attachment on the server.
+   * Authentication (token query param, cookies, etc.) is handled by the caller.
+   */
   deleteAttachment: (serverId: number) => Promise<{ error: unknown }>
   existingFiles: ExistingFileType[]
   idPrefix: string
   inputRef: RefObject<HTMLInputElement | null>
   maxSuccessfulUploads: number
   maxUploadAttempts: number
-  // Full URL to POST the upload to, built by the caller (e.g. including a token query param,
-  // or a same-origin path that relies on cookies).
+  /**
+   * Full URL to POST the upload to.
+   * Authentication (token query param, cookies, etc.) is handled by the caller.
+   */
   uploadUrl: string
 }
 
