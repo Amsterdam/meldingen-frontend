@@ -126,7 +126,8 @@ export const useFileUploads = ({
     startPendingUploads(newFileUploads, uploadUrl, setFileUploads)
 
     // Clear the file input after starting the upload, so it is empty for the next selection.
-    // Non-null assertion is safe here because handleUpload is only called when the input and Attachments are mounted
+    // Non-null assertion is safe: handleUpload only runs as this input's own change handler,
+    // so the input (and inputRef.current) must already exist when it fires.
     inputRef.current!.value = ''
   }
 
