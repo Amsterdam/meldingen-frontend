@@ -18,6 +18,9 @@ export default defineConfig({
         statements: 97,
       },
     },
+    env: {
+      NEXT_PUBLIC_BACKEND_BASE_URL: 'http://localhost:3000',
+    },
     environment: 'jsdom',
     globals: true,
     include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],

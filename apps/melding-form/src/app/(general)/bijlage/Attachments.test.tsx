@@ -32,13 +32,6 @@ window.crypto.randomUUID = vi.fn(() => 'test-id') as unknown as typeof window.cr
 global.URL.createObjectURL = vi.fn()
 global.URL.revokeObjectURL = vi.fn()
 
-// TODO: Check if we can do this somewhere else
-// `process.env.NEXT_PUBLIC_BACKEND_BASE_URL` isn't loaded from `.env` in the vitest environment.
-// Attachments builds the upload XHR's URL from it, so it needs to resolve to something msw's
-// relative-path handlers can match. jsdom's default origin (also used by msw to resolve relative
-// handler paths) is http://localhost:3000, so we set it to that here.
-process.env.NEXT_PUBLIC_BACKEND_BASE_URL = 'http://localhost:3000'
-
 const mockFile = new File(['dummy content'], 'example.png', { type: 'image/png' })
 
 describe('Attachments', () => {
