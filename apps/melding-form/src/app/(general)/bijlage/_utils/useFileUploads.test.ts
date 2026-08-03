@@ -4,7 +4,7 @@ import type { Mock } from 'vitest'
 import { act, renderHook } from '@testing-library/react'
 
 import type { ExistingFileType } from '../page'
-import type { FileUploadState } from './startUpload'
+import type { FileUploadState, PendingFileUpload } from './startUpload'
 
 import { startUpload } from './startUpload'
 import { useFileUploads } from './useFileUploads'
@@ -179,6 +179,8 @@ describe('useFileUploads', () => {
 
   describe('handleDelete', () => {
     it('aborts an in-progress upload and removes it from the list', () => {
+      // startUpload is mocked, so the XMLHttpRequest will never reach the sent state.
+      // We make use of that in this test.
       const inputRef = createInputRef()
       const abortSpy = vi.spyOn(XMLHttpRequest.prototype, 'abort').mockImplementation(() => {})
 
@@ -188,7 +190,7 @@ describe('useFileUploads', () => {
         result.current.handleUpload(createChangeEvent([new File(['content'], 'test.png')]))
       })
 
-      const upload = result.current.fileUploads[0] as FileUploadState & { xhr: XMLHttpRequest }
+      const upload = result.current.fileUploads[0] as PendingFileUpload
 
       act(() => {
         result.current.handleDelete(upload.id, 'test.png', upload.xhr)
@@ -208,18 +210,15 @@ describe('useFileUploads', () => {
       act(() => {
         result.current.handleUpload(createChangeEvent([new File(['content'], 'test.png')]))
       })
-      act(() => {
-        result.current.handleUpload(createChangeEvent([new File(['content'], 'test.png')]))
-      })
 
-      const duplicate = result.current.fileUploads[1]
+      const upload = result.current.fileUploads[0]
 
       act(() => {
-        result.current.handleDelete(duplicate.id, 'test.png')
+        result.current.handleDelete(upload.id, 'test.png')
       })
 
       expect(deleteAttachmentMock).not.toHaveBeenCalled()
-      expect(result.current.fileUploads).toHaveLength(1)
+      expect(result.current.fileUploads).toEqual([])
       expect(result.current.deletedFileName).toBe('test.png')
     })
 
