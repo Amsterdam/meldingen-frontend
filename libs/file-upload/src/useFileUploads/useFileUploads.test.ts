@@ -3,8 +3,8 @@ import type { Mock } from 'vitest'
 
 import { act, renderHook } from '@testing-library/react'
 
-import type { ExistingFileType } from '../page'
 import type { FileUploadState, PendingFileUpload } from './startUpload'
+import type { ExistingFile } from './useFileUploads'
 
 import { startUpload } from './startUpload'
 import { useFileUploads } from './useFileUploads'
@@ -22,7 +22,7 @@ const deleteAttachmentMock = vi.fn()
 
 const defaultParams = {
   deleteAttachment: deleteAttachmentMock,
-  existingFiles: [] as ExistingFileType[],
+  existingFiles: [] as ExistingFile[],
   idPrefix: 'upload',
   maxSuccessfulUploads: 3,
   maxUploadAttempts: 10,
@@ -40,7 +40,7 @@ describe('useFileUploads', () => {
     })
 
     it('maps an existing file with a blob to a successful upload', () => {
-      const existingFiles: ExistingFileType[] = [{ blob: new Blob(['content']), fileName: 'test.png', serverId: 1 }]
+      const existingFiles: ExistingFile[] = [{ blob: new Blob(['content']), fileName: 'test.png', serverId: 1 }]
 
       const { result } = renderHook(() =>
         useFileUploads({ ...defaultParams, existingFiles, inputRef: createInputRef() }),
@@ -53,7 +53,7 @@ describe('useFileUploads', () => {
     })
 
     it('maps an existing file without a blob to a file name placeholder', () => {
-      const existingFiles: ExistingFileType[] = [{ blob: undefined, fileName: 'test.png', serverId: 1 }]
+      const existingFiles: ExistingFile[] = [{ blob: undefined, fileName: 'test.png', serverId: 1 }]
 
       const { result } = renderHook(() =>
         useFileUploads({ ...defaultParams, existingFiles, inputRef: createInputRef() }),
@@ -225,7 +225,7 @@ describe('useFileUploads', () => {
     it('calls deleteAttachment and removes the upload on success', async () => {
       deleteAttachmentMock.mockResolvedValueOnce({ error: undefined })
 
-      const existingFiles: ExistingFileType[] = [{ blob: undefined, fileName: 'test.png', serverId: 42 }]
+      const existingFiles: ExistingFile[] = [{ blob: undefined, fileName: 'test.png', serverId: 42 }]
       const { result } = renderHook(() =>
         useFileUploads({ ...defaultParams, existingFiles, inputRef: createInputRef() }),
       )
@@ -243,7 +243,7 @@ describe('useFileUploads', () => {
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
       deleteAttachmentMock.mockResolvedValueOnce({ error: 'API error' })
 
-      const existingFiles: ExistingFileType[] = [{ blob: undefined, fileName: 'test.png', serverId: 42 }]
+      const existingFiles: ExistingFile[] = [{ blob: undefined, fileName: 'test.png', serverId: 42 }]
       const { result } = renderHook(() =>
         useFileUploads({ ...defaultParams, existingFiles, inputRef: createInputRef() }),
       )

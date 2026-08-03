@@ -9,18 +9,18 @@ import Form from 'next/form'
 import { useActionState, useEffect, useRef, useState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+import type { ErroredFileUpload, ExistingFile, FileUploadState } from '@meldingen/file-upload'
 
 import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
+import { FileList, FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Column, FileList, FileUpload, Heading, SubmitButton } from '@meldingen/ui'
+import { Column, Heading, SubmitButton } from '@meldingen/ui'
 
-import type { ExistingFileType } from './page'
 import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
-import { useFileUploads } from './_utils/useFileUploads'
 import { submitAttachmentsForm } from './actions'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
@@ -31,7 +31,7 @@ const MAX_SUCCESSFUL_UPLOADS = 3
 const MAX_UPLOAD_ATTEMPTS = 10
 
 export type Props = {
-  files: ExistingFileType[]
+  files: ExistingFile[]
   formData: StaticFormTextAreaComponentOutput[]
   meldingId: number
   token: string
@@ -50,6 +50,8 @@ const deleteAttachment = async (meldingId: number, token: string, serverId: numb
 }
 
 const initialState: Pick<FormState, 'apiError'> = {}
+
+const isErroredFileUpload = (upload: FileUploadState): upload is ErroredFileUpload => upload.status === 'error'
 
 export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -73,11 +75,11 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     uploadUrl: `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`,
   })
 
-  const erroredFileUploads = fileUploads.filter(({ status }) => status === 'error')
+  const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
   const erroredFileUploadsKey = erroredFileUploads.map(({ id }) => id).join(',')
   const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
     key: id,
-    message: errorMessage ? t(errorMessage) : '',
+    message: t(errorMessage),
   }))
 
   const { description, label } = formData[0]

@@ -2,10 +2,15 @@ import type { ChangeEvent, Dispatch, RefObject, SetStateAction, SubmitEvent } fr
 
 import { useRef, useState } from 'react'
 
-import type { ExistingFileType } from '../page'
-import type { FileUploadState, FileUpload as FileUploadType, PendingFileUpload } from './startUpload'
+import type { ErroredFileUpload, FileUploadState, FileUpload as FileUploadType, PendingFileUpload } from './startUpload'
 
 import { startUpload } from './startUpload'
+
+export type ExistingFile = {
+  blob?: Blob
+  fileName: string
+  serverId: number
+}
 
 type GenericErrorMessage = {
   description?: string
@@ -13,7 +18,7 @@ type GenericErrorMessage = {
   title: string
 }
 
-const createDuplicatedUploadError = (file: File, errorMessage: string, id: string): FileUploadType => ({
+const createDuplicatedUploadError = (file: File, errorMessage: string, id: string): ErroredFileUpload => ({
   errorMessage,
   file,
   id,
@@ -29,7 +34,7 @@ const createFileUpload = (file: File, id: string): PendingFileUpload => ({
   xhr: new XMLHttpRequest(),
 })
 
-const mapExistingFilesToUploads = (files: ExistingFileType[], idPrefix: string): FileUploadType[] =>
+const mapExistingFilesToUploads = (files: ExistingFile[], idPrefix: string): FileUploadType[] =>
   files.map(({ blob, fileName, serverId }, index) => ({
     file: blob ? new File([blob], fileName) : { name: fileName },
     id: `${idPrefix}-${index + 1}`,
@@ -57,7 +62,7 @@ type UseFileUploadsParams = {
    * Authentication (token query param, cookies, etc.) is handled by the caller.
    */
   deleteAttachment: (serverId: number) => Promise<{ error: unknown }>
-  existingFiles: ExistingFileType[]
+  existingFiles: ExistingFile[]
   idPrefix: string
   inputRef: RefObject<HTMLInputElement | null>
   maxSuccessfulUploads: number

@@ -1,5 +1,7 @@
 import { cookies } from 'next/headers'
 
+import type { ExistingFile } from '@meldingen/file-upload'
+
 import {
   getMeldingByMeldingIdAttachmentByAttachmentIdDownload,
   getMeldingByMeldingIdAttachmentsMelder,
@@ -10,12 +12,6 @@ import {
 import { Attachments } from './Attachments'
 import { isTypeTextAreaComponent } from '~/app/_utils/isTypeTextAreaComponent'
 import { COOKIES } from '~/constants'
-
-export type ExistingFileType = {
-  blob?: Blob
-  fileName: string
-  serverId: number
-}
 
 export default async () => {
   const cookieStore = await cookies()
@@ -60,7 +56,7 @@ export default async () => {
   // We should probably implement a different approach where we fetch the attachments on the client after the page has loaded.
   const attachments = attachmentData
     ? await Promise.all(
-        attachmentData.map(async ({ id, original_filename }): Promise<ExistingFileType> => {
+        attachmentData.map(async ({ id, original_filename }): Promise<ExistingFile> => {
           const { data, error } = await getMeldingByMeldingIdAttachmentByAttachmentIdDownload({
             path: { attachment_id: id, melding_id: parseInt(meldingId, 10) },
             query: { token, type: 'thumbnail' },

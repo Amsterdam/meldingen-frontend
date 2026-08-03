@@ -1,14 +1,12 @@
 import type { Mock } from 'vitest'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { http, HttpResponse } from 'msw'
+import { delay, http, HttpResponse } from 'msw'
 import { useActionState } from 'react'
 
-import type { FileUpload } from './_utils/startUpload'
 import type { Props } from './Attachments'
 
-import { startUpload } from './_utils/startUpload'
 import { Attachments } from './Attachments'
 import { textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
@@ -34,9 +32,12 @@ window.crypto.randomUUID = vi.fn(() => 'test-id') as unknown as typeof window.cr
 global.URL.createObjectURL = vi.fn()
 global.URL.revokeObjectURL = vi.fn()
 
-vi.mock('./_utils/startUpload', () => ({
-  startUpload: vi.fn(),
-}))
+// TODO: Check if we can do this somewhere else
+// `process.env.NEXT_PUBLIC_BACKEND_BASE_URL` isn't loaded from `.env` in the vitest environment.
+// Attachments builds the upload XHR's URL from it, so it needs to resolve to something msw's
+// relative-path handlers can match. jsdom's default origin (also used by msw to resolve relative
+// handler paths) is http://localhost:3000, so we set it to that here.
+process.env.NEXT_PUBLIC_BACKEND_BASE_URL = 'http://localhost:3000'
 
 const mockFile = new File(['dummy content'], 'example.png', { type: 'image/png' })
 
@@ -98,14 +99,12 @@ describe('Attachments', () => {
     expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
   })
 
-  it('renders an Invalid Form Alert, focuses it and updates the document title when there are validation errors', () => {
-    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
-      setFileUploads((prev: FileUpload[]) =>
-        prev.map((upload) =>
-          upload.id === fileUpload.id ? { ...upload, errorMessage: 'Upload failed', status: 'error' } : upload,
-        ),
-      )
-    })
+  it('renders an Invalid Form Alert, focuses it and updates the document title when there are validation errors', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () =>
+        HttpResponse.json({ detail: 'Allowed content size exceeded' }, { status: 422 }),
+      ),
+    )
 
     const { container } = render(<Attachments {...defaultProps} />)
 
@@ -117,12 +116,12 @@ describe('Attachments', () => {
     // the behaviour under test.
     fireEvent.change(fileInput, { target: { files: [mockFile] } })
 
-    const link = screen.getByRole('link', { name: 'Upload failed' })
+    const link = await screen.findByRole('link', { name: 'validation-errors.file-too-large' })
     const alert = container.querySelector('.ams-alert')
 
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', '#file-upload.id-prefix-1')
-    expect(alert).toHaveFocus()
+    await waitFor(() => expect(alert).toHaveFocus())
 
     expect(document.title).toBe(`document-title-error-count-prefix ${textAreaComponent.label} - organisation-name`)
   })
@@ -151,27 +150,6 @@ describe('Attachments', () => {
     expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
   })
 
-  it('renders an empty error message when an upload has an error without a message', async () => {
-    const user = userEvent.setup()
-
-    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
-      setFileUploads((prev: FileUpload[]) =>
-        prev.map((upload) => (upload.id === fileUpload.id ? { ...upload, status: 'error' } : upload)),
-      )
-    })
-
-    render(<Attachments {...defaultProps} />)
-
-    const fileInput = screen.getByLabelText('File input')
-
-    await user.upload(fileInput, [mockFile])
-
-    const link = screen.getByRole('link', { name: '' })
-
-    expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '#file-upload.id-prefix-1')
-  })
-
   it('renders an empty aria-live region when no file is deleted', () => {
     render(<Attachments {...defaultProps} />)
 
@@ -184,50 +162,34 @@ describe('Attachments', () => {
   it('renders an aria-live region with a notification when a file is deleted', async () => {
     const user = userEvent.setup()
 
-    const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
-
-    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
-      setFileUploads((prev: FileUpload[]) =>
-        prev.map((upload) =>
-          upload.id === fileUpload.id
-            ? { ...upload, progress: 100, serverId: 123, status: 'success', xhr: xhrMock as XMLHttpRequest }
-            : upload,
-        ),
-      )
-    })
-
     render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText('File input')
 
     await user.upload(fileInput, [mockFile])
 
-    const deleteButton = screen.getByRole('button', { name: `file-upload.action-button-delete ${mockFile.name}` })
+    const deleteButton = await screen.findByRole('button', {
+      name: `file-upload.action-button-delete ${mockFile.name}`,
+    })
 
     await user.click(deleteButton)
 
-    const liveRegion = screen.getByText('delete-notification')
+    const liveRegion = await screen.findByText('delete-notification')
 
     expect(liveRegion).toBeInTheDocument()
   })
 
   it('cancels an in-progress upload and removes it from the file list with the cancel button', async () => {
     // This is more or less an integration test, to make sure the XHR reference from fileUploads is passed back to handleDelete correctly
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, async () => {
+        await delay('infinite')
+        return HttpResponse.json({ id: 123 })
+      }),
+    )
+
+    const abortSpy = vi.spyOn(XMLHttpRequest.prototype, 'abort')
     const user = userEvent.setup()
-
-    const abortMock = vi.fn()
-
-    const xhrMock: Partial<XMLHttpRequest> = { abort: abortMock, readyState: XMLHttpRequest.OPENED }
-
-    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
-      setFileUploads((prev: FileUpload[]) =>
-        prev.map((upload) =>
-          upload.id === fileUpload.id
-            ? { ...upload, progress: 20, serverId: 123, status: 'loading', xhr: xhrMock as XMLHttpRequest }
-            : upload,
-        ),
-      )
-    })
 
     render(<Attachments {...defaultProps} />)
 
@@ -235,14 +197,18 @@ describe('Attachments', () => {
 
     await user.upload(fileInput, [mockFile])
 
-    const deleteButton = screen.getByRole('button', { name: `file-upload.action-button-cancel ${mockFile.name}` })
+    const cancelButton = await screen.findByRole('button', {
+      name: `file-upload.action-button-cancel ${mockFile.name}`,
+    })
 
-    await user.click(deleteButton)
+    await user.click(cancelButton)
 
     const fileName = screen.queryByText(mockFile.name)
 
     expect(fileName).not.toBeInTheDocument()
-    expect(abortMock).toHaveBeenCalled()
+    expect(abortSpy).toHaveBeenCalled()
+
+    abortSpy.mockRestore()
   })
 
   it('shows a generic error Alert when delete request fails', async () => {
@@ -255,53 +221,40 @@ describe('Attachments', () => {
 
     const user = userEvent.setup()
 
-    const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.DONE }
-
-    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
-      setFileUploads((prev: FileUpload[]) =>
-        prev.map((upload) =>
-          upload.id === fileUpload.id
-            ? { ...upload, progress: 100, serverId: 123, status: 'success', xhr: xhrMock as XMLHttpRequest }
-            : upload,
-        ),
-      )
-    })
-
     const { container } = render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText('File input')
 
     await user.upload(fileInput, [mockFile])
 
-    const deleteButton = screen.getByRole('button', { name: `file-upload.action-button-delete ${mockFile.name}` })
+    const deleteButton = await screen.findByRole('button', {
+      name: `file-upload.action-button-delete ${mockFile.name}`,
+    })
 
     await user.click(deleteButton)
 
     const alert = container.querySelector('.ams-alert')
 
-    expect(alert).toHaveTextContent('errors.delete-failed.title')
+    await waitFor(() => expect(alert).toHaveTextContent('errors.delete-failed.title'))
   })
 
   it('shows a generic error Alert when trying to navigate to the next page while an upload is in progress', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, async () => {
+        await delay('infinite')
+        return HttpResponse.json({ id: 123 })
+      }),
+    )
+
     const user = userEvent.setup()
-
-    const xhrMock: Partial<XMLHttpRequest> = { readyState: XMLHttpRequest.LOADING }
-
-    ;(startUpload as Mock).mockImplementationOnce((fileUpload, setFileUploads) => {
-      setFileUploads((prev: FileUpload[]) =>
-        prev.map((upload) =>
-          upload.id === fileUpload.id
-            ? { ...upload, progress: 20, serverId: 123, status: 'uploading', xhr: xhrMock as XMLHttpRequest }
-            : upload,
-        ),
-      )
-    })
 
     const { container } = render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText('File input')
 
     await user.upload(fileInput, [mockFile])
+
+    await screen.findByRole('button', { name: `file-upload.action-button-cancel ${mockFile.name}` })
 
     const submitButton = screen.getByRole('button', { name: 'submit-button' })
 
