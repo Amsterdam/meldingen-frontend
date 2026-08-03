@@ -154,10 +154,6 @@ export const useFileUploads = ({
         description: 'errors.delete-failed.description',
         title: 'errors.delete-failed.title',
       })
-
-      // TODO: Log the error to an error reporting service
-      // eslint-disable-next-line no-console
-      console.error(error)
       return
     }
 

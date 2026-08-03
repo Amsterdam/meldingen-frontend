@@ -204,11 +204,13 @@ describe('Attachments', () => {
     abortSpy.mockRestore()
   })
 
-  it('shows a generic error Alert when delete request fails', async () => {
+  it('shows a generic error Alert and logs the error to the console when delete request fails', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
     server.use(
       http.delete(
         ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID,
-        () => new HttpResponse(null, { status: 404 }),
+        () => new HttpResponse('API error', { status: 404 }),
       ),
     )
 
@@ -229,6 +231,10 @@ describe('Attachments', () => {
     const alert = container.querySelector('.ams-alert')
 
     await waitFor(() => expect(alert).toHaveTextContent('errors.delete-failed.title'))
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith('API error')
+
+    consoleErrorSpy.mockRestore()
   })
 
   it('shows a generic error Alert when trying to navigate to the next page while an upload is in progress', async () => {

@@ -46,6 +46,12 @@ const deleteAttachment = async (meldingId: number, token: string, serverId: numb
     query: { token },
   })
 
+  if (error) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(error)
+  }
+
   return { error }
 }
 
