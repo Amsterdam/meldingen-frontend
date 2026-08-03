@@ -49,6 +49,7 @@ describe('useFileUploads', () => {
       expect(result.current.fileUploads).toEqual([
         { file: expect.any(File), id: 'upload-1', progress: 100, serverId: 1, status: 'success' },
       ])
+      expect(result.current.fileUploads[0].file.name).toBe('test.png')
     })
 
     it('maps an existing file without a blob to a file name placeholder', () => {
