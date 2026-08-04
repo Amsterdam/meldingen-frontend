@@ -22,7 +22,7 @@ export const ENDPOINTS = {
 
   POST_MELDING: '/melding',
   POST_MELDING_BY_MELDING_ID_ASSET: '/melding/:id/asset',
-  POST_MELDING_BY_MELDING_ID_ATTACHMENT: '/melding/:id/attachment',
+  POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER: '/melding/:id/attachment/melder',
   POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID: '/melding/:melding_id/question/:question_id',
 
   PUT_MELDING_BY_MELDING_ID_ADD_ATTACHMENTS: '/melding/:id/add_attachments',
