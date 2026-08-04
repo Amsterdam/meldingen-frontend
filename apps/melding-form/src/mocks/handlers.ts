@@ -61,7 +61,7 @@ export const handlers = [
       token: 'test-token',
     }),
   ),
-  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () => HttpResponse.json({ id: 42 })),
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, () => HttpResponse.json({ id: 42 })),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ASSET, () => HttpResponse.json()),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, async ({ request }) =>
     // Echo back the request body as the response to make it easier to test if the correct body is sent in the request
