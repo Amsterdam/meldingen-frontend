@@ -111,7 +111,9 @@ export const useFileUploads = ({
       return
     }
 
-    if (newFiles.length + fileUploads.filter((file) => file.status !== 'error').length > maxSuccessfulUploads) {
+    const successfulUploadsCount = fileUploads.filter((file) => file.status !== 'error').length
+
+    if (newFiles.length + successfulUploadsCount > maxSuccessfulUploads) {
       setGenericError({
         options: { maxFiles: maxSuccessfulUploads },
         title: 'errors.too-many-files.title',
