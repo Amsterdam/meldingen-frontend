@@ -102,9 +102,9 @@ export const startUpload = (
 
   setFileUploads((prev) =>
     prev.map((upload): FileUploadState => {
-      const isCurrentUpload = upload.id === fileUpload.id
+      const isNewUpload = upload.id === fileUpload.id
 
-      if (!isCurrentUpload) return upload
+      if (!isNewUpload) return upload
 
       return { ...upload, errorMessage: undefined, status: 'uploading' }
     }),
