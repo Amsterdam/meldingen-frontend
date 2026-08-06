@@ -94,7 +94,7 @@ describe('Attachments', () => {
 
   it('renders an Invalid Form Alert, focuses it and updates the document title when there are validation errors', async () => {
     server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () =>
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, () =>
         HttpResponse.json({ detail: 'Allowed content size exceeded' }, { status: 422 }),
       ),
     )
@@ -175,7 +175,7 @@ describe('Attachments', () => {
   it('cancels an in-progress upload and removes it from the file list with the cancel button', async () => {
     // This is more or less an integration test, to make sure the XHR reference from fileUploads is passed back to handleDelete correctly
     server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, async () => {
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, async () => {
         await delay('infinite')
         return HttpResponse.json({ id: 123 })
       }),
@@ -239,7 +239,7 @@ describe('Attachments', () => {
 
   it('shows a generic error Alert when trying to navigate to the next page while an upload is in progress', async () => {
     server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, async () => {
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, async () => {
         await delay('infinite')
         return HttpResponse.json({ id: 123 })
       }),
