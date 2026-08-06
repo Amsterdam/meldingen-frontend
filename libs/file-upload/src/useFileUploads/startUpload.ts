@@ -70,36 +70,44 @@ export const startUpload = (
       prev.map((upload): FileUploadState => {
         if (upload.id !== fileUpload.id) return upload
 
-        return isOk
-          ? { ...upload, errorMessage: undefined, serverId: parsed?.id, status: 'success' }
-          : {
-              ...upload,
-              errorMessage: getValidationErrorMessageTranslationKey(parsed?.detail),
-              serverId: parsed?.id,
-              status: 'error',
-            }
+        if (!isOk) {
+          return {
+            ...upload,
+            errorMessage: getValidationErrorMessageTranslationKey(parsed?.detail),
+            serverId: parsed?.id,
+            status: 'error',
+          }
+        }
+
+        return { ...upload, errorMessage: undefined, serverId: parsed?.id, status: 'success' }
       }),
     )
   }
 
   xhr.onerror = () => {
     setFileUploads((prev) =>
-      prev.map((upload): FileUploadState =>
-        upload.id === fileUpload.id
-          ? {
-              ...upload,
-              errorMessage: 'validation-errors.failed-upload',
-              status: 'error',
-            }
-          : upload,
-      ),
+      prev.map((upload): FileUploadState => {
+        const isCurrentUpload = upload.id === fileUpload.id
+
+        if (!isCurrentUpload) return upload
+
+        return {
+          ...upload,
+          errorMessage: 'validation-errors.failed-upload',
+          status: 'error',
+        }
+      }),
     )
   }
 
   setFileUploads((prev) =>
-    prev.map((upload): FileUploadState =>
-      upload.id === fileUpload.id ? { ...upload, errorMessage: undefined, status: 'uploading' } : upload,
-    ),
+    prev.map((upload): FileUploadState => {
+      const isCurrentUpload = upload.id === fileUpload.id
+
+      if (!isCurrentUpload) return upload
+
+      return { ...upload, errorMessage: undefined, status: 'uploading' }
+    }),
   )
 
   const formData = new FormData()
