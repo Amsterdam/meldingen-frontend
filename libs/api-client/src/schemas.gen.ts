@@ -841,7 +841,7 @@ export const BaseModelSchema = {
     title: 'BaseModel'
 } as const;
 
-export const Body_melding_attachment_melding__melding_id__attachment_postSchema = {
+export const Body_melding_attachment_melder_melding__melding_id__attachment_melder_postSchema = {
     properties: {
         file: {
             type: 'string',
@@ -853,7 +853,22 @@ export const Body_melding_attachment_melding__melding_id__attachment_postSchema 
     required: [
         'file'
     ],
-    title: 'Body_melding_attachment_melding__melding_id__attachment_post'
+    title: 'Body_melding_attachment_melder_melding__melding_id__attachment_melder_post'
+} as const;
+
+export const Body_melding_attachment_melding__melding_id__attachment__postSchema = {
+    properties: {
+        file: {
+            type: 'string',
+            contentMediaType: 'application/octet-stream',
+            title: 'File'
+        }
+    },
+    type: 'object',
+    required: [
+        'file'
+    ],
+    title: 'Body_melding_attachment_melding__melding_id__attachment__post'
 } as const;
 
 export const CatSchema = {

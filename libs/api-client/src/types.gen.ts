@@ -209,7 +209,17 @@ export type BaseModel = {
 };
 
 /**
- * Body_melding_attachment_melding__melding_id__attachment_post
+ * Body_melding_attachment_melder_melding__melding_id__attachment_melder_post
+ */
+export type BodyMeldingAttachmentMelderMeldingMeldingIdAttachmentMelderPost = {
+    /**
+     * File
+     */
+    file: Blob | File;
+};
+
+/**
+ * Body_melding_attachment_melding__melding_id__attachment__post
  */
 export type BodyMeldingAttachmentMeldingMeldingIdAttachmentPost = {
     /**
@@ -792,23 +802,7 @@ export type FormInput = {
     /**
      * Components
      */
-    components: Array<({
-        type: 'panel';
-    } & FormPanelComponentInput) | ({
-        type: 'textarea';
-    } & FormTextAreaComponentInput) | ({
-        type: 'textfield';
-    } & FormTextFieldComponentInput) | ({
-        type: 'radio';
-    } & FormRadioComponentInput) | ({
-        type: 'selectboxes';
-    } & FormCheckboxComponentInput) | ({
-        type: 'select';
-    } & FormSelectComponentInput) | ({
-        type: 'date';
-    } & FormDateComponentInput) | ({
-        type: 'time';
-    } & FormTimeComponentInput)>;
+    components: Array<FormPanelComponentInput | FormTextAreaComponentInput | FormTextFieldComponentInput | FormRadioComponentInput | FormCheckboxComponentInput | FormSelectComponentInput | FormDateComponentInput | FormTimeComponentInput>;
     /**
      * Classification
      */
@@ -886,21 +880,7 @@ export type FormPanelComponentInput = {
     /**
      * Components
      */
-    components: Array<({
-        type: 'textarea';
-    } & FormTextAreaComponentInput) | ({
-        type: 'textfield';
-    } & FormTextFieldComponentInput) | ({
-        type: 'radio';
-    } & FormRadioComponentInput) | ({
-        type: 'selectboxes';
-    } & FormCheckboxComponentInput) | ({
-        type: 'select';
-    } & FormSelectComponentInput) | ({
-        type: 'date';
-    } & FormDateComponentInput) | ({
-        type: 'time';
-    } & FormTimeComponentInput)>;
+    components: Array<FormTextAreaComponentInput | FormTextFieldComponentInput | FormRadioComponentInput | FormCheckboxComponentInput | FormSelectComponentInput | FormDateComponentInput | FormTimeComponentInput>;
 };
 
 /**
@@ -1385,21 +1365,7 @@ export type GeometryCollection = {
     /**
      * Geometries
      */
-    geometries: Array<({
-        type: 'Point';
-    } & Point) | ({
-        type: 'MultiPoint';
-    } & MultiPoint) | ({
-        type: 'LineString';
-    } & LineString) | ({
-        type: 'MultiLineString';
-    } & MultiLineString) | ({
-        type: 'Polygon';
-    } & Polygon) | ({
-        type: 'MultiPolygon';
-    } & MultiPolygon) | ({
-        type: 'GeometryCollection';
-    } & GeometryCollection)>;
+    geometries: Array<Point | MultiPoint | LineString | MultiLineString | Polygon | MultiPolygon | GeometryCollection>;
 };
 
 /**
@@ -2653,23 +2619,7 @@ export type StaticFormInput = {
     /**
      * Components
      */
-    components: Array<({
-        type: 'panel';
-    } & FormPanelComponentInput) | ({
-        type: 'textarea';
-    } & FormTextAreaComponentInput) | ({
-        type: 'textfield';
-    } & FormTextFieldComponentInput) | ({
-        type: 'radio';
-    } & FormRadioComponentInput) | ({
-        type: 'selectboxes';
-    } & FormCheckboxComponentInput) | ({
-        type: 'select';
-    } & FormSelectComponentInput) | ({
-        type: 'date';
-    } & FormDateComponentInput) | ({
-        type: 'time';
-    } & FormTimeComponentInput)>;
+    components: Array<FormPanelComponentInput | FormTextAreaComponentInput | FormTextFieldComponentInput | FormRadioComponentInput | FormCheckboxComponentInput | FormSelectComponentInput | FormDateComponentInput | FormTimeComponentInput>;
 };
 
 /**
@@ -5084,8 +5034,8 @@ export type PatchMeldingByMeldingIdAnswerByAnswerIdResponses = {
 
 export type PatchMeldingByMeldingIdAnswerByAnswerIdResponse = PatchMeldingByMeldingIdAnswerByAnswerIdResponses[keyof PatchMeldingByMeldingIdAnswerByAnswerIdResponses];
 
-export type PostMeldingByMeldingIdAttachmentData = {
-    body: BodyMeldingAttachmentMeldingMeldingIdAttachmentPost;
+export type PostMeldingByMeldingIdAttachmentMelderData = {
+    body: BodyMeldingAttachmentMelderMeldingMeldingIdAttachmentMelderPost;
     path: {
         /**
          * Melding Id
@@ -5102,10 +5052,10 @@ export type PostMeldingByMeldingIdAttachmentData = {
          */
         token: string;
     };
-    url: '/melding/{melding_id}/attachment';
+    url: '/melding/{melding_id}/attachment/melder';
 };
 
-export type PostMeldingByMeldingIdAttachmentErrors = {
+export type PostMeldingByMeldingIdAttachmentMelderErrors = {
     /**
      * Bad Request
      */
@@ -5142,16 +5092,16 @@ export type PostMeldingByMeldingIdAttachmentErrors = {
     422: HttpValidationError;
 };
 
-export type PostMeldingByMeldingIdAttachmentError = PostMeldingByMeldingIdAttachmentErrors[keyof PostMeldingByMeldingIdAttachmentErrors];
+export type PostMeldingByMeldingIdAttachmentMelderError = PostMeldingByMeldingIdAttachmentMelderErrors[keyof PostMeldingByMeldingIdAttachmentMelderErrors];
 
-export type PostMeldingByMeldingIdAttachmentResponses = {
+export type PostMeldingByMeldingIdAttachmentMelderResponses = {
     /**
      * Successful Response
      */
     200: AttachmentOutput;
 };
 
-export type PostMeldingByMeldingIdAttachmentResponse = PostMeldingByMeldingIdAttachmentResponses[keyof PostMeldingByMeldingIdAttachmentResponses];
+export type PostMeldingByMeldingIdAttachmentMelderResponse = PostMeldingByMeldingIdAttachmentMelderResponses[keyof PostMeldingByMeldingIdAttachmentMelderResponses];
 
 export type GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData = {
     body?: never;
@@ -5408,6 +5358,68 @@ export type DeleteMeldingByMeldingIdAttachmentByAttachmentIdResponses = {
     200: unknown;
 };
 
+export type PostMeldingByMeldingIdAttachmentData = {
+    body: BodyMeldingAttachmentMeldingMeldingIdAttachmentPost;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/attachment/';
+};
+
+export type PostMeldingByMeldingIdAttachmentErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Uploading attachment that is too large.
+     */
+    413: unknown;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type PostMeldingByMeldingIdAttachmentError = PostMeldingByMeldingIdAttachmentErrors[keyof PostMeldingByMeldingIdAttachmentErrors];
+
+export type PostMeldingByMeldingIdAttachmentResponses = {
+    /**
+     * Successful Response
+     */
+    200: AttachmentOutput;
+};
+
+export type PostMeldingByMeldingIdAttachmentResponse = PostMeldingByMeldingIdAttachmentResponses[keyof PostMeldingByMeldingIdAttachmentResponses];
+
 export type PatchMeldingByMeldingIdLocationData = {
     body: GeoJson;
     path: {
@@ -5660,15 +5672,7 @@ export type GetMeldingByMeldingIdAnswersMelderResponses = {
      *
      * Successful Response
      */
-    200: Array<({
-        type: 'text';
-    } & TextAnswerQuestionOutput) | ({
-        type: 'time';
-    } & TimeAnswerQuestionOutput) | ({
-        type: 'date';
-    } & DateAnswerQuestionOutput) | ({
-        type: 'value_label';
-    } & ValueLabelAnswerQuestionOutput)>;
+    200: Array<TextAnswerQuestionOutput | TimeAnswerQuestionOutput | DateAnswerQuestionOutput | ValueLabelAnswerQuestionOutput>;
 };
 
 export type GetMeldingByMeldingIdAnswersMelderResponse = GetMeldingByMeldingIdAnswersMelderResponses[keyof GetMeldingByMeldingIdAnswersMelderResponses];
@@ -5724,15 +5728,7 @@ export type GetMeldingByMeldingIdAnswersResponses = {
      *
      * Successful Response
      */
-    200: Array<({
-        type: 'text';
-    } & TextAnswerQuestionOutput) | ({
-        type: 'time';
-    } & TimeAnswerQuestionOutput) | ({
-        type: 'date';
-    } & DateAnswerQuestionOutput) | ({
-        type: 'value_label';
-    } & ValueLabelAnswerQuestionOutput)>;
+    200: Array<TextAnswerQuestionOutput | TimeAnswerQuestionOutput | DateAnswerQuestionOutput | ValueLabelAnswerQuestionOutput>;
 };
 
 export type GetMeldingByMeldingIdAnswersResponse = GetMeldingByMeldingIdAnswersResponses[keyof GetMeldingByMeldingIdAnswersResponses];

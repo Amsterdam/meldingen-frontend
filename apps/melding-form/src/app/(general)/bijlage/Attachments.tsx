@@ -78,7 +78,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     inputRef,
     maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
     maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
-    uploadUrl: `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment?token=${encodeURIComponent(token)}`,
+    uploadUrl: `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment/melder?token=${encodeURIComponent(token)}`,
   })
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
