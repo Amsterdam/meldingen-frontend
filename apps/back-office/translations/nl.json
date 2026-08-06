@@ -202,6 +202,13 @@
       "maxLength": "De notitie mag niet langer zijn dan {max} tekens."
     }
   },
+  "photos": {
+    "metadata": {
+      "title": "Foto’s - Gemeente Amsterdam"
+    },
+    "back-link": "Meldingdetails",
+    "title": "Foto’s"
+  },
   "shared": {
     "document-title-error-count-prefix": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",
     "api-error-alert": {
