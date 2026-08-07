@@ -2,11 +2,14 @@
 
 import { Button, Image } from '@amsterdam/design-system-react'
 import { ChevronBackwardIcon, ChevronForwardIcon } from '@amsterdam/design-system-react-icons'
+import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 import { debounce, scrollToCurrentSlideOnResize, scrollToSlide, setCurrentSlideIdToVisibleSlide } from './_utils'
 import { ImageSliderThumbnails } from './ImageSliderThumbnails'
+
+import styles from './ImageSlider.module.css'
 
 /**
  * This component is copied from the Amsterdam Design System React package and modified to fit our needs.
@@ -65,6 +68,11 @@ export const ImageSlider = ({ images, labelId }: { images: (Blob | File)[]; labe
 
   if (images.length === 0) return null
 
+  const goToSlide = (id: number) => {
+    setCurrentSlideId(id)
+    scrollToSlide(id, scrollerRef)
+  }
+
   const isAtStart = currentSlideId === 0
   const isAtEnd = currentSlideId === images.length - 1
 
@@ -76,7 +84,7 @@ export const ImageSlider = ({ images, labelId }: { images: (Blob | File)[]; labe
           disabled={isAtStart}
           icon={ChevronBackwardIcon}
           iconOnly
-          onClick={() => scrollToSlide(currentSlideId - 1, scrollerRef)}
+          onClick={() => goToSlide(currentSlideId - 1)}
         >
           {t('previous')}
         </Button>
@@ -85,7 +93,7 @@ export const ImageSlider = ({ images, labelId }: { images: (Blob | File)[]; labe
           disabled={isAtEnd}
           icon={ChevronForwardIcon}
           iconOnly
-          onClick={() => scrollToSlide(currentSlideId + 1, scrollerRef)}
+          onClick={() => goToSlide(currentSlideId + 1)}
         >
           {t('next')}
         </Button>
@@ -96,25 +104,16 @@ export const ImageSlider = ({ images, labelId }: { images: (Blob | File)[]; labe
           <div
             aria-hidden={currentSlideId !== index}
             aria-labelledby={`tab${index + 1}`}
-            className="ams-image-slider__slide"
+            className={clsx('ams-image-slider__slide', styles.tabPanel)}
             id={`slide${index + 1}`}
             key={imageUrl}
             role="tabpanel"
-            style={{ height: '600px', position: 'relative', width: '100%' }}
           >
-            <Image
-              alt=""
-              src={imageUrl}
-              style={{ height: '100%', objectFit: 'contain', position: 'absolute', width: '100%' }}
-            />
+            <Image alt="" className={styles.image} src={imageUrl} />
           </div>
         ))}
       </div>
-      <ImageSliderThumbnails
-        currentSlideId={currentSlideId}
-        images={imageUrls}
-        scrollToSlide={(id) => scrollToSlide(id, scrollerRef)}
-      />
+      <ImageSliderThumbnails currentSlideId={currentSlideId} images={imageUrls} scrollToSlide={goToSlide} />
     </section>
   )
 }

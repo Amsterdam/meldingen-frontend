@@ -1,6 +1,5 @@
 import type { KeyboardEvent } from 'react'
 
-import { Image } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 
@@ -50,16 +49,11 @@ export const ImageSliderThumbnails = ({ currentSlideId, images, scrollToSlide }:
           key={imageUrl}
           onClick={() => scrollToSlide(index)}
           role="tab"
-          style={{ height: '64px', position: 'relative', width: '100%' }}
+          style={{ backgroundImage: `url(${imageUrl})` }}
           tabIndex={currentSlideId === index ? 0 : -1}
           type="button"
         >
           <span className="ams-visually-hidden">{`${t('thumbnail-button-prefix')} ${index + 1}`}</span>
-          <Image
-            alt=""
-            src={imageUrl}
-            style={{ height: '100%', objectFit: 'contain', position: 'absolute', width: '100%' }}
-          />
         </button>
       ))}
     </div>

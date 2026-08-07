@@ -1,0 +1,12 @@
+.tabPanel {
+  height: 37.5rem;
+  position: relative;
+  width: 100%;
+}
+
+.image {
+  height: 100%;
+  object-fit: contain;
+  position: absolute;
+  width: 100%;
+}
