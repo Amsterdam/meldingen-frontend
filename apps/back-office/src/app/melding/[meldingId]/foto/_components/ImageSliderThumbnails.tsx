@@ -13,24 +13,32 @@ export const ImageSliderThumbnails = ({ currentSlideId, images, scrollToSlide }:
   const t = useTranslations('photos.image-slider')
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    const element = event.currentTarget.children[currentSlideId]
+    const tabs = event.currentTarget.children
+    const element = tabs[currentSlideId]
+
+    const focusAndGoToSlide = (target: Element | null, id: number) => {
+      if (!target) return
+
+      ;(target as HTMLElement).focus()
+      scrollToSlide(id)
+    }
 
     if (event.key === 'ArrowRight') {
-      const nextElement = element?.nextElementSibling as HTMLElement | null
-
-      if (nextElement) {
-        nextElement.focus()
-        scrollToSlide(currentSlideId + 1)
-      }
+      focusAndGoToSlide(element?.nextElementSibling ?? null, currentSlideId + 1)
     }
 
     if (event.key === 'ArrowLeft') {
-      const previousElement = element?.previousElementSibling as HTMLElement | null
+      focusAndGoToSlide(element?.previousElementSibling ?? null, currentSlideId - 1)
+    }
 
-      if (previousElement) {
-        previousElement.focus()
-        scrollToSlide(currentSlideId - 1)
-      }
+    if (event.key === 'Home') {
+      event.preventDefault()
+      focusAndGoToSlide(tabs[0] ?? null, 0)
+    }
+
+    if (event.key === 'End') {
+      event.preventDefault()
+      focusAndGoToSlide(tabs[tabs.length - 1] ?? null, tabs.length - 1)
     }
   }
 
