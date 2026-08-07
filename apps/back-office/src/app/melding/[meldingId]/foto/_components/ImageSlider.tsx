@@ -1,8 +1,8 @@
 'use client'
 
-import { Button } from '@amsterdam/design-system-react'
+import { Button, Image } from '@amsterdam/design-system-react'
 import { ChevronBackwardIcon, ChevronForwardIcon } from '@amsterdam/design-system-react-icons'
-import NextImage from 'next/image'
+import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 import { debounce, scrollToCurrentSlideOnResize, scrollToSlide, setCurrentSlideIdToVisibleSlide } from './_utils'
@@ -14,7 +14,9 @@ import { ImageSliderThumbnails } from './ImageSliderThumbnails'
  * https://github.com/Amsterdam/design-system/tree/develop/packages/react/src/ImageSlider
  */
 
-export const ImageSlider = ({ images }: { images: (Blob | File)[] }) => {
+export const ImageSlider = ({ images, labelId }: { images: (Blob | File)[]; labelId: string }) => {
+  const t = useTranslations('photos.image-slider')
+
   const [currentSlideId, setCurrentSlideId] = useState(0)
   const [imageUrls, setImageUrls] = useState<string[]>([])
 
@@ -55,7 +57,10 @@ export const ImageSlider = ({ images }: { images: (Blob | File)[] }) => {
 
     window.addEventListener('resize', handleResize)
 
-    return () => window.removeEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      handleResize.cancel()
+    }
   }, [currentSlideId, images.length])
 
   if (images.length === 0) return null
@@ -64,7 +69,7 @@ export const ImageSlider = ({ images }: { images: (Blob | File)[] }) => {
   const isAtEnd = currentSlideId === images.length - 1
 
   return (
-    <section aria-roledescription="carousel" className="ams-image-slider">
+    <section aria-labelledby={labelId} aria-roledescription="carousel" className="ams-image-slider">
       <div className="ams-image-slider__controls">
         <Button
           className="ams-image-slider__control"
@@ -73,7 +78,7 @@ export const ImageSlider = ({ images }: { images: (Blob | File)[] }) => {
           iconOnly
           onClick={() => scrollToSlide(currentSlideId - 1, scrollerRef)}
         >
-          Vorige
+          {t('previous')}
         </Button>
         <Button
           className="ams-image-slider__control"
@@ -82,26 +87,25 @@ export const ImageSlider = ({ images }: { images: (Blob | File)[] }) => {
           iconOnly
           onClick={() => scrollToSlide(currentSlideId + 1, scrollerRef)}
         >
-          Volgende
+          {t('next')}
         </Button>
       </div>
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
-      <div className="ams-image-slider__scroller" ref={scrollerRef} tabIndex={0}>
+      <div aria-labelledby={labelId} className="ams-image-slider__scroller" ref={scrollerRef} tabIndex={0}>
         {imageUrls.map((imageUrl, index) => (
           <div
             aria-hidden={currentSlideId !== index}
+            aria-labelledby={`tab${index + 1}`}
             className="ams-image-slider__slide"
             id={`slide${index + 1}`}
             key={imageUrl}
             role="tabpanel"
             style={{ height: '600px', position: 'relative', width: '100%' }}
           >
-            <NextImage
+            <Image
               alt=""
-              className="ams-image-slider__slide"
-              fill
               src={imageUrl}
-              style={{ objectFit: 'contain' }}
+              style={{ height: '100%', objectFit: 'contain', position: 'absolute', width: '100%' }}
             />
           </div>
         ))}

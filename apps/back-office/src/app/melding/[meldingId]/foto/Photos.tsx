@@ -13,10 +13,10 @@ export const Photos = ({ images, meldingId }: { images: (Blob | File)[]; melding
       <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
       <Grid as="main" gapVertical="large">
         <Grid.Cell span="all">
-          <Heading className="ams-mb-m" level={1}>
+          <Heading className="ams-mb-m" id="heading" level={1}>
             {t('title')}
           </Heading>
-          <ImageSlider images={images} />
+          <ImageSlider images={images} labelId="heading" />
         </Grid.Cell>
       </Grid>
     </div>

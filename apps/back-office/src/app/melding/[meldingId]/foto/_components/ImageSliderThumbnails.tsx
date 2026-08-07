@@ -1,7 +1,8 @@
 import type { KeyboardEvent } from 'react'
 
+import { Image } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
-import NextImage from 'next/image'
+import { useTranslations } from 'next-intl'
 
 type Props = {
   currentSlideId: number
@@ -10,6 +11,8 @@ type Props = {
 }
 
 export const ImageSliderThumbnails = ({ currentSlideId, images, scrollToSlide }: Props) => {
+  const t = useTranslations('photos.image-slider')
+
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     const element = event.currentTarget.children[currentSlideId]
 
@@ -43,14 +46,20 @@ export const ImageSliderThumbnails = ({ currentSlideId, images, scrollToSlide }:
             'ams-image-slider__thumbnail',
             currentSlideId === index && 'ams-image-slider__thumbnail--in-view',
           )}
-          key={index}
+          id={`tab${index + 1}`}
+          key={imageUrl}
           onClick={() => scrollToSlide(index)}
           role="tab"
           style={{ height: '64px', position: 'relative', width: '100%' }}
           tabIndex={currentSlideId === index ? 0 : -1}
           type="button"
         >
-          <NextImage alt="" className="ams-image-slider__slide" fill src={imageUrl} style={{ objectFit: 'contain' }} />
+          <span className="ams-visually-hidden">{`${t('thumbnail-button-prefix')} ${index + 1}`}</span>
+          <Image
+            alt=""
+            src={imageUrl}
+            style={{ height: '100%', objectFit: 'contain', position: 'absolute', width: '100%' }}
+          />
         </button>
       ))}
     </div>
