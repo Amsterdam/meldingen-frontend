@@ -1,5 +1,6 @@
 .imageContainer {
-  height: 37.5rem;
+  aspect-ratio: 4 / 3;
+  max-height: 37.5rem;
   position: relative;
   width: 100%;
 }
