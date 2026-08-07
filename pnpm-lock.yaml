@@ -281,6 +281,9 @@ importers:
       '@meldingen/api-client':
         specifier: workspace:*
         version: link:../../libs/api-client
+      '@meldingen/file-upload':
+        specifier: workspace:*
+        version: link:../../libs/file-upload
       '@meldingen/form-renderer':
         specifier: workspace:*
         version: link:../../libs/form-renderer
@@ -301,6 +304,8 @@ importers:
         version: 4.13.2(@swc/helpers@0.5.23)(next@16.2.11(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(typescript@5.9.3)
 
   libs/api-client: {}
+
+  libs/file-upload: {}
 
   libs/form-builder:
     dependencies:
