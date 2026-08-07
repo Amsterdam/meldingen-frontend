@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@meldingen/api-client": "workspace:*",
+    "@meldingen/file-upload": "workspace:*",
     "@meldingen/form-renderer": "workspace:*",
     "@meldingen/map": "workspace:*",
     "@meldingen/markdown-to-html": "workspace:*",
