@@ -43,7 +43,7 @@
     "tslib": "2.8.1"
   },
   "devDependencies": {
-    "@eslint/js": "9.39.4",
+    "@eslint/js": "9.39.5",
     "@eslint/json": "2.0.1",
     "@eslint/markdown": "8.0.3",
     "@hey-api/openapi-ts": "0.99.0",
