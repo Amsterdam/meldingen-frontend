@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 
 type Props = {
   currentSlideId: number
-  images: string[]
+  images: { id: number; url: string }[]
   scrollToSlide: (id: number) => void
 }
 
@@ -45,7 +45,7 @@ export const ImageSliderThumbnails = ({ currentSlideId, images, scrollToSlide }:
   return (
     // eslint-disable-next-line jsx-a11y/interactive-supports-focus
     <div className="ams-image-slider__thumbnails" onKeyDown={handleKeyDown} role="tablist">
-      {images.map((imageUrl, index) => (
+      {images.map(({ id, url }, index) => (
         <button
           aria-controls={`slide${index + 1}`}
           aria-selected={currentSlideId === index ? 'true' : 'false'}
@@ -54,10 +54,10 @@ export const ImageSliderThumbnails = ({ currentSlideId, images, scrollToSlide }:
             currentSlideId === index && 'ams-image-slider__thumbnail--in-view',
           )}
           id={`tab${index + 1}`}
-          key={imageUrl}
+          key={id}
           onClick={() => scrollToSlide(index)}
           role="tab"
-          style={{ backgroundImage: `url(${imageUrl})` }}
+          style={{ backgroundImage: `url(${url})` }}
           tabIndex={currentSlideId === index ? 0 : -1}
           type="button"
         >

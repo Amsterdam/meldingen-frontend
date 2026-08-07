@@ -30,16 +30,16 @@ export const ImageSlider = ({ images, labelId }: Props) => {
   const t = useTranslations('photos.image-slider')
 
   const [currentSlideId, setCurrentSlideId] = useState(0)
-  const [imageUrls, setImageUrls] = useState<string[]>([])
+  const [imageUrls, setImageUrls] = useState<{ id: number; url: string }[]>([])
 
   const scrollerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const urls = images.map((image) => URL.createObjectURL(image.data))
+    const urls = images.map((image) => ({ id: image.id, url: URL.createObjectURL(image.data) }))
     setImageUrls(urls)
 
     return () => {
-      urls.forEach((url) => URL.revokeObjectURL(url))
+      urls.forEach(({ url }) => URL.revokeObjectURL(url))
     }
   }, [images])
 
@@ -109,19 +109,19 @@ export const ImageSlider = ({ images, labelId }: Props) => {
       </div>
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
       <div aria-labelledby={labelId} className="ams-image-slider__scroller" ref={scrollerRef} tabIndex={0}>
-        {imageUrls.map((imageUrl, index) => (
+        {imageUrls.map(({ id, url }, index) => (
           <div
             aria-hidden={currentSlideId !== index}
             aria-labelledby={`tab${index + 1}`}
             className="ams-image-slider__slide"
             id={`slide${index + 1}`}
-            key={imageUrl}
+            key={id}
             role="tabpanel"
           >
             <Figure>
               <Figure.Caption>{images[index].filename}</Figure.Caption>
               <div className={styles.imageContainer}>
-                <Image alt="" className={styles.image} src={imageUrl} />
+                <Image alt="" className={styles.image} src={url} />
               </div>
             </Figure>
           </div>
