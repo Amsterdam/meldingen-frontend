@@ -5,14 +5,24 @@ import { Grid, Heading } from '@meldingen/ui'
 import { BackLink } from '../_components/BackLink'
 import { ImageSlider } from './_components/ImageSlider'
 
-export const Photos = ({ images, meldingId }: { images: (Blob | File)[]; meldingId: number }) => {
+type Props = {
+  images: {
+    createdAt: string
+    data: Blob | File
+    filename: string
+    id: number
+  }[]
+  meldingId: number
+}
+
+export const Photos = ({ images, meldingId }: Props) => {
   const t = useTranslations('photos')
 
   return (
     <div className="ams-page__area--body">
       <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
       <Grid as="main" gapVertical="large">
-        <Grid.Cell span="all">
+        <Grid.Cell appearance="transparent" span="all">
           <Heading className="ams-mb-m" id="heading" level={1}>
             {t('title')}
           </Heading>

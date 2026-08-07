@@ -23,14 +23,19 @@ export default async ({ params }: Params) => {
   if (error) throw new Error('Failed to fetch melding attachments.')
 
   const images = await Promise.all(
-    data.map(async ({ id }) => {
+    data.map(async ({ created_at, id, original_filename }) => {
       const { data: imageData, error: imageDownloadError } = await getAttachmentById({
         path: { id },
       })
 
       if (imageDownloadError) throw new Error('Failed to download image.')
 
-      return imageData
+      return {
+        createdAt: created_at,
+        data: imageData,
+        filename: original_filename,
+        id,
+      }
     }),
   )
 

@@ -1,8 +1,7 @@
 'use client'
 
-import { Button, Image } from '@amsterdam/design-system-react'
+import { Button, Figure, Image } from '@amsterdam/design-system-react'
 import { ChevronBackwardIcon, ChevronForwardIcon } from '@amsterdam/design-system-react-icons'
-import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
@@ -17,7 +16,17 @@ import styles from './ImageSlider.module.css'
  * https://github.com/Amsterdam/design-system/tree/develop/packages/react/src/ImageSlider
  */
 
-export const ImageSlider = ({ images, labelId }: { images: (Blob | File)[]; labelId: string }) => {
+type Props = {
+  images: {
+    createdAt: string
+    data: Blob | File
+    filename: string
+    id: number
+  }[]
+  labelId: string
+}
+
+export const ImageSlider = ({ images, labelId }: Props) => {
   const t = useTranslations('photos.image-slider')
 
   const [currentSlideId, setCurrentSlideId] = useState(0)
@@ -26,7 +35,7 @@ export const ImageSlider = ({ images, labelId }: { images: (Blob | File)[]; labe
   const scrollerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const urls = images.map((image) => URL.createObjectURL(image))
+    const urls = images.map((image) => URL.createObjectURL(image.data))
     setImageUrls(urls)
 
     return () => {
@@ -104,12 +113,17 @@ export const ImageSlider = ({ images, labelId }: { images: (Blob | File)[]; labe
           <div
             aria-hidden={currentSlideId !== index}
             aria-labelledby={`tab${index + 1}`}
-            className={clsx('ams-image-slider__slide', styles.tabPanel)}
+            className="ams-image-slider__slide"
             id={`slide${index + 1}`}
             key={imageUrl}
             role="tabpanel"
           >
-            <Image alt="" className={styles.image} src={imageUrl} />
+            <Figure>
+              <Figure.Caption>{images[index].filename}</Figure.Caption>
+              <div className={styles.imageContainer}>
+                <Image alt="" className={styles.image} src={imageUrl} />
+              </div>
+            </Figure>
           </div>
         ))}
       </div>
