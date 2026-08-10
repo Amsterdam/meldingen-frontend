@@ -53,5 +53,5 @@ beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
-// Set timezone in Vitest so dates will be the consistent across environments
+// Set timezone in Vitest so dates will be consistent across environments
 process.env.TZ = 'UTC'
