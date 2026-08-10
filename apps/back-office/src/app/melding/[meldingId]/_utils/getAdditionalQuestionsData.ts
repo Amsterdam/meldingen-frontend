@@ -17,8 +17,10 @@ const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200
       return answer.time
     case 'value_label':
       return answer.values_and_labels.map((option: ValueLabelObject) => option.label).join(', ')
-    default:
+    default: {
+      const _exhaustive: never = answer
       return ''
+    }
   }
 }
 
