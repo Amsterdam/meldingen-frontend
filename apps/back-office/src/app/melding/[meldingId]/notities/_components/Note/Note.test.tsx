@@ -20,7 +20,7 @@ const mockNote = {
   },
 } as NoteRetrieveOutput
 
-describe.only('Note', () => {
+describe('Note', () => {
   it('renders the note', () => {
     render(<Note currentUserId={1} meldingId={123} note={mockNote} />)
 
