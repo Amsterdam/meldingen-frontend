@@ -8,7 +8,7 @@ import type { Coordinates } from '../types'
 import { MapContext } from '../Map/Map'
 import { Crosshair } from './Crosshair'
 
-export const FLY_TO_MIN_ZOOM = 18
+export const FLY_TO_MIN_ZOOM = 8
 
 const defaultIcon = icon({
   iconAnchor: [15, 40],
