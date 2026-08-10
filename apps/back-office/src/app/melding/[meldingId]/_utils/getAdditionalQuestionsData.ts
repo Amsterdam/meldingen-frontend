@@ -3,8 +3,10 @@ import type { GetMeldingByMeldingIdAnswersMelderResponses, ValueLabelObject } fr
 import { getMeldingByMeldingIdAnswers } from '~/app/_api-client/proxy'
 import { handleApiError } from '~/app/_utils/handleApiError'
 
-const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
+const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]): string => {
   switch (answer.type) {
+    case 'date':
+      return answer.date.converted_date ?? answer.date.label
     case 'text':
       return answer.text
     case 'time':
