@@ -94,7 +94,8 @@
     },
     "attachments": {
       "title": "Bestanden",
-      "no-data": "Geen bestanden toegevoegd"
+      "no-data": "Geen bestanden toegevoegd",
+      "add-link": "Voeg bestand toevoegen"
     },
     "errors": {
       "melding-not-found": "An error occurred"
