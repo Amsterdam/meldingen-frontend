@@ -1,7 +1,8 @@
 'use client'
 
-import { Image, Paragraph } from '@amsterdam/design-system-react'
 import { useEffect, useState } from 'react'
+
+import { Image, Paragraph } from '@meldingen/ui'
 
 type Props = {
   blob: Blob | null
