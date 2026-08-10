@@ -16,13 +16,11 @@ export const formatDateTime = (dateString: string) => {
   const formattedDate = date.toLocaleDateString('nl-NL', {
     day: '2-digit',
     month: '2-digit',
-    timeZone: 'Europe/Amsterdam',
     year: 'numeric',
   })
   const formattedTime = date.toLocaleTimeString('nl-NL', {
     hour: 'numeric',
     minute: 'numeric',
-    timeZone: 'Europe/Amsterdam',
   })
 
   return `${formattedDate} ${formattedTime}`
