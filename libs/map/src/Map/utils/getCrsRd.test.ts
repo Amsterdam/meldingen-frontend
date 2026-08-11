@@ -184,28 +184,23 @@ describe('getCrsRd', () => {
     })
   })
 
-  describe('scales array parameter (mutable default argument behavior)', () => {
-    it('populates a user-supplied empty array with maxZoom + 1 entries', () => {
+  describe('scales array parameter', () => {
+    it('does not mutate a user-supplied empty array', () => {
       const customScales: number[] = []
-      getCrsRd(2, 3440.64, customScales)
+      const crs = getCrsRd(2, 3440.64, customScales)
 
-      expect(customScales).toHaveLength(3) // zoom 0, 1, 2
-      expect(customScales[0]).toBeCloseTo(1 / 3440.64)
-      expect(customScales[2]).toBeCloseTo(1 / (3440.64 * 0.5 ** 2))
+      expect(customScales).toEqual([])
+      expect(crs.scale(0)).toBeCloseTo(1 / 3440.64)
+      expect(crs.scale(2)).toBeCloseTo(1 / (3440.64 * 0.5 ** 2))
     })
 
-    it('appends to (rather than replacing) a pre-populated scales array', () => {
-      // NOTE: this documents a side-effect of the implementation: since
-      // `scales.push(...)` is used without clearing the array first, any
-      // pre-existing entries are preserved and new entries are appended
-      // after them, rather than the array being reset/overwritten.
+    it('does not overwrite a pre-populated caller-owned scales array', () => {
       const preExisting = [999]
-      getCrsRd(1, 3440.64, preExisting)
+      const crs = getCrsRd(1, 3440.64, preExisting)
 
-      expect(preExisting[0]).toBe(999)
-      expect(preExisting).toHaveLength(1 + 2) // original entry + zoom 0,1
-      expect(preExisting[1]).toBeCloseTo(1 / 3440.64)
-      expect(preExisting[2]).toBeCloseTo(1 / (3440.64 * 0.5 ** 1))
+      expect(preExisting).toEqual([999])
+      expect(crs.scale(0)).toBeCloseTo(1 / 3440.64)
+      expect(crs.scale(1)).toBeCloseTo(1 / (3440.64 * 0.5 ** 1))
     })
 
     it('does not leak scales between separate calls when no array is passed', () => {

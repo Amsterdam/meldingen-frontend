@@ -38,8 +38,10 @@ export const proj4RD = proj4(CRS_CONFIG.WGS84.code, CRS_CONFIG.RD.projection)
  * @param scales
  */
 const getCrsRd = (maxZoom = 16, zeroScale = 3440.64, scales: number[] = []) => {
+  const precomputedScales = [...scales]
+
   for (let i = 0; i <= maxZoom; i++) {
-    scales.push(1 / (zeroScale * 0.5 ** i))
+    precomputedScales[i] = 1 / (zeroScale * 0.5 ** i)
   }
 
   return {
@@ -64,8 +66,8 @@ const getCrsRd = (maxZoom = 16, zeroScale = 3440.64, scales: number[] = []) => {
 
       R: CRS_CONFIG.EARTH_RADIUS,
       scale: (zoom: number) => {
-        if (scales[zoom]) {
-          return scales[zoom]
+        if (precomputedScales[zoom]) {
+          return precomputedScales[zoom]
         }
         return 1 / (zeroScale * 0.5 ** zoom)
       },
