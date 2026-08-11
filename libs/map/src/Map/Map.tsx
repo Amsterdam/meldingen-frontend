@@ -51,7 +51,7 @@ export const MapComponent = ({ children, hasAlert, isHidden, testMapInstance }: 
       ],
       maxZoom: 16,
       minZoom: 8,
-      zoom: 14,
+      zoom: 9,
       zoomControl: false,
     })
 
