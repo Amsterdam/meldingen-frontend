@@ -9,6 +9,7 @@ import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
 import { AttachmentImage } from './_components/AttachmentImage'
 import { BackLink } from './_components/BackLink'
+import { formatDateTime } from '~/app/_utils/formatDateTime'
 
 import styles from './Detail.module.css'
 
@@ -37,22 +38,6 @@ type Props = {
   meldingData: MeldingDataItem[]
   meldingId: number
   publicId: MeldingOutput['public_id']
-}
-
-const formatDateTime = (dateString: string) => {
-  const date = new Date(dateString)
-
-  const formattedDate = date.toLocaleDateString('nl-NL', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  })
-  const formattedTime = date.toLocaleTimeString('nl-NL', {
-    hour: 'numeric',
-    minute: 'numeric',
-  })
-
-  return `${formattedDate} ${formattedTime}`
 }
 
 export const Detail = ({
