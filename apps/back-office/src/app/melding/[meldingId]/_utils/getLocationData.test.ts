@@ -23,6 +23,12 @@ describe('getLocationData', () => {
 
     const result = getLocationData(meldingDataWithoutPostalCode, (key: string) => key)
 
-    expect(result).toEqual(undefined)
+    expect(result).toEqual([
+      {
+        description: 'detail.location.no-address',
+        key: 'address',
+        term: 'detail.location.address',
+      },
+    ])
   })
 })
