@@ -1,8 +1,7 @@
-import type { CRS, LatLng } from 'leaflet'
-import type { PointExpression } from 'leaflet'
+import type { LatLng, PointExpression } from 'leaflet'
 import type { InterfaceCoordinates } from 'proj4'
 
-import L from 'leaflet'
+import { bounds, CRS, latLng, Point, Transformation } from 'leaflet'
 import proj4 from 'proj4'
 
 export const CRS_CONFIG = {
@@ -38,28 +37,28 @@ export const proj4RD = proj4(CRS_CONFIG.WGS84.code, CRS_CONFIG.RD.projection)
  * @param zeroScale
  * @param scales
  */
-const getCrsRd = (maxZoom = 16, zeroScale = 3440.64, scales: number[] = []): CRS => {
+const getCrsRd = (maxZoom = 16, zeroScale = 3440.64, scales: number[] = []) => {
   for (let i = 0; i <= maxZoom; i++) {
     scales.push(1 / (zeroScale * 0.5 ** i))
   }
 
   return {
-    ...L.CRS.Simple,
+    ...CRS.Simple,
     ...{
       code: CRS_CONFIG.RD.code,
-      distance: L.CRS.Earth.distance,
+      distance: CRS.Earth.distance,
       infinite: false,
       projection: {
-        bounds: L.bounds(CRS_CONFIG.RD.transformation.bounds.topLeft, CRS_CONFIG.RD.transformation.bounds.bottomRight),
+        bounds: bounds(CRS_CONFIG.RD.transformation.bounds.topLeft, CRS_CONFIG.RD.transformation.bounds.bottomRight),
         proj4def: CRS_CONFIG.RD.projection,
         project: (latlng: LatLng) => {
           const [x, y] = proj4RD.forward([latlng.lng, latlng.lat])
-          return new L.Point(x, y)
+          return new Point(x, y)
         },
 
         unproject: (point: InterfaceCoordinates) => {
           const [lng, lat] = proj4RD.inverse([point.x, point.y])
-          return L.latLng(lat, lng)
+          return latLng(lat, lng)
         },
       },
 
@@ -70,7 +69,7 @@ const getCrsRd = (maxZoom = 16, zeroScale = 3440.64, scales: number[] = []): CRS
         }
         return 1 / (zeroScale * 0.5 ** zoom)
       },
-      transformation: new L.Transformation(1, 285401.92, -1, 903401.92),
+      transformation: new Transformation(1, 285401.92, -1, 903401.92),
 
       zoom: (scale: number) => Math.log(1 / scale / zeroScale) / Math.log(0.5),
     },
