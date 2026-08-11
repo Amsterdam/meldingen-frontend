@@ -9,20 +9,25 @@ export const getAttachmentsData = async (meldingId: number, t: (key: string) => 
   if (error) return { error: handleApiError(error) }
 
   const attachments = await Promise.all(
-    data.map(async ({ id, original_filename }) => {
-      const { data, error } = await getAttachmentById({
+    data.map(async ({ created_at, id, original_filename }) => {
+      const { data: attachmentBlob, error } = await getAttachmentById({
         path: { id },
-
         query: { type: 'thumbnail' },
       })
 
       if (error) {
-        return { blob: null, error: handleApiError(error), fileName: original_filename }
+        return {
+          blob: null,
+          createdAt: created_at,
+          error: handleApiError(error),
+          fileName: original_filename,
+        }
       }
 
       // Returning blob instead of File since the File api is not available in Node.js
       return {
-        blob: data as Blob,
+        blob: attachmentBlob as Blob,
+        createdAt: created_at,
         fileName: original_filename,
       }
     }),
