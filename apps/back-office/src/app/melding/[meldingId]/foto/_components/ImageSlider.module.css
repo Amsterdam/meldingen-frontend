@@ -1,13 +1,17 @@
 .imageContainer {
+  align-items: center;
   aspect-ratio: 4 / 3;
+  display: flex;
+  justify-content: center;
   max-height: 37.5rem;
   position: relative;
   width: 100%;
 }
 
 .image {
-  height: 100%;
-  object-fit: contain;
-  position: absolute;
-  width: 100%;
+  aspect-ratio: auto; /* Reset the aspect ratio set by the design system */
+  block-size: auto;
+  inline-size: auto; /* Reset the inline size set by the design system */
+  max-block-size: 100%;
+  max-inline-size: 100%;
 }
