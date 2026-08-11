@@ -22,6 +22,7 @@ type MeldingDataItem = DescriptionListItem & { link?: { href: string; label: str
 
 type File = {
   blob: Blob | null
+  createdAt: string
   error?: string
   fileName: string
 }
@@ -38,6 +39,22 @@ type Props = {
   publicId: MeldingOutput['public_id']
 }
 
+const formatDateTime = (dateString: string) => {
+  const date = new Date(dateString)
+
+  const formattedDate = date.toLocaleDateString('nl-NL', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+  const formattedTime = date.toLocaleTimeString('nl-NL', {
+    hour: 'numeric',
+    minute: 'numeric',
+  })
+
+  return `${formattedDate} ${formattedTime}`
+}
+
 export const Detail = ({
   additionalQuestionsWithMeldingText,
   assets,
@@ -52,6 +69,7 @@ export const Detail = ({
   const t = useTranslations('detail')
 
   const hasAttachments = attachments.files.length > 0
+  const addAttachmentLink = `/melding/${meldingId}/bestand-toevoegen`
 
   return (
     <div className="ams-page__area--body">
@@ -76,7 +94,7 @@ export const Detail = ({
               {additionalQuestionsWithMeldingText.map(({ description, key, term }) => (
                 <Column gap="x-small" key={key}>
                   <dt className={styles.term}>{term}</dt>
-                  <dd className={styles.description}>{description}</dd>
+                  <dd className={styles.description}>{description}ss</dd>
                 </Column>
               ))}
             </dl>
@@ -125,19 +143,31 @@ export const Detail = ({
                 </Fragment>
               ))}
             </dl>
-            <dl className={clsx(styles.descriptionList, styles.cardWide, styles.attachmentsGrid)}>
+
+            <dl className={clsx(styles.descriptionList, styles.cardWide, styles.attachmentsSection)}>
               <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
-              {hasAttachments ? (
-                attachments.files.map((file) => (
-                  <dd className={styles.description} key={file.fileName}>
-                    <AttachmentImage blob={file.blob} fileName={file.fileName} />
-                  </dd>
-                ))
-              ) : (
+              {hasAttachments && (
+                <div className={styles.attachmentsWrapper}>
+                  {attachments.files.map((file) => (
+                    <dd className={clsx(styles.description, styles.attachmentWrapper)} key={file.fileName}>
+                      <AttachmentImage blob={file.blob} fileName={file.fileName} />
+                      <Paragraph>{formatDateTime(file.createdAt)}</Paragraph>
+                      <Paragraph>-- Placeholder --</Paragraph>
+                    </dd>
+                  ))}
+                </div>
+              )}
+
+              {!hasAttachments && (
                 <dd className={styles.attachmentsFallBackDescription}>
                   <Paragraph>{t('attachments.no-data')}</Paragraph>
                 </dd>
               )}
+              <dd className={styles.horizontalLink}>
+                <Link href={addAttachmentLink} linkComponent={NextLink}>
+                  {t('attachments.add-link')}
+                </Link>
+              </dd>
             </dl>
           </div>
         </Grid.Cell>

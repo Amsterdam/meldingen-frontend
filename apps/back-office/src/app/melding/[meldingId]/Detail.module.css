@@ -118,8 +118,15 @@
   }
 }
 
-.attachmentsGrid {
+.attachmentsSection {
   column-gap: var(--ams-space-l);
+  display: flex;
+  flex-direction: column;
+}
+
+.attachmentsWrapper {
+  display: grid;
+  gap: var(--ams-space-m);
 
   @media screen and (min-width: 37.5rem) {
     grid-template-columns: 1fr 1fr;
@@ -140,4 +147,10 @@
   @media screen and (min-width: 37.5rem) {
     grid-column: span 2;
   }
+}
+
+.attachmentWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--ams-space-xs);
 }
