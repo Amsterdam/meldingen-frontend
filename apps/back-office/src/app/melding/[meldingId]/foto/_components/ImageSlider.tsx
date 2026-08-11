@@ -26,6 +26,22 @@ type Props = {
   labelId: string
 }
 
+export const formatDateTime = (dateString: string) => {
+  const date = new Date(dateString)
+
+  const formattedDate = date.toLocaleDateString('nl-NL', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+  const formattedTime = date.toLocaleTimeString('nl-NL', {
+    hour: 'numeric',
+    minute: 'numeric',
+  })
+
+  return `${formattedDate} ${formattedTime}`
+}
+
 export const ImageSlider = ({ images, labelId }: Props) => {
   const t = useTranslations('photos.image-slider')
 
@@ -119,7 +135,10 @@ export const ImageSlider = ({ images, labelId }: Props) => {
             role="tabpanel"
           >
             <Figure>
-              <Figure.Caption>{images[index].filename}</Figure.Caption>
+              <Figure.Caption className={styles.caption}>
+                <span className={styles.filename}>{images[index].filename}</span>
+                <span>{formatDateTime(images[index].createdAt)}</span>
+              </Figure.Caption>
               <div className={styles.imageContainer}>
                 <Image alt="" className={styles.image} src={url} />
               </div>
