@@ -6,19 +6,23 @@
 .contentWrapper {
   composes: column;
   background-color: var(--ams-color-background);
+  margin-block-end: var(--ams-space-l);
   padding-block: var(--ams-space-l);
   padding-inline: var(--ams-space-l);
   row-gap: var(--ams-space-xl);
 }
 
 .uploadInfo {
-	composes: column;
+  composes: column;
   align-items: start;
-  row-gap: var(--ams-field-gap);
+  row-gap: var(--ams-space-s);
+
+  @media screen and (min-width: 37.5rem) {
+    row-gap: var(--ams-space-l);
+  }
 }
 
-
-.attachmentsList {
+/* .attachmentsList {
   composes: column;
   row-gap: var(--ams-space-xl);
 }
@@ -29,6 +33,6 @@
   row-gap: var(--ams-space-m);
 
   img {
-	max-width: calc(100% / 3 * 2);
+    max-width: calc(100% / 3 * 2);
   }
-}
+} */
