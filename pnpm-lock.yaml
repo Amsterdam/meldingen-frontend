@@ -215,6 +215,9 @@ importers:
       '@meldingen/api-client':
         specifier: workspace:*
         version: link:../../libs/api-client
+      '@meldingen/file-upload':
+        specifier: workspace:*
+        version: link:../../libs/file-upload
       '@meldingen/form-renderer':
         specifier: workspace:*
         version: link:../../libs/form-renderer
