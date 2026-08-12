@@ -15,7 +15,7 @@ describe('getLocationData', () => {
     ])
   })
 
-  it('returns undefined when not all location data exists', () => {
+  it('returns "Locatie gekozen op de kaart" when not all location data exists', () => {
     const meldingDataWithoutPostalCode = {
       ...melding,
       postal_code: null,
