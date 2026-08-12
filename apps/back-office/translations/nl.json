@@ -105,8 +105,9 @@
     "metadata": {
       "title": "Bestand toevoegen - Gemeente Amsterdam"
     },
-    "back-link": "Meldingdetails",
     "title": "Voeg bestand toe",
+    "delete-notification": "{fileName} is verwijderd",
+    "back-link": "Meldingdetails",
     "cancel-link": "Annuleer",
     "upload": {
       "title": "Bestand toevoegen",
