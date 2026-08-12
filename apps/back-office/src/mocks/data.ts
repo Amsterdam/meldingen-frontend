@@ -1,5 +1,6 @@
 import type {
   AssetOutput,
+  DateAnswerQuestionOutput,
   FormTextAreaComponentOutput,
   MeldingOutput,
   TextAnswerQuestionOutput,
@@ -123,6 +124,25 @@ export const additionalQuestions: TextAnswerQuestionOutput[] = [
     updated_at: '2025-02-18T10:34:32.187573',
   },
 ]
+
+export const additionalDateQuestion: DateAnswerQuestionOutput = {
+  created_at: '2026-08-10T10:21:03Z',
+  date: {
+    converted_date: '2026-08-06',
+    label: 'Donderdag 6 augustus',
+    value: 'day - 4',
+  },
+  id: 12,
+  original_question_text: 'Welke dag was het?',
+  question: {
+    created_at: '2026-08-10T10:13:05Z',
+    id: 2,
+    text: 'Welke dag was het?',
+    updated_at: '2026-08-10T10:13:05Z',
+  },
+  type: 'date',
+  updated_at: '2026-08-10T10:21:03Z',
+}
 
 export const additionalTimeQuestion: TimeAnswerQuestionOutput = {
   created_at: '2025-02-18T10:34:32.193123',
