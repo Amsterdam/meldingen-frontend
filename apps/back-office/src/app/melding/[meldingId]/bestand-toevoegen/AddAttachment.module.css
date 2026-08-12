@@ -1,0 +1,34 @@
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.contentWrapper {
+  composes: column;
+  background-color: var(--ams-color-background);
+  padding-block: var(--ams-space-l);
+  padding-inline: var(--ams-space-l);
+  row-gap: var(--ams-space-xl);
+}
+
+.uploadInfo {
+	composes: column;
+  align-items: start;
+  row-gap: var(--ams-field-gap);
+}
+
+
+.attachmentsList {
+  composes: column;
+  row-gap: var(--ams-space-xl);
+}
+
+.attachmentListItem {
+  composes: column;
+  align-items: start;
+  row-gap: var(--ams-space-m);
+
+  img {
+	max-width: calc(100% / 3 * 2);
+  }
+}
