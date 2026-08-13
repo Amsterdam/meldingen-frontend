@@ -4,6 +4,8 @@ import { clsx } from 'clsx'
 import { latLng, Map, tileLayer } from 'leaflet'
 import { createContext, useEffect, useRef, useState } from 'react'
 
+import getCrsRd from './utils/getCrsRd'
+
 import 'leaflet/dist/leaflet.css'
 import styles from './Map.module.css'
 
@@ -33,10 +35,12 @@ export const MapComponent = ({ children, hasAlert, isHidden, testMapInstance }: 
 
     const map = new Map(mapRef.current, {
       center: latLng([52.370216, 4.895168]),
+      crs: getCrsRd(),
       layers: [
-        tileLayer('https://{s}.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
+        tileLayer('https://{s}.data.amsterdam.nl/topo_rd/{z}/{x}/{y}.png', {
           attribution: '',
           subdomains: ['t1', 't2', 't3', 't4'],
+          tms: true,
         }),
       ],
       // Prevent the user browsing too far outside Amsterdam otherwise the map will render blank greyspace.
@@ -45,9 +49,9 @@ export const MapComponent = ({ children, hasAlert, isHidden, testMapInstance }: 
         [52.25168, 4.64034],
         [52.50536, 5.10737],
       ],
-      maxZoom: 18,
-      minZoom: 11,
-      zoom: 14,
+      maxZoom: 16,
+      minZoom: 8,
+      zoom: 10,
       zoomControl: false,
     })
 
