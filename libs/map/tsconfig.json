@@ -2,6 +2,6 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "types": ["../../typings/cssmodules.d.ts", "vitest/globals"]
+    "types": ["vite/client", "../../typings/cssmodules.d.ts", "vitest/globals"]
   }
 }
