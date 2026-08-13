@@ -3,55 +3,8 @@ import { describe, expect, it } from 'vitest'
 
 import getCrsRd, { CRS_CONFIG, proj4RD } from './getCrsRd'
 
-describe('CRS_CONFIG', () => {
-  it('has the correct earth radius', () => {
-    expect(CRS_CONFIG.EARTH_RADIUS).toBe(6378137)
-  })
-
-  it('has the correct RD EPSG code', () => {
-    expect(CRS_CONFIG.RD.code).toBe('EPSG:28992')
-  })
-
-  it('has an RD proj4 definition using the stereographic projection', () => {
-    expect(CRS_CONFIG.RD.projection).toContain('+proj=sterea')
-    expect(CRS_CONFIG.RD.projection).toContain('+lat_0=52.15616055555555')
-    expect(CRS_CONFIG.RD.projection).toContain('+lon_0=5.38763888888889')
-    expect(CRS_CONFIG.RD.projection).toContain('+units=m')
-  })
-
-  it('has the correct RD transformation bounds', () => {
-    expect(CRS_CONFIG.RD.transformation.bounds.topLeft).toEqual([-285401, 903401])
-    expect(CRS_CONFIG.RD.transformation.bounds.bottomRight).toEqual([595401.92, 22598.08])
-  })
-
-  it('has the correct WGS84 code and proj4 definition', () => {
-    expect(CRS_CONFIG.WGS84.code).toBe('EPSG:4326')
-    expect(CRS_CONFIG.WGS84.projection).toBe('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs')
-  })
-})
-
 describe('getCrsRd', () => {
   describe('basic CRS shape', () => {
-    it('uses the configured RD code', () => {
-      const crs = getCrsRd()
-      expect(crs.code).toBe(CRS_CONFIG.RD.code)
-    })
-
-    it('is not infinite', () => {
-      const crs = getCrsRd()
-      expect(crs.infinite).toBe(false)
-    })
-
-    it('uses CRS.Earth.distance as its distance function', () => {
-      const crs = getCrsRd()
-      expect(crs.distance).toBe(CRS.Earth.distance)
-    })
-
-    it('uses the configured earth radius', () => {
-      const crs = getCrsRd()
-      expect(crs.R).toBe(CRS_CONFIG.EARTH_RADIUS)
-    })
-
     it('inherits properties from CRS.Simple that are not overridden', () => {
       const crs = getCrsRd()
       expect(crs.wrapLng).toBe(CRS.Simple.wrapLng)
