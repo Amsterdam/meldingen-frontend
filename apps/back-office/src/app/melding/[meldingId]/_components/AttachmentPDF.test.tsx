@@ -7,6 +7,7 @@ const createObjectURLMock = vi.fn().mockImplementation(() => {
 })
 
 global.URL.createObjectURL = createObjectURLMock
+global.URL.revokeObjectURL = vi.fn()
 
 describe('AttachmentPDF', () => {
   it('renders a link when a blob is provided', async () => {
@@ -26,5 +27,15 @@ describe('AttachmentPDF', () => {
     const errorMessage = screen.getByText('test.pdf')
 
     expect(errorMessage).toBeInTheDocument()
+  })
+
+  it('revokes the object URL on unmount', () => {
+    const { unmount } = render(
+      <AttachmentPDF blob={new Blob(['test-blob'], { type: 'application/pdf' })} fileName={'test.pdf'} />,
+    )
+
+    unmount()
+
+    expect(global.URL.revokeObjectURL).toHaveBeenCalledWith('test-url')
   })
 })
