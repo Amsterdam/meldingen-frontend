@@ -8,7 +8,9 @@ import { Column, Grid, Heading, Link, Paragraph, TabNavigation } from '@meldinge
 import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
 import { AttachmentImage } from './_components/AttachmentImage'
+import { AttachmentPDF } from './_components/AttachmentPDF'
 import { BackLink } from './_components/BackLink'
+import { isFilePDF } from './_utils/getAttachmentsData'
 
 import styles from './Detail.module.css'
 
@@ -128,11 +130,19 @@ export const Detail = ({
             <dl className={clsx(styles.descriptionList, styles.cardWide, styles.attachmentsGrid)}>
               <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
               {hasAttachments ? (
-                attachments.files.map((file) => (
-                  <dd className={styles.description} key={file.fileName}>
-                    <AttachmentImage blob={file.blob} fileName={file.fileName} />
-                  </dd>
-                ))
+                attachments.files.map((file) => {
+                  const isPDF = isFilePDF(file.fileName)
+
+                  return (
+                    <dd className={styles.description} key={file.fileName}>
+                      {isPDF ? (
+                        <AttachmentPDF blob={file.blob} fileName={file.fileName} />
+                      ) : (
+                        <AttachmentImage blob={file.blob} fileName={file.fileName} />
+                      )}
+                    </dd>
+                  )
+                })
               ) : (
                 <dd className={styles.attachmentsFallBackDescription}>
                   <Paragraph>{t('attachments.no-data')}</Paragraph>
