@@ -30,11 +30,12 @@ describe('getAttachmentsData', () => {
     )
 
     server.use(
-      http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, () =>
-        HttpResponse.json(new Blob(['mock content'], { type: 'application/pdf' }), {
+      http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, ({ request }) => {
+        expect(new URL(request.url).searchParams.get('type')).toBe('original')
+        return HttpResponse.json(new Blob(['mock content'], { type: 'application/pdf' }), {
           headers: { 'content-type': 'application/pdf' },
-        }),
-      ),
+        })
+      }),
     )
 
     const result = await getAttachmentsData(mockMeldingId, (key: string) => key)
