@@ -22,9 +22,11 @@ export const AttachmentPDF = ({ blob, fileName }: Props) => {
     setUrl(objectUrl)
 
     return () => {
-      URL.revokeObjectURL(objectUrl)
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl)
+      }
     }
-  }, [blob])
+  }, [])
 
   if (!blob || !url) return <Paragraph>{fileName}</Paragraph>
 
@@ -37,6 +39,7 @@ export const AttachmentPDF = ({ blob, fileName }: Props) => {
       target="_blank"
     >
       <Icon size="heading-1" svg={DocumentsIcon} />
+      <span className="ams-visually-hidden">{fileName}</span>
     </Link>
   )
 }
