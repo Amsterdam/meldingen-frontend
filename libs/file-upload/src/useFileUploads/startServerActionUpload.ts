@@ -1,13 +1,8 @@
 import type { Dispatch, SetStateAction } from 'react'
 
-import type { FileUploadState, PendingFileUpload } from './startUpload'
+import type { FileUploadState, PendingFileUpload, UploadResult } from './types'
 
-import { getValidationErrorMessageTranslationKey } from './startUpload'
-
-export type UploadResult = {
-  error?: string
-  serverId?: number
-}
+import { getValidationErrorMessageTranslationKey } from './utils'
 
 // Server Actions can't report byte-level progress or be aborted, so uploads jump straight from 0% to 100%.
 export const startServerActionUpload = async (

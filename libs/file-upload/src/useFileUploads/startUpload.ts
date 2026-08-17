@@ -1,5 +1,9 @@
 import type { Dispatch, SetStateAction } from 'react'
 
+import type { FileUploadState, PendingFileUpload } from './types'
+
+import { getValidationErrorMessageTranslationKey } from './utils'
+
 const safeJSONParse = <T>(value: unknown): T | undefined => {
   if (!value || typeof value !== 'string') return undefined
 
@@ -9,38 +13,6 @@ const safeJSONParse = <T>(value: unknown): T | undefined => {
     return undefined
   }
 }
-
-export type FileUpload = {
-  errorMessage?: string
-  file: File | { name: string }
-  id: string
-  progress: number // 0-100
-  serverId?: number
-  status: 'uploading' | 'success'
-  xhr?: XMLHttpRequest
-}
-
-export type ErroredFileUpload = Omit<FileUpload, 'status'> & {
-  errorMessage: string
-  status: 'error'
-}
-
-export type PendingFileUpload = Omit<FileUpload, 'status'> & {
-  file: File
-  status: 'pending'
-  xhr: XMLHttpRequest
-}
-
-export type FileUploadState = FileUpload | ErroredFileUpload | PendingFileUpload
-
-export const VALIDATION_ERROR_MESSAGES_TRANSLATION_KEYS: Record<string, string> = {
-  'Allowed content size exceeded': 'validation-errors.file-too-large',
-  'Attachment not allowed': 'validation-errors.invalid-file-type',
-  'Media type of data does not match provided media type': 'validation-errors.invalid-file-extension',
-}
-
-export const getValidationErrorMessageTranslationKey = (error?: string): string =>
-  (error && VALIDATION_ERROR_MESSAGES_TRANSLATION_KEYS[error]) || 'validation-errors.failed-upload'
 
 // We're using XMLHttpRequest instead of fetch here,
 // because fetch does not allow you to track the upload progress.

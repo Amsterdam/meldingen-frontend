@@ -2,17 +2,17 @@ import type { ChangeEvent, Dispatch, RefObject, SetStateAction, SubmitEvent } fr
 
 import { useRef, useState } from 'react'
 
-import type { UploadResult } from './startServerActionUpload'
-import type { ErroredFileUpload, FileUploadState, FileUpload as FileUploadType, PendingFileUpload } from './startUpload'
+import type {
+  ErroredFileUpload,
+  ExistingFile,
+  FileUploadState,
+  FileUpload as FileUploadType,
+  PendingFileUpload,
+  UploadResult,
+} from './types'
 
 import { startServerActionUpload } from './startServerActionUpload'
 import { startUpload } from './startUpload'
-
-export type ExistingFile = {
-  blob?: Blob
-  fileName: string
-  serverId: number
-}
 
 type GenericErrorMessage = {
   description?: string

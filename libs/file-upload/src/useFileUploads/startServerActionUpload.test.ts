@@ -1,4 +1,4 @@
-import type { PendingFileUpload } from './startUpload'
+import type { PendingFileUpload } from './types'
 
 import { startServerActionUpload } from './startServerActionUpload'
 

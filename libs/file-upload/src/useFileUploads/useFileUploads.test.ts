@@ -3,8 +3,7 @@ import type { Mock } from 'vitest'
 
 import { act, renderHook } from '@testing-library/react'
 
-import type { FileUploadState, PendingFileUpload } from './startUpload'
-import type { ExistingFile } from './useFileUploads'
+import type { ExistingFile, FileUploadState, PendingFileUpload } from './types'
 
 import { startServerActionUpload } from './startServerActionUpload'
 import { startUpload } from './startUpload'
