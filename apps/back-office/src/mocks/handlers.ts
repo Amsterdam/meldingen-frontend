@@ -61,6 +61,14 @@ export const handlers = [
       token: 'test-token',
     }),
   ),
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () =>
+    HttpResponse.json({
+      created_at: '2025-05-26T11:56:34.081Z',
+      id: 42,
+      original_filename: 'IMG_0815.jpg',
+      updated_at: '2025-05-26T11:56:34.081Z',
+    }),
+  ),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_NOTE, () => new HttpResponse()),
 
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_CANCEL, () => new HttpResponse()),

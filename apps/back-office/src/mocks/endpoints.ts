@@ -3,6 +3,7 @@
 export const ENDPOINTS = {
   // Attachments
   GET_ATTACHMENT_BY_ID: '/attachment/:id',
+  POST_MELDING_BY_MELDING_ID_ATTACHMENT: '/melding/:id/attachment/',
 
   // Labels
   GET_LABEL: '/label',
