@@ -17,7 +17,7 @@ export const uploadAttachmentAction = async (meldingId: number, file: File) => {
   })
 
   return {
-    error: error ? handleApiError(error) : undefined,
+    apiError: error ? handleApiError(error) : undefined,
     serverId: data?.id,
   }
 }

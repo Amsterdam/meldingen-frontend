@@ -66,9 +66,9 @@ const uploadAttachment =
 
     formData.set('file', file)
 
-    const { error, serverId } = await uploadAttachmentAction(meldingId, file)
+    const { apiError, serverId } = await uploadAttachmentAction(meldingId, file)
 
-    return { error, serverId }
+    return { error: apiError, serverId }
   }
 
 const isErroredFileUpload = (upload: FileUploadState): upload is ErroredFileUpload => upload.status === 'error'
