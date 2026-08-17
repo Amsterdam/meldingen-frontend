@@ -21,6 +21,7 @@ export const getAttachmentsData = async (meldingId: number, t: (key: string) => 
           createdAt: created_at,
           error: handleApiError(error),
           fileName: original_filename,
+          id,
         }
       }
 
@@ -29,6 +30,7 @@ export const getAttachmentsData = async (meldingId: number, t: (key: string) => 
         blob: attachmentBlob as Blob,
         createdAt: created_at,
         fileName: original_filename,
+        id,
       }
     }),
   )
