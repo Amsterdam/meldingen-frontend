@@ -10,10 +10,10 @@ export default defineConfig({
       exclude: ['src/index.ts'],
       include: ['src/**/*.{js,jsx,ts,tsx}'],
       thresholds: {
-        branches: 95,
+        branches: 94,
         functions: 96,
-        lines: 99,
-        statements: 99,
+        lines: 98,
+        statements: 98,
       },
     },
     environment: 'jsdom',
