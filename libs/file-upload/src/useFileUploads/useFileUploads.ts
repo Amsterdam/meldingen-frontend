@@ -111,9 +111,7 @@ export const useFileUploads = ({
   uploadFile,
   uploadUrl,
 }: UseFileUploadsParams) => {
-  // NOTE: Current flows separate client-side and server-side authentication
-  // Whereas the client-side uses uploadUrl (url token auth), enabling xhr and onprogress tracking
-  // server-side authentication is handled on the server, thus not supporting specific features
+  // NOTE: Only client-side upload (uploadUrl) using xhr supports in-progress cancellation
   const supportsUploadCancellation = Boolean(uploadUrl)
 
   const uploadIdCounter = useRef(existingFiles.length)
