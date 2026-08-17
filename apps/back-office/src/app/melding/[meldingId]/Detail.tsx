@@ -79,7 +79,7 @@ export const Detail = ({
               {additionalQuestionsWithMeldingText.map(({ description, key, term }) => (
                 <Column gap="x-small" key={key}>
                   <dt className={styles.term}>{term}</dt>
-                  <dd className={styles.description}>{description}ss</dd>
+                  <dd className={styles.description}>{description}</dd>
                 </Column>
               ))}
             </dl>
