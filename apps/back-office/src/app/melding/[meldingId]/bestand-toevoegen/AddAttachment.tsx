@@ -5,7 +5,7 @@ import type { ChangeEvent } from 'react'
 import { Alert } from '@amsterdam/design-system-react'
 import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
-import { useId, useRef } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 
 import type { ErroredFileUpload, FileUploadState, UploadResult } from '@meldingen/file-upload'
 
@@ -16,6 +16,7 @@ import { Grid, Heading, Link, Paragraph } from '@meldingen/ui'
 import { BackLink } from '../_components/BackLink'
 import { uploadAttachmentAction } from './actions'
 import { AttachmentsList } from './AttachmentsList'
+import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 
 import styles from './AddAttachment.module.css'
 
@@ -78,6 +79,9 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
 
   const genericErrorAlertRef = useRef<HTMLDivElement>(null)
 
+  const [apiError, setApiError] = useState<string | null>(null)
+  const [shouldFocusInvalidAlert, setShouldFocusInvalidAlert] = useState<boolean>(false)
+
   const fileUploadId = useId()
   const fileUploadRef = useRef<HTMLInputElement>(null)
 
@@ -87,6 +91,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     serverId: file.id,
   }))
 
+  const uploadFile = uploadAttachment(meldingId)
   const { deletedFileName, fileUploads, genericError, handleDelete, handleUpload } = useFileUploads({
     deleteAttachment: (serverId: number) => deleteAttachment(meldingId, 'token', serverId),
     existingFiles,
@@ -94,16 +99,47 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     inputRef: fileUploadRef,
     maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
     maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
-    uploadFile: uploadAttachment(meldingId),
+    uploadFile: async (file: File) => {
+      const { error, serverId } = await uploadFile(file)
+
+      if (error) {
+        // TODO: Log the error to an error reporting service
+        // eslint-disable-next-line no-console
+        console.error(error)
+        setApiError(error)
+      }
+
+      return { error, serverId }
+    },
   })
 
   const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    setShouldFocusInvalidAlert(false)
     handleUpload(event)
   }
 
-  const hasAttachments = fileUploads.length > 0
+  // Set focus on generic Alert when there is a generic error
+  useEffect(() => {
+    if (!genericError || !genericErrorAlertRef.current) return
+
+    genericErrorAlertRef.current.focus()
+  }, [genericError])
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
+  const hasErroredFileUploads = erroredFileUploads.length > 0
+  const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
+    key: id,
+    message: t(errorMessage),
+  }))
+
+  useEffect(() => {
+    if (!hasErroredFileUploads) return
+
+    setShouldFocusInvalidAlert(true)
+  }, [hasErroredFileUploads])
+
+  const hasAttachments = fileUploads.length > 0
+
   const validUploadedFilesCount = fileUploads.length - erroredFileUploads.length
   const meldingDetailLink = `/melding/${meldingId}`
 
@@ -111,22 +147,30 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     <div className="ams-page__area--body">
       <BackLink href={meldingDetailLink}>{t('back-link')}</BackLink>
 
-      {genericError && (
-        <Alert
-          className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
-          heading={t(genericError.title, genericError.options)}
-          headingLevel={2}
-          ref={genericErrorAlertRef}
-          role="alert"
-          severity="error"
-          tabIndex={-1}
-        >
-          {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
-        </Alert>
-      )}
-
       <Grid as="main" className="ams-page__area--content ams-mb-l">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
+          {Boolean(apiError) && <ApiErrorAlert shouldFocus={true} />}
+
+          {genericError && (
+            <Alert
+              className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
+              heading={t(genericError.title, genericError.options)}
+              headingLevel={2}
+              ref={genericErrorAlertRef}
+              role="alert"
+              severity="error"
+              tabIndex={-1}
+            >
+              {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
+            </Alert>
+          )}
+
+          <InvalidFormAlert
+            errors={validationErrors}
+            heading={t('validation-errors.alert-title', { count: validationErrors.length })}
+            shouldFocus={shouldFocusInvalidAlert}
+          />
+
           <Heading className="ams-mb-l" level={1}>
             {t('title')}
           </Heading>

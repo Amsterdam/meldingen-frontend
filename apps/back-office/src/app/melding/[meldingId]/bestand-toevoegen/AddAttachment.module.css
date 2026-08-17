@@ -1,3 +1,7 @@
+.genericErrorAlert {
+  outline-offset: var(--ams-focus-outline-offset);
+}
+
 .column {
   display: flex;
   flex-direction: column;
