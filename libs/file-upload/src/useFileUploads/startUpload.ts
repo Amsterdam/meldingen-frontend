@@ -39,7 +39,7 @@ export const VALIDATION_ERROR_MESSAGES_TRANSLATION_KEYS: Record<string, string> 
   'Media type of data does not match provided media type': 'validation-errors.invalid-file-extension',
 }
 
-const getValidationErrorMessageTranslationKey = (error?: string): string =>
+export const getValidationErrorMessageTranslationKey = (error?: string): string =>
   (error && VALIDATION_ERROR_MESSAGES_TRANSLATION_KEYS[error]) || 'validation-errors.failed-upload'
 
 // We're using XMLHttpRequest instead of fetch here,

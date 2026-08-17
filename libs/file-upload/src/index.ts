@@ -1,5 +1,6 @@
 export { FileList } from './FileList/FileList'
 export { FileUpload } from './FileUpload/FileUpload'
+export type { UploadResult } from './useFileUploads/startServerActionUpload'
 export type { ErroredFileUpload, FileUploadState } from './useFileUploads/startUpload'
 export type { ExistingFile } from './useFileUploads/useFileUploads'
 export { useFileUploads } from './useFileUploads/useFileUploads'
