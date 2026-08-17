@@ -30,10 +30,10 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
 
   return (
     <html dir="ltr" lang={locale}>
-      <ApiClientInitializer />
-      <NextIntlClientProvider>
-        <body className="ams-theme">{children}</body>
-      </NextIntlClientProvider>
+      <body className="ams-theme">
+        <ApiClientInitializer />
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+      </body>
     </html>
   )
 }
