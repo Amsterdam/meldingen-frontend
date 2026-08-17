@@ -39,12 +39,21 @@ const options: ExtendedFormBuilderOptions = {
 
 type Props = {
   data?: ComponentSchema[]
-  onChange: (schema: { components: unknown[] }) => void
+  onChange: (schema: { components: ComponentSchema[] }) => void
 }
+
+const serializeComponents = (components?: ComponentSchema[]) => JSON.stringify(components ?? [])
+
+const createFormSchema = (components?: ComponentSchema[]) => ({
+  components: components ?? [],
+  display: 'wizard' as const,
+})
 
 export const FormBuilder = ({ data, onChange }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
   const builderInstance = useRef<FormioFormBuilder | null>(null)
+  const onChangeRef = useRef(onChange)
+  const lastSyncedComponents = useRef(serializeComponents(data))
 
   Components.setComponents({
     date: Date,
@@ -58,12 +67,19 @@ export const FormBuilder = ({ data, onChange }: Props) => {
   })
 
   useEffect(() => {
-    if (!ref.current) return
+    onChangeRef.current = onChange
+  }, [onChange])
 
-    builderInstance.current = new FormioFormBuilder(ref.current, { components: data ?? [], display: 'wizard' }, options)
+  useEffect(() => {
+    if (!ref.current || builderInstance.current) return
+
+    builderInstance.current = new FormioFormBuilder(ref.current, createFormSchema(data), options)
 
     const handleChange = () => {
-      onChange(builderInstance.current?.instance.form)
+      const schema = builderInstance.current?.instance.form as { components: ComponentSchema[] } | undefined
+
+      lastSyncedComponents.current = serializeComponents(schema?.components)
+      onChangeRef.current(schema ?? { components: [] })
     }
 
     const builderEvents = [
@@ -83,8 +99,22 @@ export const FormBuilder = ({ data, onChange }: Props) => {
     return () => {
       if (builderInstance.current) {
         builderInstance.current.instance.destroy(true)
+        builderInstance.current = null
       }
     }
+  }, [])
+
+  useEffect(() => {
+    const nextComponents = serializeComponents(data)
+
+    if (!builderInstance.current || nextComponents === lastSyncedComponents.current) {
+      return
+    }
+
+    lastSyncedComponents.current = nextComponents
+    builderInstance.current.ready?.then(() => {
+      builderInstance.current?.setForm(createFormSchema(data))
+    })
   }, [data])
 
   return <div ref={ref} />

@@ -24,4 +24,14 @@ describe('FormBuilder', () => {
 
     expect(input).toBeInTheDocument()
   })
+
+  it('updates the builder when form data changes after mount', async () => {
+    const { rerender } = render(<FormBuilder onChange={vi.fn()} />)
+
+    expect(screen.queryByRole('textbox', { name: 'Eerste vraag' })).not.toBeInTheDocument()
+
+    rerender(<FormBuilder data={mockData} onChange={vi.fn()} />)
+
+    expect(await screen.findByRole('textbox', { name: 'Eerste vraag' })).toBeInTheDocument()
+  })
 })
