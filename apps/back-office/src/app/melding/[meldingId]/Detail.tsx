@@ -137,7 +137,7 @@ export const Detail = ({
                     <dd className={clsx(styles.description, styles.attachmentWrapper)} key={file.fileName}>
                       <AttachmentImage blob={file.blob} fileName={file.fileName} />
                       <Paragraph>{formatDateTime(file.createdAt)}</Paragraph>
-                      <Paragraph>-- Placeholder --</Paragraph>
+                      <Paragraph>{file.fileName}</Paragraph>
                     </dd>
                   ))}
                 </div>
