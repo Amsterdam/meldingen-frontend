@@ -7,26 +7,28 @@ import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
 import { useId, useRef } from 'react'
 
-import type { ErroredFileUpload, FileUploadState } from '@meldingen/file-upload'
+import type { ErroredFileUpload, FileUploadState, UploadResult } from '@meldingen/file-upload'
 
 import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
 import { FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { Grid, Heading, Link, Paragraph } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
+import { uploadAttachmentAction } from './actions'
 import { AttachmentsList } from './AttachmentsList'
 
 import styles from './AddAttachment.module.css'
 
-type File = {
+type AttachmentFile = {
   blob: Blob | null
   createdAt: string
   error?: string
   fileName: string
+  id: number
 }
 
 type Attachment = {
-  files: File[]
+  files: AttachmentFile[]
   key: string
   term: string
 }
@@ -57,6 +59,18 @@ const deleteAttachment = async (meldingId: number, token: string, serverId: numb
   return { error }
 }
 
+const uploadAttachment =
+  (meldingId: number) =>
+  async (file: File): Promise<UploadResult> => {
+    const formData = new FormData()
+
+    formData.set('file', file)
+
+    const { error, serverId } = await uploadAttachmentAction(meldingId, file)
+
+    return { error, serverId }
+  }
+
 const isErroredFileUpload = (upload: FileUploadState): upload is ErroredFileUpload => upload.status === 'error'
 
 export const AddAttachment = ({ attachments, meldingId }: Props) => {
@@ -66,14 +80,21 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
 
   const fileUploadId = useId()
   const fileUploadRef = useRef<HTMLInputElement>(null)
+
+  const existingFiles = attachments.files.map((file) => ({
+    blob: file.blob || undefined,
+    fileName: file.fileName,
+    serverId: file.id,
+  }))
+
   const { deletedFileName, fileUploads, genericError, handleDelete, handleUpload } = useFileUploads({
     deleteAttachment: (serverId: number) => deleteAttachment(meldingId, 'token', serverId),
-    existingFiles: attachments.files,
+    existingFiles,
     idPrefix: t('file-upload.id-prefix'),
     inputRef: fileUploadRef,
     maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
     maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
-    uploadUrl: `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/add-attachments?token=${encodeURIComponent('token')}`,
+    uploadFile: uploadAttachment(meldingId),
   })
 
   const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
