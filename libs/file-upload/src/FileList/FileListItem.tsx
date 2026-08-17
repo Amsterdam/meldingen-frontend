@@ -48,7 +48,14 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, labels, onDel
           <span className={styles.statusMessage}>{progressLabel}</span>
         )}
       </div>
-      <Button className={styles.deleteButton} id={deleteButtonId} onClick={() => onDelete?.()} variant="secondary">
+
+      <Button
+        className={styles.deleteButton}
+        disabled={!onDelete}
+        id={deleteButtonId}
+        onClick={() => onDelete?.()}
+        variant="secondary"
+      >
         {actionButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
       </Button>
     </li>
