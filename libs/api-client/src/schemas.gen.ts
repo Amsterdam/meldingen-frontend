@@ -813,6 +813,16 @@ export const AttachmentOutputSchema = {
         original_filename: {
             type: 'string',
             title: 'Original Filename'
+        },
+        user: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/UserOutput'
+                },
+                {
+                    type: 'null'
+                }
+            ]
         }
     },
     type: 'object',
@@ -820,7 +830,8 @@ export const AttachmentOutputSchema = {
         'id',
         'created_at',
         'updated_at',
-        'original_filename'
+        'original_filename',
+        'user'
     ],
     title: 'AttachmentOutput'
 } as const;
