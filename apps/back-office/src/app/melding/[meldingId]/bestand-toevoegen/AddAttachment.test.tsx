@@ -161,10 +161,7 @@ describe('AddAttachment', () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     server.use(
-      http.delete(
-        ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID,
-        () => new HttpResponse('API error', { status: 404 }),
-      ),
+      http.delete(ENDPOINTS.DELETE_ATTACHMENT_BY_ID, () => HttpResponse.json({ detail: 'API error' }, { status: 404 })),
     )
 
     const user = userEvent.setup()

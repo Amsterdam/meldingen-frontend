@@ -9,12 +9,11 @@ import { useEffect, useId, useRef, useState } from 'react'
 
 import type { ErroredFileUpload, FileUploadState, UploadResult } from '@meldingen/file-upload'
 
-import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api-client'
 import { FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { Grid, Heading, Link, Paragraph } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
-import { uploadAttachmentAction } from './actions'
+import { deleteAttachmentAction, uploadAttachmentAction } from './actions'
 import { AttachmentsList } from './AttachmentsList'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 
@@ -42,14 +41,20 @@ type Props = {
 const MAX_SUCCESSFUL_UPLOADS = 5
 const MAX_UPLOAD_ATTEMPTS = 10
 
-const deleteAttachment = async (meldingId: number, token: string, serverId: number) => {
-  const { error } = await deleteMeldingByMeldingIdAttachmentByAttachmentId({
-    path: {
-      attachment_id: serverId,
-      melding_id: meldingId,
-    },
-    query: { token },
-  })
+const uploadAttachment =
+  (meldingId: number) =>
+  async (file: File): Promise<UploadResult> => {
+    const formData = new FormData()
+
+    formData.set('file', file)
+
+    const { error, serverId } = await uploadAttachmentAction(meldingId, file)
+
+    return { error, serverId }
+  }
+
+const deleteAttachment = async (serverId: number) => {
+  const { error } = await deleteAttachmentAction(serverId)
 
   if (error) {
     // TODO: Log the error to an error reporting service
@@ -59,18 +64,6 @@ const deleteAttachment = async (meldingId: number, token: string, serverId: numb
 
   return { error }
 }
-
-const uploadAttachment =
-  (meldingId: number) =>
-  async (file: File): Promise<UploadResult> => {
-    const formData = new FormData()
-
-    formData.set('file', file)
-
-    const { apiError, serverId } = await uploadAttachmentAction(meldingId, file)
-
-    return { error: apiError, serverId }
-  }
 
 const isErroredFileUpload = (upload: FileUploadState): upload is ErroredFileUpload => upload.status === 'error'
 
@@ -93,7 +86,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
 
   const uploadFile = uploadAttachment(meldingId)
   const { deletedFileName, fileUploads, genericError, handleDelete, handleUpload } = useFileUploads({
-    deleteAttachment: (serverId: number) => deleteAttachment(meldingId, 'token', serverId),
+    deleteAttachment,
     existingFiles,
     idPrefix: t('file-upload.id-prefix'),
     inputRef: fileUploadRef,
