@@ -24,7 +24,17 @@ export const Note = ({ currentUserId, meldingId, note }: Props) => {
 
   const wasEdited = new Date(updated_at) > new Date(created_at)
 
-  const { date, time } = formatDateString(created_at)
+  const { date, time } = formatDateString(created_at, {
+    date: {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    },
+    time: {
+      hour: 'numeric',
+      minute: 'numeric',
+    },
+  })
 
   return (
     <UnorderedList.Item className={styles.item}>

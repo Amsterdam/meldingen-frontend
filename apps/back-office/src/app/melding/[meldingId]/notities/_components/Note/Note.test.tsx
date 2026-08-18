@@ -3,13 +3,6 @@ import { render, screen } from '@testing-library/react'
 import type { NoteRetrieveOutput } from '@meldingen/api-client'
 
 import { Note } from './Note'
-import { formatDateString } from '~/app/_utils/formatDateString'
-
-describe('formatDateTime', () => {
-  it('formats a date string correctly', () => {
-    expect(formatDateString('2024-03-05T08:09:00Z')).toBe('05-03-2024 08:09')
-  })
-})
 
 const mockNote = {
   created_at: '2024-03-05T08:09:00Z',
