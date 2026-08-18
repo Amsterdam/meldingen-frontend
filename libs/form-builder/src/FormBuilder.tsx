@@ -39,7 +39,7 @@ const options: ExtendedFormBuilderOptions = {
 
 type Props = {
   data?: ComponentSchema[]
-  onChange: (schema: { components: unknown[] }) => void
+  onChange: (schema: { components: ComponentSchema[] }) => void
 }
 
 export const FormBuilder = ({ data, onChange }: Props) => {

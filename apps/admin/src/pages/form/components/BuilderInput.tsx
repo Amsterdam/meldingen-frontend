@@ -1,16 +1,17 @@
+import type { Component } from '@formio/core'
+
 import { TextInput } from 'react-admin'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, useWatch } from 'react-hook-form'
 
 import { FormBuilder } from '@meldingen/form-builder'
 
 import styles from './BuilderInput.module.css'
 
 export const BuilderInput = () => {
-  const { getValues, setValue } = useFormContext()
+  const { control, setValue } = useFormContext()
+  const data = useWatch({ control, defaultValue: [], name: 'components' })
 
-  const data = getValues('components')
-
-  const onChange = (schema: { components: unknown[] }) => {
+  const onChange = (schema: { components: Component[] }) => {
     setValue('components', schema?.components)
   }
 
