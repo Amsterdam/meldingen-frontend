@@ -21,7 +21,7 @@ const updatedComponents: Component[] = [
 
 const mocks = vi.hoisted(() => ({
   formBuilder: vi.fn(
-    ({ onChange }: { data?: Component[]; onChange: (schema: { components: Component[] }) => void }) => (
+    ({ onChange }: { components?: Component[]; onChange: (schema: { components: Component[] }) => void }) => (
       <button onClick={() => onChange({ components: updatedComponents })} type="button">
         Trigger builder change
       </button>
@@ -55,7 +55,7 @@ vi.mock('react-admin', async () => {
 })
 
 vi.mock('@meldingen/form-builder', () => ({
-  FormBuilder: (props: { data?: Component[]; onChange: (schema: { components: Component[] }) => void }) =>
+  FormBuilder: (props: { components?: Component[]; onChange: (schema: { components: Component[] }) => void }) =>
     mocks.formBuilder(props),
 }))
 
@@ -75,7 +75,7 @@ describe('BuilderInput', () => {
     expect(mocks.textInput).toHaveBeenCalledWith(expect.objectContaining({ source: 'components' }))
     expect(mocks.formBuilder).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: watchedComponents,
+        components: watchedComponents,
         onChange: expect.any(Function),
       }),
     )

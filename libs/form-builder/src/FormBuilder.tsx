@@ -2,7 +2,7 @@ import type { Component as ComponentSchema } from '@formio/core'
 import type { FormBuilder as FormBuilderProps } from '@formio/js'
 
 import { Components, FormBuilder as FormioFormBuilder } from '@formio/js'
-import { useEffect, useRef } from 'react'
+import { useEffect, useEffectEvent, useRef } from 'react'
 
 import { Date, Panel, Radio, Select, SelectBoxes, Textarea, Textfield, Time } from './components'
 import nl from './translations/nl.json'
@@ -37,6 +37,22 @@ const options: ExtendedFormBuilderOptions = {
   noDefaultSubmitButton: true,
 }
 
+const getFormSchema = (components: ComponentSchema[] = []) => ({
+  components,
+  display: 'wizard' as const,
+})
+
+Components.setComponents({
+  date: Date,
+  panel: Panel,
+  radio: Radio,
+  select: Select,
+  selectboxes: SelectBoxes,
+  textarea: Textarea,
+  textfield: Textfield,
+  time: Time,
+})
+
 type Props = {
   components?: ComponentSchema[]
   onChange: (schema: { components: ComponentSchema[] }) => void
@@ -45,26 +61,19 @@ type Props = {
 export const FormBuilder = ({ components, onChange }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
   const builderInstance = useRef<FormioFormBuilder | null>(null)
+  const handleChange = useEffectEvent(() => {
+    if (!builderInstance.current) {
+      return
+    }
 
-  Components.setComponents({
-    date: Date,
-    panel: Panel,
-    radio: Radio,
-    select: Select,
-    selectboxes: SelectBoxes,
-    textarea: Textarea,
-    textfield: Textfield,
-    time: Time,
+    onChange(builderInstance.current.instance.form)
   })
 
   useEffect(() => {
     if (!ref.current) return
 
-    builderInstance.current = new FormioFormBuilder(ref.current, { components, display: 'wizard' }, options)
-
-    const handleChange = () => {
-      onChange(builderInstance.current?.instance.form)
-    }
+    const builder = new FormioFormBuilder(ref.current, getFormSchema(), options)
+    builderInstance.current = builder
 
     const builderEvents = [
       { action: handleChange, name: 'addComponent' },
@@ -74,18 +83,35 @@ export const FormBuilder = ({ components, onChange }: Props) => {
       { action: handleChange, name: 'deleteComponent' },
     ]
 
-    builderInstance.current.ready.then(() => {
+    let isDisposed = false
+
+    void builder.ready.then(() => {
+      if (isDisposed) {
+        return
+      }
+
       builderEvents.forEach(({ action, name }) => {
-        builderInstance.current?.instance.on(name, action)
+        builder.instance.on(name, action)
       })
     })
 
     return () => {
+      isDisposed = true
+
       if (builderInstance.current) {
         builderInstance.current.instance.destroy(true)
+        builderInstance.current = null
       }
     }
-  }, [components, onChange])
+  }, [])
+
+  useEffect(() => {
+    const nextForm = getFormSchema(components ?? [])
+
+    if (builderInstance.current && JSON.stringify(builderInstance.current.form) !== JSON.stringify(nextForm)) {
+      void builderInstance.current.setForm(nextForm)
+    }
+  }, [components])
 
   return <div ref={ref} />
 }
