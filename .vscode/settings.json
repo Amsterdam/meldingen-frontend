@@ -8,9 +8,6 @@
     "source.fixAll.eslint": "always",
     "source.fixAll.stylelint": "explicit"
   },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "files.associations": {
