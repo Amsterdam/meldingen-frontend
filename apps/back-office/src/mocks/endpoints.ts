@@ -2,6 +2,7 @@
 
 export const ENDPOINTS = {
   // Attachments
+  DELETE_ATTACHMENT_BY_ID: '/attachment/:id',
   GET_ATTACHMENT_BY_ID: '/attachment/:id',
 
   // Labels
