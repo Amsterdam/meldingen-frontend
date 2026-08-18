@@ -12,6 +12,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y'
 import perfectionist from 'eslint-plugin-perfectionist'
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 import react from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
 import workspaces from 'eslint-plugin-workspaces'
 import { defineConfig } from 'eslint/config'
 import globals from 'globals'
@@ -92,6 +93,7 @@ export default defineConfig(
       perfectionist,
       'prefer-arrow-functions': preferArrowFunctions,
       react,
+      'react-hooks': reactHooks,
       workspaces,
     },
     settings: {
@@ -145,6 +147,8 @@ export default defineConfig(
       'react/jsx-props-no-spreading': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/require-default-props': 'off',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/rules-of-hooks': 'error',
     },
   },
 

@@ -38,11 +38,11 @@ const options: ExtendedFormBuilderOptions = {
 }
 
 type Props = {
-  data?: ComponentSchema[]
+  components?: ComponentSchema[]
   onChange: (schema: { components: ComponentSchema[] }) => void
 }
 
-export const FormBuilder = ({ data, onChange }: Props) => {
+export const FormBuilder = ({ components, onChange }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
   const builderInstance = useRef<FormioFormBuilder | null>(null)
 
@@ -60,7 +60,7 @@ export const FormBuilder = ({ data, onChange }: Props) => {
   useEffect(() => {
     if (!ref.current) return
 
-    builderInstance.current = new FormioFormBuilder(ref.current, { components: data ?? [], display: 'wizard' }, options)
+    builderInstance.current = new FormioFormBuilder(ref.current, { components, display: 'wizard' }, options)
 
     const handleChange = () => {
       onChange(builderInstance.current?.instance.form)
@@ -85,7 +85,7 @@ export const FormBuilder = ({ data, onChange }: Props) => {
         builderInstance.current.instance.destroy(true)
       }
     }
-  }, [data])
+  }, [components, onChange])
 
   return <div ref={ref} />
 }

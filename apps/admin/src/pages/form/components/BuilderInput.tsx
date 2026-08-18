@@ -9,7 +9,7 @@ import styles from './BuilderInput.module.css'
 
 export const BuilderInput = () => {
   const { control, setValue } = useFormContext()
-  const data = useWatch({ control, defaultValue: [], name: 'components' })
+  const components = useWatch({ control, defaultValue: [], name: 'components' })
 
   const onChange = (schema: { components: Component[] }) => {
     setValue('components', schema?.components)
@@ -25,7 +25,7 @@ export const BuilderInput = () => {
         source="components"
       />
       <div className={styles.builder}>
-        <FormBuilder data={data} onChange={onChange} />
+        <FormBuilder components={components} onChange={onChange} />
       </div>
     </>
   )
