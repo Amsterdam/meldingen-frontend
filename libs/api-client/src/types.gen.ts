@@ -194,6 +194,7 @@ export type AttachmentOutput = {
      * Original Filename
      */
     original_filename: string;
+    user: UserOutput | null;
 };
 
 /**
@@ -3283,6 +3284,60 @@ export type Var = {
     ] | number | number | Array<null> | null;
 };
 
+export type DeleteAttachmentByIdData = {
+    body?: never;
+    path: {
+        /**
+         * Id
+         *
+         * The id of the attachment.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/attachment/{id}';
+};
+
+export type DeleteAttachmentByIdErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type DeleteAttachmentByIdError = DeleteAttachmentByIdErrors[keyof DeleteAttachmentByIdErrors];
+
+export type DeleteAttachmentByIdResponses = {
+    /**
+     * Successful Response
+     */
+    204: void;
+};
+
+export type DeleteAttachmentByIdResponse = DeleteAttachmentByIdResponses[keyof DeleteAttachmentByIdResponses];
+
 export type GetAttachmentByIdData = {
     body?: never;
     path: {
@@ -3346,6 +3401,12 @@ export type GetClassificationData = {
     body?: never;
     path?: never;
     query?: {
+        /**
+         * Include Deleted
+         *
+         * Include soft-deleted classifications in the list result when true.
+         */
+        include_deleted?: boolean;
         /**
          * The limit
          */

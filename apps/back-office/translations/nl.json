@@ -63,7 +63,8 @@
       "no-data": "Niet ingevuld"
     },
     "location": {
-      "address": "Adres"
+      "address": "Adres",
+      "no-address": "Locatie gekozen op de kaart"
     },
     "assets": {
       "term": "Objecten"

@@ -1,7 +1,12 @@
 import { http, HttpResponse } from 'msw'
 
 import { getAdditionalQuestionsData } from './getAdditionalQuestionsData'
-import { additionalQuestions, additionalTimeQuestion, additionalValueLabelQuestion } from '~/mocks/data'
+import {
+  additionalDateQuestion,
+  additionalQuestions,
+  additionalTimeQuestion,
+  additionalValueLabelQuestion,
+} from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -56,6 +61,22 @@ describe('getAdditionalQuestionsData', () => {
           description: 'Weet ik niet',
           key: additionalTimeQuestionWithNullTime.question.id.toString(),
           term: additionalTimeQuestionWithNullTime.question.text,
+        },
+      ],
+    })
+  })
+
+  it('returns correct additional date question data', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () => HttpResponse.json([additionalDateQuestion])))
+
+    const result = await getAdditionalQuestionsData(mockMeldingId)
+
+    expect(result).toEqual({
+      data: [
+        {
+          description: additionalDateQuestion.date.converted_date,
+          key: additionalDateQuestion.question.id.toString(),
+          term: additionalDateQuestion.question.text,
         },
       ],
     })

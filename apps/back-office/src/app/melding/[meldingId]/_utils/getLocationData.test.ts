@@ -15,7 +15,7 @@ describe('getLocationData', () => {
     ])
   })
 
-  it('returns undefined when not all location data exists', () => {
+  it('returns "Locatie gekozen op de kaart" when not all location data exists', () => {
     const meldingDataWithoutPostalCode = {
       ...melding,
       postal_code: null,
@@ -23,6 +23,12 @@ describe('getLocationData', () => {
 
     const result = getLocationData(meldingDataWithoutPostalCode, (key: string) => key)
 
-    expect(result).toEqual(undefined)
+    expect(result).toEqual([
+      {
+        description: 'detail.location.no-address',
+        key: 'address',
+        term: 'detail.location.address',
+      },
+    ])
   })
 })
