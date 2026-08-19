@@ -1,6 +1,7 @@
 import { http, HttpResponse } from 'msw'
 
 import { getAdditionalQuestionsData } from './getAdditionalQuestionsData'
+import { formatDateString } from '~/app/_utils/formatDateString'
 import {
   additionalDateQuestion,
   additionalQuestions,
@@ -74,7 +75,7 @@ describe('getAdditionalQuestionsData', () => {
     expect(result).toEqual({
       data: [
         {
-          description: additionalDateQuestion.date.converted_date,
+          description: formatDateString(additionalDateQuestion.date.converted_date!).date,
           key: additionalDateQuestion.question.id.toString(),
           term: additionalDateQuestion.question.text,
         },
