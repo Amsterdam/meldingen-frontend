@@ -181,7 +181,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
               <Paragraph>{t('upload.count', { currentCount: validUploadedFilesCount, maxCount: 5 })}</Paragraph>
 
               <FileUpload
-                accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp"
+                accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp,.pdf"
                 // aria-describedby={getAriaDescribedBy(fileUploadId, description)}
                 aria-labelledby={`file-upload-label ${fileUploadId}`}
                 buttonText={t('file-upload.select-file-button')}
