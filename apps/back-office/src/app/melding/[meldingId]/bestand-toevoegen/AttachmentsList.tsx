@@ -28,12 +28,9 @@ export const AttachmentsList = ({ files, handleDelete }: Props) => {
     <FileList>
       {files.map(({ errorMessage, file, id, progress, serverId, status, xhr }) => {
         const labels = {
-          actionButtonCancelLabel: t('file-upload.action-button-cancel'),
           actionButtonDeleteLabel: t('file-upload.action-button-delete'),
           progressFinishedLabel: progress === 100 ? t('file-upload.progress-finished') : '',
-          progressLoadingLabel: t('file-upload.progress-loading', {
-            percentage: Math.round(progress),
-          }),
+          progressLoadingLabel: t('file-upload.progress-loading'),
         }
 
         return (
