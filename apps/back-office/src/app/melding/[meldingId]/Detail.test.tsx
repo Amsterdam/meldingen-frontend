@@ -4,8 +4,8 @@ import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
 import { asset, melding } from '~/mocks/data'
 
-vi.mock('./_components/AttachmentImage', () => ({
-  AttachmentImage: vi.fn(() => <div>AttachmentsImage</div>),
+vi.mock('./_components/Attachment', () => ({
+  Attachment: vi.fn(() => <div>Attachment</div>),
 }))
 
 const defaultProps = {
@@ -158,7 +158,7 @@ describe('Detail', () => {
     render(<Detail {...defaultProps} />)
 
     expect(screen.getByText('attachments.title')).toBeInTheDocument()
-    expect(screen.getByText('AttachmentsImage')).toBeInTheDocument()
+    expect(screen.getByText('Attachment')).toBeInTheDocument()
   })
 
   it('renders a no-data message when there are no attachments', () => {

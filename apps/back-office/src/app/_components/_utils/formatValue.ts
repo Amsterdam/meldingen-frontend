@@ -1,6 +1,8 @@
 import type { MeldingWithAddress } from '../../Overview'
 import type { OverviewField } from './getOverviewFieldLabel'
 
+import { formatDateString } from '~/app/_utils/formatDateString'
+
 export const formatValue = (melding: MeldingWithAddress, key: OverviewField['key'], t: (key: string) => string) => {
   switch (key) {
     case 'address':
@@ -8,7 +10,7 @@ export const formatValue = (melding: MeldingWithAddress, key: OverviewField['key
     case 'classification':
       return melding.classification ? melding.classification.name : t('overview.no-classification')
     case 'created_at':
-      return new Date(melding.created_at).toLocaleDateString('nl-NL')
+      return formatDateString(melding.created_at).date
     case 'postal_code':
       return melding.postal_code || ''
     case 'public_id':

@@ -1,6 +1,8 @@
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
 import { handleApiError } from '~/app/_utils/handleApiError'
 
+export const isFilePDF = (fileName: string) => fileName.toLowerCase().endsWith('.pdf')
+
 export const getAttachmentsData = async (meldingId: number, t: (key: string) => string) => {
   const { data, error } = await getMeldingByMeldingIdAttachments({
     path: { melding_id: meldingId },
@@ -12,7 +14,7 @@ export const getAttachmentsData = async (meldingId: number, t: (key: string) => 
     data.map(async ({ created_at, id, original_filename }) => {
       const { data: attachmentBlob, error } = await getAttachmentById({
         path: { id },
-        query: { type: 'thumbnail' },
+        query: { type: isFilePDF(original_filename) ? 'original' : 'thumbnail' },
       })
 
       if (error) {

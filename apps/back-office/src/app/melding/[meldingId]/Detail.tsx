@@ -7,7 +7,7 @@ import { Column, Grid, Heading, Link, Paragraph, TabNavigation } from '@meldinge
 
 import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
-import { AttachmentImage } from './_components/AttachmentImage'
+import { Attachment } from './_components/Attachment'
 import { BackLink } from './_components/BackLink'
 import { formatDateTime } from '~/app/_utils/formatDateTime'
 
@@ -131,19 +131,15 @@ export const Detail = ({
 
             <dl className={clsx(styles.descriptionList, styles.cardWide, styles.attachmentsSection)}>
               <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
-              {hasAttachments && (
-                <div className={styles.attachmentsWrapper}>
-                  {attachments.files.map((file) => (
-                    <dd className={clsx(styles.description, styles.attachmentWrapper)} key={file.fileName}>
-                      <AttachmentImage blob={file.blob} fileName={file.fileName} />
-                      <Paragraph>{formatDateTime(file.createdAt)}</Paragraph>
-                      <Paragraph>{file.fileName}</Paragraph>
-                    </dd>
-                  ))}
-                </div>
-              )}
-
-              {!hasAttachments && (
+              {hasAttachments ? (
+                attachments.files.map(({ blob, createdAt, fileName }) => (
+                  <dd className={styles.description} key={fileName}>
+                    <Attachment blob={blob} fileName={fileName} />
+                    <Paragraph>{formatDateTime(createdAt)}</Paragraph>
+                    <Paragraph>{fileName}</Paragraph>
+                  </dd>
+                ))
+              ) : (
                 <dd className={styles.attachmentsFallBackDescription}>
                   <Paragraph>{t('attachments.no-data')}</Paragraph>
                 </dd>
