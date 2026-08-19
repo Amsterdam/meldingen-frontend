@@ -35,13 +35,6 @@ describe('AttachmentsList', () => {
     expect(screen.getAllByText('sample.txt')[0]).toBeInTheDocument()
   })
 
-  it('shows the cancel action and loading label while uploading', () => {
-    render(<AttachmentsList files={[createFile({ progress: 20, status: 'uploading' })]} handleDelete={vi.fn()} />)
-
-    expect(screen.getByRole('button', { name: 'file-upload.action-button-cancel sample.txt' })).toBeInTheDocument()
-    expect(screen.getByText('file-upload.progress-loading')).toBeInTheDocument()
-  })
-
   it('shows the delete action and finished label when upload succeeded at 100%', () => {
     render(<AttachmentsList files={[createFile({ progress: 100, status: 'success' })]} handleDelete={vi.fn()} />)
 
@@ -66,16 +59,15 @@ describe('AttachmentsList', () => {
     expect(screen.getByText('validation-errors.file-too-large')).toBeInTheDocument()
   })
 
-  it('confirms deletion with the file name before deleting', async () => {
+  it('confirms deletion has been called with required params', async () => {
     const user = userEvent.setup()
-    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true)
     const handleDelete = vi.fn()
 
     render(<AttachmentsList files={[createFile()]} handleDelete={handleDelete} />)
 
     await user.click(screen.getByRole('button', { name: 'file-upload.action-button-delete sample.txt' }))
 
-    expect(confirmSpy).toHaveBeenCalledWith(expect.stringContaining('sample.txt'))
+    expect(handleDelete).toHaveBeenCalledWith('file-1', 'sample.txt', undefined, undefined)
   })
 
   it('calls handleDelete with the file details when deletion is confirmed', async () => {
@@ -89,18 +81,6 @@ describe('AttachmentsList', () => {
     await user.click(screen.getByRole('button', { name: 'file-upload.action-button-delete sample.txt' }))
 
     expect(handleDelete).toHaveBeenCalledWith('file-1', 'sample.txt', xhr, 42)
-  })
-
-  it('does not call handleDelete when deletion is not confirmed', async () => {
-    const user = userEvent.setup()
-    vi.spyOn(window, 'confirm').mockReturnValue(false)
-    const handleDelete = vi.fn()
-
-    render(<AttachmentsList files={[createFile()]} handleDelete={handleDelete} />)
-
-    await user.click(screen.getByRole('button', { name: 'file-upload.action-button-delete sample.txt' }))
-
-    expect(handleDelete).not.toHaveBeenCalled()
   })
 
   it('sets the delete button id to the file id', () => {

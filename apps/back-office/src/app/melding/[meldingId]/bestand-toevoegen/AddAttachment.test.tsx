@@ -6,8 +6,30 @@ import { AddAttachment } from './AddAttachment'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
+vi.mock('./AttachmentsList', () => ({
+  AttachmentsList: ({
+    files,
+    handleDelete,
+  }: {
+    files: Array<{ file: File; id: string; serverId?: number; xhr?: XMLHttpRequest }>
+    handleDelete: (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => void
+  }) => (
+    <ul>
+      {files.map(({ file, id, serverId, xhr }) => (
+        <li key={id}>
+          <span>{file.name}</span>
+          <button onClick={() => handleDelete(id, file.name, xhr, serverId)}>
+            {`file-upload.action-button-delete ${file.name}`}
+          </button>
+        </li>
+      ))}
+    </ul>
+  ),
+}))
+
 global.URL.createObjectURL = vi.fn()
 global.URL.revokeObjectURL = vi.fn()
+window.confirm = vi.fn(() => true)
 
 const mockFile = new File(['dummy content'], 'example.png', { type: 'image/png' })
 
@@ -16,21 +38,22 @@ const defaultProps = {
   meldingId: 123,
 }
 
-window.confirm = vi.fn(() => true)
-
 describe('AddAttachment', () => {
   it('renders correctly', () => {
     render(<AddAttachment {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
     const heading = screen.getByRole('heading', { level: 1, name: 'title' })
-    const uploadButton = screen.getByRole('button', { name: 'file-upload.drop-area file-upload.select-file-button' })
+    const uploadButton = screen.getByRole('button')
     const bottomLink = screen.getByRole('link', { name: 'cancel-link' })
 
     expect(backLink).toBeInTheDocument()
     expect(heading).toBeInTheDocument()
     expect(uploadButton).toBeInTheDocument()
     expect(bottomLink).toBeInTheDocument()
+
+    expect(uploadButton).toHaveTextContent('file-upload.drop-area')
+    expect(uploadButton).toHaveTextContent('file-upload.select-file-button')
   })
 
   it('renders existing attachments and shows the back-link instead of the cancel-link', () => {
@@ -85,6 +108,29 @@ describe('AddAttachment', () => {
 
     expect(deleteButton).toBeInTheDocument()
     expect(screen.getAllByRole('link', { name: 'back-link' })).toHaveLength(2)
+  })
+
+  it('confirms deletion with the file name before deleting', async () => {
+    const user = userEvent.setup()
+    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true)
+
+    render(
+      <AddAttachment
+        attachments={{
+          files: [{ blob: new Blob(['sample content']), createdAt: '2025-01-01', fileName: 'first.png', id: 1 }],
+          key: 'attachments',
+          term: 'attachments',
+        }}
+        meldingId={123}
+      />,
+    )
+
+    await user.click(screen.getByRole('button', { name: 'file-upload.action-button-delete first.png' }))
+
+    expect(confirmSpy).toHaveBeenCalledWith('file-upload.confirm-delete')
+    expect(confirmSpy).toHaveReturnedWith(true)
+
+    expect(screen.queryByText('first.png')).not.toBeInTheDocument()
   })
 
   it('shows an API error alert and a validation error when the upload fails', async () => {

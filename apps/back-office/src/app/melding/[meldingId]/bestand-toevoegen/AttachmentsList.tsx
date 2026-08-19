@@ -16,14 +16,6 @@ type Props = {
 export const AttachmentsList = ({ files, handleDelete }: Props) => {
   const t = useTranslations('add-attachment')
 
-  const handleOnDelete = (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => {
-    const shouldDelete = window.confirm(t('file-upload.confirm-delete', { fileName }))
-
-    if (!shouldDelete) return
-
-    handleDelete(id, fileName, xhr, serverId)
-  }
-
   return (
     <FileList>
       {files.map(({ errorMessage, file, id, progress, serverId, status, xhr }) => {
@@ -41,7 +33,7 @@ export const AttachmentsList = ({ files, handleDelete }: Props) => {
             file={file}
             key={id}
             labels={labels}
-            onDelete={() => handleOnDelete(id, file.name, xhr, serverId)}
+            onDelete={() => handleDelete(id, file.name, xhr, serverId)}
             status={status}
           />
         )

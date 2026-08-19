@@ -118,6 +118,14 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     handleUpload(event)
   }
 
+  const handleOnDelete = (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => {
+    const shouldDelete = window.confirm(t('file-upload.confirm-delete', { fileName }))
+
+    if (!shouldDelete) return
+
+    handleDelete(id, fileName, xhr, serverId)
+  }
+
   // Set focus on generic Alert when there is a generic error
   useEffect(() => {
     if (!genericError || !genericErrorAlertRef.current) return
@@ -200,7 +208,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
 
             {hasAttachments && (
               <>
-                <AttachmentsList files={fileUploads} handleDelete={handleDelete} />
+                <AttachmentsList files={fileUploads} handleDelete={handleOnDelete} />
 
                 <div aria-live="polite" className="ams-visually-hidden">
                   {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
