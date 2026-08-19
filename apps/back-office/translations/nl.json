@@ -118,11 +118,10 @@
     "file-upload": {
       "select-file-button": "Bestanden kiezen",
       "action-button-delete": "Verwijder bestand",
-      "action-button-cancel": "Annuleren",
       "drop-area": "Sleep bestanden in dit vak of",
       "id-prefix": "bestand",
       "progress-finished": "Upload geslaagd",
-      "progress-loading": "Upload {percentage}%"
+      "progress-loading": "Aan het uploaden"
     },
 
     "errors": {
