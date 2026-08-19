@@ -44,6 +44,12 @@ const MAX_UPLOAD_ATTEMPTS = 10
 const uploadAttachment =
   (meldingId: number) =>
   async (file: File): Promise<UploadResult> => {
+    // Instead of getting an uncatchable next.js server action error when the file is too large, we check the file size here and return a validation error.
+    // Check if the file size exceeds 20 MB (20 * 1024 * 1024 bytes)
+    if (file.size > 20 * 1024 * 1024) {
+      return { error: 'Allowed content size exceeded', serverId: undefined }
+    }
+
     const formData = new FormData()
 
     formData.set('file', file)
