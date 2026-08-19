@@ -116,6 +116,7 @@
       "count": "{currentCount} van {maxCount} bestanden geupload"
     },
     "file-upload": {
+      "confirm-delete": "Weet je zeker dat je het bestand \"{fileName}\" wilt verwijderen?",
       "select-file-button": "Bestanden kiezen",
       "action-button-delete": "Verwijder bestand",
       "drop-area": "Sleep bestanden in dit vak of",

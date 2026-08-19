@@ -17,7 +17,7 @@ export const AttachmentsList = ({ files, handleDelete }: Props) => {
   const t = useTranslations('add-attachment')
 
   const handleOnDelete = (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => {
-    const shouldDelete = window.confirm(`Are you sure you want to delete ${fileName}?`)
+    const shouldDelete = window.confirm(t('file-upload.confirm-delete', { fileName }))
 
     if (!shouldDelete) return
 
