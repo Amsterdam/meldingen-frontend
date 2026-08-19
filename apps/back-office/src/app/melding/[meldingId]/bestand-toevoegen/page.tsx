@@ -1,9 +1,8 @@
 import { getTranslations } from 'next-intl/server'
 
-import { getMeldingByMeldingId } from '@meldingen/api-client'
-
 import { getAttachmentsData } from '../_utils'
 import { AddAttachment } from './AddAttachment'
+import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
