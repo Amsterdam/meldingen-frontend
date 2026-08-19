@@ -76,11 +76,8 @@ export const FormBuilder = ({ components, onChange }: Props) => {
     builderInstance.current = builder
 
     const builderEvents = [
-      { action: handleChange, name: 'addComponent' },
-      { action: handleChange, name: 'saveComponent' },
-      { action: handleChange, name: 'updateComponent' },
       { action: handleChange, name: 'removeComponent' },
-      { action: handleChange, name: 'deleteComponent' },
+      { action: handleChange, name: 'saveComponent' },
     ]
 
     let isDisposed = false
