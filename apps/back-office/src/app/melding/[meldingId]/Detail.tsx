@@ -9,7 +9,7 @@ import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
 import { Attachment } from './_components/Attachment'
 import { BackLink } from './_components/BackLink'
-import { formatDateTime } from '~/app/_utils/formatDateTime'
+import { formatDateString } from '~/app/_utils/formatDateString'
 
 import styles from './Detail.module.css'
 
@@ -132,13 +132,29 @@ export const Detail = ({
             <dl className={clsx(styles.descriptionList, styles.cardWide, styles.attachmentsSection)}>
               <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
               {hasAttachments ? (
-                attachments.files.map(({ blob, createdAt, fileName }) => (
-                  <dd className={styles.description} key={fileName}>
-                    <Attachment blob={blob} fileName={fileName} />
-                    <Paragraph>{formatDateTime(createdAt)}</Paragraph>
-                    <Paragraph>{fileName}</Paragraph>
-                  </dd>
-                ))
+                <div className={styles.attachmentsWrapper}>
+                  {attachments.files.map(({ blob, createdAt, fileName }) => {
+                    const { date, time } = formatDateString(createdAt, {
+                      date: {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                      },
+                      time: {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                      },
+                    })
+
+                    return (
+                      <dd className={clsx(styles.description, styles.attachmentWrapper)} key={fileName}>
+                        <Attachment blob={blob} fileName={fileName} />
+                        <Paragraph>{`${date} ${time}`}</Paragraph>
+                        <Paragraph>{fileName}</Paragraph>
+                      </dd>
+                    )
+                  })}
+                </div>
               ) : (
                 <dd className={styles.attachmentsFallBackDescription}>
                   <Paragraph>{t('attachments.no-data')}</Paragraph>
