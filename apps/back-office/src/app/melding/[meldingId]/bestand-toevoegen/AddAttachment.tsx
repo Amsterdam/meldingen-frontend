@@ -10,7 +10,8 @@ import { useEffect, useId, useRef, useState } from 'react'
 import type { ErroredFileUpload, FileUploadState, UploadResult } from '@meldingen/file-upload'
 
 import { FileUpload, useFileUploads } from '@meldingen/file-upload'
-import { Grid, Heading, Link, Paragraph } from '@meldingen/ui'
+import { getAriaDescribedBy } from '@meldingen/form-renderer'
+import { Column, Grid, Heading, Link, Paragraph } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
 import { deleteAttachmentAction, uploadAttachmentAction } from './actions'
@@ -137,9 +138,11 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     setShouldFocusInvalidAlert(true)
   }, [hasErroredFileUploads])
 
-  const hasAttachments = fileUploads.length > 0
+  const successfulUploadsCount = fileUploads.filter(({ status }) => status === 'success').length
 
-  const validUploadedFilesCount = fileUploads.length - erroredFileUploads.length
+  const hasAttachments = successfulUploadsCount > 0
+  const validUploadedFilesCount = successfulUploadsCount - erroredFileUploads.length
+
   const meldingDetailLink = `/melding/${meldingId}`
 
   return (
@@ -174,24 +177,26 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
             {t('title')}
           </Heading>
 
-          <div className={styles.contentWrapper}>
+          <Column className={clsx(styles.contentWrapper, 'ams-mb-m')}>
             <div className={styles.uploadInfo}>
-              <Heading level={4}>{t('upload.title')}</Heading>
-              <Paragraph>{t('upload.description')}</Paragraph>
+              <Heading id="file-upload-label" level={2} size="level-4">
+                {t('upload.title')}
+              </Heading>
+              <Paragraph id="file-upload-description">{t('upload.description')}</Paragraph>
               <Paragraph>{t('upload.count', { currentCount: validUploadedFilesCount, maxCount: 5 })}</Paragraph>
-
-              <FileUpload
-                accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp,.pdf"
-                // aria-describedby={getAriaDescribedBy(fileUploadId, description)}
-                aria-labelledby={`file-upload-label ${fileUploadId}`}
-                buttonText={t('file-upload.select-file-button')}
-                dropAreaText={t('file-upload.drop-area')}
-                id={fileUploadId}
-                multiple
-                onChange={onUpload}
-                ref={fileUploadRef}
-              />
             </div>
+
+            <FileUpload
+              accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp,.pdf"
+              aria-describedby={getAriaDescribedBy(fileUploadId, t('upload.description'))}
+              aria-labelledby={`file-upload-label ${fileUploadId}`}
+              buttonText={t('file-upload.select-file-button')}
+              dropAreaText={t('file-upload.drop-area')}
+              id={fileUploadId}
+              multiple
+              onChange={onUpload}
+              ref={fileUploadRef}
+            />
 
             {hasAttachments && (
               <>
@@ -202,7 +207,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
                 </div>
               </>
             )}
-          </div>
+          </Column>
 
           <Link href={meldingDetailLink}>{hasAttachments ? t('back-link') : t('cancel-link')}</Link>
         </Grid.Cell>
