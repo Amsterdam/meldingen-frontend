@@ -66,6 +66,7 @@
     "eslint-plugin-perfectionist": "5.10.0",
     "eslint-plugin-prefer-arrow-functions": "3.10.1",
     "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "7.1.1",
     "eslint-plugin-workspaces": "0.12.1",
     "globals": "17.7.0",
     "husky": "9.1.7",
