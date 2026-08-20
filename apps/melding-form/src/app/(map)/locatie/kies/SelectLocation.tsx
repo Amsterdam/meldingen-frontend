@@ -162,7 +162,7 @@ export const SelectLocation = ({
             )}
           </Controls>
         </Map>
-        <div className={styles.buttonWrapper}>
+        <div className={clsx(styles.buttonWrapper, showAssetList && styles.background)}>
           <Button
             className={clsx(styles.submitButton, showAssetList && styles.removeAbsolutePosition)}
             form="address"

@@ -46,6 +46,10 @@
   z-index: 2;
 }
 
+.background {
+  background-color: var(--ams-color-background);
+}
+
 .submitButton {
   bottom: 0;
   margin-block: var(--ams-space-m);
