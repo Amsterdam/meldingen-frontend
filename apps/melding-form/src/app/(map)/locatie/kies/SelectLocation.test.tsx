@@ -17,7 +17,11 @@ vi.mock('./_components/AssetList/AssetList', () => ({
 
 vi.mock('@meldingen/map', () => ({
   Controls: vi.fn(),
-  Map: vi.fn(({ children }) => <div>{children}</div>),
+  Map: vi.fn(({ children, isInert }) => (
+    <div aria-hidden={isInert} inert={isInert || undefined}>
+      {children}
+    </div>
+  )),
   MarkerSelectLayer: vi.fn(),
   PointSelectLayer: vi.fn(),
 }))
@@ -92,6 +96,26 @@ describe('SelectLocation', () => {
     const SideBarBottomVisible = container.querySelector('[class*="_hide"]')
 
     expect(SideBarBottomVisible).toBeInTheDocument()
+  })
+
+  it('makes only the map subtree inert when the asset list overlay is open', async () => {
+    const user = userEvent.setup()
+
+    ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) => (
+      <SetInternalState setter={setSelectedAssets} value={[{ id: '1' }]} />
+    ))
+
+    const { container } = render(<SelectLocation {...defaultProps} />)
+
+    const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
+
+    await user.click(toggleButton)
+
+    const inertMap = container.querySelector('[inert]')
+    const toggleButtonMap = screen.getByRole('button', { name: 'toggle-button.map' })
+
+    expect(inertMap).toHaveAttribute('aria-hidden', 'true')
+    expect(toggleButtonMap).toBeEnabled()
   })
 
   it('renders the notification when it is set in AssetList and closes on click', async () => {

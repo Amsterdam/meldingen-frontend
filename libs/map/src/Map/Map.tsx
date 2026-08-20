@@ -11,13 +11,14 @@ import styles from './Map.module.css'
 
 export type Props = PropsWithChildren & {
   hasAlert?: boolean
+  isInert?: boolean
   /* This prop is only used for unit tests. */
   testMapInstance?: Map
 }
 
 export const MapContext = createContext<Map | undefined>(undefined)
 
-export const MapComponent = ({ children, hasAlert, testMapInstance }: Props) => {
+export const MapComponent = ({ children, hasAlert, isInert, testMapInstance }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
@@ -75,7 +76,11 @@ export const MapComponent = ({ children, hasAlert, testMapInstance }: Props) => 
 
   return (
     <MapContext.Provider value={mapInstance}>
-      <div className={clsx(styles.container, hasAlert && styles.notInteractive)}>
+      <div
+        aria-hidden={isInert}
+        className={clsx(styles.container, hasAlert && styles.notInteractive)}
+        inert={isInert || undefined}
+      >
         <div className={styles.map} ref={mapRef} />
         {children}
       </div>

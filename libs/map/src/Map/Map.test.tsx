@@ -27,6 +27,14 @@ describe('MapComponent', () => {
     expect(container.firstChild).toBeInTheDocument()
   })
 
+  it('makes the map subtree inert when requested', () => {
+    const { container } = render(<MapComponent isInert />)
+
+    const inertElement = container.querySelector('[inert]')
+
+    expect(inertElement).toHaveAttribute('aria-hidden', 'true')
+  })
+
   it('sets up a Leaflet map instance when it does not exist already and container exists', () => {
     const containerRef = { current: 'not-null' }
     const createdMapInstanceRef = { current: false }
