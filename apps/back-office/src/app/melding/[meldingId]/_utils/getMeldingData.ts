@@ -1,11 +1,13 @@
 import type { MeldingOutput } from '@meldingen/api-client'
 
+import { formatDateString } from '~/app/_utils/formatDateString'
+
 export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) => {
   const { classification, created_at, id, labels, source, state, urgency } = data
 
   return [
     {
-      description: new Date(created_at).toLocaleDateString('nl-NL'),
+      description: formatDateString(created_at).date,
       key: 'created_at',
       term: t('detail.melding-data.created_at'),
     },
