@@ -11,14 +11,13 @@ import styles from './Map.module.css'
 
 export type Props = PropsWithChildren & {
   hasAlert?: boolean
-  isHidden?: boolean
   /* This prop is only used for unit tests. */
   testMapInstance?: Map
 }
 
 export const MapContext = createContext<Map | undefined>(undefined)
 
-export const MapComponent = ({ children, hasAlert, isHidden, testMapInstance }: Props) => {
+export const MapComponent = ({ children, hasAlert, testMapInstance }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
@@ -70,13 +69,13 @@ export const MapComponent = ({ children, hasAlert, isHidden, testMapInstance }: 
 
   useEffect(() => {
     // Leaflet has to know it should recalculate dimensions of the map
-    // when it is shown/hidden or has an Alert as this can change the size of the map container
+    // when an Alert changes the size of the map container
     mapInstance?.invalidateSize()
-  }, [isHidden, hasAlert])
+  }, [hasAlert])
 
   return (
     <MapContext.Provider value={mapInstance}>
-      <div className={clsx(styles.container, isHidden && styles.hideMap, hasAlert && styles.notInteractive)}>
+      <div className={clsx(styles.container, hasAlert && styles.notInteractive)}>
         <div className={styles.map} ref={mapRef} />
         {children}
       </div>

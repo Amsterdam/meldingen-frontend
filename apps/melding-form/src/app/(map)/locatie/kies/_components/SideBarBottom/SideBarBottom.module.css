@@ -1,14 +1,32 @@
 .container {
+  background-color: var(--ams-color-background);
   display: flex;
   flex-direction: column;
   grid-row-start: 2;
+  height: 100%;
+  left: 0;
   overflow-y: auto;
-  padding-inline: var(--ams-space-m);
+  position: absolute;
+  right: 0;
   row-gap: var(--ams-space-m);
+  top: 0;
+  width: 100%;
+  z-index: 1;
 
   @media screen and (min-width: 72.5rem) {
+    left: auto;
     padding-block: var(--ams-space-m);
+    position: relative;
+    top: auto;
+    width: auto;
   }
+}
+
+.inner {
+  box-sizing: border-box;
+  height: 100%;
+  padding-inline: var(--ams-space-m);
+  width: 100%;
 }
 
 .hide {

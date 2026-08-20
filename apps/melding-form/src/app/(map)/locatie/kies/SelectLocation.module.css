@@ -4,6 +4,7 @@
   grid-template-rows: auto 1fr auto;
   min-height: 100vh; /* Fallback for browsers that do not support dvh */
   min-height: 100dvh;
+  position: relative;
 
   @media screen and (min-width: 72.5rem) {
     grid-template-columns: 1fr 2fr;
@@ -35,9 +36,14 @@
 }
 
 .buttonWrapper {
+  bottom: 0;
   display: flex;
   flex-wrap: wrap; /* Allow buttons to wrap on smaller screens with increased base font size */
   justify-content: space-between;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 2;
 }
 
 .submitButton {

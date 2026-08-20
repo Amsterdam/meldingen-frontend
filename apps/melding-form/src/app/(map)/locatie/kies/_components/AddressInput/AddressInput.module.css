@@ -5,5 +5,5 @@
 
 .comboboxOptions {
   overflow-y: auto;
-  z-index: 1; /* The ComboxBoxOptions need to be shown above the map.  */
+  z-index: 2; /* The ComboxBoxOptions need to be shown above the map.  */
 }

@@ -27,14 +27,6 @@ describe('MapComponent', () => {
     expect(container.firstChild).toBeInTheDocument()
   })
 
-  it('applies hideMap class when isHidden is true', () => {
-    const { container } = render(<MapComponent isHidden />)
-
-    const element = container.querySelector('[class*="_hideMap"]')
-
-    expect(element).toBeInTheDocument()
-  })
-
   it('sets up a Leaflet map instance when it does not exist already and container exists', () => {
     const containerRef = { current: 'not-null' }
     const createdMapInstanceRef = { current: false }
@@ -46,13 +38,13 @@ describe('MapComponent', () => {
     expect(leafletContainer).toBeInTheDocument()
   })
 
-  it('calls invalidateSize when isHidden prop changes', () => {
+  it('calls invalidateSize when hasAlert prop changes', () => {
     const mockMapInstance = {
       invalidateSize: vi.fn(),
     } as unknown as Map
 
-    const { rerender } = render(<MapComponent isHidden={false} testMapInstance={mockMapInstance} />)
-    rerender(<MapComponent isHidden={true} />)
+    const { rerender } = render(<MapComponent hasAlert={false} testMapInstance={mockMapInstance} />)
+    rerender(<MapComponent hasAlert={true} testMapInstance={mockMapInstance} />)
 
     expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
   })
@@ -62,7 +54,7 @@ describe('MapComponent', () => {
       invalidateSize: vi.fn(),
     } as unknown as Map
 
-    const { container } = render(<MapComponent hasAlert={true} isHidden={false} testMapInstance={mockMapInstance} />)
+    const { container } = render(<MapComponent hasAlert={true} testMapInstance={mockMapInstance} />)
     const element = container.querySelector('[class*="notInteractive"]')
 
     expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
