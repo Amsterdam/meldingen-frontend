@@ -3,36 +3,23 @@ import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 import { Fragment } from 'react'
 
-import { Column, Grid, Heading, Link, Paragraph, TabNavigation } from '@meldingen/ui'
+import { Column, Grid, Heading, Link, TabNavigation } from '@meldingen/ui'
 
+import type { Attachments, DescriptionListItem } from './types'
 import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
-import { Attachment } from './_components/Attachment'
+import { AttachmentSection } from './_components/AttachmentSection'
 import { BackLink } from './_components/BackLink'
-import { formatDateString } from '~/app/_utils/formatDateString'
 
 import styles from './Detail.module.css'
 
-type DescriptionListItem = {
-  description: string
-  key: string
-  term: string
-}
-
 type MeldingDataItem = DescriptionListItem & { link?: { href: string; label: string } }
-
-type File = {
-  blob: Blob | null
-  createdAt: string
-  error?: string
-  fileName: string
-}
 
 type Props = {
   additionalQuestionsWithMeldingText: DescriptionListItem[]
   assets: AssetOutput[]
   assetsTerm?: string
-  attachments: Omit<DescriptionListItem, 'description'> & { files: File[] }
+  attachments: Attachments
   contact?: DescriptionListItem[]
   location?: DescriptionListItem[]
   meldingData: MeldingDataItem[]
@@ -52,9 +39,6 @@ export const Detail = ({
   publicId,
 }: Props) => {
   const t = useTranslations('detail')
-
-  const hasAttachments = attachments.files.length > 0
-  const addAttachmentLink = `/melding/${meldingId}/bestand-toevoegen`
 
   return (
     <div className="ams-page__area--body">
@@ -129,43 +113,7 @@ export const Detail = ({
               ))}
             </dl>
 
-            <dl className={clsx(styles.descriptionList, styles.cardWide, styles.attachmentsSection)}>
-              <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
-              {hasAttachments ? (
-                <div className={styles.attachmentsWrapper}>
-                  {attachments.files.map(({ blob, createdAt, fileName }) => {
-                    const { date, time } = formatDateString(createdAt, {
-                      date: {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                      },
-                      time: {
-                        hour: 'numeric',
-                        minute: 'numeric',
-                      },
-                    })
-
-                    return (
-                      <dd className={clsx(styles.description, styles.attachmentWrapper)} key={fileName}>
-                        <Attachment blob={blob} fileName={fileName} />
-                        <Paragraph>{`${date} ${time}`}</Paragraph>
-                        <Paragraph>{fileName}</Paragraph>
-                      </dd>
-                    )
-                  })}
-                </div>
-              ) : (
-                <dd className={styles.attachmentsFallBackDescription}>
-                  <Paragraph>{t('attachments.no-data')}</Paragraph>
-                </dd>
-              )}
-              <dd className={styles.horizontalLink}>
-                <Link href={addAttachmentLink} linkComponent={NextLink}>
-                  {t('attachments.add-link')}
-                </Link>
-              </dd>
-            </dl>
+            <AttachmentSection attachments={attachments} meldingId={meldingId} />
           </div>
         </Grid.Cell>
       </Grid>
