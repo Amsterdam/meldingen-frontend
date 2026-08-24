@@ -12,7 +12,8 @@ import styles from './ImageSlider.module.css'
 
 /**
  * This component is copied from the Amsterdam Design System React package and modified to fit our needs.
- * The original component is not used because it does not support the use of Blob or File objects as images.
+ * The original component is not used because it does not support the use of Blob or File objects as images,
+ * the caption is styled differently and it does not support image zoom.
  * https://github.com/Amsterdam/design-system/tree/develop/packages/react/src/ImageSlider
  */
 
@@ -125,28 +126,40 @@ export const ImageSlider = ({ images, labelId }: Props) => {
       </div>
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
       <div aria-labelledby={labelId} className="ams-image-slider__scroller" ref={scrollerRef} tabIndex={0}>
-        {imageUrls.map(({ id, url }, index) => (
-          <div
-            aria-hidden={currentSlideId !== index}
-            aria-labelledby={`tab${index + 1}`}
-            className="ams-image-slider__slide"
-            id={`slide${index + 1}`}
-            key={id}
-            role="tabpanel"
-          >
-            <Figure>
-              <Figure.Caption className={styles.caption}>
-                <span className={styles.filename}>{images[index].filename}</span>
-                <span>{formatDateTime(images[index].createdAt)}</span>
-              </Figure.Caption>
-              <div className={styles.imageContainer}>
-                <Image alt="" className={styles.image} src={url} />
-              </div>
-            </Figure>
-          </div>
-        ))}
+        {images.map(({ id }, index) => {
+          const imageUrl = imageUrls.find((imageUrl) => imageUrl.id === id)
+
+          return (
+            <div
+              aria-hidden={currentSlideId !== index}
+              aria-labelledby={`tab${index + 1}`}
+              className="ams-image-slider__slide"
+              id={`slide${index + 1}`}
+              key={id}
+              role="tabpanel"
+            >
+              <Figure>
+                <Figure.Caption className={styles.caption}>
+                  <span className={styles.fileName}>{images[index].filename}</span>
+                  <span>{formatDateTime(images[index].createdAt)}</span>
+                </Figure.Caption>
+                <div className={styles.imageContainer}>
+                  {imageUrl ? (
+                    <Image alt="" className={styles.image} src={imageUrl.url} />
+                  ) : (
+                    <div className={styles.loadingImage} />
+                  )}
+                </div>
+              </Figure>
+            </div>
+          )
+        })}
       </div>
-      <ImageSliderThumbnails currentSlideId={currentSlideId} images={imageUrls} scrollToSlide={goToSlide} />
+      {imageUrls.length === 0 ? (
+        <div />
+      ) : (
+        <ImageSliderThumbnails currentSlideId={currentSlideId} images={imageUrls} scrollToSlide={goToSlide} />
+      )}
     </section>
   )
 }

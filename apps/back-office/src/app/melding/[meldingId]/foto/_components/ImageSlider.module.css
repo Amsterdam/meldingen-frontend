@@ -1,3 +1,9 @@
+.loadingImage {
+  background-color: green;
+  height: 100%;
+  width: 100%;
+}
+
 .caption {
   display: flex;
   flex-direction: column;
@@ -6,7 +12,7 @@
   line-height: var(--ams-typography-body-text-line-height);
 }
 
-.filename {
+.fileName {
   font-weight: var(--ams-typography-body-text-bold-font-weight);
 }
 
