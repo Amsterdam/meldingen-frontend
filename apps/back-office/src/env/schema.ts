@@ -35,6 +35,18 @@ export const serverSchema = z
         ['ENTRA_CLIENT_ID', 'ENTRA_CLIENT_SECRET', 'ENTRA_TENANT_ID', 'ENTRA_TOKEN_URL'],
       ] as const
 
+      const hasAuthConfigured = allOrNoneGroups.some((group) => group.every((key) => data[key] !== undefined))
+
+      if (!hasAuthConfigured) {
+        ctx.addIssue({
+          code: 'custom',
+          message:
+            'No authentication has been configured. Either all Keycloak environment variables or all Entra environment variables must be provided',
+        })
+
+        return
+      }
+
       for (const group of allOrNoneGroups) {
         const provided = group.filter((key) => data[key] !== undefined)
 
@@ -55,6 +67,6 @@ export const serverSchema = z
 
 export const clientSchema = z.object({
   NEXT_PUBLIC_BACKEND_BASE_URL: z.string(),
-  NEXT_PUBLIC_BASE_PATH: z.string(), //empty string allowed?
+  NEXT_PUBLIC_BASE_PATH: z.string(),
   NEXT_PUBLIC_MELDING_FORM_BASE_URL: z.string(),
 })
