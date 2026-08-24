@@ -33,12 +33,12 @@ export const ImageSliderThumbnails = ({ currentSlideId, images, scrollToSlide }:
 
     if (event.key === 'Home') {
       event.preventDefault()
-      focusAndGoToSlide(tabs[0] ?? null, 0)
+      if (currentSlideId !== 0) focusAndGoToSlide(tabs[0] ?? null, 0)
     }
 
     if (event.key === 'End') {
       event.preventDefault()
-      focusAndGoToSlide(tabs[tabs.length - 1] ?? null, tabs.length - 1)
+      if (currentSlideId !== tabs.length - 1) focusAndGoToSlide(tabs[tabs.length - 1] ?? null, tabs.length - 1)
     }
   }
 
