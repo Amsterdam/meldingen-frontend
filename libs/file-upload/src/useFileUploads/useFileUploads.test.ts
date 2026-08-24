@@ -3,14 +3,18 @@ import type { Mock } from 'vitest'
 
 import { act, renderHook } from '@testing-library/react'
 
-import type { FileUploadState, PendingFileUpload } from './startUpload'
-import type { ExistingFile } from './useFileUploads'
+import type { ExistingFile, FileUploadState, PendingFileUpload } from './types'
 
+import { startServerActionUpload } from './startServerActionUpload'
 import { startUpload } from './startUpload'
 import { useFileUploads } from './useFileUploads'
 
 vi.mock('./startUpload', () => ({
   startUpload: vi.fn(),
+}))
+
+vi.mock('./startServerActionUpload', () => ({
+  startServerActionUpload: vi.fn(),
 }))
 
 const createChangeEvent = (files: File[] | null) =>
@@ -174,6 +178,57 @@ describe('useFileUploads', () => {
         status: 'error',
       })
       expect(startUpload).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('uploadFile adapter', () => {
+    const uploadFileMock = vi.fn()
+
+    const uploadFileParams = {
+      deleteAttachment: deleteAttachmentMock,
+      existingFiles: [] as ExistingFile[],
+      idPrefix: 'upload',
+      maxSuccessfulUploads: 3,
+      maxUploadAttempts: 10,
+      uploadFile: uploadFileMock,
+    }
+
+    it('starts the upload via the adapter instead of opening an XHR', () => {
+      const openSpy = vi.spyOn(XMLHttpRequest.prototype, 'open')
+      const inputRef = createInputRef()
+      const file = new File(['content'], 'test.png')
+
+      const { result } = renderHook(() => useFileUploads({ ...uploadFileParams, inputRef }))
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([file]))
+      })
+
+      expect(result.current.fileUploads).toHaveLength(1)
+
+      expect(openSpy).not.toHaveBeenCalled()
+
+      expect(startServerActionUpload).toHaveBeenCalledWith(
+        expect.objectContaining({ file, id: 'upload-1' }),
+        uploadFileMock,
+        expect.any(Function),
+      )
+
+      expect(startUpload).not.toHaveBeenCalled()
+
+      openSpy.mockRestore()
+    })
+
+    it('reports supportsUploadCancellation as false when using the uploadFile adapter', () => {
+      const { result } = renderHook(() => useFileUploads({ ...uploadFileParams, inputRef: createInputRef() }))
+
+      expect(result.current.supportsUploadCancellation).toBe(false)
+    })
+
+    it('reports supportsUploadCancellation as true when using uploadUrl', () => {
+      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
+
+      expect(result.current.supportsUploadCancellation).toBe(true)
     })
   })
 
