@@ -33,6 +33,7 @@
     "@tiptap/static-renderer": "3.27.4",
     "next": "16.2.11",
     "next-auth": "4.24.14",
-    "next-intl": "4.13.2"
+    "next-intl": "4.13.2",
+    "server-only": "0.0.1"
   }
 }
