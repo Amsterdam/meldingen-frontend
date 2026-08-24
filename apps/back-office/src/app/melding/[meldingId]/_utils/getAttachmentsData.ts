@@ -1,7 +1,6 @@
+import { isFilePDF } from './isFilePDF'
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
 import { handleApiError } from '~/app/_utils/handleApiError'
-
-export const isFilePDF = (fileName: string) => fileName.toLowerCase().endsWith('.pdf')
 
 export const getAttachmentsData = async (meldingId: number, t: (key: string) => string) => {
   const { data, error } = await getMeldingByMeldingIdAttachments({
