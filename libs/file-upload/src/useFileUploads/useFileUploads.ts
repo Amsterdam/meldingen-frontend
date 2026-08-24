@@ -2,15 +2,17 @@ import type { ChangeEvent, Dispatch, RefObject, SetStateAction, SubmitEvent } fr
 
 import { useRef, useState } from 'react'
 
-import type { ErroredFileUpload, FileUploadState, FileUpload as FileUploadType, PendingFileUpload } from './startUpload'
+import type {
+  ErroredFileUpload,
+  ExistingFile,
+  FileUploadState,
+  FileUpload as FileUploadType,
+  PendingFileUpload,
+  UploadResult,
+} from './types'
 
+import { startServerActionUpload } from './startServerActionUpload'
 import { startUpload } from './startUpload'
-
-export type ExistingFile = {
-  blob?: Blob
-  fileName: string
-  serverId: number
-}
 
 type GenericErrorMessage = {
   description?: string
@@ -56,7 +58,17 @@ const startPendingUploads = (
   })
 }
 
-type UseFileUploadsParams = {
+const startPendingServerActionUpload = (
+  uploads: FileUploadState[],
+  uploadFile: (file: File) => Promise<UploadResult>,
+  setFileUploads: Dispatch<SetStateAction<FileUploadState[]>>,
+) => {
+  uploads.filter(isPendingUpload).forEach((upload) => {
+    startServerActionUpload(upload, uploadFile, setFileUploads)
+  })
+}
+
+type BaseUseFileUploadsParams = {
   /**
    * Function to delete the attachment on the server.
    * Authentication (token query param, cookies, etc.) is handled by the caller.
@@ -67,12 +79,27 @@ type UseFileUploadsParams = {
   inputRef: RefObject<HTMLInputElement | null>
   maxSuccessfulUploads: number
   maxUploadAttempts: number
-  /**
-   * Full URL to POST the upload to.
-   * Authentication (token query param, cookies, etc.) is handled by the caller.
-   */
-  uploadUrl: string
 }
+
+type UseFileUploadsParams = BaseUseFileUploadsParams &
+  (
+    | {
+        /**
+         * Uploads a file via a server-side action (e.g. a Next.js Server Action).
+         * Authentication is handled entirely server-side; no upload progress or cancellation is available.
+         */
+        uploadFile: (file: File) => Promise<UploadResult>
+        uploadUrl?: never
+      }
+    | {
+        uploadFile?: never
+        /**
+         * Full URL to POST the upload to.
+         * Authentication (token query param, cookies, etc.) is handled by the caller.
+         */
+        uploadUrl: string
+      }
+  )
 
 export const useFileUploads = ({
   deleteAttachment,
@@ -81,8 +108,12 @@ export const useFileUploads = ({
   inputRef,
   maxSuccessfulUploads,
   maxUploadAttempts,
+  uploadFile,
   uploadUrl,
 }: UseFileUploadsParams) => {
+  // NOTE: Only client-side upload (uploadUrl) using xhr supports in-progress cancellation
+  const supportsUploadCancellation = Boolean(uploadUrl)
+
   const uploadIdCounter = useRef(existingFiles.length)
 
   const existingFileUploads = mapExistingFilesToUploads(existingFiles, idPrefix)
@@ -130,12 +161,18 @@ export const useFileUploads = ({
     })
 
     setFileUploads((prev) => [...prev, ...newFileUploads])
-    startPendingUploads(newFileUploads, uploadUrl, setFileUploads)
 
     // Clear the file input after starting the upload, so it is empty for the next selection.
     // Non-null assertion is safe: handleUpload only runs as this input's own change handler,
     // so the input (and inputRef.current) must already exist when it fires.
     inputRef.current!.value = ''
+
+    if (supportsUploadCancellation) {
+      startPendingUploads(newFileUploads, uploadUrl!, setFileUploads)
+      return
+    }
+
+    startPendingServerActionUpload(newFileUploads, uploadFile!, setFileUploads)
   }
 
   const removeLocalUpload = (id: string, fileName: string) => {
@@ -190,5 +227,13 @@ export const useFileUploads = ({
     }
   }
 
-  return { deletedFileName, fileUploads, genericError, handleDelete, handleSubmit, handleUpload }
+  return {
+    deletedFileName,
+    fileUploads,
+    genericError,
+    handleDelete,
+    handleSubmit,
+    handleUpload,
+    supportsUploadCancellation,
+  }
 }
