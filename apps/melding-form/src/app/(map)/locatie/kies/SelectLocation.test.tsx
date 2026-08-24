@@ -26,11 +26,17 @@ vi.mock('@amsterdam/design-system-react/dist/common/useViewportHasMinWidth', () 
   default: vi.fn(),
 }))
 
-const setInternalState = <T,>(setter: (value: T) => void, value: T) => {
+type SetInternalStateProps<T> = {
+  setter: (value: T) => void
+  value: T
+}
+
+const SetInternalState = <T,>({ setter, value }: SetInternalStateProps<T>) => {
   useEffect(() => {
     setter(value)
-  }, [])
-  return undefined
+  }, [setter, value])
+
+  return null
 }
 
 const defaultProps: Props = {
@@ -68,9 +74,9 @@ describe('SelectLocation', () => {
   })
 
   it('toggles a class name on SideBarBottom', async () => {
-    ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) =>
-      setInternalState(setSelectedAssets, [{ id: '1' }]),
-    )
+    ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) => (
+      <SetInternalState setter={setSelectedAssets} value={[{ id: '1' }]} />
+    ))
     ;(useViewportHasMinWidth as Mock).mockImplementationOnce(() => true)
 
     const { container } = render(<SelectLocation {...defaultProps} />)
@@ -91,9 +97,9 @@ describe('SelectLocation', () => {
   it('renders the notification when it is set in AssetList and closes on click', async () => {
     const user = userEvent.setup()
 
-    ;(AssetList as Mock).mockImplementationOnce(({ setNotificationType }) =>
-      setInternalState(setNotificationType, 'too-many-assets'),
-    )
+    ;(AssetList as Mock).mockImplementationOnce(({ setNotificationType }) => (
+      <SetInternalState setter={setNotificationType} value="too-many-assets" />
+    ))
 
     render(<SelectLocation {...defaultProps} />)
 
@@ -119,9 +125,9 @@ describe('Asset list toggle button', () => {
   })
 
   it('renders a button with a "list" label when there are selected assets and the asset list is not shown', () => {
-    ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) =>
-      setInternalState(setSelectedAssets, [{ id: '1' }]),
-    )
+    ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) => (
+      <SetInternalState setter={setSelectedAssets} value={[{ id: '1' }]} />
+    ))
 
     render(<SelectLocation {...defaultProps} />)
 
@@ -133,9 +139,9 @@ describe('Asset list toggle button', () => {
   it('renders a button with a "map" label when pressing the toggle button', async () => {
     const user = userEvent.setup()
 
-    ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) =>
-      setInternalState(setSelectedAssets, [{ id: '1' }]),
-    )
+    ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) => (
+      <SetInternalState setter={setSelectedAssets} value={[{ id: '1' }]} />
+    ))
 
     render(<SelectLocation {...defaultProps} />)
 

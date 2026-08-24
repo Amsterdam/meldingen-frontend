@@ -1,0 +1,7 @@
+.attachmentPdf {
+  aspect-ratio: var(--ams-aspect-ratio-16-9);
+  background-color: var(--ams-color-background-body);
+  display: flex;
+  flex-wrap: wrap;
+  place-content: center center;
+}

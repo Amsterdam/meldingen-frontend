@@ -12,11 +12,14 @@ export default defineConfig({
       enabled: true,
       include: ['src/**/*.{js,jsx,ts,tsx}'],
       thresholds: {
-        branches: 96,
-        functions: 92,
+        branches: 97,
+        functions: 95,
         lines: 97,
         statements: 97,
       },
+    },
+    env: {
+      NEXT_PUBLIC_BACKEND_BASE_URL: 'http://localhost:3000',
     },
     environment: 'jsdom',
     globals: true,

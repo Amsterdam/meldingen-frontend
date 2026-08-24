@@ -7,7 +7,7 @@ import { Column, Grid, Heading, Link, Paragraph, TabNavigation } from '@meldinge
 
 import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
-import { AttachmentImage } from './_components/AttachmentImage'
+import { Attachment } from './_components/Attachment'
 import { BackLink } from './_components/BackLink'
 
 import styles from './Detail.module.css'
@@ -130,7 +130,7 @@ export const Detail = ({
               {hasAttachments ? (
                 attachments.files.map((file) => (
                   <dd className={styles.description} key={file.fileName}>
-                    <AttachmentImage blob={file.blob} fileName={file.fileName} />
+                    <Attachment blob={file.blob} fileName={file.fileName} />
                   </dd>
                 ))
               ) : (

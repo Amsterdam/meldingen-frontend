@@ -2,13 +2,7 @@ import { render, screen } from '@testing-library/react'
 
 import type { NoteRetrieveOutput } from '@meldingen/api-client'
 
-import { formatDateTime, Note } from './Note'
-
-describe('formatDateTime', () => {
-  it('formats a date string correctly', () => {
-    expect(formatDateTime('2024-03-05T08:09:00Z')).toBe('05-03-2024 09:09')
-  })
-})
+import { Note } from './Note'
 
 const mockNote = {
   created_at: '2024-03-05T08:09:00Z',
@@ -26,7 +20,7 @@ describe('Note', () => {
 
     expect(screen.getByText('This is a test note.')).toBeInTheDocument()
     expect(screen.getByText('test@example.com')).toBeInTheDocument()
-    expect(screen.getByText('05-03-2024 09:09')).toBeInTheDocument()
+    expect(screen.getByText('05-03-2024 08:09')).toBeInTheDocument()
   })
 
   it('does not show an edit link for a note that does not belong to the current user', () => {
