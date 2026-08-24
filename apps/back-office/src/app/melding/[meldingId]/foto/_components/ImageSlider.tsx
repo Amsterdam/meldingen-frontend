@@ -156,7 +156,7 @@ export const ImageSlider = ({ images, labelId }: Props) => {
         })}
       </div>
       {imageUrls.length === 0 ? (
-        <div />
+        <div className={styles.loadingThumbnail} />
       ) : (
         <ImageSliderThumbnails currentSlideId={currentSlideId} images={imageUrls} scrollToSlide={goToSlide} />
       )}
