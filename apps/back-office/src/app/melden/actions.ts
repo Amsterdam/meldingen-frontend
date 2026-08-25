@@ -19,7 +19,7 @@ import {
 } from '~/app/_api-client/proxy'
 import { handleApiError } from '~/app/_utils/handleApiError'
 import { MAX_NOTE_LENGTH, URGENCY_VALUES } from '~/constants'
-import { clientEnv } from '~/env/client'
+import { getClientEnv } from '~/env/client'
 
 export type ArgsType = {
   existingId?: number
@@ -171,5 +171,5 @@ export const postMeldingForm = async (
 
   if (meldingData.classificationId) params.set('classification_id', String(meldingData.classificationId))
 
-  redirect(`${clientEnv.NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`)
+  redirect(`${getClientEnv().NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`)
 }
