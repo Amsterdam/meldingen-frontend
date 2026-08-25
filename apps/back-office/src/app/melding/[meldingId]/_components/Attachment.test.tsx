@@ -41,15 +41,16 @@ describe('Attachment', () => {
   })
 
   describe('AttachmentPDF', () => {
-    it('renders a link when a blob is provided', async () => {
+    it('renders a link with an accessible name when a blob is provided', async () => {
       render(<Attachment blob={new Blob(['test-blob'], { type: 'application/pdf' })} fileName={'test.pdf'} />)
 
       expect(createObjectURLMock).toHaveBeenCalled()
 
-      const link = screen.getByRole('link')
+      const link = screen.getByRole('link', { name: 'visually-hidden-text' })
 
       expect(link).toHaveAttribute('href')
       expect(link).toHaveAttribute('target', '_blank')
+      expect(link).toHaveAccessibleName('visually-hidden-text')
     })
 
     it('renders an an error message when the blob is missing', async () => {
