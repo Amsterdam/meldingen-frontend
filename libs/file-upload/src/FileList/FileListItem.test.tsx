@@ -121,4 +121,12 @@ describe('FileListItem', () => {
 
     expect(deleteButton).toHaveAttribute('id', 'test-id')
   })
+
+  it('disables the action button when onDelete is not provided', () => {
+    render(<FileListItem {...defaultProps} onDelete={undefined} />)
+
+    const button = screen.getByRole('button', { name: 'Verwijderen sample.txt' })
+
+    expect(button).toBeDisabled()
+  })
 })
