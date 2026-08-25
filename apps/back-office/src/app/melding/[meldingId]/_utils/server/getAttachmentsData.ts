@@ -1,4 +1,4 @@
-import { isFilePDF } from './isFilePDF'
+import { isFilePDF } from '../'
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
 import { handleApiError } from '~/app/_utils/handleApiError'
 

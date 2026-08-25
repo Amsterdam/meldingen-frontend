@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 
 import { Icon, Link } from '@meldingen/ui'
 
-import { isFilePDF } from '../_utils/isFilePDF'
+import { isFilePDF } from '../_utils'
 
 import styles from './Attachment.module.css'
 
