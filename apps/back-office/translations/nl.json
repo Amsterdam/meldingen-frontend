@@ -96,7 +96,7 @@
     "attachments": {
       "title": "Bestanden",
       "no-data": "Geen bestanden toegevoegd",
-      "visually-hidden-text": "Bekijk document: {fileName} (opent in nieuw venster)"
+      "visually-hidden-text": "Bekijk document: {fileName} (opent in nieuw venster)",
       "add-link": "Voeg bestand toevoegen"
     },
     "errors": {
