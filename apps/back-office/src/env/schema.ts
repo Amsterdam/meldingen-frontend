@@ -1,6 +1,19 @@
 import * as z from 'zod/mini'
 
-export const serverSchema = z
+const authProviderGroups = [
+  [
+    'KEYCLOAK_AUTH_URL',
+    'KEYCLOAK_CLIENT_ID',
+    'KEYCLOAK_CLIENT_SECRET',
+    'KEYCLOAK_ISSUER_URL',
+    'KEYCLOAK_JWKS_URL',
+    'KEYCLOAK_TOKEN_URL',
+    'KEYCLOAK_USERINFO_URL',
+  ],
+  ['ENTRA_CLIENT_ID', 'ENTRA_CLIENT_SECRET', 'ENTRA_TENANT_ID', 'ENTRA_TOKEN_URL'],
+] as const
+
+export const authSchema = z
   .object({
     ENTRA_CLIENT_ID: z.optional(z.string()),
     ENTRA_CLIENT_SECRET: z.optional(z.string()),
@@ -15,27 +28,12 @@ export const serverSchema = z
     KEYCLOAK_TOKEN_URL: z.optional(z.string()),
     KEYCLOAK_USERINFO_URL: z.optional(z.string()),
 
-    NEXT_INTERNAL_BACKEND_BASE_URL: z.string(),
     NEXTAUTH_SECRET: z.string(),
     NEXTAUTH_URL: z.string(),
-    TZ: z.optional(z.string()),
   })
   .check(
     z.superRefine((data, ctx) => {
-      const allOrNoneGroups = [
-        [
-          'KEYCLOAK_AUTH_URL',
-          'KEYCLOAK_CLIENT_ID',
-          'KEYCLOAK_CLIENT_SECRET',
-          'KEYCLOAK_ISSUER_URL',
-          'KEYCLOAK_JWKS_URL',
-          'KEYCLOAK_TOKEN_URL',
-          'KEYCLOAK_USERINFO_URL',
-        ],
-        ['ENTRA_CLIENT_ID', 'ENTRA_CLIENT_SECRET', 'ENTRA_TENANT_ID', 'ENTRA_TOKEN_URL'],
-      ] as const
-
-      const hasAuthConfigured = allOrNoneGroups.some((group) => group.every((key) => data[key] !== undefined))
+      const hasAuthConfigured = authProviderGroups.some((group) => group.every((key) => data[key] !== undefined))
 
       if (!hasAuthConfigured) {
         ctx.addIssue({
@@ -47,7 +45,7 @@ export const serverSchema = z
         return
       }
 
-      for (const group of allOrNoneGroups) {
+      for (const group of authProviderGroups) {
         const provided = group.filter((key) => data[key] !== undefined)
 
         if (provided.length > 0 && provided.length < group.length) {
@@ -64,6 +62,11 @@ export const serverSchema = z
       }
     }),
   )
+
+export const serverSchema = z.object({
+  NEXT_INTERNAL_BACKEND_BASE_URL: z.string(),
+  TZ: z.optional(z.string()),
+})
 
 export const clientSchema = z.object({
   NEXT_PUBLIC_BACKEND_BASE_URL: z.string(),

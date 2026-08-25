@@ -1,6 +1,16 @@
 import * as z from 'zod/mini'
 
-import { clientSchema, serverSchema } from './schema'
+import { authSchema, clientSchema, serverSchema } from './schema'
+
+export const validateAuthEnv = () => {
+  const parsed = z.safeParse(authSchema, process.env)
+
+  if (!parsed.success) {
+    throw new Error('Invalid authentication environment variables', { cause: parsed.error })
+  }
+
+  return Object.freeze(parsed.data)
+}
 
 export const validateServerEnv = () => {
   const parsed = z.safeParse(serverSchema, process.env)

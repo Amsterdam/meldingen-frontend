@@ -1,3 +1,6 @@
 import { validateClientEnv } from './validate'
 
-export const clientEnv = validateClientEnv()
+// Accomodates for tests env stubbing
+export const getClientEnv = () => validateClientEnv()
+
+export const clientEnv = getClientEnv()

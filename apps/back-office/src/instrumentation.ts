@@ -1,5 +1,7 @@
 export const register = async () => {
-  const { validateClientEnv, validateServerEnv } = await import('./env/validate')
+  const { validateAuthEnv, validateClientEnv, validateServerEnv } = await import('./env/validate')
+
   validateServerEnv()
+  validateAuthEnv()
   validateClientEnv()
 }
