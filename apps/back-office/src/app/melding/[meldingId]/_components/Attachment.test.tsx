@@ -12,17 +12,23 @@ global.URL.revokeObjectURL = vi.fn()
 describe('Attachment', () => {
   describe('Image', () => {
     it('renders an image when a blob is provided', async () => {
-      render(<Attachment blob={new Blob(['test-blob'], { type: 'image/jpeg' })} fileName={'IMG_0815.jpg'} />)
+      render(
+        <Attachment blob={new Blob(['test-blob'], { type: 'image/jpeg' })} fileName={'IMG_0815.jpg'} meldingId={42} />,
+      )
 
       expect(createObjectURLMock).toHaveBeenCalled()
 
       const image = screen.getByRole('presentation')
 
       expect(image).toHaveAttribute('src', 'test-url')
+
+      const link = screen.getByRole('link')
+
+      expect(link).toHaveAttribute('href', '/melding/42/foto')
     })
 
     it('renders an an error message when the blob is missing', async () => {
-      render(<Attachment blob={null} fileName={'IMG_0815.jpg'} />)
+      render(<Attachment blob={null} fileName={'IMG_0815.jpg'} meldingId={42} />)
 
       const errorMessage = screen.getByText('IMG_0815.jpg')
 
@@ -31,7 +37,7 @@ describe('Attachment', () => {
 
     it('revokes the object URL on unmount', () => {
       const { unmount } = render(
-        <Attachment blob={new Blob(['test-blob'], { type: 'image/jpeg' })} fileName={'IMG_0815.jpg'} />,
+        <Attachment blob={new Blob(['test-blob'], { type: 'image/jpeg' })} fileName={'IMG_0815.jpg'} meldingId={42} />,
       )
 
       unmount()
@@ -42,7 +48,9 @@ describe('Attachment', () => {
 
   describe('AttachmentPDF', () => {
     it('renders a link when a blob is provided', async () => {
-      render(<Attachment blob={new Blob(['test-blob'], { type: 'application/pdf' })} fileName={'test.pdf'} />)
+      render(
+        <Attachment blob={new Blob(['test-blob'], { type: 'application/pdf' })} fileName={'test.pdf'} meldingId={42} />,
+      )
 
       expect(createObjectURLMock).toHaveBeenCalled()
 
@@ -53,7 +61,7 @@ describe('Attachment', () => {
     })
 
     it('renders an an error message when the blob is missing', async () => {
-      render(<Attachment blob={null} fileName={'test.pdf'} />)
+      render(<Attachment blob={null} fileName={'test.pdf'} meldingId={42} />)
 
       const errorMessage = screen.getByText('test.pdf')
 
@@ -62,7 +70,7 @@ describe('Attachment', () => {
 
     it('revokes the object URL on unmount', () => {
       const { unmount } = render(
-        <Attachment blob={new Blob(['test-blob'], { type: 'application/pdf' })} fileName={'test.pdf'} />,
+        <Attachment blob={new Blob(['test-blob'], { type: 'application/pdf' })} fileName={'test.pdf'} meldingId={42} />,
       )
 
       unmount()

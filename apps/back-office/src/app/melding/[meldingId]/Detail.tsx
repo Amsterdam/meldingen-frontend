@@ -130,7 +130,7 @@ export const Detail = ({
               {hasAttachments ? (
                 attachments.files.map((file) => (
                   <dd className={styles.description} key={file.fileName}>
-                    <Attachment blob={file.blob} fileName={file.fileName} />
+                    <Attachment blob={file.blob} fileName={file.fileName} meldingId={meldingId} />
                   </dd>
                 ))
               ) : (

@@ -151,8 +151,10 @@ describe('Detail', () => {
   it('renders the attachments', () => {
     render(<Detail {...defaultProps} />)
 
+    const attachmentLink = screen.getByRole('link', { name: 'IMG_0815.jpg' })
+
     expect(screen.getByText('attachments.title')).toBeInTheDocument()
-    expect(screen.getByText('Attachment')).toBeInTheDocument()
+    expect(attachmentLink).toBeInTheDocument()
   })
 
   it('renders a no-data message when there are no attachments', () => {

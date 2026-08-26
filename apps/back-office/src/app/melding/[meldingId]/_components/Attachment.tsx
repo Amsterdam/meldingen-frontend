@@ -14,9 +14,10 @@ import styles from './Attachment.module.css'
 type Props = {
   blob: Blob | null
   fileName: string
+  meldingId: number
 }
 
-export const Attachment = ({ blob, fileName }: Props) => {
+export const Attachment = ({ blob, fileName, meldingId }: Props) => {
   const [url, setUrl] = useState<string | null>(null)
 
   // This useEffect is necessary to avoid render problems while refreshing the page.
@@ -52,5 +53,10 @@ export const Attachment = ({ blob, fileName }: Props) => {
     )
   }
 
-  return <Image alt="" src={url} />
+  return (
+    <Link href={`/melding/${meldingId}/foto`} linkComponent={NextLink}>
+      <Image alt="" src={url} />
+      <span className="ams-visually-hidden">{fileName}</span>
+    </Link>
+  )
 }
