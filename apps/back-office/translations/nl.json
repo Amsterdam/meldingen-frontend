@@ -96,9 +96,9 @@
     "attachments": {
       "title": "Bestanden",
       "no-data": "Geen bestanden toegevoegd",
-      "pdf-link": "Bekijk document: {fileName} (opent in nieuw venster).",
-      "photo-link": "Bekijk foto {fileName} in groot formaat.",
-      "add-link": "Voeg bestand toevoegen"
+      "pdf-link": "Bekijk document: {fileName} (opent in nieuw venster)",
+      "photo-link": "Bekijk foto {fileName} in groot formaat",
+      "add-link": "Voeg bestand toe"
     },
     "errors": {
       "melding-not-found": "An error occurred"
