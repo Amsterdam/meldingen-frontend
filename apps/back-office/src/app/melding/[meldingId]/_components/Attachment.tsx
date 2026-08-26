@@ -2,6 +2,7 @@
 
 import { Image, Paragraph } from '@amsterdam/design-system-react'
 import { DocumentsIcon } from '@amsterdam/design-system-react-icons'
+import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -19,6 +20,8 @@ type Props = {
 }
 
 export const Attachment = ({ blob, fileName, id, meldingId }: Props) => {
+  const t = useTranslations('detail.attachments')
+
   const [url, setUrl] = useState<string | null>(null)
 
   // This useEffect is necessary to avoid render problems while refreshing the page.
@@ -49,7 +52,7 @@ export const Attachment = ({ blob, fileName, id, meldingId }: Props) => {
         target="_blank"
       >
         <Icon size="heading-1" svg={DocumentsIcon} />
-        <span className="ams-visually-hidden">{fileName}</span>
+        <span className="ams-visually-hidden">{t('pdf-link', { fileName })}</span>
       </Link>
     )
   }
@@ -57,7 +60,7 @@ export const Attachment = ({ blob, fileName, id, meldingId }: Props) => {
   return (
     <Link href={`/melding/${meldingId}/foto?id=${id}`} linkComponent={NextLink}>
       <Image alt="" src={url} />
-      <span className="ams-visually-hidden">{fileName}</span>
+      <span className="ams-visually-hidden">{t('photo-link', { fileName })}</span>
     </Link>
   )
 }

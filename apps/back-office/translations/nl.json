@@ -95,7 +95,9 @@
     },
     "attachments": {
       "title": "Bestanden",
-      "no-data": "Geen bestanden toegevoegd"
+      "no-data": "Geen bestanden toegevoegd",
+      "pdf-link": "Open {fileName} in een nieuw tabblad.",
+      "photo-link": "Bekijk {fileName} in groot formaat."
     },
     "errors": {
       "melding-not-found": "An error occurred"
