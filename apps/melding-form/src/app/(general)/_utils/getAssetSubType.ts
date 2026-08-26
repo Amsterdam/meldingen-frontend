@@ -2,7 +2,7 @@
 // A subtype is for example for:
 // containers: 'Restafval', 'Glas', 'Textiel', 'Plastic'
 // lichten: 'Grachtmast', 'Overspanning'
-const ASSET_SUBTYPE_PROPERTY_KEYS = ['objecttype_omschrijving', 'fractie_omschrijving'] as const
+const ASSET_SUBTYPE_PROPERTY_KEYS = ['objecttype_omschrijving', 'fractie_omschrijving', 'type_soortnaam'] as const
 
 export const getAssetSubType = (properties: Record<string, unknown> | null) => {
   if (!properties) return undefined

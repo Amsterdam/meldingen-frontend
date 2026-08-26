@@ -40,6 +40,7 @@ export const getAssetsFromMelding = async (meldingId: string, token: string) => 
     pageConfig: {
       description: assetType?.arguments?.location_description as string | undefined,
       label: assetType?.arguments?.location_label as string | undefined,
+      name: assetType?.name as string | undefined,
     },
     requiredErrorMessage: assetType?.arguments?.location_required_error as string | undefined,
   }
