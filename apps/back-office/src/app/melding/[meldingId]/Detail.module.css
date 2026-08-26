@@ -108,36 +108,3 @@
     grid-column: auto;
   }
 }
-
-.assetsDescription {
-  composes: description;
-  grid-column: 2;
-
-  @media screen and (min-width: 72.5rem) {
-    grid-column: auto;
-  }
-}
-
-.attachmentsGrid {
-  column-gap: var(--ams-space-l);
-
-  @media screen and (min-width: 37.5rem) {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.attachmentsTerm {
-  composes: term;
-
-  @media screen and (min-width: 37.5rem) {
-    grid-column: span 2;
-  }
-}
-
-.attachmentsFallBackDescription {
-  composes: description;
-
-  @media screen and (min-width: 37.5rem) {
-    grid-column: span 2;
-  }
-}

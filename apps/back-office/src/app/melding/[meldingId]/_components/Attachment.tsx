@@ -36,7 +36,7 @@ export const Attachment = ({ blob, fileName, id, meldingId }: Props) => {
 
       URL.revokeObjectURL(objectUrl)
     }
-  }, [])
+  }, [blob])
 
   if (!blob || !url) return <Paragraph>{fileName}</Paragraph>
 

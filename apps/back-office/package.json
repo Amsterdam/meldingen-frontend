@@ -18,6 +18,7 @@
     "@meldingen/api-client": "workspace:*",
     "@meldingen/form-renderer": "workspace:*",
     "@meldingen/markdown-to-html": "workspace:*",
+    "@meldingen/file-upload": "workspace:*",
     "@meldingen/ui": "workspace:*",
     "@tiptap/core": "3.27.4",
     "@tiptap/extension-bold": "3.27.4",

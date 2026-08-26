@@ -69,10 +69,11 @@ describe('Attachment', () => {
 
       expect(createObjectURLMock).toHaveBeenCalled()
 
-      const link = screen.getByRole('link')
+      const link = screen.getByRole('link', { name: 'pdf-link' })
 
       expect(link).toHaveAttribute('href')
       expect(link).toHaveAttribute('target', '_blank')
+      expect(link).toHaveAccessibleName('pdf-link')
     })
 
     it('renders an an error message when the blob is missing', async () => {
