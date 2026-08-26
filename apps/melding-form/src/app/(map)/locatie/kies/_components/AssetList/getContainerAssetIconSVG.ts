@@ -1,4 +1,4 @@
-import type { Feature } from '@meldingen/api-client'
+import type { AssetItem } from '~/app/(general)/_utils/formatAssetItem'
 
 export const containerTypes = ['Papier', 'Glas', 'Rest', 'Textiel', 'Plastic', 'Gft'] as const
 
@@ -11,8 +11,8 @@ export const containerIconsSVG: Record<(typeof containerTypes)[number], string> 
   Textiel: '/container/textiel.svg',
 }
 
-export const getContainerAssetIconSVG = (feature: Feature): string => {
-  const containerFeatureType = feature.properties?.fractie_omschrijving as (typeof containerTypes)[number]
+export const getContainerAssetIconSVG = (asset: AssetItem): string => {
+  const containerFeatureType = asset.subtype as (typeof containerTypes)[number]
 
   return containerIconsSVG[containerFeatureType] || '/container/rest.svg'
 }

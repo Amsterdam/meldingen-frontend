@@ -6,10 +6,9 @@ import Form from 'next/form'
 import NextLink from 'next/link'
 import { useActionState, useEffect } from 'react'
 
-import type { Feature } from '@meldingen/api-client'
-
 import { SubmitButton } from '@meldingen/ui'
 
+import type { AssetItem } from '../_utils/formatAssetItem'
 import type { FormState } from '~/types'
 
 import { AssetElement } from '../_components/AssetElement/AssetElement'
@@ -28,7 +27,7 @@ type Props = {
     label?: string
   }
   prevPage: string
-  selectedAssets: Feature[]
+  selectedAssets: AssetItem[]
 }
 
 export const Location = ({ action, address, pageConfig, prevPage, selectedAssets }: Props) => {
