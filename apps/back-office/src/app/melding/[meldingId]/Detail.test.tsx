@@ -4,10 +4,6 @@ import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
 import { asset, melding } from '~/mocks/data'
 
-vi.mock('./_components/Attachment', () => ({
-  Attachment: vi.fn(() => <div>Attachment</div>),
-}))
-
 const defaultProps = {
   additionalQuestionsWithMeldingText: [
     { description: 'Test melding description', key: 'text', term: 'Test melding text' },
@@ -151,7 +147,7 @@ describe('Detail', () => {
   it('renders the attachments', () => {
     render(<Detail {...defaultProps} />)
 
-    const attachmentLink = screen.getByRole('link', { name: 'IMG_0815.jpg' })
+    const attachmentLink = screen.getByRole('link', { name: 'photo-link' })
 
     expect(screen.getByText('attachments.title')).toBeInTheDocument()
     expect(attachmentLink).toBeInTheDocument()

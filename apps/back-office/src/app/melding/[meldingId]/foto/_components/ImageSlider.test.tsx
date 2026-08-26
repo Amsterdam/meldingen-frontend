@@ -61,6 +61,12 @@ describe('ImageSlider', () => {
     expect(component).toBeInTheDocument()
   })
 
+  it('scrolls to the default slide instantly on mount when defaultSlideIndex is provided', () => {
+    render(<ImageSlider {...defaultProps} defaultSlideIndex={2} />)
+
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'instant', block: 'nearest', inline: 'center' })
+  })
+
   it('scrolls to the next image when clicking the next button', async () => {
     const user = userEvent.setup()
 
