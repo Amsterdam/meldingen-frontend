@@ -1,3 +1,4 @@
+export { formatAssetItem } from './formatAssetItem'
 export { getAssetLabelText } from './getAssetLabelText'
 export { getAssetSubType } from './getAssetSubType'
 export { getFullNLAddress } from './getFullNLAddress'
