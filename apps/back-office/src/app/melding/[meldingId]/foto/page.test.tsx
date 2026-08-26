@@ -84,7 +84,7 @@ describe('Page', () => {
     expect(Photos).toHaveBeenCalledWith(expect.objectContaining({ defaultSlideIndex: undefined }), undefined)
   })
 
-  it('excludes PDF attachments from the images passed to Photos', async () => {
+  it('excludes PDFs from the attachments passed to Photos', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
         HttpResponse.json([
