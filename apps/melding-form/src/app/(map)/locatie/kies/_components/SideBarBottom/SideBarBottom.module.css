@@ -2,35 +2,16 @@
   background-color: var(--ams-color-background);
   display: flex;
   flex-direction: column;
-  grid-row-start: 2;
-  height: 100%;
-  left: 0;
+  grid-area: stack;
   overflow-y: auto;
-  position: absolute;
-  right: 0;
+  padding-inline: var(--ams-space-m);
   row-gap: var(--ams-space-m);
-  top: 0;
-  width: 100%;
   z-index: 1;
 
   @media screen and (min-width: 72.5rem) {
-    height: auto;
-    left: auto;
+    grid-area: bottom;
     padding-block: var(--ams-space-m);
-    position: relative;
-    top: auto;
-    width: auto;
   }
-}
-
-.inner {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding-inline: var(--ams-space-m);
-  row-gap: var(--ams-space-m);
-  width: 100%;
 }
 
 .hide {

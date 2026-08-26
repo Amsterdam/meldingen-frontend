@@ -162,24 +162,20 @@ export const SelectLocation = ({
             )}
           </Controls>
         </Map>
-        <div className={clsx(styles.buttonWrapper, showAssetList && styles.background)}>
+      </div>
+      <div className={clsx(styles.buttonWrapper, showAssetList && styles.background)}>
+        <Button className={styles.submitButton} form="address" type="submit">
+          {t('submit-button.mobile')}
+        </Button>
+        {showAssetListToggleButton && (
           <Button
-            className={clsx(styles.submitButton, showAssetList && styles.removeAbsolutePosition)}
-            form="address"
-            type="submit"
+            className={styles.toggleButton}
+            onClick={() => setShowAssetList((prevState) => !prevState)}
+            variant="secondary"
           >
-            {t('submit-button.mobile')}
+            {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
           </Button>
-          {showAssetListToggleButton && (
-            <Button
-              className={clsx(styles.toggleButton, showAssetList && styles.removeAbsolutePosition)}
-              onClick={() => setShowAssetList((prevState) => !prevState)}
-              variant="secondary"
-            >
-              {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
-            </Button>
-          )}
-        </div>
+        )}
       </div>
     </div>
   )

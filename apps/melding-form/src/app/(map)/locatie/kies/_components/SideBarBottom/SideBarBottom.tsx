@@ -9,9 +9,5 @@ type Props = PropsWithChildren & {
 }
 
 export const SideBarBottom = ({ children, isHidden }: Props) => {
-  return (
-    <div className={clsx(styles.container, isHidden && styles.hide)}>
-      <div className={styles.inner}>{children}</div>
-    </div>
-  )
+  return <div className={clsx(styles.container, isHidden && styles.hide)}>{children}</div>
 }
