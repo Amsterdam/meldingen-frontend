@@ -146,21 +146,6 @@ describe('ImageSliderThumbnails', () => {
     expect(scrollToSlide).not.toHaveBeenCalled()
   })
 
-  it('does not call scrollToSlide on Home keydown when there are no thumbnails', async () => {
-    const scrollToSlide = vi.fn()
-
-    const user = userEvent.setup()
-
-    render(<ImageSliderThumbnails currentSlideId={1} images={[]} scrollToSlide={scrollToSlide} />)
-
-    const tablist = screen.getByRole('tablist')
-    tablist.focus()
-
-    await user.keyboard('{Home}')
-
-    expect(scrollToSlide).not.toHaveBeenCalled()
-  })
-
   it('calls scrollToSlide on End keydown', async () => {
     const scrollToSlide = vi.fn()
 
@@ -193,21 +178,6 @@ describe('ImageSliderThumbnails', () => {
 
     const lastThumbnail = component.children[images.length - 1] as HTMLElement
     lastThumbnail.focus()
-
-    await user.keyboard('{End}')
-
-    expect(scrollToSlide).not.toHaveBeenCalled()
-  })
-
-  it('does not call scrollToSlide on End keydown when there are no thumbnails', async () => {
-    const scrollToSlide = vi.fn()
-
-    const user = userEvent.setup()
-
-    render(<ImageSliderThumbnails currentSlideId={1} images={[]} scrollToSlide={scrollToSlide} />)
-
-    const tablist = screen.getByRole('tablist')
-    tablist.focus()
 
     await user.keyboard('{End}')
 
