@@ -16,6 +16,12 @@ import { convertWktPointToCoordinates } from './_utils/convertWktPointToCoordina
 import { safeJSONParse } from '~/app/_utils/safeJSONParse'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
+export type SelectedAssetSubmission = {
+  externalId: string
+  label: string
+  subtype: string
+}
+
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 
 export const postCoordinatesAndAssets = async (
@@ -23,33 +29,37 @@ export const postCoordinatesAndAssets = async (
   _: unknown,
   formData: FormData,
 ) => {
-  const selectedAssetIdsRaw = formData.get('selectedAssetIds')
-  const selectedAssetIds = safeJSONParse<Array<string | number>, number[]>(selectedAssetIdsRaw, [])
   const cookieStore = await cookies()
 
-  const meldingIdString = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
+  const meldingIdString = cookieStore.get(COOKIES.ID)?.value
 
   if (!meldingIdString || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
+
+  const t = await getTranslations('select-location')
 
   const meldingId = parseInt(meldingIdString, 10)
 
   const addressFormData = formData.get('address')
   const coordinatesFormData = formData.get('coordinates')
-  const t = await getTranslations('select-location')
+  const selectedAssetsValueRaw = formData.get('selectedAssetsValue')
+
+  const selectedAssetsValue = safeJSONParse<SelectedAssetSubmission[], SelectedAssetSubmission[]>(
+    selectedAssetsValueRaw,
+    [],
+  )
 
   /** Post assets */
 
-  if (selectedAssetIds.length > 0) {
+  if (selectedAssetsValue.length > 0) {
     if (!asset_type_id) {
       return { errorMessage: t('errors.assets-post-failed') }
     }
 
     const results = await Promise.all(
-      selectedAssetIds.map((id) =>
+      selectedAssetsValue.map(({ externalId, label, subtype }) =>
         postMeldingByMeldingIdAsset({
-          // TODO: Remove the 'Temp' label and 'temp' subtype
-          body: { asset_type_id, external_id: String(id), label: 'Temp', subtype: 'temp' },
+          body: { asset_type_id, external_id: String(externalId), label, subtype },
           path: { melding_id: meldingId },
           query: { token },
         }),

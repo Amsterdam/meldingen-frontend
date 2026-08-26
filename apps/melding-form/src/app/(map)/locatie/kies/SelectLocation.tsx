@@ -14,6 +14,7 @@ import type { Coordinates } from '~/types'
 
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
+import { getAssetLabelText } from '~/app/(general)/_utils/getAssetLabelText'
 
 import styles from './SelectLocation.module.css'
 
@@ -71,6 +72,7 @@ export const SelectLocation = ({
   const postCoordinatesAndAssetsWithExtraArgs = postCoordinatesAndAssets.bind(null, {
     asset_type_id: assetConfig.wfsQuery.assetTypeId,
   })
+
   const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssetsWithExtraArgs, initialState)
 
   const t = useTranslations('select-location')
@@ -87,8 +89,14 @@ export const SelectLocation = ({
   }, [isWideWindow])
 
   const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
-  const coordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
-  const selectedAssetsIds = JSON.stringify(selectedAssets.map((asset) => asset.id))
+  const defaultCoordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
+  const selectedAssetsValue = JSON.stringify(
+    selectedAssets.map((asset) => ({
+      externalId: asset.id,
+      label: getAssetLabelText(asset, assetConfig.label),
+      subtype: asset.properties?.fractie_omschrijving,
+    })),
+  )
 
   return (
     <div className={clsx(styles.grid, showAssetList && styles.hasAssetList)}>
@@ -100,10 +108,11 @@ export const SelectLocation = ({
             setCoordinates={setCoordinates}
             setSelectedAssets={setSelectedAssets}
           />
-          <input defaultValue={coordinatesValue} name="coordinates" type="hidden" />
-          <input name="selectedAssetIds" type="hidden" value={selectedAssetsIds} />
+          <input defaultValue={defaultCoordinatesValue} name="coordinates" type="hidden" />
+          <input name="selectedAssetsValue" type="hidden" value={selectedAssetsValue} />
         </Form>
       </SideBarTop>
+
       <SideBarBottom isHidden={!showAssetList}>
         {notificationType === 'too-many-assets' && !isWideWindow && (
           <Notification
@@ -125,6 +134,7 @@ export const SelectLocation = ({
           {t('submit-button.desktop')}
         </Button>
       </SideBarBottom>
+
       <div className={styles.map}>
         <Map hasAlert={Boolean(notificationType)} isHidden={showAssetList}>
           <PointSelectLayer
@@ -162,6 +172,7 @@ export const SelectLocation = ({
             )}
           </Controls>
         </Map>
+
         <div className={styles.buttonWrapper}>
           <Button
             className={clsx(styles.submitButton, showAssetList && styles.removeAbsolutePosition)}
