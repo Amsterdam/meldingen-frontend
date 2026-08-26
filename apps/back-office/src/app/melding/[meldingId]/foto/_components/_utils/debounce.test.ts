@@ -50,4 +50,15 @@ describe('debounce', () => {
     vi.advanceTimersByTime(100)
     expect(spy).toHaveReturnedWith(42)
   })
+
+  it('does not call the function if cancelled before the delay elapses', () => {
+    const fn = vi.fn()
+    const debounced = debounce(fn, 100)
+
+    debounced('a')
+    debounced.cancel()
+
+    vi.advanceTimersByTime(100)
+    expect(fn).not.toHaveBeenCalled()
+  })
 })
