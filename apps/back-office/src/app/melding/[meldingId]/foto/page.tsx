@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 
+import { isFilePDF } from '../_utils/getAttachmentsData'
 import { Photos } from './Photos'
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
 
@@ -25,20 +26,22 @@ export default async ({ params, searchParams }: Params) => {
   if (error) throw new Error('Failed to fetch melding attachments.')
 
   const images = await Promise.all(
-    data.map(async ({ created_at, id, original_filename }) => {
-      const { data: imageData, error: imageDownloadError } = await getAttachmentById({
-        path: { id },
-      })
+    data
+      .filter(({ original_filename }) => !isFilePDF(original_filename))
+      .map(async ({ created_at, id, original_filename }) => {
+        const { data: imageData, error: imageDownloadError } = await getAttachmentById({
+          path: { id },
+        })
 
-      if (imageDownloadError) throw new Error('Failed to download image.')
+        if (imageDownloadError) throw new Error('Failed to download image.')
 
-      return {
-        createdAt: created_at,
-        data: imageData,
-        filename: original_filename,
-        id,
-      }
-    }),
+        return {
+          createdAt: created_at,
+          data: imageData,
+          filename: original_filename,
+          id,
+        }
+      }),
   )
 
   const attachmentId = attachmentIdString ? parseInt(attachmentIdString, 10) : undefined

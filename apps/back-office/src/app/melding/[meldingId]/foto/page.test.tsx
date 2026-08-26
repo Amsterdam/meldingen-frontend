@@ -83,4 +83,29 @@ describe('Page', () => {
 
     expect(Photos).toHaveBeenCalledWith(expect.objectContaining({ defaultSlideIndex: undefined }), undefined)
   })
+
+  it('excludes PDF attachments from the images passed to Photos', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
+        HttpResponse.json([
+          { id: 42, original_filename: 'IMG_0815.jpg' },
+          { id: 43, original_filename: 'document.pdf' },
+        ]),
+      ),
+    )
+
+    const params = Promise.resolve({ meldingId: 123 })
+    const searchParams = Promise.resolve({})
+
+    const result = await Page({ params, searchParams })
+
+    render(result)
+
+    expect(Photos).toHaveBeenCalledWith(
+      expect.objectContaining({
+        images: [expect.objectContaining({ filename: 'IMG_0815.jpg', id: 42 })],
+      }),
+      undefined,
+    )
+  })
 })
