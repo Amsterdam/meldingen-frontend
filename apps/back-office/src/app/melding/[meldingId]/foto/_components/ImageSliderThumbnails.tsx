@@ -4,41 +4,41 @@ import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 
 type Props = {
-  currentSlideId: number
+  currentSlideIndex: number
   images: { id: number; url: string }[]
-  scrollToSlide: (id: number) => void
+  scrollToSlide: (index: number) => void
 }
 
-export const ImageSliderThumbnails = ({ currentSlideId, images, scrollToSlide }: Props) => {
+export const ImageSliderThumbnails = ({ currentSlideIndex, images, scrollToSlide }: Props) => {
   const t = useTranslations('photos.image-slider')
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     const tabs = event.currentTarget.children
-    const element = tabs[currentSlideId]
+    const element = tabs[currentSlideIndex]
 
-    const focusAndGoToSlide = (target: Element | null, id: number) => {
+    const focusAndGoToSlide = (target: Element | null, index: number) => {
       if (!target) return
 
       ;(target as HTMLElement).focus()
-      scrollToSlide(id)
+      scrollToSlide(index)
     }
 
     if (event.key === 'ArrowRight') {
-      focusAndGoToSlide(element?.nextElementSibling ?? null, currentSlideId + 1)
+      focusAndGoToSlide(element?.nextElementSibling ?? null, currentSlideIndex + 1)
     }
 
     if (event.key === 'ArrowLeft') {
-      focusAndGoToSlide(element?.previousElementSibling ?? null, currentSlideId - 1)
+      focusAndGoToSlide(element?.previousElementSibling ?? null, currentSlideIndex - 1)
     }
 
     if (event.key === 'Home') {
       event.preventDefault()
-      if (currentSlideId !== 0) focusAndGoToSlide(tabs[0], 0)
+      if (currentSlideIndex !== 0) focusAndGoToSlide(tabs[0], 0)
     }
 
     if (event.key === 'End') {
       event.preventDefault()
-      if (currentSlideId !== tabs.length - 1) focusAndGoToSlide(tabs[tabs.length - 1], tabs.length - 1)
+      if (currentSlideIndex !== tabs.length - 1) focusAndGoToSlide(tabs[tabs.length - 1], tabs.length - 1)
     }
   }
 
@@ -48,17 +48,17 @@ export const ImageSliderThumbnails = ({ currentSlideId, images, scrollToSlide }:
       {images.map(({ id, url }, index) => (
         <button
           aria-controls={`slide${index + 1}`}
-          aria-selected={currentSlideId === index ? 'true' : 'false'}
+          aria-selected={currentSlideIndex === index ? 'true' : 'false'}
           className={clsx(
             'ams-image-slider__thumbnail',
-            currentSlideId === index && 'ams-image-slider__thumbnail--in-view',
+            currentSlideIndex === index && 'ams-image-slider__thumbnail--in-view',
           )}
           id={`tab${index + 1}`}
           key={id}
           onClick={() => scrollToSlide(index)}
           role="tab"
           style={{ backgroundImage: `url(${url})` }}
-          tabIndex={currentSlideId === index ? 0 : -1}
+          tabIndex={currentSlideIndex === index ? 0 : -1}
           type="button"
         >
           <span className="ams-visually-hidden">{`${t('thumbnail-button-prefix')} ${index + 1}`}</span>

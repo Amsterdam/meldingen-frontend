@@ -18,13 +18,14 @@ export const getAttachmentsData = async (meldingId: number, t: (key: string) => 
       })
 
       if (error) {
-        return { blob: null, error: handleApiError(error), fileName: original_filename }
+        return { blob: null, error: handleApiError(error), fileName: original_filename, id }
       }
 
       // Returning blob instead of File since the File api is not available in Node.js
       return {
         blob: attachmentBlob as Blob,
         fileName: original_filename,
+        id,
       }
     }),
   )

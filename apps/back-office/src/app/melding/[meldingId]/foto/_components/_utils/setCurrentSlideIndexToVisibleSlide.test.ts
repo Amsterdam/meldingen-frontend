@@ -2,11 +2,11 @@ import type { RefObject } from 'react'
 
 import { describe, expect, it, vi } from 'vitest'
 
-import { setCurrentSlideIdToVisibleSlide } from './setCurrentSlideIdToVisibleSlide'
+import { setCurrentSlideIndexToVisibleSlide } from './setCurrentSlideIndexToVisibleSlide'
 
-describe('setCurrentSlideIdToVisibleSlide', () => {
-  it('calls setCurrentSlideId with the index of the intersecting element', () => {
-    const setCurrentSlideId = vi.fn()
+describe('setCurrentSlideIndexToVisibleSlide', () => {
+  it('calls setCurrentSlideIndex with the index of the intersecting element', () => {
+    const setCurrentSlideIndex = vi.fn()
     const element1 = {} as HTMLElement
     const element2 = {} as HTMLElement
     const ref = { current: { children: [element1, element2] } } as unknown as RefObject<HTMLDivElement>
@@ -15,13 +15,13 @@ describe('setCurrentSlideIdToVisibleSlide', () => {
       { isIntersecting: true, target: element2 } as unknown as IntersectionObserverEntry,
     ]
 
-    setCurrentSlideIdToVisibleSlide({ observations, ref, setCurrentSlideId })
+    setCurrentSlideIndexToVisibleSlide({ observations, ref, setCurrentSlideIndex })
 
-    expect(setCurrentSlideId).toHaveBeenCalledWith(1)
+    expect(setCurrentSlideIndex).toHaveBeenCalledWith(1)
   })
 
-  it('does not call setCurrentSlideId if no element is intersecting', () => {
-    const setCurrentSlideId = vi.fn()
+  it('does not call setCurrentSlideIndex if no element is intersecting', () => {
+    const setCurrentSlideIndex = vi.fn()
     const element1 = {} as HTMLElement
     const element2 = {} as HTMLElement
     const ref = { current: { children: [element1, element2] } } as unknown as RefObject<HTMLDivElement>
@@ -30,27 +30,27 @@ describe('setCurrentSlideIdToVisibleSlide', () => {
       { isIntersecting: false, target: element2 } as unknown as IntersectionObserverEntry,
     ]
 
-    setCurrentSlideIdToVisibleSlide({ observations, ref, setCurrentSlideId })
+    setCurrentSlideIndexToVisibleSlide({ observations, ref, setCurrentSlideIndex })
 
-    expect(setCurrentSlideId).not.toHaveBeenCalled()
+    expect(setCurrentSlideIndex).not.toHaveBeenCalled()
   })
 
   it('returns undefined for empty children array', () => {
-    const setCurrentSlideId = vi.fn()
+    const setCurrentSlideIndex = vi.fn()
     const ref = { current: { children: [] } } as unknown as RefObject<HTMLDivElement>
     const observations = [{ isIntersecting: true, target: {} } as IntersectionObserverEntry]
 
-    const result = setCurrentSlideIdToVisibleSlide({ observations, ref, setCurrentSlideId })
+    const result = setCurrentSlideIndexToVisibleSlide({ observations, ref, setCurrentSlideIndex })
 
     expect(result).toBeUndefined()
   })
 
   it('returns undefined if ref.current is null', () => {
-    const setCurrentSlideId = vi.fn()
+    const setCurrentSlideIndex = vi.fn()
     const ref = { current: null } as unknown as RefObject<HTMLDivElement>
     const observations = [{ isIntersecting: true, target: {} } as IntersectionObserverEntry]
 
-    const result = setCurrentSlideIdToVisibleSlide({ observations, ref, setCurrentSlideId })
+    const result = setCurrentSlideIndexToVisibleSlide({ observations, ref, setCurrentSlideIndex })
 
     expect(result).toBeUndefined()
   })

@@ -3,17 +3,17 @@ import type { RefObject } from 'react'
 type Args = {
   observations: IntersectionObserverEntry[]
   ref: RefObject<HTMLDivElement | null>
-  setCurrentSlideId: (id: number) => void
+  setCurrentSlideIndex: (index: number) => void
 }
 
-export const setCurrentSlideIdToVisibleSlide = ({ observations, ref, setCurrentSlideId }: Args) => {
+export const setCurrentSlideIndexToVisibleSlide = ({ observations, ref, setCurrentSlideIndex }: Args) => {
   const images = Array.from(ref.current?.children || [])
 
   if (images.length === 0) return
 
   observations.forEach((observation) => {
     if (observation.isIntersecting) {
-      setCurrentSlideId(images.indexOf(observation.target as HTMLElement))
+      setCurrentSlideIndex(images.indexOf(observation.target as HTMLElement))
     }
   })
 }

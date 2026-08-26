@@ -6,6 +6,7 @@ import { BackLink } from '../_components/BackLink'
 import { ImageSlider } from './_components/ImageSlider'
 
 type Props = {
+  defaultSlideIndex?: number
   images: {
     createdAt: string
     data: Blob | File
@@ -15,7 +16,7 @@ type Props = {
   meldingId: number
 }
 
-export const Photos = ({ images, meldingId }: Props) => {
+export const Photos = ({ defaultSlideIndex, images, meldingId }: Props) => {
   const t = useTranslations('photos')
 
   return (
@@ -26,7 +27,7 @@ export const Photos = ({ images, meldingId }: Props) => {
           <Heading className="ams-mb-m" id="heading" level={1}>
             {t('title')}
           </Heading>
-          <ImageSlider images={images} labelId="heading" />
+          <ImageSlider defaultSlideIndex={defaultSlideIndex} images={images} labelId="heading" />
         </Grid.Cell>
       </Grid>
     </div>

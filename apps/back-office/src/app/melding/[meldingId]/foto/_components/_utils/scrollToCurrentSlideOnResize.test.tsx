@@ -30,7 +30,7 @@ describe('scrollToCurrentSlideOnResize', () => {
 
     const { ref } = createRef({ withElement: true })
 
-    scrollToCurrentSlideOnResize({ currentSlideId: 0, ref })
+    scrollToCurrentSlideOnResize({ currentSlideIndex: 0, ref })
 
     expect(scrollToSlide).toHaveBeenCalledWith(0, ref)
   })
@@ -42,7 +42,7 @@ describe('scrollToCurrentSlideOnResize', () => {
 
     const { ref } = createRef({ withElement: false })
 
-    scrollToCurrentSlideOnResize({ currentSlideId: 0, ref })
+    scrollToCurrentSlideOnResize({ currentSlideIndex: 0, ref })
 
     expect(scrollToSlide).not.toHaveBeenCalled()
   })
@@ -55,7 +55,7 @@ describe('scrollToCurrentSlideOnResize', () => {
     const scrollerElement = { children: [null] }
     const ref = { current: scrollerElement } as unknown as RefObject<HTMLDivElement>
 
-    scrollToCurrentSlideOnResize({ currentSlideId: 0, ref })
+    scrollToCurrentSlideOnResize({ currentSlideIndex: 0, ref })
 
     expect(scrollToSlide).not.toHaveBeenCalled()
   })

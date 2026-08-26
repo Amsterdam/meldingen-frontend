@@ -13,10 +13,12 @@ export const generateMetadata = async () => {
 
 type Params = {
   params: Promise<{ meldingId: number }>
+  searchParams: Promise<{ id?: string }>
 }
 
-export default async ({ params }: Params) => {
+export default async ({ params, searchParams }: Params) => {
   const { meldingId } = await params
+  const { id: attachmentIdString } = await searchParams
 
   const { data, error } = await getMeldingByMeldingIdAttachments({ path: { melding_id: meldingId } })
 
@@ -39,5 +41,9 @@ export default async ({ params }: Params) => {
     }),
   )
 
-  return <Photos images={images} meldingId={meldingId} />
+  const attachmentId = attachmentIdString ? parseInt(attachmentIdString, 10) : undefined
+  const attachmentIndex = images.findIndex((image) => image.id === attachmentId)
+  const defaultSlideIndex = attachmentIndex === -1 ? undefined : attachmentIndex
+
+  return <Photos defaultSlideIndex={defaultSlideIndex} images={images} meldingId={meldingId} />
 }

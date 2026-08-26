@@ -17,7 +17,7 @@ const defaultProps = {
   ],
   assets: [asset],
   attachments: {
-    files: [{ blob: new Blob(['test-blob'], { type: 'image/jpeg' }), fileName: 'IMG_0815.jpg' }],
+    files: [{ blob: new Blob(['test-blob'], { type: 'image/jpeg' }), fileName: 'IMG_0815.jpg', id: 42 }],
     key: 'attachments',
     term: 'detail.attachments.title',
   },

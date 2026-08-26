@@ -5,7 +5,7 @@ import { ChevronBackwardIcon, ChevronForwardIcon } from '@amsterdam/design-syste
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
-import { debounce, scrollToCurrentSlideOnResize, scrollToSlide, setCurrentSlideIdToVisibleSlide } from './_utils'
+import { debounce, scrollToCurrentSlideOnResize, scrollToSlide, setCurrentSlideIndexToVisibleSlide } from './_utils'
 import { ImageSliderThumbnails } from './ImageSliderThumbnails'
 
 import styles from './ImageSlider.module.css'
@@ -18,6 +18,7 @@ import styles from './ImageSlider.module.css'
  */
 
 type Props = {
+  defaultSlideIndex?: number
   images: {
     createdAt: string
     data: Blob | File
@@ -43,10 +44,10 @@ export const formatDateTime = (dateString: string) => {
   return `${formattedDate} ${formattedTime}`
 }
 
-export const ImageSlider = ({ images, labelId }: Props) => {
+export const ImageSlider = ({ defaultSlideIndex, images, labelId }: Props) => {
   const t = useTranslations('photos.image-slider')
 
-  const [currentSlideId, setCurrentSlideId] = useState(0)
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(defaultSlideIndex ?? 0)
   const [imageUrls, setImageUrls] = useState<{ id: number; url: string }[]>([])
 
   const scrollerRef = useRef<HTMLDivElement>(null)
@@ -61,6 +62,13 @@ export const ImageSlider = ({ images, labelId }: Props) => {
   }, [images])
 
   useEffect(() => {
+    if (defaultSlideIndex === undefined) return
+
+    scrollToSlide(defaultSlideIndex, scrollerRef, 'instant')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
     if (!scrollerRef.current) return undefined
 
     const observerOptions = {
@@ -69,7 +77,7 @@ export const ImageSlider = ({ images, labelId }: Props) => {
     }
 
     const observer = new IntersectionObserver(
-      (observations) => setCurrentSlideIdToVisibleSlide({ observations, ref: scrollerRef, setCurrentSlideId }),
+      (observations) => setCurrentSlideIndexToVisibleSlide({ observations, ref: scrollerRef, setCurrentSlideIndex }),
       observerOptions,
     )
 
@@ -82,7 +90,7 @@ export const ImageSlider = ({ images, labelId }: Props) => {
   useEffect(() => {
     if (images.length === 0) return undefined
 
-    const handleResize = debounce(() => scrollToCurrentSlideOnResize({ currentSlideId, ref: scrollerRef }), 100)
+    const handleResize = debounce(() => scrollToCurrentSlideOnResize({ currentSlideIndex, ref: scrollerRef }), 100)
 
     window.addEventListener('resize', handleResize)
 
@@ -90,17 +98,17 @@ export const ImageSlider = ({ images, labelId }: Props) => {
       window.removeEventListener('resize', handleResize)
       handleResize.cancel()
     }
-  }, [currentSlideId, images.length])
+  }, [currentSlideIndex, images.length])
 
   if (images.length === 0) return null
 
-  const goToSlide = (id: number) => {
-    setCurrentSlideId(id)
-    scrollToSlide(id, scrollerRef)
+  const goToSlide = (index: number) => {
+    setCurrentSlideIndex(index)
+    scrollToSlide(index, scrollerRef)
   }
 
-  const isAtStart = currentSlideId === 0
-  const isAtEnd = currentSlideId === images.length - 1
+  const isAtStart = currentSlideIndex === 0
+  const isAtEnd = currentSlideIndex === images.length - 1
 
   return (
     <section aria-labelledby={labelId} aria-roledescription="carousel" className="ams-image-slider">
@@ -110,7 +118,7 @@ export const ImageSlider = ({ images, labelId }: Props) => {
           disabled={isAtStart}
           icon={ChevronBackwardIcon}
           iconOnly
-          onClick={() => goToSlide(currentSlideId - 1)}
+          onClick={() => goToSlide(currentSlideIndex - 1)}
         >
           {t('previous')}
         </Button>
@@ -119,7 +127,7 @@ export const ImageSlider = ({ images, labelId }: Props) => {
           disabled={isAtEnd}
           icon={ChevronForwardIcon}
           iconOnly
-          onClick={() => goToSlide(currentSlideId + 1)}
+          onClick={() => goToSlide(currentSlideIndex + 1)}
         >
           {t('next')}
         </Button>
@@ -131,7 +139,7 @@ export const ImageSlider = ({ images, labelId }: Props) => {
 
           return (
             <div
-              aria-hidden={currentSlideId !== index}
+              aria-hidden={currentSlideIndex !== index}
               aria-labelledby={`tab${index + 1}`}
               className="ams-image-slider__slide"
               id={`slide${index + 1}`}
@@ -158,7 +166,7 @@ export const ImageSlider = ({ images, labelId }: Props) => {
       {imageUrls.length === 0 ? (
         <div className={styles.loadingThumbnail} />
       ) : (
-        <ImageSliderThumbnails currentSlideId={currentSlideId} images={imageUrls} scrollToSlide={goToSlide} />
+        <ImageSliderThumbnails currentSlideIndex={currentSlideIndex} images={imageUrls} scrollToSlide={goToSlide} />
       )}
     </section>
   )

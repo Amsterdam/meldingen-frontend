@@ -19,7 +19,7 @@ const images = [
   },
 ]
 
-const defaultProps = { currentSlideId: 0, images: images, scrollToSlide: vi.fn() }
+const defaultProps = { currentSlideIndex: 0, images: images, scrollToSlide: vi.fn() }
 
 describe('ImageSliderThumbnails', () => {
   it('renders', () => {
@@ -57,7 +57,7 @@ describe('ImageSliderThumbnails', () => {
     const user = userEvent.setup()
 
     const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideId={images.length - 1} scrollToSlide={scrollToSlide} />,
+      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={images.length - 1} scrollToSlide={scrollToSlide} />,
     )
 
     const component = container.querySelector(':only-child') as HTMLElement
@@ -76,7 +76,7 @@ describe('ImageSliderThumbnails', () => {
     const user = userEvent.setup()
 
     const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideId={1} scrollToSlide={scrollToSlide} />,
+      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={1} scrollToSlide={scrollToSlide} />,
     )
 
     const component = container.querySelector(':only-child') as HTMLElement
@@ -95,7 +95,7 @@ describe('ImageSliderThumbnails', () => {
     const user = userEvent.setup()
 
     const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideId={0} scrollToSlide={scrollToSlide} />,
+      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={0} scrollToSlide={scrollToSlide} />,
     )
 
     const component = container.querySelector(':only-child') as HTMLElement
@@ -114,7 +114,7 @@ describe('ImageSliderThumbnails', () => {
     const user = userEvent.setup()
 
     const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideId={1} scrollToSlide={scrollToSlide} />,
+      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={1} scrollToSlide={scrollToSlide} />,
     )
 
     const component = container.querySelector(':only-child') as HTMLElement
@@ -133,7 +133,7 @@ describe('ImageSliderThumbnails', () => {
     const user = userEvent.setup()
 
     const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideId={0} scrollToSlide={scrollToSlide} />,
+      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={0} scrollToSlide={scrollToSlide} />,
     )
 
     const component = container.querySelector(':only-child') as HTMLElement
@@ -152,7 +152,7 @@ describe('ImageSliderThumbnails', () => {
     const user = userEvent.setup()
 
     const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideId={1} scrollToSlide={scrollToSlide} />,
+      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={1} scrollToSlide={scrollToSlide} />,
     )
 
     const component = container.querySelector(':only-child') as HTMLElement
@@ -171,7 +171,7 @@ describe('ImageSliderThumbnails', () => {
     const user = userEvent.setup()
 
     const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideId={images.length - 1} scrollToSlide={scrollToSlide} />,
+      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={images.length - 1} scrollToSlide={scrollToSlide} />,
     )
 
     const component = container.querySelector(':only-child') as HTMLElement
