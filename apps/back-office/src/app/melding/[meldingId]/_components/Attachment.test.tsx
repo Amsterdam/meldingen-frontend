@@ -11,7 +11,7 @@ global.URL.revokeObjectURL = vi.fn()
 
 describe('Attachment', () => {
   describe('Image', () => {
-    it('renders an image when a blob is provided', async () => {
+    it('renders a link containing an image when an image blob is provided', async () => {
       render(
         <Attachment
           blob={new Blob(['test-blob'], { type: 'image/jpeg' })}
@@ -57,7 +57,7 @@ describe('Attachment', () => {
   })
 
   describe('AttachmentPDF', () => {
-    it('renders a link when a blob is provided', async () => {
+    it('renders a link when a PDF blob is provided', async () => {
       render(
         <Attachment
           blob={new Blob(['test-blob'], { type: 'application/pdf' })}
