@@ -12,6 +12,7 @@ import type { Feature } from '@meldingen/api-client'
 
 import type { Coordinates } from '~/types'
 
+import { getAssetSubType } from '../../../(general)/_utils'
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
 import { getAssetLabelText } from '~/app/(general)/_utils/getAssetLabelText'
@@ -94,7 +95,7 @@ export const SelectLocation = ({
     selectedAssets.map((asset) => ({
       externalId: asset.id,
       label: getAssetLabelText(asset, assetConfig.label),
-      subtype: asset.properties?.fractie_omschrijving,
+      subtype: getAssetSubType(asset.properties),
     })),
   )
 

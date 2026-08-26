@@ -1,2 +1,4 @@
+export { getAssetLabelText } from './getAssetLabelText'
+export { getAssetSubType } from './getAssetSubType'
 export { getFullNLAddress } from './getFullNLAddress'
 export { isPanelComponentOutput } from './isPanelComponentOutput'
