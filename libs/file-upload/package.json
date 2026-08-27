@@ -12,5 +12,8 @@
     "test:watch": "vitest watch",
     "type-check": "tsc --project ./tsconfig.json --noEmit"
   },
+  "dependencies": {
+    "@meldingen/utils": "workspace:*"
+  },
   "private": true
 }
