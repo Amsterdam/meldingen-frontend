@@ -1,8 +1,8 @@
 import type { ValidationError } from './generated'
 
-// Both error shapes share the `detail` field name but differ in its value type (string vs. array), so TypeScript
-// can't discriminate between them without a runtime check. We also accept `unknown` rather than trust the SDK's
-// per-endpoint error type, since that type is a compile-time assertion, not a runtime guarantee for e.g. network failures.
+// The errors returned by the API are either a simple error string or an array of `ValidationError`s.
+// This functions returns a simple error string for both shapes.
+// We type `error` as `unknown` because the SDK's error type is only a compile-time assertion, not guaranteed at runtime (e.g. network errors).
 const isSimpleApiError = (error: unknown): error is { detail: string } =>
   typeof error === 'object' && error !== null && 'detail' in error && typeof error.detail === 'string'
 
