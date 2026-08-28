@@ -31,6 +31,24 @@ const defaultProps = {
       term: 'Text Area 2',
     },
   ],
+  assets: {
+    data: [
+      {
+        icon: { entry: 'fractie_omschrijving', folder: 'container' },
+        id: 'container.1',
+        label: 'Asset 1',
+        subtype: 'containers',
+      },
+      {
+        icon: { entry: 'fractie_omschrijving', folder: 'container' },
+        id: 'container.2',
+        label: 'Asset 2',
+        subtype: 'containers',
+      },
+    ],
+    name: 'Containers',
+    term: 'Waar staat de container?',
+  },
   attachments: {
     files: [
       {
@@ -64,6 +82,10 @@ global.URL.createObjectURL = vi.fn(() => 'blob:http://localhost/uploaded-file-1'
 global.URL.revokeObjectURL = vi.fn()
 
 describe('Summary', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('renders the component with the correct document title', () => {
     render(<Summary {...defaultProps} />)
 
@@ -108,7 +130,7 @@ describe('Summary', () => {
 
     const primaryChangeLink = screen.getByRole('link', { name: 'change-links.primary' })
     const additionalChangeLinks = screen.getAllByRole('link', { name: 'change-links.additional' })
-    const locationChangeLink = screen.getByRole('link', { name: 'change-links.location' })
+    const locationChangeLink = screen.getByRole('link', { name: 'change-links.assets' })
     const attachmentsChangeLink = screen.getByRole('link', { name: 'change-links.attachments' })
     const contactChangeLink = screen.getByRole('link', { name: 'change-links.contact' })
 
@@ -127,6 +149,51 @@ describe('Summary', () => {
 
     expect(contactChangeLink).toBeInTheDocument()
     expect(contactChangeLink).toHaveAttribute('href', `/contact#${TOP_ANCHOR_ID}`)
+  })
+
+  it('hides optional sections when no additional questions, attachments, or contact details are available', () => {
+    render(
+      <Summary
+        {...defaultProps}
+        additionalQuestions={[]}
+        attachments={{ ...defaultProps.attachments, files: [] }}
+        contact={undefined}
+      />,
+    )
+
+    expect(screen.queryByText('Text Field 1')).not.toBeInTheDocument()
+    expect(screen.queryByText('Text Area 2')).not.toBeInTheDocument()
+    expect(screen.queryByText('Foto’s')).not.toBeInTheDocument()
+    expect(screen.queryByText('Wat zijn uw contactgegevens?')).not.toBeInTheDocument()
+
+    expect(screen.queryByRole('link', { name: 'change-links.additional' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'change-links.attachments' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'change-links.contact' })).not.toBeInTheDocument()
+  })
+
+  it('falls back to the location term and generic location change link when no assets are available', () => {
+    render(
+      <Summary
+        {...defaultProps}
+        assets={{
+          ...defaultProps.assets,
+          data: [],
+          name: undefined,
+          term: undefined,
+        }}
+      />,
+    )
+
+    expect(screen.getByText(defaultProps.location.term)).toBeInTheDocument()
+
+    const locationChangeLink = screen.getByRole('link', { name: 'change-links.location' })
+
+    expect(locationChangeLink).toBeInTheDocument()
+    expect(locationChangeLink).toHaveAttribute('href', `/locatie#${TOP_ANCHOR_ID}`)
+
+    expect(screen.queryByRole('link', { name: 'change-links.assets' })).not.toBeInTheDocument()
+    expect(screen.queryByText('Asset 1')).not.toBeInTheDocument()
+    expect(screen.queryByText('Asset 2')).not.toBeInTheDocument()
   })
 
   it('renders the Summary component with an error message', () => {
