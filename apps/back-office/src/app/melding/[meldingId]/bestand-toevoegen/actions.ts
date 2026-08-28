@@ -1,7 +1,8 @@
 'use server'
 
+import { handleApiError } from '@meldingen/api-client'
+
 import { deleteAttachmentById, postMeldingByMeldingIdAttachment } from '~/app/_api-client/proxy'
-import { handleApiError } from '~/app/_utils/handleApiError'
 
 export const uploadAttachmentAction = async (meldingId: number, file: File) => {
   const { data, error } = await postMeldingByMeldingIdAttachment({

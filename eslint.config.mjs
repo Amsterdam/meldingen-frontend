@@ -65,7 +65,7 @@ export default defineConfig(
       '**/dist/',
       '**/tmp/',
       // Ignore generated api client
-      'libs/api-client',
+      'libs/api-client/src/generated',
       // Next.js generated files
       '**/.next/',
       '**/next-env.d.ts',

@@ -17,4 +17,4 @@ yarn.lock
 pnpm-lock.yaml
 
 # Ignore generated api client
-libs/api-client
+libs/api-client/src/generated

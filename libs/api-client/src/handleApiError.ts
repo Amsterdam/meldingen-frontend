@@ -1,6 +1,8 @@
-import type { ValidationError } from '@meldingen/api-client'
+import type { ValidationError } from './generated'
 
-// Our API client doesn't strongly type errors, so we need to check if the error is a simple error or an array of errors.
+// Both error shapes share the `detail` field name but differ in its value type (string vs. array), so TypeScript
+// can't discriminate between them without a runtime check. We also accept `unknown` rather than trust the SDK's
+// per-endpoint error type, since that type is a compile-time assertion, not a runtime guarantee for e.g. network failures.
 const isSimpleApiError = (error: unknown): error is { detail: string } =>
   typeof error === 'object' && error !== null && 'detail' in error && typeof error.detail === 'string'
 

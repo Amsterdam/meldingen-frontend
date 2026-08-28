@@ -1,10 +1,13 @@
 import type { GetMeldingByMeldingIdAnswersMelderResponses, ValueLabelObject } from '@meldingen/api-client'
 
-import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
+import {
+  getFormClassificationByClassificationId,
+  getMeldingByMeldingIdAnswersMelder,
+  handleApiError,
+} from '@meldingen/api-client'
 
 import { isPanelComponentOutput } from '../../_utils'
 import { getFilteredAnswersByKey } from '../../_utils/conditions'
-import { handleApiError } from '~/app/_utils/handleApiError'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {

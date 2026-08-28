@@ -1,5 +1,6 @@
+import { handleApiError } from '@meldingen/api-client'
+
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
-import { handleApiError } from '~/app/_utils/handleApiError'
 
 export const isFilePDF = (fileName: string) => fileName.toLowerCase().endsWith('.pdf')
 

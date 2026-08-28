@@ -3,11 +3,9 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { patchMeldingByMeldingIdMelder, postMelding } from '@meldingen/api-client'
+import { handleApiError, hasValidationErrors, patchMeldingByMeldingIdMelder, postMelding } from '@meldingen/api-client'
 
 import { resolveClassificationRedirect } from '../_utils/resolveClassificationRedirect'
-import { hasValidationErrors } from './_utils/validation'
-import { handleApiError } from '~/app/_utils/handleApiError'
 import { COOKIES } from '~/constants'
 
 export type ArgsType = {

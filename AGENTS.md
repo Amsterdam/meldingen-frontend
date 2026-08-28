@@ -410,7 +410,7 @@ export const postContactForm = async (_: FormState, formData: FormData): Promise
     body: { email: formData.get('email') as string },
   })
 
-  if (hasValidationErrors(error) && isApiErrorArray(error)) {
+  if (hasValidationErrors(error)) {
     return { validationErrors: error.detail.map((e) => ({ key: e.loc[1], message: e.msg })) }
   }
   if (error) return { apiError: handleApiError(error) }

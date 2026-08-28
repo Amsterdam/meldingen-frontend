@@ -4,10 +4,12 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { patchMeldingByMeldingIdContact, putMeldingByMeldingIdAddContactInfo } from '@meldingen/api-client'
+import {
+  hasValidationErrors,
+  patchMeldingByMeldingIdContact,
+  putMeldingByMeldingIdAddContactInfo,
+} from '@meldingen/api-client'
 
-import { hasValidationErrors } from '../_utils/validation'
-import { isApiErrorArray } from '~/app/_utils/handleApiError'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
 export const postContactForm = async (_: unknown, formData: FormData) => {
@@ -32,7 +34,7 @@ export const postContactForm = async (_: unknown, formData: FormData) => {
   })
 
   // Return validation errors if there are any
-  if (hasValidationErrors(response, error) && isApiErrorArray(error)) {
+  if (hasValidationErrors(response, error)) {
     const emailError = error?.detail.find((error) => error.loc.includes('email'))
     const phoneError = error?.detail.find((error) => error.loc.includes('phone'))
 
