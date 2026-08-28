@@ -28,6 +28,7 @@ type Props = {
   labelId: string
 }
 
+// TODO: Remove this function and use formatDateString instead, once we've added the correct defaults there.
 export const formatDateTime = (dateString: string) => {
   const date = new Date(dateString)
 
