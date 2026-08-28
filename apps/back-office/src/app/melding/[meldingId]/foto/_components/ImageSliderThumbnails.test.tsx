@@ -5,18 +5,9 @@ import { describe, expect, it, vi } from 'vitest'
 import { ImageSliderThumbnails } from './ImageSliderThumbnails'
 
 const images = [
-  {
-    id: 1,
-    url: 'image-1.jpg',
-  },
-  {
-    id: 2,
-    url: 'image-2.jpg',
-  },
-  {
-    id: 3,
-    url: 'image-3.jpg',
-  },
+  { id: 1, url: 'image-1.jpg' },
+  { id: 2, url: 'image-2.jpg' },
+  { id: 3, url: 'image-3.jpg' },
 ]
 
 const defaultProps = { currentSlideIndex: 0, images: images, scrollToSlide: vi.fn() }
@@ -34,152 +25,50 @@ describe('ImageSliderThumbnails', () => {
     expect(thumbnail3).toBeInTheDocument()
   })
 
-  it('calls scrollToSlide on ArrowRight keydown', async () => {
-    const scrollToSlide = vi.fn()
-
-    const user = userEvent.setup()
-
-    const { container } = render(<ImageSliderThumbnails {...defaultProps} scrollToSlide={scrollToSlide} />)
-
-    const component = container.querySelector(':only-child') as HTMLElement
-
-    const firstThumbnail = component.children[0] as HTMLElement
-    firstThumbnail.focus()
-
-    await user.keyboard('{ArrowRight}')
-
-    expect(scrollToSlide).toHaveBeenCalledWith(1)
-  })
-
-  it('does not call scrollToSlide on ArrowRight keydown when at end', async () => {
+  it.each([
+    { expected: 1, focusedThumbnail: 0, key: '{ArrowRight}', startIndex: 0 },
+    { expected: 0, focusedThumbnail: 1, key: '{ArrowLeft}', startIndex: 1 },
+    { expected: 0, focusedThumbnail: 1, key: '{Home}', startIndex: 1 },
+    { expected: images.length - 1, focusedThumbnail: 1, key: '{End}', startIndex: 1 },
+  ])('calls scrollToSlide with $expected on $key keydown', async ({ expected, focusedThumbnail, key, startIndex }) => {
     const scrollToSlide = vi.fn()
 
     const user = userEvent.setup()
 
     const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={images.length - 1} scrollToSlide={scrollToSlide} />,
+      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={startIndex} scrollToSlide={scrollToSlide} />,
     )
 
     const component = container.querySelector(':only-child') as HTMLElement
 
-    const lastThumbnail = component.children[images.length - 1] as HTMLElement
-    lastThumbnail.focus()
+    const thumbnail = component.children[focusedThumbnail] as HTMLElement
+    thumbnail.focus()
 
-    await user.keyboard('{ArrowRight}')
+    await user.keyboard(key)
 
-    expect(scrollToSlide).not.toHaveBeenCalled()
+    expect(scrollToSlide).toHaveBeenCalledWith(expected)
   })
 
-  it('calls scrollToSlide on ArrowLeft keydown', async () => {
+  it.each([
+    { boundaryIndex: images.length - 1, description: 'end', key: '{ArrowRight}' },
+    { boundaryIndex: 0, description: 'start', key: '{ArrowLeft}' },
+    { boundaryIndex: 0, description: 'start', key: '{Home}' },
+    { boundaryIndex: images.length - 1, description: 'end', key: '{End}' },
+  ])('does not call scrollToSlide on $key keydown when at $description', async ({ boundaryIndex, key }) => {
     const scrollToSlide = vi.fn()
 
     const user = userEvent.setup()
 
     const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={1} scrollToSlide={scrollToSlide} />,
+      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={boundaryIndex} scrollToSlide={scrollToSlide} />,
     )
 
     const component = container.querySelector(':only-child') as HTMLElement
 
-    const secondThumbnail = component.children[1] as HTMLElement
-    secondThumbnail.focus()
+    const thumbnail = component.children[boundaryIndex] as HTMLElement
+    thumbnail.focus()
 
-    await user.keyboard('{ArrowLeft}')
-
-    expect(scrollToSlide).toHaveBeenCalledWith(0)
-  })
-
-  it('does not call scrollToSlide on ArrowLeft keydown when at start', async () => {
-    const scrollToSlide = vi.fn()
-
-    const user = userEvent.setup()
-
-    const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={0} scrollToSlide={scrollToSlide} />,
-    )
-
-    const component = container.querySelector(':only-child') as HTMLElement
-
-    const firstThumbnail = component.children[0] as HTMLElement
-    firstThumbnail.focus()
-
-    await user.keyboard('{ArrowLeft}')
-
-    expect(scrollToSlide).not.toHaveBeenCalled()
-  })
-
-  it('calls scrollToSlide on Home keydown', async () => {
-    const scrollToSlide = vi.fn()
-
-    const user = userEvent.setup()
-
-    const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={1} scrollToSlide={scrollToSlide} />,
-    )
-
-    const component = container.querySelector(':only-child') as HTMLElement
-
-    const secondThumbnail = component.children[1] as HTMLElement
-    secondThumbnail.focus()
-
-    await user.keyboard('{Home}')
-
-    expect(scrollToSlide).toHaveBeenCalledWith(0)
-  })
-
-  it('does not call scrollToSlide on Home keydown when at start', async () => {
-    const scrollToSlide = vi.fn()
-
-    const user = userEvent.setup()
-
-    const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={0} scrollToSlide={scrollToSlide} />,
-    )
-
-    const component = container.querySelector(':only-child') as HTMLElement
-
-    const firstThumbnail = component.children[0] as HTMLElement
-    firstThumbnail.focus()
-
-    await user.keyboard('{Home}')
-
-    expect(scrollToSlide).not.toHaveBeenCalled()
-  })
-
-  it('calls scrollToSlide on End keydown', async () => {
-    const scrollToSlide = vi.fn()
-
-    const user = userEvent.setup()
-
-    const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={1} scrollToSlide={scrollToSlide} />,
-    )
-
-    const component = container.querySelector(':only-child') as HTMLElement
-
-    const secondThumbnail = component.children[1] as HTMLElement
-    secondThumbnail.focus()
-
-    await user.keyboard('{End}')
-
-    expect(scrollToSlide).toHaveBeenCalledWith(images.length - 1)
-  })
-
-  it('does not call scrollToSlide on End keydown when at end', async () => {
-    const scrollToSlide = vi.fn()
-
-    const user = userEvent.setup()
-
-    const { container } = render(
-      <ImageSliderThumbnails {...defaultProps} currentSlideIndex={images.length - 1} scrollToSlide={scrollToSlide} />,
-    )
-
-    const component = container.querySelector(':only-child') as HTMLElement
-
-    const lastThumbnail = component.children[images.length - 1] as HTMLElement
-    lastThumbnail.focus()
-
-    await user.keyboard('{End}')
+    await user.keyboard(key)
 
     expect(scrollToSlide).not.toHaveBeenCalled()
   })
