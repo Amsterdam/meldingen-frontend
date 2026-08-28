@@ -394,28 +394,39 @@ All form submissions in melding-form and back-office use Next.js Server Actions.
 // apps/melding-form/src/app/(general)/contact/actions.ts
 'use server'
 
-import { handleApiError, hasValidationErrors, isApiErrorArray } from '~/handleApiError'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { patchMeldingByMeldingIdContact } from '@meldingen/api-client'
 
-export const postContactForm = async (_: FormState, formData: FormData): Promise<FormState> => {
+import { hasValidationErrors, patchMeldingByMeldingIdContact } from '@meldingen/api-client'
+
+import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import type { FormState } from '~/types'
+
+export const postContactForm = async (_: unknown, formData: FormData): Promise<FormState> => {
   const cookieStore = await cookies()
-  const id = cookieStore.get(COOKIES.ID)?.value
+  const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
-  const { error } = await patchMeldingByMeldingIdContact({
-    path: { melding_id: Number(id) },
+  if (!meldingId || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
+
+  const email = formData.get('email')
+
+  const { error, response } = await patchMeldingByMeldingIdContact({
+    body: { email: email ? (email as string) : null },
+    path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
-    body: { email: formData.get('email') as string },
   })
 
-  if (hasValidationErrors(error)) {
-    return { validationErrors: error.detail.map((e) => ({ key: e.loc[1], message: e.msg })) }
+  if (hasValidationErrors(response, error)) {
+    return {
+      formData,
+      validationErrors: error.detail.map((e) => ({ key: e.loc[1], message: e.msg })),
+    }
   }
-  if (error) return { apiError: handleApiError(error) }
 
-  redirect('/samenvatting')
+  if (error) return { apiError: error, formData }
+
+  return redirect(`/samenvatting#${TOP_ANCHOR_ID}`)
 }
 ```
 
