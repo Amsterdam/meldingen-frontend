@@ -5,10 +5,17 @@ import { postSummaryForm } from './actions'
 import Page from './page'
 import { Summary } from './Summary'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
-import { additionalQuestions, melding, textAreaComponent } from '~/mocks/data'
+import { additionalQuestions, containerAssetIds, melding, textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 import { mockCookies, mockIdAndTokenCookies } from '~/mocks/utils'
+
+const expectedAssets = containerAssetIds.map((asset) => ({
+  icon: { entry: 'fractie_omschrijving', folder: 'container' },
+  id: asset.external_id,
+  label: asset.label,
+  subtype: asset.subtype,
+}))
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -55,20 +62,7 @@ describe('Page', () => {
     }))
 
     const assets = {
-      data: [
-        {
-          icon: { entry: 'fractie_omschrijving', folder: 'container' },
-          id: 'container.1',
-          label: 'Asset 1',
-          subtype: 'containers',
-        },
-        {
-          icon: { entry: 'fractie_omschrijving', folder: 'container' },
-          id: 'container.2',
-          label: 'Asset 2',
-          subtype: 'containers',
-        },
-      ],
+      data: expectedAssets,
       name: melding.classification?.asset_type?.name,
       term: undefined,
     }
