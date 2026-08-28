@@ -21,6 +21,11 @@ vi.mock('./actions', () => ({
 }))
 
 describe('Page', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.unstubAllEnvs()
+  })
+
   it('renders the Summary component', async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
@@ -49,6 +54,25 @@ describe('Page', () => {
       term: item.question.text,
     }))
 
+    const assets = {
+      data: [
+        {
+          icon: { entry: 'fractie_omschrijving', folder: 'container' },
+          id: 'container.1',
+          label: 'Asset 1',
+          subtype: 'containers',
+        },
+        {
+          icon: { entry: 'fractie_omschrijving', folder: 'container' },
+          id: 'container.2',
+          label: 'Asset 2',
+          subtype: 'containers',
+        },
+      ],
+      name: melding.classification?.asset_type?.name,
+      term: undefined,
+    }
+
     const attachments = {
       files: [
         expect.objectContaining({
@@ -75,10 +99,19 @@ describe('Page', () => {
     expect(screen.getByText('Summary Component')).toBeInTheDocument()
 
     expect(Summary).toHaveBeenCalledWith(
-      {
+      expect.objectContaining({
         action: expect.any(Function),
         additionalQuestions: additionalQuestionsSummary,
-        attachments,
+        assets,
+        attachments: expect.objectContaining({
+          ...attachments,
+          files: [
+            expect.objectContaining({
+              blob: expect.any(Blob),
+              fileName: 'IMG_0815.jpg',
+            }),
+          ],
+        }),
         contact: contact,
         location: {
           description: 'Oudezijds Voorburgwal 300A, 1012GL Amsterdam',
@@ -87,7 +120,7 @@ describe('Page', () => {
         },
         primaryForm: primaryForm,
         primaryFormLink: `/#${TOP_ANCHOR_ID}`,
-      },
+      }),
       undefined,
     )
   })
@@ -142,8 +175,6 @@ describe('Page', () => {
       }),
       undefined,
     )
-
-    vi.unstubAllEnvs()
   })
 
   it('binds staleAnswerIds into the action passed to Summary', async () => {
