@@ -1888,6 +1888,20 @@ export type MeldingOutput = {
 };
 
 /**
+ * MeldingReclassificationInput
+ */
+export type MeldingReclassificationInput = {
+    /**
+     * Classification Id
+     */
+    classification_id: number;
+    /**
+     * Reason
+     */
+    reason: string;
+};
+
+/**
  * MeldingUpdateInput
  */
 export type MeldingUpdateInput = {
@@ -1903,6 +1917,10 @@ export type MeldingUpdateInput = {
      * Source Id
      */
     source_id?: number | null;
+    /**
+     * Classification Id
+     */
+    classification_id?: number | null;
 };
 
 /**
@@ -2243,6 +2261,10 @@ export type NoteOutput = {
      * User Id
      */
     user_id: number;
+    /**
+     * Classification Id
+     */
+    classification_id?: number | null;
 };
 
 /**
@@ -2270,6 +2292,10 @@ export type NoteRetrieveOutput = {
      */
     melding_id: number;
     user: UserOutput;
+    /**
+     * Classification Id
+     */
+    classification_id?: number | null;
 };
 
 /**
@@ -3879,6 +3905,10 @@ export type PatchMeldingByMeldingIdData = {
 
 export type PatchMeldingByMeldingIdErrors = {
     /**
+     * The melding is in a state that may not be classified through this endpoint.
+     */
+    400: unknown;
+    /**
      * ResponseWithDetail
      *
      * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
@@ -4845,6 +4875,64 @@ export type PutMeldingByMeldingIdCancelResponses = {
 };
 
 export type PutMeldingByMeldingIdCancelResponse = PutMeldingByMeldingIdCancelResponses[keyof PutMeldingByMeldingIdCancelResponses];
+
+export type PostMeldingByMeldingIdReclassificationData = {
+    body: MeldingReclassificationInput;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/reclassification';
+};
+
+export type PostMeldingByMeldingIdReclassificationErrors = {
+    /**
+     * The melding is in a state that may not be reclassified.
+     */
+    400: unknown;
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Unexpected error
+     */
+    default: unknown;
+};
+
+export type PostMeldingByMeldingIdReclassificationError = PostMeldingByMeldingIdReclassificationErrors[keyof PostMeldingByMeldingIdReclassificationErrors];
+
+export type PostMeldingByMeldingIdReclassificationResponses = {
+    /**
+     * Successful Response
+     */
+    200: MeldingOutput;
+};
+
+export type PostMeldingByMeldingIdReclassificationResponse = PostMeldingByMeldingIdReclassificationResponses[keyof PostMeldingByMeldingIdReclassificationResponses];
 
 export type PostMeldingByMeldingIdQuestionByQuestionIdData = {
     /**
