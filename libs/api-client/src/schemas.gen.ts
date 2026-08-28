@@ -5541,6 +5541,29 @@ export const MeldingOutputSchema = {
     title: 'MeldingOutput'
 } as const;
 
+export const MeldingReclassificationInputSchema = {
+    properties: {
+        classification_id: {
+            type: 'integer',
+            minimum: 1,
+            title: 'Classification Id'
+        },
+        reason: {
+            type: 'string',
+            maxLength: 1000,
+            minLength: 1,
+            title: 'Reason'
+        }
+    },
+    additionalProperties: false,
+    type: 'object',
+    required: [
+        'classification_id',
+        'reason'
+    ],
+    title: 'MeldingReclassificationInput'
+} as const;
+
 export const MeldingUpdateInputSchema = {
     properties: {
         urgency: {
@@ -5583,6 +5606,18 @@ export const MeldingUpdateInputSchema = {
                 }
             ],
             title: 'Source Id'
+        },
+        classification_id: {
+            anyOf: [
+                {
+                    type: 'integer',
+                    minimum: 1
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Classification Id'
         }
     },
     type: 'object',
@@ -6684,6 +6719,17 @@ export const NoteOutputSchema = {
         user_id: {
             type: 'integer',
             title: 'User Id'
+        },
+        classification_id: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Classification Id'
         }
     },
     type: 'object',
@@ -6722,6 +6768,17 @@ export const NoteRetrieveOutputSchema = {
         },
         user: {
             $ref: '#/components/schemas/UserOutput'
+        },
+        classification_id: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Classification Id'
         }
     },
     type: 'object',
