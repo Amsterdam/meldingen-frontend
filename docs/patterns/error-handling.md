@@ -84,7 +84,7 @@ However, validation errors also include a link that takes the user directly to t
 ### Not yet implemented
 
 - There is no `src/app/error.tsx` or `src/app/not-found.tsx` yet, so uncaught errors and unknown routes currently fall through to Next.js’s default, unstyled error/404 pages.
-- Some Server Component data loaders (e.g. `src/app/page.tsx`, `src/app/melding/[meldingId]/page.tsx`) catch fetch errors and return the error message as the page body instead of throwing or calling `notFound()`. These should be migrated once `error.tsx`/`not-found.tsx` exist. `getAssetsData` returns an empty array, so the page is still shown if it throws an error.
+- Some Server Component data loaders (e.g. `src/app/page.tsx`, `src/app/melding/[meldingId]/page.tsx`) catch fetch errors and return the error message as the page body instead of throwing or calling `notFound()`. These should be migrated once `error.tsx`/`not-found.tsx` exist. `getAssetsData` returns an empty array, so the page is still shown if the API client returns an error.
 
 ### To discuss
 
