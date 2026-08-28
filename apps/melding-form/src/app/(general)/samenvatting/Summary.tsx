@@ -10,7 +10,7 @@ import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
-import { useDocumentTitleOnError } from '../_utils/validation'
+import { useDocumentTitleOnError } from '../_utils'
 import { BackLink } from '../../_components'
 import { AttachmentImage } from './_components/AttachmentImage'
 import { ApiErrorAlert } from '~/app/_components'

@@ -13,7 +13,7 @@ import { SubmitButton } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
-import { useDocumentTitleOnError } from '../_utils/validation'
+import { useDocumentTitleOnError } from '../_utils'
 import { BackLink } from '../../_components'
 import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'

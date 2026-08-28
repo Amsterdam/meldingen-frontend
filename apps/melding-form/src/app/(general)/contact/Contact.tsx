@@ -13,7 +13,7 @@ import { SubmitButton, TextInput } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
-import { useDocumentTitleOnError } from '../_utils/validation'
+import { useDocumentTitleOnError } from '../_utils'
 import { BackLink } from '../../_components'
 import { postContactForm } from './actions'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
