@@ -45,25 +45,26 @@ export const ImageSliderThumbnails = ({ currentSlideIndex, images, scrollToSlide
   return (
     // eslint-disable-next-line jsx-a11y/interactive-supports-focus
     <div className="ams-image-slider__thumbnails" onKeyDown={handleKeyDown} role="tablist">
-      {images.map(({ id, url }, index) => (
-        <button
-          aria-controls={`slide${index + 1}`}
-          aria-selected={currentSlideIndex === index ? 'true' : 'false'}
-          className={clsx(
-            'ams-image-slider__thumbnail',
-            currentSlideIndex === index && 'ams-image-slider__thumbnail--in-view',
-          )}
-          id={`tab${index + 1}`}
-          key={id}
-          onClick={() => scrollToSlide(index)}
-          role="tab"
-          style={{ backgroundImage: `url(${url})` }}
-          tabIndex={currentSlideIndex === index ? 0 : -1}
-          type="button"
-        >
-          <span className="ams-visually-hidden">{`${t('thumbnail-button-prefix')} ${index + 1}`}</span>
-        </button>
-      ))}
+      {images.map(({ id, url }, index) => {
+        const isActiveSlide = currentSlideIndex === index
+
+        return (
+          <button
+            aria-controls={`slide${index + 1}`}
+            aria-selected={isActiveSlide ? 'true' : 'false'}
+            className={clsx('ams-image-slider__thumbnail', isActiveSlide && 'ams-image-slider__thumbnail--in-view')}
+            id={`tab${index + 1}`}
+            key={id}
+            onClick={() => scrollToSlide(index)}
+            role="tab"
+            style={{ backgroundImage: `url(${url})` }}
+            tabIndex={isActiveSlide ? 0 : -1}
+            type="button"
+          >
+            <span className="ams-visually-hidden">{`${t('thumbnail-button-prefix')} ${index + 1}`}</span>
+          </button>
+        )
+      })}
     </div>
   )
 }
