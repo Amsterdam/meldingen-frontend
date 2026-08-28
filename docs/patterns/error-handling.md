@@ -58,7 +58,7 @@ There are a few exceptions, which are detailed below.
   We consider these errors non-blocking, since you can still use the application without prefilled answers.
   All we do is log the errors.
 - Session validity is enforced up front instead of being checked on each page.
-  `next-auth` middleware (`src/proxy.ts`) requires a valid session for every route, and the API client config (`_api-client/proxy.ts`) redirects to `/api/auth/signin` if the access token is missing or its refresh has failed.
+  `next-auth` middleware (`src/proxy.ts`) requires a valid session for every route, and the API client config (`src/app/_api-client/proxy.ts`) redirects to `/api/auth/signin` if the access token is missing or its refresh has failed.
   This replaces the cookie-presence check the Melding form does, since Back office is an authenticated app rather than an anonymous one.
 - When performing an action, an error may occur.
   This can be a server error, or a 4XX or 5XX response from the back end.
