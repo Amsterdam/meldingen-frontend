@@ -14,31 +14,31 @@ export const ImageSliderThumbnails = ({ currentSlideIndex, images, scrollToSlide
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     const tabs = event.currentTarget.children
-    const element = tabs[currentSlideIndex]
 
-    const focusAndGoToSlide = (target: Element | null, index: number) => {
-      if (!target) return
+    const focusAndGoToSlide = (index: number) => {
+      const tab = tabs[index]
+      if (!tab || index === currentSlideIndex) return
 
-      ;(target as HTMLElement).focus()
+      ;(tab as HTMLElement).focus()
       scrollToSlide(index)
     }
 
     if (event.key === 'ArrowRight') {
-      focusAndGoToSlide(element?.nextElementSibling ?? null, currentSlideIndex + 1)
+      focusAndGoToSlide(currentSlideIndex + 1)
     }
 
     if (event.key === 'ArrowLeft') {
-      focusAndGoToSlide(element?.previousElementSibling ?? null, currentSlideIndex - 1)
+      focusAndGoToSlide(currentSlideIndex - 1)
     }
 
     if (event.key === 'Home') {
       event.preventDefault()
-      if (currentSlideIndex !== 0) focusAndGoToSlide(tabs[0], 0)
+      focusAndGoToSlide(0)
     }
 
     if (event.key === 'End') {
       event.preventDefault()
-      if (currentSlideIndex !== tabs.length - 1) focusAndGoToSlide(tabs[tabs.length - 1], tabs.length - 1)
+      focusAndGoToSlide(tabs.length - 1)
     }
   }
 
