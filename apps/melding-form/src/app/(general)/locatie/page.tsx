@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 
-import { getAssetsFromMelding } from '../_utils/getAssetsFromMelding'
+import { getAssetsFromMelding } from '../_utils'
 import { postLocationForm } from './actions'
 import { Location } from './Location'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'

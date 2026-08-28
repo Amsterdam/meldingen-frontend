@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 
-import { getAssetsFromMelding } from '../_utils/getAssetsFromMelding'
+import { getAssetsFromMelding } from '../_utils'
 import {
   getAdditionalQuestionsSummary,
   getAttachmentsSummary,

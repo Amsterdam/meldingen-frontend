@@ -1,5 +1,6 @@
 export { formatAssetItem } from './formatAssetItem'
 export { getAssetLabelText } from './getAssetLabelText'
+export { getAssetsFromMelding } from './getAssetsFromMelding'
 export { getAssetSubType } from './getAssetSubType'
 export { getFullNLAddress } from './getFullNLAddress'
 export { isPanelComponentOutput } from './isPanelComponentOutput'
