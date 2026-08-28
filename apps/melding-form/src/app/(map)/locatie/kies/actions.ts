@@ -9,11 +9,11 @@ import {
   postMeldingByMeldingIdAsset,
   putMeldingByMeldingIdSubmitLocation,
 } from '@meldingen/api-client'
+import { safeJSONParse } from '@meldingen/utils'
 
 import type { Coordinates } from '~/types'
 
 import { convertWktPointToCoordinates } from './_utils/convertWktPointToCoordinates'
-import { safeJSONParse } from '~/app/_utils/safeJSONParse'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
