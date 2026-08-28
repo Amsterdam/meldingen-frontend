@@ -71,7 +71,7 @@ There are a few exceptions, which are detailed below.
 
 #### Attachments
 
-The attachments page (`/bestand-toevoegen`) handles errors slightly differently.
+The attachments page (`/melding/{meldingId}/bestand-toevoegen`) handles errors slightly differently.
 It distinguishes between three types of errors:
 
 - API errors: these include server errors or a 4XX or 5XX response when changing state or deleting an attachment.
