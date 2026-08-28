@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation'
 
 import type { MeldingOutput } from '@meldingen/api-client'
 
+import { safeJSONParse } from '@meldingen/utils'
+
 import type { MeldingData } from './types'
 import type { FormState } from '~/types'
 
@@ -38,14 +40,6 @@ const isMeldingData = (value: unknown): value is MeldingData =>
   typeof (value as MeldingData).token === 'string' &&
   typeof (value as MeldingData).publicId === 'string' &&
   typeof (value as MeldingData).createdAt === 'string'
-
-const safeJSONParse = (jsonString: string) => {
-  try {
-    return JSON.parse(jsonString)
-  } catch {
-    return undefined
-  }
-}
 
 const createOrUpdateMelding = async (text: string, id?: number, token?: string) => {
   if (id && token) {
@@ -116,7 +110,7 @@ export const postMeldingForm = async (
   }
 
   const prefetchedMeldingRaw = formDataObj.prefetchedMelding as string | undefined
-  const prefetchedMelding = prefetchedMeldingRaw ? safeJSONParse(prefetchedMeldingRaw) : undefined
+  const prefetchedMelding = prefetchedMeldingRaw ? safeJSONParse(prefetchedMeldingRaw, undefined) : undefined
   const validPrefetchedMelding = isMeldingData(prefetchedMelding) ? prefetchedMelding : undefined
 
   const meldingIdForPatch = validPrefetchedMelding?.id ?? existingId

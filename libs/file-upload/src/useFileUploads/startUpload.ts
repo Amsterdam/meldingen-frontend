@@ -1,18 +1,10 @@
 import type { Dispatch, SetStateAction } from 'react'
 
+import { safeJSONParse } from '@meldingen/utils'
+
 import type { FileUploadState, PendingFileUpload } from './types'
 
 import { getValidationErrorMessageTranslationKey } from './utils'
-
-const safeJSONParse = <T>(value: unknown): T | undefined => {
-  if (!value || typeof value !== 'string') return undefined
-
-  try {
-    return JSON.parse(value) as T
-  } catch {
-    return undefined
-  }
-}
 
 // We're using XMLHttpRequest instead of fetch here,
 // because fetch does not allow you to track the upload progress.
@@ -35,7 +27,7 @@ export const startUpload = (
   xhr.onload = () => {
     type Response = { detail?: string; id?: number }
 
-    const parsed = safeJSONParse<Response>(xhr.response)
+    const parsed = safeJSONParse<Response>(xhr.response, undefined)
     const isOk = xhr.status >= 200 && xhr.status < 300
 
     setFileUploads((prev) =>
