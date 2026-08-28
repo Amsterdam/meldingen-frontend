@@ -74,7 +74,7 @@ There are a few exceptions, which are detailed below.
 The attachments page (`/melding/{meldingId}/bestand-toevoegen`) handles errors slightly differently.
 It distinguishes between three types of errors:
 
-- API errors: these include server errors or a 4XX or 5XX response when changing state or deleting an attachment.
+- API errors: these include server errors or a 4XX or 5XX response when posting or deleting an attachment.
 - Generic errors: these are validation errors that affect the whole file upload module. For instance, when a user attempts to upload too many files.
 - Validation errors: these are errors related to a specific file, such as a file that exceeds the size limit.
 
