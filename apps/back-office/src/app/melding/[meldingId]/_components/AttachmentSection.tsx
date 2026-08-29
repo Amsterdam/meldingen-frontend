@@ -10,7 +10,7 @@ import { Link } from '@meldingen/ui'
 import type { Attachments } from '../types'
 import type { FormDateStringOptions } from '~/app/_utils/formatDateString'
 
-import { Attachment } from './Attachment'
+import { AttachmentPreview } from './AttachmentPreview'
 import { formatDateString } from '~/app/_utils/formatDateString'
 
 import parentStyles from '../Detail.module.css'
@@ -50,7 +50,7 @@ export const AttachmentSection = ({ attachments, meldingId }: Props) => {
 
             return (
               <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={fileName}>
-                <Attachment blob={blob} fileName={fileName} id={id} meldingId={meldingId} />
+                <AttachmentPreview blob={blob} fileName={fileName} id={id} meldingId={meldingId} />
                 <Paragraph>{`${date} ${time}`}</Paragraph>
                 <Paragraph>{fileName}</Paragraph>
               </dd>
