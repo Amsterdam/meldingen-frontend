@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
+import { redirect } from 'next/navigation'
 
 import type { MeldingAttachmentWithFile } from '../types'
 
@@ -22,7 +23,20 @@ vi.mock('next-intl/server', async () => ({
     vi.fn().mockImplementation((key, params) => (params ? `${key}: ${JSON.stringify(params)}` : key)),
 }))
 
-const attachmentFiles: MeldingAttachmentWithFile[] = []
+const attachmentFiles: MeldingAttachmentWithFile[] = [
+  {
+    blob: new Blob(['file-content'], { type: 'image/png' }),
+    createdAt: '2024-01-01 10:30',
+    id: 1,
+    originalFilename: 'bewijs.png',
+    updatedAt: '2024-01-01 10:30',
+    user: {
+      email: 'behandelaar@example.com',
+      id: 10,
+      username: 'behandelaar',
+    },
+  },
+]
 
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
@@ -41,6 +55,10 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('calls getAttachmentsData with the melding id', async () => {
     vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachmentFiles)
 
@@ -57,6 +75,19 @@ describe('Page', () => {
     expect(result).toBe('Something went wrong')
   })
 
+  it('redirects to the detail page when there are no attachments', async () => {
+    const redirectSignal = new Error('NEXT_REDIRECT')
+
+    vi.mocked(getAttachmentsData).mockResolvedValueOnce([])
+    vi.mocked(redirect).mockImplementationOnce(() => {
+      throw redirectSignal
+    })
+
+    await expect(Page({ params: Promise.resolve({ meldingId: 123 }) })).rejects.toBe(redirectSignal)
+
+    expect(redirect).toHaveBeenCalledWith('/melding/123')
+  })
+
   it('renders Attachments with the attachments and melding id when successful', async () => {
     vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachmentFiles)
 
@@ -64,7 +95,7 @@ describe('Page', () => {
 
     render(result)
 
-    expect(Attachments).toHaveBeenCalledWith({ initialAttachments: attachmentFiles }, undefined)
+    expect(Attachments).toHaveBeenCalledWith({ initialAttachments: attachmentFiles, meldingId: 123 }, undefined)
     expect(screen.getByText('Attachments Component')).toBeInTheDocument()
   })
 })

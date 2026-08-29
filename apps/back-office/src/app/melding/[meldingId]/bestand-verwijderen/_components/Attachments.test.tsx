@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useRouter } from 'next/navigation'
 
 import type { MeldingAttachmentWithFile } from '../../types'
 
@@ -10,6 +11,10 @@ type DeleteAttachmentActionResult = Awaited<ReturnType<typeof deleteAttachmentAc
 
 vi.mock('../actions', () => ({
   deleteAttachmentAction: vi.fn(),
+}))
+
+vi.mock('next/navigation', () => ({
+  useRouter: vi.fn(),
 }))
 
 vi.mock('./Attachment', () => ({
@@ -43,6 +48,10 @@ const createAttachment = (overrides: Partial<MeldingAttachmentWithFile> = {}): M
 })
 
 describe('Attachments', () => {
+  beforeEach(() => {
+    vi.mocked(useRouter).mockReturnValue({ push: vi.fn() } as ReturnType<typeof useRouter>)
+  })
+
   afterEach(() => {
     vi.restoreAllMocks()
   })
@@ -51,7 +60,7 @@ describe('Attachments', () => {
     const user = userEvent.setup()
     vi.spyOn(window, 'confirm').mockReturnValue(false)
 
-    render(<Attachments initialAttachments={[createAttachment()]} />)
+    render(<Attachments initialAttachments={[createAttachment()]} meldingId={123} />)
 
     await user.click(screen.getByRole('button', { name: 'bewijs.png' }))
 
@@ -70,12 +79,16 @@ describe('Attachments', () => {
       }),
     )
 
+    const push = vi.fn()
+    vi.mocked(useRouter).mockReturnValue({ push } as ReturnType<typeof useRouter>)
+
     render(
       <Attachments
         initialAttachments={[
           createAttachment({ id: 1, originalFilename: 'bewijs.png' }),
           createAttachment({ id: 2, originalFilename: 'foto.png' }),
         ]}
+        meldingId={123}
       />,
     )
 
@@ -91,6 +104,7 @@ describe('Attachments', () => {
       expect(screen.queryByRole('button', { name: 'bewijs.png' })).not.toBeInTheDocument()
     })
     expect(screen.getByRole('button', { name: 'foto.png' })).toBeInTheDocument()
+    expect(push).not.toHaveBeenCalled()
   })
 
   it('shows the delete error and keeps the attachment available when deletion fails', async () => {
@@ -98,7 +112,7 @@ describe('Attachments', () => {
     vi.spyOn(window, 'confirm').mockReturnValue(true)
     vi.mocked(deleteAttachmentAction).mockResolvedValue({ error: 'Could not delete attachment', status: 500 })
 
-    render(<Attachments initialAttachments={[createAttachment()]} />)
+    render(<Attachments initialAttachments={[createAttachment()]} meldingId={123} />)
 
     await user.click(screen.getByRole('button', { name: 'bewijs.png' }))
 
@@ -106,5 +120,22 @@ describe('Attachments', () => {
       expect(screen.getByText('Could not delete attachment')).toBeInTheDocument()
     })
     expect(screen.getByRole('button', { name: 'bewijs.png' })).toBeEnabled()
+  })
+
+  it('redirects to the detail page after deleting the last attachment', async () => {
+    const user = userEvent.setup()
+    const push = vi.fn()
+
+    vi.mocked(useRouter).mockReturnValue({ push } as ReturnType<typeof useRouter>)
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    vi.mocked(deleteAttachmentAction).mockResolvedValue({ error: undefined, status: 204 })
+
+    render(<Attachments initialAttachments={[createAttachment()]} meldingId={123} />)
+
+    await user.click(screen.getByRole('button', { name: 'bewijs.png' }))
+
+    await waitFor(() => {
+      expect(push).toHaveBeenCalledWith('/melding/123')
+    })
   })
 })

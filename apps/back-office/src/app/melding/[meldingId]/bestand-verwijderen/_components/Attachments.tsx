@@ -1,6 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import type { MeldingAttachmentWithFile } from '../../types'
@@ -12,9 +13,11 @@ import styles from './Attachments.module.css'
 
 type Props = {
   initialAttachments: MeldingAttachmentWithFile[]
+  meldingId: number
 }
 
-export const Attachments = ({ initialAttachments }: Props) => {
+export const Attachments = ({ initialAttachments, meldingId }: Props) => {
+  const router = useRouter()
   const t = useTranslations('remove-attachment')
 
   const [attachments, setAttachments] = useState(initialAttachments)
@@ -36,7 +39,14 @@ export const Attachments = ({ initialAttachments }: Props) => {
       return
     }
 
-    setAttachments((items) => items.filter((item) => item.id !== id))
+    const remainingAttachments = attachments.filter((item) => item.id !== id)
+
+    if (remainingAttachments.length === 0) {
+      router.push(`/melding/${meldingId}`)
+      return
+    }
+
+    setAttachments(remainingAttachments)
     setDeletingIds((ids) => ids.filter((value) => value !== id))
   }
 

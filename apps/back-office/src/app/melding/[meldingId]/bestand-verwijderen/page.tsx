@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server'
+import { redirect } from 'next/navigation'
 
 import { getAttachmentsData } from '../_utils'
 import { Attachments } from './_components/Attachments'
@@ -20,15 +21,21 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
 
-  try {
-    const attachmentFiles = await getAttachmentsData(meldingId)
+  let attachmentFiles
 
-    return (
-      <Page meldingId={meldingId}>
-        <Attachments initialAttachments={attachmentFiles} />
-      </Page>
-    )
+  try {
+    attachmentFiles = await getAttachmentsData(meldingId)
   } catch (error) {
     return typeof error === 'string' ? error : handleApiError(error)
   }
+
+  if (attachmentFiles.length === 0) {
+    redirect(`/melding/${meldingId}`)
+  }
+
+  return (
+    <Page meldingId={meldingId}>
+      <Attachments initialAttachments={attachmentFiles} meldingId={meldingId} />
+    </Page>
+  )
 }

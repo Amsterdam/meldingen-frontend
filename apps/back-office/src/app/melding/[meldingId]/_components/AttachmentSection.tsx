@@ -38,6 +38,7 @@ export const AttachmentSection = ({ attachments, meldingId }: Props) => {
 
   const hasAttachments = attachments.files.length > 0
   const addAttachmentLink = `/melding/${meldingId}/bestand-toevoegen`
+  const removeAttachmentLink = `/melding/${meldingId}/bestand-verwijderen`
 
   return (
     <dl className={clsx(parentStyles.descriptionList, parentStyles.cardWide, styles.attachmentsSection)}>
@@ -68,6 +69,13 @@ export const AttachmentSection = ({ attachments, meldingId }: Props) => {
           {t('attachments.add-link')}
         </Link>
       </dd>
+      {hasAttachments && (
+        <dd className={styles.fullWidth}>
+          <Link href={removeAttachmentLink} linkComponent={NextLink}>
+            {t('attachments.remove-link')}
+          </Link>
+        </dd>
+      )}
     </dl>
   )
 }
