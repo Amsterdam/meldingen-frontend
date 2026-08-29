@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 
 import type { MeldingAttachmentWithFile } from '../../types'
 
+import { RemoveAttachmentErrorProvider, useRemoveAttachmentError } from '../_context/RemoveAttachmentErrorContext'
 import { deleteAttachmentAction } from '../actions'
 import { Attachments } from './Attachments'
 
@@ -47,9 +48,33 @@ const createAttachment = (overrides: Partial<MeldingAttachmentWithFile> = {}): M
   ...overrides,
 })
 
+const ApiErrorValue = () => {
+  const { apiError } = useRemoveAttachmentError()
+
+  return apiError ? <p>{apiError}</p> : null
+}
+
+const createMockRouter = (overrides: Partial<ReturnType<typeof useRouter>> = {}): ReturnType<typeof useRouter> => ({
+  back: vi.fn(),
+  forward: vi.fn(),
+  prefetch: vi.fn(),
+  push: vi.fn(),
+  refresh: vi.fn(),
+  replace: vi.fn(),
+  ...overrides,
+})
+
+const renderAttachments = (attachments: MeldingAttachmentWithFile[]) =>
+  render(
+    <RemoveAttachmentErrorProvider>
+      <Attachments initialAttachments={attachments} meldingId={123} />
+      <ApiErrorValue />
+    </RemoveAttachmentErrorProvider>,
+  )
+
 describe('Attachments', () => {
   beforeEach(() => {
-    vi.mocked(useRouter).mockReturnValue({ push: vi.fn() } as ReturnType<typeof useRouter>)
+    vi.mocked(useRouter).mockReturnValue(createMockRouter())
   })
 
   afterEach(() => {
@@ -60,7 +85,7 @@ describe('Attachments', () => {
     const user = userEvent.setup()
     vi.spyOn(window, 'confirm').mockReturnValue(false)
 
-    render(<Attachments initialAttachments={[createAttachment()]} meldingId={123} />)
+    renderAttachments([createAttachment()])
 
     await user.click(screen.getByRole('button', { name: 'bewijs.png' }))
 
@@ -80,17 +105,12 @@ describe('Attachments', () => {
     )
 
     const push = vi.fn()
-    vi.mocked(useRouter).mockReturnValue({ push } as ReturnType<typeof useRouter>)
+    vi.mocked(useRouter).mockReturnValue(createMockRouter({ push }))
 
-    render(
-      <Attachments
-        initialAttachments={[
-          createAttachment({ id: 1, originalFilename: 'bewijs.png' }),
-          createAttachment({ id: 2, originalFilename: 'foto.png' }),
-        ]}
-        meldingId={123}
-      />,
-    )
+    renderAttachments([
+      createAttachment({ id: 1, originalFilename: 'bewijs.png' }),
+      createAttachment({ id: 2, originalFilename: 'foto.png' }),
+    ])
 
     await user.click(screen.getByRole('button', { name: 'bewijs.png' }))
 
@@ -109,10 +129,11 @@ describe('Attachments', () => {
 
   it('shows the delete error and keeps the attachment available when deletion fails', async () => {
     const user = userEvent.setup()
+
     vi.spyOn(window, 'confirm').mockReturnValue(true)
     vi.mocked(deleteAttachmentAction).mockResolvedValue({ error: 'Could not delete attachment', status: 500 })
 
-    render(<Attachments initialAttachments={[createAttachment()]} meldingId={123} />)
+    renderAttachments([createAttachment()])
 
     await user.click(screen.getByRole('button', { name: 'bewijs.png' }))
 
@@ -126,11 +147,11 @@ describe('Attachments', () => {
     const user = userEvent.setup()
     const push = vi.fn()
 
-    vi.mocked(useRouter).mockReturnValue({ push } as ReturnType<typeof useRouter>)
+    vi.mocked(useRouter).mockReturnValue(createMockRouter({ push }))
     vi.spyOn(window, 'confirm').mockReturnValue(true)
     vi.mocked(deleteAttachmentAction).mockResolvedValue({ error: undefined, status: 204 })
 
-    render(<Attachments initialAttachments={[createAttachment()]} meldingId={123} />)
+    renderAttachments([createAttachment()])
 
     await user.click(screen.getByRole('button', { name: 'bewijs.png' }))
 

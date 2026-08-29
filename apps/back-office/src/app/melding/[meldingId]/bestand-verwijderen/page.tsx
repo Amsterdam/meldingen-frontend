@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { getAttachmentsData } from '../_utils'
 import { Attachments } from './_components/Attachments'
 import { Page } from './_components/Page'
+import { RemoveAttachmentErrorProvider } from './_context/RemoveAttachmentErrorContext'
 import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 import { handleApiError } from '~/app/_utils/handleApiError'
 
@@ -34,8 +35,10 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   }
 
   return (
-    <Page meldingId={meldingId}>
-      <Attachments initialAttachments={attachmentFiles} meldingId={meldingId} />
-    </Page>
+    <RemoveAttachmentErrorProvider>
+      <Page meldingId={meldingId}>
+        <Attachments initialAttachments={attachmentFiles} meldingId={meldingId} />
+      </Page>
+    </RemoveAttachmentErrorProvider>
   )
 }

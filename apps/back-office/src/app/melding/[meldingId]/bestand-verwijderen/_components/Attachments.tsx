@@ -6,6 +6,7 @@ import { useState } from 'react'
 
 import type { MeldingAttachmentWithFile } from '../../types'
 
+import { useRemoveAttachmentError } from '../_context/RemoveAttachmentErrorContext'
 import { deleteAttachmentAction } from '../actions'
 import { Attachment } from './Attachment'
 
@@ -17,24 +18,24 @@ type Props = {
 }
 
 export const Attachments = ({ initialAttachments, meldingId }: Props) => {
+  const { setApiError } = useRemoveAttachmentError()
   const router = useRouter()
   const t = useTranslations('remove-attachment')
 
   const [attachments, setAttachments] = useState(initialAttachments)
   const [deletingIds, setDeletingIds] = useState<number[]>([])
-  const [error, setError] = useState<string | null>(null)
 
   const handleDelete = async (id: number, fileName: string) => {
     const shouldDelete = window.confirm(t('confirmation-prompt', { fileName }))
     if (!shouldDelete) return
 
     setDeletingIds((ids) => [...ids, id])
-    setError(null)
+    setApiError(null)
 
     const { error: deleteAttachmentError } = await deleteAttachmentAction(id)
 
     if (deleteAttachmentError) {
-      setError(deleteAttachmentError)
+      setApiError(deleteAttachmentError)
       setDeletingIds((ids) => ids.filter((value) => value !== id))
       return
     }
@@ -52,8 +53,6 @@ export const Attachments = ({ initialAttachments, meldingId }: Props) => {
 
   return (
     <div className={styles.cardGrid}>
-      {error && <p>{error}</p>}
-
       {attachments.map((attachment) => (
         <Attachment
           attachment={attachment}

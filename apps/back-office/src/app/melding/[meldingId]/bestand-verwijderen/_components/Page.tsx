@@ -5,7 +5,9 @@ import type { ReactNode } from 'react'
 import { Grid, Heading } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 
+import { useRemoveAttachmentError } from '../_context/RemoveAttachmentErrorContext'
 import { BackLink } from '../../_components/BackLink'
+import { ApiErrorAlert } from '~/app/_components'
 
 type Props = {
   children: ReactNode
@@ -13,6 +15,7 @@ type Props = {
 }
 
 export const Page = ({ children, meldingId }: Props) => {
+  const { apiError } = useRemoveAttachmentError()
   const t = useTranslations('remove-attachment')
   const backLinkHref = `/melding/${meldingId}`
 
@@ -22,6 +25,8 @@ export const Page = ({ children, meldingId }: Props) => {
 
       <Grid as="main">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
+          {apiError && <ApiErrorAlert description={apiError} shouldFocus={true} />}
+
           <Heading className="ams-mb-l" level={1}>
             {t('title')}
           </Heading>

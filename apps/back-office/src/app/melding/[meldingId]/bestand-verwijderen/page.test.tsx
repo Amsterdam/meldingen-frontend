@@ -95,7 +95,13 @@ describe('Page', () => {
 
     render(result)
 
-    expect(Attachments).toHaveBeenCalledWith({ initialAttachments: attachmentFiles, meldingId: 123 }, undefined)
+    expect(Attachments).toHaveBeenCalledWith(
+      {
+        initialAttachments: attachmentFiles,
+        meldingId: 123,
+      },
+      undefined,
+    )
     expect(screen.getByText('Attachments Component')).toBeInTheDocument()
   })
 })
