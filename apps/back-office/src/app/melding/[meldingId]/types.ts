@@ -1,15 +1,17 @@
-export type DescriptionListItem = {
-  description: string
-  key: string
-  term: string
-}
-
-type File = {
-  blob: Blob | null
+export type MeldingAttachment = {
   createdAt: string
-  error?: string
-  fileName: string
   id: number
+  originalFilename: string
+  updatedAt: string
+  user?: {
+    email: string
+    id: number
+    username: string
+  }
 }
 
-export type Attachments = Omit<DescriptionListItem, 'description'> & { files: File[] }
+export type AttachmentFile = {
+  blob: Blob | null
+}
+
+export type MeldingAttachmentWithFile = AttachmentFile & MeldingAttachment
