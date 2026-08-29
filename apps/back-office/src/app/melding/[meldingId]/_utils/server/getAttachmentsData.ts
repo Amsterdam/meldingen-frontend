@@ -1,40 +1,50 @@
+import type { MeldingAttachmentWithFile } from '../../types'
+
 import { isFilePDF } from '../'
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
 import { handleApiError } from '~/app/_utils/handleApiError'
 
-export const getAttachmentsData = async (meldingId: number, t: (key: string) => string) => {
-  const { data, error } = await getMeldingByMeldingIdAttachments({
-    path: { melding_id: meldingId },
-  })
-
-  if (error) return { error: handleApiError(error) }
-
-  const attachments = await Promise.all(
-    data.map(async ({ created_at, id, original_filename }) => {
-      const { data: attachmentBlob, error } = await getAttachmentById({
-        path: { id },
-        query: { type: isFilePDF(original_filename) ? 'original' : 'thumbnail' },
+export const getAttachmentsData = async (meldingId: number): Promise<MeldingAttachmentWithFile[]> => {
+  try {
+    const { data: meldingAttachments, error: getMeldingByMeldingIdAttachmentsError } =
+      await getMeldingByMeldingIdAttachments({
+        path: { melding_id: meldingId },
       })
 
-      if (error) {
-        return {
-          blob: null,
-          createdAt: created_at,
-          error: handleApiError(error),
-          fileName: original_filename,
-          id,
+    if (getMeldingByMeldingIdAttachmentsError) {
+      return Promise.reject(handleApiError(getMeldingByMeldingIdAttachmentsError))
+    }
+
+    const attachmentsWithFile = await Promise.all(
+      meldingAttachments.map(async ({ created_at, id, original_filename, updated_at, user }) => {
+        const { data: attachmentBlob, error: getAttachmentByIdError } = await getAttachmentById({
+          path: { id },
+          query: { type: isFilePDF(original_filename) ? 'original' : 'thumbnail' },
+        })
+
+        if (getAttachmentByIdError || !attachmentBlob) {
+          return Promise.reject(handleApiError(getAttachmentByIdError))
         }
-      }
 
-      // Returning blob instead of File since the File api is not available in Node.js
-      return {
-        blob: attachmentBlob as Blob,
-        createdAt: created_at,
-        fileName: original_filename,
-        id,
-      }
-    }),
-  )
+        return {
+          blob: attachmentBlob as Blob,
+          createdAt: created_at,
+          id,
+          originalFilename: original_filename,
+          updatedAt: updated_at,
+          ...(user && {
+            user: {
+              email: user.email,
+              id: user.id,
+              username: user.username,
+            },
+          }),
+        }
+      }),
+    )
 
-  return { files: attachments, key: 'attachments', term: t('detail.attachments.title') }
+    return attachmentsWithFile
+  } catch (caughtError) {
+    return Promise.reject(caughtError)
+  }
 }

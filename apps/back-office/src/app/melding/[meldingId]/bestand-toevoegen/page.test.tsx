@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
+import type { AttachmentsDescriptionListItem } from '../Detail'
+
 import { getAttachmentsData } from '../_utils/server'
 import { AddAttachment } from './AddAttachment'
 import Page, { generateMetadata } from './page'
@@ -20,7 +22,12 @@ vi.mock('next-intl/server', async () => ({
     vi.fn().mockImplementation((key, params) => (params ? `${key}: ${JSON.stringify(params)}` : key)),
 }))
 
-const attachments = { files: [], key: 'attachments', term: 'detail.attachments.title' }
+const attachmentFiles: AttachmentsDescriptionListItem['attachments'] = []
+const attachments: AttachmentsDescriptionListItem = {
+  attachments: attachmentFiles,
+  key: 'attachments',
+  term: 'detail.attachments.title',
+}
 
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
@@ -39,16 +46,16 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  it('calls getAttachmentsData with the melding id and translation function', async () => {
-    vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachments)
+  it('calls getAttachmentsData with the melding id', async () => {
+    vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachmentFiles)
 
     await Page({ params: Promise.resolve({ meldingId: 123 }) })
 
-    expect(getAttachmentsData).toHaveBeenCalledWith(123, expect.any(Function))
+    expect(getAttachmentsData).toHaveBeenCalledWith(123)
   })
 
-  it('renders the error message when getAttachmentsData returns an error', async () => {
-    vi.mocked(getAttachmentsData).mockResolvedValueOnce({ error: 'Something went wrong' })
+  it('renders the error message when getAttachmentsData rejects', async () => {
+    vi.mocked(getAttachmentsData).mockRejectedValueOnce('Something went wrong')
 
     const result = await Page({ params: Promise.resolve({ meldingId: 123 }) })
 
@@ -56,7 +63,7 @@ describe('Page', () => {
   })
 
   it('renders AddAttachment with the attachments and melding id when successful', async () => {
-    vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachments)
+    vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachmentFiles)
 
     const result = await Page({ params: Promise.resolve({ meldingId: 123 }) })
 
