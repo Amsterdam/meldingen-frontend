@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 
-import { isFilePDF } from '../_utils/getAttachmentsData'
+import { isFilePDF } from '../_utils'
 import { Photos } from './Photos'
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
 
