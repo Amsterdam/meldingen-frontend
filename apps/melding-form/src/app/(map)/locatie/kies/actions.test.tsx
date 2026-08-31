@@ -53,7 +53,9 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets({}, undefined, formData)
 
-    expect(result).toEqual({ error: { cause: expect.any(Error), message: 'errors.assets-post-failed' } })
+    expect(result).toEqual({
+      error: { cause: 'Missing asset_type_id for selected assets', message: 'errors.assets-post-failed' },
+    })
   })
 
   it('returns errors when postMeldingByMeldingIdAsset fails', async () => {
@@ -113,7 +115,7 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
-    expect(result).toEqual({ error: { cause: expect.any(Error), message: 'errors.no-location' } })
+    expect(result).toEqual({ error: { cause: 'No location provided by user', message: 'errors.no-location' } })
   })
 
   it('returns an error when PDOK free returns an error', async () => {
@@ -124,7 +126,9 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
-    expect(result).toEqual({ error: { cause: expect.any(Error), message: 'errors.pdok-failed' } })
+    expect(result).toEqual({
+      error: { cause: 'PDOK request failed with status 500', message: 'errors.pdok-failed' },
+    })
   })
 
   it('returns an error when no address is found by PDOK free', async () => {
@@ -143,7 +147,9 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
-    expect(result).toEqual({ error: { cause: expect.any(Error), message: 'errors.pdok-no-address-found' } })
+    expect(result).toEqual({
+      error: { cause: 'PDOK returned no results for the given address', message: 'errors.pdok-no-address-found' },
+    })
   })
 
   it('returns an error when PDOK free does not return coordinates', async () => {
@@ -162,7 +168,9 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
-    expect(result).toEqual({ error: { cause: expect.any(Error), message: 'errors.pdok-failed' } })
+    expect(result).toEqual({
+      error: { cause: 'Failed to convert PDOK point to coordinates', message: 'errors.pdok-failed' },
+    })
   })
 
   it('fetches coordinates from PDOK API if not provided', async () => {

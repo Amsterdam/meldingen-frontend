@@ -123,18 +123,17 @@ describe('SelectLocation', () => {
   })
 
   it('logs the error cause to the console when the action returns an error', () => {
-    const cause = new Error('Something went wrong')
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     ;(useActionState as Mock).mockReturnValueOnce([
-      { error: { cause, message: 'errors.location-patch-failed' } },
+      { error: { cause: 'Failed to patch location', message: 'errors.location-patch-failed' } },
       vi.fn(),
       false,
     ])
 
     render(<SelectLocation {...defaultProps} />)
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith(cause)
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to patch location')
 
     consoleErrorSpy.mockRestore()
   })

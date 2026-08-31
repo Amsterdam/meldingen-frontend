@@ -44,7 +44,7 @@ export const postCoordinatesAndAssets = async (
     if (!asset_type_id) {
       return {
         error: {
-          cause: new Error('Missing asset_type_id for selected assets'),
+          cause: 'Missing asset_type_id for selected assets',
           message: t('errors.assets-post-failed'),
         },
       }
@@ -74,7 +74,7 @@ export const postCoordinatesAndAssets = async (
   let coordinates = safeJSONParse<Coordinates, null>(coordinatesFormData, null)
 
   if (!address) {
-    return { error: { cause: new Error('No location provided by user'), message: t('errors.no-location') } }
+    return { error: { cause: 'No location provided by user', message: t('errors.no-location') } }
   }
 
   if (!coordinates) {
@@ -83,7 +83,7 @@ export const postCoordinatesAndAssets = async (
     if (!response.ok) {
       return {
         error: {
-          cause: new Error(`PDOK request failed with status ${response.status}`),
+          cause: `PDOK request failed with status ${response.status}`,
           message: t('errors.pdok-failed'),
         },
       }
@@ -94,7 +94,7 @@ export const postCoordinatesAndAssets = async (
     if (!result.response.docs.length) {
       return {
         error: {
-          cause: new Error('PDOK returned no results for the given address'),
+          cause: 'PDOK returned no results for the given address',
           message: t('errors.pdok-no-address-found'),
         },
       }
@@ -104,7 +104,7 @@ export const postCoordinatesAndAssets = async (
 
     if (!PDOKCoordinates) {
       return {
-        error: { cause: new Error('Failed to convert PDOK point to coordinates'), message: t('errors.pdok-failed') },
+        error: { cause: 'Failed to convert PDOK point to coordinates', message: t('errors.pdok-failed') },
       }
     }
 
