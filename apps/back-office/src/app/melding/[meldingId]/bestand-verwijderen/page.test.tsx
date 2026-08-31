@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
+import type { GetAttachmentsDataResult } from '../_utils/getAttachmentsData'
 import type { MeldingAttachmentWithFile } from '../types'
 
 import { getAttachmentsData } from '../_utils'
@@ -38,6 +39,10 @@ const attachmentFiles: MeldingAttachmentWithFile[] = [
   },
 ]
 
+const attachments: GetAttachmentsDataResult = {
+  attachmentsWithFile: attachmentFiles,
+}
+
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
     const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: 123 }) })
@@ -60,7 +65,7 @@ describe('Page', () => {
   })
 
   it('calls getAttachmentsData with the melding id', async () => {
-    vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachmentFiles)
+    vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachments)
 
     await Page({ params: Promise.resolve({ meldingId: 123 }) })
 
@@ -70,15 +75,13 @@ describe('Page', () => {
   it('renders the error message when getAttachmentsData rejects', async () => {
     vi.mocked(getAttachmentsData).mockRejectedValueOnce('Something went wrong')
 
-    const result = await Page({ params: Promise.resolve({ meldingId: 123 }) })
-
-    expect(result).toBe('Something went wrong')
+    await expect(Page({ params: Promise.resolve({ meldingId: 123 }) })).rejects.toBe('Something went wrong')
   })
 
   it('redirects to the detail page when there are no attachments', async () => {
     const redirectSignal = new Error('NEXT_REDIRECT')
 
-    vi.mocked(getAttachmentsData).mockResolvedValueOnce([])
+    vi.mocked(getAttachmentsData).mockResolvedValueOnce({ attachmentsWithFile: [] })
     vi.mocked(redirect).mockImplementationOnce(() => {
       throw redirectSignal
     })
@@ -89,7 +92,7 @@ describe('Page', () => {
   })
 
   it('renders Attachments with the attachments and melding id when successful', async () => {
-    vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachmentFiles)
+    vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachments)
 
     const result = await Page({ params: Promise.resolve({ meldingId: 123 }) })
 
@@ -97,7 +100,7 @@ describe('Page', () => {
 
     expect(Attachments).toHaveBeenCalledWith(
       {
-        initialAttachments: attachmentFiles,
+        attachments,
         meldingId: 123,
       },
       undefined,

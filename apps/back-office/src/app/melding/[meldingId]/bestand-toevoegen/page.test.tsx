@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
-import type { AttachmentsDescriptionListItem } from '../Detail'
+import type { GetAttachmentsDataResult } from '../_utils/getAttachmentsData'
 
 import { getAttachmentsData } from '../_utils/server'
 import { AddAttachment } from './AddAttachment'
@@ -22,11 +22,8 @@ vi.mock('next-intl/server', async () => ({
     vi.fn().mockImplementation((key, params) => (params ? `${key}: ${JSON.stringify(params)}` : key)),
 }))
 
-const attachmentFiles: AttachmentsDescriptionListItem['attachments'] = []
-const attachments: AttachmentsDescriptionListItem = {
-  attachments: attachmentFiles,
-  key: 'attachments',
-  term: 'detail.attachments.title',
+const attachments: GetAttachmentsDataResult = {
+  attachmentsWithFile: [],
 }
 
 describe('generateMetadata', () => {
@@ -47,7 +44,7 @@ describe('generateMetadata', () => {
 
 describe('Page', () => {
   it('calls getAttachmentsData with the melding id', async () => {
-    vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachmentFiles)
+    vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachments)
 
     await Page({ params: Promise.resolve({ meldingId: 123 }) })
 
@@ -57,13 +54,11 @@ describe('Page', () => {
   it('renders the error message when getAttachmentsData rejects', async () => {
     vi.mocked(getAttachmentsData).mockRejectedValueOnce('Something went wrong')
 
-    const result = await Page({ params: Promise.resolve({ meldingId: 123 }) })
-
-    expect(result).toBe('Something went wrong')
+    await expect(Page({ params: Promise.resolve({ meldingId: 123 }) })).rejects.toBe('Something went wrong')
   })
 
   it('renders AddAttachment with the attachments and melding id when successful', async () => {
-    vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachmentFiles)
+    vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachments)
 
     const result = await Page({ params: Promise.resolve({ meldingId: 123 }) })
 

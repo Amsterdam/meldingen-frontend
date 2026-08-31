@@ -1,8 +1,29 @@
+import type { ComponentProps } from 'react'
+
 import { render, screen } from '@testing-library/react'
 
 import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
 import { asset, melding } from '~/mocks/data'
+
+vi.mock('./_components/AttachmentPreview', () => ({
+  AttachmentPreview: ({ fileName }: { blob: Blob | null; fileName: string }) => (
+    <div data-testid="attachment-preview">{fileName}</div>
+  ),
+}))
+
+type DetailProps = ComponentProps<typeof Detail>
+
+const createAttachment = (
+  overrides: Partial<DetailProps['attachments']['attachmentsWithFile'][number]> = {},
+): DetailProps['attachments']['attachmentsWithFile'][number] => ({
+  blob: new Blob(['test-blob'], { type: 'image/jpeg' }),
+  createdAt: '2025-10-01T12:00:00Z',
+  id: 42,
+  originalFilename: 'IMG_0815.jpg',
+  updatedAt: '2025-10-01T12:00:00Z',
+  ...overrides,
+})
 
 const defaultProps = {
   additionalQuestionsWithMeldingText: [
@@ -13,16 +34,7 @@ const defaultProps = {
   ],
   assets: [asset],
   attachments: {
-    files: [
-      {
-        blob: new Blob(['test-blob'], { type: 'image/jpeg' }),
-        createdAt: '2025-10-01T12:00:00Z',
-        fileName: 'IMG_0815.jpg',
-        id: 42,
-      },
-    ],
-    key: 'attachments',
-    term: 'detail.attachments.title',
+    attachmentsWithFile: [createAttachment()],
   },
   meldingData: [
     { description: '2023-10-01', key: 'created_at', term: 'Created at' },
@@ -48,7 +60,7 @@ const defaultProps = {
   ],
   meldingId: 123,
   publicId: 'B100AA',
-}
+} satisfies DetailProps
 
 describe('Detail', () => {
   it('renders the component', () => {
@@ -158,13 +170,13 @@ describe('Detail', () => {
 
     expect(screen.getByText('attachments.title')).toBeInTheDocument()
     expect(attachmentLink).toBeInTheDocument()
+    expect(screen.getByTestId('attachment-preview')).toHaveTextContent('IMG_0815.jpg')
+    expect(screen.getAllByText('IMG_0815.jpg')).toHaveLength(2)
   })
 
   it('renders a no-data message when there are no attachments', () => {
-    const attachments = {
-      files: [],
-      key: 'attachments',
-      term: 'detail.attachments.title',
+    const attachments: DetailProps['attachments'] = {
+      attachmentsWithFile: [],
     }
 
     render(<Detail {...defaultProps} attachments={attachments} />)

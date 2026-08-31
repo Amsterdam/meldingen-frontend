@@ -1,3 +1,5 @@
+import type { ComponentProps } from 'react'
+
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
@@ -33,10 +35,23 @@ window.confirm = vi.fn(() => true)
 
 const mockFile = new File(['dummy content'], 'example.png', { type: 'image/png' })
 
+type AddAttachmentProps = ComponentProps<typeof AddAttachment>
+
+const createAttachment = (
+  overrides: Partial<AddAttachmentProps['attachments']['attachmentsWithFile'][number]> = {},
+): AddAttachmentProps['attachments']['attachmentsWithFile'][number] => ({
+  blob: new Blob(['dummy content'], { type: 'image/png' }),
+  createdAt: '2025-01-01',
+  id: 1,
+  originalFilename: 'existing.png',
+  updatedAt: '2025-01-01',
+  ...overrides,
+})
+
 const defaultProps = {
-  attachments: { files: [], key: 'attachments', term: 'attachments' },
+  attachments: { attachmentsWithFile: [] },
   meldingId: 123,
-}
+} satisfies AddAttachmentProps
 
 describe('AddAttachment', () => {
   it('renders correctly', () => {
@@ -60,9 +75,7 @@ describe('AddAttachment', () => {
     render(
       <AddAttachment
         attachments={{
-          files: [{ blob: new Blob(['x']), createdAt: '2025-01-01', fileName: 'existing.png', id: 7 }],
-          key: 'attachments',
-          term: 'attachments',
+          attachmentsWithFile: [createAttachment({ id: 7 })],
         }}
         meldingId={123}
       />,
@@ -79,9 +92,7 @@ describe('AddAttachment', () => {
     render(
       <AddAttachment
         attachments={{
-          files: [{ blob: new Blob(['a']), createdAt: '2025-01-01', fileName: 'first.png', id: 1 }],
-          key: 'attachments',
-          term: 'attachments',
+          attachmentsWithFile: [createAttachment({ originalFilename: 'first.png' })],
         }}
         meldingId={123}
       />,
@@ -117,9 +128,12 @@ describe('AddAttachment', () => {
     render(
       <AddAttachment
         attachments={{
-          files: [{ blob: new Blob(['sample content']), createdAt: '2025-01-01', fileName: 'first.png', id: 1 }],
-          key: 'attachments',
-          term: 'attachments',
+          attachmentsWithFile: [
+            createAttachment({
+              blob: new Blob(['sample content']),
+              originalFilename: 'first.png',
+            }),
+          ],
         }}
         meldingId={123}
       />,
@@ -181,12 +195,10 @@ describe('AddAttachment', () => {
     render(
       <AddAttachment
         attachments={{
-          files: [
-            { blob: new Blob(['a']), createdAt: '2025-01-01', fileName: 'first.png', id: 1 },
-            { blob: new Blob(['b']), createdAt: '2025-01-01', fileName: 'second.png', id: 2 },
+          attachmentsWithFile: [
+            createAttachment({ originalFilename: 'first.png' }),
+            createAttachment({ blob: new Blob(['b']), id: 2, originalFilename: 'second.png' }),
           ],
-          key: 'attachments',
-          term: 'attachments',
         }}
         meldingId={123}
       />,
@@ -215,9 +227,7 @@ describe('AddAttachment', () => {
     const { container } = render(
       <AddAttachment
         attachments={{
-          files: [{ blob: new Blob(['a']), createdAt: '2025-01-01', fileName: 'first.png', id: 1 }],
-          key: 'attachments',
-          term: 'attachments',
+          attachmentsWithFile: [createAttachment({ originalFilename: 'first.png' })],
         }}
         meldingId={123}
       />,

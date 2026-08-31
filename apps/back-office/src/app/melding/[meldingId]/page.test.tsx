@@ -1,3 +1,5 @@
+import type { ComponentProps } from 'react'
+
 import { render } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
@@ -16,6 +18,8 @@ vi.mock('next-intl/server', async () => ({
   getTranslations: () =>
     vi.fn().mockImplementation((key, params) => (params ? `${key}: ${JSON.stringify(params)}` : key)),
 }))
+
+type DetailProps = ComponentProps<typeof Detail>
 
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
@@ -70,9 +74,17 @@ describe('Page', () => {
     const params = Promise.resolve({ meldingId: 123 })
     const result = await Page({ params })
 
-    const { getByText } = render(result)
+    render(result)
 
-    expect(getByText('Error message')).toBeInTheDocument()
+    expect(Detail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        attachments: {
+          attachmentsWithFile: [],
+          getMeldingByMeldingIdAttachmentsError: 'Error message',
+        },
+      }),
+      undefined,
+    )
   })
 
   it('calls the Detail component with the correct data', async () => {
@@ -159,21 +171,21 @@ describe('Page', () => {
       },
     ]
 
-    const attachments = {
-      files: [
+    const attachments: DetailProps['attachments'] = {
+      attachmentsWithFile: [
         expect.objectContaining({
           blob: expect.any(Blob),
-          fileName: 'IMG_0815.jpg',
+          id: 42,
+          originalFilename: 'IMG_0815.jpg',
         }),
-      ],
-      key: 'attachments',
-      term: 'detail.attachments.title',
+      ] as DetailProps['attachments']['attachmentsWithFile'],
     }
 
     expect(Detail).toHaveBeenCalledWith(
       {
         additionalQuestionsWithMeldingText: additionalQuestionsWithMeldingText,
         assets: [asset],
+        assetsTerm: undefined,
         attachments: attachments,
         contact: contact,
         location: location,

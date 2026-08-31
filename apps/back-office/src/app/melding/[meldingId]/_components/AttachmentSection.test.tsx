@@ -1,38 +1,47 @@
+import type { ComponentProps } from 'react'
+
 import { render, screen } from '@testing-library/react'
 
 import { AttachmentSection } from './AttachmentSection'
 
+vi.mock('./AttachmentPreview', () => ({
+  AttachmentPreview: ({ fileName }: { blob: Blob | null; fileName: string }) => (
+    <div data-testid="attachment-preview">{fileName}</div>
+  ),
+}))
+
+type AttachmentSectionProps = ComponentProps<typeof AttachmentSection>
+
+const createAttachment = (
+  overrides: Partial<AttachmentSectionProps['attachments']['attachmentsWithFile'][number]> = {},
+): AttachmentSectionProps['attachments']['attachmentsWithFile'][number] => ({
+  blob: new Blob(['test-blob'], { type: 'image/jpeg' }),
+  createdAt: '2025-10-01T12:00:00Z',
+  id: 1,
+  originalFilename: 'IMG_0815.jpg',
+  updatedAt: '2025-10-01T12:00:00Z',
+  ...overrides,
+})
+
 const defaultProps = {
   attachments: {
-    files: [
-      {
-        blob: new Blob(['test-blob'], { type: 'image/jpeg' }),
-        createdAt: '2025-10-01T12:00:00Z',
-        fileName: 'IMG_0815.jpg',
-        id: 42,
-      },
-    ],
-    key: 'attachments',
-    term: 'detail.attachments.title',
+    attachmentsWithFile: [createAttachment()],
   },
 
   meldingId: 123,
-}
+} satisfies AttachmentSectionProps
 
 describe('AttachmentSection', () => {
   it('renders the component with attachments', () => {
     render(<AttachmentSection {...defaultProps} />)
 
     expect(screen.getByText('attachments.title')).toBeInTheDocument()
-    expect(screen.getByText('IMG_0815.jpg')).toBeInTheDocument()
+    expect(screen.getByTestId('attachment-preview')).toHaveTextContent('IMG_0815.jpg')
+    expect(screen.getAllByText('IMG_0815.jpg')).toHaveLength(2)
   })
 
   it('renders the component without attachments with no-data message', () => {
-    const attachments = {
-      files: [],
-      key: 'attachments',
-      term: 'detail.attachments.title',
-    }
+    const attachments: AttachmentSectionProps['attachments'] = { attachmentsWithFile: [] }
 
     render(<AttachmentSection {...defaultProps} attachments={attachments} />)
 
