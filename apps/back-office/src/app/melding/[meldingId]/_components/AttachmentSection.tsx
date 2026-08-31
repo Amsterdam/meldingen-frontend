@@ -7,17 +7,18 @@ import NextLink from 'next/link'
 
 import { Link } from '@meldingen/ui'
 
-import type { Attachments } from '../types'
+import type { GetAttachmentsDataResult } from '../_utils/getAttachmentsData'
 import type { FormDateStringOptions } from '~/app/_utils/formatDateString'
 
 import { AttachmentPreview } from './AttachmentPreview'
+import { ApiErrorAlert } from '~/app/_components'
 import { formatDateString } from '~/app/_utils/formatDateString'
 
 import parentStyles from '../Detail.module.css'
 import styles from './AttachmentSection.module.css'
 
 type Props = {
-  attachments: Attachments
+  attachments: GetAttachmentsDataResult
   meldingId: number
 }
 
@@ -33,20 +34,26 @@ const formatDateStringOptions: FormDateStringOptions = {
   },
 }
 
-export const AttachmentSection = ({ attachments, meldingId }: Props) => {
+export const AttachmentSection = ({
+  attachments: { attachmentsWithFile: attachments, getMeldingByMeldingIdAttachmentsError },
+  meldingId,
+}: Props) => {
   const t = useTranslations('detail')
 
-  const hasAttachments = attachments.files.length > 0
+  const hasAttachments = attachments.length > 0
   const addAttachmentLink = `/melding/${meldingId}/bestand-toevoegen`
   const removeAttachmentLink = `/melding/${meldingId}/bestand-verwijderen`
 
   return (
     <dl className={clsx(parentStyles.descriptionList, parentStyles.cardWide, styles.attachmentsSection)}>
       <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
+      {getMeldingByMeldingIdAttachmentsError && (
+        <ApiErrorAlert description="De bestanden konden niet worden geladen." shouldFocus={false} />
+      )}
 
-      {hasAttachments ? (
+      {hasAttachments && !getMeldingByMeldingIdAttachmentsError ? (
         <div className={styles.attachmentsWrapper}>
-          {attachments.files.map(({ blob, createdAt, fileName, id }) => {
+          {attachments.map(({ blob, createdAt, id, originalFilename }) => {
             const { date, time } = formatDateString(createdAt, formatDateStringOptions)
 
             return (

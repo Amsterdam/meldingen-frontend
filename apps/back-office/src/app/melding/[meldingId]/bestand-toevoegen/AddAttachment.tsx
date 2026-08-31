@@ -13,7 +13,7 @@ import { FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { Column, Grid, Heading, Link, Paragraph } from '@meldingen/ui'
 
-import type { AttachmentsDescriptionListItem } from '../Detail'
+import type { GetAttachmentsDataResult } from '../_utils/getAttachmentsData'
 
 import { BackLink } from '../_components/BackLink'
 import { deleteAttachmentAction, uploadAttachmentAction } from './actions'
@@ -23,7 +23,7 @@ import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import styles from './AddAttachment.module.css'
 
 type Props = {
-  attachments: AttachmentsDescriptionListItem
+  attachments: GetAttachmentsDataResult
   meldingId: number
 }
 
@@ -58,7 +58,7 @@ const deleteAttachment = async (serverId: number) => {
 
 const isErroredFileUpload = (upload: FileUploadState): upload is ErroredFileUpload => upload.status === 'error'
 
-export const AddAttachment = ({ attachments, meldingId }: Props) => {
+export const AddAttachment = ({ attachments: { attachmentsWithFile: attachments }, meldingId }: Props) => {
   const t = useTranslations('add-attachment')
 
   const genericErrorAlertRef = useRef<HTMLDivElement>(null)
@@ -69,7 +69,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   const fileUploadId = useId()
   const fileUploadRef = useRef<HTMLInputElement>(null)
 
-  const existingFiles = attachments.attachments.map((file) => ({
+  const existingFiles = attachments.map((file) => ({
     blob: file.blob || undefined,
     fileName: file.originalFilename,
     serverId: file.id,

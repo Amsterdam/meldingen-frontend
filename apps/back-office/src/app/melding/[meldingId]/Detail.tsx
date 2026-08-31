@@ -5,7 +5,7 @@ import { Fragment } from 'react'
 
 import { Column, Grid, Heading, Link, TabNavigation } from '@meldingen/ui'
 
-import type { MeldingAttachmentWithFile } from './types'
+import type { GetAttachmentsDataResult } from './_utils/getAttachmentsData'
 import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
 import { AttachmentSection } from './_components/AttachmentSection'
@@ -19,17 +19,13 @@ type DescriptionListItem = {
   term: string
 }
 
-export type AttachmentsDescriptionListItem = DescriptionListItem & {
-  attachments: MeldingAttachmentWithFile[]
-}
-
 type MeldingDataItem = DescriptionListItem & { link?: { href: string; label: string } }
 
 type Props = {
   additionalQuestionsWithMeldingText: DescriptionListItem[]
   assets: AssetOutput[]
   assetsTerm?: string
-  attachments: AttachmentsDescriptionListItem
+  attachments: GetAttachmentsDataResult
   contact?: DescriptionListItem[]
   location?: DescriptionListItem[]
   meldingData: MeldingDataItem[]

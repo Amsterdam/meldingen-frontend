@@ -10,7 +10,6 @@ import {
 } from './_utils/server'
 import { Detail } from './Detail'
 import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
-import { handleApiError } from '~/app/_utils/handleApiError'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
@@ -44,19 +43,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
     ...additionalQuestions.data,
   ]
 
-  let attachmentFiles
-
-  try {
-    attachmentFiles = await getAttachmentsData(meldingId)
-  } catch (caughtError) {
-    return typeof caughtError === 'string' ? caughtError : handleApiError(caughtError)
-  }
-
-  const attachments = {
-    attachments: attachmentFiles,
-    key: 'attachments',
-    term: t('detail.attachments.title'),
-  }
+  const attachments = await getAttachmentsData(meldingId)
 
   const contact = getContactData(data, t)
   const location = getLocationData(data, t)
