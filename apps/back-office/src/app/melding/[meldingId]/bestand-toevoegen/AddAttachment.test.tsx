@@ -141,7 +141,7 @@ describe('AddAttachment', () => {
 
     await user.click(screen.getByRole('button', { name: 'file-upload.action-button-delete first.png' }))
 
-    expect(confirmSpy).toHaveBeenCalledWith('file-upload.confirm-delete')
+    expect(confirmSpy).toHaveBeenCalledWith('confirmation-prompt')
     expect(confirmSpy).toHaveReturnedWith(true)
 
     expect(screen.queryByText('first.png')).not.toBeInTheDocument()

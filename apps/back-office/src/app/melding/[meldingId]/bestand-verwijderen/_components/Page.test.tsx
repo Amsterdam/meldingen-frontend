@@ -42,7 +42,7 @@ describe('Page', () => {
 
     await user.click(screen.getByRole('button', { name: 'Trigger error' }))
 
-    expect(screen.getByText('description')).toBeInTheDocument()
+    expect(screen.getByText('Could not delete attachment')).toBeInTheDocument()
     expect(screen.getAllByRole('heading').map((heading) => heading.textContent)).toEqual(['heading', 'title'])
   })
 })

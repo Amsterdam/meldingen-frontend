@@ -37,7 +37,7 @@ describe('Attachment', () => {
     expect(screen.getByText('behandelaar@example.com')).toBeInTheDocument()
     expect(screen.getByTestId('attachment-preview')).toHaveTextContent('bewijs.png')
 
-    await user.click(screen.getByRole('button', { name: 'submit-button' }))
+    await user.click(screen.getByRole('button', { name: 'submit-button bewijs.png' }))
 
     expect(onDelete).toHaveBeenCalledTimes(1)
   })
@@ -46,6 +46,6 @@ describe('Attachment', () => {
     render(<Attachment attachment={createAttachment({ user: undefined })} isDeleting={true} onDelete={vi.fn()} />)
 
     expect(screen.getByText('attachments.melding-form-user')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'submit-button' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'submit-button bewijs.png' })).toBeDisabled()
   })
 })
