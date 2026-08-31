@@ -1,3 +1,7 @@
+.container {
+  margin-block: auto;
+}
+
 .description {
   display: block;
   font-weight: var(--ams-description-list-description-font-weight);

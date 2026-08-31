@@ -3,14 +3,14 @@ import { Button } from '@amsterdam/design-system-react/dist/Button'
 import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
 
-import type { AttachmentsDescriptionListItem } from '../../Detail'
+import type { MeldingAttachmentWithFile } from '../../types'
 
 import { AttachmentPreview } from '../../_components/AttachmentPreview'
 
 import styles from './Attachment.module.css'
 
 type Props = {
-  attachment: AttachmentsDescriptionListItem['attachments'][number]
+  attachment: MeldingAttachmentWithFile
   isDeleting: boolean
   onDelete: () => void
 }
@@ -23,7 +23,7 @@ export const Attachment = ({
   const tDetail = useTranslations('detail')
   const tRemove = useTranslations('remove-attachment')
   return (
-    <div className={clsx(styles.cardWide, 'ams-column ')}>
+    <dl className={clsx(styles.container, styles.cardWide, 'ams-column')}>
       <dt className={styles.term}>{originalFilename}</dt>
       <div className="ams-column ams-column--gap-small">
         <dd className={styles.description}>{createdAt}</dd>
@@ -36,6 +36,6 @@ export const Attachment = ({
       <Button disabled={isDeleting} onClick={onDelete} variant="secondary">
         {tRemove('submit-button')}
       </Button>
-    </div>
+    </dl>
   )
 }
