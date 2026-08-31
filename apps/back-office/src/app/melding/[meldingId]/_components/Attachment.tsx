@@ -8,19 +8,21 @@ import { useEffect, useState } from 'react'
 
 import { Icon, Link } from '@meldingen/ui'
 
-import { isFilePDF } from '../_utils/getAttachmentsData'
+import { isFilePDF } from '../_utils'
 
 import styles from './Attachment.module.css'
 
 type Props = {
   blob: Blob | null
   fileName: string
+  id: number
+  meldingId: number
 }
 
-export const Attachment = ({ blob, fileName }: Props) => {
-  const [url, setUrl] = useState<string | null>(null)
-
+export const Attachment = ({ blob, fileName, id, meldingId }: Props) => {
   const t = useTranslations('detail.attachments')
+
+  const [url, setUrl] = useState<string | null>(null)
 
   // This useEffect is necessary to avoid render problems while refreshing the page.
   useEffect(() => {
@@ -50,10 +52,15 @@ export const Attachment = ({ blob, fileName }: Props) => {
         target="_blank"
       >
         <Icon size="heading-1" svg={DocumentsIcon} />
-        <span className="ams-visually-hidden">{t('visually-hidden-text', { fileName: fileName })}</span>
+        <span className="ams-visually-hidden">{t('pdf-link', { fileName })}</span>
       </Link>
     )
   }
 
-  return <Image alt="" src={url} />
+  return (
+    <Link href={`/melding/${meldingId}/foto?id=${id}`} linkComponent={NextLink}>
+      <Image alt="" src={url} />
+      <span className="ams-visually-hidden">{t('photo-link', { fileName })}</span>
+    </Link>
+  )
 }

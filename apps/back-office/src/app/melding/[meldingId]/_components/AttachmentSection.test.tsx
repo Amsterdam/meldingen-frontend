@@ -9,6 +9,7 @@ const defaultProps = {
         blob: new Blob(['test-blob'], { type: 'image/jpeg' }),
         createdAt: '2025-10-01T12:00:00Z',
         fileName: 'IMG_0815.jpg',
+        id: 42,
       },
     ],
     key: 'attachments',

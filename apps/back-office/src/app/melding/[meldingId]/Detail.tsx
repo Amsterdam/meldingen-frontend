@@ -112,7 +112,6 @@ export const Detail = ({
                 </Fragment>
               ))}
             </dl>
-
             <AttachmentSection attachments={attachments} meldingId={meldingId} />
           </div>
         </Grid.Cell>
