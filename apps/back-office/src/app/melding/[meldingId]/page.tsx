@@ -7,7 +7,7 @@ import {
   getContactData,
   getLocationData,
   getMeldingData,
-} from './_utils'
+} from './_utils/server'
 import { Detail } from './Detail'
 import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
