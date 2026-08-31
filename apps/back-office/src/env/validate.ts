@@ -22,7 +22,7 @@ export const validateServerEnv = () => {
   return Object.freeze(parsed.data)
 }
 
-// Next.js NEXT_PUBLIC varaibles are "inlined" at build time with hard-coded values.
+// Next.js NEXT_PUBLIC variables are "inlined" at build time with hard-coded values.
 // Meaning, we need to reference them 1-by-1 compared to the server and auth env vars, which can be referenced as a whole object.
 // See https://nextjs.org/docs/app/guides/environment-variables#bundling-environment-variables-for-the-browser
 export const validateClientEnv = () => {
