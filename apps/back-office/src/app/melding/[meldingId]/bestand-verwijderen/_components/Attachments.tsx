@@ -23,6 +23,7 @@ export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachm
   const t = useTranslations('remove-attachment')
 
   const [attachments, setAttachments] = useState(initialAttachments)
+  const [deletedFileName, setDeletedFileName] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDelete = async (id: number, fileName: string) => {
@@ -32,6 +33,7 @@ export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachm
     if (!shouldDelete) return
 
     setIsDeleting(true)
+    setDeletedFileName(null)
     setApiError(null)
 
     const { error: deleteAttachmentError } = await deleteAttachmentAction(id)
@@ -44,6 +46,8 @@ export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachm
 
     const remainingAttachments = attachments.filter((item) => item.id !== id)
 
+    setDeletedFileName(fileName)
+
     if (remainingAttachments.length === 0) {
       router.push(`/melding/${meldingId}`)
       return
@@ -54,15 +58,20 @@ export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachm
   }
 
   return (
-    <div className={styles.cardGrid}>
-      {attachments.map((attachment) => (
-        <Attachment
-          attachment={attachment}
-          isDeleting={isDeleting}
-          key={attachment.id}
-          onDelete={() => handleDelete(attachment.id, attachment.originalFilename)}
-        />
-      ))}
-    </div>
+    <>
+      <div className={styles.cardGrid}>
+        {attachments.map((attachment) => (
+          <Attachment
+            attachment={attachment}
+            isDeleting={isDeleting}
+            key={attachment.id}
+            onDelete={() => handleDelete(attachment.id, attachment.originalFilename)}
+          />
+        ))}
+      </div>
+      <div aria-live="polite" className="ams-visually-hidden">
+        {deletedFileName ? t('confirmation', { fileName: deletedFileName }) : ''}
+      </div>
+    </>
   )
 }

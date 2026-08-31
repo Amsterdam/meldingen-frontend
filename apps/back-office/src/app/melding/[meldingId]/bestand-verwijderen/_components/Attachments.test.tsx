@@ -120,6 +120,8 @@ describe('Attachments', () => {
 
     resolveDeletion?.({ error: undefined, status: 204 })
 
+    expect(await screen.findByText('confirmation')).toBeInTheDocument()
+
     await waitFor(() => {
       expect(screen.queryByRole('button', { name: 'bewijs.png' })).not.toBeInTheDocument()
     })
