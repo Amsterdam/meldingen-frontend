@@ -15,6 +15,7 @@ describe('getAttachmentsData', () => {
         {
           blob: expect.any(Blob),
           fileName: 'IMG_0815.jpg',
+          id: 42,
         },
       ],
       key: 'attachments',
@@ -25,7 +26,7 @@ describe('getAttachmentsData', () => {
   it('returns correct attachments data for PDFs', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
-        HttpResponse.json([{ id: 43, original_filename: 'PDF_0815.pdf' }]),
+        HttpResponse.json([{ id: 1, original_filename: 'PDF_0815.pdf' }]),
       ),
     )
 
@@ -48,6 +49,7 @@ describe('getAttachmentsData', () => {
         {
           blob: expect.any(Blob),
           fileName: 'PDF_0815.pdf',
+          id: 1,
         },
       ],
       key: 'attachments',
@@ -80,6 +82,7 @@ describe('getAttachmentsData', () => {
           blob: null,
           error: 'Error message',
           fileName: 'IMG_0815.jpg',
+          id: 42,
         },
       ],
       key: 'attachments',
