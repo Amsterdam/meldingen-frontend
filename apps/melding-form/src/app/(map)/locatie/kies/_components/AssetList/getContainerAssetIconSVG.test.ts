@@ -22,7 +22,7 @@ describe('getContainerAssetIconSVG', () => {
     })
   })
 
-  it('returns fallback SVG if feature has no sybtype', () => {
+  it('returns fallback SVG if feature has no subtype', () => {
     const assetItem = makeAssetItem('') // Empty subtype
 
     const svg = getContainerAssetIconSVG(assetItem)

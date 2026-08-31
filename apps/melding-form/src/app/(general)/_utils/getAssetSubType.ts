@@ -1,3 +1,4 @@
+// subTypeKey refers to the Asset ->  Icon -> Koppelcode in the Admin Asset
 export const getAssetSubType = (subTypeKey: string | undefined, properties: Record<string, unknown> | null) => {
   if (!properties || !subTypeKey) return undefined
 

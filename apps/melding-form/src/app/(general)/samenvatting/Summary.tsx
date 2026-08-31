@@ -52,6 +52,7 @@ const getLocationLinkCopy = (t: ReturnType<typeof useTranslations>, hasAssets: b
   if (hasAssets && assetName) {
     return t('change-links.assets', { assetName: assetName.toLocaleLowerCase() })
   }
+
   return t('change-links.location')
 }
 
@@ -86,6 +87,7 @@ export const Summary = ({
   }, [apiError])
 
   const hasAssets = Boolean(assets.data && assets.data.length > 0)
+  const locationTermCopy = hasAssets ? (assets.term ?? location.term) : location.term
 
   return (
     <>
@@ -124,17 +126,19 @@ export const Summary = ({
             ))}
 
           <SummaryList.Item>
-            <SummaryList.Term>{assets.term ?? location.term}</SummaryList.Term>
+            <SummaryList.Term>{locationTermCopy}</SummaryList.Term>
             <SummaryList.Description>{location.description}</SummaryList.Description>
 
             {hasAssets && (
-              <UnorderedList className="ams-mb-m" markers={false}>
-                {assets.data?.map((asset) => (
-                  <UnorderedList.Item key={asset.id}>
-                    <AssetElement asset={asset} />
-                  </UnorderedList.Item>
-                ))}
-              </UnorderedList>
+              <SummaryList.Description>
+                <UnorderedList className="ams-mb-m" markers={false}>
+                  {assets.data.map((asset) => (
+                    <UnorderedList.Item key={asset.id}>
+                      <AssetElement asset={asset} />
+                    </UnorderedList.Item>
+                  ))}
+                </UnorderedList>
+              </SummaryList.Description>
             )}
 
             <SummaryList.Description>

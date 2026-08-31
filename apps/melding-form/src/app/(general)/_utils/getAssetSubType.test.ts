@@ -1,28 +1,25 @@
+import { describe, expect, it } from 'vitest'
+
 import { getAssetSubType } from './getAssetSubType'
 
 describe('getAssetSubType', () => {
+  it('returns undefined when the subtype key is missing', () => {
+    expect(getAssetSubType(undefined, { objecttype_omschrijving: 'Afvalbak' })).toBeUndefined()
+  })
+
   it('returns undefined when properties is null', () => {
-    expect(getAssetSubType(null)).toBeUndefined()
+    expect(getAssetSubType('objecttype_omschrijving', null)).toBeUndefined()
   })
 
-  it('returns objecttype_omschrijving when it exists', () => {
-    expect(getAssetSubType({ objecttype_omschrijving: 'Afvalbak' })).toBe('Afvalbak')
+  it('returns the property value for the provided subtype key', () => {
+    expect(getAssetSubType('objecttype_omschrijving', { objecttype_omschrijving: 'Afvalbak' })).toBe('Afvalbak')
   })
 
-  it('returns fractie_omschrijving when objecttype_omschrijving is missing', () => {
-    expect(getAssetSubType({ fractie_omschrijving: 'Glas' })).toBe('Glas')
+  it('returns undefined when the provided subtype key is not present', () => {
+    expect(getAssetSubType('objecttype_omschrijving', { fractie_omschrijving: 'Glas' })).toBeUndefined()
   })
 
-  it('skips falsy values and returns the next matching property', () => {
-    expect(
-      getAssetSubType({
-        fractie_omschrijving: 'Restafval',
-        objecttype_omschrijving: '',
-      }),
-    ).toBe('Restafval')
-  })
-
-  it('returns undefined when no supported subtype properties exist', () => {
-    expect(getAssetSubType({ name: 'Asset without subtype' })).toBeUndefined()
+  it('returns undefined when the subtype property value is falsy', () => {
+    expect(getAssetSubType('objecttype_omschrijving', { objecttype_omschrijving: '' })).toBeUndefined()
   })
 })

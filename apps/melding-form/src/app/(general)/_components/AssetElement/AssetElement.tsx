@@ -16,9 +16,9 @@ export const AssetElement = ({ asset }: Props) => {
   const icon = getContainerAssetIconSVG(asset)
 
   return (
-    <span className={styles.assetElement}>
+    <div className={styles.assetElement}>
       <Image alt="" height={32} src={icon} width={32} />
       <Paragraph>{asset.label}</Paragraph>
-    </span>
+    </div>
   )
 }
