@@ -91,11 +91,12 @@ export const SelectLocation = ({
 
   const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
   const defaultCoordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
+
   const selectedAssetsValue = JSON.stringify(
     selectedAssets.map((asset) => ({
       externalId: asset.id,
       label: getAssetLabelText(asset, assetConfig.label),
-      subtype: getAssetSubType(asset.properties),
+      subtype: getAssetSubType(assetConfig.icon.entry, asset.properties),
     })),
   )
 
