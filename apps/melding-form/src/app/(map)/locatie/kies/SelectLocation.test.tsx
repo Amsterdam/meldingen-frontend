@@ -3,13 +3,21 @@ import type { Mock } from 'vitest'
 import useViewportHasMinWidth from '@amsterdam/design-system-react/dist/common/useViewportHasMinWidth'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useEffect } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import type { Props } from './SelectLocation'
 
 import { AssetList } from './_components'
 import { SelectLocation } from './SelectLocation'
 import { containerAssets } from '~/mocks/data'
+
+vi.mock('react', async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...(typeof actual === 'object' ? actual : {}),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
+  }
+})
 
 vi.mock('./_components/AssetList/AssetList', () => ({
   AssetList: vi.fn(),
@@ -112,6 +120,23 @@ describe('SelectLocation', () => {
     await user.click(closeButton)
 
     expect(screen.queryByText('too-many-assets.title')).not.toBeInTheDocument()
+  })
+
+  it('logs the error cause to the console when the action returns an error', () => {
+    const cause = new Error('Something went wrong')
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    ;(useActionState as Mock).mockReturnValueOnce([
+      { error: { cause, message: 'errors.location-patch-failed' } },
+      vi.fn(),
+      false,
+    ])
+
+    render(<SelectLocation {...defaultProps} />)
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(cause)
+
+    consoleErrorSpy.mockRestore()
   })
 })
 

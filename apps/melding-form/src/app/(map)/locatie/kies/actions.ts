@@ -42,7 +42,12 @@ export const postCoordinatesAndAssets = async (
 
   if (selectedAssetIds.length > 0) {
     if (!asset_type_id) {
-      return { errorMessage: t('errors.assets-post-failed') }
+      return {
+        error: {
+          cause: new Error('Missing asset_type_id for selected assets'),
+          message: t('errors.assets-post-failed'),
+        },
+      }
     }
 
     const results = await Promise.all(
@@ -56,8 +61,10 @@ export const postCoordinatesAndAssets = async (
       ),
     )
 
-    if (results.some(({ error }) => error)) {
-      return { errorMessage: t('errors.assets-post-failed') }
+    const errors = results.flatMap(({ error }) => (error ? [error] : []))
+
+    if (errors.length > 0) {
+      return { error: { cause: errors, message: t('errors.assets-post-failed') } }
     }
   }
 
@@ -67,21 +74,39 @@ export const postCoordinatesAndAssets = async (
   let coordinates = safeJSONParse<Coordinates, null>(coordinatesFormData, null)
 
   if (!address) {
-    return { errorMessage: t('errors.no-location') }
+    return { error: { cause: new Error('No location provided by user'), message: t('errors.no-location') } }
   }
 
   if (!coordinates) {
     const response = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`)
 
-    if (!response.ok) return { errorMessage: t('errors.pdok-failed') }
+    if (!response.ok) {
+      return {
+        error: {
+          cause: new Error(`PDOK request failed with status ${response.status}`),
+          message: t('errors.pdok-failed'),
+        },
+      }
+    }
 
     const result = await response.json()
 
-    if (!result.response.docs.length) return { errorMessage: t('errors.pdok-no-address-found') }
+    if (!result.response.docs.length) {
+      return {
+        error: {
+          cause: new Error('PDOK returned no results for the given address'),
+          message: t('errors.pdok-no-address-found'),
+        },
+      }
+    }
 
     const PDOKCoordinates = convertWktPointToCoordinates(result.response.docs[0].centroide_ll)
 
-    if (!PDOKCoordinates) return { errorMessage: t('errors.pdok-failed') }
+    if (!PDOKCoordinates) {
+      return {
+        error: { cause: new Error('Failed to convert PDOK point to coordinates'), message: t('errors.pdok-failed') },
+      }
+    }
 
     coordinates = PDOKCoordinates
     address = result.response.docs[0].weergavenaam
@@ -103,7 +128,7 @@ export const postCoordinatesAndAssets = async (
   })
 
   if (error) {
-    return { errorMessage: t('errors.location-patch-failed') }
+    return { error: { cause: error, message: t('errors.location-patch-failed') } }
   }
 
   const source = cookieStore.get(COOKIES.SOURCE)?.value
@@ -116,7 +141,7 @@ export const postCoordinatesAndAssets = async (
       query: { token },
     })
 
-    if (stateError) return { errorMessage: t('errors.state-change-failed') }
+    if (stateError) return { error: { cause: stateError, message: t('errors.state-change-failed') } }
   }
 
   return redirect(source === 'back-office' ? `/bijlage#${TOP_ANCHOR_ID}` : `/locatie#${TOP_ANCHOR_ID}`)
