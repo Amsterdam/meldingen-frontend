@@ -33,7 +33,12 @@ export const Attachment = ({
         <AttachmentPreview blob={blob} fileName={originalFilename} />
       </div>
 
-      <Button disabled={isDeleting} onClick={onDelete} variant="secondary">
+      <Button
+        aria-label={`${tRemove('submit-button')} ${originalFilename}`}
+        disabled={isDeleting}
+        onClick={onDelete}
+        variant="secondary"
+      >
         {tRemove('submit-button')}
       </Button>
     </dl>
