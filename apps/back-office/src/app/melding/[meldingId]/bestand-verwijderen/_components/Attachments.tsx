@@ -23,20 +23,22 @@ export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachm
   const t = useTranslations('remove-attachment')
 
   const [attachments, setAttachments] = useState(initialAttachments)
-  const [deletingIds, setDeletingIds] = useState<number[]>([])
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDelete = async (id: number, fileName: string) => {
+    if (isDeleting) return
+
     const shouldDelete = window.confirm(t('confirmation-prompt', { fileName }))
     if (!shouldDelete) return
 
-    setDeletingIds((ids) => [...ids, id])
+    setIsDeleting(true)
     setApiError(null)
 
     const { error: deleteAttachmentError } = await deleteAttachmentAction(id)
 
     if (deleteAttachmentError) {
       setApiError(deleteAttachmentError)
-      setDeletingIds((ids) => ids.filter((value) => value !== id))
+      setIsDeleting(false)
       return
     }
 
@@ -48,7 +50,7 @@ export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachm
     }
 
     setAttachments(remainingAttachments)
-    setDeletingIds((ids) => ids.filter((value) => value !== id))
+    setIsDeleting(false)
   }
 
   return (
@@ -56,7 +58,7 @@ export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachm
       {attachments.map((attachment) => (
         <Attachment
           attachment={attachment}
-          isDeleting={deletingIds.includes(attachment.id)}
+          isDeleting={isDeleting}
           key={attachment.id}
           onDelete={() => handleDelete(attachment.id, attachment.originalFilename)}
         />

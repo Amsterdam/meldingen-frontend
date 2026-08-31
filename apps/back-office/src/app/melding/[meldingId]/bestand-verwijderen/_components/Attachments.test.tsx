@@ -67,7 +67,7 @@ const createMockRouter = (overrides: Partial<ReturnType<typeof useRouter>> = {})
 const renderAttachments = (attachments: MeldingAttachmentWithFile[]) =>
   render(
     <RemoveAttachmentErrorProvider>
-      <Attachments initialAttachments={attachments} meldingId={123} />
+      <Attachments attachments={{ attachmentsWithFile: attachments }} meldingId={123} />
       <ApiErrorValue />
     </RemoveAttachmentErrorProvider>,
   )
@@ -93,7 +93,7 @@ describe('Attachments', () => {
     expect(screen.getByRole('button', { name: 'bewijs.png' })).toBeInTheDocument()
   })
 
-  it('disables the attachment while the deletion request is pending and removes it on success', async () => {
+  it('disables all attachments while the deletion request is pending and removes the deleted attachment on success', async () => {
     const user = userEvent.setup()
     vi.spyOn(window, 'confirm').mockReturnValue(true)
 
@@ -116,7 +116,7 @@ describe('Attachments', () => {
 
     expect(deleteAttachmentAction).toHaveBeenCalledWith(1)
     expect(screen.getByRole('button', { name: 'bewijs.png' })).toBeDisabled()
-    expect(screen.getByRole('button', { name: 'foto.png' })).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'foto.png' })).toBeDisabled()
 
     resolveDeletion?.({ error: undefined, status: 204 })
 
