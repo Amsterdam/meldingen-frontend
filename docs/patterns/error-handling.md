@@ -43,7 +43,7 @@ It distinguishes between three types of errors:
 - Validation errors: these are errors related to a specific file, such as a file that exceeds the size limit.
 
 All three types of errors are displayed at the top of the page.  
-However, validation errors also include a link that takes the user directly to the corresponding upload.
+However, validation errors also include an in-page link that takes the user directly to the corresponding upload, where the same error message is shown again.
 
 ## Back office
 
@@ -79,7 +79,7 @@ It distinguishes between three types of errors:
 - Validation errors: these are errors related to a specific file, such as a file that exceeds the size limit.
 
 All three types of errors are displayed at the top of the page.
-However, validation errors also include a link that takes the user directly to the corresponding upload.
+However, validation errors also include an in-page link that takes the user directly to the corresponding upload, where the same error message is shown again.
 
 ### Not yet implemented
 
