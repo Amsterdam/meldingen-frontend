@@ -233,6 +233,9 @@ importers:
       '@meldingen/ui':
         specifier: workspace:*
         version: link:../../libs/ui
+      '@meldingen/utils':
+        specifier: workspace:*
+        version: link:../../libs/utils
       '@tiptap/core':
         specifier: 3.27.4
         version: 3.27.4(@tiptap/pm@3.27.4)
@@ -305,6 +308,9 @@ importers:
       '@meldingen/ui':
         specifier: workspace:*
         version: link:../../libs/ui
+      '@meldingen/utils':
+        specifier: workspace:*
+        version: link:../../libs/utils
       next:
         specifier: 16.2.11
         version: 16.2.11(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -314,7 +320,11 @@ importers:
 
   libs/api-client: {}
 
-  libs/file-upload: {}
+  libs/file-upload:
+    dependencies:
+      '@meldingen/utils':
+        specifier: workspace:*
+        version: link:../utils
 
   libs/form-builder:
     dependencies:
@@ -376,6 +386,8 @@ importers:
         version: 10.1.0(@types/react@19.2.17)(react@19.2.7)
 
   libs/ui: {}
+
+  libs/utils: {}
 
 packages:
 
