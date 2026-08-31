@@ -1,6 +1,6 @@
 import type { Mock } from 'vitest'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { useActionState } from 'react'
 import { vi } from 'vitest'
 
@@ -81,6 +81,15 @@ const defaultProps = {
 global.URL.createObjectURL = vi.fn(() => 'blob:http://localhost/uploaded-file-1')
 global.URL.revokeObjectURL = vi.fn()
 
+const getSummaryItem = (term: string) => {
+  const termElement = screen.getByText(term, { selector: 'dt' })
+  const summaryItem = termElement.parentElement
+
+  expect(summaryItem).not.toBeNull()
+
+  return summaryItem as HTMLElement
+}
+
 describe('Summary', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -104,25 +113,33 @@ describe('Summary', () => {
   it('renders the Summary component with data', () => {
     render(<Summary {...defaultProps} />)
 
-    const terms = screen.getAllByRole('term')
-    const definitions = screen.getAllByRole('definition')
+    const primaryItem = getSummaryItem(defaultProps.primaryForm.term)
+    const firstAdditionalQuestionItem = getSummaryItem(defaultProps.additionalQuestions[0].term)
+    const secondAdditionalQuestionItem = getSummaryItem(defaultProps.additionalQuestions[1].term)
+    const locationItem = getSummaryItem(defaultProps.assets.term)
+    const attachmentsItem = getSummaryItem(defaultProps.attachments.term)
+    const contactItem = getSummaryItem(defaultProps.contact.term)
 
-    expect(terms[0]).toHaveTextContent('Wat wilt u melden?')
-    expect(terms[1]).toHaveTextContent('Text Field 1')
-    expect(terms[2]).toHaveTextContent('Text Area 2')
-    expect(terms[3]).toHaveTextContent('Waar staat de container?')
-    expect(terms[4]).toHaveTextContent('Foto’s')
-    expect(terms[5]).toHaveTextContent('Wat zijn uw contactgegevens?')
+    expect(within(primaryItem).getByText(defaultProps.primaryForm.description)).toBeInTheDocument()
 
-    expect(definitions[0]).toHaveTextContent('Er ligt heel veel afval op straat.')
-    expect(definitions[2]).toHaveTextContent('Antwoord vraag 1')
-    expect(definitions[4]).toHaveTextContent('Antwoord vraag 2')
-    expect(definitions[6]).toHaveTextContent('Nieuwmarkt 247, 1011MB Amsterdam')
-    expect(definitions[8]).toHaveTextContent('IMG_0815.jpg')
-    expect(definitions[10]).toHaveTextContent('test@test.com')
-    expect(definitions[11]).toHaveTextContent('+31612345678')
+    expect(
+      within(firstAdditionalQuestionItem).getByText(defaultProps.additionalQuestions[0].description),
+    ).toBeInTheDocument()
 
-    expect(screen.getByRole('button', { name: 'submit-button' }))
+    expect(
+      within(secondAdditionalQuestionItem).getByText(defaultProps.additionalQuestions[1].description),
+    ).toBeInTheDocument()
+
+    expect(within(locationItem).getByText(defaultProps.location.description)).toBeInTheDocument()
+    expect(within(locationItem).getByText(defaultProps.assets.data[0].label)).toBeInTheDocument()
+    expect(within(locationItem).getByText(defaultProps.assets.data[1].label)).toBeInTheDocument()
+
+    expect(within(attachmentsItem).getByText(defaultProps.attachments.files[0].fileName)).toBeInTheDocument()
+
+    expect(within(contactItem).getByText(defaultProps.contact.description[0])).toBeInTheDocument()
+    expect(within(contactItem).getByText(defaultProps.contact.description[1])).toBeInTheDocument()
+
+    expect(screen.getByRole('button', { name: 'submit-button' })).toBeInTheDocument()
   })
 
   it('renders the change links', () => {

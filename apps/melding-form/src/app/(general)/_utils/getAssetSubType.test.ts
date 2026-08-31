@@ -19,7 +19,7 @@ describe('getAssetSubType', () => {
     expect(getAssetSubType('objecttype_omschrijving', { fractie_omschrijving: 'Glas' })).toBeUndefined()
   })
 
-  it('returns undefined when the subtype property value is falsy', () => {
+  it('returns undefined when the subtype property value is an empty string', () => {
     expect(getAssetSubType('objecttype_omschrijving', { objecttype_omschrijving: '' })).toBeUndefined()
   })
 })
