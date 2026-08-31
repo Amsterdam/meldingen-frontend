@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 
-import { getAttachmentsData } from '../_utils'
+import { getAttachmentsData } from '../_utils/server'
 import { AddAttachment } from './AddAttachment'
 import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
