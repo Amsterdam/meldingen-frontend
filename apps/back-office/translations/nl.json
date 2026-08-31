@@ -96,8 +96,9 @@
     "attachments": {
       "title": "Bestanden",
       "no-data": "Geen bestanden toegevoegd",
-      "visually-hidden-text": "Bekijk document: {fileName} (opent in nieuw venster)",
-      "add-link": "Voeg bestand toevoegen"
+      "pdf-link": "Bekijk document: {fileName} (opent in nieuw venster)",
+      "photo-link": "Bekijk foto {fileName} in groot formaat",
+      "add-link": "Voeg bestand toe"
     },
     "errors": {
       "melding-not-found": "An error occurred"
@@ -252,6 +253,18 @@
     "cancel-link": "Annuleer",
     "errors": {
       "maxLength": "De notitie mag niet langer zijn dan {max} tekens."
+    }
+  },
+  "photos": {
+    "metadata": {
+      "title": "Foto’s - Gemeente Amsterdam"
+    },
+    "back-link": "Meldingdetails",
+    "title": "Foto’s",
+    "image-slider": {
+      "previous": "Vorige",
+      "next": "Volgende",
+      "thumbnail-button-prefix": "Foto"
     }
   },
   "shared": {

@@ -45,12 +45,12 @@ export const AttachmentSection = ({ attachments, meldingId }: Props) => {
 
       {hasAttachments ? (
         <div className={styles.attachmentsWrapper}>
-          {attachments.files.map(({ blob, createdAt, fileName }) => {
+          {attachments.files.map(({ blob, createdAt, fileName, id }) => {
             const { date, time } = formatDateString(createdAt, formatDateStringOptions)
 
             return (
               <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={fileName}>
-                <Attachment blob={blob} fileName={fileName} />
+                <Attachment blob={blob} fileName={fileName} id={id} meldingId={meldingId} />
                 <Paragraph>{`${date} ${time}`}</Paragraph>
                 <Paragraph>{fileName}</Paragraph>
               </dd>
