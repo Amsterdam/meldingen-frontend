@@ -1,7 +1,7 @@
 {
-  "name": "@meldingen/file-upload",
+  "name": "@meldingen/utils",
   "version": "0.1.0",
-  "description": "Components and logic for uploading, tracking progress of, and deleting files.",
+  "description": "A library of generic utility functions.",
   "license": "EUPL-1.2",
   "exports": {
     ".": "./src/index.ts"
@@ -11,9 +11,6 @@
     "test": "vitest",
     "test:watch": "vitest watch",
     "type-check": "tsc --project ./tsconfig.json --noEmit"
-  },
-  "dependencies": {
-    "@meldingen/utils": "workspace:*"
   },
   "private": true
 }
