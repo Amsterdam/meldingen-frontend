@@ -2,6 +2,8 @@ import type { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
 
+import type { MeldingAttachment } from './types'
+
 import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
 import { asset, melding } from '~/mocks/data'
@@ -14,9 +16,7 @@ vi.mock('./_components/AttachmentPreview', () => ({
 
 type DetailProps = ComponentProps<typeof Detail>
 
-const createAttachment = (
-  overrides: Partial<DetailProps['attachments']['attachmentsWithFile'][number]> = {},
-): DetailProps['attachments']['attachmentsWithFile'][number] => ({
+const createAttachment = (overrides: Partial<MeldingAttachment> = {}) => ({
   blob: new Blob(['test-blob'], { type: 'image/jpeg' }),
   createdAt: '2025-10-01T12:00:00Z',
   id: 42,
