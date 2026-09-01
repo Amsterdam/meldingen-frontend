@@ -49,7 +49,7 @@ export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachm
     setDeletedFileName(fileName)
 
     if (remainingAttachments.length === 0) {
-      router.push(`/melding/${meldingId}`)
+      router.replace(`/melding/${meldingId}`)
       return
     }
 
