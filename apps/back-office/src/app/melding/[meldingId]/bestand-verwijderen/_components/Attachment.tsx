@@ -1,7 +1,9 @@
 'use client'
 import { Button } from '@amsterdam/design-system-react/dist/Button'
-import clsx from 'clsx'
+import { Column } from '@amsterdam/design-system-react/dist/Column'
 import { useTranslations } from 'next-intl'
+
+import { Heading, Paragraph } from '@meldingen/ui'
 
 import type { MeldingAttachment } from '../../types'
 
@@ -22,16 +24,13 @@ export const Attachment = ({
 }: Props) => {
   const t = useTranslations('attachments')
   return (
-    <dl className={clsx(styles.container, styles.cardWide, 'ams-column')}>
-      <dt className={styles.term}>{originalFilename}</dt>
-      <div className="ams-column ams-column--gap-small">
-        <dd className={styles.description}>{createdAt}</dd>
-        <dd className={styles.description}>{user ? user.email : t('melding-form-user')}</dd>
-      </div>
-      <div className={styles.imagePreview}>
-        <AttachmentPreview blob={blob} fileName={originalFilename} />
-      </div>
-
+    <Column alignHorizontal="start" className={styles.cardWide}>
+      <Heading level={4}>{originalFilename}</Heading>
+      <Column gap="x-small">
+        <Paragraph>{createdAt}</Paragraph>
+        <Paragraph>{user ? user.email : t('melding-form-user')}</Paragraph>
+      </Column>
+      <AttachmentPreview blob={blob} fileName={originalFilename} />
       <Button
         aria-label={`${t('remove.submit-button')} ${originalFilename}`}
         disabled={isDeleting}
@@ -40,6 +39,6 @@ export const Attachment = ({
       >
         {t('remove.submit-button')}
       </Button>
-    </dl>
+    </Column>
   )
 }
