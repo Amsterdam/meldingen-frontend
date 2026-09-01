@@ -5,7 +5,7 @@ import { Fragment } from 'react'
 
 import { Column, Grid, Heading, Link, TabNavigation } from '@meldingen/ui'
 
-import type { GetAttachmentsDataResult } from './_utils/getAttachmentsData'
+import type { GetAttachmentsDataResult } from './_utils/server/getAttachmentsData'
 import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
 import { AttachmentSection } from './_components/AttachmentSection'
