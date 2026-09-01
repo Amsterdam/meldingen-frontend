@@ -9,9 +9,25 @@ import { Detail } from './Detail'
 import { asset, melding } from '~/mocks/data'
 
 vi.mock('./_components/AttachmentPreview', () => ({
-  AttachmentPreview: ({ fileName }: { blob: Blob | null; fileName: string }) => (
-    <div data-testid="attachment-preview">{fileName}</div>
-  ),
+  AttachmentPreview: ({
+    fileName,
+    id,
+    isLinkToSlider,
+    meldingId,
+  }: {
+    fileName: string
+    id: number
+    isLinkToSlider?: boolean
+    meldingId: number
+  }) =>
+    isLinkToSlider ? (
+      <a data-testid="attachment-preview" href={`/melding/${meldingId}/foto?id=${id}`}>
+        <span className="ams-visually-hidden">photo-link</span>
+        {fileName}
+      </a>
+    ) : (
+      <div data-testid="attachment-preview">{fileName}</div>
+    ),
 }))
 
 type DetailProps = ComponentProps<typeof Detail>
@@ -67,7 +83,7 @@ describe('Detail', () => {
     render(<Detail {...defaultProps} />)
 
     expect(screen.getByText('back-link')).toBeInTheDocument()
-    expect(screen.getByText('title')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'title' })).toBeInTheDocument()
   })
 
   it('renders the additional questions with melding text', () => {
@@ -166,10 +182,11 @@ describe('Detail', () => {
   it('renders the attachments', () => {
     render(<Detail {...defaultProps} />)
 
-    const attachmentLink = screen.getByRole('link', { name: 'photo-link' })
+    const attachmentLink = screen.getByTestId('attachment-preview')
 
-    expect(screen.getByText('attachments.title')).toBeInTheDocument()
+    expect(screen.getByText('title', { selector: 'dt' })).toBeInTheDocument()
     expect(attachmentLink).toBeInTheDocument()
+    expect(attachmentLink).toHaveAttribute('href', '/melding/123/foto?id=42')
     expect(screen.getByTestId('attachment-preview')).toHaveTextContent('IMG_0815.jpg')
     expect(screen.getAllByText('IMG_0815.jpg')).toHaveLength(2)
   })
@@ -181,7 +198,7 @@ describe('Detail', () => {
 
     render(<Detail {...defaultProps} attachments={attachments} />)
 
-    expect(screen.getByText('attachments.title')).toBeInTheDocument()
-    expect(screen.getByText('attachments.no-data')).toBeInTheDocument()
+    expect(screen.getByText('title', { selector: 'dt' })).toBeInTheDocument()
+    expect(screen.getByText('no-data')).toBeInTheDocument()
   })
 })
