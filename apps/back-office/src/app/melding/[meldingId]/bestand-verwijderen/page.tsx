@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
 
-import { getAttachmentsData } from '../_utils'
+import { getAttachmentsData } from '../_utils/server'
 import { Attachments } from './_components/Attachments'
 import { PageWrapper } from './_components/PageWrapper'
 import { RemoveAttachmentErrorProvider } from './_context/RemoveAttachmentErrorContext'

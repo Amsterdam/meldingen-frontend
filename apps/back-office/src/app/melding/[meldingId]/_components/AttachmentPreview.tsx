@@ -20,7 +20,7 @@ type Props = {
 }
 
 export const AttachmentPreview = ({ blob, fileName, id, meldingId }: Props) => {
-  const t = useTranslations('attachments')
+  const t = useTranslations('detail.attachments')
   const url = useObjectUrl(blob)
 
   if (!blob || !url) {

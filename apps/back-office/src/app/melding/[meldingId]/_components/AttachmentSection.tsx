@@ -7,7 +7,7 @@ import NextLink from 'next/link'
 
 import { Link } from '@meldingen/ui'
 
-import type { GetAttachmentsDataResult } from '../_utils/getAttachmentsData'
+import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
 import type { FormDateStringOptions } from '~/app/_utils/formatDateString'
 
 import { AttachmentPreview } from './AttachmentPreview'
@@ -52,10 +52,10 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
             const { date, time } = formatDateString(createdAt, formatDateStringOptions)
 
             return (
-              <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={fileName}>
-                <AttachmentPreview blob={blob} fileName={fileName} id={id} meldingId={meldingId} />
+              <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={originalFilename}>
+                <AttachmentPreview blob={blob} fileName={originalFilename} id={id} meldingId={meldingId} />
                 <Paragraph>{`${date} ${time}`}</Paragraph>
-                <Paragraph>{fileName}</Paragraph>
+                <Paragraph>{originalFilename}</Paragraph>
               </dd>
             )
           })}
