@@ -131,6 +131,23 @@ export default defineConfig(
       'import/no-cycle': 'error',
       'import/no-default-export': 'error',
       'import/no-named-as-default': 'error',
+      'no-restricted-imports': [
+        'warn',
+        {
+          patterns: [
+            {
+              group: ['@amsterdam/design-system-react', '@amsterdam/design-system-react/dist/Grid'],
+              importNames: ['Grid'],
+              message: 'Import Alert from @meldingen/ui',
+            },
+            {
+              group: ['@amsterdam/design-system-react', '@amsterdam/design-system-react/dist/Heading'],
+              importNames: ['Heading'],
+              message: 'Import Alert from @meldingen/ui',
+            },
+          ],
+        },
+      ],
 
       // ESLint
       'no-console': 'error',

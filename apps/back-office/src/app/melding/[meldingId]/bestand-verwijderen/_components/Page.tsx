@@ -2,8 +2,9 @@
 
 import type { ReactNode } from 'react'
 
-import { Grid, Heading } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
+
+import { Grid, Heading } from '@meldingen/ui'
 
 import { useRemoveAttachmentError } from '../_context/RemoveAttachmentErrorContext'
 import { BackLink } from '../../_components/BackLink'
