@@ -59,8 +59,7 @@ const deleteAttachment = async (serverId: number) => {
 const isErroredFileUpload = (upload: FileUploadState): upload is ErroredFileUpload => upload.status === 'error'
 
 export const AddAttachment = ({ attachments, meldingId }: Props) => {
-  const tAdd = useTranslations('add-attachment')
-  const tRemove = useTranslations('remove-attachment')
+  const t = useTranslations('attachments')
 
   const genericErrorAlertRef = useRef<HTMLDivElement>(null)
 
@@ -80,7 +79,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   const { deletedFileName, fileUploads, genericError, handleDelete, handleUpload } = useFileUploads({
     deleteAttachment,
     existingFiles,
-    idPrefix: tAdd('file-upload.id-prefix'),
+    idPrefix: t('add.file-upload.id-prefix'),
     inputRef: fileUploadRef,
     maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
     maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
@@ -104,7 +103,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   }
 
   const handleOnDelete = (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => {
-    const shouldDelete = window.confirm(tRemove('confirmation-prompt', { fileName }))
+    const shouldDelete = window.confirm(t('remove.confirmation-prompt', { fileName }))
 
     if (!shouldDelete) return
 
@@ -122,7 +121,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   const hasErroredFileUploads = erroredFileUploads.length > 0
   const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
     key: id,
-    message: tAdd(errorMessage),
+    message: t(`add.${errorMessage}`),
   }))
 
   useEffect(() => {
@@ -140,7 +139,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
 
   return (
     <div className="ams-page__area--body">
-      <BackLink href={meldingDetailLink}>{tAdd('back-link')}</BackLink>
+      <BackLink href={meldingDetailLink}>{t('back-link')}</BackLink>
 
       <Grid as="main" className="ams-page__area--content ams-mb-l">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
@@ -149,42 +148,42 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
           {genericError && (
             <Alert
               className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
-              heading={tAdd(genericError.title, genericError.options)}
+              heading={t(genericError.title, genericError.options)}
               headingLevel={2}
               ref={genericErrorAlertRef}
               role="alert"
               severity="error"
               tabIndex={-1}
             >
-              {genericError.description && <Paragraph>{tAdd(genericError.description)}</Paragraph>}
+              {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
             </Alert>
           )}
 
           <InvalidFormAlert
             errors={validationErrors}
-            heading={tAdd('validation-errors.alert-title', { count: validationErrors.length })}
+            heading={t('add.validation-errors.alert-title', { count: validationErrors.length })}
             shouldFocus={shouldFocusInvalidAlert}
           />
 
           <Heading className="ams-mb-l" level={1}>
-            {tAdd('title')}
+            {t('add.title')}
           </Heading>
 
           <Column className={clsx(styles.contentWrapper, 'ams-mb-m')}>
             <div className={styles.uploadInfo}>
               <Heading id="file-upload-label" level={2} size="level-4">
-                {tAdd('upload.title')}
+                {t('add.upload.title')}
               </Heading>
-              <Paragraph id="file-upload-description">{tAdd('upload.description')}</Paragraph>
-              <Paragraph>{tAdd('upload.count', { currentCount: validUploadedFilesCount, maxCount: 5 })}</Paragraph>
+              <Paragraph id="file-upload-description">{t('add.upload.description')}</Paragraph>
+              <Paragraph>{t('add.upload.count', { currentCount: validUploadedFilesCount, maxCount: 5 })}</Paragraph>
             </div>
 
             <FileUpload
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp,.pdf"
-              aria-describedby={getAriaDescribedBy(fileUploadId, tAdd('upload.description'))}
+              aria-describedby={getAriaDescribedBy(fileUploadId, t('add.upload.description'))}
               aria-labelledby={`file-upload-label ${fileUploadId}`}
-              buttonText={tAdd('file-upload.select-file-button')}
-              dropAreaText={tAdd('file-upload.drop-area')}
+              buttonText={t('add.file-upload.select-file-button')}
+              dropAreaText={t('add.file-upload.drop-area')}
               id={fileUploadId}
               multiple
               onChange={onUpload}
@@ -196,13 +195,13 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
                 <AttachmentsList files={fileUploads} handleDelete={handleOnDelete} />
 
                 <div aria-live="polite" className="ams-visually-hidden">
-                  {deletedFileName ? tAdd('delete-notification', { fileName: deletedFileName }) : ''}
+                  {deletedFileName ? t('add.delete-notification', { fileName: deletedFileName }) : ''}
                 </div>
               </>
             )}
           </Column>
 
-          <Link href={meldingDetailLink}>{hasAttachments ? tAdd('back-link') : tAdd('cancel-link')}</Link>
+          <Link href={meldingDetailLink}>{hasAttachments ? t('back-link') : t('add.cancel-link')}</Link>
         </Grid.Cell>
       </Grid>
     </div>

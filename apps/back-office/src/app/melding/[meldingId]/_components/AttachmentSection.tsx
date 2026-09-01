@@ -35,8 +35,7 @@ const formatDateStringOptions: FormDateStringOptions = {
 }
 
 export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachments, error }, meldingId }: Props) => {
-  const tAttachments = useTranslations('attachments')
-  const tDetail = useTranslations('detail')
+  const t = useTranslations('attachments')
 
   const hasAttachments = attachments.length > 0
   const addAttachmentLink = `/melding/${meldingId}/bestand-toevoegen`
@@ -44,8 +43,8 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
 
   return (
     <dl className={clsx(parentStyles.descriptionList, parentStyles.cardWide, styles.attachmentsSection)}>
-      <dt className={styles.attachmentsTerm}>{tDetail('attachments.title')}</dt>
-      {error && <ApiErrorAlert description={tAttachments('fetch-error.description')} shouldFocus={false} />}
+      <dt className={styles.attachmentsTerm}>{t('title')}</dt>
+      {error && <ApiErrorAlert description={t('fetch-error.description')} shouldFocus={false} />}
 
       {hasAttachments && !error ? (
         <div className={styles.attachmentsWrapper}>
@@ -63,19 +62,19 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
         </div>
       ) : (
         <dd className={styles.fullWidth}>
-          <Paragraph>{tDetail('attachments.no-data')}</Paragraph>
+          <Paragraph>{t('no-data')}</Paragraph>
         </dd>
       )}
 
       <dd className={styles.fullWidth}>
         <Link href={addAttachmentLink} linkComponent={NextLink}>
-          {tDetail('attachments.add-link')}
+          {t('add-link')}
         </Link>
       </dd>
       {hasAttachments && (
         <dd className={styles.fullWidth}>
           <Link href={removeAttachmentLink} linkComponent={NextLink}>
-            {tDetail('attachments.remove-link')}
+            {t('remove-link')}
           </Link>
         </dd>
       )}

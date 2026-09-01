@@ -12,7 +12,7 @@ type Props = {
 }
 
 export const AttachmentsList = ({ files, handleDelete }: Props) => {
-  const t = useTranslations('add-attachment')
+  const t = useTranslations('attachments.add')
 
   return (
     <FileList>
