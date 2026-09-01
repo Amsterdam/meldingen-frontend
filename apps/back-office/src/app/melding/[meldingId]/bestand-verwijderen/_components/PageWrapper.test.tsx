@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { RemoveAttachmentErrorProvider, useRemoveAttachmentError } from '../_context/RemoveAttachmentErrorContext'
-import { Page } from './Page'
+import { PageWrapper } from './PageWrapper'
 
 const ErrorTrigger = () => {
   const { setApiError } = useRemoveAttachmentError()
@@ -14,13 +14,13 @@ const ErrorTrigger = () => {
   )
 }
 
-describe('Page', () => {
+describe('PageWrapper', () => {
   it('renders the back link, title and content', () => {
     render(
       <RemoveAttachmentErrorProvider>
-        <Page meldingId={123}>
+        <PageWrapper meldingId={123}>
           <p>Child content</p>
-        </Page>
+        </PageWrapper>
       </RemoveAttachmentErrorProvider>,
     )
 
@@ -34,9 +34,9 @@ describe('Page', () => {
 
     render(
       <RemoveAttachmentErrorProvider>
-        <Page meldingId={123}>
+        <PageWrapper meldingId={123}>
           <ErrorTrigger />
-        </Page>
+        </PageWrapper>
       </RemoveAttachmentErrorProvider>,
     )
 

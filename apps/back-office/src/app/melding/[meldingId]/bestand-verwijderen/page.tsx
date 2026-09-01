@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 
 import { getAttachmentsData } from '../_utils'
 import { Attachments } from './_components/Attachments'
-import { Page } from './_components/Page'
+import { PageWrapper } from './_components/PageWrapper'
 import { RemoveAttachmentErrorProvider } from './_context/RemoveAttachmentErrorContext'
 import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
@@ -29,9 +29,9 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   return (
     <RemoveAttachmentErrorProvider>
-      <Page meldingId={meldingId}>
+      <PageWrapper meldingId={meldingId}>
         <Attachments attachments={attachments} meldingId={meldingId} />
-      </Page>
+      </PageWrapper>
     </RemoveAttachmentErrorProvider>
   )
 }
