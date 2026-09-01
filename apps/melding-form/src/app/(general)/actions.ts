@@ -3,7 +3,12 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { handleApiError, hasValidationErrors, patchMeldingByMeldingIdMelder, postMelding } from '@meldingen/api-client'
+import {
+  getApiErrorMessage,
+  hasValidationErrors,
+  patchMeldingByMeldingIdMelder,
+  postMelding,
+} from '@meldingen/api-client'
 
 import { resolveClassificationRedirect } from '../_utils/resolveClassificationRedirect'
 import { COOKIES } from '~/constants'
@@ -48,7 +53,7 @@ export const postPrimaryForm = async (
   if (hasValidationErrors(response, error)) {
     return {
       formData,
-      validationErrors: [{ key: 'primary', message: handleApiError(error) }],
+      validationErrors: [{ key: 'primary', message: getApiErrorMessage(error) }],
     }
   }
 

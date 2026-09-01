@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { handleApiError, hasValidationErrors, putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
+import { getApiErrorMessage, hasValidationErrors, putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
 import type { AnswersByKey } from '../../../_utils/conditions'
 import type { PanelComponentsConditions } from './_utils/navigation'
@@ -142,7 +142,7 @@ export const postForm = async (
       formData,
       validationErrors: resultsWithValidationError.map(({ key, value }) => ({
         key,
-        message: handleApiError(value.error),
+        message: getApiErrorMessage(value.error),
       })),
     }
   }

@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 import type { MeldingOutput } from '@meldingen/api-client'
 
-import { handleApiError, hasValidationErrors } from '@meldingen/api-client'
+import { getApiErrorMessage, hasValidationErrors } from '@meldingen/api-client'
 import { safeJSONParse } from '@meldingen/utils'
 
 import type { MeldingData } from './types'
@@ -124,7 +124,7 @@ export const postMeldingForm = async (
   if (hasValidationErrors(response, error)) {
     return {
       formData,
-      validationErrors: [{ key: 'primary', message: handleApiError(error) }],
+      validationErrors: [{ key: 'primary', message: getApiErrorMessage(error) }],
     }
   }
 

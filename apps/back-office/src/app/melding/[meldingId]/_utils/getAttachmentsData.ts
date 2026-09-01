@@ -1,4 +1,4 @@
-import { handleApiError } from '@meldingen/api-client'
+import { getApiErrorMessage } from '@meldingen/api-client'
 
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
 
@@ -9,7 +9,7 @@ export const getAttachmentsData = async (meldingId: number, t: (key: string) => 
     path: { melding_id: meldingId },
   })
 
-  if (error) return { error: handleApiError(error) }
+  if (error) return { error: getApiErrorMessage(error) }
 
   const attachments = await Promise.all(
     data.map(async ({ created_at, id, original_filename }) => {
@@ -22,7 +22,7 @@ export const getAttachmentsData = async (meldingId: number, t: (key: string) => 
         return {
           blob: null,
           createdAt: created_at,
-          error: handleApiError(error),
+          error: getApiErrorMessage(error),
           fileName: original_filename,
           id,
         }

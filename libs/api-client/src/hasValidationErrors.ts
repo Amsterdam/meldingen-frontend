@@ -1,6 +1,6 @@
 import type { ValidationError } from './generated'
 
-import { isApiErrorArray } from './handleApiError'
+import { isApiErrorArray } from './getApiErrorMessage'
 
 export const hasValidationErrors = (response?: Response, error?: unknown): error is { detail: ValidationError[] } =>
   response?.status === 422 &&

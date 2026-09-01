@@ -1,3 +1,3 @@
 export * from './generated'
-export { handleApiError } from './handleApiError'
+export { getApiErrorMessage } from './getApiErrorMessage'
 export { hasValidationErrors } from './hasValidationErrors'

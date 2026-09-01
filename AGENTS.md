@@ -571,21 +571,20 @@ it('returns validation error for invalid email', async () => {
 
 ## Key Files to Reference
 
-| Pattern            | Reference File                                                                                                      |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| Server Action      | [apps/melding-form/src/app/(general)/contact/actions.ts](<apps/melding-form/src/app/(general)/contact/actions.ts>)  |
-| Form rendering     | [libs/form-renderer/src/FormRenderer.tsx](libs/form-renderer/src/FormRenderer.tsx)                                  |
-| Form type guards   | [libs/form-renderer/src/utils.ts](libs/form-renderer/src/utils.ts)                                                  |
-| API error handling | [apps/melding-form/src/handleApiError.ts](apps/melding-form/src/handleApiError.ts)                                  |
-| MSW mock handlers  | [apps/melding-form/src/mocks/handlers.ts](apps/melding-form/src/mocks/handlers.ts)                                  |
-| UI component       | [libs/ui/src/FileUpload/FileUpload.tsx](libs/ui/src/FileUpload/FileUpload.tsx)                                      |
-| CSS Module         | [libs/ui/src/FileUpload/FileUpload.module.css](libs/ui/src/FileUpload/FileUpload.module.css)                        |
-| NextAuth config    | [apps/back-office/src/app/\_authentication/authOptions.ts](apps/back-office/src/app/_authentication/authOptions.ts) |
-| API client proxy   | [apps/back-office/src/apiClientProxy.ts](apps/back-office/src/apiClientProxy.ts)                                    |
-| Translations       | [apps/melding-form/translations/nl.json](apps/melding-form/translations/nl.json)                                    |
-| i18n config        | [apps/melding-form/i18n/request.ts](apps/melding-form/i18n/request.ts)                                              |
-| Cookie constants   | [apps/melding-form/src/constants.ts](apps/melding-form/src/constants.ts)                                            |
-| Middleware         | [apps/melding-form/src/proxy.ts](apps/melding-form/src/proxy.ts)                                                    |
+| Pattern           | Reference File                                                                                                      |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Server Action     | [apps/melding-form/src/app/(general)/contact/actions.ts](<apps/melding-form/src/app/(general)/contact/actions.ts>)  |
+| Form rendering    | [libs/form-renderer/src/FormRenderer.tsx](libs/form-renderer/src/FormRenderer.tsx)                                  |
+| Form type guards  | [libs/form-renderer/src/utils.ts](libs/form-renderer/src/utils.ts)                                                  |
+| MSW mock handlers | [apps/melding-form/src/mocks/handlers.ts](apps/melding-form/src/mocks/handlers.ts)                                  |
+| UI component      | [libs/ui/src/FileUpload/FileUpload.tsx](libs/ui/src/FileUpload/FileUpload.tsx)                                      |
+| CSS Module        | [libs/ui/src/FileUpload/FileUpload.module.css](libs/ui/src/FileUpload/FileUpload.module.css)                        |
+| NextAuth config   | [apps/back-office/src/app/\_authentication/authOptions.ts](apps/back-office/src/app/_authentication/authOptions.ts) |
+| API client proxy  | [apps/back-office/src/apiClientProxy.ts](apps/back-office/src/apiClientProxy.ts)                                    |
+| Translations      | [apps/melding-form/translations/nl.json](apps/melding-form/translations/nl.json)                                    |
+| i18n config       | [apps/melding-form/i18n/request.ts](apps/melding-form/i18n/request.ts)                                              |
+| Cookie constants  | [apps/melding-form/src/constants.ts](apps/melding-form/src/constants.ts)                                            |
+| Middleware        | [apps/melding-form/src/proxy.ts](apps/melding-form/src/proxy.ts)                                                    |
 
 ## Documentation References
 

@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { handleApiError } from '@meldingen/api-client'
+import { getApiErrorMessage } from '@meldingen/api-client'
 
 import { COOKIES, DEFAULT_PAGE_SIZE, SORT } from '../constants'
 import { Overview } from './Overview'
@@ -44,7 +44,7 @@ export default async ({ searchParams }: Props) => {
 
   const meldingenCountString = response?.headers.get('Content-Range')?.split('/')[1]
 
-  if (error || !meldingenCountString) return handleApiError(error)
+  if (error || !meldingenCountString) return getApiErrorMessage(error)
 
   const meldingenCount = parseInt(meldingenCountString, 10)
 
