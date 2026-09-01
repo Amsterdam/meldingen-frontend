@@ -1,6 +1,7 @@
-import type { ComponentProps } from 'react'
-
 import { render, screen } from '@testing-library/react'
+
+import type { GetAttachmentsDataResult } from '../_utils/getAttachmentsData'
+import type { MeldingAttachmentWithFile } from '../types'
 
 import { AttachmentSection } from './AttachmentSection'
 
@@ -10,11 +11,7 @@ vi.mock('./AttachmentPreview', () => ({
   ),
 }))
 
-type AttachmentSectionProps = ComponentProps<typeof AttachmentSection>
-
-const createAttachment = (
-  overrides: Partial<AttachmentSectionProps['attachments']['attachmentsWithFile'][number]> = {},
-): AttachmentSectionProps['attachments']['attachmentsWithFile'][number] => ({
+const createAttachment = (overrides: Partial<MeldingAttachmentWithFile> = {}) => ({
   blob: new Blob(['test-blob'], { type: 'image/jpeg' }),
   createdAt: '2025-10-01T12:00:00Z',
   id: 1,
@@ -29,7 +26,7 @@ const defaultProps = {
   },
 
   meldingId: 123,
-} satisfies AttachmentSectionProps
+}
 
 describe('AttachmentSection', () => {
   it('renders the component with attachments', () => {
@@ -41,7 +38,7 @@ describe('AttachmentSection', () => {
   })
 
   it('renders the component without attachments with no-data message', () => {
-    const attachments: AttachmentSectionProps['attachments'] = { attachmentsWithFile: [] }
+    const attachments: GetAttachmentsDataResult = { attachmentsWithFile: [] }
 
     render(<AttachmentSection {...defaultProps} attachments={attachments} />)
 
