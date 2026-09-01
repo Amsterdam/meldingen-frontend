@@ -21,5 +21,5 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const attachments = await getAttachmentsData(meldingId)
 
-  return <AddAttachment attachments={attachments} meldingId={meldingId} />
+  return <AddAttachment attachments={attachments.attachmentsWithFile} meldingId={meldingId} />
 }
