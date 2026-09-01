@@ -58,17 +58,17 @@ describe('AddAttachment', () => {
     render(<AddAttachment {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
-    const heading = screen.getByRole('heading', { level: 1, name: 'title' })
+    const heading = screen.getByRole('heading', { level: 1, name: 'add.title' })
     const uploadButton = screen.getByRole('button')
-    const bottomLink = screen.getByRole('link', { name: 'cancel-link' })
+    const bottomLink = screen.getByRole('link', { name: 'add.cancel-link' })
 
     expect(backLink).toBeInTheDocument()
     expect(heading).toBeInTheDocument()
     expect(uploadButton).toBeInTheDocument()
     expect(bottomLink).toBeInTheDocument()
 
-    expect(uploadButton).toHaveTextContent('file-upload.drop-area')
-    expect(uploadButton).toHaveTextContent('file-upload.select-file-button')
+    expect(uploadButton).toHaveTextContent('add.file-upload.drop-area')
+    expect(uploadButton).toHaveTextContent('add.file-upload.select-file-button')
   })
 
   it('renders existing attachments and shows the back-link instead of the cancel-link', () => {
@@ -125,7 +125,7 @@ describe('AddAttachment', () => {
 
     await user.click(screen.getByRole('button', { name: 'file-upload.action-button-delete first.png' }))
 
-    expect(confirmSpy).toHaveBeenCalledWith('confirmation-prompt')
+    expect(confirmSpy).toHaveBeenCalledWith('remove.confirmation-prompt')
     expect(confirmSpy).toHaveReturnedWith(true)
 
     expect(screen.queryByText('first.png')).not.toBeInTheDocument()
@@ -145,9 +145,9 @@ describe('AddAttachment', () => {
 
     await user.upload(fileInput, [mockFile])
 
-    const validationLink = await screen.findByRole('link', { name: 'validation-errors.file-too-large' })
+    const validationLink = await screen.findByRole('link', { name: 'add.validation-errors.file-too-large' })
 
-    expect(validationLink).toHaveAttribute('href', '#file-upload.id-prefix-1')
+    expect(validationLink).toHaveAttribute('href', '#add.file-upload.id-prefix-1')
     expect(container.querySelectorAll('.ams-alert')[0]).toHaveTextContent('heading')
 
     // Both an API error alert and a validation error alert are shown; the validation alert
@@ -190,7 +190,7 @@ describe('AddAttachment', () => {
 
     await user.click(deleteButton)
 
-    const notification = await screen.findByText('delete-notification')
+    const notification = await screen.findByText('add.delete-notification')
 
     expect(notification).toBeInTheDocument()
     expect(screen.queryByText('first.png')).not.toBeInTheDocument()

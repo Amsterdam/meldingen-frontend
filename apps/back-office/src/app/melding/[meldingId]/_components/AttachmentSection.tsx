@@ -53,7 +53,13 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
 
             return (
               <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={originalFilename}>
-                <AttachmentPreview blob={blob} fileName={originalFilename} id={id} meldingId={meldingId} />
+                <AttachmentPreview
+                  blob={blob}
+                  fileName={originalFilename}
+                  id={id}
+                  isLinkToSlider
+                  meldingId={meldingId}
+                />
                 <Paragraph>{`${date} ${time}`}</Paragraph>
                 <Paragraph>{originalFilename}</Paragraph>
               </dd>

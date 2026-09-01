@@ -16,10 +16,11 @@ type Props = {
   blob: Blob | null
   fileName: string
   id: number
+  isLinkToSlider?: boolean
   meldingId: number
 }
 
-export const AttachmentPreview = ({ blob, fileName, id, meldingId }: Props) => {
+export const AttachmentPreview = ({ blob, fileName, id, isLinkToSlider, meldingId }: Props) => {
   const t = useTranslations('detail.attachments')
   const url = useObjectUrl(blob)
 
@@ -42,10 +43,12 @@ export const AttachmentPreview = ({ blob, fileName, id, meldingId }: Props) => {
     )
   }
 
-  return (
+  return isLinkToSlider ? (
     <Link href={`/melding/${meldingId}/foto?id=${id}`} linkComponent={NextLink}>
       <Image alt="" src={url} />
       <span className="ams-visually-hidden">{t('photo-link', { fileName })}</span>
     </Link>
+  ) : (
+    <Image alt="" src={url} />
   )
 }

@@ -26,6 +26,19 @@ describe('AttachmentPreview', () => {
       const image = screen.getByRole('presentation')
 
       expect(image).toHaveAttribute('src', 'test-url')
+      expect(screen.queryByRole('link')).not.toBeInTheDocument()
+    })
+
+    it('renders a link to the image slider when requested', async () => {
+      render(
+        <AttachmentPreview
+          blob={new Blob(['test-blob'], { type: 'image/jpeg' })}
+          fileName={'IMG_0815.jpg'}
+          id={7}
+          isLinkToSlider
+          meldingId={42}
+        />,
+      )
 
       const link = screen.getByRole('link')
 
