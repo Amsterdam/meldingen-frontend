@@ -11,15 +11,13 @@ describe('getAttachmentsData', () => {
     const result = await getAttachmentsData(mockMeldingId)
 
     expect(result).toMatchObject({
-      files: [
+      attachmentsWithFile: [
         {
           blob: expect.any(Blob),
-          fileName: 'IMG_0815.jpg',
           id: 42,
+          originalFilename: 'IMG_0815.jpg',
         },
       ],
-      key: 'attachments',
-      term: 'detail.attachments.title',
     })
   })
 
@@ -45,15 +43,13 @@ describe('getAttachmentsData', () => {
     expect((result.attachmentsWithFile?.[0]?.blob as Blob).type).toBe('application/pdf')
 
     expect(result).toMatchObject({
-      files: [
+      attachmentsWithFile: [
         {
           blob: expect.any(Blob),
-          fileName: 'PDF_0815.pdf',
           id: 1,
+          originalFilename: 'PDF_0815.pdf',
         },
       ],
-      key: 'attachments',
-      term: 'detail.attachments.title',
     })
   })
 

@@ -22,13 +22,15 @@ vi.mock('./Attachment', () => ({
   Attachment: ({
     attachment,
     isDeleting,
+    meldingId,
     onDelete,
   }: {
     attachment: MeldingAttachment
     isDeleting: boolean
+    meldingId: number
     onDelete: () => void
   }) => (
-    <button disabled={isDeleting} onClick={onDelete} type="button">
+    <button data-melding-id={meldingId} disabled={isDeleting} onClick={onDelete} type="button">
       {attachment.originalFilename}
     </button>
   ),
@@ -104,8 +106,8 @@ describe('Attachments', () => {
       }),
     )
 
-    const push = vi.fn()
-    vi.mocked(useRouter).mockReturnValue(createMockRouter({ push }))
+    const replace = vi.fn()
+    vi.mocked(useRouter).mockReturnValue(createMockRouter({ replace }))
 
     renderAttachments([
       createAttachment({ id: 1, originalFilename: 'bewijs.png' }),
@@ -126,7 +128,7 @@ describe('Attachments', () => {
       expect(screen.queryByRole('button', { name: 'bewijs.png' })).not.toBeInTheDocument()
     })
     expect(screen.getByRole('button', { name: 'foto.png' })).toBeInTheDocument()
-    expect(push).not.toHaveBeenCalled()
+    expect(replace).not.toHaveBeenCalled()
   })
 
   it('shows the delete error and keeps the attachment available when deletion fails', async () => {
@@ -147,9 +149,9 @@ describe('Attachments', () => {
 
   it('redirects to the detail page after deleting the last attachment', async () => {
     const user = userEvent.setup()
-    const push = vi.fn()
+    const replace = vi.fn()
 
-    vi.mocked(useRouter).mockReturnValue(createMockRouter({ push }))
+    vi.mocked(useRouter).mockReturnValue(createMockRouter({ replace }))
     vi.spyOn(window, 'confirm').mockReturnValue(true)
     vi.mocked(deleteAttachmentAction).mockResolvedValue({ error: undefined, status: 204 })
 
@@ -158,7 +160,7 @@ describe('Attachments', () => {
     await user.click(screen.getByRole('button', { name: 'bewijs.png' }))
 
     await waitFor(() => {
-      expect(push).toHaveBeenCalledWith('/melding/123')
+      expect(replace).toHaveBeenCalledWith('/melding/123')
     })
   })
 })

@@ -32,7 +32,7 @@ describe('AttachmentSection', () => {
   it('renders the component with attachments', () => {
     render(<AttachmentSection {...defaultProps} />)
 
-    expect(screen.getByText('attachments.title')).toBeInTheDocument()
+    expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByTestId('attachment-preview')).toHaveTextContent('IMG_0815.jpg')
     expect(screen.getAllByText('IMG_0815.jpg')).toHaveLength(2)
   })
@@ -42,14 +42,14 @@ describe('AttachmentSection', () => {
 
     render(<AttachmentSection {...defaultProps} attachments={attachments} />)
 
-    expect(screen.getByText('attachments.title')).toBeInTheDocument()
-    expect(screen.getByText('attachments.no-data')).toBeInTheDocument()
+    expect(screen.getByText('title')).toBeInTheDocument()
+    expect(screen.getByText('no-data')).toBeInTheDocument()
   })
 
   it('renders the add attachment link correctly', () => {
     render(<AttachmentSection {...defaultProps} />)
 
-    const addAttachmentLink = screen.getByRole('link', { name: 'attachments.add-link' })
+    const addAttachmentLink = screen.getByRole('link', { name: 'add-link' })
     expect(addAttachmentLink).toBeInTheDocument()
 
     expect(addAttachmentLink).toHaveAttribute('href', `/melding/${defaultProps.meldingId}/bestand-toevoegen`)

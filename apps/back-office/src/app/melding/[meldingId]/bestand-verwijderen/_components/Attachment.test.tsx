@@ -6,7 +6,7 @@ import type { MeldingAttachment } from '../../types'
 import { Attachment } from './Attachment'
 
 vi.mock('../../_components/AttachmentPreview', () => ({
-  AttachmentPreview: ({ fileName }: { blob: Blob | null; fileName: string }) => (
+  AttachmentPreview: ({ fileName }: { blob: Blob | null; fileName: string; id: number; meldingId: number }) => (
     <div data-testid="attachment-preview">{fileName}</div>
   ),
 }))
@@ -37,7 +37,7 @@ describe('Attachment', () => {
     expect(screen.getByText('behandelaar@example.com')).toBeInTheDocument()
     expect(screen.getByTestId('attachment-preview')).toHaveTextContent('bewijs.png')
 
-    await user.click(screen.getByRole('button', { name: 'submit-button bewijs.png' }))
+    await user.click(screen.getByRole('button', { name: 'remove.submit-button bewijs.png' }))
 
     expect(onDelete).toHaveBeenCalledTimes(1)
   })
@@ -52,7 +52,7 @@ describe('Attachment', () => {
       />,
     )
 
-    expect(screen.getByText('attachments.melding-form-user')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'submit-button bewijs.png' })).toBeDisabled()
+    expect(screen.getByText('melding-form-user')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'remove.submit-button bewijs.png' })).toBeDisabled()
   })
 })
