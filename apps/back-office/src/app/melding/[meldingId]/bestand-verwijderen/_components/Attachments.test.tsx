@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useRouter } from 'next/navigation'
 
-import type { MeldingAttachmentWithFile } from '../../types'
+import type { MeldingAttachment } from '../../types'
 
 import { RemoveAttachmentErrorProvider, useRemoveAttachmentError } from '../_context/RemoveAttachmentErrorContext'
 import { deleteAttachmentAction } from '../actions'
@@ -24,7 +24,7 @@ vi.mock('./Attachment', () => ({
     isDeleting,
     onDelete,
   }: {
-    attachment: MeldingAttachmentWithFile
+    attachment: MeldingAttachment
     isDeleting: boolean
     onDelete: () => void
   }) => (
@@ -34,7 +34,7 @@ vi.mock('./Attachment', () => ({
   ),
 }))
 
-const createAttachment = (overrides: Partial<MeldingAttachmentWithFile> = {}): MeldingAttachmentWithFile => ({
+const createAttachment = (overrides: Partial<MeldingAttachment> = {}): MeldingAttachment => ({
   blob: new Blob(['file-content'], { type: 'image/png' }),
   createdAt: '2024-01-01 10:30',
   id: 1,
@@ -64,7 +64,7 @@ const createMockRouter = (overrides: Partial<ReturnType<typeof useRouter>> = {})
   ...overrides,
 })
 
-const renderAttachments = (attachments: MeldingAttachmentWithFile[]) =>
+const renderAttachments = (attachments: MeldingAttachment[]) =>
   render(
     <RemoveAttachmentErrorProvider>
       <Attachments attachments={{ attachmentsWithFile: attachments }} meldingId={123} />

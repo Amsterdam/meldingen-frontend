@@ -1,4 +1,4 @@
-export type MeldingAttachment = {
+type Attachment = {
   createdAt: string
   id: number
   originalFilename: string
@@ -10,8 +10,8 @@ export type MeldingAttachment = {
   }
 }
 
-export type AttachmentFile = {
+type File = {
   blob: Blob | null
 }
 
-export type MeldingAttachmentWithFile = AttachmentFile & MeldingAttachment
+export type MeldingAttachment = Attachment & File

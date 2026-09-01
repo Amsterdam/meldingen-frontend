@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import type { MeldingAttachmentWithFile } from '../../types'
+import type { MeldingAttachment } from '../../types'
 
 import { Attachment } from './Attachment'
 
@@ -11,7 +11,7 @@ vi.mock('../../_components/AttachmentPreview', () => ({
   ),
 }))
 
-const createAttachment = (overrides: Partial<MeldingAttachmentWithFile> = {}): MeldingAttachmentWithFile => ({
+const createAttachment = (overrides: Partial<MeldingAttachment> = {}): MeldingAttachment => ({
   blob: new Blob(['file-content'], { type: 'image/png' }),
   createdAt: '2024-01-01 10:30',
   id: 1,

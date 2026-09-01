@@ -3,14 +3,14 @@ import { Button } from '@amsterdam/design-system-react/dist/Button'
 import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
 
-import type { MeldingAttachmentWithFile } from '../../types'
+import type { MeldingAttachment } from '../../types'
 
 import { AttachmentPreview } from '../../_components/AttachmentPreview'
 
 import styles from './Attachment.module.css'
 
 type Props = {
-  attachment: MeldingAttachmentWithFile
+  attachment: MeldingAttachment
   isDeleting: boolean
   onDelete: () => void
 }

@@ -1,11 +1,11 @@
-import type { MeldingAttachmentWithFile } from '../../types'
+import type { MeldingAttachment } from '../../types'
 
 import { isFilePDF } from '../'
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
 import { handleApiError } from '~/app/_utils/handleApiError'
 
 export type GetAttachmentsDataResult = {
-  attachmentsWithFile: MeldingAttachmentWithFile[]
+  attachmentsWithFile: MeldingAttachment[]
   getMeldingByMeldingIdAttachmentsError?: string
 }
 

@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
 import type { GetAttachmentsDataResult } from '../_utils/getAttachmentsData'
-import type { MeldingAttachmentWithFile } from '../types'
+import type { MeldingAttachment } from '../types'
 
 import { getAttachmentsData } from '../_utils'
 import { Attachments } from './_components/Attachments'
@@ -24,7 +24,7 @@ vi.mock('next-intl/server', async () => ({
     vi.fn().mockImplementation((key, params) => (params ? `${key}: ${JSON.stringify(params)}` : key)),
 }))
 
-const attachmentFiles: MeldingAttachmentWithFile[] = [
+const attachmentFiles: MeldingAttachment[] = [
   {
     blob: new Blob(['file-content'], { type: 'image/png' }),
     createdAt: '2024-01-01 10:30',
