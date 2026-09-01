@@ -38,7 +38,8 @@ export const AttachmentSection = ({
   attachments: { attachmentsWithFile: attachments, getMeldingByMeldingIdAttachmentsError },
   meldingId,
 }: Props) => {
-  const t = useTranslations('detail')
+  const tAttachments = useTranslations('attachments')
+  const tDetail = useTranslations('detail')
 
   const hasAttachments = attachments.length > 0
   const addAttachmentLink = `/melding/${meldingId}/bestand-toevoegen`
@@ -46,9 +47,9 @@ export const AttachmentSection = ({
 
   return (
     <dl className={clsx(parentStyles.descriptionList, parentStyles.cardWide, styles.attachmentsSection)}>
-      <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
+      <dt className={styles.attachmentsTerm}>{tDetail('attachments.title')}</dt>
       {getMeldingByMeldingIdAttachmentsError && (
-        <ApiErrorAlert description="De bestanden konden niet worden geladen." shouldFocus={false} />
+        <ApiErrorAlert description={tAttachments('fetch-error.description')} shouldFocus={false} />
       )}
 
       {hasAttachments && !getMeldingByMeldingIdAttachmentsError ? (
@@ -67,19 +68,19 @@ export const AttachmentSection = ({
         </div>
       ) : (
         <dd className={styles.fullWidth}>
-          <Paragraph>{t('attachments.no-data')}</Paragraph>
+          <Paragraph>{tDetail('attachments.no-data')}</Paragraph>
         </dd>
       )}
 
       <dd className={styles.fullWidth}>
         <Link href={addAttachmentLink} linkComponent={NextLink}>
-          {t('attachments.add-link')}
+          {tDetail('attachments.add-link')}
         </Link>
       </dd>
       {hasAttachments && (
         <dd className={styles.fullWidth}>
           <Link href={removeAttachmentLink} linkComponent={NextLink}>
-            {t('attachments.remove-link')}
+            {tDetail('attachments.remove-link')}
           </Link>
         </dd>
       )}
