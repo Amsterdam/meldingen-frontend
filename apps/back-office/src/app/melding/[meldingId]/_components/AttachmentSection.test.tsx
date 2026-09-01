@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import type { GetAttachmentsDataResult } from '../_utils/getAttachmentsData'
+import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
 import type { MeldingAttachment } from '../types'
 
 import { AttachmentSection } from './AttachmentSection'

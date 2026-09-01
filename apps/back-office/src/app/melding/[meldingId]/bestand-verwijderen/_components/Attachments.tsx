@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import type { GetAttachmentsDataResult } from '../../_utils/getAttachmentsData'
+import type { GetAttachmentsDataResult } from '../../_utils/server/getAttachmentsData'
 
 import { useRemoveAttachmentError } from '../_context/RemoveAttachmentErrorContext'
 import { deleteAttachmentAction } from '../actions'
@@ -65,6 +65,7 @@ export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachm
             attachment={attachment}
             isDeleting={isDeleting}
             key={attachment.id}
+            meldingId={meldingId}
             onDelete={() => handleDelete(attachment.id, attachment.originalFilename)}
           />
         ))}

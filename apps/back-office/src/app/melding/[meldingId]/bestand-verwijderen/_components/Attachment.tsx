@@ -14,12 +14,14 @@ import styles from './Attachment.module.css'
 type Props = {
   attachment: MeldingAttachment
   isDeleting: boolean
+  meldingId: number
   onDelete: () => void
 }
 
 export const Attachment = ({
-  attachment: { blob, createdAt, originalFilename, user },
+  attachment: { blob, createdAt, id, originalFilename, user },
   isDeleting,
+  meldingId,
   onDelete,
 }: Props) => {
   const t = useTranslations('attachments')
@@ -30,7 +32,7 @@ export const Attachment = ({
         <Paragraph>{createdAt}</Paragraph>
         <Paragraph>{user ? user.email : t('melding-form-user')}</Paragraph>
       </Column>
-      <AttachmentPreview blob={blob} fileName={originalFilename} />
+      <AttachmentPreview blob={blob} fileName={originalFilename} id={id} meldingId={meldingId} />
       <Button
         aria-label={`${t('remove.submit-button')} ${originalFilename}`}
         disabled={isDeleting}

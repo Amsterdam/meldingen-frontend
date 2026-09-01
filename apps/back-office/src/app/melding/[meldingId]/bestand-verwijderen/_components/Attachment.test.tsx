@@ -30,7 +30,7 @@ describe('Attachment', () => {
     const user = userEvent.setup()
     const onDelete = vi.fn()
 
-    render(<Attachment attachment={createAttachment()} isDeleting={false} onDelete={onDelete} />)
+    render(<Attachment attachment={createAttachment()} isDeleting={false} meldingId={123} onDelete={onDelete} />)
 
     expect(screen.getAllByText('bewijs.png')).toHaveLength(2)
     expect(screen.getByText('2024-01-01 10:30')).toBeInTheDocument()
@@ -43,7 +43,14 @@ describe('Attachment', () => {
   })
 
   it('renders the melding form fallback user and disables the delete button while deleting', () => {
-    render(<Attachment attachment={createAttachment({ user: undefined })} isDeleting={true} onDelete={vi.fn()} />)
+    render(
+      <Attachment
+        attachment={createAttachment({ user: undefined })}
+        isDeleting={true}
+        meldingId={123}
+        onDelete={vi.fn()}
+      />,
+    )
 
     expect(screen.getByText('attachments.melding-form-user')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'submit-button bewijs.png' })).toBeDisabled()

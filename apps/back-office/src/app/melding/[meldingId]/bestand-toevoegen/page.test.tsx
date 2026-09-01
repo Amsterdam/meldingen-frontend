@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
-import type { GetAttachmentsDataResult } from '../_utils/getAttachmentsData'
+import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
 
 import { getAttachmentsData } from '../_utils/server'
 import { AddAttachment } from './AddAttachment'
@@ -64,7 +64,10 @@ describe('Page', () => {
 
     render(result)
 
-    expect(AddAttachment).toHaveBeenCalledWith({ attachments, meldingId: 123 }, undefined)
+    expect(AddAttachment).toHaveBeenCalledWith(
+      { attachments: attachments.attachmentsWithFile, meldingId: 123 },
+      undefined,
+    )
     expect(screen.getByText('AddAttachment Component')).toBeInTheDocument()
   })
 })

@@ -2,10 +2,10 @@ import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
-import type { GetAttachmentsDataResult } from '../_utils/getAttachmentsData'
+import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
 import type { MeldingAttachment } from '../types'
 
-import { getAttachmentsData } from '../_utils'
+import { getAttachmentsData } from '../_utils/server'
 import { Attachments } from './_components/Attachments'
 import Page, { generateMetadata } from './page'
 import { ENDPOINTS } from '~/mocks/endpoints'
@@ -15,7 +15,7 @@ vi.mock('./_components/Attachments', () => ({
   Attachments: vi.fn(() => <div>Attachments Component</div>),
 }))
 
-vi.mock('../_utils', () => ({
+vi.mock('../_utils/server', () => ({
   getAttachmentsData: vi.fn(),
 }))
 
