@@ -38,8 +38,8 @@ const mockFile = new File(['dummy content'], 'example.png', { type: 'image/png' 
 type AddAttachmentProps = ComponentProps<typeof AddAttachment>
 
 const createAttachment = (
-  overrides: Partial<AddAttachmentProps['attachments']['attachmentsWithFile'][number]> = {},
-): AddAttachmentProps['attachments']['attachmentsWithFile'][number] => ({
+  overrides: Partial<AddAttachmentProps['attachments'][number]> = {},
+): AddAttachmentProps['attachments'][number] => ({
   blob: new Blob(['dummy content'], { type: 'image/png' }),
   createdAt: '2025-01-01',
   id: 1,
@@ -49,7 +49,7 @@ const createAttachment = (
 })
 
 const defaultProps = {
-  attachments: { attachmentsWithFile: [] },
+  attachments: [],
   meldingId: 123,
 } satisfies AddAttachmentProps
 
@@ -72,14 +72,7 @@ describe('AddAttachment', () => {
   })
 
   it('renders existing attachments and shows the back-link instead of the cancel-link', () => {
-    render(
-      <AddAttachment
-        attachments={{
-          attachmentsWithFile: [createAttachment({ id: 7 })],
-        }}
-        meldingId={123}
-      />,
-    )
+    render(<AddAttachment attachments={[createAttachment({ id: 7 })]} meldingId={123} />)
 
     const fileName = screen.getAllByText('existing.png')[0]
     const links = screen.getAllByRole('link', { name: 'back-link' })
@@ -89,14 +82,7 @@ describe('AddAttachment', () => {
   })
 
   it('shows an empty aria-live region when no file has been deleted', () => {
-    render(
-      <AddAttachment
-        attachments={{
-          attachmentsWithFile: [createAttachment({ originalFilename: 'first.png' })],
-        }}
-        meldingId={123}
-      />,
-    )
+    render(<AddAttachment attachments={[createAttachment({ originalFilename: 'first.png' })]} meldingId={123} />)
 
     const liveRegion = document.querySelector('[aria-live="polite"]')
 
@@ -127,14 +113,12 @@ describe('AddAttachment', () => {
 
     render(
       <AddAttachment
-        attachments={{
-          attachmentsWithFile: [
-            createAttachment({
-              blob: new Blob(['sample content']),
-              originalFilename: 'first.png',
-            }),
-          ],
-        }}
+        attachments={[
+          createAttachment({
+            blob: new Blob(['sample content']),
+            originalFilename: 'first.png',
+          }),
+        ]}
         meldingId={123}
       />,
     )
@@ -194,12 +178,10 @@ describe('AddAttachment', () => {
 
     render(
       <AddAttachment
-        attachments={{
-          attachmentsWithFile: [
-            createAttachment({ originalFilename: 'first.png' }),
-            createAttachment({ blob: new Blob(['b']), id: 2, originalFilename: 'second.png' }),
-          ],
-        }}
+        attachments={[
+          createAttachment({ originalFilename: 'first.png' }),
+          createAttachment({ blob: new Blob(['b']), id: 2, originalFilename: 'second.png' }),
+        ]}
         meldingId={123}
       />,
     )
@@ -225,12 +207,7 @@ describe('AddAttachment', () => {
     const user = userEvent.setup()
 
     const { container } = render(
-      <AddAttachment
-        attachments={{
-          attachmentsWithFile: [createAttachment({ originalFilename: 'first.png' })],
-        }}
-        meldingId={123}
-      />,
+      <AddAttachment attachments={[createAttachment({ originalFilename: 'first.png' })]} meldingId={123} />,
     )
 
     const deleteButton = screen.getByRole('button', { name: 'file-upload.action-button-delete first.png' })
