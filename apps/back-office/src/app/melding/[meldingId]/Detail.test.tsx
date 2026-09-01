@@ -4,10 +4,6 @@ import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
 import { asset, melding } from '~/mocks/data'
 
-vi.mock('./_components/Attachment', () => ({
-  Attachment: vi.fn(() => <div>Attachment</div>),
-}))
-
 const defaultProps = {
   additionalQuestionsWithMeldingText: [
     { description: 'Test melding description', key: 'text', term: 'Test melding text' },
@@ -22,6 +18,7 @@ const defaultProps = {
         blob: new Blob(['test-blob'], { type: 'image/jpeg' }),
         createdAt: '2025-10-01T12:00:00Z',
         fileName: 'IMG_0815.jpg',
+        id: 42,
       },
     ],
     key: 'attachments',
@@ -157,8 +154,10 @@ describe('Detail', () => {
   it('renders the attachments', () => {
     render(<Detail {...defaultProps} />)
 
+    const attachmentLink = screen.getByRole('link', { name: 'photo-link' })
+
     expect(screen.getByText('attachments.title')).toBeInTheDocument()
-    expect(screen.getByText('Attachment')).toBeInTheDocument()
+    expect(attachmentLink).toBeInTheDocument()
   })
 
   it('renders a no-data message when there are no attachments', () => {

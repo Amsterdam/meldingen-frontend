@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
-import { getAttachmentsData } from '../_utils'
+import { getAttachmentsData } from '../_utils/server'
 import { AddAttachment } from './AddAttachment'
 import Page, { generateMetadata } from './page'
 import { ENDPOINTS } from '~/mocks/endpoints'
@@ -11,7 +11,7 @@ vi.mock('./AddAttachment', () => ({
   AddAttachment: vi.fn(() => <div>AddAttachment Component</div>),
 }))
 
-vi.mock('../_utils', () => ({
+vi.mock('../_utils/server', () => ({
   getAttachmentsData: vi.fn(),
 }))
 

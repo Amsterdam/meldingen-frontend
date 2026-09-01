@@ -1,0 +1,67 @@
+@keyframes loading {
+  0% {
+    background-color: var(--ams-color-background-body);
+  }
+
+  50% {
+    background-color: var(--ams-color-separator);
+  }
+
+  100% {
+    background-color: var(--ams-color-background-body);
+  }
+}
+
+.loading {
+  animation-delay: 0.3s;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-name: loading;
+  animation-timing-function: ease-in-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    background-color: var(--ams-color-separator);
+  }
+}
+
+.loadingImage {
+  composes: loading;
+  block-size: 100%;
+  inline-size: 100%;
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--ams-typography-body-text-font-size);
+  gap: var(--ams-space-s);
+  line-height: var(--ams-typography-body-text-line-height);
+}
+
+.fileName {
+  font-weight: var(--ams-typography-body-text-bold-font-weight);
+}
+
+.imageContainer {
+  align-items: center;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  justify-content: center;
+  max-height: 37.5rem;
+  position: relative;
+  width: 100%;
+}
+
+.image {
+  aspect-ratio: auto; /* Reset the aspect ratio set by the design system */
+  inline-size: auto; /* Reset the inline size set by the design system */
+  max-block-size: 100%;
+  max-inline-size: 100%;
+}
+
+.loadingThumbnail {
+  composes: loading;
+  aspect-ratio: calc(5 * 16) / 9; /* ImageSliderThumbnails shows 5 images per row, each with a 16 / 9 aspect ratio */
+  inline-size: 100%;
+}

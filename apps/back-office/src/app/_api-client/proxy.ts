@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { client } from '@meldingen/api-client'
 
 import { authOptions } from '../_authentication/authOptions'
+import { serverEnv } from '~/env/server'
 
 client.interceptors.error.use((error) => {
   // Re-throw Next.js redirect errors so the client's catch block doesn't swallow them
@@ -21,7 +22,7 @@ client.setConfig({
 
     return session.accessToken
   },
-  baseUrl: process.env.NEXT_INTERNAL_BACKEND_BASE_URL,
+  baseUrl: serverEnv.NEXT_INTERNAL_BACKEND_BASE_URL,
 })
 
 export * from '@meldingen/api-client'

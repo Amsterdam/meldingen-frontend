@@ -9,6 +9,7 @@ type File = {
   createdAt: string
   error?: string
   fileName: string
+  id: number
 }
 
 export type Attachments = Omit<DescriptionListItem, 'description'> & { files: File[] }

@@ -1,8 +1,7 @@
 import { getApiErrorMessage } from '@meldingen/api-client'
 
+import { isFilePDF } from '../'
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
-
-export const isFilePDF = (fileName: string) => fileName.toLowerCase().endsWith('.pdf')
 
 export const getAttachmentsData = async (meldingId: number, t: (key: string) => string) => {
   const { data, error } = await getMeldingByMeldingIdAttachments({
