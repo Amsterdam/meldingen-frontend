@@ -34,10 +34,7 @@ const formatDateStringOptions: FormDateStringOptions = {
   },
 }
 
-export const AttachmentSection = ({
-  attachments: { attachmentsWithFile: attachments, getMeldingByMeldingIdAttachmentsError },
-  meldingId,
-}: Props) => {
+export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachments, error }, meldingId }: Props) => {
   const tAttachments = useTranslations('attachments')
   const tDetail = useTranslations('detail')
 
@@ -48,11 +45,9 @@ export const AttachmentSection = ({
   return (
     <dl className={clsx(parentStyles.descriptionList, parentStyles.cardWide, styles.attachmentsSection)}>
       <dt className={styles.attachmentsTerm}>{tDetail('attachments.title')}</dt>
-      {getMeldingByMeldingIdAttachmentsError && (
-        <ApiErrorAlert description={tAttachments('fetch-error.description')} shouldFocus={false} />
-      )}
+      {error && <ApiErrorAlert description={tAttachments('fetch-error.description')} shouldFocus={false} />}
 
-      {hasAttachments && !getMeldingByMeldingIdAttachmentsError ? (
+      {hasAttachments && !error ? (
         <div className={styles.attachmentsWrapper}>
           {attachments.map(({ blob, createdAt, id, originalFilename }) => {
             const { date, time } = formatDateString(createdAt, formatDateStringOptions)

@@ -80,7 +80,7 @@ describe('Page', () => {
       expect.objectContaining({
         attachments: {
           attachmentsWithFile: [],
-          getMeldingByMeldingIdAttachmentsError: 'Error message',
+          error: 'Error message',
         },
       }),
       undefined,

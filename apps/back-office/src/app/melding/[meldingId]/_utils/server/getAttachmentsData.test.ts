@@ -65,6 +65,6 @@ describe('getAttachmentsData', () => {
     )
 
     const result = await getAttachmentsData(mockMeldingId)
-    expect(result.getMeldingByMeldingIdAttachmentsError).toBe('Error message')
+    expect(result.error).toBe('Error message')
   })
 })

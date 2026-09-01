@@ -6,19 +6,18 @@ import { handleApiError } from '~/app/_utils/handleApiError'
 
 export type GetAttachmentsDataResult = {
   attachmentsWithFile: MeldingAttachment[]
-  getMeldingByMeldingIdAttachmentsError?: string
+  error?: string
 }
 
 export const getAttachmentsData = async (meldingId: number): Promise<GetAttachmentsDataResult> => {
-  const { data: meldingAttachments, error: getMeldingByMeldingIdAttachmentsError } =
-    await getMeldingByMeldingIdAttachments({
-      path: { melding_id: meldingId },
-    })
+  const { data: meldingAttachments, error: error } = await getMeldingByMeldingIdAttachments({
+    path: { melding_id: meldingId },
+  })
 
-  if (getMeldingByMeldingIdAttachmentsError) {
+  if (error) {
     return {
       attachmentsWithFile: [],
-      getMeldingByMeldingIdAttachmentsError: handleApiError(getMeldingByMeldingIdAttachmentsError),
+      error: handleApiError(error),
     }
   }
 
