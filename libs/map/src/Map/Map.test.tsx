@@ -1,8 +1,8 @@
-import type { Map } from 'leaflet'
 import type { RefObject } from 'react'
 import type { Mock } from 'vitest'
 
 import { render } from '@testing-library/react'
+import { Map } from 'leaflet'
 import { useRef } from 'react'
 
 import { MapComponent } from './Map'
@@ -84,19 +84,17 @@ describe('MapComponent', () => {
   })
 
   it('calls remove when the component unmounts', () => {
-    const mockMapInstance = {
-      fire: vi.fn(),
-      invalidateSize: vi.fn(),
-      remove: vi.fn(),
-    } as unknown as Map
-
     const containerRef = { current: 'not-null' }
     const createdMapInstanceRef = { current: false }
     ;(useRef as Mock).mockReturnValueOnce(containerRef).mockReturnValue(createdMapInstanceRef)
 
-    const { unmount } = render(<MapComponent testMapInstance={mockMapInstance} />)
+    const removeSpy = vi.spyOn(Map.prototype, 'remove')
+
+    const { unmount } = render(<MapComponent />)
     unmount()
 
-    expect(mockMapInstance.remove).toHaveBeenCalled()
+    expect(removeSpy).toHaveBeenCalled()
+
+    removeSpy.mockRestore()
   })
 })

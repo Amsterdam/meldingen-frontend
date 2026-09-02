@@ -70,9 +70,9 @@ export const MapComponent = ({ children, isHidden, isInert, mapHandleRef, testMa
 
     // On component unmount, destroy the map and all related events
     return () => {
-      if (mapInstance) mapInstance.remove()
+      map.remove()
+      createdMapInstance.current = false
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useImperativeHandle(mapHandleRef, () => ({
