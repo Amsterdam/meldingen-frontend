@@ -86,7 +86,7 @@ export const Summary = ({
     }
   }, [apiError])
 
-  const hasAssets = Boolean(assets.data && assets.data.length > 0)
+  const hasAssets = assets.data && assets.data.length > 0
   const locationTermCopy = hasAssets ? (assets.term ?? location.term) : location.term
 
   return (

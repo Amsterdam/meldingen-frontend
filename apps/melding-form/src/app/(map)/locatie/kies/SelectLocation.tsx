@@ -12,10 +12,9 @@ import type { Feature } from '@meldingen/api-client'
 
 import type { Coordinates } from '~/types'
 
-import { getAssetSubType } from '../../../(general)/_utils'
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
-import { getAssetLabelText } from '~/app/(general)/_utils/getAssetLabelText'
+import { getAssetLabelText, getAssetSubType } from '~/app/(general)/_utils'
 
 import styles from './SelectLocation.module.css'
 
