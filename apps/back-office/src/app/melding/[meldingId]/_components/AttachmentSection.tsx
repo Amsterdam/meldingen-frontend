@@ -22,7 +22,7 @@ type Props = {
 }
 
 export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachments, error }, meldingId }: Props) => {
-  const t = useTranslations('add-attachment')
+  const t = useTranslations('detail.attachments')
 
   const hasAttachments = attachments.length > 0
   const addAttachmentLink = `/melding/${meldingId}/bestand-toevoegen`
