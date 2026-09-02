@@ -54,10 +54,15 @@ describe('MapComponent', () => {
     } as unknown as Map
 
     const { rerender } = render(<MapComponent isHidden={false} testMapInstance={mockMapInstance} />)
-    rerender(<MapComponent isHidden={true} />)
 
-    expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
-    expect(mockMapInstance.fire).toHaveBeenCalledWith('viewreset')
+    // Clear the calls made on mount so the assertions below only capture the effect of the isHidden change
+    ;(mockMapInstance.invalidateSize as Mock).mockClear()
+    ;(mockMapInstance.fire as Mock).mockClear()
+
+    rerender(<MapComponent isHidden />)
+
+    expect(mockMapInstance.invalidateSize).toHaveBeenCalledTimes(1)
+    expect(mockMapInstance.fire).toHaveBeenCalledExactlyOnceWith('viewreset')
   })
 
   it('exposes invalidateSize on mapHandleRef', () => {
