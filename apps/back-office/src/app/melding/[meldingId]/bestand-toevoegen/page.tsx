@@ -19,7 +19,7 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
 
-  const attachments = await getAttachmentsData(meldingId)
+  const attachments = await getAttachmentsData(meldingId, 'thumbnail')
 
   //TODO show error as alert
 

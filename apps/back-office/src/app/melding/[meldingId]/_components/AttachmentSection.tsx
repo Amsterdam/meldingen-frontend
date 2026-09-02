@@ -8,11 +8,10 @@ import NextLink from 'next/link'
 import { Link } from '@meldingen/ui'
 
 import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
-import type { FormDateStringOptions } from '~/app/_utils/formatDateString'
 
+import { getFormattedDateString } from '../_utils/getFormattedDateString'
 import { AttachmentPreview } from './AttachmentPreview'
 import { ApiErrorAlert } from '~/app/_components'
-import { formatDateString } from '~/app/_utils/formatDateString'
 
 import parentStyles from '../Detail.module.css'
 import styles from './AttachmentSection.module.css'
@@ -20,18 +19,6 @@ import styles from './AttachmentSection.module.css'
 type Props = {
   attachments: GetAttachmentsDataResult
   meldingId: number
-}
-
-const formatDateStringOptions: FormDateStringOptions = {
-  date: {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  },
-  time: {
-    hour: 'numeric',
-    minute: 'numeric',
-  },
 }
 
 export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachments, error }, meldingId }: Props) => {
@@ -49,8 +36,6 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
       {hasAttachments && !error ? (
         <div className={styles.attachmentsWrapper}>
           {attachments.map(({ blob, createdAt, id, originalFilename }) => {
-            const { date, time } = formatDateString(createdAt, formatDateStringOptions)
-
             return (
               <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={originalFilename}>
                 <AttachmentPreview
@@ -60,7 +45,7 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
                   isLinkToSlider
                   meldingId={meldingId}
                 />
-                <Paragraph>{`${date} ${time}`}</Paragraph>
+                <Paragraph>{getFormattedDateString(createdAt)}</Paragraph>
                 <Paragraph>{originalFilename}</Paragraph>
               </dd>
             )

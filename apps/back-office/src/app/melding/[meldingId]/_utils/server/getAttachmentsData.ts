@@ -1,4 +1,5 @@
 import type { MeldingAttachment } from '../../types'
+import type { AttachmentTypes } from '~/app/_api-client/proxy'
 
 import { isFilePDF } from '../'
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
@@ -9,7 +10,10 @@ export type GetAttachmentsDataResult = {
   error?: string
 }
 
-export const getAttachmentsData = async (meldingId: number): Promise<GetAttachmentsDataResult> => {
+export const getAttachmentsData = async (
+  meldingId: number,
+  imageAttachmentType: AttachmentTypes = 'original',
+): Promise<GetAttachmentsDataResult> => {
   const { data: meldingAttachments, error: error } = await getMeldingByMeldingIdAttachments({
     path: { melding_id: meldingId },
   })
@@ -25,7 +29,7 @@ export const getAttachmentsData = async (meldingId: number): Promise<GetAttachme
     meldingAttachments.map(async ({ created_at, id, original_filename, updated_at, user }) => {
       const { data: attachmentBlob, error: getAttachmentByIdError } = await getAttachmentById({
         path: { id },
-        query: { type: isFilePDF(original_filename) ? 'original' : 'thumbnail' },
+        query: { type: isFilePDF(original_filename) ? 'original' : imageAttachmentType },
       })
 
       return {

@@ -9,6 +9,7 @@ import { Heading, Paragraph } from '@meldingen/ui'
 import type { MeldingAttachment } from '../../types'
 
 import { AttachmentPreview } from '../../_components/AttachmentPreview'
+import { getFormattedDateString } from '../../_utils/getFormattedDateString'
 
 import styles from './Attachment.module.css'
 
@@ -30,7 +31,7 @@ export const Attachment = ({
     <Column alignHorizontal="start" className={clsx(styles.container, styles.cardWide)}>
       <Heading level={4}>{originalFilename}</Heading>
       <Column gap="x-small">
-        <Paragraph>{createdAt}</Paragraph>
+        <Paragraph>{getFormattedDateString(createdAt)}</Paragraph>
         <Paragraph>{user ? user.email : t('melding-form-user')}</Paragraph>
       </Column>
       <div className={styles.imagePreview}>
