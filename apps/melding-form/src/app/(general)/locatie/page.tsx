@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 
-import { getMeldingAssets } from '../_utils'
+import { getMeldingAssets, getMeldingData } from '../_utils'
 import { postLocationForm } from './actions'
 import { Location } from './Location'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
@@ -35,7 +35,13 @@ export default async () => {
 
   const previousPagePath = getPreviousPagePath({ lastPanelPath, meldingId, source, token })
 
-  const { assets, pageConfig, requiredErrorMessage } = await getMeldingAssets(meldingId, token)
+  const meldingData = await getMeldingData(meldingId, token)
+
+  const { assets, pageConfig, requiredErrorMessage } = await getMeldingAssets(
+    meldingId,
+    token,
+    meldingData?.classification,
+  )
 
   const action = postLocationForm.bind(null, requiredErrorMessage)
 

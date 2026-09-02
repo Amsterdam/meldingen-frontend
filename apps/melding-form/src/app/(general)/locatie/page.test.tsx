@@ -123,21 +123,8 @@ describe('Page', () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json('Test error', { status: 500 })),
     )
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-    const PageComponent = await Page()
-    render(PageComponent)
-
-    expect(consoleSpy).toHaveBeenCalledWith('Test error')
-
-    consoleSpy.mockRestore()
-
-    expect(Location).toHaveBeenCalledWith(
-      expect.objectContaining({
-        selectedAssets: [],
-      }),
-      undefined,
-    )
+    await expect(Page()).rejects.toThrowError('Failed to fetch melding data.')
   })
 
   it('returns an empty array of selectedAssets when assetTypeId is not set', async () => {
