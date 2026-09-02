@@ -3,8 +3,10 @@ import type { Mock } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { useActionState } from 'react'
 
+import type { AssetItem } from '../_utils/formatAssetItem'
+
 import { Location } from './Location'
-import { containerAssets } from '~/mocks/data'
+import { containerAssetIds } from '~/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -20,7 +22,21 @@ const defaultProps = {
   selectedAssets: [],
 }
 
+const savedAssets: AssetItem[] = containerAssetIds.map((asset) => ({
+  icon: {
+    entry: 'fractie_omschrijving',
+    folder: 'container',
+  },
+  id: asset.external_id,
+  label: asset.label,
+  subtype: asset.subtype,
+}))
+
 describe('Location', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('renders the component with the correct document title', () => {
     render(<Location {...defaultProps} />)
 
@@ -94,7 +110,7 @@ describe('Location', () => {
   })
 
   it('renders saved assets', () => {
-    render(<Location {...defaultProps} selectedAssets={containerAssets} />)
+    render(<Location {...defaultProps} selectedAssets={savedAssets} />)
 
     const listItems = screen.getAllByRole('listitem')
 

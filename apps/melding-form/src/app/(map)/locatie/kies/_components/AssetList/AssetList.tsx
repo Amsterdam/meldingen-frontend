@@ -8,6 +8,7 @@ import type { NotificationType, Props as SelectLocationProps } from '../../Selec
 import type { Coordinates } from '~/types'
 
 import { AssetIcon } from '~/app/_components/AssetIcon/AssetIcon'
+import { getAssetLabelText } from '~/app/(general)/_utils/getAssetLabelText'
 
 import styles from './AssetList.module.css'
 
@@ -18,22 +19,6 @@ export type Props = {
   setCoordinates: (coordinates?: Coordinates) => void
   setNotificationType: (notificationType: NotificationType | null) => void
   setSelectedAssets: Dispatch<SetStateAction<Feature[]>>
-}
-
-const getLabelText = (asset: Feature, labelConfig?: SelectLocationProps['assetConfig']['label']) => {
-  // `id` always exists on WFS layers from the City of Amsterdam
-  if (!labelConfig) return asset.id
-
-  const label = labelConfig
-    // Replace each {{field_name}} placeholder with the matching value from asset.properties
-    // For example, '{{fractie_omschrijving}} container - {{id_nummer}}' will become 'Papier container - 12345'
-    .replace(/\{\{(\w+)\}\}/g, (_, key) => {
-      const value = asset.properties?.[key]
-      return value !== undefined && value !== null ? String(value) : ''
-    })
-    .trim()
-
-  return label || asset.id
 }
 
 type AssetListItemProps = {
@@ -48,7 +33,7 @@ const AssetListItem = ({ asset, assetConfig, isChecked = false, onChange }: Asse
     <Checkbox checked={isChecked} className={styles.checkbox} onChange={onChange}>
       <span className={styles.label}>
         <AssetIcon alt="" height={32} iconConfig={assetConfig.icon} properties={asset.properties} width={32} />
-        {getLabelText(asset, assetConfig.label)}
+        {getAssetLabelText(asset, assetConfig.label)}
       </span>
     </Checkbox>
   </li>
