@@ -12,7 +12,7 @@ export type GetAttachmentsDataResult = {
 
 export const getAttachmentsData = async (
   meldingId: number,
-  imageAttachmentType: AttachmentTypes = 'original',
+  imageAttachmentType: AttachmentTypes = 'optimized',
 ): Promise<GetAttachmentsDataResult> => {
   const { data: meldingAttachments, error: error } = await getMeldingByMeldingIdAttachments({
     path: { melding_id: meldingId },
