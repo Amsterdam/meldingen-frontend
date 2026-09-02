@@ -17,7 +17,7 @@ type Props = {
 
 export const PageWrapper = ({ children, meldingId }: Props) => {
   const { apiError } = useRemoveAttachmentError()
-  const t = useTranslations('attachments')
+  const t = useTranslations('remove-attachment')
   const backLinkHref = `/melding/${meldingId}`
 
   return (

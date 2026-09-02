@@ -43,7 +43,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
     ...additionalQuestions.data,
   ]
 
-  const attachments = await getAttachmentsData(meldingId)
+  const attachments = await getAttachmentsData(meldingId, 'thumbnail')
 
   const contact = getContactData(data, t)
   const location = getLocationData(data, t)
