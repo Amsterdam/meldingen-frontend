@@ -1,7 +1,7 @@
 import { getMeldingByMeldingIdAssetsMelder, getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 
 import { formatAssetItem } from './formatAssetItem'
-import { getAssetsFromMelding } from './getAssetsFromMelding'
+import { getMeldingAssets } from './getMeldingAssets'
 import { containerAssetIds, melding } from '~/mocks/data'
 
 vi.mock('@meldingen/api-client', () => ({
@@ -31,7 +31,7 @@ const meldingWithAssetType = {
   },
 }
 
-describe('getAssetsFromMelding', () => {
+describe('getMeldingAssets', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
@@ -62,7 +62,7 @@ describe('getAssetsFromMelding', () => {
         subtype: 'containers',
       })
 
-    const result = await getAssetsFromMelding('123', 'test-token')
+    const result = await getMeldingAssets('123', 'test-token')
 
     expect(getMeldingByMeldingIdAssetsMelderMock).toHaveBeenCalledWith({
       path: { melding_id: 123 },
@@ -122,7 +122,7 @@ describe('getAssetsFromMelding', () => {
         subtype: 'containers',
       })
 
-    const result = await getAssetsFromMelding('123', 'test-token')
+    const result = await getMeldingAssets('123', 'test-token')
 
     expect(result.assets).toEqual([
       {
@@ -148,7 +148,7 @@ describe('getAssetsFromMelding', () => {
       response: {} as never,
     } as never)
 
-    const result = await getAssetsFromMelding('123', 'test-token')
+    const result = await getMeldingAssets('123', 'test-token')
 
     expect(consoleSpy).toHaveBeenCalledWith(apiError)
     expect(formatAssetItemMock).not.toHaveBeenCalled()
@@ -171,7 +171,7 @@ describe('getAssetsFromMelding', () => {
       response: {} as never,
     } as never)
 
-    const result = await getAssetsFromMelding('123', 'test-token')
+    const result = await getMeldingAssets('123', 'test-token')
 
     expect(consoleSpy).toHaveBeenCalledWith(apiError)
     expect(formatAssetItemMock).not.toHaveBeenCalled()
@@ -198,7 +198,7 @@ describe('getAssetsFromMelding', () => {
       response: {} as never,
     } as never)
 
-    const result = await getAssetsFromMelding('123', 'test-token')
+    const result = await getMeldingAssets('123', 'test-token')
 
     expect(formatAssetItemMock).not.toHaveBeenCalled()
     expect(result).toEqual({ assets: [], pageConfig: undefined, requiredErrorMessage: undefined })
@@ -228,7 +228,7 @@ describe('getAssetsFromMelding', () => {
       response: {} as never,
     } as never)
 
-    const result = await getAssetsFromMelding('123', 'test-token')
+    const result = await getMeldingAssets('123', 'test-token')
 
     expect(formatAssetItemMock).not.toHaveBeenCalled()
     expect(result).toEqual({ assets: [], pageConfig: undefined, requiredErrorMessage: undefined })
@@ -261,7 +261,7 @@ describe('getAssetsFromMelding', () => {
       response: {} as never,
     } as never)
 
-    const result = await getAssetsFromMelding('123', 'test-token')
+    const result = await getMeldingAssets('123', 'test-token')
 
     expect(result).toEqual({
       assets: [],

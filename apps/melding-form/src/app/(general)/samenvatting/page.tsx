@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 
-import { getAssetsFromMelding } from '../_utils'
+import { getMeldingAssets } from '../_utils'
 import {
   getAdditionalQuestionsSummary,
   getAttachmentsSummary,
@@ -28,7 +28,7 @@ export default async () => {
   const primaryForm = await getPrimaryFormSummary(text)
   const attachments = await getAttachmentsSummary(t('attachments-label'), meldingId, token)
   const additionalQuestions = await getAdditionalQuestionsSummary(meldingId, token, classification?.id)
-  const { assets, pageConfig } = await getAssetsFromMelding(meldingId, token)
+  const { assets, pageConfig } = await getMeldingAssets(meldingId, token)
 
   const location = getLocationSummary(t, meldingData)
   const contact = getContactSummary(t('contact-label'), email, phone)

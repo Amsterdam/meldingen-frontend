@@ -4,8 +4,8 @@ import { getMeldingByMeldingIdAssetsMelder, getMeldingByMeldingIdMelder } from '
 
 import { formatAssetItem } from './formatAssetItem'
 
-export const getAssetsFromMelding = async (meldingId: string, token: string) => {
-  const meldingIdInt = parseInt(meldingId, 10)
+export const getMeldingAssets = async (meldingId: string, token: string) => {
+  const meldingIdInt = Number(meldingId)
 
   const [{ data: rawAssets, error: assetIdError }, { data: melding, error: meldingError }] = await Promise.all([
     getMeldingByMeldingIdAssetsMelder({ path: { melding_id: meldingIdInt }, query: { token } }),
