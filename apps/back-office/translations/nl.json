@@ -137,7 +137,7 @@
       "file-upload": {
         "select-file-button": "Bestanden kiezen",
         "action-button-delete": "Verwijder bestand",
-        "drop-area": "Sleep bestanden in dit vak of",
+        "drop-area": "Of sleep de bestanden in dit vlak.",
         "id-prefix": "bestand",
         "progress-finished": "Upload geslaagd",
         "progress-loading": "Aan het uploaden"

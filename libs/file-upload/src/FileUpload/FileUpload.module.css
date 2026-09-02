@@ -26,24 +26,12 @@
 }
 
 .button {
-  border-style: var(--ams-button-border-style);
-  border-width: var(--ams-button-border-width);
-  box-sizing: border-box;
-  color: var(--ams-button-secondary-color);
-  display: inline-block;
-  padding-block: var(--ams-button-padding-block);
-  padding-inline: var(--ams-button-padding-inline);
   text-align: center;
   width: 100%;
 
   @media screen and (min-width: 37.5rem) {
     width: auto;
   }
-}
-
-.upload:hover .button {
-  box-shadow: var(--ams-button-secondary-hover-box-shadow);
-  color: var(--ams-button-secondary-hover-color);
 }
 
 .dropAreaText {

@@ -1,6 +1,7 @@
 'use client'
 
-import type { DragEvent, InputHTMLAttributes, RefObject } from 'react'
+import type { Button } from '@amsterdam/design-system-react'
+import type { ComponentProps, DragEvent, InputHTMLAttributes, RefObject } from 'react'
 
 import { clsx } from 'clsx'
 import { useImperativeHandle, useRef } from 'react'
@@ -23,24 +24,33 @@ const isContainingFiles = (dataTransfer: DataTransfer): boolean => {
   return hasNoTypesInfo || isDraggingFiles
 }
 
+type ButtonProps = ComponentProps<typeof Button> & { text?: string }
+
 type Props = InputHTMLAttributes<HTMLInputElement> & {
-  buttonText?: string
+  button?: ButtonProps
   className?: string
   dropAreaText?: string
   ref?: RefObject<HTMLInputElement | null>
 }
 
+const buttonDefaults: ButtonProps = {
+  text: 'Bestanden kiezen',
+  variant: 'primary',
+}
+
 export const FileUpload = ({
   'aria-describedby': ariaDescribedBy,
   'aria-labelledby': ariaLabelledBy,
-  buttonText = 'Bestanden kiezen',
+  button,
   className,
-  dropAreaText = 'Sleep bestanden in dit vak of',
+  dropAreaText = 'Of sleep de bestanden in dit vlak.',
   id,
   ref,
   ...restProps
 }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const buttonProps = { ...buttonDefaults, ...button }
 
   // use a passed ref if it's there, otherwise use fileInputRef
   useImperativeHandle(ref, () => fileInputRef.current as HTMLInputElement)
@@ -79,8 +89,19 @@ export const FileUpload = ({
         onDrop={handleDrop}
         type="button"
       >
-        <span className={styles.dropAreaText}>{dropAreaText}</span> <span className={styles.button}>{buttonText}</span>
+        <span
+          className={clsx(
+            styles.button,
+            'ams-button',
+            `ams-button--${buttonProps.variant ?? 'primary'}`,
+            styles.button,
+          )}
+        >
+          {buttonProps.text}
+        </span>
+        <span className={styles.dropAreaText}>{dropAreaText}</span>
       </button>
+
       <input
         {...restProps}
         aria-label="File input" // This is only used in tests, the input is hidden for users

@@ -182,7 +182,9 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp,.pdf"
               aria-describedby={getAriaDescribedBy(fileUploadId, t('add.upload.description'))}
               aria-labelledby={`file-upload-label ${fileUploadId}`}
-              buttonText={t('add.file-upload.select-file-button')}
+              button={{
+                text: t('add.file-upload.select-file-button'),
+              }}
               dropAreaText={t('add.file-upload.drop-area')}
               id={fileUploadId}
               multiple
