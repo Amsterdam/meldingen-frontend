@@ -3,23 +3,19 @@
 import { ErrorMessage, Field, Heading, Paragraph, StandaloneLink, UnorderedList } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import Image from 'next/image'
 import NextLink from 'next/link'
 import { useActionState, useEffect } from 'react'
 
-import type { Feature } from '@meldingen/api-client'
-
 import { SubmitButton } from '@meldingen/ui'
 
+import type { AssetItem } from '../_utils/formatAssetItem'
 import type { FormState } from '~/types'
 
+import { AssetElement } from '../_components/AssetElement/AssetElement'
 import { useDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
-import { getContainerAssetIconSVG } from '../../(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
-
-import styles from './Location.module.css'
 
 const initialState: Pick<FormState, 'apiError' | 'validationErrors'> = {}
 
@@ -31,20 +27,7 @@ type Props = {
     label?: string
   }
   prevPage: string
-  selectedAssets: Feature[]
-}
-
-const getAssetElement = (asset: Feature) => {
-  const icon = getContainerAssetIconSVG(asset)
-  // TODO: use assetType instead of "container" when available
-  const label = `${asset.properties?.fractie_omschrijving ?? ''} container - ${asset.properties?.id_nummer}`
-
-  return (
-    <UnorderedList.Item className={styles.label} key={asset.id}>
-      <Image alt="" height={32} src={icon} width={32} />
-      <Paragraph>{label}</Paragraph>
-    </UnorderedList.Item>
-  )
+  selectedAssets: AssetItem[]
 }
 
 export const Location = ({ action, address, pageConfig, prevPage, selectedAssets }: Props) => {
@@ -84,7 +67,13 @@ export const Location = ({ action, address, pageConfig, prevPage, selectedAssets
           </Heading>
           <Paragraph>{address ?? pageConfig?.description ?? t('description')}</Paragraph>
           {selectedAssets.length > 0 && (
-            <UnorderedList markers={false}>{selectedAssets.map((asset) => getAssetElement(asset))}</UnorderedList>
+            <UnorderedList markers={false}>
+              {selectedAssets.map((asset) => (
+                <UnorderedList.Item key={asset.id}>
+                  <AssetElement asset={asset} />
+                </UnorderedList.Item>
+              ))}
+            </UnorderedList>
           )}
           {validationErrors &&
             validationErrors.map(({ key, message }) => <ErrorMessage key={key}>{message}</ErrorMessage>)}

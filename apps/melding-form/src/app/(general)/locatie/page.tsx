@@ -1,70 +1,9 @@
 import { cookies } from 'next/headers'
 
-import {
-  getAssetTypeByAssetTypeIdWfs,
-  getMeldingByMeldingIdAssetsMelder,
-  getMeldingByMeldingIdMelder,
-} from '@meldingen/api-client'
-
+import { getMeldingAssets, getMeldingData } from '../_utils'
 import { postLocationForm } from './actions'
 import { Location } from './Location'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
-
-const getFilter = (id: string) => `
-  <Filter>
-    <ResourceId rid="${id}" />
-  </Filter>
-`
-
-const getAssetsFromMelding = async (meldingId: string, token: string) => {
-  const meldingIdInt = parseInt(meldingId, 10)
-
-  const [{ data: assetIds, error: assetIdError }, { data: melding, error: meldingError }] = await Promise.all([
-    getMeldingByMeldingIdAssetsMelder({ path: { melding_id: meldingIdInt }, query: { token } }),
-    getMeldingByMeldingIdMelder({ path: { melding_id: meldingIdInt }, query: { token } }),
-  ])
-
-  if (assetIdError || meldingError) {
-    // TODO: Log the error to an error reporting service
-    // eslint-disable-next-line no-console
-    console.error(assetIdError ?? meldingError)
-    return { assets: [], pageConfig: undefined, requiredErrorMessage: undefined }
-  }
-
-  const assetTypeId = melding.classification?.asset_type?.id
-  const typeNames = melding.classification?.asset_type?.arguments?.type_names as string | undefined
-
-  if (!assetTypeId || !typeNames) return { assets: [], pageConfig: undefined, requiredErrorMessage: undefined }
-
-  const assets = await Promise.all(
-    assetIds.map(async (asset) => {
-      const filter = getFilter(asset.external_id)
-
-      const { data, error } = await getAssetTypeByAssetTypeIdWfs({
-        path: { asset_type_id: assetTypeId },
-        query: { filter, type_names: typeNames },
-      })
-
-      if (error) {
-        // TODO: Log the error to an error reporting service
-        // eslint-disable-next-line no-console
-        console.error(error)
-        return null
-      }
-
-      return data.features[0] ?? null
-    }),
-  )
-
-  return {
-    assets: assets.filter((asset) => asset !== null),
-    pageConfig: {
-      description: melding.classification?.asset_type?.arguments?.location_description as string | undefined,
-      label: melding.classification?.asset_type?.arguments?.location_label as string | undefined,
-    },
-    requiredErrorMessage: melding.classification?.asset_type?.arguments?.location_required_error as string | undefined,
-  }
-}
 
 type Args = {
   lastPanelPath: string | undefined
@@ -96,7 +35,9 @@ export default async () => {
 
   const previousPagePath = getPreviousPagePath({ lastPanelPath, meldingId, source, token })
 
-  const { assets, pageConfig, requiredErrorMessage } = await getAssetsFromMelding(meldingId, token)
+  const meldingData = await getMeldingData(meldingId, token)
+
+  const { assets, meta, requiredErrorMessage } = await getMeldingAssets(meldingId, token, meldingData?.classification)
 
   const action = postLocationForm.bind(null, requiredErrorMessage)
 
@@ -104,7 +45,7 @@ export default async () => {
     <Location
       action={action}
       address={address}
-      pageConfig={pageConfig}
+      pageConfig={meta?.location}
       prevPage={previousPagePath}
       selectedAssets={assets}
     />

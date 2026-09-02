@@ -149,6 +149,7 @@
       "primary": "Wijzig uw melding",
       "additional": "Wijzig antwoord",
       "location": "Wijzig locatie",
+      "assets": "Wijzig locatie of {assetName}",
       "attachments": "Wijzig foto’s",
       "contact": "Wijzig contactgegevens"
     },

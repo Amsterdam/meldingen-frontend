@@ -5,10 +5,17 @@ import { postSummaryForm } from './actions'
 import Page from './page'
 import { Summary } from './Summary'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
-import { additionalQuestions, melding, textAreaComponent } from '~/mocks/data'
+import { additionalQuestions, containerAssetIds, melding, textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 import { mockCookies, mockIdAndTokenCookies } from '~/mocks/utils'
+
+const expectedAssets = containerAssetIds.map((asset) => ({
+  icon: { entry: 'fractie_omschrijving', folder: 'container' },
+  id: asset.external_id,
+  label: asset.label,
+  subtype: asset.subtype,
+}))
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -21,6 +28,11 @@ vi.mock('./actions', () => ({
 }))
 
 describe('Page', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.unstubAllEnvs()
+  })
+
   it('renders the Summary component', async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
@@ -49,6 +61,12 @@ describe('Page', () => {
       term: item.question.text,
     }))
 
+    const assets = {
+      data: expectedAssets,
+      name: melding.classification?.asset_type?.name,
+      term: undefined,
+    }
+
     const attachments = {
       files: [
         expect.objectContaining({
@@ -75,10 +93,19 @@ describe('Page', () => {
     expect(screen.getByText('Summary Component')).toBeInTheDocument()
 
     expect(Summary).toHaveBeenCalledWith(
-      {
+      expect.objectContaining({
         action: expect.any(Function),
         additionalQuestions: additionalQuestionsSummary,
-        attachments,
+        assets,
+        attachments: expect.objectContaining({
+          ...attachments,
+          files: [
+            expect.objectContaining({
+              blob: expect.any(Blob),
+              fileName: 'IMG_0815.jpg',
+            }),
+          ],
+        }),
         contact: contact,
         location: {
           description: 'Oudezijds Voorburgwal 300A, 1012GL Amsterdam',
@@ -87,7 +114,7 @@ describe('Page', () => {
         },
         primaryForm: primaryForm,
         primaryFormLink: `/#${TOP_ANCHOR_ID}`,
-      },
+      }),
       undefined,
     )
   })
@@ -142,8 +169,6 @@ describe('Page', () => {
       }),
       undefined,
     )
-
-    vi.unstubAllEnvs()
   })
 
   it('binds staleAnswerIds into the action passed to Summary', async () => {

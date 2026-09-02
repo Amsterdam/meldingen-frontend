@@ -8,8 +8,10 @@ import { useActionState, useEffect } from 'react'
 
 import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
+import type { AssetItem } from '../_utils/formatAssetItem'
 import type { FormState } from '~/types'
 
+import { AssetElement } from '../_components/AssetElement/AssetElement'
 import { useDocumentTitleOnError } from '../_utils/validation'
 import { BackLink } from '../../_components'
 import { AttachmentImage } from './_components/AttachmentImage'
@@ -27,9 +29,16 @@ type File = {
   fileName: string
 }
 
+type Asset = {
+  data: AssetItem[]
+  name?: string
+  term?: string
+}
+
 type Props = {
   action: (_: unknown, formData: FormData) => Promise<FormState>
   additionalQuestions: (GenericSummaryData & { link: string })[]
+  assets: Asset
   attachments: Omit<GenericSummaryData, 'description'> & { files: File[] }
   contact?: Omit<GenericSummaryData, 'description'> & { description: string[] }
   location: GenericSummaryData
@@ -39,9 +48,18 @@ type Props = {
 
 const initialState: Pick<FormState, 'apiError'> = {}
 
+const getLocationLinkCopy = (t: ReturnType<typeof useTranslations>, hasAssets: boolean, assetName?: string) => {
+  if (hasAssets && assetName) {
+    return t('change-links.assets', { assetName: assetName.toLocaleLowerCase() })
+  }
+
+  return t('change-links.location')
+}
+
 export const Summary = ({
   action,
   additionalQuestions,
+  assets,
   attachments,
   contact,
   location,
@@ -67,6 +85,9 @@ export const Summary = ({
       console.error(apiError)
     }
   }, [apiError])
+
+  const hasAssets = assets.data && assets.data.length > 0
+  const locationTermCopy = hasAssets ? (assets.term ?? location.term) : location.term
 
   return (
     <>
@@ -105,11 +126,24 @@ export const Summary = ({
             ))}
 
           <SummaryList.Item>
-            <SummaryList.Term>{location.term}</SummaryList.Term>
+            <SummaryList.Term>{locationTermCopy}</SummaryList.Term>
             <SummaryList.Description>{location.description}</SummaryList.Description>
+
+            {hasAssets && (
+              <SummaryList.Description>
+                <UnorderedList className="ams-mb-m" markers={false}>
+                  {assets.data.map((asset) => (
+                    <UnorderedList.Item key={asset.id}>
+                      <AssetElement asset={asset} />
+                    </UnorderedList.Item>
+                  ))}
+                </UnorderedList>
+              </SummaryList.Description>
+            )}
+
             <SummaryList.Description>
               <Link href={`/locatie#${TOP_ANCHOR_ID}`} linkComponent={NextLink}>
-                {t('change-links.location')}
+                {getLocationLinkCopy(t, hasAssets, assets.name)}
               </Link>
             </SummaryList.Description>
           </SummaryList.Item>
