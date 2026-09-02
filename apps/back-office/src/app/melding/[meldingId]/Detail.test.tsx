@@ -1,12 +1,45 @@
+import type { ComponentProps } from 'react'
+
 import { render, screen } from '@testing-library/react'
+
+import type { MeldingAttachment } from './types'
 
 import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
 import { asset, melding } from '~/mocks/data'
 
-vi.mock('./_components/Attachment', () => ({
-  Attachment: vi.fn(() => <div>Attachment</div>),
+vi.mock('./_components/AttachmentPreview', () => ({
+  AttachmentPreview: ({
+    fileName,
+    id,
+    isLinkToSlider,
+    meldingId,
+  }: {
+    fileName: string
+    id: number
+    isLinkToSlider?: boolean
+    meldingId: number
+  }) =>
+    isLinkToSlider ? (
+      <a data-testid="attachment-preview" href={`/melding/${meldingId}/foto?id=${id}`}>
+        <span className="ams-visually-hidden">photo-link</span>
+        {fileName}
+      </a>
+    ) : (
+      <div data-testid="attachment-preview">{fileName}</div>
+    ),
 }))
+
+type DetailProps = ComponentProps<typeof Detail>
+
+const createAttachment = (overrides: Partial<MeldingAttachment> = {}) => ({
+  blob: new Blob(['test-blob'], { type: 'image/jpeg' }),
+  createdAt: '2025-10-01T12:00:00Z',
+  id: 42,
+  originalFilename: 'IMG_0815.jpg',
+  updatedAt: '2025-10-01T12:00:00Z',
+  ...overrides,
+})
 
 const defaultProps = {
   additionalQuestionsWithMeldingText: [
@@ -17,9 +50,7 @@ const defaultProps = {
   ],
   assets: [asset],
   attachments: {
-    files: [{ blob: new Blob(['test-blob'], { type: 'image/jpeg' }), fileName: 'IMG_0815.jpg' }],
-    key: 'attachments',
-    term: 'detail.attachments.title',
+    attachmentsWithFile: [createAttachment()],
   },
   meldingData: [
     { description: '2023-10-01', key: 'created_at', term: 'Created at' },
@@ -45,14 +76,14 @@ const defaultProps = {
   ],
   meldingId: 123,
   publicId: 'B100AA',
-}
+} satisfies DetailProps
 
 describe('Detail', () => {
   it('renders the component', () => {
     render(<Detail {...defaultProps} />)
 
     expect(screen.getByText('back-link')).toBeInTheDocument()
-    expect(screen.getByText('title')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'title' })).toBeInTheDocument()
   })
 
   it('renders the additional questions with melding text', () => {
@@ -151,20 +182,23 @@ describe('Detail', () => {
   it('renders the attachments', () => {
     render(<Detail {...defaultProps} />)
 
-    expect(screen.getByText('attachments.title')).toBeInTheDocument()
-    expect(screen.getByText('Attachment')).toBeInTheDocument()
+    const attachmentLink = screen.getByTestId('attachment-preview')
+
+    expect(screen.getByText('title', { selector: 'dt' })).toBeInTheDocument()
+    expect(attachmentLink).toBeInTheDocument()
+    expect(attachmentLink).toHaveAttribute('href', '/melding/123/foto?id=42')
+    expect(screen.getByTestId('attachment-preview')).toHaveTextContent('IMG_0815.jpg')
+    expect(screen.getAllByText('IMG_0815.jpg')).toHaveLength(2)
   })
 
   it('renders a no-data message when there are no attachments', () => {
-    const attachments = {
-      files: [],
-      key: 'attachments',
-      term: 'detail.attachments.title',
+    const attachments: DetailProps['attachments'] = {
+      attachmentsWithFile: [],
     }
 
     render(<Detail {...defaultProps} attachments={attachments} />)
 
-    expect(screen.getByText('attachments.title')).toBeInTheDocument()
-    expect(screen.getByText('attachments.no-data')).toBeInTheDocument()
+    expect(screen.getByText('title', { selector: 'dt' })).toBeInTheDocument()
+    expect(screen.getByText('no-data')).toBeInTheDocument()
   })
 })

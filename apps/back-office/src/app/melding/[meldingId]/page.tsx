@@ -7,7 +7,7 @@ import {
   getContactData,
   getLocationData,
   getMeldingData,
-} from './_utils'
+} from './_utils/server'
 import { Detail } from './Detail'
 import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
@@ -43,8 +43,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
     ...additionalQuestions.data,
   ]
 
-  const attachments = await getAttachmentsData(meldingId, t)
-  if ('error' in attachments) return attachments.error
+  const attachments = await getAttachmentsData(meldingId)
 
   const contact = getContactData(data, t)
   const location = getLocationData(data, t)

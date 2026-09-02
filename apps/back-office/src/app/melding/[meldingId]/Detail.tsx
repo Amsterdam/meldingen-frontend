@@ -3,34 +3,29 @@ import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 import { Fragment } from 'react'
 
-import { Column, Grid, Heading, Link, Paragraph, TabNavigation } from '@meldingen/ui'
+import { Column, Grid, Heading, Link, TabNavigation } from '@meldingen/ui'
 
+import type { GetAttachmentsDataResult } from './_utils/server/getAttachmentsData'
 import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
-import { Attachment } from './_components/Attachment'
+import { AttachmentSection } from './_components/AttachmentSection'
 import { BackLink } from './_components/BackLink'
 
 import styles from './Detail.module.css'
 
 type DescriptionListItem = {
-  description: string
+  description?: string
   key: string
   term: string
 }
 
 type MeldingDataItem = DescriptionListItem & { link?: { href: string; label: string } }
 
-type File = {
-  blob: Blob | null
-  error?: string
-  fileName: string
-}
-
 type Props = {
   additionalQuestionsWithMeldingText: DescriptionListItem[]
   assets: AssetOutput[]
   assetsTerm?: string
-  attachments: Omit<DescriptionListItem, 'description'> & { files: File[] }
+  attachments: GetAttachmentsDataResult
   contact?: DescriptionListItem[]
   location?: DescriptionListItem[]
   meldingData: MeldingDataItem[]
@@ -50,8 +45,6 @@ export const Detail = ({
   publicId,
 }: Props) => {
   const t = useTranslations('detail')
-
-  const hasAttachments = attachments.files.length > 0
 
   return (
     <div className="ams-page__area--body">
@@ -125,20 +118,7 @@ export const Detail = ({
                 </Fragment>
               ))}
             </dl>
-            <dl className={clsx(styles.descriptionList, styles.cardWide, styles.attachmentsGrid)}>
-              <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
-              {hasAttachments ? (
-                attachments.files.map((file) => (
-                  <dd className={styles.description} key={file.fileName}>
-                    <Attachment blob={file.blob} fileName={file.fileName} />
-                  </dd>
-                ))
-              ) : (
-                <dd className={styles.attachmentsFallBackDescription}>
-                  <Paragraph>{t('attachments.no-data')}</Paragraph>
-                </dd>
-              )}
-            </dl>
+            <AttachmentSection attachments={attachments} meldingId={meldingId} />
           </div>
         </Grid.Cell>
       </Grid>
