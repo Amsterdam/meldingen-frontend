@@ -7,17 +7,18 @@ import NextLink from 'next/link'
 
 import { Link } from '@meldingen/ui'
 
-import type { Attachments } from '../types'
+import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
 import type { FormDateStringOptions } from '~/app/_utils/formatDateString'
 
-import { Attachment } from './Attachment'
+import { AttachmentPreview } from './AttachmentPreview'
+import { ApiErrorAlert } from '~/app/_components'
 import { formatDateString } from '~/app/_utils/formatDateString'
 
 import parentStyles from '../Detail.module.css'
 import styles from './AttachmentSection.module.css'
 
 type Props = {
-  attachments: Attachments
+  attachments: GetAttachmentsDataResult
   meldingId: number
 }
 
@@ -33,41 +34,56 @@ const formatDateStringOptions: FormDateStringOptions = {
   },
 }
 
-export const AttachmentSection = ({ attachments, meldingId }: Props) => {
-  const t = useTranslations('detail')
+export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachments, error }, meldingId }: Props) => {
+  const t = useTranslations('attachments')
 
-  const hasAttachments = attachments.files.length > 0
+  const hasAttachments = attachments.length > 0
   const addAttachmentLink = `/melding/${meldingId}/bestand-toevoegen`
+  const removeAttachmentLink = `/melding/${meldingId}/bestand-verwijderen`
 
   return (
     <dl className={clsx(parentStyles.descriptionList, parentStyles.cardWide, styles.attachmentsSection)}>
-      <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
+      <dt className={styles.attachmentsTerm}>{t('title')}</dt>
+      {error && <ApiErrorAlert description={t('fetch-error.description')} shouldFocus={false} />}
 
-      {hasAttachments ? (
+      {hasAttachments && !error ? (
         <div className={styles.attachmentsWrapper}>
-          {attachments.files.map(({ blob, createdAt, fileName, id }) => {
+          {attachments.map(({ blob, createdAt, id, originalFilename }) => {
             const { date, time } = formatDateString(createdAt, formatDateStringOptions)
 
             return (
-              <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={fileName}>
-                <Attachment blob={blob} fileName={fileName} id={id} meldingId={meldingId} />
+              <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={originalFilename}>
+                <AttachmentPreview
+                  blob={blob}
+                  fileName={originalFilename}
+                  id={id}
+                  isLinkToSlider
+                  meldingId={meldingId}
+                />
                 <Paragraph>{`${date} ${time}`}</Paragraph>
-                <Paragraph>{fileName}</Paragraph>
+                <Paragraph>{originalFilename}</Paragraph>
               </dd>
             )
           })}
         </div>
       ) : (
         <dd className={styles.fullWidth}>
-          <Paragraph>{t('attachments.no-data')}</Paragraph>
+          <Paragraph>{t('no-data')}</Paragraph>
         </dd>
       )}
 
       <dd className={styles.fullWidth}>
         <Link href={addAttachmentLink} linkComponent={NextLink}>
-          {t('attachments.add-link')}
+          {t('add-link')}
         </Link>
       </dd>
+      {hasAttachments && (
+        <dd className={styles.fullWidth}>
+          <Link href={removeAttachmentLink} linkComponent={NextLink}>
+            {t('remove-link')}
+          </Link>
+        </dd>
+      )}
     </dl>
   )
 }

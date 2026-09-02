@@ -1,14 +1,16 @@
 import { getTranslations } from 'next-intl/server'
+import { redirect } from 'next/navigation'
 
 import { getAttachmentsData } from '../_utils/server'
-import { AddAttachment } from './AddAttachment'
+import { Attachments } from './_components/Attachments'
+import { PageWrapper } from './_components/PageWrapper'
+import { RemoveAttachmentErrorProvider } from './_context/RemoveAttachmentErrorContext'
 import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
 
-  const t = await getTranslations('attachments.add')
-
+  const t = await getTranslations('attachments.remove')
   const { data } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
   return {
@@ -21,7 +23,15 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const attachments = await getAttachmentsData(meldingId)
 
-  //TODO show error as alert
+  if (attachments.attachmentsWithFile.length === 0) {
+    redirect(`/melding/${meldingId}`)
+  }
 
-  return <AddAttachment attachments={attachments.attachmentsWithFile} meldingId={meldingId} />
+  return (
+    <RemoveAttachmentErrorProvider>
+      <PageWrapper meldingId={meldingId}>
+        <Attachments attachments={attachments} meldingId={meldingId} />
+      </PageWrapper>
+    </RemoveAttachmentErrorProvider>
+  )
 }

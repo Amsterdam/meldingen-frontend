@@ -8,18 +8,16 @@ const mockMeldingId = 88
 
 describe('getAttachmentsData', () => {
   it('returns correct attachments data for Images', async () => {
-    const result = await getAttachmentsData(mockMeldingId, (key: string) => key)
+    const result = await getAttachmentsData(mockMeldingId)
 
     expect(result).toMatchObject({
-      files: [
+      attachmentsWithFile: [
         {
           blob: expect.any(Blob),
-          fileName: 'IMG_0815.jpg',
           id: 42,
+          originalFilename: 'IMG_0815.jpg',
         },
       ],
-      key: 'attachments',
-      term: 'detail.attachments.title',
     })
   })
 
@@ -39,54 +37,30 @@ describe('getAttachmentsData', () => {
       }),
     )
 
-    const result = await getAttachmentsData(mockMeldingId, (key: string) => key)
+    const result = await getAttachmentsData(mockMeldingId)
 
-    expect(result.files?.[0]?.blob).toBeInstanceOf(Blob)
-    expect((result.files?.[0]?.blob as Blob).type).toBe('application/pdf')
+    expect(result.attachmentsWithFile?.[0]?.blob).toBeInstanceOf(Blob)
+    expect((result.attachmentsWithFile?.[0]?.blob as Blob).type).toBe('application/pdf')
 
     expect(result).toMatchObject({
-      files: [
+      attachmentsWithFile: [
         {
           blob: expect.any(Blob),
-          fileName: 'PDF_0815.pdf',
           id: 1,
+          originalFilename: 'PDF_0815.pdf',
         },
       ],
-      key: 'attachments',
-      term: 'detail.attachments.title',
     })
   })
 
-  it('returns an error message when getMeldingByMeldingIdAttachments returns an error', async () => {
+  it('rejects when getMeldingByMeldingIdAttachments returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
 
-    const result = await getAttachmentsData(mockMeldingId, (key: string) => key)
-
-    expect(result).toEqual({ error: 'Error message' })
-  })
-
-  it('returns an attachment with error message when getAttachmentById returns an error ', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })),
-    )
-
-    const result = await getAttachmentsData(mockMeldingId, (key: string) => key)
-
-    expect(result).toMatchObject({
-      files: [
-        {
-          blob: null,
-          error: 'Error message',
-          fileName: 'IMG_0815.jpg',
-          id: 42,
-        },
-      ],
-      key: 'attachments',
-      term: 'detail.attachments.title',
-    })
+    const result = await getAttachmentsData(mockMeldingId)
+    expect(result.error).toBe('Error message')
   })
 })
