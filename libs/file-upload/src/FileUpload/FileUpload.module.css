@@ -1,8 +1,11 @@
 .upload {
+  align-items: center;
   background-color: var(--ams-file-input-background-color);
   border: none;
   color: var(--ams-file-input-color);
+  column-gap: var(--ams-space-m);
   cursor: var(--ams-file-input-cursor);
+  display: flex;
   font-family: var(--ams-file-input-font-family);
   font-size: var(--ams-file-input-font-size);
   font-weight: var(--ams-file-input-font-weight);

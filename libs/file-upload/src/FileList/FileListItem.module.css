@@ -5,6 +5,7 @@
   margin-block: var(--ams-space-m) var(--ams-space-l);
 
   @media screen and (min-width: 37.5rem) {
+    align-items: center;
     grid-template-columns: 1fr 2fr 1fr;
     margin-block-end: var(--ams-space-m);
   }
@@ -21,7 +22,7 @@
 
 .imageContainer {
   display: block;
-  max-inline-size: 50%;
+  max-inline-size: var(--file-upload-item-image-max-inline-size, 50%);
   min-width: 7.5rem;
 
   @media screen and (min-width: 37.5rem) {

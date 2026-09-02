@@ -13,6 +13,7 @@ import styles from './FileListItem.module.css'
 // an unordered list with list items is used here because NVDA currently (16-9-2025) reads the number of items in a description list incorrectly.
 
 export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
+  className?: string
   deleteButtonId: string
   errorMessage?: string
   file: File | { name: string }
@@ -26,7 +27,15 @@ export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
   status: 'pending' | 'uploading' | 'success' | 'error'
 }
 
-export const FileListItem = ({ deleteButtonId, errorMessage, file, labels, onDelete, status }: FileListItemProps) => {
+export const FileListItem = ({
+  className,
+  deleteButtonId,
+  errorMessage,
+  file,
+  labels,
+  onDelete,
+  status,
+}: FileListItemProps) => {
   const { actionButtonCancelLabel, actionButtonDeleteLabel, progressFinishedLabel, progressLoadingLabel } = labels
 
   const isError = status === 'error'
@@ -36,17 +45,30 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, labels, onDel
   const progressLabel = isFinished ? progressFinishedLabel : progressLoadingLabel
 
   return (
-    <li className={clsx(styles.item, errorMessage && styles.itemWithError)}>
+    <li
+      className={clsx(
+        styles.item,
+        {
+          [styles.itemWithError]: errorMessage,
+        },
+        className,
+      )}
+    >
       <div className={styles.imageContainer}>
         {isError ? <Icon className={styles.icon} size="heading-1" svg={WarningIcon} /> : <FileListImage file={file} />}
       </div>
+
       <div className={styles.description}>
         <span>{file.name}</span>
-        {isError ? (
-          <span className={styles.errorMessage}>{errorMessage}</span>
-        ) : (
-          <span className={styles.statusMessage}>{progressLabel}</span>
-        )}
+
+        <span
+          className={clsx({
+            [styles.errorMessage]: isError,
+            [styles.statusMessage]: !isError,
+          })}
+        >
+          {isError ? errorMessage : progressLabel}
+        </span>
       </div>
 
       {actionButtonLabel && (
