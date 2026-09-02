@@ -42,7 +42,6 @@
 }
 
 .buttonWrapper {
-  align-self: end;
   display: flex;
   flex-wrap: wrap; /* Allow buttons to wrap on smaller screens with increased base font size */
   gap: var(--ams-space-m);
