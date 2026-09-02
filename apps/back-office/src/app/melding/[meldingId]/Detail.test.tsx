@@ -184,7 +184,7 @@ describe('Detail', () => {
 
     const attachmentLink = screen.getByTestId('attachment-preview')
 
-    expect(screen.getByText('title', { selector: 'dt' })).toBeInTheDocument()
+    expect(screen.getByText('attachments.title', { selector: 'dt' })).toBeInTheDocument()
     expect(attachmentLink).toBeInTheDocument()
     expect(attachmentLink).toHaveAttribute('href', '/melding/123/foto?id=42')
     expect(screen.getByTestId('attachment-preview')).toHaveTextContent('IMG_0815.jpg')
@@ -198,7 +198,7 @@ describe('Detail', () => {
 
     render(<Detail {...defaultProps} attachments={attachments} />)
 
-    expect(screen.getByText('title', { selector: 'dt' })).toBeInTheDocument()
-    expect(screen.getByText('no-data')).toBeInTheDocument()
+    expect(screen.getByText('attachments.title', { selector: 'dt' })).toBeInTheDocument()
+    expect(screen.getByText('attachments.no-data')).toBeInTheDocument()
   })
 })

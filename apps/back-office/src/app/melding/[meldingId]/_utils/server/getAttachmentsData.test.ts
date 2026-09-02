@@ -5,10 +5,21 @@ import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
 const mockMeldingId = 88
+const imageAttachmentType = 'thumbnail'
 
 describe('getAttachmentsData', () => {
   it('returns correct attachments data for Images', async () => {
-    const result = await getAttachmentsData(mockMeldingId)
+    server.use(
+      http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, ({ request }) => {
+        expect(new URL(request.url).searchParams.get('type')).toBe(imageAttachmentType)
+
+        return HttpResponse.json(new Blob(['mock content'], { type: 'image/jpeg' }), {
+          headers: { 'content-type': 'image/jpeg' },
+        })
+      }),
+    )
+
+    const result = await getAttachmentsData(mockMeldingId, imageAttachmentType)
 
     expect(result).toMatchObject({
       attachmentsWithFile: [
@@ -37,7 +48,7 @@ describe('getAttachmentsData', () => {
       }),
     )
 
-    const result = await getAttachmentsData(mockMeldingId)
+    const result = await getAttachmentsData(mockMeldingId, imageAttachmentType)
 
     expect(result.attachmentsWithFile?.[0]?.blob).toBeInstanceOf(Blob)
     expect((result.attachmentsWithFile?.[0]?.blob as Blob).type).toBe('application/pdf')

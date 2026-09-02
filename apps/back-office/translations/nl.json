@@ -94,7 +94,6 @@
       }
     },
     "attachments": {
-      "melding-form-user": "Melder",
       "title": "Bestanden",
       "no-data": "Geen bestanden toegevoegd",
       "pdf-link": "Bekijk document: {fileName} (opent in nieuw venster)",
@@ -104,79 +103,68 @@
       "remove-link": "Verwijder bestand"
     },
     "errors": {
+      "fetch-error": "De bestanden konden niet worden geladen.",
       "melding-not-found": "An error occurred"
     }
   },
-  "attachments": {
-    "melding-form-user": "Melder",
-    "title": "Bestanden",
-    "no-data": "Geen bestanden toegevoegd",
+  "add-attachment": {
+    "metadata": {
+      "title": "Bestand toevoegen - Gemeente Amsterdam"
+    },
+    "title": "Voeg bestand toe",
     "back-link": "Meldingdetails",
-    "visually-hidden-text": "Bekijk document: {fileName} (opent in nieuw venster)",
-    "add-link": "Voeg bestand toe",
-    "remove-link": "Verwijder bestand",
-    "errors": [
-      {
-        "fetch": {
-          "description": "De bestanden kunnen nu niet worden geladen. Probeer het later opnieuw."
-        }
-      }
-    ],
-    "add": {
-      "metadata": {
-        "title": "Bestand toevoegen - Gemeente Amsterdam"
+    "delete-notification": "{fileName} is verwijderd",
+    "cancel-link": "Annuleer",
+    "confirmation-prompt": "Weet je zeker dat je het bestand \"{fileName}\" wilt verwijderen?",
+    "upload": {
+      "title": "Bestand toevoegen",
+      "description": "U kunt maximaal 5 bestanden tegelijk toevoegen. Toegestane bestandtypes: jpg, jpeg, png en pdf. Een bestand mag maximaal 20 Mb groot zijn.",
+      "count": "{currentCount} van {maxCount} bestanden geupload"
+    },
+    "file-upload": {
+      "select-file-button": "Bestanden kiezen",
+      "action-button-delete": "Verwijder bestand",
+      "drop-area": "Of sleep de bestanden in dit vlak.",
+      "id-prefix": "bestand",
+      "progress-finished": "Upload geslaagd",
+      "progress-loading": "Aan het uploaden"
+    },
+    "errors": {
+      "too-many-files": {
+        "title": "U kunt maximaal {maxFiles} bestanden uploaden."
       },
-      "title": "Voeg bestand toe",
-      "delete-notification": "{fileName} is verwijderd",
-      "cancel-link": "Annuleer",
-      "upload": {
-        "title": "Bestand toevoegen",
-        "description": "U kunt maximaal 5 bestanden tegelijk toevoegen. Toegestane bestandtypes: jpg, jpeg, png en pdf. Een bestand mag maximaal 20 Mb groot zijn.",
-        "count": "{currentCount} van {maxCount} bestanden geupload"
+      "too-many-attempts": {
+        "title": "Verbeter de fouten om uw foto’s toe te voegen",
+        "description": "U heeft te vaak geprobeerd een foto toe te voegen. Verwijder eerst een mislukte poging uit de lijst om nog een foto toe te voegen."
       },
-      "file-upload": {
-        "select-file-button": "Bestanden kiezen",
-        "action-button-delete": "Verwijder bestand",
-        "drop-area": "Of sleep de bestanden in dit vlak.",
-        "id-prefix": "bestand",
-        "progress-finished": "Upload geslaagd",
-        "progress-loading": "Aan het uploaden"
+      "upload-in-progress": {
+        "title": "De foto’s zijn nog niet toegevoegd",
+        "description": "Wacht tot de foto’s zijn toegevoegd of annuleer."
       },
-      "errors": {
-        "too-many-files": {
-          "title": "U kunt maximaal {maxFiles} bestanden uploaden."
-        },
-        "too-many-attempts": {
-          "title": "Verbeter de fouten om uw foto’s toe te voegen",
-          "description": "U heeft te vaak geprobeerd een foto toe te voegen. Verwijder eerst een mislukte poging uit de lijst om nog een foto toe te voegen."
-        },
-        "upload-in-progress": {
-          "title": "De foto’s zijn nog niet toegevoegd",
-          "description": "Wacht tot de foto’s zijn toegevoegd of annuleer."
-        },
-        "delete-failed": {
-          "title": "Het is niet gelukt om de foto te verwijderen",
-          "description": "Probeer het opnieuw."
-        }
-      },
-      "validation-errors": {
-        "alert-title": "{count, plural, =1 {Verbeter de fout om uw foto’s toe te voegen} other {Verbeter de fouten om uw foto’s toe te voegen}}",
-        "duplicate-upload": "Het gekozen bestand is al toegevoegd.",
-        "failed-upload": "Probeer het opnieuw.",
-        "invalid-file-type": "Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp.",
-        "file-too-large": "Een foto mag maximaal 20 MB groot zijn.",
-        "invalid-file-extension": "De toevoeging achter de punt in de bestandsnaam is niet gelijk aan het echte bestandstype. Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp."
+      "delete-failed": {
+        "title": "Het is niet gelukt om de foto te verwijderen",
+        "description": "Probeer het opnieuw."
       }
     },
-    "remove": {
-      "confirmation": "{fileName} is verwijderd",
-      "confirmation-prompt": "Weet je zeker dat je het bestand \"{fileName}\" wilt verwijderen?",
-      "metadata": {
-        "title": "Bestand verwijderen - Gemeente Amsterdam"
-      },
-      "submit-button": "Verwijder bestand",
-      "title": "Bestand verwijderen"
+    "validation-errors": {
+      "alert-title": "{count, plural, =1 {Verbeter de fout om uw foto’s toe te voegen} other {Verbeter de fouten om uw foto’s toe te voegen}}",
+      "duplicate-upload": "Het gekozen bestand is al toegevoegd.",
+      "failed-upload": "Probeer het opnieuw.",
+      "invalid-file-type": "Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp.",
+      "file-too-large": "Een foto mag maximaal 20 MB groot zijn.",
+      "invalid-file-extension": "De toevoeging achter de punt in de bestandsnaam is niet gelijk aan het echte bestandstype. Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp."
     }
+  },
+  "remove-attachment": {
+    "melding-form-user": "Melder",
+    "metadata": {
+      "title": "Bestand verwijderen - Gemeente Amsterdam"
+    },
+    "back-link": "Meldingdetails",
+    "title": "Bestand verwijderen",
+    "confirmation": "{fileName} is verwijderd",
+    "confirmation-prompt": "Weet je zeker dat je het bestand \"{fileName}\" wilt verwijderen?",
+    "submit-button": "Verwijder bestand"
   },
   "change-labels": {
     "metadata": {

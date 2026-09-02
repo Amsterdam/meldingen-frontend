@@ -24,7 +24,7 @@ const isContainingFiles = (dataTransfer: DataTransfer): boolean => {
   return hasNoTypesInfo || isDraggingFiles
 }
 
-type ButtonProps = { text?: string; variant: ComponentProps<typeof Button>['variant'] }
+type ButtonProps = { text?: string; variant?: ComponentProps<typeof Button>['variant'] }
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
   button?: ButtonProps
