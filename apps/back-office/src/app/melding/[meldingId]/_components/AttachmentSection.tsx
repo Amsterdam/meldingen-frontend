@@ -35,7 +35,7 @@ const formatDateStringOptions: FormDateStringOptions = {
 }
 
 export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachments, error }, meldingId }: Props) => {
-  const t = useTranslations('attachments')
+  const t = useTranslations('add-attachment')
 
   const hasAttachments = attachments.length > 0
   const addAttachmentLink = `/melding/${meldingId}/bestand-toevoegen`
@@ -44,7 +44,7 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
   return (
     <dl className={clsx(parentStyles.descriptionList, parentStyles.cardWide, styles.attachmentsSection)}>
       <dt className={styles.attachmentsTerm}>{t('title')}</dt>
-      {error && <ApiErrorAlert description={t('fetch-error.description')} shouldFocus={false} />}
+      {error && <ApiErrorAlert description={t('errors.fetch-error.description')} shouldFocus={false} />}
 
       {hasAttachments && !error ? (
         <div className={styles.attachmentsWrapper}>

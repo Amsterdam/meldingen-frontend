@@ -20,7 +20,7 @@ type Props = {
 export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachments }, meldingId }: Props) => {
   const { setApiError } = useRemoveAttachmentError()
   const router = useRouter()
-  const t = useTranslations('attachments.remove')
+  const t = useTranslations('remove-attachment')
 
   const [attachments, setAttachments] = useState(initialAttachments)
   const [deletedFileName, setDeletedFileName] = useState<string | null>(null)

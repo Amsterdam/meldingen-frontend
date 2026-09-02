@@ -25,7 +25,7 @@ export const Attachment = ({
   meldingId,
   onDelete,
 }: Props) => {
-  const t = useTranslations('attachments')
+  const t = useTranslations('remove-attachment')
   return (
     <Column alignHorizontal="start" className={clsx(styles.container, styles.cardWide)}>
       <Heading level={4}>{originalFilename}</Heading>
@@ -37,12 +37,12 @@ export const Attachment = ({
         <AttachmentPreview blob={blob} fileName={originalFilename} id={id} meldingId={meldingId} />
       </div>
       <Button
-        aria-label={`${t('remove.submit-button')} ${originalFilename}`}
+        aria-label={`${t('submit-button')} ${originalFilename}`}
         disabled={isDeleting}
         onClick={onDelete}
         variant="secondary"
       >
-        {t('remove.submit-button')}
+        {t('submit-button')}
       </Button>
     </Column>
   )
