@@ -22,7 +22,7 @@ type Props = {
 }
 
 export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachments, error }, meldingId }: Props) => {
-  const t = useTranslations('detail.attachments')
+  const t = useTranslations('detail')
 
   const hasAttachments = attachments.length > 0
   const addAttachmentLink = `/melding/${meldingId}/bestand-toevoegen`
@@ -30,8 +30,8 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
 
   return (
     <dl className={clsx(parentStyles.descriptionList, parentStyles.cardWide, styles.attachmentsSection)}>
-      <dt className={styles.attachmentsTerm}>{t('title')}</dt>
-      {error && <ApiErrorAlert description={t('errors.fetch-error.description')} shouldFocus={false} />}
+      <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
+      {error && <ApiErrorAlert description={t('errors.fetch-error')} shouldFocus={false} />}
 
       {hasAttachments && !error ? (
         <div className={styles.attachmentsWrapper}>
@@ -53,19 +53,19 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
         </div>
       ) : (
         <dd className={styles.fullWidth}>
-          <Paragraph>{t('no-data')}</Paragraph>
+          <Paragraph>{t('attachments.no-data')}</Paragraph>
         </dd>
       )}
 
       <dd className={styles.fullWidth}>
         <Link href={addAttachmentLink} linkComponent={NextLink}>
-          {t('add-link')}
+          {t('attachments.add-link')}
         </Link>
       </dd>
       {hasAttachments && (
         <dd className={styles.fullWidth}>
           <Link href={removeAttachmentLink} linkComponent={NextLink}>
-            {t('remove-link')}
+            {t('attachments.remove-link')}
           </Link>
         </dd>
       )}

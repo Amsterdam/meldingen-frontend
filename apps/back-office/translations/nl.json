@@ -103,6 +103,7 @@
       "remove-link": "Verwijder bestand"
     },
     "errors": {
+      "fetch-error": "De bestanden konden niet worden geladen.",
       "melding-not-found": "An error occurred"
     }
   },
@@ -129,9 +130,6 @@
       "progress-loading": "Aan het uploaden"
     },
     "errors": {
-      "fetch-error": {
-        "description": "De bestanden konden niet worden geladen."
-      },
       "too-many-files": {
         "title": "U kunt maximaal {maxFiles} bestanden uploaden."
       },
