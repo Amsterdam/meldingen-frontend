@@ -21,7 +21,7 @@
     "@meldingen/file-upload": "workspace:*",
     "@meldingen/ui": "workspace:*",
     "@meldingen/utils": "workspace:*",
-    "@tiptap/core": "3.27.4",
+    "@tiptap/core": "3.30.4",
     "@tiptap/extension-bold": "3.27.4",
     "@tiptap/extension-document": "3.27.4",
     "@tiptap/extension-italic": "3.27.4",
