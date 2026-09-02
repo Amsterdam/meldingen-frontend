@@ -1,4 +1,5 @@
 import type { Map } from 'leaflet'
+import type { RefObject } from 'react'
 import type { Mock } from 'vitest'
 
 import { render } from '@testing-library/react'
@@ -46,8 +47,9 @@ describe('MapComponent', () => {
     expect(leafletContainer).toBeInTheDocument()
   })
 
-  it('calls invalidateSize when isHidden prop changes', () => {
+  it('calls invalidateSize and viewreset when isHidden prop changes', () => {
     const mockMapInstance = {
+      fire: vi.fn(),
       invalidateSize: vi.fn(),
     } as unknown as Map
 
@@ -55,22 +57,35 @@ describe('MapComponent', () => {
     rerender(<MapComponent isHidden={true} />)
 
     expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
+    expect(mockMapInstance.fire).toHaveBeenCalledWith('viewreset')
   })
 
-  it('calls invalidateSize and adds classname when hasAlert prop set to true', () => {
+  it('exposes invalidateSize on mapHandleRef', () => {
     const mockMapInstance = {
+      fire: vi.fn(),
       invalidateSize: vi.fn(),
     } as unknown as Map
 
-    const { container } = render(<MapComponent hasAlert={true} isHidden={false} testMapInstance={mockMapInstance} />)
-    const element = container.querySelector('[class*="notInteractive"]')
+    const mapHandleRef: RefObject<{ invalidateSize: () => void } | null> = { current: null }
+
+    render(<MapComponent mapHandleRef={mapHandleRef} testMapInstance={mockMapInstance} />)
+
+    mapHandleRef.current?.invalidateSize()
 
     expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
+  })
+
+  it('makes the map inert when isInert is true', () => {
+    const { container } = render(<MapComponent isInert />)
+
+    const element = container.querySelector('[inert]')
+
     expect(element).toBeInTheDocument()
   })
 
   it('calls remove when the component unmounts', () => {
     const mockMapInstance = {
+      fire: vi.fn(),
       invalidateSize: vi.fn(),
       remove: vi.fn(),
     } as unknown as Map
