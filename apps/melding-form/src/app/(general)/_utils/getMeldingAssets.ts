@@ -18,7 +18,7 @@ export const getMeldingAssets = async (
   if (!assetTypeId || !typeNames) {
     return {
       assets: [],
-      pageConfig: undefined,
+      meta: undefined,
       requiredErrorMessage: undefined,
     }
   }
@@ -32,7 +32,7 @@ export const getMeldingAssets = async (
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
     console.error(assetIdError)
-    return { assets: [], pageConfig: undefined, requiredErrorMessage: undefined }
+    return { assets: [], meta: undefined, requiredErrorMessage: undefined }
   }
 
   const assets = rawAssets
@@ -41,10 +41,14 @@ export const getMeldingAssets = async (
 
   return {
     assets,
-    pageConfig: {
-      description: assetType?.arguments?.location_description as string | undefined,
-      label: assetType?.arguments?.location_label as string | undefined,
-      name: assetType?.name as string | undefined,
+    meta: {
+      asset: {
+        name: assetType?.name as string | undefined,
+      },
+      location: {
+        description: assetType?.arguments?.location_description as string | undefined,
+        label: assetType?.arguments?.location_label as string | undefined,
+      },
     },
     requiredErrorMessage: assetType?.arguments?.location_required_error as string | undefined,
   }

@@ -82,10 +82,11 @@ describe('getMeldingAssets', () => {
           subtype: 'containers',
         },
       ],
-      pageConfig: {
-        description: undefined,
-        label: undefined,
-        name: 'container',
+      meta: {
+        asset: {
+          name: 'container',
+        },
+        location: { description: undefined, label: undefined },
       },
       requiredErrorMessage: undefined,
     })
@@ -131,7 +132,7 @@ describe('getMeldingAssets', () => {
 
     expect(consoleSpy).toHaveBeenCalledWith(apiError)
     expect(formatAssetItemMock).not.toHaveBeenCalled()
-    expect(result).toEqual({ assets: [], pageConfig: undefined, requiredErrorMessage: undefined })
+    expect(result).toEqual({ assets: [], meta: undefined, requiredErrorMessage: undefined })
 
     consoleSpy.mockRestore()
   })
@@ -149,7 +150,7 @@ describe('getMeldingAssets', () => {
     })
 
     expect(formatAssetItemMock).not.toHaveBeenCalled()
-    expect(result).toEqual({ assets: [], pageConfig: undefined, requiredErrorMessage: undefined })
+    expect(result).toEqual({ assets: [], meta: undefined, requiredErrorMessage: undefined })
   })
 
   it('returns empty results when the asset type has no type_names', async () => {
@@ -171,7 +172,7 @@ describe('getMeldingAssets', () => {
     })
 
     expect(formatAssetItemMock).not.toHaveBeenCalled()
-    expect(result).toEqual({ assets: [], pageConfig: undefined, requiredErrorMessage: undefined })
+    expect(result).toEqual({ assets: [], meta: undefined, requiredErrorMessage: undefined })
   })
 
   it('returns location page configuration and required error message when provided by the asset type', async () => {
@@ -197,10 +198,12 @@ describe('getMeldingAssets', () => {
 
     expect(result).toEqual({
       assets: [],
-      pageConfig: {
-        description: 'Choose a location',
-        label: 'Selecteer locatie',
-        name: 'Containerlocatie',
+      meta: {
+        asset: { name: 'Containerlocatie' },
+        location: {
+          description: 'Choose a location',
+          label: 'Selecteer locatie',
+        },
       },
       requiredErrorMessage: 'Locatie is verplicht',
     })
@@ -218,7 +221,7 @@ describe('getMeldingAssets', () => {
     expect(formatAssetItemMock).not.toHaveBeenCalled()
     expect(result).toEqual({
       assets: [],
-      pageConfig: undefined,
+      meta: undefined,
       requiredErrorMessage: undefined,
     })
   })

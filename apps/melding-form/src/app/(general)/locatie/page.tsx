@@ -37,11 +37,7 @@ export default async () => {
 
   const meldingData = await getMeldingData(meldingId, token)
 
-  const { assets, pageConfig, requiredErrorMessage } = await getMeldingAssets(
-    meldingId,
-    token,
-    meldingData?.classification,
-  )
+  const { assets, meta, requiredErrorMessage } = await getMeldingAssets(meldingId, token, meldingData?.classification)
 
   const action = postLocationForm.bind(null, requiredErrorMessage)
 
@@ -49,7 +45,7 @@ export default async () => {
     <Location
       action={action}
       address={address}
-      pageConfig={pageConfig}
+      pageConfig={meta?.location}
       prevPage={previousPagePath}
       selectedAssets={assets}
     />
