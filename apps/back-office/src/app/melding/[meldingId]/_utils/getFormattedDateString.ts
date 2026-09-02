@@ -15,13 +15,9 @@ const formatDateStringOptions: FormDateStringOptions = {
 }
 
 /**
- * Returns a formatted date string object containing `date` and `time` properties.
+ * Returns a formatted Dutch date and time string.
  * @param dateString The date string to format.
- * @returns An object containing `date` and `time` properties.
- * @example
- * const { date, time } = getFormattedDateString('2024-06-05T12:34:56Z')
- * console.log(date) // "05-06-2024"
- * console.log(time) // "12:34"
+ * @returns The formatted date and time as a single string.
  */
 export const getFormattedDateString = (dateString: string) => {
   const { date, time } = formatDateString(dateString, formatDateStringOptions)
