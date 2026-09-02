@@ -66,13 +66,21 @@ export const MapComponent = ({ children, hasAlert, isHidden, testMapInstance }: 
     return () => {
       if (mapInstance) mapInstance.remove()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    // Leaflet has to know it should recalculate dimensions of the map
-    // when it is shown/hidden or has an Alert as this can change the size of the map container
+    // Showing/hiding the map changes its container size, so Leaflet needs to recalculate
+    // dimensions. Leaflet also uses the container size to position tiles, and while hidden
+    // that size is 0x0, so the view has to be reset once the correct size is known again.
     mapInstance?.invalidateSize()
-  }, [isHidden, hasAlert])
+    mapInstance?.fire('viewreset')
+  }, [mapInstance, isHidden])
+
+  useEffect(() => {
+    // Showing/hiding the alert changes the map container size, so Leaflet needs to recalculate dimensions.
+    mapInstance?.invalidateSize()
+  }, [mapInstance, hasAlert])
 
   return (
     <MapContext.Provider value={mapInstance}>
