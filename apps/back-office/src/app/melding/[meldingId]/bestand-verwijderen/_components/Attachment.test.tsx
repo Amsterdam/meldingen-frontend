@@ -33,11 +33,11 @@ describe('Attachment', () => {
     render(<Attachment attachment={createAttachment()} isDeleting={false} meldingId={123} onDelete={onDelete} />)
 
     expect(screen.getAllByText('bewijs.png')).toHaveLength(2)
-    expect(screen.getByText('2024-01-01 10:30')).toBeInTheDocument()
+    expect(screen.getByText('01-01-2024 10:30')).toBeInTheDocument()
     expect(screen.getByText('behandelaar@example.com')).toBeInTheDocument()
     expect(screen.getByTestId('attachment-preview')).toHaveTextContent('bewijs.png')
 
-    await user.click(screen.getByRole('button', { name: 'remove.submit-button bewijs.png' }))
+    await user.click(screen.getByRole('button', { name: 'submit-button bewijs.png' }))
 
     expect(onDelete).toHaveBeenCalledTimes(1)
   })
@@ -53,6 +53,6 @@ describe('Attachment', () => {
     )
 
     expect(screen.getByText('melding-form-user')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'remove.submit-button bewijs.png' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'submit-button bewijs.png' })).toBeDisabled()
   })
 })

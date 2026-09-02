@@ -8,11 +8,10 @@ import NextLink from 'next/link'
 import { Link } from '@meldingen/ui'
 
 import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
-import type { FormDateStringOptions } from '~/app/_utils/formatDateString'
 
+import { getFormattedDateString } from '../_utils/getFormattedDateString'
 import { AttachmentPreview } from './AttachmentPreview'
 import { ApiErrorAlert } from '~/app/_components'
-import { formatDateString } from '~/app/_utils/formatDateString'
 
 import parentStyles from '../Detail.module.css'
 import styles from './AttachmentSection.module.css'
@@ -22,20 +21,8 @@ type Props = {
   meldingId: number
 }
 
-const formatDateStringOptions: FormDateStringOptions = {
-  date: {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  },
-  time: {
-    hour: 'numeric',
-    minute: 'numeric',
-  },
-}
-
 export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachments, error }, meldingId }: Props) => {
-  const t = useTranslations('attachments')
+  const t = useTranslations('detail')
 
   const hasAttachments = attachments.length > 0
   const addAttachmentLink = `/melding/${meldingId}/bestand-toevoegen`
@@ -43,14 +30,12 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
 
   return (
     <dl className={clsx(parentStyles.descriptionList, parentStyles.cardWide, styles.attachmentsSection)}>
-      <dt className={styles.attachmentsTerm}>{t('title')}</dt>
-      {error && <ApiErrorAlert description={t('fetch-error.description')} shouldFocus={false} />}
+      <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
+      {error && <ApiErrorAlert description={t('errors.fetch-error')} shouldFocus={false} />}
 
       {hasAttachments && !error ? (
         <div className={styles.attachmentsWrapper}>
           {attachments.map(({ blob, createdAt, id, originalFilename }) => {
-            const { date, time } = formatDateString(createdAt, formatDateStringOptions)
-
             return (
               <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={originalFilename}>
                 <AttachmentPreview
@@ -60,7 +45,7 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
                   isLinkToSlider
                   meldingId={meldingId}
                 />
-                <Paragraph>{`${date} ${time}`}</Paragraph>
+                <Paragraph>{getFormattedDateString(createdAt)}</Paragraph>
                 <Paragraph>{originalFilename}</Paragraph>
               </dd>
             )
@@ -68,19 +53,19 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
         </div>
       ) : (
         <dd className={styles.fullWidth}>
-          <Paragraph>{t('no-data')}</Paragraph>
+          <Paragraph>{t('attachments.no-data')}</Paragraph>
         </dd>
       )}
 
       <dd className={styles.fullWidth}>
         <Link href={addAttachmentLink} linkComponent={NextLink}>
-          {t('add-link')}
+          {t('attachments.add-link')}
         </Link>
       </dd>
       {hasAttachments && (
         <dd className={styles.fullWidth}>
           <Link href={removeAttachmentLink} linkComponent={NextLink}>
-            {t('remove-link')}
+            {t('attachments.remove-link')}
           </Link>
         </dd>
       )}
