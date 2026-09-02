@@ -87,12 +87,12 @@ export const SelectLocation = ({
     if (isWideWindow) setShowAssetList(false)
   }, [isWideWindow])
 
-  const mapRef = useRef<{ invalidateSize: () => void }>(null)
+  const mapHandleRef = useRef<{ invalidateSize: () => void }>(null)
 
   useEffect(() => {
     if (notificationType) {
       // Recalculate the map size when showing/hiding a notification, as it may change the map container size
-      mapRef.current?.invalidateSize()
+      mapHandleRef.current?.invalidateSize()
     }
   }, [notificationType])
 
@@ -136,7 +136,7 @@ export const SelectLocation = ({
         </Button>
       </SideBarBottom>
       <div className={styles.map}>
-        <Map isHidden={showAssetList} isInert={isNarrowWindow && Boolean(notificationType)} ref={mapRef}>
+        <Map isHidden={showAssetList} isInert={isNarrowWindow && Boolean(notificationType)} mapHandleRef={mapHandleRef}>
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}
