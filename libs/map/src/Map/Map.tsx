@@ -14,8 +14,7 @@ export type Props = PropsWithChildren & {
   isInert?: boolean
   /*
    * Note: this is intentionally not called `ref`. Map is loaded via next/dynamic in consuming
-   * apps, and next/dynamic intercepts a prop literally named `ref` to expose its own retry
-   * handle instead of forwarding it to the loaded component.
+   * apps, and next/dynamic intercepts a prop literally named `ref` for its own retry handle instead of forwarding it.
    */
   mapHandleRef?: RefObject<{ invalidateSize: () => void } | null>
   /* This prop is only used for unit tests. */

@@ -33,7 +33,7 @@
 }
 
 .map {
-  grid-area: content-start / 1 / buttons-end / -1; /* Span both the list row and the button row, so the map stays visible behind both */
+  grid-area: content-start / 1 / buttons-end / -1; /* Span both the content row and the button row, so the map is visible on both */
   position: relative; /* Containing block for the map's internal overlays, e.g. the crosshair */
 
   @media screen and (min-width: 72.5rem) {
