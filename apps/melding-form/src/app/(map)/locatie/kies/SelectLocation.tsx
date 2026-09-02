@@ -75,6 +75,7 @@ export const SelectLocation = ({
 
   const t = useTranslations('select-location')
   const isWideWindow = useViewportHasMinWidth('wide')
+  const isNarrowWindow = !useViewportHasMinWidth('medium')
   const controlsTexts = {
     currentLocation: t('controls-overlay.current-location-button'),
     zoomIn: t('controls-overlay.zoom-in'),
@@ -126,7 +127,11 @@ export const SelectLocation = ({
         </Button>
       </SideBarBottom>
       <div className={styles.map}>
-        <Map hasAlert={Boolean(notificationType)} isHidden={showAssetList}>
+        <Map
+          hasAlert={Boolean(notificationType)}
+          isHidden={showAssetList}
+          isInert={isNarrowWindow && Boolean(notificationType)}
+        >
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}
