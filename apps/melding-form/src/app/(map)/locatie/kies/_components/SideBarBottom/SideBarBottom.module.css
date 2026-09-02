@@ -6,6 +6,7 @@
   overflow-y: auto;
   padding-inline: var(--ams-space-m);
   row-gap: var(--ams-space-m);
+  z-index: 1;
 
   @media screen and (min-width: 72.5rem) {
     grid-area: bottom;
