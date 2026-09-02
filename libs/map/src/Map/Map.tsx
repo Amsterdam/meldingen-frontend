@@ -1,8 +1,8 @@
-import type { PropsWithChildren } from 'react'
+import type { PropsWithChildren, RefObject } from 'react'
 
 import { clsx } from 'clsx'
 import { latLng, Map, tileLayer } from 'leaflet'
-import { createContext, useEffect, useRef, useState } from 'react'
+import { createContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
 import getCrsRd from './utils/getCrsRd'
 
@@ -10,16 +10,16 @@ import 'leaflet/dist/leaflet.css'
 import styles from './Map.module.css'
 
 export type Props = PropsWithChildren & {
-  hasAlert?: boolean
   isHidden?: boolean
   isInert?: boolean
+  ref?: RefObject<{ invalidateSize: () => void } | null>
   /* This prop is only used for unit tests. */
   testMapInstance?: Map
 }
 
 export const MapContext = createContext<Map | undefined>(undefined)
 
-export const MapComponent = ({ children, hasAlert, isHidden, isInert, testMapInstance }: Props) => {
+export const MapComponent = ({ children, isHidden, isInert, ref, testMapInstance }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
@@ -70,6 +70,11 @@ export const MapComponent = ({ children, hasAlert, isHidden, isInert, testMapIns
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useImperativeHandle(ref, () => ({
+    // Expose the invalidateSize method outside of the component
+    invalidateSize: () => mapInstance?.invalidateSize(),
+  }))
+
   useEffect(() => {
     // Showing/hiding the map changes its container size, so Leaflet needs to recalculate
     // dimensions. Leaflet also uses the container size to position tiles, and while hidden
@@ -77,11 +82,6 @@ export const MapComponent = ({ children, hasAlert, isHidden, isInert, testMapIns
     mapInstance?.invalidateSize()
     mapInstance?.fire('viewreset')
   }, [mapInstance, isHidden])
-
-  useEffect(() => {
-    // Showing/hiding the alert changes the map container size, so Leaflet needs to recalculate dimensions.
-    mapInstance?.invalidateSize()
-  }, [mapInstance, hasAlert])
 
   return (
     <MapContext.Provider value={mapInstance}>

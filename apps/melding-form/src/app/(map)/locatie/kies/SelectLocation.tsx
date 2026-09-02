@@ -6,7 +6,7 @@ import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import dynamic from 'next/dynamic'
 import Form from 'next/form'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
@@ -87,6 +87,15 @@ export const SelectLocation = ({
     if (isWideWindow) setShowAssetList(false)
   }, [isWideWindow])
 
+  const mapRef = useRef<{ invalidateSize: () => void }>(null)
+
+  useEffect(() => {
+    if (notificationType) {
+      // Recalculate the map size when showing/hiding a notification, as it may change the map container size
+      mapRef.current?.invalidateSize()
+    }
+  }, [notificationType])
+
   const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
   const coordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
   const selectedAssetsIds = JSON.stringify(selectedAssets.map((asset) => asset.id))
@@ -127,11 +136,7 @@ export const SelectLocation = ({
         </Button>
       </SideBarBottom>
       <div className={styles.map}>
-        <Map
-          hasAlert={Boolean(notificationType)}
-          isHidden={showAssetList}
-          isInert={isNarrowWindow && Boolean(notificationType)}
-        >
+        <Map isHidden={showAssetList} isInert={isNarrowWindow && Boolean(notificationType)} ref={mapRef}>
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}
