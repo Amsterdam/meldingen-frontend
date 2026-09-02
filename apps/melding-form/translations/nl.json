@@ -97,9 +97,6 @@
     "no-js-alert-description": "Wijzig dit in de instellingen van uw browser of probeer opnieuw de pagina te laden.",
     "submit-button": "Volgende vraag",
     "errors": {
-      "fetch-error": {
-        "description": "De bestanden konden niet worden geladen."
-      },
       "too-many-files": {
         "title": "U kunt maximaal {maxFiles} bestanden uploaden."
       },
