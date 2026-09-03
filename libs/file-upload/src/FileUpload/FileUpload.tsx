@@ -1,7 +1,7 @@
 'use client'
 
-import type { Button } from '@amsterdam/design-system-react'
-import type { ComponentProps, DragEvent, InputHTMLAttributes, RefObject } from 'react'
+import type { ButtonProps as ADSButtonProps } from '@amsterdam/design-system-react'
+import type { DragEvent, InputHTMLAttributes, RefObject } from 'react'
 
 import { clsx } from 'clsx'
 import { useImperativeHandle, useRef } from 'react'
@@ -24,7 +24,7 @@ const isContainingFiles = (dataTransfer: DataTransfer): boolean => {
   return hasNoTypesInfo || isDraggingFiles
 }
 
-type ButtonProps = { text?: string; variant?: ComponentProps<typeof Button>['variant'] }
+type ButtonProps = { text?: string; variant?: ADSButtonProps['variant'] }
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
   button?: ButtonProps
@@ -46,7 +46,7 @@ export const FileUpload = ({
   dropAreaText = 'Of sleep de bestanden in dit vlak.',
   id,
   ref,
-  ...restProps
+  ...inputProps
 }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -103,7 +103,7 @@ export const FileUpload = ({
       </button>
 
       <input
-        {...restProps}
+        {...inputProps}
         aria-label="File input" // This is only used in tests, the input is hidden for users
         hidden
         ref={fileInputRef}
