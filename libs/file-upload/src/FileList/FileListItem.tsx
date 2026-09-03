@@ -5,7 +5,7 @@ import { Button } from '@amsterdam/design-system-react/dist/Button'
 import { Icon } from '@amsterdam/design-system-react/dist/Icon'
 import { clsx } from 'clsx'
 
-import { FileListImage } from './FileListImage'
+import { FileListMedia } from './FileListMedia'
 
 import styles from './FileListItem.module.css'
 
@@ -55,7 +55,7 @@ export const FileListItem = ({
       )}
     >
       <div className={styles.imageContainer}>
-        {isError ? <Icon className={styles.icon} size="heading-1" svg={WarningIcon} /> : <FileListImage file={file} />}
+        {isError ? <Icon className={styles.icon} size="heading-1" svg={WarningIcon} /> : <FileListMedia file={file} />}
       </div>
 
       <div className={styles.description}>
