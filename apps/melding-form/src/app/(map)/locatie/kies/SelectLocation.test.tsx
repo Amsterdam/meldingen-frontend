@@ -3,7 +3,7 @@ import type { Mock } from 'vitest'
 import useViewportHasMinWidth from '@amsterdam/design-system-react/dist/common/useViewportHasMinWidth'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useActionState, useEffect } from 'react'
+import { useActionState, useEffect, useImperativeHandle } from 'react'
 
 import type { Props } from './SelectLocation'
 
@@ -23,9 +23,19 @@ vi.mock('./_components/AssetList/AssetList', () => ({
   AssetList: vi.fn(),
 }))
 
+const { invalidateSizeMock } = vi.hoisted(() => ({ invalidateSizeMock: vi.fn() }))
+
 vi.mock('@meldingen/map', () => ({
   Controls: vi.fn(),
-  Map: vi.fn(({ children }) => <div>{children}</div>),
+  Map: vi.fn(({ children, isHidden, isInert, mapHandleRef }) => {
+    useImperativeHandle(mapHandleRef, () => ({ invalidateSize: invalidateSizeMock }), [])
+
+    return (
+      <div data-testhidden={isHidden} data-testid="map" data-testinert={isInert}>
+        {children}
+      </div>
+    )
+  }),
   MarkerSelectLayer: vi.fn(),
   PointSelectLayer: vi.fn(),
 }))
@@ -136,6 +146,49 @@ describe('SelectLocation', () => {
     expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to patch location')
 
     consoleErrorSpy.mockRestore()
+  })
+
+  it('passes the isHidden prop to the map when the asset list is shown', async () => {
+    const user = userEvent.setup()
+
+    ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) => (
+      <SetInternalState setter={setSelectedAssets} value={[{ id: '1' }]} />
+    ))
+
+    render(<SelectLocation {...defaultProps} />)
+
+    const map = screen.getByTestId('map')
+
+    expect(map).toBeInTheDocument()
+
+    const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
+
+    await user.click(toggleButton)
+
+    expect(map).toHaveAttribute('data-testhidden', 'true')
+  })
+
+  it('passes the isInert prop to the map when the asset list is shown on narrow windows', async () => {
+    ;(AssetList as Mock).mockImplementationOnce(({ setNotificationType }) => (
+      <SetInternalState setter={setNotificationType} value="too-many-assets" />
+    ))
+    ;(useViewportHasMinWidth as Mock).mockImplementationOnce(() => false)
+
+    render(<SelectLocation {...defaultProps} />)
+
+    const map = screen.getByTestId('map')
+
+    expect(map).toHaveAttribute('data-testinert', 'true')
+  })
+
+  it('calls invalidateSize on the map when a notification is shown', async () => {
+    ;(AssetList as Mock).mockImplementationOnce(({ setNotificationType }) => (
+      <SetInternalState setter={setNotificationType} value="too-many-assets" />
+    ))
+
+    render(<SelectLocation {...defaultProps} />)
+
+    expect(invalidateSizeMock).toHaveBeenCalledTimes(1)
   })
 })
 

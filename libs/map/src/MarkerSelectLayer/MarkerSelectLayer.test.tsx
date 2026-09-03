@@ -31,6 +31,7 @@ const defaultProps: Props = {
 }
 
 const mockMapInstance = {
+  fire: vi.fn(),
   getBounds: vi.fn(() => ({
     getEast: vi.fn(() => 4.911),
     getNorth: vi.fn(() => 52.3792),

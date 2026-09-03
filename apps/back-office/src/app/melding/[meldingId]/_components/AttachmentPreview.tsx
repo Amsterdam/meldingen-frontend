@@ -4,45 +4,31 @@ import { Image, Paragraph } from '@amsterdam/design-system-react'
 import { DocumentsIcon } from '@amsterdam/design-system-react-icons'
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
-import { useEffect, useState } from 'react'
 
+import { useObjectUrl } from '@meldingen/file-upload'
 import { Icon, Link } from '@meldingen/ui'
 
 import { isFilePDF } from '../_utils'
 
-import styles from './Attachment.module.css'
+import styles from './AttachmentPreview.module.css'
 
 type Props = {
   blob: Blob | null
   fileName: string
   id: number
+  isLinkToSlider?: boolean
   meldingId: number
 }
 
-export const Attachment = ({ blob, fileName, id, meldingId }: Props) => {
+export const AttachmentPreview = ({ blob, fileName, id, isLinkToSlider, meldingId }: Props) => {
   const t = useTranslations('detail.attachments')
+  const url = useObjectUrl(blob)
 
-  const [url, setUrl] = useState<string | null>(null)
+  if (!blob || !url) {
+    return <Paragraph>{fileName}</Paragraph>
+  }
 
-  // This useEffect is necessary to avoid render problems while refreshing the page.
-  useEffect(() => {
-    if (!blob) return
-
-    const objectUrl = URL.createObjectURL(blob)
-    setUrl(objectUrl)
-
-    return () => {
-      if (!objectUrl) return
-
-      URL.revokeObjectURL(objectUrl)
-    }
-  }, [blob])
-
-  if (!blob || !url) return <Paragraph>{fileName}</Paragraph>
-
-  const isPDF = isFilePDF(fileName)
-
-  if (isPDF) {
+  if (isFilePDF(fileName)) {
     return (
       <Link
         className={styles.attachmentPdf}
@@ -57,10 +43,12 @@ export const Attachment = ({ blob, fileName, id, meldingId }: Props) => {
     )
   }
 
-  return (
+  return isLinkToSlider ? (
     <Link href={`/melding/${meldingId}/foto?id=${id}`} linkComponent={NextLink}>
       <Image alt="" src={url} />
       <span className="ams-visually-hidden">{t('photo-link', { fileName })}</span>
     </Link>
+  ) : (
+    <Image alt="" src={url} />
   )
 }

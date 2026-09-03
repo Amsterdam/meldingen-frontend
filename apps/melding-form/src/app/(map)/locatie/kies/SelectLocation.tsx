@@ -6,7 +6,7 @@ import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import dynamic from 'next/dynamic'
 import Form from 'next/form'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
@@ -14,6 +14,7 @@ import type { Coordinates } from '~/types'
 
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
+import { getAssetLabelText, getAssetSubType } from '~/app/(general)/_utils'
 
 import styles from './SelectLocation.module.css'
 
@@ -80,6 +81,7 @@ export const SelectLocation = ({
 
   const t = useTranslations('select-location')
   const isWideWindow = useViewportHasMinWidth('wide')
+  const isNarrowWindow = !useViewportHasMinWidth('medium')
   const controlsTexts = {
     currentLocation: t('controls-overlay.current-location-button'),
     zoomIn: t('controls-overlay.zoom-in'),
@@ -91,6 +93,15 @@ export const SelectLocation = ({
     if (isWideWindow) setShowAssetList(false)
   }, [isWideWindow])
 
+  const mapHandleRef = useRef<{ invalidateSize: () => void }>(null)
+
+  useEffect(() => {
+    if (notificationType) {
+      // Recalculate the map size when showing/hiding a notification, as it may change the map container size
+      mapHandleRef.current?.invalidateSize()
+    }
+  }, [notificationType])
+
   useEffect(() => {
     if (error) {
       // TODO: Log the error to an error reporting service
@@ -100,8 +111,15 @@ export const SelectLocation = ({
   }, [error])
 
   const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
-  const coordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
-  const selectedAssetsIds = JSON.stringify(selectedAssets.map((asset) => asset.id))
+  const defaultCoordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
+
+  const selectedAssetsValue = JSON.stringify(
+    selectedAssets.map((asset) => ({
+      externalId: asset.id,
+      label: getAssetLabelText(asset, assetConfig.label),
+      subtype: getAssetSubType(assetConfig.icon.entry, asset.properties),
+    })),
+  )
 
   return (
     <div className={clsx(styles.grid, showAssetList && styles.hasAssetList)}>
@@ -113,10 +131,11 @@ export const SelectLocation = ({
             setCoordinates={setCoordinates}
             setSelectedAssets={setSelectedAssets}
           />
-          <input defaultValue={coordinatesValue} name="coordinates" type="hidden" />
-          <input name="selectedAssetIds" type="hidden" value={selectedAssetsIds} />
+          <input defaultValue={defaultCoordinatesValue} name="coordinates" type="hidden" />
+          <input name="selectedAssetsValue" type="hidden" value={selectedAssetsValue} />
         </Form>
       </SideBarTop>
+
       <SideBarBottom isHidden={!showAssetList}>
         {notificationType === 'too-many-assets' && !isWideWindow && (
           <Notification
@@ -138,8 +157,9 @@ export const SelectLocation = ({
           {t('submit-button.desktop')}
         </Button>
       </SideBarBottom>
+
       <div className={styles.map}>
-        <Map hasAlert={Boolean(notificationType)} isHidden={showAssetList}>
+        <Map isHidden={showAssetList} isInert={isNarrowWindow && Boolean(notificationType)} mapHandleRef={mapHandleRef}>
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}
@@ -175,24 +195,16 @@ export const SelectLocation = ({
             )}
           </Controls>
         </Map>
-        <div className={styles.buttonWrapper}>
-          <Button
-            className={clsx(styles.submitButton, showAssetList && styles.removeAbsolutePosition)}
-            form="address"
-            type="submit"
-          >
-            {t('submit-button.mobile')}
+      </div>
+      <div className={styles.buttonWrapper}>
+        <Button form="address" type="submit">
+          {t('submit-button.mobile')}
+        </Button>
+        {showAssetListToggleButton && (
+          <Button onClick={() => setShowAssetList((prevState) => !prevState)} variant="secondary">
+            {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
           </Button>
-          {showAssetListToggleButton && (
-            <Button
-              className={clsx(styles.toggleButton, showAssetList && styles.removeAbsolutePosition)}
-              onClick={() => setShowAssetList((prevState) => !prevState)}
-              variant="secondary"
-            >
-              {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
-            </Button>
-          )}
-        </div>
+        )}
       </div>
     </div>
   )

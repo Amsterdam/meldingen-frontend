@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
 import { postCoordinatesAndAssets } from './actions'
+import { getAssetLabelText } from '~/app/(general)/_utils/getAssetLabelText'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 import { containerAssets } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
@@ -27,10 +28,10 @@ describe('postCoordinatesAndAssets', () => {
     mockCookies({ [COOKIES.ID]: '123', [COOKIES.TOKEN]: 'test-token' }, mockSetCookie)
   })
 
-  it('falls back to empty array if selectedAssetIds is not valid JSON', async () => {
+  it('falls back to empty array if selectedAssetsValue is not valid JSON', async () => {
     const formData = new FormData()
     formData.set('address', 'Amstel 1, Amsterdam')
-    formData.set('selectedAssetIds', 'invalid-json')
+    formData.set('selectedAssetsValue', 'invalid-json')
 
     await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
@@ -49,7 +50,7 @@ describe('postCoordinatesAndAssets', () => {
 
   it('returns an error when there are selected assets but asset_type_id is not provided', async () => {
     const formData = new FormData()
-    formData.set('selectedAssetIds', JSON.stringify([1, 2]))
+    formData.set('selectedAssetsValue', JSON.stringify([{ externalId: 1 }, { externalId: 2 }]))
 
     const result = await postCoordinatesAndAssets({}, undefined, formData)
 
@@ -66,7 +67,7 @@ describe('postCoordinatesAndAssets', () => {
     )
 
     const formData = new FormData()
-    formData.set('selectedAssetIds', JSON.stringify(containerAssets))
+    formData.set('selectedAssetsValue', JSON.stringify(containerAssets))
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
@@ -90,7 +91,16 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
     formData.set('address', 'Amstel 1, Amsterdam')
-    formData.set('selectedAssetIds', JSON.stringify(containerAssets.map((asset) => asset.id)))
+    formData.set(
+      'selectedAssetsValue',
+      JSON.stringify(
+        containerAssets.map((asset) => ({
+          externalId: asset.id,
+          label: getAssetLabelText(asset, '{{fractie_omschrijving}} container - {{id_nummer}}'),
+          subtype: asset.properties?.fractie_omschrijving,
+        })),
+      ),
+    )
 
     await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
@@ -98,14 +108,14 @@ describe('postCoordinatesAndAssets', () => {
     expect(capturedBodies[0]).toEqual({
       asset_type_id: 123,
       external_id: 'container.1',
-      label: 'Temp',
-      subtype: 'temp',
+      label: 'Restafval container - Container-001',
+      subtype: 'Restafval',
     })
     expect(capturedBodies[1]).toEqual({
       asset_type_id: 123,
       external_id: 'container.2',
-      label: 'Temp',
-      subtype: 'temp',
+      label: 'Glas container - Container-002',
+      subtype: 'Glas',
     })
     expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
   })
