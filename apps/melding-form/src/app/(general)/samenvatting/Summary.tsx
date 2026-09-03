@@ -131,7 +131,7 @@ export const Summary = ({
 
             {hasAssets && (
               <SummaryList.Description>
-                <UnorderedList className="ams-mb-m" markers={false}>
+                <UnorderedList markers={false}>
                   {assets.data.map((asset) => (
                     <UnorderedList.Item key={asset.id}>
                       <AssetElement asset={asset} />
