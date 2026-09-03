@@ -10,6 +10,7 @@ import { FLY_TO_MIN_ZOOM, PointSelectLayer } from './PointSelectLayer'
 const testCoords = { lat: 52.370216, lng: 4.895168 }
 
 const mockMapInstance = {
+  fire: vi.fn(),
   getCenter: vi.fn(() => testCoords),
   invalidateSize: vi.fn(),
   off: vi.fn(),

@@ -6,7 +6,7 @@ import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import dynamic from 'next/dynamic'
 import Form from 'next/form'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
@@ -77,6 +77,7 @@ export const SelectLocation = ({
 
   const t = useTranslations('select-location')
   const isWideWindow = useViewportHasMinWidth('wide')
+  const isNarrowWindow = !useViewportHasMinWidth('medium')
   const controlsTexts = {
     currentLocation: t('controls-overlay.current-location-button'),
     zoomIn: t('controls-overlay.zoom-in'),
@@ -87,6 +88,15 @@ export const SelectLocation = ({
     // Hide mobile asset list view when resizing to larger screens
     if (isWideWindow) setShowAssetList(false)
   }, [isWideWindow])
+
+  const mapHandleRef = useRef<{ invalidateSize: () => void }>(null)
+
+  useEffect(() => {
+    if (notificationType) {
+      // Recalculate the map size when showing/hiding a notification, as it may change the map container size
+      mapHandleRef.current?.invalidateSize()
+    }
+  }, [notificationType])
 
   const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
   const defaultCoordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
@@ -137,7 +147,7 @@ export const SelectLocation = ({
       </SideBarBottom>
 
       <div className={styles.map}>
-        <Map hasAlert={Boolean(notificationType)} isHidden={showAssetList}>
+        <Map isHidden={showAssetList} isInert={isNarrowWindow && Boolean(notificationType)} mapHandleRef={mapHandleRef}>
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}
@@ -173,25 +183,16 @@ export const SelectLocation = ({
             )}
           </Controls>
         </Map>
-
-        <div className={styles.buttonWrapper}>
-          <Button
-            className={clsx(styles.submitButton, showAssetList && styles.removeAbsolutePosition)}
-            form="address"
-            type="submit"
-          >
-            {t('submit-button.mobile')}
+      </div>
+      <div className={styles.buttonWrapper}>
+        <Button form="address" type="submit">
+          {t('submit-button.mobile')}
+        </Button>
+        {showAssetListToggleButton && (
+          <Button onClick={() => setShowAssetList((prevState) => !prevState)} variant="secondary">
+            {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
           </Button>
-          {showAssetListToggleButton && (
-            <Button
-              className={clsx(styles.toggleButton, showAssetList && styles.removeAbsolutePosition)}
-              onClick={() => setShowAssetList((prevState) => !prevState)}
-              variant="secondary"
-            >
-              {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
-            </Button>
-          )}
-        </div>
+        )}
       </div>
     </div>
   )
