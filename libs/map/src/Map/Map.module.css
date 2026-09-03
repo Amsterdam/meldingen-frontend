@@ -17,7 +17,3 @@
 .map {
   isolation: isolate; /* Prevents Leaflet z-index use from bleeding into our app. */
 }
-
-.notInteractive {
-  pointer-events: none; /* Disable interaction with the map */
-}
