@@ -26,19 +26,16 @@ export const FileListMedia = ({ file }: Props) => {
     return (
       <div className={styles.pdf}>
         <Icon size="heading-1" svg={DocumentsIcon} />
-        <span className="ams-visually-hidden">{file.name}</span>
       </div>
     )
   }
 
-  return url ? (
+  return (
     <Image
       alt=""
       className={styles.image}
       src={url}
       width={256} // Fixed width for when CSS does not load. Gets overridden by CSS.
     />
-  ) : (
-    <Placeholder />
   )
 }
