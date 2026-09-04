@@ -4,7 +4,7 @@ import { Paragraph } from '@meldingen/ui'
 
 import type { AssetItem } from '../../_utils/formatAssetItem'
 
-import { getContainerAssetIconSVG } from '~/app/(map)/locatie/kies/_components/AssetList/getContainerAssetIconSVG'
+import { getAssetIconSVG } from '~/app/_utils/getAssetIconSVG'
 
 import styles from './AssetElement.module.css'
 
@@ -13,7 +13,7 @@ type Props = {
 }
 
 export const AssetElement = ({ asset }: Props) => {
-  const icon = getContainerAssetIconSVG(asset)
+  const icon = getAssetIconSVG(asset)
 
   return (
     <div className={styles.assetElement}>
