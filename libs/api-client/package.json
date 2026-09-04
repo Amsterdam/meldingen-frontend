@@ -8,6 +8,8 @@
   },
   "type": "module",
   "scripts": {
+    "test": "vitest",
+    "test:watch": "vitest watch",
     "type-check": "tsc --project ./tsconfig.json --noEmit"
   },
   "private": true

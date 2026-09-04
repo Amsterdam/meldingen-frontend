@@ -12,7 +12,7 @@ import type { AssetItem } from '../_utils/formatAssetItem'
 import type { FormState } from '~/types'
 
 import { AssetElement } from '../_components/AssetElement/AssetElement'
-import { useDocumentTitleOnError } from '../_utils/validation'
+import { useDocumentTitleOnError } from '../_utils'
 import { BackLink } from '../../_components'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'

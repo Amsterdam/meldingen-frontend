@@ -1,7 +1,8 @@
 'use server'
 
+import { getApiErrorMessage } from '@meldingen/api-client'
+
 import { deleteAttachmentById } from '~/app/_api-client/proxy'
-import { handleApiError } from '~/app/_utils/handleApiError'
 
 export const deleteAttachmentAction = async (serverId: number) => {
   const { error, response } = await deleteAttachmentById({
@@ -9,7 +10,7 @@ export const deleteAttachmentAction = async (serverId: number) => {
   })
 
   return {
-    error: error ? handleApiError(error) : undefined,
+    error: error ? getApiErrorMessage(error) : undefined,
     status: response?.status,
   }
 }

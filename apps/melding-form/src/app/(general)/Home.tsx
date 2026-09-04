@@ -9,7 +9,7 @@ import { FormRenderer } from '@meldingen/form-renderer'
 
 import type { FormState } from '~/types'
 
-import { useDocumentTitleOnError } from './_utils/validation'
+import { useDocumentTitleOnError } from './_utils'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 
 const initialState: FormState = {}
