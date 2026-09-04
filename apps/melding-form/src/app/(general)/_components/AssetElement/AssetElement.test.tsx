@@ -39,10 +39,10 @@ describe('AssetElement', () => {
   })
 
   it('falls back to the default icon when the subtype is unknown', () => {
-    render(createElement(AssetElement, { asset: createAsset({ subtype: 'Unknown subtype' }) }))
+    render(createElement(AssetElement, { asset: createAsset({ subtype: undefined }) }))
 
     const icon = screen.getByRole('presentation')
 
-    expect(icon).toHaveAttribute('src', '/container/rest.svg')
+    expect(icon).toHaveAttribute('src', '/asset-fallback.svg')
   })
 })
