@@ -16,7 +16,9 @@ permissions:
   pull-requests: read
   copilot-requests: write
 
-engine: copilot
+engine:
+  id: copilot
+  model: sonnet
 
 network: defaults
 
