@@ -1,5 +1,4 @@
 .assetElement {
-  align-items: center;
   display: flex;
   gap: var(--ams-checkbox-gap);
 }
