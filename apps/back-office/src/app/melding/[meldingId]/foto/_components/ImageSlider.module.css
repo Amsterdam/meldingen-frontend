@@ -44,13 +44,22 @@
 }
 
 .imageContainer {
-  align-items: center;
+  align-items: start;
   aspect-ratio: 4 / 3;
   display: flex;
   justify-content: center;
   max-height: 37.5rem;
   position: relative;
   width: 100%;
+
+  /*
+   * We want to align the image at the start when the previous and next buttons are not shown.
+   * This media query is copied from the Amsterdam Design System Image Slider to determine when the buttons are shown.
+   * https://github.com/Amsterdam/design-system/blob/develop/packages/css/src/components/image-slider/image-slider.scss#L63
+   */
+  @media (pointer: coarse) and (max-width: 37.5rem) {
+    justify-content: start;
+  }
 }
 
 .image {
