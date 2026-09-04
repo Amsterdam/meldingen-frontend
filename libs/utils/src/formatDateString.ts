@@ -6,7 +6,7 @@ export type FormDateStringOptions = {
 
 const DEFAULT_LOCALE: Intl.LocalesArgument = 'nl-NL'
 
-const DEFAULT_TIMEZONE = 'Europe/Amsterdam'
+export const DEFAULT_TIMEZONE = 'Europe/Amsterdam'
 
 const DEFAULT_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
   day: '2-digit',
