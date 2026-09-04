@@ -31,7 +31,7 @@ describe('Page', () => {
     render(PageComponent)
 
     const heading = screen.getByRole('heading', { name: 'title' })
-    const paragraph = screen.getByText('description:{"date":"26-5-2025","publicId":"1234","time":"11:56"}')
+    const paragraph = screen.getByText('description:{"date":"26-05-2025","publicId":"1234","time":"13:56"}')
     const link = screen.getByRole('link', { name: 'link' })
 
     expect(redirect).not.toHaveBeenCalledWith('/')
@@ -47,7 +47,7 @@ describe('Page', () => {
 
     render(PageComponent)
 
-    const description = screen.getByText('description:{"date":"26-5-2025","time":"11:56"}')
+    const description = screen.getByText('description:{"date":"26-05-2025","time":"13:56"}')
 
     expect(description).toBeInTheDocument()
   })
