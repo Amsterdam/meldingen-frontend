@@ -24,7 +24,7 @@ export const Photos = ({ defaultSlideIndex, images, meldingId }: Props) => {
       <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
       <Grid as="main" gapVertical="large">
         <Grid.Cell appearance="transparent" span="all">
-          <Heading className="ams-mb-m" id="heading" level={1}>
+          <Heading className="ams-mb-s" id="heading" level={1}>
             {t('title')}
           </Heading>
           <ImageSlider defaultSlideIndex={defaultSlideIndex} images={images} labelId="heading" />
