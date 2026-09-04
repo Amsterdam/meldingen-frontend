@@ -1,3 +1,5 @@
+import { formatDateString } from '@meldingen/utils'
+
 import type { OverviewField } from './getOverviewFieldLabel'
 
 import { formatValue } from './formatValue'
@@ -39,7 +41,7 @@ describe('formatValue', () => {
   it('returns a formatted date for created_at', () => {
     const result = formatValue(melding, 'created_at', t)
 
-    expect(result).toBe(new Date(melding.created_at).toLocaleDateString('nl-NL'))
+    expect(result).toBe(formatDateString(melding.created_at).date)
   })
 
   it('returns a postal code if present', () => {
