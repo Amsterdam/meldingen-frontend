@@ -48,16 +48,18 @@ describe('postCoordinatesAndAssets', () => {
     expect(redirect).toHaveBeenCalledWith(`/cookie-storing#${TOP_ANCHOR_ID}`)
   })
 
-  it('returns an error message when there are selected assets but asset_type_id is not provided', async () => {
+  it('returns an error when there are selected assets but asset_type_id is not provided', async () => {
     const formData = new FormData()
     formData.set('selectedAssetsValue', JSON.stringify([{ externalId: 1 }, { externalId: 2 }]))
 
     const result = await postCoordinatesAndAssets({}, undefined, formData)
 
-    expect(result).toEqual({ errorMessage: 'errors.assets-post-failed' })
+    expect(result).toEqual({
+      error: { cause: 'Missing asset_type_id for selected assets', message: 'errors.assets-post-failed' },
+    })
   })
 
-  it('returns an error when postMeldingByMeldingIdAsset fails', async () => {
+  it('returns errors when postMeldingByMeldingIdAsset fails', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ASSET, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -69,7 +71,12 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
-    expect(result).toEqual({ errorMessage: 'errors.assets-post-failed' })
+    expect(result).toEqual({
+      error: {
+        cause: [{ detail: 'Error message' }, { detail: 'Error message' }],
+        message: 'errors.assets-post-failed',
+      },
+    })
   })
 
   it('posts each selected asset with the correct body', async () => {
@@ -113,15 +120,15 @@ describe('postCoordinatesAndAssets', () => {
     expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
   })
 
-  it('returns an error message if no address is provided', async () => {
+  it('returns an error when no location is provided', async () => {
     const formData = new FormData()
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
-    expect(result).toEqual({ errorMessage: 'errors.no-location' })
+    expect(result).toEqual({ error: { cause: 'No location provided by user', message: 'errors.no-location' } })
   })
 
-  it('returns an error message if PDOK free returns an error', async () => {
+  it('returns an error when PDOK free returns an error', async () => {
     server.use(http.get(ENDPOINTS.PDOK_FREE, () => new HttpResponse(null, { status: 500 })))
 
     const formData = new FormData()
@@ -129,10 +136,12 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
-    expect(result).toEqual({ errorMessage: 'errors.pdok-failed' })
+    expect(result).toEqual({
+      error: { cause: 'PDOK request failed with status 500', message: 'errors.pdok-failed' },
+    })
   })
 
-  it('returns an error message if no address is found by PDOK free', async () => {
+  it('returns an error when no address is found by PDOK free', async () => {
     server.use(
       http.get(ENDPOINTS.PDOK_FREE, () =>
         HttpResponse.json({
@@ -148,10 +157,12 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
-    expect(result).toEqual({ errorMessage: 'errors.pdok-no-address-found' })
+    expect(result).toEqual({
+      error: { cause: 'PDOK returned no results for the given address', message: 'errors.pdok-no-address-found' },
+    })
   })
 
-  it('returns an error message if PDOK free does not return coordinates', async () => {
+  it('returns an error when PDOK free does not return coordinates', async () => {
     server.use(
       http.get(ENDPOINTS.PDOK_FREE, () =>
         HttpResponse.json({
@@ -167,7 +178,9 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
-    expect(result).toEqual({ errorMessage: 'errors.pdok-failed' })
+    expect(result).toEqual({
+      error: { cause: 'Failed to convert PDOK point to coordinates', message: 'errors.pdok-failed' },
+    })
   })
 
   it('fetches coordinates from PDOK API if not provided', async () => {
@@ -199,10 +212,10 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
-    expect(result).toEqual({ errorMessage: 'errors.location-patch-failed' })
+    expect(result).toEqual({ error: { cause: { detail: 'Error message' }, message: 'errors.location-patch-failed' } })
   })
 
-  it('returns an error message if an error occurs when changing melding state', async () => {
+  it('returns an error when putMeldingByMeldingIdSubmitLocation fails', async () => {
     mockCookies({ [COOKIES.ID]: '123', [COOKIES.SOURCE]: 'back-office', [COOKIES.TOKEN]: 'test-token' }, mockSetCookie)
 
     server.use(
@@ -216,7 +229,7 @@ describe('postCoordinatesAndAssets', () => {
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
-    expect(result).toEqual({ errorMessage: 'errors.state-change-failed' })
+    expect(result).toEqual({ error: { cause: 'Error message', message: 'errors.state-change-failed' } })
   })
 
   it('redirects to /bijlage when source is back office', async () => {
