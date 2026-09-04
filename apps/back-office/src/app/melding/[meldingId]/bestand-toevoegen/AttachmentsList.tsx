@@ -6,6 +6,8 @@ import type { FileUploadState } from '@meldingen/file-upload'
 
 import { FileList } from '@meldingen/file-upload'
 
+import styles from './AttachmentsList.module.css'
+
 type Props = {
   files: FileUploadState[]
   handleDelete: (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => void
@@ -25,6 +27,7 @@ export const AttachmentsList = ({ files, handleDelete }: Props) => {
 
         return (
           <FileList.Item
+            className={styles.fileListItem}
             deleteButtonId={id}
             errorMessage={errorMessage ? t(errorMessage) : undefined}
             file={file}
