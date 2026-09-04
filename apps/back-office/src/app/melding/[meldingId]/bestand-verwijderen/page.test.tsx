@@ -27,10 +27,10 @@ vi.mock('next-intl/server', async () => ({
 const attachmentFiles: MeldingAttachment[] = [
   {
     blob: new Blob(['file-content'], { type: 'image/png' }),
-    createdAt: '2024-01-01 10:30',
+    createdAt: '2024-01-01T10:30:00Z',
     id: 1,
     originalFilename: 'bewijs.png',
-    updatedAt: '2024-01-01 10:30',
+    updatedAt: '2024-01-01T10:30:00Z',
     user: {
       email: 'behandelaar@example.com',
       id: 10,

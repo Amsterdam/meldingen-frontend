@@ -41,10 +41,10 @@ const createAttachment = (
   overrides: Partial<AddAttachmentProps['attachments'][number]> = {},
 ): AddAttachmentProps['attachments'][number] => ({
   blob: new Blob(['dummy content'], { type: 'image/png' }),
-  createdAt: '2025-01-01',
+  createdAt: '2025-01-01T00:00:00Z',
   id: 1,
   originalFilename: 'existing.png',
-  updatedAt: '2025-01-01',
+  updatedAt: '2025-01-01T00:00:00Z',
   ...overrides,
 })
 

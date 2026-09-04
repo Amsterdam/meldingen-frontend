@@ -1,7 +1,8 @@
 import { http, HttpResponse } from 'msw'
 
+import { formatDateString } from '@meldingen/utils'
+
 import { getAdditionalQuestionsData } from './getAdditionalQuestionsData'
-import { formatDateString } from '~/app/_utils/formatDateString'
 import {
   additionalDateQuestion,
   additionalQuestions,
