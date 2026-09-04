@@ -5,6 +5,7 @@ import NextLink from 'next/link'
 
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
 import { Heading, StandaloneLink } from '@meldingen/ui'
+import { formatDateString } from '@meldingen/utils'
 
 import { BackOfficeLayout, RegularLayout } from '../_components'
 import { TOP_ANCHOR_ID } from '~/constants'
@@ -25,9 +26,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ [key: string]:
 
   const { created_at: createdAt, id, public_id: publicId, source } = await searchParams
 
-  const createdAtDate = createdAt ? new Date(createdAt) : undefined
-  const date = createdAtDate?.toLocaleDateString('nl-NL')
-  const time = createdAtDate?.toLocaleTimeString('nl-NL', { timeStyle: 'short' })
+  const { date, time } = createdAt ? formatDateString(createdAt) : { date: undefined, time: undefined }
 
   const backOfficeBaseUrl = process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL
   const publicIdLinkOrText =

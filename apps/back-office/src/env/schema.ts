@@ -65,7 +65,6 @@ export const authSchema = z
 
 export const serverSchema = z.object({
   NEXT_INTERNAL_BACKEND_BASE_URL: z.string(),
-  TZ: z.optional(z.string()),
 })
 
 export const clientSchema = z.object({

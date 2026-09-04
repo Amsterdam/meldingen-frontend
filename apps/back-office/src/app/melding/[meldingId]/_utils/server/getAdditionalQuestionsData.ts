@@ -1,7 +1,8 @@
 import type { GetMeldingByMeldingIdAnswersMelderResponses, ValueLabelObject } from '@meldingen/api-client'
 
+import { formatDateString } from '@meldingen/utils'
+
 import { getMeldingByMeldingIdAnswers } from '~/app/_api-client/proxy'
-import { formatDateString } from '~/app/_utils/formatDateString'
 import { handleApiError } from '~/app/_utils/handleApiError'
 
 const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {

@@ -20,7 +20,7 @@ describe('Note', () => {
 
     expect(screen.getByText('This is a test note.')).toBeInTheDocument()
     expect(screen.getByText('test@example.com')).toBeInTheDocument()
-    expect(screen.getByText('05-03-2024 08:09')).toBeInTheDocument()
+    expect(screen.getByText('05-03-2024 09:09')).toBeInTheDocument()
   })
 
   it('does not show an edit link for a note that does not belong to the current user', () => {

@@ -11,34 +11,34 @@ import type {
 export const melding: MeldingOutput = {
   city: 'Amsterdam',
   classification: {
-    created_at: '2025-02-18T10:34:29.103642',
+    created_at: '2025-02-18T10:34:29.103642Z',
     id: 1,
     name: 'Test classification',
-    updated_at: '2025-02-18T10:34:40.730569',
+    updated_at: '2025-02-18T10:34:40.730569Z',
   },
-  created_at: '2025-02-18T10:34:29.103642',
+  created_at: '2025-02-18T10:34:29.103642Z',
   email: 'email@email.email',
   geo_location: null,
   house_number: 202,
   house_number_addition: 'A',
   id: 123,
   labels: [
-    { created_at: '2025-02-18T10:34:29.103642', id: 0, name: 'Label 1', updated_at: '2025-02-18T10:34:40.730569' },
-    { created_at: '2025-02-18T10:34:29.103642', id: 1, name: 'Label 2', updated_at: '2025-02-18T10:34:40.730569' },
+    { created_at: '2025-02-18T10:34:29.103642Z', id: 0, name: 'Label 1', updated_at: '2025-02-18T10:34:40.730569Z' },
+    { created_at: '2025-02-18T10:34:29.103642Z', id: 1, name: 'Label 2', updated_at: '2025-02-18T10:34:40.730569Z' },
   ],
   phone: '0612345678',
   postal_code: '1016BS',
   public_id: 'ABC',
   source: {
-    created_at: '2025-02-18T10:34:29.103642',
+    created_at: '2025-02-18T10:34:29.103642Z',
     id: 2,
     name: 'E-mail',
-    updated_at: '2025-02-18T10:34:40.730569',
+    updated_at: '2025-02-18T10:34:40.730569Z',
   },
   state: 'questions_answered',
   street: 'Herengracht',
   text: 'Alles',
-  updated_at: '2025-02-18T10:34:40.730569',
+  updated_at: '2025-02-18T10:34:40.730569Z',
   urgency: 0,
 }
 
@@ -47,7 +47,7 @@ export const meldingen: MeldingOutput[] = [
   {
     city: 'Amsterdam',
     classification: null,
-    created_at: '2025-02-18T10:34:29.103642',
+    created_at: '2025-02-18T10:34:29.103642Z',
     email: 'email@email.email',
     geo_location: null,
     house_number: null,
@@ -59,13 +59,13 @@ export const meldingen: MeldingOutput[] = [
     state: 'questions_answered',
     street: null,
     text: 'Alles',
-    updated_at: '2025-02-18T10:34:40.730569',
+    updated_at: '2025-02-18T10:34:40.730569Z',
     urgency: 0,
   },
   {
     city: 'Amsterdam',
     classification: null,
-    created_at: '2025-02-18T10:34:29.103642',
+    created_at: '2025-02-18T10:34:29.103642Z',
     email: 'email@email.email',
     geo_location: null,
     house_number: null,
@@ -77,7 +77,7 @@ export const meldingen: MeldingOutput[] = [
     state: 'questions_answered',
     street: null,
     text: 'Alles',
-    updated_at: '2025-02-18T10:34:40.730569',
+    updated_at: '2025-02-18T10:34:40.730569Z',
     urgency: 0,
   },
 ]
@@ -96,32 +96,32 @@ export const textAreaComponent: FormTextAreaComponentOutput = {
 
 export const additionalQuestions: TextAnswerQuestionOutput[] = [
   {
-    created_at: '2025-02-18T10:34:32.181638',
+    created_at: '2025-02-18T10:34:32.181638Z',
     id: 123,
     original_question_text: 'Wat wilt u melden?',
     question: {
-      created_at: '2025-02-17T11:06:22.137002',
+      created_at: '2025-02-17T11:06:22.137002Z',
       id: 35,
       text: 'Wat wilt u melden?',
-      updated_at: '2025-02-17T11:06:22.137002',
+      updated_at: '2025-02-17T11:06:22.137002Z',
     },
     text: 'q1',
     type: 'text',
-    updated_at: '2025-02-18T10:34:32.181638',
+    updated_at: '2025-02-18T10:34:32.181638Z',
   },
   {
-    created_at: '2025-02-18T10:34:32.187573',
+    created_at: '2025-02-18T10:34:32.187573Z',
     id: 124,
     original_question_text: 'Text Field',
     question: {
-      created_at: '2025-02-17T11:06:22.137002',
+      created_at: '2025-02-17T11:06:22.137002Z',
       id: 36,
       text: 'Text Field',
-      updated_at: '2025-02-17T11:06:22.137002',
+      updated_at: '2025-02-17T11:06:22.137002Z',
     },
     text: 'q2',
     type: 'text',
-    updated_at: '2025-02-18T10:34:32.187573',
+    updated_at: '2025-02-18T10:34:32.187573Z',
   },
 ]
 
@@ -145,32 +145,32 @@ export const additionalDateQuestion: DateAnswerQuestionOutput = {
 }
 
 export const additionalTimeQuestion: TimeAnswerQuestionOutput = {
-  created_at: '2025-02-18T10:34:32.193123',
+  created_at: '2025-02-18T10:34:32.193123Z',
   id: 125,
   original_question_text: 'Tijd veld',
   question: {
-    created_at: '2025-02-17T11:06:22.137002',
+    created_at: '2025-02-17T11:06:22.137002Z',
     id: 37,
     text: 'Tijd veld',
-    updated_at: '2025-02-17T11:06:22.137002',
+    updated_at: '2025-02-17T11:06:22.137002Z',
   },
   time: '14:30',
   type: 'time',
-  updated_at: '2025-02-18T10:34:32.193123',
+  updated_at: '2025-02-18T10:34:32.193123Z',
 }
 
 export const additionalValueLabelQuestion: ValueLabelAnswerQuestionOutput = {
-  created_at: '2025-02-18T10:34:32.200456',
+  created_at: '2025-02-18T10:34:32.200456Z',
   id: 126,
   original_question_text: 'Keuze veld',
   question: {
-    created_at: '2025-02-17T11:06:22.137002',
+    created_at: '2025-02-17T11:06:22.137002Z',
     id: 38,
     text: 'Keuze veld',
-    updated_at: '2025-02-17T11:06:22.137002',
+    updated_at: '2025-02-17T11:06:22.137002Z',
   },
   type: 'value_label',
-  updated_at: '2025-02-18T10:34:32.200456',
+  updated_at: '2025-02-18T10:34:32.200456Z',
   values_and_labels: [
     { label: 'Option 1', value: 'option_1' },
     { label: 'Option 2', value: 'option_2' },
@@ -179,10 +179,10 @@ export const additionalValueLabelQuestion: ValueLabelAnswerQuestionOutput = {
 }
 
 export const asset: AssetOutput = {
-  created_at: '2025-02-18T10:34:29.103642',
+  created_at: '2025-02-18T10:34:29.103642Z',
   external_id: 'ext-1',
   id: 1,
   label: 'Asset 1',
   subtype: 'containers',
-  updated_at: '2025-02-18T10:34:40.730569',
+  updated_at: '2025-02-18T10:34:40.730569Z',
 }

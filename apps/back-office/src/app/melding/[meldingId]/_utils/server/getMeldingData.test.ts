@@ -1,3 +1,5 @@
+import { formatDateString } from '@meldingen/utils'
+
 import { getMeldingData } from './getMeldingData'
 import { melding } from '~/mocks/data'
 
@@ -9,7 +11,7 @@ describe('getMeldingData', () => {
 
     expect(result).toEqual([
       {
-        description: new Date(created_at).toLocaleDateString('nl-NL'),
+        description: formatDateString(created_at).date,
         key: 'created_at',
         term: 'detail.melding-data.created_at',
       },
