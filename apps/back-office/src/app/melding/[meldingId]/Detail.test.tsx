@@ -136,7 +136,7 @@ describe('Detail', () => {
     )
 
     expect(screen.getByText('Objecten')).toBeInTheDocument()
-    expect(screen.getByText(asset.external_id)).toBeInTheDocument()
+    expect(screen.getByText(asset.label)).toBeInTheDocument()
   })
 
   it('falls back to a default term when asset term is not provided', () => {
@@ -149,7 +149,7 @@ describe('Detail', () => {
     )
 
     expect(screen.getByText('assets.term')).toBeInTheDocument()
-    expect(screen.getByText(asset.external_id)).toBeInTheDocument()
+    expect(screen.getByText(asset.label)).toBeInTheDocument()
   })
 
   it('renders the melding data', () => {
