@@ -1,11 +1,17 @@
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
+  grid-template:
+    'top' auto
+    'content' 1fr
+    'buttons' auto
+    / 1fr;
   min-height: 100vh; /* Fallback for browsers that do not support dvh */
   min-height: 100dvh;
 
   @media screen and (min-width: 72.5rem) {
+    grid-template-areas:
+      'top map'
+      'bottom map';
     grid-template-columns: 1fr 2fr;
     height: 100vh; /* Fallback for browsers that do not support dvh */
     height: 100dvh;
@@ -27,36 +33,30 @@
 }
 
 .map {
-  position: relative;
+  grid-area: content-start / 1 / buttons-end / -1; /* Span both the content row and the button row, so the map is visible on both */
+  position: relative; /* Containing block for the map's internal overlays, e.g. the crosshair */
 
   @media screen and (min-width: 72.5rem) {
-    grid-row: 1 / -1;
+    grid-area: map;
   }
 }
 
 .buttonWrapper {
   display: flex;
   flex-wrap: wrap; /* Allow buttons to wrap on smaller screens with increased base font size */
+  gap: var(--ams-space-m);
+  grid-area: buttons;
   justify-content: space-between;
-}
-
-.submitButton {
-  bottom: 0;
   margin-block: var(--ams-space-m);
   margin-inline: var(--ams-space-m);
-  position: absolute;
+  pointer-events: none; /* Allow clicks to pass through to the wrapper */
+  z-index: 1;
+
+  > * {
+    pointer-events: auto; /* Allow interaction with button child elements */
+  }
 
   @media screen and (min-width: 72.5rem) {
     display: none;
   }
-}
-
-.removeAbsolutePosition {
-  position: unset;
-}
-
-.toggleButton {
-  /* stylelint-disable-next-line value-keyword-case */
-  composes: submitButton;
-  right: 0;
 }

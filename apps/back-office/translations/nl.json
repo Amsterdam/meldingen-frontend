@@ -98,9 +98,12 @@
       "no-data": "Geen bestanden toegevoegd",
       "pdf-link": "Bekijk document: {fileName} (opent in nieuw venster)",
       "photo-link": "Bekijk foto {fileName} in groot formaat",
-      "add-link": "Voeg bestand toe"
+      "add-link": "Voeg bestand toe",
+      "visually-hidden-text": "Bekijk document: {fileName} (opent in nieuw venster)",
+      "remove-link": "Verwijder bestand"
     },
     "errors": {
+      "fetch-error": "De bestanden konden niet worden geladen.",
       "melding-not-found": "An error occurred"
     }
   },
@@ -109,16 +112,16 @@
       "title": "Bestand toevoegen - Gemeente Amsterdam"
     },
     "title": "Voeg bestand toe",
-    "delete-notification": "{fileName} is verwijderd",
     "back-link": "Meldingdetails",
+    "delete-notification": "{fileName} is verwijderd",
     "cancel-link": "Annuleer",
+    "confirmation-prompt": "Weet je zeker dat je het bestand \"{fileName}\" wilt verwijderen?",
     "upload": {
       "title": "Bestand toevoegen",
       "description": "U kunt maximaal 5 bestanden tegelijk toevoegen. Toegestane bestandtypes: jpg, jpeg, png en pdf. Een bestand mag maximaal 20 Mb groot zijn.",
       "count": "{currentCount} van {maxCount} bestanden geupload"
     },
     "file-upload": {
-      "confirm-delete": "Weet je zeker dat je het bestand \"{fileName}\" wilt verwijderen?",
       "select-file-button": "Bestanden kiezen",
       "action-button-delete": "Verwijder bestand",
       "drop-area": "Sleep bestanden in dit vak of",
@@ -126,7 +129,6 @@
       "progress-finished": "Upload geslaagd",
       "progress-loading": "Aan het uploaden"
     },
-
     "errors": {
       "too-many-files": {
         "title": "U kunt maximaal {maxFiles} bestanden uploaden."
@@ -152,6 +154,17 @@
       "file-too-large": "Een foto mag maximaal 20 MB groot zijn.",
       "invalid-file-extension": "De toevoeging achter de punt in de bestandsnaam is niet gelijk aan het echte bestandstype. Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp."
     }
+  },
+  "remove-attachment": {
+    "melding-form-user": "Melder",
+    "metadata": {
+      "title": "Bestand verwijderen - Gemeente Amsterdam"
+    },
+    "back-link": "Meldingdetails",
+    "title": "Bestand verwijderen",
+    "confirmation": "{fileName} is verwijderd",
+    "confirmation-prompt": "Weet je zeker dat je het bestand \"{fileName}\" wilt verwijderen?",
+    "submit-button": "Verwijder bestand"
   },
   "change-labels": {
     "metadata": {

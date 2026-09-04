@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { Attachment } from './Attachment'
+import { AttachmentPreview } from './AttachmentPreview'
 
 const createObjectURLMock = vi.fn().mockImplementation(() => {
   return 'test-url'
@@ -9,13 +9,13 @@ const createObjectURLMock = vi.fn().mockImplementation(() => {
 global.URL.createObjectURL = createObjectURLMock
 global.URL.revokeObjectURL = vi.fn()
 
-describe('Attachment', () => {
+describe('AttachmentPreview', () => {
   describe('Image', () => {
-    it('renders a link containing an image when an image blob is provided', async () => {
+    it('renders an image when a blob is provided', async () => {
       render(
-        <Attachment
+        <AttachmentPreview
           blob={new Blob(['test-blob'], { type: 'image/jpeg' })}
-          fileName="IMG_0815.jpg"
+          fileName={'IMG_0815.jpg'}
           id={7}
           meldingId={42}
         />,
@@ -26,6 +26,19 @@ describe('Attachment', () => {
       const image = screen.getByRole('presentation')
 
       expect(image).toHaveAttribute('src', 'test-url')
+      expect(screen.queryByRole('link')).not.toBeInTheDocument()
+    })
+
+    it('renders a link to the image slider when requested', async () => {
+      render(
+        <AttachmentPreview
+          blob={new Blob(['test-blob'], { type: 'image/jpeg' })}
+          fileName={'IMG_0815.jpg'}
+          id={7}
+          isLinkToSlider
+          meldingId={42}
+        />,
+      )
 
       const link = screen.getByRole('link')
 
@@ -33,7 +46,7 @@ describe('Attachment', () => {
     })
 
     it('renders an an error message when the blob is missing', async () => {
-      render(<Attachment blob={null} fileName="IMG_0815.jpg" id={7} meldingId={42} />)
+      render(<AttachmentPreview blob={null} fileName={'IMG_0815.jpg'} id={7} meldingId={42} />)
 
       const errorMessage = screen.getByText('IMG_0815.jpg')
 
@@ -42,9 +55,9 @@ describe('Attachment', () => {
 
     it('revokes the object URL on unmount', () => {
       const { unmount } = render(
-        <Attachment
+        <AttachmentPreview
           blob={new Blob(['test-blob'], { type: 'image/jpeg' })}
-          fileName="IMG_0815.jpg"
+          fileName={'IMG_0815.jpg'}
           id={7}
           meldingId={42}
         />,
@@ -56,12 +69,12 @@ describe('Attachment', () => {
     })
   })
 
-  describe('AttachmentPDF', () => {
-    it('renders a link when a PDF blob is provided', async () => {
+  describe('AttachmentPreviewPDF', () => {
+    it('renders a link with an accessible name when a blob is provided', async () => {
       render(
-        <Attachment
+        <AttachmentPreview
           blob={new Blob(['test-blob'], { type: 'application/pdf' })}
-          fileName="test.pdf"
+          fileName={'test.pdf'}
           id={1}
           meldingId={42}
         />,
@@ -77,7 +90,7 @@ describe('Attachment', () => {
     })
 
     it('renders an an error message when the blob is missing', async () => {
-      render(<Attachment blob={null} fileName="test.pdf" id={1} meldingId={42} />)
+      render(<AttachmentPreview blob={null} fileName={'test.pdf'} id={1} meldingId={42} />)
 
       const errorMessage = screen.getByText('test.pdf')
 
@@ -86,9 +99,9 @@ describe('Attachment', () => {
 
     it('revokes the object URL on unmount', () => {
       const { unmount } = render(
-        <Attachment
+        <AttachmentPreview
           blob={new Blob(['test-blob'], { type: 'application/pdf' })}
-          fileName="test.pdf"
+          fileName={'test.pdf'}
           id={1}
           meldingId={42}
         />,

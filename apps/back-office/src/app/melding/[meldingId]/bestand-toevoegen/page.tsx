@@ -19,10 +19,9 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
 
-  const t = await getTranslations()
+  const attachments = await getAttachmentsData(meldingId, 'thumbnail')
 
-  const attachments = await getAttachmentsData(meldingId, t)
-  if ('error' in attachments) return attachments.error
+  //TODO show error as alert
 
-  return <AddAttachment attachments={attachments} meldingId={meldingId} />
+  return <AddAttachment attachments={attachments.attachmentsWithFile} meldingId={meldingId} />
 }

@@ -5,7 +5,7 @@ import { Fragment } from 'react'
 
 import { Column, Grid, Heading, Link, TabNavigation } from '@meldingen/ui'
 
-import type { Attachments, DescriptionListItem } from './types'
+import type { GetAttachmentsDataResult } from './_utils/server/getAttachmentsData'
 import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
 import { AttachmentSection } from './_components/AttachmentSection'
@@ -13,13 +13,19 @@ import { BackLink } from './_components/BackLink'
 
 import styles from './Detail.module.css'
 
+type DescriptionListItem = {
+  description?: string
+  key: string
+  term: string
+}
+
 type MeldingDataItem = DescriptionListItem & { link?: { href: string; label: string } }
 
 type Props = {
   additionalQuestionsWithMeldingText: DescriptionListItem[]
   assets: AssetOutput[]
   assetsTerm?: string
-  attachments: Attachments
+  attachments: GetAttachmentsDataResult
   contact?: DescriptionListItem[]
   location?: DescriptionListItem[]
   meldingData: MeldingDataItem[]

@@ -13,6 +13,8 @@ import { FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { Column, Grid, Heading, Link, Paragraph } from '@meldingen/ui'
 
+import type { MeldingAttachment } from '../types'
+
 import { BackLink } from '../_components/BackLink'
 import { deleteAttachmentAction, uploadAttachmentAction } from './actions'
 import { AttachmentsList } from './AttachmentsList'
@@ -20,22 +22,8 @@ import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 
 import styles from './AddAttachment.module.css'
 
-type AttachmentFile = {
-  blob: Blob | null
-  createdAt: string
-  error?: string
-  fileName: string
-  id: number
-}
-
-type Attachment = {
-  files: AttachmentFile[]
-  key: string
-  term: string
-}
-
 type Props = {
-  attachments: Attachment
+  attachments: MeldingAttachment[]
   meldingId: number
 }
 
@@ -81,10 +69,10 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   const fileUploadId = useId()
   const fileUploadRef = useRef<HTMLInputElement>(null)
 
-  const existingFiles = attachments.files.map((file) => ({
-    blob: file.blob || undefined,
-    fileName: file.fileName,
-    serverId: file.id,
+  const existingFiles = attachments.map(({ blob, id, originalFilename }) => ({
+    blob: blob || undefined,
+    fileName: originalFilename,
+    serverId: id,
   }))
 
   const uploadFile = uploadAttachment(meldingId)
@@ -115,7 +103,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   }
 
   const handleOnDelete = (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => {
-    const shouldDelete = window.confirm(t('file-upload.confirm-delete', { fileName }))
+    const shouldDelete = window.confirm(t('confirmation-prompt', { fileName }))
 
     if (!shouldDelete) return
 
