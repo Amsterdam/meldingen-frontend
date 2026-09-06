@@ -3,13 +3,21 @@ import type { Mock } from 'vitest'
 import useViewportHasMinWidth from '@amsterdam/design-system-react/dist/common/useViewportHasMinWidth'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useEffect, useImperativeHandle } from 'react'
+import { useActionState, useEffect, useImperativeHandle } from 'react'
 
 import type { Props } from './SelectLocation'
 
 import { AssetList } from './_components'
 import { SelectLocation } from './SelectLocation'
 import { containerAssets } from '~/mocks/data'
+
+vi.mock('react', async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...(typeof actual === 'object' ? actual : {}),
+    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
+  }
+})
 
 vi.mock('./_components/AssetList/AssetList', () => ({
   AssetList: vi.fn(),
@@ -122,6 +130,22 @@ describe('SelectLocation', () => {
     await user.click(closeButton)
 
     expect(screen.queryByText('too-many-assets.title')).not.toBeInTheDocument()
+  })
+
+  it('logs the error cause to the console when the action returns an error', () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    ;(useActionState as Mock).mockReturnValueOnce([
+      { error: { cause: 'Failed to patch location', message: 'errors.location-patch-failed' } },
+      vi.fn(),
+      false,
+    ])
+
+    render(<SelectLocation {...defaultProps} />)
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to patch location')
+
+    consoleErrorSpy.mockRestore()
   })
 
   it('passes the isHidden prop to the map when the asset list is shown', async () => {

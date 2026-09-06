@@ -56,7 +56,12 @@ export type Props = {
 
 export type NotificationType = 'too-many-assets' | 'location-service-disabled'
 
-const initialState: { errorMessage?: string } = {}
+const initialState: {
+  error?: {
+    cause: unknown
+    message: string
+  }
+} = {}
 
 export const SelectLocation = ({
   assetConfig,
@@ -72,8 +77,7 @@ export const SelectLocation = ({
   const postCoordinatesAndAssetsWithExtraArgs = postCoordinatesAndAssets.bind(null, {
     asset_type_id: assetConfig.wfsQuery.assetTypeId,
   })
-
-  const [{ errorMessage }, formAction] = useActionState(postCoordinatesAndAssetsWithExtraArgs, initialState)
+  const [{ error }, formAction] = useActionState(postCoordinatesAndAssetsWithExtraArgs, initialState)
 
   const t = useTranslations('select-location')
   const isWideWindow = useViewportHasMinWidth('wide')
@@ -98,6 +102,14 @@ export const SelectLocation = ({
     }
   }, [notificationType])
 
+  useEffect(() => {
+    if (error) {
+      // TODO: Log the error to an error reporting service
+      // eslint-disable-next-line no-console
+      console.error(error.cause)
+    }
+  }, [error])
+
   const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
   const defaultCoordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
 
@@ -115,7 +127,7 @@ export const SelectLocation = ({
         <Form action={formAction} id="address" noValidate>
           <AddressInput
             coordinates={coordinates}
-            errorMessage={errorMessage}
+            errorMessage={error?.message}
             setCoordinates={setCoordinates}
             setSelectedAssets={setSelectedAssets}
           />
