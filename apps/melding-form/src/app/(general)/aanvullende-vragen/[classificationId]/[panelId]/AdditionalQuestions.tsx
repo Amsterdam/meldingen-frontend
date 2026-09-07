@@ -10,7 +10,7 @@ import { FormRenderer, isSelectboxes, isTimeInput } from '@meldingen/form-render
 import type { AnswersByKey } from '../../../_utils/conditions'
 import type { FormState } from '~/types'
 
-import { useDocumentTitleOnError } from '../../../_utils/validation'
+import { useDocumentTitleOnError } from '../../../_utils'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { BackLink } from '~/app/_components'
 
