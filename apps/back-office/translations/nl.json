@@ -96,6 +96,8 @@
     "attachments": {
       "title": "Bestanden",
       "no-data": "Geen bestanden toegevoegd",
+      "melding-form-user": "Melder",
+      "loading-file": "Bestand {fileName} wordt geladen",
       "pdf-link": "Bekijk document: {fileName} (opent in nieuw venster)",
       "photo-link": "Bekijk foto {fileName} in groot formaat",
       "add-link": "Voeg bestand toe",
