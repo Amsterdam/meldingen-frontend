@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import Page from './error'
 
@@ -27,6 +28,21 @@ describe('Error component', () => {
     const firstParagraph = screen.queryAllByRole('paragraph')[0]
 
     expect(firstParagraph).toHaveTextContent('description')
+  })
+
+  it('reloads the page when the reload button is clicked', async () => {
+    const user = userEvent.setup()
+    const reloadSpy = vi.fn()
+    vi.stubGlobal('location', { ...window.location, reload: reloadSpy })
+
+    render(<Page error={error} />)
+
+    const button = screen.getByRole('button', { name: 'button' })
+    await user.click(button)
+
+    expect(reloadSpy).toHaveBeenCalledOnce()
+
+    vi.unstubAllGlobals()
   })
 
   it('logs the error to the console', () => {
