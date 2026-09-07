@@ -1,9 +1,10 @@
+import { getApiErrorMessage } from '@meldingen/api-client'
+
 import type { MeldingAttachment } from '../../types'
 import type { AttachmentTypes } from '~/app/_api-client/proxy'
 
 import { isFilePDF } from '../'
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
-import { handleApiError } from '~/app/_utils/handleApiError'
 
 export type GetAttachmentsDataResult = {
   attachmentsWithFile: MeldingAttachment[]
@@ -21,7 +22,7 @@ export const getAttachmentsData = async (
   if (error) {
     return {
       attachmentsWithFile: [],
-      error: handleApiError(error),
+      error: getApiErrorMessage(error),
     }
   }
 
