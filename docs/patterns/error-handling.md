@@ -34,7 +34,7 @@ There are a few exceptions, which are detailed below.
   This can be a server error, or a 4XX or 5XX response from the back end.
   In such cases, we display the current page with an `ApiErrorAlert` at the top of the `main` container.
 - Form validation is also done by the back end.
-  If a user’s responses fail validation, we show an `InvalidFormAlert` with the field-level errors, following [the form validation documentation](./form-validation.md).
+  If a user’s submission fails validation, we show an `InvalidFormAlert` with the field-level errors, following [the form validation documentation](./form-validation.md).
 - A page only ever shows one alert at a time: either `ApiErrorAlert` or `InvalidFormAlert`, never both.
   Validation errors take precedence over API errors: we check for and return validation errors before falling back to a generic API error.
 - If session tokens are missing when executing an action, we redirect to `/cookie-storing`.
@@ -87,7 +87,7 @@ There are a few exceptions, which are detailed below.
   This can be a server error, or a 4XX or 5XX response from the back end.
   In such cases, we display the current page with an `ApiErrorAlert` at the top of the `main` container, the same pattern the Melding form uses for action errors.
 - Form validation is also done by the back end.
-  If a user’s responses fail validation, we show an `InvalidFormAlert` with the field-level errors, following [the form validation documentation](./form-validation.md).
+  If a user’s submission fails validation, we show an `InvalidFormAlert` with the field-level errors, following [the form validation documentation](./form-validation.md).
 - A page only ever shows one alert at a time: either `ApiErrorAlert` or `InvalidFormAlert`, never both.
   Validation errors take precedence over API errors: we check for and return validation errors before falling back to a generic API error.
 - When a user navigates to a path that does not exist, we show a `not-found` page.
