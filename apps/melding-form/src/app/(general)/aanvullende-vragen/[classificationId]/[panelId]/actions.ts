@@ -3,17 +3,15 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
+import { getApiErrorMessage, hasValidationErrors, putMeldingByMeldingIdAnswerQuestions } from '@meldingen/api-client'
 
 import type { AnswersByKey } from '../../../_utils/conditions'
 import type { PanelComponentsConditions } from './_utils/navigation'
 
 import { shouldRenderComponent } from '../../../_utils/conditions'
-import { hasValidationErrors } from '../../../_utils/validation'
 import { buildAnswerPromises } from './_utils'
 import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, refilterAnswersByKey } from './_utils/navigation'
 import { categorizeFormEntries, mergeCheckboxAnswers, mergeUnknownTimeAnswers } from './_utils/processEntries'
-import { handleApiError } from '~/app/_utils/handleApiError'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
 type RequiredQuestionErrorMessage = { key: string; requiredErrorMessage: string }
@@ -144,7 +142,7 @@ export const postForm = async (
       formData,
       validationErrors: resultsWithValidationError.map(({ key, value }) => ({
         key,
-        message: handleApiError(value.error),
+        message: getApiErrorMessage(value.error),
       })),
     }
   }

@@ -1,7 +1,8 @@
 'use server'
 
+import { getApiErrorMessage } from '@meldingen/api-client'
+
 import { deleteAttachmentById, postMeldingByMeldingIdAttachment } from '~/app/_api-client/proxy'
-import { handleApiError } from '~/app/_utils/handleApiError'
 
 export const uploadAttachmentAction = async (meldingId: number, file: File) => {
   const { data, error } = await postMeldingByMeldingIdAttachment({
@@ -12,7 +13,7 @@ export const uploadAttachmentAction = async (meldingId: number, file: File) => {
   })
 
   return {
-    error: error ? handleApiError(error) : undefined,
+    error: error ? getApiErrorMessage(error) : undefined,
     serverId: data?.id,
   }
 }
@@ -24,7 +25,7 @@ export const deleteAttachmentAction = async (serverId: number) => {
   })
 
   return {
-    error: error ? handleApiError(error) : undefined,
+    error: error ? getApiErrorMessage(error) : undefined,
     status: response?.status,
   }
 }
