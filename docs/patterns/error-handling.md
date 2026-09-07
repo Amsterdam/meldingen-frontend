@@ -25,9 +25,9 @@ There are a few exceptions, which are detailed below.
 - For errors occurring during page load, we show a general error page (`src/app/(general)/error.tsx` and `src/app/(map)/locatie/kies/error.tsx`).
   An error can be a server error, or a 4XX or 5XX response from the back end.
   These error pages are catch-all, so any error not specifically addressed will end up here.
-  An exception to this is the errors that happen when we retrieve answers that were given before.
-  We consider these errors non-blocking, since you can still use the application without prefilled answers.
-  All we do is log the errors.
+  - An exception to this is the errors that happen when we retrieve answers that were given before.
+    We consider these errors non-blocking, since you can still use the application without prefilled answers.
+    All we do is log the errors.
 - On page load for all pages except the first, we verify if the required session cookies (an `id` and `token`) are present.
   If they are absent, we redirect to the first page.
 - When performing an action, an error may occur.
@@ -77,9 +77,9 @@ There are a few exceptions, which are detailed below.
 
 - For errors occurring during page load, we show a general error page (`src/app/error.tsx`).
   This is a catch-all, so any error not specifically addressed will end up here.
-  An exception to this is the errors that happen when we retrieve answers that were given before.
-  We consider these errors non-blocking, since you can still use the application without prefilled answers.
-  All we do is log the errors.
+  - An exception to this is the errors that happen when we retrieve answers that were given before on the `/melden` page.
+    We consider these errors non-blocking, since you can still create a melding without prefilled answers.
+    All we do is log the errors.
 - Session validity is enforced up front instead of being checked on each page.
   `next-auth` middleware (`src/proxy.ts`) requires a valid session for every route, and the API client config (`src/app/_api-client/proxy.ts`) redirects to `/api/auth/signin` if the access token is missing or its refresh has failed.
   This replaces the cookie-presence check the Melding form does, since Back office is an authenticated app rather than an anonymous one.
