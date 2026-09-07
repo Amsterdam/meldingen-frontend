@@ -1,10 +1,13 @@
 import type { GetMeldingByMeldingIdAnswersMelderResponses, ValueLabelObject } from '@meldingen/api-client'
 
-import { getFormClassificationByClassificationId, getMeldingByMeldingIdAnswersMelder } from '@meldingen/api-client'
+import {
+  getApiErrorMessage,
+  getFormClassificationByClassificationId,
+  getMeldingByMeldingIdAnswersMelder,
+} from '@meldingen/api-client'
 
 import { isPanelComponentOutput } from '../../_utils'
 import { getFilteredAnswersByKey } from '../../_utils/conditions'
-import { handleApiError } from '~/app/_utils/handleApiError'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200'][number]) => {
@@ -35,7 +38,7 @@ export const getAdditionalQuestionsSummary = async (meldingId: string, token: st
 
   if (formError) {
     // Not Found error is returned when the classification does not have additional questions
-    if (handleApiError(formError) === 'Not Found') return { data: [], staleAnswerIds: [] }
+    if (getApiErrorMessage(formError) === 'Not Found') return { data: [], staleAnswerIds: [] }
 
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
