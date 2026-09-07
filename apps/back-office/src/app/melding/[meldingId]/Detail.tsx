@@ -86,7 +86,7 @@ export const Detail = ({
                     <dt className={styles.term}>{assetsTerm ?? t('assets.term')}</dt>
                     {assets.map((asset) => (
                       <dd className={styles.assetsDescription} key={asset.id}>
-                        {asset.external_id}
+                        {asset.label}
                       </dd>
                     ))}
                   </>
