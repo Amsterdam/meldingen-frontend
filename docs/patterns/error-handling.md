@@ -1,5 +1,20 @@
 # Error handling
 
+## Table of contents
+
+- [Melding form](#melding-form)
+  - [Common error handling strategy](#common-error-handling-strategy)
+  - [Exceptions](#exceptions)
+    - [Map page](#map-page)
+    - [Attachments](#attachments)
+  - [Not yet implemented](#not-yet-implemented)
+- [Back office](#back-office)
+  - [Common error handling strategy](#common-error-handling-strategy-1)
+  - [Exceptions](#exceptions-1)
+    - [Attachments](#attachments-1)
+  - [Not yet implemented](#not-yet-implemented-1)
+  - [To discuss](#to-discuss)
+
 ## Melding form
 
 Most pages in the Melding form follow a common error handling strategy.
@@ -49,6 +64,10 @@ However, validation errors also include an in-page link that takes the user dire
 
 We still only show 1 alert at a time. The precedence order here is validation errors, then generic errors, and finally API errors.
 
+### Not yet implemented
+
+- The Attachments page can show multiple errors at once, and the precedence order isn't followed.
+
 ## Back office
 
 Most pages in the Back Office also follow a common error handling strategy.
@@ -93,7 +112,7 @@ We still only show 1 alert at a time. The precedence order here is validation er
 
 - There is no `src/app/error.tsx` or `src/app/not-found.tsx` yet, so uncaught errors and unknown routes currently fall through to Next.js’s default, unstyled error/404 pages.
 - Some Server Component data loaders (e.g. `src/app/page.tsx`, `src/app/melding/[meldingId]/page.tsx`) catch fetch errors and return the error message as the page body instead of throwing or calling `notFound()`. These should be migrated once `error.tsx`/`not-found.tsx` exist. `getAssetsData` returns an empty array, so the page is still shown if the API client returns an error.
-- The file upload pages can show multiple errors at once, and the precedence order isn't followed.
+- The AddAttachment page can show multiple errors at once, and the precedence order isn't followed.
 
 ### To discuss
 
