@@ -118,8 +118,13 @@ export const ImageSlider = ({ defaultSlideIndex, images, labelId }: Props) => {
           {t('next')}
         </Button>
       </div>
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
-      <div aria-labelledby={labelId} className="ams-image-slider__scroller" ref={scrollerRef} tabIndex={0}>
+      <div
+        aria-labelledby={labelId}
+        className={`ams-image-slider__scroller ${styles.scroller}`}
+        ref={scrollerRef}
+        /* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */
+        tabIndex={0}
+      >
         {images.map(({ createdAt, filename, id }, index) => {
           const imageUrl = imageUrls.find((imageUrl) => imageUrl.id === id)
           const { date, time } = formatDateString(createdAt)
