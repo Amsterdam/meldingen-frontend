@@ -138,12 +138,12 @@ export default defineConfig(
             {
               group: ['@amsterdam/design-system-react', '@amsterdam/design-system-react/dist/Grid'],
               importNames: ['Grid'],
-              message: 'Import Alert from @meldingen/ui',
+              message: 'Import Grid from @meldingen/ui',
             },
             {
               group: ['@amsterdam/design-system-react', '@amsterdam/design-system-react/dist/Heading'],
               importNames: ['Heading'],
-              message: 'Import Alert from @meldingen/ui',
+              message: 'Import Heading from @meldingen/ui',
             },
           ],
         },
