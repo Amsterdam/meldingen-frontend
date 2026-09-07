@@ -127,7 +127,7 @@
       "drop-area": "Sleep bestanden in dit vak of",
       "id-prefix": "bestand",
       "progress-finished": "Upload geslaagd",
-      "progress-loading": "Aan het uploaden"
+      "progress-loading": "Je bestand wordt nu geüpload"
     },
     "errors": {
       "too-many-files": {
