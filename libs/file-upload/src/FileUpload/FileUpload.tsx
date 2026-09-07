@@ -24,7 +24,7 @@ const isContainingFiles = (dataTransfer: DataTransfer): boolean => {
   return hasNoTypesInfo || isDraggingFiles
 }
 
-type ButtonProps = { text?: string; variant?: ADSButtonProps['variant'] }
+type ButtonProps = { className?: string; text?: string; variant?: ADSButtonProps['variant'] }
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
   button?: ButtonProps
@@ -94,7 +94,7 @@ export const FileUpload = ({
             styles.button,
             'ams-button',
             `ams-button--${buttonProps.variant ?? 'primary'}`,
-            styles.button,
+            buttonProps.className,
           )}
         >
           {buttonProps.text}

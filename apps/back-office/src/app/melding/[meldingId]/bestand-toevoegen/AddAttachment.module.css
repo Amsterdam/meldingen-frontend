@@ -22,3 +22,11 @@
     row-gap: var(--ams-space-l);
   }
 }
+
+@media screen and (min-width: 37.5rem) {
+  .responsiveButton {
+    background-color: var(--ams-button-secondary-background-color);
+    border-color: var(--ams-button-secondary-border-color);
+    color: var(--ams-button-secondary-color);
+  }
+}
