@@ -1,6 +1,6 @@
 'use client'
 
-import { Image, Paragraph } from '@amsterdam/design-system-react'
+import { Image } from '@amsterdam/design-system-react'
 import { DocumentsIcon } from '@amsterdam/design-system-react-icons'
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
@@ -25,7 +25,11 @@ export const AttachmentPreview = ({ blob, fileName, id, isLinkToSlider, meldingI
   const url = useObjectUrl(blob)
 
   if (!blob || !url) {
-    return <Paragraph>{fileName}</Paragraph>
+    return (
+      <div className={styles.attachmentLoading}>
+        <span className="ams-visually-hidden">{t('loading-file', { fileName })}</span>
+      </div>
+    )
   }
 
   if (isFilePDF(fileName)) {
