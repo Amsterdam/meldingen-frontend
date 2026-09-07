@@ -113,6 +113,7 @@ We still only show 1 alert at a time. The precedence order here is validation er
 - There is no `src/app/error.tsx` or `src/app/not-found.tsx` yet, so uncaught errors and unknown routes currently fall through to Next.js’s default, unstyled error/404 pages.
 - Some Server Component data loaders (e.g. `src/app/page.tsx`, `src/app/melding/[meldingId]/page.tsx`) catch fetch errors and return the error message as the page body instead of throwing or calling `notFound()`. These should be migrated once `error.tsx`/`not-found.tsx` exist. `getAssetsData` returns an empty array, so the page is still shown if the API client returns an error.
 - The AddAttachment page can show multiple errors at once, and the precedence order isn't followed.
+- We don't log when `safeJSONParse` returns its fallback, which we should. We should also log when the `isMeldingData` check fails.
 
 ### To discuss
 
