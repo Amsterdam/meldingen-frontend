@@ -120,6 +120,7 @@ export const ImageSlider = ({ defaultSlideIndex, images, labelId }: Props) => {
       </div>
       <div
         aria-labelledby={labelId}
+        aria-live="polite"
         className={`ams-image-slider__scroller ${styles.scroller}`}
         ref={scrollerRef}
         /* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */
