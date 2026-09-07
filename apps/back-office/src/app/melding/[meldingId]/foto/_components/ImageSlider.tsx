@@ -126,7 +126,7 @@ export const ImageSlider = ({ defaultSlideIndex, images, labelId }: Props) => {
         tabIndex={0}
       >
         {images.map(({ createdAt, filename, id }, index) => {
-          const imageUrl = imageUrls.find((imageUrl) => imageUrl.id === id)
+          const { url } = imageUrls.find((entry) => entry.id === id) ?? {}
           const { date, time } = formatDateString(createdAt)
 
           return (
@@ -144,11 +144,7 @@ export const ImageSlider = ({ defaultSlideIndex, images, labelId }: Props) => {
                   <span>{`${date} ${time}`}</span>
                 </Figure.Caption>
                 <div className={styles.imageContainer}>
-                  {imageUrl ? (
-                    <Image alt="" className={styles.image} src={imageUrl.url} />
-                  ) : (
-                    <div className={styles.loadingImage} />
-                  )}
+                  {url ? <Image alt="" className={styles.image} src={url} /> : <div className={styles.loadingImage} />}
                 </div>
               </Figure>
             </div>
