@@ -15,16 +15,16 @@ jobs:
   pr-label:
     runs-on: ubuntu-latest
     steps:
-      - uses: Amsterdam/aapp_pr_label@1.1.0
+      - uses: Amsterdam/aapp_pr_label@6c0bbc34466526f901021236f11e21d6be1300a7
         with:
-          code-reviewed-color: '#99f490'
+          code-reviewed-color: "#99f490"
           code-reviewed-enabled: true
-          code-reviewed-label: 'Code reviewed'
+          code-reviewed-label: "Code reviewed"
           copilot-logins: |
             github-copilot[bot]
-          copilot-ready-color: '#05b103'
+          copilot-ready-color: "#05b103"
           copilot-ready-enabled: true
-          copilot-ready-label: 'Copilot ready'
+          copilot-ready-label: "Copilot ready"
           labels: |
             "^apps/([^/]+)/":
                 name: "app: $1"
