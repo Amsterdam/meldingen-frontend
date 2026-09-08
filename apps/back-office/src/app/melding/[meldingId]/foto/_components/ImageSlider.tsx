@@ -5,6 +5,8 @@ import { ChevronBackwardIcon, ChevronForwardIcon } from '@amsterdam/design-syste
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
+import { formatDateString } from '@meldingen/utils'
+
 import { debounce, scrollToCurrentSlideOnResize, scrollToSlide, setCurrentSlideIndexToVisibleSlide } from './_utils'
 import { ImageSliderThumbnails } from './ImageSliderThumbnails'
 
@@ -26,23 +28,6 @@ type Props = {
     id: number
   }[]
   labelId: string
-}
-
-// TODO: Remove this function and use formatDateString instead, once we've added the correct defaults there.
-export const formatDateTime = (dateString: string) => {
-  const date = new Date(dateString)
-
-  const formattedDate = date.toLocaleDateString('nl-NL', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  })
-  const formattedTime = date.toLocaleTimeString('nl-NL', {
-    hour: 'numeric',
-    minute: 'numeric',
-  })
-
-  return `${formattedDate} ${formattedTime}`
 }
 
 export const ImageSlider = ({ defaultSlideIndex, images, labelId }: Props) => {
@@ -137,6 +122,7 @@ export const ImageSlider = ({ defaultSlideIndex, images, labelId }: Props) => {
       <div aria-labelledby={labelId} className="ams-image-slider__scroller" ref={scrollerRef} tabIndex={0}>
         {images.map(({ createdAt, filename, id }, index) => {
           const imageUrl = imageUrls.find((imageUrl) => imageUrl.id === id)
+          const { date, time } = formatDateString(createdAt)
 
           return (
             <div
@@ -150,7 +136,7 @@ export const ImageSlider = ({ defaultSlideIndex, images, labelId }: Props) => {
               <Figure>
                 <Figure.Caption className={styles.caption}>
                   <span className={styles.fileName}>{filename}</span>
-                  <span>{formatDateTime(createdAt)}</span>
+                  <span>{`${date} ${time}`}</span>
                 </Figure.Caption>
                 <div className={styles.imageContainer}>
                   {imageUrl ? (
