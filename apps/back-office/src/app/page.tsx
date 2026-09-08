@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 import { getApiErrorMessage } from '@meldingen/api-client'
 
 import { COOKIES, DEFAULT_PAGE_SIZE, SORT } from '../constants'
-import { Overview } from './Overview'
+import { Overview } from './kebab-overview'
 import { getMelding } from '~/app/_api-client/proxy'
 
 export const generateMetadata = async () => {

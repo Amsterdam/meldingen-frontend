@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 
 import { Link } from '@meldingen/ui'
 
-import type { MeldingWithAddress } from '../../Overview'
+import type { MeldingWithAddress } from '../../kebab-overview'
 import type { OverviewField } from './getOverviewFieldLabel'
 
 import { formatValue } from './formatValue'

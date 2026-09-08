@@ -9,7 +9,7 @@ import { meldingen } from '../mocks/data'
 import { ENDPOINTS } from '../mocks/endpoints'
 import { server } from '../mocks/node'
 import { mockCookies } from '../mocks/utils'
-import { Overview } from './Overview'
+import { Overview } from './kebab-overview'
 import Page, { generateMetadata } from './page'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))

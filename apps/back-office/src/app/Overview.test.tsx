@@ -12,7 +12,7 @@ vi.mock('./_components/PageSizeSelect', () => ({
   PageSizeSelect: () => <div>PageSizeSelect</div>,
 }))
 
-import { Overview } from './Overview'
+import { Overview } from './kebab-overview'
 
 describe('Overview', () => {
   it('should render correctly', () => {

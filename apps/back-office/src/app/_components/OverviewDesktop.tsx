@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl'
 
 import { Table } from '@meldingen/ui'
 
-import type { MeldingWithAddress } from '../Overview'
+import type { MeldingWithAddress } from '../kebab-overview'
 
 import { OVERVIEW_FIELDS } from '../constants'
 import { getOverviewFieldLabel, renderOverviewFieldValue } from './_utils'

@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 
 import { DescriptionList, UnorderedList } from '@meldingen/ui'
 
-import type { MeldingWithAddress } from '../Overview'
+import type { MeldingWithAddress } from '../kebab-overview'
 
 import { OVERVIEW_FIELDS } from '../constants'
 import { getOverviewFieldLabel, renderOverviewFieldValue } from './_utils'
