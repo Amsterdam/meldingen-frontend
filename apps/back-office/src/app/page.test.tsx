@@ -14,7 +14,7 @@ import Page, { generateMetadata } from './page'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
-vi.mock('./Overview', () => ({
+vi.mock('./kebab-overview', () => ({
   Overview: vi.fn(() => <div>Overview Component</div>),
 }))
 
