@@ -28,15 +28,17 @@ jobs:
           labels: |
             "^apps/([^/]+)/":
                 name: "app: $1"
-                color: "#0366d6"
+                color: '#0366d6'
             "^libs/([^/]+)/":
                 name: "lib: $1"
-                color: "#0366d6"
+                color: '#0366d6'
             "^(?:pipelines/|\\.github/(?:workflows|actions)/)":
                 name: 'pipelines'
-                color: '#036d66'
+                color: '#0366d6'
                 description: 'Pipeline related'
-          pr-description-update-enabled: false
+          pr-description-copilot-section-after: '## What'
+          pr-description-copilot-section-before: '## Why'
+          pr-description-update-enabled: true
           reviewer-usernames: |
             frankfe-amsterdam
             kyunwang
