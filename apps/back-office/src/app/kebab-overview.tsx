@@ -9,6 +9,7 @@ import { OverviewMobile } from './_components/OverviewMobile'
 import { Pagination } from './_components/Pagination'
 import { getShortNLAddress } from './_utils/getShortNLAddress'
 
+// force a content diff line for the inline-comment anchoring test
 export type MeldingWithAddress = MeldingOutput & { address?: string }
 
 type Props = {
