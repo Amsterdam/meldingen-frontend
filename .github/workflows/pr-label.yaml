@@ -36,8 +36,8 @@ jobs:
                 name: 'pipelines'
                 color: '#0366d6'
                 description: 'Pipeline related'
-          pr-description-copilot-section-after: '## What'
-          pr-description-copilot-section-before: '## Why'
+          pr-description-copilot-section-after: '## Why'
+          pr-description-copilot-section-before: '## What'
           pr-description-update-enabled: true
           reviewer-usernames: |
             frankfe-amsterdam
