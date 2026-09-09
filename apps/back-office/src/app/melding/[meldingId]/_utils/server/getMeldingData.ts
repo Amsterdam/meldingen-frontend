@@ -14,6 +14,10 @@ export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) 
     {
       description: classification ? classification.name : t('detail.melding-data.classification.no-data'),
       key: 'classification',
+      link: {
+        href: `/melding/${id}/wijzig-categorie`,
+        label: t('detail.melding-data.classification.link'),
+      },
       term: t('detail.melding-data.classification.term'),
     },
     {

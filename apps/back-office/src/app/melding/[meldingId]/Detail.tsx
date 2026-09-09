@@ -1,4 +1,4 @@
-import { clsx } from 'clsx'
+import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 import { Fragment } from 'react'
@@ -10,6 +10,7 @@ import type { AssetOutput, MeldingOutput } from '~/app/_api-client/proxy'
 
 import { AttachmentSection } from './_components/AttachmentSection'
 import { BackLink } from './_components/BackLink'
+import { getIsReclassificationNotAllowed } from './_utils/getIsReclassificationNotAllowed'
 
 import styles from './Detail.module.css'
 
@@ -30,6 +31,7 @@ type Props = {
   location?: DescriptionListItem[]
   meldingData: MeldingDataItem[]
   meldingId: number
+  meldingState: MeldingOutput['state']
   publicId: MeldingOutput['public_id']
 }
 
@@ -42,6 +44,7 @@ export const Detail = ({
   location,
   meldingData,
   meldingId,
+  meldingState,
   publicId,
 }: Props) => {
   const t = useTranslations('detail')
@@ -108,13 +111,15 @@ export const Detail = ({
                 <Fragment key={key}>
                   <dt className={styles.term}>{term}</dt>
                   <dd className={styles.horizontalDescription}>{description}</dd>
-                  {link && (
-                    <dd className={styles.horizontalLink}>
-                      <Link href={link.href} linkComponent={NextLink}>
-                        {link.label}
-                      </Link>
-                    </dd>
-                  )}
+                  {link &&
+                    ((key === 'classification' && !getIsReclassificationNotAllowed(meldingState)) ||
+                      key !== 'classification') && (
+                      <dd className={styles.horizontalLink}>
+                        <Link href={link.href} linkComponent={NextLink}>
+                          {link.label}
+                        </Link>
+                      </dd>
+                    )}
                 </Fragment>
               ))}
             </dl>
