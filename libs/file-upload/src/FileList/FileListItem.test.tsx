@@ -7,9 +7,7 @@ import { FileListItem } from './FileListItem'
 
 const file = new File(['sample content'], 'sample.txt', { type: 'text/plain' })
 
-const createObjectURLMock = vi.fn().mockImplementation((file: File) => {
-  return file.name
-})
+const createObjectURLMock = vi.fn().mockImplementation((file: File) => file.name)
 
 global.URL.createObjectURL = createObjectURLMock
 global.URL.revokeObjectURL = vi.fn()

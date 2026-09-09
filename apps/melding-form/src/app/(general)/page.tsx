@@ -30,12 +30,10 @@ const getPrefilledPrimaryFormComponents = async (
     console.error(error)
   }
 
-  return formComponents.map((component) => {
-    return {
-      ...component,
-      defaultValue: data?.text,
-    }
-  })
+  return formComponents.map((component) => ({
+    ...component,
+    defaultValue: data?.text,
+  }))
 }
 
 export default async () => {
