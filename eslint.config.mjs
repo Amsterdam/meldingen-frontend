@@ -131,28 +131,16 @@ export default defineConfig(
       'import/no-cycle': 'error',
       'import/no-default-export': 'error',
       'import/no-named-as-default': 'error',
-      'no-restricted-imports': [
-        'warn',
-        {
-          patterns: [
-            {
-              group: ['@amsterdam/design-system-react', '@amsterdam/design-system-react/dist/Grid'],
-              importNames: ['Grid'],
-              message: 'Import Alert from @meldingen/ui',
-            },
-            {
-              group: ['@amsterdam/design-system-react', '@amsterdam/design-system-react/dist/Heading'],
-              importNames: ['Heading'],
-              message: 'Import Alert from @meldingen/ui',
-            },
-          ],
-        },
-      ],
 
       // ESLint
       'no-console': 'error',
       'no-unused-vars': 'off', // Handled by @typescript-eslint/no-unused-vars
-      'prefer-arrow-functions/prefer-arrow-functions': 'error',
+      'prefer-arrow-functions/prefer-arrow-functions': [
+        'error',
+        {
+          returnStyle: 'implicit',
+        },
+      ],
 
       // Perfectionist
       'perfectionist/sort-imports': ['error', perfectionistImportGroups],

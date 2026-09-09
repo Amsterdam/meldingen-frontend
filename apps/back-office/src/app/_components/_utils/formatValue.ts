@@ -1,7 +1,7 @@
+import { formatDateString } from '@meldingen/utils'
+
 import type { MeldingWithAddress } from '../../Overview'
 import type { OverviewField } from './getOverviewFieldLabel'
-
-import { formatDateString } from '~/app/_utils/formatDateString'
 
 export const formatValue = (melding: MeldingWithAddress, key: OverviewField['key'], t: (key: string) => string) => {
   switch (key) {

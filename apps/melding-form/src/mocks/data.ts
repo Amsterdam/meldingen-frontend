@@ -84,11 +84,11 @@ export const form: FormOutput = {
       type: 'panel',
     },
   ],
-  created_at: '2024-07-16T13:13:30.968809',
+  created_at: '2024-07-16T13:13:30.968809Z',
   display: 'wizard',
   id: 2,
   title: 'Wizard form mock',
-  updated_at: '2024-07-16T13:13:30.968809',
+  updated_at: '2024-07-16T13:13:30.968809Z',
 }
 
 export const contact: FormTextAreaComponentOutput[] = [
@@ -198,7 +198,7 @@ export const melding: MeldingOutput = {
     name: 'container',
     updated_at: '2025-07-15T09:43:46Z',
   },
-  created_at: '2025-02-18T10:34:29.103642',
+  created_at: '2025-02-18T10:34:29.103642Z',
   email: 'email@email.email',
   geo_location: {
     geometry: { coordinates: [52.370216, 4.895168], type: 'Point' },
@@ -214,53 +214,53 @@ export const melding: MeldingOutput = {
   state: 'questions_answered',
   street: 'Oudezijds Voorburgwal',
   text: 'Alles',
-  updated_at: '2025-02-18T10:34:40.730569',
+  updated_at: '2025-02-18T10:34:40.730569Z',
   urgency: 0,
 }
 
 export const additionalQuestions: TextAnswerQuestionOutput[] = [
   {
-    created_at: '2025-02-18T10:34:32.181638',
+    created_at: '2025-02-18T10:34:32.181638Z',
     id: 123,
     original_question_text: 'Wat wilt u melden?',
     question: {
-      created_at: '2025-02-17T11:06:22.137002',
+      created_at: '2025-02-17T11:06:22.137002Z',
       id: 35,
       text: 'Wat wilt u melden?',
-      updated_at: '2025-02-17T11:06:22.137002',
+      updated_at: '2025-02-17T11:06:22.137002Z',
     },
     text: 'q1',
     type: 'text',
-    updated_at: '2025-02-18T10:34:32.181638',
+    updated_at: '2025-02-18T10:34:32.181638Z',
   },
   {
-    created_at: '2025-02-18T10:34:32.187573',
+    created_at: '2025-02-18T10:34:32.187573Z',
     id: 124,
     original_question_text: 'Text Field',
     question: {
-      created_at: '2025-02-17T11:06:22.137002',
+      created_at: '2025-02-17T11:06:22.137002Z',
       id: 36,
       text: 'Text Field',
-      updated_at: '2025-02-17T11:06:22.137002',
+      updated_at: '2025-02-17T11:06:22.137002Z',
     },
     text: 'q2',
     type: 'text',
-    updated_at: '2025-02-18T10:34:32.187573',
+    updated_at: '2025-02-18T10:34:32.187573Z',
   },
 ]
 
 export const selectAdditionalQuestion: ValueLabelAnswerQuestionOutput = {
-  created_at: '2025-02-18T10:34:32.193489',
+  created_at: '2025-02-18T10:34:32.193489Z',
   id: 125,
   original_question_text: 'Select Field',
   question: {
-    created_at: '2025-02-17T11:06:22.137002',
+    created_at: '2025-02-17T11:06:22.137002Z',
     id: 37,
     text: 'Select Field',
-    updated_at: '2025-02-17T11:06:22.137002',
+    updated_at: '2025-02-17T11:06:22.137002Z',
   },
   type: 'value_label',
-  updated_at: '2025-02-18T10:34:32.193489',
+  updated_at: '2025-02-18T10:34:32.193489Z',
   values_and_labels: [
     {
       label: 'Option 1',

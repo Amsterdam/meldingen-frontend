@@ -13,14 +13,12 @@ import { useKeyboardFocus } from './useKeyboardFocus'
 
 import styles from './Toolbar.module.css'
 
-const toolbarStateSelector = (ctx: EditorStateSnapshot<Editor>) => {
-  return {
-    canUndo: ctx.editor.can().chain().undo().run() ?? false,
-    isBold: ctx.editor.isActive('bold') ?? false,
-    isBulletList: ctx.editor.isActive('bulletList') ?? false,
-    isItalic: ctx.editor.isActive('italic') ?? false,
-  }
-}
+const toolbarStateSelector = (ctx: EditorStateSnapshot<Editor>) => ({
+  canUndo: ctx.editor.can().chain().undo().run() ?? false,
+  isBold: ctx.editor.isActive('bold') ?? false,
+  isBulletList: ctx.editor.isActive('bulletList') ?? false,
+  isItalic: ctx.editor.isActive('italic') ?? false,
+})
 
 type Props = {
   editor: Editor

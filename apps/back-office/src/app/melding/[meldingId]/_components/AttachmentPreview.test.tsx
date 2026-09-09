@@ -2,9 +2,7 @@ import { render, screen } from '@testing-library/react'
 
 import { AttachmentPreview } from './AttachmentPreview'
 
-const createObjectURLMock = vi.fn().mockImplementation(() => {
-  return 'test-url'
-})
+const createObjectURLMock = vi.fn().mockImplementation(() => 'test-url')
 
 global.URL.createObjectURL = createObjectURLMock
 global.URL.revokeObjectURL = vi.fn()

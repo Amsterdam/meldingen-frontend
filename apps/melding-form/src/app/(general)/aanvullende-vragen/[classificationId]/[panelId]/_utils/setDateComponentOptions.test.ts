@@ -36,43 +36,19 @@ describe('setDateComponentOptions', () => {
     })
   })
 
-  it('returns "Vandaag" with correct converted_date for the first entry', () => {
-    const components = [{ dayRange: 1, key: 'incidentDate', type: 'date' }] as FormDateComponentOutputWithValues[]
+  it('returns the correct label, converted_date and value for a 5 day range', () => {
+    const components = [{ dayRange: 5, key: 'incidentDate', type: 'date' }] as FormDateComponentOutputWithValues[]
 
     const result = setDateComponentOptions(components)
     const values = (result[0] as FormDateComponentOutputWithValues).values
 
-    expect(values[0]).toEqual({
-      converted_date: '2026-03-03',
-      label: 'Vandaag',
-      value: 'day',
-    })
-  })
-
-  it('returns "Gisteren" with correct date for the second entry', () => {
-    const components = [{ dayRange: 2, key: 'incidentDate', type: 'date' }] as FormOutputWithoutPanelComponents[]
-
-    const result = setDateComponentOptions(components)
-    const values = (result[0] as FormDateComponentOutputWithValues).values
-
-    expect(values[1]).toEqual({
-      converted_date: '2026-03-02',
-      label: 'Gisteren 2 maart',
-      value: 'day - 1',
-    })
-  })
-
-  it('returns full day name and date from the third entry onwards', () => {
-    const components = [{ dayRange: 3, key: 'incidentDate', type: 'date' }] as FormDateComponentOutputWithValues[]
-
-    const result = setDateComponentOptions(components)
-    const values = (result[0] as FormDateComponentOutputWithValues).values
-
-    expect(values[2]).toEqual({
-      converted_date: '2026-03-01',
-      label: 'Zondag 1 maart',
-      value: 'day - 2',
-    })
+    expect(values.slice(0, 5)).toEqual([
+      { converted_date: '2026-03-03', label: 'Vandaag', value: 'day' },
+      { converted_date: '2026-03-02', label: 'Gisteren 2 maart', value: 'day - 1' },
+      { converted_date: '2026-03-01', label: 'Zondag 1 maart', value: 'day - 2' },
+      { converted_date: '2026-02-28', label: 'Zaterdag 28 februari', value: 'day - 3' },
+      { converted_date: '2026-02-27', label: 'Vrijdag 27 februari', value: 'day - 4' },
+    ])
   })
 
   it('returns "Weet ik niet" as the last entry', () => {
