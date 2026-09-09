@@ -34,7 +34,18 @@ describe('AttachmentSection', () => {
 
     expect(screen.getByText('attachments.title')).toBeInTheDocument()
     expect(screen.getByTestId('attachment-preview')).toHaveTextContent('IMG_0815.jpg')
-    expect(screen.getAllByText('IMG_0815.jpg')).toHaveLength(2)
+    expect(screen.getAllByText('IMG_0815.jpg')).toHaveLength(1)
+    expect(screen.getByText('attachments.melding-form-user')).toBeInTheDocument()
+  })
+
+  it('renders the component with attachments and user email', () => {
+    const attachments: GetAttachmentsDataResult = {
+      attachmentsWithFile: [createAttachment({ user: { email: 'test@example.com', id: 1, username: 'testuser' } })],
+    }
+
+    render(<AttachmentSection {...defaultProps} attachments={attachments} />)
+
+    expect(screen.getByText('test@example.com')).toBeInTheDocument()
   })
 
   it('renders the component without attachments with no-data message', () => {
