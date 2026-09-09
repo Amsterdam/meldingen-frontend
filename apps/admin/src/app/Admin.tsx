@@ -16,27 +16,25 @@ import {
   keycloakDataProvider,
 } from './providers'
 
-export const Admin = () => {
-  return (
-    <BrowserRouter>
-      <ReactAdmin
-        authProvider={isEntraAuthEnabled ? entraAuthProvider : keycloakAuthProvider}
-        dataProvider={isEntraAuthEnabled ? entraDataProvider : keycloakDataProvider}
-        i18nProvider={i18nProvider}
-        layout={CustomLayout}
-        loginPage={isEntraAuthEnabled ? LoginPage : undefined}
-      >
-        <Resource create={<FormCreate />} edit={<FormEdit />} list={<FormList />} name="form" />
-        <Resource
-          create={<ClassificationCreate />}
-          edit={<ClassificationEdit />}
-          list={<ClassificationList />}
-          name="classification"
-          recordRepresentation="name"
-        />
-        <Resource edit={<StaticFormEdit />} list={<StaticFormList />} name="static-form" recordRepresentation="name" />
-        <Resource create={<AssetTypeCreate />} edit={<AssetTypeEdit />} list={<AssetTypeList />} name="asset-type" />
-      </ReactAdmin>
-    </BrowserRouter>
-  )
-}
+export const Admin = () => (
+  <BrowserRouter>
+    <ReactAdmin
+      authProvider={isEntraAuthEnabled ? entraAuthProvider : keycloakAuthProvider}
+      dataProvider={isEntraAuthEnabled ? entraDataProvider : keycloakDataProvider}
+      i18nProvider={i18nProvider}
+      layout={CustomLayout}
+      loginPage={isEntraAuthEnabled ? LoginPage : undefined}
+    >
+      <Resource create={<FormCreate />} edit={<FormEdit />} list={<FormList />} name="form" />
+      <Resource
+        create={<ClassificationCreate />}
+        edit={<ClassificationEdit />}
+        list={<ClassificationList />}
+        name="classification"
+        recordRepresentation="name"
+      />
+      <Resource edit={<StaticFormEdit />} list={<StaticFormList />} name="static-form" recordRepresentation="name" />
+      <Resource create={<AssetTypeCreate />} edit={<AssetTypeEdit />} list={<AssetTypeList />} name="asset-type" />
+    </ReactAdmin>
+  </BrowserRouter>
+)
