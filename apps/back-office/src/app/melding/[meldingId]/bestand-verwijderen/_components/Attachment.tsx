@@ -5,11 +5,11 @@ import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
 
 import { Heading, Paragraph } from '@meldingen/ui'
+import { formatDateString } from '@meldingen/utils'
 
 import type { MeldingAttachment } from '../../types'
 
 import { AttachmentPreview } from '../../_components/AttachmentPreview'
-import { getFormattedDateString } from '../../_utils/getFormattedDateString'
 
 import styles from './Attachment.module.css'
 
@@ -27,11 +27,12 @@ export const Attachment = ({
   onDelete,
 }: Props) => {
   const t = useTranslations('remove-attachment')
+  const { date, time } = formatDateString(createdAt)
   return (
     <Column alignHorizontal="start" className={clsx(styles.container, styles.cardWide)}>
       <Heading level={4}>{originalFilename}</Heading>
       <Column gap="x-small">
-        <Paragraph>{getFormattedDateString(createdAt)}</Paragraph>
+        <Paragraph>{`${date} ${time}`}</Paragraph>
         <Paragraph>{user ? user.email : t('melding-form-user')}</Paragraph>
       </Column>
       <div className={styles.imagePreview}>
