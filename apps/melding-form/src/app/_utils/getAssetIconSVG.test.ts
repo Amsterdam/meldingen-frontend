@@ -1,8 +1,10 @@
 import type { AssetItem } from '~/app/(general)/_utils/formatAssetItem'
 
-import { containerIconsSVG, containerTypes, getContainerAssetIconSVG } from './getContainerAssetIconSVG'
+import { getAssetIconSVG } from './getAssetIconSVG'
 
-const makeAssetItem = (type: (typeof containerTypes)[number] | string): AssetItem => ({
+export const containerTypes = ['Papier', 'Glas', 'Rest', 'Textiel', 'Plastic', 'Gft'] as const
+
+const makeAssetItem = (type: string): AssetItem => ({
   icon: {
     entry: 'subtype',
     folder: 'container',
@@ -14,19 +16,19 @@ const makeAssetItem = (type: (typeof containerTypes)[number] | string): AssetIte
 
 describe('getContainerAssetIconSVG', () => {
   containerTypes.forEach((type) => {
-    it(`returns the correct SVG for type ${type}`, () => {
+    it(`returns the correct SVG for type: ${type}`, () => {
       const feature = makeAssetItem(type)
-      const svg = getContainerAssetIconSVG(feature)
+      const svg = getAssetIconSVG(feature)
 
-      expect(svg).toBe(containerIconsSVG[type])
+      expect(svg).toBe(`/container/${type.toLowerCase()}.svg`)
     })
   })
 
   it('returns fallback SVG if feature has no subtype', () => {
     const assetItem = makeAssetItem('') // Empty subtype
 
-    const svg = getContainerAssetIconSVG(assetItem)
+    const svg = getAssetIconSVG(assetItem)
 
-    expect(svg).toBe('/container/rest.svg')
+    expect(svg).toBe('/asset-fallback.svg')
   })
 })
