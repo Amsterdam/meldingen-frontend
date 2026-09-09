@@ -1,6 +1,6 @@
 import type { MeldingOutput } from '@meldingen/api-client'
 
-import { formatDateString } from '~/app/_utils/formatDateString'
+import { formatDateString } from '@meldingen/utils'
 
 export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) => {
   const { classification, created_at, id, labels, source, state, urgency } = data

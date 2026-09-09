@@ -1,19 +1,29 @@
 import type { FormDateComponentOutput } from '@meldingen/api-client'
 
+import { DEFAULT_TIMEZONE } from '@meldingen/utils'
+
 import type { FormOutputWithoutPanelComponents } from '../page'
 
 const getDateComponentOptions = (dayRange?: number | null) => {
-  const today = new Date()
+  // (Ab)use en-CA to get the date in yyyy-mm-dd format for the DEFAULT_TIMEZONE
+  const todayString = new Intl.DateTimeFormat('en-CA', {
+    day: '2-digit',
+    month: '2-digit',
+    timeZone: DEFAULT_TIMEZONE,
+    year: 'numeric',
+  }).format(new Date())
+  const today = new Date(`${todayString}T00:00:00Z`)
 
   const dateEntries = Array.from({ length: dayRange ?? 0 }, (_, i) => {
     const date = new Date(today)
-    date.setDate(today.getDate() - i)
+    // Calculate using UTC in order to prevent DST bugs
+    date.setUTCDate(today.getUTCDate() - i)
 
     const converted_date = date.toISOString().split('T')[0]
 
-    const dayName = date.toLocaleString('nl-NL', { weekday: 'long' })
-    const day = date.getDate()
-    const month = date.toLocaleString('nl-NL', { month: 'long' })
+    const dayName = date.toLocaleString('nl-NL', { timeZone: 'UTC', weekday: 'long' })
+    const day = date.getUTCDate()
+    const month = date.toLocaleString('nl-NL', { month: 'long', timeZone: 'UTC' })
 
     const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1)
 
