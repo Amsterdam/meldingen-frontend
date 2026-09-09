@@ -54,7 +54,12 @@ const defaultProps = {
   },
   meldingData: [
     { description: '2023-10-01', key: 'created_at', term: 'Created at' },
-    { description: 'Test classification', key: 'classification', term: 'Classification' },
+    {
+      description: 'Test classification',
+      key: 'classification',
+      link: { href: '/melding/123/wijzig-categorie', label: 'Change classification' },
+      term: 'Classification',
+    },
     {
       description: 'processing',
       key: 'state',
@@ -75,6 +80,7 @@ const defaultProps = {
     },
   ],
   meldingId: 123,
+  meldingState: 'processing',
   publicId: 'B100AA',
 } satisfies DetailProps
 
@@ -159,6 +165,11 @@ describe('Detail', () => {
     expect(screen.getByText('2023-10-01')).toBeInTheDocument()
     expect(screen.getByText('Classification')).toBeInTheDocument()
     expect(screen.getByText('Test classification')).toBeInTheDocument()
+
+    const classificationLink = screen.getByRole('link', { name: 'Change classification' })
+
+    expect(classificationLink).toBeInTheDocument()
+
     expect(screen.getByText('State')).toBeInTheDocument()
     expect(screen.getByText('processing')).toBeInTheDocument()
 
@@ -177,6 +188,12 @@ describe('Detail', () => {
 
     const labelsLink = screen.getByRole('link', { name: 'Change labels' })
     expect(labelsLink).toBeInTheDocument()
+  })
+
+  it('does not render the classification link when reclassification is not allowed', () => {
+    render(<Detail {...defaultProps} meldingState="completed" />)
+
+    expect(screen.queryByRole('link', { name: 'Change classification' })).not.toBeInTheDocument()
   })
 
   it('renders the attachments', () => {
