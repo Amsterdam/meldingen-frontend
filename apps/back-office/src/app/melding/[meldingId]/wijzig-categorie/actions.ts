@@ -38,10 +38,15 @@ export const postChangeCategoryForm = async (
     return { formData, validationErrors }
   }
 
+  const parsedCategoryId = Number(categoryId)
+  if (!Number.isInteger(parsedCategoryId)) {
+    return { formData, validationErrors: [{ key: 'category-id', message: t('category-required') }] }
+  }
+
   const { error } = await postMeldingByMeldingIdReclassification({
     body: {
-      classification_id: Number(categoryId),
-      reason: reason,
+      classification_id: parsedCategoryId,
+      reason,
     },
     path: { melding_id: meldingId },
   })
