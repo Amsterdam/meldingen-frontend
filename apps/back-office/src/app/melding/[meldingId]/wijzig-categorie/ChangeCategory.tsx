@@ -90,10 +90,10 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
               {categoryIdErrorMessage && <ErrorMessage id="category-id-error">{categoryIdErrorMessage}</ErrorMessage>}
               <Select
                 className={styles.selectFullWidth}
-                defaultValue={meldingClassification?.id}
+                defaultValue={meldingClassification?.id ? String(meldingClassification.id) : ''}
                 id="category-id"
                 invalid={Boolean(categoryIdErrorMessage)}
-                key={meldingClassification?.id}
+                key={meldingClassification?.id ?? 'no-classification'}
                 name="category-id"
               >
                 {!meldingClassification?.id && <Select.Option value={undefined}>-- Kies categorie --</Select.Option>}
