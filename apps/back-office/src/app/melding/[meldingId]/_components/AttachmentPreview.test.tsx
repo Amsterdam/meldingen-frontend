@@ -27,12 +27,12 @@ describe('AttachmentPreview', () => {
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
   })
 
-  it('renders an error message when the blob is missing', async () => {
+  it('renders the filename as fallback message when the blob is missing', async () => {
     render(<AttachmentPreview blob={null} fileName={'test.pdf'} id={1} meldingId={42} />)
 
-    const errorMessage = screen.getByText('test.pdf')
+    const fallbackMessage = screen.getByText('test.pdf')
 
-    expect(errorMessage).toBeInTheDocument()
+    expect(fallbackMessage).toBeInTheDocument()
   })
 
   it('revokes the object URL on unmount', () => {
