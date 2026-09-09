@@ -31,6 +31,10 @@
   inline-size: 100%;
 }
 
+.scroller {
+  align-items: start;
+}
+
 .caption {
   display: flex;
   flex-direction: column;
