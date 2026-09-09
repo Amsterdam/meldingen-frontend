@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
-import { FALLBACK_SRC } from '~/constants'
+import { ASSET_FALLBACK_SRC } from '~/constants'
 
 type Props = Omit<ImageProps, 'src'> & {
   iconConfig: {
@@ -19,7 +19,7 @@ const getAssetIconSVG = (properties: Feature['properties'], { entry, folder }: P
   const assetSubType = entry ? (properties?.[entry] as string) : undefined
 
   if (!folder || !assetSubType) {
-    return FALLBACK_SRC
+    return ASSET_FALLBACK_SRC
   }
 
   return `/${folder}/${assetSubType.toLowerCase()}.svg`
@@ -33,7 +33,7 @@ export const AssetIcon = ({ iconConfig, properties, ...rest }: Props) => {
     <NextImage
       {...rest}
       onError={() => {
-        setImgSrc(FALLBACK_SRC)
+        setImgSrc(ASSET_FALLBACK_SRC)
       }}
       src={imgSrc}
     />
