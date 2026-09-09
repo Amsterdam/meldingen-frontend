@@ -1,0 +1,1 @@
+export const REASON_COUNT_MAX_LENGTH = 1000
