@@ -3,6 +3,8 @@ import type { ComponentProps } from 'react'
 import { render } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
+import { formatDateString } from '@meldingen/utils'
+
 import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
 import Page, { generateMetadata } from './page'
@@ -128,7 +130,7 @@ describe('Page', () => {
 
     const meldingData = [
       {
-        description: new Date(created_at).toLocaleDateString('nl-NL'),
+        description: formatDateString(created_at).date,
         key: 'created_at',
         term: 'detail.melding-data.created_at',
       },
