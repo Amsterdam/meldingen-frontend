@@ -7,7 +7,7 @@ import type { Feature } from '@meldingen/api-client'
 import type { NotificationType, Props as SelectLocationProps } from '../../SelectLocation'
 import type { Coordinates } from '~/types'
 
-import { AssetIcon } from '~/app/_components/AssetIcon/AssetIcon'
+import { AssetIcon } from '../AssetIcon/AssetIcon'
 import { getAssetLabelText } from '~/app/(general)/_utils/getAssetLabelText'
 
 import styles from './AssetList.module.css'

@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { Feature } from '@meldingen/api-client'
 
 import { AssetIcon } from './AssetIcon'
-import { FALLBACK_SRC } from '~/constants'
+import { ASSET_FALLBACK_SRC } from '~/constants'
 
 describe('AssetIcon', () => {
   it('renders an icon with the provided alt text', () => {
@@ -45,7 +45,7 @@ describe('AssetIcon', () => {
       />,
     )
 
-    expect(screen.getByRole('img', { name: 'Test icon' }).getAttribute('src')).toContain(FALLBACK_SRC)
+    expect(screen.getByRole('img', { name: 'Test icon' }).getAttribute('src')).toContain(ASSET_FALLBACK_SRC)
   })
 
   it('falls back to fallback src when entry is missing or property is absent', () => {
@@ -59,7 +59,7 @@ describe('AssetIcon', () => {
       />,
     )
 
-    expect(screen.getByRole('img', { name: 'Test icon' }).getAttribute('src')).toContain(FALLBACK_SRC)
+    expect(screen.getByRole('img', { name: 'Test icon' }).getAttribute('src')).toContain(ASSET_FALLBACK_SRC)
 
     rerender(
       <AssetIcon
@@ -71,7 +71,7 @@ describe('AssetIcon', () => {
       />,
     )
 
-    expect(screen.getByRole('img', { name: 'Test icon' }).getAttribute('src')).toContain(FALLBACK_SRC)
+    expect(screen.getByRole('img', { name: 'Test icon' }).getAttribute('src')).toContain(ASSET_FALLBACK_SRC)
   })
 
   it('falls back to the default fallback icon when loading fails', async () => {
