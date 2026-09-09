@@ -13,10 +13,10 @@ vi.mock('../../_components/AttachmentPreview', () => ({
 
 const createAttachment = (overrides: Partial<MeldingAttachment> = {}): MeldingAttachment => ({
   blob: new Blob(['file-content'], { type: 'image/png' }),
-  createdAt: '2024-01-01 10:30',
+  createdAt: '2024-01-01T10:30:00Z',
   id: 1,
   originalFilename: 'bewijs.png',
-  updatedAt: '2024-01-01 10:30',
+  updatedAt: '2024-01-01T10:30:00Z',
   user: {
     email: 'behandelaar@example.com',
     id: 10,
@@ -33,7 +33,7 @@ describe('Attachment', () => {
     render(<Attachment attachment={createAttachment()} isDeleting={false} meldingId={123} onDelete={onDelete} />)
 
     expect(screen.getAllByText('bewijs.png')).toHaveLength(2)
-    expect(screen.getByText('01-01-2024 10:30')).toBeInTheDocument()
+    expect(screen.getByText('01-01-2024 11:30')).toBeInTheDocument()
     expect(screen.getByText('behandelaar@example.com')).toBeInTheDocument()
     expect(screen.getByTestId('attachment-preview')).toHaveTextContent('bewijs.png')
 
