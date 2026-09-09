@@ -1,0 +1,9 @@
+.selectFullWidth {
+  inline-size: 100%;
+}
+
+.formPanel {
+  background-color: var(--ams-color-background);
+  padding-block: var(--ams-space-l);
+  padding-inline: var(--ams-space-l);
+}
