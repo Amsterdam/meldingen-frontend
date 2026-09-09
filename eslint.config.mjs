@@ -135,7 +135,12 @@ export default defineConfig(
       // ESLint
       'no-console': 'error',
       'no-unused-vars': 'off', // Handled by @typescript-eslint/no-unused-vars
-      'prefer-arrow-functions/prefer-arrow-functions': 'error',
+      'prefer-arrow-functions/prefer-arrow-functions': [
+        'error',
+        {
+          returnStyle: 'implicit',
+        },
+      ],
 
       // Perfectionist
       'perfectionist/sort-imports': ['error', perfectionistImportGroups],
