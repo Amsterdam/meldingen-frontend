@@ -1,0 +1,57 @@
+'use server'
+
+import { getTranslations } from 'next-intl/server'
+import { redirect } from 'next/navigation'
+
+import type { FormState } from '~/types'
+
+import { REASON_COUNT_MAX_LENGTH } from './constants'
+import { postMeldingByMeldingIdReclassification } from '~/app/_api-client/proxy'
+
+type MeldingIdParam = {
+  currentClassificationId?: number
+  meldingId: number
+}
+
+export const postChangeCategoryForm = async (
+  { currentClassificationId, meldingId }: MeldingIdParam,
+  _: unknown,
+  formData: FormData,
+): Promise<FormState> => {
+  const t = await getTranslations('change-category.errors')
+  const redirectPath = `/melding/${meldingId}`
+
+  const formDataObj = Object.fromEntries(formData)
+  const categoryId = formDataObj['category-id'] as string | undefined
+  const reason = (formDataObj.reason as string | undefined) ?? ''
+
+  const validationErrors = [
+    ...(!categoryId ? [{ key: 'category-id', message: t('category-required') }] : []),
+    ...(categoryId === String(currentClassificationId) ? [{ key: 'category-id', message: t('category-same') }] : []),
+    ...(!reason ? [{ key: 'reason', message: t('reason-required') }] : []),
+    ...(reason.length > REASON_COUNT_MAX_LENGTH
+      ? [{ key: 'reason', message: t('reason-max-length', { max: REASON_COUNT_MAX_LENGTH }) }]
+      : []),
+  ]
+
+  if (validationErrors.length > 0) {
+    return { formData, validationErrors }
+  }
+
+  const { error } = await postMeldingByMeldingIdReclassification({
+    body: {
+      classification_id: Number(categoryId),
+      reason: reason,
+    },
+    path: { melding_id: meldingId },
+  })
+
+  if (error) {
+    return {
+      apiError: error,
+      validationErrors,
+    }
+  }
+
+  return redirect(redirectPath)
+}
