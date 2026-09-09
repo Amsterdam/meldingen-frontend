@@ -29,7 +29,7 @@ describe('AttachmentPreview', () => {
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
   })
 
-  it('renders an an error message when the blob is missing', async () => {
+  it('renders an error message when the blob is missing', async () => {
     render(<AttachmentPreview blob={null} fileName={'test.pdf'} id={1} meldingId={42} />)
 
     const errorMessage = screen.getByText('test.pdf')
@@ -85,14 +85,6 @@ describe('AttachmentPreview', () => {
       const link = screen.getByRole('link')
 
       expect(link).toHaveAttribute('href', '/melding/42/foto?id=7')
-    })
-
-    it('renders an an error message when the blob is missing', async () => {
-      render(<AttachmentPreview blob={null} fileName={'IMG_0815.jpg'} id={7} meldingId={42} />)
-
-      const errorMessage = screen.getByText('IMG_0815.jpg')
-
-      expect(errorMessage).toBeInTheDocument()
     })
 
     it('revokes the object URL on unmount', () => {
