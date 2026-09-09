@@ -109,11 +109,7 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
               <Paragraph id="reason-description">{t('form-labels.reason-description')}</Paragraph>
               {reasonErrorMessage && <ErrorMessage id="reason-error">{reasonErrorMessage}</ErrorMessage>}
               <TextArea
-                aria-describedby={getAriaDescribedBy(
-                  'reason-description',
-                  t('form-labels.reason-description'),
-                  'reason-error',
-                )}
+                aria-describedby={getAriaDescribedBy('reason', t('form-labels.reason-description'), reasonErrorMessage)}
                 aria-required
                 defaultValue={formData?.get('reason') as string}
                 id="reason"
