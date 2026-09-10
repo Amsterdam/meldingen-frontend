@@ -35,10 +35,10 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
 
       {hasAttachments && !error ? (
         <div className={styles.attachmentsWrapper}>
-          {attachments.map(({ blob, createdAt, id, originalFilename }) => {
+          {attachments.map(({ blob, createdAt, id, originalFilename, user }) => {
             const { date, time } = formatDateString(createdAt)
             return (
-              <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={originalFilename}>
+              <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={id}>
                 <AttachmentPreview
                   blob={blob}
                   fileName={originalFilename}
@@ -47,7 +47,7 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
                   meldingId={meldingId}
                 />
                 <Paragraph>{`${date} ${time}`}</Paragraph>
-                <Paragraph>{originalFilename}</Paragraph>
+                <Paragraph>{user ? user.email : t('attachments.melding-form-user')}</Paragraph>
               </dd>
             )
           })}
