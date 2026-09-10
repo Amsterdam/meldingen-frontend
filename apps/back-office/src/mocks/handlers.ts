@@ -5,6 +5,7 @@ import { ENDPOINTS } from './endpoints'
 
 export const handlers = [
   // Attachments
+  http.delete(ENDPOINTS.DELETE_ATTACHMENT_BY_ID, () => new HttpResponse()),
   http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, () =>
     HttpResponse.json(new Blob(['mock content'], { type: 'image/webp' }), {
       headers: { 'content-type': 'image/webp' },
@@ -21,6 +22,8 @@ export const handlers = [
   ),
 
   // Melding
+  http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID, () => new HttpResponse()),
+
   http.get(ENDPOINTS.GET_MELDING, () => HttpResponse.json(meldingen, { headers: { 'Content-Range': '0/40' } })),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json(melding)),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () => HttpResponse.json(additionalQuestions)),
@@ -59,6 +62,14 @@ export const handlers = [
       id: 123,
       public_id: 'B100AA',
       token: 'test-token',
+    }),
+  ),
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () =>
+    HttpResponse.json({
+      created_at: '2025-05-26T11:56:34.081Z',
+      id: 42,
+      original_filename: 'IMG_0815.jpg',
+      updated_at: '2025-05-26T11:56:34.081Z',
     }),
   ),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_NOTE, () => new HttpResponse()),

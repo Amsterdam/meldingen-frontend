@@ -2,12 +2,15 @@
 
 export const ENDPOINTS = {
   // Attachments
+  DELETE_ATTACHMENT_BY_ID: '/attachment/:id',
   GET_ATTACHMENT_BY_ID: '/attachment/:id',
 
   // Labels
   GET_LABEL: '/label',
 
   // Melding
+  DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID: '/melding/:id/attachment/:attachmentId',
+
   GET_MELDING: '/melding',
   GET_MELDING_BY_MELDING_ID: '/melding/:id',
   GET_MELDING_BY_MELDING_ID_ANSWERS: '/melding/:id/answers',
@@ -22,6 +25,7 @@ export const ENDPOINTS = {
   PATCH_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID: '/melding/:id/note/:noteId',
 
   POST_MELDING: '/melding',
+  POST_MELDING_BY_MELDING_ID_ATTACHMENT: '/melding/:id/attachment/',
   POST_MELDING_BY_MELDING_ID_NOTE: '/melding/:id/note',
 
   PUT_MELDING_BY_MELDING_ID_CANCEL: '/melding/:id/cancel',

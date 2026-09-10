@@ -13,6 +13,7 @@ export { DescriptionList } from '@amsterdam/design-system-react/dist/Description
 export { Grid } from '@amsterdam/design-system-react/dist/Grid'
 export { Heading } from '@amsterdam/design-system-react/dist/Heading'
 export { Icon } from '@amsterdam/design-system-react/dist/Icon'
+export { Image } from '@amsterdam/design-system-react/dist/Image'
 export { Link } from '@amsterdam/design-system-react/dist/Link'
 export { Menu } from '@amsterdam/design-system-react/dist/Menu'
 export { OrderedList } from '@amsterdam/design-system-react/dist/OrderedList'

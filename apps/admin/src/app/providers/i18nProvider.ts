@@ -215,6 +215,7 @@ const nl: TranslationMessages = {
       oneOf: 'Moet een zijn van: %{options}',
       regex: 'Moet overeenkomen met een specifiek format (regexp): %{pattern}',
       required: 'Verplicht',
+      unique: 'Moet uniek zijn',
     },
   },
   resources: {

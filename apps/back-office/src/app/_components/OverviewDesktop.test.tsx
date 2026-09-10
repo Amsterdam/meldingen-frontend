@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
+import { formatDateString } from '@meldingen/utils'
+
 import { OVERVIEW_FIELDS } from '../constants'
 import { OverviewDesktop } from './OverviewDesktop'
 import { melding } from '~/mocks/data'
@@ -19,9 +21,7 @@ describe('OverviewDesktop', () => {
 
     expect(detailLink).toHaveAttribute('href', `/melding/${melding.id}`)
 
-    expect(
-      screen.getByRole('cell', { name: new Date(melding.created_at).toLocaleDateString('nl-NL') }),
-    ).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: formatDateString(melding.created_at).date })).toBeInTheDocument()
     expect(screen.getByRole('cell', { name: melding.classification?.name })).toBeInTheDocument()
     expect(screen.getByRole('cell', { name: `shared.state.${melding.state}` })).toBeInTheDocument()
     expect(screen.getByRole('cell', { name: 'Amstel 1' })).toBeInTheDocument()

@@ -1,0 +1,4 @@
+.assetElement {
+  display: flex;
+  gap: var(--ams-checkbox-gap);
+}
