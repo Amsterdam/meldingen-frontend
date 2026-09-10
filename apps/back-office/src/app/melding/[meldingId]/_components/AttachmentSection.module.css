@@ -1,0 +1,36 @@
+.attachmentsSection {
+  column-gap: var(--ams-space-l);
+  display: flex;
+  flex-direction: column;
+}
+
+.attachmentsWrapper {
+  display: grid;
+  gap: var(--ams-space-m);
+
+  @media screen and (min-width: 37.5rem) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.attachmentsTerm {
+  composes: term from '../Detail.module.css';
+
+  @media screen and (min-width: 37.5rem) {
+    grid-column: span 2;
+  }
+}
+
+.attachmentWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--ams-space-xs);
+}
+
+.fullWidth {
+  composes: description from '../Detail.module.css';
+
+  @media screen and (min-width: 37.5rem) {
+    grid-column: span 2;
+  }
+}

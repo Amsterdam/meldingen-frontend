@@ -7,9 +7,7 @@ import { FileListItem } from './FileListItem'
 
 const file = new File(['sample content'], 'sample.txt', { type: 'text/plain' })
 
-const createObjectURLMock = vi.fn().mockImplementation((file: File) => {
-  return file.name
-})
+const createObjectURLMock = vi.fn().mockImplementation((file: File) => file.name)
 
 global.URL.createObjectURL = createObjectURLMock
 global.URL.revokeObjectURL = vi.fn()
@@ -120,5 +118,13 @@ describe('FileListItem', () => {
     const deleteButton = screen.getByRole('button', { name: 'Verwijderen sample.txt' })
 
     expect(deleteButton).toHaveAttribute('id', 'test-id')
+  })
+
+  it('disables the action button when onDelete is not provided', () => {
+    render(<FileListItem {...defaultProps} onDelete={undefined} />)
+
+    const button = screen.getByRole('button', { name: 'Verwijderen sample.txt' })
+
+    expect(button).toBeDisabled()
   })
 })

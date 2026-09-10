@@ -17,7 +17,7 @@ export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
   errorMessage?: string
   file: File | { name: string }
   labels: {
-    actionButtonCancelLabel: string
+    actionButtonCancelLabel?: string
     actionButtonDeleteLabel: string
     progressFinishedLabel: string
     progressLoadingLabel: string
@@ -48,9 +48,18 @@ export const FileListItem = ({ deleteButtonId, errorMessage, file, labels, onDel
           <span className={styles.statusMessage}>{progressLabel}</span>
         )}
       </div>
-      <Button className={styles.deleteButton} id={deleteButtonId} onClick={() => onDelete?.()} variant="secondary">
-        {actionButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
-      </Button>
+
+      {actionButtonLabel && (
+        <Button
+          className={styles.deleteButton}
+          disabled={!onDelete}
+          id={deleteButtonId}
+          onClick={() => onDelete?.()}
+          variant="secondary"
+        >
+          {actionButtonLabel} <span className="ams-visually-hidden">{file.name}</span>
+        </Button>
+      )}
     </li>
   )
 }

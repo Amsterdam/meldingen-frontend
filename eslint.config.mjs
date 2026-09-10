@@ -65,7 +65,7 @@ export default defineConfig(
       '**/dist/',
       '**/tmp/',
       // Ignore generated api client
-      'libs/api-client',
+      'libs/api-client/src/generated',
       // Next.js generated files
       '**/.next/',
       '**/next-env.d.ts',
@@ -122,6 +122,8 @@ export default defineConfig(
       '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      'no-shadow': 'off',
+      '@typescript-eslint/no-shadow': ['warn'],
 
       // Import
       'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
@@ -133,7 +135,12 @@ export default defineConfig(
       // ESLint
       'no-console': 'error',
       'no-unused-vars': 'off', // Handled by @typescript-eslint/no-unused-vars
-      'prefer-arrow-functions/prefer-arrow-functions': 'error',
+      'prefer-arrow-functions/prefer-arrow-functions': [
+        'error',
+        {
+          returnStyle: 'implicit',
+        },
+      ],
 
       // Perfectionist
       'perfectionist/sort-imports': ['error', perfectionistImportGroups],
