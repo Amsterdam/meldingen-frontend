@@ -188,7 +188,7 @@ describe('Detail', () => {
     expect(attachmentLink).toBeInTheDocument()
     expect(attachmentLink).toHaveAttribute('href', '/melding/123/foto?id=42')
     expect(screen.getByTestId('attachment-preview')).toHaveTextContent('IMG_0815.jpg')
-    expect(screen.getAllByText('IMG_0815.jpg')).toHaveLength(2)
+    expect(screen.getByText('IMG_0815.jpg')).toBeInTheDocument()
   })
 
   it('renders a no-data message when there are no attachments', () => {
