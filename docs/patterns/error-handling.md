@@ -7,13 +7,10 @@
   - [Exceptions](#exceptions)
     - [Map page](#map-page)
     - [Attachments](#attachments)
-  - [Not yet implemented](#not-yet-implemented)
 - [Back office](#back-office)
   - [Common error handling strategy](#common-error-handling-strategy-1)
   - [Exceptions](#exceptions-1)
     - [Attachments](#attachments-1)
-  - [Not yet implemented](#not-yet-implemented-1)
-  - [To discuss](#to-discuss)
 
 ## Melding form
 
@@ -64,10 +61,6 @@ However, validation errors also include an in-page link that takes the user dire
 
 We still only show 1 alert at a time. The precedence order here is validation errors, then generic errors, and finally API errors.
 
-### Not yet implemented
-
-- The Attachments page can show multiple errors at once, and the precedence order isn't followed.
-
 ## Back office
 
 Most pages in the Back Office also follow a common error handling strategy.
@@ -107,16 +100,3 @@ All three types of errors are displayed at the top of the page.
 However, validation errors also include an in-page link that takes the user directly to the corresponding upload, where the same error message is shown again.
 
 We still only show 1 alert at a time. The precedence order here is validation errors, then generic errors, and finally API errors.
-
-### Not yet implemented
-
-- There is no `src/app/error.tsx` or `src/app/not-found.tsx` yet, so uncaught errors and unknown routes currently fall through to Next.js’s default, unstyled error/404 pages.
-- Some Server Component data loaders (e.g. `src/app/page.tsx`, `src/app/melding/[meldingId]/page.tsx`) catch fetch errors and return the error message as the page body instead of throwing or calling `notFound()`. These should be migrated once `error.tsx`/`not-found.tsx` exist. `getAssetsData` returns an empty array, so the page is still shown if the API client returns an error.
-- The AddAttachment page can show multiple errors at once, and the precedence order isn't followed.
-- We don't log when `safeJSONParse` returns its fallback, which we should. We should also log when the `isMeldingData` check fails.
-
-### To discuss
-
-- When submitting the "melden" form, `prefetchedMelding` form data that fails to parse (`safeJSONParse`) or fails its shape check (`isMeldingData`) is silently discarded: the action falls back to the existing melding ID/token and proceeds, with no error, no alert, and no logging.
-- Note documents that fail to parse (`_utils/parseNoteDocument.ts`, shared by `melden`, `notities/toevoegen`, and `notities/[noteId]/wijzigen`) are silently treated as an empty note instead of surfacing a parse error. In `toevoegen` this incidentally resurfaces as a normal "required" validation error; in `wijzigen`/`melden`, where empty is valid, the failure is completely invisible. Nothing is logged.
-- On the melding detail page, if an individual attachment's blob fetch fails, `getAttachmentsData` keeps it in the list as `{ blob: null, error }`, but that `error` is never read downstream — `AttachmentSection.tsx`/`Attachment.tsx` silently fall back to plain filename text with no indication anything failed, and nothing is logged. This is distinct from the attachments exception above, which is about uploading new files rather than viewing already-uploaded ones.
