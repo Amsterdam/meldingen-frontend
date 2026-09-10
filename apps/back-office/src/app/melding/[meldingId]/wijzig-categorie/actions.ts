@@ -22,12 +22,12 @@ export const postChangeCategoryForm = async (
   const redirectPath = `/melding/${meldingId}`
 
   const formDataObj = Object.fromEntries(formData)
-  const categoryId = formDataObj['category-id'] as string | undefined
+  const category = formDataObj['category'] as string | undefined
   const reason = (formDataObj.reason as string | undefined) ?? ''
 
   const validationErrors = [
-    ...(!categoryId ? [{ key: 'category-id', message: t('category-required') }] : []),
-    ...(categoryId === String(currentClassificationId) ? [{ key: 'category-id', message: t('category-same') }] : []),
+    ...(!category ? [{ key: 'category', message: t('category-required') }] : []),
+    ...(category === String(currentClassificationId) ? [{ key: 'category', message: t('category-same') }] : []),
     ...(!reason ? [{ key: 'reason', message: t('reason-required') }] : []),
     ...(reason.length > REASON_COUNT_MAX_LENGTH
       ? [{ key: 'reason', message: t('reason-max-length', { max: REASON_COUNT_MAX_LENGTH }) }]
@@ -38,9 +38,9 @@ export const postChangeCategoryForm = async (
     return { formData, validationErrors }
   }
 
-  const parsedCategoryId = Number(categoryId)
+  const parsedCategoryId = Number(category)
   if (!Number.isInteger(parsedCategoryId)) {
-    return { formData, validationErrors: [{ key: 'category-id', message: t('category-required') }] }
+    return { formData, validationErrors: [{ key: 'category', message: t('category-required') }] }
   }
 
   const { error } = await postMeldingByMeldingIdReclassification({
