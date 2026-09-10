@@ -8,6 +8,6 @@ type Props = PropsWithChildren & {
   isHidden: boolean
 }
 
-export const SideBarBottom = ({ children, isHidden }: Props) => {
-  return <div className={clsx(styles.container, isHidden && styles.hide)}>{children}</div>
-}
+export const SideBarBottom = ({ children, isHidden }: Props) => (
+  <div className={clsx(styles.container, isHidden && styles.hide)}>{children}</div>
+)

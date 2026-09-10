@@ -1,0 +1,16 @@
+{
+  "name": "@meldingen/utils",
+  "version": "0.1.0",
+  "description": "A library of generic utility functions.",
+  "license": "EUPL-1.2",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "type-check": "tsc --project ./tsconfig.json --noEmit"
+  },
+  "private": true
+}

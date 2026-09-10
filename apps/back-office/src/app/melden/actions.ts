@@ -5,11 +5,13 @@ import { redirect } from 'next/navigation'
 
 import type { MeldingOutput } from '@meldingen/api-client'
 
+import { getApiErrorMessage, hasValidationErrors } from '@meldingen/api-client'
+import { safeJSONParse } from '@meldingen/utils'
+
 import type { MeldingData } from './types'
 import type { FormState } from '~/types'
 
 import { parseNoteDocument } from '../_utils/parseNoteDocument'
-import { hasValidationErrors } from './_utils/hasValidationErrors'
 import {
   patchMeldingByMeldingId,
   patchMeldingByMeldingIdMelder,
@@ -17,9 +19,8 @@ import {
   postMelding,
   postMeldingByMeldingIdNote,
 } from '~/app/_api-client/proxy'
-import { handleApiError } from '~/app/_utils/handleApiError'
-import { MAX_NOTE_LENGTH } from '~/constants'
-import { URGENCY_VALUES } from '~/constants'
+import { MAX_NOTE_LENGTH, URGENCY_VALUES } from '~/constants'
+import { getClientEnv } from '~/env/client'
 
 export type ArgsType = {
   existingId?: number
@@ -38,14 +39,6 @@ const isMeldingData = (value: unknown): value is MeldingData =>
   typeof (value as MeldingData).token === 'string' &&
   typeof (value as MeldingData).publicId === 'string' &&
   typeof (value as MeldingData).createdAt === 'string'
-
-const safeJSONParse = (jsonString: string) => {
-  try {
-    return JSON.parse(jsonString)
-  } catch {
-    return undefined
-  }
-}
 
 const createOrUpdateMelding = async (text: string, id?: number, token?: string) => {
   if (id && token) {
@@ -116,7 +109,7 @@ export const postMeldingForm = async (
   }
 
   const prefetchedMeldingRaw = formDataObj.prefetchedMelding as string | undefined
-  const prefetchedMelding = prefetchedMeldingRaw ? safeJSONParse(prefetchedMeldingRaw) : undefined
+  const prefetchedMelding = prefetchedMeldingRaw ? safeJSONParse(prefetchedMeldingRaw, undefined) : undefined
   const validPrefetchedMelding = isMeldingData(prefetchedMelding) ? prefetchedMelding : undefined
 
   const meldingIdForPatch = validPrefetchedMelding?.id ?? existingId
@@ -131,7 +124,7 @@ export const postMeldingForm = async (
   if (hasValidationErrors(response, error)) {
     return {
       formData,
-      validationErrors: [{ key: 'primary', message: handleApiError(error) }],
+      validationErrors: [{ key: 'primary', message: getApiErrorMessage(error) }],
     }
   }
 
@@ -171,5 +164,5 @@ export const postMeldingForm = async (
 
   if (meldingData.classificationId) params.set('classification_id', String(meldingData.classificationId))
 
-  redirect(`${process.env.NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`)
+  redirect(`${getClientEnv().NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`)
 }
