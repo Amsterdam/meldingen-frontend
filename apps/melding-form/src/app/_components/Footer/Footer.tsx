@@ -1,9 +1,10 @@
 import { Column } from '@amsterdam/design-system-react/dist/Column'
-import { Grid } from '@amsterdam/design-system-react/dist/Grid'
 import { Heading } from '@amsterdam/design-system-react/dist/Heading'
 import { Link } from '@amsterdam/design-system-react/dist/Link'
 import { PageFooter } from '@amsterdam/design-system-react/dist/PageFooter'
 import { Paragraph } from '@amsterdam/design-system-react/dist/Paragraph'
+
+import { Grid } from '@meldingen/ui'
 
 export const Footer = () => (
   <PageFooter>

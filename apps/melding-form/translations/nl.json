@@ -138,6 +138,7 @@
     "main-title": "Versturen",
     "description": "Controleer uw gegevens en verstuur uw melding.",
     "location-label": "Waar is het?",
+    "no-address": "Locatie gekozen op de kaart",
     "attachments-label": "Foto’s",
     "contact-label": "Contactgegevens",
     "submit-button": "Verstuur melding",
@@ -145,6 +146,7 @@
       "primary": "Wijzig uw melding",
       "additional": "Wijzig antwoord",
       "location": "Wijzig locatie",
+      "assets": "Wijzig locatie of {assetName}",
       "attachments": "Wijzig foto’s",
       "contact": "Wijzig contactgegevens"
     },

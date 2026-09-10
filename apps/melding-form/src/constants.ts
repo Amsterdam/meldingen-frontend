@@ -8,4 +8,4 @@ export const COOKIES = {
 
 export const TOP_ANCHOR_ID = 'top'
 
-export const FALLBACK_SRC = '/asset-fallback.svg'
+export const ASSET_FALLBACK_SRC = '/asset-fallback.svg'

@@ -12,6 +12,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y'
 import perfectionist from 'eslint-plugin-perfectionist'
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 import react from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
 import workspaces from 'eslint-plugin-workspaces'
 import { defineConfig } from 'eslint/config'
 import globals from 'globals'
@@ -64,7 +65,7 @@ export default defineConfig(
       '**/dist/',
       '**/tmp/',
       // Ignore generated api client
-      'libs/api-client',
+      'libs/api-client/src/generated',
       // Next.js generated files
       '**/.next/',
       '**/next-env.d.ts',
@@ -92,6 +93,7 @@ export default defineConfig(
       perfectionist,
       'prefer-arrow-functions': preferArrowFunctions,
       react,
+      'react-hooks': reactHooks,
       workspaces,
     },
     settings: {
@@ -120,6 +122,8 @@ export default defineConfig(
       '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      'no-shadow': 'off',
+      '@typescript-eslint/no-shadow': ['warn'],
 
       // Import
       'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
@@ -131,7 +135,12 @@ export default defineConfig(
       // ESLint
       'no-console': 'error',
       'no-unused-vars': 'off', // Handled by @typescript-eslint/no-unused-vars
-      'prefer-arrow-functions/prefer-arrow-functions': 'error',
+      'prefer-arrow-functions/prefer-arrow-functions': [
+        'error',
+        {
+          returnStyle: 'implicit',
+        },
+      ],
 
       // Perfectionist
       'perfectionist/sort-imports': ['error', perfectionistImportGroups],
@@ -145,6 +154,8 @@ export default defineConfig(
       'react/jsx-props-no-spreading': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/require-default-props': 'off',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/rules-of-hooks': 'error',
     },
   },
 

@@ -147,16 +147,4 @@ you can use the following extensions for automatic linting and formatting:
 - [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 - [stylelint](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint)
 
-To enable correct validation and to fix lint/style errors on save, add this to your VSCode `settings.json`:
-
-```json
-  "css.validate": false,
-  "scss.validate": false,
-  "stylelint.validate": ["css", "scss"],
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.fixAll.stylelint": true,
-  },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-```
+Linting config is set in workspace settings.

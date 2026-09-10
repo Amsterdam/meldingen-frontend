@@ -1,22 +1,29 @@
-import type { PropsWithChildren } from 'react'
+import type { PropsWithChildren, RefObject } from 'react'
 
 import { clsx } from 'clsx'
 import { latLng, Map, tileLayer } from 'leaflet'
-import { createContext, useEffect, useRef, useState } from 'react'
+import { createContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
+
+import getCrsRd from './utils/getCrsRd'
 
 import 'leaflet/dist/leaflet.css'
 import styles from './Map.module.css'
 
 export type Props = PropsWithChildren & {
-  hasAlert?: boolean
   isHidden?: boolean
+  isInert?: boolean
+  /*
+   * Note: this is intentionally not called `ref`. Map is loaded via next/dynamic in consuming
+   * apps, and next/dynamic intercepts a prop literally named `ref` for its own retry handle instead of forwarding it.
+   */
+  mapHandleRef?: RefObject<{ invalidateSize: () => void } | null>
   /* This prop is only used for unit tests. */
   testMapInstance?: Map
 }
 
 export const MapContext = createContext<Map | undefined>(undefined)
 
-export const MapComponent = ({ children, hasAlert, isHidden, testMapInstance }: Props) => {
+export const MapComponent = ({ children, isHidden, isInert, mapHandleRef, testMapInstance }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
@@ -33,10 +40,12 @@ export const MapComponent = ({ children, hasAlert, isHidden, testMapInstance }: 
 
     const map = new Map(mapRef.current, {
       center: latLng([52.370216, 4.895168]),
+      crs: getCrsRd(),
       layers: [
-        tileLayer('https://{s}.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
+        tileLayer('https://{s}.data.amsterdam.nl/topo_rd/{z}/{x}/{y}.png', {
           attribution: '',
           subdomains: ['t1', 't2', 't3', 't4'],
+          tms: true,
         }),
       ],
       // Prevent the user browsing too far outside Amsterdam otherwise the map will render blank greyspace.
@@ -45,9 +54,9 @@ export const MapComponent = ({ children, hasAlert, isHidden, testMapInstance }: 
         [52.25168, 4.64034],
         [52.50536, 5.10737],
       ],
-      maxZoom: 18,
-      minZoom: 11,
-      zoom: 14,
+      maxZoom: 16,
+      minZoom: 8,
+      zoom: 10,
       zoomControl: false,
     })
 
@@ -60,20 +69,28 @@ export const MapComponent = ({ children, hasAlert, isHidden, testMapInstance }: 
 
     // On component unmount, destroy the map and all related events
     return () => {
-      if (mapInstance) mapInstance.remove()
+      map.remove()
+      createdMapInstance.current = false
     }
   }, [])
 
+  useImperativeHandle(mapHandleRef, () => ({
+    // Expose the invalidateSize method outside of the component
+    invalidateSize: () => mapInstance?.invalidateSize(),
+  }))
+
   useEffect(() => {
-    // Leaflet has to know it should recalculate dimensions of the map
-    // when it is shown/hidden or has an Alert as this can change the size of the map container
+    // Showing/hiding the map changes its container size, so Leaflet needs to recalculate
+    // dimensions. Leaflet also uses the container size to position tiles, and while hidden
+    // that size is 0x0, so the view has to be reset once the correct size is known again.
     mapInstance?.invalidateSize()
-  }, [isHidden, hasAlert])
+    mapInstance?.fire('viewreset')
+  }, [mapInstance, isHidden])
 
   return (
     <MapContext.Provider value={mapInstance}>
-      <div className={clsx(styles.container, isHidden && styles.hideMap, hasAlert && styles.notInteractive)}>
-        <div className={styles.map} ref={mapRef} />
+      <div className={clsx(styles.container, isHidden && styles.hideMap)}>
+        <div className={styles.map} inert={isInert} ref={mapRef} />
         {children}
       </div>
     </MapContext.Provider>

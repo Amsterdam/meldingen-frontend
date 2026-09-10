@@ -17,7 +17,7 @@ import { getWfsFilter } from './utils/getWfsFilter'
 
 import './cluster.css'
 
-export const ZOOM_THRESHOLD = 16
+export const ZOOM_THRESHOLD = 11
 
 export type WfsQuery = {
   assetTypeId?: number

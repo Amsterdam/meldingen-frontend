@@ -1,7 +1,8 @@
-import type { Map } from 'leaflet'
+import type { RefObject } from 'react'
 import type { Mock } from 'vitest'
 
 import { render } from '@testing-library/react'
+import { Map } from 'leaflet'
 import { useRef } from 'react'
 
 import { MapComponent } from './Map'
@@ -46,42 +47,59 @@ describe('MapComponent', () => {
     expect(leafletContainer).toBeInTheDocument()
   })
 
-  it('calls invalidateSize when isHidden prop changes', () => {
+  it('calls invalidateSize and viewreset when isHidden prop changes', () => {
     const mockMapInstance = {
+      fire: vi.fn(),
       invalidateSize: vi.fn(),
     } as unknown as Map
 
     const { rerender } = render(<MapComponent isHidden={false} testMapInstance={mockMapInstance} />)
-    rerender(<MapComponent isHidden={true} />)
+
+    // Clear the calls made on mount so the assertions below only capture the effect of the isHidden change
+    ;(mockMapInstance.invalidateSize as Mock).mockClear()
+    ;(mockMapInstance.fire as Mock).mockClear()
+
+    rerender(<MapComponent isHidden />)
+
+    expect(mockMapInstance.invalidateSize).toHaveBeenCalledTimes(1)
+    expect(mockMapInstance.fire).toHaveBeenCalledExactlyOnceWith('viewreset')
+  })
+
+  it('exposes invalidateSize on mapHandleRef', () => {
+    const mockMapInstance = {
+      fire: vi.fn(),
+      invalidateSize: vi.fn(),
+    } as unknown as Map
+
+    const mapHandleRef: RefObject<{ invalidateSize: () => void } | null> = { current: null }
+
+    render(<MapComponent mapHandleRef={mapHandleRef} testMapInstance={mockMapInstance} />)
+
+    mapHandleRef.current?.invalidateSize()
 
     expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
   })
 
-  it('calls invalidateSize and adds classname when hasAlert prop set to true', () => {
-    const mockMapInstance = {
-      invalidateSize: vi.fn(),
-    } as unknown as Map
+  it('makes the map inert when isInert is true', () => {
+    const { container } = render(<MapComponent isInert />)
 
-    const { container } = render(<MapComponent hasAlert={true} isHidden={false} testMapInstance={mockMapInstance} />)
-    const element = container.querySelector('[class*="notInteractive"]')
+    const element = container.querySelector('[inert]')
 
-    expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
     expect(element).toBeInTheDocument()
   })
 
   it('calls remove when the component unmounts', () => {
-    const mockMapInstance = {
-      invalidateSize: vi.fn(),
-      remove: vi.fn(),
-    } as unknown as Map
-
     const containerRef = { current: 'not-null' }
     const createdMapInstanceRef = { current: false }
     ;(useRef as Mock).mockReturnValueOnce(containerRef).mockReturnValue(createdMapInstanceRef)
 
-    const { unmount } = render(<MapComponent testMapInstance={mockMapInstance} />)
+    const removeSpy = vi.spyOn(Map.prototype, 'remove')
+
+    const { unmount } = render(<MapComponent />)
     unmount()
 
-    expect(mockMapInstance.remove).toHaveBeenCalled()
+    expect(removeSpy).toHaveBeenCalled()
+
+    removeSpy.mockRestore()
   })
 })

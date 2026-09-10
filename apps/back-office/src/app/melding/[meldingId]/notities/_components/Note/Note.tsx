@@ -5,28 +5,11 @@ import NextLink from 'next/link'
 import type { NoteRetrieveOutput } from '@meldingen/api-client'
 
 import { Paragraph, UnorderedList } from '@meldingen/ui'
+import { formatDateString } from '@meldingen/utils'
 
 import { TipTapMarkdownToHtml } from '../TipTapMarkdownToHtml'
 
 import styles from './Note.module.css'
-
-export const formatDateTime = (dateString: string) => {
-  const date = new Date(dateString)
-
-  const formattedDate = date.toLocaleDateString('nl-NL', {
-    day: '2-digit',
-    month: '2-digit',
-    timeZone: 'Europe/Amsterdam',
-    year: 'numeric',
-  })
-  const formattedTime = date.toLocaleTimeString('nl-NL', {
-    hour: 'numeric',
-    minute: 'numeric',
-    timeZone: 'Europe/Amsterdam',
-  })
-
-  return `${formattedDate} ${formattedTime}`
-}
 
 type Props = {
   currentUserId: number
@@ -38,6 +21,7 @@ export const Note = ({ currentUserId, meldingId, note }: Props) => {
   const t = useTranslations('notes-overview')
 
   const { created_at, id, text, updated_at, user } = note
+  const { date, time } = formatDateString(created_at)
 
   const wasEdited = new Date(updated_at) > new Date(created_at)
 
@@ -47,7 +31,7 @@ export const Note = ({ currentUserId, meldingId, note }: Props) => {
         <span className="ams-visually-hidden">{t('visually-hidden-texts.created-at')}</span>
         <span>
           <time className={styles.time} dateTime={created_at}>
-            {formatDateTime(created_at)}
+            {`${date} ${time}`}
           </time>
           {wasEdited && (
             <>
