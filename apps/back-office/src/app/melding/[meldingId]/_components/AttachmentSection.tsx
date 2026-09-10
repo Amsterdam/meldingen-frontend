@@ -6,10 +6,10 @@ import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 
 import { Link } from '@meldingen/ui'
+import { formatDateString } from '@meldingen/utils'
 
 import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
 
-import { getFormattedDateString } from '../_utils/getFormattedDateString'
 import { AttachmentPreview } from './AttachmentPreview'
 import { ApiErrorAlert } from '~/app/_components'
 
@@ -35,9 +35,10 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
 
       {hasAttachments && !error ? (
         <div className={styles.attachmentsWrapper}>
-          {attachments.map(({ blob, createdAt, id, originalFilename }) => {
+          {attachments.map(({ blob, createdAt, id, originalFilename, user }) => {
+            const { date, time } = formatDateString(createdAt)
             return (
-              <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={originalFilename}>
+              <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={id}>
                 <AttachmentPreview
                   blob={blob}
                   fileName={originalFilename}
@@ -45,8 +46,8 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
                   isLinkToSlider
                   meldingId={meldingId}
                 />
-                <Paragraph>{getFormattedDateString(createdAt)}</Paragraph>
-                <Paragraph>{originalFilename}</Paragraph>
+                <Paragraph>{`${date} ${time}`}</Paragraph>
+                <Paragraph>{user ? user.email : t('attachments.melding-form-user')}</Paragraph>
               </dd>
             )
           })}

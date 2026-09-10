@@ -38,10 +38,10 @@ vi.mock('./Attachment', () => ({
 
 const createAttachment = (overrides: Partial<MeldingAttachment> = {}): MeldingAttachment => ({
   blob: new Blob(['file-content'], { type: 'image/png' }),
-  createdAt: '2024-01-01 10:30',
+  createdAt: '2024-01-01T10:30:00Z',
   id: 1,
   originalFilename: 'bewijs.png',
-  updatedAt: '2024-01-01 10:30',
+  updatedAt: '2024-01-01T10:30:00Z',
   user: {
     email: 'behandelaar@example.com',
     id: 10,
@@ -58,6 +58,7 @@ const ApiErrorValue = () => {
 
 const createMockRouter = (overrides: Partial<ReturnType<typeof useRouter>> = {}): ReturnType<typeof useRouter> => ({
   back: vi.fn(),
+  bfcacheId: overrides.bfcacheId ?? 'test-bfcache-id',
   forward: vi.fn(),
   prefetch: vi.fn(),
   push: vi.fn(),

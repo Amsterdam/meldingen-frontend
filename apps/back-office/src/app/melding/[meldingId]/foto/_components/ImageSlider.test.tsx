@@ -2,7 +2,9 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
-import { formatDateTime, ImageSlider } from './ImageSlider'
+import { formatDateString } from '@meldingen/utils'
+
+import { ImageSlider } from './ImageSlider'
 
 // All functionality that relies on IntersectionObserver, like setting aria-hidden and showing an image
 // by clicking on the thumbnail button, cannot be properly tested here because IntersectionObserver is not implemented in JSDom.
@@ -164,6 +166,11 @@ describe('ImageSlider', () => {
     expect(screen.getByText('image-1.jpg')).toBeInTheDocument()
     expect(screen.getByText('image-2.jpg')).toBeInTheDocument()
     expect(screen.getByText('image-3.jpg')).toBeInTheDocument()
+
+    const formatDateTime = (dateString: string) => {
+      const { date, time } = formatDateString(dateString)
+      return `${date} ${time}`
+    }
 
     expect(screen.getByText(formatDateTime(defaultProps.images[0].createdAt))).toBeInTheDocument()
     expect(screen.getByText(formatDateTime(defaultProps.images[1].createdAt))).toBeInTheDocument()
