@@ -42,6 +42,3 @@ client.setConfig({ baseUrl: 'http://localhost:3000' })
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
-
-// Set timezone in Vitest so dates will be consistent across environments
-process.env.TZ = 'UTC'

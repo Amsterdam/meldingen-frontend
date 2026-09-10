@@ -6,53 +6,48 @@ import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 
 import { Link } from '@meldingen/ui'
+import { formatDateString } from '@meldingen/utils'
 
-import type { Attachments } from '../types'
-import type { FormDateStringOptions } from '~/app/_utils/formatDateString'
+import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
 
-import { Attachment } from './Attachment'
-import { formatDateString } from '~/app/_utils/formatDateString'
+import { AttachmentPreview } from './AttachmentPreview'
+import { ApiErrorAlert } from '~/app/_components'
 
 import parentStyles from '../Detail.module.css'
 import styles from './AttachmentSection.module.css'
 
 type Props = {
-  attachments: Attachments
+  attachments: GetAttachmentsDataResult
   meldingId: number
 }
 
-const formatDateStringOptions: FormDateStringOptions = {
-  date: {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  },
-  time: {
-    hour: 'numeric',
-    minute: 'numeric',
-  },
-}
-
-export const AttachmentSection = ({ attachments, meldingId }: Props) => {
+export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachments, error }, meldingId }: Props) => {
   const t = useTranslations('detail')
 
-  const hasAttachments = attachments.files.length > 0
+  const hasAttachments = attachments.length > 0
   const addAttachmentLink = `/melding/${meldingId}/bestand-toevoegen`
+  const removeAttachmentLink = `/melding/${meldingId}/bestand-verwijderen`
 
   return (
     <dl className={clsx(parentStyles.descriptionList, parentStyles.cardWide, styles.attachmentsSection)}>
       <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
+      {error && <ApiErrorAlert description={t('errors.fetch-error')} shouldFocus={false} />}
 
-      {hasAttachments ? (
+      {hasAttachments && !error ? (
         <div className={styles.attachmentsWrapper}>
-          {attachments.files.map(({ blob, createdAt, fileName, id }) => {
-            const { date, time } = formatDateString(createdAt, formatDateStringOptions)
-
+          {attachments.map(({ blob, createdAt, id, originalFilename, user }) => {
+            const { date, time } = formatDateString(createdAt)
             return (
-              <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={fileName}>
-                <Attachment blob={blob} fileName={fileName} id={id} meldingId={meldingId} />
+              <dd className={clsx(parentStyles.description, styles.attachmentWrapper)} key={id}>
+                <AttachmentPreview
+                  blob={blob}
+                  fileName={originalFilename}
+                  id={id}
+                  isLinkToSlider
+                  meldingId={meldingId}
+                />
                 <Paragraph>{`${date} ${time}`}</Paragraph>
-                <Paragraph>{fileName}</Paragraph>
+                <Paragraph>{user ? user.email : t('attachments.melding-form-user')}</Paragraph>
               </dd>
             )
           })}
@@ -68,6 +63,13 @@ export const AttachmentSection = ({ attachments, meldingId }: Props) => {
           {t('attachments.add-link')}
         </Link>
       </dd>
+      {hasAttachments && (
+        <dd className={styles.fullWidth}>
+          <Link href={removeAttachmentLink} linkComponent={NextLink}>
+            {t('attachments.remove-link')}
+          </Link>
+        </dd>
+      )}
     </dl>
   )
 }

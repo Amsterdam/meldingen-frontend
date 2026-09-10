@@ -9,13 +9,11 @@ import styles from './FileList.module.css'
 
 type Props = PropsWithChildren<HTMLAttributes<HTMLUListElement>>
 
-export const FileListRoot = ({ children, ...restProps }: Props) => {
-  return (
-    <ul className={styles.list} {...restProps}>
-      {children}
-    </ul>
-  )
-}
+export const FileListRoot = ({ children, ...restProps }: Props) => (
+  <ul className={styles.list} {...restProps}>
+    {children}
+  </ul>
+)
 
 export const FileList = Object.assign(FileListRoot, {
   Item: FileListItem,

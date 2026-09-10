@@ -1,0 +1,36 @@
+@keyframes loading {
+  0% {
+    background-color: var(--ams-color-background-body);
+  }
+
+  50% {
+    background-color: var(--ams-color-separator);
+  }
+
+  100% {
+    background-color: var(--ams-color-background-body);
+  }
+}
+
+.attachmentPdf {
+  aspect-ratio: var(--ams-aspect-ratio-16-9);
+  background-color: var(--ams-color-background-body);
+  display: flex;
+  flex-wrap: wrap;
+  place-content: center center;
+}
+
+.attachmentLoading {
+  animation-delay: 0.3s;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-name: loading;
+  animation-timing-function: ease-in-out;
+  aspect-ratio: var(--ams-aspect-ratio-16-9);
+  background-color: var(--ams-color-separator);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    background-color: var(--ams-color-separator);
+  }
+}

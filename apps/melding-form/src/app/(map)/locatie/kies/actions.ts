@@ -16,6 +16,12 @@ import type { Coordinates } from '~/types'
 import { convertWktPointToCoordinates } from './_utils/convertWktPointToCoordinates'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
+export type SelectedAssetSubmission = {
+  externalId: string
+  label: string
+  subtype: string
+}
+
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 
 export const postCoordinatesAndAssets = async (
@@ -23,41 +29,52 @@ export const postCoordinatesAndAssets = async (
   _: unknown,
   formData: FormData,
 ) => {
-  const selectedAssetIdsRaw = formData.get('selectedAssetIds')
-  const selectedAssetIds = safeJSONParse<Array<string | number>, number[]>(selectedAssetIdsRaw, [])
   const cookieStore = await cookies()
 
-  const meldingIdString = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
+  const meldingIdString = cookieStore.get(COOKIES.ID)?.value
 
   if (!meldingIdString || !token) return redirect(`/cookie-storing#${TOP_ANCHOR_ID}`)
+
+  const t = await getTranslations('select-location')
 
   const meldingId = parseInt(meldingIdString, 10)
 
   const addressFormData = formData.get('address')
   const coordinatesFormData = formData.get('coordinates')
-  const t = await getTranslations('select-location')
+  const selectedAssetsValueRaw = formData.get('selectedAssetsValue')
+
+  const selectedAssetsValue = safeJSONParse<SelectedAssetSubmission[], SelectedAssetSubmission[]>(
+    selectedAssetsValueRaw,
+    [],
+  )
 
   /** Post assets */
 
-  if (selectedAssetIds.length > 0) {
+  if (selectedAssetsValue.length > 0) {
     if (!asset_type_id) {
-      return { errorMessage: t('errors.assets-post-failed') }
+      return {
+        error: {
+          cause: 'Missing asset_type_id for selected assets',
+          message: t('errors.assets-post-failed'),
+        },
+      }
     }
 
     const results = await Promise.all(
-      selectedAssetIds.map((id) =>
+      selectedAssetsValue.map(({ externalId, label, subtype }) =>
         postMeldingByMeldingIdAsset({
-          // TODO: Remove the 'Temp' label and 'temp' subtype
-          body: { asset_type_id, external_id: String(id), label: 'Temp', subtype: 'temp' },
+          body: { asset_type_id, external_id: String(externalId), label, subtype },
           path: { melding_id: meldingId },
           query: { token },
         }),
       ),
     )
 
-    if (results.some(({ error }) => error)) {
-      return { errorMessage: t('errors.assets-post-failed') }
+    const errors = results.flatMap(({ error }) => (error ? [error] : []))
+
+    if (errors.length > 0) {
+      return { error: { cause: errors, message: t('errors.assets-post-failed') } }
     }
   }
 
@@ -67,21 +84,39 @@ export const postCoordinatesAndAssets = async (
   let coordinates = safeJSONParse<Coordinates, null>(coordinatesFormData, null)
 
   if (!address) {
-    return { errorMessage: t('errors.no-location') }
+    return { error: { cause: 'No location provided by user', message: t('errors.no-location') } }
   }
 
   if (!coordinates) {
     const response = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`)
 
-    if (!response.ok) return { errorMessage: t('errors.pdok-failed') }
+    if (!response.ok) {
+      return {
+        error: {
+          cause: `PDOK request failed with status ${response.status}`,
+          message: t('errors.pdok-failed'),
+        },
+      }
+    }
 
     const result = await response.json()
 
-    if (!result.response.docs.length) return { errorMessage: t('errors.pdok-no-address-found') }
+    if (!result.response.docs.length) {
+      return {
+        error: {
+          cause: 'PDOK returned no results for the given address',
+          message: t('errors.pdok-no-address-found'),
+        },
+      }
+    }
 
     const PDOKCoordinates = convertWktPointToCoordinates(result.response.docs[0].centroide_ll)
 
-    if (!PDOKCoordinates) return { errorMessage: t('errors.pdok-failed') }
+    if (!PDOKCoordinates) {
+      return {
+        error: { cause: 'Failed to convert PDOK point to coordinates', message: t('errors.pdok-failed') },
+      }
+    }
 
     coordinates = PDOKCoordinates
     address = result.response.docs[0].weergavenaam
@@ -103,7 +138,7 @@ export const postCoordinatesAndAssets = async (
   })
 
   if (error) {
-    return { errorMessage: t('errors.location-patch-failed') }
+    return { error: { cause: error, message: t('errors.location-patch-failed') } }
   }
 
   const source = cookieStore.get(COOKIES.SOURCE)?.value
@@ -116,7 +151,7 @@ export const postCoordinatesAndAssets = async (
       query: { token },
     })
 
-    if (stateError) return { errorMessage: t('errors.state-change-failed') }
+    if (stateError) return { error: { cause: stateError, message: t('errors.state-change-failed') } }
   }
 
   return redirect(source === 'back-office' ? `/bijlage#${TOP_ANCHOR_ID}` : `/locatie#${TOP_ANCHOR_ID}`)

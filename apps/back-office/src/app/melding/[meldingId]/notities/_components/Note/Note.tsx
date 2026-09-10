@@ -5,9 +5,9 @@ import NextLink from 'next/link'
 import type { NoteRetrieveOutput } from '@meldingen/api-client'
 
 import { Paragraph, UnorderedList } from '@meldingen/ui'
+import { formatDateString } from '@meldingen/utils'
 
 import { TipTapMarkdownToHtml } from '../TipTapMarkdownToHtml'
-import { formatDateString } from '~/app/_utils/formatDateString'
 
 import styles from './Note.module.css'
 
@@ -21,20 +21,9 @@ export const Note = ({ currentUserId, meldingId, note }: Props) => {
   const t = useTranslations('notes-overview')
 
   const { created_at, id, text, updated_at, user } = note
+  const { date, time } = formatDateString(created_at)
 
   const wasEdited = new Date(updated_at) > new Date(created_at)
-
-  const { date, time } = formatDateString(created_at, {
-    date: {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    },
-    time: {
-      hour: 'numeric',
-      minute: 'numeric',
-    },
-  })
 
   return (
     <UnorderedList.Item className={styles.item}>
