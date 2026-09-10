@@ -69,7 +69,7 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
     }
   }, [apiError])
 
-  const categoryIdErrorMessage = validationErrors?.find((error) => error.key === 'category-id')?.message
+  const categoryErrorMessage = validationErrors?.find((error) => error.key === 'category')?.message
   const reasonErrorMessage = validationErrors?.find((error) => error.key === 'reason')?.message
 
   return (
@@ -85,16 +85,16 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
             {t('title', { publicId })}
           </Heading>
           <Form action={formAction} className={clsx(styles.formPanel)} noValidate>
-            <Field className="ams-mb-m" invalid={Boolean(categoryIdErrorMessage)}>
-              <Label htmlFor="category-id">{t('form-labels.category')}</Label>
-              {categoryIdErrorMessage && <ErrorMessage id="category-id-error">{categoryIdErrorMessage}</ErrorMessage>}
+            <Field className="ams-mb-m" invalid={Boolean(categoryErrorMessage)}>
+              <Label htmlFor="category">{t('form-labels.category')}</Label>
+              {categoryErrorMessage && <ErrorMessage id="category-error">{categoryErrorMessage}</ErrorMessage>}
               <Select
                 className={styles.selectFullWidth}
                 defaultValue={meldingClassification?.id ? String(meldingClassification.id) : ''}
-                id="category-id"
-                invalid={Boolean(categoryIdErrorMessage)}
+                id="category"
+                invalid={Boolean(categoryErrorMessage)}
                 key={meldingClassification?.id ?? 'no-classification'}
-                name="category-id"
+                name="category"
               >
                 {!meldingClassification?.id && <Select.Option value={undefined}>-- Kies categorie --</Select.Option>}
                 {classifications.map((classification) => (
