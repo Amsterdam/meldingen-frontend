@@ -38,7 +38,10 @@
       "no-results": "Geen resultaten gevonden",
       "no-address": "Locatie gekozen op de kaart"
     },
-    "assets-loading": "{pluralName} worden geladen",
+    "asset-list": {
+      "loading": "{pluralName} worden geladen",
+      "no-results": "Geen {pluralName} gevonden."
+    },
     "submit-button": {
       "mobile": "Bevestigen",
       "desktop": "Bevestig locatie"

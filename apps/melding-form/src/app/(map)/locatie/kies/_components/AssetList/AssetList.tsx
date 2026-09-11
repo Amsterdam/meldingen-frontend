@@ -1,8 +1,11 @@
 import type { Dispatch, SetStateAction } from 'react'
 
 import { Checkbox } from '@amsterdam/design-system-react'
+import { useTranslations } from 'next-intl'
 
 import type { Feature } from '@meldingen/api-client'
+
+import { Paragraph } from '@meldingen/ui'
 
 import type { NotificationType, Props as SelectLocationProps } from '../../SelectLocation'
 import type { Coordinates } from '~/types'
@@ -50,9 +53,14 @@ export const AssetList = ({
   setNotificationType,
   setSelectedAssets,
 }: Props) => {
-  if (isLoading) return <Loading pluralName={assetConfig.names.plural} />
+  const t = useTranslations('select-location.asset-list')
 
-  if (assetList.length === 0 && selectedAssets.length === 0) return
+  if (isLoading) return <Loading>{t('loading', { pluralName: assetConfig.names.plural })}</Loading>
+
+  if (assetList.length === 0 && selectedAssets.length === 0)
+    return (
+      <Paragraph className={styles.emptyState}>{t('no-results', { pluralName: assetConfig.names.plural })}</Paragraph>
+    )
 
   const filteredList = assetList.filter(
     (asset) => !selectedAssets.some((selectedAsset) => selectedAsset.id === asset.id),

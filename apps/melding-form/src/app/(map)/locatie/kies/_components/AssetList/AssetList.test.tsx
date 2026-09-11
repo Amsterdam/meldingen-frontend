@@ -15,6 +15,10 @@ const defaultProps: Props = {
     },
     label: '{{fractie_omschrijving}} {{id_nummer}}',
     maxCount: 5,
+    names: {
+      plural: 'containers',
+      singular: 'container',
+    },
   },
   assetList: containerAssets,
   isLoading: false,
@@ -25,23 +29,23 @@ const defaultProps: Props = {
 }
 
 describe('AssetList', () => {
-  it('renders nothing when assetList and selectedAssets are empty', () => {
-    const { container } = render(<AssetList {...defaultProps} assetList={[]} />)
+  it('renders an empty state message when assetList and selectedAssets are empty', () => {
+    render(<AssetList {...defaultProps} assetList={[]} />)
 
-    expect(container).toBeEmptyDOMElement()
+    expect(screen.getByText('Geen assets gevonden')).toBeInTheDocument()
   })
 
-  it('renders loading text instead of the list when isLoading is true', () => {
+  it('renders loading skeleton instead of the list when isLoading is true', () => {
     render(<AssetList {...defaultProps} isLoading />)
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument()
+    expect(screen.getByText('assets-loading')).toBeInTheDocument()
     expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
   })
 
-  it('renders loading text even when assetList and selectedAssets are empty', () => {
+  it('renders loading skeleton even when assetList and selectedAssets are empty', () => {
     render(<AssetList {...defaultProps} assetList={[]} isLoading selectedAssets={[]} />)
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument()
+    expect(screen.getByText('assets-loading')).toBeInTheDocument()
   })
 
   it('renders a list of assets', () => {
@@ -88,7 +92,11 @@ describe('AssetList', () => {
     render(
       <AssetList
         {...defaultProps}
-        assetConfig={{ icon: defaultProps.assetConfig.icon, maxCount: defaultProps.assetConfig.maxCount }}
+        assetConfig={{
+          icon: defaultProps.assetConfig.icon,
+          maxCount: defaultProps.assetConfig.maxCount,
+          names: defaultProps.assetConfig.names,
+        }}
       />,
     )
 
@@ -107,6 +115,7 @@ describe('AssetList', () => {
           icon: defaultProps.assetConfig.icon,
           label: '{{non_existing_property_1}} {{non_existing_property_2}}',
           maxCount: defaultProps.assetConfig.maxCount,
+          names: defaultProps.assetConfig.names,
         }}
       />,
     )
