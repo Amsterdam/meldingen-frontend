@@ -33,13 +33,9 @@ export const fetchFeaturesOnMoveEnd = async (
   markerLayerRef: RefObject<Layer | null>,
   wfsQuery: WfsQuery,
 ) => {
-  // Don't fetch markers when map is hidden with display: none
-  const size = map.getSize()
-  const mapIsHidden = size.x === 0 && size.y === 0
-
   const { assetTypeId, classification, filter, srsName, typeNames } = wfsQuery
 
-  if (!classification || !assetTypeId || !typeNames || !filter || !srsName || mapIsHidden) return
+  if (!classification || !assetTypeId || !typeNames || !filter || !srsName) return
 
   const zoom = map.getZoom()
 

@@ -38,7 +38,6 @@ const mockMapInstance = {
     getSouth: vi.fn(() => 52.3676),
     getWest: vi.fn(() => 4.9041),
   })),
-  getSize: vi.fn(() => ({ x: 800, y: 600 })),
   getZoom: vi.fn(() => 18),
   invalidateSize: vi.fn(),
   off: vi.fn(),
@@ -105,22 +104,6 @@ describe('fetchFeaturesOnMoveEnd', () => {
       vi.fn(),
       { current: null },
       { ...defaultProps.wfsQuery, classification: undefined },
-    )
-
-    expect(result).toBeUndefined()
-  })
-
-  it('does not fetch assets if map is hidden', async () => {
-    const mockMapInstanceHidden = {
-      ...mockMapInstance,
-      getSize: vi.fn(() => ({ x: 0, y: 0 })),
-    } as unknown as Map
-
-    const result = await fetchFeaturesOnMoveEnd(
-      mockMapInstanceHidden,
-      vi.fn(),
-      { current: null },
-      defaultProps.wfsQuery,
     )
 
     expect(result).toBeUndefined()
