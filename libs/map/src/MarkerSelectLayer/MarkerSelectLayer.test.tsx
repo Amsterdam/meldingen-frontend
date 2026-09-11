@@ -1,4 +1,5 @@
 import type { Layer, Map } from 'leaflet'
+import type { RefObject } from 'react'
 import type { Mock } from 'vitest'
 
 import { render, waitFor } from '@testing-library/react'
@@ -10,6 +11,8 @@ import type { Props } from './MarkerSelectLayer'
 
 import { MapComponent } from '../Map/Map'
 import { fetchFeaturesOnMoveEnd, MarkerSelectLayer } from './MarkerSelectLayer'
+
+type WfsResult = Awaited<ReturnType<typeof getAssetTypeByAssetTypeIdWfs<false>>>
 
 const defaultProps: Props = {
   features: [],
@@ -104,6 +107,7 @@ describe('fetchFeaturesOnMoveEnd', () => {
       vi.fn(),
       { current: null },
       { ...defaultProps.wfsQuery, classification: undefined },
+      { current: null },
     )
 
     expect(result).toBeUndefined()
@@ -118,7 +122,7 @@ describe('fetchFeaturesOnMoveEnd', () => {
 
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-    fetchFeaturesOnMoveEnd(mockMapInstance, vi.fn(), { current: null }, defaultProps.wfsQuery)
+    fetchFeaturesOnMoveEnd(mockMapInstance, vi.fn(), { current: null }, defaultProps.wfsQuery, { current: null })
 
     waitFor(() => {
       expect(consoleSpy).toHaveBeenCalledWith({ detail: 'Test error' })
@@ -137,9 +141,94 @@ describe('fetchFeaturesOnMoveEnd', () => {
 
     const mockMarkerLayerRef = { current: { remove: vi.fn() } as unknown as Layer }
 
-    await fetchFeaturesOnMoveEnd(lowZoomMapInstance, mockOnFeaturesChange, mockMarkerLayerRef, defaultProps.wfsQuery)
+    await fetchFeaturesOnMoveEnd(lowZoomMapInstance, mockOnFeaturesChange, mockMarkerLayerRef, defaultProps.wfsQuery, {
+      current: null,
+    })
 
     expect(mockOnFeaturesChange).toHaveBeenCalledWith([])
     expect(mockMarkerLayerRef.current.remove).toHaveBeenCalled()
+  })
+
+  it('aborts a still in-flight request when a new one starts, and ignores its response', async () => {
+    let resolveFirstRequest: (value: WfsResult) => void = () => {}
+    const firstRequestPromise = new Promise<WfsResult>((resolve) => {
+      resolveFirstRequest = resolve
+    })
+
+    vi.mocked(getAssetTypeByAssetTypeIdWfs)
+      .mockReturnValueOnce(firstRequestPromise)
+      .mockResolvedValueOnce({ data: { features: ['Newer feature'] }, error: undefined } as unknown as WfsResult)
+
+    const mockOnFeaturesChange = vi.fn()
+    const pendingRequestRef: RefObject<AbortController | null> = { current: null }
+
+    const firstCall = fetchFeaturesOnMoveEnd(
+      mockMapInstance,
+      mockOnFeaturesChange,
+      { current: null },
+      defaultProps.wfsQuery,
+      pendingRequestRef,
+    )
+
+    const firstAbortController = pendingRequestRef.current
+
+    await fetchFeaturesOnMoveEnd(
+      mockMapInstance,
+      mockOnFeaturesChange,
+      { current: null },
+      defaultProps.wfsQuery,
+      pendingRequestRef,
+    )
+
+    expect(firstAbortController?.signal.aborted).toBe(true)
+    expect(mockOnFeaturesChange).toHaveBeenCalledWith(['Newer feature'])
+
+    resolveFirstRequest({ data: { features: ['Stale feature'] }, error: undefined } as unknown as WfsResult)
+    await firstCall
+
+    expect(mockOnFeaturesChange).not.toHaveBeenCalledWith(['Stale feature'])
+    expect(mockOnFeaturesChange).toHaveBeenCalledTimes(1)
+  })
+
+  it('aborts a still in-flight request when the zoom drops below the threshold', async () => {
+    let resolveFirstRequest: (value: WfsResult) => void = () => {}
+    const firstRequestPromise = new Promise<WfsResult>((resolve) => {
+      resolveFirstRequest = resolve
+    })
+
+    vi.mocked(getAssetTypeByAssetTypeIdWfs).mockReturnValueOnce(firstRequestPromise)
+
+    const mockOnFeaturesChange = vi.fn()
+    const pendingRequestRef: RefObject<AbortController | null> = { current: null }
+
+    const firstCall = fetchFeaturesOnMoveEnd(
+      mockMapInstance,
+      mockOnFeaturesChange,
+      { current: null },
+      defaultProps.wfsQuery,
+      pendingRequestRef,
+    )
+
+    const firstAbortController = pendingRequestRef.current
+
+    const lowZoomMapInstance = {
+      ...mockMapInstance,
+      getZoom: vi.fn(() => 2),
+    } as unknown as Map
+
+    await fetchFeaturesOnMoveEnd(
+      lowZoomMapInstance,
+      mockOnFeaturesChange,
+      { current: null },
+      defaultProps.wfsQuery,
+      pendingRequestRef,
+    )
+
+    expect(firstAbortController?.signal.aborted).toBe(true)
+
+    resolveFirstRequest({ data: { features: ['Stale feature'] }, error: undefined } as unknown as WfsResult)
+    await firstCall
+
+    expect(mockOnFeaturesChange).not.toHaveBeenCalledWith(['Stale feature'])
   })
 })

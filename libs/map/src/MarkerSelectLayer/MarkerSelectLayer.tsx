@@ -32,6 +32,7 @@ export const fetchFeaturesOnMoveEnd = async (
   onFeaturesChange: Props['onFeaturesChange'],
   markerLayerRef: RefObject<Layer | null>,
   wfsQuery: WfsQuery,
+  pendingRequestRef: RefObject<AbortController | null>,
 ) => {
   const { assetTypeId, classification, filter, srsName, typeNames } = wfsQuery
 
@@ -41,12 +42,20 @@ export const fetchFeaturesOnMoveEnd = async (
 
   // Has correct zoom level for markers
   if (zoom >= ZOOM_THRESHOLD) {
+    // Abort a still in-flight request from an earlier call
+    pendingRequestRef.current?.abort()
+    const abortController = new AbortController()
+    pendingRequestRef.current = abortController
+
     const filterWithCoordinates = getWfsFilter({ filter, mapInstance: map, srsName })
 
     const { data, error } = await getAssetTypeByAssetTypeIdWfs({
       path: { asset_type_id: assetTypeId },
       query: { filter: filterWithCoordinates, type_names: typeNames },
+      signal: abortController.signal,
     })
+
+    if (abortController.signal.aborted) return
 
     if (error) {
       // TODO: Log the error to an error reporting service
@@ -57,9 +66,13 @@ export const fetchFeaturesOnMoveEnd = async (
     onFeaturesChange(data?.features || [])
   }
 
-  if (zoom < ZOOM_THRESHOLD && markerLayerRef.current) {
-    markerLayerRef.current.remove()
-    onFeaturesChange([])
+  if (zoom < ZOOM_THRESHOLD) {
+    pendingRequestRef.current?.abort()
+
+    if (markerLayerRef.current) {
+      markerLayerRef.current.remove()
+      onFeaturesChange([])
+    }
   }
 }
 
@@ -91,16 +104,22 @@ export const MarkerSelectLayer = ({
 }: Props) => {
   const map = useContext(MapContext)
   const markerLayerRef = useRef<Layer | null>(null)
+  const pendingRequestRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
     if (!map) return
 
-    const handleMoveEnd = () => fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, wfsQuery)
+    const handleMoveEnd = () =>
+      fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, wfsQuery, pendingRequestRef)
 
     map.on('moveend', handleMoveEnd)
 
     return () => {
       map.off('moveend', handleMoveEnd)
+      // Reading .current here on purpose: unlike a DOM-node ref, we want whichever
+      // request is in flight at cleanup time, not a value captured at mount.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      pendingRequestRef.current?.abort()
     }
   }, [map, onFeaturesChange, wfsQuery])
 
