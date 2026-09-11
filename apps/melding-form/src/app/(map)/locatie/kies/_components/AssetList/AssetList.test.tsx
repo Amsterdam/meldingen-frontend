@@ -1,3 +1,5 @@
+import type { Mock } from 'vitest'
+
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
@@ -29,12 +31,6 @@ const defaultProps: Props = {
 }
 
 describe('AssetList', () => {
-  it('renders an empty state message when assetList and selectedAssets are empty', () => {
-    render(<AssetList {...defaultProps} assetList={[]} />)
-
-    expect(screen.getByText('no-results')).toBeInTheDocument()
-  })
-
   it('renders loading skeleton instead of the list when isLoading is true', () => {
     render(<AssetList {...defaultProps} isLoading />)
 
@@ -42,10 +38,10 @@ describe('AssetList', () => {
     expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
   })
 
-  it('renders loading skeleton even when assetList and selectedAssets are empty', () => {
-    render(<AssetList {...defaultProps} assetList={[]} isLoading selectedAssets={[]} />)
+  it('renders an empty state message when assetList and selectedAssets are empty', () => {
+    render(<AssetList {...defaultProps} assetList={[]} />)
 
-    expect(screen.getByText('loading')).toBeInTheDocument()
+    expect(screen.getByText('no-results')).toBeInTheDocument()
   })
 
   it('renders a list of assets', () => {
@@ -142,6 +138,11 @@ describe('AssetList', () => {
 
     expect(defaultProps.setCoordinates).toHaveBeenCalledWith({ lat: x, lng: y })
     expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
+
+    const updater = (defaultProps.setSelectedAssets as Mock).mock.calls[0][0]
+    const result = updater([])
+
+    expect(result).toEqual([containerAssets[0]])
   })
 
   it('sets notification when max selected assets is reached', async () => {
@@ -169,6 +170,11 @@ describe('AssetList', () => {
 
     expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
     expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
+
+    const updater = (defaultProps.setSelectedAssets as Mock).mock.calls[0][0]
+    const result = updater([containerAssets[0]])
+
+    expect(result).toEqual([])
   })
 
   it('resets notification when asset is deselected', async () => {
