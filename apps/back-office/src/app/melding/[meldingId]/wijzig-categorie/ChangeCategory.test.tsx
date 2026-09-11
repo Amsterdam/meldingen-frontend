@@ -1,20 +1,78 @@
-import type { Mock } from 'vitest'
+import type { ReactNode } from 'react'
 
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useActionState } from 'react'
+import { useStateAction } from 'next-safe-action/hooks'
 
 import type { Props } from './ChangeCategory'
 
 import { ChangeCategory } from './ChangeCategory'
 
-vi.mock('react', async (importOriginal) => {
-  const actual = await importOriginal()
-  return {
-    ...(typeof actual === 'object' ? actual : {}),
-    useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
-  }
-})
+const { mockNextForm } = vi.hoisted(() => ({
+  mockNextForm: vi.fn(),
+}))
+
+type UseStateActionResult = ReturnType<typeof useStateAction>
+
+const createUseStateActionResult = (overrides: Partial<UseStateActionResult> = {}): UseStateActionResult =>
+  ({
+    execute: vi.fn(),
+    executeAsync: vi.fn(),
+    formAction: vi.fn(),
+    hasErrored: false,
+    hasNavigated: false,
+    hasSucceeded: false,
+    input: undefined,
+    isExecuting: false,
+    isIdle: true,
+    isPending: false,
+    isTransitioning: false,
+    reset: vi.fn(),
+    result: {
+      data: undefined,
+      serverError: undefined,
+      validationErrors: undefined,
+    },
+    status: 'idle',
+    ...overrides,
+  }) as unknown as UseStateActionResult
+
+const createErroredUseStateActionResult = (
+  overrides: Partial<Pick<UseStateActionResult, 'formAction' | 'input' | 'isPending' | 'result'>>,
+): UseStateActionResult =>
+  ({
+    execute: vi.fn(),
+    executeAsync: vi.fn(),
+    formAction: vi.fn(),
+    hasErrored: true,
+    hasNavigated: false,
+    hasSucceeded: false,
+    input: undefined,
+    isExecuting: false,
+    isIdle: false,
+    isPending: false,
+    isTransitioning: false,
+    reset: vi.fn(),
+    result: {
+      data: undefined,
+      serverError: undefined,
+      validationErrors: undefined,
+    },
+    status: 'hasErrored',
+    ...overrides,
+  }) as unknown as UseStateActionResult
+
+vi.mock('next-safe-action/hooks', () => ({
+  useStateAction: vi.fn(),
+}))
+
+vi.mock('next/form', () => ({
+  default: (props: { children: ReactNode }) => {
+    mockNextForm(props)
+
+    return <form>{props.children}</form>
+  },
+}))
 
 const defaultProps: Props = {
   classifications: [
@@ -42,6 +100,10 @@ const defaultProps: Props = {
 }
 
 describe('ChangeCategory', () => {
+  beforeEach(() => {
+    vi.mocked(useStateAction).mockReturnValue(createUseStateActionResult())
+  })
+
   it('renders the component with the correct document title', () => {
     render(<ChangeCategory {...defaultProps} />)
 
@@ -101,32 +163,42 @@ describe('ChangeCategory', () => {
   })
 
   it('displays validation errors and preserves the reason when the action returns validation errors', () => {
-    const formData = new FormData()
-    formData.set('reason', 'Because this is the right category')
-
-    ;(useActionState as Mock).mockReturnValueOnce([
-      {
-        formData,
-        validationErrors: [
-          { key: 'category-id', message: 'errors.category-required' },
-          { key: 'reason', message: 'errors.reason-required' },
-        ],
-      },
-      vi.fn(),
-      false,
-    ])
+    vi.mocked(useStateAction).mockReturnValueOnce(
+      createErroredUseStateActionResult({
+        formAction: vi.fn(),
+        input: {
+          category: '3',
+          reason: 'Because this is the right category',
+        },
+        isPending: false,
+        result: {
+          validationErrors: {
+            category: { _errors: ['errors.category-required'] },
+            reason: { _errors: ['errors.reason-required'] },
+          },
+        },
+      }),
+    )
 
     render(<ChangeCategory {...defaultProps} />)
 
     expect(screen.getByText('errors.category-required')).toBeInTheDocument()
     expect(screen.getByText('errors.reason-required')).toBeInTheDocument()
+    expect(screen.getByRole('combobox', { name: 'form-labels.category' })).toHaveValue('3')
     expect(screen.getByRole('textbox', { name: 'form-labels.reason' })).toHaveValue(
       'Because this is the right category',
     )
   })
 
-  it('displays an API error alert with the correct document title', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: { detail: 'Error message' } }, vi.fn(), false])
+  it('displays a server error alert with the correct document title', () => {
+    vi.mocked(useStateAction).mockReturnValueOnce(
+      createErroredUseStateActionResult({
+        formAction: vi.fn(),
+        input: undefined,
+        isPending: false,
+        result: { serverError: 'Something went wrong while executing the operation.' },
+      }),
+    )
 
     const { container } = render(<ChangeCategory {...defaultProps} />)
 
@@ -142,16 +214,27 @@ describe('ChangeCategory', () => {
   })
 
   it('submits the form when the submit button is clicked', async () => {
-    const user = userEvent.setup()
-
     const mockFormAction = vi.fn()
-    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
+    vi.mocked(useStateAction).mockReturnValueOnce(
+      createUseStateActionResult({
+        formAction: mockFormAction,
+        input: undefined,
+        isPending: false,
+      }),
+    )
 
     render(<ChangeCategory {...defaultProps} />)
 
-    const submitButton = screen.getByRole('button', { name: 'submit-button' })
-    await user.click(submitButton)
+    const formProps = mockNextForm.mock.calls.at(-1)?.[0] as { action?: (formData: FormData) => void }
+    const formData = new FormData()
+    formData.set('category', '3')
+    formData.set('reason', 'Need to correct the classification')
 
-    expect(mockFormAction).toHaveBeenCalled()
+    formProps.action?.(formData)
+
+    expect(mockFormAction).toHaveBeenCalledWith({
+      category: '3',
+      reason: 'Need to correct the classification',
+    })
   })
 })
