@@ -102,7 +102,7 @@ export const MarkerSelectLayer = ({
     return () => {
       map.off('moveend', handleMoveEnd)
     }
-  }, [map])
+  }, [map, onFeaturesChange, wfsQuery])
 
   useAddMarkersToMap({
     features,
