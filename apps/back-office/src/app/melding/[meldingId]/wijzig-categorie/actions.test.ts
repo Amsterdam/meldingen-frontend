@@ -32,7 +32,7 @@ describe('postChangeCategoryForm', () => {
       reason: 'Need to correct the classification',
     })
 
-    expect(result.validationErrors?.category?._errors).toEqual(['category-same'])
+    expect(result.validationErrors?.category?._errors).toEqual([ERRORS.VALIDATION.CATEGORY_SAME])
     expect(redirect).not.toHaveBeenCalled()
   })
 
