@@ -32,20 +32,20 @@ describe('AssetList', () => {
   it('renders an empty state message when assetList and selectedAssets are empty', () => {
     render(<AssetList {...defaultProps} assetList={[]} />)
 
-    expect(screen.getByText('Geen assets gevonden')).toBeInTheDocument()
+    expect(screen.getByText('no-results')).toBeInTheDocument()
   })
 
   it('renders loading skeleton instead of the list when isLoading is true', () => {
     render(<AssetList {...defaultProps} isLoading />)
 
-    expect(screen.getByText('assets-loading')).toBeInTheDocument()
+    expect(screen.getByText('loading')).toBeInTheDocument()
     expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
   })
 
   it('renders loading skeleton even when assetList and selectedAssets are empty', () => {
     render(<AssetList {...defaultProps} assetList={[]} isLoading selectedAssets={[]} />)
 
-    expect(screen.getByText('assets-loading')).toBeInTheDocument()
+    expect(screen.getByText('loading')).toBeInTheDocument()
   })
 
   it('renders a list of assets', () => {
