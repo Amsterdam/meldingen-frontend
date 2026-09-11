@@ -1,8 +1,7 @@
 import type { Layer, Map } from 'leaflet'
-
-import 'leaflet.markercluster'
 import type { RefObject } from 'react'
 
+import 'leaflet.markercluster'
 import { useContext, useEffect, useRef } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
@@ -17,9 +16,9 @@ import { getWfsFilter } from './utils/getWfsFilter'
 
 import './cluster.css'
 
-export const ZOOM_THRESHOLD = 11
+const ZOOM_THRESHOLD = 11
 
-export type WfsQuery = {
+type WfsQuery = {
   assetTypeId?: number
   classification?: string
   filter?: string
@@ -27,13 +26,21 @@ export type WfsQuery = {
   typeNames?: string
 }
 
-export const fetchFeaturesOnMoveEnd = async (
-  map: Map,
-  onFeaturesChange: Props['onFeaturesChange'],
-  markerLayerRef: RefObject<Layer | null>,
-  wfsQuery: WfsQuery,
-  pendingRequestRef: RefObject<AbortController | null>,
-) => {
+type Args = {
+  map: Map
+  markerLayerRef: RefObject<Layer | null>
+  onFeaturesChange: Props['onFeaturesChange']
+  pendingRequestRef: RefObject<AbortController | null>
+  wfsQuery: WfsQuery
+}
+
+export const fetchFeaturesOnMoveEnd = async ({
+  map,
+  markerLayerRef,
+  onFeaturesChange,
+  pendingRequestRef,
+  wfsQuery,
+}: Args) => {
   const { assetTypeId, classification, filter, srsName, typeNames } = wfsQuery
 
   if (!classification || !assetTypeId || !typeNames || !filter || !srsName) return
@@ -110,7 +117,7 @@ export const MarkerSelectLayer = ({
     if (!map) return
 
     const handleMoveEnd = () =>
-      fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, wfsQuery, pendingRequestRef)
+      fetchFeaturesOnMoveEnd({ map, markerLayerRef, onFeaturesChange, pendingRequestRef, wfsQuery })
 
     map.on('moveend', handleMoveEnd)
 

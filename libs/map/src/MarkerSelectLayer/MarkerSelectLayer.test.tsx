@@ -102,13 +102,13 @@ describe('MarkerSelectLayer', () => {
 
 describe('fetchFeaturesOnMoveEnd', () => {
   it('returns undefined if classification is undefined', async () => {
-    const result = await fetchFeaturesOnMoveEnd(
-      mockMapInstance,
-      vi.fn(),
-      { current: null },
-      { ...defaultProps.wfsQuery, classification: undefined },
-      { current: null },
-    )
+    const result = await fetchFeaturesOnMoveEnd({
+      map: mockMapInstance,
+      markerLayerRef: { current: null },
+      onFeaturesChange: vi.fn(),
+      pendingRequestRef: { current: null },
+      wfsQuery: { ...defaultProps.wfsQuery, classification: undefined },
+    })
 
     expect(result).toBeUndefined()
   })
@@ -122,7 +122,13 @@ describe('fetchFeaturesOnMoveEnd', () => {
 
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-    fetchFeaturesOnMoveEnd(mockMapInstance, vi.fn(), { current: null }, defaultProps.wfsQuery, { current: null })
+    fetchFeaturesOnMoveEnd({
+      map: mockMapInstance,
+      markerLayerRef: { current: null },
+      onFeaturesChange: vi.fn(),
+      pendingRequestRef: { current: null },
+      wfsQuery: defaultProps.wfsQuery,
+    })
 
     waitFor(() => {
       expect(consoleSpy).toHaveBeenCalledWith({ detail: 'Test error' })
@@ -141,8 +147,12 @@ describe('fetchFeaturesOnMoveEnd', () => {
 
     const mockMarkerLayerRef = { current: { remove: vi.fn() } as unknown as Layer }
 
-    await fetchFeaturesOnMoveEnd(lowZoomMapInstance, mockOnFeaturesChange, mockMarkerLayerRef, defaultProps.wfsQuery, {
-      current: null,
+    await fetchFeaturesOnMoveEnd({
+      map: lowZoomMapInstance,
+      markerLayerRef: mockMarkerLayerRef,
+      onFeaturesChange: mockOnFeaturesChange,
+      pendingRequestRef: { current: null },
+      wfsQuery: defaultProps.wfsQuery,
     })
 
     expect(mockOnFeaturesChange).toHaveBeenCalledWith([])
@@ -162,23 +172,23 @@ describe('fetchFeaturesOnMoveEnd', () => {
     const mockOnFeaturesChange = vi.fn()
     const pendingRequestRef: RefObject<AbortController | null> = { current: null }
 
-    const firstCall = fetchFeaturesOnMoveEnd(
-      mockMapInstance,
-      mockOnFeaturesChange,
-      { current: null },
-      defaultProps.wfsQuery,
+    const firstCall = fetchFeaturesOnMoveEnd({
+      map: mockMapInstance,
+      markerLayerRef: { current: null },
+      onFeaturesChange: mockOnFeaturesChange,
       pendingRequestRef,
-    )
+      wfsQuery: defaultProps.wfsQuery,
+    })
 
     const firstAbortController = pendingRequestRef.current
 
-    await fetchFeaturesOnMoveEnd(
-      mockMapInstance,
-      mockOnFeaturesChange,
-      { current: null },
-      defaultProps.wfsQuery,
+    await fetchFeaturesOnMoveEnd({
+      map: mockMapInstance,
+      markerLayerRef: { current: null },
+      onFeaturesChange: mockOnFeaturesChange,
       pendingRequestRef,
-    )
+      wfsQuery: defaultProps.wfsQuery,
+    })
 
     expect(firstAbortController?.signal.aborted).toBe(true)
     expect(mockOnFeaturesChange).toHaveBeenCalledWith(['Newer feature'])
@@ -201,13 +211,13 @@ describe('fetchFeaturesOnMoveEnd', () => {
     const mockOnFeaturesChange = vi.fn()
     const pendingRequestRef: RefObject<AbortController | null> = { current: null }
 
-    const firstCall = fetchFeaturesOnMoveEnd(
-      mockMapInstance,
-      mockOnFeaturesChange,
-      { current: null },
-      defaultProps.wfsQuery,
+    const firstCall = fetchFeaturesOnMoveEnd({
+      map: mockMapInstance,
+      markerLayerRef: { current: null },
+      onFeaturesChange: mockOnFeaturesChange,
       pendingRequestRef,
-    )
+      wfsQuery: defaultProps.wfsQuery,
+    })
 
     const firstAbortController = pendingRequestRef.current
 
@@ -216,13 +226,13 @@ describe('fetchFeaturesOnMoveEnd', () => {
       getZoom: vi.fn(() => 2),
     } as unknown as Map
 
-    await fetchFeaturesOnMoveEnd(
-      lowZoomMapInstance,
-      mockOnFeaturesChange,
-      { current: null },
-      defaultProps.wfsQuery,
+    await fetchFeaturesOnMoveEnd({
+      map: lowZoomMapInstance,
+      markerLayerRef: { current: null },
+      onFeaturesChange: mockOnFeaturesChange,
       pendingRequestRef,
-    )
+      wfsQuery: defaultProps.wfsQuery,
+    })
 
     expect(firstAbortController?.signal.aborted).toBe(true)
 
