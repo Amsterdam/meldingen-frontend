@@ -1,3 +1,4 @@
 .notification {
   max-width: 37.5rem;
+  min-height: 0;
 }

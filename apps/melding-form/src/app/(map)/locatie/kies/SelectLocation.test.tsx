@@ -3,7 +3,7 @@ import type { Mock } from 'vitest'
 import useViewportHasMinWidth from '@amsterdam/design-system-react/dist/common/useViewportHasMinWidth'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useActionState, useEffect, useImperativeHandle } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import type { Props } from './SelectLocation'
 
@@ -23,19 +23,13 @@ vi.mock('./_components/AssetList/AssetList', () => ({
   AssetList: vi.fn(),
 }))
 
-const { invalidateSizeMock } = vi.hoisted(() => ({ invalidateSizeMock: vi.fn() }))
-
 vi.mock('@meldingen/map', () => ({
   Controls: vi.fn(),
-  Map: vi.fn(({ children, isHidden, isInert, mapHandleRef }) => {
-    useImperativeHandle(mapHandleRef, () => ({ invalidateSize: invalidateSizeMock }), [])
-
-    return (
-      <div data-testhidden={isHidden} data-testid="map" data-testinert={isInert}>
-        {children}
-      </div>
-    )
-  }),
+  Map: vi.fn(({ children, isHidden, isInert }) => (
+    <div data-testhidden={isHidden} data-testid="map" data-testinert={isInert}>
+      {children}
+    </div>
+  )),
   MarkerSelectLayer: vi.fn(),
   PointSelectLayer: vi.fn(),
 }))
@@ -179,16 +173,6 @@ describe('SelectLocation', () => {
     const map = screen.getByTestId('map')
 
     expect(map).toHaveAttribute('data-testinert', 'true')
-  })
-
-  it('calls invalidateSize on the map when a notification is shown', async () => {
-    ;(AssetList as Mock).mockImplementationOnce(({ setNotificationType }) => (
-      <SetInternalState setter={setNotificationType} value="too-many-assets" />
-    ))
-
-    render(<SelectLocation {...defaultProps} />)
-
-    expect(invalidateSizeMock).toHaveBeenCalledTimes(1)
   })
 })
 

@@ -2,11 +2,10 @@
 
 import { Button } from '@amsterdam/design-system-react'
 import useViewportHasMinWidth from '@amsterdam/design-system-react/dist/common/useViewportHasMinWidth'
-import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import dynamic from 'next/dynamic'
 import Form from 'next/form'
-import { useActionState, useEffect, useRef, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
@@ -93,15 +92,6 @@ export const SelectLocation = ({
     if (isWideWindow) setShowAssetList(false)
   }, [isWideWindow])
 
-  const mapHandleRef = useRef<{ invalidateSize: () => void }>(null)
-
-  useEffect(() => {
-    if (notificationType) {
-      // Recalculate the map size when showing/hiding a notification, as it may change the map container size
-      mapHandleRef.current?.invalidateSize()
-    }
-  }, [notificationType])
-
   useEffect(() => {
     if (error) {
       // TODO: Log the error to an error reporting service
@@ -122,7 +112,7 @@ export const SelectLocation = ({
   )
 
   return (
-    <div className={clsx(styles.grid, showAssetList && styles.hasAssetList)}>
+    <div className={styles.grid}>
       <SideBarTop>
         <Form action={formAction} id="address" noValidate>
           <AddressInput
@@ -159,7 +149,7 @@ export const SelectLocation = ({
       </SideBarBottom>
 
       <div className={styles.map}>
-        <Map isHidden={showAssetList} isInert={isNarrowWindow && Boolean(notificationType)} mapHandleRef={mapHandleRef}>
+        <Map isHidden={showAssetList} isInert={isNarrowWindow && Boolean(notificationType)}>
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}

@@ -5,22 +5,15 @@
     'content' 1fr
     'buttons' auto
     / 1fr;
-  min-height: 100vh; /* Fallback for browsers that do not support dvh */
-  min-height: 100dvh;
+  height: 100vh; /* Fallback for browsers that do not support dvh */
+  height: 100dvh;
 
   @media screen and (min-width: 72.5rem) {
     grid-template-areas:
       'top map'
       'bottom map';
     grid-template-columns: 1fr 2fr;
-    height: 100vh; /* Fallback for browsers that do not support dvh */
-    height: 100dvh;
   }
-}
-
-.hasAssetList {
-  height: 100vh; /* Fallback for browsers that do not support dvh */
-  height: 100dvh;
 }
 
 .hideButtonMobile {
