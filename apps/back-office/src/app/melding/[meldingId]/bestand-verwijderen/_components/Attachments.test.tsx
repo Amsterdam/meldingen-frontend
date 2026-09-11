@@ -58,6 +58,7 @@ const ApiErrorValue = () => {
 
 const createMockRouter = (overrides: Partial<ReturnType<typeof useRouter>> = {}): ReturnType<typeof useRouter> => ({
   back: vi.fn(),
+  bfcacheId: overrides.bfcacheId ?? 'test-bfcache-id',
   forward: vi.fn(),
   prefetch: vi.fn(),
   push: vi.fn(),

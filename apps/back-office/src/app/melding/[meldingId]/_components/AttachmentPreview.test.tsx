@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
+import * as fileUpload from '@meldingen/file-upload'
+
 import { AttachmentPreview } from './AttachmentPreview'
 
 const createObjectURLMock = vi.fn().mockImplementation(() => 'test-url')
@@ -8,6 +10,46 @@ global.URL.createObjectURL = createObjectURLMock
 global.URL.revokeObjectURL = vi.fn()
 
 describe('AttachmentPreview', () => {
+  it('renders the loader while the object URL is still being constructed', () => {
+    vi.spyOn(fileUpload, 'useObjectUrl').mockReturnValueOnce(null)
+
+    render(
+      <AttachmentPreview
+        blob={new Blob(['test-blob'], { type: 'image/jpeg' })}
+        fileName={'IMG_0815.jpg'}
+        id={7}
+        meldingId={42}
+      />,
+    )
+
+    expect(screen.getByText('loading-file')).toBeInTheDocument()
+    expect(screen.queryByRole('presentation')).not.toBeInTheDocument()
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
+  })
+
+  it('renders the filename as fallback message when the blob is missing', async () => {
+    render(<AttachmentPreview blob={null} fileName={'test.pdf'} id={1} meldingId={42} />)
+
+    const fallbackMessage = screen.getByText('test.pdf')
+
+    expect(fallbackMessage).toBeInTheDocument()
+  })
+
+  it('revokes the object URL on unmount', () => {
+    const { unmount } = render(
+      <AttachmentPreview
+        blob={new Blob(['test-blob'], { type: 'application/pdf' })}
+        fileName={'test.pdf'}
+        id={1}
+        meldingId={42}
+      />,
+    )
+
+    unmount()
+
+    expect(global.URL.revokeObjectURL).toHaveBeenCalledWith('test-url')
+  })
+
   describe('Image', () => {
     it('renders an image when a blob is provided', async () => {
       render(
@@ -41,14 +83,6 @@ describe('AttachmentPreview', () => {
       const link = screen.getByRole('link')
 
       expect(link).toHaveAttribute('href', '/melding/42/foto?id=7')
-    })
-
-    it('renders an an error message when the blob is missing', async () => {
-      render(<AttachmentPreview blob={null} fileName={'IMG_0815.jpg'} id={7} meldingId={42} />)
-
-      const errorMessage = screen.getByText('IMG_0815.jpg')
-
-      expect(errorMessage).toBeInTheDocument()
     })
 
     it('revokes the object URL on unmount', () => {
@@ -85,29 +119,6 @@ describe('AttachmentPreview', () => {
       expect(link).toHaveAttribute('href')
       expect(link).toHaveAttribute('target', '_blank')
       expect(link).toHaveAccessibleName('pdf-link')
-    })
-
-    it('renders an an error message when the blob is missing', async () => {
-      render(<AttachmentPreview blob={null} fileName={'test.pdf'} id={1} meldingId={42} />)
-
-      const errorMessage = screen.getByText('test.pdf')
-
-      expect(errorMessage).toBeInTheDocument()
-    })
-
-    it('revokes the object URL on unmount', () => {
-      const { unmount } = render(
-        <AttachmentPreview
-          blob={new Blob(['test-blob'], { type: 'application/pdf' })}
-          fileName={'test.pdf'}
-          id={1}
-          meldingId={42}
-        />,
-      )
-
-      unmount()
-
-      expect(global.URL.revokeObjectURL).toHaveBeenCalledWith('test-url')
     })
   })
 })
