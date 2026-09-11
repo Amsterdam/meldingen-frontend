@@ -15,19 +15,18 @@ import {
 } from '@amsterdam/design-system-react'
 import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
+import { useStateAction } from 'next-safe-action/hooks'
 import Form from 'next/form'
-import { useActionState, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { ClassificationOutput, SimpleClassificationOutput } from '@meldingen/api-client'
 
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 
-import type { FormState } from '~/types'
-
 import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
 import { postChangeCategoryForm } from './actions'
-import { REASON_COUNT_MAX_LENGTH } from './constants'
+import { ERRORS, REASON_COUNT_MAX_LENGTH } from './constants'
 import { ApiErrorAlert } from '~/app/_components'
 import { useDocumentTitleOnError } from '~/app/_utils/useDocumentTitleOnError'
 
@@ -40,37 +39,35 @@ export type Props = {
   publicId: string
 }
 
-const initialState: FormState = {}
-
 export const ChangeCategory = ({ classifications, meldingClassification, meldingId, publicId }: Props) => {
   const [characterCount, setCharacterCount] = useState(0)
-  const [{ apiError, formData, validationErrors }, formAction, isPending] = useActionState(
-    postChangeCategoryForm.bind(null, {
-      currentClassificationId: meldingClassification?.id,
-      meldingId,
-    }),
-    initialState,
-  )
+  const {
+    formAction,
+    input,
+    isPending,
+    result: { serverError, validationErrors },
+  } = useStateAction(postChangeCategoryForm.bind(null, meldingId, meldingClassification?.id))
+  const reasonErrorMessage = validationErrors?.reason?._errors?.[0]
+  const categoryErrorMessage = validationErrors?.category?._errors?.[0]
 
   const t = useTranslations('change-category')
 
   // Update document title when there is an API error
   const documentTitle = useDocumentTitleOnError({
-    apiErrorMessage: apiError ? t('errors.category-change-failed-heading') : undefined,
+    apiErrorMessage: serverError ? t(ERRORS.SERVER.CHANGE_FAILED) : undefined,
     baseDocumentTitle: t('metadata.title'),
-    hasApiError: Boolean(apiError),
+    hasApiError: Boolean(serverError),
   })
 
   useEffect(() => {
-    if (apiError) {
+    if (serverError) {
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
-      console.error(apiError)
+      console.error(serverError)
     }
-  }, [apiError])
+  }, [serverError])
 
-  const categoryErrorMessage = validationErrors?.find((error) => error.key === 'category')?.message
-  const reasonErrorMessage = validationErrors?.find((error) => error.key === 'reason')?.message
+  const selectedCategory = input?.category ?? (meldingClassification?.id ? String(meldingClassification.id) : '')
 
   return (
     <div className="ams-page__area--body">
@@ -78,22 +75,29 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
       <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
       <Grid as="main" gapVertical="large">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
-          {Boolean(apiError) && (
-            <ApiErrorAlert heading={t('errors.category-change-failed-heading')} shouldFocus={!isPending} />
-          )}
+          {Boolean(serverError) && <ApiErrorAlert heading={t(ERRORS.SERVER.CHANGE_FAILED)} shouldFocus={!isPending} />}
           <Heading className="ams-mb-m" level={1}>
             {t('title', { publicId })}
           </Heading>
-          <Form action={formAction} className={clsx(styles.formPanel)} noValidate>
-            <Field className="ams-mb-m" invalid={Boolean(categoryErrorMessage)}>
+          <Form
+            action={(formData) =>
+              formAction({
+                category: String(formData.get('category') ?? ''),
+                reason: String(formData.get('reason') ?? ''),
+              })
+            }
+            className={clsx(styles.formPanel)}
+            noValidate
+          >
+            <Field className="ams-mb-m" invalid={Boolean(validationErrors?.category?._errors?.length)}>
               <Label htmlFor="category">{t('form-labels.category')}</Label>
-              {categoryErrorMessage && <ErrorMessage id="category-error">{categoryErrorMessage}</ErrorMessage>}
+              {categoryErrorMessage && <ErrorMessage id="category-error">{t(categoryErrorMessage)}</ErrorMessage>}
               <Select
                 className={styles.selectFullWidth}
-                defaultValue={meldingClassification?.id ? String(meldingClassification.id) : ''}
+                defaultValue={selectedCategory}
                 id="category"
-                invalid={Boolean(categoryErrorMessage)}
-                key={meldingClassification?.id ?? 'no-classification'}
+                invalid={Boolean(validationErrors?.category?._errors?.length)}
+                key={selectedCategory}
                 name="category"
               >
                 {!meldingClassification?.id && <Select.Option value={undefined}>-- Kies categorie --</Select.Option>}
@@ -104,16 +108,22 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
                 ))}
               </Select>
             </Field>
-            <Field className="ams-mb-m" invalid={Boolean(reasonErrorMessage)}>
+            <Field className="ams-mb-m" invalid={Boolean(validationErrors?.reason?._errors?.length)}>
               <Label htmlFor="reason">{t('form-labels.reason')}</Label>
               <Paragraph id="reason-description">{t('form-labels.reason-description')}</Paragraph>
-              {reasonErrorMessage && <ErrorMessage id="reason-error">{reasonErrorMessage}</ErrorMessage>}
+              {reasonErrorMessage && (
+                <ErrorMessage id="reason-error">{t(reasonErrorMessage, { max: REASON_COUNT_MAX_LENGTH })}</ErrorMessage>
+              )}
               <TextArea
-                aria-describedby={getAriaDescribedBy('reason', t('form-labels.reason-description'), reasonErrorMessage)}
+                aria-describedby={getAriaDescribedBy(
+                  'reason',
+                  t('form-labels.reason-description'),
+                  validationErrors?.reason?._errors?.[0],
+                )}
                 aria-required
-                defaultValue={formData?.get('reason') as string}
+                defaultValue={input?.reason ?? ''}
                 id="reason"
-                invalid={Boolean(reasonErrorMessage)}
+                invalid={Boolean(validationErrors?.reason?._errors?.length)}
                 name="reason"
                 onChange={(e) => setCharacterCount(e.target.value.length)}
                 rows={12}
