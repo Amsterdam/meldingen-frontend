@@ -12,6 +12,12 @@
   }
 }
 
+.emptyState {
+  @media screen and (min-width: 72.5rem) {
+    display: none;
+  }
+}
+
 .checkbox {
   border-top: 0.0625rem solid var(--ams-color-separator);
   padding-block: var(--ams-space-m);

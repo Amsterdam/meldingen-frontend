@@ -6,7 +6,7 @@ import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import dynamic from 'next/dynamic'
 import Form from 'next/form'
-import { useActionState, useEffect, useRef, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
@@ -70,9 +70,25 @@ export const SelectLocation = ({
 }: Props) => {
   const [assetList, setAssetList] = useState<Feature[]>([])
   const [coordinates, setCoordinates] = useState<Coordinates | undefined>(coordinatesFromServer)
+  const [isAssetListLoading, setIsAssetListLoading] = useState(false)
   const [notificationType, setNotificationType] = useState<NotificationType | null>(null)
   const [selectedAssets, setSelectedAssets] = useState<Feature[]>(selectedAssetsFromServer)
   const [showAssetList, setShowAssetList] = useState(false)
+
+  // TODO: this duplicates the guard in MarkerSelectLayer.
+  // Eventually, all this app specific WFS stuff should be removed from MarkerSelectLayer.
+  const { assetTypeId, classification, filter, srsName, typeNames } = assetConfig.wfsQuery
+  const hasValidWfsQuery = Boolean(classification && assetTypeId && typeNames && filter && srsName)
+
+  const handleSetCoordinates = (newCoordinates?: Coordinates) => {
+    if (newCoordinates && hasValidWfsQuery) setIsAssetListLoading(true)
+    setCoordinates(newCoordinates)
+  }
+
+  const handleFeaturesChange = (features: Feature[]) => {
+    setAssetList(features)
+    setIsAssetListLoading(false)
+  }
 
   const postCoordinatesAndAssetsWithExtraArgs = postCoordinatesAndAssets.bind(null, {
     asset_type_id: assetConfig.wfsQuery.assetTypeId,
@@ -93,15 +109,6 @@ export const SelectLocation = ({
     if (isWideWindow) setShowAssetList(false)
   }, [isWideWindow])
 
-  const mapHandleRef = useRef<{ invalidateSize: () => void }>(null)
-
-  useEffect(() => {
-    if (notificationType) {
-      // Recalculate the map size when showing/hiding a notification, as it may change the map container size
-      mapHandleRef.current?.invalidateSize()
-    }
-  }, [notificationType])
-
   useEffect(() => {
     if (error) {
       // TODO: Log the error to an error reporting service
@@ -110,7 +117,7 @@ export const SelectLocation = ({
     }
   }, [error])
 
-  const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
+  const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0 || showAssetList
   const defaultCoordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
 
   const selectedAssetsValue = JSON.stringify(
@@ -122,13 +129,13 @@ export const SelectLocation = ({
   )
 
   return (
-    <div className={clsx(styles.grid, showAssetList && styles.hasAssetList)}>
+    <div className={styles.grid}>
       <SideBarTop>
         <Form action={formAction} id="address" noValidate>
           <AddressInput
             coordinates={coordinates}
             errorMessage={error?.message}
-            setCoordinates={setCoordinates}
+            setCoordinates={handleSetCoordinates}
             setSelectedAssets={setSelectedAssets}
           />
           <input defaultValue={defaultCoordinatesValue} name="coordinates" type="hidden" />
@@ -148,8 +155,9 @@ export const SelectLocation = ({
         <AssetList
           assetConfig={assetConfig}
           assetList={assetList}
+          isLoading={isAssetListLoading && !isWideWindow}
           selectedAssets={selectedAssets}
-          setCoordinates={setCoordinates}
+          setCoordinates={handleSetCoordinates}
           setNotificationType={setNotificationType}
           setSelectedAssets={setSelectedAssets}
         />
@@ -158,14 +166,14 @@ export const SelectLocation = ({
         </Button>
       </SideBarBottom>
 
-      <div className={styles.map}>
-        <Map isHidden={showAssetList} isInert={isNarrowWindow && Boolean(notificationType)} mapHandleRef={mapHandleRef}>
+      <div className={styles.map} inert={showAssetList}>
+        <Map isInert={isNarrowWindow && Boolean(notificationType)}>
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}
-            onSelectedPointChange={(coordinates) => {
+            onSelectedPointChange={(selectedPoint) => {
               setSelectedAssets([])
-              setCoordinates(coordinates)
+              handleSetCoordinates(selectedPoint)
             }}
             selectedPoint={coordinates}
           />
@@ -173,17 +181,17 @@ export const SelectLocation = ({
             features={assetList}
             iconConfig={assetConfig.icon}
             maxMarkers={assetConfig.maxCount}
-            onFeaturesChange={setAssetList}
+            onFeaturesChange={handleFeaturesChange}
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
             onSelectedMarkersChange={setSelectedAssets}
             selectedMarkers={selectedAssets}
-            updateSelectedPoint={setCoordinates}
+            updateSelectedPoint={handleSetCoordinates}
             wfsQuery={assetConfig.wfsQuery}
           />
           <Controls
             onCurrentLocationError={() => setNotificationType('location-service-disabled')}
             texts={controlsTexts}
-            updateSelectedPoint={setCoordinates}
+            updateSelectedPoint={handleSetCoordinates}
           >
             {notificationType && (
               <Notification
@@ -196,7 +204,7 @@ export const SelectLocation = ({
           </Controls>
         </Map>
       </div>
-      <div className={styles.buttonWrapper}>
+      <div className={clsx(styles.buttonWrapper, showAssetList && styles.assetListOpen)}>
         <Button form="address" type="submit">
           {t('submit-button.mobile')}
         </Button>

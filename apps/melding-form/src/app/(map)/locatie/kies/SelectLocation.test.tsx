@@ -1,9 +1,9 @@
 import type { Mock } from 'vitest'
 
 import useViewportHasMinWidth from '@amsterdam/design-system-react/dist/common/useViewportHasMinWidth'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useActionState, useEffect, useImperativeHandle } from 'react'
+import { useActionState, useEffect } from 'react'
 
 import type { Props } from './SelectLocation'
 
@@ -23,19 +23,13 @@ vi.mock('./_components/AssetList/AssetList', () => ({
   AssetList: vi.fn(),
 }))
 
-const { invalidateSizeMock } = vi.hoisted(() => ({ invalidateSizeMock: vi.fn() }))
-
 vi.mock('@meldingen/map', () => ({
   Controls: vi.fn(),
-  Map: vi.fn(({ children, isHidden, isInert, mapHandleRef }) => {
-    useImperativeHandle(mapHandleRef, () => ({ invalidateSize: invalidateSizeMock }), [])
-
-    return (
-      <div data-testhidden={isHidden} data-testid="map" data-testinert={isInert}>
-        {children}
-      </div>
-    )
-  }),
+  Map: vi.fn(({ children, isInert }) => (
+    <div data-testid="map" data-testinert={isInert}>
+      {children}
+    </div>
+  )),
   MarkerSelectLayer: vi.fn(),
   PointSelectLayer: vi.fn(),
 }))
@@ -148,26 +142,6 @@ describe('SelectLocation', () => {
     consoleErrorSpy.mockRestore()
   })
 
-  it('passes the isHidden prop to the map when the asset list is shown', async () => {
-    const user = userEvent.setup()
-
-    ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) => (
-      <SetInternalState setter={setSelectedAssets} value={[{ id: '1' }]} />
-    ))
-
-    render(<SelectLocation {...defaultProps} />)
-
-    const map = screen.getByTestId('map')
-
-    expect(map).toBeInTheDocument()
-
-    const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
-
-    await user.click(toggleButton)
-
-    expect(map).toHaveAttribute('data-testhidden', 'true')
-  })
-
   it('passes the isInert prop to the map when the asset list is shown on narrow windows', async () => {
     ;(AssetList as Mock).mockImplementationOnce(({ setNotificationType }) => (
       <SetInternalState setter={setNotificationType} value="too-many-assets" />
@@ -179,16 +153,6 @@ describe('SelectLocation', () => {
     const map = screen.getByTestId('map')
 
     expect(map).toHaveAttribute('data-testinert', 'true')
-  })
-
-  it('calls invalidateSize on the map when a notification is shown', async () => {
-    ;(AssetList as Mock).mockImplementationOnce(({ setNotificationType }) => (
-      <SetInternalState setter={setNotificationType} value="too-many-assets" />
-    ))
-
-    render(<SelectLocation {...defaultProps} />)
-
-    expect(invalidateSizeMock).toHaveBeenCalledTimes(1)
   })
 })
 
@@ -240,5 +204,66 @@ describe('Asset list toggle button', () => {
       }),
       undefined,
     )
+  })
+})
+
+describe('Asset list loading state', () => {
+  it('shows a loading state on AssetList when coordinates change with a valid WFS query', async () => {
+    ;(AssetList as Mock).mockImplementationOnce(({ setCoordinates }) => (
+      <SetInternalState setter={setCoordinates} value={{ lat: 1, lng: 2 }} />
+    ))
+
+    render(<SelectLocation {...defaultProps} />)
+
+    await waitFor(() => {
+      expect(AssetList).toHaveBeenLastCalledWith(expect.objectContaining({ isLoading: true }), undefined)
+    })
+  })
+
+  it('does not show a loading state when the WFS query is missing required fields', async () => {
+    ;(AssetList as Mock).mockImplementationOnce(({ setCoordinates }) => (
+      <SetInternalState setter={setCoordinates} value={{ lat: 1, lng: 2 }} />
+    ))
+
+    render(
+      <SelectLocation
+        {...defaultProps}
+        assetConfig={{
+          ...defaultProps.assetConfig,
+          wfsQuery: { ...defaultProps.assetConfig.wfsQuery, filter: undefined },
+        }}
+      />,
+    )
+
+    await waitFor(() => {
+      expect(AssetList).toHaveBeenLastCalledWith(expect.objectContaining({ isLoading: false }), undefined)
+    })
+  })
+
+  it('does not show a loading state when coordinates are cleared', async () => {
+    ;(AssetList as Mock).mockImplementationOnce(({ setCoordinates }) => (
+      <SetInternalState setter={setCoordinates} value={undefined} />
+    ))
+
+    render(<SelectLocation {...defaultProps} />)
+
+    await waitFor(() => {
+      expect(AssetList).toHaveBeenLastCalledWith(expect.objectContaining({ isLoading: false }), undefined)
+    })
+  })
+
+  it('does not show a loading state when the viewport is wide', async () => {
+    ;(AssetList as Mock).mockImplementationOnce(({ setCoordinates }) => (
+      <SetInternalState setter={setCoordinates} value={{ lat: 1, lng: 2 }} />
+    ))
+    ;(useViewportHasMinWidth as Mock).mockImplementation((minWidth: string) => minWidth === 'wide')
+
+    render(<SelectLocation {...defaultProps} />)
+
+    await waitFor(() => {
+      expect(AssetList).toHaveBeenLastCalledWith(expect.objectContaining({ isLoading: false }), undefined)
+    })
+
+    ;(useViewportHasMinWidth as Mock).mockReset()
   })
 })

@@ -1,8 +1,7 @@
 import type { Layer, Map } from 'leaflet'
-
-import 'leaflet.markercluster'
 import type { RefObject } from 'react'
 
+import 'leaflet.markercluster'
 import { useContext, useEffect, useRef } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
@@ -17,9 +16,9 @@ import { getWfsFilter } from './utils/getWfsFilter'
 
 import './cluster.css'
 
-export const ZOOM_THRESHOLD = 11
+const ZOOM_THRESHOLD = 11
 
-export type WfsQuery = {
+type WfsQuery = {
   assetTypeId?: number
   classification?: string
   filter?: string
@@ -27,30 +26,43 @@ export type WfsQuery = {
   typeNames?: string
 }
 
-export const fetchFeaturesOnMoveEnd = async (
-  map: Map,
-  onFeaturesChange: Props['onFeaturesChange'],
-  markerLayerRef: RefObject<Layer | null>,
-  wfsQuery: WfsQuery,
-) => {
-  // Don't fetch markers when map is hidden with display: none
-  const size = map.getSize()
-  const mapIsHidden = size.x === 0 && size.y === 0
+type Args = {
+  map: Map
+  markerLayerRef: RefObject<Layer | null>
+  onFeaturesChange: Props['onFeaturesChange']
+  pendingRequestRef: RefObject<AbortController | null>
+  wfsQuery: WfsQuery
+}
 
+export const fetchFeaturesOnMoveEnd = async ({
+  map,
+  markerLayerRef,
+  onFeaturesChange,
+  pendingRequestRef,
+  wfsQuery,
+}: Args) => {
   const { assetTypeId, classification, filter, srsName, typeNames } = wfsQuery
 
-  if (!classification || !assetTypeId || !typeNames || !filter || !srsName || mapIsHidden) return
+  if (!classification || !assetTypeId || !typeNames || !filter || !srsName) return
 
   const zoom = map.getZoom()
 
   // Has correct zoom level for markers
   if (zoom >= ZOOM_THRESHOLD) {
+    // Abort a still in-flight request from an earlier call
+    pendingRequestRef.current?.abort()
+    const abortController = new AbortController()
+    pendingRequestRef.current = abortController
+
     const filterWithCoordinates = getWfsFilter({ filter, mapInstance: map, srsName })
 
     const { data, error } = await getAssetTypeByAssetTypeIdWfs({
       path: { asset_type_id: assetTypeId },
       query: { filter: filterWithCoordinates, type_names: typeNames },
+      signal: abortController.signal,
     })
+
+    if (abortController.signal.aborted) return
 
     if (error) {
       // TODO: Log the error to an error reporting service
@@ -61,9 +73,13 @@ export const fetchFeaturesOnMoveEnd = async (
     onFeaturesChange(data?.features || [])
   }
 
-  if (zoom < ZOOM_THRESHOLD && markerLayerRef.current) {
-    markerLayerRef.current.remove()
-    onFeaturesChange([])
+  if (zoom < ZOOM_THRESHOLD) {
+    pendingRequestRef.current?.abort()
+
+    if (markerLayerRef.current) {
+      markerLayerRef.current.remove()
+      onFeaturesChange([])
+    }
   }
 }
 
@@ -95,18 +111,24 @@ export const MarkerSelectLayer = ({
 }: Props) => {
   const map = useContext(MapContext)
   const markerLayerRef = useRef<Layer | null>(null)
+  const pendingRequestRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
     if (!map) return
 
-    const handleMoveEnd = () => fetchFeaturesOnMoveEnd(map, onFeaturesChange, markerLayerRef, wfsQuery)
+    const handleMoveEnd = () =>
+      fetchFeaturesOnMoveEnd({ map, markerLayerRef, onFeaturesChange, pendingRequestRef, wfsQuery })
 
     map.on('moveend', handleMoveEnd)
 
     return () => {
       map.off('moveend', handleMoveEnd)
+      // Reading .current here on purpose: unlike a DOM-node ref, we want whichever
+      // request is in flight at cleanup time, not a value captured at mount.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      pendingRequestRef.current?.abort()
     }
-  }, [map])
+  }, [map, onFeaturesChange, wfsQuery])
 
   useAddMarkersToMap({
     features,
