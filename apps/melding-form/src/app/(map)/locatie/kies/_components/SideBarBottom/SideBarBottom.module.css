@@ -1,4 +1,5 @@
 .container {
+  background-color: var(--ams-color-background);
   display: flex;
   flex-direction: column;
   grid-area: content;

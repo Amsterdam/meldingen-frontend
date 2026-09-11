@@ -2,6 +2,7 @@
 
 import { Button } from '@amsterdam/design-system-react'
 import useViewportHasMinWidth from '@amsterdam/design-system-react/dist/common/useViewportHasMinWidth'
+import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import dynamic from 'next/dynamic'
 import Form from 'next/form'
@@ -148,8 +149,8 @@ export const SelectLocation = ({
         </Button>
       </SideBarBottom>
 
-      <div className={styles.map}>
-        <Map isHidden={showAssetList} isInert={isNarrowWindow && Boolean(notificationType)}>
+      <div className={styles.map} inert={showAssetList}>
+        <Map isInert={isNarrowWindow && Boolean(notificationType)}>
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}
@@ -186,7 +187,7 @@ export const SelectLocation = ({
           </Controls>
         </Map>
       </div>
-      <div className={styles.buttonWrapper}>
+      <div className={clsx(styles.buttonWrapper, showAssetList && styles.assetListOpen)}>
         <Button form="address" type="submit">
           {t('submit-button.mobile')}
         </Button>
