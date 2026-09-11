@@ -23,7 +23,7 @@ export const postChangeCategoryForm = actionClient
     async ({ bindArgsParsedInputs: [meldingId, currentClassificationId], parsedInput: { category, reason } }) => {
       if (currentClassificationId && Number(category) === currentClassificationId) {
         return returnValidationErrors(changeCategorySchema, {
-          category: { _errors: ['category-same'] },
+          category: { _errors: [ERRORS.VALIDATION.CATEGORY_SAME] },
         })
       }
       await postMeldingByMeldingIdReclassification({
