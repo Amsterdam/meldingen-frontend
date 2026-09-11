@@ -5,13 +5,15 @@ import { ChangeCategory } from './ChangeCategory'
 import { getClassification, getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
 type Params = {
-  params: Promise<{ meldingId: number }>
+  params: Promise<{ meldingId: string }>
 }
 
 export default async ({ params }: Params) => {
   const { meldingId } = await params
 
-  const { data: melding, error: meldingError } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
+  const { data: melding, error: meldingError } = await getMeldingByMeldingId({
+    path: { melding_id: Number(meldingId) },
+  })
 
   if (meldingError) throw new Error('Failed to fetch melding data.')
 
@@ -29,7 +31,7 @@ export default async ({ params }: Params) => {
     <ChangeCategory
       classifications={classifications}
       meldingClassification={melding.classification}
-      meldingId={meldingId}
+      meldingId={Number(meldingId)}
       publicId={melding.public_id}
     />
   )
