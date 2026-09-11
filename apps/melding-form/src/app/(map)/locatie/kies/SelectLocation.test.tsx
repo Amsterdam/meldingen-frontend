@@ -25,8 +25,8 @@ vi.mock('./_components/AssetList/AssetList', () => ({
 
 vi.mock('@meldingen/map', () => ({
   Controls: vi.fn(),
-  Map: vi.fn(({ children, isHidden, isInert }) => (
-    <div data-testhidden={isHidden} data-testid="map" data-testinert={isInert}>
+  Map: vi.fn(({ children, isInert }) => (
+    <div data-testid="map" data-testinert={isInert}>
       {children}
     </div>
   )),
@@ -140,26 +140,6 @@ describe('SelectLocation', () => {
     expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to patch location')
 
     consoleErrorSpy.mockRestore()
-  })
-
-  it('passes the isHidden prop to the map when the asset list is shown', async () => {
-    const user = userEvent.setup()
-
-    ;(AssetList as Mock).mockImplementationOnce(({ setSelectedAssets }) => (
-      <SetInternalState setter={setSelectedAssets} value={[{ id: '1' }]} />
-    ))
-
-    render(<SelectLocation {...defaultProps} />)
-
-    const map = screen.getByTestId('map')
-
-    expect(map).toBeInTheDocument()
-
-    const toggleButton = screen.getByRole('button', { name: 'toggle-button.list' })
-
-    await user.click(toggleButton)
-
-    expect(map).toHaveAttribute('data-testhidden', 'true')
   })
 
   it('passes the isInert prop to the map when the asset list is shown on narrow windows', async () => {
