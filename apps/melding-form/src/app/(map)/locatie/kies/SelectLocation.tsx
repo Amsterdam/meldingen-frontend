@@ -154,9 +154,9 @@ export const SelectLocation = ({
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}
-            onSelectedPointChange={(coordinates) => {
+            onSelectedPointChange={(selectedPoint) => {
               setSelectedAssets([])
-              setCoordinates(coordinates)
+              setCoordinates(selectedPoint)
             }}
             selectedPoint={coordinates}
           />
