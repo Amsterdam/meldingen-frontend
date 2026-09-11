@@ -54,13 +54,11 @@ export const AssetList = ({
   setSelectedAssets,
 }: Props) => {
   const t = useTranslations('select-location.asset-list')
+  const pluralName = assetConfig.names.plural
+  const noResults = assetList.length === 0 && selectedAssets.length === 0
 
-  if (isLoading) return <Loading>{t('loading', { pluralName: assetConfig.names.plural })}</Loading>
-
-  if (assetList.length === 0 && selectedAssets.length === 0)
-    return (
-      <Paragraph className={styles.emptyState}>{t('no-results', { pluralName: assetConfig.names.plural })}</Paragraph>
-    )
+  if (isLoading) return <Loading>{t('loading', { pluralName })}</Loading>
+  if (noResults) return <Paragraph className={styles.emptyState}>{t('no-results', { pluralName })}</Paragraph>
 
   const filteredList = assetList.filter(
     (asset) => !selectedAssets.some((selectedAsset) => selectedAsset.id === asset.id),
