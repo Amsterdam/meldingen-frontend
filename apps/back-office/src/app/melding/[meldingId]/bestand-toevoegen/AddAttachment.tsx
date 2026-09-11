@@ -183,7 +183,6 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
               aria-describedby={getAriaDescribedBy(fileUploadId, t('upload.description'))}
               aria-labelledby={`file-upload-label ${fileUploadId}`}
               button={{
-                className: styles.responsiveButton,
                 text: t('file-upload.select-file-button'),
               }}
               dropAreaText={t('file-upload.drop-area')}
