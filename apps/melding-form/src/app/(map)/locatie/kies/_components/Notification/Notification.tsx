@@ -1,7 +1,8 @@
-import type { AlertProps } from '@amsterdam/design-system-react'
-
-import { Alert, Paragraph } from '@amsterdam/design-system-react'
+import { Heading, Icon, IconButton, Paragraph, Row } from '@amsterdam/design-system-react'
+import { ErrorFillIcon, InfoFillIcon } from '@amsterdam/design-system-react-icons'
+import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
+import { useId } from 'react'
 
 import type { NotificationType } from '../../SelectLocation'
 
@@ -15,7 +16,7 @@ const getTexts = (
   'location-service-disabled': {
     closeButton: t('location-service-disabled.close-button'),
     description: t('location-service-disabled.description'),
-    severity: 'error' as AlertProps['severity'],
+    severity: 'error',
     title: t('location-service-disabled.title'),
   },
   'too-many-assets': {
@@ -29,30 +30,46 @@ const getTexts = (
   },
 })
 
-export type Props = Omit<AlertProps, 'heading' | 'headingLevel'> & {
+export type Props = {
   assetNames: { plural: string; singular: string }
   maxAssets: number
+  onClose: () => void
   type: NotificationType
 }
 
-export const Notification = ({ assetNames, maxAssets, type, ...restProps }: Props) => {
+/**
+ * Notification is mostly a rebuild of the Amsterdam Design System Alert component.
+ * The only change is a scroll container inside the content area.
+ * This is done to make sure the component doesn't enlarge the Map it is shown in.
+ */
+export const Notification = ({ assetNames, maxAssets, onClose, type }: Props) => {
   const t = useTranslations('select-location.notifications')
   const texts = getTexts(t, maxAssets, assetNames)
+  const id = useId()
+  const severity = texts[type].severity
 
   return (
-    <Alert
-      {...restProps}
-      className={styles.notification}
-      closeable
-      closeButtonLabel={texts[type].closeButton}
-      heading={texts[type].title}
-      headingLevel={2}
+    <section
+      aria-labelledby={id}
+      className={clsx('ams-alert', severity && `ams-alert--${severity}`, styles.notification)}
       role="alert"
-      severity={texts[type].severity}
     >
-      {type === 'location-service-disabled' && texts[type].description && (
-        <Paragraph>{texts[type].description}</Paragraph>
-      )}
-    </Alert>
+      <div className="ams-alert__severity-indicator">
+        <Icon color="inverse" size="heading-3" svg={severity === 'error' ? ErrorFillIcon : InfoFillIcon} />
+      </div>
+      <div className={clsx('ams-alert__content', styles.content)}>
+        <div className={styles.scrollContainer}>
+          <Row align="between" alignVertical="start">
+            <Heading id={id} level={2} size="level-3">
+              {texts[type].title}
+            </Heading>
+            <IconButton label={texts[type].closeButton} onClick={onClose} size="heading-3" />
+          </Row>
+          {type === 'location-service-disabled' && texts[type].description && (
+            <Paragraph>{texts[type].description}</Paragraph>
+          )}
+        </div>
+      </div>
+    </section>
   )
 }

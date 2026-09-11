@@ -2,3 +2,14 @@
   max-width: 37.5rem;
   min-height: 0;
 }
+
+.scrollContainer {
+  overflow-y: auto;
+  padding-block: var(--ams-space-s);
+  padding-inline: var(--ams-space-s);
+}
+
+.content {
+  padding-block: var(--ams-space-s);
+  padding-inline: var(--ams-space-s);
+}
