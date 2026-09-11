@@ -17,15 +17,15 @@ export default async ({ params }: Params) => {
 
   if (meldingError) throw new Error('Failed to fetch melding data.')
 
-  const { data: classifications, error: classificationsError } = await getClassification()
-
-  if (classificationsError) throw new Error('Failed to fetch classifications.')
-
   const isStateNotAllowed = getIsReclassificationNotAllowed(melding.state)
 
   if (isStateNotAllowed) {
     redirect(`/melding/${meldingId}`)
   }
+
+  const { data: classifications, error: classificationsError } = await getClassification()
+
+  if (classificationsError) throw new Error('Failed to fetch classifications.')
 
   return (
     <ChangeCategory
