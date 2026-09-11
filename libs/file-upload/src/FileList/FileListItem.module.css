@@ -21,7 +21,6 @@
 }
 
 .imageContainer {
-  aspect-ratio: var(--ams-aspect-ratio-16-9);
   max-inline-size: 50%;
   min-width: 7.5rem;
 
