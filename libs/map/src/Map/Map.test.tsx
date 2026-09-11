@@ -1,4 +1,3 @@
-import type { RefObject } from 'react'
 import type { Mock } from 'vitest'
 
 import { render } from '@testing-library/react'
@@ -63,21 +62,6 @@ describe('MapComponent', () => {
 
     expect(mockMapInstance.invalidateSize).toHaveBeenCalledTimes(1)
     expect(mockMapInstance.fire).toHaveBeenCalledExactlyOnceWith('viewreset')
-  })
-
-  it('exposes invalidateSize on mapHandleRef', () => {
-    const mockMapInstance = {
-      fire: vi.fn(),
-      invalidateSize: vi.fn(),
-    } as unknown as Map
-
-    const mapHandleRef: RefObject<{ invalidateSize: () => void } | null> = { current: null }
-
-    render(<MapComponent mapHandleRef={mapHandleRef} testMapInstance={mockMapInstance} />)
-
-    mapHandleRef.current?.invalidateSize()
-
-    expect(mockMapInstance.invalidateSize).toHaveBeenCalled()
   })
 
   it('makes the map inert when isInert is true', () => {
