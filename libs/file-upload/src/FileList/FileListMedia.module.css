@@ -1,4 +1,5 @@
 .image {
+  background-color: transparent;
   object-fit: contain;
   object-position: left;
 
