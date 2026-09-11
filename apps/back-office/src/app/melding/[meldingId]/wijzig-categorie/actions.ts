@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
 import { ERRORS, REASON_COUNT_MAX_LENGTH } from './constants'
-import { actionClient } from '~/app/_actions/safe-action'
+import { actionClient } from '~/app/_actions/actionClient'
 import { postMeldingByMeldingIdReclassification } from '~/app/_api-client/proxy'
 
 const changeCategorySchema = z.object({
