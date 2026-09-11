@@ -34,6 +34,23 @@
   }
 }
 
+@media (hover: hover) {
+  .upload:hover .button:global(.ams-button--primary) {
+    background-color: var(--ams-button-primary-hover-background-color);
+    border-color: var(--ams-button-primary-hover-border-color);
+  }
+
+  .upload:hover .button:global(.ams-button--secondary) {
+    box-shadow: var(--ams-button-secondary-hover-box-shadow);
+    color: var(--ams-button-secondary-hover-color);
+  }
+
+  .upload:hover .button:global(.ams-button--tertiary) {
+    border-color: var(--ams-button-tertiary-hover-border-color);
+    color: var(--ams-button-tertiary-hover-color);
+  }
+}
+
 .dropAreaText {
   display: none;
 
