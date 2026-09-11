@@ -15,6 +15,7 @@ import styles from './AssetList.module.css'
 export type Props = {
   assetConfig: Pick<SelectLocationProps['assetConfig'], 'icon' | 'label' | 'maxCount'>
   assetList: Feature[]
+  isLoading: boolean
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
   setNotificationType: (notificationType: NotificationType | null) => void
@@ -42,11 +43,14 @@ const AssetListItem = ({ asset, assetConfig, isChecked = false, onChange }: Asse
 export const AssetList = ({
   assetConfig,
   assetList,
+  isLoading,
   selectedAssets,
   setCoordinates,
   setNotificationType,
   setSelectedAssets,
 }: Props) => {
+  if (isLoading) return <p>Loading...</p>
+
   if (assetList.length === 0 && selectedAssets.length === 0) return
 
   const filteredList = assetList.filter(

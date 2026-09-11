@@ -1,7 +1,7 @@
 import type { Mock } from 'vitest'
 
 import useViewportHasMinWidth from '@amsterdam/design-system-react/dist/common/useViewportHasMinWidth'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useActionState, useEffect } from 'react'
 
@@ -224,5 +224,66 @@ describe('Asset list toggle button', () => {
       }),
       undefined,
     )
+  })
+})
+
+describe('Asset list loading state', () => {
+  it('shows a loading state on AssetList when coordinates change with a valid WFS query', async () => {
+    ;(AssetList as Mock).mockImplementationOnce(({ setCoordinates }) => (
+      <SetInternalState setter={setCoordinates} value={{ lat: 1, lng: 2 }} />
+    ))
+
+    render(<SelectLocation {...defaultProps} />)
+
+    await waitFor(() => {
+      expect(AssetList).toHaveBeenLastCalledWith(expect.objectContaining({ isLoading: true }), undefined)
+    })
+  })
+
+  it('does not show a loading state when the WFS query is missing required fields', async () => {
+    ;(AssetList as Mock).mockImplementationOnce(({ setCoordinates }) => (
+      <SetInternalState setter={setCoordinates} value={{ lat: 1, lng: 2 }} />
+    ))
+
+    render(
+      <SelectLocation
+        {...defaultProps}
+        assetConfig={{
+          ...defaultProps.assetConfig,
+          wfsQuery: { ...defaultProps.assetConfig.wfsQuery, filter: undefined },
+        }}
+      />,
+    )
+
+    await waitFor(() => {
+      expect(AssetList).toHaveBeenLastCalledWith(expect.objectContaining({ isLoading: false }), undefined)
+    })
+  })
+
+  it('does not show a loading state when coordinates are cleared', async () => {
+    ;(AssetList as Mock).mockImplementationOnce(({ setCoordinates }) => (
+      <SetInternalState setter={setCoordinates} value={undefined} />
+    ))
+
+    render(<SelectLocation {...defaultProps} />)
+
+    await waitFor(() => {
+      expect(AssetList).toHaveBeenLastCalledWith(expect.objectContaining({ isLoading: false }), undefined)
+    })
+  })
+
+  it('does not show a loading state when the viewport is wide', async () => {
+    ;(AssetList as Mock).mockImplementationOnce(({ setCoordinates }) => (
+      <SetInternalState setter={setCoordinates} value={{ lat: 1, lng: 2 }} />
+    ))
+    ;(useViewportHasMinWidth as Mock).mockImplementation((minWidth: string) => minWidth === 'wide')
+
+    render(<SelectLocation {...defaultProps} />)
+
+    await waitFor(() => {
+      expect(AssetList).toHaveBeenLastCalledWith(expect.objectContaining({ isLoading: false }), undefined)
+    })
+
+    ;(useViewportHasMinWidth as Mock).mockReset()
   })
 })

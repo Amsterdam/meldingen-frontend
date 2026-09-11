@@ -17,6 +17,7 @@ const defaultProps: Props = {
     maxCount: 5,
   },
   assetList: containerAssets,
+  isLoading: false,
   selectedAssets: [],
   setCoordinates: vi.fn(),
   setNotificationType: vi.fn(),
@@ -28,6 +29,19 @@ describe('AssetList', () => {
     const { container } = render(<AssetList {...defaultProps} assetList={[]} />)
 
     expect(container).toBeEmptyDOMElement()
+  })
+
+  it('renders loading text instead of the list when isLoading is true', () => {
+    render(<AssetList {...defaultProps} isLoading />)
+
+    expect(screen.getByText('Loading...')).toBeInTheDocument()
+    expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
+  })
+
+  it('renders loading text even when assetList and selectedAssets are empty', () => {
+    render(<AssetList {...defaultProps} assetList={[]} isLoading selectedAssets={[]} />)
+
+    expect(screen.getByText('Loading...')).toBeInTheDocument()
   })
 
   it('renders a list of assets', () => {
