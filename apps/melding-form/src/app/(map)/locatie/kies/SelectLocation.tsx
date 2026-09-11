@@ -101,7 +101,7 @@ export const SelectLocation = ({
     }
   }, [error])
 
-  const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0
+  const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0 || showAssetList
   const defaultCoordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
 
   const selectedAssetsValue = JSON.stringify(
