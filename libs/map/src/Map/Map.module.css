@@ -11,10 +11,6 @@
   }
 }
 
-.hideMap {
-  display: none;
-}
-
 .map {
   isolation: isolate; /* Prevents Leaflet z-index use from bleeding into our app. */
 }

@@ -1,6 +1,5 @@
 import type { PropsWithChildren } from 'react'
 
-import { clsx } from 'clsx'
 import { latLng, Map, tileLayer } from 'leaflet'
 import { createContext, useEffect, useRef, useState } from 'react'
 
@@ -10,7 +9,6 @@ import 'leaflet/dist/leaflet.css'
 import styles from './Map.module.css'
 
 export type Props = PropsWithChildren & {
-  isHidden?: boolean
   isInert?: boolean
   /* This prop is only used for unit tests. */
   testMapInstance?: Map
@@ -18,7 +16,7 @@ export type Props = PropsWithChildren & {
 
 export const MapContext = createContext<Map | undefined>(undefined)
 
-export const MapComponent = ({ children, isHidden, isInert, testMapInstance }: Props) => {
+export const MapComponent = ({ children, isInert, testMapInstance }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null)
 
   // Use state instead of a ref for storing the Leaflet map object otherwise you may run into DOM issues when React StrictMode is enabled
@@ -69,17 +67,9 @@ export const MapComponent = ({ children, isHidden, isInert, testMapInstance }: P
     }
   }, [])
 
-  useEffect(() => {
-    // Showing/hiding the map changes its container size, so Leaflet needs to recalculate
-    // dimensions. Leaflet also uses the container size to position tiles, and while hidden
-    // that size is 0x0, so the view has to be reset once the correct size is known again.
-    mapInstance?.invalidateSize()
-    mapInstance?.fire('viewreset')
-  }, [mapInstance, isHidden])
-
   return (
     <MapContext.Provider value={mapInstance}>
-      <div className={clsx(styles.container, isHidden && styles.hideMap)}>
+      <div className={styles.container}>
         <div className={styles.map} inert={isInert} ref={mapRef} />
         {children}
       </div>
