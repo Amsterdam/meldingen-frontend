@@ -93,6 +93,8 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
               <Label htmlFor="category">{t('form-labels.category')}</Label>
               {categoryErrorMessage && <ErrorMessage id="category-error">{t(categoryErrorMessage)}</ErrorMessage>}
               <Select
+                aria-describedby={getAriaDescribedBy('category', undefined, categoryErrorMessage)}
+                aria-required="true"
                 className={styles.selectFullWidth}
                 defaultValue={selectedCategory}
                 id="category"
