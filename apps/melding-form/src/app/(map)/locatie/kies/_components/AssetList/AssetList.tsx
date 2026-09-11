@@ -71,7 +71,7 @@ export const AssetList = ({
       setCoordinates({ lat: x, lng: y })
     }
 
-    setSelectedAssets((assetList) => assetList.filter((a) => a.id !== asset.id))
+    setSelectedAssets((prevSelectedAssets) => prevSelectedAssets.filter((a) => a.id !== asset.id))
   }
 
   const handleSelectAsset = (asset: Feature) => {
@@ -84,7 +84,7 @@ export const AssetList = ({
     const [y, x] = asset.geometry.coordinates
     setCoordinates({ lat: x, lng: y })
 
-    setSelectedAssets((assetList) => [asset, ...assetList])
+    setSelectedAssets((prevSelectedAssets) => [asset, ...prevSelectedAssets])
   }
 
   return (
