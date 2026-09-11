@@ -8,12 +8,13 @@ import type { NotificationType, Props as SelectLocationProps } from '../../Selec
 import type { Coordinates } from '~/types'
 
 import { AssetIcon } from '../AssetIcon/AssetIcon'
+import { Loading } from './Loading'
 import { getAssetLabelText } from '~/app/(general)/_utils/getAssetLabelText'
 
 import styles from './AssetList.module.css'
 
 export type Props = {
-  assetConfig: Pick<SelectLocationProps['assetConfig'], 'icon' | 'label' | 'maxCount'>
+  assetConfig: Pick<SelectLocationProps['assetConfig'], 'icon' | 'label' | 'maxCount' | 'names'>
   assetList: Feature[]
   isLoading: boolean
   selectedAssets: Feature[]
@@ -49,7 +50,7 @@ export const AssetList = ({
   setNotificationType,
   setSelectedAssets,
 }: Props) => {
-  if (isLoading) return <p>Loading...</p>
+  if (isLoading) return <Loading pluralName={assetConfig.names.plural} />
 
   if (assetList.length === 0 && selectedAssets.length === 0) return
 
