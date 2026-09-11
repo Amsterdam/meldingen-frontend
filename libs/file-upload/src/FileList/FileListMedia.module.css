@@ -1,10 +1,21 @@
 .image {
+  background-color: transparent;
   object-fit: contain;
   object-position: left;
 
   @media screen and (min-width: 37.5rem) {
     object-position: center;
   }
+}
+
+.pdf {
+  background-color: var(--ams-color-background-body);
+  color: #004699;
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  place-content: center center;
+  width: 100%;
 }
 
 .placeholder {
