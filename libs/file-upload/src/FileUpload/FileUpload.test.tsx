@@ -8,9 +8,9 @@ import { FileUpload } from './FileUpload'
 
 describe('FileUpload', () => {
   it('renders button and texts', () => {
-    render(<FileUpload buttonText="Button text" dropAreaText="Drop area text" onChange={vi.fn()} />)
+    render(<FileUpload button={{ text: 'Button text' }} dropAreaText="Drop area text" onChange={vi.fn()} />)
 
-    const button = screen.getByRole('button', { name: 'Drop area text Button text' })
+    const button = screen.getByRole('button', { name: 'Button textDrop area text' })
 
     expect(button).toBeInTheDocument()
   })
