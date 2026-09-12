@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@meldingen/api-client": "workspace:*",
+    "@meldingen/file-upload": "workspace:*",
     "@meldingen/form-renderer": "workspace:*",
     "@meldingen/markdown-to-html": "workspace:*",
-    "@meldingen/file-upload": "workspace:*",
     "@meldingen/ui": "workspace:*",
     "@meldingen/utils": "workspace:*",
     "@tiptap/core": "3.31.3",
@@ -35,6 +35,8 @@
     "@tiptap/static-renderer": "3.31.3",
     "next": "16.3.4",
     "next-auth": "4.24.15",
-    "next-intl": "4.14.2"
+    "next-intl": "4.14.2",
+    "next-safe-action": "8.7.3",
+    "zod": "4.4.3"
   }
 }
