@@ -191,6 +191,7 @@
     "label": "Wijzig categorie",
     "submit-button": "Wijzig categorie",
     "cancel-link": "Annuleer",
+    "option-placeholder": "Kies categorie",
     "errors": {
       "category-change-failed-heading": "De categorie kan niet worden gewijzigd",
       "category-required": "Selecteer een categorie.",

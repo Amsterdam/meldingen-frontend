@@ -96,7 +96,9 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
                 key={meldingClassification?.id ?? 'no-classification'}
                 name="category"
               >
-                {!meldingClassification?.id && <Select.Option value={undefined}>-- Kies categorie --</Select.Option>}
+                {!meldingClassification?.id && (
+                  <Select.Option value={undefined}>-- {t('option-placeholder')} --</Select.Option>
+                )}
                 {classifications.map((classification) => (
                   <Select.Option key={classification.id} value={classification.id}>
                     {classification.name}
