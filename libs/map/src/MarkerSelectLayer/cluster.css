@@ -5,9 +5,13 @@
   background-size: cover;
   font-family: var(--ams-typography-font-family);
   font-size: var(--ams-typography-heading-3-font-size);
-  font-weight: var(--ams-typography-heading-font-weight);
+  font-weight: var(--ams-typography-body-text-extra-bold-font-weight);
   justify-content: center;
   line-height: var(--ams-typography-heading-3-line-height);
+
+  &.active {
+    background-image: url('/cluster-active.svg');
+  }
 }
 
 /* Increase specificity, to avoid conflicts with native Leaflet styles */

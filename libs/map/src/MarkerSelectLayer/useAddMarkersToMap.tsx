@@ -1,8 +1,8 @@
 import type { Layer, Map, MarkerCluster } from 'leaflet'
 import type { RefObject } from 'react'
 
-import 'leaflet.markercluster'
 import L, { divIcon, latLng, Marker } from 'leaflet'
+import 'leaflet.markercluster'
 import { useEffect } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
@@ -11,15 +11,15 @@ import type { Coordinates } from '../types'
 
 import { getAssetIcon } from './utils/getAssetIcon'
 
-export const createClusterIcon = (cluster: MarkerCluster) => {
+export const createClusterIcon = (cluster: MarkerCluster, isActive?: boolean) => {
   // Cluster markers should not be keyboard accessible
   cluster.options.keyboard = false
 
   return divIcon({
-    className: 'meldingen-cluster',
+    className: isActive ? 'meldingen-cluster active' : 'meldingen-cluster',
     html: cluster.getChildCount().toString(),
-    iconAnchor: [35, 35],
-    iconSize: [70, 70],
+    iconAnchor: [40, 40],
+    iconSize: [80, 80],
   })
 }
 
@@ -52,20 +52,32 @@ export const useAddMarkersToMap = ({
   useEffect(() => {
     if (!map || features.length === 0) return
 
+    const markerIds = new WeakMap<Marker, Feature['id']>()
+    const selectedMarkerIds = new Set(selectedMarkers.map(({ id }) => id))
+
     markerLayerRef.current?.remove()
 
     const markerClusterGroup = L.markerClusterGroup({
-      iconCreateFunction: createClusterIcon,
+      iconCreateFunction: (cluster) => {
+        const isActive = cluster.getAllChildMarkers().some((marker) => {
+          const markerId = markerIds.get(marker)
+
+          return markerId != null && selectedMarkerIds.has(markerId)
+        })
+
+        return createClusterIcon(cluster, isActive)
+      },
       showCoverageOnHover: false,
     })
 
-    features.forEach((feature) => {
-      if (!feature.geometry || feature.geometry.type !== 'Point') return
+    for (const feature of features) {
+      if (!feature.geometry || feature.geometry.type !== 'Point') continue
 
       const geometry = feature.geometry
       const [lng, lat] = geometry.coordinates
       const latlng = latLng(lat, lng)
-      const isSelected = selectedMarkers.some((a) => a.id === feature.id)
+      // const isSelected = selectedMarkers.some((a) => a.id === feature.id)
+      const isSelected = selectedMarkerIds.has(feature.id)
 
       const marker = new Marker(latlng, {
         icon: getAssetIcon(feature, isSelected, iconConfig),
@@ -86,14 +98,17 @@ export const useAddMarkersToMap = ({
             const [y, x] = selectedMarkers[1].geometry.coordinates
             updateSelectedPoint({ lat: x, lng: y })
           }
-        } else {
-          if (selectedMarkers.length >= maxMarkers) {
-            onMaxMarkersReached(true)
-            return
-          }
-          onSelectedMarkersChange([feature, ...selectedMarkers])
-          updateSelectedPoint({ lat, lng })
+
+          return
         }
+
+        if (selectedMarkers.length >= maxMarkers) {
+          onMaxMarkersReached(true)
+          return
+        }
+
+        onSelectedMarkersChange([feature, ...selectedMarkers])
+        updateSelectedPoint({ lat, lng })
       })
 
       // Load fallback whe icon fails to load (e.g. due to missing icon for a specific asset type)
@@ -110,8 +125,10 @@ export const useAddMarkersToMap = ({
         )
       })
 
+      markerIds.set(marker, feature.id)
+
       markerClusterGroup.addLayer(marker)
-    })
+    }
 
     markerLayerRef.current = markerClusterGroup
     markerClusterGroup.addTo(map)
