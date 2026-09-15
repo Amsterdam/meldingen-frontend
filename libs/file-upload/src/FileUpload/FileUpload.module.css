@@ -1,8 +1,11 @@
 .upload {
+  align-items: center;
   background-color: var(--ams-file-input-background-color);
   border: none;
   color: var(--ams-file-input-color);
+  column-gap: var(--ams-space-m);
   cursor: var(--ams-file-input-cursor);
+  display: flex;
   font-family: var(--ams-file-input-font-family);
   font-size: var(--ams-file-input-font-size);
   font-weight: var(--ams-file-input-font-weight);
@@ -23,13 +26,6 @@
 }
 
 .button {
-  border-style: var(--ams-button-border-style);
-  border-width: var(--ams-button-border-width);
-  box-sizing: border-box;
-  color: var(--ams-button-secondary-color);
-  display: inline-block;
-  padding-block: var(--ams-button-padding-block);
-  padding-inline: var(--ams-button-padding-inline);
   text-align: center;
   width: 100%;
 
@@ -38,9 +34,21 @@
   }
 }
 
-.upload:hover .button {
-  box-shadow: var(--ams-button-secondary-hover-box-shadow);
-  color: var(--ams-button-secondary-hover-color);
+@media (hover: hover) {
+  .upload:hover .button:global(.ams-button--primary) {
+    background-color: var(--ams-button-primary-hover-background-color);
+    border-color: var(--ams-button-primary-hover-border-color);
+  }
+
+  .upload:hover .button:global(.ams-button--secondary) {
+    box-shadow: var(--ams-button-secondary-hover-box-shadow);
+    color: var(--ams-button-secondary-hover-color);
+  }
+
+  .upload:hover .button:global(.ams-button--tertiary) {
+    border-color: var(--ams-button-tertiary-hover-border-color);
+    color: var(--ams-button-tertiary-hover-color);
+  }
 }
 
 .dropAreaText {
