@@ -15,7 +15,7 @@ describe('Page', () => {
       error: { detail: 'Error message' },
     } as Awaited<ReturnType<typeof apiClientProxy.getMeldingByMeldingId>>)
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     await expect(Page({ params })).rejects.toThrowError('Failed to fetch melding data.')
 
@@ -35,7 +35,7 @@ describe('Page', () => {
       error: { detail: 'Error message' },
     } as Awaited<ReturnType<typeof apiClientProxy.getClassification>>)
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     await expect(Page({ params })).rejects.toThrowError('Failed to fetch classifications.')
 
@@ -64,7 +64,7 @@ describe('Page', () => {
       error: undefined,
     } as Awaited<ReturnType<typeof apiClientProxy.getClassification>>)
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     await Page({ params })
 
@@ -95,7 +95,7 @@ describe('Page', () => {
       error: undefined,
     } as Awaited<ReturnType<typeof apiClientProxy.getClassification>>)
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     const result = await Page({ params })
 
