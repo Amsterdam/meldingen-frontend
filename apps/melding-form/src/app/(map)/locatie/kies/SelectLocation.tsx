@@ -6,7 +6,7 @@ import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import dynamic from 'next/dynamic'
 import Form from 'next/form'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useCallback, useEffect, useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
@@ -85,10 +85,10 @@ export const SelectLocation = ({
     setCoordinates(newCoordinates)
   }
 
-  const handleFeaturesChange = (features: Feature[]) => {
+  const handleFeaturesChange = useCallback((features: Feature[]) => {
     setAssetList(features)
     setIsAssetListLoading(false)
-  }
+  }, [])
 
   const postCoordinatesAndAssetsWithExtraArgs = postCoordinatesAndAssets.bind(null, {
     asset_type_id: assetConfig.wfsQuery.assetTypeId,
