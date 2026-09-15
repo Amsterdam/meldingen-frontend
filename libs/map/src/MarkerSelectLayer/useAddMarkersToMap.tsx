@@ -67,6 +67,7 @@ export const useAddMarkersToMap = ({
 
         return createClusterIcon(cluster, isActive)
       },
+      showCoverageOnHover: false,
     })
 
     for (const feature of features) {
