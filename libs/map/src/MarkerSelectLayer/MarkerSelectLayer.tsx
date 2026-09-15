@@ -123,10 +123,6 @@ export const MarkerSelectLayer = ({
 
     return () => {
       map.off('moveend', handleMoveEnd)
-      // Reading .current here on purpose: unlike a DOM-node ref, we want whichever
-      // request is in flight at cleanup time, not a value captured at mount.
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      pendingRequestRef.current?.abort()
     }
   }, [map, onFeaturesChange, wfsQuery])
 
