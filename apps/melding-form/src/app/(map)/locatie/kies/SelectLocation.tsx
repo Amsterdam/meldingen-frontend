@@ -80,7 +80,7 @@ export const SelectLocation = ({
   const { assetTypeId, classification, filter, srsName, typeNames } = assetConfig.wfsQuery
   const hasValidWfsQuery = Boolean(classification && assetTypeId && typeNames && filter && srsName)
 
-  const handleSetCoordinates = (newCoordinates?: Coordinates) => {
+  const setCoordinatesAndAssetLoading = (newCoordinates?: Coordinates) => {
     if (newCoordinates && hasValidWfsQuery) setIsAssetListLoading(true)
     setCoordinates(newCoordinates)
   }
@@ -135,7 +135,7 @@ export const SelectLocation = ({
           <AddressInput
             coordinates={coordinates}
             errorMessage={error?.message}
-            setCoordinates={handleSetCoordinates}
+            setCoordinates={setCoordinatesAndAssetLoading}
             setSelectedAssets={setSelectedAssets}
           />
           <input defaultValue={defaultCoordinatesValue} name="coordinates" type="hidden" />
@@ -157,7 +157,7 @@ export const SelectLocation = ({
           assetList={assetList}
           isLoading={isAssetListLoading && !isWideWindow}
           selectedAssets={selectedAssets}
-          setCoordinates={handleSetCoordinates}
+          setCoordinates={setCoordinates}
           setNotificationType={setNotificationType}
           setSelectedAssets={setSelectedAssets}
         />
@@ -173,7 +173,7 @@ export const SelectLocation = ({
             hideSelectedPoint={selectedAssets.length > 0}
             onSelectedPointChange={(selectedPoint) => {
               setSelectedAssets([])
-              handleSetCoordinates(selectedPoint)
+              setCoordinatesAndAssetLoading(selectedPoint)
             }}
             selectedPoint={coordinates}
           />
@@ -185,13 +185,13 @@ export const SelectLocation = ({
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
             onSelectedMarkersChange={setSelectedAssets}
             selectedMarkers={selectedAssets}
-            updateSelectedPoint={handleSetCoordinates}
+            updateSelectedPoint={setCoordinates}
             wfsQuery={assetConfig.wfsQuery}
           />
           <Controls
             onCurrentLocationError={() => setNotificationType('location-service-disabled')}
             texts={controlsTexts}
-            updateSelectedPoint={handleSetCoordinates}
+            updateSelectedPoint={setCoordinatesAndAssetLoading}
           >
             {notificationType && (
               <Notification

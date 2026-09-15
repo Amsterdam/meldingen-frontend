@@ -7,7 +7,7 @@ import { useActionState, useEffect } from 'react'
 
 import type { Props } from './SelectLocation'
 
-import { AssetList } from './_components'
+import { AddressInput, AssetList } from './_components'
 import { SelectLocation } from './SelectLocation'
 import { containerAssets } from '~/mocks/data'
 
@@ -18,6 +18,10 @@ vi.mock('react', async (importOriginal) => {
     useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
+
+vi.mock('./_components/AddressInput/AddressInput', () => ({
+  AddressInput: vi.fn(),
+}))
 
 vi.mock('./_components/AssetList/AssetList', () => ({
   AssetList: vi.fn(),
@@ -209,7 +213,7 @@ describe('Asset list toggle button', () => {
 
 describe('Asset list loading state', () => {
   it('shows a loading state on AssetList when coordinates change with a valid WFS query', async () => {
-    ;(AssetList as Mock).mockImplementationOnce(({ setCoordinates }) => (
+    ;(AddressInput as Mock).mockImplementationOnce(({ setCoordinates }) => (
       <SetInternalState setter={setCoordinates} value={{ lat: 1, lng: 2 }} />
     ))
 
@@ -221,7 +225,7 @@ describe('Asset list loading state', () => {
   })
 
   it('does not show a loading state when the WFS query is missing required fields', async () => {
-    ;(AssetList as Mock).mockImplementationOnce(({ setCoordinates }) => (
+    ;(AddressInput as Mock).mockImplementationOnce(({ setCoordinates }) => (
       <SetInternalState setter={setCoordinates} value={{ lat: 1, lng: 2 }} />
     ))
 
@@ -241,7 +245,7 @@ describe('Asset list loading state', () => {
   })
 
   it('does not show a loading state when coordinates are cleared', async () => {
-    ;(AssetList as Mock).mockImplementationOnce(({ setCoordinates }) => (
+    ;(AddressInput as Mock).mockImplementationOnce(({ setCoordinates }) => (
       <SetInternalState setter={setCoordinates} value={undefined} />
     ))
 
@@ -253,7 +257,7 @@ describe('Asset list loading state', () => {
   })
 
   it('does not show a loading state when the viewport is wide', async () => {
-    ;(AssetList as Mock).mockImplementationOnce(({ setCoordinates }) => (
+    ;(AddressInput as Mock).mockImplementationOnce(({ setCoordinates }) => (
       <SetInternalState setter={setCoordinates} value={{ lat: 1, lng: 2 }} />
     ))
     ;(useViewportHasMinWidth as Mock).mockImplementation((minWidth: string) => minWidth === 'wide')
