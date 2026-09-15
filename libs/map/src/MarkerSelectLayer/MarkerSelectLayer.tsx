@@ -75,11 +75,8 @@ export const fetchFeaturesOnMoveEnd = async ({
 
   if (zoom < ZOOM_THRESHOLD) {
     pendingRequestRef.current?.abort()
-
-    if (markerLayerRef.current) {
-      markerLayerRef.current.remove()
-      onFeaturesChange([])
-    }
+    markerLayerRef.current?.remove()
+    onFeaturesChange([])
   }
 }
 
