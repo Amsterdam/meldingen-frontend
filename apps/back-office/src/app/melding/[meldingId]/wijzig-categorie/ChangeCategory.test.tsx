@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import type { Mock } from 'vitest'
 
 import { render, screen, within } from '@testing-library/react'
@@ -8,6 +9,10 @@ import type { Props } from './ChangeCategory'
 
 import { ChangeCategory } from './ChangeCategory'
 
+const { mockNextForm } = vi.hoisted(() => ({
+  mockNextForm: vi.fn(),
+}))
+
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
@@ -15,6 +20,14 @@ vi.mock('react', async (importOriginal) => {
     useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
+
+vi.mock('next/form', () => ({
+  default: (props: { action?: (formData: FormData) => void; children: ReactNode }) => {
+    mockNextForm(props)
+
+    return <form>{props.children}</form>
+  },
+}))
 
 const defaultProps: Props = {
   classifications: [
@@ -42,6 +55,11 @@ const defaultProps: Props = {
 }
 
 describe('ChangeCategory', () => {
+  beforeEach(() => {
+    mockNextForm.mockClear()
+    ;(useActionState as Mock).mockReturnValue([{}, vi.fn(), false])
+  })
+
   it('renders the component with the correct document title', () => {
     render(<ChangeCategory {...defaultProps} />)
 
@@ -77,7 +95,7 @@ describe('ChangeCategory', () => {
   it('renders a placeholder option when no current category exists', () => {
     render(<ChangeCategory {...defaultProps} meldingClassification={null} />)
 
-    expect(screen.getByRole('option', { name: '-- Kies categorie --' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: '-- option-placeholder --' })).toBeInTheDocument()
   })
 
   it('renders the cancel link', () => {
@@ -108,8 +126,8 @@ describe('ChangeCategory', () => {
       {
         formData,
         validationErrors: [
-          { key: 'category-id', message: 'errors.category-required' },
-          { key: 'reason', message: 'errors.reason-required' },
+          { key: 'category', message: 'category-required' },
+          { key: 'reason', message: 'reason-required' },
         ],
       },
       vi.fn(),
@@ -118,8 +136,8 @@ describe('ChangeCategory', () => {
 
     render(<ChangeCategory {...defaultProps} />)
 
-    expect(screen.getByText('errors.category-required')).toBeInTheDocument()
-    expect(screen.getByText('errors.reason-required')).toBeInTheDocument()
+    expect(screen.getByText('category-required')).toBeInTheDocument()
+    expect(screen.getByText('reason-required')).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: 'form-labels.reason' })).toHaveValue(
       'Because this is the right category',
     )
@@ -142,16 +160,21 @@ describe('ChangeCategory', () => {
   })
 
   it('submits the form when the submit button is clicked', async () => {
-    const user = userEvent.setup()
-
     const mockFormAction = vi.fn()
     ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<ChangeCategory {...defaultProps} />)
 
-    const submitButton = screen.getByRole('button', { name: 'submit-button' })
-    await user.click(submitButton)
+    const formProps = mockNextForm.mock.calls.at(-1)?.[0] as { action?: (formData: FormData) => void }
+    const formData = new FormData()
+    formData.set('category', '3')
+    formData.set('reason', 'Need to correct the classification')
 
-    expect(mockFormAction).toHaveBeenCalled()
+    formProps.action?.(formData)
+
+    expect(mockFormAction).toHaveBeenCalledTimes(1)
+    const submittedFormData = mockFormAction.mock.calls[0][0] as FormData
+    expect(submittedFormData.get('category')).toBe('3')
+    expect(submittedFormData.get('reason')).toBe('Need to correct the classification')
   })
 })
