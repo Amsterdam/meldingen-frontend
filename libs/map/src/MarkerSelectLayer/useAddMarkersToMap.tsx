@@ -1,4 +1,4 @@
-import type { Layer, Map, MarkerCluster } from 'leaflet'
+import type { Layer, Map, MarkerCluster, PointExpression } from 'leaflet'
 import type { RefObject } from 'react'
 
 import L, { divIcon, latLng, Marker } from 'leaflet'
@@ -15,11 +15,15 @@ export const createClusterIcon = (cluster: MarkerCluster, isActive?: boolean) =>
   // Cluster markers should not be keyboard accessible
   cluster.options.keyboard = false
 
+  const className = isActive ? 'meldingen-cluster active' : 'meldingen-cluster'
+  const iconSize: PointExpression = isActive ? [80, 80] : [54, 54]
+  const iconAnchor: PointExpression = isActive ? [40, 40] : [27, 27]
+
   return divIcon({
-    className: isActive ? 'meldingen-cluster active' : 'meldingen-cluster',
+    className,
     html: cluster.getChildCount().toString(),
-    iconAnchor: [40, 40],
-    iconSize: [80, 80],
+    iconAnchor,
+    iconSize,
   })
 }
 
