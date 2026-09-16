@@ -73,7 +73,7 @@ export const SelectLocation = ({
   const [isAssetListLoading, setIsAssetListLoading] = useState(false)
   const [notificationType, setNotificationType] = useState<NotificationType | null>(null)
   const [selectedAssets, setSelectedAssets] = useState<Feature[]>(selectedAssetsFromServer)
-  const [showAssetList, setShowAssetList] = useState(false)
+  const [isAssetListOpen, setIsAssetListOpen] = useState(false)
 
   // TODO: this duplicates the guard in MarkerSelectLayer.
   // Eventually, all this app specific WFS stuff should be removed from MarkerSelectLayer.
@@ -105,11 +105,6 @@ export const SelectLocation = ({
   }
 
   useEffect(() => {
-    // Hide mobile asset list view when resizing to larger screens
-    if (isWideWindow) setShowAssetList(false)
-  }, [isWideWindow])
-
-  useEffect(() => {
     if (error) {
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
@@ -117,7 +112,8 @@ export const SelectLocation = ({
     }
   }, [error])
 
-  const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0 || showAssetList
+  const showAssetList = isAssetListOpen && !isWideWindow
+  const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0 || isAssetListOpen
   const defaultCoordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
 
   const selectedAssetsValue = JSON.stringify(
@@ -209,8 +205,8 @@ export const SelectLocation = ({
           {t('submit-button.mobile')}
         </Button>
         {showAssetListToggleButton && (
-          <Button onClick={() => setShowAssetList((prevState) => !prevState)} variant="secondary">
-            {showAssetList ? t('toggle-button.map') : t('toggle-button.list')}
+          <Button onClick={() => setIsAssetListOpen((prevState) => !prevState)} variant="secondary">
+            {isAssetListOpen ? t('toggle-button.map') : t('toggle-button.list')}
           </Button>
         )}
       </div>
