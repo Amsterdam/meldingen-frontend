@@ -6,7 +6,7 @@
 
   @media screen and (min-width: 37.5rem) {
     align-items: center;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 2fr auto;
     margin-block-end: var(--ams-space-m);
   }
 }
@@ -52,7 +52,7 @@
 .deleteButton {
   inline-size: fit-content;
   line-height: var(--ams-typography-body-text-large-line-height);
-  padding-block: 0;
+  padding-block: var(--ams-space-xs);
   padding-inline: var(--ams-space-s);
 
   @media screen and (min-width: 37.5rem) {
