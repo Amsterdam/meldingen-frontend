@@ -17,8 +17,4 @@
   composes: column;
   align-items: start;
   row-gap: var(--ams-space-s);
-
-  @media screen and (min-width: 37.5rem) {
-    row-gap: var(--ams-space-l);
-  }
 }
