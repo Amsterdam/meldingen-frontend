@@ -48,7 +48,7 @@ describe('Attachments', () => {
     const heading = screen.getByRole('heading', { name: 'First question hint-text' })
     const description = screen.getByText('Test description')
     const fileUpload = screen.getByRole('button', {
-      name: 'First question hint-text file-upload.drop-area file-upload.button',
+      name: 'First question hint-text file-upload.buttonfile-upload.drop-area',
     })
     const noJSAlertHeading = screen.getByRole('heading', { name: 'no-js-alert-title' })
 

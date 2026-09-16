@@ -171,7 +171,10 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp"
               aria-describedby={getAriaDescribedBy('file-upload', description)}
               aria-labelledby="file-upload-label file-upload"
-              buttonText={t('file-upload.button')}
+              button={{
+                text: t('file-upload.button'),
+                variant: 'secondary',
+              }}
               dropAreaText={t('file-upload.drop-area')}
               id="file-upload"
               multiple
