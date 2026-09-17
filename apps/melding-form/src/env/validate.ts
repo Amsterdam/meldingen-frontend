@@ -5,6 +5,7 @@ import { clientSchema, serverSchema } from './schema'
 export const validateServerEnv = () => {
   const parsed = z.safeParse(serverSchema, process.env)
 
+  // v8 ignore next 1
   if (!parsed.success) {
     throw new Error('Invalid server environment variables', { cause: parsed.error })
   }
@@ -22,6 +23,7 @@ export const validateClientEnv = () => {
     NEXT_PUBLIC_MELDING_FORM_BASE_URL: process.env.NEXT_PUBLIC_MELDING_FORM_BASE_URL,
   })
 
+  // v8 ignore next 1
   if (!parsed.success) {
     throw new Error('Invalid client environment variables', { cause: parsed.error })
   }

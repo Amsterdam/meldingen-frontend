@@ -19,7 +19,10 @@ export default defineConfig({
       },
     },
     env: {
+      NEXT_INTERNAL_BACKEND_BASE_URL: 'http://localhost:8000',
+      NEXT_PUBLIC_BACK_OFFICE_BASE_URL: 'http://localhost:3002',
       NEXT_PUBLIC_BACKEND_BASE_URL: 'http://localhost:3000',
+      NEXT_PUBLIC_MELDING_FORM_BASE_URL: 'http://localhost:3000',
     },
     environment: 'jsdom',
     globals: true,
