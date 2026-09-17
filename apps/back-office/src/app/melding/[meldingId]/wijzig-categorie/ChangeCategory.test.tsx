@@ -104,8 +104,9 @@ describe('ChangeCategory', () => {
     expect(screen.getByRole('status')).toHaveTextContent('3 van 1000 tekens')
   })
 
-  it('displays validation errors and preserves the reason when the action returns validation errors', () => {
+  it('displays validation errors and preserves the submitted form data when the action returns validation errors', () => {
     const formData = new FormData()
+    formData.set('classification', '3')
     formData.set('reason', 'Because this is the right classification')
 
     ;(useActionState as Mock).mockReturnValueOnce([
@@ -120,13 +121,14 @@ describe('ChangeCategory', () => {
       false,
     ])
 
-    render(<ChangeCategory {...defaultProps} />)
+    const { container } = render(<ChangeCategory {...defaultProps} />)
 
-    expect(screen.getByText('classification-required')).toBeInTheDocument()
-    expect(screen.getByText('reason-required')).toBeInTheDocument()
+    expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveValue('3')
     expect(screen.getByRole('textbox', { name: 'form-labels.reason' })).toHaveValue(
       'Because this is the right classification',
     )
+    expect(container.querySelector('#classification-error')).toHaveTextContent('classification-required')
+    expect(container.querySelector('#reason-error')).toHaveTextContent('reason-required')
   })
 
   it('displays an API error alert with the correct document title', () => {

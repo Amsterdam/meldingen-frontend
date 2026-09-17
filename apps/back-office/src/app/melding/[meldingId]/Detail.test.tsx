@@ -190,12 +190,6 @@ describe('Detail', () => {
     expect(labelsLink).toBeInTheDocument()
   })
 
-  it('does not render the classification link when reclassification is not allowed', () => {
-    render(<Detail {...defaultProps} meldingState="completed" />)
-
-    expect(screen.queryByRole('link', { name: 'Change classification' })).not.toBeInTheDocument()
-  })
-
   it('renders the attachments', () => {
     render(<Detail {...defaultProps} />)
 

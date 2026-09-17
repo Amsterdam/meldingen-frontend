@@ -72,6 +72,24 @@ describe('getMeldingData', () => {
     expect(classificationEntry?.description).toBe('detail.melding-data.classification.no-data')
   })
 
+  it('does not include a reclassification link when the melding state does not allow it', () => {
+    const result = getMeldingData(
+      {
+        ...melding,
+        state: 'completed',
+      },
+      (key: string) => key,
+    )
+
+    const classificationEntry = result.find((item) => item.key === 'classification')
+
+    expect(classificationEntry).toEqual({
+      description: melding.classification!.name,
+      key: 'classification',
+      term: 'detail.melding-data.classification.term',
+    })
+  })
+
   it('returns fallback label when labels is empty', () => {
     const meldingDataWithoutLabels = {
       ...melding,
