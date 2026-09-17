@@ -16,7 +16,7 @@ describe('ApiClientInitializer', () => {
     render(<ApiClientInitializer />)
 
     expect(apiClient.client.setConfig).toHaveBeenCalledWith({
-      baseUrl: getClientEnv().NEXT_PUBLIC_MELDING_FORM_BASE_URL,
+      baseUrl: getClientEnv().NEXT_PUBLIC_BACKEND_BASE_URL,
     })
   })
 
