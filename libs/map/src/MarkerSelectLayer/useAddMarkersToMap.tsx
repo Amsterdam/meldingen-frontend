@@ -80,7 +80,6 @@ export const useAddMarkersToMap = ({
       const geometry = feature.geometry
       const [lng, lat] = geometry.coordinates
       const latlng = latLng(lat, lng)
-      // const isSelected = selectedMarkers.some((a) => a.id === feature.id)
       const isSelected = selectedMarkerIds.has(feature.id)
 
       const marker = new Marker(latlng, {
