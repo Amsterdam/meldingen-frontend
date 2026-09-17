@@ -7,7 +7,7 @@ import { client } from '@meldingen/api-client'
 
 import { resolveClassificationRedirect } from '../_utils/resolveClassificationRedirect'
 import { COOKIES } from '~/constants'
-import { clientEnv } from '~/env/client'
+import { getClientEnv } from '~/env/client'
 import { serverEnv } from '~/env/server'
 
 // Configure the API client here, because a route handler does not pass layout.tsx.
@@ -24,8 +24,7 @@ export const GET = async (request: NextRequest) => {
   const token = searchParams.get('token')
 
   // request.nextUrl.origin returns the internal server address, not the public URL, so we use an env var instead.
-  const origin = clientEnv.NEXT_PUBLIC_MELDING_FORM_BASE_URL || request.nextUrl.origin
-
+  const origin = getClientEnv().NEXT_PUBLIC_MELDING_FORM_BASE_URL
   // If id or token is missing, redirect to the home page
   if (!id || !token) {
     return NextResponse.redirect(new URL('/', origin))

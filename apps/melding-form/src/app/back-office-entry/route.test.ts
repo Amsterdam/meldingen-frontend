@@ -1,17 +1,19 @@
 import type { Mock } from 'vitest'
 
-import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
 import { vi } from 'vitest'
 
+import { resolveClassificationRedirect } from '../_utils/resolveClassificationRedirect'
 import { GET } from './route'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
-import { ENDPOINTS } from '~/mocks/endpoints'
-import { server } from '~/mocks/node'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
+}))
+
+vi.mock('../_utils/resolveClassificationRedirect', () => ({
+  resolveClassificationRedirect: vi.fn(),
 }))
 
 const BASE_URL = 'http://localhost:3000'
@@ -29,15 +31,12 @@ const requiredParams = {
 
 describe('GET', () => {
   let mockCookieStore: { delete: Mock; set: Mock }
+  const resolveClassificationRedirectMock = vi.mocked(resolveClassificationRedirect)
 
   beforeEach(() => {
     mockCookieStore = { delete: vi.fn(), set: vi.fn() }
     ;(cookies as Mock).mockReturnValue(mockCookieStore)
-    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', BASE_URL)
-  })
-
-  afterAll(() => {
-    vi.unstubAllEnvs()
+    resolveClassificationRedirectMock.mockResolvedValue({ type: 'redirect', url: `/locatie#${TOP_ANCHOR_ID}` })
   })
 
   it('redirects to Home when id or token is missing', async () => {
@@ -65,21 +64,9 @@ describe('GET', () => {
     expect(mockCookieStore.delete).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
   })
 
-  it('falls back to request host as origin when NEXT_PUBLIC_MELDING_FORM_BASE_URL is not set', async () => {
-    vi.unstubAllEnvs()
-
-    const response = await GET(createRequest(requiredParams))
-
-    expect(response.headers.get('location')).toContain('not-url-from-env-var.com')
-  })
-
   it('redirects to Home and logs error when an API error occurs', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-    server.use(
-      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
-        HttpResponse.json('API error', { status: 500 }),
-      ),
-    )
+    resolveClassificationRedirectMock.mockResolvedValueOnce({ error: 'API error', type: 'error' })
 
     const response = await GET(createRequest({ ...requiredParams, classification_id: '42' }))
 
@@ -90,6 +77,7 @@ describe('GET', () => {
   it('redirects to the correct URL when GET is successful', async () => {
     const response = await GET(createRequest({ ...requiredParams, classification_id: '42' }))
 
+    expect(resolveClassificationRedirectMock).toHaveBeenCalledWith(123, 'test-token', 42)
     expect(response.headers.get('location')).toBe(`${BASE_URL}/locatie#${TOP_ANCHOR_ID}`)
   })
 })
