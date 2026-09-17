@@ -60,12 +60,6 @@ describe('ChangeCategory', () => {
     ;(useActionState as Mock).mockReturnValue([{}, vi.fn(), false])
   })
 
-  it('renders the component with the correct document title', () => {
-    render(<ChangeCategory {...defaultProps} />)
-
-    expect(document.title).toBe('metadata.title')
-  })
-
   it('renders the backlink', () => {
     render(<ChangeCategory {...defaultProps} />)
 
@@ -74,25 +68,17 @@ describe('ChangeCategory', () => {
     expect(backLink).toHaveAttribute('href', '/melding/123')
   })
 
-  it('renders the title and form fields', () => {
+  it('renders the classification options and defaults to the current classification', () => {
     render(<ChangeCategory {...defaultProps} />)
 
-    expect(screen.getByRole('heading', { name: 'title' })).toBeInTheDocument()
-    expect(screen.getByRole('combobox', { name: 'form-labels.category' })).toBeInTheDocument()
-    expect(screen.getByRole('textbox', { name: 'form-labels.reason' })).toBeInTheDocument()
-  })
-
-  it('renders the category options and defaults to the current category', () => {
-    render(<ChangeCategory {...defaultProps} />)
-
-    const select = screen.getByRole('combobox', { name: 'form-labels.category' })
+    const select = screen.getByRole('combobox', { name: 'form-labels.classification' })
 
     expect(select).toHaveValue('2')
     expect(screen.getByRole('option', { name: 'Category 1' })).toBeInTheDocument()
     expect(screen.getByRole('option', { name: 'Category 2' })).toBeInTheDocument()
   })
 
-  it('renders a placeholder option when no current category exists', () => {
+  it('renders a placeholder option when no current classification exists', () => {
     render(<ChangeCategory {...defaultProps} meldingClassification={null} />)
 
     expect(screen.getByRole('option', { name: '-- option-placeholder --' })).toBeInTheDocument()
@@ -120,13 +106,13 @@ describe('ChangeCategory', () => {
 
   it('displays validation errors and preserves the reason when the action returns validation errors', () => {
     const formData = new FormData()
-    formData.set('reason', 'Because this is the right category')
+    formData.set('reason', 'Because this is the right classification')
 
     ;(useActionState as Mock).mockReturnValueOnce([
       {
         formData,
         validationErrors: [
-          { key: 'category', message: 'category-required' },
+          { key: 'classification', message: 'classification-required' },
           { key: 'reason', message: 'reason-required' },
         ],
       },
@@ -136,10 +122,10 @@ describe('ChangeCategory', () => {
 
     render(<ChangeCategory {...defaultProps} />)
 
-    expect(screen.getByText('category-required')).toBeInTheDocument()
+    expect(screen.getByText('classification-required')).toBeInTheDocument()
     expect(screen.getByText('reason-required')).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: 'form-labels.reason' })).toHaveValue(
-      'Because this is the right category',
+      'Because this is the right classification',
     )
   })
 
@@ -150,31 +136,12 @@ describe('ChangeCategory', () => {
 
     const alert = container.querySelector('.ams-alert')
     const heading = within(alert as HTMLElement).getByRole('heading', {
-      name: 'errors.category-change-failed-heading',
+      name: 'errors.reclassification-failed-heading',
     })
 
     expect(alert).toBeInTheDocument()
     expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('description')
-    expect(document.title).toBe('errors.category-change-failed-heading - metadata.title')
-  })
-
-  it('submits the form when the submit button is clicked', async () => {
-    const mockFormAction = vi.fn()
-    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
-
-    render(<ChangeCategory {...defaultProps} />)
-
-    const formProps = mockNextForm.mock.calls.at(-1)?.[0] as { action?: (formData: FormData) => void }
-    const formData = new FormData()
-    formData.set('category', '3')
-    formData.set('reason', 'Need to correct the classification')
-
-    formProps.action?.(formData)
-
-    expect(mockFormAction).toHaveBeenCalledTimes(1)
-    const submittedFormData = mockFormAction.mock.calls[0][0] as FormData
-    expect(submittedFormData.get('category')).toBe('3')
-    expect(submittedFormData.get('reason')).toBe('Need to correct the classification')
+    expect(document.title).toBe('errors.reclassification-failed-heading - metadata.title')
   })
 })

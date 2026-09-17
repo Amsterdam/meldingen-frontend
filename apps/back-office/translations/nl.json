@@ -188,19 +188,19 @@
     },
     "back-link": "Meldingdetails",
     "title": "Wijzig categorie melding {publicId}",
-    "label": "Wijzig categorie",
     "submit-button": "Wijzig categorie",
     "cancel-link": "Annuleer",
     "option-placeholder": "Kies categorie",
     "errors": {
-      "category-change-failed-heading": "De categorie kan niet worden gewijzigd",
-      "category-required": "Selecteer een categorie.",
-      "category-same": "De geselecteerde categorie is hetzelfde als de huidige.",
-      "reason-required": "Geef een reden op voor de wijziging.",
+      "reclassification-failed-heading": "De categorie kan niet worden gewijzigd",
+      "reclassification-failed-description": "Het kan zijn dat de categorie al is aangepast door een andere behandelaar.",
+      "classification-required": "Selecteer een categorie.",
+      "classification-same": "De geselecteerde categorie is hetzelfde als de huidige.",
+      "reason-required": "Vul een toelichting in.",
       "reason-max-length": "De reden mag niet langer zijn dan {max} tekens."
     },
     "form-labels": {
-      "category": "Wijzig categorie",
+      "classification": "Wijzig categorie",
       "reason": "Waarom wijzig je de categorie?",
       "reason-description": "Geef een toelichting voor je collega."
     }

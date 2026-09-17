@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 
-import { getIsReclassificationNotAllowed } from '../_utils/getIsReclassificationNotAllowed'
+import { getIsReclassificationAllowed } from '../_utils/server'
 import { ChangeCategory } from './ChangeCategory'
 import { getClassification, getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
@@ -21,9 +21,9 @@ export default async ({ params }: Params) => {
 
   if (classificationsError) throw new Error('Failed to fetch classifications.')
 
-  const isStateNotAllowed = getIsReclassificationNotAllowed(melding.state)
+  const isStateAllowed = getIsReclassificationAllowed(melding.state)
 
-  if (isStateNotAllowed) {
+  if (!isStateAllowed) {
     redirect(`/melding/${meldingId}`)
   }
 

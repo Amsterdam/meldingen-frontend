@@ -26,9 +26,9 @@ import type { FormState } from '~/types'
 
 import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
-import { postChangeCategoryForm } from './actions'
+import { postReclassificationForm } from './actions'
 import { REASON_COUNT_MAX_LENGTH } from './constants'
-import { ApiErrorAlert } from '~/app/_components'
+import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { useDocumentTitleOnError } from '~/app/_utils/useDocumentTitleOnError'
 
 import styles from './ChangeCategory.module.css'
@@ -45,7 +45,7 @@ const initialState: FormState = {}
 export const ChangeCategory = ({ classifications, meldingClassification, meldingId, publicId }: Props) => {
   const [characterCount, setCharacterCount] = useState(0)
   const [{ apiError, formData, validationErrors }, formAction, isPending] = useActionState(
-    postChangeCategoryForm.bind(null, {
+    postReclassificationForm.bind(null, {
       currentClassificationId: meldingClassification?.id,
       meldingId,
     }),
@@ -56,9 +56,10 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
 
   // Update document title when there is an API error
   const documentTitle = useDocumentTitleOnError({
-    apiErrorMessage: apiError ? t('errors.category-change-failed-heading') : undefined,
+    apiErrorMessage: apiError ? t('errors.reclassification-failed-heading') : undefined,
     baseDocumentTitle: t('metadata.title'),
     hasApiError: Boolean(apiError),
+    validationErrorCount: validationErrors?.length ?? undefined,
   })
 
   useEffect(() => {
@@ -69,7 +70,10 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
     }
   }, [apiError])
 
-  const categoryErrorMessage = validationErrors?.find((error) => error.key === 'category')?.message
+  const classificationValue =
+    (formData?.get('classification') as string | null) ??
+    (meldingClassification?.id ? String(meldingClassification.id) : '')
+  const classificationErrorMessage = validationErrors?.find((error) => error.key === 'classification')?.message
   const reasonErrorMessage = validationErrors?.find((error) => error.key === 'reason')?.message
 
   return (
@@ -79,22 +83,30 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
       <Grid as="main" gapVertical="large">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
           {Boolean(apiError) && (
-            <ApiErrorAlert heading={t('errors.category-change-failed-heading')} shouldFocus={!isPending} />
+            <ApiErrorAlert
+              description={t('errors.reclassification-failed-description')}
+              heading={t('errors.reclassification-failed-heading')}
+              shouldFocus={!isPending}
+            />
           )}
+          {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
           <Heading className="ams-mb-m" level={1}>
             {t('title', { publicId })}
           </Heading>
           <Form action={formAction} className={clsx(styles.formPanel)} noValidate>
-            <Field className="ams-mb-m" invalid={Boolean(categoryErrorMessage)}>
-              <Label htmlFor="category">{t('form-labels.category')}</Label>
-              {categoryErrorMessage && <ErrorMessage id="category-error">{categoryErrorMessage}</ErrorMessage>}
+            <Field className="ams-mb-m" invalid={Boolean(classificationErrorMessage)}>
+              <Label htmlFor="classification">{t('form-labels.classification')}</Label>
+              {classificationErrorMessage && (
+                <ErrorMessage id="classification-error">{classificationErrorMessage}</ErrorMessage>
+              )}
               <Select
-                className={styles.selectFullWidth}
-                defaultValue={meldingClassification?.id ? String(meldingClassification.id) : ''}
-                id="category"
-                invalid={Boolean(categoryErrorMessage)}
-                key={meldingClassification?.id ?? 'no-classification'}
-                name="category"
+                aria-describedby={getAriaDescribedBy('classification', undefined, classificationErrorMessage)}
+                aria-required
+                defaultValue={classificationValue}
+                id="classification"
+                invalid={Boolean(classificationErrorMessage)}
+                key={classificationValue}
+                name="classification"
               >
                 {!meldingClassification?.id && (
                   <Select.Option value={undefined}>-- {t('option-placeholder')} --</Select.Option>

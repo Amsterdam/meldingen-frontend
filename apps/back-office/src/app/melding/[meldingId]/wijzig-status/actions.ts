@@ -2,7 +2,6 @@
 
 import { redirect } from 'next/navigation'
 
-import { STATES, STATES_LIST } from './constants'
 import {
   putMeldingByMeldingIdCancel,
   putMeldingByMeldingIdComplete,
@@ -13,6 +12,7 @@ import {
   putMeldingByMeldingIdRequestReopen,
   putMeldingByMeldingIdSubmit,
 } from '~/app/_api-client/proxy'
+import { STATES, STATES_LIST } from '~/app/constants'
 
 type State = (typeof STATES)[keyof typeof STATES]
 

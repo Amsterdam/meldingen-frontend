@@ -2,6 +2,8 @@ import type { MeldingOutput } from '@meldingen/api-client'
 
 import { formatDateString } from '@meldingen/utils'
 
+import { getIsReclassificationAllowed } from './getIsReclassificationAllowed'
+
 export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) => {
   const { classification, created_at, id, labels, source, state, urgency } = data
 
@@ -14,10 +16,14 @@ export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) 
     {
       description: classification ? classification.name : t('detail.melding-data.classification.no-data'),
       key: 'classification',
-      link: {
-        href: `/melding/${id}/wijzig-categorie`,
-        label: t('detail.melding-data.classification.link'),
-      },
+      ...(getIsReclassificationAllowed(state)
+        ? {
+            link: {
+              href: `/melding/${id}/wijzig-categorie`,
+              label: t('detail.melding-data.classification.link'),
+            },
+          }
+        : {}),
       term: t('detail.melding-data.classification.term'),
     },
     {
