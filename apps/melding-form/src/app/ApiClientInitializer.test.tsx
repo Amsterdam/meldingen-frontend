@@ -12,14 +12,6 @@ vi.mock('@meldingen/api-client', () => ({
 }))
 
 describe('ApiClientInitializer', () => {
-  beforeEach(() => {
-    vi.stubEnv('NEXT_PUBLIC_BACKEND_BASE_URL', 'testBaseUrl')
-  })
-
-  afterAll(() => {
-    vi.unstubAllEnvs()
-  })
-
   it('calls client.setConfig with the correct baseUrl', async () => {
     render(<ApiClientInitializer />)
 
