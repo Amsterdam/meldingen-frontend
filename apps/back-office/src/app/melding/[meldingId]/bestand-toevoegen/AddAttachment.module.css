@@ -16,5 +16,4 @@
 .uploadInfo {
   composes: column;
   align-items: start;
-  row-gap: var(--ams-space-s);
 }
