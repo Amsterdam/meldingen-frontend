@@ -170,13 +170,13 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
           </Heading>
 
           <Column className={clsx(styles.contentWrapper, 'ams-mb-m')}>
-            <div className={styles.uploadInfo}>
+            <Column className={styles.uploadInfo} gap="small">
               <Heading id="file-upload-label" level={2} size="level-4">
                 {t('upload.title')}
               </Heading>
               <Paragraph id="file-upload-description">{t('upload.description')}</Paragraph>
               <Paragraph>{t('upload.count', { currentCount: validUploadedFilesCount, maxCount: 5 })}</Paragraph>
-            </div>
+            </Column>
 
             <FileUpload
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp,.pdf"
