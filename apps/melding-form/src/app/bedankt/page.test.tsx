@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { redirect } from 'next/navigation'
 
 import Page, { generateMetadata } from './page'
+import { getClientEnv } from '~/env/client'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
@@ -65,8 +66,6 @@ describe('Page', () => {
   })
 
   it('renders the publicId as a link when source is back-office', async () => {
-    vi.stubEnv('NEXT_PUBLIC_BACK_OFFICE_BASE_URL', 'https://backoffice.example.com')
-
     const searchParams = Promise.resolve({
       created_at: '2025-05-26T11:56:34.081Z',
       id: '10',
@@ -81,14 +80,12 @@ describe('Page', () => {
     const link = screen.getByRole('link', { name: '1234' })
 
     expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', 'https://backoffice.example.com/melding/10?id=1234')
+    expect(link).toHaveAttribute('href', `${getClientEnv().NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melding/10?id=1234`)
 
     vi.unstubAllEnvs()
   })
 
   it('links to the back-office melden page when source is back-office', async () => {
-    vi.stubEnv('NEXT_PUBLIC_BACK_OFFICE_BASE_URL', 'https://backoffice.example.com')
-
     const searchParams = Promise.resolve({
       created_at: '2025-05-26T11:56:34.081Z',
       id: '10',
@@ -103,7 +100,7 @@ describe('Page', () => {
     const link = screen.getByRole('link', { name: 'link' })
 
     expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', 'https://backoffice.example.com/melden')
+    expect(link).toHaveAttribute('href', `${getClientEnv().NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden`)
 
     vi.unstubAllEnvs()
   })

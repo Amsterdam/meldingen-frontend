@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 
 import { BackOfficeLayout } from './BackOfficeLayout'
 import { TOP_ANCHOR_ID } from '~/constants'
+import { getClientEnv } from '~/env/client'
 
 describe('BackOfficeLayout', () => {
   it('renders', () => {
@@ -26,17 +27,15 @@ describe('BackOfficeLayout', () => {
   })
 
   it('renders menu links for overview and melding-form', () => {
-    vi.stubEnv('NEXT_PUBLIC_BACK_OFFICE_BASE_URL', 'http://back-office.example.com')
-
     render(<BackOfficeLayout />)
 
     const overviewLinks = screen.getAllByRole('link', { name: 'overview' })
     expect(overviewLinks.length).toBe(2)
-    expect(overviewLinks[0]).toHaveAttribute('href', 'http://back-office.example.com/')
+    expect(overviewLinks[0]).toHaveAttribute('href', getClientEnv().NEXT_PUBLIC_BACK_OFFICE_BASE_URL)
 
     const meldingFormLinks = screen.getAllByRole('link', { name: 'melding-form' })
     expect(meldingFormLinks.length).toBe(2)
-    expect(meldingFormLinks[0]).toHaveAttribute('href', 'http://back-office.example.com/melden')
+    expect(meldingFormLinks[0]).toHaveAttribute('href', `${getClientEnv().NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden`)
 
     vi.unstubAllEnvs()
   })
