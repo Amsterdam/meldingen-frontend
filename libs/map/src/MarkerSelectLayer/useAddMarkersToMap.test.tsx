@@ -84,6 +84,30 @@ describe('useAddMarkersToMap', () => {
     expect(typeof mockMarkerLayerRef.current?.addTo).toBe('function')
   })
 
+  it('marks a cluster as active when it contains a selected feature', () => {
+    renderHook(() =>
+      useAddMarkersToMap({
+        ...defaultProps,
+        features: containerAssets,
+        selectedMarkers: [containerAssets[0]],
+      }),
+    )
+
+    const markerClusterGroup = mockMarkerLayerRef.current as unknown as MarkerClusterGroup & {
+      options: {
+        iconCreateFunction: (cluster: L.MarkerCluster) => L.DivIcon
+      }
+    }
+    const markers = markerClusterGroup.getLayers() as unknown as L.Marker[]
+    const icon = markerClusterGroup.options.iconCreateFunction({
+      getAllChildMarkers: () => markers,
+      getChildCount: () => markers.length,
+      options: {},
+    } as unknown as L.MarkerCluster)
+
+    expect(icon.options.className).toBe('meldingen-cluster active')
+  })
+
   it('falls back to /asset-fallback.svg when a marker icon fails to load', () => {
     const img = document.createElement('img')
     img.src = '/container/rest.svg'
@@ -228,7 +252,7 @@ describe('createClusterIcon', () => {
     expect(mockCluster.options.keyboard).toBe(false)
     expect(icon.options.html).toBe('7')
     expect(icon.options.className).toBe('meldingen-cluster')
-    expect(icon.options.iconSize).toEqual([70, 70])
-    expect(icon.options.iconAnchor).toEqual([35, 35])
+    expect(icon.options.iconSize).toEqual([54, 54])
+    expect(icon.options.iconAnchor).toEqual([27, 27])
   })
 })
