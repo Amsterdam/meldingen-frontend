@@ -42,10 +42,6 @@ const defaultProps: Props = {
 }
 
 describe('ChangeCategory', () => {
-  beforeEach(() => {
-    mockNextForm.mockClear()
-    ;(useActionState as Mock).mockReturnValue([{}, vi.fn(), false])
-  })
 
   it('renders the backlink', () => {
     render(<ChangeCategory {...defaultProps} />)
