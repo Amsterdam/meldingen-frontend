@@ -3,10 +3,12 @@ import type { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js'
 import Keycloak from 'keycloak-js'
 import { keycloakAuthProvider as raKeycloakAuthProvider } from 'ra-keycloak'
 
+import { clientEnv } from '~/env/client'
+
 const config: KeycloakConfig = {
-  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
-  realm: import.meta.env.VITE_KEYCLOAK_REALM,
-  url: import.meta.env.VITE_KEYCLOAK_BASE_URL,
+  clientId: clientEnv.VITE_KEYCLOAK_CLIENT_ID!,
+  realm: clientEnv.VITE_KEYCLOAK_REALM!,
+  url: clientEnv.VITE_KEYCLOAK_BASE_URL!,
 }
 
 export const keycloakInstance = new Keycloak(config)
