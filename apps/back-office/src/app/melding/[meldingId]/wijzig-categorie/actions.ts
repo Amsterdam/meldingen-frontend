@@ -6,11 +6,7 @@ import { redirect } from 'next/navigation'
 import type { FormState } from '~/types'
 
 import { REASON_COUNT_MAX_LENGTH } from './constants'
-import {
-  getApiErrorMessage,
-  hasValidationErrors,
-  postMeldingByMeldingIdReclassification,
-} from '~/app/_api-client/proxy'
+import { postMeldingByMeldingIdReclassification } from '~/app/_api-client/proxy'
 
 type MeldingIdParam = {
   currentClassificationId?: number
@@ -30,7 +26,7 @@ export const postReclassificationForm = async (
   const reason = (formDataObj.reason as string | undefined) ?? ''
 
   const validationErrors = [
-    ...(!classification ? [{ key: 'category', message: t('classification-required') }] : []),
+    ...(!classification ? [{ key: 'classification', message: t('classification-required') }] : []),
     ...(classification === String(currentClassificationId)
       ? [{ key: 'classification', message: t('classification-same') }]
       : []),
@@ -46,20 +42,13 @@ export const postReclassificationForm = async (
 
   const parsedClassificationId = Number(classification)
 
-  const { error, response } = await postMeldingByMeldingIdReclassification({
+  const { error } = await postMeldingByMeldingIdReclassification({
     body: {
       classification_id: parsedClassificationId,
       reason,
     },
     path: { melding_id: meldingId },
   })
-
-  if (hasValidationErrors(response, error)) {
-    return {
-      formData,
-      validationErrors: [{ key: 'primary', message: getApiErrorMessage(error) }],
-    }
-  }
 
   if (error) return { apiError: error, formData }
 

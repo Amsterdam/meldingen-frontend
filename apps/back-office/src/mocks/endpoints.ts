@@ -8,6 +8,9 @@ export const ENDPOINTS = {
   // Labels
   GET_LABEL: '/label',
 
+  // Classifications
+  GET_CLASSIFICATION: '/classification',
+
   // Melding
   DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID: '/melding/:id/attachment/:attachmentId',
 

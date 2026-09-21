@@ -42,7 +42,6 @@ const defaultProps: Props = {
 }
 
 describe('ChangeCategory', () => {
-
   it('renders the backlink', () => {
     render(<ChangeCategory {...defaultProps} />)
 
@@ -128,5 +127,18 @@ describe('ChangeCategory', () => {
     expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('description')
     expect(document.title).toBe('errors.reclassification-failed-heading - metadata.title')
+  })
+  it('submits the form when the submit button is clicked', async () => {
+    const user = userEvent.setup()
+
+    const mockFormAction = vi.fn()
+    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
+
+    render(<ChangeCategory {...defaultProps} />)
+
+    const submitButton = screen.getByRole('button', { name: 'submit-button' })
+    await user.click(submitButton)
+
+    expect(mockFormAction).toHaveBeenCalled()
   })
 })

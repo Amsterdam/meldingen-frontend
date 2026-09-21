@@ -1,7 +1,7 @@
 import { getIsReclassificationAllowed } from './getIsReclassificationAllowed'
 
 describe('getIsReclassificationAllowed', () => {
-  it('returns true for completed meldingen', () => {
+  it('returns false for completed meldingen', () => {
     expect(getIsReclassificationAllowed('completed')).toBe(false)
   })
 

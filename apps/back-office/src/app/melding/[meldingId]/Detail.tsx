@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 import { Fragment } from 'react'
@@ -30,7 +30,6 @@ type Props = {
   location?: DescriptionListItem[]
   meldingData: MeldingDataItem[]
   meldingId: number
-  meldingState: MeldingOutput['state']
   publicId: MeldingOutput['public_id']
 }
 

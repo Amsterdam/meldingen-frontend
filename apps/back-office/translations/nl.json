@@ -193,11 +193,11 @@
     "option-placeholder": "Kies categorie",
     "errors": {
       "reclassification-failed-heading": "De categorie kan niet worden gewijzigd",
-      "reclassification-failed-description": "Het kan zijn dat de categorie al is aangepast door een andere behandelaar.",
-      "classification-required": "Selecteer een categorie.",
-      "classification-same": "De geselecteerde categorie is hetzelfde als de huidige.",
+      "reclassification-failed-description": "Het kan zijn dat de status al is aangepast door een andere behandelaar.",
+      "classification-required": "Vul een categorie in.",
+      "classification-same": "Wijzig de categorie.",
       "reason-required": "Vul een toelichting in.",
-      "reason-max-length": "De reden mag niet langer zijn dan {max} tekens."
+      "reason-max-length": "Toelichting moet {max} tekens of minder zijn."
     },
     "form-labels": {
       "classification": "Wijzig categorie",
