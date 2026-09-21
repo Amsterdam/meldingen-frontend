@@ -197,7 +197,6 @@ describe('Page', () => {
         location: location,
         meldingData: meldingData,
         meldingId: 123,
-        meldingState: melding.state,
         publicId: public_id,
       },
       undefined,

@@ -31,7 +31,7 @@ describe('postReclassificationForm', () => {
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'category', message: 'classification-required' }],
+      validationErrors: [{ key: 'classification', message: 'classification-required' }],
     })
     expect(redirect).not.toHaveBeenCalled()
   })
@@ -83,7 +83,7 @@ describe('postReclassificationForm', () => {
     expect(result).toEqual({
       formData,
       validationErrors: [
-        { key: 'category', message: 'classification-required' },
+        { key: 'classification', message: 'classification-required' },
         { key: 'reason', message: 'reason-required' },
       ],
     })
