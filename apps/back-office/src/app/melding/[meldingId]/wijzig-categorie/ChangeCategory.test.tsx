@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react'
 import type { Mock } from 'vitest'
 
 import { render, screen, within } from '@testing-library/react'
@@ -9,10 +8,6 @@ import type { Props } from './ChangeCategory'
 
 import { ChangeCategory } from './ChangeCategory'
 
-const { mockNextForm } = vi.hoisted(() => ({
-  mockNextForm: vi.fn(),
-}))
-
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
   return {
@@ -20,14 +15,6 @@ vi.mock('react', async (importOriginal) => {
     useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
-
-vi.mock('next/form', () => ({
-  default: (props: { action?: (formData: FormData) => void; children: ReactNode }) => {
-    mockNextForm(props)
-
-    return <form>{props.children}</form>
-  },
-}))
 
 const defaultProps: Props = {
   classifications: [
