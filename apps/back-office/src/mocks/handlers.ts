@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import { additionalQuestions, asset, melding, meldingen, textAreaComponent } from './data'
+import { additionalQuestions, asset, classifications, melding, meldingen, textAreaComponent } from './data'
 import { ENDPOINTS } from './endpoints'
 
 export const handlers = [
@@ -11,6 +11,9 @@ export const handlers = [
       headers: { 'content-type': 'image/webp' },
     }),
   ),
+
+  // Classifications
+  http.get(ENDPOINTS.GET_CLASSIFICATION, () => HttpResponse.json(classifications)),
 
   // Labels
   http.get(ENDPOINTS.GET_LABEL, () =>
@@ -73,6 +76,7 @@ export const handlers = [
     }),
   ),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_NOTE, () => new HttpResponse()),
+  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_RECLASSIFICATION, () => new HttpResponse(undefined, { status: 201 })),
 
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_CANCEL, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_COMPLETE, () => new HttpResponse()),

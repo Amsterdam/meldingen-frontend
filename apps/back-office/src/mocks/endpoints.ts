@@ -30,6 +30,7 @@ export const ENDPOINTS = {
   POST_MELDING: '/melding',
   POST_MELDING_BY_MELDING_ID_ATTACHMENT: '/melding/:id/attachment/',
   POST_MELDING_BY_MELDING_ID_NOTE: '/melding/:id/note',
+  POST_MELDING_BY_MELDING_ID_RECLASSIFICATION: '/melding/:id/reclassification',
 
   PUT_MELDING_BY_MELDING_ID_CANCEL: '/melding/:id/cancel',
   PUT_MELDING_BY_MELDING_ID_COMPLETE: '/melding/:id/complete',

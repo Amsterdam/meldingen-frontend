@@ -1,5 +1,6 @@
 import type {
   AssetOutput,
+  ClassificationOutput,
   DateAnswerQuestionOutput,
   FormTextAreaComponentOutput,
   MeldingOutput,
@@ -79,6 +80,21 @@ export const meldingen: MeldingOutput[] = [
     text: 'Alles',
     updated_at: '2025-02-18T10:34:40.730569Z',
     urgency: 0,
+  },
+]
+
+export const classifications: ClassificationOutput[] = [
+  {
+    created_at: '2024-01-01T00:00:00Z',
+    id: 1,
+    name: 'Test classification',
+    updated_at: '2024-01-01T00:00:00Z',
+  },
+  {
+    created_at: '2024-01-01T00:00:00Z',
+    id: 2,
+    name: 'Category 2',
+    updated_at: '2024-01-01T00:00:00Z',
   },
 ]
 

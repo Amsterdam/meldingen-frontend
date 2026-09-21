@@ -43,16 +43,6 @@ describe('Page', () => {
           state: 'completed',
         }),
       ),
-      http.get(ENDPOINTS.GET_CLASSIFICATION, () =>
-        HttpResponse.json([
-          {
-            created_at: '2024-01-01T00:00:00Z',
-            id: 2,
-            name: 'Test classification',
-            updated_at: '2024-01-01T00:00:00Z',
-          },
-        ]),
-      ),
     )
 
     const params = Promise.resolve({ meldingId: '123' })
@@ -63,26 +53,6 @@ describe('Page', () => {
   })
 
   it('renders the ChangeCategory component when data is available', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () =>
-        HttpResponse.json({
-          classification: { id: 2, name: 'Test classification' },
-          public_id: 'ABC',
-          state: 'processing',
-        }),
-      ),
-      http.get(ENDPOINTS.GET_CLASSIFICATION, () =>
-        HttpResponse.json([
-          {
-            created_at: '2024-01-01T00:00:00Z',
-            id: 2,
-            name: 'Test classification',
-            updated_at: '2024-01-01T00:00:00Z',
-          },
-        ]),
-      ),
-    )
-
     const params = Promise.resolve({ meldingId: '123' })
 
     const result = await Page({ params })

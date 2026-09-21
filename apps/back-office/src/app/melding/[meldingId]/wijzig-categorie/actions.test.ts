@@ -3,9 +3,8 @@ import { redirect } from 'next/navigation'
 
 import { postReclassificationForm } from './actions'
 import { REASON_COUNT_MAX_LENGTH } from './constants'
+import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
-
-const RECLASSIFICATION_ENDPOINT = '/melding/:id/reclassification'
 
 const createFormData = (input: { classification?: string; reason?: string }) => {
   const formData = new FormData()
@@ -92,7 +91,9 @@ describe('postReclassificationForm', () => {
 
   it('returns an API error when the API returns an error', async () => {
     server.use(
-      http.post(RECLASSIFICATION_ENDPOINT, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })),
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_RECLASSIFICATION, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
     )
 
     const formData = createFormData({ classification: '3', reason: 'Need to correct the classification' })
@@ -107,8 +108,6 @@ describe('postReclassificationForm', () => {
   })
 
   it('redirects on success', async () => {
-    server.use(http.post(RECLASSIFICATION_ENDPOINT, () => new HttpResponse(undefined, { status: 201 })))
-
     const formData = createFormData({ classification: '3', reason: 'Need to correct the classification' })
 
     await postReclassificationForm(defaultArgs, null, formData)
