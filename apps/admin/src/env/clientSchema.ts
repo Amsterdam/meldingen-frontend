@@ -5,14 +5,16 @@ const authProviderGroups = [
   ['VITE_ENTRA_APP_BASE_URL', 'VITE_ENTRA_AUTHORITY', 'VITE_ENTRA_CLIENT_ID'],
 ] as const
 
-const authShape = {
-  VITE_ENTRA_APP_BASE_URL: z.optional(z.string()),
-  VITE_ENTRA_AUTHORITY: z.optional(z.string()),
-  VITE_ENTRA_CLIENT_ID: z.optional(z.string()),
+const optionalNonEmptyString = z.string().trim().min(1).optional()
 
-  VITE_KEYCLOAK_BASE_URL: z.optional(z.string()),
-  VITE_KEYCLOAK_CLIENT_ID: z.optional(z.string()),
-  VITE_KEYCLOAK_REALM: z.optional(z.string()),
+const authShape = {
+  VITE_ENTRA_APP_BASE_URL: optionalNonEmptyString,
+  VITE_ENTRA_AUTHORITY: optionalNonEmptyString,
+  VITE_ENTRA_CLIENT_ID: optionalNonEmptyString,
+
+  VITE_KEYCLOAK_BASE_URL: optionalNonEmptyString,
+  VITE_KEYCLOAK_CLIENT_ID: optionalNonEmptyString,
+  VITE_KEYCLOAK_REALM: optionalNonEmptyString,
 }
 
 const authCheck = (data: Record<string, string | undefined>, ctx: z.RefinementCtx) => {
