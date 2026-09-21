@@ -73,6 +73,7 @@
       "created_at": "Gemeld op",
       "classification": {
         "term": "Categorie",
+        "link": "Wijzig categorie",
         "no-data": "Geen categorie"
       },
       "labels": {
@@ -179,6 +180,29 @@
     "cancel-link": "Annuleer",
     "errors": {
       "labels-change-failed-heading": "De labels kunnen niet worden gewijzigd"
+    }
+  },
+  "change-category": {
+    "metadata": {
+      "title": "Wijzig categorie - Gemeente Amsterdam"
+    },
+    "back-link": "Meldingdetails",
+    "title": "Wijzig categorie melding {publicId}",
+    "submit-button": "Wijzig categorie",
+    "cancel-link": "Annuleer",
+    "option-placeholder": "Kies categorie",
+    "errors": {
+      "reclassification-failed-heading": "De categorie kan niet worden gewijzigd",
+      "reclassification-failed-description": "Het kan zijn dat de status al is aangepast door een andere behandelaar.",
+      "classification-required": "Vul een categorie in.",
+      "classification-same": "Wijzig de categorie.",
+      "reason-required": "Vul een toelichting in.",
+      "reason-max-length": "Toelichting moet {max} tekens of minder zijn."
+    },
+    "form-labels": {
+      "classification": "Wijzig categorie",
+      "reason": "Waarom wijzig je de categorie?",
+      "reason-description": "Geef een toelichting voor je collega."
     }
   },
   "change-state": {
