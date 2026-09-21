@@ -1,0 +1,36 @@
+@keyframes loading {
+  0% {
+    background-color: var(--ams-color-background-body);
+  }
+
+  50% {
+    background-color: var(--ams-color-separator);
+  }
+
+  100% {
+    background-color: var(--ams-color-background-body);
+  }
+}
+
+.container {
+  /* stylelint-disable-next-line unit-disallowed-list */
+  block-size: max(32px, calc(var(--ams-checkbox-font-size) * var(--ams-checkbox-line-height)));
+  border-top: 0.0625rem solid var(--ams-color-separator);
+  padding-block: var(--ams-space-m);
+  padding-inline: var(--ams-space-m);
+}
+
+.loading {
+  animation-delay: 0.3s;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-name: loading;
+  animation-timing-function: ease-in-out;
+  block-size: 100%;
+  inline-size: 100%;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    background-color: var(--ams-color-separator);
+  }
+}
