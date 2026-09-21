@@ -80,7 +80,6 @@ const defaultProps = {
     },
   ],
   meldingId: 123,
-  meldingState: 'processing',
   publicId: 'B100AA',
 } satisfies DetailProps
 
