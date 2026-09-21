@@ -5,7 +5,7 @@ import { addRefreshAuthToDataProvider } from 'react-admin'
 
 import { msalInstance, scopes } from './entraAuthProvider'
 import { genericDataProvider } from './genericDataProvider'
-import { clientEnv } from '~/env/client'
+import { clientEnv } from '~/env/clientEnv'
 
 export const tokenRequest: SilentRequest = {
   forceRefresh: false,

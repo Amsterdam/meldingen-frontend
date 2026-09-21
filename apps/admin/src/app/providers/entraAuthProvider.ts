@@ -4,7 +4,7 @@ import { PublicClientApplication } from '@azure/msal-browser'
 import { msalAuthProvider } from 'ra-auth-msal'
 
 import { entraAuthConfig } from './entraAuthConfig'
-import { clientEnv } from '~/env/client'
+import { clientEnv } from '~/env/clientEnv'
 
 export const msalInstance = new PublicClientApplication(entraAuthConfig)
 

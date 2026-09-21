@@ -1,4 +1,4 @@
-import { validateClientEnv } from './validate.ts'
+import { validateClientEnv } from './validateClientEnv.ts'
 
 // Accommodates tests env stubbing
 export const getClientEnv = () => validateClientEnv(import.meta.env)

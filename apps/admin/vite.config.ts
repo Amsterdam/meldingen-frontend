@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 
-import validateEnvPlugin from './vite/plugins/validateEnv.ts'
+import validateEnvPlugin from './vite/plugins/validateEnvPlugin.ts'
 
 export default defineConfig({
   plugins: [react(), validateEnvPlugin()],

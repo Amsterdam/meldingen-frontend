@@ -2,7 +2,7 @@ import type { Plugin } from 'vite'
 
 import { loadEnv } from 'vite'
 
-import { validateClientEnv } from '../../src/env/validate.ts'
+import { validateClientEnv } from '../../src/env/validateClientEnv.js'
 
 const validateEnvPlugin = (): Plugin => ({
   config: ({ envDir, root }, { mode }) => {

@@ -3,7 +3,7 @@ import type { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js'
 import Keycloak from 'keycloak-js'
 import { keycloakAuthProvider as raKeycloakAuthProvider } from 'ra-keycloak'
 
-import { clientEnv } from '~/env/client'
+import { clientEnv } from '~/env/clientEnv'
 
 const config: KeycloakConfig = {
   clientId: clientEnv.VITE_KEYCLOAK_CLIENT_ID!,

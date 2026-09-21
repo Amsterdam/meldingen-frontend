@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-import { clientSchema } from './schema.ts'
+import { clientSchema } from './clientSchema.js'
 
 export const validateClientEnv = (env: Record<string, unknown>) => {
   const parsed = z.safeParse(clientSchema, env)

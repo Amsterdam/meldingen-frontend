@@ -1,6 +1,6 @@
 import type { Configuration } from '@azure/msal-browser'
 
-import { clientEnv } from '~/env/client'
+import { clientEnv } from '~/env/clientEnv'
 
 export const entraAuthConfig: Configuration = {
   auth: {
