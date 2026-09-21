@@ -1,3 +1,5 @@
+import type { Mock } from 'vitest'
+
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
@@ -15,8 +17,13 @@ const defaultProps: Props = {
     },
     label: '{{fractie_omschrijving}} {{id_nummer}}',
     maxCount: 5,
+    names: {
+      plural: 'containers',
+      singular: 'container',
+    },
   },
   assetList: containerAssets,
+  isLoading: false,
   selectedAssets: [],
   setCoordinates: vi.fn(),
   setNotificationType: vi.fn(),
@@ -24,10 +31,17 @@ const defaultProps: Props = {
 }
 
 describe('AssetList', () => {
-  it('renders nothing when assetList and selectedAssets are empty', () => {
-    const { container } = render(<AssetList {...defaultProps} assetList={[]} />)
+  it('renders loading skeleton instead of the list when isLoading is true', () => {
+    render(<AssetList {...defaultProps} isLoading />)
 
-    expect(container).toBeEmptyDOMElement()
+    expect(screen.getByText('loading')).toBeInTheDocument()
+    expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
+  })
+
+  it('renders an empty state message when assetList and selectedAssets are empty', () => {
+    render(<AssetList {...defaultProps} assetList={[]} />)
+
+    expect(screen.getByText('no-results')).toBeInTheDocument()
   })
 
   it('renders a list of assets', () => {
@@ -74,7 +88,11 @@ describe('AssetList', () => {
     render(
       <AssetList
         {...defaultProps}
-        assetConfig={{ icon: defaultProps.assetConfig.icon, maxCount: defaultProps.assetConfig.maxCount }}
+        assetConfig={{
+          icon: defaultProps.assetConfig.icon,
+          maxCount: defaultProps.assetConfig.maxCount,
+          names: defaultProps.assetConfig.names,
+        }}
       />,
     )
 
@@ -93,6 +111,7 @@ describe('AssetList', () => {
           icon: defaultProps.assetConfig.icon,
           label: '{{non_existing_property_1}} {{non_existing_property_2}}',
           maxCount: defaultProps.assetConfig.maxCount,
+          names: defaultProps.assetConfig.names,
         }}
       />,
     )
@@ -119,6 +138,11 @@ describe('AssetList', () => {
 
     expect(defaultProps.setCoordinates).toHaveBeenCalledWith({ lat: x, lng: y })
     expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
+
+    const updater = (defaultProps.setSelectedAssets as Mock).mock.calls[0][0]
+    const result = updater([])
+
+    expect(result).toEqual([containerAssets[0]])
   })
 
   it('sets notification when max selected assets is reached', async () => {
@@ -146,6 +170,11 @@ describe('AssetList', () => {
 
     expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
     expect(defaultProps.setSelectedAssets).toHaveBeenCalled()
+
+    const updater = (defaultProps.setSelectedAssets as Mock).mock.calls[0][0]
+    const result = updater([containerAssets[0]])
+
+    expect(result).toEqual([])
   })
 
   it('resets notification when asset is deselected', async () => {

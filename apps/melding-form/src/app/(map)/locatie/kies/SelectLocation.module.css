@@ -5,22 +5,15 @@
     'content' 1fr
     'buttons' auto
     / 1fr;
-  min-height: 100vh; /* Fallback for browsers that do not support dvh */
-  min-height: 100dvh;
+  height: 100vh; /* Fallback for browsers that do not support dvh */
+  height: 100dvh;
 
   @media screen and (min-width: 72.5rem) {
     grid-template-areas:
       'top map'
       'bottom map';
     grid-template-columns: 1fr 2fr;
-    height: 100vh; /* Fallback for browsers that do not support dvh */
-    height: 100dvh;
   }
-}
-
-.hasAssetList {
-  height: 100vh; /* Fallback for browsers that do not support dvh */
-  height: 100dvh;
 }
 
 .hideButtonMobile {
@@ -47,8 +40,8 @@
   gap: var(--ams-space-m);
   grid-area: buttons;
   justify-content: space-between;
-  margin-block: var(--ams-space-m);
-  margin-inline: var(--ams-space-m);
+  padding-block: var(--ams-space-m);
+  padding-inline: var(--ams-space-m);
   pointer-events: none; /* Allow clicks to pass through to the wrapper */
   z-index: 1;
 
@@ -59,4 +52,8 @@
   @media screen and (min-width: 72.5rem) {
     display: none;
   }
+}
+
+.assetListOpen {
+  background-color: var(--ams-color-background);
 }

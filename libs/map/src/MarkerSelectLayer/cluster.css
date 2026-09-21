@@ -4,13 +4,15 @@
   background-repeat: no-repeat;
   background-size: cover;
   font-family: var(--ams-typography-font-family);
-  font-size: var(--ams-typography-heading-3-font-size);
+  font-size: var(--ams-typography-heading-4-font-size);
   font-weight: var(--ams-typography-body-text-extra-bold-font-weight);
   justify-content: center;
-  line-height: var(--ams-typography-heading-3-line-height);
+  line-height: var(--ams-typography-heading-4-line-height);
 
   &.active {
     background-image: url('/cluster-active.svg');
+    font-size: var(--ams-typography-heading-3-font-size);
+    line-height: var(--ams-typography-heading-3-line-height);
   }
 }
 

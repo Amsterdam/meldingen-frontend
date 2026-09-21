@@ -1,20 +1,25 @@
 import type { Dispatch, SetStateAction } from 'react'
 
 import { Checkbox } from '@amsterdam/design-system-react'
+import { useTranslations } from 'next-intl'
 
 import type { Feature } from '@meldingen/api-client'
+
+import { Paragraph } from '@meldingen/ui'
 
 import type { NotificationType, Props as SelectLocationProps } from '../../SelectLocation'
 import type { Coordinates } from '~/types'
 
 import { AssetIcon } from '../AssetIcon/AssetIcon'
+import { Loading } from './Loading'
 import { getAssetLabelText } from '~/app/(general)/_utils/getAssetLabelText'
 
 import styles from './AssetList.module.css'
 
 export type Props = {
-  assetConfig: Pick<SelectLocationProps['assetConfig'], 'icon' | 'label' | 'maxCount'>
+  assetConfig: Pick<SelectLocationProps['assetConfig'], 'icon' | 'label' | 'maxCount' | 'names'>
   assetList: Feature[]
+  isLoading: boolean
   selectedAssets: Feature[]
   setCoordinates: (coordinates?: Coordinates) => void
   setNotificationType: (notificationType: NotificationType | null) => void
@@ -42,12 +47,18 @@ const AssetListItem = ({ asset, assetConfig, isChecked = false, onChange }: Asse
 export const AssetList = ({
   assetConfig,
   assetList,
+  isLoading,
   selectedAssets,
   setCoordinates,
   setNotificationType,
   setSelectedAssets,
 }: Props) => {
-  if (assetList.length === 0 && selectedAssets.length === 0) return
+  const t = useTranslations('select-location.asset-list')
+  const pluralName = assetConfig.names.plural
+  const noResults = assetList.length === 0 && selectedAssets.length === 0
+
+  if (isLoading) return <Loading>{t('loading', { pluralName })}</Loading>
+  if (noResults) return <Paragraph className={styles.emptyState}>{t('no-results', { pluralName })}</Paragraph>
 
   const filteredList = assetList.filter(
     (asset) => !selectedAssets.some((selectedAsset) => selectedAsset.id === asset.id),
@@ -66,7 +77,7 @@ export const AssetList = ({
       setCoordinates({ lat: x, lng: y })
     }
 
-    setSelectedAssets((assetList) => assetList.filter((a) => a.id !== asset.id))
+    setSelectedAssets((prevSelectedAssets) => prevSelectedAssets.filter((a) => a.id !== asset.id))
   }
 
   const handleSelectAsset = (asset: Feature) => {
@@ -79,7 +90,7 @@ export const AssetList = ({
     const [y, x] = asset.geometry.coordinates
     setCoordinates({ lat: x, lng: y })
 
-    setSelectedAssets((assetList) => [asset, ...assetList])
+    setSelectedAssets((prevSelectedAssets) => [asset, ...prevSelectedAssets])
   }
 
   return (
