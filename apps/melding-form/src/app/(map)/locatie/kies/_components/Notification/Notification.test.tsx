@@ -2,22 +2,22 @@ import { render, screen } from '@testing-library/react'
 
 import { Notification } from './Notification'
 
+const defaultProps = {
+  assetNames: { plural: 'assets', singular: 'asset' },
+  maxAssets: 3,
+  onClose: vi.fn(),
+}
+
 describe('Notification component', () => {
   it('renders the too many assets notification', () => {
-    render(<Notification assetNames={{ plural: 'assets', singular: 'asset' }} maxAssets={3} type="too-many-assets" />)
+    render(<Notification {...defaultProps} type="too-many-assets" />)
 
     expect(screen.getByText('too-many-assets.title', { exact: false })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'too-many-assets.close-button' })).toBeInTheDocument()
   })
 
   it('renders the location service disabled notification', () => {
-    render(
-      <Notification
-        assetNames={{ plural: 'assets', singular: 'asset' }}
-        maxAssets={3}
-        type="location-service-disabled"
-      />,
-    )
+    render(<Notification {...defaultProps} type="location-service-disabled" />)
 
     expect(screen.getByText('location-service-disabled.title')).toBeInTheDocument()
     expect(screen.getByText('location-service-disabled.description')).toBeInTheDocument()
