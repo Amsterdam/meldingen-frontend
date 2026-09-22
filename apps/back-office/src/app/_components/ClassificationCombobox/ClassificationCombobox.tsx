@@ -38,7 +38,7 @@ export const ClassificationCombobox = ({
   placeholder,
 }: Props) => {
   const defaultClassification = getClassificationById(classifications, defaultValue)
-  const [query, setQuery] = useState(defaultClassification?.name ?? '')
+  const [value, setValue] = useState(defaultClassification?.name ?? '')
   const [hasPendingInput, setHasPendingInput] = useState(false)
   const [selectedClassificationId, setSelectedClassificationId] = useState(defaultValue ?? '')
 
@@ -59,14 +59,14 @@ export const ClassificationCombobox = ({
 
     setHasPendingInput(false)
     setSelectedClassificationId(defaultValue ?? '')
-    setQuery(nextClassification?.name ?? '')
+    setValue(nextClassification?.name ?? '')
   }, [classifications, defaultValue])
 
   const filteredClassifications =
-    query === ''
+    value === ''
       ? classifications
       : classifications.filter((classification) =>
-          classification.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+          classification.name.toLocaleLowerCase().includes(value.toLocaleLowerCase()),
         )
 
   const handleChange = (classification: ClassificationOutput | null) => {
@@ -74,17 +74,18 @@ export const ClassificationCombobox = ({
 
     setHasPendingInput(false)
     setSelectedClassificationId(String(classification.id))
-    setQuery(classification.name)
+    setValue(classification.name)
   }
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setHasPendingInput(true)
-    setQuery(event.target.value)
+    setValue(event.target.value)
   }
 
   const handleBlur = (_event: FocusEvent<HTMLInputElement>) => {
     if (!selectedClassificationId) {
       setHasPendingInput(false)
+      setValue('')
 
       return
     }
@@ -94,29 +95,37 @@ export const ClassificationCombobox = ({
     const selectedClassification = getClassificationById(classifications, selectedClassificationId)
 
     if (selectedClassification) {
-      setQuery(selectedClassification.name)
+      setValue(selectedClassification.name)
     }
 
     setHasPendingInput(false)
   }
 
   return (
-    <Combobox as="div" className={styles.combobox} immediate nullable onChange={handleChange} ref={refs.setReference}>
+    <Combobox
+      as="div"
+      className={styles.combobox}
+      immediate
+      onChange={handleChange}
+      ref={refs.setReference}
+      value={getClassificationById(classifications, selectedClassificationId) ?? null}
+    >
       <input name={name} type="hidden" value={hasPendingInput ? '' : selectedClassificationId} />
       <ComboboxInput
         aria-describedby={ariaDescribedBy}
         aria-invalid={invalid}
+        aria-required
         as={TextInput}
         autoComplete="off"
         className={clsx(styles.comboboxInput, invalid && styles.comboboxInputInvalid)}
-        displayValue={(classification: ClassificationOutput | null) => classification?.name ?? query}
+        displayValue={(classification: ClassificationOutput | null) => classification?.name ?? value}
         id={id}
         invalid={invalid}
         name={`${name}-display`}
         onBlur={handleBlur}
         onChange={handleInputChange}
         placeholder={placeholder}
-        value={query}
+        value={value}
       />
       <ComboboxOptions
         as={ListBox}
