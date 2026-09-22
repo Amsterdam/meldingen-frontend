@@ -1,9 +1,11 @@
 'use client'
 
-import type { KeyboardEvent } from 'react'
+import type { ChangeEvent, FocusEvent } from 'react'
 
-import clsx from 'clsx'
-import { useEffect, useId, useRef, useState } from 'react'
+import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
+import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react'
+import { clsx } from 'clsx'
+import { useEffect, useState } from 'react'
 
 import type { ClassificationOutput } from '@meldingen/api-client'
 
@@ -14,18 +16,16 @@ import styles from './ClassificationCombobox.module.css'
 type Props = {
   ariaDescribedBy?: string
   classifications: ClassificationOutput[]
-  defaultValue: string
+  defaultValue?: string
   id: string
   invalid?: boolean
   name: string
   noResultsMessage: string
-  onSelect?: (classification?: ClassificationOutput) => void
-  placeholder: string
+  placeholder?: string
 }
 
-const getClassificationName = (classifications: ClassificationOutput[], classificationId: string) =>
-  classifications.find(({ id: currentClassificationId }) => String(currentClassificationId) === classificationId)
-    ?.name ?? ''
+const getClassificationById = (classifications: ClassificationOutput[], id?: string) =>
+  classifications.find((classification) => String(classification.id) === id)
 
 export const ClassificationCombobox = ({
   ariaDescribedBy,
@@ -35,178 +35,107 @@ export const ClassificationCombobox = ({
   invalid = false,
   name,
   noResultsMessage,
-  onSelect,
   placeholder,
 }: Props) => {
-  const defaultVisibleValue = getClassificationName(classifications, defaultValue)
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [isOpen, setIsOpen] = useState(false)
-  const [hasTyped, setHasTyped] = useState(false)
-  const [inputValue, setInputValue] = useState(defaultVisibleValue)
-  const [selectedClassificationId, setSelectedClassificationId] = useState(defaultValue)
-  const comboboxRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const listBoxId = useId()
-  const selectedClassificationName = getClassificationName(classifications, selectedClassificationId)
-  const shouldFilter = hasTyped || !selectedClassificationName || inputValue !== selectedClassificationName
-  const filteredClassifications = classifications.filter(({ name: classificationName }) =>
-    shouldFilter ? classificationName.toLowerCase().includes(inputValue.trim().toLowerCase()) : true,
-  )
+  const defaultClassification = getClassificationById(classifications, defaultValue)
+  const [query, setQuery] = useState(defaultClassification?.name ?? '')
+  const [hasPendingInput, setHasPendingInput] = useState(false)
+  const [selectedClassificationId, setSelectedClassificationId] = useState(defaultValue ?? '')
+
+  const { floatingStyles, refs } = useFloating({
+    middleware: [
+      size({
+        apply: ({ availableHeight, elements, rects }) => {
+          elements.floating.style.maxHeight = `${Math.max(0, availableHeight - 16)}px`
+          elements.floating.style.width = `${rects.reference.width}px`
+        },
+      }),
+    ],
+    whileElementsMounted: autoUpdate,
+  })
 
   useEffect(() => {
-    setSelectedClassificationId(defaultValue)
-    setInputValue(defaultVisibleValue)
-    setHasTyped(false)
-    setIsOpen(false)
-  }, [classifications, defaultValue, defaultVisibleValue])
+    const nextClassification = getClassificationById(classifications, defaultValue)
 
-  useEffect(() => {
-    if (!isOpen) return
+    setHasPendingInput(false)
+    setSelectedClassificationId(defaultValue ?? '')
+    setQuery(nextClassification?.name ?? '')
+  }, [classifications, defaultValue])
 
-    const selectedIndex = classifications
-      .filter(({ name: classificationName }) =>
-        shouldFilter ? classificationName.toLowerCase().includes(inputValue.trim().toLowerCase()) : true,
-      )
-      .findIndex(({ id: currentClassificationId }) => String(currentClassificationId) === selectedClassificationId)
+  const filteredClassifications =
+    query === ''
+      ? classifications
+      : classifications.filter((classification) =>
+          classification.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+        )
 
-    setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0)
-  }, [classifications, inputValue, isOpen, selectedClassificationId, shouldFilter])
+  const handleChange = (classification: ClassificationOutput | null) => {
+    if (!classification) return
 
-  useEffect(() => {
-    if (!isOpen) return
-
-    const handleMouseDown = (event: MouseEvent) => {
-      if (comboboxRef.current?.contains(event.target as Node)) return
-
-      restoreCommittedSelection()
-      setIsOpen(false)
-    }
-
-    document.addEventListener('mousedown', handleMouseDown)
-
-    return () => {
-      document.removeEventListener('mousedown', handleMouseDown)
-    }
-  }, [isOpen])
-
-  const restoreCommittedSelection = () => {
-    setInputValue(selectedClassificationName)
-    setHasTyped(false)
+    setHasPendingInput(false)
+    setSelectedClassificationId(String(classification.id))
+    setQuery(classification.name)
   }
 
-  const closeCombobox = () => {
-    setIsOpen(false)
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setHasPendingInput(true)
+    setQuery(event.target.value)
   }
 
-  const openCombobox = () => {
-    setIsOpen(true)
-  }
+  const handleBlur = (_event: FocusEvent<HTMLInputElement>) => {
+    if (!selectedClassificationId) {
+      setHasPendingInput(false)
 
-  const handleSelect = (classificationId: string) => {
-    const selectedClassification = classifications.find(
-      ({ id: currentClassificationId }) => String(currentClassificationId) === classificationId,
-    )
-
-    setSelectedClassificationId(classificationId)
-    setInputValue(selectedClassification?.name ?? '')
-    setHasTyped(false)
-    onSelect?.(selectedClassification)
-    closeCombobox()
-    inputRef.current?.focus()
-  }
-
-  const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'ArrowDown') {
-      event.preventDefault()
-      openCombobox()
-      setActiveIndex((currentIndex) =>
-        filteredClassifications.length === 0 ? 0 : Math.min(currentIndex + 1, filteredClassifications.length - 1),
-      )
       return
     }
 
-    if (event.key === 'ArrowUp') {
-      event.preventDefault()
-      openCombobox()
-      setActiveIndex((currentIndex) => Math.max(currentIndex - 1, 0))
-      return
+    if (!hasPendingInput) return
+
+    const selectedClassification = getClassificationById(classifications, selectedClassificationId)
+
+    if (selectedClassification) {
+      setQuery(selectedClassification.name)
     }
 
-    if (event.key === 'Enter') {
-      if (!isOpen || filteredClassifications.length === 0) return
-
-      event.preventDefault()
-      handleSelect(String(filteredClassifications[activeIndex]?.id ?? filteredClassifications[0].id))
-      return
-    }
-
-    if (event.key !== 'Escape') return
-
-    event.preventDefault()
-    closeCombobox()
+    setHasPendingInput(false)
   }
 
   return (
-    <div
-      className={styles.combobox}
-      onBlurCapture={(event) => {
-        if (comboboxRef.current?.contains(event.relatedTarget as Node | null)) return
-
-        restoreCommittedSelection()
-        closeCombobox()
-      }}
-      ref={comboboxRef}
-    >
-      <input name={name} type="hidden" value={selectedClassificationId} />
-      <TextInput
-        aria-activedescendant={isOpen ? `${listBoxId}-${filteredClassifications[activeIndex]?.id}` : undefined}
-        aria-autocomplete="list"
-        aria-controls={listBoxId}
+    <Combobox as="div" className={styles.combobox} immediate nullable onChange={handleChange} ref={refs.setReference}>
+      <input name={name} type="hidden" value={hasPendingInput ? '' : selectedClassificationId} />
+      <ComboboxInput
         aria-describedby={ariaDescribedBy}
-        aria-expanded={isOpen}
-        aria-haspopup="listbox"
         aria-invalid={invalid}
-        className={clsx(styles.comboboxInput, { [styles.comboboxInputInvalid]: invalid })}
+        as={TextInput}
+        autoComplete="off"
+        className={clsx(styles.comboboxInput, invalid && styles.comboboxInputInvalid)}
+        displayValue={(classification: ClassificationOutput | null) => classification?.name ?? query}
         id={id}
-        name={`${name}Search`}
-        onChange={(event) => {
-          setInputValue(event.target.value)
-          setHasTyped(true)
-          openCombobox()
-        }}
-        onClick={openCombobox}
-        onFocus={openCombobox}
-        onKeyDown={handleInputKeyDown}
+        invalid={invalid}
+        name={`${name}-display`}
+        onBlur={handleBlur}
+        onChange={handleInputChange}
         placeholder={placeholder}
-        ref={inputRef}
-        role="combobox"
-        value={inputValue}
+        value={query}
       />
-      {isOpen && (
-        <div className={styles.comboboxPopover}>
-          <ListBox className={styles.comboboxResults} id={listBoxId} role="listbox">
-            {filteredClassifications.length === 0 ? (
-              <ListBox.Option aria-disabled="true">{noResultsMessage}</ListBox.Option>
-            ) : (
-              filteredClassifications.map((classification, index) => (
-                <ListBox.Option
-                  aria-selected={String(classification.id) === selectedClassificationId}
-                  data-active={index === activeIndex ? true : undefined}
-                  data-selected={String(classification.id) === selectedClassificationId ? true : undefined}
-                  id={`${listBoxId}-${classification.id}`}
-                  key={classification.id}
-                  onClick={() => handleSelect(String(classification.id))}
-                  onMouseDown={(event) => event.preventDefault()}
-                  onMouseEnter={() => setActiveIndex(index)}
-                  role="option"
-                >
-                  {classification.name}
-                </ListBox.Option>
-              ))
-            )}
-          </ListBox>
-        </div>
-      )}
-    </div>
+      <ComboboxOptions
+        as={ListBox}
+        className={clsx(styles.comboboxPopover, styles.comboboxResults)}
+        ref={refs.setFloating}
+        style={floatingStyles}
+      >
+        {filteredClassifications.length > 0 ? (
+          filteredClassifications.map((classification) => (
+            <ComboboxOption as={ListBox.Option} key={classification.id} value={classification}>
+              {classification.name}
+            </ComboboxOption>
+          ))
+        ) : (
+          <ComboboxOption as={ListBox.Option} disabled value={null}>
+            {noResultsMessage}
+          </ComboboxOption>
+        )}
+      </ComboboxOptions>
+    </Combobox>
   )
 }

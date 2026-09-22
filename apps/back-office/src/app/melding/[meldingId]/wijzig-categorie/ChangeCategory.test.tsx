@@ -10,6 +10,7 @@ import { ChangeCategory } from './ChangeCategory'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
+
   return {
     ...(typeof actual === 'object' ? actual : {}),
     useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
@@ -46,6 +47,7 @@ describe('ChangeCategory', () => {
     render(<ChangeCategory {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
+
     expect(backLink).toBeInTheDocument()
     expect(backLink).toHaveAttribute('href', '/melding/123')
   })
@@ -83,6 +85,20 @@ describe('ChangeCategory', () => {
     expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveValue('Category 2')
   })
 
+  it('reverts to the last selected classification on blur when typed text is not selected', async () => {
+    const user = userEvent.setup()
+
+    render(<ChangeCategory {...defaultProps} />)
+
+    const combobox = screen.getByRole('combobox', { name: 'form-labels.classification' })
+
+    await user.clear(combobox)
+    await user.type(combobox, 'Other category')
+    await user.tab()
+
+    expect(combobox).toHaveValue('Category 1')
+  })
+
   it('renders the cancel link', () => {
     render(<ChangeCategory {...defaultProps} />)
 
@@ -98,6 +114,7 @@ describe('ChangeCategory', () => {
     render(<ChangeCategory {...defaultProps} />)
 
     const reasonField = screen.getByRole('textbox', { name: 'form-labels.reason' })
+
     await user.type(reasonField, 'abc')
 
     expect(screen.getByRole('status')).toHaveTextContent('3 van 1000 tekens')
@@ -105,6 +122,7 @@ describe('ChangeCategory', () => {
 
   it('displays validation errors and preserves the submitted form data when the action returns validation errors', () => {
     const formData = new FormData()
+
     formData.set('classification', '3')
     formData.set('reason', 'Because this is the right classification')
 
@@ -149,11 +167,13 @@ describe('ChangeCategory', () => {
     const user = userEvent.setup()
 
     const mockFormAction = vi.fn()
+
     ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<ChangeCategory {...defaultProps} />)
 
     const submitButton = screen.getByRole('button', { name: 'submit-button' })
+
     await user.click(submitButton)
 
     expect(mockFormAction).toHaveBeenCalled()

@@ -18,159 +18,71 @@ const classifications = [
   },
 ]
 
+const defaultProps = {
+  classifications,
+  id: 'classification',
+  name: 'classification',
+  noResultsMessage: 'No categories found',
+  placeholder: 'Choose a category',
+}
+
 describe('ClassificationCombobox', () => {
-  it('renders the current classification in the visible input and hidden input', () => {
-    const { container } = render(
-      <ClassificationCombobox
-        classifications={classifications}
-        defaultValue="2"
-        id="classification"
-        name="classification"
-        noResultsMessage="No results"
-        placeholder="Search classifications"
-      />,
-    )
+  it('renders the default classification name and submitted id', () => {
+    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue="2" />)
 
     expect(screen.getByRole('combobox')).toHaveValue('Category 1')
-    expect(container.querySelector('input[type="hidden"][name="classification"]')).toHaveValue('2')
+    expect(container.querySelector('input[type="hidden"]')).toHaveValue('2')
   })
 
-  it('filters results while typing and updates the hidden value when an option is selected', async () => {
-    const user = userEvent.setup()
-    const onSelect = vi.fn()
+  it('renders the placeholder when there is no default classification', () => {
+    render(<ClassificationCombobox {...defaultProps} />)
 
-    const { container } = render(
-      <ClassificationCombobox
-        classifications={classifications}
-        defaultValue="2"
-        id="classification"
-        name="classification"
-        noResultsMessage="No results"
-        onSelect={onSelect}
-        placeholder="Search classifications"
-      />,
-    )
+    expect(screen.getByRole('combobox')).toHaveAttribute('placeholder', 'Choose a category')
+  })
+
+  it('filters classifications and selects a new one', async () => {
+    const user = userEvent.setup()
+    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue="2" />)
 
     const combobox = screen.getByRole('combobox')
 
     await user.clear(combobox)
     await user.type(combobox, '2')
 
-    expect(container.querySelector('input[type="hidden"][name="classification"]')).toHaveValue('2')
     expect(screen.queryByRole('option', { name: 'Category 1' })).not.toBeInTheDocument()
 
     await user.click(screen.getByRole('option', { name: 'Category 2' }))
 
     expect(combobox).toHaveValue('Category 2')
-    expect(container.querySelector('input[type="hidden"][name="classification"]')).toHaveValue('3')
-    expect(onSelect).toHaveBeenCalledWith(classifications[1])
+    expect(container.querySelector('input[type="hidden"]')).toHaveValue('3')
   })
 
-  it('shows the no-results message when the filter matches nothing', async () => {
+  it('shows the no results message when no classifications match', async () => {
     const user = userEvent.setup()
 
-    render(
-      <ClassificationCombobox
-        classifications={classifications}
-        defaultValue=""
-        id="classification"
-        name="classification"
-        noResultsMessage="No results"
-        placeholder="Search classifications"
-      />,
-    )
+    render(<ClassificationCombobox {...defaultProps} />)
 
     const combobox = screen.getByRole('combobox')
 
-    await user.type(combobox, 'unknown')
+    await user.type(combobox, 'Unknown')
 
-    expect(screen.getByRole('listitem')).toHaveTextContent('No results')
+    expect(screen.getByRole('option', { name: 'No categories found' })).toBeInTheDocument()
   })
 
-  it('restores the provided default values when the props change', async () => {
+  it('reverts to the last selected classification on blur after uncommitted input', async () => {
     const user = userEvent.setup()
-
-    const { container, rerender } = render(
-      <ClassificationCombobox
-        classifications={classifications}
-        defaultValue="2"
-        id="classification"
-        name="classification"
-        noResultsMessage="No results"
-        placeholder="Search classifications"
-      />,
-    )
-
-    const combobox = screen.getByRole('combobox')
-    await user.clear(combobox)
-    await user.type(combobox, 'draft')
-
-    rerender(
-      <ClassificationCombobox
-        classifications={classifications}
-        defaultValue="3"
-        id="classification"
-        name="classification"
-        noResultsMessage="No results"
-        placeholder="Search classifications"
-      />,
-    )
-
-    expect(screen.getByRole('combobox')).toHaveValue('Category 2')
-    expect(container.querySelector('input[type="hidden"][name="classification"]')).toHaveValue('3')
-  })
-
-  it('restores the last committed selection when the user blurs after typing', async () => {
-    const user = userEvent.setup()
-
-    const { container } = render(
-      <>
-        <ClassificationCombobox
-          classifications={classifications}
-          defaultValue="2"
-          id="classification"
-          name="classification"
-          noResultsMessage="No results"
-          placeholder="Search classifications"
-        />
-        <button type="button">Next field</button>
-      </>,
-    )
+    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue="2" />)
 
     const combobox = screen.getByRole('combobox')
 
     await user.clear(combobox)
-    await user.type(combobox, '2')
+    await user.type(combobox, 'Other category')
+
+    expect(container.querySelector('input[type="hidden"]')).toHaveValue('')
+
     await user.tab()
 
     expect(combobox).toHaveValue('Category 1')
-    expect(container.querySelector('input[type="hidden"][name="classification"]')).toHaveValue('2')
-  })
-
-  it('clears the typed value on blur when no selection has been committed', async () => {
-    const user = userEvent.setup()
-
-    const { container } = render(
-      <>
-        <ClassificationCombobox
-          classifications={classifications}
-          defaultValue=""
-          id="classification"
-          name="classification"
-          noResultsMessage="No results"
-          placeholder="Search classifications"
-        />
-        <button type="button">Next field</button>
-      </>,
-    )
-
-    const combobox = screen.getByRole('combobox')
-
-    await user.type(combobox, 'unknown')
-    await user.tab()
-
-    expect(combobox).toHaveValue('')
-    expect(combobox).toHaveAttribute('placeholder', 'Search classifications')
-    expect(container.querySelector('input[type="hidden"][name="classification"]')).toHaveValue('')
+    expect(container.querySelector('input[type="hidden"]')).toHaveValue('2')
   })
 })

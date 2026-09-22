@@ -1,5 +1,6 @@
 .combobox {
   position: relative;
+  width: 100%;
 }
 
 .comboboxInput {
@@ -17,11 +18,7 @@
 .comboboxPopover {
   background-color: var(--ams-color-background);
   border: var(--ams-border-width-s) solid currentcolor;
-  inset-inline: 0;
-  margin-block-start: var(--ams-space-xs);
-  max-block-size: 16rem;
   overflow-y: auto;
-  position: absolute;
   z-index: 1;
 }
 
