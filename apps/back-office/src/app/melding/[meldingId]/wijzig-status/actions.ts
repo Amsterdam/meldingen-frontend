@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation'
 
-import { STATES, STATES_LIST } from './constants'
+import { STATES, STATES_LIST } from '../constants'
 import {
   putMeldingByMeldingIdCancel,
   putMeldingByMeldingIdComplete,
