@@ -141,6 +141,29 @@ export default defineConfig(
           returnStyle: 'implicit',
         },
       ],
+      'padding-line-between-statements': [
+        'warn',
+        {
+          blankLine: 'always',
+          prev: '*',
+          next: ['block', 'block-like', 'return'],
+        },
+        {
+          blankLine: 'always',
+          prev: ['block', 'block-like'],
+          next: '*',
+        },
+        {
+          blankLine: 'always',
+          prev: ['const', 'let', 'var'],
+          next: '*',
+        },
+        {
+          blankLine: 'any',
+          prev: ['const', 'let', 'var'],
+          next: ['const', 'let', 'var'],
+        },
+      ],
 
       // Perfectionist
       'perfectionist/sort-imports': ['error', perfectionistImportGroups],
