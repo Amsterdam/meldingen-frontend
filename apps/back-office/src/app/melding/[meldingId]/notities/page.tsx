@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { NotesOverview } from './NotesOverview'
-import { getMeldingByMeldingId, getMeldingByMeldingIdNote, getUserMe } from '~/app/_api-client/proxy'
+import { getClassification, getMeldingByMeldingId, getMeldingByMeldingIdNote, getUserMe } from '~/app/_api-client/proxy'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
@@ -32,5 +32,15 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   if (notesError) throw new Error('Failed to fetch notes data.')
   if (currentUserError) throw new Error('Failed to fetch current user data.')
 
-  return <NotesOverview currentUserId={currentUser.id} meldingId={meldingId} notes={notes} publicId={data.public_id} />
+  const { data: classifications } = await getClassification()
+
+  return (
+    <NotesOverview
+      classifications={classifications}
+      currentUserId={currentUser.id}
+      meldingId={meldingId}
+      notes={notes}
+      publicId={data.public_id}
+    />
+  )
 }

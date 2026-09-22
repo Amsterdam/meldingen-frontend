@@ -1,8 +1,9 @@
 import { StandaloneLink } from '@amsterdam/design-system-react/dist/StandaloneLink'
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
+import { useCallback } from 'react'
 
-import type { NoteRetrieveOutput } from '@meldingen/api-client'
+import type { ClassificationOutput, NoteRetrieveOutput } from '@meldingen/api-client'
 
 import { Grid, Heading, TabNavigation, UnorderedList } from '@meldingen/ui'
 
@@ -12,14 +13,20 @@ import { Note } from './_components/Note/Note'
 import styles from './NotesOverview.module.css'
 
 type Props = {
+  classifications?: ClassificationOutput[]
   currentUserId: number
   meldingId: number
   notes: NoteRetrieveOutput[]
   publicId: string
 }
 
-export const NotesOverview = ({ currentUserId, meldingId, notes, publicId }: Props) => {
+export const NotesOverview = ({ classifications, currentUserId, meldingId, notes, publicId }: Props) => {
   const t = useTranslations('notes-overview')
+  const getClassification = useCallback(
+    (classificationId: NoteRetrieveOutput['classification_id']) =>
+      classifications?.find((classification) => classification.id === classificationId),
+    [classifications],
+  )
 
   return (
     <div className="ams-page__area--body">
@@ -42,7 +49,13 @@ export const NotesOverview = ({ currentUserId, meldingId, notes, publicId }: Pro
           {notes.length > 0 && (
             <UnorderedList className={styles.list} markers={false}>
               {notes.map((note) => (
-                <Note currentUserId={currentUserId} key={note.id} meldingId={meldingId} note={note} />
+                <Note
+                  classification={getClassification(note.classification_id)}
+                  currentUserId={currentUserId}
+                  key={note.id}
+                  meldingId={meldingId}
+                  note={note}
+                />
               ))}
             </UnorderedList>
           )}

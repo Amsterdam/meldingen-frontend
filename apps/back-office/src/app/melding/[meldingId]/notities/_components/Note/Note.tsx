@@ -1,8 +1,9 @@
 import { StandaloneLink } from '@amsterdam/design-system-react/dist/StandaloneLink'
+import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 
-import type { NoteRetrieveOutput } from '@meldingen/api-client'
+import type { ClassificationOutput, NoteRetrieveOutput } from '@meldingen/api-client'
 
 import { Paragraph, UnorderedList } from '@meldingen/ui'
 import { formatDateString } from '@meldingen/utils'
@@ -12,14 +13,14 @@ import { TipTapMarkdownToHtml } from '../TipTapMarkdownToHtml'
 import styles from './Note.module.css'
 
 type Props = {
+  classification?: ClassificationOutput
   currentUserId: number
   meldingId: number
   note: NoteRetrieveOutput
 }
 
-export const Note = ({ currentUserId, meldingId, note }: Props) => {
+export const Note = ({ classification, currentUserId, meldingId, note }: Props) => {
   const t = useTranslations('notes-overview')
-
   const { created_at, id, text, updated_at, user } = note
   const { date, time } = formatDateString(created_at)
 
@@ -56,6 +57,12 @@ export const Note = ({ currentUserId, meldingId, note }: Props) => {
         >
           {t('edit-link')}
         </StandaloneLink>
+      )}
+      {classification && (
+        <Paragraph className={styles.metadata}>
+          <span className={clsx(styles.classification)}>{t('classification')}</span>
+          <span>{classification.name}</span>
+        </Paragraph>
       )}
     </UnorderedList.Item>
   )
