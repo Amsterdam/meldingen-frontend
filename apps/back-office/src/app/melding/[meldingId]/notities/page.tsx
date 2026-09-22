@@ -32,7 +32,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   if (notesError) throw new Error('Failed to fetch notes data.')
   if (currentUserError) throw new Error('Failed to fetch current user data.')
 
-  const { data: classifications } = await getClassification()
+  const { data: classifications } = await getClassification({ query: { include_deleted: true } })
 
   return (
     <NotesOverview
