@@ -137,6 +137,10 @@ describe('Page', () => {
       {
         description: classification!.name,
         key: 'classification',
+        link: {
+          href: `/melding/${id}/wijzig-categorie`,
+          label: 'detail.melding-data.classification.link',
+        },
         term: 'detail.melding-data.classification.term',
       },
       {
