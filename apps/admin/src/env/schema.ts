@@ -8,11 +8,11 @@ const authProviderGroups = [
 const optionalNonEmptyString = z.string().trim().min(1).optional()
 
 const authShape = {
-  VITE_ENTRA_APP_BASE_URL: optionalNonEmptyString,
+  VITE_ENTRA_APP_BASE_URL: z.url().optional(),
   VITE_ENTRA_AUTHORITY: optionalNonEmptyString,
   VITE_ENTRA_CLIENT_ID: optionalNonEmptyString,
 
-  VITE_KEYCLOAK_BASE_URL: optionalNonEmptyString,
+  VITE_KEYCLOAK_BASE_URL: z.url().optional(),
   VITE_KEYCLOAK_CLIENT_ID: optionalNonEmptyString,
   VITE_KEYCLOAK_REALM: optionalNonEmptyString,
 }
@@ -49,7 +49,7 @@ const authCheck = (data: Record<string, string | undefined>, ctx: z.RefinementCt
 
 export const clientSchema = z
   .object({
-    VITE_BACKEND_BASE_URL: z.string(),
+    VITE_BACKEND_BASE_URL: z.url(),
     ...authShape,
   })
   .superRefine(authCheck)
