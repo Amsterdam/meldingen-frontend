@@ -36,8 +36,6 @@ describe('BackOfficeLayout', () => {
     const meldingFormLinks = screen.getAllByRole('link', { name: 'melding-form' })
     expect(meldingFormLinks.length).toBe(2)
     expect(meldingFormLinks[0]).toHaveAttribute('href', `${getClientEnv().NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden`)
-
-    vi.unstubAllEnvs()
   })
 
   it('sets the top anchor id on the page', () => {
