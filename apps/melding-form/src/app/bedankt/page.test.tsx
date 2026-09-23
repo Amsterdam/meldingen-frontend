@@ -81,8 +81,6 @@ describe('Page', () => {
 
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', `${getClientEnv().NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melding/10?id=1234`)
-
-    vi.unstubAllEnvs()
   })
 
   it('links to the back-office melden page when source is back-office', async () => {
@@ -101,7 +99,5 @@ describe('Page', () => {
 
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', `${getClientEnv().NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden`)
-
-    vi.unstubAllEnvs()
   })
 })
