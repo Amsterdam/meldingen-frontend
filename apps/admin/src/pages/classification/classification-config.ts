@@ -4,4 +4,6 @@ export const ServiceLevelObjectiveDayType = {
 }
 
 export const SERVICE_LEVEL_OBJECTIVE_DAYS_DEFAULT = 5
+export const SERVICE_LEVEL_OBJECTIVE_DAYS_MAX = 365
 export const SERVICE_LEVEL_OBJECTIVE_DAY_TYPE_DEFAULT = ServiceLevelObjectiveDayType.CALENDAR_DAYS
+export const SERVICE_LEVEL_OBJECTIVE_TEXT_MAX_LENGTH = 1000
