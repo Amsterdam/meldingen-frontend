@@ -170,7 +170,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
           </Heading>
 
           <Column className={clsx(styles.contentWrapper, 'ams-mb-m')}>
-            <Column className={styles.uploadInfo} gap="small">
+            <Column gap="small">
               <Heading id="file-upload-label" level={2} size="level-4">
                 {t('upload.title')}
               </Heading>

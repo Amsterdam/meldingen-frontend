@@ -2,18 +2,8 @@
   outline-offset: var(--ams-focus-outline-offset);
 }
 
-.column {
-  display: flex;
-  flex-direction: column;
-}
-
 .contentWrapper {
   background-color: var(--ams-color-background);
   padding-block: var(--ams-space-l);
   padding-inline: var(--ams-space-l);
-}
-
-.uploadInfo {
-  composes: column;
-  align-items: start;
 }
