@@ -1,22 +1,22 @@
 import type { Mock } from 'vitest'
 
+import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
-import { vi } from 'vitest'
+import { expect, vi } from 'vitest'
 
-import { resolveClassificationRedirect } from '../_utils/resolveClassificationRedirect'
 import { GET } from './route'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { server } from '~/mocks/node'
 
 vi.mock('next/headers', () => ({
   cookies: vi.fn(),
 }))
 
-vi.mock('../_utils/resolveClassificationRedirect', () => ({
-  resolveClassificationRedirect: vi.fn(),
-}))
-
 const BASE_URL = 'http://localhost:3000'
+// NOTE: A deviation from the BASE_URL used in the application, for testing purposes we define it explicitly here.
+// As the tual integrated GET call is targeted to localhost:8000, ENDPOINTS cannot be used here
+const BACKEND_BASE_URL = 'http://localhost:8000'
 
 const createRequest = (params: Record<string, string>) => {
   const url = new URL('/back-office-entry', 'http://not-url-from-env-var.com')
@@ -31,12 +31,10 @@ const requiredParams = {
 
 describe('GET', () => {
   let mockCookieStore: { delete: Mock; set: Mock }
-  const resolveClassificationRedirectMock = vi.mocked(resolveClassificationRedirect)
 
   beforeEach(() => {
     mockCookieStore = { delete: vi.fn(), set: vi.fn() }
     ;(cookies as Mock).mockReturnValue(mockCookieStore)
-    resolveClassificationRedirectMock.mockResolvedValue({ type: 'redirect', url: `/locatie#${TOP_ANCHOR_ID}` })
   })
 
   it('redirects to Home when id or token is missing', async () => {
@@ -66,7 +64,9 @@ describe('GET', () => {
 
   it('redirects to Home and logs error when an API error occurs', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-    resolveClassificationRedirectMock.mockResolvedValueOnce({ error: 'API error', type: 'error' })
+    server.use(
+      http.get(`${BACKEND_BASE_URL}/form/classification/:id`, () => HttpResponse.json('API error', { status: 500 })),
+    )
 
     const response = await GET(createRequest({ ...requiredParams, classification_id: '42' }))
 
@@ -75,9 +75,21 @@ describe('GET', () => {
   })
 
   it('redirects to the correct URL when GET is successful', async () => {
-    const response = await GET(createRequest({ ...requiredParams, classification_id: '42' }))
+    server.use(
+      http.get(`${BACKEND_BASE_URL}/form/classification/:id`, () => HttpResponse.json({ components: [] })),
+      http.put(`${BACKEND_BASE_URL}/melding/:id/answer_questions`, () => HttpResponse.json({}, { status: 200 })),
+    )
 
-    expect(resolveClassificationRedirectMock).toHaveBeenCalledWith(123, 'test-token', 42)
+    const response = await GET(
+      createRequest({
+        classification_id: '42',
+        ...requiredParams,
+      }),
+    )
+
     expect(response.headers.get('location')).toBe(`${BASE_URL}/locatie#${TOP_ANCHOR_ID}`)
+    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: 24 * 60 * 60 })
+    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', { maxAge: 24 * 60 * 60 })
+    expect(mockCookieStore.delete).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
   })
 })
