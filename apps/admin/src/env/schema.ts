@@ -47,7 +47,7 @@ const authCheck = (data: Record<string, string | undefined>, ctx: z.RefinementCt
   }
 }
 
-export const clientSchema = z
+export const envSchema = z
   .object({
     VITE_BACKEND_BASE_URL: z.url(),
     ...authShape,

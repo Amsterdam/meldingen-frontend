@@ -1,3 +1,3 @@
-import { validateClientEnv } from './validateEnv.ts'
+import { validateEnv } from './validateEnv.ts'
 
-export const clientEnv = validateClientEnv(import.meta.env)
+export const env = validateEnv(import.meta.env)

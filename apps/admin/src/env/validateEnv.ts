@@ -1,9 +1,9 @@
 import * as z from 'zod'
 
-import { clientSchema } from './schema.js'
+import { envSchema } from './schema.js'
 
-export const validateClientEnv = (env: Record<string, unknown>) => {
-  const parsed = z.safeParse(clientSchema, env)
+export const validateEnv = (env: Record<string, unknown>) => {
+  const parsed = z.safeParse(envSchema, env)
 
   if (!parsed.success) {
     throw new Error('Invalid client environment variables', { cause: parsed.error })

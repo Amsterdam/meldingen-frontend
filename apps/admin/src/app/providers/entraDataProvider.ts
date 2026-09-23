@@ -5,7 +5,7 @@ import { addRefreshAuthToDataProvider } from 'react-admin'
 
 import { msalInstance, scopes } from './entraAuthProvider'
 import { genericDataProvider } from './genericDataProvider'
-import { clientEnv } from '~/env/env'
+import { env } from '~/env/env'
 
 export const tokenRequest: SilentRequest = {
   forceRefresh: false,
@@ -18,7 +18,7 @@ const httpClient = msalHttpClient({
 })
 
 export const entraDataProvider = addRefreshAuthToDataProvider(
-  genericDataProvider(clientEnv.VITE_BACKEND_BASE_URL, httpClient),
+  genericDataProvider(env.VITE_BACKEND_BASE_URL, httpClient),
   msalRefreshAuth({
     msalInstance,
     tokenRequest,
