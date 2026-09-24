@@ -127,6 +127,31 @@ export default defineConfig(
       'no-shadow': 'off',
       '@typescript-eslint/no-shadow': ['warn'],
 
+      // Stylistic
+      '@stylistic/padding-line-between-statements': [
+        'warn',
+        {
+          blankLine: 'always',
+          prev: '*',
+          next: ['block', 'block-like', 'return'],
+        },
+        {
+          blankLine: 'always',
+          prev: ['block', 'block-like'],
+          next: '*',
+        },
+        {
+          blankLine: 'always',
+          prev: ['const', 'let', 'var'],
+          next: '*',
+        },
+        {
+          blankLine: 'any',
+          prev: ['const', 'let', 'var'],
+          next: ['const', 'let', 'var'],
+        },
+      ],
+
       // Import
       'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
       'import/newline-after-import': 'error',
@@ -207,35 +232,6 @@ export default defineConfig(
     files: ['**/error.tsx', '**/page.tsx', '**/layout.tsx', '**/not-found.tsx'],
     rules: {
       'import/no-default-export': 'off',
-    },
-  },
-
-  {
-    files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
-    rules: {
-      '@stylistic/padding-line-between-statements': [
-        'warn',
-        {
-          blankLine: 'always',
-          prev: '*',
-          next: ['block', 'block-like', 'return'],
-        },
-        {
-          blankLine: 'always',
-          prev: ['block', 'block-like'],
-          next: '*',
-        },
-        {
-          blankLine: 'always',
-          prev: ['const', 'let', 'var'],
-          next: '*',
-        },
-        {
-          blankLine: 'any',
-          prev: ['const', 'let', 'var'],
-          next: ['const', 'let', 'var'],
-        },
-      ],
     },
   },
 
