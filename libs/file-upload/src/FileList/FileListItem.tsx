@@ -54,7 +54,7 @@ export const FileListItem = ({
         className,
       )}
     >
-      <div className={styles.imageContainer}>
+      <div className={styles.attachmentContainer}>
         {isError ? <Icon className={styles.icon} size="heading-1" svg={WarningIcon} /> : <FileListMedia file={file} />}
       </div>
 
