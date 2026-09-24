@@ -4,6 +4,7 @@ import eslint from '@eslint/js'
 import json from '@eslint/json'
 import markdown from '@eslint/markdown'
 import pluginNext from '@next/eslint-plugin-next'
+import stylistic from '@stylistic/eslint-plugin'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import eslintConfigPrettier from 'eslint-config-prettier/flat'
@@ -88,6 +89,7 @@ export default defineConfig(
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
+      '@stylistic': stylistic,
       import: importPlugin,
       'jsx-a11y': jsxA11y,
       perfectionist,
@@ -208,13 +210,10 @@ export default defineConfig(
     },
   },
 
-  // Global Prettier config. Defined here to make sure no other rules override it.
-  eslintConfigPrettier,
-
   {
     files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
     rules: {
-      'padding-line-between-statements': [
+      '@stylistic/padding-line-between-statements': [
         'warn',
         {
           blankLine: 'always',
@@ -239,4 +238,7 @@ export default defineConfig(
       ],
     },
   },
+
+  // Global Prettier config. Defined here to make sure no other rules override it.
+  eslintConfigPrettier,
 )
