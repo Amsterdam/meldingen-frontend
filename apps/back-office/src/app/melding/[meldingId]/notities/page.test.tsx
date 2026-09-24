@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw'
 
 import { NotesOverview } from './NotesOverview'
 import Page, { generateMetadata } from './page'
-import { melding } from '~/mocks/data'
+import { classifications, melding } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -64,7 +64,7 @@ describe('Page', () => {
     render(result)
 
     expect(NotesOverview).toHaveBeenCalledWith(
-      { currentUserId: 1, meldingId: 123, notes: [], publicId: melding.public_id },
+      { classifications, currentUserId: 1, meldingId: 123, notes: [], publicId: melding.public_id },
       undefined,
     )
   })
