@@ -88,7 +88,7 @@
     "hint-text": "(niet verplicht)",
     "status": "{fileCount} van {maxFiles} bestanden toegevoegd",
     "file-upload": {
-      "action-button-delete": "Verwijderen",
+      "action-button-delete": "Verwijder foto",
       "action-button-cancel": "Annuleren",
       "button": "Bestanden kiezen",
       "drop-area": "Of sleep de bestanden in dit vlak.",
