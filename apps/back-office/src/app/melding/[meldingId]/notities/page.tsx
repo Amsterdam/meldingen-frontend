@@ -21,7 +21,7 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
   const data = await getMeldingData(meldingId)
 
   return {
-    title: t('metadata.title', { publicId: data.public_id }),
+    title: t('metadata.title', { publicId: data.public_id ?? '' }),
   }
 }
 
