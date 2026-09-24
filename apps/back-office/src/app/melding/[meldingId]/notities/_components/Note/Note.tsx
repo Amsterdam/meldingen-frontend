@@ -1,11 +1,10 @@
-import { StandaloneLink } from '@amsterdam/design-system-react/dist/StandaloneLink'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 
 import type { ClassificationOutput, NoteRetrieveOutput } from '@meldingen/api-client'
 
-import { Paragraph, UnorderedList } from '@meldingen/ui'
+import { Link, Paragraph, UnorderedList } from '@meldingen/ui'
 import { formatDateString } from '@meldingen/utils'
 
 import { TipTapMarkdownToHtml } from '../TipTapMarkdownToHtml'
@@ -50,13 +49,13 @@ export const Note = ({ classification, currentUserId, meldingId, note }: Props) 
       {text === '' ? <Paragraph>{t('deleted-note')}</Paragraph> : <TipTapMarkdownToHtml markdown={text} />}
       {/* Only show the edit link if the current user is the author of the note */}
       {currentUserId === user.id && (
-        <StandaloneLink
-          className={styles.link}
+        <Link
+          className={clsx(styles.link, 'ams-mb-s')}
           href={`/melding/${meldingId}/notities/${id}/wijzigen`}
           linkComponent={NextLink}
         >
           {t('edit-link')}
-        </StandaloneLink>
+        </Link>
       )}
       {classification && (
         <Paragraph className={styles.metadata}>

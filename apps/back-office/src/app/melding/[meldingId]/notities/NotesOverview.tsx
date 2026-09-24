@@ -1,11 +1,10 @@
-import { StandaloneLink } from '@amsterdam/design-system-react/dist/StandaloneLink'
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 import { useCallback } from 'react'
 
 import type { ClassificationOutput, NoteRetrieveOutput } from '@meldingen/api-client'
 
-import { Grid, Heading, TabNavigation, UnorderedList } from '@meldingen/ui'
+import { Grid, Heading, Link, TabNavigation, UnorderedList } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
 import { Note } from './_components/Note/Note'
@@ -32,7 +31,7 @@ export const NotesOverview = ({ classifications, currentUserId, meldingId, notes
     <div className="ams-page__area--body">
       <BackLink href={`/`}>{t('back-link')}</BackLink>
       <Grid as="main">
-        <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
+        <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
           <Heading className="ams-mb-l" level={1}>
             {t('title', { publicId })}
           </Heading>
@@ -46,26 +45,24 @@ export const NotesOverview = ({ classifications, currentUserId, meldingId, notes
               </TabNavigation.Link>
             </TabNavigation.List>
           </TabNavigation>
-          {notes.length > 0 && (
-            <UnorderedList className={styles.list} markers={false}>
-              {notes.map((note) => (
-                <Note
-                  classification={getClassification(note.classification_id)}
-                  currentUserId={currentUserId}
-                  key={note.id}
-                  meldingId={meldingId}
-                  note={note}
-                />
-              ))}
-            </UnorderedList>
-          )}
-          <StandaloneLink
-            className="ams-mb-m"
-            href={`/melding/${meldingId}/notities/toevoegen`}
-            linkComponent={NextLink}
-          >
-            {t('add-note-link')}
-          </StandaloneLink>
+          <Grid.Subgrid gapVertical="large">
+            <Link href={`/melding/${meldingId}/notities/toevoegen`} linkComponent={NextLink}>
+              {t('add-note-link')}
+            </Link>
+            {notes.length > 0 && (
+              <UnorderedList className={styles.list} markers={false}>
+                {notes.map((note) => (
+                  <Note
+                    classification={getClassification(note.classification_id)}
+                    currentUserId={currentUserId}
+                    key={note.id}
+                    meldingId={meldingId}
+                    note={note}
+                  />
+                ))}
+              </UnorderedList>
+            )}
+          </Grid.Subgrid>
         </Grid.Cell>
       </Grid>
     </div>
