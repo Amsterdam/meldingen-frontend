@@ -18,21 +18,25 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
 
-  const [{ data, error }, { data: notes, error: notesError }, { data: currentUser, error: currentUserError }] =
-    await Promise.all([
-      getMeldingByMeldingId({ path: { melding_id: meldingId } }),
-      getMeldingByMeldingIdNote({
-        path: { melding_id: meldingId },
-        query: { sort: '["created_at","DESC"]' },
-      }),
-      getUserMe(),
-    ])
+  const [
+    { data, error },
+    { data: notes, error: notesError },
+    { data: currentUser, error: currentUserError },
+    { data: classifications, error: classificationsError },
+  ] = await Promise.all([
+    getMeldingByMeldingId({ path: { melding_id: meldingId } }),
+    getMeldingByMeldingIdNote({
+      path: { melding_id: meldingId },
+      query: { sort: '["created_at","DESC"]' },
+    }),
+    getUserMe(),
+    getClassification({ query: { include_deleted: true } }),
+  ])
 
   if (error) throw new Error('Failed to fetch melding data.')
   if (notesError) throw new Error('Failed to fetch notes data.')
   if (currentUserError) throw new Error('Failed to fetch current user data.')
-
-  const { data: classifications } = await getClassification({ query: { include_deleted: true } })
+  if (classificationsError) throw new Error('Failed to fetch classifications data.')
 
   return (
     <NotesOverview
