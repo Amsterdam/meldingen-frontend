@@ -37,9 +37,9 @@ export const ClassificationCombobox = ({
   noResultsMessage,
   placeholder,
 }: Props) => {
-  const defaultClassification = getClassificationById(classifications, defaultValue)
-  const [value, setValue] = useState(defaultClassification?.name ?? '')
   const [selectedClassificationId, setSelectedClassificationId] = useState(defaultValue ?? '')
+  const selectedClassification = getClassificationById(classifications, selectedClassificationId)
+  const [value, setValue] = useState(selectedClassification?.name ?? '')
 
   const { floatingStyles, refs } = useFloating({
     middleware: [
@@ -78,7 +78,7 @@ export const ClassificationCombobox = ({
       immediate
       onChange={handleChange}
       ref={refs.setReference}
-      value={getClassificationById(classifications, selectedClassificationId) ?? null}
+      value={selectedClassification}
     >
       <input name={name} type="hidden" value={selectedClassificationId} />
       <ComboboxInput
