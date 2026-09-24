@@ -24,12 +24,12 @@
     "ra-keycloak": "2.0.0",
     "react-admin": "5.15.3",
     "react-hook-form": "7.88.0",
-    "react-router": "7.18.3",
+    "react-router": "7.18.4",
     "react-router-dom": "7.18.4",
     "uber-json-schema-filter": "2.0.5"
   },
   "devDependencies": {
-    "@formio/core": "2.8.2",
+    "@formio/core": "2.9.0",
     "ra-core": "5.15.3"
   }
 }
