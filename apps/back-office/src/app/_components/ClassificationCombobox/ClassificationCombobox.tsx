@@ -4,7 +4,6 @@ import type { ChangeEvent } from 'react'
 
 import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react'
-import { clsx } from 'clsx'
 import { useEffect, useState } from 'react'
 
 import type { ClassificationOutput } from '@meldingen/api-client'
@@ -99,7 +98,7 @@ export const ClassificationCombobox = ({
         />
         <ComboboxOptions
           as={ListBox}
-          className={clsx(styles.comboboxPopover, styles.comboboxResults)}
+          className={styles.comboboxOptions}
           modal={false}
           ref={refs.setFloating}
           style={floatingStyles}

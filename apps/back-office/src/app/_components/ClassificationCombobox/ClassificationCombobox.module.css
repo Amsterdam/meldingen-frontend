@@ -5,3 +5,9 @@
   background-size: 1em 1em;
   padding-inline-end: calc(2 * var(--ams-inputs-padding-inline) + 1em);
 }
+
+.comboboxOptions {
+  margin-block-end: 0;
+  overflow-y: auto;
+  z-index: 1;
+}
