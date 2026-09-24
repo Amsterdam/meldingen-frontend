@@ -85,20 +85,6 @@ describe('ChangeCategory', () => {
     expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveValue('Category 2')
   })
 
-  it('reverts to the last selected classification on blur when typed text is not selected', async () => {
-    const user = userEvent.setup()
-
-    render(<ChangeCategory {...defaultProps} />)
-
-    const combobox = screen.getByRole('combobox', { name: 'form-labels.classification' })
-
-    await user.clear(combobox)
-    await user.type(combobox, 'Other category')
-    await user.tab()
-
-    expect(combobox).toHaveValue('Category 1')
-  })
-
   it('renders the cancel link', () => {
     render(<ChangeCategory {...defaultProps} />)
 

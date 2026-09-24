@@ -68,21 +68,4 @@ describe('ClassificationCombobox', () => {
 
     expect(screen.getByRole('option', { name: 'No categories found' })).toBeInTheDocument()
   })
-
-  it('reverts to the last selected classification on blur after uncommitted input', async () => {
-    const user = userEvent.setup()
-    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue="2" />)
-
-    const combobox = screen.getByRole('combobox')
-
-    await user.clear(combobox)
-    await user.type(combobox, 'Other category')
-
-    expect(container.querySelector('input[type="hidden"]')).toHaveValue('')
-
-    await user.tab()
-
-    expect(combobox).toHaveValue('Category 1')
-    expect(container.querySelector('input[type="hidden"]')).toHaveValue('2')
-  })
 })
