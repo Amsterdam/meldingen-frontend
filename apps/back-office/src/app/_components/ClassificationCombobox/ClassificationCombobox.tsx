@@ -1,11 +1,11 @@
 'use client'
 
-import type { ChangeEvent, FocusEvent } from 'react'
+import type { ChangeEvent } from 'react'
 
 import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react'
 import { clsx } from 'clsx'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import type { ClassificationOutput } from '@meldingen/api-client'
 
@@ -39,7 +39,6 @@ export const ClassificationCombobox = ({
 }: Props) => {
   const defaultClassification = getClassificationById(classifications, defaultValue)
   const [value, setValue] = useState(defaultClassification?.name ?? '')
-  const [hasPendingInput, setHasPendingInput] = useState(false)
   const [selectedClassificationId, setSelectedClassificationId] = useState(defaultValue ?? '')
 
   const { floatingStyles, refs } = useFloating({
@@ -54,14 +53,6 @@ export const ClassificationCombobox = ({
     whileElementsMounted: autoUpdate,
   })
 
-  useEffect(() => {
-    const nextClassification = getClassificationById(classifications, defaultValue)
-
-    setHasPendingInput(false)
-    setSelectedClassificationId(defaultValue ?? '')
-    setValue(nextClassification?.name ?? '')
-  }, [classifications, defaultValue])
-
   const filteredClassifications =
     value === ''
       ? classifications
@@ -72,33 +63,12 @@ export const ClassificationCombobox = ({
   const handleChange = (classification: ClassificationOutput | null) => {
     if (!classification) return
 
-    setHasPendingInput(false)
     setSelectedClassificationId(String(classification.id))
     setValue(classification.name)
   }
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setHasPendingInput(true)
     setValue(event.target.value)
-  }
-
-  const handleBlur = (_event: FocusEvent<HTMLInputElement>) => {
-    if (!selectedClassificationId) {
-      setHasPendingInput(false)
-      setValue('')
-
-      return
-    }
-
-    if (!hasPendingInput) return
-
-    const selectedClassification = getClassificationById(classifications, selectedClassificationId)
-
-    if (selectedClassification) {
-      setValue(selectedClassification.name)
-    }
-
-    setHasPendingInput(false)
   }
 
   return (
@@ -110,7 +80,7 @@ export const ClassificationCombobox = ({
       ref={refs.setReference}
       value={getClassificationById(classifications, selectedClassificationId) ?? null}
     >
-      <input name={name} type="hidden" value={hasPendingInput ? '' : selectedClassificationId} />
+      <input name={name} type="hidden" value={selectedClassificationId} />
       <ComboboxInput
         aria-describedby={ariaDescribedBy}
         aria-invalid={invalid}
@@ -122,7 +92,6 @@ export const ClassificationCombobox = ({
         id={id}
         invalid={invalid}
         name={`${name}-display`}
-        onBlur={handleBlur}
         onChange={handleInputChange}
         placeholder={placeholder}
         value={value}
