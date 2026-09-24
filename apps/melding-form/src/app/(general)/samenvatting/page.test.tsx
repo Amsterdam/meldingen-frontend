@@ -5,6 +5,7 @@ import { postSummaryForm } from './actions'
 import Page from './page'
 import { Summary } from './Summary'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { getClientEnv } from '~/env/client'
 import { additionalQuestions, containerAssetIds, melding, textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
@@ -137,8 +138,6 @@ describe('Page', () => {
   })
 
   it('passes a link to the Back Office if the source cookie is set to back-office', async () => {
-    vi.stubEnv('NEXT_PUBLIC_BACK_OFFICE_BASE_URL', 'https://backoffice.example.com')
-
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({
@@ -165,7 +164,7 @@ describe('Page', () => {
 
     expect(Summary).toHaveBeenCalledWith(
       expect.objectContaining({
-        primaryFormLink: 'https://backoffice.example.com/melden?id=123&token=abc',
+        primaryFormLink: `${getClientEnv().NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?id=123&token=abc`,
       }),
       undefined,
     )

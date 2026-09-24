@@ -25,6 +25,7 @@ import {
 import { postForm } from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 import { COOKIES } from '~/constants'
+import { clientEnv } from '~/env/client'
 
 export const dynamic = 'force-dynamic'
 
@@ -174,7 +175,7 @@ export default async ({ params }: { params: Params }) => {
   const beforeLinkParams = new URLSearchParams({ id: meldingId, token })
   const beforeAdditionalQuestionsPath =
     source === 'back-office'
-      ? `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?${beforeLinkParams}`
+      ? `${clientEnv.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?${beforeLinkParams}`
       : BEFORE_ADDITIONAL_QUESTIONS_PATH
 
   // Pass previous panel path to the Aanvullende vragen component
