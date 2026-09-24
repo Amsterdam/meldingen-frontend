@@ -12,6 +12,7 @@ import {
 import { postSummaryForm } from './actions'
 import { Summary } from './Summary'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { clientEnv } from '~/env/client'
 
 export default async () => {
   const cookieStore = await cookies()
@@ -42,7 +43,7 @@ export default async () => {
   const source = cookieStore.get(COOKIES.SOURCE)?.value
   const params = new URLSearchParams({ id: meldingId, token })
   const primaryFormLink =
-    source === 'back-office' ? `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?${params}` : `/#${TOP_ANCHOR_ID}`
+    source === 'back-office' ? `${clientEnv.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?${params}` : `/#${TOP_ANCHOR_ID}`
 
   return (
     <Summary
