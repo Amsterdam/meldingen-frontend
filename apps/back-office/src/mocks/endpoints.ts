@@ -5,6 +5,9 @@ export const ENDPOINTS = {
   DELETE_ATTACHMENT_BY_ID: '/attachment/:id',
   GET_ATTACHMENT_BY_ID: '/attachment/:id',
 
+  // Back office's own same-origin route (proxies to the backend with the session's access token)
+  POST_API_MELDING_BY_MELDING_ID_ATTACHMENT: '/api/melding/:id/attachment',
+
   // Labels
   GET_LABEL: '/label',
 

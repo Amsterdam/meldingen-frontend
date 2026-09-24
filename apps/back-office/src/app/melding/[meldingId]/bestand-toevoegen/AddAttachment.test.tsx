@@ -4,7 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 
-import { AddAttachment, uploadAttachment } from './AddAttachment'
+import { AddAttachment } from './AddAttachment'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -131,9 +131,9 @@ describe('AddAttachment', () => {
     expect(screen.queryByText('first.png')).not.toBeInTheDocument()
   })
 
-  it('shows an API error alert and a validation error when the upload fails', async () => {
+  it('shows a validation error and focuses it when the upload fails', async () => {
     server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () =>
+      http.post(ENDPOINTS.POST_API_MELDING_BY_MELDING_ID_ATTACHMENT, () =>
         HttpResponse.json({ detail: 'Allowed content size exceeded' }, { status: 422 }),
       ),
     )
@@ -148,11 +148,8 @@ describe('AddAttachment', () => {
     const validationLink = await screen.findByRole('link', { name: 'validation-errors.file-too-large' })
 
     expect(validationLink).toHaveAttribute('href', '#file-upload.id-prefix-1')
-    expect(container.querySelectorAll('.ams-alert')[0]).toHaveTextContent('heading')
 
-    // Both an API error alert and a validation error alert are shown; the validation alert
-    // (mounted last, since it only appears once there's an errored file) ends up with focus.
-    await waitFor(() => expect(container.querySelectorAll('.ams-alert')[1]).toHaveFocus())
+    await waitFor(() => expect(container.querySelector('.ams-alert')).toHaveFocus())
   })
 
   it('shows a generic error alert and focuses it when too many files are selected', () => {
@@ -222,41 +219,5 @@ describe('AddAttachment', () => {
     expect(container.querySelector('.ams-alert')).toHaveFocus()
 
     consoleErrorSpy.mockRestore()
-  })
-})
-
-describe('uploadAttachment', () => {
-  it('returns a validation error without calling the server when the file exceeds 20MB', async () => {
-    const largeFile = new File(['x'], 'large.png', { type: 'image/png' })
-
-    Object.defineProperty(largeFile, 'size', { value: 21 * 1024 * 1024 })
-
-    server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () => {
-        throw new Error('Should not call the server for oversized files')
-      }),
-    )
-
-    const result = await uploadAttachment(123)(largeFile)
-
-    expect(result).toEqual({ error: 'Allowed content size exceeded', serverId: undefined })
-  })
-
-  it('returns the server id when the upload succeeds', async () => {
-    const result = await uploadAttachment(123)(mockFile)
-
-    expect(result).toEqual({ error: undefined, serverId: 42 })
-  })
-
-  it('returns the error when the upload fails', async () => {
-    server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
-      ),
-    )
-
-    const result = await uploadAttachment(123)(mockFile)
-
-    expect(result).toEqual({ error: 'Error message', serverId: undefined })
   })
 })

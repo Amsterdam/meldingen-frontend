@@ -2,21 +2,7 @@
 
 import { getApiErrorMessage } from '@meldingen/api-client'
 
-import { deleteAttachmentById, postMeldingByMeldingIdAttachment } from '~/app/_api-client/proxy'
-
-export const uploadAttachmentAction = async (meldingId: number, file: File) => {
-  const { data, error } = await postMeldingByMeldingIdAttachment({
-    body: {
-      file,
-    },
-    path: { melding_id: meldingId },
-  })
-
-  return {
-    error: error ? getApiErrorMessage(error) : undefined,
-    serverId: data?.id,
-  }
-}
+import { deleteAttachmentById } from '~/app/_api-client/proxy'
 
 // serverId is attachment ID
 export const deleteAttachmentAction = async (serverId: number) => {
