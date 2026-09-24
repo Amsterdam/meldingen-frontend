@@ -9,6 +9,7 @@ import { formatDateString } from '@meldingen/utils'
 
 import { BackOfficeLayout, RegularLayout } from '../_components'
 import { TOP_ANCHOR_ID } from '~/constants'
+import { clientEnv } from '~/env/client'
 
 // The "description" translation also accepts undefined values for conditional rendering
 type TWithUndefined = (key: string, values?: Record<string, string | number | Date | undefined>) => string
@@ -28,7 +29,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ [key: string]:
 
   const { date, time } = createdAt ? formatDateString(createdAt) : { date: undefined, time: undefined }
 
-  const backOfficeBaseUrl = process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL
+  const backOfficeBaseUrl = clientEnv.NEXT_PUBLIC_BACK_OFFICE_BASE_URL
   const publicIdLinkOrText =
     source === 'back-office' && publicId && id && backOfficeBaseUrl
       ? `[${publicId}](${backOfficeBaseUrl}/melding/${id}?id=${encodeURIComponent(publicId)})`
