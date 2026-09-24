@@ -15,7 +15,9 @@ vi.mock('next/headers', () => ({
 
 const BASE_URL = 'http://localhost:3000'
 // NOTE: A deviation from the BASE_URL used in the application, for testing purposes we define it explicitly here.
-// As the tual integrated GET call is targeted to localhost:8000, ENDPOINTS cannot be used here
+// As the atual integrated GET call is targeted to localhost:8000, ENDPOINTS cannot be used here
+// NOTE: An exception is made here to explicitly define the backend base URL for testing purposes.
+// Reason behind it is that the `client` used in the application is configured with the backend base URL, and for testing purposes, we need to explicitly define it here. See the related route.ts
 const BACKEND_BASE_URL = 'http://localhost:8000'
 
 const createRequest = (params: Record<string, string>) => {
