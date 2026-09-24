@@ -80,14 +80,7 @@ export const ClassificationCombobox = ({
   }
 
   return (
-    <Combobox
-      as="div"
-      className={styles.combobox}
-      immediate
-      onChange={handleChange}
-      ref={refs.setReference}
-      value={selectedClassification}
-    >
+    <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification}>
       <input name={name} type="hidden" value={selectedClassificationId} />
       <ComboboxInput
         aria-describedby={ariaDescribedBy}
@@ -95,11 +88,9 @@ export const ClassificationCombobox = ({
         aria-required
         as={TextInput}
         autoComplete="off"
-        className={clsx(styles.comboboxInput, invalid && styles.comboboxInputInvalid)}
-        displayValue={(classification: ClassificationOutput | null) => classification?.name ?? value}
+        className={styles.comboboxInput}
         id={id}
         invalid={invalid}
-        name={`${name}-display`}
         onChange={handleInputChange}
         placeholder={placeholder}
         value={value}
@@ -107,6 +98,7 @@ export const ClassificationCombobox = ({
       <ComboboxOptions
         as={ListBox}
         className={clsx(styles.comboboxPopover, styles.comboboxResults)}
+        modal={false}
         ref={refs.setFloating}
         style={floatingStyles}
       >
