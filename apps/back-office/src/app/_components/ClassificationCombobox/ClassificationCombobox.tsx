@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 
 import type { ClassificationOutput } from '@meldingen/api-client'
 
-import { ListBox, TextInput } from '@meldingen/ui'
+import { Column, ListBox, Paragraph, TextInput } from '@meldingen/ui'
 
 import styles from './ClassificationCombobox.module.css'
 
@@ -45,6 +45,7 @@ export const ClassificationCombobox = ({
     if (!invalid) {
       return
     }
+
     setSelectedClassificationId(defaultValue ?? '')
     setValue(selectedClassification?.name ?? '')
   }, [selectedClassification, invalid, defaultValue])
@@ -80,40 +81,43 @@ export const ClassificationCombobox = ({
   }
 
   return (
-    <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification}>
-      <input name={name} type="hidden" value={selectedClassificationId} />
-      <ComboboxInput
-        aria-describedby={ariaDescribedBy}
-        aria-invalid={invalid}
-        aria-required
-        as={TextInput}
-        autoComplete="off"
-        className={styles.comboboxInput}
-        id={id}
-        invalid={invalid}
-        onChange={handleInputChange}
-        placeholder={placeholder}
-        value={value}
-      />
-      <ComboboxOptions
-        as={ListBox}
-        className={clsx(styles.comboboxPopover, styles.comboboxResults)}
-        modal={false}
-        ref={refs.setFloating}
-        style={floatingStyles}
-      >
-        {filteredClassifications.length > 0 ? (
-          filteredClassifications.map((classification) => (
-            <ComboboxOption as={ListBox.Option} key={classification.id} value={classification}>
-              {classification.name}
+    <Column gap="small">
+      <Combobox as="div" immediate onChange={handleChange} ref={refs.setReference} value={selectedClassification}>
+        <input name={name} type="hidden" value={selectedClassificationId} />
+        <ComboboxInput
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={invalid}
+          aria-required
+          as={TextInput}
+          autoComplete="off"
+          className={styles.comboboxInput}
+          id={id}
+          invalid={invalid}
+          onChange={handleInputChange}
+          placeholder={placeholder}
+          value={value}
+        />
+        <ComboboxOptions
+          as={ListBox}
+          className={clsx(styles.comboboxPopover, styles.comboboxResults)}
+          modal={false}
+          ref={refs.setFloating}
+          style={floatingStyles}
+        >
+          {filteredClassifications.length > 0 ? (
+            filteredClassifications.map((classification) => (
+              <ComboboxOption as={ListBox.Option} key={classification.id} value={classification}>
+                {classification.name}
+              </ComboboxOption>
+            ))
+          ) : (
+            <ComboboxOption as={ListBox.Option} disabled value={null}>
+              {noResultsMessage}
             </ComboboxOption>
-          ))
-        ) : (
-          <ComboboxOption as={ListBox.Option} disabled value={null}>
-            {noResultsMessage}
-          </ComboboxOption>
-        )}
-      </ComboboxOptions>
-    </Combobox>
+          )}
+        </ComboboxOptions>
+      </Combobox>
+      {selectedClassification?.instructions && <Paragraph>{selectedClassification.instructions}</Paragraph>}
+    </Column>
   )
 }
