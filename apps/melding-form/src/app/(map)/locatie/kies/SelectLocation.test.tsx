@@ -1,9 +1,13 @@
+import type NextDynamic from 'next/dynamic'
+import type { ComponentType } from 'react'
 import type { Mock } from 'vitest'
 
 import useViewportHasMinWidth from '@amsterdam/design-system-react/dist/common/useViewportHasMinWidth'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useActionState, useEffect } from 'react'
+
+import { Controls } from '@meldingen/map'
 
 import type { Props } from './SelectLocation'
 
@@ -13,6 +17,7 @@ import { containerAssets } from '~/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
+
   return {
     ...(typeof actual === 'object' ? actual : {}),
     useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
@@ -26,6 +31,25 @@ vi.mock('./_components/AddressInput/AddressInput', () => ({
 vi.mock('./_components/AssetList/AssetList', () => ({
   AssetList: vi.fn(),
 }))
+
+// Concurrent dynamic imports of a mocked module can resolve to the real module in Vitest.
+// Chaining the next/dynamic loaders makes sure every dynamic component gets the mocked @meldingen/map.
+// TODO: remove when https://github.com/vitest-dev/vitest/issues/7040 is fixed.
+vi.mock('next/dynamic', async (importOriginal) => {
+  const { default: dynamic } = await importOriginal<{ default: typeof NextDynamic }>()
+  let previousImport: Promise<unknown> = Promise.resolve()
+
+  return {
+    default: (loader: () => Promise<ComponentType>, options: Parameters<typeof NextDynamic>[1]) =>
+      dynamic(() => {
+        const currentImport = previousImport.then(loader)
+
+        previousImport = currentImport
+
+        return currentImport
+      }, options),
+  }
+})
 
 vi.mock('@meldingen/map', () => ({
   Controls: vi.fn(),
@@ -157,6 +181,18 @@ describe('SelectLocation', () => {
     const map = screen.getByTestId('map')
 
     expect(map).toHaveAttribute('data-testinert', 'true')
+  })
+
+  it('clears the selected assets when the current location button is used', async () => {
+    ;(Controls as Mock).mockImplementationOnce(({ updateSelectedPoint }) => (
+      <SetInternalState setter={updateSelectedPoint} value={{ lat: 1, lng: 2 }} />
+    ))
+
+    render(<SelectLocation {...defaultProps} selectedAssets={containerAssets} />)
+
+    await waitFor(() => {
+      expect(AssetList).toHaveBeenLastCalledWith(expect.objectContaining({ selectedAssets: [] }), undefined)
+    })
   })
 })
 
