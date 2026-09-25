@@ -10,7 +10,6 @@ import {
   Heading,
   Label,
   Paragraph,
-  Select,
   TextArea,
 } from '@amsterdam/design-system-react'
 import clsx from 'clsx'
@@ -28,7 +27,7 @@ import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
 import { postReclassificationForm } from './actions'
 import { REASON_COUNT_MAX_LENGTH } from './constants'
-import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
+import { ApiErrorAlert, ClassificationCombobox, InvalidFormAlert } from '~/app/_components'
 import { useDocumentTitleOnError } from '~/app/_utils/useDocumentTitleOnError'
 
 import styles from './ChangeCategory.module.css'
@@ -99,22 +98,16 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
               {classificationErrorMessage && (
                 <ErrorMessage id="classification-error">{classificationErrorMessage}</ErrorMessage>
               )}
-              <Select
-                aria-describedby={getAriaDescribedBy('classification', undefined, classificationErrorMessage)}
-                aria-required
+              <ClassificationCombobox
+                ariaDescribedBy={getAriaDescribedBy('classification', undefined, classificationErrorMessage)}
+                classifications={classifications}
                 defaultValue={classificationValue}
                 id="classification"
                 invalid={Boolean(classificationErrorMessage)}
-                key={classificationValue}
                 name="classification"
-              >
-                {!meldingClassification?.id && <Select.Option value="">-- {t('option-placeholder')} --</Select.Option>}
-                {classifications.map((classification) => (
-                  <Select.Option key={classification.id} value={classification.id}>
-                    {classification.name}
-                  </Select.Option>
-                ))}
-              </Select>
+                noResultsMessage={t('no-results')}
+                placeholder={t('search-placeholder')}
+              />
             </Field>
             <Field className="ams-mb-m" invalid={Boolean(reasonErrorMessage)}>
               <Label htmlFor="reason">{t('form-labels.reason')}</Label>

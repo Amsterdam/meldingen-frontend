@@ -46,6 +46,15 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 })
 
+vi.stubGlobal(
+  'ResizeObserver',
+  class {
+    disconnect = vi.fn()
+    observe = vi.fn()
+    unobserve = vi.fn()
+  },
+)
+
 // Configure the API client for the test environment.
 client.setConfig({ baseUrl: 'http://localhost:3000' })
 

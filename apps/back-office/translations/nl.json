@@ -190,7 +190,8 @@
     "title": "Wijzig categorie melding {publicId}",
     "submit-button": "Wijzig categorie",
     "cancel-link": "Annuleer",
-    "option-placeholder": "Kies categorie",
+    "search-placeholder": "--Kies categorie--",
+    "no-results": "Geen categorie gevonden",
     "errors": {
       "reclassification-failed-heading": "De categorie kan niet worden gewijzigd",
       "reclassification-failed-description": "Het kan zijn dat de status al is aangepast door een andere behandelaar.",
