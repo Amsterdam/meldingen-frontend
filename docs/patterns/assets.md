@@ -27,14 +27,35 @@ The front end never calls a WFS server directly. The back end proxies all WFS re
 
 ## Selecting and saving assets
 
-The location picker (`/locatie/kies`) shows assets both as markers on the map and in the asset list. Both share the same `selectedAssets` state, so selecting an asset in one updates the other. The selection logic is implemented in both places (`AssetList` and `useAddMarkersToMap` in `@meldingen/map`) and should behave the same:
+The location picker (`/locatie/kies`) shows assets both as markers on the map and in the asset list. Both share the same `selectedAssets` state, so selecting an asset in one updates the other. The selection logic is implemented in both places (`AssetList` and `useAddMarkersToMap` in `@meldingen/map`) and should behave the same.
 
-- The newest selection is added to the front of `selectedAssets`, and the selected location follows the first item.
-- Deselecting the first asset moves the location to the next one. Deselecting the only remaining asset clears the location.
-- No more than `max_assets` can be selected. Going over that limit shows a notification instead.
-- Picking a location without an asset (map click, current location or address) clears the selected assets.
+A Melding always has one location, even when multiple assets are selected. The location is shown as an address in the address field and a coordinate is saved as the Melding's location. The map doesn't move when an asset is selected.
+
+The rules:
+
+- A newly selected asset is added to the front of `selectedAssets`, and the location is set to the location of that asset.
+- Deselecting the first asset moves the location to the next asset in the array. Deselecting any other asset doesn't change the location. Deselecting the last remaining asset clears the location.
+
+<!-- TODO: that last sentence isn't currently how it works. Should it? Keeping the last location also isn't correctly implemented: it currently clears the coordinates but keeps the address. -->
+
+- No more than `max_assets` can be selected. Selecting more shows a notification, and the selection doesn't change.
+- Picking a location without an asset (map click, current location or address) clears all selected assets.
 
 On submit, each asset is saved with its WFS feature id, its [label](#labels) and its `subtype`: the value of the `icon_entry` property. Saving these means later pages (`/locatie`, `/samenvatting` and the Back Office detail page) can show the asset and its [icon](#icons) without calling the WFS layer again.
+
+### Example
+
+With `max_assets: 3`:
+
+| Action             | `selectedAssets` | Location                      |
+| ------------------ | ---------------- | ----------------------------- |
+| Select container A | `[A]`            | A                             |
+| Select container B | `[B, A]`         | B                             |
+| Select container C | `[C, B, A]`      | C                             |
+| Select container D | `[C, B, A]`      | C (notification: max reached) |
+| Deselect B         | `[C, A]`         | C (unchanged)                 |
+| Deselect C         | `[A]`            | A                             |
+| Click on the map   | `[]`             | Clicked point                 |
 
 ## Labels
 
