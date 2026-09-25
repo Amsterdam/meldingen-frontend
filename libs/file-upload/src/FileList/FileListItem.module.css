@@ -6,7 +6,7 @@
 
   @media screen and (min-width: 37.5rem) {
     align-items: center;
-    grid-template-columns: 1fr 2fr auto;
+    grid-template-columns: 1fr 2fr 1fr;
     margin-block-end: var(--ams-space-m);
   }
 }
