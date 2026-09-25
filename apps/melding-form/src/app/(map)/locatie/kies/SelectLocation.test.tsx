@@ -213,8 +213,8 @@ describe('Asset list toggle button', () => {
 
 describe('Asset list loading state', () => {
   it('shows a loading state on AssetList when coordinates change with a valid WFS query', async () => {
-    ;(AddressInput as Mock).mockImplementationOnce(({ setCoordinates }) => (
-      <SetInternalState setter={setCoordinates} value={{ lat: 1, lng: 2 }} />
+    ;(AddressInput as Mock).mockImplementationOnce(({ onAddressSelect }) => (
+      <SetInternalState setter={onAddressSelect} value={{ lat: 1, lng: 2 }} />
     ))
 
     render(<SelectLocation {...defaultProps} />)
@@ -225,8 +225,8 @@ describe('Asset list loading state', () => {
   })
 
   it('does not show a loading state when the WFS query is missing required fields', async () => {
-    ;(AddressInput as Mock).mockImplementationOnce(({ setCoordinates }) => (
-      <SetInternalState setter={setCoordinates} value={{ lat: 1, lng: 2 }} />
+    ;(AddressInput as Mock).mockImplementationOnce(({ onAddressSelect }) => (
+      <SetInternalState setter={onAddressSelect} value={{ lat: 1, lng: 2 }} />
     ))
 
     render(
@@ -245,8 +245,8 @@ describe('Asset list loading state', () => {
   })
 
   it('does not show a loading state when coordinates are cleared', async () => {
-    ;(AddressInput as Mock).mockImplementationOnce(({ setCoordinates }) => (
-      <SetInternalState setter={setCoordinates} value={undefined} />
+    ;(AddressInput as Mock).mockImplementationOnce(({ clearCoordinates }) => (
+      <SetInternalState setter={clearCoordinates} value={undefined} />
     ))
 
     render(<SelectLocation {...defaultProps} />)
@@ -257,8 +257,8 @@ describe('Asset list loading state', () => {
   })
 
   it('does not show a loading state when the viewport is wide', async () => {
-    ;(AddressInput as Mock).mockImplementationOnce(({ setCoordinates }) => (
-      <SetInternalState setter={setCoordinates} value={{ lat: 1, lng: 2 }} />
+    ;(AddressInput as Mock).mockImplementationOnce(({ onAddressSelect }) => (
+      <SetInternalState setter={onAddressSelect} value={{ lat: 1, lng: 2 }} />
     ))
     ;(useViewportHasMinWidth as Mock).mockImplementation((minWidth: string) => minWidth === 'wide')
 

@@ -14,8 +14,6 @@ import {
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
-import type { Feature } from '@meldingen/api-client'
-
 import { ListBox, TextInput } from '@meldingen/ui'
 
 import type { PDOKItem } from './types'
@@ -29,13 +27,13 @@ import { fetchAndSetAddress } from './_utils/fetchAndSetAddress'
 import styles from './AddressInput.module.css'
 
 export type Props = {
+  clearCoordinates: () => void
   coordinates?: Coordinates
   errorMessage?: string
-  setCoordinates: (coordinates?: Coordinates) => void
-  setSelectedAssets: (selectedAssets: Feature[]) => void
+  onAddressSelect: (coordinates: Coordinates) => void
 }
 
-export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSelectedAssets }: Props) => {
+export const AddressInput = ({ clearCoordinates, coordinates, errorMessage, onAddressSelect }: Props) => {
   const [address, setAddress] = useState('')
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
   const [query, setQuery] = useState('')
@@ -71,11 +69,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
     } else {
       const addressCoordinates = convertWktPointToCoordinates(value.centroide_ll)
 
-      if (addressCoordinates) {
-        // Clear selected assets when selecting a new address
-        setSelectedAssets([])
-        setCoordinates(addressCoordinates)
-      }
+      if (addressCoordinates) onAddressSelect(addressCoordinates)
 
       setAddress(value.weergavenaam)
     }
@@ -88,7 +82,8 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
 
-    if (coordinates) setCoordinates(undefined)
+    // Clear coordinates on typing so submitting without selecting a valid address gives a validation error
+    if (coordinates) clearCoordinates()
 
     if (value === '') {
       setAddressList([])

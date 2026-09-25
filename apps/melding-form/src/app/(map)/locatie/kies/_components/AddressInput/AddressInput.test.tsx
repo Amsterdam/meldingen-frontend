@@ -18,8 +18,8 @@ vi.stubGlobal(
 )
 
 const defaultProps: Props = {
-  setCoordinates: vi.fn(),
-  setSelectedAssets: vi.fn(),
+  clearCoordinates: vi.fn(),
+  onAddressSelect: vi.fn(),
 }
 
 describe('AddressInput', () => {
@@ -83,7 +83,7 @@ describe('AddressInput', () => {
 
     await user.type(input, 'abc')
 
-    expect(defaultProps.setCoordinates).toHaveBeenCalledWith(undefined)
+    expect(defaultProps.clearCoordinates).toHaveBeenCalled()
   })
 
   it('should show all options returned by the API', async () => {

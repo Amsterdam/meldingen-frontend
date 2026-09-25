@@ -80,12 +80,13 @@ export const SelectLocation = ({
   const { assetTypeId, classification, filter, srsName, typeNames } = assetConfig.wfsQuery
   const hasValidWfsQuery = Boolean(classification && assetTypeId && typeNames && filter && srsName)
 
-  const setCoordinatesAndAssetLoading = (newCoordinates?: Coordinates) => {
+  const handleLocationSelect = (newCoordinates?: Coordinates) => {
     if (newCoordinates && hasValidWfsQuery) setIsAssetListLoading(true)
+    setSelectedAssets([])
     setCoordinates(newCoordinates)
   }
 
-  const handleFeaturesChange = (features: Feature[]) => {
+  const handleAssetListChange = (features: Feature[]) => {
     setAssetList(features)
     setIsAssetListLoading(false)
   }
@@ -129,10 +130,10 @@ export const SelectLocation = ({
       <SideBarTop>
         <Form action={formAction} id="address" noValidate>
           <AddressInput
+            clearCoordinates={() => setCoordinates(undefined)}
             coordinates={coordinates}
             errorMessage={error?.message}
-            setCoordinates={setCoordinatesAndAssetLoading}
-            setSelectedAssets={setSelectedAssets}
+            onAddressSelect={handleLocationSelect}
           />
           <input defaultValue={defaultCoordinatesValue} name="coordinates" type="hidden" />
           <input name="selectedAssetsValue" type="hidden" value={selectedAssetsValue} />
@@ -167,17 +168,14 @@ export const SelectLocation = ({
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}
-            onSelectedPointChange={(selectedPoint) => {
-              setSelectedAssets([])
-              setCoordinatesAndAssetLoading(selectedPoint)
-            }}
+            onSelectedPointChange={handleLocationSelect}
             selectedPoint={coordinates}
           />
           <MarkerSelectLayer
             features={assetList}
             iconConfig={assetConfig.icon}
             maxMarkers={assetConfig.maxCount}
-            onFeaturesChange={handleFeaturesChange}
+            onFeaturesChange={handleAssetListChange}
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
             onSelectedMarkersChange={setSelectedAssets}
             selectedMarkers={selectedAssets}
@@ -187,7 +185,7 @@ export const SelectLocation = ({
           <Controls
             onCurrentLocationError={() => setNotificationType('location-service-disabled')}
             texts={controlsTexts}
-            updateSelectedPoint={setCoordinatesAndAssetLoading}
+            updateSelectedPoint={handleLocationSelect}
           >
             {notificationType && (
               <Notification
