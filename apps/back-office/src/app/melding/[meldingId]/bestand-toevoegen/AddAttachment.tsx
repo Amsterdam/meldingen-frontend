@@ -7,7 +7,7 @@ import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
 import { useEffect, useId, useRef, useState } from 'react'
 
-import type { ErroredFileUpload, FileUploadState, UploadResult } from '@meldingen/file-upload'
+import type { ErroredFileUpload, FileUploadState } from '@meldingen/file-upload'
 
 import { FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
@@ -16,9 +16,10 @@ import { Column, Grid, Heading, Link, Paragraph } from '@meldingen/ui'
 import type { MeldingAttachment } from '../types'
 
 import { BackLink } from '../_components/BackLink'
-import { deleteAttachmentAction, uploadAttachmentAction } from './actions'
+import { deleteAttachmentAction } from './actions'
 import { AttachmentsList } from './AttachmentsList'
-import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
+import { InvalidFormAlert } from '~/app/_components'
+import { clientEnv } from '~/env/client'
 
 import styles from './AddAttachment.module.css'
 
@@ -29,20 +30,6 @@ type Props = {
 
 const MAX_SUCCESSFUL_UPLOADS = 5
 const MAX_UPLOAD_ATTEMPTS = 10
-
-export const uploadAttachment =
-  (meldingId: number) =>
-  async (file: File): Promise<UploadResult> => {
-    // Instead of getting an uncatchable next.js server action error when the file is too large, we check the file size here and return a validation error.
-    // Check if the file size exceeds 20 MB (20 * 1024 * 1024 bytes)
-    if (file.size > 20 * 1024 * 1024) {
-      return { error: 'Allowed content size exceeded', serverId: undefined }
-    }
-
-    const { error, serverId } = await uploadAttachmentAction(meldingId, file)
-
-    return { error, serverId }
-  }
 
 const deleteAttachment = async (serverId: number) => {
   const { error } = await deleteAttachmentAction(serverId)
@@ -63,7 +50,6 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
 
   const genericErrorAlertRef = useRef<HTMLDivElement>(null)
 
-  const [apiError, setApiError] = useState<string | null>(null)
   const [shouldFocusInvalidAlert, setShouldFocusInvalidAlert] = useState<boolean>(false)
 
   const fileUploadId = useId()
@@ -75,7 +61,6 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     serverId: id,
   }))
 
-  const uploadFile = uploadAttachment(meldingId)
   const { deletedFileName, fileUploads, genericError, handleDelete, handleUpload } = useFileUploads({
     deleteAttachment,
     existingFiles,
@@ -83,18 +68,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     inputRef: fileUploadRef,
     maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
     maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
-    uploadFile: async (file: File) => {
-      const { error, serverId } = await uploadFile(file)
-
-      if (error) {
-        // TODO: Log the error to an error reporting service
-        // eslint-disable-next-line no-console
-        console.error(error)
-        setApiError(error)
-      }
-
-      return { error, serverId }
-    },
+    uploadUrl: `${clientEnv.NEXT_PUBLIC_BASE_PATH}/api/melding/${meldingId}/attachment`,
   })
 
   const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
@@ -143,8 +117,6 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
 
       <Grid as="main" className="ams-page__area--content ams-mb-l">
         <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
-          {Boolean(apiError) && <ApiErrorAlert shouldFocus={true} />}
-
           {genericError && (
             <Alert
               className={clsx(styles.genericErrorAlert, 'ams-mb-m')}

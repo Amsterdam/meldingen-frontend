@@ -75,6 +75,14 @@ export const handlers = [
       updated_at: '2025-05-26T11:56:34.081Z',
     }),
   ),
+  http.post(ENDPOINTS.POST_API_MELDING_BY_MELDING_ID_ATTACHMENT, () =>
+    HttpResponse.json({
+      created_at: '2025-05-26T11:56:34.081Z',
+      id: 42,
+      original_filename: 'IMG_0815.jpg',
+      updated_at: '2025-05-26T11:56:34.081Z',
+    }),
+  ),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_NOTE, () => new HttpResponse()),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_RECLASSIFICATION, () => new HttpResponse(undefined, { status: 201 })),
 
