@@ -69,12 +69,12 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
     if (typeof value === 'string' || value === null) {
       setQuery(value ?? '')
     } else {
-      const coordinates = convertWktPointToCoordinates(value.centroide_ll)
+      const addressCoordinates = convertWktPointToCoordinates(value.centroide_ll)
 
-      if (coordinates) {
+      if (addressCoordinates) {
         // Clear selected assets when selecting a new address
         setSelectedAssets([])
-        setCoordinates(coordinates)
+        setCoordinates(addressCoordinates)
       }
 
       setAddress(value.weergavenaam)
