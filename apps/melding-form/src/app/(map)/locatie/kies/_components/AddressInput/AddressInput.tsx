@@ -49,6 +49,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
       size({
         apply: ({ availableHeight, elements }) => {
           const value = `${Math.max(0, availableHeight - 16)}px`
+
           elements.floating.style.maxHeight = value
         },
       }),
@@ -91,6 +92,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
 
     if (value === '') {
       setAddressList([])
+
       return
     }
 
@@ -115,7 +117,13 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
         ref={refs.setReference}
         value={query}
       >
-        <ComboboxInput as={TextInput} autoComplete="off" name="address" onChange={handleInputChange} />
+        <ComboboxInput
+          aria-required="true"
+          as={TextInput}
+          autoComplete="off"
+          name="address"
+          onChange={handleInputChange}
+        />
         {showListBox && (
           <ComboboxOptions
             as={ListBox}
