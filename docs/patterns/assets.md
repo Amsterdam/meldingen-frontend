@@ -8,6 +8,8 @@ This happens on the location picker in Melding form (`/locatie/kies`). The selec
 
 Assets are configured per **asset type** in the Admin. An asset type is linked to a classification. If the classification has no asset type, no assets are shown.
 
+For example, an asset type 'Waste containers' could be linked to a classification called 'Damaged waste container'. It would get its assets from a WFS layer with all waste containers in an area, so each asset is one container. Containers can be of different kinds, such as paper, glass, organic or residual waste. Each kind can get its own [icon](#icons), and each container gets its own [label](#labels), e.g. 'Paper container - 12345'.
+
 Most settings are stored in the asset type's free-form `arguments` object:
 
 | Field                                                                         | Purpose                                                                                                                    |
