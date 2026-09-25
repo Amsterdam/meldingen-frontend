@@ -26,6 +26,7 @@
 }
 
 .button {
+  min-width: fit-content;
   text-align: center;
   width: 100%;
 
