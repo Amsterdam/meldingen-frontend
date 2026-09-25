@@ -1,6 +1,7 @@
 import type { AssetItem } from '~/app/(general)/_utils/formatAssetItem'
 
 import { getAssetIconSVG } from './getAssetIconSVG'
+import { ASSET_FALLBACK_SRC } from '~/constants'
 
 export const containerTypes = ['Papier', 'Glas', 'Rest', 'Textiel', 'Plastic', 'Gft'] as const
 
@@ -29,6 +30,6 @@ describe('getContainerAssetIconSVG', () => {
 
     const svg = getAssetIconSVG(assetItem)
 
-    expect(svg).toBe('/asset-fallback.svg')
+    expect(svg).toBe(ASSET_FALLBACK_SRC)
   })
 })

@@ -15,6 +15,7 @@ import type { Coordinates } from '~/types'
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
 import { getAssetLabelText, getAssetSubType } from '~/app/(general)/_utils'
+import { ASSET_FALLBACK_SRC } from '~/constants'
 
 import styles from './SelectLocation.module.css'
 
@@ -172,6 +173,7 @@ export const SelectLocation = ({
             selectedPoint={coordinates}
           />
           <MarkerSelectLayer
+            fallbackIconSrc={ASSET_FALLBACK_SRC}
             features={assetList}
             iconConfig={assetConfig.icon}
             maxMarkers={assetConfig.maxCount}
