@@ -21,6 +21,7 @@ const mockMapInstance = {
 const mockMarkerLayerRef = { current: null } as unknown as RefObject<Layer | null>
 
 const defaultProps: Props = {
+  fallbackIconSrc: '/asset-fallback.svg',
   features: [],
   iconConfig: {},
   map: mockMapInstance,
@@ -110,6 +111,7 @@ describe('useAddMarkersToMap', () => {
 
   it('falls back to /asset-fallback.svg when a marker icon fails to load', () => {
     const img = document.createElement('img')
+
     img.src = '/container/rest.svg'
 
     const getElementSpy = vi.spyOn(L.Marker.prototype, 'getElement').mockReturnValue(img)
@@ -158,6 +160,7 @@ describe('useAddMarkersToMap', () => {
 
     const markers = (mockMarkerLayerRef.current as unknown as MarkerClusterGroup).getLayers()
     const firstMarker = markers[1] // For some reason the first marker is second in this array
+
     firstMarker.fire('click')
 
     expect(onMaxMarkersReachedMock).toHaveBeenCalledWith(false)
@@ -179,6 +182,7 @@ describe('useAddMarkersToMap', () => {
 
     const markers = (mockMarkerLayerRef.current as unknown as MarkerClusterGroup).getLayers()
     const firstMarker = markers[1] // For some reason the first marker is second in this array
+
     firstMarker.fire('click')
 
     // @ts-expect-error coordinates always exist in mock data
@@ -205,6 +209,7 @@ describe('useAddMarkersToMap', () => {
 
     const markers = (mockMarkerLayerRef.current as unknown as MarkerClusterGroup).getLayers()
     const firstMarker = markers[1] // For some reason the first marker is second in this array
+
     firstMarker.fire('click')
 
     expect(onMaxMarkersReachedMock).toHaveBeenCalledWith(true)
@@ -229,6 +234,7 @@ describe('useAddMarkersToMap', () => {
 
     const markers = (mockMarkerLayerRef.current as unknown as MarkerClusterGroup).getLayers()
     const firstMarker = markers[1] // For some reason the first marker is second in this array
+
     firstMarker.fire('click')
 
     // @ts-expect-error coordinates always exist in mock data

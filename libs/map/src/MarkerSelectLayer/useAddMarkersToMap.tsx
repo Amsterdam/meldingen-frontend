@@ -28,6 +28,7 @@ export const createClusterIcon = (cluster: MarkerCluster, isActive?: boolean) =>
 }
 
 export type Props = {
+  fallbackIconSrc: string
   features: Feature[]
   iconConfig: {
     entry?: string
@@ -43,6 +44,7 @@ export type Props = {
 }
 
 export const useAddMarkersToMap = ({
+  fallbackIconSrc,
   features,
   iconConfig,
   map,
@@ -83,7 +85,7 @@ export const useAddMarkersToMap = ({
       const isSelected = selectedMarkerIds.has(feature.id)
 
       const marker = new Marker(latlng, {
-        icon: getAssetIcon(feature, isSelected, iconConfig),
+        icon: getAssetIcon(feature, isSelected, iconConfig, fallbackIconSrc),
         keyboard: false,
       })
 
@@ -99,6 +101,7 @@ export const useAddMarkersToMap = ({
             // the last selected marker (#1 on the list) is deselected
             // @ts-expect-error an marker always has coordinates
             const [y, x] = selectedMarkers[1].geometry.coordinates
+
             updateSelectedPoint({ lat: x, lng: y })
           }
 
@@ -107,6 +110,7 @@ export const useAddMarkersToMap = ({
 
         if (selectedMarkers.length >= maxMarkers) {
           onMaxMarkersReached(true)
+
           return
         }
 
@@ -117,12 +121,13 @@ export const useAddMarkersToMap = ({
       // Load fallback whe icon fails to load (e.g. due to missing icon for a specific asset type)
       marker.on('add', () => {
         const el = marker.getElement() as HTMLImageElement | null
+
         if (!el) return
 
         el.addEventListener(
           'error',
           () => {
-            el.src = '/asset-fallback.svg'
+            el.src = fallbackIconSrc
           },
           { once: true },
         )
@@ -149,5 +154,6 @@ export const useAddMarkersToMap = ({
     onMaxMarkersReached,
     onSelectedMarkersChange,
     updateSelectedPoint,
+    fallbackIconSrc,
   ])
 }

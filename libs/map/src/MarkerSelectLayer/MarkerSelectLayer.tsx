@@ -52,6 +52,7 @@ export const fetchFeaturesOnMoveEnd = async ({
     // Abort a still in-flight request from an earlier call
     pendingRequestRef.current?.abort()
     const abortController = new AbortController()
+
     pendingRequestRef.current = abortController
 
     const filterWithCoordinates = getWfsFilter({ filter, mapInstance: map, srsName })
@@ -81,6 +82,7 @@ export const fetchFeaturesOnMoveEnd = async ({
 }
 
 export type Props = {
+  fallbackIconSrc: string
   features: Feature[]
   iconConfig: {
     entry?: string
@@ -96,6 +98,7 @@ export type Props = {
 }
 
 export const MarkerSelectLayer = ({
+  fallbackIconSrc,
   features,
   iconConfig,
   maxMarkers,
@@ -124,6 +127,7 @@ export const MarkerSelectLayer = ({
   }, [map, onFeaturesChange, wfsQuery])
 
   useAddMarkersToMap({
+    fallbackIconSrc,
     features,
     iconConfig,
     map,
