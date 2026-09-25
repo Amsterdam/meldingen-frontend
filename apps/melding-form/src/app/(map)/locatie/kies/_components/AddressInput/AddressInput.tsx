@@ -12,7 +12,7 @@ import {
   Label as HUILabel,
 } from '@headlessui/react'
 import { useTranslations } from 'next-intl'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
@@ -49,6 +49,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
       size({
         apply: ({ availableHeight, elements }) => {
           const value = `${Math.max(0, availableHeight - 16)}px`
+
           elements.floating.style.maxHeight = value
         },
       }),
@@ -57,7 +58,11 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
   })
 
   useEffect(() => {
-    if (coordinates) fetchAndSetAddress({ coordinates, setAddress, t })
+    if (coordinates) {
+      fetchAndSetAddress({ coordinates, setAddress, t })
+    } else {
+      setAddress('')
+    }
   }, [coordinates, t])
 
   useEffect(() => {
@@ -80,23 +85,25 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
     }
   }
 
-  const debouncedFetchAddressList = debounce((value: string) => {
-    fetchAddressList({ setAddressList, setShowListBox, value })
-  })
+  // Memoized so the debounce timer survives rerenders, otherwise every keystroke would trigger a fetch
+  const debouncedFetchAddressList = useMemo(
+    () =>
+      debounce((value: string) => {
+        fetchAddressList({ setAddressList, setShowListBox, value })
+      }),
+    [],
+  )
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
 
-    if (coordinates) setCoordinates(undefined)
-
-    if (value === '') {
-      setAddressList([])
-      return
-    }
-
     setQuery(value)
     debouncedFetchAddressList(value)
   }
+
+  // Only submit the coordinates while the input still shows the address they belong to.
+  const hasUnchangedAddress = coordinates && query === address
+  const coordinatesValue = hasUnchangedAddress ? JSON.stringify(coordinates) : ''
 
   return (
     <HUIField as={Field} invalid={Boolean(errorMessage)}>
@@ -138,6 +145,7 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
           </ComboboxOptions>
         )}
       </Combobox>
+      <input name="coordinates" type="hidden" value={coordinatesValue} />
     </HUIField>
   )
 }

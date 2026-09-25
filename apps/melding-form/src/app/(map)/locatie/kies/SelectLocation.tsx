@@ -114,7 +114,6 @@ export const SelectLocation = ({
 
   const showAssetList = isAssetListOpen && !isWideWindow
   const showAssetListToggleButton = assetList.length !== 0 || selectedAssets.length !== 0 || isAssetListOpen
-  const defaultCoordinatesValue = coordinates ? JSON.stringify(coordinates) : undefined
 
   const selectedAssetsValue = JSON.stringify(
     selectedAssets.map((asset) => ({
@@ -134,7 +133,6 @@ export const SelectLocation = ({
             setCoordinates={setCoordinatesAndAssetLoading}
             setSelectedAssets={setSelectedAssets}
           />
-          <input defaultValue={defaultCoordinatesValue} name="coordinates" type="hidden" />
           <input name="selectedAssetsValue" type="hidden" value={selectedAssetsValue} />
         </Form>
       </SideBarTop>
