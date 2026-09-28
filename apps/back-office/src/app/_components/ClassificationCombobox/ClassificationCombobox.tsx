@@ -1,10 +1,10 @@
 'use client'
 
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, ComponentProps, ForwardedRef } from 'react'
 
 import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react'
-import { useState } from 'react'
+import { forwardRef, useState } from 'react'
 
 import type { ClassificationOutput } from '@meldingen/api-client'
 
@@ -25,6 +25,16 @@ type Props = {
 
 const getClassificationById = (classifications: ClassificationOutput[], id?: number) =>
   classifications.find((classification) => classification.id === id)
+
+type ComboboxTextInputProps = ComponentProps<typeof TextInput> & {
+  describedBy?: string
+}
+
+const ComboboxTextInput = forwardRef(
+  ({ describedBy, ...props }: ComboboxTextInputProps, ref: ForwardedRef<HTMLInputElement>) => (
+    <TextInput {...props} aria-describedby={describedBy} ref={ref} />
+  ),
+)
 
 export const ClassificationCombobox = ({
   ariaDescribedBy,
@@ -72,7 +82,7 @@ export const ClassificationCombobox = ({
 
   return (
     <Column gap="small">
-      <Combobox as="div" immediate onChange={handleChange} ref={refs.setReference} value={selectedClassification}>
+      <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification}>
         <input name={name} type="hidden" value={selectedClassificationId} />
         <input name="isClassificationEmpty" type="hidden" value={value.length === 0 ? 'true' : 'false'} />
         <input
@@ -81,12 +91,12 @@ export const ClassificationCombobox = ({
           value={value === selectedClassification?.name ? 'true' : 'false'}
         />
         <ComboboxInput
-          aria-describedby={ariaDescribedBy}
           aria-invalid={invalid}
           aria-required
-          as={TextInput}
+          as={ComboboxTextInput}
           autoComplete="off"
           className={styles.comboboxInput}
+          describedBy={ariaDescribedBy}
           id={id}
           invalid={invalid}
           onChange={handleInputChange}

@@ -50,6 +50,12 @@ describe('ClassificationCombobox', () => {
     expect(getHiddenInput(container, 'isClassificationSelected')).toHaveValue('false')
   })
 
+  it('forwards aria-describedby to the rendered combobox input', () => {
+    render(<ClassificationCombobox {...defaultProps} ariaDescribedBy="classification-error" />)
+
+    expect(screen.getByRole('combobox')).toHaveAttribute('aria-describedby', 'classification-error')
+  })
+
   it('filters classifications and selects a new one', async () => {
     const user = userEvent.setup()
     const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue={2} />)

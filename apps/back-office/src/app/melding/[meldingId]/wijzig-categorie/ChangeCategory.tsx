@@ -98,7 +98,7 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
             <Field className="ams-mb-m" invalid={Boolean(classificationValidationErrorMessage)}>
               <Label htmlFor="classificationId">{t('form-labels.classification')}</Label>
               {classificationValidationErrorMessage && (
-                <ErrorMessage id="classification-error">{classificationValidationErrorMessage}</ErrorMessage>
+                <ErrorMessage id="classificationId-error">{classificationValidationErrorMessage}</ErrorMessage>
               )}
               <ClassificationCombobox
                 ariaDescribedBy={getAriaDescribedBy(
