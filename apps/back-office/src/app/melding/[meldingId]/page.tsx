@@ -9,7 +9,7 @@ import {
   getMeldingData,
 } from './_utils/server'
 import { Detail } from './Detail'
-import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
+import { getMeldingByMeldingId, getMeldingByMeldingIdNote } from '~/app/_api-client/proxy'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
@@ -29,9 +29,11 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   const t = await getTranslations()
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
+
   if (error) return t('detail.errors.melding-not-found')
 
   const additionalQuestions = await getAdditionalQuestionsData(meldingId)
+
   if ('error' in additionalQuestions) return additionalQuestions.error
 
   const additionalQuestionsWithMeldingText = [
@@ -50,6 +52,18 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
   const meldingData = getMeldingData(data, t)
   const { assets, assetsTerm } = await getAssetsData(data, meldingId)
 
+  const { data: notes, error: notesError } = await getMeldingByMeldingIdNote({
+    path: { melding_id: meldingId },
+    query: { sort: '["created_at","DESC"]' },
+  })
+
+  if (notesError) {
+    // TODO: Handle the error appropriately, e.g., show a user-friendly message or retry fetching notes.
+    // No impact on the main detail view, so we just log the error for now.
+    // eslint-disable-next-line no-console
+    console.error(notesError)
+  }
+
   return (
     <Detail
       additionalQuestionsWithMeldingText={additionalQuestionsWithMeldingText}
@@ -60,6 +74,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
       location={location}
       meldingData={meldingData}
       meldingId={meldingId}
+      notesCount={notes?.length ?? 0}
       publicId={data.public_id}
     />
   )
