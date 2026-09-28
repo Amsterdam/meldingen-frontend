@@ -197,6 +197,7 @@
       "reclassification-failed-description": "Het kan zijn dat de status al is aangepast door een andere behandelaar.",
       "classification-required": "Vul een categorie in.",
       "classification-same": "Wijzig de categorie.",
+      "classification-does-not-exist": "Deze categorie bestaat niet. Kies een categorie uit de lijst.",
       "reason-required": "Vul een toelichting in.",
       "reason-max-length": "Toelichting moet {max} tekens of minder zijn."
     },

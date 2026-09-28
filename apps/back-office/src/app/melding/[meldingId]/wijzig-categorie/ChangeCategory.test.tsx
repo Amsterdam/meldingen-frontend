@@ -109,14 +109,14 @@ describe('ChangeCategory', () => {
   it('displays validation errors and preserves the submitted form data when the action returns validation errors', () => {
     const formData = new FormData()
 
-    formData.set('classification', '3')
+    formData.set('classificationId', '3')
     formData.set('reason', 'Because this is the right classification')
 
     ;(useActionState as Mock).mockReturnValueOnce([
       {
         formData,
         validationErrors: [
-          { key: 'classification', message: 'classification-required' },
+          { key: 'classificationId', message: 'classification-required' },
           { key: 'reason', message: 'reason-required' },
         ],
       },

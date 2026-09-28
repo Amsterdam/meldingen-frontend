@@ -6,11 +6,24 @@ import { REASON_COUNT_MAX_LENGTH } from './constants'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
-const createFormData = (input: { classificationId?: string; reason?: string }) => {
+const createFormData = (input: {
+  classificationId?: string
+  isClassificationEmpty?: string
+  isClassificationSelected?: string
+  reason?: string
+}) => {
   const formData = new FormData()
 
   if (input.classificationId !== undefined) {
     formData.append('classificationId', input.classificationId)
+  }
+
+  if (input.isClassificationEmpty !== undefined) {
+    formData.append('isClassificationEmpty', input.isClassificationEmpty)
+  }
+
+  if (input.isClassificationSelected !== undefined) {
+    formData.append('isClassificationSelected', input.isClassificationSelected)
   }
 
   if (input.reason !== undefined) {
@@ -24,7 +37,11 @@ describe('postReclassificationForm', () => {
   const defaultArgs = { currentClassificationId: 2, meldingId: 123 }
 
   it('returns a validation error when no category is selected', async () => {
-    const formData = createFormData({ reason: 'Need to correct the classification' })
+    const formData = createFormData({
+      isClassificationEmpty: 'true',
+      isClassificationSelected: 'false',
+      reason: 'Need to correct the classification',
+    })
 
     const result = await postReclassificationForm(defaultArgs, null, formData)
 
@@ -36,7 +53,12 @@ describe('postReclassificationForm', () => {
   })
 
   it('returns a validation error when the selected category equals the current category', async () => {
-    const formData = createFormData({ classificationId: '2', reason: 'Need to correct the classification' })
+    const formData = createFormData({
+      classificationId: '2',
+      isClassificationEmpty: 'false',
+      isClassificationSelected: 'true',
+      reason: 'Need to correct the classification',
+    })
 
     const result = await postReclassificationForm(defaultArgs, null, formData)
 
@@ -47,8 +69,29 @@ describe('postReclassificationForm', () => {
     expect(redirect).not.toHaveBeenCalled()
   })
 
+  it('returns a validation error when the typed category was not selected from the list', async () => {
+    const formData = createFormData({
+      classificationId: '2',
+      isClassificationEmpty: 'false',
+      isClassificationSelected: 'false',
+      reason: 'Need to correct the classification',
+    })
+
+    const result = await postReclassificationForm(defaultArgs, null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'classificationId', message: 'classification-does-not-exist' }],
+    })
+    expect(redirect).not.toHaveBeenCalled()
+  })
+
   it('returns a validation error when no reason is provided', async () => {
-    const formData = createFormData({ classificationId: '3' })
+    const formData = createFormData({
+      classificationId: '3',
+      isClassificationEmpty: 'false',
+      isClassificationSelected: 'true',
+    })
 
     const result = await postReclassificationForm(defaultArgs, null, formData)
 
@@ -62,6 +105,8 @@ describe('postReclassificationForm', () => {
   it('returns a validation error when the reason exceeds the maximum length', async () => {
     const formData = createFormData({
       classificationId: '3',
+      isClassificationEmpty: 'false',
+      isClassificationSelected: 'true',
       reason: 'a'.repeat(REASON_COUNT_MAX_LENGTH + 1),
     })
 
@@ -75,7 +120,10 @@ describe('postReclassificationForm', () => {
   })
 
   it('returns all validation errors together when multiple fields are invalid', async () => {
-    const formData = createFormData({})
+    const formData = createFormData({
+      isClassificationEmpty: 'true',
+      isClassificationSelected: 'false',
+    })
 
     const result = await postReclassificationForm(defaultArgs, null, formData)
 
@@ -96,7 +144,12 @@ describe('postReclassificationForm', () => {
       ),
     )
 
-    const formData = createFormData({ classificationId: '3', reason: 'Need to correct the classification' })
+    const formData = createFormData({
+      classificationId: '3',
+      isClassificationEmpty: 'false',
+      isClassificationSelected: 'true',
+      reason: 'Need to correct the classification',
+    })
 
     const result = await postReclassificationForm(defaultArgs, null, formData)
 
@@ -108,7 +161,12 @@ describe('postReclassificationForm', () => {
   })
 
   it('redirects on success', async () => {
-    const formData = createFormData({ classificationId: '3', reason: 'Need to correct the classification' })
+    const formData = createFormData({
+      classificationId: '3',
+      isClassificationEmpty: 'false',
+      isClassificationSelected: 'true',
+      reason: 'Need to correct the classification',
+    })
 
     await postReclassificationForm(defaultArgs, null, formData)
 

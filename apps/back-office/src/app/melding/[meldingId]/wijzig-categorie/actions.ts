@@ -23,18 +23,27 @@ export const postReclassificationForm = async (
 
   const formDataObj = Object.fromEntries(formData)
   const classificationId = formDataObj['classificationId'] ? Number(formDataObj['classificationId']) : undefined
+  const isClassificationSelected = formDataObj['isClassificationSelected'] as string | undefined
+  const isClassificationEmpty = formDataObj['isClassificationEmpty'] as string | undefined
   const reason = (formDataObj.reason as string | undefined) ?? ''
 
-  const validationErrors = [
-    ...(!classificationId ? [{ key: 'classificationId', message: t('classification-required') }] : []),
-    ...(classificationId === currentClassificationId
-      ? [{ key: 'classificationId', message: t('classification-same') }]
-      : []),
-    ...(!reason ? [{ key: 'reason', message: t('reason-required') }] : []),
-    ...(reason.length > REASON_COUNT_MAX_LENGTH
-      ? [{ key: 'reason', message: t('reason-max-length', { max: REASON_COUNT_MAX_LENGTH }) }]
-      : []),
-  ]
+  const validationErrors = []
+
+  if (isClassificationEmpty === 'true') {
+    validationErrors.push({ key: 'classificationId', message: t('classification-required') })
+  } else if (isClassificationSelected === 'false') {
+    validationErrors.push({ key: 'classificationId', message: t('classification-does-not-exist') })
+  } else if (classificationId === currentClassificationId) {
+    validationErrors.push({ key: 'classificationId', message: t('classification-same') })
+  }
+
+  if (!reason) {
+    validationErrors.push({ key: 'reason', message: t('reason-required') })
+  }
+
+  if (reason.length > REASON_COUNT_MAX_LENGTH) {
+    validationErrors.push({ key: 'reason', message: t('reason-max-length', { max: REASON_COUNT_MAX_LENGTH }) })
+  }
 
   if (validationErrors.length > 0 || !classificationId) {
     return { formData, validationErrors }

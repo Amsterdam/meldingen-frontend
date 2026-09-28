@@ -4,7 +4,7 @@ import type { ChangeEvent } from 'react'
 
 import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import type { ClassificationOutput } from '@meldingen/api-client'
 
@@ -16,7 +16,6 @@ type Props = {
   ariaDescribedBy?: string
   classifications: ClassificationOutput[]
   defaultValue?: number
-  hasFormError?: boolean
   id: string
   invalid?: boolean
   name: string
@@ -31,7 +30,6 @@ export const ClassificationCombobox = ({
   ariaDescribedBy,
   classifications,
   defaultValue,
-  hasFormError = false,
   id,
   invalid = false,
   name,
@@ -41,15 +39,6 @@ export const ClassificationCombobox = ({
   const [selectedClassificationId, setSelectedClassificationId] = useState(defaultValue)
   const selectedClassification = getClassificationById(classifications, selectedClassificationId)
   const [value, setValue] = useState(selectedClassification?.name ?? '')
-
-  useEffect(() => {
-    if (!hasFormError) {
-      return
-    }
-
-    setSelectedClassificationId(defaultValue)
-    setValue(selectedClassification?.name ?? '')
-  }, [selectedClassification, hasFormError, defaultValue])
 
   const { floatingStyles, refs } = useFloating({
     middleware: [
@@ -85,6 +74,12 @@ export const ClassificationCombobox = ({
     <Column gap="small">
       <Combobox as="div" immediate onChange={handleChange} ref={refs.setReference} value={selectedClassification}>
         <input name={name} type="hidden" value={selectedClassificationId} />
+        <input name="isClassificationEmpty" type="hidden" value={value.length === 0 ? 'true' : 'false'} />
+        <input
+          name="isClassificationSelected"
+          type="hidden"
+          value={value === selectedClassification?.name ? 'true' : 'false'}
+        />
         <ComboboxInput
           aria-describedby={ariaDescribedBy}
           aria-invalid={invalid}

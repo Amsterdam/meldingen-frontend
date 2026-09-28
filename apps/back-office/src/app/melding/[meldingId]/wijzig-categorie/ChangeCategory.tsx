@@ -70,10 +70,10 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
   }, [apiError])
 
   const classificationValue =
-    (formData?.get('classification') as string | null) ??
+    (formData?.get('classificationId') as string | null) ??
     (meldingClassification?.id ? String(meldingClassification.id) : '')
   const classificationValidationErrorMessage = validationErrors?.find(
-    (error) => error.key === 'classification',
+    (error) => error.key === 'classificationId',
   )?.message
   const reasonValidationErrorMessage = validationErrors?.find((error) => error.key === 'reason')?.message
 
@@ -108,11 +108,6 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
                 )}
                 classifications={classifications}
                 defaultValue={Number(classificationValue)}
-                hasFormError={
-                  Boolean(classificationValidationErrorMessage) ||
-                  Boolean(apiError) ||
-                  Boolean(reasonValidationErrorMessage)
-                }
                 id="classificationId"
                 invalid={Boolean(classificationValidationErrorMessage)}
                 name="classificationId"
