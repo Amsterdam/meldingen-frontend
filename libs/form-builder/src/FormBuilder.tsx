@@ -8,7 +8,7 @@ import { Date, Panel, Radio, Select, SelectBoxes, Textarea, Textfield, Time } fr
 import nl from './translations/nl.json'
 
 import '@formio/js/dist/formio.builder.min.css'
-import './visually-hidden.css' // This class is set by Form.io, but not included in the builder CSS, so we add it ourselves
+import './global.css'
 
 type ExtendedFormBuilderOptions = FormBuilderProps['options'] & {
   i18n?: {
