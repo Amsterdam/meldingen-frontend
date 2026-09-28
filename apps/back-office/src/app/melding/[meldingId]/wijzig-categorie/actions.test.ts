@@ -6,11 +6,11 @@ import { REASON_COUNT_MAX_LENGTH } from './constants'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
-const createFormData = (input: { classification?: string; reason?: string }) => {
+const createFormData = (input: { classificationId?: string; reason?: string }) => {
   const formData = new FormData()
 
-  if (input.classification !== undefined) {
-    formData.append('classification', input.classification)
+  if (input.classificationId !== undefined) {
+    formData.append('classificationId', input.classificationId)
   }
 
   if (input.reason !== undefined) {
@@ -30,25 +30,25 @@ describe('postReclassificationForm', () => {
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'classification', message: 'classification-required' }],
+      validationErrors: [{ key: 'classificationId', message: 'classification-required' }],
     })
     expect(redirect).not.toHaveBeenCalled()
   })
 
   it('returns a validation error when the selected category equals the current category', async () => {
-    const formData = createFormData({ classification: '2', reason: 'Need to correct the classification' })
+    const formData = createFormData({ classificationId: '2', reason: 'Need to correct the classification' })
 
     const result = await postReclassificationForm(defaultArgs, null, formData)
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'classification', message: 'classification-same' }],
+      validationErrors: [{ key: 'classificationId', message: 'classification-same' }],
     })
     expect(redirect).not.toHaveBeenCalled()
   })
 
   it('returns a validation error when no reason is provided', async () => {
-    const formData = createFormData({ classification: '3' })
+    const formData = createFormData({ classificationId: '3' })
 
     const result = await postReclassificationForm(defaultArgs, null, formData)
 
@@ -61,7 +61,7 @@ describe('postReclassificationForm', () => {
 
   it('returns a validation error when the reason exceeds the maximum length', async () => {
     const formData = createFormData({
-      classification: '3',
+      classificationId: '3',
       reason: 'a'.repeat(REASON_COUNT_MAX_LENGTH + 1),
     })
 
@@ -82,7 +82,7 @@ describe('postReclassificationForm', () => {
     expect(result).toEqual({
       formData,
       validationErrors: [
-        { key: 'classification', message: 'classification-required' },
+        { key: 'classificationId', message: 'classification-required' },
         { key: 'reason', message: 'reason-required' },
       ],
     })
@@ -96,7 +96,7 @@ describe('postReclassificationForm', () => {
       ),
     )
 
-    const formData = createFormData({ classification: '3', reason: 'Need to correct the classification' })
+    const formData = createFormData({ classificationId: '3', reason: 'Need to correct the classification' })
 
     const result = await postReclassificationForm(defaultArgs, null, formData)
 
@@ -108,7 +108,7 @@ describe('postReclassificationForm', () => {
   })
 
   it('redirects on success', async () => {
-    const formData = createFormData({ classification: '3', reason: 'Need to correct the classification' })
+    const formData = createFormData({ classificationId: '3', reason: 'Need to correct the classification' })
 
     await postReclassificationForm(defaultArgs, null, formData)
 

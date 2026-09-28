@@ -30,7 +30,7 @@ const defaultProps = {
 
 describe('ClassificationCombobox', () => {
   it('renders the default classification name, instructions and submitted id', () => {
-    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue="2" />)
+    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue={2} />)
 
     expect(screen.getByRole('combobox')).toHaveValue('Category 1')
     expect(screen.getByText('Instructions for Category 1')).toBeInTheDocument()
@@ -45,7 +45,7 @@ describe('ClassificationCombobox', () => {
 
   it('filters classifications and selects a new one', async () => {
     const user = userEvent.setup()
-    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue="2" />)
+    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue={2} />)
 
     const combobox = screen.getByRole('combobox')
 
@@ -61,9 +61,9 @@ describe('ClassificationCombobox', () => {
     expect(container.querySelector('input[type="hidden"]')).toHaveValue('3')
   })
 
-  it('resets the selected classification when invalid becomes true', async () => {
+  it('resets the selected classification when the form has errors', async () => {
     const user = userEvent.setup()
-    const { container, rerender } = render(<ClassificationCombobox {...defaultProps} defaultValue="2" />)
+    const { container, rerender } = render(<ClassificationCombobox {...defaultProps} defaultValue={2} />)
 
     const combobox = screen.getByRole('combobox')
 
@@ -74,7 +74,7 @@ describe('ClassificationCombobox', () => {
     expect(combobox).toHaveValue('Category 2')
     expect(container.querySelector('input[type="hidden"]')).toHaveValue('3')
 
-    rerender(<ClassificationCombobox {...defaultProps} defaultValue="2" invalid />)
+    rerender(<ClassificationCombobox {...defaultProps} defaultValue={2} hasFormError />)
 
     expect(combobox).toHaveValue('Category 1')
     expect(screen.getByText('Instructions for Category 1')).toBeInTheDocument()

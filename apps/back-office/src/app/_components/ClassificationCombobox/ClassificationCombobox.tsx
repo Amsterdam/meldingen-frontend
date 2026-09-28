@@ -47,6 +47,7 @@ export const ClassificationCombobox = ({
       return
     }
 
+    setSelectedClassificationId(defaultValue)
     setValue(selectedClassification?.name ?? '')
   }, [selectedClassification, hasFormError, defaultValue])
 
