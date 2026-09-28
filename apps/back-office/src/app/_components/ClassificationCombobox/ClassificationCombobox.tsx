@@ -82,7 +82,13 @@ export const ClassificationCombobox = ({
 
   return (
     <Column gap="small">
-      <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification}>
+      <Combobox
+        as="div"
+        immediate={!invalid}
+        onChange={handleChange}
+        ref={refs.setReference}
+        value={selectedClassification}
+      >
         <input name={name} type="hidden" value={selectedClassificationId} />
         <input name="isClassificationEmpty" type="hidden" value={value.length === 0 ? 'true' : 'false'} />
         <input
