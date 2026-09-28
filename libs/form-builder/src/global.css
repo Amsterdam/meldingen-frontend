@@ -1,5 +1,11 @@
-/* Sourced from https://github.com/Amsterdam/design-system/blob/main/packages/css/src/components/visually-hidden/visually-hidden.scss */
+@import url('bootstrap/dist/css/bootstrap.min.css');
+@import url('bootstrap-icons/font/bootstrap-icons.min.css');
 
+/*
+  Sourced from https://github.com/Amsterdam/design-system/blob/main/packages/css/src/components/visually-hidden/visually-hidden.scss
+
+  This class is set by Form.io, but not included in the builder CSS, so we add it ourselves
+*/
 /* stylelint-disable unit-disallowed-list */
 .visually-hidden {
   block-size: 1px;
