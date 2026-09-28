@@ -72,8 +72,10 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
   const classificationValue =
     (formData?.get('classification') as string | null) ??
     (meldingClassification?.id ? String(meldingClassification.id) : '')
-  const classificationErrorMessage = validationErrors?.find((error) => error.key === 'classification')?.message
-  const reasonErrorMessage = validationErrors?.find((error) => error.key === 'reason')?.message
+  const classificationValidationErrorMessage = validationErrors?.find(
+    (error) => error.key === 'classification',
+  )?.message
+  const reasonValidationErrorMessage = validationErrors?.find((error) => error.key === 'reason')?.message
 
   return (
     <div className="ams-page__area--body">
@@ -93,32 +95,47 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
             {t('title', { publicId })}
           </Heading>
           <Form action={formAction} className={clsx(styles.formPanel)} noValidate>
-            <Field className="ams-mb-m" invalid={Boolean(classificationErrorMessage)}>
-              <Label htmlFor="classification">{t('form-labels.classification')}</Label>
-              {classificationErrorMessage && (
-                <ErrorMessage id="classification-error">{classificationErrorMessage}</ErrorMessage>
+            <Field className="ams-mb-m" invalid={Boolean(classificationValidationErrorMessage)}>
+              <Label htmlFor="classificationId">{t('form-labels.classification')}</Label>
+              {classificationValidationErrorMessage && (
+                <ErrorMessage id="classification-error">{classificationValidationErrorMessage}</ErrorMessage>
               )}
               <ClassificationCombobox
-                ariaDescribedBy={getAriaDescribedBy('classification', undefined, classificationErrorMessage)}
+                ariaDescribedBy={getAriaDescribedBy(
+                  'classificationId',
+                  undefined,
+                  classificationValidationErrorMessage,
+                )}
                 classifications={classifications}
-                defaultValue={classificationValue}
-                id="classification"
-                invalid={Boolean(classificationErrorMessage)}
-                name="classification"
+                defaultValue={Number(classificationValue)}
+                hasFormError={
+                  Boolean(classificationValidationErrorMessage) ||
+                  Boolean(apiError) ||
+                  Boolean(reasonValidationErrorMessage)
+                }
+                id="classificationId"
+                invalid={Boolean(classificationValidationErrorMessage)}
+                name="classificationId"
                 noResultsMessage={t('no-results')}
                 placeholder={t('search-placeholder')}
               />
             </Field>
-            <Field className="ams-mb-m" invalid={Boolean(reasonErrorMessage)}>
+            <Field className="ams-mb-m" invalid={Boolean(reasonValidationErrorMessage)}>
               <Label htmlFor="reason">{t('form-labels.reason')}</Label>
               <Paragraph id="reason-description">{t('form-labels.reason-description')}</Paragraph>
-              {reasonErrorMessage && <ErrorMessage id="reason-error">{reasonErrorMessage}</ErrorMessage>}
+              {reasonValidationErrorMessage && (
+                <ErrorMessage id="reason-error">{reasonValidationErrorMessage}</ErrorMessage>
+              )}
               <TextArea
-                aria-describedby={getAriaDescribedBy('reason', t('form-labels.reason-description'), reasonErrorMessage)}
+                aria-describedby={getAriaDescribedBy(
+                  'reason',
+                  t('form-labels.reason-description'),
+                  reasonValidationErrorMessage,
+                )}
                 aria-required
                 defaultValue={formData?.get('reason') as string}
                 id="reason"
-                invalid={Boolean(reasonErrorMessage)}
+                invalid={Boolean(reasonValidationErrorMessage)}
                 name="reason"
                 onChange={(e) => setCharacterCount(e.target.value.length)}
                 rows={12}

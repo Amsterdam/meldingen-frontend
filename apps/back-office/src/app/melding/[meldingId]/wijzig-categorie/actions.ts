@@ -22,13 +22,13 @@ export const postReclassificationForm = async (
   const redirectPath = `/melding/${meldingId}`
 
   const formDataObj = Object.fromEntries(formData)
-  const classification = formDataObj['classification'] as string | undefined
+  const classificationId = formDataObj['classificationId'] ? Number(formDataObj['classificationId']) : undefined
   const reason = (formDataObj.reason as string | undefined) ?? ''
 
   const validationErrors = [
-    ...(!classification ? [{ key: 'classification', message: t('classification-required') }] : []),
-    ...(classification === String(currentClassificationId)
-      ? [{ key: 'classification', message: t('classification-same') }]
+    ...(!classificationId ? [{ key: 'classificationId', message: t('classification-required') }] : []),
+    ...(classificationId === currentClassificationId
+      ? [{ key: 'classificationId', message: t('classification-same') }]
       : []),
     ...(!reason ? [{ key: 'reason', message: t('reason-required') }] : []),
     ...(reason.length > REASON_COUNT_MAX_LENGTH
@@ -36,15 +36,13 @@ export const postReclassificationForm = async (
       : []),
   ]
 
-  if (validationErrors.length > 0) {
+  if (validationErrors.length > 0 || !classificationId) {
     return { formData, validationErrors }
   }
 
-  const parsedClassificationId = Number(classification)
-
   const { error } = await postMeldingByMeldingIdReclassification({
     body: {
-      classification_id: parsedClassificationId,
+      classification_id: classificationId,
       reason,
     },
     path: { melding_id: meldingId },

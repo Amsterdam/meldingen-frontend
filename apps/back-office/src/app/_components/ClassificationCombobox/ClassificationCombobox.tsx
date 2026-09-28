@@ -15,7 +15,8 @@ import styles from './ClassificationCombobox.module.css'
 type Props = {
   ariaDescribedBy?: string
   classifications: ClassificationOutput[]
-  defaultValue?: string
+  defaultValue?: number
+  hasFormError?: boolean
   id: string
   invalid?: boolean
   name: string
@@ -23,31 +24,31 @@ type Props = {
   placeholder?: string
 }
 
-const getClassificationById = (classifications: ClassificationOutput[], id?: string) =>
-  classifications.find((classification) => String(classification.id) === id)
+const getClassificationById = (classifications: ClassificationOutput[], id?: number) =>
+  classifications.find((classification) => classification.id === id)
 
 export const ClassificationCombobox = ({
   ariaDescribedBy,
   classifications,
   defaultValue,
+  hasFormError = false,
   id,
   invalid = false,
   name,
   noResultsMessage,
   placeholder,
 }: Props) => {
-  const [selectedClassificationId, setSelectedClassificationId] = useState(defaultValue ?? '')
+  const [selectedClassificationId, setSelectedClassificationId] = useState(defaultValue)
   const selectedClassification = getClassificationById(classifications, selectedClassificationId)
   const [value, setValue] = useState(selectedClassification?.name ?? '')
 
   useEffect(() => {
-    if (!invalid) {
+    if (!hasFormError) {
       return
     }
 
-    setSelectedClassificationId(defaultValue ?? '')
     setValue(selectedClassification?.name ?? '')
-  }, [selectedClassification, invalid, defaultValue])
+  }, [selectedClassification, hasFormError, defaultValue])
 
   const { floatingStyles, refs } = useFloating({
     middleware: [
@@ -71,7 +72,7 @@ export const ClassificationCombobox = ({
   const handleChange = (classification: ClassificationOutput | null) => {
     if (!classification) return
 
-    setSelectedClassificationId(String(classification.id))
+    setSelectedClassificationId(classification.id)
     setValue(classification.name)
   }
 
