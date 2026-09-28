@@ -108,7 +108,7 @@ describe('Page', () => {
     expect(Detail).toHaveBeenCalledWith(
       expect.objectContaining({
         meldingId: 123,
-        notesCount: 0,
+        notesCount: undefined,
         publicId: melding.public_id,
       }),
       undefined,

@@ -43,5 +43,6 @@ describe('NotesOverview', () => {
     expect(screen.getByText('This is a test note.')).toBeInTheDocument()
     expect(screen.getByText('This is another test note.')).toBeInTheDocument()
     expect(screen.getAllByText('test@example.com')).toHaveLength(2)
+    expect(screen.getByRole('link', { name: /tab-navigation\.notes\s*\(2\)/ })).toBeInTheDocument()
   })
 })

@@ -74,7 +74,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
       location={location}
       meldingData={meldingData}
       meldingId={meldingId}
-      notesCount={notes?.length ?? 0}
+      notesCount={notes?.length}
       publicId={data.public_id}
     />
   )
