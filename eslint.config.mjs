@@ -194,6 +194,14 @@ export default defineConfig(
     },
   },
 
+  // TypeScript file size
+  {
+    files: ['**/*.{ts,tsx}'],
+    rules: {
+      'max-lines': ['warn', { max: 150, skipBlankLines: true, skipComments: true }],
+    },
+  },
+
   // Don't force named exports for non-React files
   {
     files: ['**/*.{js,ts,mjs,cjs}'],
