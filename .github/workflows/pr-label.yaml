@@ -17,14 +17,14 @@ jobs:
     steps:
       - uses: Amsterdam/aapp_pr_label@2c0b4305c36394794a8c79671079da31fba48846
         with:
-          code-reviewed-color: "#99f490"
+          code-reviewed-color: '#99f490'
           code-reviewed-enabled: true
-          code-reviewed-label: "Code reviewed"
+          code-reviewed-label: 'Code reviewed'
           copilot-logins: |
             github-copilot[bot]
-          copilot-ready-color: "#05b103"
+          copilot-ready-color: '#05b103'
           copilot-ready-enabled: true
-          copilot-ready-label: "Copilot ready"
+          copilot-ready-label: 'Copilot ready'
           labels: |
             "^apps/([^/]+)/":
                 name: "app: $1"
@@ -36,8 +36,8 @@ jobs:
                 name: 'pipelines'
                 color: '#0366d6'
                 description: 'Pipeline related'
-          pr-description-copilot-section-after: "## Why"
-          pr-description-copilot-section-before: "## What"
+          pr-description-copilot-section-after: '## Why'
+          pr-description-copilot-section-before: '## What'
           pr-description-update-enabled: true
           reviewer-usernames: |
             frankfe-amsterdam
