@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 
 import type { ClassificationOutput, NoteRetrieveOutput } from '@meldingen/api-client'
 
-import { Paragraph, StandaloneLink, UnorderedList } from '@meldingen/ui'
+import { Column, Paragraph, StandaloneLink, UnorderedList } from '@meldingen/ui'
 import { formatDateString } from '@meldingen/utils'
 
 import { TipTapMarkdownToHtml } from '../TipTapMarkdownToHtml'
@@ -47,22 +47,24 @@ export const Note = ({ classification, currentUserId, meldingId, note }: Props) 
         {wasEdited && <span className="ams-visually-hidden">{t('visually-hidden-texts.edited')}</span>}
       </Paragraph>
       {text === '' ? <Paragraph>{t('deleted-note')}</Paragraph> : <TipTapMarkdownToHtml markdown={text} />}
-      {/* Only show the edit link if the current user is the author of the note */}
-      {currentUserId === user.id && (
-        <StandaloneLink
-          className={clsx(styles.link, 'ams-mb-s')}
-          href={`/melding/${meldingId}/notities/${id}/wijzigen`}
-          linkComponent={NextLink}
-        >
-          {t('edit-link')}
-        </StandaloneLink>
-      )}
-      {classification && (
-        <Paragraph className={styles.metadata}>
-          <span className={clsx(styles.classification)}>{t('classification')}</span>
-          <span>{classification.name}</span>
-        </Paragraph>
-      )}
+      <Column>
+        {/* Only show the edit link if the current user is the author of the note */}
+        {currentUserId === user.id && (
+          <StandaloneLink
+            className={styles.link}
+            href={`/melding/${meldingId}/notities/${id}/wijzigen`}
+            linkComponent={NextLink}
+          >
+            {t('edit-link')}
+          </StandaloneLink>
+        )}
+        {classification && (
+          <Paragraph className={styles.metadata}>
+            <span className={clsx(styles.classification)}>{t('classification')}</span>
+            <span>{classification.name}</span>
+          </Paragraph>
+        )}
+      </Column>
     </UnorderedList.Item>
   )
 }

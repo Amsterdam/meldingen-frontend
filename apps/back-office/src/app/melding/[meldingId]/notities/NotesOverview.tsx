@@ -1,6 +1,5 @@
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
-import { useCallback } from 'react'
 
 import type { ClassificationOutput, NoteRetrieveOutput } from '@meldingen/api-client'
 
@@ -21,11 +20,8 @@ type Props = {
 
 export const NotesOverview = ({ classifications, currentUserId, meldingId, notes, publicId }: Props) => {
   const t = useTranslations('notes-overview')
-  const getClassification = useCallback(
-    (classificationId: NoteRetrieveOutput['classification_id']) =>
-      classifications?.find((classification) => classification.id === classificationId),
-    [classifications],
-  )
+  const getClassification = (classificationId: NoteRetrieveOutput['classification_id']) =>
+    classifications?.find((classification) => classification.id === classificationId)
 
   return (
     <div className="ams-page__area--body">
