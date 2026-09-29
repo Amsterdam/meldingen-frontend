@@ -48,6 +48,13 @@ export const postReclassificationForm = async (
     return { formData, validationErrors }
   }
 
+  if (classificationId === undefined) {
+    return {
+      formData,
+      validationErrors: [{ key: 'classificationId', message: t('classification-does-not-exist') }],
+    }
+  }
+
   const { error } = await postMeldingByMeldingIdReclassification({
     body: {
       classification_id: classificationId,
