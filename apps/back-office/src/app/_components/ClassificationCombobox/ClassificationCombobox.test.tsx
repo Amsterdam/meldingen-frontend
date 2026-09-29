@@ -38,16 +38,13 @@ describe('ClassificationCombobox', () => {
     expect(screen.getByRole('combobox')).toHaveValue('Category 1')
     expect(screen.getByText('Instructions for Category 1')).toBeInTheDocument()
     expect(getHiddenInput(container, 'classificationId')).toHaveValue('2')
-    expect(getHiddenInput(container, 'isClassificationEmpty')).toHaveValue('false')
-    expect(getHiddenInput(container, 'isClassificationSelected')).toHaveValue('true')
   })
 
   it('renders the placeholder when there is no default classification', () => {
     const { container } = render(<ClassificationCombobox {...defaultProps} />)
 
     expect(screen.getByRole('combobox')).toHaveAttribute('placeholder', 'Choose a category')
-    expect(getHiddenInput(container, 'isClassificationEmpty')).toHaveValue('true')
-    expect(getHiddenInput(container, 'isClassificationSelected')).toHaveValue('false')
+    expect(getHiddenInput(container, 'classificationId')).toHaveValue('')
   })
 
   it('renders the label, error message and invalid state', () => {
@@ -75,8 +72,6 @@ describe('ClassificationCombobox', () => {
     expect(combobox).toHaveValue('Category 2')
     expect(screen.getByText('Instructions for Category 2')).toBeInTheDocument()
     expect(getHiddenInput(container, 'classificationId')).toHaveValue('3')
-    expect(getHiddenInput(container, 'isClassificationEmpty')).toHaveValue('false')
-    expect(getHiddenInput(container, 'isClassificationSelected')).toHaveValue('true')
   })
 
   it('marks the input as unselected when the user types a value without choosing an option', async () => {
@@ -89,9 +84,7 @@ describe('ClassificationCombobox', () => {
     await user.type(combobox, 'Unknown')
 
     expect(combobox).toHaveValue('Unknown')
-    expect(getHiddenInput(container, 'classificationId')).toHaveValue('2')
-    expect(getHiddenInput(container, 'isClassificationEmpty')).toHaveValue('false')
-    expect(getHiddenInput(container, 'isClassificationSelected')).toHaveValue('false')
+    expect(getHiddenInput(container, 'classificationId')).toHaveValue('')
   })
 
   it('shows the no results message when no classifications match', async () => {

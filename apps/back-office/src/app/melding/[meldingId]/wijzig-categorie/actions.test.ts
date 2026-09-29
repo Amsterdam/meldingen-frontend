@@ -6,24 +6,15 @@ import { REASON_COUNT_MAX_LENGTH } from './constants'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
-const createFormData = (input: {
-  classificationId?: string
-  isClassificationEmpty?: string
-  isClassificationSelected?: string
-  reason?: string
-}) => {
+const createFormData = (input: { classificationId?: string; classificationQuery?: string; reason?: string }) => {
   const formData = new FormData()
 
   if (input.classificationId !== undefined) {
     formData.append('classificationId', input.classificationId)
   }
 
-  if (input.isClassificationEmpty !== undefined) {
-    formData.append('isClassificationEmpty', input.isClassificationEmpty)
-  }
-
-  if (input.isClassificationSelected !== undefined) {
-    formData.append('isClassificationSelected', input.isClassificationSelected)
+  if (input.classificationQuery !== undefined) {
+    formData.append('classificationQuery', input.classificationQuery)
   }
 
   if (input.reason !== undefined) {
@@ -38,8 +29,6 @@ describe('postReclassificationForm', () => {
 
   it('returns a validation error when no category is selected', async () => {
     const formData = createFormData({
-      isClassificationEmpty: 'true',
-      isClassificationSelected: 'false',
       reason: 'Need to correct the classification',
     })
 
@@ -55,8 +44,7 @@ describe('postReclassificationForm', () => {
   it('returns a validation error when the selected category equals the current category', async () => {
     const formData = createFormData({
       classificationId: '2',
-      isClassificationEmpty: 'false',
-      isClassificationSelected: 'true',
+      classificationQuery: 'Category 1',
       reason: 'Need to correct the classification',
     })
 
@@ -71,9 +59,7 @@ describe('postReclassificationForm', () => {
 
   it('returns a validation error when the typed category was not selected from the list', async () => {
     const formData = createFormData({
-      classificationId: '2',
-      isClassificationEmpty: 'false',
-      isClassificationSelected: 'false',
+      classificationQuery: 'Unknown category',
       reason: 'Need to correct the classification',
     })
 
@@ -89,8 +75,7 @@ describe('postReclassificationForm', () => {
   it('returns a validation error when no reason is provided', async () => {
     const formData = createFormData({
       classificationId: '3',
-      isClassificationEmpty: 'false',
-      isClassificationSelected: 'true',
+      classificationQuery: 'Category 2',
     })
 
     const result = await postReclassificationForm(defaultArgs, null, formData)
@@ -105,8 +90,7 @@ describe('postReclassificationForm', () => {
   it('returns a validation error when the reason exceeds the maximum length', async () => {
     const formData = createFormData({
       classificationId: '3',
-      isClassificationEmpty: 'false',
-      isClassificationSelected: 'true',
+      classificationQuery: 'Category 2',
       reason: 'a'.repeat(REASON_COUNT_MAX_LENGTH + 1),
     })
 
@@ -120,10 +104,7 @@ describe('postReclassificationForm', () => {
   })
 
   it('returns all validation errors together when multiple fields are invalid', async () => {
-    const formData = createFormData({
-      isClassificationEmpty: 'true',
-      isClassificationSelected: 'false',
-    })
+    const formData = createFormData({})
 
     const result = await postReclassificationForm(defaultArgs, null, formData)
 
@@ -146,8 +127,7 @@ describe('postReclassificationForm', () => {
 
     const formData = createFormData({
       classificationId: '3',
-      isClassificationEmpty: 'false',
-      isClassificationSelected: 'true',
+      classificationQuery: 'Category 2',
       reason: 'Need to correct the classification',
     })
 
@@ -163,8 +143,7 @@ describe('postReclassificationForm', () => {
   it('redirects on success', async () => {
     const formData = createFormData({
       classificationId: '3',
-      isClassificationEmpty: 'false',
-      isClassificationSelected: 'true',
+      classificationQuery: 'Category 2',
       reason: 'Need to correct the classification',
     })
 

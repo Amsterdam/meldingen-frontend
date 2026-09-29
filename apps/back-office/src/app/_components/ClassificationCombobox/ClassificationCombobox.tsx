@@ -47,6 +47,7 @@ export const ClassificationCombobox = ({
   const selectedClassification = getClassificationById(classifications, selectedClassificationId)
   const [value, setValue] = useState(selectedClassification?.name ?? '')
   const hasErrorMessage = Boolean(errorMessage)
+  const isValidClassificationName = value === (selectedClassification?.name ?? '')
 
   const { floatingStyles, refs } = useFloating({
     middleware: [
@@ -83,17 +84,12 @@ export const ClassificationCombobox = ({
       <HUILabel as={Label}>{label}</HUILabel>
       {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification}>
-        <input name={name} type="hidden" value={selectedClassificationId} />
-        <input name="isClassificationEmpty" type="hidden" value={value.length === 0 ? 'true' : 'false'} />
-        <input
-          name="isClassificationSelected"
-          type="hidden"
-          value={value === selectedClassification?.name ? 'true' : 'false'}
-        />
+        <input name={name} type="hidden" value={isValidClassificationName ? selectedClassificationId : ''} />
         <ComboboxInput
           as={TextInput}
           className={styles.comboboxInput}
           invalid={hasErrorMessage}
+          name="classificationQuery"
           onChange={handleInputChange}
           placeholder={placeholder}
           value={value}
