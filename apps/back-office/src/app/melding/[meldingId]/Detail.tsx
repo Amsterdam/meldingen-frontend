@@ -48,8 +48,6 @@ export const Detail = ({
 }: Props) => {
   const t = useTranslations('detail')
 
-  const hasNotes = notesCount && notesCount > 0
-
   return (
     <div className="ams-page__area--body">
       <BackLink href={`/`}>{t('back-link')}</BackLink>
@@ -64,7 +62,7 @@ export const Detail = ({
                 {t('tab-navigation.detail')}
               </TabNavigation.Link>
               <TabNavigation.Link href={`/melding/${meldingId}/notities`} linkComponent={NextLink}>
-                {t('tab-navigation.notes')} {hasNotes && `(${notesCount})`}
+                {t('tab-navigation.notes')} {notesCount ? `(${notesCount})` : undefined}
               </TabNavigation.Link>
             </TabNavigation.List>
           </TabNavigation>
