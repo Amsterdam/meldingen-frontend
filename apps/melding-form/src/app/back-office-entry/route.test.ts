@@ -3,11 +3,10 @@ import type { Mock } from 'vitest'
 import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
-import { vi } from 'vitest'
+import { expect, vi } from 'vitest'
 
 import { GET } from './route'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
-import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
 vi.mock('next/headers', () => ({
@@ -15,6 +14,9 @@ vi.mock('next/headers', () => ({
 }))
 
 const BASE_URL = 'http://localhost:3000'
+// NOTE: An exception is made here to explicitly define the backend base URL for testing purposes.
+// Reason behind it is that the `client` used in the application is configured with the backend base URL, and for testing purposes, we need to explicitly define it here. See the related route.ts
+const BACKEND_BASE_URL = 'http://localhost:8000'
 
 const createRequest = (params: Record<string, string>) => {
   const url = new URL('/back-office-entry', 'http://not-url-from-env-var.com')
@@ -33,11 +35,6 @@ describe('GET', () => {
   beforeEach(() => {
     mockCookieStore = { delete: vi.fn(), set: vi.fn() }
     ;(cookies as Mock).mockReturnValue(mockCookieStore)
-    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', BASE_URL)
-  })
-
-  afterAll(() => {
-    vi.unstubAllEnvs()
   })
 
   it('redirects to Home when id or token is missing', async () => {
@@ -65,20 +62,10 @@ describe('GET', () => {
     expect(mockCookieStore.delete).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
   })
 
-  it('falls back to request host as origin when NEXT_PUBLIC_MELDING_FORM_BASE_URL is not set', async () => {
-    vi.unstubAllEnvs()
-
-    const response = await GET(createRequest(requiredParams))
-
-    expect(response.headers.get('location')).toContain('not-url-from-env-var.com')
-  })
-
   it('redirects to Home and logs error when an API error occurs', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     server.use(
-      http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
-        HttpResponse.json('API error', { status: 500 }),
-      ),
+      http.get(`${BACKEND_BASE_URL}/form/classification/:id`, () => HttpResponse.json('API error', { status: 500 })),
     )
 
     const response = await GET(createRequest({ ...requiredParams, classification_id: '42' }))
@@ -88,8 +75,21 @@ describe('GET', () => {
   })
 
   it('redirects to the correct URL when GET is successful', async () => {
-    const response = await GET(createRequest({ ...requiredParams, classification_id: '42' }))
+    server.use(
+      http.get(`${BACKEND_BASE_URL}/form/classification/:id`, () => HttpResponse.json({ components: [] })),
+      http.put(`${BACKEND_BASE_URL}/melding/:id/answer_questions`, () => HttpResponse.json({}, { status: 200 })),
+    )
+
+    const response = await GET(
+      createRequest({
+        classification_id: '42',
+        ...requiredParams,
+      }),
+    )
 
     expect(response.headers.get('location')).toBe(`${BASE_URL}/locatie#${TOP_ANCHOR_ID}`)
+    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: 24 * 60 * 60 })
+    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', { maxAge: 24 * 60 * 60 })
+    expect(mockCookieStore.delete).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
   })
 })

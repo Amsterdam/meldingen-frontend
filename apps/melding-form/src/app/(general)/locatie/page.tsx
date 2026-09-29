@@ -4,6 +4,7 @@ import { getMeldingAssets, getMeldingData } from '../_utils'
 import { postLocationForm } from './actions'
 import { Location } from './Location'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { clientEnv } from '~/env/client'
 
 type Args = {
   lastPanelPath: string | undefined
@@ -17,7 +18,7 @@ const getPreviousPagePath = ({ lastPanelPath, meldingId, source, token }: Args) 
 
   if (source === 'back-office') {
     const params = new URLSearchParams({ id: meldingId, token })
-    return `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?${params}`
+    return `${clientEnv.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?${params}`
   }
 
   return `/#${TOP_ANCHOR_ID}`

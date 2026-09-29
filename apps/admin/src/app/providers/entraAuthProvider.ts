@@ -4,15 +4,14 @@ import { PublicClientApplication } from '@azure/msal-browser'
 import { msalAuthProvider } from 'ra-auth-msal'
 
 import { entraAuthConfig } from './entraAuthConfig'
+import { env } from '~/env/env'
 
 export const msalInstance = new PublicClientApplication(entraAuthConfig)
 
-export const scopes = [`${import.meta.env.VITE_ENTRA_CLIENT_ID}/.default`, 'openid', 'email']
+export const scopes = [`${env.VITE_ENTRA_CLIENT_ID}/.default`, 'openid', 'email']
 
 export const isEntraAuthEnabled =
-  Boolean(import.meta.env.VITE_ENTRA_APP_BASE_URL) &&
-  Boolean(import.meta.env.VITE_ENTRA_AUTHORITY) &&
-  Boolean(import.meta.env.VITE_ENTRA_CLIENT_ID)
+  Boolean(env.VITE_ENTRA_APP_BASE_URL) && Boolean(env.VITE_ENTRA_AUTHORITY) && Boolean(env.VITE_ENTRA_CLIENT_ID)
 
 export const entraAuthProvider = msalAuthProvider({
   loginRequest: { scopes },

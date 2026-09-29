@@ -24,6 +24,7 @@ import { BackLink } from '../../_components'
 import { submitAttachmentsForm } from './actions'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
+import { clientEnv } from '~/env/client'
 
 import styles from './Attachments.module.css'
 
@@ -78,7 +79,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     inputRef,
     maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
     maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
-    uploadUrl: `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment/melder?token=${encodeURIComponent(token)}`,
+    uploadUrl: `${clientEnv.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment/melder?token=${encodeURIComponent(token)}`,
   })
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)

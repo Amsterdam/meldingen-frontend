@@ -6,7 +6,8 @@
     "paths": {
       "~/*": ["./src/*"]
     },
-    "types": ["vite/client", "vitest/globals"]
+    "types": ["vite/client", "vitest/globals"],
+    "allowImportingTsExtensions": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "./vite.config.ts", "./vitest.setup.ts"]
 }

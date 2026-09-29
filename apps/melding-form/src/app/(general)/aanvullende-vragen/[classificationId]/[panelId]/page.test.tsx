@@ -8,6 +8,7 @@ import * as actionsModule from './actions'
 import { AdditionalQuestions } from './AdditionalQuestions'
 import Page from './page'
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { getClientEnv } from '~/env/client'
 import { additionalQuestions, selectAdditionalQuestion } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
@@ -460,8 +461,6 @@ describe('Page', () => {
   })
 
   it('passes the correct previousPanelPath to AdditionalQuestions when coming from the back office', async () => {
-    vi.stubEnv('NEXT_PUBLIC_BACK_OFFICE_BASE_URL', 'http://back-office.example.com')
-
     mockCookies({
       [COOKIES.ID]: '123',
       [COOKIES.SOURCE]: 'back-office',
@@ -484,12 +483,10 @@ describe('Page', () => {
 
     expect(AdditionalQuestions).toHaveBeenCalledWith(
       expect.objectContaining({
-        previousPanelPath: `${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?id=123&token=abc`,
+        previousPanelPath: `${getClientEnv().NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?id=123&token=abc`,
       }),
       undefined,
     )
-
-    vi.unstubAllEnvs()
   })
 
   it('passes postForm with the correct bounded args to AdditionalQuestions', async () => {
