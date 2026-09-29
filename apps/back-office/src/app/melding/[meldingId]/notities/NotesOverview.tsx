@@ -23,6 +23,8 @@ export const NotesOverview = ({ classifications, currentUserId, meldingId, notes
   const getClassification = (classificationId: NoteRetrieveOutput['classification_id']) =>
     classifications?.find((classification) => classification.id === classificationId)
 
+  const hasNotes = notes.length > 0
+
   return (
     <div className="ams-page__area--body">
       <BackLink href={`/`}>{t('back-link')}</BackLink>
@@ -36,8 +38,9 @@ export const NotesOverview = ({ classifications, currentUserId, meldingId, notes
               <TabNavigation.Link href={`/melding/${meldingId}`} linkComponent={NextLink}>
                 {t('tab-navigation.detail')}
               </TabNavigation.Link>
+
               <TabNavigation.Link aria-current="page" href={`/melding/${meldingId}/notities`} linkComponent={NextLink}>
-                {t('tab-navigation.notes')}
+                {t('tab-navigation.notes')} {hasNotes && `(${notes.length})`}
               </TabNavigation.Link>
             </TabNavigation.List>
           </TabNavigation>
@@ -48,7 +51,7 @@ export const NotesOverview = ({ classifications, currentUserId, meldingId, notes
           >
             {t('add-note-link')}
           </StandaloneLink>
-          {notes.length > 0 && (
+          {hasNotes && (
             <UnorderedList className={styles.list} markers={false}>
               {notes.map((note) => (
                 <Note
