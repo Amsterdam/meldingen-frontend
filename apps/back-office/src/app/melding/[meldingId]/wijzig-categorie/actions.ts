@@ -44,7 +44,7 @@ export const postReclassificationForm = async (
     validationErrors.push({ key: 'reason', message: t('reason-max-length', { max: REASON_COUNT_MAX_LENGTH }) })
   }
 
-  if (validationErrors.length > 0 || !classificationId) {
+  if (validationErrors.length > 0) {
     return { formData, validationErrors }
   }
 

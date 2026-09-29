@@ -99,7 +99,6 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
               defaultValue={Number(classificationValue)}
               errorMessage={classificationValidationErrorMessage}
               label={t('form-labels.classification')}
-              name="classificationId"
               noResultsMessage={t('no-results')}
               placeholder={t('search-placeholder')}
             />

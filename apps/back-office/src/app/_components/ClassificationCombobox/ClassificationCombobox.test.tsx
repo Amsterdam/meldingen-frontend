@@ -23,28 +23,27 @@ const classifications = [
 const defaultProps = {
   classifications,
   label: 'Choose classification',
-  name: 'classificationId',
   noResultsMessage: 'No categories found',
   placeholder: 'Choose a category',
 }
 
 describe('ClassificationCombobox', () => {
-  const getHiddenInput = (container: HTMLElement, name: string) =>
-    container.querySelector(`input[type="hidden"][name="${name}"]`)
+  const getHiddenInput = (container: HTMLElement) =>
+    container.querySelector('input[type="hidden"][name="classificationId"]')
 
   it('renders the default classification name, instructions and submitted id', () => {
     const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue={2} />)
 
     expect(screen.getByRole('combobox')).toHaveValue('Category 1')
     expect(screen.getByText('Instructions for Category 1')).toBeInTheDocument()
-    expect(getHiddenInput(container, 'classificationId')).toHaveValue('2')
+    expect(getHiddenInput(container)).toHaveValue('2')
   })
 
   it('renders the placeholder when there is no default classification', () => {
     const { container } = render(<ClassificationCombobox {...defaultProps} />)
 
     expect(screen.getByRole('combobox')).toHaveAttribute('placeholder', 'Choose a category')
-    expect(getHiddenInput(container, 'classificationId')).toHaveValue('')
+    expect(getHiddenInput(container)).toHaveValue('')
   })
 
   it('renders the label, error message and invalid state', () => {
@@ -71,7 +70,7 @@ describe('ClassificationCombobox', () => {
 
     expect(combobox).toHaveValue('Category 2')
     expect(screen.getByText('Instructions for Category 2')).toBeInTheDocument()
-    expect(getHiddenInput(container, 'classificationId')).toHaveValue('3')
+    expect(getHiddenInput(container)).toHaveValue('3')
   })
 
   it('marks the input as unselected when the user types a value without choosing an option', async () => {
@@ -84,7 +83,7 @@ describe('ClassificationCombobox', () => {
     await user.type(combobox, 'Unknown')
 
     expect(combobox).toHaveValue('Unknown')
-    expect(getHiddenInput(container, 'classificationId')).toHaveValue('')
+    expect(getHiddenInput(container)).toHaveValue('')
   })
 
   it('shows the no results message when no classifications match', async () => {

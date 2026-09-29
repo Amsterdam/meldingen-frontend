@@ -26,7 +26,6 @@ type Props = {
   defaultValue?: number
   errorMessage?: string
   label: string
-  name: string
   noResultsMessage: string
   placeholder?: string
 }
@@ -39,7 +38,6 @@ export const ClassificationCombobox = ({
   defaultValue,
   errorMessage,
   label,
-  name,
   noResultsMessage,
   placeholder,
 }: Props) => {
@@ -80,14 +78,18 @@ export const ClassificationCombobox = ({
   }
 
   return (
-    <HUIField as={Field} className="ams-mb-m" invalid={Boolean(errorMessage)}>
+    <HUIField as={Field} className="ams-mb-m" invalid={hasErrorMessage}>
       <HUILabel as={Label}>{label}</HUILabel>
-      {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
+      {hasErrorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification}>
-        <input name={name} type="hidden" value={isValidClassificationName ? selectedClassificationId : ''} />
+        <input
+          name="classificationId"
+          type="hidden"
+          value={isValidClassificationName ? selectedClassificationId : ''}
+        />
         <ComboboxInput
           as={TextInput}
-          className={styles.comboboxInput}
+          autoComplete="off"
           invalid={hasErrorMessage}
           name="classificationQuery"
           onChange={handleInputChange}
