@@ -25,8 +25,6 @@ export const NotesOverview = ({ classifications, currentUserId, meldingId, notes
 
   const hasNotes = notes.length > 0
 
-  const hasNotes = notes.length > 0
-
   return (
     <div className="ams-page__area--body">
       <BackLink href={`/`}>{t('back-link')}</BackLink>
