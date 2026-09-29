@@ -147,6 +147,7 @@ export const useAddMarkersToMap = ({
     }
   }, [
     map,
+    markerLayerRef,
     features,
     selectedMarkers,
     iconConfig,
