@@ -127,14 +127,13 @@ describe('ChangeCategory', () => {
     const { container } = render(<ChangeCategory {...defaultProps} />)
 
     expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveValue('Category 2')
-    expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveAttribute(
-      'aria-describedby',
-      'classificationId-error',
+    expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveAccessibleDescription(
+      /classification-required/i,
     )
+    expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveAttribute('aria-invalid', 'true')
     expect(screen.getByRole('textbox', { name: 'form-labels.reason' })).toHaveValue(
       'Because this is the right classification',
     )
-    expect(container.querySelector('#classificationId-error')).toHaveTextContent('classification-required')
     expect(container.querySelector('#reason-error')).toHaveTextContent('reason-required')
   })
 

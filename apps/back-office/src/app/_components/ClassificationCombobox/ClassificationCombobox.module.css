@@ -11,3 +11,7 @@
   overflow-y: auto;
   z-index: 1;
 }
+
+.instructions {
+  margin-block-start: var(--ams-space-s);
+}

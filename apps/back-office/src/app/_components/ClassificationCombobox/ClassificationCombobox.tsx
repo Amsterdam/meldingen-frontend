@@ -1,23 +1,31 @@
 'use client'
 
-import type { ChangeEvent, ComponentProps, ForwardedRef } from 'react'
+import type { ChangeEvent } from 'react'
 
+import { ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
 import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
-import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react'
-import { forwardRef, useState } from 'react'
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxOption,
+  ComboboxOptions,
+  Description,
+  Field as HUIField,
+  Label as HUILabel,
+} from '@headlessui/react'
+import { useState } from 'react'
 
 import type { ClassificationOutput } from '@meldingen/api-client'
 
-import { Column, ListBox, Paragraph, TextInput } from '@meldingen/ui'
+import { ListBox, TextInput } from '@meldingen/ui'
 
 import styles from './ClassificationCombobox.module.css'
 
 type Props = {
-  ariaDescribedBy?: string
   classifications: ClassificationOutput[]
   defaultValue?: number
-  id: string
-  invalid?: boolean
+  errorMessage?: string
+  label: string
   name: string
   noResultsMessage: string
   placeholder?: string
@@ -26,22 +34,11 @@ type Props = {
 const getClassificationById = (classifications: ClassificationOutput[], id?: number) =>
   classifications.find((classification) => classification.id === id)
 
-type ComboboxTextInputProps = ComponentProps<typeof TextInput> & {
-  describedBy?: string
-}
-
-const ComboboxTextInput = forwardRef(
-  ({ describedBy, ...props }: ComboboxTextInputProps, ref: ForwardedRef<HTMLInputElement>) => (
-    <TextInput {...props} aria-describedby={describedBy} ref={ref} />
-  ),
-)
-
 export const ClassificationCombobox = ({
-  ariaDescribedBy,
   classifications,
   defaultValue,
-  id,
-  invalid = false,
+  errorMessage,
+  label,
   name,
   noResultsMessage,
   placeholder,
@@ -49,6 +46,7 @@ export const ClassificationCombobox = ({
   const [selectedClassificationId, setSelectedClassificationId] = useState(defaultValue)
   const selectedClassification = getClassificationById(classifications, selectedClassificationId)
   const [value, setValue] = useState(selectedClassification?.name ?? '')
+  const hasErrorMessage = Boolean(errorMessage)
 
   const { floatingStyles, refs } = useFloating({
     middleware: [
@@ -81,14 +79,10 @@ export const ClassificationCombobox = ({
   }
 
   return (
-    <Column gap="small">
-      <Combobox
-        as="div"
-        immediate={!invalid}
-        onChange={handleChange}
-        ref={refs.setReference}
-        value={selectedClassification}
-      >
+    <HUIField as={Field} className="ams-mb-m" invalid={Boolean(errorMessage)}>
+      <HUILabel as={Label}>{label}</HUILabel>
+      {errorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
+      <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification}>
         <input name={name} type="hidden" value={selectedClassificationId} />
         <input name="isClassificationEmpty" type="hidden" value={value.length === 0 ? 'true' : 'false'} />
         <input
@@ -97,14 +91,9 @@ export const ClassificationCombobox = ({
           value={value === selectedClassification?.name ? 'true' : 'false'}
         />
         <ComboboxInput
-          aria-invalid={invalid}
-          aria-required
-          as={ComboboxTextInput}
-          autoComplete="off"
+          as={TextInput}
           className={styles.comboboxInput}
-          describedBy={ariaDescribedBy}
-          id={id}
-          invalid={invalid}
+          invalid={hasErrorMessage}
           onChange={handleInputChange}
           placeholder={placeholder}
           value={value}
@@ -129,7 +118,9 @@ export const ClassificationCombobox = ({
           )}
         </ComboboxOptions>
       </Combobox>
-      {selectedClassification?.instructions && <Paragraph>{selectedClassification.instructions}</Paragraph>}
-    </Column>
+      {selectedClassification?.instructions && (
+        <Description className={styles.instructions}>{selectedClassification.instructions}</Description>
+      )}
+    </HUIField>
   )
 }

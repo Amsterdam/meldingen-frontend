@@ -12,7 +12,6 @@ import {
   Paragraph,
   TextArea,
 } from '@amsterdam/design-system-react'
-import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useState } from 'react'
@@ -94,27 +93,16 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
           <Heading className="ams-mb-m" level={1}>
             {t('title', { publicId })}
           </Heading>
-          <Form action={formAction} className={clsx(styles.formPanel)} noValidate>
-            <Field className="ams-mb-m" invalid={Boolean(classificationValidationErrorMessage)}>
-              <Label htmlFor="classificationId">{t('form-labels.classification')}</Label>
-              {classificationValidationErrorMessage && (
-                <ErrorMessage id="classificationId-error">{classificationValidationErrorMessage}</ErrorMessage>
-              )}
-              <ClassificationCombobox
-                ariaDescribedBy={getAriaDescribedBy(
-                  'classificationId',
-                  undefined,
-                  classificationValidationErrorMessage,
-                )}
-                classifications={classifications}
-                defaultValue={Number(classificationValue)}
-                id="classificationId"
-                invalid={Boolean(classificationValidationErrorMessage)}
-                name="classificationId"
-                noResultsMessage={t('no-results')}
-                placeholder={t('search-placeholder')}
-              />
-            </Field>
+          <Form action={formAction} className={styles.formPanel} noValidate>
+            <ClassificationCombobox
+              classifications={classifications}
+              defaultValue={Number(classificationValue)}
+              errorMessage={classificationValidationErrorMessage}
+              label={t('form-labels.classification')}
+              name="classificationId"
+              noResultsMessage={t('no-results')}
+              placeholder={t('search-placeholder')}
+            />
             <Field className="ams-mb-m" invalid={Boolean(reasonValidationErrorMessage)}>
               <Label htmlFor="reason">{t('form-labels.reason')}</Label>
               <Paragraph id="reason-description">{t('form-labels.reason-description')}</Paragraph>

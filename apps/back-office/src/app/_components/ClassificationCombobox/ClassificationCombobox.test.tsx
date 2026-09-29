@@ -22,7 +22,7 @@ const classifications = [
 
 const defaultProps = {
   classifications,
-  id: 'classificationId',
+  label: 'Choose classification',
   name: 'classificationId',
   noResultsMessage: 'No categories found',
   placeholder: 'Choose a category',
@@ -50,10 +50,13 @@ describe('ClassificationCombobox', () => {
     expect(getHiddenInput(container, 'isClassificationSelected')).toHaveValue('false')
   })
 
-  it('forwards aria-describedby to the rendered combobox input', () => {
-    render(<ClassificationCombobox {...defaultProps} ariaDescribedBy="classification-error" />)
+  it('renders the label, error message and invalid state', () => {
+    render(<ClassificationCombobox {...defaultProps} errorMessage="classification-required" />)
 
-    expect(screen.getByRole('combobox')).toHaveAttribute('aria-describedby', 'classification-error')
+    expect(screen.getByRole('combobox', { name: 'Choose classification' })).toHaveAccessibleDescription(
+      /classification-required/i,
+    )
+    expect(screen.getByRole('combobox', { name: 'Choose classification' })).toHaveAttribute('aria-invalid', 'true')
   })
 
   it('filters classifications and selects a new one', async () => {
