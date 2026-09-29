@@ -15,7 +15,7 @@ jobs:
   pr-label:
     runs-on: ubuntu-latest
     steps:
-      - uses: Amsterdam/aapp_pr_label@6c0bbc34466526f901021236f11e21d6be1300a7
+      - uses: Amsterdam/aapp_pr_label@2c0b4305c36394794a8c79671079da31fba48846
         with:
           code-reviewed-color: '#99f490'
           code-reviewed-enabled: true
