@@ -61,9 +61,11 @@ describe('Page', () => {
         },
       },
     }
+
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(meldingWithoutAssetTypeId)))
 
     const PageComponent = await Page()
+
     render(PageComponent)
 
     expect(SelectLocation).toHaveBeenCalledWith(
@@ -88,9 +90,11 @@ describe('Page', () => {
         },
       },
     }
+
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(meldingWithoutTypeNames)))
 
     const PageComponent = await Page()
+
     render(PageComponent)
 
     expect(SelectLocation).toHaveBeenCalledWith(
@@ -110,6 +114,7 @@ describe('Page', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     const PageComponent = await Page()
+
     render(PageComponent)
 
     expect(consoleSpy).toHaveBeenCalledWith('Test error')
@@ -134,6 +139,7 @@ describe('Page', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     const PageComponent = await Page()
+
     render(PageComponent)
 
     expect(consoleSpy).toHaveBeenCalledWith('Test error')
@@ -148,6 +154,7 @@ describe('Page', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     const PageComponent = await Page()
+
     render(PageComponent)
 
     expect(consoleSpy).toHaveBeenCalledWith('Test error')
@@ -168,6 +175,7 @@ describe('Page', () => {
     server.use(http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, mockGetWfsByAssetTypeId))
 
     const PageComponent = await Page()
+
     render(PageComponent)
 
     expect(mockGetWfsByAssetTypeId).toHaveBeenCalledTimes(2)
@@ -177,6 +185,7 @@ describe('Page', () => {
     server.use(http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json({ features: [] })))
 
     const PageComponent = await Page()
+
     render(PageComponent)
 
     expect(SelectLocation).toHaveBeenCalledWith(
@@ -188,24 +197,8 @@ describe('Page', () => {
   })
 
   it('fetches assetIds from melding and passes assets to SelectLocation', async () => {
-    let callCount = 0
-    server.use(
-      http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => {
-        callCount += 1
-
-        if (callCount === 1) {
-          return HttpResponse.json({
-            features: [containerAssets[0]],
-          })
-        } else {
-          return HttpResponse.json({
-            features: [containerAssets[1]],
-          })
-        }
-      }),
-    )
-
     const PageComponent = await Page()
+
     render(PageComponent)
 
     expect(SelectLocation).toHaveBeenCalledWith(
@@ -218,6 +211,7 @@ describe('Page', () => {
 
   it('passes maxAssets from melding classification.asset_type.max_assets when it exists', async () => {
     const PageComponent = await Page()
+
     render(PageComponent)
 
     expect(SelectLocation).toHaveBeenCalledWith(
@@ -234,6 +228,7 @@ describe('Page', () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)))
 
     const PageComponent = await Page()
+
     render(PageComponent)
 
     expect(SelectLocation).toHaveBeenCalledWith(
@@ -255,6 +250,7 @@ describe('Page', () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(melding)))
 
     const PageComponent = await Page()
+
     render(PageComponent)
 
     expect(SelectLocation).toHaveBeenCalledWith(
@@ -291,6 +287,7 @@ describe('Page', () => {
     )
 
     const PageComponent = await Page()
+
     render(PageComponent)
 
     expect(SelectLocation).toHaveBeenCalledWith(
@@ -318,6 +315,7 @@ describe('Page', () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () => HttpResponse.json(meldingWithAssetType)))
 
     const PageComponent = await Page()
+
     render(PageComponent)
 
     expect(SelectLocation).toHaveBeenCalledWith(
@@ -332,6 +330,7 @@ describe('Page', () => {
 
   it('passes coordinates to SelectLocation when they already exist', async () => {
     const PageComponent = await Page()
+
     render(PageComponent)
 
     const [lat, lng] = melding.geo_location?.geometry?.coordinates || []
