@@ -10,6 +10,7 @@ import { Grid, Menu, Page } from '@meldingen/ui'
 
 import { Header } from './Header'
 import { TOP_ANCHOR_ID } from '~/constants'
+import { clientEnv } from '~/env/client'
 
 import styles from './BackOfficeLayout.module.css'
 
@@ -18,17 +19,14 @@ import styles from './BackOfficeLayout.module.css'
 const MenuItems = () => {
   const t = useTranslations('shared.back-office-menu')
 
+  const backOfficeBaseUrl = clientEnv.NEXT_PUBLIC_BACK_OFFICE_BASE_URL
+
   return [
-    <Menu.Link
-      href={`${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/`}
-      icon={<HouseFillIcon />}
-      key="overview"
-      linkComponent={NextLink}
-    >
+    <Menu.Link href={backOfficeBaseUrl} icon={<HouseFillIcon />} key="overview" linkComponent={NextLink}>
       {t('overview')}
     </Menu.Link>,
     <Menu.Link
-      href={`${process.env.NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden`}
+      href={`${backOfficeBaseUrl}/melden`}
       icon={<PlusCircleFillIcon />}
       key="melding-form"
       linkComponent={NextLink}

@@ -7,6 +7,7 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { client } from '@meldingen/api-client'
 
 import { ApiClientInitializer } from './ApiClientInitializer'
+import { serverEnv } from '~/env/server'
 
 import './global.css'
 
@@ -22,7 +23,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
 // Server requests that pass through route.ts are configured in the route handlers themselves.
 // Client requests are configured in ApiClientInitializer.
 client.setConfig({
-  baseUrl: process.env.NEXT_INTERNAL_BACKEND_BASE_URL,
+  baseUrl: serverEnv.NEXT_INTERNAL_BACKEND_BASE_URL,
 })
 
 const RootLayout = async ({ children }: PropsWithChildren) => {

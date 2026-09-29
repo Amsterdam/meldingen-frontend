@@ -6,6 +6,7 @@ import { http, HttpResponse } from 'msw'
 import { Location } from './Location'
 import Page from './page'
 import { COOKIES } from '~/constants'
+import { getClientEnv } from '~/env/client'
 import { containerAssetIds, melding } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
@@ -75,8 +76,6 @@ describe('Page', () => {
   })
 
   it('renders Location component with back-office URL as prevPage when source cookie is set to back-office and lastPanelPath cookie is not set', async () => {
-    vi.stubEnv('NEXT_PUBLIC_BACK_OFFICE_BASE_URL', 'https://backoffice.example.com')
-
     mockCookies({
       [COOKIES.ID]: '123',
       [COOKIES.SOURCE]: 'back-office',
@@ -90,7 +89,7 @@ describe('Page', () => {
     expect(screen.getByText('Location Component')).toBeInTheDocument()
     expect(Location).toHaveBeenCalledWith(
       expect.objectContaining({
-        prevPage: `https://backoffice.example.com/melden?id=123&token=test-token`,
+        prevPage: `${getClientEnv().NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melden?id=123&token=test-token`,
       }),
       undefined,
     )

@@ -4,6 +4,7 @@ import eslint from '@eslint/js'
 import json from '@eslint/json'
 import markdown from '@eslint/markdown'
 import pluginNext from '@next/eslint-plugin-next'
+import stylistic from '@stylistic/eslint-plugin'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import eslintConfigPrettier from 'eslint-config-prettier/flat'
@@ -88,6 +89,7 @@ export default defineConfig(
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
+      '@stylistic': stylistic,
       import: importPlugin,
       'jsx-a11y': jsxA11y,
       perfectionist,
@@ -124,6 +126,31 @@ export default defineConfig(
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
       'no-shadow': 'off',
       '@typescript-eslint/no-shadow': ['warn'],
+
+      // Stylistic
+      '@stylistic/padding-line-between-statements': [
+        'warn',
+        {
+          blankLine: 'always',
+          prev: '*',
+          next: ['block', 'block-like', 'return'],
+        },
+        {
+          blankLine: 'always',
+          prev: ['block', 'block-like'],
+          next: '*',
+        },
+        {
+          blankLine: 'always',
+          prev: ['const', 'let', 'var'],
+          next: '*',
+        },
+        {
+          blankLine: 'any',
+          prev: ['const', 'let', 'var'],
+          next: ['const', 'let', 'var'],
+        },
+      ],
 
       // Import
       'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
