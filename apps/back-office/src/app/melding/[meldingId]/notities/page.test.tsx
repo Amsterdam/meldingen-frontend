@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw'
 
 import { NotesOverview } from './NotesOverview'
 import Page, { generateMetadata } from './page'
-import { melding } from '~/mocks/data'
+import { classifications, melding } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -33,7 +33,7 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  it('throws an error when getMeldingByMeldingId returns an error or no data', async () => {
+  it('throws an error when getMeldingByMeldingId returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 500 })))
 
     const params = Promise.resolve({ meldingId: 123 })
@@ -57,6 +57,14 @@ describe('Page', () => {
     await expect(Page({ params })).rejects.toThrow('Failed to fetch current user data.')
   })
 
+  it('throws an error when getClassification returns an error', async () => {
+    server.use(http.get(ENDPOINTS.GET_CLASSIFICATION, () => HttpResponse.json({}, { status: 500 })))
+
+    const params = Promise.resolve({ meldingId: 123 })
+
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch classifications data.')
+  })
+
   it('calls the NotesOverview component with the correct data', async () => {
     const params = Promise.resolve({ meldingId: 123 })
     const result = await Page({ params })
@@ -64,7 +72,7 @@ describe('Page', () => {
     render(result)
 
     expect(NotesOverview).toHaveBeenCalledWith(
-      { currentUserId: 1, meldingId: 123, notes: [], publicId: melding.public_id },
+      { classifications, currentUserId: 1, meldingId: 123, notes: [], publicId: melding.public_id },
       undefined,
     )
   })
