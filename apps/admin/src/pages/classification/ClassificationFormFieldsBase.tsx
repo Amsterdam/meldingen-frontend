@@ -41,6 +41,7 @@ export const ClassificationFormFieldsBase = () => {
           choices={serviceLevelObjectiveDayTypeChoices}
           defaultValue={SERVICE_LEVEL_OBJECTIVE_DAY_TYPE_DEFAULT}
           source="service_level_objective_day_type"
+          validate={[required()]}
         />
       </div>
       <TextInput minRows={3} multiline source="service_level_objective_text" validate={required()} />
