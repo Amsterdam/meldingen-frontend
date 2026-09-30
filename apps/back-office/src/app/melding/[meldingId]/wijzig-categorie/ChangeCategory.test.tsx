@@ -7,6 +7,7 @@ import { useActionState } from 'react'
 import type { Props } from './ChangeCategory'
 
 import { ChangeCategory } from './ChangeCategory'
+import { classifications } from '~/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
@@ -18,23 +19,10 @@ vi.mock('react', async (importOriginal) => {
 })
 
 const defaultProps: Props = {
-  classifications: [
-    {
-      created_at: '2024-01-01T00:00:00Z',
-      id: 2,
-      name: 'Category 1',
-      updated_at: '2024-01-01T00:00:00Z',
-    },
-    {
-      created_at: '2024-01-01T00:00:00Z',
-      id: 3,
-      name: 'Category 2',
-      updated_at: '2024-01-01T00:00:00Z',
-    },
-  ],
+  classifications: classifications,
   meldingClassification: {
     created_at: '2024-01-01T00:00:00Z',
-    id: 2,
+    id: 1,
     name: 'Category 1',
     updated_at: '2024-01-01T00:00:00Z',
   },
@@ -109,7 +97,7 @@ describe('ChangeCategory', () => {
   it('displays validation errors and preserves the submitted form data when the action returns validation errors', () => {
     const formData = new FormData()
 
-    formData.set('classificationId', '3')
+    formData.set('classificationId', '2')
     formData.set('classificationQuery', 'Category 2')
     formData.set('reason', 'Because this is the right classification')
 
@@ -138,8 +126,14 @@ describe('ChangeCategory', () => {
     expect(container.querySelector('#reason-error')).toHaveTextContent('reason-required')
   })
 
-  it('displays an API error alert with the correct document title', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: { detail: 'Error message' } }, vi.fn(), false])
+  it('displays an API error alert with the correct document title and preserves the form data', () => {
+    const formData = new FormData()
+
+    formData.set('classificationId', '2')
+    formData.set('classificationQuery', 'Category 2')
+    formData.set('reason', 'Because this is the right classification')
+
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: { detail: 'Error message' }, formData }, vi.fn(), false])
 
     const { container } = render(<ChangeCategory {...defaultProps} />)
 
@@ -151,8 +145,13 @@ describe('ChangeCategory', () => {
     expect(alert).toBeInTheDocument()
     expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('description')
+    expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveValue('Category 2')
+    expect(screen.getByRole('textbox', { name: 'form-labels.reason' })).toHaveValue(
+      'Because this is the right classification',
+    )
     expect(document.title).toBe('errors.reclassification-failed-heading - metadata.title')
   })
+
   it('submits the form when the submit button is clicked', async () => {
     const user = userEvent.setup()
 
