@@ -1,5 +1,7 @@
-import { minLength, required, SaveButton, SimpleForm, TextInput, Toolbar } from 'react-admin'
+import { minLength, required, SaveButton, TextInput, Toolbar } from 'react-admin'
 import { useFormContext } from 'react-hook-form'
+
+import { MeldingenSimpleForm } from '~/shared/simple-form/MeldingenSimpleForm'
 
 const MaxCharCountInputs = () => {
   const { getValues, setValue } = useFormContext()
@@ -28,7 +30,7 @@ export const PrimaryForm = () => {
   const validateLabel = [required(), minLength(3)]
 
   return (
-    <SimpleForm
+    <MeldingenSimpleForm
       toolbar={
         <Toolbar>
           <SaveButton />
@@ -43,6 +45,6 @@ export const PrimaryForm = () => {
       {/* Set JSONLogic error message */}
       <TextInput source="components[0].validate.json.if[2]" />
       <TextInput source="components[0].validate.required_error_message" />
-    </SimpleForm>
+    </MeldingenSimpleForm>
   )
 }
