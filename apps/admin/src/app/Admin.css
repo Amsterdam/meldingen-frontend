@@ -1,0 +1,36 @@
+/* Override default styles for the admin layout */
+#root .layout {
+  background-color: #fff;
+}
+
+#main-content.RaLayout-content {
+  background-color: #fff;
+}
+
+#main-content .MuiPaper-root {
+  box-shadow: none;
+}
+
+#main-content .MuiCardContent-root {
+  padding: 0; /* stylelint-disable-line */
+}
+
+/* Bottom toolbar overrides */
+#main-content .MuiToolbar-root {
+  @media screen and (min-width: 37.5rem) {
+    background-color: unset;
+    padding: 0; /* stylelint-disable-line */
+  }
+}
+
+#main-content .RaToolbar-defaultToolbar {
+  justify-content: flex-start;
+}
+
+#main-content .RaToolbar-defaultToolbar .MuiSvgIcon-root {
+  display: none;
+}
+
+#main-content .RaToolbar-defaultToolbar button {
+  font-weight: bold;
+}
