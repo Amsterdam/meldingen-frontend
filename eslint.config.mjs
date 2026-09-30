@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable perfectionist/sort-objects */
 
 import eslint from '@eslint/js'
@@ -160,6 +161,7 @@ export default defineConfig(
       'import/no-named-as-default': 'error',
 
       // ESLint
+      'max-lines': ['warn', { max: 150, skipBlankLines: true, skipComments: true }],
       'no-console': 'error',
       'no-unused-vars': 'off', // Handled by @typescript-eslint/no-unused-vars
       'prefer-arrow-functions/prefer-arrow-functions': [
@@ -191,14 +193,6 @@ export default defineConfig(
     files: ['**/*.d.ts'],
     rules: {
       '@typescript-eslint/consistent-type-definitions': 'off',
-    },
-  },
-
-  // TypeScript file size
-  {
-    files: ['**/*.{ts,tsx}'],
-    rules: {
-      'max-lines': ['warn', { max: 150, skipBlankLines: true, skipComments: true }],
     },
   },
 
