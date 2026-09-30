@@ -68,8 +68,7 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
     }
   }, [apiError])
 
-  const classificationValue =
-    (formData?.get('classificationQuery') as string | null) ?? meldingClassification?.name ?? ''
+  const classificationValue = (formData?.get('classificationQuery') as string | null) ?? meldingClassification?.name
   const classificationValidationErrorMessage = validationErrors?.find(
     (error) => error.key === 'classificationId',
   )?.message
