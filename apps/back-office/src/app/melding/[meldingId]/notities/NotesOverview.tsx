@@ -21,6 +21,8 @@ type Props = {
 export const NotesOverview = ({ currentUserId, meldingId, notes, publicId }: Props) => {
   const t = useTranslations('notes-overview')
 
+  const hasNotes = notes.length > 0
+
   return (
     <div className="ams-page__area--body">
       <BackLink href={`/`}>{t('back-link')}</BackLink>
@@ -34,18 +36,21 @@ export const NotesOverview = ({ currentUserId, meldingId, notes, publicId }: Pro
               <TabNavigation.Link href={`/melding/${meldingId}`} linkComponent={NextLink}>
                 {t('tab-navigation.detail')}
               </TabNavigation.Link>
+
               <TabNavigation.Link aria-current="page" href={`/melding/${meldingId}/notities`} linkComponent={NextLink}>
-                {t('tab-navigation.notes')}
+                {t('tab-navigation.notes')} {hasNotes && `(${notes.length})`}
               </TabNavigation.Link>
             </TabNavigation.List>
           </TabNavigation>
-          {notes.length > 0 && (
+
+          {hasNotes && (
             <UnorderedList className={styles.list} markers={false}>
               {notes.map((note) => (
                 <Note currentUserId={currentUserId} key={note.id} meldingId={meldingId} note={note} />
               ))}
             </UnorderedList>
           )}
+
           <StandaloneLink
             className="ams-mb-m"
             href={`/melding/${meldingId}/notities/toevoegen`}
