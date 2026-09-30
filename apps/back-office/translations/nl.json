@@ -307,6 +307,10 @@
     }
   },
   "shared": {
+    "error": {
+      "heading": "Er is iets misgegaan",
+      "retry-button": "Probeer het opnieuw"
+    },
     "document-title-error-count-prefix": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",
     "api-error-alert": {
       "heading": "Er is iets misgegaan",
