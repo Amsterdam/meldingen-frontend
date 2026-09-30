@@ -1,7 +1,248 @@
+/* eslint-disable perfectionist/sort-objects */
+
+import eslint from '@eslint/js'
+import json from '@eslint/json'
+import markdown from '@eslint/markdown'
+import pluginNext from '@next/eslint-plugin-next'
+import stylistic from '@stylistic/eslint-plugin'
+import tsPlugin from '@typescript-eslint/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
+import eslintConfigPrettier from 'eslint-config-prettier/flat'
+import importPlugin from 'eslint-plugin-import'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
+import perfectionist from 'eslint-plugin-perfectionist'
+import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
+import react from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
+import workspaces from 'eslint-plugin-workspaces'
 import { defineConfig } from 'eslint/config'
+import globals from 'globals'
 
-import { globalConfigs, scriptConfigs } from './eslint/common.mjs'
-import { fileTypeConfigs } from './eslint/file-types.mjs'
-import { frameworkConfigs } from './eslint/frameworks.mjs'
+const perfectionistImportGroups = {
+  customGroups: [
+    {
+      elementNamePattern: ['^~'],
+      groupName: 'type-parent',
+      selector: 'type',
+    },
+    {
+      elementNamePattern: ['^~'],
+      groupName: 'value-parent',
+    },
+    {
+      elementNamePattern: ['.css$'],
+      groupName: 'unknown',
+    },
+  ],
+  internalPattern: ['^@meldingen'],
+}
 
-export default defineConfig(...globalConfigs, ...scriptConfigs, ...fileTypeConfigs, ...frameworkConfigs)
+const perfectionistCustomGridPropsOrder = {
+  customGroups: [
+    {
+      groupName: 'narrow',
+      elementNamePattern: 'narrow',
+    },
+    {
+      groupName: 'medium',
+      elementNamePattern: 'medium',
+    },
+    {
+      groupName: 'wide',
+      elementNamePattern: 'wide',
+    },
+  ],
+  groups: ['narrow', 'medium', 'wide'],
+}
+
+export default defineConfig(
+  // Global
+  {
+    ignores: [
+      // Ignore generated files
+      '**/vendor/',
+      '**/build/',
+      '**/coverage/',
+      '**/dist/',
+      '**/tmp/',
+      // Ignore generated api client
+      'libs/api-client/src/generated',
+      // Next.js generated files
+      '**/.next/',
+      '**/next-env.d.ts',
+    ],
+  },
+  {
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.es6, ...globals.node, ...globals.vitest },
+    },
+  },
+
+  // JavaScript, TypeScript & React
+  {
+    files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+      '@stylistic': stylistic,
+      import: importPlugin,
+      'jsx-a11y': jsxA11y,
+      perfectionist,
+      'prefer-arrow-functions': preferArrowFunctions,
+      react,
+      'react-hooks': reactHooks,
+      workspaces,
+    },
+    settings: {
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx'],
+      },
+      'import/resolver': {
+        // This uses eslint-import-resolver-typescript
+        typescript: {},
+        node: {
+          extensions: ['js', 'jsx', 'ts', 'tsx'],
+        },
+      },
+      react: { version: 'detect' },
+    },
+    rules: {
+      ...eslint.configs.recommended.rules,
+      ...jsxA11y.configs.strict.rules,
+      ...perfectionist.configs['recommended-natural'].rules,
+      ...react.configs.recommended.rules,
+      ...tsPlugin.configs.recommended.rules,
+      ...workspaces.configs.recommended.rules,
+
+      // TypeScript
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      'no-shadow': 'off',
+      '@typescript-eslint/no-shadow': ['warn'],
+
+      // Stylistic
+      '@stylistic/padding-line-between-statements': [
+        'warn',
+        {
+          blankLine: 'always',
+          prev: '*',
+          next: ['block', 'block-like', 'return'],
+        },
+        {
+          blankLine: 'always',
+          prev: ['block', 'block-like'],
+          next: '*',
+        },
+        {
+          blankLine: 'always',
+          prev: ['const', 'let', 'var'],
+          next: '*',
+        },
+        {
+          blankLine: 'any',
+          prev: ['const', 'let', 'var'],
+          next: ['const', 'let', 'var'],
+        },
+      ],
+
+      // Import
+      'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+      'import/newline-after-import': 'error',
+      'import/no-cycle': 'error',
+      'import/no-default-export': 'error',
+      'import/no-named-as-default': 'error',
+
+      // ESLint
+      'no-console': 'error',
+      'no-unused-vars': 'off', // Handled by @typescript-eslint/no-unused-vars
+      'prefer-arrow-functions/prefer-arrow-functions': [
+        'error',
+        {
+          returnStyle: 'implicit',
+        },
+      ],
+
+      // Perfectionist
+      'perfectionist/sort-imports': ['error', perfectionistImportGroups],
+      'perfectionist/sort-modules': 'off', // This impacts readability in a negative way. We want to decide the order of modules ourselves.
+      'perfectionist/sort-objects': ['error', perfectionistCustomGridPropsOrder],
+      'perfectionist/sort-union-types': 'off', // This causes more issues than it solves
+
+      // React
+      'react/display-name': 'off',
+      'react/function-component-definition': 'off',
+      'react/jsx-props-no-spreading': 'off',
+      'react/react-in-jsx-scope': 'off',
+      'react/require-default-props': 'off',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/rules-of-hooks': 'error',
+    },
+  },
+
+  // Don't force using type over interface in .d.ts files
+  {
+    files: ['**/*.d.ts'],
+    rules: {
+      '@typescript-eslint/consistent-type-definitions': 'off',
+    },
+  },
+
+  // TypeScript file size
+  {
+    files: ['**/*.{ts,tsx}'],
+    rules: {
+      'max-lines': ['warn', { max: 150, skipBlankLines: true, skipComments: true }],
+    },
+  },
+
+  // Don't force named exports for non-React files
+  {
+    files: ['**/*.{js,ts,mjs,cjs}'],
+    rules: {
+      'import/no-default-export': 'off',
+    },
+  },
+
+  // JSON
+  {
+    files: ['**/*.json'],
+    language: 'json/json',
+    plugins: { json },
+    ...json.configs.recommended,
+  },
+
+  // Markdown
+  {
+    ...markdown.configs.recommended[0],
+    language: 'markdown/gfm',
+  },
+
+  // Next.js apps
+  {
+    files: ['apps/melding-form/**/*', 'apps/back-office/**/*'],
+    plugins: {
+      '@next/next': pluginNext,
+    },
+    rules: {
+      ...pluginNext.configs.recommended.rules,
+      ...pluginNext.configs['core-web-vitals'].rules,
+      '@next/next/no-html-link-for-pages': ['error', ['apps/melding-form/src', 'apps/back-office/src']],
+    },
+  },
+  {
+    files: ['**/error.tsx', '**/page.tsx', '**/layout.tsx', '**/not-found.tsx'],
+    rules: {
+      'import/no-default-export': 'off',
+    },
+  },
+
+  // Global Prettier config. Defined here to make sure no other rules override it.
+  eslintConfigPrettier,
+)
