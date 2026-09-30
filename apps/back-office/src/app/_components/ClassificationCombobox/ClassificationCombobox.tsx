@@ -88,6 +88,7 @@ export const ClassificationCombobox = ({
           as={TextInput}
           autoComplete="off"
           className={styles.comboboxInput}
+          id="classificationId"
           invalid={hasErrorMessage}
           name="classificationQuery"
           onChange={handleInputChange}
