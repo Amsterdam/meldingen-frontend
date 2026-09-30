@@ -2,23 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ClassificationCombobox } from './ClassificationCombobox'
-
-const classifications = [
-  {
-    created_at: '2024-01-01T00:00:00Z',
-    id: 2,
-    instructions: 'Instructions for Category 1',
-    name: 'Category 1',
-    updated_at: '2024-01-01T00:00:00Z',
-  },
-  {
-    created_at: '2024-01-01T00:00:00Z',
-    id: 3,
-    instructions: 'Instructions for Category 2',
-    name: 'Category 2',
-    updated_at: '2024-01-01T00:00:00Z',
-  },
-]
+import { classifications } from '~/mocks/data'
 
 const defaultProps = {
   classifications,
@@ -27,16 +11,16 @@ const defaultProps = {
   placeholder: 'Choose a category',
 }
 
-describe('ClassificationCombobox', () => {
-  const getHiddenInput = (container: HTMLElement) =>
-    container.querySelector('input[type="hidden"][name="classificationId"]')
+const getHiddenInput = (container: HTMLElement) =>
+  container.querySelector('input[type="hidden"][name="classificationId"]')
 
+describe('ClassificationCombobox', () => {
   it('renders the default classification name, instructions and submitted id', () => {
     const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue="Category 1" />)
 
     expect(screen.getByRole('combobox')).toHaveValue('Category 1')
     expect(screen.getByText('Instructions for Category 1')).toBeInTheDocument()
-    expect(getHiddenInput(container)).toHaveValue('2')
+    expect(getHiddenInput(container)).toHaveValue('1')
   })
 
   it('renders a default value that does not match a classification without selecting one', () => {
@@ -77,7 +61,7 @@ describe('ClassificationCombobox', () => {
 
     expect(combobox).toHaveValue('Category 2')
     expect(screen.getByText('Instructions for Category 2')).toBeInTheDocument()
-    expect(getHiddenInput(container)).toHaveValue('3')
+    expect(getHiddenInput(container)).toHaveValue('2')
   })
 
   it('marks the input as unselected when the user types a value without choosing an option', async () => {
@@ -100,7 +84,7 @@ describe('ClassificationCombobox', () => {
     await user.type(screen.getByRole('combobox'), 'Category 2')
 
     expect(screen.getByText('Instructions for Category 2')).toBeInTheDocument()
-    expect(getHiddenInput(container)).toHaveValue('3')
+    expect(getHiddenInput(container)).toHaveValue('2')
   })
 
   it('shows the no results message when no classifications match', async () => {
