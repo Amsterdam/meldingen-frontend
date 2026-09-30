@@ -110,6 +110,7 @@ describe('ChangeCategory', () => {
     const formData = new FormData()
 
     formData.set('classificationId', '3')
+    formData.set('classificationQuery', 'Category 2')
     formData.set('reason', 'Because this is the right classification')
 
     ;(useActionState as Mock).mockReturnValueOnce([

@@ -32,11 +32,18 @@ describe('ClassificationCombobox', () => {
     container.querySelector('input[type="hidden"][name="classificationId"]')
 
   it('renders the default classification name, instructions and submitted id', () => {
-    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue={2} />)
+    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue="Category 1" />)
 
     expect(screen.getByRole('combobox')).toHaveValue('Category 1')
     expect(screen.getByText('Instructions for Category 1')).toBeInTheDocument()
     expect(getHiddenInput(container)).toHaveValue('2')
+  })
+
+  it('renders a default value that does not match a classification without selecting one', () => {
+    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue="Unknown" />)
+
+    expect(screen.getByRole('combobox')).toHaveValue('Unknown')
+    expect(getHiddenInput(container)).toHaveValue('')
   })
 
   it('renders the placeholder when there is no default classification', () => {
@@ -57,7 +64,7 @@ describe('ClassificationCombobox', () => {
 
   it('filters classifications and selects a new one', async () => {
     const user = userEvent.setup()
-    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue={2} />)
+    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue="Category 1" />)
 
     const combobox = screen.getByRole('combobox')
 
@@ -75,7 +82,7 @@ describe('ClassificationCombobox', () => {
 
   it('marks the input as unselected when the user types a value without choosing an option', async () => {
     const user = userEvent.setup()
-    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue={2} />)
+    const { container } = render(<ClassificationCombobox {...defaultProps} defaultValue="Category 1" />)
 
     const combobox = screen.getByRole('combobox')
 

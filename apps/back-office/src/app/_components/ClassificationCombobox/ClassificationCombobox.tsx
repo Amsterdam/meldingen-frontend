@@ -23,28 +23,25 @@ import styles from './ClassificationCombobox.module.css'
 
 type Props = {
   classifications: ClassificationOutput[]
-  defaultValue?: number
+  defaultValue?: string
   errorMessage?: string
   label: string
   noResultsMessage: string
   placeholder?: string
 }
 
-const getClassificationById = (classifications: ClassificationOutput[], id?: number) =>
-  classifications.find((classification) => classification.id === id)
-
 const getClassificationByName = (classifications: ClassificationOutput[], name: string) =>
   classifications.find((classification) => classification.name === name)
 
 export const ClassificationCombobox = ({
   classifications,
-  defaultValue,
+  defaultValue = '',
   errorMessage,
   label,
   noResultsMessage,
   placeholder,
 }: Props) => {
-  const [value, setValue] = useState(getClassificationById(classifications, defaultValue)?.name ?? '')
+  const [value, setValue] = useState(defaultValue)
 
   // The input value is the source of truth, so typing an exact name counts as a selection too
   const selectedClassification = getClassificationByName(classifications, value)

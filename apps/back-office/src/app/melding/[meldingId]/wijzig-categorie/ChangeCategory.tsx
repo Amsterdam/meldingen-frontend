@@ -69,8 +69,7 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
   }, [apiError])
 
   const classificationValue =
-    (formData?.get('classificationId') as string | null) ??
-    (meldingClassification?.id ? String(meldingClassification.id) : '')
+    (formData?.get('classificationQuery') as string | null) ?? meldingClassification?.name ?? ''
   const classificationValidationErrorMessage = validationErrors?.find(
     (error) => error.key === 'classificationId',
   )?.message
@@ -96,7 +95,7 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
           <Form action={formAction} className={styles.formPanel} noValidate>
             <ClassificationCombobox
               classifications={classifications}
-              defaultValue={classificationValue ? Number(classificationValue) : undefined}
+              defaultValue={classificationValue}
               errorMessage={classificationValidationErrorMessage}
               label={t('form-labels.classification')}
               noResultsMessage={t('no-results')}
