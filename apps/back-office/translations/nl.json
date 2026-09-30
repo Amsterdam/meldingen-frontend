@@ -265,7 +265,8 @@
     "edited": "(gewijzigd)",
     "deleted-note": "Deze notitie is verwijderd.",
     "edit-link": "Wijzig notitie",
-    "add-note-link": "Notitie toevoegen"
+    "add-note-link": "Voeg notitie toe",
+    "classification": "Categorie"
   },
   "add-note": {
     "metadata": {
