@@ -2,7 +2,7 @@
 
 import type { ChangeEvent } from 'react'
 
-import { ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
+import { ErrorMessage, Field, Label, Paragraph } from '@amsterdam/design-system-react'
 import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
 import {
   Combobox,
@@ -118,7 +118,9 @@ export const ClassificationCombobox = ({
         </ComboboxOptions>
       </Combobox>
       {selectedClassification?.instructions && (
-        <Description className={styles.instructions}>{selectedClassification.instructions}</Description>
+        <Description as={Paragraph} className={styles.instructions}>
+          {selectedClassification.instructions}
+        </Description>
       )}
     </HUIField>
   )
