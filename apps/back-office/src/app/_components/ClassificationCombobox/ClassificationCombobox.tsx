@@ -80,7 +80,9 @@ export const ClassificationCombobox = ({
 
   return (
     <HUIField as={Field} className="ams-mb-m" invalid={hasErrorMessage}>
-      <HUILabel as={Label}>{label}</HUILabel>
+      <HUILabel as={Label} htmlFor="classificationId">
+        {label}
+      </HUILabel>
       {hasErrorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification ?? null}>
         <input name="classificationId" type="hidden" value={selectedClassification?.id ?? ''} />
