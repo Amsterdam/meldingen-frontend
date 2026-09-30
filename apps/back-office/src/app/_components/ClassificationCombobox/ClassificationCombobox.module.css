@@ -6,6 +6,12 @@
   padding-inline-end: calc(2 * var(--ams-inputs-padding-inline) + 1em);
 }
 
+.comboboxOptions {
+  /* stylelint-disable-next-line csstools/value-no-unknown-custom-properties */
+  inline-size: var(--input-width); /* Defined by Headless UI */
+  overflow-y: auto;
+}
+
 .instructions {
   margin-block-start: var(--ams-space-s);
 }

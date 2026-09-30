@@ -50,9 +50,8 @@ export const ClassificationCombobox = ({
   const { floatingStyles, refs } = useFloating({
     middleware: [
       size({
-        apply: ({ availableHeight, elements, rects }) => {
+        apply: ({ availableHeight, elements }) => {
           elements.floating.style.maxHeight = `${Math.max(0, availableHeight - 16)}px`
-          elements.floating.style.width = `${rects.reference.width}px`
         },
       }),
     ],
