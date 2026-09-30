@@ -33,6 +33,9 @@ type Props = {
 const getClassificationById = (classifications: ClassificationOutput[], id?: number) =>
   classifications.find((classification) => classification.id === id)
 
+const getClassificationByName = (classifications: ClassificationOutput[], name: string) =>
+  classifications.find((classification) => classification.name === name)
+
 export const ClassificationCombobox = ({
   classifications,
   defaultValue,
@@ -41,11 +44,11 @@ export const ClassificationCombobox = ({
   noResultsMessage,
   placeholder,
 }: Props) => {
-  const [selectedClassificationId, setSelectedClassificationId] = useState(defaultValue)
-  const selectedClassification = getClassificationById(classifications, selectedClassificationId)
-  const [value, setValue] = useState(selectedClassification?.name ?? '')
+  const [value, setValue] = useState(getClassificationById(classifications, defaultValue)?.name ?? '')
+
+  // The input value is the source of truth, so typing an exact name counts as a selection too
+  const selectedClassification = getClassificationByName(classifications, value)
   const hasErrorMessage = Boolean(errorMessage)
-  const isValidClassificationName = value === (selectedClassification?.name ?? '')
 
   const { floatingStyles, refs } = useFloating({
     middleware: [
@@ -68,7 +71,6 @@ export const ClassificationCombobox = ({
   const handleChange = (classification: ClassificationOutput | null) => {
     if (!classification) return
 
-    setSelectedClassificationId(classification.id)
     setValue(classification.name)
   }
 
@@ -80,12 +82,8 @@ export const ClassificationCombobox = ({
     <HUIField as={Field} className="ams-mb-m" invalid={hasErrorMessage}>
       <HUILabel as={Label}>{label}</HUILabel>
       {hasErrorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
-      <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification}>
-        <input
-          name="classificationId"
-          type="hidden"
-          value={isValidClassificationName ? selectedClassificationId : ''}
-        />
+      <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification ?? null}>
+        <input name="classificationId" type="hidden" value={selectedClassification?.id ?? ''} />
         <ComboboxInput
           as={TextInput}
           autoComplete="off"
@@ -116,7 +114,7 @@ export const ClassificationCombobox = ({
           )}
         </ComboboxOptions>
       </Combobox>
-      {isValidClassificationName && selectedClassification?.instructions && (
+      {selectedClassification?.instructions && (
         <Description className={styles.instructions}>{selectedClassification.instructions}</Description>
       )}
     </HUIField>

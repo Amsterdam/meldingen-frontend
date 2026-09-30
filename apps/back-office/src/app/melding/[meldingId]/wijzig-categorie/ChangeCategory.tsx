@@ -96,7 +96,7 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
           <Form action={formAction} className={styles.formPanel} noValidate>
             <ClassificationCombobox
               classifications={classifications}
-              defaultValue={Number(classificationValue)}
+              defaultValue={classificationValue ? Number(classificationValue) : undefined}
               errorMessage={classificationValidationErrorMessage}
               label={t('form-labels.classification')}
               noResultsMessage={t('no-results')}

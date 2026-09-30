@@ -86,6 +86,16 @@ describe('ClassificationCombobox', () => {
     expect(getHiddenInput(container)).toHaveValue('')
   })
 
+  it('selects a classification when the user types its exact name without choosing an option', async () => {
+    const user = userEvent.setup()
+    const { container } = render(<ClassificationCombobox {...defaultProps} />)
+
+    await user.type(screen.getByRole('combobox'), 'Category 2')
+
+    expect(screen.getByText('Instructions for Category 2')).toBeInTheDocument()
+    expect(getHiddenInput(container)).toHaveValue('3')
+  })
+
   it('shows the no results message when no classifications match', async () => {
     const user = userEvent.setup()
 
