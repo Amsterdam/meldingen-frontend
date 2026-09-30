@@ -116,7 +116,7 @@ export const ClassificationCombobox = ({
           )}
         </ComboboxOptions>
       </Combobox>
-      {selectedClassification?.instructions && (
+      {isValidClassificationName && selectedClassification?.instructions && (
         <Description className={styles.instructions}>{selectedClassification.instructions}</Description>
       )}
     </HUIField>
