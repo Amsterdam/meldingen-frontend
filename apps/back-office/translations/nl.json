@@ -190,12 +190,14 @@
     "title": "Wijzig categorie melding {publicId}",
     "submit-button": "Wijzig categorie",
     "cancel-link": "Annuleer",
-    "option-placeholder": "Kies categorie",
+    "search-placeholder": "--Kies categorie--",
+    "no-results": "Geen categorie gevonden",
     "errors": {
       "reclassification-failed-heading": "De categorie kan niet worden gewijzigd",
       "reclassification-failed-description": "Het kan zijn dat de status al is aangepast door een andere behandelaar.",
       "classification-required": "Vul een categorie in.",
       "classification-same": "Wijzig de categorie.",
+      "classification-does-not-exist": "Deze categorie bestaat niet. Kies een categorie uit de lijst.",
       "reason-required": "Vul een toelichting in.",
       "reason-max-length": "Toelichting moet {max} tekens of minder zijn."
     },
@@ -263,7 +265,8 @@
     "edited": "(gewijzigd)",
     "deleted-note": "Deze notitie is verwijderd.",
     "edit-link": "Wijzig notitie",
-    "add-note-link": "Notitie toevoegen"
+    "add-note-link": "Voeg notitie toe",
+    "classification": "Categorie"
   },
   "add-note": {
     "metadata": {

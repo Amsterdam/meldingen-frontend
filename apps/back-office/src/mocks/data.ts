@@ -87,12 +87,14 @@ export const classifications: ClassificationOutput[] = [
   {
     created_at: '2024-01-01T00:00:00Z',
     id: 1,
-    name: 'Test classification',
+    instructions: 'Instructions for Category 1',
+    name: 'Category 1',
     updated_at: '2024-01-01T00:00:00Z',
   },
   {
     created_at: '2024-01-01T00:00:00Z',
     id: 2,
+    instructions: 'Instructions for Category 2',
     name: 'Category 2',
     updated_at: '2024-01-01T00:00:00Z',
   },
