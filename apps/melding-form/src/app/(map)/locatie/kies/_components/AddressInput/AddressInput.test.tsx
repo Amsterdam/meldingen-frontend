@@ -5,6 +5,7 @@ import { http, HttpResponse } from 'msw'
 import type { Props } from './AddressInput'
 
 import { AddressInput } from './AddressInput'
+import { PDOKReverse } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -114,6 +115,32 @@ describe('AddressInput', () => {
     const input = screen.getByRole('combobox', { name: 'label' })
 
     expect(input).toHaveValue('')
+  })
+
+  it('does not show the address of a request that resolves after the coordinates are cleared', async () => {
+    let resolveRequest = () => {}
+    const requestCanResolve = new Promise<void>((resolve) => {
+      resolveRequest = resolve
+    })
+
+    server.use(
+      http.get(ENDPOINTS.PDOK_REVERSE, async () => {
+        await requestCanResolve
+
+        return HttpResponse.json(PDOKReverse)
+      }),
+    )
+
+    const { rerender } = render(<AddressInput {...defaultProps} coordinates={coordinates} />)
+
+    rerender(<AddressInput {...defaultProps} />)
+
+    resolveRequest()
+
+    // Give a late response the chance to update the input
+    await new Promise((resolve) => setTimeout(resolve, 50))
+
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('')
   })
 
   it('shows all options returned by the API', async () => {

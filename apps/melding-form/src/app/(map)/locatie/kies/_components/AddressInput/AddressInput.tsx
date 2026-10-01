@@ -55,11 +55,18 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
   })
 
   useEffect(() => {
-    if (coordinates) {
-      fetchAndSetAddress({ coordinates, setAddress, t })
-    } else {
+    if (!coordinates) {
       setAddress('')
+
+      return
     }
+
+    // Abort the request when coordinates change or are cleared, so a late response cannot overwrite the address
+    const controller = new AbortController()
+
+    fetchAndSetAddress({ coordinates, setAddress, signal: controller.signal, t })
+
+    return () => controller.abort()
   }, [coordinates, t])
 
   useEffect(() => {
