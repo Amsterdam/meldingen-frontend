@@ -1,22 +1,15 @@
-import {
-  DeleteWithConfirmButton,
-  required,
-  SaveButton,
-  SimpleForm,
-  TextInput,
-  Toolbar,
-  ToolbarClasses,
-} from 'react-admin'
+import { DeleteWithConfirmButton, required, SaveButton, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
 
 import { BuilderInput } from './BuilderInput'
 import { ClassificationInput } from './ClassificationInput'
+import { MeldingenSimpleForm } from '~/shared/simple-form/MeldingenSimpleForm'
 
 type CreateEditFormProps = {
   isEditForm?: boolean
 }
 
 export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => (
-  <SimpleForm
+  <MeldingenSimpleForm
     toolbar={
       <Toolbar>
         <div className={ToolbarClasses.defaultToolbar}>
@@ -30,5 +23,5 @@ export const CreateEditForm = ({ isEditForm = false }: CreateEditFormProps) => (
     <TextInput defaultValue="wizard" hidden source="display" />
     <ClassificationInput />
     <BuilderInput />
-  </SimpleForm>
+  </MeldingenSimpleForm>
 )

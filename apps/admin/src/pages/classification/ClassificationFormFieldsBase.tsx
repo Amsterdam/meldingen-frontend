@@ -1,4 +1,4 @@
-import { maxValue, required } from 'ra-core'
+import { maxLength, required } from 'ra-core'
 import { NumberInput, ReferenceInput, SelectInput, TextInput, useTranslate } from 'react-admin'
 
 import styles from './ClassificationForm.module.css'
@@ -27,7 +27,7 @@ export const ClassificationFormFieldsBase = () => {
         minRows={3}
         multiline
         source="instructions"
-        validate={[required(), maxValue(SERVICE_LEVEL_OBJECTIVE_TEXT_MAX_LENGTH)]}
+        validate={[required(), maxLength(SERVICE_LEVEL_OBJECTIVE_TEXT_MAX_LENGTH)]}
       />
       <div className={styles['days-and-type-input-wrapper']}>
         <NumberInput

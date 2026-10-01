@@ -1,4 +1,4 @@
-import { Edit, minLength, required, SaveButton, SimpleForm, TextInput, Toolbar, useEditContext } from 'react-admin'
+import { Edit, minLength, required, SaveButton, TextInput, Toolbar, useEditContext } from 'react-admin'
 import filter from 'uber-json-schema-filter'
 
 import { FormTextAreaComponentInputSchema } from '@meldingen/api-client'
@@ -7,6 +7,7 @@ import type { AdditionalQuestionsForm } from '../types'
 
 import { ContactForm } from './ContactForm'
 import { PrimaryForm } from './PrimaryForm'
+import { MeldingenSimpleForm } from '~/shared/simple-form/MeldingenSimpleForm'
 
 const Form = () => {
   const { record } = useEditContext()
@@ -14,6 +15,7 @@ const Form = () => {
   if (record.type === 'primary') {
     return <PrimaryForm />
   }
+
   if (record.type === 'contact') {
     return <ContactForm />
   }
@@ -21,7 +23,7 @@ const Form = () => {
   const validateLabel = [required(), minLength(3)]
 
   return (
-    <SimpleForm
+    <MeldingenSimpleForm
       toolbar={
         <Toolbar>
           <SaveButton />
@@ -31,7 +33,7 @@ const Form = () => {
       <TextInput readOnly source="title" />
       <TextInput source="components[0].label" validate={validateLabel} />
       <TextInput multiline parse={(value) => value ?? ''} source="components[0].description" />
-    </SimpleForm>
+    </MeldingenSimpleForm>
   )
 }
 

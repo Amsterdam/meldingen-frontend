@@ -1,15 +1,16 @@
 import { render, screen } from '@testing-library/react'
-import { AdminContext, ResourceContextProvider, SimpleForm } from 'react-admin'
+import { AdminContext, ResourceContextProvider } from 'react-admin'
 
 import { AssetTypeFields } from './AssetTypeFields'
+import { MeldingenSimpleForm } from '~/shared/simple-form/MeldingenSimpleForm'
 
 const renderFields = (record?: Record<string, unknown>) =>
   render(
     <AdminContext>
       <ResourceContextProvider value="asset-type">
-        <SimpleForm record={record}>
+        <MeldingenSimpleForm record={record}>
           <AssetTypeFields />
-        </SimpleForm>
+        </MeldingenSimpleForm>
       </ResourceContextProvider>
     </AdminContext>,
   )
