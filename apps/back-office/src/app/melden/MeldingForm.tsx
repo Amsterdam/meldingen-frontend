@@ -18,9 +18,9 @@ import type { MeldingData } from './types'
 import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from '../_utils/useDocumentTitleOnError'
-import { LabelsField, NoteField, PrimaryField, SourceField, UrgencyField } from './_components'
+import { ClassificationField, LabelsField, NoteField, PrimaryField, SourceField, UrgencyField } from './_components'
 import { postMeldingForm } from './actions'
-import { ApiErrorAlert, ClassificationCombobox, InvalidFormAlert } from '~/app/_components'
+import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 
 import styles from './MeldingForm.module.css'
 
@@ -76,7 +76,7 @@ export const MeldingForm = ({
     requiredErrorMessage,
   })
 
-  const [_, startPrefetchingTransition] = useTransition()
+  const [isPrefetching, startPrefetchingTransition] = useTransition()
 
   const [{ apiError, formData, validationErrors }, formAction, isPending] = useActionState(
     postMeldingFormAction,
@@ -117,9 +117,11 @@ export const MeldingForm = ({
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
         {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
+
         <Heading className="ams-mb-m ams-visually-hidden" level={1}>
           {t('visually-hidden-title')}
         </Heading>
+
         <Form action={formAction} noValidate>
           <Column>
             <PrimaryField
@@ -140,16 +142,17 @@ export const MeldingForm = ({
               <input name="prefetchedMelding" type="hidden" value={JSON.stringify(prefetchedMelding)} />
             )}
 
-            <ClassificationCombobox
+            <ClassificationField
               classifications={classifications}
               derivedClassification={prefetchedMelding?.classificationName}
-              label={t('classification.label')}
-              noResultsMessage={t('classification.no-results')}
+              isDisabled={isPrefetching}
             />
+
             <SourceField defaultValue={sourceDefaultValue} errorMessage={sourceErrorMessage} sources={sources} />
             <UrgencyField defaultValue={urgencyDefaultValue} />
             <LabelsField defaultValues={labelsDefaultValues} labels={labels} />
             <NoteField defaultValue={noteDefaultValue} errorMessage={noteErrorMessage} />
+
             <Button className={styles.submit} type="submit">
               {t('submit-button')}
             </Button>
