@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import type { NoteRetrieveOutput } from '@meldingen/api-client'
+import type { ClassificationOutput, NoteRetrieveOutput } from '@meldingen/api-client'
 
 import { Note } from './Note'
 
@@ -13,6 +13,13 @@ const mockNote = {
     email: 'test@example.com',
   },
 } as NoteRetrieveOutput
+
+const mockClassification = {
+  created_at: '2024-01-01T00:00:00Z',
+  id: 2,
+  name: 'Category 2',
+  updated_at: '2024-01-01T00:00:00Z',
+} as ClassificationOutput
 
 describe('Note', () => {
   it('renders the note', () => {
@@ -71,5 +78,12 @@ describe('Note', () => {
 
     expect(visualOnlyEditedText).toBeInTheDocument()
     expect(visuallyHiddenEditedText).toBeInTheDocument()
+  })
+
+  it('shows the note classification when available', () => {
+    render(<Note classification={mockClassification} currentUserId={1} meldingId={123} note={mockNote} />)
+
+    expect(screen.getByText('classification')).toBeInTheDocument()
+    expect(screen.getByText('Category 2')).toBeInTheDocument()
   })
 })

@@ -14,8 +14,6 @@ import {
 import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from 'react'
 
-import type { Feature } from '@meldingen/api-client'
-
 import { ListBox, TextInput } from '@meldingen/ui'
 
 import type { PDOKItem } from './types'
@@ -31,11 +29,10 @@ import styles from './AddressInput.module.css'
 export type Props = {
   coordinates?: Coordinates
   errorMessage?: string
-  setCoordinates: (coordinates?: Coordinates) => void
-  setSelectedAssets: (selectedAssets: Feature[]) => void
+  onAddressSelect: (coordinates: Coordinates) => void
 }
 
-export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSelectedAssets }: Props) => {
+export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Props) => {
   const [address, setAddress] = useState('')
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
   const [query, setQuery] = useState('')
@@ -73,13 +70,9 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
     if (typeof value === 'string' || value === null) {
       setQuery(value ?? '')
     } else {
-      const coordinates = convertWktPointToCoordinates(value.centroide_ll)
+      const addressCoordinates = convertWktPointToCoordinates(value.centroide_ll)
 
-      if (coordinates) {
-        // Clear selected assets when selecting a new address
-        setSelectedAssets([])
-        setCoordinates(coordinates)
-      }
+      if (addressCoordinates) onAddressSelect(addressCoordinates)
 
       setAddress(value.weergavenaam)
     }
@@ -122,7 +115,13 @@ export const AddressInput = ({ coordinates, errorMessage, setCoordinates, setSel
         ref={refs.setReference}
         value={query}
       >
-        <ComboboxInput as={TextInput} autoComplete="off" name="address" onChange={handleInputChange} />
+        <ComboboxInput
+          aria-required="true"
+          as={TextInput}
+          autoComplete="off"
+          name="address"
+          onChange={handleInputChange}
+        />
         {showListBox && (
           <ComboboxOptions
             as={ListBox}

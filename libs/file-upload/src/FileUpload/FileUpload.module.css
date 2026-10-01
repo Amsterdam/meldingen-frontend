@@ -26,6 +26,7 @@
 }
 
 .button {
+  min-inline-size: fit-content;
   text-align: center;
   width: 100%;
 

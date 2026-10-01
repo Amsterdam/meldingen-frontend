@@ -18,8 +18,7 @@ vi.stubGlobal(
 )
 
 const defaultProps: Props = {
-  setCoordinates: vi.fn(),
-  setSelectedAssets: vi.fn(),
+  onAddressSelect: vi.fn(),
 }
 
 const coordinates = { lat: 52.37239126063553, lng: 4.900905743712159 }
@@ -101,7 +100,6 @@ describe('AddressInput', () => {
     const coordinatesInput = container.querySelector('input[name="coordinates"]')
 
     expect(coordinatesInput).toHaveValue('')
-    expect(defaultProps.setCoordinates).not.toHaveBeenCalled()
   })
 
   it('clears the address when the coordinates are cleared', async () => {

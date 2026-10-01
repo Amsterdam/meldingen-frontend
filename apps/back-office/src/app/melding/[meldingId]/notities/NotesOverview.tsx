@@ -1,10 +1,9 @@
-import { StandaloneLink } from '@amsterdam/design-system-react/dist/StandaloneLink'
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 
-import type { NoteRetrieveOutput } from '@meldingen/api-client'
+import type { ClassificationOutput, NoteRetrieveOutput } from '@meldingen/api-client'
 
-import { Grid, Heading, TabNavigation, UnorderedList } from '@meldingen/ui'
+import { Grid, Heading, StandaloneLink, TabNavigation, UnorderedList } from '@meldingen/ui'
 
 import { BackLink } from '../_components/BackLink'
 import { Note } from './_components/Note/Note'
@@ -12,14 +11,19 @@ import { Note } from './_components/Note/Note'
 import styles from './NotesOverview.module.css'
 
 type Props = {
+  classifications?: ClassificationOutput[]
   currentUserId: number
   meldingId: number
   notes: NoteRetrieveOutput[]
   publicId: string
 }
 
-export const NotesOverview = ({ currentUserId, meldingId, notes, publicId }: Props) => {
+export const NotesOverview = ({ classifications, currentUserId, meldingId, notes, publicId }: Props) => {
   const t = useTranslations('notes-overview')
+  const getClassification = (classificationId: NoteRetrieveOutput['classification_id']) =>
+    classifications?.find((classification) => classification.id === classificationId)
+
+  const hasNotes = notes.length > 0
 
   return (
     <div className="ams-page__area--body">
@@ -34,18 +38,12 @@ export const NotesOverview = ({ currentUserId, meldingId, notes, publicId }: Pro
               <TabNavigation.Link href={`/melding/${meldingId}`} linkComponent={NextLink}>
                 {t('tab-navigation.detail')}
               </TabNavigation.Link>
+
               <TabNavigation.Link aria-current="page" href={`/melding/${meldingId}/notities`} linkComponent={NextLink}>
-                {t('tab-navigation.notes')}
+                {t('tab-navigation.notes')} {hasNotes && `(${notes.length})`}
               </TabNavigation.Link>
             </TabNavigation.List>
           </TabNavigation>
-          {notes.length > 0 && (
-            <UnorderedList className={styles.list} markers={false}>
-              {notes.map((note) => (
-                <Note currentUserId={currentUserId} key={note.id} meldingId={meldingId} note={note} />
-              ))}
-            </UnorderedList>
-          )}
           <StandaloneLink
             className="ams-mb-m"
             href={`/melding/${meldingId}/notities/toevoegen`}
@@ -53,6 +51,19 @@ export const NotesOverview = ({ currentUserId, meldingId, notes, publicId }: Pro
           >
             {t('add-note-link')}
           </StandaloneLink>
+          {hasNotes && (
+            <UnorderedList className={styles.list} markers={false}>
+              {notes.map((note) => (
+                <Note
+                  classification={getClassification(note.classification_id)}
+                  currentUserId={currentUserId}
+                  key={note.id}
+                  meldingId={meldingId}
+                  note={note}
+                />
+              ))}
+            </UnorderedList>
+          )}
         </Grid.Cell>
       </Grid>
     </div>

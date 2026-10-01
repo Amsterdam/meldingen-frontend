@@ -15,6 +15,7 @@ import type { Coordinates } from '~/types'
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
 import { getAssetLabelText, getAssetSubType } from '~/app/(general)/_utils'
+import { ASSET_FALLBACK_SRC } from '~/constants'
 
 import styles from './SelectLocation.module.css'
 
@@ -80,12 +81,13 @@ export const SelectLocation = ({
   const { assetTypeId, classification, filter, srsName, typeNames } = assetConfig.wfsQuery
   const hasValidWfsQuery = Boolean(classification && assetTypeId && typeNames && filter && srsName)
 
-  const setCoordinatesAndAssetLoading = (newCoordinates?: Coordinates) => {
+  const handleLocationSelect = (newCoordinates?: Coordinates) => {
     if (newCoordinates && hasValidWfsQuery) setIsAssetListLoading(true)
+    setSelectedAssets([])
     setCoordinates(newCoordinates)
   }
 
-  const handleFeaturesChange = (features: Feature[]) => {
+  const handleAssetListChange = (features: Feature[]) => {
     setAssetList(features)
     setIsAssetListLoading(false)
   }
@@ -130,8 +132,7 @@ export const SelectLocation = ({
           <AddressInput
             coordinates={coordinates}
             errorMessage={error?.message}
-            setCoordinates={setCoordinatesAndAssetLoading}
-            setSelectedAssets={setSelectedAssets}
+            onAddressSelect={handleLocationSelect}
           />
           <input name="selectedAssetsValue" type="hidden" value={selectedAssetsValue} />
         </Form>
@@ -165,17 +166,15 @@ export const SelectLocation = ({
           <PointSelectLayer
             // If there are selected assets, do not add a point marker
             hideSelectedPoint={selectedAssets.length > 0}
-            onSelectedPointChange={(selectedPoint) => {
-              setSelectedAssets([])
-              setCoordinatesAndAssetLoading(selectedPoint)
-            }}
+            onSelectedPointChange={handleLocationSelect}
             selectedPoint={coordinates}
           />
           <MarkerSelectLayer
+            fallbackIconSrc={ASSET_FALLBACK_SRC}
             features={assetList}
             iconConfig={assetConfig.icon}
             maxMarkers={assetConfig.maxCount}
-            onFeaturesChange={handleFeaturesChange}
+            onFeaturesChange={handleAssetListChange}
             onMaxMarkersReached={(maxReached) => setNotificationType(maxReached ? 'too-many-assets' : null)}
             onSelectedMarkersChange={setSelectedAssets}
             selectedMarkers={selectedAssets}
@@ -185,7 +184,7 @@ export const SelectLocation = ({
           <Controls
             onCurrentLocationError={() => setNotificationType('location-service-disabled')}
             texts={controlsTexts}
-            updateSelectedPoint={setCoordinatesAndAssetLoading}
+            updateSelectedPoint={handleLocationSelect}
           >
             {notificationType && (
               <Notification
