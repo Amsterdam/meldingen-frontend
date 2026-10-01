@@ -7,9 +7,13 @@ import { useActionState } from 'react'
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { MeldingForm } from './MeldingForm'
+import { classifications } from '~/mocks/data'
+
+const getSourceSelect = () => screen.getByLabelText('label', { selector: 'select' })
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
+
   return {
     ...(typeof actual === 'object' ? actual : {}),
     useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
@@ -17,6 +21,7 @@ vi.mock('react', async (importOriginal) => {
 })
 
 const defaultProps = {
+  classifications,
   labels: [
     { created_at: '2024-01-01', id: 1, name: 'Label 1', updated_at: '2024-01-01' },
     { created_at: '2024-01-02', id: 2, name: 'Label 2', updated_at: '2024-01-02' },
@@ -87,6 +92,7 @@ describe('MeldingForm', () => {
 
   it('prefills the text area from formData when the action returns formData', () => {
     const formData = new FormData()
+
     formData.set('primary', 'Prefilled text')
     ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
@@ -122,35 +128,37 @@ describe('MeldingForm', () => {
 
     render(<MeldingForm {...defaultProps} />)
 
-    const input = screen.getByRole('combobox', { name: 'label' })
+    const input = getSourceSelect()
 
     expect(input).toHaveAccessibleDescription('Invoerfout:Source field error')
   })
 
   it('prefills the source select input from formData when the action returns formData', () => {
     const formData = new FormData()
+
     formData.set('source', '2')
     ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
     render(<MeldingForm {...defaultProps} />)
 
-    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('2')
+    expect(getSourceSelect()).toHaveValue('2')
   })
 
   it('prefills the source select input from defaultValues when provided and there is no formData', () => {
     render(<MeldingForm {...defaultProps} defaultValues={{ source: '1' }} />)
 
-    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('1')
+    expect(getSourceSelect()).toHaveValue('1')
   })
 
   it('falls back to an empty source select input when there is no formData and no defaultValues', () => {
     render(<MeldingForm {...defaultProps} />)
 
-    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('')
+    expect(getSourceSelect()).toHaveValue('')
   })
 
   it('prefills urgency from formData when the action returns formData', () => {
     const formData = new FormData()
+
     formData.set('urgency', '1')
     ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
@@ -173,6 +181,7 @@ describe('MeldingForm', () => {
 
   it('prefills labels from formData when the action returns formData', () => {
     const formData = new FormData()
+
     formData.append('labels', '1')
     formData.append('labels', '2')
     ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
@@ -195,6 +204,7 @@ describe('MeldingForm', () => {
 
   it('prefills note from formData when the action returns formData', async () => {
     const formData = new FormData()
+
     formData.set('addNote', 'Prefilled note')
     ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
 
@@ -236,6 +246,7 @@ describe('MeldingForm', () => {
   it('submits the form when the submit button is clicked', async () => {
     const user = userEvent.setup()
     const mockFormAction = vi.fn()
+
     ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<MeldingForm {...defaultProps} />)

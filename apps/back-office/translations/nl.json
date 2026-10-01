@@ -34,6 +34,10 @@
       "default": "--Kies een bron--",
       "error": "Vul in wat de bron van de melding is."
     },
+    "classification": {
+      "label": "Wat is de categorie van de melding?",
+      "no-results": "Geen categorie gevonden"
+    },
     "urgency-label": "Wat is de urgentie?",
     "labels-label": "Wat is het label?",
     "note": {

@@ -3,9 +3,14 @@
 import { Button, Grid, Heading } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect, useState, useTransition } from 'react'
 
-import type { LabelOutput, SourceOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+import type {
+  ClassificationOutput,
+  LabelOutput,
+  SourceOutput,
+  StaticFormTextAreaComponentOutput,
+} from '@meldingen/api-client'
 
 import { Column, Paragraph } from '@meldingen/ui'
 
@@ -13,13 +18,14 @@ import type { MeldingData } from './types'
 import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from '../_utils/useDocumentTitleOnError'
-import { LabelsField, NoteField, PrimaryField, SourceField, UrgencyField } from './_components'
+import { ClassificationField, LabelsField, NoteField, PrimaryField, SourceField, UrgencyField } from './_components'
 import { postMeldingForm } from './actions'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 
 import styles from './MeldingForm.module.css'
 
 type Props = {
+  classifications: ClassificationOutput[]
   defaultValues?: { labels?: number[]; note?: string; primary?: string; source?: string; urgency?: number }
   existingId?: number
   existingMelding?: MeldingData
@@ -48,6 +54,7 @@ const calculateDefaultValues = (formData?: FormData, defaultValues?: Props['defa
 const initialState: FormState = {}
 
 export const MeldingForm = ({
+  classifications,
   defaultValues,
   existingId,
   existingMelding,
@@ -61,14 +68,20 @@ export const MeldingForm = ({
 
   const requiredErrorMessage =
     primaryTextArea.validate?.required_error_message ?? t('errors.required-error-message-fallback')
-  const action = postMeldingForm.bind(null, {
+
+  const postMeldingFormAction = postMeldingForm.bind(null, {
     existingId,
     existingNoteId,
     existingToken,
     requiredErrorMessage,
   })
 
-  const [{ apiError, formData, validationErrors }, formAction, isPending] = useActionState(action, initialState)
+  const [isPrefetching, startPrefetchingTransition] = useTransition()
+
+  const [{ apiError, formData, validationErrors }, formAction, isPending] = useActionState(
+    postMeldingFormAction,
+    initialState,
+  )
   const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
   const { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } =
@@ -104,9 +117,11 @@ export const MeldingForm = ({
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
         {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
+
         <Heading className="ams-mb-m ams-visually-hidden" level={1}>
           {t('visually-hidden-title')}
         </Heading>
+
         <Form action={formAction} noValidate>
           <Column>
             <PrimaryField
@@ -116,17 +131,28 @@ export const MeldingForm = ({
               existingId={prefetchedMelding?.id ?? existingId}
               existingToken={prefetchedMelding?.token ?? existingToken}
               onMeldingPrefetched={setPrefetchedMelding}
+              startPrefetchingTransition={startPrefetchingTransition}
             />
+
             {prefetchedMelding?.classificationName && (
               <Paragraph>De categorie van de melding is: {prefetchedMelding.classificationName}</Paragraph>
             )}
+
             {prefetchedMelding && (
               <input name="prefetchedMelding" type="hidden" value={JSON.stringify(prefetchedMelding)} />
             )}
+
+            <ClassificationField
+              classifications={classifications}
+              derivedClassification={prefetchedMelding?.classificationName}
+              isDisabled={isPrefetching}
+            />
+
             <SourceField defaultValue={sourceDefaultValue} errorMessage={sourceErrorMessage} sources={sources} />
             <UrgencyField defaultValue={urgencyDefaultValue} />
             <LabelsField defaultValues={labelsDefaultValues} labels={labels} />
             <NoteField defaultValue={noteDefaultValue} errorMessage={noteErrorMessage} />
+
             <Button className={styles.submit} type="submit">
               {t('submit-button')}
             </Button>
