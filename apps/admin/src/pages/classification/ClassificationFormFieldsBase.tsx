@@ -1,4 +1,4 @@
-import { maxLength, required } from 'ra-core'
+import { maxLength, minValue, required } from 'ra-core'
 import { NumberInput, ReferenceInput, SelectInput, TextInput, useTranslate } from 'react-admin'
 
 import styles from './ClassificationForm.module.css'
@@ -30,7 +30,7 @@ export const ClassificationFormFieldsBase = () => {
           max={SERVICE_LEVEL_OBJECTIVE_DAYS_MAX}
           min={1}
           source="service_level_objective_days"
-          validate={[required()]}
+          validate={[required(), minValue(1), maxLength(SERVICE_LEVEL_OBJECTIVE_DAYS_MAX)]}
         />
         <SelectInput
           choices={serviceLevelObjectiveDayTypeChoices}
