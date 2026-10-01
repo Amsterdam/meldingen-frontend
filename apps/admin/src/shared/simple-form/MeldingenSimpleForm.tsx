@@ -2,8 +2,8 @@ import type { SimpleFormProps } from 'react-admin'
 
 import { SimpleForm } from 'react-admin'
 
-import './MeldingenSimpleForm.css'
+import styles from './MeldingenSimpleForm.module.css'
 
 export const MeldingenSimpleForm = (props: SimpleFormProps) => (
-  <SimpleForm className="meldingen-simple-form" {...props} />
+  <SimpleForm className={styles['meldingen-simple-form']} {...props} />
 )

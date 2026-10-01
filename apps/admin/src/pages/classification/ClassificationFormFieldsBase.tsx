@@ -1,7 +1,7 @@
 import { maxValue, required } from 'ra-core'
 import { NumberInput, ReferenceInput, SelectInput, TextInput, useTranslate } from 'react-admin'
 
-import './ClassificationForm.css'
+import styles from './ClassificationForm.module.css'
 
 const ServiceLevelObjectiveDayType = {
   CALENDAR_DAYS: 'calendar_days',
@@ -29,7 +29,7 @@ export const ClassificationFormFieldsBase = () => {
         source="instructions"
         validate={[required(), maxValue(SERVICE_LEVEL_OBJECTIVE_TEXT_MAX_LENGTH)]}
       />
-      <div className="days-and-type-input-wrapper">
+      <div className={styles['days-and-type-input-wrapper']}>
         <NumberInput
           defaultValue={SERVICE_LEVEL_OBJECTIVE_DAYS_DEFAULT}
           max={SERVICE_LEVEL_OBJECTIVE_DAYS_MAX}
