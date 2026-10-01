@@ -23,12 +23,7 @@ export const ClassificationFormFieldsBase = () => {
   return (
     <>
       <TextInput source="name" validate={required()} />
-      <TextInput
-        minRows={3}
-        multiline
-        source="instructions"
-        validate={[required(), maxLength(SERVICE_LEVEL_OBJECTIVE_TEXT_MAX_LENGTH)]}
-      />
+      <TextInput minRows={3} multiline source="instructions" />
       <div className={styles['days-and-type-input-wrapper']}>
         <NumberInput
           defaultValue={SERVICE_LEVEL_OBJECTIVE_DAYS_DEFAULT}
@@ -44,7 +39,12 @@ export const ClassificationFormFieldsBase = () => {
           validate={[required()]}
         />
       </div>
-      <TextInput minRows={3} multiline source="service_level_objective_text" validate={required()} />
+      <TextInput
+        minRows={3}
+        multiline
+        source="service_level_objective_text"
+        validate={[required(), maxLength(SERVICE_LEVEL_OBJECTIVE_TEXT_MAX_LENGTH)]}
+      />
       <ReferenceInput reference="asset-type" sort={{ field: 'name', order: 'ASC' }} source="asset_type" />
     </>
   )
