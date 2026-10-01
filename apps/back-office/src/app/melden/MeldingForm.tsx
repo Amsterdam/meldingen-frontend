@@ -5,7 +5,12 @@ import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useState } from 'react'
 
-import type { LabelOutput, SourceOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+import type {
+  ClassificationOutput,
+  LabelOutput,
+  SourceOutput,
+  StaticFormTextAreaComponentOutput,
+} from '@meldingen/api-client'
 
 import { Column, Paragraph } from '@meldingen/ui'
 
@@ -15,11 +20,12 @@ import type { FormState } from '~/types'
 import { useDocumentTitleOnError } from '../_utils/useDocumentTitleOnError'
 import { LabelsField, NoteField, PrimaryField, SourceField, UrgencyField } from './_components'
 import { postMeldingForm } from './actions'
-import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
+import { ApiErrorAlert, ClassificationCombobox, InvalidFormAlert } from '~/app/_components'
 
 import styles from './MeldingForm.module.css'
 
 type Props = {
+  classifications: ClassificationOutput[]
   defaultValues?: { labels?: number[]; note?: string; primary?: string; source?: string; urgency?: number }
   existingId?: number
   existingMelding?: MeldingData
@@ -48,6 +54,7 @@ const calculateDefaultValues = (formData?: FormData, defaultValues?: Props['defa
 const initialState: FormState = {}
 
 export const MeldingForm = ({
+  classifications,
   defaultValues,
   existingId,
   existingMelding,
@@ -123,6 +130,13 @@ export const MeldingForm = ({
             {prefetchedMelding && (
               <input name="prefetchedMelding" type="hidden" value={JSON.stringify(prefetchedMelding)} />
             )}
+
+            <ClassificationCombobox
+              classifications={classifications}
+              derivedClassification={prefetchedMelding?.classificationName}
+              label={t('classification.label')}
+              noResultsMessage={t('classification.no-results')}
+            />
             <SourceField defaultValue={sourceDefaultValue} errorMessage={sourceErrorMessage} sources={sources} />
             <UrgencyField defaultValue={urgencyDefaultValue} />
             <LabelsField defaultValues={labelsDefaultValues} labels={labels} />

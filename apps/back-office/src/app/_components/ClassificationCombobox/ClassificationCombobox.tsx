@@ -28,7 +28,7 @@ export type ClassificationComboboxRef = {
 
 type Props = {
   classifications: ClassificationOutput[]
-  defaultValue?: string
+  derivedClassification?: string
   errorMessage?: string
   isDisabled?: boolean
   label: string
@@ -42,7 +42,7 @@ const getClassificationByName = (classifications: ClassificationOutput[], name: 
 
 export const ClassificationCombobox = ({
   classifications,
-  defaultValue = '',
+  derivedClassification = '',
   errorMessage,
   isDisabled = false,
   label,
@@ -50,7 +50,7 @@ export const ClassificationCombobox = ({
   placeholder,
   ref,
 }: Props) => {
-  const [value, setValue] = useState(defaultValue)
+  const [value, setValue] = useState(derivedClassification)
 
   useImperativeHandle(
     ref,
