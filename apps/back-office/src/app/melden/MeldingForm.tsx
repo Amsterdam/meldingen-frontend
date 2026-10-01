@@ -3,7 +3,7 @@
 import { Button, Grid, Heading } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect, useState, useTransition } from 'react'
 
 import type {
   ClassificationOutput,
@@ -68,14 +68,20 @@ export const MeldingForm = ({
 
   const requiredErrorMessage =
     primaryTextArea.validate?.required_error_message ?? t('errors.required-error-message-fallback')
-  const action = postMeldingForm.bind(null, {
+
+  const postMeldingFormAction = postMeldingForm.bind(null, {
     existingId,
     existingNoteId,
     existingToken,
     requiredErrorMessage,
   })
 
-  const [{ apiError, formData, validationErrors }, formAction, isPending] = useActionState(action, initialState)
+  const [_, startPrefetchingTransition] = useTransition()
+
+  const [{ apiError, formData, validationErrors }, formAction, isPending] = useActionState(
+    postMeldingFormAction,
+    initialState,
+  )
   const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
   const { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } =
@@ -123,10 +129,13 @@ export const MeldingForm = ({
               existingId={prefetchedMelding?.id ?? existingId}
               existingToken={prefetchedMelding?.token ?? existingToken}
               onMeldingPrefetched={setPrefetchedMelding}
+              startPrefetchingTransition={startPrefetchingTransition}
             />
+
             {prefetchedMelding?.classificationName && (
               <Paragraph>De categorie van de melding is: {prefetchedMelding.classificationName}</Paragraph>
             )}
+
             {prefetchedMelding && (
               <input name="prefetchedMelding" type="hidden" value={JSON.stringify(prefetchedMelding)} />
             )}
