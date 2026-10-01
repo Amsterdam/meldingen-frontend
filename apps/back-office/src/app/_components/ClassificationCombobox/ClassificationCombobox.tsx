@@ -1,6 +1,6 @@
 'use client'
 
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, Ref } from 'react'
 
 import { ErrorMessage, Field, Label, Paragraph } from '@amsterdam/design-system-react'
 import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
@@ -13,7 +13,7 @@ import {
   Field as HUIField,
   Label as HUILabel,
 } from '@headlessui/react'
-import { useState } from 'react'
+import { useImperativeHandle, useState } from 'react'
 
 import type { ClassificationOutput } from '@meldingen/api-client'
 
@@ -21,13 +21,20 @@ import { ListBox, TextInput } from '@meldingen/ui'
 
 import styles from './ClassificationCombobox.module.css'
 
+export type ClassificationComboboxRef = {
+  classification: string
+  setClassification: (value: string) => void
+}
+
 type Props = {
   classifications: ClassificationOutput[]
   defaultValue?: string
   errorMessage?: string
+  isDisabled?: boolean
   label: string
   noResultsMessage: string
   placeholder?: string
+  ref?: Ref<ClassificationComboboxRef>
 }
 
 const getClassificationByName = (classifications: ClassificationOutput[], name: string) =>
@@ -37,11 +44,22 @@ export const ClassificationCombobox = ({
   classifications,
   defaultValue = '',
   errorMessage,
+  isDisabled = false,
   label,
   noResultsMessage,
   placeholder,
+  ref,
 }: Props) => {
   const [value, setValue] = useState(defaultValue)
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      classification: value,
+      setClassification: setValue,
+    }),
+    [value],
+  )
 
   // The input value is the source of truth, so typing an exact name counts as a selection too
   const selectedClassification = getClassificationByName(classifications, value)
@@ -80,13 +98,16 @@ export const ClassificationCombobox = ({
       <HUILabel as={Label} htmlFor="classificationId">
         {label}
       </HUILabel>
+
       {hasErrorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
+
       <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification ?? null}>
         <input name="classificationId" type="hidden" value={selectedClassification?.id ?? ''} />
         <ComboboxInput
           as={TextInput}
           autoComplete="off"
           className={styles.comboboxInput}
+          disabled={isDisabled}
           id="classificationId"
           invalid={hasErrorMessage}
           name="classificationQuery"
@@ -114,6 +135,7 @@ export const ClassificationCombobox = ({
           )}
         </ComboboxOptions>
       </Combobox>
+
       {selectedClassification?.instructions && (
         <Description as={Paragraph} className={styles.instructions}>
           {selectedClassification.instructions}
