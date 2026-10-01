@@ -49,4 +49,36 @@ describe('fetchAddressList', () => {
 
     consoleSpy.mockRestore()
   })
+
+  it('does not set the address list when the request is aborted', async () => {
+    const controller = new AbortController()
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    controller.abort()
+
+    await fetchAddressList({ ...defaultAddressListArgs, signal: controller.signal })
+
+    expect(defaultAddressListArgs.setAddressList).not.toHaveBeenCalled()
+    expect(defaultAddressListArgs.setShowListBox).not.toHaveBeenCalled()
+    expect(consoleSpy).not.toHaveBeenCalled()
+
+    consoleSpy.mockRestore()
+  })
+
+  it('does not set the address list when the request is aborted while it is in flight', async () => {
+    const controller = new AbortController()
+
+    server.use(
+      http.get(ENDPOINTS.PDOK_SUGGEST, () => {
+        controller.abort()
+
+        return HttpResponse.json(PDOKSuggest)
+      }),
+    )
+
+    await fetchAddressList({ ...defaultAddressListArgs, signal: controller.signal })
+
+    expect(defaultAddressListArgs.setAddressList).not.toHaveBeenCalled()
+    expect(defaultAddressListArgs.setShowListBox).not.toHaveBeenCalled()
+  })
 })

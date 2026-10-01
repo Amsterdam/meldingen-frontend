@@ -86,13 +86,17 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
   }
 
   // Memoized so the debounce timer survives rerenders, otherwise every keystroke would trigger a fetch
-  const debouncedFetchAddressList = useMemo(
-    () =>
-      debounce((value: string) => {
-        fetchAddressList({ setAddressList, setShowListBox, value })
-      }),
-    [],
-  )
+  const debouncedFetchAddressList = useMemo(() => {
+    let controller: AbortController | undefined
+
+    return debounce((value: string) => {
+      // Abort the previous request, so a late response cannot overwrite the address list of a newer one
+      controller?.abort()
+      controller = new AbortController()
+
+      fetchAddressList({ setAddressList, setShowListBox, signal: controller.signal, value })
+    })
+  }, [])
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
