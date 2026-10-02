@@ -3,7 +3,6 @@
 import type { ChangeEvent } from 'react'
 
 import { ErrorMessage, Field, Label, Paragraph } from '@amsterdam/design-system-react'
-import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
 import {
   Combobox,
   ComboboxInput,
@@ -47,17 +46,6 @@ export const ClassificationCombobox = ({
   const selectedClassification = getClassificationByName(classifications, value)
   const hasErrorMessage = Boolean(errorMessage)
 
-  const { floatingStyles, refs } = useFloating({
-    middleware: [
-      size({
-        apply: ({ availableHeight, elements }) => {
-          elements.floating.style.maxHeight = `${Math.max(0, availableHeight - 16)}px`
-        },
-      }),
-    ],
-    whileElementsMounted: autoUpdate,
-  })
-
   const filteredClassifications =
     value === ''
       ? classifications
@@ -81,7 +69,7 @@ export const ClassificationCombobox = ({
         {label}
       </HUILabel>
       {hasErrorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
-      <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification ?? null}>
+      <Combobox as="div" className={styles.combobox} onChange={handleChange} value={selectedClassification ?? null}>
         <input name="classificationId" type="hidden" value={selectedClassification?.id ?? ''} />
         <ComboboxInput
           as={TextInput}
@@ -95,11 +83,10 @@ export const ClassificationCombobox = ({
           value={value}
         />
         <ComboboxOptions
+          anchor={{ padding: 16, to: 'bottom start' }}
           as={ListBox}
           className={styles.comboboxOptions}
           modal={false}
-          ref={refs.setFloating}
-          style={floatingStyles}
         >
           {filteredClassifications.length > 0 ? (
             filteredClassifications.map((classification) => (
