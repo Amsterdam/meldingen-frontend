@@ -5,7 +5,7 @@ import type { Coordinates } from '~/types'
 export type AddressArgType = {
   coordinates: Coordinates
   setAddress: (address: string) => void
-  signal?: AbortSignal
+  signal: AbortSignal
   t: ReturnType<typeof useTranslations>
 }
 
@@ -23,14 +23,14 @@ export const fetchAndSetAddress = async ({ coordinates: { lat, lng }, setAddress
     const result = await response.json()
 
     // The request can be aborted after the response has been parsed, so check again before setting the address
-    if (signal?.aborted) return
+    if (signal.aborted) return
 
     const address = result.response.docs?.[0]?.weergavenaam ?? t('no-address')
 
     setAddress(address)
   } catch (error) {
     // An aborted request has been superseded by a newer one, so it should not touch the address
-    if (signal?.aborted) return
+    if (signal.aborted) return
 
     // eslint-disable-next-line no-console
     console.error(error)

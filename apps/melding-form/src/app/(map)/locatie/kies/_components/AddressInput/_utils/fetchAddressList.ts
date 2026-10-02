@@ -6,7 +6,7 @@ const pdokQueryParams =
 export type AddressListArgType = {
   setAddressList: (list: PDOKItem[]) => void
   setShowListBox: (show: boolean) => void
-  signal?: AbortSignal
+  signal: AbortSignal
   value: string
 }
 
@@ -31,13 +31,13 @@ export const fetchAddressList = async ({ setAddressList, setShowListBox, signal,
     const result = await response.json()
 
     // The request can be aborted after the response has been parsed, so check again before setting the address list
-    if (signal?.aborted) return
+    if (signal.aborted) return
 
     setAddressList(result.response.docs)
     setShowListBox(true)
   } catch (error) {
     // An aborted request has been superseded by a newer one, so it is not an error
-    if (signal?.aborted) return
+    if (signal.aborted) return
 
     // Only log the error, the user can continue without suggestions
     // eslint-disable-next-line no-console

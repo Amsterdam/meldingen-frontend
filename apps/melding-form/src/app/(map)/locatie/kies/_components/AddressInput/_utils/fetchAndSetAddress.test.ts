@@ -12,6 +12,7 @@ import { server } from '~/mocks/node'
 const defaultAddressArgs: AddressArgType = {
   coordinates: { lat: 52.37239126063553, lng: 4.900905743712159 },
   setAddress: vi.fn(),
+  signal: new AbortController().signal,
   t: vi.fn((key) => key) as unknown as ReturnType<typeof useTranslations>,
 }
 

@@ -10,6 +10,7 @@ import { server } from '~/mocks/node'
 const defaultAddressListArgs: AddressListArgType = {
   setAddressList: vi.fn(),
   setShowListBox: vi.fn(),
+  signal: new AbortController().signal,
   value: 'Nieuwmarkt',
 }
 
