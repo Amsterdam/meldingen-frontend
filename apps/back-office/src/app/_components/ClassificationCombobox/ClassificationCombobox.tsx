@@ -1,11 +1,11 @@
 'use client'
 
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, MouseEvent } from 'react'
 
 import { ErrorMessage, Field, Label, Paragraph } from '@amsterdam/design-system-react'
-import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
 import {
   Combobox,
+  ComboboxButton,
   ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
@@ -13,7 +13,7 @@ import {
   Field as HUIField,
   Label as HUILabel,
 } from '@headlessui/react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import type { ClassificationOutput } from '@meldingen/api-client'
 
@@ -42,21 +42,11 @@ export const ClassificationCombobox = ({
   placeholder,
 }: Props) => {
   const [value, setValue] = useState(defaultValue)
+  const comboboxButtonRef = useRef<HTMLButtonElement>(null)
 
   // The input value is the source of truth, so typing an exact name counts as a selection too
   const selectedClassification = getClassificationByName(classifications, value)
   const hasErrorMessage = Boolean(errorMessage)
-
-  const { floatingStyles, refs } = useFloating({
-    middleware: [
-      size({
-        apply: ({ availableHeight, elements }) => {
-          elements.floating.style.maxHeight = `${Math.max(0, availableHeight - 16)}px`
-        },
-      }),
-    ],
-    whileElementsMounted: autoUpdate,
-  })
 
   const filteredClassifications =
     value === ''
@@ -75,14 +65,21 @@ export const ClassificationCombobox = ({
     setValue(event.target.value)
   }
 
+  const handleInputClick = (event: MouseEvent<HTMLInputElement>) => {
+    if (event.currentTarget.getAttribute('aria-expanded') === 'false') {
+      comboboxButtonRef.current?.click()
+    }
+  }
+
   return (
     <HUIField as={Field} className="ams-mb-m" invalid={hasErrorMessage}>
       <HUILabel as={Label} htmlFor="classificationId">
         {label}
       </HUILabel>
       {hasErrorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
-      <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification ?? null}>
+      <Combobox as="div" onChange={handleChange} value={selectedClassification ?? null}>
         <input name="classificationId" type="hidden" value={selectedClassification?.id ?? ''} />
+        <ComboboxButton aria-hidden hidden ref={comboboxButtonRef} />
         <ComboboxInput
           as={TextInput}
           autoComplete="off"
@@ -91,15 +88,15 @@ export const ClassificationCombobox = ({
           invalid={hasErrorMessage}
           name="classificationQuery"
           onChange={handleInputChange}
+          onClick={handleInputClick}
           placeholder={placeholder}
           value={value}
         />
         <ComboboxOptions
+          anchor={{ padding: 16, to: 'bottom start' }}
           as={ListBox}
           className={styles.comboboxOptions}
           modal={false}
-          ref={refs.setFloating}
-          style={floatingStyles}
         >
           {filteredClassifications.length > 0 ? (
             filteredClassifications.map((classification) => (

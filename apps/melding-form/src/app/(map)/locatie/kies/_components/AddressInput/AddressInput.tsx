@@ -1,7 +1,6 @@
 import type { ChangeEvent } from 'react'
 
 import { ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
-import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
 import {
   Combobox,
   ComboboxInput,
@@ -40,20 +39,6 @@ export const AddressInput = ({ clearCoordinates, coordinates, errorMessage, onAd
   const [showListBox, setShowListBox] = useState(false)
 
   const t = useTranslations('select-location.combo-box')
-
-  // Make sure the ComboboxOptions do not overflow the viewport
-  const { floatingStyles, refs } = useFloating({
-    middleware: [
-      size({
-        apply: ({ availableHeight, elements }) => {
-          const value = `${Math.max(0, availableHeight - 16)}px`
-
-          elements.floating.style.maxHeight = value
-        },
-      }),
-    ],
-    whileElementsMounted: autoUpdate,
-  })
 
   useEffect(() => {
     if (coordinates) fetchAndSetAddress({ coordinates, setAddress, t })
@@ -109,7 +94,6 @@ export const AddressInput = ({ clearCoordinates, coordinates, errorMessage, onAd
         // Setting the address as key makes sure it does.
         key={address}
         onChange={handleAddressSelect}
-        ref={refs.setReference}
         value={query}
       >
         <ComboboxInput
@@ -121,11 +105,10 @@ export const AddressInput = ({ clearCoordinates, coordinates, errorMessage, onAd
         />
         {showListBox && (
           <ComboboxOptions
+            anchor={{ padding: 16, to: 'bottom start' }}
             as={ListBox}
             className={styles.comboboxOptions}
             modal={false}
-            ref={refs.setFloating}
-            style={floatingStyles}
           >
             {addressList.length > 0 ? (
               addressList.map((option) => (
