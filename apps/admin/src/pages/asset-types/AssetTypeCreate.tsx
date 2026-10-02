@@ -1,7 +1,6 @@
-import { Create, SaveButton, Toolbar, ToolbarClasses } from 'react-admin'
+import { Create, SaveButton, SimpleForm, Toolbar, ToolbarClasses } from 'react-admin'
 
 import { AssetTypeFields } from './AssetTypeFields'
-import { MeldingenSimpleForm } from '~/shared/simple-form/MeldingenSimpleForm'
 
 type AssetTypeCreateData = {
   arguments: unknown
@@ -18,7 +17,7 @@ export const transform = (data: AssetTypeCreateData) => ({
 
 export const AssetTypeCreate = () => (
   <Create redirect="list" resource="asset-type" transform={transform}>
-    <MeldingenSimpleForm
+    <SimpleForm
       toolbar={
         <Toolbar>
           <div className={ToolbarClasses.defaultToolbar}>
@@ -28,6 +27,6 @@ export const AssetTypeCreate = () => (
       }
     >
       <AssetTypeFields />
-    </MeldingenSimpleForm>
+    </SimpleForm>
   </Create>
 )

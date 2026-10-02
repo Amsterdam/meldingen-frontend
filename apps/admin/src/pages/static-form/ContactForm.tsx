@@ -1,12 +1,10 @@
-import { minLength, required, SaveButton, TextInput, Toolbar } from 'react-admin'
-
-import { MeldingenSimpleForm } from '~/shared/simple-form/MeldingenSimpleForm'
+import { minLength, required, SaveButton, SimpleForm, TextInput, Toolbar } from 'react-admin'
 
 export const ContactForm = () => {
   const validateLabel = [required(), minLength(3)]
 
   return (
-    <MeldingenSimpleForm
+    <SimpleForm
       toolbar={
         <Toolbar>
           <SaveButton />
@@ -34,6 +32,6 @@ export const ContactForm = () => {
         parse={(value) => value ?? ''}
         source="components[1].description"
       />
-    </MeldingenSimpleForm>
+    </SimpleForm>
   )
 }

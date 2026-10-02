@@ -1,11 +1,10 @@
-import { DeleteWithConfirmButton, Edit, SaveButton, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
+import { DeleteWithConfirmButton, Edit, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
 
 import { ClassificationFormFieldsBase } from './ClassificationFormFieldsBase'
-import { MeldingenSimpleForm } from '~/shared/simple-form/MeldingenSimpleForm'
 
 export const ClassificationEdit = () => (
   <Edit>
-    <MeldingenSimpleForm
+    <SimpleForm
       toolbar={
         <Toolbar>
           <div className={ToolbarClasses.defaultToolbar}>
@@ -17,6 +16,6 @@ export const ClassificationEdit = () => (
     >
       <ClassificationFormFieldsBase />
       <TextInput readOnly source="form" />
-    </MeldingenSimpleForm>
+    </SimpleForm>
   </Edit>
 )

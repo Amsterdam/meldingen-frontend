@@ -1,11 +1,10 @@
-import { Create, SaveButton, Toolbar, ToolbarClasses } from 'react-admin'
+import { Create, SaveButton, SimpleForm, Toolbar, ToolbarClasses } from 'react-admin'
 
 import { ClassificationFormFieldsBase } from './ClassificationFormFieldsBase'
-import { MeldingenSimpleForm } from '~/shared/simple-form/MeldingenSimpleForm'
 
 export const ClassificationCreate = () => (
   <Create redirect="list">
-    <MeldingenSimpleForm
+    <SimpleForm
       toolbar={
         <Toolbar>
           <div className={ToolbarClasses.defaultToolbar}>
@@ -15,6 +14,6 @@ export const ClassificationCreate = () => (
       }
     >
       <ClassificationFormFieldsBase />
-    </MeldingenSimpleForm>
+    </SimpleForm>
   </Create>
 )

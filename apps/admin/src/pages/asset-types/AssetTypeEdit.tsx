@@ -1,11 +1,10 @@
-import { DeleteWithConfirmButton, Edit, SaveButton, Toolbar, ToolbarClasses } from 'react-admin'
+import { DeleteWithConfirmButton, Edit, SaveButton, SimpleForm, Toolbar, ToolbarClasses } from 'react-admin'
 
-import { MeldingenSimpleForm } from '../../shared/simple-form/MeldingenSimpleForm'
 import { AssetTypeFields } from './AssetTypeFields'
 
 export const AssetTypeEdit = ({ id }: { id?: number }) => (
   <Edit id={id} resource="asset-type">
-    <MeldingenSimpleForm
+    <SimpleForm
       toolbar={
         <Toolbar>
           <div className={ToolbarClasses.defaultToolbar}>
@@ -16,6 +15,6 @@ export const AssetTypeEdit = ({ id }: { id?: number }) => (
       }
     >
       <AssetTypeFields />
-    </MeldingenSimpleForm>
+    </SimpleForm>
   </Edit>
 )
