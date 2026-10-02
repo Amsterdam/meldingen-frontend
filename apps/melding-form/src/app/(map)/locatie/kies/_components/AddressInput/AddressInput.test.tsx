@@ -103,7 +103,7 @@ describe('AddressInput', () => {
     expect(coordinatesInput).toHaveValue('')
   })
 
-  it('does not save new coordinates while the address of the previous coordinates is shown', async () => {
+  it('empties the address while the address of new coordinates is fetched', async () => {
     const { container, rerender } = render(<AddressInput {...defaultProps} coordinates={coordinates} />)
 
     await waitFor(() => {
@@ -116,7 +116,7 @@ describe('AddressInput', () => {
 
     const coordinatesInput = container.querySelector('input[name="coordinates"]')
 
-    expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('')
     expect(coordinatesInput).toHaveValue('')
   })
 
@@ -137,6 +137,7 @@ describe('AddressInput', () => {
 
     const coordinatesInput = container.querySelector('input[name="coordinates"]')
 
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('Amsteldijk 152A-H, 1079LG Amsterdam')
     expect(coordinatesInput).toHaveValue(JSON.stringify(selectedCoordinates))
   })
 

@@ -64,6 +64,10 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
       return
     }
 
+    // Empty an outdated address while fetching, so it cannot be submitted.
+    // Unless the address already belongs to the new coordinates, e.g. when picked from the suggestions.
+    setAddress((previous) => (previous.coordinates === coordinates ? previous : { label: '' }))
+
     // Abort the request when coordinates change or are cleared, so a late response cannot overwrite the address
     const controller = new AbortController()
 
