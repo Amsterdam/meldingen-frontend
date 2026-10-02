@@ -33,17 +33,13 @@ export type Props = {
 }
 
 export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Props) => {
-  // Keep track of the coordinates the address belongs to, so the address of previous coordinates is never submitted with new ones
-  const [resolvedAddress, setResolvedAddress] = useState<{ address: string; coordinates?: Coordinates }>({
-    address: '',
-  })
+  // Keep track of the coordinates the label belongs to, so the label of previous coordinates is never submitted with new ones
+  const [address, setAddress] = useState<{ coordinates?: Coordinates; label: string }>({ label: '' })
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
   const [query, setQuery] = useState('')
   const [showListBox, setShowListBox] = useState(false)
 
   const t = useTranslations('select-location.combo-box')
-
-  const address = resolvedAddress.address
 
   // Make sure the ComboboxOptions do not overflow the viewport
   const { floatingStyles, refs } = useFloating({
@@ -61,7 +57,7 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
 
   useEffect(() => {
     if (!coordinates) {
-      setResolvedAddress({ address: '' })
+      setAddress({ label: '' })
 
       return
     }
@@ -71,7 +67,7 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
 
     fetchAndSetAddress({
       coordinates,
-      setAddress: (newAddress) => setResolvedAddress({ address: newAddress, coordinates }),
+      setAddress: (label) => setAddress({ coordinates, label }),
       signal: controller.signal,
       t,
     })
@@ -80,7 +76,7 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
   }, [coordinates, t])
 
   useEffect(() => {
-    setQuery(address)
+    setQuery(address.label)
   }, [address])
 
   const handleAddressSelect = (value: PDOKItem | string | null) => {
@@ -91,7 +87,7 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
 
       if (addressCoordinates) onAddressSelect(addressCoordinates)
 
-      setResolvedAddress({ address: value.weergavenaam, coordinates: addressCoordinates })
+      setAddress({ coordinates: addressCoordinates, label: value.weergavenaam })
     }
   }
 
@@ -116,7 +112,7 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
   }
 
   // Only submit the coordinates while the input still shows the address they belong to.
-  const hasUnchangedAddress = coordinates && coordinates === resolvedAddress.coordinates && query === address
+  const hasUnchangedAddress = coordinates && coordinates === address.coordinates && query === address.label
   const coordinatesValue = hasUnchangedAddress ? JSON.stringify(coordinates) : ''
 
   return (
@@ -131,7 +127,7 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
         className={styles.combobox}
         // Combobox does not rerender when address is set using keyboard on the Map, for some reason.
         // Setting the address as key makes sure it does.
-        key={address}
+        key={address.label}
         onChange={handleAddressSelect}
         ref={refs.setReference}
         value={query}
