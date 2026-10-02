@@ -30,9 +30,6 @@ export const fetchAddressList = async ({ setAddressList, setShowListBox, signal,
 
     const result = await response.json()
 
-    // The request can be aborted after the response has been parsed, so check again before setting the address list
-    if (signal.aborted) return
-
     setAddressList(result.response.docs)
     setShowListBox(true)
   } catch (error) {

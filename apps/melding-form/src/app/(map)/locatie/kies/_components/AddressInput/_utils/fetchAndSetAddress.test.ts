@@ -40,20 +40,4 @@ describe('fetchAndSetAddress', () => {
 
     expect(defaultAddressArgs.setAddress).not.toHaveBeenCalled()
   })
-
-  it('does not set the address when the request is aborted while it is in flight', async () => {
-    const controller = new AbortController()
-
-    server.use(
-      http.get(ENDPOINTS.PDOK_REVERSE, () => {
-        controller.abort()
-
-        return HttpResponse.json(PDOKReverse)
-      }),
-    )
-
-    await fetchAndSetAddress({ ...defaultAddressArgs, signal: controller.signal })
-
-    expect(defaultAddressArgs.setAddress).not.toHaveBeenCalled()
-  })
 })

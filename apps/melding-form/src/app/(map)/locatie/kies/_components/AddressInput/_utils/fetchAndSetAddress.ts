@@ -22,9 +22,6 @@ export const fetchAndSetAddress = async ({ coordinates: { lat, lng }, setAddress
 
     const result = await response.json()
 
-    // The request can be aborted after the response has been parsed, so check again before setting the address
-    if (signal.aborted) return
-
     const address = result.response.docs?.[0]?.weergavenaam ?? t('no-address')
 
     setAddress(address)
