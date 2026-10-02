@@ -201,7 +201,7 @@ describe('AddressInput', () => {
     })
   })
 
-  it('does not show the options of a request that resolves after a newer request', async () => {
+  it('does not show the options of a request that resolves after the input has changed', async () => {
     let resolveFirstRequest = () => {}
     const firstRequestCanResolve = new Promise<void>((resolve) => {
       resolveFirstRequest = resolve
@@ -233,17 +233,15 @@ describe('AddressInput', () => {
     await new Promise((resolve) => setTimeout(resolve, 300))
     await user.type(input, 'd')
 
+    // Resolve the first request while the second one is still debounced
+    resolveFirstRequest()
+    await new Promise((resolve) => setTimeout(resolve, 50))
+
+    expect(screen.queryByRole('option', { name: 'Stale address' })).not.toBeInTheDocument()
+
     await waitFor(() => {
       expect(screen.getByRole('option', { name: 'New address' })).toBeInTheDocument()
     })
-
-    resolveFirstRequest()
-
-    // Give a late response the chance to update the options
-    await new Promise((resolve) => setTimeout(resolve, 50))
-
-    expect(screen.getByRole('option', { name: 'New address' })).toBeInTheDocument()
-    expect(screen.queryByRole('option', { name: 'Stale address' })).not.toBeInTheDocument()
   })
 
   it('shows a "no results" message when no results are returned', async () => {

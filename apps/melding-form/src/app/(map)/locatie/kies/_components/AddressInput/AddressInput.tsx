@@ -12,7 +12,7 @@ import {
   Label as HUILabel,
 } from '@headlessui/react'
 import { useTranslations } from 'next-intl'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { ListBox, TextInput } from '@meldingen/ui'
 
@@ -38,6 +38,8 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
   const [query, setQuery] = useState('')
   const [showListBox, setShowListBox] = useState(false)
+
+  const addressListControllerRef = useRef<AbortController>(undefined)
 
   const t = useTranslations('select-location.combo-box')
 
@@ -92,23 +94,23 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
   }
 
   // Memoized so the debounce timer survives rerenders, otherwise every keystroke would trigger a fetch
-  const debouncedFetchAddressList = useMemo(() => {
-    let controller: AbortController | undefined
-
-    return debounce((value: string) => {
-      // Abort the previous request, so a late response cannot overwrite the address list of a newer one
-      controller?.abort()
-      controller = new AbortController()
-
-      fetchAddressList({ setAddressList, setShowListBox, signal: controller.signal, value })
-    })
-  }, [])
+  const debouncedFetchAddressList = useMemo(
+    () =>
+      debounce((value: string, signal: AbortSignal) => {
+        fetchAddressList({ setAddressList, setShowListBox, signal, value })
+      }),
+    [],
+  )
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
 
+    // Abort the previous request immediately, so it cannot show the address list of an outdated query during the debounce
+    addressListControllerRef.current?.abort()
+    addressListControllerRef.current = new AbortController()
+
     setQuery(value)
-    debouncedFetchAddressList(value)
+    debouncedFetchAddressList(value, addressListControllerRef.current.signal)
   }
 
   // Only submit the coordinates while the input still shows the address they belong to.
