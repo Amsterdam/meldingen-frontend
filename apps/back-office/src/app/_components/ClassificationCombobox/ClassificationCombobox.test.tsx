@@ -37,6 +37,20 @@ describe('ClassificationCombobox', () => {
     expect(getHiddenInput(container)).toHaveValue('')
   })
 
+  it('opens the classification options when the combobox is clicked', async () => {
+    const user = userEvent.setup()
+
+    render(<ClassificationCombobox {...defaultProps} />)
+
+    await user.tab()
+
+    expect(screen.getByRole('combobox')).toHaveAttribute('aria-expanded', 'false')
+
+    await user.click(screen.getByRole('combobox'))
+
+    expect(screen.getByRole('option', { name: 'Category 1' })).toBeInTheDocument()
+  })
+
   it('renders the label, error message and invalid state', () => {
     render(<ClassificationCombobox {...defaultProps} errorMessage="classification-required" />)
 
