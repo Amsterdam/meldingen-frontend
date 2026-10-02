@@ -5,6 +5,7 @@ import { http, HttpResponse } from 'msw'
 import type { Props } from './AddressInput'
 
 import { AddressInput } from './AddressInput'
+import { PDOKReverse } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -18,12 +19,13 @@ vi.stubGlobal(
 )
 
 const defaultProps: Props = {
-  clearCoordinates: vi.fn(),
   onAddressSelect: vi.fn(),
 }
 
+const coordinates = { lat: 52.37239126063553, lng: 4.900905743712159 }
+
 describe('AddressInput', () => {
-  it('should render the address input', () => {
+  it('renders the address input', () => {
     render(<AddressInput {...defaultProps} />)
 
     const input = screen.getByRole('combobox', { name: 'label' })
@@ -31,7 +33,7 @@ describe('AddressInput', () => {
     expect(input).toBeInTheDocument()
   })
 
-  it('should not show the list box initially', () => {
+  it('does not show the list box initially', () => {
     render(<AddressInput {...defaultProps} />)
 
     const listBox = screen.queryByRole('listbox')
@@ -39,7 +41,7 @@ describe('AddressInput', () => {
     expect(listBox).not.toBeInTheDocument()
   })
 
-  it('should not show the list box on 2 character input', async () => {
+  it('does not show the list box on 2 character input', async () => {
     const user = userEvent.setup()
 
     render(<AddressInput {...defaultProps} />)
@@ -50,11 +52,12 @@ describe('AddressInput', () => {
 
     await waitFor(() => {
       const listBox = screen.queryByRole('listbox')
+
       expect(listBox).not.toBeInTheDocument()
     })
   })
 
-  it('should show the list box on 3 or more character input', async () => {
+  it('shows the list box on 3 or more character input', async () => {
     const user = userEvent.setup()
 
     render(<AddressInput {...defaultProps} />)
@@ -65,16 +68,28 @@ describe('AddressInput', () => {
 
     await waitFor(() => {
       const listBox = screen.getByRole('listbox')
+
       expect(listBox).toBeInTheDocument()
     })
   })
 
-  it('should clear coordinates when input changes', async () => {
+  it('shows an address and saves coordinates when coordinates are provided', async () => {
+    const { container } = render(<AddressInput {...defaultProps} coordinates={coordinates} />)
+
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
+    })
+
+    const coordinatesInput = container.querySelector('input[name="coordinates"]')
+
+    expect(coordinatesInput).toHaveValue(JSON.stringify(coordinates))
+  })
+
+  it('does not save the coordinates when the address is edited', async () => {
     const user = userEvent.setup()
 
-    render(<AddressInput {...defaultProps} coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
+    const { container } = render(<AddressInput {...defaultProps} coordinates={coordinates} />)
 
-    // Wait for the address to be fetched using coordinates and displayed
     await waitFor(() => {
       expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
     })
@@ -83,10 +98,118 @@ describe('AddressInput', () => {
 
     await user.type(input, 'abc')
 
-    expect(defaultProps.clearCoordinates).toHaveBeenCalled()
+    const coordinatesInput = container.querySelector('input[name="coordinates"]')
+
+    expect(coordinatesInput).toHaveValue('')
   })
 
-  it('should show all options returned by the API', async () => {
+  it('empties the address while the address of new coordinates is fetched', async () => {
+    const { container, rerender } = render(<AddressInput {...defaultProps} coordinates={coordinates} />)
+
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
+    })
+
+    server.use(http.get(ENDPOINTS.PDOK_REVERSE, () => new Promise(() => {})))
+
+    rerender(<AddressInput {...defaultProps} coordinates={{ lat: 52.37, lng: 4.9 }} />)
+
+    const coordinatesInput = container.querySelector('input[name="coordinates"]')
+
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('')
+    expect(coordinatesInput).toHaveValue('')
+  })
+
+  it('saves the coordinates of a selected address option', async () => {
+    const user = userEvent.setup()
+    const onAddressSelect = vi.fn()
+
+    const { container, rerender } = render(<AddressInput onAddressSelect={onAddressSelect} />)
+
+    const input = screen.getByRole('combobox', { name: 'label' })
+
+    await user.type(input, 'abc')
+    await user.click(await screen.findByRole('option', { name: 'Amsteldijk 152A-H, 1079LG Amsterdam' }))
+
+    const selectedCoordinates = onAddressSelect.mock.calls[0][0]
+
+    rerender(<AddressInput coordinates={selectedCoordinates} onAddressSelect={onAddressSelect} />)
+
+    const coordinatesInput = container.querySelector('input[name="coordinates"]')
+
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('Amsteldijk 152A-H, 1079LG Amsterdam')
+    expect(coordinatesInput).toHaveValue(JSON.stringify(selectedCoordinates))
+  })
+
+  it('clears the address when the coordinates are cleared', async () => {
+    const { rerender } = render(<AddressInput {...defaultProps} coordinates={coordinates} />)
+
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
+    })
+
+    rerender(<AddressInput {...defaultProps} />)
+
+    const input = screen.getByRole('combobox', { name: 'label' })
+
+    expect(input).toHaveValue('')
+  })
+
+  it('does not show the address of a request that resolves after the coordinates are cleared', async () => {
+    let resolveRequest = () => {}
+    const requestCanResolve = new Promise<void>((resolve) => {
+      resolveRequest = resolve
+    })
+
+    server.use(
+      http.get(ENDPOINTS.PDOK_REVERSE, async () => {
+        await requestCanResolve
+
+        return HttpResponse.json(PDOKReverse)
+      }),
+    )
+
+    const { rerender } = render(<AddressInput {...defaultProps} coordinates={coordinates} />)
+
+    rerender(<AddressInput {...defaultProps} />)
+
+    resolveRequest()
+
+    // Give a late response the chance to update the input
+    await new Promise((resolve) => setTimeout(resolve, 50))
+
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('')
+  })
+
+  it('does not overwrite typed text with an address that is fetched afterwards', async () => {
+    let resolveRequest = () => {}
+    const requestCanResolve = new Promise<void>((resolve) => {
+      resolveRequest = resolve
+    })
+
+    server.use(
+      http.get(ENDPOINTS.PDOK_REVERSE, async () => {
+        await requestCanResolve
+
+        return HttpResponse.json(PDOKReverse)
+      }),
+    )
+
+    const user = userEvent.setup()
+
+    render(<AddressInput {...defaultProps} coordinates={coordinates} />)
+
+    await user.type(screen.getByRole('combobox', { name: 'label' }), 'Dam')
+
+    resolveRequest()
+
+    // Give a late response the chance to update the input
+    await new Promise((resolve) => setTimeout(resolve, 50))
+
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('Dam')
+  })
+
+  it('shows all options returned by the API', async () => {
     const user = userEvent.setup()
 
     render(<AddressInput {...defaultProps} />)
@@ -97,6 +220,7 @@ describe('AddressInput', () => {
 
     await waitFor(() => {
       const listItems = screen.getAllByRole('option')
+
       expect(listItems).toHaveLength(5)
       expect(listItems[0]).toHaveTextContent('Amsteldijk 152A-H, 1079LG Amsterdam')
       expect(listItems[1]).toHaveTextContent('Amstelkade 166A-H, 1078AX Amsterdam')
@@ -106,7 +230,50 @@ describe('AddressInput', () => {
     })
   })
 
-  it('should show a "no results" message when no results are returned', async () => {
+  it('does not show the options of a request that resolves after the input has changed', async () => {
+    let resolveFirstRequest = () => {}
+    const firstRequestCanResolve = new Promise<void>((resolve) => {
+      resolveFirstRequest = resolve
+    })
+
+    const createResponse = (weergavenaam: string) =>
+      HttpResponse.json({ response: { docs: [{ centroide_ll: 'POINT(4.9 52.37)', id: weergavenaam, weergavenaam }] } })
+
+    server.use(
+      http.get(ENDPOINTS.PDOK_SUGGEST, async ({ request }) => {
+        if (new URL(request.url).searchParams.get('q') === 'abc') {
+          await firstRequestCanResolve
+
+          return createResponse('Stale address')
+        }
+
+        return createResponse('New address')
+      }),
+    )
+
+    const user = userEvent.setup()
+
+    render(<AddressInput {...defaultProps} />)
+
+    const input = screen.getByRole('combobox', { name: 'label' })
+
+    // Wait for the debounce, so the first request is sent before typing again
+    await user.type(input, 'abc')
+    await new Promise((resolve) => setTimeout(resolve, 300))
+    await user.type(input, 'd')
+
+    // Resolve the first request while the second one is still debounced
+    resolveFirstRequest()
+    await new Promise((resolve) => setTimeout(resolve, 50))
+
+    expect(screen.queryByRole('option', { name: 'Stale address' })).not.toBeInTheDocument()
+
+    await waitFor(() => {
+      expect(screen.getByRole('option', { name: 'New address' })).toBeInTheDocument()
+    })
+  })
+
+  it('shows a "no results" message when no results are returned', async () => {
     server.use(
       http.get(ENDPOINTS.PDOK_SUGGEST, () =>
         HttpResponse.json({
@@ -125,15 +292,8 @@ describe('AddressInput', () => {
 
     await waitFor(() => {
       const noResults = screen.getByRole('option', { name: 'no-results' })
+
       expect(noResults).toBeInTheDocument()
-    })
-  })
-
-  it('shows an address based on provided coordinates ', async () => {
-    render(<AddressInput {...defaultProps} coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
-
-    await waitFor(() => {
-      expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
     })
   })
 
@@ -149,7 +309,7 @@ describe('AddressInput', () => {
       ),
     )
 
-    render(<AddressInput {...defaultProps} coordinates={{ lat: 52.37239126063553, lng: 4.900905743712159 }} />)
+    render(<AddressInput {...defaultProps} coordinates={coordinates} />)
 
     await waitFor(() => {
       expect(screen.getByDisplayValue('no-address')).toBeInTheDocument()
