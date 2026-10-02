@@ -33,12 +33,17 @@ export type Props = {
 }
 
 export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Props) => {
-  const [address, setAddress] = useState('')
+  // Keep track of the coordinates the address belongs to, so the address of previous coordinates is never submitted with new ones
+  const [resolvedAddress, setResolvedAddress] = useState<{ address: string; coordinates?: Coordinates }>({
+    address: '',
+  })
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
   const [query, setQuery] = useState('')
   const [showListBox, setShowListBox] = useState(false)
 
   const t = useTranslations('select-location.combo-box')
+
+  const address = resolvedAddress.address
 
   // Make sure the ComboboxOptions do not overflow the viewport
   const { floatingStyles, refs } = useFloating({
@@ -56,7 +61,7 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
 
   useEffect(() => {
     if (!coordinates) {
-      setAddress('')
+      setResolvedAddress({ address: '' })
 
       return
     }
@@ -64,7 +69,12 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
     // Abort the request when coordinates change or are cleared, so a late response cannot overwrite the address
     const controller = new AbortController()
 
-    fetchAndSetAddress({ coordinates, setAddress, signal: controller.signal, t })
+    fetchAndSetAddress({
+      coordinates,
+      setAddress: (newAddress) => setResolvedAddress({ address: newAddress, coordinates }),
+      signal: controller.signal,
+      t,
+    })
 
     return () => controller.abort()
   }, [coordinates, t])
@@ -81,7 +91,7 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
 
       if (addressCoordinates) onAddressSelect(addressCoordinates)
 
-      setAddress(value.weergavenaam)
+      setResolvedAddress({ address: value.weergavenaam, coordinates: addressCoordinates })
     }
   }
 
@@ -106,7 +116,7 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
   }
 
   // Only submit the coordinates while the input still shows the address they belong to.
-  const hasUnchangedAddress = coordinates && query === address
+  const hasUnchangedAddress = coordinates && coordinates === resolvedAddress.coordinates && query === address
   const coordinatesValue = hasUnchangedAddress ? JSON.stringify(coordinates) : ''
 
   return (

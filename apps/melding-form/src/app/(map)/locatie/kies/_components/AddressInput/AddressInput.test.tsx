@@ -103,6 +103,43 @@ describe('AddressInput', () => {
     expect(coordinatesInput).toHaveValue('')
   })
 
+  it('does not save new coordinates while the address of the previous coordinates is shown', async () => {
+    const { container, rerender } = render(<AddressInput {...defaultProps} coordinates={coordinates} />)
+
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
+    })
+
+    server.use(http.get(ENDPOINTS.PDOK_REVERSE, () => new Promise(() => {})))
+
+    rerender(<AddressInput {...defaultProps} coordinates={{ lat: 52.37, lng: 4.9 }} />)
+
+    const coordinatesInput = container.querySelector('input[name="coordinates"]')
+
+    expect(screen.getByDisplayValue('Nieuwmarkt 15, 1011JR Amsterdam')).toBeInTheDocument()
+    expect(coordinatesInput).toHaveValue('')
+  })
+
+  it('saves the coordinates of a selected address option', async () => {
+    const user = userEvent.setup()
+    const onAddressSelect = vi.fn()
+
+    const { container, rerender } = render(<AddressInput onAddressSelect={onAddressSelect} />)
+
+    const input = screen.getByRole('combobox', { name: 'label' })
+
+    await user.type(input, 'abc')
+    await user.click(await screen.findByRole('option', { name: 'Amsteldijk 152A-H, 1079LG Amsterdam' }))
+
+    const selectedCoordinates = onAddressSelect.mock.calls[0][0]
+
+    rerender(<AddressInput coordinates={selectedCoordinates} onAddressSelect={onAddressSelect} />)
+
+    const coordinatesInput = container.querySelector('input[name="coordinates"]')
+
+    expect(coordinatesInput).toHaveValue(JSON.stringify(selectedCoordinates))
+  })
+
   it('clears the address when the coordinates are cleared', async () => {
     const { rerender } = render(<AddressInput {...defaultProps} coordinates={coordinates} />)
 
