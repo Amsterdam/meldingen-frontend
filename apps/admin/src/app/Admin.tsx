@@ -16,6 +16,8 @@ import {
   keycloakDataProvider,
 } from './providers'
 
+import './Admin.css'
+
 export const Admin = () => (
   <BrowserRouter>
     <ReactAdmin

@@ -1,17 +1,9 @@
-import {
-  DeleteWithConfirmButton,
-  Edit,
-  ReferenceInput,
-  required,
-  SaveButton,
-  SimpleForm,
-  TextInput,
-  Toolbar,
-  ToolbarClasses,
-} from 'react-admin'
+import { DeleteWithConfirmButton, Edit, SaveButton, SimpleForm, TextInput, Toolbar, ToolbarClasses } from 'react-admin'
+
+import { ClassificationFormFieldsBase } from './ClassificationFormFieldsBase'
 
 export const ClassificationEdit = () => (
-  <Edit>
+  <Edit className="crud-form">
     <SimpleForm
       toolbar={
         <Toolbar>
@@ -22,9 +14,7 @@ export const ClassificationEdit = () => (
         </Toolbar>
       }
     >
-      <TextInput source="name" validate={required()} />
-      <TextInput minRows={3} multiline source="instructions" />
-      <ReferenceInput reference="asset-type" sort={{ field: 'name', order: 'ASC' }} source="asset_type" />
+      <ClassificationFormFieldsBase />
       <TextInput readOnly source="form" />
     </SimpleForm>
   </Edit>

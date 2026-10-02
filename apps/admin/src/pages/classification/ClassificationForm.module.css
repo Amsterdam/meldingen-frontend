@@ -1,0 +1,5 @@
+.days-and-type-input-wrapper {
+  column-gap: 2rem;
+  display: flex;
+  width: 100%;
+}
