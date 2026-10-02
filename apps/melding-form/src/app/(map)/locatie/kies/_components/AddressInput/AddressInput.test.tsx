@@ -181,6 +181,34 @@ describe('AddressInput', () => {
     expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('')
   })
 
+  it('does not overwrite typed text with an address that is fetched afterwards', async () => {
+    let resolveRequest = () => {}
+    const requestCanResolve = new Promise<void>((resolve) => {
+      resolveRequest = resolve
+    })
+
+    server.use(
+      http.get(ENDPOINTS.PDOK_REVERSE, async () => {
+        await requestCanResolve
+
+        return HttpResponse.json(PDOKReverse)
+      }),
+    )
+
+    const user = userEvent.setup()
+
+    render(<AddressInput {...defaultProps} coordinates={coordinates} />)
+
+    await user.type(screen.getByRole('combobox', { name: 'label' }), 'Dam')
+
+    resolveRequest()
+
+    // Give a late response the chance to update the input
+    await new Promise((resolve) => setTimeout(resolve, 50))
+
+    expect(screen.getByRole('combobox', { name: 'label' })).toHaveValue('Dam')
+  })
+
   it('shows all options returned by the API', async () => {
     const user = userEvent.setup()
 

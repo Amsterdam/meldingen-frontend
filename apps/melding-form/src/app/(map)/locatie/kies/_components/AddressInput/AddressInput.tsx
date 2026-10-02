@@ -39,6 +39,7 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
   const [query, setQuery] = useState('')
   const [showListBox, setShowListBox] = useState(false)
 
+  const addressControllerRef = useRef<AbortController>(undefined)
   const addressListControllerRef = useRef<AbortController>(undefined)
 
   const t = useTranslations('select-location.combo-box')
@@ -70,6 +71,8 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
 
     // Abort the request when coordinates change or are cleared, so a late response cannot overwrite the address
     const controller = new AbortController()
+
+    addressControllerRef.current = controller
 
     fetchAndSetAddress({
       coordinates,
@@ -108,6 +111,9 @@ export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Pro
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
+
+    // Typing replaces the address, so an address that is still being fetched should not overwrite it
+    addressControllerRef.current?.abort()
 
     // Abort the previous request immediately, so it cannot show the address list of an outdated query during the debounce
     addressListControllerRef.current?.abort()
