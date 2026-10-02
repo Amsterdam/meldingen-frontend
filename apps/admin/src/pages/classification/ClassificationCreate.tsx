@@ -3,7 +3,7 @@ import { Create, SaveButton, SimpleForm, Toolbar, ToolbarClasses } from 'react-a
 import { ClassificationFormFieldsBase } from './ClassificationFormFieldsBase'
 
 export const ClassificationCreate = () => (
-  <Create className="crud-form-wrap" redirect="list">
+  <Create className="crud-form" redirect="list">
     <SimpleForm
       toolbar={
         <Toolbar>

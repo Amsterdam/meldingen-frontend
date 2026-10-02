@@ -3,7 +3,7 @@ import { DeleteWithConfirmButton, Edit, SaveButton, SimpleForm, TextInput, Toolb
 import { ClassificationFormFieldsBase } from './ClassificationFormFieldsBase'
 
 export const ClassificationEdit = () => (
-  <Edit className="crud-form-wrap">
+  <Edit className="crud-form">
     <SimpleForm
       toolbar={
         <Toolbar>
