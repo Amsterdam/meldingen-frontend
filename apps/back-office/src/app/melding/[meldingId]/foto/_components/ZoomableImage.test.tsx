@@ -1,29 +1,45 @@
+import type { UserEvent } from '@testing-library/user-event'
+
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
 import { ZoomableImage } from './ZoomableImage'
 
-const mockBoundingClientRect = (element: Element) => {
-  vi.spyOn(element, 'getBoundingClientRect').mockReturnValue(new DOMRect(100, 100, 400, 200))
-}
+// Renders the image in a button of 400 by 200 pixels, with its top left corner at 100, 100
+const setup = () => {
+  const user = userEvent.setup()
 
-// Renders the image zoomed in to 200% on the center
-const renderZoomedIn = () => {
   render(<ZoomableImage src="image.jpg" />)
 
   const button = screen.getByRole('button')
 
-  mockBoundingClientRect(button)
-  fireEvent.click(button, { clientX: 300, clientY: 200, detail: 1 })
+  vi.spyOn(button, 'getBoundingClientRect').mockReturnValue(new DOMRect(100, 100, 400, 200))
 
-  return { button, image: screen.getByRole('presentation') }
+  return { button, image: screen.getByRole('presentation'), user }
 }
 
-const touchDrag = (element: Element, deltaX: number, deltaY: number) => {
-  fireEvent.pointerDown(element, { clientX: 300, clientY: 200, pointerType: 'touch' })
-  fireEvent.pointerMove(element, { clientX: 300 + deltaX, clientY: 200 + deltaY, pointerType: 'touch' })
-  fireEvent.pointerUp(element, { clientX: 300 + deltaX, clientY: 200 + deltaY, pointerType: 'touch' })
+const clickAt = (user: UserEvent, target: Element, clientX: number, clientY: number) =>
+  user.pointer({ coords: { clientX, clientY }, keys: '[MouseLeft]', target })
+
+const moveMouseTo = (user: UserEvent, target: Element, clientX: number, clientY: number) =>
+  user.pointer({ coords: { clientX, clientY }, target })
+
+// Drags from the center of the button. A drag of 0, 0 is a tap.
+const touchDrag = (user: UserEvent, target: Element, deltaX: number, deltaY: number) =>
+  user.pointer([
+    { coords: { clientX: 300, clientY: 200 }, keys: '[TouchA>]', target },
+    { coords: { clientX: 300 + deltaX, clientY: 200 + deltaY }, pointerName: 'TouchA' },
+    { keys: '[/TouchA]' },
+  ])
+
+// Renders the image zoomed in to 200% on the center
+const setupZoomedIn = async () => {
+  const result = setup()
+
+  await clickAt(result.user, result.button, 300, 200)
+
+  return result
 }
 
 describe('ZoomableImage', () => {
@@ -37,164 +53,143 @@ describe('ZoomableImage', () => {
     expect(image).toHaveStyle({ transform: 'translate(0%, 0%) scale(1)' })
   })
 
-  it('cycles through the zoom levels when clicked', () => {
-    const { button, image } = renderZoomedIn()
+  it('cycles through the zoom levels when clicked', async () => {
+    const { button, image, user } = await setupZoomedIn()
 
     expect(image).toHaveStyle({ transform: 'translate(-50%, -50%) scale(2)' })
     expect(button).toHaveAccessibleName('zoom-in')
 
-    fireEvent.click(button, { clientX: 300, clientY: 200, detail: 1 })
+    await clickAt(user, button, 300, 200)
     expect(image).toHaveStyle({ transform: 'translate(-150%, -150%) scale(4)' })
     expect(button).toHaveAccessibleName('zoom-out')
 
-    fireEvent.click(button, { clientX: 300, clientY: 200, detail: 1 })
+    await clickAt(user, button, 300, 200)
     expect(image).toHaveStyle({ transform: 'translate(0%, 0%) scale(1)' })
   })
 
   it('zooms in on the center when activated with the keyboard', async () => {
-    const user = userEvent.setup()
+    const { button, image, user } = setup()
 
-    render(<ZoomableImage src="image.jpg" />)
-
-    screen.getByRole('button').focus()
+    button.focus()
     await user.keyboard('{Enter}')
 
-    expect(screen.getByRole('presentation')).toHaveStyle({ transform: 'translate(-50%, -50%) scale(2)' })
+    expect(image).toHaveStyle({ transform: 'translate(-50%, -50%) scale(2)' })
   })
 
-  it('follows the mouse when zoomed in', () => {
-    render(<ZoomableImage src="image.jpg" />)
+  it('follows the mouse when zoomed in', async () => {
+    const { button, image, user } = setup()
 
-    const button = screen.getByRole('button')
-    const image = screen.getByRole('presentation')
-
-    mockBoundingClientRect(button)
-
-    fireEvent.click(button, { clientX: 200, clientY: 150, detail: 1 })
+    await clickAt(user, button, 200, 150)
     expect(image).toHaveStyle({ transform: 'translate(-25%, -25%) scale(2)' })
 
-    fireEvent.pointerMove(button, { clientX: 400, clientY: 250, pointerType: 'mouse' })
+    await moveMouseTo(user, button, 400, 250)
     expect(image).toHaveStyle({ transform: 'translate(-75%, -75%) scale(2)' })
   })
 
-  it('stops following the mouse at the edges of the image', () => {
-    render(<ZoomableImage src="image.jpg" />)
+  it('stops following the mouse at the edges of the image', async () => {
+    const { button, image, user } = await setupZoomedIn()
 
-    const button = screen.getByRole('button')
-    const image = screen.getByRole('presentation')
-
-    mockBoundingClientRect(button)
-
-    fireEvent.click(button, { clientX: 300, clientY: 200, detail: 1 })
-    fireEvent.pointerMove(button, { clientX: 0, clientY: 600, pointerType: 'mouse' })
+    await moveMouseTo(user, button, 0, 600)
 
     expect(image).toHaveStyle({ transform: 'translate(0%, -100%) scale(2)' })
   })
 
-  it('does not follow the mouse when not zoomed in', () => {
-    render(<ZoomableImage src="image.jpg" />)
+  it('does not follow the mouse when not zoomed in', async () => {
+    const { button, image, user } = setup()
 
-    const button = screen.getByRole('button')
+    await moveMouseTo(user, button, 200, 150)
 
-    mockBoundingClientRect(button)
-
-    fireEvent.pointerMove(button, { clientX: 200, clientY: 150, pointerType: 'mouse' })
-
-    expect(screen.getByRole('presentation')).toHaveStyle({ transform: 'translate(0%, 0%) scale(1)' })
+    expect(image).toHaveStyle({ transform: 'translate(0%, 0%) scale(1)' })
   })
 
-  it('pans the image when dragging with touch', () => {
-    const { button, image } = renderZoomedIn()
+  it('keeps the clicked part of the image in place when zooming in further', async () => {
+    const { button, image, user } = await setupZoomedIn()
 
-    touchDrag(button, 40, 20)
-
-    expect(image).toHaveStyle({ transform: 'translate(-40%, -40%) scale(2)' })
-  })
-
-  it('keeps the tapped part of the image in place when zooming in further', () => {
-    const { button, image } = renderZoomedIn()
-
-    // At 200% centered, the tap at 80% / 20% of the button is on 65% / 35% of the image.
+    // At 200% centered, the click at 80% / 20% of the button is on 65% / 35% of the image.
     // At 400%, that part of the image is shown at the same place with an offset of -180% / -120%.
-    fireEvent.click(button, { clientX: 420, clientY: 140, detail: 1 })
+    await clickAt(user, button, 420, 140)
 
     expect(image).toHaveStyle({ transform: 'translate(-180%, -120%) scale(4)' })
   })
 
-  it('stops panning at the edges of the image when dragging with touch', () => {
-    const { button, image } = renderZoomedIn()
+  it('pans the image when dragging with touch, without changing the zoom level', async () => {
+    const { button, image, user } = await setupZoomedIn()
 
-    touchDrag(button, 1000, -1000)
-
-    expect(image).toHaveStyle({ transform: 'translate(0%, -100%) scale(2)' })
-  })
-
-  it('does not change the zoom level after dragging with touch', () => {
-    const { button, image } = renderZoomedIn()
-
-    touchDrag(button, 40, 20)
-    fireEvent.click(button, { clientX: 340, clientY: 220, detail: 1 })
+    await touchDrag(user, button, 40, 20)
 
     expect(image).toHaveStyle({ transform: 'translate(-40%, -40%) scale(2)' })
   })
 
-  it('changes the zoom level when tapping without dragging', () => {
-    const { button } = renderZoomedIn()
+  it('stops panning at the edges of the image when dragging with touch', async () => {
+    const { button, image, user } = await setupZoomedIn()
 
-    touchDrag(button, 2, 2)
+    await touchDrag(user, button, 1000, -1000)
 
-    expect(button).toHaveAccessibleName('zoom-out')
-
-    // The click the browser fires after the tap should not change the zoom level again
-    fireEvent.click(button, { clientX: 302, clientY: 202, detail: 1 })
-
-    expect(button).toHaveAccessibleName('zoom-out')
+    expect(image).toHaveStyle({ transform: 'translate(0%, -100%) scale(2)' })
   })
 
-  it('changes the zoom level when tapping after dragging with touch', () => {
-    const { button } = renderZoomedIn()
+  it('does not pan when dragging with touch while not zoomed in', async () => {
+    const { button, image, user } = setup()
 
-    touchDrag(button, 40, 20)
-    touchDrag(button, 0, 0)
+    await touchDrag(user, button, 40, 20)
 
-    expect(button).toHaveAccessibleName('zoom-out')
+    expect(image).toHaveStyle({ transform: 'translate(0%, 0%) scale(1)' })
   })
 
-  it('changes the zoom level with the keyboard after dragging with touch', () => {
-    const { button } = renderZoomedIn()
+  it('changes the zoom level once when tapping', async () => {
+    const { button, user } = await setupZoomedIn()
 
-    touchDrag(button, 40, 20)
-    fireEvent.click(button, { detail: 0 })
+    // A small movement is still a tap. The click after the tap should not change the zoom level again.
+    await touchDrag(user, button, 2, 2)
 
     expect(button).toHaveAccessibleName('zoom-out')
   })
 
-  it('does not pan when dragging with touch while not zoomed in', () => {
-    render(<ZoomableImage src="image.jpg" />)
+  it('changes the zoom level when tapping after dragging with touch', async () => {
+    const { button, user } = await setupZoomedIn()
 
-    const button = screen.getByRole('button')
+    await touchDrag(user, button, 40, 20)
+    await touchDrag(user, button, 0, 0)
 
-    mockBoundingClientRect(button)
-    touchDrag(button, 40, 20)
-
-    expect(screen.getByRole('presentation')).toHaveStyle({ transform: 'translate(0%, 0%) scale(1)' })
+    expect(button).toHaveAccessibleName('zoom-out')
   })
 
-  it('only animates the image while zooming or panning with the keyboard', () => {
-    const { image } = renderZoomedIn()
+  it('changes the zoom level with the keyboard after dragging with touch', async () => {
+    const { button, user } = await setupZoomedIn()
 
-    expect(image.className).toMatch(/animating/)
+    await touchDrag(user, button, 40, 20)
 
-    fireEvent.transitionEnd(image)
+    button.focus()
+    await user.keyboard('{Enter}')
 
-    expect(image.className).not.toMatch(/animating/)
+    expect(button).toHaveAccessibleName('zoom-out')
+  })
+
+  it('ignores a cancelled touch, so a mouse click afterwards zooms in only once', async () => {
+    const { button, image, user } = setup()
+
+    // userEvent cannot cancel a pointer, which the browser does when it scrolls the image slider instead
+    fireEvent.pointerDown(button, { clientX: 300, clientY: 200, pointerType: 'touch' })
+    fireEvent.pointerCancel(button, { pointerType: 'touch' })
+
+    await clickAt(user, button, 300, 200)
+
+    expect(image).toHaveStyle({ transform: 'translate(-50%, -50%) scale(2)' })
+  })
+
+  it('does not pan when hovering with a pen', async () => {
+    const { button, image } = await setupZoomedIn()
+
+    // userEvent cannot hover a pen, it only moves a pen while it touches the screen
+    fireEvent.pointerMove(button, { clientX: 340, clientY: 220, pointerType: 'pen' })
+
+    expect(image).toHaveStyle({ transform: 'translate(-50%, -50%) scale(2)' })
   })
 
   it('pans the image with the arrow keys when zoomed in', async () => {
-    const user = userEvent.setup()
-    const { image } = renderZoomedIn()
+    const { button, image, user } = await setupZoomedIn()
 
-    screen.getByRole('button').focus()
+    button.focus()
 
     await user.keyboard('{ArrowRight}{ArrowDown}{ArrowDown}')
     expect(image).toHaveStyle({ transform: 'translate(-60%, -70%) scale(2)' })
@@ -204,50 +199,42 @@ describe('ZoomableImage', () => {
   })
 
   it('stops panning with the arrow keys at the edges of the image', async () => {
-    const user = userEvent.setup()
-    const { image } = renderZoomedIn()
+    const { button, image, user } = await setupZoomedIn()
 
-    screen.getByRole('button').focus()
+    button.focus()
 
     await user.keyboard('{ArrowLeft>6/}{ArrowDown>6/}')
 
     expect(image).toHaveStyle({ transform: 'translate(0%, -100%) scale(2)' })
   })
 
+  // userEvent does not tell whether the default action was prevented, so these tests use fireEvent
   it('does not pan with the arrow keys when not zoomed in', () => {
-    render(<ZoomableImage src="image.jpg" />)
+    const { button, image } = setup()
 
-    const button = screen.getByRole('button')
     const isNotPrevented = fireEvent.keyDown(button, { key: 'ArrowRight' })
 
     // The arrow key should still scroll the image slider
     expect(isNotPrevented).toBe(true)
-    expect(screen.getByRole('presentation')).toHaveStyle({ transform: 'translate(0%, 0%) scale(1)' })
+    expect(image).toHaveStyle({ transform: 'translate(0%, 0%) scale(1)' })
   })
 
-  it('prevents the image slider from scrolling when panning with the arrow keys', () => {
-    const { button } = renderZoomedIn()
+  it('prevents the image slider from scrolling when panning with the arrow keys', async () => {
+    const { button } = await setupZoomedIn()
 
     const isNotPrevented = fireEvent.keyDown(button, { key: 'ArrowRight' })
 
     expect(isNotPrevented).toBe(false)
   })
 
-  it('ignores a cancelled touch, so a mouse click afterwards zooms in only once', () => {
-    render(<ZoomableImage src="image.jpg" />)
+  it('adds an `animating` class while zooming or panning with the keyboard', async () => {
+    const { image } = await setupZoomedIn()
 
-    const button = screen.getByRole('button')
+    expect(image.className).toMatch(/animating/)
 
-    mockBoundingClientRect(button)
+    // userEvent cannot end a CSS transition
+    fireEvent.transitionEnd(image)
 
-    // The browser cancels the touch when it scrolls the image slider instead
-    fireEvent.pointerDown(button, { clientX: 300, clientY: 200, pointerType: 'touch' })
-    fireEvent.pointerCancel(button, { pointerType: 'touch' })
-
-    fireEvent.pointerDown(button, { clientX: 300, clientY: 200, pointerType: 'mouse' })
-    fireEvent.pointerUp(button, { clientX: 300, clientY: 200, pointerType: 'mouse' })
-    fireEvent.click(button, { clientX: 300, clientY: 200, detail: 1 })
-
-    expect(screen.getByRole('presentation')).toHaveStyle({ transform: 'translate(-50%, -50%) scale(2)' })
+    expect(image.className).not.toMatch(/animating/)
   })
 })
