@@ -20,7 +20,7 @@ export const ErrorPage = ({ error, retry }: Props) => {
         span={{ narrow: 4, medium: 6, wide: 6 }}
         start={{ narrow: 1, medium: 2, wide: 4 }}
       >
-        <Heading className="ams-mb-l" level={2}>
+        <Heading className="ams-mb-l" level={1} size="level-2">
           {error.message || t('heading')}
         </Heading>
         <Button onClick={retry}>{t('retry-button')}</Button>
