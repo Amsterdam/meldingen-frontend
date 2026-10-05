@@ -10,10 +10,16 @@ import { ClassificationCombobox } from '~/app/_components'
 type Props = {
   classifications: ClassificationOutput[]
   derivedClassification?: string
+  errorMessage?: string
   isDisabled?: boolean
 }
 
-export const ClassificationField = ({ classifications, derivedClassification, isDisabled = false }: Props) => {
+export const ClassificationField = ({
+  classifications,
+  derivedClassification,
+  errorMessage,
+  isDisabled = false,
+}: Props) => {
   const t = useTranslations('melding-form.classification')
 
   const comboboxRef = useRef<ClassificationComboboxRef | null>(null)
@@ -34,6 +40,7 @@ export const ClassificationField = ({ classifications, derivedClassification, is
     <ClassificationCombobox
       classifications={classifications}
       defaultValue={derivedClassification}
+      errorMessage={errorMessage}
       isDisabled={isDisabled}
       label={t('label')}
       noResultsMessage={t('no-results')}

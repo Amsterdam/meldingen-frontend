@@ -32,7 +32,7 @@ describe('ClassificationField', () => {
     expect(screen.getByRole('combobox', { name: label })).toBeEnabled()
   })
 
-  it('updates the value when the default value changes', () => {
+  it('updates the value when the derivedClassification changes', () => {
     const { rerender } = render(
       <ClassificationField classifications={classifications} derivedClassification="Category 1" />,
     )

@@ -26,7 +26,14 @@ import styles from './MeldingForm.module.css'
 
 type Props = {
   classifications: ClassificationOutput[]
-  defaultValues?: { labels?: number[]; note?: string; primary?: string; source?: string; urgency?: number }
+  defaultValues?: {
+    classificationQuery?: string
+    labels?: number[]
+    note?: string
+    primary?: string
+    source?: string
+    urgency?: number
+  }
   existingId?: number
   existingMelding?: MeldingData
   existingNoteId?: number
@@ -36,11 +43,11 @@ type Props = {
   sources: SourceOutput[]
 }
 
-// Form components can be prefilled on load on the server, where we fill in existing answers from the backend,
-// or in case of an error, where we use the form data provided.
-// If there is form data, it should take priority over the prefilled components from the server.
+// Form data from a failed submission takes priority over server-provided defaults.
 const calculateDefaultValues = (formData?: FormData, defaultValues?: Props['defaultValues']) => {
   const primaryDefaultValue = (formData?.get('primary') as string | null) ?? defaultValues?.primary ?? ''
+  const classificationQueryDefaultValue =
+    (formData?.get('classificationQuery') as string | null) ?? defaultValues?.classificationQuery
   const sourceDefaultValue = (formData?.get('source') as string | null) ?? defaultValues?.source ?? ''
   const labelsDefaultValues = formData?.getAll('labels').map((label) => Number(label)) ?? defaultValues?.labels ?? []
   const rawUrgency = formData?.get('urgency')
@@ -48,7 +55,14 @@ const calculateDefaultValues = (formData?: FormData, defaultValues?: Props['defa
     rawUrgency !== null && rawUrgency !== undefined ? Number(rawUrgency) : (defaultValues?.urgency ?? 0)
   const noteDefaultValue = (formData?.get('addNote') as string | null) ?? defaultValues?.note ?? ''
 
-  return { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue }
+  return {
+    classificationQueryDefaultValue,
+    labelsDefaultValues,
+    noteDefaultValue,
+    primaryDefaultValue,
+    sourceDefaultValue,
+    urgencyDefaultValue,
+  }
 }
 
 const initialState: FormState = {}
@@ -82,10 +96,8 @@ export const MeldingForm = ({
     postMeldingFormAction,
     initialState,
   )
-  const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
-  const { labelsDefaultValues, noteDefaultValue, primaryDefaultValue, sourceDefaultValue, urgencyDefaultValue } =
-    calculateDefaultValues(formData, defaultValues)
+  const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
   // Update document title when there are validation errors or an API error
   const documentTitle = useDocumentTitleOnError({
@@ -102,9 +114,24 @@ export const MeldingForm = ({
     }
   }, [apiError])
 
+  const {
+    classificationQueryDefaultValue,
+    labelsDefaultValues,
+    noteDefaultValue,
+    primaryDefaultValue,
+    sourceDefaultValue,
+    urgencyDefaultValue,
+  } = calculateDefaultValues(formData, defaultValues)
+
+  const classificationDefaultValue = classificationQueryDefaultValue ?? prefetchedMelding?.classificationName ?? ''
+
   const primaryErrorMessage = validationErrors?.find((error) => error.key === 'primary')?.message
   const sourceErrorMessage = validationErrors?.find((error) => error.key === 'source')?.message
   const noteErrorMessage = validationErrors?.find((error) => error.key === 'addNote')?.message
+  const classificationQueryErrorMessage = validationErrors?.find(
+    (error) => error.key === 'classificationQuery',
+  )?.message
+  const classificationIdErrorMessage = validationErrors?.find((error) => error.key === 'classificationId')?.message
 
   return (
     <Grid
@@ -144,7 +171,8 @@ export const MeldingForm = ({
 
             <ClassificationField
               classifications={classifications}
-              derivedClassification={prefetchedMelding?.classificationName}
+              derivedClassification={classificationDefaultValue}
+              errorMessage={classificationQueryErrorMessage ?? classificationIdErrorMessage}
               isDisabled={isPrefetching}
             />
 

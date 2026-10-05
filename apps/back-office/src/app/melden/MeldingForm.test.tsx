@@ -9,6 +9,7 @@ import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import { MeldingForm } from './MeldingForm'
 import { classifications } from '~/mocks/data'
 
+const getClassificationInput = () => screen.getByLabelText('label', { selector: 'input' })
 const getSourceSelect = () => screen.getByLabelText('label', { selector: 'select' })
 
 vi.mock('react', async (importOriginal) => {
@@ -117,6 +118,75 @@ describe('MeldingForm', () => {
     const input = screen.getByRole('textbox', { name: 'Some label' })
 
     expect(input).toHaveValue('')
+  })
+
+  it('renders an error message connected to the classification input when there is a validation error for the classification query field', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([
+      { validationErrors: [{ key: 'classificationQuery', message: 'Classification query error' }] },
+      vi.fn(),
+      false,
+    ])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    const input = getClassificationInput()
+
+    expect(input).toHaveAccessibleDescription('Invoerfout:Classification query error')
+  })
+
+  it('renders an error message connected to the classification input when there is a validation error for the classification id field', () => {
+    ;(useActionState as Mock).mockReturnValueOnce([
+      { validationErrors: [{ key: 'classificationId', message: 'Classification id error' }] },
+      vi.fn(),
+      false,
+    ])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    const input = getClassificationInput()
+
+    expect(input).toHaveAccessibleDescription('Invoerfout:Classification id error')
+  })
+
+  it('prefills the classification input from formData when the action returns formData', () => {
+    const formData = new FormData()
+
+    formData.set('classificationQuery', 'Category 2')
+    ;(useActionState as Mock).mockReturnValueOnce([{ formData }, vi.fn(), false])
+
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(getClassificationInput()).toHaveValue('Category 2')
+  })
+
+  it('prefills the classification input from defaultValues when provided and there is no formData', () => {
+    render(<MeldingForm {...defaultProps} defaultValues={{ classificationQuery: 'Category 1' }} />)
+
+    expect(getClassificationInput()).toHaveValue('Category 1')
+  })
+
+  it('falls back to the prefetched classification when there is no formData and no classification default value', () => {
+    render(
+      <MeldingForm
+        {...defaultProps}
+        existingMelding={{
+          classificationId: 2,
+          classificationName: 'Category 2',
+          createdAt: '2024-01-01',
+          id: 1,
+          publicId: 'ABC-123',
+          token: 'token',
+        }}
+      />,
+    )
+
+    expect(getClassificationInput()).toHaveValue('Category 2')
+  })
+
+  it('falls back to an empty classification input when there is no formData, defaultValues, or prefetched classification', () => {
+    render(<MeldingForm {...defaultProps} />)
+
+    expect(getClassificationInput()).toHaveValue('')
   })
 
   it('renders an error message connected to the source select input when there is a validation error for the source field', () => {
