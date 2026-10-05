@@ -9,6 +9,11 @@
   padding-inline: 0;
 }
 
+.zoomedIn {
+  /* Let a touch drag pan the zoomed image instead of scrolling the image slider */
+  touch-action: none;
+}
+
 .zoomOut {
   cursor: zoom-out;
 }
