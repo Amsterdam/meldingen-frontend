@@ -17,6 +17,7 @@ import { useImperativeHandle, useState } from 'react'
 
 import type { ClassificationOutput } from '@meldingen/api-client'
 
+import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { ListBox, TextInput } from '@meldingen/ui'
 
 import styles from './ClassificationCombobox.module.css'
@@ -99,11 +100,17 @@ export const ClassificationCombobox = ({
         {label}
       </HUILabel>
 
-      {hasErrorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
+      {hasErrorMessage && (
+        <Description as={ErrorMessage} id="classificationId-error">
+          {errorMessage}
+        </Description>
+      )}
 
       <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification ?? null}>
         <input name="classificationId" type="hidden" value={selectedClassification?.id ?? ''} />
         <ComboboxInput
+          aria-describedby={getAriaDescribedBy('classificationId', undefined, errorMessage)}
+          aria-required="true"
           as={TextInput}
           autoComplete="off"
           className={styles.comboboxInput}
