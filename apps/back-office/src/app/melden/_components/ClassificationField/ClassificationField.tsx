@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl'
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import type { ClassificationOutput } from '@meldingen/api-client'
 
