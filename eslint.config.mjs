@@ -187,15 +187,6 @@ export default defineConfig(
     },
   },
 
-  // Limit the number of lines in source files, but ignore test files
-  {
-    files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
-    ignores: ['**/*.test.*'],
-    rules: {
-      'max-lines': ['warn', { max: 150, skipBlankLines: true, skipComments: true }],
-    },
-  },
-
   // Don't force using type over interface in .d.ts files
   {
     files: ['**/*.d.ts'],
