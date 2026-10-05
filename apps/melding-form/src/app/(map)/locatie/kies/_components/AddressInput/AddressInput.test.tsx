@@ -103,7 +103,7 @@ describe('AddressInput', () => {
     expect(coordinatesInput).toHaveValue('')
   })
 
-  it('empties the address while the address of new coordinates is fetched', async () => {
+  it('empties the address while the address of new coordinates is being fetched', async () => {
     const { container, rerender } = render(<AddressInput {...defaultProps} coordinates={coordinates} />)
 
     await waitFor(() => {
