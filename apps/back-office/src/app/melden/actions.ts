@@ -31,6 +31,8 @@ export type ArgsType = {
 }
 
 type ValidationMessages = {
+  classificationIdRequired: string
+  classificationQueryRequired: string
   noteTooLong: string
   primaryRequired: string
   sourceRequired: string
@@ -39,15 +41,40 @@ type ValidationMessages = {
 const requiredString = (message: string) => z.string({ error: message }).min(1, { error: message })
 
 // The order of the keys determines the order of the validation errors
-/* eslint-disable perfectionist/sort-objects */
-const createMeldingFormSchema = ({ noteTooLong, primaryRequired, sourceRequired }: ValidationMessages) =>
-  z.object({
-    primary: requiredString(primaryRequired),
-    source: requiredString(sourceRequired),
-    // The note is validated on its plain-text character count, not on the submitted JSON document
-    addNote: z.number().max(MAX_NOTE_LENGTH, { error: noteTooLong }),
-  })
-/* eslint-enable perfectionist/sort-objects */
+const createMeldingFormSchema = ({
+  classificationIdRequired,
+  classificationQueryRequired,
+  noteTooLong,
+  primaryRequired,
+  sourceRequired,
+}: ValidationMessages) =>
+  z
+    .object({
+      /* eslint-disable perfectionist/sort-objects */
+      primary: requiredString(primaryRequired),
+      classificationQuery: requiredString(classificationQueryRequired),
+      classificationId: z.unknown().optional(),
+      source: requiredString(sourceRequired),
+      addNote: z.number().max(MAX_NOTE_LENGTH, { error: noteTooLong }),
+      /* eslint-enable perfectionist/sort-objects */
+    })
+    .superRefine((data, ctx) => {
+      const hasQueryError = ctx.issues.some(({ path }) => path?.includes('classificationQuery'))
+
+      if (hasQueryError) return
+
+      const result = requiredString(classificationIdRequired).safeParse(data.classificationId)
+
+      // Added to the end of the issues list if the classificationId is invalid
+      if (!result.success) {
+        for (const issue of result.error.issues) {
+          ctx.addIssue({
+            ...issue,
+            path: ['classificationId', ...issue.path],
+          })
+        }
+      }
+    })
 
 const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
   URGENCY_VALUES.includes(value as MeldingOutput['urgency'])
@@ -106,10 +133,18 @@ export const postMeldingForm = async (
   formData.set('addNote', markdown)
 
   const { error: parseError } = createMeldingFormSchema({
+    classificationIdRequired: t('classification.does-not-exist'),
+    classificationQueryRequired: t('classification.required'),
     noteTooLong: t('note.error', { max: MAX_NOTE_LENGTH }),
     primaryRequired: requiredErrorMessage,
     sourceRequired: t('source.error'),
-  }).safeParse({ addNote: characterCount, primary: formDataObj.primary, source: formDataObj.source })
+  }).safeParse({
+    addNote: characterCount,
+    classificationId: formDataObj.classificationId,
+    classificationQuery: formDataObj.classificationQuery,
+    primary: formDataObj.primary,
+    source: formDataObj.source,
+  })
 
   if (parseError) {
     return {
