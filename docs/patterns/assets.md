@@ -34,9 +34,7 @@ A Melding always has one location, even when multiple assets are selected. The l
 The rules:
 
 - A newly selected asset is added to the front of `selectedAssets`, and the location is set to the location of that asset.
-- Deselecting the first asset moves the location to the next asset in the array. Deselecting any other asset doesn't change the location. Deselecting the last remaining asset clears the location.
-
-<!-- TODO: that last sentence isn't currently how it works. Should it? Keeping the last location also isn't correctly implemented: it currently clears the coordinates but keeps the address. -->
+- Deselecting the first asset moves the location to the next asset in the array. Deselecting any other asset doesn't change the location. Deselecting the last remaining asset clears the location: both the coordinate and the address.
 
 - No more than `max_assets` can be selected. Selecting more shows a notification, and the selection doesn't change.
 - Picking a location without an asset (map click, current location or address) clears all selected assets.
