@@ -307,8 +307,8 @@
       "previous": "Vorige",
       "next": "Volgende",
       "thumbnail-button-prefix": "Foto",
-      "zoom-in": "Inzoomen naar {zoomLevel}%",
-      "zoom-out": "Uitzoomen"
+      "zoom-in": "Inzoomen naar {zoomLevel}%. Verschuif de ingezoomde foto met de pijltjestoetsen.",
+      "zoom-out": "Uitzoomen. Verschuif de ingezoomde foto met de pijltjestoetsen."
     }
   },
   "shared": {

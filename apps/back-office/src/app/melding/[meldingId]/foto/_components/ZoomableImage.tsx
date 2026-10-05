@@ -1,4 +1,4 @@
-import type { MouseEvent, PointerEvent } from 'react'
+import type { KeyboardEvent, MouseEvent, PointerEvent } from 'react'
 
 import { Image } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
@@ -16,6 +16,17 @@ const ZOOM_LEVELS = [1, 2, 4]
 // A touch that moves more than this many pixels is a drag, not a tap
 const DRAG_THRESHOLD = 10
 
+// How far an arrow key pans, in percentages of the visible image
+const ARROW_KEY_PAN_STEP = 10
+
+// Pressing an arrow key shows more of the image in that direction, so the image moves the other way
+const ARROW_KEY_DIRECTIONS: Record<string, Point> = {
+  ArrowDown: { x: 0, y: -1 },
+  ArrowLeft: { x: 1, y: 0 },
+  ArrowRight: { x: -1, y: 0 },
+  ArrowUp: { x: 0, y: 1 },
+}
+
 type Props = {
   src: string
 }
@@ -25,7 +36,7 @@ export const ZoomableImage = ({ src }: Props) => {
 
   const [zoomLevelIndex, setZoomLevelIndex] = useState(0)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
-  const [isZooming, setIsZooming] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
 
   const touchStartRef = useRef<{ clientX: number; clientY: number; hasMoved: boolean; offset: Point } | null>(null)
   const isTouchInputRef = useRef(false)
@@ -48,8 +59,25 @@ export const ZoomableImage = ({ src }: Props) => {
     setOffset(clampOffset(nextOffset, nextZoomLevel))
     setZoomLevelIndex(nextZoomLevelIndex)
 
-    // Only animate zooming, so panning follows the pointer without delay
-    setIsZooming(true)
+    // Only animate zooming and keyboard panning, so pointer panning follows the pointer without delay
+    setIsAnimating(true)
+  }
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    const direction = ARROW_KEY_DIRECTIONS[event.key]
+
+    if (!isZoomedIn || !direction) return
+
+    // Prevent the image slider from scrolling to another slide
+    event.preventDefault()
+
+    const pannedOffset = {
+      x: offset.x + direction.x * ARROW_KEY_PAN_STEP,
+      y: offset.y + direction.y * ARROW_KEY_PAN_STEP,
+    }
+
+    setOffset(clampOffset(pannedOffset, zoomLevel))
+    setIsAnimating(true)
   }
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -118,6 +146,7 @@ export const ZoomableImage = ({ src }: Props) => {
     <button
       className={clsx(styles.button, isZoomedIn && styles.zoomedIn, isMaxZoom && styles.zoomOut)}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
       onPointerCancel={handlePointerCancel}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
@@ -129,8 +158,8 @@ export const ZoomableImage = ({ src }: Props) => {
       </span>
       <Image
         alt=""
-        className={clsx(styles.image, isZooming && styles.zooming)}
-        onTransitionEnd={() => setIsZooming(false)}
+        className={clsx(styles.image, isAnimating && styles.animating)}
+        onTransitionEnd={() => setIsAnimating(false)}
         src={src}
         style={{ transform: `translate(${offset.x}%, ${offset.y}%) scale(${zoomLevel})` }}
       />

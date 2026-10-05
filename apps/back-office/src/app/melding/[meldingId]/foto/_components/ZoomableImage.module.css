@@ -28,7 +28,7 @@
   transform-origin: 0 0;
 }
 
-.zooming {
+.animating {
   transition: transform 0.2s ease-out;
 
   @media (prefers-reduced-motion: reduce) {

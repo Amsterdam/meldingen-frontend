@@ -180,13 +180,56 @@ describe('ZoomableImage', () => {
     expect(screen.getByRole('presentation')).toHaveStyle({ transform: 'translate(0%, 0%) scale(1)' })
   })
 
-  it('only animates the image while zooming', () => {
+  it('only animates the image while zooming or panning with the keyboard', () => {
     const { image } = renderZoomedIn()
 
-    expect(image.className).toMatch(/zooming/)
+    expect(image.className).toMatch(/animating/)
 
     fireEvent.transitionEnd(image)
 
-    expect(image.className).not.toMatch(/zooming/)
+    expect(image.className).not.toMatch(/animating/)
+  })
+
+  it('pans the image with the arrow keys when zoomed in', async () => {
+    const user = userEvent.setup()
+    const { image } = renderZoomedIn()
+
+    screen.getByRole('button').focus()
+
+    await user.keyboard('{ArrowRight}{ArrowDown}{ArrowDown}')
+    expect(image).toHaveStyle({ transform: 'translate(-60%, -70%) scale(2)' })
+
+    await user.keyboard('{ArrowLeft}{ArrowLeft}{ArrowUp}')
+    expect(image).toHaveStyle({ transform: 'translate(-40%, -60%) scale(2)' })
+  })
+
+  it('stops panning with the arrow keys at the edges of the image', async () => {
+    const user = userEvent.setup()
+    const { image } = renderZoomedIn()
+
+    screen.getByRole('button').focus()
+
+    await user.keyboard('{ArrowLeft>6/}{ArrowDown>6/}')
+
+    expect(image).toHaveStyle({ transform: 'translate(0%, -100%) scale(2)' })
+  })
+
+  it('does not pan with the arrow keys when not zoomed in', () => {
+    render(<ZoomableImage src="image.jpg" />)
+
+    const button = screen.getByRole('button')
+    const isNotPrevented = fireEvent.keyDown(button, { key: 'ArrowRight' })
+
+    // The arrow key should still scroll the image slider
+    expect(isNotPrevented).toBe(true)
+    expect(screen.getByRole('presentation')).toHaveStyle({ transform: 'translate(0%, 0%) scale(1)' })
+  })
+
+  it('prevents the image slider from scrolling when panning with the arrow keys', () => {
+    const { button } = renderZoomedIn()
+
+    const isNotPrevented = fireEvent.keyDown(button, { key: 'ArrowRight' })
+
+    expect(isNotPrevented).toBe(false)
   })
 })
