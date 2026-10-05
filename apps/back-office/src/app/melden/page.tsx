@@ -58,11 +58,7 @@ const fetchSourcesAndLabels = async () => {
 const fetchClassifications = async () => {
   const { data, error } = await getClassification()
 
-  if (error) {
-    // TODO: Log the error to an error reporting service
-    // eslint-disable-next-line no-console
-    console.error(error)
-  }
+  if (error) throw new Error('Failed to fetch classifications.')
 
   return data ?? []
 }
