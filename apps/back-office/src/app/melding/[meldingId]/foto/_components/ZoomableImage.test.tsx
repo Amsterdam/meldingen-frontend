@@ -5,17 +5,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { ZoomableImage } from './ZoomableImage'
 
 const mockBoundingClientRect = (element: Element) => {
-  vi.spyOn(element, 'getBoundingClientRect').mockReturnValue({
-    bottom: 300,
-    height: 200,
-    left: 100,
-    right: 500,
-    toJSON: vi.fn(),
-    top: 100,
-    width: 400,
-    x: 100,
-    y: 100,
-  })
+  vi.spyOn(element, 'getBoundingClientRect').mockReturnValue(new DOMRect(100, 100, 400, 200))
 }
 
 describe('ZoomableImage', () => {
