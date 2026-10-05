@@ -12,7 +12,8 @@
   flex-direction: column;
 }
 
-.time {
+.time,
+.classification {
   font-weight: var(--ams-typography-body-text-bold-font-weight);
 }
 

@@ -7,9 +7,11 @@ import { useActionState } from 'react'
 import type { Props } from './ChangeCategory'
 
 import { ChangeCategory } from './ChangeCategory'
+import { classifications } from '~/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
+
   return {
     ...(typeof actual === 'object' ? actual : {}),
     useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
@@ -17,23 +19,10 @@ vi.mock('react', async (importOriginal) => {
 })
 
 const defaultProps: Props = {
-  classifications: [
-    {
-      created_at: '2024-01-01T00:00:00Z',
-      id: 2,
-      name: 'Category 1',
-      updated_at: '2024-01-01T00:00:00Z',
-    },
-    {
-      created_at: '2024-01-01T00:00:00Z',
-      id: 3,
-      name: 'Category 2',
-      updated_at: '2024-01-01T00:00:00Z',
-    },
-  ],
+  classifications: classifications,
   meldingClassification: {
     created_at: '2024-01-01T00:00:00Z',
-    id: 2,
+    id: 1,
     name: 'Category 1',
     updated_at: '2024-01-01T00:00:00Z',
   },
@@ -46,6 +35,7 @@ describe('ChangeCategory', () => {
     render(<ChangeCategory {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
+
     expect(backLink).toBeInTheDocument()
     expect(backLink).toHaveAttribute('href', '/melding/123')
   })
@@ -53,17 +43,34 @@ describe('ChangeCategory', () => {
   it('renders the classification options and defaults to the current classification', () => {
     render(<ChangeCategory {...defaultProps} />)
 
-    const select = screen.getByRole('combobox', { name: 'form-labels.classification' })
+    const combobox = screen.getByRole('combobox', { name: 'form-labels.classification' })
 
-    expect(select).toHaveValue('2')
-    expect(screen.getByRole('option', { name: 'Category 1' })).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'Category 2' })).toBeInTheDocument()
+    expect(combobox).toHaveValue('Category 1')
   })
 
-  it('renders a placeholder option when no current classification exists', () => {
+  it('renders a placeholder when no current classification exists', () => {
     render(<ChangeCategory {...defaultProps} meldingClassification={null} />)
 
-    expect(screen.getByRole('option', { name: '-- option-placeholder --' })).toBeInTheDocument()
+    expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveAttribute(
+      'placeholder',
+      'search-placeholder',
+    )
+  })
+
+  it('filters and selects a classification by typing in the combobox input', async () => {
+    const user = userEvent.setup()
+
+    render(<ChangeCategory {...defaultProps} />)
+    const combobox = screen.getByRole('combobox', { name: 'form-labels.classification' })
+
+    await user.clear(combobox)
+    await user.type(combobox, '2')
+
+    expect(screen.queryByRole('option', { name: 'Category 1' })).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('option', { name: 'Category 2' }))
+
+    expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveValue('Category 2')
   })
 
   it('renders the cancel link', () => {
@@ -81,6 +88,7 @@ describe('ChangeCategory', () => {
     render(<ChangeCategory {...defaultProps} />)
 
     const reasonField = screen.getByRole('textbox', { name: 'form-labels.reason' })
+
     await user.type(reasonField, 'abc')
 
     expect(screen.getByRole('status')).toHaveTextContent('3 van 1000 tekens')
@@ -88,14 +96,16 @@ describe('ChangeCategory', () => {
 
   it('displays validation errors and preserves the submitted form data when the action returns validation errors', () => {
     const formData = new FormData()
-    formData.set('classification', '3')
+
+    formData.set('classificationId', '2')
+    formData.set('classificationQuery', 'Category 2')
     formData.set('reason', 'Because this is the right classification')
 
     ;(useActionState as Mock).mockReturnValueOnce([
       {
         formData,
         validationErrors: [
-          { key: 'classification', message: 'classification-required' },
+          { key: 'classificationId', message: 'classification-required' },
           { key: 'reason', message: 'reason-required' },
         ],
       },
@@ -105,16 +115,25 @@ describe('ChangeCategory', () => {
 
     const { container } = render(<ChangeCategory {...defaultProps} />)
 
-    expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveValue('3')
+    expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveValue('Category 2')
+    expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveAccessibleDescription(
+      /classification-required/i,
+    )
+    expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveAttribute('aria-invalid', 'true')
     expect(screen.getByRole('textbox', { name: 'form-labels.reason' })).toHaveValue(
       'Because this is the right classification',
     )
-    expect(container.querySelector('#classification-error')).toHaveTextContent('classification-required')
     expect(container.querySelector('#reason-error')).toHaveTextContent('reason-required')
   })
 
-  it('displays an API error alert with the correct document title', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: { detail: 'Error message' } }, vi.fn(), false])
+  it('displays an API error alert with the correct document title and preserves the form data', () => {
+    const formData = new FormData()
+
+    formData.set('classificationId', '2')
+    formData.set('classificationQuery', 'Category 2')
+    formData.set('reason', 'Because this is the right classification')
+
+    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: { detail: 'Error message' }, formData }, vi.fn(), false])
 
     const { container } = render(<ChangeCategory {...defaultProps} />)
 
@@ -126,17 +145,24 @@ describe('ChangeCategory', () => {
     expect(alert).toBeInTheDocument()
     expect(heading).toBeInTheDocument()
     expect(alert).toHaveTextContent('description')
+    expect(screen.getByRole('combobox', { name: 'form-labels.classification' })).toHaveValue('Category 2')
+    expect(screen.getByRole('textbox', { name: 'form-labels.reason' })).toHaveValue(
+      'Because this is the right classification',
+    )
     expect(document.title).toBe('errors.reclassification-failed-heading - metadata.title')
   })
+
   it('submits the form when the submit button is clicked', async () => {
     const user = userEvent.setup()
 
     const mockFormAction = vi.fn()
+
     ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<ChangeCategory {...defaultProps} />)
 
     const submitButton = screen.getByRole('button', { name: 'submit-button' })
+
     await user.click(submitButton)
 
     expect(mockFormAction).toHaveBeenCalled()
