@@ -120,16 +120,17 @@ describe('ImageSlider', () => {
     const firstSlide = screen.getAllByRole('tabpanel')[0]
     const firstImage = within(firstSlide).getByRole('presentation')
 
-    await user.click(within(firstSlide).getByRole('button', { name: 'zoom-in' }))
+    within(firstSlide).getByRole('button', { name: 'zoom-in' }).focus()
+    await user.keyboard('{Enter}')
 
-    expect(firstImage).toHaveStyle({ transform: 'scale(2)' })
+    expect(firstImage).toHaveStyle({ transform: 'translate(-50%, -50%) scale(2)' })
 
     await user.click(screen.getByRole('button', { name: 'next' }))
 
     // The image is remounted, so we query it again
     const resetImage = within(firstSlide).getByRole('presentation')
 
-    expect(resetImage).toHaveStyle({ transform: 'scale(1)' })
+    expect(resetImage).toHaveStyle({ transform: 'translate(0%, 0%) scale(1)' })
   })
 
   it('renders thumbnails', () => {

@@ -5,50 +5,16 @@ import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 
+import type { Point } from './_utils'
+
+import { clampOffset, getPointerPositionInPercentages } from './_utils'
+
 import styles from './ZoomableImage.module.css'
 
 const ZOOM_LEVELS = [1, 2, 4]
 
-const CENTER = { x: 50, y: 50 }
-
 // A touch that moves more than this many pixels is a drag, not a tap
 const DRAG_THRESHOLD = 10
-
-type Origin = typeof CENTER
-
-const clampPercentage = (value: number) => Math.min(Math.max(value, 0), 100)
-
-const getPointerPositionInPercentages = (event: MouseEvent<HTMLButtonElement>) => {
-  const { height, left, top, width } = event.currentTarget.getBoundingClientRect()
-
-  return {
-    x: clampPercentage(((event.clientX - left) / width) * 100),
-    y: clampPercentage(((event.clientY - top) / height) * 100),
-  }
-}
-
-/**
- * Moves the transform origin so the image follows the finger.
- * When zoomed in by a factor of `zoomLevel`, moving the origin by 1% moves the image by `zoomLevel - 1`% in the opposite direction.
- */
-const getDraggedOrigin = (startOrigin: Origin, deltaX: number, deltaY: number, rect: DOMRect, zoomLevel: number) => ({
-  x: clampPercentage(startOrigin.x - (deltaX / (rect.width * (zoomLevel - 1))) * 100),
-  y: clampPercentage(startOrigin.y - (deltaY / (rect.height * (zoomLevel - 1))) * 100),
-})
-
-/**
- * Returns the transform origin that keeps the part of the image under the tap in the same place when zooming.
- * With zoom level `s` and origin `o`, the image point `p` is shown at `o + s * (p - o)`.
- */
-const getZoomedOrigin = (origin: Origin, tap: Origin, zoomLevel: number, nextZoomLevel: number) => {
-  const getAxis = (originAxis: number, tapAxis: number) => {
-    const imagePoint = originAxis + (tapAxis - originAxis) / zoomLevel
-
-    return clampPercentage((tapAxis - nextZoomLevel * imagePoint) / (1 - nextZoomLevel))
-  }
-
-  return { x: getAxis(origin.x, tap.x), y: getAxis(origin.y, tap.y) }
-}
 
 type Props = {
   src: string
@@ -58,79 +24,104 @@ export const ZoomableImage = ({ src }: Props) => {
   const t = useTranslations('photos.image-slider')
 
   const [zoomLevelIndex, setZoomLevelIndex] = useState(0)
-  const [origin, setOrigin] = useState(CENTER)
+  const [offset, setOffset] = useState({ x: 0, y: 0 })
+  const [isZooming, setIsZooming] = useState(false)
 
-  const dragStartRef = useRef<{ clientX: number; clientY: number; origin: Origin } | null>(null)
-  const hasDraggedRef = useRef(false)
+  const touchStartRef = useRef<{ clientX: number; clientY: number; hasMoved: boolean; offset: Point } | null>(null)
+  const isTouchInputRef = useRef(false)
 
   const zoomLevel = ZOOM_LEVELS[zoomLevelIndex]
   const isZoomedIn = zoomLevel > 1
   const isMaxZoom = zoomLevelIndex === ZOOM_LEVELS.length - 1
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    // A click from the keyboard has no pointer position (detail is 0), so we zoom in on the center
-    const isKeyboardClick = event.detail === 0
-
-    // A finished drag should not also change the zoom level
-    if (hasDraggedRef.current && !isKeyboardClick) return
-
+  const zoomAt = (point: Point) => {
     const nextZoomLevelIndex = (zoomLevelIndex + 1) % ZOOM_LEVELS.length
     const nextZoomLevel = ZOOM_LEVELS[nextZoomLevelIndex]
+    const zoomFactor = nextZoomLevel / zoomLevel
 
-    // Keep the origin when zooming out, so the image zooms out from where it was
-    if (nextZoomLevel > 1) {
-      const tap = isKeyboardClick ? CENTER : getPointerPositionInPercentages(event)
-
-      setOrigin(getZoomedOrigin(origin, tap, zoomLevel, nextZoomLevel))
+    // Keep the part of the image under the point in the same place
+    const nextOffset = {
+      x: point.x - (point.x - offset.x) * zoomFactor,
+      y: point.y - (point.y - offset.y) * zoomFactor,
     }
 
+    setOffset(clampOffset(nextOffset, nextZoomLevel))
     setZoomLevelIndex(nextZoomLevelIndex)
+
+    // Only animate zooming, so panning follows the pointer without delay
+    setIsZooming(true)
+  }
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    // A click from the keyboard has no pointer position (detail is 0), so we zoom in on the center
+    if (event.detail === 0) {
+      zoomAt({ x: 50, y: 50 })
+    } else if (!isTouchInputRef.current) {
+      zoomAt(getPointerPositionInPercentages(event))
+    }
   }
 
   const handlePointerDown = (event: PointerEvent<HTMLButtonElement>) => {
-    hasDraggedRef.current = false
+    isTouchInputRef.current = event.pointerType !== 'mouse'
 
-    if (!isZoomedIn || event.pointerType === 'mouse') return
+    if (!isTouchInputRef.current) return
 
-    dragStartRef.current = { clientX: event.clientX, clientY: event.clientY, origin }
+    touchStartRef.current = { clientX: event.clientX, clientY: event.clientY, hasMoved: false, offset }
   }
 
   const handlePointerMove = (event: PointerEvent<HTMLButtonElement>) => {
-    if (!isZoomedIn) return
-
     // A mouse pans by hovering, touch and pen pan by dragging
     if (event.pointerType === 'mouse') {
-      setOrigin(getPointerPositionInPercentages(event))
+      if (!isZoomedIn) return
+
+      const pointer = getPointerPositionInPercentages(event)
+
+      setOffset(clampOffset({ x: pointer.x * (1 - zoomLevel), y: pointer.y * (1 - zoomLevel) }, zoomLevel))
 
       return
     }
 
-    const dragStart = dragStartRef.current
+    const touchStart = touchStartRef.current
 
-    if (!dragStart) return
+    if (!touchStart) return
 
-    const deltaX = event.clientX - dragStart.clientX
-    const deltaY = event.clientY - dragStart.clientY
+    const deltaX = event.clientX - touchStart.clientX
+    const deltaY = event.clientY - touchStart.clientY
 
-    if (Math.hypot(deltaX, deltaY) > DRAG_THRESHOLD) hasDraggedRef.current = true
+    if (Math.hypot(deltaX, deltaY) > DRAG_THRESHOLD) touchStart.hasMoved = true
 
-    const rect = event.currentTarget.getBoundingClientRect()
+    if (!isZoomedIn) return
 
-    setOrigin(getDraggedOrigin(dragStart.origin, deltaX, deltaY, rect, zoomLevel))
+    const { height, width } = event.currentTarget.getBoundingClientRect()
+    const draggedOffset = {
+      x: touchStart.offset.x + (deltaX / width) * 100,
+      y: touchStart.offset.y + (deltaY / height) * 100,
+    }
+
+    setOffset(clampOffset(draggedOffset, zoomLevel))
   }
 
-  const handlePointerEnd = () => {
-    dragStartRef.current = null
+  const handlePointerUp = (event: PointerEvent<HTMLButtonElement>) => {
+    const touchStart = touchStartRef.current
+
+    touchStartRef.current = null
+
+    // A drag should not also change the zoom level
+    if (touchStart && !touchStart.hasMoved) zoomAt(getPointerPositionInPercentages(event))
+  }
+
+  const handlePointerCancel = () => {
+    touchStartRef.current = null
   }
 
   return (
     <button
       className={clsx(styles.button, isZoomedIn && styles.zoomedIn, isMaxZoom && styles.zoomOut)}
       onClick={handleClick}
-      onPointerCancel={handlePointerEnd}
+      onPointerCancel={handlePointerCancel}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerEnd}
+      onPointerUp={handlePointerUp}
       type="button"
     >
       <span className="ams-visually-hidden">
@@ -138,9 +129,10 @@ export const ZoomableImage = ({ src }: Props) => {
       </span>
       <Image
         alt=""
-        className={styles.image}
+        className={clsx(styles.image, isZooming && styles.zooming)}
+        onTransitionEnd={() => setIsZooming(false)}
         src={src}
-        style={{ transform: `scale(${zoomLevel})`, transformOrigin: `${origin.x}% ${origin.y}%` }}
+        style={{ transform: `translate(${offset.x}%, ${offset.y}%) scale(${zoomLevel})` }}
       />
     </button>
   )
