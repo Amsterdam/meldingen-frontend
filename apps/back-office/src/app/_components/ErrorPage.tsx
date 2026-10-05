@@ -10,7 +10,7 @@ type Props = {
   retry: () => void
 }
 
-export const ErrorPage = ({ error, retry }: Props) => {
+export const ErrorPage = ({ retry }: Props) => {
   const t = useTranslations('shared.error')
 
   return (
@@ -21,8 +21,9 @@ export const ErrorPage = ({ error, retry }: Props) => {
         start={{ narrow: 1, medium: 2, wide: 4 }}
       >
         <Heading className="ams-mb-l" level={1} size="level-2">
-          {error.message || t('heading')}
+          {t('heading')}
         </Heading>
+
         <Button onClick={retry}>{t('retry-button')}</Button>
       </Grid.Cell>
     </Grid>
