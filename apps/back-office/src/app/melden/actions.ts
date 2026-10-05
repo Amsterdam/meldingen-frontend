@@ -2,6 +2,7 @@
 
 import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
+import * as z from 'zod'
 
 import type { MeldingOutput } from '@meldingen/api-client'
 
@@ -28,6 +29,25 @@ export type ArgsType = {
   existingToken?: string
   requiredErrorMessage: string
 }
+
+type ValidationMessages = {
+  noteTooLong: string
+  primaryRequired: string
+  sourceRequired: string
+}
+
+const requiredString = (message: string) => z.string({ error: message }).min(1, { error: message })
+
+// The order of the keys determines the order of the validation errors
+/* eslint-disable perfectionist/sort-objects */
+const createMeldingFormSchema = ({ noteTooLong, primaryRequired, sourceRequired }: ValidationMessages) =>
+  z.object({
+    primary: requiredString(primaryRequired),
+    source: requiredString(sourceRequired),
+    // The note is validated on its plain-text character count, not on the submitted JSON document
+    addNote: z.number().max(MAX_NOTE_LENGTH, { error: noteTooLong }),
+  })
+/* eslint-enable perfectionist/sort-objects */
 
 const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
   URGENCY_VALUES.includes(value as MeldingOutput['urgency'])
@@ -85,17 +105,17 @@ export const postMeldingForm = async (
   // its `defaultValue` (via contentType: 'markdown') if the form is redisplayed after an error.
   formData.set('addNote', markdown)
 
-  // Return validation errors if required fields are missing
-  const validationErrors = [
-    ...(!formDataObj.primary ? [{ key: 'primary', message: requiredErrorMessage }] : []),
-    ...(!formDataObj.source ? [{ key: 'source', message: t('source.error') }] : []),
-    ...(characterCount > MAX_NOTE_LENGTH
-      ? [{ key: 'addNote', message: t('note.error', { max: MAX_NOTE_LENGTH }) }]
-      : []),
-  ]
+  const { error: parseError } = createMeldingFormSchema({
+    noteTooLong: t('note.error', { max: MAX_NOTE_LENGTH }),
+    primaryRequired: requiredErrorMessage,
+    sourceRequired: t('source.error'),
+  }).safeParse({ addNote: characterCount, primary: formDataObj.primary, source: formDataObj.source })
 
-  if (validationErrors.length > 0) {
-    return { formData, validationErrors }
+  if (parseError) {
+    return {
+      formData,
+      validationErrors: parseError.issues.map(({ message, path }) => ({ key: String(path[0]), message })),
+    }
   }
 
   const urgencyRaw = formDataObj.urgency
