@@ -1,0 +1,28 @@
+.button {
+  background: none;
+  border: 0;
+  cursor: zoom-in;
+  display: flex;
+  outline-offset: var(--ams-focus-outline-offset);
+  overflow: hidden; /* Clip the zoomed image to the original image size */
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+.zoomOut {
+  cursor: zoom-out;
+}
+
+.image {
+  aspect-ratio: auto; /* Reset the aspect ratio set by the design system */
+  inline-size: auto; /* Reset the inline size set by the design system */
+
+  /* Size the image relative to the image container, because the button around it has no definite size */
+  max-block-size: 100cqb;
+  max-inline-size: 100cqi;
+  transition: transform 0.2s ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}

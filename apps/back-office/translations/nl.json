@@ -306,7 +306,9 @@
     "image-slider": {
       "previous": "Vorige",
       "next": "Volgende",
-      "thumbnail-button-prefix": "Foto"
+      "thumbnail-button-prefix": "Foto",
+      "zoom-in": "Inzoomen naar {zoomLevel}%",
+      "zoom-out": "Uitzoomen"
     }
   },
   "shared": {
