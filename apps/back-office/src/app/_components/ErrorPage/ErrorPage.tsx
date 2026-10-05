@@ -1,5 +1,4 @@
 import { useTranslations } from 'next-intl'
-import React from 'react'
 
 import { Button, Grid, Heading } from '@meldingen/ui'
 
