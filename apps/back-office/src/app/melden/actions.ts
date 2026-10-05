@@ -67,9 +67,9 @@ const createOrUpdateMelding = async (text: string, id?: number, token?: string) 
       path: { melding_id: id },
       query: { token },
     })
-  } else {
-    return await postMelding({ body: { text } })
   }
+
+  return await postMelding({ body: { text } })
 }
 
 const createOrUpdateNote = async (isEmpty: boolean, markdown: string, meldingId: number, noteId?: number) => {
@@ -150,10 +150,9 @@ export const postMeldingForm = async (
 
   if (error) return { apiError: error, formData }
 
-  const { classification, created_at, id, public_id, token } = data
+  const { created_at, id, public_id, token } = data
 
   const meldingData = {
-    classificationId: classification?.id,
     createdAt: created_at,
     id,
     publicId: public_id,
@@ -162,6 +161,7 @@ export const postMeldingForm = async (
 
   const { error: updateMeldingError } = await patchMeldingByMeldingId({
     body: {
+      classification_id: Number(formDataObj.classificationId),
       label_ids: formData.getAll('labels').map((label) => Number(label)),
       source_id: Number(formDataObj.source),
       urgency: urgencyNumber,
@@ -176,13 +176,12 @@ export const postMeldingForm = async (
   if (result?.error) return { apiError: result.error, formData }
 
   const params = new URLSearchParams({
+    classification_id: String(formDataObj.classificationId),
     created_at: meldingData.createdAt,
     id: String(meldingData.id),
     public_id: meldingData.publicId,
     token: meldingData.token,
   })
-
-  if (meldingData.classificationId) params.set('classification_id', String(meldingData.classificationId))
 
   redirect(`${getClientEnv().NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`)
 }
