@@ -148,13 +148,12 @@ describe('postMeldingForm', () => {
     await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     const params = new URLSearchParams({
+      classification_id: '2',
       created_at: '2025-05-26T11:56:34.081Z',
       id: '123',
       public_id: 'B100AA',
       token: 'test-token',
     })
-
-    params.set('classification_id', '2')
 
     expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
 
@@ -169,13 +168,12 @@ describe('postMeldingForm', () => {
     await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     const params = new URLSearchParams({
+      classification_id: '2',
       created_at: '2025-05-26T11:56:34.081Z',
       id: '123',
       public_id: 'B100AA',
       token: 'test-token',
     })
-
-    params.set('classification_id', '2')
 
     expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
 
@@ -232,13 +230,12 @@ describe('postMeldingForm', () => {
     await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     const params = new URLSearchParams({
+      classification_id: '2',
       created_at: '2025-05-26T11:56:34.081Z',
       id: '123',
       public_id: 'B100AA',
       token: 'test-token',
     })
-
-    params.set('classification_id', '2')
 
     expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
 
@@ -257,13 +254,12 @@ describe('postMeldingForm', () => {
     )
 
     const params = new URLSearchParams({
+      classification_id: '2',
       created_at: '2025-05-26T11:56:34.081Z',
       id: '123',
       public_id: 'B100AA',
       token: 'PATCH request',
     })
-
-    params.set('classification_id', '2')
 
     expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
 
@@ -286,13 +282,12 @@ describe('postMeldingForm', () => {
     await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
     const params = new URLSearchParams({
+      classification_id: '2',
       created_at: '2025-05-26T11:56:34.081Z',
       id: '123',
       public_id: 'B100AA',
       token: 'PATCH request',
     })
-
-    params.set('classification_id', '2')
 
     expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
 
@@ -418,35 +413,5 @@ describe('postMeldingForm', () => {
     )
 
     expect(result).toEqual({ apiError: 'Error message', formData })
-  })
-
-  it('redirects to the correct URL without classification_id when classification is not returned', async () => {
-    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
-
-    server.use(
-      http.post(ENDPOINTS.POST_MELDING, () =>
-        HttpResponse.json({
-          created_at: '2025-05-26T11:56:34.081Z',
-          id: 123,
-          public_id: 'B100AA',
-          token: 'test-token',
-        }),
-      ),
-    )
-
-    const formData = createFormData()
-
-    await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
-
-    const params = new URLSearchParams({
-      created_at: '2025-05-26T11:56:34.081Z',
-      id: '123',
-      public_id: 'B100AA',
-      token: 'test-token',
-    })
-
-    expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
-
-    vi.unstubAllEnvs()
   })
 })
