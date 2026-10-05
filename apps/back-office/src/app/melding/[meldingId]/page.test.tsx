@@ -40,7 +40,7 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  it('throws when getMeldingByMeldingId returns an error or no data', async () => {
+  it('throws when getMeldingByMeldingId returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 500 })))
 
     const params = Promise.resolve({ meldingId: 123 })
