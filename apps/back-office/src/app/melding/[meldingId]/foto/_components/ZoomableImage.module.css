@@ -10,8 +10,11 @@
 }
 
 .zoomedIn {
-  /* Let a touch drag pan the zoomed image instead of scrolling the image slider */
-  touch-action: none;
+  /*
+   * Let a touch drag pan the zoomed image instead of scrolling the image slider.
+   * Pinch-zoom stays available, so users can still zoom the page.
+   */
+  touch-action: pinch-zoom;
 }
 
 .zoomOut {

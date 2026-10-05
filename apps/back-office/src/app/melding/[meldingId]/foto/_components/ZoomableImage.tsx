@@ -38,7 +38,13 @@ export const ZoomableImage = ({ src }: Props) => {
   const [offset, setOffset] = useState({ x: 0, y: 0 })
   const [isAnimating, setIsAnimating] = useState(false)
 
-  const touchStartRef = useRef<{ clientX: number; clientY: number; hasMoved: boolean; offset: Point } | null>(null)
+  const touchStartRef = useRef<{
+    clientX: number
+    clientY: number
+    hasMoved: boolean
+    offset: Point
+    pointerId: number
+  } | null>(null)
   const isTouchInputRef = useRef(false)
 
   const zoomLevel = ZOOM_LEVELS[zoomLevelIndex]
@@ -92,9 +98,16 @@ export const ZoomableImage = ({ src }: Props) => {
   const handlePointerDown = (event: PointerEvent<HTMLButtonElement>) => {
     isTouchInputRef.current = event.pointerType !== 'mouse'
 
-    if (!isTouchInputRef.current) return
+    // Only the first finger pans or taps, a second finger is ignored
+    if (!isTouchInputRef.current || touchStartRef.current) return
 
-    touchStartRef.current = { clientX: event.clientX, clientY: event.clientY, hasMoved: false, offset }
+    touchStartRef.current = {
+      clientX: event.clientX,
+      clientY: event.clientY,
+      hasMoved: false,
+      offset,
+      pointerId: event.pointerId,
+    }
   }
 
   // Pointer panning should follow the pointer without delay, so it also stops a running zoom animation
@@ -117,7 +130,7 @@ export const ZoomableImage = ({ src }: Props) => {
 
     const touchStart = touchStartRef.current
 
-    if (!touchStart) return
+    if (!touchStart || touchStart.pointerId !== event.pointerId) return
 
     const deltaX = event.clientX - touchStart.clientX
     const deltaY = event.clientY - touchStart.clientY
@@ -137,13 +150,17 @@ export const ZoomableImage = ({ src }: Props) => {
   const handlePointerUp = (event: PointerEvent<HTMLButtonElement>) => {
     const touchStart = touchStartRef.current
 
+    if (!touchStart || touchStart.pointerId !== event.pointerId) return
+
     touchStartRef.current = null
 
     // A drag should not also change the zoom level
-    if (touchStart && !touchStart.hasMoved) zoomAt(getPointerPositionInPercentages(event))
+    if (!touchStart.hasMoved) zoomAt(getPointerPositionInPercentages(event))
   }
 
-  const handlePointerCancel = () => {
+  const handlePointerCancel = (event: PointerEvent<HTMLButtonElement>) => {
+    if (touchStartRef.current?.pointerId !== event.pointerId) return
+
     touchStartRef.current = null
   }
 

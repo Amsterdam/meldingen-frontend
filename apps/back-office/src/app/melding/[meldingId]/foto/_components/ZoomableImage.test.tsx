@@ -275,4 +275,31 @@ describe('ZoomableImage', () => {
 
     expect(image.className).not.toMatch(/animating/)
   })
+
+  it('ignores a second finger, so releasing the dragging finger does not change the zoom level', async () => {
+    const { button, image, user } = await setupZoomedIn()
+
+    await user.pointer([
+      { coords: { clientX: 300, clientY: 200 }, keys: '[TouchA>]', target: button },
+      { coords: { clientX: 340, clientY: 220 }, pointerName: 'TouchA' },
+      { coords: { clientX: 200, clientY: 150 }, keys: '[TouchB>]', target: button },
+      { keys: '[/TouchA]' },
+      { keys: '[/TouchB]' },
+    ])
+
+    expect(image).toHaveStyle({ transform: 'translate(-40%, -40%) scale(2)' })
+    expect(button).toHaveAccessibleName('zoom-in')
+  })
+
+  it('keeps panning with the first finger while a second finger is down', async () => {
+    const { button, image, user } = await setupZoomedIn()
+
+    await user.pointer([
+      { coords: { clientX: 300, clientY: 200 }, keys: '[TouchA>]', target: button },
+      { coords: { clientX: 200, clientY: 150 }, keys: '[TouchB>]', target: button },
+      { coords: { clientX: 340, clientY: 220 }, pointerName: 'TouchA' },
+    ])
+
+    expect(image).toHaveStyle({ transform: 'translate(-40%, -40%) scale(2)' })
+  })
 })
