@@ -5,10 +5,10 @@ import { vi } from 'vitest'
 import { ErrorPage } from './ErrorPage'
 
 describe('ErrorPage', () => {
-  it('renders the error message as the heading and shows the retry button', () => {
+  it('renders the translated heading and shows the retry button', () => {
     render(<ErrorPage error={new Error('Something went wrong')} retry={vi.fn()} />)
 
-    expect(screen.getByRole('heading', { level: 2, name: 'Something went wrong' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'title' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'retry-button' })).toBeInTheDocument()
   })
 
