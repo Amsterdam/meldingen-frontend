@@ -42,6 +42,7 @@ export const ClassificationCombobox = ({
   placeholder,
 }: Props) => {
   const [value, setValue] = useState(defaultValue)
+  const [filterValue, setFilterValue] = useState('')
   const comboboxButtonRef = useRef<HTMLButtonElement>(null)
 
   // The input value is the source of truth, so typing an exact name counts as a selection too
@@ -49,23 +50,27 @@ export const ClassificationCombobox = ({
   const hasErrorMessage = Boolean(errorMessage)
 
   const filteredClassifications =
-    value === ''
+    filterValue === ''
       ? classifications
       : classifications.filter((classification) =>
-          classification.name.toLocaleLowerCase().includes(value.toLocaleLowerCase()),
+          classification.name.toLocaleLowerCase().includes(filterValue.toLocaleLowerCase()),
         )
 
   const handleChange = (classification: ClassificationOutput | null) => {
     if (!classification) return
 
     setValue(classification.name)
+    setFilterValue('')
   }
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value)
+    setFilterValue(event.target.value)
   }
 
   const handleInputClick = (event: MouseEvent<HTMLInputElement>) => {
+    setFilterValue('')
+
     if (event.currentTarget.getAttribute('aria-expanded') === 'false') {
       comboboxButtonRef.current?.click()
     }
@@ -79,7 +84,7 @@ export const ClassificationCombobox = ({
       {hasErrorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Combobox as="div" onChange={handleChange} value={selectedClassification ?? null}>
         <input name="classificationId" type="hidden" value={selectedClassification?.id ?? ''} />
-        <ComboboxButton aria-hidden hidden ref={comboboxButtonRef} />
+        <ComboboxButton hidden ref={comboboxButtonRef} />
         <ComboboxInput
           as={TextInput}
           autoComplete="off"

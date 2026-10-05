@@ -37,10 +37,10 @@ describe('ClassificationCombobox', () => {
     expect(getHiddenInput(container)).toHaveValue('')
   })
 
-  it('opens the classification options when the combobox is clicked', async () => {
+  it('shows all classification options when a prefilled combobox is clicked', async () => {
     const user = userEvent.setup()
 
-    render(<ClassificationCombobox {...defaultProps} />)
+    render(<ClassificationCombobox {...defaultProps} defaultValue="Category 1" />)
 
     await user.tab()
 
@@ -49,6 +49,7 @@ describe('ClassificationCombobox', () => {
     await user.click(screen.getByRole('combobox'))
 
     expect(screen.getByRole('option', { name: 'Category 1' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'Category 2' })).toBeInTheDocument()
   })
 
   it('renders the label, error message and invalid state', () => {
