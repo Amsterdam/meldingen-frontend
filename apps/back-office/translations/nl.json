@@ -36,7 +36,9 @@
     },
     "classification": {
       "label": "Wat is de categorie van de melding?",
-      "no-results": "Geen categorie gevonden"
+      "no-results": "Geen categorie gevonden",
+      "required": "Vul een categorie in.",
+      "does-not-exist": "Deze categorie bestaat niet. Kies een categorie uit de lijst."
     },
     "urgency-label": "Wat is de urgentie?",
     "labels-label": "Wat is het label?",
