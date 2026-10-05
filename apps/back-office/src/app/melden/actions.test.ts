@@ -20,25 +20,31 @@ const noteDoc = (text: string) =>
     type: 'doc',
   })
 
+const redirectBaseUrl = 'testBaseUrl'
+
 const createFormData = (fields: Record<string, string> = {}): FormData => {
   const formData = new FormData()
 
   // Set default values for required fields
   formData.set('primary', 'Test')
-  formData.set('source', 'Test')
+  formData.set('classificationId', '2')
+  formData.set('classificationQuery', 'Category 2')
+  formData.set('source', '1')
   formData.set('urgency', '1')
   formData.set('addNote', '')
 
   for (const [key, value] of Object.entries(fields)) {
     formData.set(key, value)
   }
+
   return formData
 }
 
 describe('postMeldingForm', () => {
   it('returns a custom validation error when primary question is not answered', async () => {
-    const formData = new FormData()
-    formData.set('source', 'Test')
+    const formData = createFormData()
+
+    formData.delete('primary')
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -48,9 +54,37 @@ describe('postMeldingForm', () => {
     })
   })
 
+  it('returns a validation error when classification question is not answered', async () => {
+    const formData = createFormData()
+
+    formData.delete('classificationId')
+    formData.delete('classificationQuery')
+
+    const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'classificationQuery', message: 'classification.required' }],
+    })
+  })
+
+  it('returns a validation error when classification query is filled but no matching classification id is submitted', async () => {
+    const formData = createFormData()
+
+    formData.delete('classificationId')
+
+    const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
+
+    expect(result).toEqual({
+      formData,
+      validationErrors: [{ key: 'classificationId', message: 'classification.does-not-exist' }],
+    })
+  })
+
   it('returns a validation error when source question is not answered', async () => {
-    const formData = new FormData()
-    formData.set('primary', 'Test')
+    const formData = createFormData()
+
+    formData.delete('source')
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
@@ -61,9 +95,8 @@ describe('postMeldingForm', () => {
   })
 
   it('returns a validation error when note is more than the max amount of characters', async () => {
-    const formData = new FormData()
-    formData.set('primary', 'Test')
-    formData.set('source', 'Test')
+    const formData = createFormData()
+
     formData.set('addNote', noteDoc('a'.repeat(MAX_NOTE_LENGTH + 1)))
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
@@ -74,8 +107,13 @@ describe('postMeldingForm', () => {
     })
   })
 
-  it('returns 3 validation errors when primary and source questions are not answered and note is too long', async () => {
-    const formData = new FormData()
+  it('returns validation errors in schema order when required fields are missing and the note is too long', async () => {
+    const formData = createFormData()
+
+    formData.delete('primary')
+    formData.delete('classificationId')
+    formData.delete('classificationQuery')
+    formData.delete('source')
     formData.set('addNote', noteDoc('a'.repeat(MAX_NOTE_LENGTH + 1)))
 
     const result = await postMeldingForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
@@ -84,6 +122,7 @@ describe('postMeldingForm', () => {
       formData,
       validationErrors: [
         { key: 'primary', message: 'Dit veld is verplicht.' },
+        { key: 'classificationQuery', message: 'classification.required' },
         { key: 'source', message: 'source.error' },
         { key: 'addNote', message: 'note.error' },
       ],
@@ -102,7 +141,7 @@ describe('postMeldingForm', () => {
   })
 
   it('falls back to a POST call when prefetchedMelding contains invalid JSON', async () => {
-    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
+    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', redirectBaseUrl)
 
     const formData = createFormData({ prefetchedMelding: 'not-valid-json' })
 
@@ -114,6 +153,7 @@ describe('postMeldingForm', () => {
       public_id: 'B100AA',
       token: 'test-token',
     })
+
     params.set('classification_id', '2')
 
     expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
@@ -122,7 +162,7 @@ describe('postMeldingForm', () => {
   })
 
   it('falls back to a POST call when prefetchedMelding contains valid JSON that does not conform to the expected structure', async () => {
-    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
+    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', redirectBaseUrl)
 
     const formData = createFormData({ prefetchedMelding: JSON.stringify({ invalid: 'structure' }) })
 
@@ -134,6 +174,7 @@ describe('postMeldingForm', () => {
       public_id: 'B100AA',
       token: 'test-token',
     })
+
     params.set('classification_id', '2')
 
     expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
@@ -184,7 +225,7 @@ describe('postMeldingForm', () => {
   })
 
   it('redirects to the correct URL when postMeldingForm is successful', async () => {
-    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
+    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', redirectBaseUrl)
 
     const formData = createFormData()
 
@@ -196,6 +237,7 @@ describe('postMeldingForm', () => {
       public_id: 'B100AA',
       token: 'test-token',
     })
+
     params.set('classification_id', '2')
 
     expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
@@ -204,7 +246,7 @@ describe('postMeldingForm', () => {
   })
 
   it('uses a PATCH request when id and token are passed to postMeldingForm', async () => {
-    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
+    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', redirectBaseUrl)
 
     const formData = createFormData()
 
@@ -220,6 +262,7 @@ describe('postMeldingForm', () => {
       public_id: 'B100AA',
       token: 'PATCH request',
     })
+
     params.set('classification_id', '2')
 
     expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
@@ -228,7 +271,7 @@ describe('postMeldingForm', () => {
   })
 
   it('uses a PATCH request when prefetchedMelding contains valid melding data', async () => {
-    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', 'testBaseUrl')
+    vi.stubEnv('NEXT_PUBLIC_MELDING_FORM_BASE_URL', redirectBaseUrl)
 
     const formData = createFormData({
       prefetchedMelding: JSON.stringify({
@@ -248,6 +291,7 @@ describe('postMeldingForm', () => {
       public_id: 'B100AA',
       token: 'PATCH request',
     })
+
     params.set('classification_id', '2')
 
     expect(redirect).toHaveBeenCalledWith(`testBaseUrl/back-office-entry?${params}`)
@@ -259,6 +303,7 @@ describe('postMeldingForm', () => {
     const spy = vi.spyOn(apiClientProxy, 'patchMeldingByMeldingId')
 
     const formData = createFormData()
+
     formData.append('labels', '1')
     formData.append('labels', '2')
     formData.append('labels', '3')
@@ -278,6 +323,7 @@ describe('postMeldingForm', () => {
     const spy = vi.spyOn(apiClientProxy, 'patchMeldingByMeldingIdNoteByNoteId')
 
     const formData = createFormData()
+
     formData.set('addNote', noteDoc('Test note'))
 
     await postMeldingForm(
@@ -306,6 +352,7 @@ describe('postMeldingForm', () => {
     const spy = vi.spyOn(apiClientProxy, 'postMeldingByMeldingIdNote')
 
     const formData = createFormData()
+
     formData.set('addNote', noteDoc('Test note'))
 
     await postMeldingForm(
@@ -356,6 +403,7 @@ describe('postMeldingForm', () => {
     )
 
     const formData = createFormData()
+
     formData.set('addNote', noteDoc('Test note'))
 
     const result = await postMeldingForm(
