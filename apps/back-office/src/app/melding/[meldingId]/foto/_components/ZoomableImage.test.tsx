@@ -237,4 +237,42 @@ describe('ZoomableImage', () => {
 
     expect(image.className).not.toMatch(/animating/)
   })
+
+  it('stops animating when panning with the mouse during a zoom', async () => {
+    const { button, image, user } = await setupZoomedIn()
+
+    expect(image.className).toMatch(/animating/)
+
+    await moveMouseTo(user, button, 400, 250)
+
+    expect(image.className).not.toMatch(/animating/)
+  })
+
+  it('stops animating when dragging with touch during a zoom', async () => {
+    const { button, image, user } = await setupZoomedIn()
+
+    expect(image.className).toMatch(/animating/)
+
+    await touchDrag(user, button, 40, 20)
+
+    expect(image.className).not.toMatch(/animating/)
+  })
+
+  it('stops animating when panning with the mouse after an arrow key at the edge of the image', async () => {
+    const { button, image, user } = await setupZoomedIn()
+
+    button.focus()
+    await user.keyboard('{ArrowLeft>5/}')
+
+    // userEvent cannot end a CSS transition
+    fireEvent.transitionEnd(image)
+
+    // The image is already at its left edge, so the transform does not change and no transition ends
+    await user.keyboard('{ArrowLeft}')
+    expect(image.className).toMatch(/animating/)
+
+    await moveMouseTo(user, button, 400, 250)
+
+    expect(image.className).not.toMatch(/animating/)
+  })
 })

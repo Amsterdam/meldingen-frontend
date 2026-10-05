@@ -97,6 +97,12 @@ export const ZoomableImage = ({ src }: Props) => {
     touchStartRef.current = { clientX: event.clientX, clientY: event.clientY, hasMoved: false, offset }
   }
 
+  // Pointer panning should follow the pointer without delay, so it also stops a running zoom animation
+  const panTo = (nextOffset: Point) => {
+    setIsAnimating(false)
+    setOffset(clampOffset(nextOffset, zoomLevel))
+  }
+
   const handlePointerMove = (event: PointerEvent<HTMLButtonElement>) => {
     // A mouse pans by hovering, touch and pen pan by dragging
     if (event.pointerType === 'mouse') {
@@ -104,7 +110,7 @@ export const ZoomableImage = ({ src }: Props) => {
 
       const pointer = getPointerPositionInPercentages(event)
 
-      setOffset(clampOffset({ x: pointer.x * (1 - zoomLevel), y: pointer.y * (1 - zoomLevel) }, zoomLevel))
+      panTo({ x: pointer.x * (1 - zoomLevel), y: pointer.y * (1 - zoomLevel) })
 
       return
     }
@@ -121,12 +127,11 @@ export const ZoomableImage = ({ src }: Props) => {
     if (!isZoomedIn) return
 
     const { height, width } = event.currentTarget.getBoundingClientRect()
-    const draggedOffset = {
+
+    panTo({
       x: touchStart.offset.x + (deltaX / width) * 100,
       y: touchStart.offset.y + (deltaY / height) * 100,
-    }
-
-    setOffset(clampOffset(draggedOffset, zoomLevel))
+    })
   }
 
   const handlePointerUp = (event: PointerEvent<HTMLButtonElement>) => {
