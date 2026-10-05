@@ -232,4 +232,22 @@ describe('ZoomableImage', () => {
 
     expect(isNotPrevented).toBe(false)
   })
+
+  it('ignores a cancelled touch, so a mouse click afterwards zooms in only once', () => {
+    render(<ZoomableImage src="image.jpg" />)
+
+    const button = screen.getByRole('button')
+
+    mockBoundingClientRect(button)
+
+    // The browser cancels the touch when it scrolls the image slider instead
+    fireEvent.pointerDown(button, { clientX: 300, clientY: 200, pointerType: 'touch' })
+    fireEvent.pointerCancel(button, { pointerType: 'touch' })
+
+    fireEvent.pointerDown(button, { clientX: 300, clientY: 200, pointerType: 'mouse' })
+    fireEvent.pointerUp(button, { clientX: 300, clientY: 200, pointerType: 'mouse' })
+    fireEvent.click(button, { clientX: 300, clientY: 200, detail: 1 })
+
+    expect(screen.getByRole('presentation')).toHaveStyle({ transform: 'translate(-50%, -50%) scale(2)' })
+  })
 })
