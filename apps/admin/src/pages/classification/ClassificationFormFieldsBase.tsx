@@ -9,6 +9,8 @@ import {
   TextInput,
 } from 'react-admin'
 
+import { integerValue } from '~/helpers/integerValue'
+
 import styles from './ClassificationFormFieldsBase.module.css'
 
 const serviceLevelObjectiveDayTypeChoices = [
@@ -33,7 +35,7 @@ export const ClassificationFormFieldsBase = () => (
         min={1}
         source="service_level_objective_days"
         step={1}
-        validate={[required(), minValue(1), maxValue(SERVICE_LEVEL_OBJECTIVE_DAYS_MAX)]}
+        validate={[required(), integerValue(), minValue(1), maxValue(SERVICE_LEVEL_OBJECTIVE_DAYS_MAX)]}
       />
       <SelectInput
         choices={serviceLevelObjectiveDayTypeChoices}
