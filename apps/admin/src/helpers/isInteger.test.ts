@@ -1,8 +1,8 @@
-import { integerValue } from './integerValue'
+import { isInteger } from './isInteger'
 
 describe('integerValue', () => {
   it('returns undefined for integer values', () => {
-    const validate = integerValue()
+    const validate = isInteger()
 
     expect(validate('42')).toBeUndefined()
     expect(validate('0')).toBeUndefined()
@@ -10,7 +10,7 @@ describe('integerValue', () => {
   })
 
   it('returns the default message for non-integer values', () => {
-    const validate = integerValue()
+    const validate = isInteger()
 
     expect(validate('3.14')).toBe('ra.validation.integer')
     expect(validate('abc')).toBe('ra.validation.integer')
@@ -19,7 +19,7 @@ describe('integerValue', () => {
   })
 
   it('returns the custom message when provided', () => {
-    const validate = integerValue('custom.integer.message')
+    const validate = isInteger('custom.integer.message')
 
     expect(validate('1.5')).toBe('custom.integer.message')
   })
