@@ -22,7 +22,7 @@ const Error = ({ error, retry }: ErrorProps) => {
   return (
     <div className="ams-page__area--body">
       <title>{t('metadata.title')}</title>
-      <ErrorPage error={error} retry={retry} />
+      <ErrorPage retry={retry} />
     </div>
   )
 }

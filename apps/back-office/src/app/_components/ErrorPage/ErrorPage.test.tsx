@@ -6,7 +6,7 @@ import { ErrorPage } from './ErrorPage'
 
 describe('ErrorPage', () => {
   it('renders the translated heading and shows the retry button', () => {
-    render(<ErrorPage error={new Error('Something went wrong')} retry={vi.fn()} />)
+    render(<ErrorPage retry={vi.fn()} />)
 
     expect(screen.getByRole('heading', { level: 1, name: 'title' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'retry-button' })).toBeInTheDocument()
@@ -16,7 +16,7 @@ describe('ErrorPage', () => {
     const user = userEvent.setup()
     const retry = vi.fn()
 
-    render(<ErrorPage error={new Error('Something went wrong')} retry={retry} />)
+    render(<ErrorPage retry={retry} />)
 
     await user.click(screen.getByRole('button', { name: 'retry-button' }))
 
