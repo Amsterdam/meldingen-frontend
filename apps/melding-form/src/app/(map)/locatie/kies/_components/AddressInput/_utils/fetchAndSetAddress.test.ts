@@ -12,6 +12,7 @@ import { server } from '~/mocks/node'
 const defaultAddressArgs: AddressArgType = {
   coordinates: { lat: 52.37239126063553, lng: 4.900905743712159 },
   setAddress: vi.fn(),
+  signal: new AbortController().signal,
   t: vi.fn((key) => key) as unknown as ReturnType<typeof useTranslations>,
 }
 
@@ -28,5 +29,15 @@ describe('fetchAndSetAddress', () => {
     await fetchAndSetAddress(defaultAddressArgs)
 
     expect(defaultAddressArgs.setAddress).toHaveBeenCalledWith('no-address')
+  })
+
+  it('does not set the address when the request is aborted', async () => {
+    const controller = new AbortController()
+
+    controller.abort()
+
+    await fetchAndSetAddress({ ...defaultAddressArgs, signal: controller.signal })
+
+    expect(defaultAddressArgs.setAddress).not.toHaveBeenCalled()
   })
 })

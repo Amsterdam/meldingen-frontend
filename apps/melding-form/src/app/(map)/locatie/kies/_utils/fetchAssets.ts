@@ -1,33 +1,33 @@
-import type { AssetOutput } from '@meldingen/api-client'
+import type { AssetOutput, Feature } from '@meldingen/api-client'
 
 import { getAssetTypeByAssetTypeIdWfs } from '@meldingen/api-client'
 
-const getFilter = (id: string) => `
+const getFilter = (ids: string[]) => `
   <Filter>
-    <ResourceId rid="${id}" />
+    ${ids.map((id) => `<ResourceId rid="${id}" />`).join('')}
   </Filter>
 `
 
 export const fetchAssets = async (assetTypeId: number, typeNames: string, assetIds: AssetOutput[]) => {
-  const assets = await Promise.all(
-    assetIds.map(async (asset) => {
-      const filter = getFilter(asset.external_id)
+  if (assetIds.length === 0) return []
 
-      const { data, error } = await getAssetTypeByAssetTypeIdWfs({
-        path: { asset_type_id: assetTypeId },
-        query: { filter, type_names: typeNames },
-      })
+  const filter = getFilter(assetIds.map((asset) => asset.external_id))
 
-      if (error) {
-        // TODO: Log the error to an error reporting service
-        // eslint-disable-next-line no-console
-        console.error(error)
-        return null
-      }
+  const { data, error } = await getAssetTypeByAssetTypeIdWfs({
+    path: { asset_type_id: assetTypeId },
+    query: { filter, type_names: typeNames },
+  })
 
-      return data.features[0] ?? null
-    }),
-  )
+  if (error) {
+    // TODO: Log the error to an error reporting service
+    // eslint-disable-next-line no-console
+    console.error(error)
 
-  return assets.filter((asset) => asset !== null)
+    return []
+  }
+
+  // The WFS response order is not guaranteed, so we return the features in the same order as assetIds
+  return assetIds
+    .map((asset) => data.features.find((feature) => feature.id === asset.external_id))
+    .filter((feature): feature is Feature => feature !== undefined)
 }

@@ -90,7 +90,7 @@ describe('AssetIcon', () => {
     fireEvent.error(img)
 
     await waitFor(() => {
-      expect(img.getAttribute('src')).toContain('asset-fallback.svg')
+      expect(img.getAttribute('src')).toContain(ASSET_FALLBACK_SRC)
     })
   })
 })

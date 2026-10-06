@@ -7,6 +7,7 @@ import { describe, expect, it, vi } from 'vitest'
 import type { AssetItem } from '../../_utils/formatAssetItem'
 
 import { AssetElement } from './AssetElement'
+import { ASSET_FALLBACK_SRC } from '~/constants'
 
 vi.mock('next/image', () => ({
   default: ({ alt = '', ...props }: ComponentProps<'img'>) =>
@@ -43,6 +44,6 @@ describe('AssetElement', () => {
 
     const icon = screen.getByRole('presentation')
 
-    expect(icon).toHaveAttribute('src', '/asset-fallback.svg')
+    expect(icon).toHaveAttribute('src', ASSET_FALLBACK_SRC)
   })
 })

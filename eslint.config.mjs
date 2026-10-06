@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable perfectionist/sort-objects */
 
 import eslint from '@eslint/js'

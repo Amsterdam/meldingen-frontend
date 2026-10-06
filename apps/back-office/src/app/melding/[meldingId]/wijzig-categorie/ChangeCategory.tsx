@@ -10,10 +10,8 @@ import {
   Heading,
   Label,
   Paragraph,
-  Select,
   TextArea,
 } from '@amsterdam/design-system-react'
-import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect, useState } from 'react'
@@ -28,7 +26,7 @@ import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
 import { postReclassificationForm } from './actions'
 import { REASON_COUNT_MAX_LENGTH } from './constants'
-import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
+import { ApiErrorAlert, ClassificationCombobox, InvalidFormAlert } from '~/app/_components'
 import { useDocumentTitleOnError } from '~/app/_utils/useDocumentTitleOnError'
 
 import styles from './ChangeCategory.module.css'
@@ -70,11 +68,11 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
     }
   }, [apiError])
 
-  const classificationValue =
-    (formData?.get('classification') as string | null) ??
-    (meldingClassification?.id ? String(meldingClassification.id) : '')
-  const classificationErrorMessage = validationErrors?.find((error) => error.key === 'classification')?.message
-  const reasonErrorMessage = validationErrors?.find((error) => error.key === 'reason')?.message
+  const classificationValue = (formData?.get('classificationQuery') as string | null) ?? meldingClassification?.name
+  const classificationValidationErrorMessage = validationErrors?.find(
+    (error) => error.key === 'classificationId',
+  )?.message
+  const reasonValidationErrorMessage = validationErrors?.find((error) => error.key === 'reason')?.message
 
   return (
     <div className="ams-page__area--body">
@@ -93,39 +91,31 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
           <Heading className="ams-mb-m" level={1}>
             {t('title', { publicId })}
           </Heading>
-          <Form action={formAction} className={clsx(styles.formPanel)} noValidate>
-            <Field className="ams-mb-m" invalid={Boolean(classificationErrorMessage)}>
-              <Label htmlFor="classification">{t('form-labels.classification')}</Label>
-              {classificationErrorMessage && (
-                <ErrorMessage id="classification-error">{classificationErrorMessage}</ErrorMessage>
-              )}
-              <Select
-                aria-describedby={getAriaDescribedBy('classification', undefined, classificationErrorMessage)}
-                aria-required
-                defaultValue={classificationValue}
-                id="classification"
-                invalid={Boolean(classificationErrorMessage)}
-                key={classificationValue}
-                name="classification"
-              >
-                {!meldingClassification?.id && <Select.Option value="">-- {t('option-placeholder')} --</Select.Option>}
-                {classifications.map((classification) => (
-                  <Select.Option key={classification.id} value={classification.id}>
-                    {classification.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Field>
-            <Field className="ams-mb-m" invalid={Boolean(reasonErrorMessage)}>
+          <Form action={formAction} className={styles.formPanel} noValidate>
+            <ClassificationCombobox
+              classifications={classifications}
+              defaultValue={classificationValue}
+              errorMessage={classificationValidationErrorMessage}
+              label={t('form-labels.classification')}
+              noResultsMessage={t('no-results')}
+              placeholder={t('search-placeholder')}
+            />
+            <Field className="ams-mb-m" invalid={Boolean(reasonValidationErrorMessage)}>
               <Label htmlFor="reason">{t('form-labels.reason')}</Label>
               <Paragraph id="reason-description">{t('form-labels.reason-description')}</Paragraph>
-              {reasonErrorMessage && <ErrorMessage id="reason-error">{reasonErrorMessage}</ErrorMessage>}
+              {reasonValidationErrorMessage && (
+                <ErrorMessage id="reason-error">{reasonValidationErrorMessage}</ErrorMessage>
+              )}
               <TextArea
-                aria-describedby={getAriaDescribedBy('reason', t('form-labels.reason-description'), reasonErrorMessage)}
+                aria-describedby={getAriaDescribedBy(
+                  'reason',
+                  t('form-labels.reason-description'),
+                  reasonValidationErrorMessage,
+                )}
                 aria-required
                 defaultValue={formData?.get('reason') as string}
                 id="reason"
-                invalid={Boolean(reasonErrorMessage)}
+                invalid={Boolean(reasonValidationErrorMessage)}
                 name="reason"
                 onChange={(e) => setCharacterCount(e.target.value.length)}
                 rows={12}

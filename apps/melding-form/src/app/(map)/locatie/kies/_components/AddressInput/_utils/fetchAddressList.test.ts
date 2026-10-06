@@ -10,6 +10,7 @@ import { server } from '~/mocks/node'
 const defaultAddressListArgs: AddressListArgType = {
   setAddressList: vi.fn(),
   setShowListBox: vi.fn(),
+  signal: new AbortController().signal,
   value: 'Nieuwmarkt',
 }
 
@@ -46,6 +47,21 @@ describe('fetchAddressList', () => {
         message: 'Unable to fetch address suggestions from PDOK',
       }),
     )
+
+    consoleSpy.mockRestore()
+  })
+
+  it('does not set the address list when the request is aborted', async () => {
+    const controller = new AbortController()
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    controller.abort()
+
+    await fetchAddressList({ ...defaultAddressListArgs, signal: controller.signal })
+
+    expect(defaultAddressListArgs.setAddressList).not.toHaveBeenCalled()
+    expect(defaultAddressListArgs.setShowListBox).not.toHaveBeenCalled()
+    expect(consoleSpy).not.toHaveBeenCalled()
 
     consoleSpy.mockRestore()
   })

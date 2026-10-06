@@ -15,6 +15,7 @@ import { fetchFeaturesOnMoveEnd, MarkerSelectLayer } from './MarkerSelectLayer'
 type WfsResult = Awaited<ReturnType<typeof getAssetTypeByAssetTypeIdWfs<false>>>
 
 const defaultProps: Props = {
+  fallbackIconSrc: '/asset-fallback.svg',
   features: [],
   iconConfig: {},
   maxMarkers: 5,
@@ -66,6 +67,7 @@ describe('MarkerSelectLayer', () => {
       </MapComponent>,
     )
     const moveEndOnCall = (mockMapInstance.on as unknown as Mock).mock.calls.find((call) => call[0] === 'moveend')
+
     expect(moveEndOnCall).toBeDefined()
 
     const moveEndHandler = moveEndOnCall?.[1]

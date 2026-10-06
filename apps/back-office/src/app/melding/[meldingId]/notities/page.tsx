@@ -1,13 +1,12 @@
 import { getTranslations } from 'next-intl/server'
 
 import { NotesOverview } from './NotesOverview'
-import { getMeldingByMeldingId, getMeldingByMeldingIdNote, getUserMe } from '~/app/_api-client/proxy'
+import { getClassification, getMeldingByMeldingId, getMeldingByMeldingIdNote, getUserMe } from '~/app/_api-client/proxy'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
 
   const t = await getTranslations('notes-overview')
-
   const { data } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
   return {
@@ -18,19 +17,32 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
 
-  const [{ data, error }, { data: notes, error: notesError }, { data: currentUser, error: currentUserError }] =
-    await Promise.all([
-      getMeldingByMeldingId({ path: { melding_id: meldingId } }),
-      getMeldingByMeldingIdNote({
-        path: { melding_id: meldingId },
-        query: { sort: '["created_at","DESC"]' },
-      }),
-      getUserMe(),
-    ])
+  const [meldingResultData, notesResult, currentUserResult, classificationsResult] = await Promise.all([
+    getMeldingByMeldingId({ path: { melding_id: meldingId } }),
+    getMeldingByMeldingIdNote({
+      path: { melding_id: meldingId },
+      query: { sort: '["created_at","DESC"]' },
+    }),
+    getUserMe(),
+    getClassification({ query: { include_deleted: true } }),
+  ])
 
-  if (error) throw new Error('Failed to fetch melding data.')
-  if (notesError) throw new Error('Failed to fetch notes data.')
-  if (currentUserError) throw new Error('Failed to fetch current user data.')
+  if (meldingResultData.error) throw new Error('Failed to fetch melding data.')
+  if (notesResult.error) throw new Error('Failed to fetch notes data.')
+  if (currentUserResult.error) throw new Error('Failed to fetch current user data.')
+  if (classificationsResult.error) throw new Error('Failed to fetch classifications data.')
 
-  return <NotesOverview currentUserId={currentUser.id} meldingId={meldingId} notes={notes} publicId={data.public_id} />
+  const { data: notes } = notesResult
+  const { data: currentUser } = currentUserResult
+  const { data: classifications } = classificationsResult
+
+  return (
+    <NotesOverview
+      classifications={classifications}
+      currentUserId={currentUser.id}
+      meldingId={meldingId}
+      notes={notes}
+      publicId={meldingResultData.data.public_id}
+    />
+  )
 }

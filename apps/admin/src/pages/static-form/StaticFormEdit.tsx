@@ -14,6 +14,7 @@ const Form = () => {
   if (record.type === 'primary') {
     return <PrimaryForm />
   }
+
   if (record.type === 'contact') {
     return <ContactForm />
   }

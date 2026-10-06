@@ -12,14 +12,11 @@ import { server } from './src/mocks/node'
 // that just returns the key
 vi.mock('next-intl', async () => {
   const actual = await vi.importActual('next-intl')
+  const t = Object.assign((key: string) => key, { rich: (key: string) => key })
 
   return {
     ...actual,
-    useTranslations: () => {
-      const t = (key: string) => key
-      t.rich = (key: string) => key
-      return t
-    },
+    useTranslations: () => t,
   }
 })
 

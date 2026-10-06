@@ -22,29 +22,35 @@ export const postReclassificationForm = async (
   const redirectPath = `/melding/${meldingId}`
 
   const formDataObj = Object.fromEntries(formData)
-  const classification = formDataObj['classification'] as string | undefined
+  const classificationId = formDataObj['classificationId'] ? Number(formDataObj['classificationId']) : undefined
+  const classificationQuery = (formDataObj['classificationQuery'] as string | undefined) ?? ''
   const reason = (formDataObj.reason as string | undefined) ?? ''
 
-  const validationErrors = [
-    ...(!classification ? [{ key: 'classification', message: t('classification-required') }] : []),
-    ...(classification === String(currentClassificationId)
-      ? [{ key: 'classification', message: t('classification-same') }]
-      : []),
-    ...(!reason ? [{ key: 'reason', message: t('reason-required') }] : []),
-    ...(reason.length > REASON_COUNT_MAX_LENGTH
-      ? [{ key: 'reason', message: t('reason-max-length', { max: REASON_COUNT_MAX_LENGTH }) }]
-      : []),
-  ]
+  const validationErrors = []
+
+  if (!classificationQuery) {
+    validationErrors.push({ key: 'classificationId', message: t('classification-required') })
+  } else if (!classificationId) {
+    validationErrors.push({ key: 'classificationId', message: t('classification-does-not-exist') })
+  } else if (classificationId === currentClassificationId) {
+    validationErrors.push({ key: 'classificationId', message: t('classification-same') })
+  }
+
+  if (!reason) {
+    validationErrors.push({ key: 'reason', message: t('reason-required') })
+  }
+
+  if (reason.length > REASON_COUNT_MAX_LENGTH) {
+    validationErrors.push({ key: 'reason', message: t('reason-max-length', { max: REASON_COUNT_MAX_LENGTH }) })
+  }
 
   if (validationErrors.length > 0) {
     return { formData, validationErrors }
   }
 
-  const parsedClassificationId = Number(classification)
-
   const { error } = await postMeldingByMeldingIdReclassification({
     body: {
-      classification_id: parsedClassificationId,
+      classification_id: classificationId!, // Guaranteed by the classification validation above
       reason,
     },
     path: { melding_id: meldingId },

@@ -30,6 +30,7 @@ type Props = {
   location?: DescriptionListItem[]
   meldingData: MeldingDataItem[]
   meldingId: number
+  notesCount?: number
   publicId: MeldingOutput['public_id']
 }
 
@@ -42,6 +43,7 @@ export const Detail = ({
   location,
   meldingData,
   meldingId,
+  notesCount,
   publicId,
 }: Props) => {
   const t = useTranslations('detail')
@@ -60,7 +62,7 @@ export const Detail = ({
                 {t('tab-navigation.detail')}
               </TabNavigation.Link>
               <TabNavigation.Link href={`/melding/${meldingId}/notities`} linkComponent={NextLink}>
-                {t('tab-navigation.notes')}
+                {t('tab-navigation.notes')} {notesCount ? `(${notesCount})` : undefined}
               </TabNavigation.Link>
             </TabNavigation.List>
           </TabNavigation>
