@@ -32,6 +32,7 @@ export const ClassificationFormFieldsBase = () => (
         max={SERVICE_LEVEL_OBJECTIVE_DAYS_MAX}
         min={1}
         source="service_level_objective_days"
+        step={1}
         validate={[required(), minValue(1), maxValue(SERVICE_LEVEL_OBJECTIVE_DAYS_MAX)]}
       />
       <SelectInput
