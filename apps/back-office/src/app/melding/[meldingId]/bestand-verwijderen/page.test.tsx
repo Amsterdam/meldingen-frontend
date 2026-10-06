@@ -6,12 +6,12 @@ import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsDa
 import type { MeldingAttachment } from '../types'
 
 import { getAttachmentsData } from '../_utils/server'
-import { Attachments } from './_components/Attachments'
+import { Attachments } from './Attachments'
 import Page, { generateMetadata } from './page'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
-vi.mock('./_components/Attachments', () => ({
+vi.mock('./Attachments', () => ({
   Attachments: vi.fn(() => <div>Attachments Component</div>),
 }))
 
