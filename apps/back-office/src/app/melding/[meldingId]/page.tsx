@@ -30,11 +30,11 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
-  if (error) return t('detail.errors.melding-not-found')
+  if (error) throw new Error(t('detail.errors.melding-not-found'))
 
   const additionalQuestions = await getAdditionalQuestionsData(meldingId)
 
-  if ('error' in additionalQuestions) return additionalQuestions.error
+  if ('error' in additionalQuestions) throw new Error(additionalQuestions.error)
 
   const additionalQuestionsWithMeldingText = [
     {

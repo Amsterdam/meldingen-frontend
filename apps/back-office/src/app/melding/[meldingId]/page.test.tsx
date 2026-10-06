@@ -40,18 +40,15 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  it('returns an error message when getMeldingByMeldingId return an error or no data', async () => {
+  it('throws when getMeldingByMeldingId returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 500 })))
 
     const params = Promise.resolve({ meldingId: 123 })
-    const result = await Page({ params })
 
-    const { getByText } = render(result)
-
-    expect(getByText('detail.errors.melding-not-found')).toBeInTheDocument()
+    await expect(Page({ params })).rejects.toThrow('detail.errors.melding-not-found')
   })
 
-  it('returns an error message when getMeldingByMeldingIdAnswers returns an error', async () => {
+  it('throws when getMeldingByMeldingIdAnswers returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -59,11 +56,8 @@ describe('Page', () => {
     )
 
     const params = Promise.resolve({ meldingId: 123 })
-    const result = await Page({ params })
 
-    const { getByText } = render(result)
-
-    expect(getByText('Error message')).toBeInTheDocument()
+    await expect(Page({ params })).rejects.toThrow('Error message')
   })
 
   it('returns an error message when getMeldingByMeldingIdAttachments returns an error', async () => {

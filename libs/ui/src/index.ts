@@ -8,6 +8,7 @@ export { SubmitButton } from './SubmitButton/SubmitButton'
 export { SummaryList } from './SummaryList/SummaryList'
 export { TextInput } from './TextInput/TextInput'
 
+export { Button } from '@amsterdam/design-system-react/dist/Button'
 export { Column } from '@amsterdam/design-system-react/dist/Column'
 export { DescriptionList } from '@amsterdam/design-system-react/dist/DescriptionList'
 export { Grid } from '@amsterdam/design-system-react/dist/Grid'
