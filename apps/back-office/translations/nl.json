@@ -106,7 +106,6 @@
       "remove-link": "Verwijder bestand"
     },
     "errors": {
-      "fetch-error": "De bestanden konden niet worden geladen.",
       "melding-not-found": "An error occurred"
     }
   },

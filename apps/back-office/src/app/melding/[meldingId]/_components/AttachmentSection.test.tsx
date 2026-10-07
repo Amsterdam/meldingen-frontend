@@ -1,12 +1,11 @@
 import { render, screen } from '@testing-library/react'
 
-import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
 import type { MeldingAttachment } from '../types'
 
 import { AttachmentSection } from './AttachmentSection'
 
 vi.mock('./AttachmentPreview', () => ({
-  AttachmentPreview: ({ fileName }: { blob: Blob | null; fileName: string }) => (
+  AttachmentPreview: ({ fileName }: { blob: Blob; fileName: string }) => (
     <div data-testid="attachment-preview">{fileName}</div>
   ),
 }))
@@ -21,9 +20,7 @@ const createAttachment = (overrides: Partial<MeldingAttachment> = {}) => ({
 })
 
 const defaultProps = {
-  attachments: {
-    attachmentsWithFile: [createAttachment()],
-  },
+  attachments: [createAttachment()],
 
   meldingId: 123,
 }
@@ -39,9 +36,9 @@ describe('AttachmentSection', () => {
   })
 
   it('renders the component with attachments and user email', () => {
-    const attachments: GetAttachmentsDataResult = {
-      attachmentsWithFile: [createAttachment({ user: { email: 'test@example.com', id: 1, username: 'testuser' } })],
-    }
+    const attachments: MeldingAttachment[] = [
+      createAttachment({ user: { email: 'test@example.com', id: 1, username: 'testuser' } }),
+    ]
 
     render(<AttachmentSection {...defaultProps} attachments={attachments} />)
 
@@ -49,7 +46,7 @@ describe('AttachmentSection', () => {
   })
 
   it('renders the component without attachments with no-data message', () => {
-    const attachments: GetAttachmentsDataResult = { attachmentsWithFile: [] }
+    const attachments: MeldingAttachment[] = []
 
     render(<AttachmentSection {...defaultProps} attachments={attachments} />)
 

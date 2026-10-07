@@ -6,7 +6,7 @@ import type { MeldingAttachment } from '../../types'
 import { Attachment } from './Attachment'
 
 vi.mock('../../_components/AttachmentPreview', () => ({
-  AttachmentPreview: ({ fileName }: { blob: Blob | null; fileName: string; id: number; meldingId: number }) => (
+  AttachmentPreview: ({ fileName }: { blob: Blob; fileName: string; id: number; meldingId: number }) => (
     <div data-testid="attachment-preview">{fileName}</div>
   ),
 }))

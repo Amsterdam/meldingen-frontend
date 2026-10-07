@@ -21,9 +21,9 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
 export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
   const { meldingId } = await params
 
-  const attachments = await getAttachmentsData(meldingId)
+  const attachments = await getAttachmentsData(meldingId, 'optimized')
 
-  if (attachments.attachmentsWithFile.length === 0) {
+  if (attachments.length === 0) {
     redirect(`/melding/${meldingId}`)
   }
 

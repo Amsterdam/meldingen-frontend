@@ -60,7 +60,7 @@ describe('Page', () => {
     await expect(Page({ params })).rejects.toThrow('Error message')
   })
 
-  it('returns an error message when getMeldingByMeldingIdAttachments returns an error', async () => {
+  it('throws an error when getMeldingByMeldingIdAttachments returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -68,19 +68,8 @@ describe('Page', () => {
     )
 
     const params = Promise.resolve({ meldingId: 123 })
-    const result = await Page({ params })
 
-    render(result)
-
-    expect(Detail).toHaveBeenCalledWith(
-      expect.objectContaining({
-        attachments: {
-          attachmentsWithFile: [],
-          error: 'Error message',
-        },
-      }),
-      undefined,
-    )
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch melding attachments.')
   })
 
   it('logs the notes error and still renders Detail with notesCount 0', async () => {
@@ -199,15 +188,13 @@ describe('Page', () => {
       },
     ]
 
-    const attachments: DetailProps['attachments'] = {
-      attachmentsWithFile: [
-        expect.objectContaining({
-          blob: expect.any(Blob),
-          id: 42,
-          originalFilename: 'IMG_0815.jpg',
-        }),
-      ] as DetailProps['attachments']['attachmentsWithFile'],
-    }
+    const attachments = [
+      expect.objectContaining({
+        blob: expect.any(Blob),
+        id: 42,
+        originalFilename: 'IMG_0815.jpg',
+      }),
+    ] as DetailProps['attachments']
 
     expect(Detail).toHaveBeenCalledWith(
       {
