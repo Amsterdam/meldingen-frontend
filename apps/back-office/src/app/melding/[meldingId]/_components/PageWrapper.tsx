@@ -9,15 +9,15 @@ export type BackLink = {
   label: string
 }
 type Props = {
-  backlink: BackLink
+  backLink: BackLink
   children?: ReactNode
   documentTitle?: string
 }
 
-export const PageWrapper = ({ backlink, children, documentTitle }: Props) => (
+export const PageWrapper = ({ backLink, children, documentTitle }: Props) => (
   <div className="ams-page__area--body">
     {documentTitle && <title>{documentTitle}</title>}
-    {backlink && <BackLinkComponent href={backlink.href}>{backlink.label}</BackLinkComponent>}
+    {backLink && <BackLinkComponent href={backLink.href}>{backLink.label}</BackLinkComponent>}
     <Grid as="main">
       <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
         {children}

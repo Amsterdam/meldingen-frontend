@@ -6,7 +6,6 @@ import {
   CharacterCount,
   ErrorMessage,
   Field,
-  Grid,
   Heading,
   Label,
   Paragraph,
@@ -22,8 +21,8 @@ import { getAriaDescribedBy } from '@meldingen/form-renderer'
 
 import type { FormState } from '~/types'
 
-import { BackLink } from '../_components/BackLink'
 import { CancelLink } from '../_components/CancelLink'
+import { PageWrapper } from '../_components/PageWrapper'
 import { postReclassificationForm } from './actions'
 import { REASON_COUNT_MAX_LENGTH } from './constants'
 import { ApiErrorAlert, ClassificationCombobox, InvalidFormAlert } from '~/app/_components'
@@ -75,60 +74,54 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
   const reasonValidationErrorMessage = validationErrors?.find((error) => error.key === 'reason')?.message
 
   return (
-    <div className="ams-page__area--body">
-      <title>{documentTitle}</title>
-      <BackLink href={`/melding/${meldingId}`}>{t('back-link')}</BackLink>
-      <Grid as="main" gapVertical="large">
-        <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
-          {Boolean(apiError) && (
-            <ApiErrorAlert
-              description={t('errors.reclassification-failed-description')}
-              heading={t('errors.reclassification-failed-heading')}
-              shouldFocus={!isPending}
-            />
+    <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }} documentTitle={documentTitle}>
+      {Boolean(apiError) && (
+        <ApiErrorAlert
+          description={t('errors.reclassification-failed-description')}
+          heading={t('errors.reclassification-failed-heading')}
+          shouldFocus={!isPending}
+        />
+      )}
+      {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
+      <Heading className="ams-mb-m" level={1}>
+        {t('title', { publicId })}
+      </Heading>
+      <Form action={formAction} className={styles.formPanel} noValidate>
+        <ClassificationCombobox
+          classifications={classifications}
+          defaultValue={classificationValue}
+          errorMessage={classificationValidationErrorMessage}
+          label={t('form-labels.classification')}
+          noResultsMessage={t('no-results')}
+          placeholder={t('search-placeholder')}
+        />
+        <Field className="ams-mb-m" invalid={Boolean(reasonValidationErrorMessage)}>
+          <Label htmlFor="reason">{t('form-labels.reason')}</Label>
+          <Paragraph id="reason-description">{t('form-labels.reason-description')}</Paragraph>
+          {reasonValidationErrorMessage && (
+            <ErrorMessage id="reason-error">{reasonValidationErrorMessage}</ErrorMessage>
           )}
-          {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
-          <Heading className="ams-mb-m" level={1}>
-            {t('title', { publicId })}
-          </Heading>
-          <Form action={formAction} className={styles.formPanel} noValidate>
-            <ClassificationCombobox
-              classifications={classifications}
-              defaultValue={classificationValue}
-              errorMessage={classificationValidationErrorMessage}
-              label={t('form-labels.classification')}
-              noResultsMessage={t('no-results')}
-              placeholder={t('search-placeholder')}
-            />
-            <Field className="ams-mb-m" invalid={Boolean(reasonValidationErrorMessage)}>
-              <Label htmlFor="reason">{t('form-labels.reason')}</Label>
-              <Paragraph id="reason-description">{t('form-labels.reason-description')}</Paragraph>
-              {reasonValidationErrorMessage && (
-                <ErrorMessage id="reason-error">{reasonValidationErrorMessage}</ErrorMessage>
-              )}
-              <TextArea
-                aria-describedby={getAriaDescribedBy(
-                  'reason',
-                  t('form-labels.reason-description'),
-                  reasonValidationErrorMessage,
-                )}
-                aria-required
-                defaultValue={formData?.get('reason') as string}
-                id="reason"
-                invalid={Boolean(reasonValidationErrorMessage)}
-                name="reason"
-                onChange={(e) => setCharacterCount(e.target.value.length)}
-                rows={12}
-              />
-              <CharacterCount length={characterCount} maxLength={REASON_COUNT_MAX_LENGTH} />
-            </Field>
-            <ActionGroup>
-              <Button type="submit">{t('submit-button')}</Button>
-              <CancelLink href={`/melding/${meldingId}`}>{t('cancel-link')}</CancelLink>
-            </ActionGroup>
-          </Form>
-        </Grid.Cell>
-      </Grid>
-    </div>
+          <TextArea
+            aria-describedby={getAriaDescribedBy(
+              'reason',
+              t('form-labels.reason-description'),
+              reasonValidationErrorMessage,
+            )}
+            aria-required
+            defaultValue={formData?.get('reason') as string}
+            id="reason"
+            invalid={Boolean(reasonValidationErrorMessage)}
+            name="reason"
+            onChange={(e) => setCharacterCount(e.target.value.length)}
+            rows={12}
+          />
+          <CharacterCount length={characterCount} maxLength={REASON_COUNT_MAX_LENGTH} />
+        </Field>
+        <ActionGroup>
+          <Button type="submit">{t('submit-button')}</Button>
+          <CancelLink href={`/melding/${meldingId}`}>{t('cancel-link')}</CancelLink>
+        </ActionGroup>
+      </Form>
+    </PageWrapper>
   )
 }

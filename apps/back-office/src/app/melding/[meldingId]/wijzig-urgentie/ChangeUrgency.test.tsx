@@ -29,7 +29,7 @@ describe('ChangeUrgency', () => {
     expect(document.title).toBe('metadata.title')
   })
 
-  it('renders the backlink', () => {
+  it('renders the backLink', () => {
     render(<ChangeUrgency {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'back-link' })

@@ -34,7 +34,7 @@ describe('ChangeLabels', () => {
     expect(document.title).toBe('metadata.title')
   })
 
-  it('renders the backlink', () => {
+  it('renders the backLink', () => {
     render(<ChangeLabels {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'back-link' })

@@ -65,7 +65,7 @@ export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachm
   }
 
   return (
-    <PageWrapper backlink={{ href: backLinkHref, label: t('back-link') }} documentTitle={t('title')}>
+    <PageWrapper backLink={{ href: backLinkHref, label: t('back-link') }}>
       {!!apiError && <ApiErrorAlert description={apiError} shouldFocus={true} />}
       <Heading className="ams-mb-l" level={1}>
         {t('title')}

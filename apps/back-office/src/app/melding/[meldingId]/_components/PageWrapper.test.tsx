@@ -3,9 +3,9 @@ import { render, screen } from '@testing-library/react'
 import { PageWrapper } from './PageWrapper'
 
 describe('PageWrapper', () => {
-  it('renders the backlink and children inside the main landmark', () => {
+  it('renders the backLink and children inside the main landmark', () => {
     render(
-      <PageWrapper backlink={{ href: '/melding/123', label: 'Back to report' }}>
+      <PageWrapper backLink={{ href: '/melding/123', label: 'Back to report' }}>
         <p>Page content</p>
       </PageWrapper>,
     )
@@ -16,7 +16,7 @@ describe('PageWrapper', () => {
 
   it('sets the document title when provided', () => {
     render(
-      <PageWrapper backlink={{ href: '/melding/123', label: 'Back to report' }} documentTitle="Report details">
+      <PageWrapper backLink={{ href: '/melding/123', label: 'Back to report' }} documentTitle="Report details">
         <p>Page content</p>
       </PageWrapper>,
     )
@@ -28,7 +28,7 @@ describe('PageWrapper', () => {
     document.title = 'Existing title'
 
     render(
-      <PageWrapper backlink={{ href: '/melding/123', label: 'Back to report' }}>
+      <PageWrapper backLink={{ href: '/melding/123', label: 'Back to report' }}>
         <p>Page content</p>
       </PageWrapper>,
     )

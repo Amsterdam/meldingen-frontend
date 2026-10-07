@@ -31,7 +31,7 @@ const defaultProps: Props = {
 }
 
 describe('ChangeCategory', () => {
-  it('renders the backlink', () => {
+  it('renders the backLink', () => {
     render(<ChangeCategory {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
