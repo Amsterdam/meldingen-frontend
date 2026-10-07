@@ -1,0 +1,9 @@
+.container {
+  @media screen and (min-width: 37.5rem) {
+    padding-block: 3.75rem;
+  }
+
+  @media screen and (min-width: 72.5rem) {
+    padding-block: 7.5rem;
+  }
+}
