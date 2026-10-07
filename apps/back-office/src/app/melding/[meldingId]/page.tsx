@@ -54,12 +54,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
     query: { sort: '["created_at","DESC"]' },
   })
 
-  if (notesError) {
-    // TODO: Handle the error appropriately, e.g., show a user-friendly message or retry fetching notes.
-    // No impact on the main detail view, so we just log the error for now.
-    // eslint-disable-next-line no-console
-    console.error(notesError)
-  }
+  if (notesError) throw Error('Failed to fetch notes.')
 
   return (
     <Detail

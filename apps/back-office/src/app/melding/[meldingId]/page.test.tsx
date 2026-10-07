@@ -84,32 +84,16 @@ describe('Page', () => {
     await expect(Page({ params })).rejects.toThrow('Failed to fetch assets.')
   })
 
-  it('logs the notes error and still renders Detail with notesCount 0', async () => {
+  it('throws an error when getMeldingByMeldingIdNote returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
 
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-
     const params = Promise.resolve({ meldingId: 123 })
-    const result = await Page({ params })
 
-    render(result)
-
-    expect(consoleErrorSpy).toHaveBeenCalled()
-
-    expect(Detail).toHaveBeenCalledWith(
-      expect.objectContaining({
-        meldingId: 123,
-        notesCount: undefined,
-        publicId: melding.public_id,
-      }),
-      undefined,
-    )
-
-    consoleErrorSpy.mockRestore()
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch notes.')
   })
 
   it('calls the Detail component with the correct data', async () => {
