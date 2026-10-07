@@ -72,6 +72,18 @@ describe('Page', () => {
     await expect(Page({ params })).rejects.toThrow('Failed to fetch melding attachments.')
   })
 
+  it('throws an error when getMeldingByMeldingIdAssets returns an error', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    const params = Promise.resolve({ meldingId: 123 })
+
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch assets.')
+  })
+
   it('logs the notes error and still renders Detail with notesCount 0', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () =>
