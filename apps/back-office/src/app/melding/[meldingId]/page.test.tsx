@@ -57,7 +57,7 @@ describe('Page', () => {
 
     const params = Promise.resolve({ meldingId: 123 })
 
-    await expect(Page({ params })).rejects.toThrow('Error message')
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch additional questions.')
   })
 
   it('throws an error when getMeldingByMeldingIdAttachments returns an error', async () => {

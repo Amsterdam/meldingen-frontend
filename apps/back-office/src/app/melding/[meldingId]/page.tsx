@@ -34,15 +34,13 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const additionalQuestions = await getAdditionalQuestionsData(meldingId)
 
-  if ('error' in additionalQuestions) throw new Error(additionalQuestions.error)
-
   const additionalQuestionsWithMeldingText = [
     {
       description: data.text,
       key: 'text',
       term: t('detail.melding-text'),
     },
-    ...additionalQuestions.data,
+    ...additionalQuestions,
   ]
 
   const attachments = await getAttachmentsData(meldingId, 'thumbnail')
