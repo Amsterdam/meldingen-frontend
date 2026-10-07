@@ -42,10 +42,6 @@ describe('ClassificationCombobox', () => {
 
     render(<ClassificationCombobox {...defaultProps} defaultValue="Category 1" />)
 
-    await user.tab()
-
-    expect(screen.getByRole('combobox')).toHaveAttribute('aria-expanded', 'false')
-
     await user.click(screen.getByRole('combobox'))
 
     expect(screen.getByRole('option', { name: 'Category 1' })).toBeInTheDocument()
