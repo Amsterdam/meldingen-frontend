@@ -30,7 +30,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
-  if (error) throw new Error(t('detail.errors.melding-not-found'))
+  if (error) throw new Error('Failed to fetch melding data.')
 
   const additionalQuestions = await getAdditionalQuestionsData(meldingId)
 
@@ -54,7 +54,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
     query: { sort: '["created_at","DESC"]' },
   })
 
-  if (notesError) throw Error('Failed to fetch notes.')
+  if (notesError) throw new Error('Failed to fetch notes.')
 
   return (
     <Detail

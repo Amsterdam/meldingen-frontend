@@ -45,7 +45,7 @@ describe('Page', () => {
 
     const params = Promise.resolve({ meldingId: 123 })
 
-    await expect(Page({ params })).rejects.toThrow('detail.errors.melding-not-found')
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch melding data.')
   })
 
   it('throws when getMeldingByMeldingIdAnswers returns an error', async () => {
