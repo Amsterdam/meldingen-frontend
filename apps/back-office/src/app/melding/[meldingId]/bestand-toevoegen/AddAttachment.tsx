@@ -113,7 +113,6 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   // Set focus on generic Alert when there is a generic error
   useEffect(() => {
     if (!genericError || !genericErrorAlertRef.current) return
-
     genericErrorAlertRef.current.focus()
   }, [genericError])
 
@@ -130,10 +129,8 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     setShouldFocusInvalidAlert(true)
   }, [hasErroredFileUploads])
 
+  const hasAttachments = fileUploads.length > 0
   const successfulUploadsCount = fileUploads.filter(({ status }) => status === 'success').length
-
-  const hasAttachments = successfulUploadsCount > 0
-  const validUploadedFilesCount = successfulUploadsCount - erroredFileUploads.length
 
   const meldingDetailLink = `/melding/${meldingId}`
 
@@ -175,7 +172,9 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
                 {t('upload.title')}
               </Heading>
               <Paragraph id="file-upload-description">{t('upload.description')}</Paragraph>
-              <Paragraph>{t('upload.count', { currentCount: validUploadedFilesCount, maxCount: 5 })}</Paragraph>
+              <Paragraph>
+                {t('upload.count', { currentCount: successfulUploadsCount, maxCount: MAX_SUCCESSFUL_UPLOADS })}
+              </Paragraph>
             </Column>
 
             <FileUpload
