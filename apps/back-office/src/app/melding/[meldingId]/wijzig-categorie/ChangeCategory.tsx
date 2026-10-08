@@ -1,7 +1,6 @@
 'use client'
 
 import {
-  ActionGroup,
   Button,
   CharacterCount,
   ErrorMessage,
@@ -10,6 +9,7 @@ import {
   Heading,
   Label,
   Paragraph,
+  Row,
   TextArea,
 } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
@@ -19,6 +19,7 @@ import { useActionState, useEffect, useState } from 'react'
 import type { ClassificationOutput, SimpleClassificationOutput } from '@meldingen/api-client'
 
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
+import { Column } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
@@ -92,40 +93,42 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
             {t('title', { publicId })}
           </Heading>
           <Form action={formAction} className={styles.formPanel} noValidate>
-            <ClassificationCombobox
-              classifications={classifications}
-              defaultValue={classificationValue}
-              errorMessage={classificationValidationErrorMessage}
-              label={t('form-labels.classification')}
-              noResultsMessage={t('no-results')}
-              placeholder={t('search-placeholder')}
-            />
-            <Field className="ams-mb-m" invalid={Boolean(reasonValidationErrorMessage)}>
-              <Label htmlFor="reason">{t('form-labels.reason')}</Label>
-              <Paragraph id="reason-description">{t('form-labels.reason-description')}</Paragraph>
-              {reasonValidationErrorMessage && (
-                <ErrorMessage id="reason-error">{reasonValidationErrorMessage}</ErrorMessage>
-              )}
-              <TextArea
-                aria-describedby={getAriaDescribedBy(
-                  'reason',
-                  t('form-labels.reason-description'),
-                  reasonValidationErrorMessage,
-                )}
-                aria-required
-                defaultValue={formData?.get('reason') as string}
-                id="reason"
-                invalid={Boolean(reasonValidationErrorMessage)}
-                name="reason"
-                onChange={(e) => setCharacterCount(e.target.value.length)}
-                rows={12}
+            <Column>
+              <ClassificationCombobox
+                classifications={classifications}
+                defaultValue={classificationValue}
+                errorMessage={classificationValidationErrorMessage}
+                label={t('form-labels.classification')}
+                noResultsMessage={t('no-results')}
+                placeholder={t('search-placeholder')}
               />
-              <CharacterCount length={characterCount} maxLength={REASON_COUNT_MAX_LENGTH} />
-            </Field>
-            <ActionGroup>
-              <Button type="submit">{t('submit-button')}</Button>
-              <CancelLink href={`/melding/${meldingId}`}>{t('cancel-link')}</CancelLink>
-            </ActionGroup>
+              <Field invalid={Boolean(reasonValidationErrorMessage)}>
+                <Label htmlFor="reason">{t('form-labels.reason')}</Label>
+                <Paragraph id="reason-description">{t('form-labels.reason-description')}</Paragraph>
+                {reasonValidationErrorMessage && (
+                  <ErrorMessage id="reason-error">{reasonValidationErrorMessage}</ErrorMessage>
+                )}
+                <TextArea
+                  aria-describedby={getAriaDescribedBy(
+                    'reason',
+                    t('form-labels.reason-description'),
+                    reasonValidationErrorMessage,
+                  )}
+                  aria-required
+                  defaultValue={formData?.get('reason') as string}
+                  id="reason"
+                  invalid={Boolean(reasonValidationErrorMessage)}
+                  name="reason"
+                  onChange={(e) => setCharacterCount(e.target.value.length)}
+                  rows={12}
+                />
+                <CharacterCount length={characterCount} maxLength={REASON_COUNT_MAX_LENGTH} />
+              </Field>
+              <Row alignVertical="center" role="group">
+                <Button type="submit">{t('submit-button')}</Button>
+                <CancelLink href={`/melding/${meldingId}`}>{t('cancel-link')}</CancelLink>
+              </Row>
+            </Column>
           </Form>
         </Grid.Cell>
       </Grid>
