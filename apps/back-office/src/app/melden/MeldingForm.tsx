@@ -123,7 +123,7 @@ export const MeldingForm = ({
     urgencyDefaultValue,
   } = calculateDefaultValues(formData, defaultValues)
 
-  const classificationDefaultValue = classificationQueryDefaultValue ?? prefetchedMelding?.classificationName ?? ''
+  const classificationDefaultValue = classificationQueryDefaultValue || prefetchedMelding?.classificationName || ''
 
   const primaryErrorMessage = validationErrors?.find((error) => error.key === 'primary')?.message
   const sourceErrorMessage = validationErrors?.find((error) => error.key === 'source')?.message
