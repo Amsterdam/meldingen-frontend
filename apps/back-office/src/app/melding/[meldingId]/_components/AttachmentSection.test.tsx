@@ -6,9 +6,7 @@ import type { MeldingAttachment } from '../types'
 import { AttachmentSection } from './AttachmentSection'
 
 vi.mock('./AttachmentPreview', () => ({
-  AttachmentPreview: ({ fileName }: { blob: Blob | null; fileName: string }) => (
-    <div data-testid="attachment-preview">{fileName}</div>
-  ),
+  AttachmentPreview: ({ fileName }: { fileName: string }) => <div data-testid="attachment-preview">{fileName}</div>,
 }))
 
 const createAttachment = (overrides: Partial<MeldingAttachment> = {}) => ({
