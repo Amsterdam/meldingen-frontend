@@ -90,7 +90,11 @@ export const ZoomableImage = ({ src }: Props) => {
     // A click from the keyboard has no pointer position (detail is 0), so we zoom in on the center
     if (event.detail === 0) {
       zoomAt({ x: 50, y: 50 })
-    } else if (!isTouchInputRef.current) {
+
+      return
+    }
+
+    if (!isTouchInputRef.current) {
       zoomAt(getPointerPositionInPercentages(event))
     }
   }
