@@ -9,10 +9,17 @@ import { textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
+type StartPrefetchingTransition = Parameters<typeof PrimaryField>[0]['startPrefetchingTransition']
+
+const startPrefetchingTransitionMock: StartPrefetchingTransition = (callback) => {
+  void callback()
+}
+
 const defaultProps = {
   config: textAreaComponent,
   defaultValue: '',
   onMeldingPrefetched: vi.fn(),
+  startPrefetchingTransition: vi.fn(startPrefetchingTransitionMock),
 }
 
 describe('PrimaryField', () => {
@@ -71,9 +78,11 @@ describe('PrimaryField', () => {
     const { container } = render(<PrimaryField {...defaultProps} errorMessage="Test error message" />)
 
     const field = container.firstChild
+
     expect(field).toHaveClass('ams-field--invalid')
 
     const input = screen.getByRole('textbox', { name: textAreaComponent.label })
+
     expect(input).toHaveAttribute('aria-invalid', 'true')
   })
 
@@ -124,7 +133,9 @@ describe('PrimaryField', () => {
       await user.type(screen.getByRole('textbox', { name: textAreaComponent.label }), 'Hello world')
       await user.tab()
 
-      expect(spy).toHaveBeenCalled()
+      await waitFor(() => {
+        expect(spy).toHaveBeenCalled()
+      })
 
       spy.mockRestore()
     })
@@ -139,7 +150,9 @@ describe('PrimaryField', () => {
       await user.type(screen.getByRole('textbox', { name: textAreaComponent.label }), 'Hello world')
       await user.tab()
 
-      expect(spy).toHaveBeenCalled()
+      await waitFor(() => {
+        expect(spy).toHaveBeenCalled()
+      })
 
       spy.mockRestore()
     })

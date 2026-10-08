@@ -109,4 +109,10 @@ describe('ClassificationCombobox', () => {
 
     expect(screen.getByRole('option', { name: 'No categories found' })).toBeInTheDocument()
   })
+
+  it('disables the combobox when isDisabled is true', () => {
+    render(<ClassificationCombobox {...defaultProps} isDisabled />)
+
+    expect(screen.getByRole('combobox')).toBeDisabled()
+  })
 })

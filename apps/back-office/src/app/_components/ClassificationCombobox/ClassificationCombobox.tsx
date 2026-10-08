@@ -25,6 +25,7 @@ type Props = {
   classifications: ClassificationOutput[]
   defaultValue?: string
   errorMessage?: string
+  isDisabled?: boolean
   label: string
   noResultsMessage: string
   placeholder?: string
@@ -37,6 +38,7 @@ export const ClassificationCombobox = ({
   classifications,
   defaultValue = '',
   errorMessage,
+  isDisabled = false,
   label,
   noResultsMessage,
   placeholder,
@@ -81,6 +83,7 @@ export const ClassificationCombobox = ({
       <HUILabel as={Label} htmlFor="classificationQuery">
         {label}
       </HUILabel>
+
       {hasErrorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
       <Combobox as="div" onChange={handleChange} value={selectedClassification ?? null}>
         <input name="classificationId" type="hidden" value={selectedClassification?.id ?? ''} />
@@ -89,6 +92,7 @@ export const ClassificationCombobox = ({
           as={TextInput}
           autoComplete="off"
           className={styles.comboboxInput}
+          disabled={isDisabled}
           id="classificationQuery"
           invalid={hasErrorMessage}
           name="classificationQuery"
@@ -116,6 +120,7 @@ export const ClassificationCombobox = ({
           )}
         </ComboboxOptions>
       </Combobox>
+
       {selectedClassification?.instructions && (
         <Description as={Paragraph} className={styles.instructions}>
           {selectedClassification.instructions}
