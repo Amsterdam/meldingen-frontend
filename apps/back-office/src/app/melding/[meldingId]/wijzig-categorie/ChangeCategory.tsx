@@ -124,7 +124,7 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
                 />
                 <CharacterCount length={characterCount} maxLength={REASON_COUNT_MAX_LENGTH} />
               </Field>
-              <Row alignVertical="center">
+              <Row alignVertical="center" role="group">
                 <Button type="submit">{t('submit-button')}</Button>
                 <CancelLink href={`/melding/${meldingId}`}>{t('cancel-link')}</CancelLink>
               </Row>
