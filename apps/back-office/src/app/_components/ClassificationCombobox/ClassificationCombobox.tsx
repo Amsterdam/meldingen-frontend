@@ -99,11 +99,7 @@ export const ClassificationCombobox = ({
         {label}
       </HUILabel>
 
-      {hasErrorMessage && (
-        <Description as={ErrorMessage} id="classificationId-error">
-          {errorMessage}
-        </Description>
-      )}
+      {hasErrorMessage && <Description as={ErrorMessage}>{errorMessage}</Description>}
 
       <Combobox as="div" onChange={handleChange} ref={refs.setReference} value={selectedClassification ?? null}>
         <input name="classificationId" type="hidden" value={selectedClassification?.id ?? ''} />
