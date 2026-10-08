@@ -59,8 +59,9 @@ const fetchClassifications = async () => {
   const { data, error } = await getClassification()
 
   if (error) throw new Error('Failed to fetch classifications.')
+  if (!data || data.length === 0) throw new Error('No classifications found.')
 
-  return data ?? []
+  return data
 }
 
 const fetchExistingMelding = async (id: number) => {

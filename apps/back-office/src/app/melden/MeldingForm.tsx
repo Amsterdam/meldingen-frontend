@@ -181,7 +181,7 @@ export const MeldingForm = ({
             <LabelsField defaultValues={labelsDefaultValues} labels={labels} />
             <NoteField defaultValue={noteDefaultValue} errorMessage={noteErrorMessage} />
 
-            <Button className={styles.submit} disabled={isPending} type="submit">
+            <Button className={styles.submit} disabled={isPending || isPrefetching} type="submit">
               {t('submit-button')}
             </Button>
           </Column>
