@@ -11,8 +11,8 @@ import Page, { generateMetadata } from './page'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
-vi.mock('./Attachments', () => ({
-  Attachments: vi.fn(() => <div>Attachments Component</div>),
+vi.mock('./DeleteAttachment', () => ({
+  DeleteAttachment: vi.fn(() => <div>Attachments Component</div>),
 }))
 
 vi.mock('../_utils/server', () => ({
