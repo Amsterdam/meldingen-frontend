@@ -105,7 +105,7 @@ describe('ChangeCategory', () => {
       {
         formData,
         validationErrors: [
-          { key: 'classificationId', message: 'classification-required' },
+          { key: 'classificationQuery', message: 'classification-required' },
           { key: 'reason', message: 'reason-required' },
         ],
       },
