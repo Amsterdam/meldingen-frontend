@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
 
 import { getAttachmentsData } from '../_utils/server'
-import { Attachments } from './Attachments'
+import { DeleteAttachment } from './DeleteAttachment'
 import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
@@ -25,5 +25,5 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
     redirect(`/melding/${meldingId}`)
   }
 
-  return <Attachments attachments={attachments} meldingId={meldingId} />
+  return <DeleteAttachment attachments={attachments} meldingId={meldingId} />
 }

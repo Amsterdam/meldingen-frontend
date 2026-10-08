@@ -173,7 +173,11 @@
     "title": "Bestand verwijderen",
     "confirmation": "{fileName} is verwijderd",
     "confirmation-prompt": "Weet je zeker dat je het bestand \"{fileName}\" wilt verwijderen?",
-    "submit-button": "Verwijder bestand"
+    "submit-button": "Verwijder bestand",
+    "error-delete-failed": {
+      "title": "Het is niet gelukt om het bestand te verwijderen.",
+      "description": "Probeer het opnieuw."
+    }
   },
   "change-labels": {
     "metadata": {

@@ -10,6 +10,7 @@ import { ChangeUrgency } from './ChangeUrgency'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
+
   return {
     ...(typeof actual === 'object' ? actual : {}),
     useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
@@ -29,10 +30,11 @@ describe('ChangeUrgency', () => {
     expect(document.title).toBe('metadata.title')
   })
 
-  it('renders the backLink', () => {
+  it('renders the back link', () => {
     render(<ChangeUrgency {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
+
     expect(backLink).toBeInTheDocument()
     expect(backLink).toHaveAttribute('href', '/melding/123')
   })
@@ -119,11 +121,13 @@ describe('ChangeUrgency', () => {
     const user = userEvent.setup()
 
     const mockFormAction = vi.fn()
+
     ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<ChangeUrgency {...defaultProps} />)
 
     const submitButton = screen.getByRole('button', { name: 'submit-button' })
+
     await user.click(submitButton)
 
     expect(mockFormAction).toHaveBeenCalled()

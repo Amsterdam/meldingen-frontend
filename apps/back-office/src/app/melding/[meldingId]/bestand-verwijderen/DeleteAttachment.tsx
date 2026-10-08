@@ -20,7 +20,7 @@ type Props = {
   meldingId: number
 }
 
-export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachments }, meldingId }: Props) => {
+export const DeleteAttachment = ({ attachments: { attachmentsWithFile: initialAttachments }, meldingId }: Props) => {
   const [apiError, setApiError] = useState<string>()
   const router = useRouter()
   const t = useTranslations('remove-attachment')
@@ -66,7 +66,13 @@ export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachm
 
   return (
     <PageWrapper backLink={{ href: backLinkHref, label: t('back-link') }}>
-      {!!apiError && <ApiErrorAlert description={apiError} shouldFocus={true} />}
+      {!!apiError && (
+        <ApiErrorAlert
+          description={t('error-delete-failed.description')}
+          heading={t('error-delete-failed.title')}
+          shouldFocus={true}
+        />
+      )}
       <Heading className="ams-mb-l" level={1}>
         {t('title')}
       </Heading>

@@ -6,7 +6,7 @@ import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsDa
 import type { MeldingAttachment } from '../types'
 
 import { getAttachmentsData } from '../_utils/server'
-import { Attachments } from './Attachments'
+import { DeleteAttachment } from './DeleteAttachment'
 import Page, { generateMetadata } from './page'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
@@ -98,7 +98,7 @@ describe('Page', () => {
 
     render(result)
 
-    expect(Attachments).toHaveBeenCalledWith(
+    expect(DeleteAttachment).toHaveBeenCalledWith(
       {
         attachments,
         meldingId: 123,

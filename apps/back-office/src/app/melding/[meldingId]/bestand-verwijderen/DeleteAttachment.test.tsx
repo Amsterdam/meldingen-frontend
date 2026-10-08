@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import type { MeldingAttachment } from '../types'
 
 import { deleteAttachmentAction } from './actions'
-import { Attachments } from './Attachments'
+import { DeleteAttachment } from './DeleteAttachment'
 
 type DeleteAttachmentActionResult = Awaited<ReturnType<typeof deleteAttachmentAction>>
 
@@ -61,7 +61,7 @@ const createMockRouter = (overrides: Partial<ReturnType<typeof useRouter>> = {})
 })
 
 const renderAttachments = (attachments: MeldingAttachment[]) =>
-  render(<Attachments attachments={{ attachmentsWithFile: attachments }} meldingId={123} />)
+  render(<DeleteAttachment attachments={{ attachmentsWithFile: attachments }} meldingId={123} />)
 
 describe('Attachments', () => {
   beforeEach(() => {

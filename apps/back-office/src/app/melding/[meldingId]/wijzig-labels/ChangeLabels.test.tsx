@@ -10,6 +10,7 @@ import { ChangeLabels } from './ChangeLabels'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
+
   return {
     ...(typeof actual === 'object' ? actual : {}),
     useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
@@ -34,10 +35,11 @@ describe('ChangeLabels', () => {
     expect(document.title).toBe('metadata.title')
   })
 
-  it('renders the backLink', () => {
+  it('renders the back link', () => {
     render(<ChangeLabels {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
+
     expect(backLink).toBeInTheDocument()
     expect(backLink).toHaveAttribute('href', '/melding/123')
   })
@@ -54,6 +56,7 @@ describe('ChangeLabels', () => {
     expect(screen.getByRole('group', { name: 'label' })).toBeInTheDocument()
 
     const checkboxes = screen.getAllByRole('checkbox')
+
     expect(checkboxes).toHaveLength(3)
     expect(checkboxes[0]).toHaveAccessibleName('Label 1')
     expect(checkboxes[1]).toHaveAccessibleName('Label 2')
@@ -88,6 +91,7 @@ describe('ChangeLabels', () => {
 
     // Alert
     const alert = container.querySelector('.ams-alert')
+
     expect(alert).toBeInTheDocument()
     expect(alert).toHaveTextContent('errors.labels-change-failed-heading')
     expect(alert).toHaveTextContent('description')
@@ -115,6 +119,7 @@ describe('ChangeLabels', () => {
     render(<ChangeLabels {...defaultProps} currentLabelIds={undefined} />)
 
     const checkboxes = screen.getAllByRole('checkbox')
+
     checkboxes.forEach((checkbox) => expect(checkbox).not.toBeChecked())
   })
 
@@ -122,11 +127,13 @@ describe('ChangeLabels', () => {
     const user = userEvent.setup()
 
     const mockFormAction = vi.fn()
+
     ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<ChangeLabels {...defaultProps} />)
 
     const submitButton = screen.getByRole('button', { name: 'submit-button' })
+
     await user.click(submitButton)
 
     expect(mockFormAction).toHaveBeenCalled()
