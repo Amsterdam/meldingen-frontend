@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 
-import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
 import type { MeldingAttachment } from '../types'
 
 import { AttachmentSection } from './AttachmentSection'
@@ -19,9 +18,7 @@ const createAttachment = (overrides: Partial<MeldingAttachment> = {}) => ({
 })
 
 const defaultProps = {
-  attachments: {
-    attachmentsWithFile: [createAttachment()],
-  },
+  attachments: [createAttachment()],
 
   meldingId: 123,
 }
@@ -37,9 +34,9 @@ describe('AttachmentSection', () => {
   })
 
   it('renders the component with attachments and user email', () => {
-    const attachments: GetAttachmentsDataResult = {
-      attachmentsWithFile: [createAttachment({ user: { email: 'test@example.com', id: 1, username: 'testuser' } })],
-    }
+    const attachments: MeldingAttachment[] = [
+      createAttachment({ user: { email: 'test@example.com', id: 1, username: 'testuser' } }),
+    ]
 
     render(<AttachmentSection {...defaultProps} attachments={attachments} />)
 
@@ -47,7 +44,7 @@ describe('AttachmentSection', () => {
   })
 
   it('renders the component without attachments with no-data message', () => {
-    const attachments: GetAttachmentsDataResult = { attachmentsWithFile: [] }
+    const attachments: MeldingAttachment[] = []
 
     render(<AttachmentSection {...defaultProps} attachments={attachments} />)
 
@@ -59,6 +56,7 @@ describe('AttachmentSection', () => {
     render(<AttachmentSection {...defaultProps} />)
 
     const addAttachmentLink = screen.getByRole('link', { name: 'attachments.add-link' })
+
     expect(addAttachmentLink).toBeInTheDocument()
 
     expect(addAttachmentLink).toHaveAttribute('href', `/melding/${defaultProps.meldingId}/bestand-toevoegen`)

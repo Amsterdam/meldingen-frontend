@@ -49,9 +49,7 @@ const defaultProps = {
     { description: 'Description 3', key: '3', term: 'Term 3' },
   ],
   assets: [asset],
-  attachments: {
-    attachmentsWithFile: [createAttachment()],
-  },
+  attachments: [createAttachment()],
   meldingData: [
     { description: '2023-10-01', key: 'created_at', term: 'Created at' },
     {
@@ -202,9 +200,7 @@ describe('Detail', () => {
   })
 
   it('renders a no-data message when there are no attachments', () => {
-    const attachments: DetailProps['attachments'] = {
-      attachmentsWithFile: [],
-    }
+    const attachments: DetailProps['attachments'] = []
 
     render(<Detail {...defaultProps} attachments={attachments} />)
 
