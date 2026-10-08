@@ -33,7 +33,7 @@
     "@tiptap/pm": "3.31.4",
     "@tiptap/react": "3.31.4",
     "@tiptap/static-renderer": "3.31.4",
-    "next": "16.3.7",
+    "next": "16.3.8",
     "next-auth": "4.24.15",
     "next-intl": "4.14.8"
   }
