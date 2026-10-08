@@ -37,6 +37,17 @@ describe('ClassificationCombobox', () => {
     expect(getHiddenInput(container)).toHaveValue('')
   })
 
+  it('shows all classification options when a prefilled combobox is clicked', async () => {
+    const user = userEvent.setup()
+
+    render(<ClassificationCombobox {...defaultProps} defaultValue="Category 1" />)
+
+    await user.click(screen.getByRole('combobox'))
+
+    expect(screen.getByRole('option', { name: 'Category 1' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'Category 2' })).toBeInTheDocument()
+  })
+
   it('renders the label, error message and invalid state', () => {
     render(<ClassificationCombobox {...defaultProps} errorMessage="classification-required" />)
 
@@ -97,5 +108,11 @@ describe('ClassificationCombobox', () => {
     await user.type(combobox, 'Unknown')
 
     expect(screen.getByRole('option', { name: 'No categories found' })).toBeInTheDocument()
+  })
+
+  it('disables the combobox when isDisabled is true', () => {
+    render(<ClassificationCombobox {...defaultProps} isDisabled />)
+
+    expect(screen.getByRole('combobox')).toBeDisabled()
   })
 })

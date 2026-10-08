@@ -2,6 +2,7 @@
 
 import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
+import * as z from 'zod'
 
 import type { MeldingOutput } from '@meldingen/api-client'
 
@@ -29,6 +30,51 @@ export type ArgsType = {
   requiredErrorMessage: string
 }
 
+type ValidationMessages = {
+  classificationIdRequired: string
+  classificationQueryRequired: string
+  noteTooLong: string
+  primaryRequired: string
+  sourceRequired: string
+}
+
+// Represents the shape of the form data submitted by the user
+type UserFormData = {
+  addNote: string
+  classificationId: string
+  classificationQuery: string
+  labels?: string
+  prefetchedMelding?: string
+  primary: string
+  source: string
+  urgency: string
+}
+
+const requiredString = (message: string) => z.string({ error: message }).min(1, { error: message })
+
+// The order of the keys determines the order of the validation errors
+const createMeldingFormSchema = ({
+  classificationIdRequired,
+  classificationQueryRequired,
+  noteTooLong,
+  primaryRequired,
+  sourceRequired,
+}: ValidationMessages) =>
+  z
+    .object({
+      /* eslint-disable perfectionist/sort-objects */
+      primary: requiredString(primaryRequired),
+      classificationQuery: requiredString(classificationQueryRequired),
+      classificationId: z.unknown().optional(),
+      source: requiredString(sourceRequired),
+      addNote: z.number().max(MAX_NOTE_LENGTH, { error: noteTooLong }),
+      /* eslint-enable perfectionist/sort-objects */
+    })
+    .refine(({ classificationId, classificationQuery }) => !classificationQuery || !!classificationId, {
+      error: classificationIdRequired,
+      path: ['classificationQuery'],
+    })
+
 const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
   URGENCY_VALUES.includes(value as MeldingOutput['urgency'])
 
@@ -47,9 +93,9 @@ const createOrUpdateMelding = async (text: string, id?: number, token?: string) 
       path: { melding_id: id },
       query: { token },
     })
-  } else {
-    return await postMelding({ body: { text } })
   }
+
+  return await postMelding({ body: { text } })
 }
 
 const createOrUpdateNote = async (isEmpty: boolean, markdown: string, meldingId: number, noteId?: number) => {
@@ -77,7 +123,7 @@ export const postMeldingForm = async (
 ): Promise<FormState> => {
   const t = await getTranslations('melding-form')
 
-  const formDataObj = Object.fromEntries(formData)
+  const formDataObj = Object.fromEntries(formData) as UserFormData
 
   const { characterCount, isEmpty, markdown } = parseNoteDocument(formDataObj.addNote)
 
@@ -85,17 +131,25 @@ export const postMeldingForm = async (
   // its `defaultValue` (via contentType: 'markdown') if the form is redisplayed after an error.
   formData.set('addNote', markdown)
 
-  // Return validation errors if required fields are missing
-  const validationErrors = [
-    ...(!formDataObj.primary ? [{ key: 'primary', message: requiredErrorMessage }] : []),
-    ...(!formDataObj.source ? [{ key: 'source', message: t('source.error') }] : []),
-    ...(characterCount > MAX_NOTE_LENGTH
-      ? [{ key: 'addNote', message: t('note.error', { max: MAX_NOTE_LENGTH }) }]
-      : []),
-  ]
+  const { error: parseError } = createMeldingFormSchema({
+    classificationIdRequired: t('classification.does-not-exist'),
+    classificationQueryRequired: t('classification.required'),
+    noteTooLong: t('note.error', { max: MAX_NOTE_LENGTH }),
+    primaryRequired: requiredErrorMessage,
+    sourceRequired: t('source.error'),
+  }).safeParse({
+    addNote: characterCount,
+    classificationId: formDataObj.classificationId,
+    classificationQuery: formDataObj.classificationQuery,
+    primary: formDataObj.primary,
+    source: formDataObj.source,
+  })
 
-  if (validationErrors.length > 0) {
-    return { formData, validationErrors }
+  if (parseError) {
+    return {
+      formData,
+      validationErrors: parseError.issues.map(({ message, path }) => ({ key: String(path[0]), message })),
+    }
   }
 
   const urgencyRaw = formDataObj.urgency
@@ -130,10 +184,9 @@ export const postMeldingForm = async (
 
   if (error) return { apiError: error, formData }
 
-  const { classification, created_at, id, public_id, token } = data
+  const { created_at, id, public_id, token } = data
 
   const meldingData = {
-    classificationId: classification?.id,
     createdAt: created_at,
     id,
     publicId: public_id,
@@ -142,6 +195,7 @@ export const postMeldingForm = async (
 
   const { error: updateMeldingError } = await patchMeldingByMeldingId({
     body: {
+      classification_id: Number(formDataObj.classificationId),
       label_ids: formData.getAll('labels').map((label) => Number(label)),
       source_id: Number(formDataObj.source),
       urgency: urgencyNumber,
@@ -156,13 +210,12 @@ export const postMeldingForm = async (
   if (result?.error) return { apiError: result.error, formData }
 
   const params = new URLSearchParams({
+    classification_id: String(formDataObj.classificationId),
     created_at: meldingData.createdAt,
     id: String(meldingData.id),
     public_id: meldingData.publicId,
     token: meldingData.token,
   })
-
-  if (meldingData.classificationId) params.set('classification_id', String(meldingData.classificationId))
 
   redirect(`${getClientEnv().NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`)
 }
