@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import type { GetAttachmentsDataResult } from '../../_utils/server/getAttachmentsData'
+import type { MeldingAttachment } from '../../types'
 
 import { useRemoveAttachmentError } from '../_context/RemoveAttachmentErrorContext'
 import { deleteAttachmentAction } from '../actions'
@@ -13,11 +13,11 @@ import { Attachment } from './Attachment'
 import styles from './Attachments.module.css'
 
 type Props = {
-  attachments: GetAttachmentsDataResult
+  attachments: MeldingAttachment[]
   meldingId: number
 }
 
-export const Attachments = ({ attachments: { attachmentsWithFile: initialAttachments }, meldingId }: Props) => {
+export const Attachments = ({ attachments: initialAttachments, meldingId }: Props) => {
   const { setApiError } = useRemoveAttachmentError()
   const router = useRouter()
   const t = useTranslations('remove-attachment')

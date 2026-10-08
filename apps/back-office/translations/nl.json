@@ -110,10 +110,6 @@
       "add-link": "Voeg bestand toe",
       "visually-hidden-text": "Bekijk document: {fileName} (opent in nieuw venster)",
       "remove-link": "Verwijder bestand"
-    },
-    "errors": {
-      "fetch-error": "De bestanden konden niet worden geladen.",
-      "melding-not-found": "An error occurred"
     }
   },
   "add-attachment": {

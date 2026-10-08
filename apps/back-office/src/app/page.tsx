@@ -2,12 +2,11 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { getApiErrorMessage } from '@meldingen/api-client'
-
 import { COOKIES, DEFAULT_PAGE_SIZE, SORT } from '../constants'
 import { Overview } from './Overview'
 import { getMelding } from '~/app/_api-client/proxy'
 
+/* v8 ignore next */
 export const generateMetadata = async () => {
   const t = await getTranslations('overview')
 
@@ -42,9 +41,11 @@ export default async ({ searchParams }: Props) => {
     query: { limit: pageSize, offset: page ? (page - 1) * pageSize : 0, sort: SORT },
   })
 
+  if (error) throw new Error('Failed to fetch meldingen.')
+
   const meldingenCountString = response?.headers.get('Content-Range')?.split('/')[1]
 
-  if (error || !meldingenCountString) return getApiErrorMessage(error)
+  if (!meldingenCountString) throw new Error('Missing Content-Range header for meldingen overview.')
 
   const meldingenCount = parseInt(meldingenCountString, 10)
 

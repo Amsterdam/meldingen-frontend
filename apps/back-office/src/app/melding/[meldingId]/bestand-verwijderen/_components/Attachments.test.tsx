@@ -70,7 +70,7 @@ const createMockRouter = (overrides: Partial<ReturnType<typeof useRouter>> = {})
 const renderAttachments = (attachments: MeldingAttachment[]) =>
   render(
     <RemoveAttachmentErrorProvider>
-      <Attachments attachments={{ attachmentsWithFile: attachments }} meldingId={123} />
+      <Attachments attachments={attachments} meldingId={123} />
       <ApiErrorValue />
     </RemoveAttachmentErrorProvider>,
   )

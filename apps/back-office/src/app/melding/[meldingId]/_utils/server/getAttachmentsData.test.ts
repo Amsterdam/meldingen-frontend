@@ -21,15 +21,13 @@ describe('getAttachmentsData', () => {
 
     const result = await getAttachmentsData(mockMeldingId, imageAttachmentType)
 
-    expect(result).toMatchObject({
-      attachmentsWithFile: [
-        {
-          blob: expect.any(Blob),
-          id: 42,
-          originalFilename: 'IMG_0815.jpg',
-        },
-      ],
-    })
+    expect(result).toMatchObject([
+      {
+        blob: expect.any(Blob),
+        id: 42,
+        originalFilename: 'IMG_0815.jpg',
+      },
+    ])
   })
 
   it('returns correct attachments data for PDFs', async () => {
@@ -50,28 +48,37 @@ describe('getAttachmentsData', () => {
 
     const result = await getAttachmentsData(mockMeldingId, imageAttachmentType)
 
-    expect(result.attachmentsWithFile?.[0]?.blob).toBeInstanceOf(Blob)
-    expect((result.attachmentsWithFile?.[0]?.blob as Blob).type).toBe('application/pdf')
+    expect(result[0]?.blob).toBeInstanceOf(Blob)
+    expect((result[0]?.blob as Blob).type).toBe('application/pdf')
 
-    expect(result).toMatchObject({
-      attachmentsWithFile: [
-        {
-          blob: expect.any(Blob),
-          id: 1,
-          originalFilename: 'PDF_0815.pdf',
-        },
-      ],
-    })
+    expect(result).toMatchObject([
+      {
+        blob: expect.any(Blob),
+        id: 1,
+        originalFilename: 'PDF_0815.pdf',
+      },
+    ])
   })
 
-  it('rejects when getMeldingByMeldingIdAttachments returns an error', async () => {
+  it('throws an error when getAttachmentById returns an error', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })),
+    )
+
+    await expect(getAttachmentsData(mockMeldingId, imageAttachmentType)).rejects.toThrow(
+      'Failed to fetch melding attachment file.',
+    )
+  })
+
+  it('throws an error when getMeldingByMeldingIdAttachments returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
 
-    const result = await getAttachmentsData(mockMeldingId)
-    expect(result.error).toBe('Error message')
+    await expect(getAttachmentsData(mockMeldingId, imageAttachmentType)).rejects.toThrow(
+      'Failed to fetch melding attachments.',
+    )
   })
 })
