@@ -5,9 +5,7 @@ import type { MeldingAttachment } from '../types'
 import { AttachmentSection } from './AttachmentSection'
 
 vi.mock('./AttachmentPreview', () => ({
-  AttachmentPreview: ({ fileName }: { blob: Blob; fileName: string }) => (
-    <div data-testid="attachment-preview">{fileName}</div>
-  ),
+  AttachmentPreview: ({ fileName }: { fileName: string }) => <div data-testid="attachment-preview">{fileName}</div>,
 }))
 
 const createAttachment = (overrides: Partial<MeldingAttachment> = {}) => ({
@@ -58,6 +56,7 @@ describe('AttachmentSection', () => {
     render(<AttachmentSection {...defaultProps} />)
 
     const addAttachmentLink = screen.getByRole('link', { name: 'attachments.add-link' })
+
     expect(addAttachmentLink).toBeInTheDocument()
 
     expect(addAttachmentLink).toHaveAttribute('href', `/melding/${defaultProps.meldingId}/bestand-toevoegen`)
