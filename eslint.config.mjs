@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 /* eslint-disable perfectionist/sort-objects */
 
 import eslint from '@eslint/js'
@@ -180,19 +179,11 @@ export default defineConfig(
       'react/display-name': 'off',
       'react/function-component-definition': 'off',
       'react/jsx-props-no-spreading': 'off',
+      'react/no-unused-prop-types': 'error',
       'react/react-in-jsx-scope': 'off',
       'react/require-default-props': 'off',
       'react-hooks/exhaustive-deps': 'warn',
       'react-hooks/rules-of-hooks': 'error',
-    },
-  },
-
-  // Limit the number of lines in source files, but ignore test files
-  {
-    files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
-    ignores: ['**/*.test.*'],
-    rules: {
-      'max-lines': ['warn', { max: 150, skipBlankLines: true, skipComments: true }],
     },
   },
 

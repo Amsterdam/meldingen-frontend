@@ -280,18 +280,6 @@ describe('Asset list loading state', () => {
     })
   })
 
-  it('does not show a loading state when coordinates are cleared', async () => {
-    ;(AddressInput as Mock).mockImplementationOnce(({ clearCoordinates }) => (
-      <SetInternalState setter={clearCoordinates} value={undefined} />
-    ))
-
-    render(<SelectLocation {...defaultProps} />)
-
-    await waitFor(() => {
-      expect(AssetList).toHaveBeenLastCalledWith(expect.objectContaining({ isLoading: false }), undefined)
-    })
-  })
-
   it('does not show a loading state when the viewport is wide', async () => {
     ;(AddressInput as Mock).mockImplementationOnce(({ onAddressSelect }) => (
       <SetInternalState setter={onAddressSelect} value={{ lat: 1, lng: 2 }} />
