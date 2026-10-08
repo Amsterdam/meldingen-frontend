@@ -1,6 +1,6 @@
 import { isInteger } from './isInteger'
 
-describe('integerValue', () => {
+describe('isInteger', () => {
   it('returns undefined for integer values', () => {
     const validate = isInteger()
 
