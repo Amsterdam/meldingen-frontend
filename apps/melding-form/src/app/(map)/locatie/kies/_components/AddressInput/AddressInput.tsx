@@ -1,7 +1,6 @@
 import type { ChangeEvent } from 'react'
 
 import { ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
-import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
 import {
   Combobox,
   ComboboxInput,
@@ -12,7 +11,7 @@ import {
   Label as HUILabel,
 } from '@headlessui/react'
 import { useTranslations } from 'next-intl'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { ListBox, TextInput } from '@meldingen/ui'
 
@@ -27,40 +26,51 @@ import { fetchAndSetAddress } from './_utils/fetchAndSetAddress'
 import styles from './AddressInput.module.css'
 
 export type Props = {
-  clearCoordinates: () => void
   coordinates?: Coordinates
   errorMessage?: string
   onAddressSelect: (coordinates: Coordinates) => void
 }
 
-export const AddressInput = ({ clearCoordinates, coordinates, errorMessage, onAddressSelect }: Props) => {
-  const [address, setAddress] = useState('')
+export const AddressInput = ({ coordinates, errorMessage, onAddressSelect }: Props) => {
+  // Keep track of the coordinates the label belongs to, so the label of previous coordinates is never submitted with new ones
+  const [address, setAddress] = useState<{ coordinates?: Coordinates; label: string }>({ label: '' })
   const [addressList, setAddressList] = useState<PDOKItem[]>([])
   const [query, setQuery] = useState('')
   const [showListBox, setShowListBox] = useState(false)
 
+  const addressControllerRef = useRef<AbortController>(undefined)
+  const addressListControllerRef = useRef<AbortController>(undefined)
+
   const t = useTranslations('select-location.combo-box')
 
-  // Make sure the ComboboxOptions do not overflow the viewport
-  const { floatingStyles, refs } = useFloating({
-    middleware: [
-      size({
-        apply: ({ availableHeight, elements }) => {
-          const value = `${Math.max(0, availableHeight - 16)}px`
-
-          elements.floating.style.maxHeight = value
-        },
-      }),
-    ],
-    whileElementsMounted: autoUpdate,
-  })
-
   useEffect(() => {
-    if (coordinates) fetchAndSetAddress({ coordinates, setAddress, t })
+    if (!coordinates) {
+      setAddress({ label: '' })
+
+      return
+    }
+
+    // Empty an outdated address while fetching, so it cannot be submitted.
+    // Unless the address already belongs to the new coordinates, e.g. when picked from the suggestions.
+    setAddress((previous) => (previous.coordinates === coordinates ? previous : { label: '' }))
+
+    // Abort the request when coordinates change or are cleared, so a late response cannot overwrite the address
+    const controller = new AbortController()
+
+    addressControllerRef.current = controller
+
+    fetchAndSetAddress({
+      coordinates,
+      setAddress: (label) => setAddress({ coordinates, label }),
+      signal: controller.signal,
+      t,
+    })
+
+    return () => controller.abort()
   }, [coordinates, t])
 
   useEffect(() => {
-    setQuery(address)
+    setQuery(address.label)
   }, [address])
 
   const handleAddressSelect = (value: PDOKItem | string | null) => {
@@ -71,29 +81,36 @@ export const AddressInput = ({ clearCoordinates, coordinates, errorMessage, onAd
 
       if (addressCoordinates) onAddressSelect(addressCoordinates)
 
-      setAddress(value.weergavenaam)
+      setAddress({ coordinates: addressCoordinates, label: value.weergavenaam })
     }
   }
 
-  const debouncedFetchAddressList = debounce((value: string) => {
-    fetchAddressList({ setAddressList, setShowListBox, value })
-  })
+  // Memoized so the debounce timer survives rerenders, otherwise every keystroke would trigger a fetch
+  const debouncedFetchAddressList = useMemo(
+    () =>
+      debounce((value: string, signal: AbortSignal) => {
+        fetchAddressList({ setAddressList, setShowListBox, signal, value })
+      }),
+    [],
+  )
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
 
-    // Clear coordinates on typing so submitting without selecting a valid address gives a validation error
-    if (coordinates) clearCoordinates()
+    // Typing replaces the address, so an address that is still being fetched should not overwrite it
+    addressControllerRef.current?.abort()
 
-    if (value === '') {
-      setAddressList([])
-
-      return
-    }
+    // Abort the previous request immediately, so it cannot show the address list of an outdated query during the debounce
+    addressListControllerRef.current?.abort()
+    addressListControllerRef.current = new AbortController()
 
     setQuery(value)
-    debouncedFetchAddressList(value)
+    debouncedFetchAddressList(value, addressListControllerRef.current.signal)
   }
+
+  // Only submit the coordinates while the input still shows the address they belong to.
+  const hasUnchangedAddress = coordinates && coordinates === address.coordinates && query === address.label
+  const coordinatesValue = hasUnchangedAddress ? JSON.stringify(coordinates) : ''
 
   return (
     <HUIField as={Field} invalid={Boolean(errorMessage)}>
@@ -107,9 +124,8 @@ export const AddressInput = ({ clearCoordinates, coordinates, errorMessage, onAd
         className={styles.combobox}
         // Combobox does not rerender when address is set using keyboard on the Map, for some reason.
         // Setting the address as key makes sure it does.
-        key={address}
+        key={address.label}
         onChange={handleAddressSelect}
-        ref={refs.setReference}
         value={query}
       >
         <ComboboxInput
@@ -121,11 +137,10 @@ export const AddressInput = ({ clearCoordinates, coordinates, errorMessage, onAd
         />
         {showListBox && (
           <ComboboxOptions
+            anchor={{ padding: 16, to: 'bottom start' }}
             as={ListBox}
             className={styles.comboboxOptions}
             modal={false}
-            ref={refs.setFloating}
-            style={floatingStyles}
           >
             {addressList.length > 0 ? (
               addressList.map((option) => (
@@ -141,6 +156,7 @@ export const AddressInput = ({ clearCoordinates, coordinates, errorMessage, onAd
           </ComboboxOptions>
         )}
       </Combobox>
+      <input name="coordinates" type="hidden" value={coordinatesValue} />
     </HUIField>
   )
 }

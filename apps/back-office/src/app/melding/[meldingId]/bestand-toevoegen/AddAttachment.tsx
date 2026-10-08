@@ -70,7 +70,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   const fileUploadRef = useRef<HTMLInputElement>(null)
 
   const existingFiles = attachments.map(({ blob, id, originalFilename }) => ({
-    blob: blob || undefined,
+    blob,
     fileName: originalFilename,
     serverId: id,
   }))

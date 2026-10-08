@@ -9,6 +9,8 @@ import {
   TextInput,
 } from 'react-admin'
 
+import { isInteger } from '~/helpers/isInteger'
+
 import styles from './ClassificationFormFieldsBase.module.css'
 
 const serviceLevelObjectiveDayTypeChoices = [
@@ -17,7 +19,6 @@ const serviceLevelObjectiveDayTypeChoices = [
 ]
 
 const SERVICE_LEVEL_OBJECTIVE_DAY_TYPE_DEFAULT = 'calendar_days'
-const SERVICE_LEVEL_OBJECTIVE_DAYS_DEFAULT = 5
 const SERVICE_LEVEL_OBJECTIVE_DAYS_MAX = 365
 const SERVICE_LEVEL_OBJECTIVE_TEXT_MAX_LENGTH = 1000
 
@@ -28,11 +29,11 @@ export const ClassificationFormFieldsBase = () => (
     <ReferenceInput reference="asset-type" sort={{ field: 'name', order: 'ASC' }} source="asset_type" />
     <div className={styles.daysAndTypeInputWrapper}>
       <NumberInput
-        defaultValue={SERVICE_LEVEL_OBJECTIVE_DAYS_DEFAULT}
         max={SERVICE_LEVEL_OBJECTIVE_DAYS_MAX}
         min={1}
         source="service_level_objective_days"
-        validate={[required(), minValue(1), maxValue(SERVICE_LEVEL_OBJECTIVE_DAYS_MAX)]}
+        step={1}
+        validate={[required(), isInteger(), minValue(1), maxValue(SERVICE_LEVEL_OBJECTIVE_DAYS_MAX)]}
       />
       <SelectInput
         choices={serviceLevelObjectiveDayTypeChoices}

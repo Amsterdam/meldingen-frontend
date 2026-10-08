@@ -34,6 +34,12 @@
       "default": "--Kies een bron--",
       "error": "Vul in wat de bron van de melding is."
     },
+    "classification": {
+      "label": "Wat is de categorie van de melding?",
+      "no-results": "Geen categorie gevonden",
+      "required": "Vul een categorie in.",
+      "does-not-exist": "Deze categorie bestaat niet. Kies een categorie uit de lijst."
+    },
     "urgency-label": "Wat is de urgentie?",
     "labels-label": "Wat is het label?",
     "note": {
@@ -104,10 +110,6 @@
       "add-link": "Voeg bestand toe",
       "visually-hidden-text": "Bekijk document: {fileName} (opent in nieuw venster)",
       "remove-link": "Verwijder bestand"
-    },
-    "errors": {
-      "fetch-error": "De bestanden konden niet worden geladen.",
-      "melding-not-found": "An error occurred"
     }
   },
   "add-attachment": {
@@ -310,6 +312,13 @@
       "zoom-in": "Inzoomen naar {zoomLevel}%. Verschuif de ingezoomde foto met de pijltjestoetsen.",
       "zoom-out": "Uitzoomen. Verschuif de ingezoomde foto met de pijltjestoetsen."
     }
+  },
+  "error": {
+    "metadata": {
+      "title": "Er is iets misgegaan - Gemeente Amsterdam"
+    },
+    "title": "Er is iets misgegaan",
+    "retry-button": "Probeer het opnieuw"
   },
   "shared": {
     "document-title-error-count-prefix": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",

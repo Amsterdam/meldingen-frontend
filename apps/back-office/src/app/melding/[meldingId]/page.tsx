@@ -30,11 +30,9 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
-  if (error) return t('detail.errors.melding-not-found')
+  if (error) throw new Error('Failed to fetch melding data.')
 
   const additionalQuestions = await getAdditionalQuestionsData(meldingId)
-
-  if ('error' in additionalQuestions) return additionalQuestions.error
 
   const additionalQuestionsWithMeldingText = [
     {
@@ -42,11 +40,10 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
       key: 'text',
       term: t('detail.melding-text'),
     },
-    ...additionalQuestions.data,
+    ...additionalQuestions,
   ]
 
   const attachments = await getAttachmentsData(meldingId, 'thumbnail')
-
   const contact = getContactData(data, t)
   const location = getLocationData(data, t)
   const meldingData = getMeldingData(data, t)
@@ -57,12 +54,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
     query: { sort: '["created_at","DESC"]' },
   })
 
-  if (notesError) {
-    // TODO: Handle the error appropriately, e.g., show a user-friendly message or retry fetching notes.
-    // No impact on the main detail view, so we just log the error for now.
-    // eslint-disable-next-line no-console
-    console.error(notesError)
-  }
+  if (notesError) throw new Error('Failed to fetch notes.')
 
   return (
     <Detail

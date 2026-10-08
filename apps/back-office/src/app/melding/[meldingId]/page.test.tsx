@@ -40,18 +40,15 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  it('returns an error message when getMeldingByMeldingId return an error or no data', async () => {
+  it('throws when getMeldingByMeldingId returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 500 })))
 
     const params = Promise.resolve({ meldingId: 123 })
-    const result = await Page({ params })
 
-    const { getByText } = render(result)
-
-    expect(getByText('detail.errors.melding-not-found')).toBeInTheDocument()
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch melding data.')
   })
 
-  it('returns an error message when getMeldingByMeldingIdAnswers returns an error', async () => {
+  it('throws when getMeldingByMeldingIdAnswers returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -59,14 +56,11 @@ describe('Page', () => {
     )
 
     const params = Promise.resolve({ meldingId: 123 })
-    const result = await Page({ params })
 
-    const { getByText } = render(result)
-
-    expect(getByText('Error message')).toBeInTheDocument()
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch additional questions.')
   })
 
-  it('returns an error message when getMeldingByMeldingIdAttachments returns an error', async () => {
+  it('throws an error when getMeldingByMeldingIdAttachments returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
@@ -74,47 +68,32 @@ describe('Page', () => {
     )
 
     const params = Promise.resolve({ meldingId: 123 })
-    const result = await Page({ params })
 
-    render(result)
-
-    expect(Detail).toHaveBeenCalledWith(
-      expect.objectContaining({
-        attachments: {
-          attachmentsWithFile: [],
-          error: 'Error message',
-        },
-      }),
-      undefined,
-    )
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch melding attachments.')
   })
 
-  it('logs the notes error and still renders Detail with notesCount 0', async () => {
+  it('throws an error when getMeldingByMeldingIdAssets returns an error', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS, () =>
+        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+      ),
+    )
+
+    const params = Promise.resolve({ meldingId: 123 })
+
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch assets.')
+  })
+
+  it('throws an error when getMeldingByMeldingIdNote returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
 
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-
     const params = Promise.resolve({ meldingId: 123 })
-    const result = await Page({ params })
 
-    render(result)
-
-    expect(consoleErrorSpy).toHaveBeenCalled()
-
-    expect(Detail).toHaveBeenCalledWith(
-      expect.objectContaining({
-        meldingId: 123,
-        notesCount: undefined,
-        publicId: melding.public_id,
-      }),
-      undefined,
-    )
-
-    consoleErrorSpy.mockRestore()
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch notes.')
   })
 
   it('calls the Detail component with the correct data', async () => {
@@ -205,15 +184,13 @@ describe('Page', () => {
       },
     ]
 
-    const attachments: DetailProps['attachments'] = {
-      attachmentsWithFile: [
-        expect.objectContaining({
-          blob: expect.any(Blob),
-          id: 42,
-          originalFilename: 'IMG_0815.jpg',
-        }),
-      ] as DetailProps['attachments']['attachmentsWithFile'],
-    }
+    const attachments = [
+      expect.objectContaining({
+        blob: expect.any(Blob),
+        id: 42,
+        originalFilename: 'IMG_0815.jpg',
+      }),
+    ] as DetailProps['attachments']
 
     expect(Detail).toHaveBeenCalledWith(
       {
