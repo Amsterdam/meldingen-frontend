@@ -131,32 +131,33 @@
       "count": "{currentCount} van {maxCount} bestanden geupload"
     },
     "file-upload": {
-      "select-file-button": "Bestanden kiezen",
+      "action-button-cancel": "Annuleren",
       "action-button-delete": "Verwijder bestand",
       "drop-area": "Of sleep de bestanden in dit vlak.",
       "id-prefix": "bestand",
       "progress-finished": "Upload geslaagd",
-      "progress-loading": "Je bestand wordt nu geüpload"
+      "progress-loading": "Upload {percentage}%",
+      "select-file-button": "Bestanden kiezen"
     },
     "errors": {
       "too-many-files": {
         "title": "U kunt maximaal {maxFiles} bestanden uploaden."
       },
       "too-many-attempts": {
-        "title": "Verbeter de fouten om uw foto’s toe te voegen",
+        "title": "Verbeter de fouten om uw bestanden toe te voegen",
         "description": "U heeft te vaak geprobeerd een foto toe te voegen. Verwijder eerst een mislukte poging uit de lijst om nog een foto toe te voegen."
       },
       "upload-in-progress": {
-        "title": "De foto’s zijn nog niet toegevoegd",
-        "description": "Wacht tot de foto’s zijn toegevoegd of annuleer."
+        "title": "De bestanden zijn nog niet toegevoegd",
+        "description": "Wacht tot de bestanden zijn toegevoegd of annuleer."
       },
       "delete-failed": {
-        "title": "Het is niet gelukt om de foto te verwijderen",
+        "title": "Het is niet gelukt om de bestand te verwijderen",
         "description": "Probeer het opnieuw."
       }
     },
     "validation-errors": {
-      "alert-title": "{count, plural, =1 {Verbeter de fout om uw foto’s toe te voegen} other {Verbeter de fouten om uw foto’s toe te voegen}}",
+      "alert-title": "{count, plural, =1 {Verbeter de fout om uw bestanden toe te voegen} other {Verbeter de fouten om uw bestanden toe te voegen}}",
       "duplicate-upload": "Het gekozen bestand is al toegevoegd.",
       "failed-upload": "Probeer het opnieuw.",
       "invalid-file-type": "Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp.",
