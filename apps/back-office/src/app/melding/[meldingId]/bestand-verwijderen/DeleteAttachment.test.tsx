@@ -134,9 +134,8 @@ describe('Attachments', () => {
 
     await user.click(screen.getByRole('button', { name: 'bewijs.png' }))
 
-    await waitFor(() => {
-      expect(screen.getByText('Could not delete attachment')).toBeInTheDocument()
-    })
+    expect(await screen.findByText('error-delete-failed.title')).toBeInTheDocument()
+    expect(screen.getByText('error-delete-failed.description')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'bewijs.png' })).toBeEnabled()
   })
 
