@@ -51,6 +51,29 @@ describe('ClassificationField', () => {
     expect(screen.getByRole('combobox', { name: label })).toHaveValue('Category 2')
   })
 
+  it('keeps the user input when re-rendered with the same derivedClassification', async () => {
+    const user = userEvent.setup()
+
+    const { rerender } = render(
+      <ClassificationField classifications={classifications} derivedClassification="Category 1" />,
+    )
+
+    const combobox = screen.getByRole('combobox', { name: label })
+
+    await user.clear(combobox)
+    await user.type(combobox, 'Category 2')
+
+    rerender(
+      <ClassificationField
+        classifications={classifications}
+        derivedClassification="Category 1"
+        errorMessage="Error message"
+      />,
+    )
+
+    expect(screen.getByRole('combobox', { name: label })).toHaveValue('Category 2')
+  })
+
   it('renders the no results message when the query matches nothing', async () => {
     const user = userEvent.setup()
 

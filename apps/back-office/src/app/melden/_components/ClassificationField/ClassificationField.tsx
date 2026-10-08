@@ -1,9 +1,6 @@
 import { useTranslations } from 'next-intl'
-import { useEffect, useRef } from 'react'
 
 import type { ClassificationOutput } from '@meldingen/api-client'
-
-import type { ClassificationComboboxRef } from '~/app/_components/ClassificationCombobox/ClassificationCombobox'
 
 import { ClassificationCombobox } from '~/app/_components'
 
@@ -22,29 +19,16 @@ export const ClassificationField = ({
 }: Props) => {
   const t = useTranslations('melding-form.classification')
 
-  const comboboxRef = useRef<ClassificationComboboxRef | null>(null)
-
-  useEffect(() => {
-    if (!comboboxRef.current) return
-
-    const { classification, setClassification } = comboboxRef.current
-
-    if (classification === '' || classification !== derivedClassification) {
-      setClassification(derivedClassification ?? '')
-    }
-
-    return () => {}
-  }, [derivedClassification, comboboxRef.current?.classification])
-
   return (
     <ClassificationCombobox
       classifications={classifications}
       defaultValue={derivedClassification}
       errorMessage={errorMessage}
       isDisabled={isDisabled}
+      // Remount when the derived classification changes, so the combobox resets to the new value
+      key={derivedClassification}
       label={t('label')}
       noResultsMessage={t('no-results')}
-      ref={comboboxRef}
     />
   )
 }

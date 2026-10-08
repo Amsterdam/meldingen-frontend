@@ -1,6 +1,6 @@
 'use client'
 
-import type { ChangeEvent, Ref } from 'react'
+import type { ChangeEvent } from 'react'
 
 import { ErrorMessage, Field, Label, Paragraph } from '@amsterdam/design-system-react'
 import { autoUpdate, size, useFloating } from '@floating-ui/react-dom'
@@ -13,18 +13,13 @@ import {
   Field as HUIField,
   Label as HUILabel,
 } from '@headlessui/react'
-import { useImperativeHandle, useState } from 'react'
+import { useState } from 'react'
 
 import type { ClassificationOutput } from '@meldingen/api-client'
 
 import { ListBox, TextInput } from '@meldingen/ui'
 
 import styles from './ClassificationCombobox.module.css'
-
-export type ClassificationComboboxRef = {
-  classification: string
-  setClassification: (value: string) => void
-}
 
 type Props = {
   classifications: ClassificationOutput[]
@@ -34,7 +29,6 @@ type Props = {
   label: string
   noResultsMessage: string
   placeholder?: string
-  ref?: Ref<ClassificationComboboxRef>
 }
 
 const getClassificationByName = (classifications: ClassificationOutput[], name: string) =>
@@ -48,18 +42,8 @@ export const ClassificationCombobox = ({
   label,
   noResultsMessage,
   placeholder,
-  ref,
 }: Props) => {
   const [value, setValue] = useState(defaultValue)
-
-  useImperativeHandle(
-    ref,
-    () => ({
-      classification: value,
-      setClassification: setValue,
-    }),
-    [value],
-  )
 
   // The input value is the source of truth, so typing an exact name counts as a selection too
   const selectedClassification = getClassificationByName(classifications, value)
