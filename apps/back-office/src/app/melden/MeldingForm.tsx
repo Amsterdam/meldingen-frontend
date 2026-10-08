@@ -12,7 +12,7 @@ import type {
   StaticFormTextAreaComponentOutput,
 } from '@meldingen/api-client'
 
-import { Column, Paragraph } from '@meldingen/ui'
+import { Column } from '@meldingen/ui'
 
 import type { MeldingData } from './types'
 import type { FormState } from '~/types'
@@ -157,10 +157,6 @@ export const MeldingForm = ({
               onMeldingPrefetched={setPrefetchedMelding}
               startPrefetchingTransition={startPrefetchingTransition}
             />
-
-            {prefetchedMelding?.classificationName && (
-              <Paragraph>De categorie van de melding is: {prefetchedMelding.classificationName}</Paragraph>
-            )}
 
             {prefetchedMelding && (
               <input name="prefetchedMelding" type="hidden" value={JSON.stringify(prefetchedMelding)} />
