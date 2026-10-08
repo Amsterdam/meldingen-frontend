@@ -2,6 +2,7 @@ import type { MeldingOutput, NoteRetrieveOutput, StaticFormTextAreaComponentOutp
 
 import { MeldingForm } from './MeldingForm'
 import {
+  getClassification,
   getLabel,
   getMeldingByMeldingId,
   getMeldingByMeldingIdNote,
@@ -52,6 +53,15 @@ const fetchSourcesAndLabels = async () => {
   if (labels.length === 0) throw new Error('No labels found.')
 
   return { labels, sources }
+}
+
+const fetchClassifications = async () => {
+  const { data, error } = await getClassification()
+
+  if (error) throw new Error('Failed to fetch classifications.')
+  if (!data || data.length === 0) throw new Error('No classifications found.')
+
+  return data
 }
 
 const fetchExistingMelding = async (id: number) => {
@@ -119,9 +129,10 @@ const toExistingMeldingData = (melding?: MeldingOutput, token?: string) => {
 export default async ({ searchParams }: { searchParams: Promise<{ id?: number; token?: string }> }) => {
   const { id, token } = await searchParams
 
-  const [primaryTextArea, { labels, sources }, existingMelding, note] = await Promise.all([
+  const [primaryTextArea, { labels, sources }, classifications, existingMelding, note] = await Promise.all([
     fetchPrimaryTextArea(),
     fetchSourcesAndLabels(),
+    fetchClassifications(),
     id && token ? fetchExistingMelding(id) : Promise.resolve(undefined),
     id && token ? fetchNote(id) : Promise.resolve(undefined),
   ])
@@ -131,6 +142,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
 
   return (
     <MeldingForm
+      classifications={classifications}
       defaultValues={defaultValues}
       existingId={id}
       existingMelding={existingMeldingData}
