@@ -38,6 +38,18 @@ type ValidationMessages = {
   sourceRequired: string
 }
 
+// Represents the shape of the form data submitted by the user
+type UserFormData = {
+  addNote: string
+  classificationId: string
+  classificationQuery: string
+  labels?: string
+  prefetchedMelding?: string
+  primary: string
+  source: string
+  urgency: string
+}
+
 const requiredString = (message: string) => z.string({ error: message }).min(1, { error: message })
 
 // The order of the keys determines the order of the validation errors
@@ -58,22 +70,9 @@ const createMeldingFormSchema = ({
       addNote: z.number().max(MAX_NOTE_LENGTH, { error: noteTooLong }),
       /* eslint-enable perfectionist/sort-objects */
     })
-    .superRefine((data, ctx) => {
-      const hasQueryError = ctx.issues.some(({ path }) => path?.includes('classificationQuery'))
-
-      if (hasQueryError) return
-
-      const result = requiredString(classificationIdRequired).safeParse(data.classificationId)
-
-      // Added to the end of the issues list if the classificationId is invalid
-      if (!result.success) {
-        for (const issue of result.error.issues) {
-          ctx.addIssue({
-            ...issue,
-            path: ['classificationId', ...issue.path],
-          })
-        }
-      }
+    .refine(({ classificationId, classificationQuery }) => !classificationQuery || !!classificationId, {
+      error: classificationIdRequired,
+      path: ['classificationId'],
     })
 
 const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
@@ -124,7 +123,7 @@ export const postMeldingForm = async (
 ): Promise<FormState> => {
   const t = await getTranslations('melding-form')
 
-  const formDataObj = Object.fromEntries(formData)
+  const formDataObj = Object.fromEntries(formData) as UserFormData
 
   const { characterCount, isEmpty, markdown } = parseNoteDocument(formDataObj.addNote)
 
