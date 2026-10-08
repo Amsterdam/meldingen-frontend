@@ -207,6 +207,7 @@ const nl: TranslationMessages = {
     },
     validation: {
       email: 'Moet een geldig e-mailadres zijn',
+      integer: 'Moet een geheel getal zijn',
       maxLength: 'Mag hooguit %{max} karakters bevatten',
       maxValue: 'Moet kleiner of gelijk zijn aan %{max}',
       minLength: 'Moet minimaal %{min} karakters bevatten',
