@@ -120,9 +120,9 @@ describe('MeldingForm', () => {
     expect(input).toHaveValue('')
   })
 
-  it('renders an error message connected to the classification input when there is a validation error for the classification query field', () => {
+  it('renders an error message connected to the classification input when there is a classification validation error', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
-      { validationErrors: [{ key: 'classificationQuery', message: 'Classification query error' }] },
+      { validationErrors: [{ key: 'classificationQuery', message: 'Classification error' }] },
       vi.fn(),
       false,
     ])
@@ -131,21 +131,23 @@ describe('MeldingForm', () => {
 
     const input = getClassificationInput()
 
-    expect(input).toHaveAccessibleDescription('Invoerfout:Classification query error')
+    expect(input).toHaveAccessibleDescription('Invoerfout:Classification error')
   })
 
-  it('renders an error message connected to the classification input when there is a validation error for the classification id field', () => {
+  it('links the classification validation error in the invalid form alert to the classification input', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
-      { validationErrors: [{ key: 'classificationId', message: 'Classification id error' }] },
+      { validationErrors: [{ key: 'classificationQuery', message: 'Classification error' }] },
       vi.fn(),
       false,
     ])
 
     render(<MeldingForm {...defaultProps} />)
 
+    const link = screen.getByRole('link', { name: 'Classification error' })
     const input = getClassificationInput()
 
-    expect(input).toHaveAccessibleDescription('Invoerfout:Classification id error')
+    expect(link).toHaveAttribute('href', `#${input.id}`)
+    expect(input).toHaveAccessibleDescription('Invoerfout:Classification error')
   })
 
   it('prefills the classification input from formData when the action returns formData', () => {

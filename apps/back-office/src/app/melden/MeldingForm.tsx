@@ -128,10 +128,7 @@ export const MeldingForm = ({
   const primaryErrorMessage = validationErrors?.find((error) => error.key === 'primary')?.message
   const sourceErrorMessage = validationErrors?.find((error) => error.key === 'source')?.message
   const noteErrorMessage = validationErrors?.find((error) => error.key === 'addNote')?.message
-  const classificationQueryErrorMessage = validationErrors?.find(
-    (error) => error.key === 'classificationQuery',
-  )?.message
-  const classificationIdErrorMessage = validationErrors?.find((error) => error.key === 'classificationId')?.message
+  const classificationErrorMessage = validationErrors?.find((error) => error.key === 'classificationQuery')?.message
 
   return (
     <Grid
@@ -172,7 +169,7 @@ export const MeldingForm = ({
             <ClassificationField
               classifications={classifications}
               derivedClassification={classificationDefaultValue}
-              errorMessage={classificationQueryErrorMessage ?? classificationIdErrorMessage}
+              errorMessage={classificationErrorMessage}
               isDisabled={isPrefetching}
             />
 

@@ -77,7 +77,7 @@ describe('postMeldingForm', () => {
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'classificationId', message: 'classification.does-not-exist' }],
+      validationErrors: [{ key: 'classificationQuery', message: 'classification.does-not-exist' }],
     })
   })
 

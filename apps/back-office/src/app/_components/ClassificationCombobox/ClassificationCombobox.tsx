@@ -79,7 +79,7 @@ export const ClassificationCombobox = ({
 
   return (
     <HUIField as={Field} className="ams-mb-m" invalid={hasErrorMessage}>
-      <HUILabel as={Label} htmlFor="classificationId">
+      <HUILabel as={Label} htmlFor="classificationQuery">
         {label}
       </HUILabel>
 
@@ -92,7 +92,7 @@ export const ClassificationCombobox = ({
           autoComplete="off"
           className={styles.comboboxInput}
           disabled={isDisabled}
-          id="classificationId"
+          id="classificationQuery"
           invalid={hasErrorMessage}
           name="classificationQuery"
           onChange={handleInputChange}

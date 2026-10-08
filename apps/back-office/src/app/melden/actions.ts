@@ -72,7 +72,7 @@ const createMeldingFormSchema = ({
     })
     .refine(({ classificationId, classificationQuery }) => !classificationQuery || !!classificationId, {
       error: classificationIdRequired,
-      path: ['classificationId'],
+      path: ['classificationQuery'],
     })
 
 const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>

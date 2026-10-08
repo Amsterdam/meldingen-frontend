@@ -36,7 +36,7 @@ describe('postReclassificationForm', () => {
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'classificationId', message: 'classification-required' }],
+      validationErrors: [{ key: 'classificationQuery', message: 'classification-required' }],
     })
     expect(redirect).not.toHaveBeenCalled()
   })
@@ -52,7 +52,7 @@ describe('postReclassificationForm', () => {
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'classificationId', message: 'classification-same' }],
+      validationErrors: [{ key: 'classificationQuery', message: 'classification-same' }],
     })
     expect(redirect).not.toHaveBeenCalled()
   })
@@ -67,7 +67,7 @@ describe('postReclassificationForm', () => {
 
     expect(result).toEqual({
       formData,
-      validationErrors: [{ key: 'classificationId', message: 'classification-does-not-exist' }],
+      validationErrors: [{ key: 'classificationQuery', message: 'classification-does-not-exist' }],
     })
     expect(redirect).not.toHaveBeenCalled()
   })
@@ -111,7 +111,7 @@ describe('postReclassificationForm', () => {
     expect(result).toEqual({
       formData,
       validationErrors: [
-        { key: 'classificationId', message: 'classification-required' },
+        { key: 'classificationQuery', message: 'classification-required' },
         { key: 'reason', message: 'reason-required' },
       ],
     })
