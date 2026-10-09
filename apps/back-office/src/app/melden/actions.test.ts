@@ -107,7 +107,7 @@ describe('postMeldingForm', () => {
     })
   })
 
-  it('returns validation errors in schema order when required fields are missing and the note is too long', async () => {
+  it('returns validation errors in field order when required fields are missing and the note is too long', async () => {
     const formData = createFormData()
 
     formData.delete('primary')
