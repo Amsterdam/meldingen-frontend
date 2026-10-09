@@ -4,23 +4,27 @@ import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import type { MeldingAttachment } from '../../types'
+import { Heading } from '@meldingen/ui'
 
-import { useRemoveAttachmentError } from '../_context/RemoveAttachmentErrorContext'
-import { deleteAttachmentAction } from '../actions'
-import { Attachment } from './Attachment'
+import type { MeldingAttachment } from '../types'
 
-import styles from './Attachments.module.css'
+import { PageWrapper } from '../_components/PageWrapper'
+import { Attachment } from './_components/Attachment'
+import { deleteAttachmentAction } from './actions'
+import { ApiErrorAlert } from '~/app/_components'
+
+import styles from './DeleteAttachment.module.css'
 
 type Props = {
   attachments: MeldingAttachment[]
   meldingId: number
 }
 
-export const Attachments = ({ attachments: initialAttachments, meldingId }: Props) => {
-  const { setApiError } = useRemoveAttachmentError()
+export const DeleteAttachment = ({ attachments: initialAttachments, meldingId }: Props) => {
+  const [apiError, setApiError] = useState<string>()
   const router = useRouter()
   const t = useTranslations('remove-attachment')
+  const backLinkHref = `/melding/${meldingId}`
 
   const [attachments, setAttachments] = useState(initialAttachments)
   const [deletedFileName, setDeletedFileName] = useState<string | null>(null)
@@ -30,17 +34,19 @@ export const Attachments = ({ attachments: initialAttachments, meldingId }: Prop
     if (isDeleting) return
 
     const shouldDelete = window.confirm(t('confirmation-prompt', { fileName }))
+
     if (!shouldDelete) return
 
     setIsDeleting(true)
     setDeletedFileName(null)
-    setApiError(null)
+    setApiError(undefined)
 
     const { error: deleteAttachmentError } = await deleteAttachmentAction(id)
 
     if (deleteAttachmentError) {
       setApiError(deleteAttachmentError)
       setIsDeleting(false)
+
       return
     }
 
@@ -50,6 +56,7 @@ export const Attachments = ({ attachments: initialAttachments, meldingId }: Prop
 
     if (remainingAttachments.length === 0) {
       router.replace(`/melding/${meldingId}`)
+
       return
     }
 
@@ -58,7 +65,17 @@ export const Attachments = ({ attachments: initialAttachments, meldingId }: Prop
   }
 
   return (
-    <>
+    <PageWrapper backLink={{ href: backLinkHref, label: t('back-link') }}>
+      {!!apiError && (
+        <ApiErrorAlert
+          description={t('error-delete-failed.description')}
+          heading={t('error-delete-failed.title')}
+          shouldFocus={true}
+        />
+      )}
+      <Heading className="ams-mb-l" level={1}>
+        {t('title')}
+      </Heading>
       <div className={styles.cardGrid}>
         {attachments.map((attachment) => (
           <Attachment
@@ -73,6 +90,6 @@ export const Attachments = ({ attachments: initialAttachments, meldingId }: Prop
       <div aria-live="polite" className="ams-visually-hidden">
         {deletedFileName ? t('confirmation', { fileName: deletedFileName }) : ''}
       </div>
-    </>
+    </PageWrapper>
   )
 }
