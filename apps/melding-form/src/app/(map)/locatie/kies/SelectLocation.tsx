@@ -14,6 +14,7 @@ import type { Coordinates } from '~/types'
 
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
+import { SubmitButton } from '~/app/_components'
 import { getAssetLabelText, getAssetSubType } from '~/app/(general)/_utils'
 import { ASSET_FALLBACK_SRC } from '~/constants'
 
@@ -95,7 +96,7 @@ export const SelectLocation = ({
   const postCoordinatesAndAssetsWithExtraArgs = postCoordinatesAndAssets.bind(null, {
     asset_type_id: assetConfig.wfsQuery.assetTypeId,
   })
-  const [{ error }, formAction] = useActionState(postCoordinatesAndAssetsWithExtraArgs, initialState)
+  const [{ error }, formAction, isPending] = useActionState(postCoordinatesAndAssetsWithExtraArgs, initialState)
 
   const t = useTranslations('select-location')
   const isWideWindow = useViewportHasMinWidth('wide')
@@ -156,9 +157,12 @@ export const SelectLocation = ({
           setNotificationType={setNotificationType}
           setSelectedAssets={setSelectedAssets}
         />
-        <Button className={styles.hideButtonMobile} form="address" type="submit">
-          {t('submit-button.desktop')}
-        </Button>
+        <SubmitButton
+          className={styles.hideButtonMobile}
+          form="address"
+          isLoading={isPending}
+          label={t('submit-button.desktop')}
+        />
       </SideBarBottom>
 
       <div className={styles.map} inert={showAssetList}>
@@ -198,9 +202,7 @@ export const SelectLocation = ({
         </Map>
       </div>
       <div className={clsx(styles.buttonWrapper, showAssetList && styles.assetListOpen)}>
-        <Button form="address" type="submit">
-          {t('submit-button.mobile')}
-        </Button>
+        <SubmitButton form="address" isLoading={isPending} label={t('submit-button.mobile')} />
         {showAssetListToggleButton && (
           <Button onClick={() => setIsAssetListOpen((prevState) => !prevState)} variant="secondary">
             {isAssetListOpen ? t('toggle-button.map') : t('toggle-button.list')}

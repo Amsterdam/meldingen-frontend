@@ -11,7 +11,7 @@ import type { AnswersByKey } from '../../../_utils/conditions'
 import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from '../../../_utils'
-import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
+import { ApiErrorAlert, InvalidFormAlert, SubmitButton } from '~/app/_components'
 import { BackLink } from '~/app/_components'
 
 const getPrefilledFormComponents = (components: Component[], formData: FormData): Component[] =>
@@ -26,7 +26,9 @@ const getPrefilledFormComponents = (components: Component[], formData: FormData)
       if (formData.get(`time___${component.key}-unknown`) === 'on') {
         return { ...component, defaultValue: null }
       }
+
       const timeValue = formData.get(`time___${component.key}`)
+
       if (typeof timeValue === 'string') {
         return { ...component, defaultValue: timeValue }
       }
@@ -110,9 +112,10 @@ export const AdditionalQuestions = ({
           formComponents={formComponents}
           panelTitle={panelTitle}
           previousAnswersByKey={previousAnswersByKey}
-          submitButtonText={t('submit-button')}
           validationErrors={validationErrors}
-        />
+        >
+          <SubmitButton isLoading={isPending} label={t('submit-button')} />
+        </FormRenderer>
       </main>
     </>
   )
