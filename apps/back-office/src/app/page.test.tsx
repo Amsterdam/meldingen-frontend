@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -10,21 +10,13 @@ import { ENDPOINTS } from '../mocks/endpoints'
 import { server } from '../mocks/node'
 import { mockCookies } from '../mocks/utils'
 import { Overview } from './Overview'
-import Page, { generateMetadata } from './page'
+import Page from './page'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('./Overview', () => ({
   Overview: vi.fn(() => <div>Overview Component</div>),
 }))
-
-describe('generateMetadata', () => {
-  it('returns the correct metadata title', async () => {
-    const metadata = await generateMetadata()
-
-    expect(metadata).toEqual({ title: 'metadata.title' })
-  })
-})
 
 describe('Page', () => {
   beforeAll(() => {
@@ -111,15 +103,19 @@ describe('Page', () => {
     expect(redirect).toHaveBeenCalledWith('/')
   })
 
-  it('shows a message on API error', async () => {
+  it('throws an error when there is an API error', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })))
 
     const searchParams = Promise.resolve({ pagina: '1' })
 
-    const result = await Page({ searchParams })
+    await expect(Page({ searchParams })).rejects.toThrow('Failed to fetch meldingen.')
+  })
 
-    render(result)
+  it('throws an error when the Content-Range header is missing', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING, () => HttpResponse.json(meldingen)))
 
-    expect(screen.getByText('Error message')).toBeInTheDocument()
+    const searchParams = Promise.resolve({ pagina: '1' })
+
+    await expect(Page({ searchParams })).rejects.toThrow('Missing Content-Range header for meldingen overview.')
   })
 })

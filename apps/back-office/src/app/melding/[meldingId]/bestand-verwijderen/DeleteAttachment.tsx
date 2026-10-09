@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 import { Heading } from '@meldingen/ui'
 
-import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
+import type { MeldingAttachment } from '../types'
 
 import { PageWrapper } from '../_components/PageWrapper'
 import { Attachment } from './_components/Attachment'
@@ -16,11 +16,11 @@ import { ApiErrorAlert } from '~/app/_components'
 import styles from './DeleteAttachment.module.css'
 
 type Props = {
-  attachments: GetAttachmentsDataResult
+  attachments: MeldingAttachment[]
   meldingId: number
 }
 
-export const DeleteAttachment = ({ attachments: { attachmentsWithFile: initialAttachments }, meldingId }: Props) => {
+export const DeleteAttachment = ({ attachments: initialAttachments, meldingId }: Props) => {
   const [apiError, setApiError] = useState<string>()
   const router = useRouter()
   const t = useTranslations('remove-attachment')

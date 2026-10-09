@@ -61,7 +61,7 @@ const createMockRouter = (overrides: Partial<ReturnType<typeof useRouter>> = {})
 })
 
 const renderAttachments = (attachments: MeldingAttachment[]) =>
-  render(<DeleteAttachment attachments={{ attachmentsWithFile: attachments }} meldingId={123} />)
+  render(<DeleteAttachment attachments={attachments} meldingId={123} />)
 
 describe('Attachments', () => {
   beforeEach(() => {
