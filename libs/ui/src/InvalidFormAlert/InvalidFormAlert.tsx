@@ -1,65 +1,31 @@
 'use client'
 
-import type { InvalidFormAlertProps as ADSInvalidFormAlertProps } from '@amsterdam/design-system-react'
+import { LinkList } from '@amsterdam/design-system-react'
 
-import { Alert, LinkList } from '@amsterdam/design-system-react'
-import { clsx } from 'clsx'
-import { useEffect, useRef } from 'react'
+import type { AlertProps } from '../Alert/Alert'
 
-import styles from './InvalidFormAlert.module.css'
+import { Alert } from '../Alert/Alert'
 
-// TODO: Copied this from Amsterdam Design System, because their built in focus on render and change page title does not work well.
-// Replace with ADS component when they've fixed that.
-
-export type InvalidFormAlertProps = {
-  className?: string
-  errors: { key: string; message: string }[]
-  heading?: ADSInvalidFormAlertProps['heading']
-  headingLevel: ADSInvalidFormAlertProps['headingLevel']
-  /**
-   * Pass a value that changes to `true` to trigger focus on the alert.
-   * With `useActionState`, `!isPending` works well — it is `false` on submit and `true` when the response arrives.
-   * Without `useActionState`, manage it yourself via a state variable: set it to `false` on submit and back to `true` on response.
-   */
-  shouldFocus: boolean
+export type ValidationError = {
+  key: string
+  message: string
 }
 
-export const InvalidFormAlert = ({
-  className,
-  errors,
-  heading = 'Verbeter de fouten voor u verder gaat',
-  headingLevel,
-  shouldFocus,
-}: InvalidFormAlertProps) => {
-  const ref = useRef<HTMLDivElement>(null)
+export type InvalidFormAlertProps = AlertProps & {
+  errors: ValidationError[]
+}
 
-  useEffect(() => {
-    if (shouldFocus) ref.current?.focus()
-  }, [shouldFocus])
-
-  if (errors.length === 0) return null
-
-  const mappedErrors = errors.map((error) => ({
-    id: `#${error.key}`,
-    label: error.message,
-  }))
+export const InvalidFormAlert = ({ errors, ...alertProps }: InvalidFormAlertProps) => {
+  if (errors.length === 0) {
+    return null
+  }
 
   return (
-    <Alert
-      className={clsx(styles.alert, className)}
-      heading={heading}
-      // Remove the default label for the Alert.
-      // Otherwise, focusing on the Alert causes NVDA to read the label twice.
-      headingId={null}
-      headingLevel={headingLevel}
-      ref={ref}
-      severity="error"
-      tabIndex={-1}
-    >
+    <Alert {...alertProps} severity="error">
       <LinkList>
-        {mappedErrors.map(({ id, label }) => (
-          <LinkList.Link href={id} key={`${id}-${label}`}>
-            {label}
+        {errors.map(({ key, message }) => (
+          <LinkList.Link href={`#${key}`} key={`${key}-${message}`}>
+            {message}
           </LinkList.Link>
         ))}
       </LinkList>

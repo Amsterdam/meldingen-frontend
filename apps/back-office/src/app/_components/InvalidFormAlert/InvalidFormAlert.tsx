@@ -1,12 +1,14 @@
 import { useTranslations } from 'next-intl'
 
-import type { InvalidFormAlertProps } from '@meldingen/ui'
+import type { InvalidFormAlertProps as UIInvalidFormAlertProps } from '@meldingen/ui'
 
 import { InvalidFormAlert as UIInvalidFormAlert } from '@meldingen/ui'
 
-type Props = Pick<InvalidFormAlertProps, 'errors' | 'heading' | 'shouldFocus'>
+export type InvalidFormAlertProps = Pick<UIInvalidFormAlertProps, 'errors' | 'shouldFocus'> & {
+  heading?: string
+}
 
-export const InvalidFormAlert = ({ errors, heading, shouldFocus }: Props) => {
+export const InvalidFormAlert = ({ errors, heading, shouldFocus }: InvalidFormAlertProps) => {
   const t = useTranslations('shared')
 
   return (
