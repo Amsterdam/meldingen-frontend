@@ -5,3 +5,33 @@
     width: fit-content;
   }
 }
+
+@keyframes ams-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  align-self: center;
+  animation: ams-spinner-rotate 0.8s linear infinite;
+  aspect-ratio: 1;
+  block-size: 1.5rem;
+  border-block-end-color: var(--ams-color-text-inverse);
+  border-block-start-color: transparent;
+  border-inline-end-color: var(--ams-color-text-inverse);
+  border-inline-start-color: var(--ams-color-text-inverse);
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 0.25rem;
+  box-sizing: border-box;
+  display: inline-block;
+
+  @media (forced-colors: active) {
+    border-block-start-color: ButtonFace;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: ams-spinner-rotate 2.4s linear infinite;
+  }
+}

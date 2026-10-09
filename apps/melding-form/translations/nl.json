@@ -194,6 +194,7 @@
     "document-title-error-count-prefix": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",
     "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
     "organisation-name": "Gemeente Amsterdam",
+    "submit-button-loading-label": "Aan het laden.",
     "api-error-alert": {
       "heading": "Er is iets misgegaan",
       "description": "Probeer opnieuw naar de volgende vraag te gaan."

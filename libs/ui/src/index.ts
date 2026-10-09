@@ -4,7 +4,7 @@ export { InvalidFormAlert } from './InvalidFormAlert/InvalidFormAlert'
 export type { InvalidFormAlertProps } from './InvalidFormAlert/InvalidFormAlert'
 export { ListBox } from './ListBox/ListBox'
 export { Page } from './Page/Page'
-export { SubmitButton } from './SubmitButton/SubmitButton'
+export { SubmitButton, SubmitButtonProps } from './SubmitButton/SubmitButton'
 export { SummaryList } from './SummaryList/SummaryList'
 export { TextInput } from './TextInput/TextInput'
 
