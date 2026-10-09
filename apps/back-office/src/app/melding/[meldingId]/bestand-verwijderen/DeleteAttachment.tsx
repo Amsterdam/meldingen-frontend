@@ -13,7 +13,7 @@ import { Attachment } from './_components/Attachment'
 import { deleteAttachmentAction } from './actions'
 import { ApiErrorAlert } from '~/app/_components'
 
-import styles from './Attachments.module.css'
+import styles from './DeleteAttachment.module.css'
 
 type Props = {
   attachments: GetAttachmentsDataResult
