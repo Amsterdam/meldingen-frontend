@@ -13,6 +13,14 @@ export const setCurrentSlideIndexToVisibleSlide = ({ observations, ref, setCurre
 
   observations.forEach((observation) => {
     if (observation.isIntersecting) {
+      const focusedSlide = images.find((slide) => slide.contains(document.activeElement))
+
+      // The previous slide becomes inert, which would remove focus from the image slider.
+      // Moving focus to the scroller keeps the arrow keys working when scrolling with the keyboard.
+      if (focusedSlide && focusedSlide !== observation.target) {
+        ref.current?.focus({ preventScroll: true })
+      }
+
       setCurrentSlideIndex(images.indexOf(observation.target as HTMLElement))
     }
   })
