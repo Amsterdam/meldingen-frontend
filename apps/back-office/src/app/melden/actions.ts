@@ -34,6 +34,7 @@ type UserFormData = {
   addNote: string
   classificationId: string
   classificationQuery: string
+  labels?: string // Only holds the last label, use formData.getAll('labels')
   prefetchedMelding?: string
   primary: string
   source: string
