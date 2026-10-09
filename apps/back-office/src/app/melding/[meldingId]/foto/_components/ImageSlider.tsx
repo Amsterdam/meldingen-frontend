@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Figure, Image } from '@amsterdam/design-system-react'
+import { Button, Figure } from '@amsterdam/design-system-react'
 import { ChevronBackwardIcon, ChevronForwardIcon } from '@amsterdam/design-system-react-icons'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
@@ -9,6 +9,7 @@ import { formatDateString } from '@meldingen/utils'
 
 import { debounce, scrollToCurrentSlideOnResize, scrollToSlide, setCurrentSlideIndexToVisibleSlide } from './_utils'
 import { ImageSliderThumbnails } from './ImageSliderThumbnails'
+import { ZoomableImage } from './ZoomableImage'
 
 import styles from './ImageSlider.module.css'
 
@@ -40,6 +41,7 @@ export const ImageSlider = ({ defaultSlideIndex, images, labelId }: Props) => {
 
   useEffect(() => {
     const urls = images.map((image) => ({ id: image.id, url: URL.createObjectURL(image.data) }))
+
     setImageUrls(urls)
 
     return () => {
@@ -68,6 +70,7 @@ export const ImageSlider = ({ defaultSlideIndex, images, labelId }: Props) => {
     )
 
     const slides = Array.from(scrollerRef.current.children)
+
     slides.forEach((slide) => observer.observe(slide))
 
     return () => observer.disconnect()
@@ -132,10 +135,10 @@ export const ImageSlider = ({ defaultSlideIndex, images, labelId }: Props) => {
 
           return (
             <div
-              aria-hidden={currentSlideIndex !== index}
               aria-labelledby={`tab${index + 1}`}
               className="ams-image-slider__slide"
               id={`slide${index + 1}`}
+              inert={currentSlideIndex !== index}
               key={id}
               role="tabpanel"
             >
@@ -145,7 +148,12 @@ export const ImageSlider = ({ defaultSlideIndex, images, labelId }: Props) => {
                   <span>{`${date} ${time}`}</span>
                 </Figure.Caption>
                 <div className={styles.imageContainer}>
-                  {url ? <Image alt="" className={styles.image} src={url} /> : <div className={styles.loadingImage} />}
+                  {url ? (
+                    // The key resets the zoom when leaving the slide
+                    <ZoomableImage key={String(currentSlideIndex === index)} src={url} />
+                  ) : (
+                    <div className={styles.loadingImage} />
+                  )}
                 </div>
               </Figure>
             </div>
