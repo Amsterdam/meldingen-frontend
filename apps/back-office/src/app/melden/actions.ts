@@ -167,10 +167,10 @@ export const postMeldingForm = async (
 
   const params = new URLSearchParams({
     classification_id: String(formDataObj.classificationId),
-    created_at: created_at,
+    created_at,
     id: String(id),
-    public_id: public_id,
-    token: token,
+    public_id,
+    token,
   })
 
   redirect(`${getClientEnv().NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`)
