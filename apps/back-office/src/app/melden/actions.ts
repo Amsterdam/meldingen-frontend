@@ -2,7 +2,6 @@
 
 import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
-import * as z from 'zod'
 
 import type { MeldingOutput } from '@meldingen/api-client'
 
@@ -30,50 +29,17 @@ export type ArgsType = {
   requiredErrorMessage: string
 }
 
-type ValidationMessages = {
-  classificationIdRequired: string
-  classificationQueryRequired: string
-  noteTooLong: string
-  primaryRequired: string
-  sourceRequired: string
-}
-
 // Represents the shape of the form data submitted by the user
 type UserFormData = {
   addNote: string
   classificationId: string
   classificationQuery: string
-  labels?: string
+  labels?: string // Only holds the last label, use formData.getAll('labels')
   prefetchedMelding?: string
   primary: string
   source: string
   urgency: string
 }
-
-const requiredString = (message: string) => z.string({ error: message }).min(1, { error: message })
-
-// The order of the keys determines the order of the validation errors
-const createMeldingFormSchema = ({
-  classificationIdRequired,
-  classificationQueryRequired,
-  noteTooLong,
-  primaryRequired,
-  sourceRequired,
-}: ValidationMessages) =>
-  z
-    .object({
-      /* eslint-disable perfectionist/sort-objects */
-      primary: requiredString(primaryRequired),
-      classificationQuery: requiredString(classificationQueryRequired),
-      classificationId: z.unknown().optional(),
-      source: requiredString(sourceRequired),
-      addNote: z.number().max(MAX_NOTE_LENGTH, { error: noteTooLong }),
-      /* eslint-enable perfectionist/sort-objects */
-    })
-    .refine(({ classificationId, classificationQuery }) => !classificationQuery || !!classificationId, {
-      error: classificationIdRequired,
-      path: ['classificationQuery'],
-    })
 
 const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
   URGENCY_VALUES.includes(value as MeldingOutput['urgency'])
@@ -131,48 +97,46 @@ export const postMeldingForm = async (
   // its `defaultValue` (via contentType: 'markdown') if the form is redisplayed after an error.
   formData.set('addNote', markdown)
 
-  const { error: parseError } = createMeldingFormSchema({
-    classificationIdRequired: t('classification.does-not-exist'),
-    classificationQueryRequired: t('classification.required'),
-    noteTooLong: t('note.error', { max: MAX_NOTE_LENGTH }),
-    primaryRequired: requiredErrorMessage,
-    sourceRequired: t('source.error'),
-  }).safeParse({
-    addNote: characterCount,
-    classificationId: formDataObj.classificationId,
-    classificationQuery: formDataObj.classificationQuery,
-    primary: formDataObj.primary,
-    source: formDataObj.source,
-  })
+  const validationErrors = []
 
-  if (parseError) {
-    return {
-      formData,
-      validationErrors: parseError.issues.map(({ message, path }) => ({ key: String(path[0]), message })),
-    }
+  if (!formDataObj.primary) {
+    validationErrors.push({ key: 'primary', message: requiredErrorMessage })
   }
 
-  const urgencyRaw = formDataObj.urgency
-  const urgencyNumber = Number(urgencyRaw)
+  if (!formDataObj.classificationQuery) {
+    validationErrors.push({ key: 'classificationQuery', message: t('classification.required') })
+  } else if (!formDataObj.classificationId) {
+    validationErrors.push({ key: 'classificationQuery', message: t('classification.does-not-exist') })
+  }
+
+  if (!formDataObj.source) {
+    validationErrors.push({ key: 'source', message: t('source.error') })
+  }
+
+  if (characterCount > MAX_NOTE_LENGTH) {
+    validationErrors.push({ key: 'addNote', message: t('note.error', { max: MAX_NOTE_LENGTH }) })
+  }
+
+  if (validationErrors.length > 0) return { formData, validationErrors }
+
+  const urgencyNumber = Number(formDataObj.urgency)
 
   if (!isValidUrgency(urgencyNumber)) {
     return {
-      apiError: `Invalid urgency value: ${urgencyRaw}`,
+      apiError: `Invalid urgency value: ${formDataObj.urgency}`,
       formData,
     }
   }
 
-  const prefetchedMeldingRaw = formDataObj.prefetchedMelding as string | undefined
-  const prefetchedMelding = prefetchedMeldingRaw ? safeJSONParse(prefetchedMeldingRaw, undefined) : undefined
+  const prefetchedMelding = formDataObj.prefetchedMelding
+    ? safeJSONParse(formDataObj.prefetchedMelding, undefined)
+    : undefined
   const validPrefetchedMelding = isMeldingData(prefetchedMelding) ? prefetchedMelding : undefined
 
-  const meldingIdForPatch = validPrefetchedMelding?.id ?? existingId
-  const meldingTokenForPatch = validPrefetchedMelding?.token ?? existingToken
-
   const { data, error, response } = await createOrUpdateMelding(
-    formDataObj.primary.toString(),
-    meldingIdForPatch,
-    meldingTokenForPatch,
+    formDataObj.primary,
+    validPrefetchedMelding?.id ?? existingId,
+    validPrefetchedMelding?.token ?? existingToken,
   )
 
   if (hasValidationErrors(response, error)) {
@@ -186,13 +150,6 @@ export const postMeldingForm = async (
 
   const { created_at, id, public_id, token } = data
 
-  const meldingData = {
-    createdAt: created_at,
-    id,
-    publicId: public_id,
-    token,
-  }
-
   const { error: updateMeldingError } = await patchMeldingByMeldingId({
     body: {
       classification_id: Number(formDataObj.classificationId),
@@ -200,21 +157,21 @@ export const postMeldingForm = async (
       source_id: Number(formDataObj.source),
       urgency: urgencyNumber,
     },
-    path: { melding_id: meldingData.id },
+    path: { melding_id: id },
   })
 
   if (updateMeldingError) return { apiError: updateMeldingError, formData }
 
-  const result = await createOrUpdateNote(isEmpty, markdown, meldingData.id, existingNoteId)
+  const result = await createOrUpdateNote(isEmpty, markdown, id, existingNoteId)
 
   if (result?.error) return { apiError: result.error, formData }
 
   const params = new URLSearchParams({
     classification_id: String(formDataObj.classificationId),
-    created_at: meldingData.createdAt,
-    id: String(meldingData.id),
-    public_id: meldingData.publicId,
-    token: meldingData.token,
+    created_at,
+    id: String(id),
+    public_id,
+    token,
   })
 
   redirect(`${getClientEnv().NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`)
