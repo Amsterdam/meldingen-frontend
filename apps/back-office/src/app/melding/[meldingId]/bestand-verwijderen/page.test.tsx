@@ -5,13 +5,13 @@ import { redirect } from 'next/navigation'
 import type { MeldingAttachment } from '../types'
 
 import { getAttachmentsData } from '../_utils/server'
-import { Attachments } from './_components/Attachments'
+import { DeleteAttachment } from './DeleteAttachment'
 import Page, { generateMetadata } from './page'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
-vi.mock('./_components/Attachments', () => ({
-  Attachments: vi.fn(() => <div>Attachments Component</div>),
+vi.mock('./DeleteAttachment', () => ({
+  DeleteAttachment: vi.fn(() => <div>Attachments Component</div>),
 }))
 
 vi.mock('../_utils/server', () => ({
@@ -93,7 +93,7 @@ describe('Page', () => {
 
     render(result)
 
-    expect(Attachments).toHaveBeenCalledWith(
+    expect(DeleteAttachment).toHaveBeenCalledWith(
       {
         attachments,
         meldingId: 123,

@@ -11,11 +11,11 @@ import type { ErroredFileUpload, FileUploadState, UploadResult } from '@meldinge
 
 import { FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
-import { Column, Grid, Heading, Link, Paragraph } from '@meldingen/ui'
+import { Column, Heading, Link, Paragraph } from '@meldingen/ui'
 
 import type { MeldingAttachment } from '../types'
 
-import { BackLink } from '../_components/BackLink'
+import { PageWrapper } from '../_components/PageWrapper'
 import { deleteAttachmentAction, uploadAttachmentAction } from './actions'
 import { AttachmentsList } from './AttachmentsList'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
@@ -138,74 +138,61 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   const meldingDetailLink = `/melding/${meldingId}`
 
   return (
-    <div className="ams-page__area--body">
-      <BackLink href={meldingDetailLink}>{t('back-link')}</BackLink>
-
-      <Grid as="main" className="ams-page__area--content ams-mb-l">
-        <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
-          {Boolean(apiError) && <ApiErrorAlert shouldFocus={true} />}
-
-          {genericError && (
-            <Alert
-              className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
-              heading={t(genericError.title, genericError.options)}
-              headingLevel={2}
-              ref={genericErrorAlertRef}
-              role="alert"
-              severity="error"
-              tabIndex={-1}
-            >
-              {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
-            </Alert>
-          )}
-
-          <InvalidFormAlert
-            errors={validationErrors}
-            heading={t('validation-errors.alert-title', { count: validationErrors.length })}
-            shouldFocus={shouldFocusInvalidAlert}
-          />
-
-          <Heading className="ams-mb-l" level={1}>
-            {t('title')}
+    <PageWrapper backLink={{ href: meldingDetailLink, label: t('back-link') }}>
+      {Boolean(apiError) && <ApiErrorAlert shouldFocus={true} />}
+      {genericError && (
+        <Alert
+          className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
+          heading={t(genericError.title, genericError.options)}
+          headingLevel={2}
+          ref={genericErrorAlertRef}
+          role="alert"
+          severity="error"
+          tabIndex={-1}
+        >
+          {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
+        </Alert>
+      )}
+      <InvalidFormAlert
+        errors={validationErrors}
+        heading={t('validation-errors.alert-title', { count: validationErrors.length })}
+        shouldFocus={shouldFocusInvalidAlert}
+      />
+      <Heading className="ams-mb-l" level={1}>
+        {t('title')}
+      </Heading>
+      <Column className={clsx(styles.contentWrapper, 'ams-mb-m')}>
+        <Column gap="small">
+          <Heading id="file-upload-label" level={2} size="level-4">
+            {t('upload.title')}
           </Heading>
+          <Paragraph id="file-upload-description">{t('upload.description')}</Paragraph>
+          <Paragraph>{t('upload.count', { currentCount: validUploadedFilesCount, maxCount: 5 })}</Paragraph>
+        </Column>
+        <FileUpload
+          accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp,.pdf"
+          aria-describedby={getAriaDescribedBy(fileUploadId, t('upload.description'))}
+          aria-labelledby={`file-upload-label ${fileUploadId}`}
+          button={{
+            text: t('file-upload.select-file-button'),
+          }}
+          dropAreaText={t('file-upload.drop-area')}
+          id={fileUploadId}
+          multiple
+          onChange={onUpload}
+          ref={fileUploadRef}
+        />
+        {hasAttachments && (
+          <>
+            <AttachmentsList files={fileUploads} handleDelete={handleOnDelete} />
 
-          <Column className={clsx(styles.contentWrapper, 'ams-mb-m')}>
-            <Column gap="small">
-              <Heading id="file-upload-label" level={2} size="level-4">
-                {t('upload.title')}
-              </Heading>
-              <Paragraph id="file-upload-description">{t('upload.description')}</Paragraph>
-              <Paragraph>{t('upload.count', { currentCount: validUploadedFilesCount, maxCount: 5 })}</Paragraph>
-            </Column>
-
-            <FileUpload
-              accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp,.pdf"
-              aria-describedby={getAriaDescribedBy(fileUploadId, t('upload.description'))}
-              aria-labelledby={`file-upload-label ${fileUploadId}`}
-              button={{
-                text: t('file-upload.select-file-button'),
-              }}
-              dropAreaText={t('file-upload.drop-area')}
-              id={fileUploadId}
-              multiple
-              onChange={onUpload}
-              ref={fileUploadRef}
-            />
-
-            {hasAttachments && (
-              <>
-                <AttachmentsList files={fileUploads} handleDelete={handleOnDelete} />
-
-                <div aria-live="polite" className="ams-visually-hidden">
-                  {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
-                </div>
-              </>
-            )}
-          </Column>
-
-          <Link href={meldingDetailLink}>{hasAttachments ? t('back-link') : t('cancel-link')}</Link>
-        </Grid.Cell>
-      </Grid>
-    </div>
+            <div aria-live="polite" className="ams-visually-hidden">
+              {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
+            </div>
+          </>
+        )}
+      </Column>
+      <Link href={meldingDetailLink}>{hasAttachments ? t('back-link') : t('cancel-link')}</Link>
+    </PageWrapper>
   )
 }

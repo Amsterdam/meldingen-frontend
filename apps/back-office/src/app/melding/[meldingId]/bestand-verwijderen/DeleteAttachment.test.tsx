@@ -2,15 +2,14 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useRouter } from 'next/navigation'
 
-import type { MeldingAttachment } from '../../types'
+import type { MeldingAttachment } from '../types'
 
-import { RemoveAttachmentErrorProvider, useRemoveAttachmentError } from '../_context/RemoveAttachmentErrorContext'
-import { deleteAttachmentAction } from '../actions'
-import { Attachments } from './Attachments'
+import { deleteAttachmentAction } from './actions'
+import { DeleteAttachment } from './DeleteAttachment'
 
 type DeleteAttachmentActionResult = Awaited<ReturnType<typeof deleteAttachmentAction>>
 
-vi.mock('../actions', () => ({
+vi.mock('./actions', () => ({
   deleteAttachmentAction: vi.fn(),
 }))
 
@@ -18,7 +17,7 @@ vi.mock('next/navigation', () => ({
   useRouter: vi.fn(),
 }))
 
-vi.mock('./Attachment', () => ({
+vi.mock('./_components/Attachment', () => ({
   Attachment: ({
     attachment,
     isDeleting,
@@ -50,12 +49,6 @@ const createAttachment = (overrides: Partial<MeldingAttachment> = {}): MeldingAt
   ...overrides,
 })
 
-const ApiErrorValue = () => {
-  const { apiError } = useRemoveAttachmentError()
-
-  return apiError ? <p>{apiError}</p> : null
-}
-
 const createMockRouter = (overrides: Partial<ReturnType<typeof useRouter>> = {}): ReturnType<typeof useRouter> => ({
   back: vi.fn(),
   bfcacheId: overrides.bfcacheId ?? 'test-bfcache-id',
@@ -68,12 +61,7 @@ const createMockRouter = (overrides: Partial<ReturnType<typeof useRouter>> = {})
 })
 
 const renderAttachments = (attachments: MeldingAttachment[]) =>
-  render(
-    <RemoveAttachmentErrorProvider>
-      <Attachments attachments={attachments} meldingId={123} />
-      <ApiErrorValue />
-    </RemoveAttachmentErrorProvider>,
-  )
+  render(<DeleteAttachment attachments={attachments} meldingId={123} />)
 
 describe('Attachments', () => {
   beforeEach(() => {
@@ -86,6 +74,7 @@ describe('Attachments', () => {
 
   it('does not delete the attachment when confirmation is cancelled', async () => {
     const user = userEvent.setup()
+
     vi.spyOn(window, 'confirm').mockReturnValue(false)
 
     renderAttachments([createAttachment()])
@@ -98,9 +87,11 @@ describe('Attachments', () => {
 
   it('disables all attachments while the deletion request is pending and removes the deleted attachment on success', async () => {
     const user = userEvent.setup()
+
     vi.spyOn(window, 'confirm').mockReturnValue(true)
 
     let resolveDeletion: ((value: DeleteAttachmentActionResult) => void) | undefined
+
     vi.mocked(deleteAttachmentAction).mockReturnValue(
       new Promise((resolve) => {
         resolveDeletion = resolve
@@ -108,6 +99,7 @@ describe('Attachments', () => {
     )
 
     const replace = vi.fn()
+
     vi.mocked(useRouter).mockReturnValue(createMockRouter({ replace }))
 
     renderAttachments([
@@ -142,9 +134,8 @@ describe('Attachments', () => {
 
     await user.click(screen.getByRole('button', { name: 'bewijs.png' }))
 
-    await waitFor(() => {
-      expect(screen.getByText('Could not delete attachment')).toBeInTheDocument()
-    })
+    expect(await screen.findByText('error-delete-failed.title')).toBeInTheDocument()
+    expect(screen.getByText('error-delete-failed.description')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'bewijs.png' })).toBeEnabled()
   })
 
