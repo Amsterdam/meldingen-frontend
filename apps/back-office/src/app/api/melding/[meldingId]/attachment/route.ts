@@ -7,6 +7,10 @@ import { authOptions } from '~/app/_authentication/authOptions'
 import { MAX_ATTACHMENT_SIZE_BYTES } from '~/constants'
 import { serverEnv } from '~/env/server'
 
+// The detail string matches the backend's own, so startUpload.ts shows the same "file too large" message
+const createSizeLimitExceededResponse = () =>
+  NextResponse.json({ detail: 'Allowed content size exceeded' }, { status: 400 })
+
 /**
  * Route Handlers get none of the CSRF protection Next.js builds into Server Actions
  * (an Origin/Host check on every request). We add it back here by hand, since this
@@ -26,6 +30,12 @@ const isSameOriginRequest = (request: NextRequest) => {
   return new URL(origin).host === host
 }
 
+/**
+ * Streams an attachment upload to the backend, adding the session's access token.
+ *
+ * This route is excluded from proxy.ts (see its `config.matcher`), so NextAuth's middleware does not run here.
+ * Every handler in this file must check the session itself.
+ */
 export const POST = async (request: NextRequest, { params }: { params: Promise<{ meldingId: string }> }) => {
   if (!isSameOriginRequest(request)) {
     return NextResponse.json({ detail: 'Invalid origin' }, { status: 403 })
@@ -33,6 +43,8 @@ export const POST = async (request: NextRequest, { params }: { params: Promise<{
 
   const { meldingId } = await params
 
+  // Don't remove: this prevents path traversal on the backend. Next.js decodes %2F in params, so meldingId
+  // can be "1/../admin", which would turn the upload URL below into /melding/admin/attachment/.
   if (!/^\d+$/.test(meldingId)) {
     return NextResponse.json({ detail: 'Invalid melding id' }, { status: 400 })
   }
@@ -52,8 +64,31 @@ export const POST = async (request: NextRequest, { params }: { params: Promise<{
   const contentLength = Number(request.headers.get('content-length'))
 
   if (contentLength > MAX_ATTACHMENT_SIZE_BYTES) {
-    return NextResponse.json({ detail: 'Allowed content size exceeded' }, { status: 400 })
+    return createSizeLimitExceededResponse()
   }
+
+  // The Content-Length check above misses chunked uploads, which have no Content-Length.
+  // So we also count the bytes while streaming, and stop the upload once it goes over the limit.
+  let bytesStreamed = 0
+  let isSizeLimitExceeded = false
+
+  const sizeLimitedBody = request.body?.pipeThrough(
+    new TransformStream<Uint8Array, Uint8Array>({
+      transform: (chunk, controller) => {
+        bytesStreamed += chunk.byteLength
+
+        if (bytesStreamed > MAX_ATTACHMENT_SIZE_BYTES) {
+          isSizeLimitExceeded = true
+          // Erroring the stream aborts the request to the backend
+          controller.error(new Error('Allowed content size exceeded'))
+
+          return
+        }
+
+        controller.enqueue(chunk)
+      },
+    }),
+  )
 
   const uploadEndpoint = `${serverEnv.NEXT_INTERNAL_BACKEND_BASE_URL}/melding/${meldingId}/attachment/`
 
@@ -61,7 +96,7 @@ export const POST = async (request: NextRequest, { params }: { params: Promise<{
 
   try {
     backendResponse = await fetch(uploadEndpoint, {
-      body: request.body,
+      body: sizeLimitedBody,
       // @ts-expect-error -- Node's fetch needs `duplex` for streamed bodies; the DOM RequestInit type lacks it
       // This tells Node's fetch that the request body is a stream, which is required for proper handling.
       // This expect error can be removed once TypeScript adds `duplex` to the DOM RequestInit type.
@@ -74,6 +109,10 @@ export const POST = async (request: NextRequest, { params }: { params: Promise<{
       signal: request.signal,
     })
   } catch (error) {
+    if (isSizeLimitExceeded) {
+      return createSizeLimitExceededResponse()
+    }
+
     if (!request.signal.aborted) {
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
@@ -81,6 +120,11 @@ export const POST = async (request: NextRequest, { params }: { params: Promise<{
     }
 
     return NextResponse.json({ detail: 'Upload failed' }, { status: 502 })
+  }
+
+  // The backend may still answer after we cut the upload off (e.g. with a parse error for the truncated body).
+  if (isSizeLimitExceeded) {
+    return createSizeLimitExceededResponse()
   }
 
   const headers = new Headers()
