@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import type { DaysType } from '@meldingen/api-client'
+import type { MeldingServiceLevelObjectiveOutput } from '@meldingen/api-client'
 
 import { renderOverviewFieldValue } from './renderOverviewFieldValue'
 import { melding } from '~/mocks/data'
@@ -28,15 +28,14 @@ describe('renderOverviewFieldValue', () => {
   it('returns a formatted value in a `strong` element when overdue', () => {
     const days = 5
     const days_passed = 7
-    const meldingWithSLO = {
-      ...melding,
-      service_level_objective: {
-        date_start: '2026-08-10T10:13:05Z',
-        day_type: 'working_days' as DaysType,
-        days,
-        days_passed,
-      },
+    const slo: MeldingServiceLevelObjectiveOutput = {
+      date_start: '2026-08-10T10:13:05Z',
+      day_type: 'working_days',
+      days,
+      days_passed,
     }
+
+    const meldingWithSLO = { ...melding, service_level_objective: slo }
 
     const result = renderOverviewFieldValue(
       meldingWithSLO,

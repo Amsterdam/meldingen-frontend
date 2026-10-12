@@ -23,14 +23,15 @@ export const renderOverviewFieldValue = (
   }
 
   if (field.key === 'days_open') {
-    // TODO: Service level objective and its underlying fields should always be filled.
-    // Remove the guards when the BE has made that change.
-    const days = melding.service_level_objective?.days
-    const days_passed = melding.service_level_objective?.days_passed
+    // TODO: Service level objective should always be filled.
+    // Remove the guard when the BE has made that change.
+    const serviceLevelObjective = melding.service_level_objective
 
-    if (days === undefined || days_passed === undefined) {
+    if (!serviceLevelObjective) {
       return ''
     }
+
+    const { days, days_passed } = serviceLevelObjective
 
     const isOverdue = days_passed > days
     const label = `${days_passed}/${days}`
