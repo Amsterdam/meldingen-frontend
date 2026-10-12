@@ -19,6 +19,7 @@ import { BackLink } from '../_components/BackLink'
 import { deleteAttachmentAction } from './actions'
 import { AttachmentsList } from './AttachmentsList'
 import { InvalidFormAlert } from '~/app/_components'
+import { MAX_ATTACHMENT_SIZE_BYTES } from '~/constants'
 import { clientEnv } from '~/env/client'
 
 import styles from './AddAttachment.module.css'
@@ -66,6 +67,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     existingFiles,
     idPrefix: t('file-upload.id-prefix'),
     inputRef: fileUploadRef,
+    maxFileSizeBytes: MAX_ATTACHMENT_SIZE_BYTES,
     maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
     maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
     uploadUrl: `${clientEnv.NEXT_PUBLIC_BASE_PATH}/api/melding/${meldingId}/attachment`,

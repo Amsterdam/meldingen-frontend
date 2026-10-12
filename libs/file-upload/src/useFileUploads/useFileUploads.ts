@@ -18,7 +18,7 @@ type GenericErrorMessage = {
   title: string
 }
 
-const createDuplicatedUploadError = (file: File, errorMessage: string, id: string): ErroredFileUpload => ({
+const createErroredUpload = (file: File, errorMessage: string, id: string): ErroredFileUpload => ({
   errorMessage,
   file,
   id,
@@ -65,6 +65,11 @@ type UseFileUploadsParams = {
   existingFiles: ExistingFile[]
   idPrefix: string
   inputRef: RefObject<HTMLInputElement | null>
+  /**
+   * Files larger than this are marked as errored without being uploaded.
+   * Optional: without it, only the server checks the file size.
+   */
+  maxFileSizeBytes?: number
   maxSuccessfulUploads: number
   maxUploadAttempts: number
   /**
@@ -80,6 +85,7 @@ export const useFileUploads = ({
   existingFiles,
   idPrefix,
   inputRef,
+  maxFileSizeBytes,
   maxSuccessfulUploads,
   maxUploadAttempts,
   uploadUrl,
@@ -127,7 +133,13 @@ export const useFileUploads = ({
 
     const newFileUploads = newFiles.map((newFile) => {
       if (fileUploads.find((upload) => upload.file.name === newFile.name)) {
-        return createDuplicatedUploadError(newFile, 'validation-errors.duplicate-upload', getNextUploadId())
+        return createErroredUpload(newFile, 'validation-errors.duplicate-upload', getNextUploadId())
+      }
+
+      // The server rejects files that are too large as well, but checking here first means the user
+      // gets the error straight away, instead of only after the whole file has been sent.
+      if (maxFileSizeBytes && newFile.size > maxFileSizeBytes) {
+        return createErroredUpload(newFile, 'validation-errors.file-too-large', getNextUploadId())
       }
 
       return createFileUpload(newFile, getNextUploadId())
