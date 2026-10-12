@@ -16,7 +16,6 @@ export const ApiErrorAlert = ({ description, heading, shouldFocus }: ApiErrorAle
       className="ams-mb-m"
       description={description ?? t('description')}
       heading={heading ?? t('heading')}
-      headingLevel={2}
       severity="error"
       shouldFocus={shouldFocus}
     />
