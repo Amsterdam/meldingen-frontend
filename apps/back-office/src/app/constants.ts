@@ -4,7 +4,7 @@ export const OVERVIEW_FIELDS = [
   { key: 'classification', labelKey: 'column-header.classification' },
   { key: 'state', labelKey: 'column-header.state' },
   { key: 'urgency', labelKey: 'column-header.urgency' },
-  { key: 'open', labelKey: 'column-header.open' },
+  { key: 'days_open', labelKey: 'column-header.days_open' },
   { key: 'address', labelKey: 'column-header.address' },
   { key: 'postal_code', labelKey: 'column-header.postal_code' },
 ] as const

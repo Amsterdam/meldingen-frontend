@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
+import type { DaysType } from '@meldingen/api-client'
+
 import { renderOverviewFieldValue } from './renderOverviewFieldValue'
 import { melding } from '~/mocks/data'
 
@@ -12,8 +14,39 @@ describe('renderOverviewFieldValue', () => {
     render(<>{result}</>)
 
     const link = screen.getByRole('link', { name: melding.public_id })
+
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', `/melding/${melding.id}`)
+  })
+
+  it('returns a formatted value for the days_open field', () => {
+    const result = renderOverviewFieldValue(melding, { key: 'days_open', labelKey: 'column-header.days_open' }, t)
+
+    expect(result).toBe(`${melding.service_level_objective!.days_passed}/${melding.service_level_objective!.days}`)
+  })
+
+  it('returns a formatted value in a `strong` element when overdue', () => {
+    const days = 5
+    const days_passed = 7
+    const meldingWithSLO = {
+      ...melding,
+      service_level_objective: {
+        date_start: '2026-08-10T10:13:05Z',
+        day_type: 'working_days' as DaysType,
+        days,
+        days_passed,
+      },
+    }
+
+    const result = renderOverviewFieldValue(
+      meldingWithSLO,
+      { key: 'days_open', labelKey: 'column-header.days_open' },
+      t,
+    )
+
+    const label = `${days_passed}/${days}`
+
+    expect(result).toEqual(<strong>{label}</strong>)
   })
 
   it('returns a formatted value for non-public_id fields', () => {
