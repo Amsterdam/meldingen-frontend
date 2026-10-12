@@ -89,6 +89,9 @@ export const classifications: ClassificationOutput[] = [
     id: 1,
     instructions: 'Instructions for Category 1',
     name: 'Category 1',
+    service_level_objective_day_type: 'calendar_days',
+    service_level_objective_days: 5,
+    service_level_objective_text: 'Service level objective text',
     updated_at: '2024-01-01T00:00:00Z',
   },
   {
@@ -96,6 +99,9 @@ export const classifications: ClassificationOutput[] = [
     id: 2,
     instructions: 'Instructions for Category 2',
     name: 'Category 2',
+    service_level_objective_day_type: 'working_days',
+    service_level_objective_days: 8,
+    service_level_objective_text: 'Service level objective text',
     updated_at: '2024-01-01T00:00:00Z',
   },
 ]
