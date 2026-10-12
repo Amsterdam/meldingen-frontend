@@ -112,4 +112,9 @@ export const handlers = [
       id: 1,
     }),
   ),
+
+  //
+  // Next.js API routes
+  //
+  http.post(ENDPOINTS.POST_API_MELDING_BY_MELDING_ID_ATTACHMENT, () => HttpResponse.json({ id: 42 })),
 ]
