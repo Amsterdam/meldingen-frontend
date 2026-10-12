@@ -21,6 +21,7 @@ const defaultProps: Props = {
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
+
   return {
     ...(typeof actual === 'object' ? actual : {}),
     useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
@@ -177,6 +178,7 @@ describe('Attachments', () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, async () => {
         await delay('infinite')
+
         return HttpResponse.json({ id: 123 })
       }),
     )
@@ -241,6 +243,7 @@ describe('Attachments', () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, async () => {
         await delay('infinite')
+
         return HttpResponse.json({ id: 123 })
       }),
     )
