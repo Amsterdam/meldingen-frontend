@@ -2,7 +2,7 @@
 
 import type { ChangeEvent } from 'react'
 
-import { Alert, Paragraph } from '@amsterdam/design-system-react'
+import { Paragraph } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
@@ -15,7 +15,7 @@ import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api
 import { FileList, FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Column, Heading, SubmitButton } from '@meldingen/ui'
+import { Alert, Column, Heading, SubmitButton } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
@@ -63,8 +63,6 @@ const isErroredFileUpload = (upload: FileUploadState): upload is ErroredFileUplo
 export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const genericErrorAlertRef = useRef<HTMLDivElement>(null)
-
   const t = useTranslations('attachments')
   const tShared = useTranslations('shared')
 
@@ -104,13 +102,6 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     validationErrorCount: validationErrors.length,
   })
 
-  // Set focus on generic Alert when there is a generic error
-  useEffect(() => {
-    if (genericError && genericErrorAlertRef.current) {
-      genericErrorAlertRef.current.focus()
-    }
-  }, [genericError])
-
   // Set shouldFocusAlert to true when the list of validation errors changes
   useEffect(() => {
     if (erroredFileUploadsKey) setShouldFocusAlert(true)
@@ -139,11 +130,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           <Alert
             className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
             heading={t(genericError.title, genericError.options)}
-            headingLevel={2}
-            ref={genericErrorAlertRef}
-            role="alert"
             severity="error"
-            tabIndex={-1}
           >
             {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
           </Alert>

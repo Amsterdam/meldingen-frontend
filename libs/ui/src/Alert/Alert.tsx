@@ -11,6 +11,9 @@ import styles from './Alert.module.css'
 export type AlertProps = Omit<ADSAlertProps, 'headingLevel'> & {
   className?: string
   description?: string
+  /**
+   * The hierarchical level of the Heading within the document. Defaults to 2.
+   */
   headingLevel?: ADSAlertProps['headingLevel']
   shouldFocus?: boolean
 }
