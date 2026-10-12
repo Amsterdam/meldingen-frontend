@@ -14,7 +14,7 @@ export const ApiErrorAlert = ({ shouldFocus }: Props) => {
       className="ams-mb-m"
       description={t('description')}
       heading={t('heading')}
-      headingLevel={2}
+      severity="error"
       shouldFocus={shouldFocus}
     />
   )
