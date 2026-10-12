@@ -12,3 +12,7 @@ export default function proxy(request: NextRequestWithAuth) {
 
   return NextAuthMiddleware(request)
 }
+
+export const config = {
+  matcher: ['/((?!api/melding/[^/]+/attachment$).*)'],
+}
