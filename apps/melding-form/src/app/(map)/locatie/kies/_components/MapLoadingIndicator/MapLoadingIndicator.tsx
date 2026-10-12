@@ -1,5 +1,7 @@
-import { Alert, Paragraph } from '@amsterdam/design-system-react'
+import { Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
+
+import { Alert } from '@meldingen/ui'
 
 import styles from './MapLoadingIndicator.module.css'
 
@@ -8,7 +10,7 @@ export const MapLoadingIndicator = () => {
 
   return (
     <div className={styles.loadingContainer}>
-      <Alert className={styles.noJavaScriptAlert} heading={t('no-js.heading')} headingLevel={2}>
+      <Alert className={styles.noJavaScriptAlert} heading={t('no-js.heading')}>
         <Paragraph>{t('no-js.description')}</Paragraph>
       </Alert>
     </div>
