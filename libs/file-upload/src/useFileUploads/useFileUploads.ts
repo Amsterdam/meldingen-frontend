@@ -8,10 +8,8 @@ import type {
   FileUploadState,
   FileUpload as FileUploadType,
   PendingFileUpload,
-  UploadResult,
 } from './types'
 
-import { startServerActionUpload } from './startServerActionUpload'
 import { startUpload } from './startUpload'
 
 type GenericErrorMessage = {
@@ -58,17 +56,7 @@ const startPendingUploads = (
   })
 }
 
-const startPendingServerActionUpload = (
-  uploads: FileUploadState[],
-  uploadFile: (file: File) => Promise<UploadResult>,
-  setFileUploads: Dispatch<SetStateAction<FileUploadState[]>>,
-) => {
-  uploads.filter(isPendingUpload).forEach((upload) => {
-    startServerActionUpload(upload, uploadFile, setFileUploads)
-  })
-}
-
-type BaseUseFileUploadsParams = {
+type UseFileUploadsParams = {
   /**
    * Function to delete the attachment on the server.
    * Authentication (token query param, cookies, etc.) is handled by the caller.
@@ -79,27 +67,13 @@ type BaseUseFileUploadsParams = {
   inputRef: RefObject<HTMLInputElement | null>
   maxSuccessfulUploads: number
   maxUploadAttempts: number
+  /**
+   * Full URL to POST the upload to via XHR. This should be a same-origin URL (either the backend
+   * directly with a token query param, or a same-origin Route Handler that adds auth server-side)
+   * so the browser never needs to hold a bearer token. Authentication itself is handled by the caller.
+   */
+  uploadUrl: string
 }
-
-type UseFileUploadsParams = BaseUseFileUploadsParams &
-  (
-    | {
-        /**
-         * Uploads a file via a server-side action (e.g. a Next.js Server Action).
-         * Authentication is handled entirely server-side; no upload progress or cancellation is available.
-         */
-        uploadFile: (file: File) => Promise<UploadResult>
-        uploadUrl?: never
-      }
-    | {
-        uploadFile?: never
-        /**
-         * Full URL to POST the upload to.
-         * Authentication (token query param, cookies, etc.) is handled by the caller.
-         */
-        uploadUrl: string
-      }
-  )
 
 export const useFileUploads = ({
   deleteAttachment,
@@ -108,12 +82,8 @@ export const useFileUploads = ({
   inputRef,
   maxSuccessfulUploads,
   maxUploadAttempts,
-  uploadFile,
   uploadUrl,
 }: UseFileUploadsParams) => {
-  // NOTE: Only client-side upload (uploadUrl) using xhr supports in-progress cancellation
-  const supportsUploadCancellation = Boolean(uploadUrl)
-
   const uploadIdCounter = useRef(existingFiles.length)
 
   const existingFileUploads = mapExistingFilesToUploads(existingFiles, idPrefix)
@@ -124,6 +94,7 @@ export const useFileUploads = ({
 
   const getNextUploadId = () => {
     uploadIdCounter.current += 1
+
     return `${idPrefix}-${uploadIdCounter.current}`
   }
 
@@ -139,6 +110,7 @@ export const useFileUploads = ({
         description: 'errors.too-many-attempts.description',
         title: 'errors.too-many-attempts.title',
       })
+
       return
     }
 
@@ -149,6 +121,7 @@ export const useFileUploads = ({
         options: { maxFiles: maxSuccessfulUploads },
         title: 'errors.too-many-files.title',
       })
+
       return
     }
 
@@ -167,12 +140,7 @@ export const useFileUploads = ({
     // so the input (and inputRef.current) must already exist when it fires.
     inputRef.current!.value = ''
 
-    if (supportsUploadCancellation) {
-      startPendingUploads(newFileUploads, uploadUrl!, setFileUploads)
-      return
-    }
-
-    startPendingServerActionUpload(newFileUploads, uploadFile!, setFileUploads)
+    startPendingUploads(newFileUploads, uploadUrl, setFileUploads)
   }
 
   const removeLocalUpload = (id: string, fileName: string) => {
@@ -193,6 +161,7 @@ export const useFileUploads = ({
         description: 'errors.delete-failed.description',
         title: 'errors.delete-failed.title',
       })
+
       return
     }
 
@@ -204,6 +173,7 @@ export const useFileUploads = ({
 
     if (xhr && xhr.readyState !== XMLHttpRequest.DONE) {
       abortInProgressUpload(id, fileName, xhr)
+
       return
     }
 
@@ -211,6 +181,7 @@ export const useFileUploads = ({
     // simply remove it from the list
     if (!serverId) {
       removeLocalUpload(id, fileName)
+
       return
     }
 
@@ -234,6 +205,5 @@ export const useFileUploads = ({
     handleDelete,
     handleSubmit,
     handleUpload,
-    supportsUploadCancellation,
   }
 }

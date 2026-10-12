@@ -5,16 +5,11 @@ import { act, renderHook } from '@testing-library/react'
 
 import type { ExistingFile, FileUploadState, PendingFileUpload } from './types'
 
-import { startServerActionUpload } from './startServerActionUpload'
 import { startUpload } from './startUpload'
 import { useFileUploads } from './useFileUploads'
 
 vi.mock('./startUpload', () => ({
   startUpload: vi.fn(),
-}))
-
-vi.mock('./startServerActionUpload', () => ({
-  startServerActionUpload: vi.fn(),
 }))
 
 const createChangeEvent = (files: File[] | null) =>
@@ -100,6 +95,7 @@ describe('useFileUploads', () => {
 
     it('clears the file input value after starting uploads', () => {
       const inputRef = createInputRef()
+
       inputRef.current!.value = 'C:\\fakepath\\test.png'
 
       const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef }))
@@ -179,180 +175,129 @@ describe('useFileUploads', () => {
       })
       expect(startUpload).toHaveBeenCalledTimes(1)
     })
-  })
 
-  describe('uploadFile adapter', () => {
-    const uploadFileMock = vi.fn()
+    describe('handleDelete', () => {
+      it('aborts an in-progress upload and removes it from the list', () => {
+        // startUpload is mocked, so the XMLHttpRequest will never reach the sent state.
+        // We make use of that in this test.
+        const inputRef = createInputRef()
+        const abortSpy = vi.spyOn(XMLHttpRequest.prototype, 'abort').mockImplementation(() => {})
 
-    const uploadFileParams = {
-      deleteAttachment: deleteAttachmentMock,
-      existingFiles: [] as ExistingFile[],
-      idPrefix: 'upload',
-      maxSuccessfulUploads: 3,
-      maxUploadAttempts: 10,
-      uploadFile: uploadFileMock,
-    }
+        const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef }))
 
-    it('starts the upload via the adapter instead of opening an XHR', () => {
-      const openSpy = vi.spyOn(XMLHttpRequest.prototype, 'open')
-      const inputRef = createInputRef()
-      const file = new File(['content'], 'test.png')
+        act(() => {
+          result.current.handleUpload(createChangeEvent([new File(['content'], 'test.png')]))
+        })
 
-      const { result } = renderHook(() => useFileUploads({ ...uploadFileParams, inputRef }))
+        const upload = result.current.fileUploads[0] as PendingFileUpload
 
-      act(() => {
-        result.current.handleUpload(createChangeEvent([file]))
+        act(() => {
+          result.current.handleDelete(upload.id, 'test.png', upload.xhr)
+        })
+
+        expect(abortSpy).toHaveBeenCalled()
+        expect(result.current.fileUploads).toEqual([])
+        expect(result.current.deletedFileName).toBe('test.png')
+
+        abortSpy.mockRestore()
       })
 
-      expect(result.current.fileUploads).toHaveLength(1)
+      it('removes an upload without a server id without calling deleteAttachment', () => {
+        const inputRef = createInputRef()
+        const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef }))
 
-      expect(openSpy).not.toHaveBeenCalled()
+        act(() => {
+          result.current.handleUpload(createChangeEvent([new File(['content'], 'test.png')]))
+        })
 
-      expect(startServerActionUpload).toHaveBeenCalledWith(
-        expect.objectContaining({ file, id: 'upload-1' }),
-        uploadFileMock,
-        expect.any(Function),
-      )
+        const upload = result.current.fileUploads[0]
 
-      expect(startUpload).not.toHaveBeenCalled()
+        act(() => {
+          result.current.handleDelete(upload.id, 'test.png')
+        })
 
-      openSpy.mockRestore()
-    })
-
-    it('reports supportsUploadCancellation as false when using the uploadFile adapter', () => {
-      const { result } = renderHook(() => useFileUploads({ ...uploadFileParams, inputRef: createInputRef() }))
-
-      expect(result.current.supportsUploadCancellation).toBe(false)
-    })
-
-    it('reports supportsUploadCancellation as true when using uploadUrl', () => {
-      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
-
-      expect(result.current.supportsUploadCancellation).toBe(true)
-    })
-  })
-
-  describe('handleDelete', () => {
-    it('aborts an in-progress upload and removes it from the list', () => {
-      // startUpload is mocked, so the XMLHttpRequest will never reach the sent state.
-      // We make use of that in this test.
-      const inputRef = createInputRef()
-      const abortSpy = vi.spyOn(XMLHttpRequest.prototype, 'abort').mockImplementation(() => {})
-
-      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef }))
-
-      act(() => {
-        result.current.handleUpload(createChangeEvent([new File(['content'], 'test.png')]))
+        expect(deleteAttachmentMock).not.toHaveBeenCalled()
+        expect(result.current.fileUploads).toEqual([])
+        expect(result.current.deletedFileName).toBe('test.png')
       })
 
-      const upload = result.current.fileUploads[0] as PendingFileUpload
+      it('calls deleteAttachment and removes the upload on success', async () => {
+        deleteAttachmentMock.mockResolvedValueOnce({ error: undefined })
 
-      act(() => {
-        result.current.handleDelete(upload.id, 'test.png', upload.xhr)
-      })
-
-      expect(abortSpy).toHaveBeenCalled()
-      expect(result.current.fileUploads).toEqual([])
-      expect(result.current.deletedFileName).toBe('test.png')
-
-      abortSpy.mockRestore()
-    })
-
-    it('removes an upload without a server id without calling deleteAttachment', () => {
-      const inputRef = createInputRef()
-      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef }))
-
-      act(() => {
-        result.current.handleUpload(createChangeEvent([new File(['content'], 'test.png')]))
-      })
-
-      const upload = result.current.fileUploads[0]
-
-      act(() => {
-        result.current.handleDelete(upload.id, 'test.png')
-      })
-
-      expect(deleteAttachmentMock).not.toHaveBeenCalled()
-      expect(result.current.fileUploads).toEqual([])
-      expect(result.current.deletedFileName).toBe('test.png')
-    })
-
-    it('calls deleteAttachment and removes the upload on success', async () => {
-      deleteAttachmentMock.mockResolvedValueOnce({ error: undefined })
-
-      const existingFiles: ExistingFile[] = [{ blob: undefined, fileName: 'test.png', serverId: 42 }]
-      const { result } = renderHook(() =>
-        useFileUploads({ ...defaultParams, existingFiles, inputRef: createInputRef() }),
-      )
-
-      await act(async () => {
-        await result.current.handleDelete('upload-1', 'test.png', undefined, 42)
-      })
-
-      expect(deleteAttachmentMock).toHaveBeenCalledWith(42)
-      expect(result.current.fileUploads).toEqual([])
-      expect(result.current.deletedFileName).toBe('test.png')
-    })
-
-    it('sets a delete-failed generic error and keeps the upload when deleteAttachment fails', async () => {
-      deleteAttachmentMock.mockResolvedValueOnce({ error: 'API error' })
-
-      const existingFiles: ExistingFile[] = [{ blob: undefined, fileName: 'test.png', serverId: 42 }]
-      const { result } = renderHook(() =>
-        useFileUploads({ ...defaultParams, existingFiles, inputRef: createInputRef() }),
-      )
-
-      await act(async () => {
-        await result.current.handleDelete('upload-1', 'test.png', undefined, 42)
-      })
-
-      expect(result.current.genericError).toEqual({
-        description: 'errors.delete-failed.description',
-        title: 'errors.delete-failed.title',
-      })
-      expect(result.current.fileUploads).toHaveLength(1)
-    })
-  })
-
-  describe('handleSubmit', () => {
-    it('prevents submission and sets an error when an upload is in progress', () => {
-      ;(startUpload as Mock).mockImplementationOnce((upload, setFileUploads) => {
-        setFileUploads((prev: FileUploadState[]) =>
-          prev.map((u) => (u.id === upload.id ? { ...u, status: 'uploading' } : u)),
+        const existingFiles: ExistingFile[] = [{ blob: undefined, fileName: 'test.png', serverId: 42 }]
+        const { result } = renderHook(() =>
+          useFileUploads({ ...defaultParams, existingFiles, inputRef: createInputRef() }),
         )
+
+        await act(async () => {
+          await result.current.handleDelete('upload-1', 'test.png', undefined, 42)
+        })
+
+        expect(deleteAttachmentMock).toHaveBeenCalledWith(42)
+        expect(result.current.fileUploads).toEqual([])
+        expect(result.current.deletedFileName).toBe('test.png')
       })
 
-      const inputRef = createInputRef()
-      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef }))
+      it('sets a delete-failed generic error and keeps the upload when deleteAttachment fails', async () => {
+        deleteAttachmentMock.mockResolvedValueOnce({ error: 'API error' })
 
-      act(() => {
-        result.current.handleUpload(createChangeEvent([new File(['content'], 'test.png')]))
-      })
+        const existingFiles: ExistingFile[] = [{ blob: undefined, fileName: 'test.png', serverId: 42 }]
+        const { result } = renderHook(() =>
+          useFileUploads({ ...defaultParams, existingFiles, inputRef: createInputRef() }),
+        )
 
-      const preventDefault = vi.fn()
+        await act(async () => {
+          await result.current.handleDelete('upload-1', 'test.png', undefined, 42)
+        })
 
-      act(() => {
-        result.current.handleSubmit({ preventDefault } as unknown as SubmitEvent<HTMLFormElement>)
-      })
-
-      expect(preventDefault).toHaveBeenCalled()
-      expect(result.current.genericError).toEqual({
-        description: 'errors.upload-in-progress.description',
-        title: 'errors.upload-in-progress.title',
+        expect(result.current.genericError).toEqual({
+          description: 'errors.delete-failed.description',
+          title: 'errors.delete-failed.title',
+        })
+        expect(result.current.fileUploads).toHaveLength(1)
       })
     })
 
-    it('allows submission when no upload is in progress', () => {
-      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
+    describe('handleSubmit', () => {
+      it('prevents submission and sets an error when an upload is in progress', () => {
+        ;(startUpload as Mock).mockImplementationOnce((upload, setFileUploads) => {
+          setFileUploads((prev: FileUploadState[]) =>
+            prev.map((u) => (u.id === upload.id ? { ...u, status: 'uploading' } : u)),
+          )
+        })
 
-      const preventDefault = vi.fn()
+        const inputRef = createInputRef()
+        const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef }))
 
-      act(() => {
-        result.current.handleSubmit({ preventDefault } as unknown as SubmitEvent<HTMLFormElement>)
+        act(() => {
+          result.current.handleUpload(createChangeEvent([new File(['content'], 'test.png')]))
+        })
+
+        const preventDefault = vi.fn()
+
+        act(() => {
+          result.current.handleSubmit({ preventDefault } as unknown as SubmitEvent<HTMLFormElement>)
+        })
+
+        expect(preventDefault).toHaveBeenCalled()
+        expect(result.current.genericError).toEqual({
+          description: 'errors.upload-in-progress.description',
+          title: 'errors.upload-in-progress.title',
+        })
       })
 
-      expect(preventDefault).not.toHaveBeenCalled()
-      expect(result.current.genericError).toBeUndefined()
+      it('allows submission when no upload is in progress', () => {
+        const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
+
+        const preventDefault = vi.fn()
+
+        act(() => {
+          result.current.handleSubmit({ preventDefault } as unknown as SubmitEvent<HTMLFormElement>)
+        })
+
+        expect(preventDefault).not.toHaveBeenCalled()
+        expect(result.current.genericError).toBeUndefined()
+      })
     })
   })
 })
