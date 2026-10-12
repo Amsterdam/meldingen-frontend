@@ -194,6 +194,10 @@ export type AttachmentOutput = {
      * Original Filename
      */
     original_filename: string;
+    /**
+     * Original Media Type
+     */
+    original_media_type: string;
     user: UserOutput | null;
 };
 
@@ -248,6 +252,15 @@ export type ClassificationCreateInput = {
      */
     name: string;
     /**
+     * Service Level Objective Text
+     */
+    service_level_objective_text: string;
+    /**
+     * Service Level Objective Days
+     */
+    service_level_objective_days?: number | null;
+    service_level_objective_day_type?: DaysType | null;
+    /**
      * Instructions
      */
     instructions?: string | null;
@@ -289,6 +302,15 @@ export type ClassificationOutput = {
      * Asset Type
      */
     asset_type?: number | null;
+    /**
+     * Service Level Objective Text
+     */
+    service_level_objective_text: string;
+    /**
+     * Service Level Objective Days
+     */
+    service_level_objective_days: number;
+    service_level_objective_day_type: DaysType;
 };
 
 /**
@@ -307,6 +329,15 @@ export type ClassificationUpdateInput = {
      * Asset Type
      */
     asset_type?: number | null;
+    /**
+     * Service Level Objective Text
+     */
+    service_level_objective_text?: string | null;
+    /**
+     * Service Level Objective Days
+     */
+    service_level_objective_days?: number | null;
+    service_level_objective_day_type?: DaysType | null;
 };
 
 /**
@@ -422,6 +453,11 @@ export type DateAnswerQuestionOutput = {
 };
 
 /**
+ * DaysType
+ */
+export type DaysType = 'working_days' | 'calendar_days';
+
+/**
  * Divide
  */
 export type Divide = {
@@ -500,7 +536,7 @@ export type Feature = {
     /**
      * Id
      */
-    id?: number | string | null;
+    id?: number | number | string | null;
 };
 
 /**
@@ -1334,7 +1370,7 @@ export type GeoJson = {
     /**
      * Id
      */
-    id?: number | string | null;
+    id?: number | number | string | null;
 };
 
 /**
@@ -1768,6 +1804,7 @@ export type MeldingCreateOutput = {
      */
     urgency: -1 | 0 | 1;
     classification?: SimpleClassificationOutput | null;
+    service_level_objective?: MeldingServiceLevelObjectiveOutput | null;
     geo_location?: GeoJson | null;
     /**
      * Street
@@ -1851,6 +1888,7 @@ export type MeldingOutput = {
      */
     urgency: -1 | 0 | 1;
     classification?: SimpleClassificationOutput | null;
+    service_level_objective?: MeldingServiceLevelObjectiveOutput | null;
     geo_location?: GeoJson | null;
     /**
      * Street
@@ -1899,6 +1937,25 @@ export type MeldingReclassificationInput = {
      * Reason
      */
     reason: string;
+};
+
+/**
+ * MeldingServiceLevelObjectiveOutput
+ */
+export type MeldingServiceLevelObjectiveOutput = {
+    /**
+     * Date Start
+     */
+    date_start: string;
+    /**
+     * Days
+     */
+    days: number;
+    day_type: DaysType;
+    /**
+     * Days Passed
+     */
+    days_passed: number;
 };
 
 /**
@@ -1956,6 +2013,7 @@ export type MeldingUpdateOutput = {
      */
     urgency: -1 | 0 | 1;
     classification?: SimpleClassificationOutput | null;
+    service_level_objective?: MeldingServiceLevelObjectiveOutput | null;
     geo_location?: GeoJson | null;
     /**
      * Street
@@ -4074,12 +4132,16 @@ export type PutMeldingByMeldingIdAnswerQuestionsData = {
     path: {
         /**
          * Melding Id
+         *
+         * The id of the melding.
          */
         melding_id: number;
     };
     query: {
         /**
          * Token
+         *
+         * The token of the melding.
          */
         token: string;
     };
@@ -4949,17 +5011,17 @@ export type PostMeldingByMeldingIdQuestionByQuestionIdData = {
     } & ValueLabelAnswerInput);
     path: {
         /**
-         * Melding Id
-         *
-         * The id of the melding.
-         */
-        melding_id: number;
-        /**
          * Question Id
          *
          * The id of the question.
          */
         question_id: number;
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
     };
     query: {
         /**
@@ -5030,17 +5092,17 @@ export type DeleteMeldingByMeldingIdAnswerByAnswerIdData = {
     body?: never;
     path: {
         /**
-         * Melding Id
-         *
-         * The id of the melding.
-         */
-        melding_id: number;
-        /**
          * Answer Id
          *
          * The id of the answer.
          */
         answer_id: number;
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
     };
     query: {
         /**
@@ -5106,17 +5168,17 @@ export type PatchMeldingByMeldingIdAnswerByAnswerIdData = {
     } & ValueLabelAnswerInput);
     path: {
         /**
-         * Melding Id
-         *
-         * The id of the melding.
-         */
-        melding_id: number;
-        /**
          * Answer Id
          *
          * The id of the answer.
          */
         answer_id: number;
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
     };
     query: {
         /**
@@ -5256,29 +5318,29 @@ export type GetMeldingByMeldingIdAttachmentByAttachmentIdDownloadData = {
     body?: never;
     path: {
         /**
-         * Melding Id
-         *
-         * The id of the melding.
-         */
-        melding_id: number;
-        /**
          * Attachment Id
          *
          * The id of the attachment.
          */
         attachment_id: number;
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
     };
     query: {
+        /**
+         * The type of the attachment to download.
+         */
+        type?: AttachmentTypes;
         /**
          * Token
          *
          * The token of the melding.
          */
         token: string;
-        /**
-         * The type of the attachment to download.
-         */
-        type?: AttachmentTypes;
     };
     url: '/melding/{melding_id}/attachment/{attachment_id}/download';
 };
@@ -5446,17 +5508,17 @@ export type DeleteMeldingByMeldingIdAttachmentByAttachmentIdData = {
     body?: never;
     path: {
         /**
-         * Melding Id
-         *
-         * The id of the melding.
-         */
-        melding_id: number;
-        /**
          * Attachment Id
          *
          * The id of the attachment.
          */
         attachment_id: number;
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
     };
     query: {
         /**
@@ -6066,17 +6128,17 @@ export type DeleteMeldingByMeldingIdAssetByAssetIdData = {
     body?: never;
     path: {
         /**
-         * Melding Id
-         *
-         * The id of the melding.
-         */
-        melding_id: number;
-        /**
          * Asset Id
          *
          * The id of the asset.
          */
         asset_id: number;
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
     };
     query: {
         /**
