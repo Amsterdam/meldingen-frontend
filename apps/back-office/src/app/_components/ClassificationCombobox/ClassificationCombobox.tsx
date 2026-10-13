@@ -79,7 +79,7 @@ export const ClassificationCombobox = ({
   }
 
   return (
-    <HUIField as={Field} className="ams-mb-m" invalid={hasErrorMessage}>
+    <HUIField as={Field} invalid={hasErrorMessage}>
       <HUILabel as={Label} htmlFor="classificationQuery">
         {label}
       </HUILabel>

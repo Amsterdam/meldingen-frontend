@@ -42,15 +42,13 @@ describe('getAssetsData', () => {
     })
   })
 
-  it('returns empty assets array and undefined assetsTerm when getMeldingByMeldingIdAssets returns an error', async () => {
+  it('throws an error when getMeldingByMeldingIdAssets returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
 
-    const result = await getAssetsData(melding, mockMeldingId)
-
-    expect(result).toEqual({ assets: [], assetsTerm: undefined })
+    await expect(getAssetsData(melding, mockMeldingId)).rejects.toThrow('Failed to fetch assets.')
   })
 })

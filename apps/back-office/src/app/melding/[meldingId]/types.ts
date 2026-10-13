@@ -11,7 +11,7 @@ type Attachment = {
 }
 
 type File = {
-  blob: Blob | null
+  blob: Blob
 }
 
 export type MeldingAttachment = Attachment & File

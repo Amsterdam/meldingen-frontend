@@ -814,6 +814,10 @@ export const AttachmentOutputSchema = {
             type: 'string',
             title: 'Original Filename'
         },
+        original_media_type: {
+            type: 'string',
+            title: 'Original Media Type'
+        },
         user: {
             anyOf: [
                 {
@@ -831,6 +835,7 @@ export const AttachmentOutputSchema = {
         'created_at',
         'updated_at',
         'original_filename',
+        'original_media_type',
         'user'
     ],
     title: 'AttachmentOutput'
@@ -935,6 +940,35 @@ export const ClassificationCreateInputSchema = {
             minLength: 1,
             title: 'Name'
         },
+        service_level_objective_text: {
+            type: 'string',
+            maxLength: 1000,
+            minLength: 1,
+            title: 'Service Level Objective Text'
+        },
+        service_level_objective_days: {
+            anyOf: [
+                {
+                    type: 'integer',
+                    maximum: 365,
+                    minimum: 1
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Service Level Objective Days'
+        },
+        service_level_objective_day_type: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/DaysType'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         instructions: {
             anyOf: [
                 {
@@ -960,7 +994,8 @@ export const ClassificationCreateInputSchema = {
     },
     type: 'object',
     required: [
-        'name'
+        'name',
+        'service_level_objective_text'
     ],
     title: 'ClassificationCreateInput'
 } as const;
@@ -1015,6 +1050,17 @@ export const ClassificationOutputSchema = {
                 }
             ],
             title: 'Asset Type'
+        },
+        service_level_objective_text: {
+            type: 'string',
+            title: 'Service Level Objective Text'
+        },
+        service_level_objective_days: {
+            type: 'integer',
+            title: 'Service Level Objective Days'
+        },
+        service_level_objective_day_type: {
+            $ref: '#/components/schemas/DaysType'
         }
     },
     type: 'object',
@@ -1022,7 +1068,10 @@ export const ClassificationOutputSchema = {
         'id',
         'created_at',
         'updated_at',
-        'name'
+        'name',
+        'service_level_objective_text',
+        'service_level_objective_days',
+        'service_level_objective_day_type'
     ],
     title: 'ClassificationOutput'
 } as const;
@@ -1062,6 +1111,42 @@ export const ClassificationUpdateInputSchema = {
                 }
             ],
             title: 'Asset Type'
+        },
+        service_level_objective_text: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 1000,
+                    minLength: 1
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Service Level Objective Text'
+        },
+        service_level_objective_days: {
+            anyOf: [
+                {
+                    type: 'integer',
+                    maximum: 365,
+                    minimum: 1
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Service Level Objective Days'
+        },
+        service_level_objective_day_type: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/DaysType'
+                },
+                {
+                    type: 'null'
+                }
+            ]
         }
     },
     type: 'object',
@@ -1259,6 +1344,15 @@ export const DateAnswerQuestionOutputSchema = {
     title: 'DateAnswerQuestionOutput'
 } as const;
 
+export const DaysTypeSchema = {
+    type: 'string',
+    enum: [
+        'working_days',
+        'calendar_days'
+    ],
+    title: 'DaysType'
+} as const;
+
 export const DivideSchema = {
     properties: {
         '/': {
@@ -1446,6 +1540,9 @@ export const FeatureSchema = {
             anyOf: [
                 {
                     type: 'integer'
+                },
+                {
+                    type: 'number'
                 },
                 {
                     type: 'string'
@@ -3682,6 +3779,9 @@ export const GeoJsonSchema = {
                     type: 'integer'
                 },
                 {
+                    type: 'number'
+                },
+                {
                     type: 'string'
                 },
                 {
@@ -5235,6 +5335,16 @@ export const MeldingCreateOutputSchema = {
                 }
             ]
         },
+        service_level_objective: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/MeldingServiceLevelObjectiveOutput'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         geo_location: {
             anyOf: [
                 {
@@ -5421,6 +5531,16 @@ export const MeldingOutputSchema = {
                 }
             ]
         },
+        service_level_objective: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/MeldingServiceLevelObjectiveOutput'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
         geo_location: {
             anyOf: [
                 {
@@ -5564,6 +5684,35 @@ export const MeldingReclassificationInputSchema = {
     title: 'MeldingReclassificationInput'
 } as const;
 
+export const MeldingServiceLevelObjectiveOutputSchema = {
+    properties: {
+        date_start: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Date Start'
+        },
+        days: {
+            type: 'integer',
+            title: 'Days'
+        },
+        day_type: {
+            $ref: '#/components/schemas/DaysType'
+        },
+        days_passed: {
+            type: 'integer',
+            title: 'Days Passed'
+        }
+    },
+    type: 'object',
+    required: [
+        'date_start',
+        'days',
+        'day_type',
+        'days_passed'
+    ],
+    title: 'MeldingServiceLevelObjectiveOutput'
+} as const;
+
 export const MeldingUpdateInputSchema = {
     properties: {
         urgency: {
@@ -5663,6 +5812,16 @@ export const MeldingUpdateOutputSchema = {
             anyOf: [
                 {
                     $ref: '#/components/schemas/SimpleClassificationOutput'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        service_level_objective: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/MeldingServiceLevelObjectiveOutput'
                 },
                 {
                     type: 'null'
