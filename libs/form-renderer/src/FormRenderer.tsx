@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react'
+import type { ReactNode } from 'react'
 
 import Form from 'next/form'
 import { useState } from 'react'
@@ -124,8 +124,9 @@ const getComponent = (
   return undefined
 }
 
-export type Props = PropsWithChildren & {
+export type Props = {
   action: (formData: FormData) => void
+  children: ReactNode
   formComponents: Component[]
   panelTitle?: string
   previousAnswersByKey?: AnswersByKey
