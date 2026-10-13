@@ -11,7 +11,6 @@ const defaultProps: Props = {
   formComponents: form.components[0].components,
   panelTitle: form.components[0].title,
   previousAnswersByKey: {},
-  submitButtonText: 'Volgende vraag',
 }
 
 const components = [
@@ -35,9 +34,9 @@ describe('FormRenderer', () => {
   it('renders a form', () => {
     const { container } = render(<FormRenderer {...defaultProps} />)
 
-    const form = container.querySelector('form')
+    const formElement = container.querySelector('form')
 
-    expect(form).toBeInTheDocument()
+    expect(formElement).toBeInTheDocument()
   })
 
   components.map(({ index, name, role }) => {
@@ -68,12 +67,16 @@ describe('FormRenderer', () => {
     expect(component).not.toBeInTheDocument()
   })
 
-  it('renders a submit button', () => {
-    render(<FormRenderer {...defaultProps} />)
+  it('renders children', () => {
+    render(
+      <FormRenderer {...defaultProps}>
+        <button>Hello</button>
+      </FormRenderer>,
+    )
 
-    const submitButton = screen.getByRole('button', { name: 'Volgende vraag' })
+    const childButton = screen.getByRole('button', { name: 'Hello' })
 
-    expect(submitButton).toBeInTheDocument()
+    expect(childButton).toBeInTheDocument()
   })
 
   components.map(({ index, name }) => {
@@ -102,11 +105,11 @@ describe('FormRenderer', () => {
           />,
         )
 
-        const components = screen.getByRole(role, {
+        const component = screen.getByRole(role, {
           name: `${form.components[0].components[index].label} Invoerfout:Test error message`,
         })
 
-        expect(components).toBeInTheDocument()
+        expect(component).toBeInTheDocument()
       })
     } else {
       it(`renders a ${name} with an error when there is one`, () => {
@@ -117,12 +120,12 @@ describe('FormRenderer', () => {
           />,
         )
 
-        const components = screen.getByRole(role, {
+        const component = screen.getByRole(role, {
           description: 'Invoerfout:Test error message',
           name: form.components[0].components[index].label,
         })
 
-        expect(components).toBeInTheDocument()
+        expect(component).toBeInTheDocument()
       })
     }
   })
@@ -171,6 +174,7 @@ describe('FormRenderer', () => {
     expect(screen.queryByRole('textbox', { name: 'Dependent' })).not.toBeInTheDocument()
 
     const controllerInput = screen.getByRole('textbox', { name: 'Controller' })
+
     await user.type(controllerInput, 'yes')
 
     expect(screen.getByRole('textbox', { name: 'Dependent' })).toBeInTheDocument()
