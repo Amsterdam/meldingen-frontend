@@ -2,16 +2,16 @@
 
 import { LinkList } from '@amsterdam/design-system-react'
 
-import type { AlertProps } from '../Alert/FocusableAlert'
+import type { AlertProps } from '../FocusableAlert/FocusableAlert'
 
-import { FocusableAlert } from '../Alert/FocusableAlert'
+import { FocusableAlert } from '../FocusableAlert/FocusableAlert'
 
 export type ValidationError = {
   key: string
   message: string
 }
 
-export type InvalidFormAlertProps = AlertProps & {
+export type InvalidFormAlertProps = Omit<AlertProps, 'children' | 'description'> & {
   errors: ValidationError[]
 }
 

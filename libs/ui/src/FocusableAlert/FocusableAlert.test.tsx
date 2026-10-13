@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react'
 import { FocusableAlert } from './FocusableAlert'
 
 const defaultProps = {
-  children: 'Test',
   description: 'Description',
   heading: 'Heading',
   shouldFocus: false,
@@ -16,6 +15,22 @@ describe('Alert', () => {
     const alert = screen.getByRole('alert')
 
     expect(alert).toBeInTheDocument()
+  })
+
+  it('renders its description when provided', () => {
+    render(<FocusableAlert {...defaultProps} />)
+
+    expect(screen.getByText('Description')).toBeInTheDocument()
+  })
+
+  it('renders its children when provided instead of a description', () => {
+    render(
+      <FocusableAlert heading="Heading" shouldFocus={false}>
+        Child content
+      </FocusableAlert>,
+    )
+
+    expect(screen.getByText('Child content')).toBeInTheDocument()
   })
 
   it('renders the correct class', () => {
