@@ -19,7 +19,7 @@ type AlertContentProps =
       description: string
     }
 
-type ADSOriginalAlertProps = Pick<ADSAlertProps, 'heading'>
+type ADSOriginalAlertProps = Pick<ADSAlertProps, 'heading' | 'role'>
 export type FocusableAlertProps = ADSOriginalAlertProps &
   AlertContentProps & {
     className?: string
@@ -43,6 +43,7 @@ export const FocusableAlert = ({
   description,
   heading,
   headingLevel = 2,
+  role,
   severity = 'error',
   shouldFocus,
 }: FocusableAlertProps) => {
@@ -61,7 +62,7 @@ export const FocusableAlert = ({
       headingId={null}
       headingLevel={headingLevel}
       ref={ref}
-      role="alert"
+      role={role}
       severity={severity}
       tabIndex={-1}
     >
