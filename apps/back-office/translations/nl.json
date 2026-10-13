@@ -152,7 +152,7 @@
         "description": "Wacht tot de bestanden zijn toegevoegd of annuleer."
       },
       "delete-failed": {
-        "title": "Het is niet gelukt om de bestand te verwijderen",
+        "title": "Het is niet gelukt om het bestand te verwijderen",
         "description": "Probeer het opnieuw."
       }
     },
