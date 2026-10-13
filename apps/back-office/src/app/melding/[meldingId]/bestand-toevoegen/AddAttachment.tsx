@@ -10,7 +10,7 @@ import type { ErroredFileUpload, FileUploadState, UploadResult } from '@meldinge
 
 import { FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
-import { Alert, Column, Heading, Link, Paragraph } from '@meldingen/ui'
+import { Column, FocusableAlert, Heading, Link, Paragraph } from '@meldingen/ui'
 
 import type { MeldingAttachment } from '../types'
 
@@ -131,14 +131,14 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     <PageWrapper backLink={{ href: meldingDetailLink, label: t('back-link') }}>
       {Boolean(apiError) && <ApiErrorAlert shouldFocus={true} />}
       {genericError && (
-        <Alert
+        <FocusableAlert
           className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
           heading={t(genericError.title, genericError.options)}
           severity="error"
           shouldFocus
         >
           {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
-        </Alert>
+        </FocusableAlert>
       )}
       <InvalidFormAlert
         errors={validationErrors}

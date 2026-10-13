@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { Alert } from './Alert'
+import { FocusableAlert } from './FocusableAlert'
 
 const defaultProps = {
   children: 'Test',
@@ -11,7 +11,7 @@ const defaultProps = {
 
 describe('Alert', () => {
   it('renders an alert', () => {
-    render(<Alert {...defaultProps} />)
+    render(<FocusableAlert {...defaultProps} />)
 
     const alert = screen.getByRole('alert')
 
@@ -19,7 +19,7 @@ describe('Alert', () => {
   })
 
   it('renders the correct class', () => {
-    render(<Alert {...defaultProps} />)
+    render(<FocusableAlert {...defaultProps} />)
 
     const alert = screen.getByRole('alert')
 
@@ -27,7 +27,7 @@ describe('Alert', () => {
   })
 
   it('renders an extra class when provided', () => {
-    render(<Alert {...defaultProps} className="extra-class" />)
+    render(<FocusableAlert {...defaultProps} className="extra-class" />)
 
     const alert = screen.getByRole('alert')
 
@@ -35,7 +35,7 @@ describe('Alert', () => {
   })
 
   it('renders the correct heading level', () => {
-    render(<Alert {...defaultProps} headingLevel={4} />)
+    render(<FocusableAlert {...defaultProps} headingLevel={4} />)
 
     const heading = screen.getByRole('heading', { level: 4 })
 
@@ -43,7 +43,7 @@ describe('Alert', () => {
   })
 
   it('sets focus on the alert when shouldFocus is true', () => {
-    render(<Alert {...defaultProps} shouldFocus />)
+    render(<FocusableAlert {...defaultProps} shouldFocus />)
 
     const alert = screen.getByRole('alert')
 
@@ -51,7 +51,7 @@ describe('Alert', () => {
   })
 
   it('does not set focus on the alert when shouldFocus is false', () => {
-    render(<Alert {...defaultProps} />)
+    render(<FocusableAlert {...defaultProps} />)
 
     const alert = screen.getByRole('alert')
 

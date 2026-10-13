@@ -2,9 +2,9 @@
 
 import { LinkList } from '@amsterdam/design-system-react'
 
-import type { AlertProps } from '../Alert/Alert'
+import type { AlertProps } from '../Alert/FocusableAlert'
 
-import { Alert } from '../Alert/Alert'
+import { FocusableAlert } from '../Alert/FocusableAlert'
 
 export type ValidationError = {
   key: string
@@ -21,7 +21,7 @@ export const InvalidFormAlert = ({ errors, ...alertProps }: InvalidFormAlertProp
   }
 
   return (
-    <Alert {...alertProps} severity="error">
+    <FocusableAlert {...alertProps} severity="error">
       <LinkList>
         {errors.map(({ key, message }) => (
           <LinkList.Link href={`#${key}`} key={`${key}-${message}`}>
@@ -29,6 +29,6 @@ export const InvalidFormAlert = ({ errors, ...alertProps }: InvalidFormAlertProp
           </LinkList.Link>
         ))}
       </LinkList>
-    </Alert>
+    </FocusableAlert>
   )
 }

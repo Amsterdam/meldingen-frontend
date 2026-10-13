@@ -15,7 +15,7 @@ import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api
 import { FileList, FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Alert, Column, Heading, SubmitButton } from '@meldingen/ui'
+import { Alert, Column, FocusableAlert, Heading, SubmitButton } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
@@ -127,14 +127,14 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           shouldFocus={shouldFocusAlert}
         />
         {genericError && (
-          <Alert
+          <FocusableAlert
             className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
             heading={t(genericError.title, genericError.options)}
             severity="error"
             shouldFocus
           >
             {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
-          </Alert>
+          </FocusableAlert>
         )}
         <Column className="ams-mb-l">
           <Column gap="small">
