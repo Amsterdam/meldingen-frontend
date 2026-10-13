@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
-import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
+import type { MeldingAttachment } from '../types'
 
 import { getAttachmentsData } from '../_utils/server'
 import { AddAttachment } from './AddAttachment'
@@ -22,9 +22,7 @@ vi.mock('next-intl/server', async () => ({
     vi.fn().mockImplementation((key, params) => (params ? `${key}: ${JSON.stringify(params)}` : key)),
 }))
 
-const attachments: GetAttachmentsDataResult = {
-  attachmentsWithFile: [],
-}
+const attachments: MeldingAttachment[] = []
 
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
@@ -64,10 +62,7 @@ describe('Page', () => {
 
     render(result)
 
-    expect(AddAttachment).toHaveBeenCalledWith(
-      { attachments: attachments.attachmentsWithFile, meldingId: 123 },
-      undefined,
-    )
+    expect(AddAttachment).toHaveBeenCalledWith({ attachments, meldingId: 123 }, undefined)
     expect(screen.getByText('AddAttachment Component')).toBeInTheDocument()
   })
 })

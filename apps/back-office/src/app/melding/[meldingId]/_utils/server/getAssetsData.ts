@@ -7,12 +7,7 @@ export const getAssetsData = async (data: MeldingOutput, meldingId: number) => {
     path: { melding_id: meldingId },
   })
 
-  if (assetsError) {
-    // TODO: Log the error to an error reporting service
-    // eslint-disable-next-line no-console
-    console.error(assetsError)
-    return { assets: [], assetsTerm: undefined }
-  }
+  if (assetsError) throw new Error('Failed to fetch assets.')
 
   return {
     assets,

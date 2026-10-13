@@ -6,14 +6,14 @@ import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 
 import { useObjectUrl } from '@meldingen/file-upload'
-import { Icon, Link, Paragraph } from '@meldingen/ui'
+import { Icon, Link } from '@meldingen/ui'
 
 import { isFilePDF } from '../_utils'
 
 import styles from './AttachmentPreview.module.css'
 
 type Props = {
-  blob: Blob | null
+  blob: Blob
   fileName: string
   id: number
   isLinkToSlider?: boolean
@@ -23,8 +23,6 @@ type Props = {
 export const AttachmentPreview = ({ blob, fileName, id, isLinkToSlider, meldingId }: Props) => {
   const t = useTranslations('detail.attachments')
   const url = useObjectUrl(blob)
-
-  if (!blob) return <Paragraph>{fileName}</Paragraph>
 
   if (!url) {
     return (

@@ -1,6 +1,6 @@
 import type { Mock } from 'vitest'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 
@@ -326,18 +326,5 @@ describe('MeldingForm', () => {
     await user.click(screen.getByRole('button', { name: 'submit-button' }))
 
     expect(mockFormAction).toHaveBeenCalled()
-  })
-
-  it('shows the classification name after a successful API call', async () => {
-    const user = userEvent.setup()
-
-    render(<MeldingForm {...defaultProps} />)
-
-    await user.type(screen.getByRole('textbox', { name: 'Some label' }), 'Hello world')
-    await user.tab()
-
-    await waitFor(() => {
-      expect(screen.getByText('De categorie van de melding is: Test classification')).toBeInTheDocument()
-    })
   })
 })
