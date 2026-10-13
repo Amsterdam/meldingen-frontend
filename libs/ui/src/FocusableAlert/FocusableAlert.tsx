@@ -19,18 +19,23 @@ type AlertContentProps =
       description: string
     }
 
-export type AlertProps = {
-  className?: string
-  heading: string
-  headingLevel?: ADSAlertProps['headingLevel']
-  severity?: ADSAlertProps['severity']
-  /**
-   * Pass a value that changes to `true` to trigger focus on the alert.
-   * With `useActionState`, `!isPending` works well — it is `false` on submit and `true` when the response arrives.
-   * Without `useActionState`, manage it yourself via a state variable.
-   */
-  shouldFocus: boolean
-} & AlertContentProps
+type ADSOriginalAlertProps = Pick<ADSAlertProps, 'heading'>
+export type FocusableAlertProps = ADSOriginalAlertProps &
+  AlertContentProps & {
+    className?: string
+    /**
+     * The hierarchical level of the Heading within the document. Defaults to 2
+     */
+    headingLevel?: ADSAlertProps['headingLevel']
+    /** The significance of the message conveyed. Defaults to 'error' */
+    severity?: ADSAlertProps['severity']
+    /**
+     * Pass a value that changes to `true` to trigger focus on the alert.
+     * With `useActionState`, `!isPending` works well — it is `false` on submit and `true` when the response arrives.
+     * Without `useActionState`, manage it yourself via a state variable.
+     */
+    shouldFocus: boolean
+  }
 
 export const FocusableAlert = ({
   children,
@@ -38,9 +43,9 @@ export const FocusableAlert = ({
   description,
   heading,
   headingLevel = 2,
-  severity,
+  severity = 'error',
   shouldFocus,
-}: AlertProps) => {
+}: FocusableAlertProps) => {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

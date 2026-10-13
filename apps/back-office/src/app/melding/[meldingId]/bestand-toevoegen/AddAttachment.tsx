@@ -134,7 +134,6 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
         <FocusableAlert
           className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
           heading={t(genericError.title, genericError.options)}
-          severity="error"
           shouldFocus
         >
           {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}

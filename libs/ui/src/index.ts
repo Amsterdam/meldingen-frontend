@@ -1,5 +1,5 @@
 export { FocusableAlert } from './FocusableAlert/FocusableAlert'
-export type { AlertProps } from './FocusableAlert/FocusableAlert'
+export type { FocusableAlertProps } from './FocusableAlert/FocusableAlert'
 export { InvalidFormAlert } from './InvalidFormAlert/InvalidFormAlert'
 export type { InvalidFormAlertProps } from './InvalidFormAlert/InvalidFormAlert'
 export type { ValidationError } from './InvalidFormAlert/InvalidFormAlert'

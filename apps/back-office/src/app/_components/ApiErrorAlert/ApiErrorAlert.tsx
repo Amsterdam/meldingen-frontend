@@ -1,10 +1,10 @@
 import { useTranslations } from 'next-intl'
 
-import type { AlertProps } from '@meldingen/ui'
+import type { FocusableAlertProps } from '@meldingen/ui'
 
 import { FocusableAlert } from '@meldingen/ui'
 
-export type ApiErrorAlertProps = Pick<AlertProps, 'description' | 'shouldFocus'> & {
+export type ApiErrorAlertProps = Pick<FocusableAlertProps, 'description' | 'shouldFocus'> & {
   heading?: string
 }
 
@@ -16,7 +16,6 @@ export const ApiErrorAlert = ({ description, heading, shouldFocus }: ApiErrorAle
       className="ams-mb-m"
       description={description ?? t('description')}
       heading={heading ?? t('heading')}
-      severity="error"
       shouldFocus={shouldFocus}
     />
   )

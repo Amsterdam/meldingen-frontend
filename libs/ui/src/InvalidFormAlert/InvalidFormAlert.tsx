@@ -2,7 +2,7 @@
 
 import { LinkList } from '@amsterdam/design-system-react'
 
-import type { AlertProps } from '../FocusableAlert/FocusableAlert'
+import type { FocusableAlertProps } from '../FocusableAlert/FocusableAlert'
 
 import { FocusableAlert } from '../FocusableAlert/FocusableAlert'
 
@@ -11,7 +11,7 @@ export type ValidationError = {
   message: string
 }
 
-export type InvalidFormAlertProps = Omit<AlertProps, 'children' | 'description'> & {
+export type InvalidFormAlertProps = Omit<FocusableAlertProps, 'children' | 'description'> & {
   errors: ValidationError[]
 }
 
@@ -21,7 +21,7 @@ export const InvalidFormAlert = ({ errors, ...alertProps }: InvalidFormAlertProp
   }
 
   return (
-    <FocusableAlert {...alertProps} severity="error">
+    <FocusableAlert {...alertProps}>
       <LinkList>
         {errors.map(({ key, message }) => (
           <LinkList.Link href={`#${key}`} key={`${key}-${message}`}>
