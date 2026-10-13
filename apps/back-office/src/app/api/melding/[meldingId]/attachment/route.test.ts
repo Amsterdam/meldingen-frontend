@@ -21,20 +21,11 @@ const MULTIPART_BOUNDARY = 'test-boundary'
 const UPLOAD_BODY = 'file content'
 
 // A generic stream body (unlike FormData/Blob/string) isn't re-measured by fetch, so a
-// Content-Length set alongside it is the one the route handler actually reads.
+// Content-Length set alongside it is the one the route handler actually receives.
 const createStreamBody = () =>
   new ReadableStream({
     start: (controller) => {
       controller.enqueue(new Uint8Array([1, 2, 3]))
-      controller.close()
-    },
-  })
-
-// A body without Content-Length, like a chunked upload: the route can only measure it while streaming
-const createChunkedBody = (sizeInBytes: number) =>
-  new ReadableStream({
-    start: (controller) => {
-      controller.enqueue(new Uint8Array(sizeInBytes))
       controller.close()
     },
   })
@@ -168,86 +159,6 @@ describe('POST /api/melding/[meldingId]/attachment', () => {
       expect(response.status).toBe(400)
       expect(global.fetch).not.toHaveBeenCalled()
     })
-
-    it('returns 400 when Content-Length exceeds the upload limit', async () => {
-      const response = await postAttachment({
-        body: createStreamBody(),
-        headers: {
-          ...SAME_ORIGIN_HEADERS,
-          'content-length': String(MAX_ATTACHMENT_SIZE_BYTES + 1),
-        },
-      })
-
-      expect(response.status).toBe(400)
-      expect(await response.json()).toEqual({ detail: 'Allowed content size exceeded' })
-      expect(global.fetch).not.toHaveBeenCalled()
-    })
-
-    it('returns 200 when Content-Length is exactly the upload limit', async () => {
-      const response = await postAttachment({
-        body: createStreamBody(),
-        headers: {
-          ...SAME_ORIGIN_HEADERS,
-          'content-length': String(MAX_ATTACHMENT_SIZE_BYTES),
-        },
-      })
-
-      expect(response.status).toBe(200)
-    })
-  })
-
-  describe('streaming size limit', () => {
-    it('returns 400 when a body without Content-Length exceeds the upload limit and the backend rejects the cut-off body', async () => {
-      let hasBackendReceivedFullBody = false
-
-      server.use(
-        http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, async ({ request }) => {
-          // Reading the body throws once the route cuts it off, which MSW turns into a 500 response
-          await request.arrayBuffer()
-          hasBackendReceivedFullBody = true
-
-          return HttpResponse.json({ id: 42 })
-        }),
-      )
-
-      const response = await postAttachment({ body: createChunkedBody(MAX_ATTACHMENT_SIZE_BYTES + 1) })
-
-      expect(hasBackendReceivedFullBody).toBe(false)
-      expect(response.status).toBe(400)
-      expect(await response.json()).toEqual({ detail: 'Allowed content size exceeded' })
-    })
-
-    it('returns 400 when a body without Content-Length exceeds the upload limit and the backend request fails', async () => {
-      // How Node's fetch behaves when its body stream errors: it rejects. MSW can't simulate this
-      // (see the test above), so we stub fetch to consume the body the way Node's fetch would.
-      vi.mocked(global.fetch).mockImplementationOnce(async (_input, init) => {
-        await new Response(init?.body).arrayBuffer()
-
-        return Response.json({ id: 42 })
-      })
-
-      const response = await postAttachment({ body: createChunkedBody(MAX_ATTACHMENT_SIZE_BYTES + 1) })
-
-      expect(response.status).toBe(400)
-      expect(await response.json()).toEqual({ detail: 'Allowed content size exceeded' })
-    })
-
-    it('returns 200 and forwards a body without Content-Length that is exactly the upload limit', async () => {
-      let backendBodySize: number | undefined
-
-      server.use(
-        http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, async ({ request }) => {
-          backendBodySize = (await request.arrayBuffer()).byteLength
-
-          return HttpResponse.json({ id: 42 })
-        }),
-      )
-
-      const response = await postAttachment({ body: createChunkedBody(MAX_ATTACHMENT_SIZE_BYTES) })
-
-      expect(response.status).toBe(200)
-      expect(backendBodySize).toBe(MAX_ATTACHMENT_SIZE_BYTES)
-    })
   })
 
   describe('backend response', () => {
@@ -315,6 +226,26 @@ describe('POST /api/melding/[meldingId]/attachment', () => {
 
       const response = await postAttachment()
 
+      expect(response.status).toBe(400)
+      expect(await response.json()).toEqual({ detail: 'Allowed content size exceeded' })
+    })
+
+    it('forwards requests whose multipart Content-Length exceeds the file limit and returns the backend size error as-is', async () => {
+      server.use(
+        http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () =>
+          HttpResponse.json({ detail: 'Allowed content size exceeded' }, { status: 400 }),
+        ),
+      )
+
+      const response = await postAttachment({
+        body: createStreamBody(),
+        headers: {
+          ...SAME_ORIGIN_HEADERS,
+          'content-length': String(MAX_ATTACHMENT_SIZE_BYTES + 1024),
+        },
+      })
+
+      expect(global.fetch).toHaveBeenCalledOnce()
       expect(response.status).toBe(400)
       expect(await response.json()).toEqual({ detail: 'Allowed content size exceeded' })
     })

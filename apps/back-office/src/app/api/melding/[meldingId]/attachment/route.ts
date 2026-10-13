@@ -4,12 +4,7 @@ import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 
 import { authOptions } from '~/app/_authentication/authOptions'
-import { MAX_ATTACHMENT_SIZE_BYTES } from '~/constants'
 import { serverEnv } from '~/env/server'
-
-// The detail string matches the backend's own, so startUpload.ts shows the same "file too large" message
-const createSizeLimitExceededResponse = () =>
-  NextResponse.json({ detail: 'Allowed content size exceeded' }, { status: 400 })
 
 /**
  * Route Handlers get none of the CSRF protection Next.js builds into Server Actions
@@ -61,42 +56,13 @@ export const POST = async (request: NextRequest, { params }: { params: Promise<{
     return NextResponse.json({ detail: 'Expected multipart/form-data' }, { status: 400 })
   }
 
-  const contentLength = Number(request.headers.get('content-length'))
-
-  if (contentLength > MAX_ATTACHMENT_SIZE_BYTES) {
-    return createSizeLimitExceededResponse()
-  }
-
-  // The Content-Length check above misses chunked uploads, which have no Content-Length.
-  // So we also count the bytes while streaming, and stop the upload once it goes over the limit.
-  let bytesStreamed = 0
-  let isSizeLimitExceeded = false
-
-  const sizeLimitedBody = request.body?.pipeThrough(
-    new TransformStream<Uint8Array, Uint8Array>({
-      transform: (chunk, controller) => {
-        bytesStreamed += chunk.byteLength
-
-        if (bytesStreamed > MAX_ATTACHMENT_SIZE_BYTES) {
-          isSizeLimitExceeded = true
-          // Erroring the stream aborts the request to the backend
-          controller.error(new Error('Allowed content size exceeded'))
-
-          return
-        }
-
-        controller.enqueue(chunk)
-      },
-    }),
-  )
-
   const uploadEndpoint = `${serverEnv.NEXT_INTERNAL_BACKEND_BASE_URL}/melding/${meldingId}/attachment/`
 
   let backendResponse: Response
 
   try {
     backendResponse = await fetch(uploadEndpoint, {
-      body: sizeLimitedBody,
+      body: request.body,
       // @ts-expect-error -- Node's fetch needs `duplex` for streamed bodies; the DOM RequestInit type lacks it
       // This tells Node's fetch that the request body is a stream, which is required for proper handling.
       // This expect error can be removed once TypeScript adds `duplex` to the DOM RequestInit type.
@@ -109,10 +75,6 @@ export const POST = async (request: NextRequest, { params }: { params: Promise<{
       signal: request.signal,
     })
   } catch (error) {
-    if (isSizeLimitExceeded) {
-      return createSizeLimitExceededResponse()
-    }
-
     if (!request.signal.aborted) {
       // TODO: Log the error to an error reporting service
       // eslint-disable-next-line no-console
@@ -120,11 +82,6 @@ export const POST = async (request: NextRequest, { params }: { params: Promise<{
     }
 
     return NextResponse.json({ detail: 'Upload failed' }, { status: 502 })
-  }
-
-  // The backend may still answer after we cut the upload off (e.g. with a parse error for the truncated body).
-  if (isSizeLimitExceeded) {
-    return createSizeLimitExceededResponse()
   }
 
   const headers = new Headers()
