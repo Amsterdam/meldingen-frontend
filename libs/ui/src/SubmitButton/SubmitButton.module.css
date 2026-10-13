@@ -6,7 +6,7 @@
   }
 }
 
-@keyframes ams-spinner-rotate {
+@keyframes rotate {
   to {
     transform: rotate(360deg);
   }
@@ -14,7 +14,7 @@
 
 .spinner {
   align-self: center;
-  animation: ams-spinner-rotate 0.8s linear infinite;
+  animation: rotate 0.8s linear infinite;
   aspect-ratio: 1;
   block-size: 1.5rem;
   border-block-start-color: transparent;
@@ -28,6 +28,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    animation: ams-spinner-rotate 2.4s linear infinite;
+    animation: rotate 2.4s linear infinite;
   }
 }
