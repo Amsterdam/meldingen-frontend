@@ -65,18 +65,9 @@ type UseFileUploadsParams = {
   existingFiles: ExistingFile[]
   idPrefix: string
   inputRef: RefObject<HTMLInputElement | null>
-  /**
-   * Files larger than this are marked as errored without being uploaded.
-   * Optional: without it, only the server checks the file size.
-   */
   maxFileSizeBytes?: number
   maxSuccessfulUploads: number
   maxUploadAttempts: number
-  /**
-   * Full URL to POST the upload to via XHR. This should be a same-origin URL (either the backend
-   * directly with a token query param, or a same-origin Route Handler that adds auth server-side)
-   * so the browser never needs to hold a bearer token. Authentication itself is handled by the caller.
-   */
   uploadUrl: string
 }
 
