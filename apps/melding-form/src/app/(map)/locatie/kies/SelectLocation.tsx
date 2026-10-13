@@ -202,7 +202,12 @@ export const SelectLocation = ({
         </Map>
       </div>
       <div className={clsx(styles.buttonWrapper, showAssetList && styles.assetListOpen)}>
-        <SubmitButton form="address" isLoading={isPending} label={t('submit-button.mobile')} />
+        <SubmitButton
+          className={styles.submitButtonMobile}
+          form="address"
+          isLoading={isPending}
+          label={t('submit-button.mobile')}
+        />
         {showAssetListToggleButton && (
           <Button onClick={() => setIsAssetListOpen((prevState) => !prevState)} variant="secondary">
             {isAssetListOpen ? t('toggle-button.map') : t('toggle-button.list')}

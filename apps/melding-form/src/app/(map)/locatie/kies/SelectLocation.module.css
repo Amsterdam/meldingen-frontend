@@ -16,6 +16,10 @@
   }
 }
 
+.submitButtonMobile {
+  width: fit-content; /* Override default full-width behavior on mobile */
+}
+
 .hideButtonMobile {
   display: none;
 
