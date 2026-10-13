@@ -9,33 +9,24 @@ import { useEffect, useRef } from 'react'
 
 import styles from './FocusableAlert.module.css'
 
-type AlertContentProps =
-  | {
-      children: ReactNode
-      description?: never
-    }
-  | {
-      children?: never
-      description: string
-    }
-
 type ADSOriginalAlertProps = Pick<ADSAlertProps, 'heading' | 'role'>
-export type FocusableAlertProps = ADSOriginalAlertProps &
-  AlertContentProps & {
-    className?: string
-    /**
-     * The hierarchical level of the Heading within the document. Defaults to 2
-     */
-    headingLevel?: ADSAlertProps['headingLevel']
-    /** The significance of the message conveyed. Defaults to 'error' */
-    severity?: ADSAlertProps['severity']
-    /**
-     * Pass a value that changes to `true` to trigger focus on the alert.
-     * With `useActionState`, `!isPending` works well — it is `false` on submit and `true` when the response arrives.
-     * Without `useActionState`, manage it yourself via a state variable.
-     */
-    shouldFocus: boolean
-  }
+export type FocusableAlertProps = ADSOriginalAlertProps & {
+  children?: ReactNode
+  className?: string
+  description?: string
+  /**
+   * The hierarchical level of the Heading within the document. Defaults to 2
+   */
+  headingLevel?: ADSAlertProps['headingLevel']
+  /** The significance of the message conveyed. Defaults to 'error' */
+  severity?: ADSAlertProps['severity']
+  /**
+   * Pass a value that changes to `true` to trigger focus on the alert.
+   * With `useActionState`, `!isPending` works well — it is `false` on submit and `true` when the response arrives.
+   * Without `useActionState`, manage it yourself via a state variable.
+   */
+  shouldFocus: boolean
+}
 
 export const FocusableAlert = ({
   children,
@@ -66,7 +57,8 @@ export const FocusableAlert = ({
       severity={severity}
       tabIndex={-1}
     >
-      {children ?? <Paragraph>{description}</Paragraph>}
+      {children}
+      {description && <Paragraph>{description}</Paragraph>}
     </ADSAlert>
   )
 }
