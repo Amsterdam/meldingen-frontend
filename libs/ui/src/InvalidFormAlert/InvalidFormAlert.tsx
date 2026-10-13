@@ -6,7 +6,7 @@ import type { FocusableAlertProps } from '../FocusableAlert/FocusableAlert'
 
 import { FocusableAlert } from '../FocusableAlert/FocusableAlert'
 
-export type ValidationError = {
+type ValidationError = {
   key: string
   message: string
 }
