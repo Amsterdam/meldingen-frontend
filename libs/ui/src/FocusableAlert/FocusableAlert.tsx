@@ -1,7 +1,4 @@
-'use client'
-
-import type { AlertProps as ADSAlertProps } from '@amsterdam/design-system-react'
-import type { ReactNode } from 'react'
+import type { AlertProps } from '@amsterdam/design-system-react'
 
 import { Alert as ADSAlert, Paragraph } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
@@ -9,22 +6,24 @@ import { useEffect, useRef } from 'react'
 
 import styles from './FocusableAlert.module.css'
 
-type ADSOriginalAlertProps = Pick<ADSAlertProps, 'heading' | 'role'>
-export type FocusableAlertProps = ADSOriginalAlertProps & {
-  children?: ReactNode
-  className?: string
-  description?: string
-  /**
-   * The hierarchical level of the Heading within the document. Defaults to 2
-   */
-  headingLevel?: ADSAlertProps['headingLevel']
-  /**
-   * Pass a value that changes to `true` to trigger focus on the alert.
-   * With `useActionState`, `!isPending` works well — it is `false` on submit and `true` when the response arrives.
-   * Without `useActionState`, manage it yourself via a state variable.
-   */
-  shouldFocus: boolean
-}
+type ADSOriginalAlertProps = Pick<AlertProps, 'heading' | 'className'>
+
+type ContentProps =
+  { children: AlertProps['children']; description?: never } | { children?: never; description?: string }
+
+export type FocusableAlertProps = ADSOriginalAlertProps &
+  ContentProps & {
+    /** The hierarchical level of the Heading within the document. Defaults to 2 */
+    headingLevel?: AlertProps['headingLevel']
+    /** The significance of the message conveyed. Defaults to 'error' */
+    severity?: AlertProps['severity']
+    /**
+     * Pass a value that changes to `true` to trigger focus on the alert.
+     * With `useActionState`, `!isPending` works well — it is `false` on submit and `true` when the response arrives.
+     * Without `useActionState`, manage it yourself via a state variable.
+     */
+    shouldFocus: boolean
+  }
 
 export const FocusableAlert = ({
   children,
