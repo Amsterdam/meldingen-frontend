@@ -1,5 +1,3 @@
-import { useTranslations } from 'next-intl'
-
 import { Table } from '@meldingen/ui'
 
 import type { MeldingWithAddress } from '../Overview'
@@ -10,8 +8,8 @@ import { OverviewFieldValue } from './OverviewFieldValue'
 
 import styles from './OverviewDesktop.module.css'
 
-const renderTableHeaders = (t: (key: string) => string) =>
-  OVERVIEW_FIELDS.map((field) => <Table.HeaderCell key={field.key}>{getOverviewFieldLabel(field, t)}</Table.HeaderCell>)
+const renderTableHeaders = () =>
+  OVERVIEW_FIELDS.map((field) => <Table.HeaderCell key={field.key}>{getOverviewFieldLabel(field)}</Table.HeaderCell>)
 
 const renderTableRows = (meldingen: MeldingWithAddress[]) =>
   meldingen.map((melding) => (
@@ -28,15 +26,11 @@ type Props = {
   meldingen: MeldingWithAddress[]
 }
 
-export const OverviewDesktop = ({ meldingen }: Props) => {
-  const t = useTranslations()
-
-  return (
-    <Table className={`ams-mb-l ${styles.desktopOnly} ${styles.table}`}>
-      <Table.Header>
-        <Table.Row>{renderTableHeaders(t)}</Table.Row>
-      </Table.Header>
-      <Table.Body>{renderTableRows(meldingen)}</Table.Body>
-    </Table>
-  )
-}
+export const OverviewDesktop = ({ meldingen }: Props) => (
+  <Table className={`ams-mb-l ${styles.desktopOnly} ${styles.table}`}>
+    <Table.Header>
+      <Table.Row>{renderTableHeaders()}</Table.Row>
+    </Table.Header>
+    <Table.Body>{renderTableRows(meldingen)}</Table.Body>
+  </Table>
+)

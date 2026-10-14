@@ -1,4 +1,3 @@
-import { useTranslations } from 'next-intl'
 import { Fragment } from 'react'
 
 import { DescriptionList, UnorderedList } from '@meldingen/ui'
@@ -15,25 +14,21 @@ type Props = {
   meldingen: MeldingWithAddress[]
 }
 
-export const OverviewMobile = ({ meldingen }: Props) => {
-  const t = useTranslations()
-
-  return (
-    <UnorderedList className={styles.list} markers={false}>
-      {meldingen.map((melding) => (
-        <UnorderedList.Item className={styles.card} key={melding.public_id}>
-          <DescriptionList className={styles.descriptionList}>
-            {OVERVIEW_FIELDS.map((field) => (
-              <Fragment key={field.key}>
-                <DescriptionList.Term>{getOverviewFieldLabel(field, t)}</DescriptionList.Term>
-                <DescriptionList.Description>
-                  <OverviewFieldValue field={field} melding={melding} />
-                </DescriptionList.Description>
-              </Fragment>
-            ))}
-          </DescriptionList>
-        </UnorderedList.Item>
-      ))}
-    </UnorderedList>
-  )
-}
+export const OverviewMobile = ({ meldingen }: Props) => (
+  <UnorderedList className={styles.list} markers={false}>
+    {meldingen.map((melding) => (
+      <UnorderedList.Item className={styles.card} key={melding.public_id}>
+        <DescriptionList className={styles.descriptionList}>
+          {OVERVIEW_FIELDS.map((field) => (
+            <Fragment key={field.key}>
+              <DescriptionList.Term>{getOverviewFieldLabel(field)}</DescriptionList.Term>
+              <DescriptionList.Description>
+                <OverviewFieldValue field={field} melding={melding} />
+              </DescriptionList.Description>
+            </Fragment>
+          ))}
+        </DescriptionList>
+      </UnorderedList.Item>
+    ))}
+  </UnorderedList>
+)
