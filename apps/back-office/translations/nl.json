@@ -325,6 +325,13 @@
     "title": "Er is iets misgegaan",
     "retry-button": "Probeer het opnieuw"
   },
+  "not-found": {
+    "metadata": {
+      "title": "Pagina niet gevonden - Gemeente Amsterdam"
+    },
+    "title": "Pagina niet gevonden",
+    "description": "Controleer of de link correct is. Als u de link heeft gekopieerd, controleer dan of u de gehele link heeft gekopieerd."
+  },
   "shared": {
     "document-title-error-count-prefix": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",
     "api-error-alert": {
