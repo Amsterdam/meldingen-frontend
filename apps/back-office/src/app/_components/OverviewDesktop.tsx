@@ -3,13 +3,17 @@ import { Table } from '@meldingen/ui'
 import type { MeldingWithAddress } from '../Overview'
 
 import { OVERVIEW_FIELDS } from '../constants'
-import { getOverviewFieldLabel } from './_utils'
+import { OverviewFieldLabel } from './OverviewFieldLabel'
 import { OverviewFieldValue } from './OverviewFieldValue'
 
 import styles from './OverviewDesktop.module.css'
 
 const renderTableHeaders = () =>
-  OVERVIEW_FIELDS.map((field) => <Table.HeaderCell key={field.key}>{getOverviewFieldLabel(field)}</Table.HeaderCell>)
+  OVERVIEW_FIELDS.map((field) => (
+    <Table.HeaderCell key={field.key}>
+      <OverviewFieldLabel field={field} />
+    </Table.HeaderCell>
+  ))
 
 const renderTableRows = (meldingen: MeldingWithAddress[]) =>
   meldingen.map((melding) => (

@@ -4,7 +4,7 @@ import type { MeldingServiceLevelObjectiveOutput } from '@meldingen/api-client'
 
 import { formatDateString } from '@meldingen/utils'
 
-import type { OverviewField } from './_utils/getOverviewFieldLabel'
+import type { OverviewField } from '../constants'
 
 import { OverviewFieldValue } from './OverviewFieldValue'
 import { URGENCY_VALUES } from '~/constants'

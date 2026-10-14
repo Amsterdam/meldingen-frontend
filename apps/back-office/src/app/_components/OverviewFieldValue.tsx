@@ -4,8 +4,8 @@ import NextLink from 'next/link'
 import { Link } from '@meldingen/ui'
 import { formatDateString } from '@meldingen/utils'
 
+import type { OverviewField } from '../constants'
 import type { MeldingWithAddress } from '../Overview'
-import type { OverviewField } from './_utils/getOverviewFieldLabel'
 
 type Props = {
   field: OverviewField

@@ -20,6 +20,7 @@ describe('OverviewMobile', () => {
     })
 
     const detailLink = screen.getByRole('link', { name: meldingWithAddress.public_id })
+
     expect(detailLink).toHaveAttribute('href', `/melding/${meldingWithAddress.id}`)
 
     expect(screen.getByText(createdAt)).toBeInTheDocument()

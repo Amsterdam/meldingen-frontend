@@ -5,7 +5,7 @@ import { DescriptionList, UnorderedList } from '@meldingen/ui'
 import type { MeldingWithAddress } from '../Overview'
 
 import { OVERVIEW_FIELDS } from '../constants'
-import { getOverviewFieldLabel } from './_utils'
+import { OverviewFieldLabel } from './OverviewFieldLabel'
 import { OverviewFieldValue } from './OverviewFieldValue'
 
 import styles from './OverviewMobile.module.css'
@@ -21,7 +21,9 @@ export const OverviewMobile = ({ meldingen }: Props) => (
         <DescriptionList className={styles.descriptionList}>
           {OVERVIEW_FIELDS.map((field) => (
             <Fragment key={field.key}>
-              <DescriptionList.Term>{getOverviewFieldLabel(field)}</DescriptionList.Term>
+              <DescriptionList.Term>
+                <OverviewFieldLabel field={field} />
+              </DescriptionList.Term>
               <DescriptionList.Description>
                 <OverviewFieldValue field={field} melding={melding} />
               </DescriptionList.Description>

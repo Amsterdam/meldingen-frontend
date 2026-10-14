@@ -1,1 +1,0 @@
-export { getOverviewFieldLabel } from './getOverviewFieldLabel'
