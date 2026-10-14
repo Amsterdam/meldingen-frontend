@@ -50,6 +50,8 @@ export const FocusableAlert = ({
     <ADSAlert
       className={clsx(styles.alert, className)}
       heading={heading}
+      // Remove the default label for the Alert.
+      // Otherwise, focusing on the Alert causes NVDA to read the label twice.
       headingId={null}
       headingLevel={headingLevel}
       ref={ref}
