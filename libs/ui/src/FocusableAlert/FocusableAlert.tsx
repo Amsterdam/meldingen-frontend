@@ -1,3 +1,5 @@
+'use client'
+
 import type { AlertProps } from '@amsterdam/design-system-react'
 
 import { Alert as ADSAlert, Paragraph } from '@amsterdam/design-system-react'
