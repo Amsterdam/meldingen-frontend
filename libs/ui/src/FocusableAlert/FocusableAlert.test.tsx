@@ -5,7 +5,6 @@ import { FocusableAlert } from './FocusableAlert'
 const defaultProps = {
   description: 'Description',
   heading: 'Heading',
-  role: 'alert' as const,
   shouldFocus: false,
 }
 
@@ -26,7 +25,7 @@ describe('Alert', () => {
 
   it('renders its children when provided instead of a description', () => {
     render(
-      <FocusableAlert heading="Heading" role="alert" shouldFocus={false}>
+      <FocusableAlert heading="Heading" shouldFocus={false}>
         Child content
       </FocusableAlert>,
     )
