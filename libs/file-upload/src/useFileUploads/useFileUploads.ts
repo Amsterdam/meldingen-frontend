@@ -123,7 +123,7 @@ export const useFileUploads = ({
     }
 
     const newFileUploads = newFiles.map((newFile) => {
-      if (fileUploads.find((upload) => upload.file.name === newFile.name)) {
+      if (fileUploads.some((upload) => upload.file.name === newFile.name)) {
         return createErroredUpload(newFile, 'validation-errors.duplicate-upload', getNextUploadId())
       }
 
