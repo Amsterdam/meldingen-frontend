@@ -22,6 +22,15 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 }
 
+const TEMP_SLA = {
+  date_start: '2026-10-08T08:10:24.728Z',
+  day_type: 'working_days',
+  days: 1,
+  days_passed: 1,
+}
+
+const mockSLACall: Promise<typeof TEMP_SLA> = new Promise((resolve) => resolve(TEMP_SLA))
+
 export default async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) => {
   const t = (await getTranslations('thanks')) as TWithUndefined
 
@@ -29,17 +38,27 @@ export default async ({ searchParams }: { searchParams: Promise<{ [key: string]:
 
   const { date, time } = createdAt ? formatDateString(createdAt) : { date: undefined, time: undefined }
 
+  const isBackOffice = source === 'back-office'
   const backOfficeBaseUrl = clientEnv.NEXT_PUBLIC_BACK_OFFICE_BASE_URL
+
   const publicIdLinkOrText =
-    source === 'back-office' && publicId && id && backOfficeBaseUrl
+    isBackOffice && publicId && id && backOfficeBaseUrl
       ? `[${publicId}](${backOfficeBaseUrl}/melding/${id}?id=${encodeURIComponent(publicId)})`
       : publicId
 
-  const description = t('description', { date, publicId: publicIdLinkOrText, time })
+  const tempSLA = await mockSLACall
 
-  const returnLink = source === 'back-office' ? `${backOfficeBaseUrl}/melden` : `/#${TOP_ANCHOR_ID}`
+  const description = t('description', {
+    date,
+    days: tempSLA.days,
+    dayType: tempSLA.day_type,
+    publicId: publicIdLinkOrText,
+    time,
+  })
 
-  const Layout = source === 'back-office' ? BackOfficeLayout : RegularLayout
+  const returnLink = isBackOffice ? `${backOfficeBaseUrl}/melden` : `/#${TOP_ANCHOR_ID}`
+
+  const Layout = isBackOffice ? BackOfficeLayout : RegularLayout
 
   return (
     <Layout>
@@ -47,7 +66,9 @@ export default async ({ searchParams }: { searchParams: Promise<{ [key: string]:
         <Heading className="ams-mb-m" level={1}>
           {t('title')}
         </Heading>
+
         <MarkdownToHtml className="ams-mb-s">{description}</MarkdownToHtml>
+
         <StandaloneLink href={returnLink} linkComponent={NextLink}>
           {t('link')}
         </StandaloneLink>
