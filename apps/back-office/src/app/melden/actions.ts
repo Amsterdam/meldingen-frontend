@@ -29,6 +29,18 @@ export type ArgsType = {
   requiredErrorMessage: string
 }
 
+// Represents the shape of the form data submitted by the user
+type UserFormData = {
+  addNote: string
+  classificationId: string
+  classificationQuery: string
+  labels?: string // Only holds the last label, use formData.getAll('labels')
+  prefetchedMelding?: string
+  primary: string
+  source: string
+  urgency: string
+}
+
 const isValidUrgency = (value: number): value is MeldingOutput['urgency'] =>
   URGENCY_VALUES.includes(value as MeldingOutput['urgency'])
 
@@ -47,9 +59,9 @@ const createOrUpdateMelding = async (text: string, id?: number, token?: string) 
       path: { melding_id: id },
       query: { token },
     })
-  } else {
-    return await postMelding({ body: { text } })
   }
+
+  return await postMelding({ body: { text } })
 }
 
 const createOrUpdateNote = async (isEmpty: boolean, markdown: string, meldingId: number, noteId?: number) => {
@@ -77,7 +89,7 @@ export const postMeldingForm = async (
 ): Promise<FormState> => {
   const t = await getTranslations('melding-form')
 
-  const formDataObj = Object.fromEntries(formData)
+  const formDataObj = Object.fromEntries(formData) as UserFormData
 
   const { characterCount, isEmpty, markdown } = parseNoteDocument(formDataObj.addNote)
 
@@ -85,40 +97,46 @@ export const postMeldingForm = async (
   // its `defaultValue` (via contentType: 'markdown') if the form is redisplayed after an error.
   formData.set('addNote', markdown)
 
-  // Return validation errors if required fields are missing
-  const validationErrors = [
-    ...(!formDataObj.primary ? [{ key: 'primary', message: requiredErrorMessage }] : []),
-    ...(!formDataObj.source ? [{ key: 'source', message: t('source.error') }] : []),
-    ...(characterCount > MAX_NOTE_LENGTH
-      ? [{ key: 'addNote', message: t('note.error', { max: MAX_NOTE_LENGTH }) }]
-      : []),
-  ]
+  const validationErrors = []
 
-  if (validationErrors.length > 0) {
-    return { formData, validationErrors }
+  if (!formDataObj.primary) {
+    validationErrors.push({ key: 'primary', message: requiredErrorMessage })
   }
 
-  const urgencyRaw = formDataObj.urgency
-  const urgencyNumber = Number(urgencyRaw)
+  if (!formDataObj.classificationQuery) {
+    validationErrors.push({ key: 'classificationQuery', message: t('classification.required') })
+  } else if (!formDataObj.classificationId) {
+    validationErrors.push({ key: 'classificationQuery', message: t('classification.does-not-exist') })
+  }
+
+  if (!formDataObj.source) {
+    validationErrors.push({ key: 'source', message: t('source.error') })
+  }
+
+  if (characterCount > MAX_NOTE_LENGTH) {
+    validationErrors.push({ key: 'addNote', message: t('note.error', { max: MAX_NOTE_LENGTH }) })
+  }
+
+  if (validationErrors.length > 0) return { formData, validationErrors }
+
+  const urgencyNumber = Number(formDataObj.urgency)
 
   if (!isValidUrgency(urgencyNumber)) {
     return {
-      apiError: `Invalid urgency value: ${urgencyRaw}`,
+      apiError: `Invalid urgency value: ${formDataObj.urgency}`,
       formData,
     }
   }
 
-  const prefetchedMeldingRaw = formDataObj.prefetchedMelding as string | undefined
-  const prefetchedMelding = prefetchedMeldingRaw ? safeJSONParse(prefetchedMeldingRaw, undefined) : undefined
+  const prefetchedMelding = formDataObj.prefetchedMelding
+    ? safeJSONParse(formDataObj.prefetchedMelding, undefined)
+    : undefined
   const validPrefetchedMelding = isMeldingData(prefetchedMelding) ? prefetchedMelding : undefined
 
-  const meldingIdForPatch = validPrefetchedMelding?.id ?? existingId
-  const meldingTokenForPatch = validPrefetchedMelding?.token ?? existingToken
-
   const { data, error, response } = await createOrUpdateMelding(
-    formDataObj.primary.toString(),
-    meldingIdForPatch,
-    meldingTokenForPatch,
+    formDataObj.primary,
+    validPrefetchedMelding?.id ?? existingId,
+    validPrefetchedMelding?.token ?? existingToken,
   )
 
   if (hasValidationErrors(response, error)) {
@@ -130,39 +148,31 @@ export const postMeldingForm = async (
 
   if (error) return { apiError: error, formData }
 
-  const { classification, created_at, id, public_id, token } = data
-
-  const meldingData = {
-    classificationId: classification?.id,
-    createdAt: created_at,
-    id,
-    publicId: public_id,
-    token,
-  }
+  const { created_at, id, public_id, token } = data
 
   const { error: updateMeldingError } = await patchMeldingByMeldingId({
     body: {
+      classification_id: Number(formDataObj.classificationId),
       label_ids: formData.getAll('labels').map((label) => Number(label)),
       source_id: Number(formDataObj.source),
       urgency: urgencyNumber,
     },
-    path: { melding_id: meldingData.id },
+    path: { melding_id: id },
   })
 
   if (updateMeldingError) return { apiError: updateMeldingError, formData }
 
-  const result = await createOrUpdateNote(isEmpty, markdown, meldingData.id, existingNoteId)
+  const result = await createOrUpdateNote(isEmpty, markdown, id, existingNoteId)
 
   if (result?.error) return { apiError: result.error, formData }
 
   const params = new URLSearchParams({
-    created_at: meldingData.createdAt,
-    id: String(meldingData.id),
-    public_id: meldingData.publicId,
-    token: meldingData.token,
+    classification_id: String(formDataObj.classificationId),
+    created_at,
+    id: String(id),
+    public_id,
+    token,
   })
-
-  if (meldingData.classificationId) params.set('classification_id', String(meldingData.classificationId))
 
   redirect(`${getClientEnv().NEXT_PUBLIC_MELDING_FORM_BASE_URL}/back-office-entry?${params}`)
 }

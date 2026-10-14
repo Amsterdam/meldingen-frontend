@@ -31,7 +31,7 @@ const defaultProps: Props = {
 }
 
 describe('ChangeCategory', () => {
-  it('renders the backlink', () => {
+  it('renders the back link', () => {
     render(<ChangeCategory {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
@@ -105,7 +105,7 @@ describe('ChangeCategory', () => {
       {
         formData,
         validationErrors: [
-          { key: 'classificationId', message: 'classification-required' },
+          { key: 'classificationQuery', message: 'classification-required' },
           { key: 'reason', message: 'reason-required' },
         ],
       },

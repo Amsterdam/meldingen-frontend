@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 /* eslint-disable perfectionist/sort-objects */
 
 import eslint from '@eslint/js'
@@ -180,6 +179,7 @@ export default defineConfig(
       'react/display-name': 'off',
       'react/function-component-definition': 'off',
       'react/jsx-props-no-spreading': 'off',
+      'react/no-unused-prop-types': 'error',
       'react/react-in-jsx-scope': 'off',
       'react/require-default-props': 'off',
       'react-hooks/exhaustive-deps': 'warn',

@@ -3,13 +3,13 @@
   background-position: var(--ams-select-background-position);
   background-repeat: no-repeat;
   background-size: 1em 1em;
+  cursor: pointer;
   padding-inline-end: calc(2 * var(--ams-inputs-padding-inline) + 1em);
 }
 
 .comboboxOptions {
   /* stylelint-disable-next-line csstools/value-no-unknown-custom-properties */
   inline-size: var(--input-width); /* Defined by Headless UI */
-  overflow-y: auto;
 }
 
 .instructions {

@@ -8,20 +8,19 @@ import NextLink from 'next/link'
 import { Link } from '@meldingen/ui'
 import { formatDateString } from '@meldingen/utils'
 
-import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
+import type { MeldingAttachment } from '../types'
 
 import { AttachmentPreview } from './AttachmentPreview'
-import { ApiErrorAlert } from '~/app/_components'
 
 import parentStyles from '../Detail.module.css'
 import styles from './AttachmentSection.module.css'
 
 type Props = {
-  attachments: GetAttachmentsDataResult
+  attachments: MeldingAttachment[]
   meldingId: number
 }
 
-export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachments, error }, meldingId }: Props) => {
+export const AttachmentSection = ({ attachments, meldingId }: Props) => {
   const t = useTranslations('detail')
 
   const hasAttachments = attachments.length > 0
@@ -31,9 +30,8 @@ export const AttachmentSection = ({ attachments: { attachmentsWithFile: attachme
   return (
     <dl className={clsx(parentStyles.descriptionList, parentStyles.cardWide, styles.attachmentsSection)}>
       <dt className={styles.attachmentsTerm}>{t('attachments.title')}</dt>
-      {error && <ApiErrorAlert description={t('errors.fetch-error')} shouldFocus={false} />}
 
-      {hasAttachments && !error ? (
+      {hasAttachments ? (
         <div className={styles.attachmentsWrapper}>
           {attachments.map(({ blob, createdAt, id, originalFilename, user }) => {
             const { date, time } = formatDateString(createdAt)

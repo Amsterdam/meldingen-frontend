@@ -1,6 +1,5 @@
 import type { GetMeldingByMeldingIdAnswersMelderResponses, ValueLabelObject } from '@meldingen/api-client'
 
-import { getApiErrorMessage } from '@meldingen/api-client'
 import { formatDateString } from '@meldingen/utils'
 
 import { getMeldingByMeldingIdAnswers } from '~/app/_api-client/proxy'
@@ -23,8 +22,10 @@ const getDescription = (answer: GetMeldingByMeldingIdAnswersMelderResponses['200
       return answer.time
     case 'value_label':
       return answer.values_and_labels.map((option: ValueLabelObject) => option.label).join(', ')
+
     default: {
       const _exhaustive: never = answer
+
       return ''
     }
   }
@@ -35,13 +36,11 @@ export const getAdditionalQuestionsData = async (meldingId: number) => {
     path: { melding_id: meldingId },
   })
 
-  if (error) return { error: getApiErrorMessage(error) }
+  if (error) throw new Error('Failed to fetch additional questions.')
 
-  return {
-    data: data.map((answer) => ({
-      description: getDescription(answer),
-      key: String(answer.question.id),
-      term: answer.original_question_text,
-    })),
-  }
+  return data.map((answer) => ({
+    description: getDescription(answer),
+    key: String(answer.question.id),
+    term: answer.original_question_text,
+  }))
 }

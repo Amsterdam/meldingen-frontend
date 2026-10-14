@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -6,7 +6,7 @@ import { formatDateString } from '@meldingen/utils'
 
 import { ImageSlider } from './ImageSlider'
 
-// All functionality that relies on IntersectionObserver, like setting aria-hidden and showing an image
+// All functionality that relies on IntersectionObserver, like setting inert and showing an image
 // by clicking on the thumbnail button, cannot be properly tested here because IntersectionObserver is not implemented in JSDom.
 // These tests are mostly covered by the Amsterdam Design System.
 
@@ -110,6 +110,27 @@ describe('ImageSlider', () => {
     await user.click(previousButton)
 
     expect(scrollIntoView).toHaveBeenCalledTimes(4)
+  })
+
+  it('resets the zoom of an image when navigating to another slide', async () => {
+    const user = userEvent.setup()
+
+    render(<ImageSlider {...defaultProps} />)
+
+    const firstSlide = screen.getAllByRole('tabpanel')[0]
+    const firstImage = within(firstSlide).getByRole('presentation')
+
+    within(firstSlide).getByRole('button', { name: 'zoom-in' }).focus()
+    await user.keyboard('{Enter}')
+
+    expect(firstImage).toHaveStyle({ transform: 'translate(-50%, -50%) scale(2)' })
+
+    await user.click(screen.getByRole('button', { name: 'next' }))
+
+    // The image is remounted, so we query it again
+    const resetImage = within(firstSlide).getByRole('presentation')
+
+    expect(resetImage).toHaveStyle({ transform: 'translate(0%, 0%) scale(1)' })
   })
 
   it('renders thumbnails', () => {

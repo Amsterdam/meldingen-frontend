@@ -21,7 +21,5 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
 
   const attachments = await getAttachmentsData(meldingId, 'thumbnail')
 
-  //TODO show error as alert
-
-  return <AddAttachment attachments={attachments.attachmentsWithFile} meldingId={meldingId} />
+  return <AddAttachment attachments={attachments} meldingId={meldingId} />
 }

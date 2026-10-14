@@ -24,7 +24,7 @@ describe('getAdditionalQuestionsData', () => {
       term: item.question.text,
     }))
 
-    expect(result).toEqual({ data: additionalQuestionsData })
+    expect(result).toEqual(additionalQuestionsData)
   })
 
   it('returns correct additional time question data', async () => {
@@ -32,15 +32,13 @@ describe('getAdditionalQuestionsData', () => {
 
     const result = await getAdditionalQuestionsData(mockMeldingId)
 
-    expect(result).toEqual({
-      data: [
-        {
-          description: additionalTimeQuestion.time,
-          key: additionalTimeQuestion.question.id.toString(),
-          term: additionalTimeQuestion.question.text,
-        },
-      ],
-    })
+    expect(result).toEqual([
+      {
+        description: additionalTimeQuestion.time,
+        key: additionalTimeQuestion.question.id.toString(),
+        term: additionalTimeQuestion.question.text,
+      },
+    ])
   })
 
   it('returns "Weet ik niet" for additional time questions when time is null', async () => {
@@ -57,15 +55,13 @@ describe('getAdditionalQuestionsData', () => {
 
     const result = await getAdditionalQuestionsData(mockMeldingId)
 
-    expect(result).toEqual({
-      data: [
-        {
-          description: 'Weet ik niet',
-          key: additionalTimeQuestionWithNullTime.question.id.toString(),
-          term: additionalTimeQuestionWithNullTime.question.text,
-        },
-      ],
-    })
+    expect(result).toEqual([
+      {
+        description: 'Weet ik niet',
+        key: additionalTimeQuestionWithNullTime.question.id.toString(),
+        term: additionalTimeQuestionWithNullTime.question.text,
+      },
+    ])
   })
 
   it('returns correct additional date question data', async () => {
@@ -73,15 +69,13 @@ describe('getAdditionalQuestionsData', () => {
 
     const result = await getAdditionalQuestionsData(mockMeldingId)
 
-    expect(result).toEqual({
-      data: [
-        {
-          description: formatDateString(additionalDateQuestion.date.converted_date!).date,
-          key: additionalDateQuestion.question.id.toString(),
-          term: additionalDateQuestion.question.text,
-        },
-      ],
-    })
+    expect(result).toEqual([
+      {
+        description: formatDateString(additionalDateQuestion.date.converted_date!).date,
+        key: additionalDateQuestion.question.id.toString(),
+        term: additionalDateQuestion.question.text,
+      },
+    ])
   })
 
   it('returns correct additional value_label question data', async () => {
@@ -91,17 +85,13 @@ describe('getAdditionalQuestionsData', () => {
 
     const result = await getAdditionalQuestionsData(mockMeldingId)
 
-    expect(result).toEqual({
-      data: [
-        {
-          description: additionalValueLabelQuestion.values_and_labels
-            .map((valAndLabel) => valAndLabel.label)
-            .join(', '),
-          key: additionalValueLabelQuestion.question.id.toString(),
-          term: additionalValueLabelQuestion.question.text,
-        },
-      ],
-    })
+    expect(result).toEqual([
+      {
+        description: additionalValueLabelQuestion.values_and_labels.map((valAndLabel) => valAndLabel.label).join(', '),
+        key: additionalValueLabelQuestion.question.id.toString(),
+        term: additionalValueLabelQuestion.question.text,
+      },
+    ])
   })
 
   it('returns an empty description for unsupported question types', async () => {
@@ -119,19 +109,16 @@ describe('getAdditionalQuestionsData', () => {
 
     const result = await getAdditionalQuestionsData(mockMeldingId)
 
-    expect(result).toEqual({
-      data: [{ description: '', key: '3', term: 'Unsupported question type' }],
-    })
+    expect(result).toEqual([{ description: '', key: '3', term: 'Unsupported question type' }])
   })
 
-  it('returns an error message when error is returned', async () => {
+  it('throws an error when getMeldingByMeldingIdAnswers returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
-    const result = await getAdditionalQuestionsData(mockMeldingId)
 
-    expect(result).toEqual({ error: 'Error message' })
+    await expect(getAdditionalQuestionsData(mockMeldingId)).rejects.toThrow('Failed to fetch additional questions.')
   })
 })

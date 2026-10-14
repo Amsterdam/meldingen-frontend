@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw'
 
 import { MeldingForm } from './MeldingForm'
 import Page from './page'
-import { melding, textAreaComponent } from '~/mocks/data'
+import { classifications, melding, textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -96,6 +96,7 @@ describe('Page', () => {
     expect(screen.getByText('MeldingForm Component')).toBeInTheDocument()
     expect(MeldingForm).toHaveBeenCalledWith(
       {
+        classifications,
         defaultValues: {},
         existingId: undefined,
         existingMelding: undefined,
@@ -123,6 +124,7 @@ describe('Page', () => {
       text: 'Prefilled text',
       urgency: -1,
     }
+
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json(meldingData)),
       http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
@@ -148,6 +150,7 @@ describe('Page', () => {
 
   it('logs an error and renders the MeldingForm component with empty default values when fetching melding data fails', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json('Test error', { status: 500 })),
       http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>

@@ -4,6 +4,7 @@
 }
 
 .comboboxOptions {
-  overflow-y: auto;
-  z-index: 2; /* The ComboxBoxOptions need to be shown above the map and the Asset List.  */
+  /* stylelint-disable-next-line csstools/value-no-unknown-custom-properties */
+  inline-size: var(--input-width); /* Defined by Headless UI */
+  z-index: 2;
 }

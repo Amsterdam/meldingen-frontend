@@ -29,11 +29,11 @@ export const postReclassificationForm = async (
   const validationErrors = []
 
   if (!classificationQuery) {
-    validationErrors.push({ key: 'classificationId', message: t('classification-required') })
+    validationErrors.push({ key: 'classificationQuery', message: t('classification-required') })
   } else if (!classificationId) {
-    validationErrors.push({ key: 'classificationId', message: t('classification-does-not-exist') })
+    validationErrors.push({ key: 'classificationQuery', message: t('classification-does-not-exist') })
   } else if (classificationId === currentClassificationId) {
-    validationErrors.push({ key: 'classificationId', message: t('classification-same') })
+    validationErrors.push({ key: 'classificationQuery', message: t('classification-same') })
   }
 
   if (!reason) {

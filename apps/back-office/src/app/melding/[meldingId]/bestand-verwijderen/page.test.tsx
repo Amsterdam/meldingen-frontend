@@ -2,17 +2,16 @@ import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
-import type { GetAttachmentsDataResult } from '../_utils/server/getAttachmentsData'
 import type { MeldingAttachment } from '../types'
 
 import { getAttachmentsData } from '../_utils/server'
-import { Attachments } from './_components/Attachments'
+import { DeleteAttachment } from './DeleteAttachment'
 import Page, { generateMetadata } from './page'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
-vi.mock('./_components/Attachments', () => ({
-  Attachments: vi.fn(() => <div>Attachments Component</div>),
+vi.mock('./DeleteAttachment', () => ({
+  DeleteAttachment: vi.fn(() => <div>Attachments Component</div>),
 }))
 
 vi.mock('../_utils/server', () => ({
@@ -24,7 +23,7 @@ vi.mock('next-intl/server', async () => ({
     vi.fn().mockImplementation((key, params) => (params ? `${key}: ${JSON.stringify(params)}` : key)),
 }))
 
-const attachmentFiles: MeldingAttachment[] = [
+const attachments: MeldingAttachment[] = [
   {
     blob: new Blob(['file-content'], { type: 'image/png' }),
     createdAt: '2024-01-01T10:30:00Z',
@@ -38,10 +37,6 @@ const attachmentFiles: MeldingAttachment[] = [
     },
   },
 ]
-
-const attachments: GetAttachmentsDataResult = {
-  attachmentsWithFile: attachmentFiles,
-}
 
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
@@ -69,7 +64,7 @@ describe('Page', () => {
 
     await Page({ params: Promise.resolve({ meldingId: 123 }) })
 
-    expect(getAttachmentsData).toHaveBeenCalledWith(123)
+    expect(getAttachmentsData).toHaveBeenCalledWith(123, 'optimized')
   })
 
   it('renders the error message when getAttachmentsData rejects', async () => {
@@ -81,7 +76,7 @@ describe('Page', () => {
   it('redirects to the detail page when there are no attachments', async () => {
     const redirectSignal = new Error('NEXT_REDIRECT')
 
-    vi.mocked(getAttachmentsData).mockResolvedValueOnce({ attachmentsWithFile: [] })
+    vi.mocked(getAttachmentsData).mockResolvedValueOnce([])
     vi.mocked(redirect).mockImplementationOnce(() => {
       throw redirectSignal
     })
@@ -98,7 +93,7 @@ describe('Page', () => {
 
     render(result)
 
-    expect(Attachments).toHaveBeenCalledWith(
+    expect(DeleteAttachment).toHaveBeenCalledWith(
       {
         attachments,
         meldingId: 123,

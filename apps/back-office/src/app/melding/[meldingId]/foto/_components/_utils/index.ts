@@ -1,4 +1,6 @@
+export { clampOffset, type Point } from './clampOffset'
 export { debounce } from './debounce'
+export { getPointerPositionInPercentages } from './getPointerPositionInPercentages'
 export { scrollToCurrentSlideOnResize } from './scrollToCurrentSlideOnResize'
 export { scrollToSlide } from './scrollToSlide'
 export { setCurrentSlideIndexToVisibleSlide } from './setCurrentSlideIndexToVisibleSlide'

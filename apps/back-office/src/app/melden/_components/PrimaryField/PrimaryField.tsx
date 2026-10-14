@@ -1,7 +1,7 @@
-import type { FocusEvent } from 'react'
+import type { FocusEvent, TransitionStartFunction } from 'react'
 
 import { CharacterCount, ErrorMessage, Field, Label, TextArea } from '@amsterdam/design-system-react'
-import { startTransition, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
@@ -18,6 +18,7 @@ type Props = {
   existingId?: number
   existingToken?: string
   onMeldingPrefetched: (melding: MeldingData) => void
+  startPrefetchingTransition: TransitionStartFunction
 }
 
 export const PrimaryField = ({
@@ -27,6 +28,7 @@ export const PrimaryField = ({
   existingId,
   existingToken,
   onMeldingPrefetched,
+  startPrefetchingTransition,
 }: Props) => {
   const { description, label, maxCharCount } = config
 
@@ -40,7 +42,7 @@ export const PrimaryField = ({
   const handleBlur = ({ target: { value: text } }: FocusEvent<HTMLTextAreaElement>) => {
     if (!text || text === lastSubmittedTextRef.current) return
 
-    startTransition(async () => {
+    startPrefetchingTransition(async () => {
       try {
         const { data, error } =
           existingId && existingToken
@@ -71,6 +73,12 @@ export const PrimaryField = ({
     })
   }
 
+  const handleOnChange = () => {
+    if (typeof maxCharCount === 'number' && ref.current) {
+      setCharCount(ref.current.value.length)
+    }
+  }
+
   return (
     <Field invalid={Boolean(errorMessage)}>
       <Label htmlFor="primary">{label}</Label>
@@ -88,11 +96,7 @@ export const PrimaryField = ({
         invalid={Boolean(errorMessage)}
         name="primary"
         onBlur={handleBlur}
-        onChange={() => {
-          if (typeof maxCharCount === 'number' && ref.current) {
-            setCharCount(ref.current.value.length)
-          }
-        }}
+        onChange={handleOnChange}
         ref={ref}
         rows={4}
       />

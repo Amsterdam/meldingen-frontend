@@ -1,3 +1,4 @@
+export { ClassificationField } from './ClassificationField/ClassificationField'
 export { LabelsField } from './LabelsField/LabelsField'
 export { NoteField } from './NoteField/NoteField'
 export { PrimaryField } from './PrimaryField/PrimaryField'
