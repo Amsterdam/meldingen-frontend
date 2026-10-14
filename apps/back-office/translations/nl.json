@@ -88,6 +88,10 @@
         "link": "Wijzig labels",
         "no-data": "Geen labels"
       },
+      "service-level-objective-days": {
+        "term": "Afhandeltermijn",
+        "no-data": "Afhandeltermijn onbekend"
+      },
       "source": {
         "term": "Bron",
         "no-data": "Geen bron"
