@@ -13,6 +13,7 @@
       "classification": "Categorie",
       "state": "Status",
       "urgency": "Urgentie",
+      "days_open": "Dagen open",
       "address": "Adres",
       "postal_code": "Postcode"
     },

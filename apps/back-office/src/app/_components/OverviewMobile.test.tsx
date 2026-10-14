@@ -12,6 +12,8 @@ describe('OverviewMobile', () => {
     const createdAt = formatDateString(meldingWithAddress.created_at).date
     const classificationText = meldingWithAddress.classification!.name
     const postalCode = meldingWithAddress.postal_code
+    const { days, days_passed } = meldingWithAddress.service_level_objective!
+    const daysOpen = `${days_passed}/${days}`
 
     render(<OverviewMobile meldingen={[meldingWithAddress]} />)
 
@@ -20,6 +22,7 @@ describe('OverviewMobile', () => {
     })
 
     const detailLink = screen.getByRole('link', { name: meldingWithAddress.public_id })
+
     expect(detailLink).toHaveAttribute('href', `/melding/${meldingWithAddress.id}`)
 
     expect(screen.getByText(createdAt)).toBeInTheDocument()
@@ -27,5 +30,6 @@ describe('OverviewMobile', () => {
     expect(screen.getByText(`shared.state.${meldingWithAddress.state}`)).toBeInTheDocument()
     expect(screen.getByText('Amstel 1')).toBeInTheDocument()
     expect(screen.getByText(postalCode!)).toBeInTheDocument()
+    expect(screen.getByText(daysOpen)).toBeInTheDocument()
   })
 })
