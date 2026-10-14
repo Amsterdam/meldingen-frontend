@@ -6,11 +6,12 @@ import { formatDateString } from '@meldingen/utils'
 
 import type { OverviewField } from '../constants'
 
+import { OVERVIEW_FIELDS } from '../constants'
 import { OverviewFieldValue } from './OverviewFieldValue'
 import { URGENCY_VALUES } from '~/constants'
 import { melding } from '~/mocks/data'
 
-const getField = (key: OverviewField['key']) => ({ key, labelKey: `column-header.${key}` }) as OverviewField
+const getField = (key: OverviewField['key']) => OVERVIEW_FIELDS.find((field) => field.key === key)!
 
 describe('OverviewFieldValue', () => {
   it('renders the address if present', () => {
