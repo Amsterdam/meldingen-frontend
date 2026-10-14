@@ -10,9 +10,9 @@ const defaultProps = {
 
 describe('Alert', () => {
   it('renders an alert', () => {
-    render(<FocusableAlert {...defaultProps} />)
+    const { container } = render(<FocusableAlert {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
     expect(alert).toBeInTheDocument()
   })
@@ -34,17 +34,17 @@ describe('Alert', () => {
   })
 
   it('renders the correct class', () => {
-    render(<FocusableAlert {...defaultProps} />)
+    const { container } = render(<FocusableAlert {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
     expect(alert).toHaveClass(/alert/)
   })
 
   it('renders an extra class when provided', () => {
-    render(<FocusableAlert {...defaultProps} className="extra-class" />)
+    const { container } = render(<FocusableAlert {...defaultProps} className="extra-class" />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
     expect(alert).toHaveClass('extra-class')
   })
@@ -58,17 +58,17 @@ describe('Alert', () => {
   })
 
   it('sets focus on the alert when shouldFocus is true', () => {
-    render(<FocusableAlert {...defaultProps} shouldFocus />)
+    const { container } = render(<FocusableAlert {...defaultProps} shouldFocus />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
     expect(alert).toHaveFocus()
   })
 
   it('does not set focus on the alert when shouldFocus is false', () => {
-    render(<FocusableAlert {...defaultProps} />)
+    const { container } = render(<FocusableAlert {...defaultProps} />)
 
-    const alert = screen.getByRole('alert')
+    const alert = container.querySelector('.ams-alert')
 
     expect(alert).not.toHaveFocus()
   })
