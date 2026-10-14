@@ -66,6 +66,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const t = useTranslations('attachments')
   const tShared = useTranslations('shared')
 
+  const [genericErrorAlertKey, setGenericErrorAlertKey] = useState(0)
   const [shouldFocusAlert, setShouldFocusAlert] = useState(false)
 
   const [{ apiError }, formAction, isPending] = useActionState(submitAttachmentsForm, initialState)
@@ -90,6 +91,10 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const { description, label } = formData[0]
 
   const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    if (genericError) {
+      setGenericErrorAlertKey((key) => key + 1)
+    }
+
     setShouldFocusAlert(false)
     handleUpload(event)
   }
@@ -130,6 +135,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           <FocusableAlert
             className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
             heading={t(genericError.title, genericError.options)}
+            key={genericErrorAlertKey} // needed to focus when the same error is shown again after a new upload attempt
             role="alert"
             shouldFocus
           >

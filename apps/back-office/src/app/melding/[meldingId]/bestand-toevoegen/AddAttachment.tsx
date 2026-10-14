@@ -61,6 +61,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   const t = useTranslations('add-attachment')
 
   const [apiError, setApiError] = useState<string | null>(null)
+  const [genericErrorAlertKey, setGenericErrorAlertKey] = useState(0)
   const [shouldFocusInvalidAlert, setShouldFocusInvalidAlert] = useState<boolean>(false)
 
   const fileUploadId = useId()
@@ -95,6 +96,10 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   })
 
   const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    if (genericError) {
+      setGenericErrorAlertKey((key) => key + 1)
+    }
+
     setShouldFocusInvalidAlert(false)
     handleUpload(event)
   }
@@ -134,6 +139,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
         <FocusableAlert
           className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
           heading={t(genericError.title, genericError.options)}
+          key={genericErrorAlertKey} // needed to focus when the same error is shown again after a new upload attempt
           role="alert"
           shouldFocus
         >

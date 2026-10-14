@@ -173,6 +173,27 @@ describe('AddAttachment', () => {
     expect(alert).toHaveFocus()
   })
 
+  it('refocuses the generic error alert when too many files are selected again', () => {
+    const { container } = render(<AddAttachment {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+    const files = Array.from({ length: 6 }, (_, index) => new File(['x'], `file-${index}.png`, { type: 'image/png' }))
+
+    fireEvent.change(fileInput, { target: { files } })
+
+    const firstAlert = container.querySelector('.ams-alert')
+
+    expect(firstAlert).toHaveFocus()
+
+    fileInput.focus()
+    fireEvent.change(fileInput, { target: { files } })
+
+    const secondAlert = container.querySelector('.ams-alert')
+
+    expect(secondAlert).toHaveFocus()
+    expect(secondAlert).not.toBe(firstAlert)
+  })
+
   it('shows a delete notification and removes only the deleted file when deletion succeeds', async () => {
     const user = userEvent.setup()
 
