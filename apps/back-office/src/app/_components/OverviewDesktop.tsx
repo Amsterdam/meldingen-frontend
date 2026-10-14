@@ -5,18 +5,21 @@ import { Table } from '@meldingen/ui'
 import type { MeldingWithAddress } from '../Overview'
 
 import { OVERVIEW_FIELDS } from '../constants'
-import { getOverviewFieldLabel, renderOverviewFieldValue } from './_utils'
+import { getOverviewFieldLabel } from './_utils'
+import { OverviewFieldValue } from './OverviewFieldValue'
 
 import styles from './OverviewDesktop.module.css'
 
 const renderTableHeaders = (t: (key: string) => string) =>
   OVERVIEW_FIELDS.map((field) => <Table.HeaderCell key={field.key}>{getOverviewFieldLabel(field, t)}</Table.HeaderCell>)
 
-const renderTableRows = (meldingen: MeldingWithAddress[], t: (key: string) => string) =>
+const renderTableRows = (meldingen: MeldingWithAddress[]) =>
   meldingen.map((melding) => (
     <Table.Row key={melding.public_id}>
       {OVERVIEW_FIELDS.map((field) => (
-        <Table.Cell key={field.key}>{renderOverviewFieldValue(melding, field, t)}</Table.Cell>
+        <Table.Cell key={field.key}>
+          <OverviewFieldValue field={field} melding={melding} />
+        </Table.Cell>
       ))}
     </Table.Row>
   ))
@@ -33,7 +36,7 @@ export const OverviewDesktop = ({ meldingen }: Props) => {
       <Table.Header>
         <Table.Row>{renderTableHeaders(t)}</Table.Row>
       </Table.Header>
-      <Table.Body>{renderTableRows(meldingen, t)}</Table.Body>
+      <Table.Body>{renderTableRows(meldingen)}</Table.Body>
     </Table>
   )
 }
