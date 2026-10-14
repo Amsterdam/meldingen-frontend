@@ -44,7 +44,7 @@ export const postSummaryForm = async ({
   }
 
   // Set melding state to 'submitted'
-  const { data, error } = await putMeldingByMeldingIdSubmitMelder({
+  const { error } = await putMeldingByMeldingIdSubmitMelder({
     path: { melding_id: parseInt(meldingId, 10) },
     query: { token },
   })
@@ -60,17 +60,10 @@ export const postSummaryForm = async ({
 
   const params = new URLSearchParams({ created_at, public_id })
 
-  const optionalParams = {
-    classification_id: data?.classification?.id,
-    id: source ? meldingId : undefined,
-    source,
+  if (source) {
+    params.set('id', meldingId)
+    params.set('source', source)
   }
-
-  Object.entries(optionalParams).forEach(([key, value]) => {
-    if (value !== undefined) {
-      params.set(key, String(value))
-    }
-  })
 
   return redirect(`/bedankt?${params.toString()}#${TOP_ANCHOR_ID}`)
 }
