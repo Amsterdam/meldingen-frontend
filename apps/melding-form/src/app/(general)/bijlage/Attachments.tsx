@@ -136,7 +136,6 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
             heading={t(genericError.title, genericError.options)}
             key={genericErrorAlertKey} // needed to focus when the same error is shown again after a new upload attempt
-            role="alert"
             shouldFocus
           >
             {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}

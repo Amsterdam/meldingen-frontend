@@ -15,8 +15,6 @@ export type FocusableAlertProps = ADSOriginalAlertProps &
   ContentProps & {
     /** The hierarchical level of the Heading within the document. Defaults to 2 */
     headingLevel?: AlertProps['headingLevel']
-    /** The significance of the message conveyed. Defaults to 'error' */
-    severity?: AlertProps['severity']
     /**
      * Pass a value that changes to `true` to trigger focus on the alert.
      * With `useActionState`, `!isPending` works well — it is `false` on submit and `true` when the response arrives.
@@ -31,7 +29,6 @@ export const FocusableAlert = ({
   description,
   heading,
   headingLevel = 2,
-  role,
   shouldFocus,
 }: FocusableAlertProps) => {
   const ref = useRef<HTMLDivElement>(null)
@@ -51,7 +48,6 @@ export const FocusableAlert = ({
       headingId={null}
       headingLevel={headingLevel}
       ref={ref}
-      role={role}
       severity="error"
       tabIndex={-1}
     >
