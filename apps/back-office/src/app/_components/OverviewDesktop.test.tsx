@@ -10,6 +10,8 @@ describe('OverviewDesktop', () => {
   it('renders column headers and values for the default fields', () => {
     const meldingWithAddress = { ...melding, address: 'Amstel 1' }
     const postalCode = meldingWithAddress.postal_code
+    const { days, days_passed } = melding.service_level_objective!
+    const daysOpen = `${days_passed}/${days}`
 
     render(<OverviewDesktop meldingen={[meldingWithAddress]} />)
 
@@ -26,5 +28,6 @@ describe('OverviewDesktop', () => {
     expect(screen.getByRole('cell', { name: `shared.state.${melding.state}` })).toBeInTheDocument()
     expect(screen.getByRole('cell', { name: 'Amstel 1' })).toBeInTheDocument()
     expect(screen.getByRole('cell', { name: postalCode! })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: daysOpen })).toBeInTheDocument()
   })
 })

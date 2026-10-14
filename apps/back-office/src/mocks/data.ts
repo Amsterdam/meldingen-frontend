@@ -30,6 +30,12 @@ export const melding: MeldingOutput = {
   phone: '0612345678',
   postal_code: '1016BS',
   public_id: 'ABC',
+  service_level_objective: {
+    date_start: '2026-08-10T10:13:05Z',
+    day_type: 'working_days',
+    days: 5,
+    days_passed: 3,
+  },
   source: {
     created_at: '2025-02-18T10:34:29.103642Z',
     id: 2,
