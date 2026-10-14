@@ -1,10 +1,10 @@
 import { useTranslations } from 'next-intl'
 
-import type { InvalidFormAlertProps as UIInvalidFormAlertProps } from '@meldingen/ui'
+import type { InvalidFormAlertProps } from '@meldingen/ui'
 
 import { InvalidFormAlert as UIInvalidFormAlert } from '@meldingen/ui'
 
-type Props = Partial<Pick<UIInvalidFormAlertProps, 'heading'>> & Pick<UIInvalidFormAlertProps, 'errors' | 'shouldFocus'>
+type Props = Partial<Pick<InvalidFormAlertProps, 'heading'>> & Pick<InvalidFormAlertProps, 'errors' | 'shouldFocus'>
 
 export const InvalidFormAlert = ({ errors, heading, shouldFocus }: Props) => {
   const t = useTranslations('shared')
