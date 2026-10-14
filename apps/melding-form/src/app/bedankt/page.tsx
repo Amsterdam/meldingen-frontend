@@ -29,7 +29,7 @@ const TEMP_SLA = {
   days_passed: 1,
 }
 
-const mockSLACall: Promise<typeof TEMP_SLA> = new Promise((resolve) => resolve(TEMP_SLA))
+export const getTempSla = async () => TEMP_SLA
 
 export default async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) => {
   const t = (await getTranslations('thanks')) as TWithUndefined
@@ -46,7 +46,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ [key: string]:
       ? `[${publicId}](${backOfficeBaseUrl}/melding/${id}?id=${encodeURIComponent(publicId)})`
       : publicId
 
-  const tempSLA = await mockSLACall
+  const tempSLA = await getTempSla()
 
   const description = t('description', {
     date,
