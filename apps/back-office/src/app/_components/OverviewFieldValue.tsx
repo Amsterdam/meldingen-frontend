@@ -53,5 +53,11 @@ export const OverviewFieldValue = ({ field, melding }: Props) => {
       return t(`shared.state.${melding.state}`)
     case 'urgency':
       return t(`shared.urgency.${melding.urgency}`)
+
+    default: {
+      const _exhaustive: never = field
+
+      return null
+    }
   }
 }
