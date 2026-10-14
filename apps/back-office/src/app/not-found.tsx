@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 
-import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Grid, Heading } from '@meldingen/ui'
+import { Grid, Heading, Paragraph } from '@meldingen/ui'
 
 export const generateMetadata = async () => {
   const t = await getTranslations('not-found')
@@ -27,7 +26,7 @@ export default async function NotFound() {
             <Heading className="ams-mb-m" level={1}>
               {t('title')}
             </Heading>
-            <MarkdownToHtml className="ams-mb-s">{t('description')}</MarkdownToHtml>
+            <Paragraph className="ams-mb-s">{t('description')}</Paragraph>
           </main>
         </Grid.Cell>
       </Grid>
