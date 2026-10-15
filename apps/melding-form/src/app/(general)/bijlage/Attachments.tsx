@@ -2,7 +2,7 @@
 
 import type { ChangeEvent } from 'react'
 
-import { Alert, Paragraph } from '@amsterdam/design-system-react'
+import { Paragraph } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
@@ -15,7 +15,7 @@ import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api
 import { FileList, FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Column, Heading, SubmitButton } from '@meldingen/ui'
+import { Alert, Column, FocusableAlert, Heading, SubmitButton } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
@@ -63,11 +63,10 @@ const isErroredFileUpload = (upload: FileUploadState): upload is ErroredFileUplo
 export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const genericErrorAlertRef = useRef<HTMLDivElement>(null)
-
   const t = useTranslations('attachments')
   const tShared = useTranslations('shared')
 
+  const [genericErrorAlertKey, setGenericErrorAlertKey] = useState(0)
   const [shouldFocusAlert, setShouldFocusAlert] = useState(false)
 
   const [{ apiError }, formAction, isPending] = useActionState(submitAttachmentsForm, initialState)
@@ -92,6 +91,10 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const { description, label } = formData[0]
 
   const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    if (genericError) {
+      setGenericErrorAlertKey((key) => key + 1)
+    }
+
     setShouldFocusAlert(false)
     handleUpload(event)
   }
@@ -103,13 +106,6 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     hasApiError: Boolean(apiError) || Boolean(genericError),
     validationErrorCount: validationErrors.length,
   })
-
-  // Set focus on generic Alert when there is a generic error
-  useEffect(() => {
-    if (genericError && genericErrorAlertRef.current) {
-      genericErrorAlertRef.current.focus()
-    }
-  }, [genericError])
 
   // Set shouldFocusAlert to true when the list of validation errors changes
   useEffect(() => {
@@ -136,17 +132,14 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           shouldFocus={shouldFocusAlert}
         />
         {genericError && (
-          <Alert
+          <FocusableAlert
             className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
             heading={t(genericError.title, genericError.options)}
-            headingLevel={2}
-            ref={genericErrorAlertRef}
-            role="alert"
-            severity="error"
-            tabIndex={-1}
+            key={genericErrorAlertKey} // needed to focus when the same error is shown again after a new upload attempt
+            shouldFocus
           >
             {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
-          </Alert>
+          </FocusableAlert>
         )}
         <Column className="ams-mb-l">
           <Column gap="small">
