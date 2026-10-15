@@ -1,17 +1,29 @@
-import type { MeldingOutput } from '@meldingen/api-client'
+import type { DaysType, MeldingOutput } from '@meldingen/api-client'
 
 import { formatDateString } from '@meldingen/utils'
 
 import { isReclassificationAllowed } from './isReclassificationAllowed'
 
+const objectiveDayTypeLabels: Record<DaysType, string> = {
+  calendar_days: 'dagen',
+  working_days: 'werkdagen',
+}
+
 export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) => {
-  const { classification, created_at, id, labels, source, state, urgency } = data
+  const { classification, created_at, id, labels, service_level_objective, source, state, urgency } = data
 
   return [
     {
       description: formatDateString(created_at).date,
       key: 'created_at',
       term: t('detail.melding-data.created_at'),
+    },
+    {
+      description: service_level_objective
+        ? `${service_level_objective.days} ${objectiveDayTypeLabels[service_level_objective.day_type]}`
+        : t('detail.melding-data.service-level-objective-days.no-data'),
+      key: 'service_level_objective',
+      term: t('detail.melding-data.service-level-objective-days.term'),
     },
     {
       description: classification ? classification.name : t('detail.melding-data.classification.no-data'),
