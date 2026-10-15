@@ -16,6 +16,11 @@ describe('getMeldingData', () => {
         term: 'detail.melding-data.created_at',
       },
       {
+        description: '5 werkdagen',
+        key: 'service_level_objective',
+        term: 'detail.melding-data.service-level-objective-days.term',
+      },
+      {
         description: classification!.name,
         key: 'classification',
         link: {
@@ -59,6 +64,37 @@ describe('getMeldingData', () => {
     ])
   })
 
+  it('uses calendar days for the service level objective when applicable', () => {
+    const result = getMeldingData(
+      {
+        ...melding,
+        service_level_objective: {
+          ...melding.service_level_objective!,
+          day_type: 'calendar_days',
+        },
+      },
+      (key: string) => key,
+    )
+
+    const serviceLevelObjectiveEntry = result.find((item) => item.key === 'service_level_objective')
+
+    expect(serviceLevelObjectiveEntry?.description).toBe('5 dagen')
+  })
+
+  it('returns fallback label when service level objective is null', () => {
+    const result = getMeldingData(
+      {
+        ...melding,
+        service_level_objective: null,
+      },
+      (key: string) => key,
+    )
+
+    const serviceLevelObjectiveEntry = result.find((item) => item.key === 'service_level_objective')
+
+    expect(serviceLevelObjectiveEntry?.description).toBe('detail.melding-data.service-level-objective-days.no-data')
+  })
+
   it('returns fallback label when classification is null', () => {
     const meldingDataWithoutClassification = {
       ...melding,
@@ -99,6 +135,7 @@ describe('getMeldingData', () => {
     const result = getMeldingData(meldingDataWithoutLabels, (key: string) => key)
 
     const labelsEntry = result.find((item) => item.key === 'labels')
+
     expect(labelsEntry?.description).toBe('detail.melding-data.labels.no-data')
   })
 
@@ -111,6 +148,7 @@ describe('getMeldingData', () => {
     const result = getMeldingData(meldingDataWithoutSource, (key: string) => key)
 
     const sourceEntry = result.find((item) => item.key === 'source')
+
     expect(sourceEntry?.description).toBe('detail.melding-data.source.no-data')
   })
 })

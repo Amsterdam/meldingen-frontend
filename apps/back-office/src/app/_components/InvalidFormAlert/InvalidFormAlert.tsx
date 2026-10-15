@@ -4,7 +4,7 @@ import type { InvalidFormAlertProps } from '@meldingen/ui'
 
 import { InvalidFormAlert as UIInvalidFormAlert } from '@meldingen/ui'
 
-type Props = Pick<InvalidFormAlertProps, 'errors' | 'heading' | 'shouldFocus'>
+type Props = Partial<Pick<InvalidFormAlertProps, 'heading'>> & Pick<InvalidFormAlertProps, 'errors' | 'shouldFocus'>
 
 export const InvalidFormAlert = ({ errors, heading, shouldFocus }: Props) => {
   const t = useTranslations('shared')
