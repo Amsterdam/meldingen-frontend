@@ -5,3 +5,29 @@
     width: fit-content;
   }
 }
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  align-self: center;
+  animation: rotate 0.8s linear infinite;
+  aspect-ratio: 1;
+  block-size: 1.5rem;
+  border-block-start-color: transparent;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 0.2rem;
+  box-sizing: border-box;
+
+  @media (forced-colors: active) {
+    border-block-start-color: ButtonFace;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: rotate 2.4s linear infinite;
+  }
+}

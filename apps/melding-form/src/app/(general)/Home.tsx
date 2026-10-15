@@ -10,7 +10,7 @@ import { FormRenderer } from '@meldingen/form-renderer'
 import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from './_utils'
-import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
+import { ApiErrorAlert, InvalidFormAlert, SubmitButton } from '~/app/_components'
 
 const initialState: FormState = {}
 
@@ -63,12 +63,9 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
       <title>{documentTitle}</title>
       {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
       {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
-      <FormRenderer
-        action={formAction}
-        formComponents={formComponents}
-        submitButtonText={t('submit-button')}
-        validationErrors={validationErrors}
-      />
+      <FormRenderer action={formAction} formComponents={formComponents} validationErrors={validationErrors}>
+        <SubmitButton isLoading={isPending} label={t('submit-button')} />
+      </FormRenderer>
     </main>
   )
 }

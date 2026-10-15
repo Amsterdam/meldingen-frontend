@@ -5,6 +5,7 @@ export type { InvalidFormAlertProps } from './InvalidFormAlert/InvalidFormAlert'
 export { ListBox } from './ListBox/ListBox'
 export { Page } from './Page/Page'
 export { SubmitButton } from './SubmitButton/SubmitButton'
+export type { SubmitButtonProps } from './SubmitButton/SubmitButton'
 export { SummaryList } from './SummaryList/SummaryList'
 export { TextInput } from './TextInput/TextInput'
 
