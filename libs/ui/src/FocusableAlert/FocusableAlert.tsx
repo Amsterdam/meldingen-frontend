@@ -50,6 +50,7 @@ export const FocusableAlert = ({
       headingId={null}
       headingLevel={headingLevel}
       ref={ref}
+      // Avoid role="alert": NVDA then skips the Alert's Heading and announces only the body text.
       severity="error"
       tabIndex={-1}
     >
