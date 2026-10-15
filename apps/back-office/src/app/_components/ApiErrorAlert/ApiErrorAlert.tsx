@@ -4,9 +4,8 @@ import type { FocusableAlertProps } from '@meldingen/ui'
 
 import { FocusableAlert } from '@meldingen/ui'
 
-export type ApiErrorAlertProps = Pick<FocusableAlertProps, 'description' | 'shouldFocus'> & {
-  heading?: string
-}
+export type ApiErrorAlertProps = Partial<Pick<FocusableAlertProps, 'heading'>> &
+  Pick<FocusableAlertProps, 'description' | 'shouldFocus'>
 
 export const ApiErrorAlert = ({ description, heading, shouldFocus }: ApiErrorAlertProps) => {
   const t = useTranslations('shared.api-error-alert')
