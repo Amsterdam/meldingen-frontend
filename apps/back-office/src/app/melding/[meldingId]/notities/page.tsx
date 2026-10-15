@@ -24,7 +24,7 @@ export default async ({ params }: { params: Promise<{ meldingId: number }> }) =>
       query: { sort: '["created_at","DESC"]' },
     }),
     getUserMe(),
-    getClassification({ query: { include_deleted: true } }),
+    getClassification({ query: { include_deleted: true, limit: 0 } }),
   ])
 
   if (meldingResultData.error) throw new Error('Failed to fetch melding data.')
