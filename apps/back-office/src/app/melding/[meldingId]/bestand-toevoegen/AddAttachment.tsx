@@ -100,7 +100,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   }
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
-  const erroredFileUploadsKey = erroredFileUploads.map(({ id }) => id).join(',')
+  const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id).join(',')
   const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
     key: id,
     message: t(errorMessage),
@@ -119,6 +119,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
       {genericError && (
         <FocusableAlert
           className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
+          // useFileUploads sets a new object for every error, so repeated errors refocus the alert too
           focusTrigger={genericError}
           heading={t(genericError.title, genericError.options)}
         >
@@ -127,7 +128,8 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
       )}
       <InvalidFormAlert
         errors={validationErrors}
-        focusTrigger={erroredFileUploadsKey}
+        // Move focus to the alert whenever a new upload fails
+        focusTrigger={erroredFileUploadIds}
         heading={t('validation-errors.alert-title', { count: validationErrors.length })}
       />
       <Heading className="ams-mb-l" level={1}>
