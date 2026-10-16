@@ -26,6 +26,7 @@ export const Admin = () => (
       loginPage={isEntraAuthEnabled ? LoginPage : undefined}
     >
       <Resource create={<FormCreate />} edit={<FormEdit />} list={<FormList />} name="form" />
+
       <Resource
         create={<ClassificationCreate />}
         edit={<ClassificationEdit />}
@@ -33,7 +34,9 @@ export const Admin = () => (
         name="classification"
         recordRepresentation="name"
       />
+
       <Resource edit={<StaticFormEdit />} list={<StaticFormList />} name="static-form" recordRepresentation="name" />
+
       <Resource create={<AssetTypeCreate />} edit={<AssetTypeEdit />} list={<AssetTypeList />} name="asset-type" />
     </ReactAdmin>
   </BrowserRouter>
