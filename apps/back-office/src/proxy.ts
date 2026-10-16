@@ -14,5 +14,6 @@ export default function proxy(request: NextRequestWithAuth) {
 }
 
 export const config = {
+  // Exclude the attachment upload route from the NextAuth middleware
   matcher: ['/((?!api/melding/[^/]+/attachment$).*)'],
 }
