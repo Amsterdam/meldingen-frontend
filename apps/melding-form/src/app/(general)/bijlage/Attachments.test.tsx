@@ -120,6 +120,60 @@ describe('Attachments', () => {
     expect(document.title).toBe(`document-title-error-count-prefix ${textAreaComponent.label} - organisation-name`)
   })
 
+  it('refocuses the Invalid Form Alert when another upload fails with the same error', () => {
+    const { container } = render(
+      <Attachments
+        {...defaultProps}
+        files={[{ blob: new Blob(['dummy content'], { type: 'image/png' }), fileName: 'existing.png', serverId: 1 }]}
+      />,
+    )
+
+    const fileInput = screen.getByLabelText('File input')
+    const duplicateFile = new File(['dummy content'], 'existing.png', { type: 'image/png' })
+
+    // Using fireEvent instead of userEvent.upload here, because userEvent restores focus to the file input
+    fireEvent.change(fileInput, { target: { files: [duplicateFile] } })
+
+    expect(container.querySelector('.ams-alert')).toHaveFocus()
+
+    fileInput.focus()
+
+    expect(fileInput).toHaveFocus()
+
+    fireEvent.change(fileInput, { target: { files: [duplicateFile] } })
+
+    expect(container.querySelector('.ams-alert')).toHaveFocus()
+  })
+
+  it('does not move focus to the Invalid Form Alert when a failed upload is deleted', () => {
+    const { container } = render(
+      <Attachments
+        {...defaultProps}
+        files={[{ blob: new Blob(['dummy content'], { type: 'image/png' }), fileName: 'existing.png', serverId: 1 }]}
+      />,
+    )
+
+    const fileInput = screen.getByLabelText('File input')
+    const duplicateFile = new File(['dummy content'], 'existing.png', { type: 'image/png' })
+
+    fireEvent.change(fileInput, { target: { files: [duplicateFile] } })
+    fireEvent.change(fileInput, { target: { files: [duplicateFile] } })
+
+    fileInput.focus()
+
+    // The first button belongs to the existing file, the other two to the failed uploads
+    const deleteButtons = screen.getAllByRole('button', { name: 'file-upload.action-button-delete existing.png' })
+
+    fireEvent.click(deleteButtons[2])
+
+    const alert = container.querySelector('.ams-alert')
+
+    expect(screen.getAllByRole('button', { name: 'file-upload.action-button-delete existing.png' })).toHaveLength(2)
+    expect(alert).toBeInTheDocument()
+    expect(alert).not.toHaveFocus()
+    expect(fileInput).toHaveFocus()
+  })
+
   it('renders a generic error Alert, focuses it and updates the document title when there is a generic error', () => {
     const { container } = render(<Attachments {...defaultProps} />)
 

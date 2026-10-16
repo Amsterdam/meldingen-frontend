@@ -4,7 +4,7 @@ import { Paragraph } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useRef } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import type { ErroredFileUpload, ExistingFile, FileUploadState } from '@meldingen/file-upload'
@@ -65,6 +65,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const tShared = useTranslations('shared')
 
   const [{ apiError }, formAction, isPending] = useActionState(submitAttachmentsForm, initialState)
+  const [invalidFormAlertFocusTrigger, setInvalidFormAlertFocusTrigger] = useState<string[]>([])
 
   const { deletedFileName, fileUploads, genericError, handleDelete, handleSubmit, handleUpload } = useFileUploads({
     deleteAttachment: (serverId: number) => deleteAttachment(meldingId, token, serverId),
@@ -77,7 +78,13 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   })
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
-  const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id).join(',')
+  const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id)
+
+  // Only update when a new upload fails, so deleting a failed upload does not refocus the alert
+  if (erroredFileUploadIds.some((id) => !invalidFormAlertFocusTrigger.includes(id))) {
+    setInvalidFormAlertFocusTrigger(erroredFileUploadIds)
+  }
+
   const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
     key: id,
     message: t(errorMessage),
@@ -109,8 +116,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {Boolean(apiError) && <ApiErrorAlert focusTrigger={!isPending} />}
         <InvalidFormAlert
           errors={validationErrors}
-          // Move focus to the alert whenever the validation error list changes
-          focusTrigger={erroredFileUploadIds}
+          focusTrigger={invalidFormAlertFocusTrigger}
           heading={t('validation-errors.alert-title', { count: validationErrors.length })}
         />
         {genericError && (

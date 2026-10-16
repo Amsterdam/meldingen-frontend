@@ -59,6 +59,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   const t = useTranslations('add-attachment')
 
   const [apiError, setApiError] = useState<string | null>(null)
+  const [invalidFormAlertFocusTrigger, setInvalidFormAlertFocusTrigger] = useState<string[]>([])
 
   const fileUploadId = useId()
   const fileUploadRef = useRef<HTMLInputElement>(null)
@@ -100,7 +101,13 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   }
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
-  const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id).join(',')
+  const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id)
+
+  // Only update when a new upload fails, so deleting a failed upload does not refocus the alert
+  if (erroredFileUploadIds.some((id) => !invalidFormAlertFocusTrigger.includes(id))) {
+    setInvalidFormAlertFocusTrigger(erroredFileUploadIds)
+  }
+
   const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
     key: id,
     message: t(errorMessage),
@@ -128,8 +135,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
       )}
       <InvalidFormAlert
         errors={validationErrors}
-        // Move focus to the alert whenever the validation error list changes
-        focusTrigger={erroredFileUploadIds}
+        focusTrigger={invalidFormAlertFocusTrigger}
         heading={t('validation-errors.alert-title', { count: validationErrors.length })}
       />
       <Heading className="ams-mb-l" level={1}>
