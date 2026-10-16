@@ -84,7 +84,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
         // TODO: Log the error to an error reporting service
         // eslint-disable-next-line no-console
         console.error(error)
-        setApiError('error')
+        setApiError(error)
       }
 
       return { error, serverId }
