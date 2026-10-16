@@ -119,6 +119,37 @@ describe('startUpload', () => {
     expect(result[0].progress).toBe(50)
   })
 
+  it("sets status to 'success' after progress reaches 100 and the server responds successfully", () => {
+    startUpload(fileUpload, setFileUploadsMock)
+
+    const startUpdater = setFileUploadsMock.mock.calls[0][0]
+    const uploadingState = startUpdater([fileUpload])
+
+    const event = { lengthComputable: true, loaded: 100, total: 100 } as ProgressEvent<EventTarget>
+
+    // Simulate onprogress event
+    if (xhrMock.upload.onprogress) {
+      xhrMock.upload.onprogress.call(xhrMock, event)
+    }
+
+    const progressUpdater = setFileUploadsMock.mock.calls[1][0]
+    const fullProgressState = progressUpdater(uploadingState)
+
+    // All bytes are sent, but the server has not responded yet
+    expect(fullProgressState[0].progress).toBe(100)
+    expect(fullProgressState[0].status).toBe('uploading')
+
+    // Simulate onload event
+    xhrMock.onload?.(new ProgressEvent('load'))
+
+    const loadUpdater = setFileUploadsMock.mock.calls[2][0]
+    const result = loadUpdater(fullProgressState)
+
+    expect(result[0].progress).toBe(100)
+    expect(result[0].status).toBe('success')
+    expect(result[0].serverId).toBe(123)
+  })
+
   it('does not update progress when the event is not length computable', () => {
     startUpload(fileUpload, setFileUploadsMock)
 
@@ -172,6 +203,7 @@ describe('startUpload', () => {
 
     const updater = setFileUploadsMock.mock.calls[1][0]
     const result = updater([otherFileUpload])
+
     expect(result[0]).toBe(otherFileUpload)
   })
 

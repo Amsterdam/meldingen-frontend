@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
 import { useEffect, useId, useRef, useState } from 'react'
 
-import type { ErroredFileUpload, FileUploadState, UploadResult } from '@meldingen/file-upload'
+import type { ErroredFileUpload, FileUploadState } from '@meldingen/file-upload'
 
 import { FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
@@ -15,9 +15,11 @@ import { Column, FocusableAlert, Heading, Link, Paragraph } from '@meldingen/ui'
 import type { MeldingAttachment } from '../types'
 
 import { PageWrapper } from '../_components/PageWrapper'
-import { deleteAttachmentAction, uploadAttachmentAction } from './actions'
+import { deleteAttachmentAction } from './actions'
 import { AttachmentsList } from './AttachmentsList'
-import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
+import { InvalidFormAlert } from '~/app/_components'
+import { MAX_ATTACHMENT_SIZE_BYTES } from '~/constants'
+import { clientEnv } from '~/env/client'
 
 import styles from './AddAttachment.module.css'
 
@@ -28,20 +30,6 @@ type Props = {
 
 const MAX_SUCCESSFUL_UPLOADS = 5
 const MAX_UPLOAD_ATTEMPTS = 10
-
-export const uploadAttachment =
-  (meldingId: number) =>
-  async (file: File): Promise<UploadResult> => {
-    // Instead of getting an uncatchable next.js server action error when the file is too large, we check the file size here and return a validation error.
-    // Check if the file size exceeds 20 MB (20 * 1024 * 1024 bytes)
-    if (file.size > 20 * 1024 * 1024) {
-      return { error: 'Allowed content size exceeded', serverId: undefined }
-    }
-
-    const { error, serverId } = await uploadAttachmentAction(meldingId, file)
-
-    return { error, serverId }
-  }
 
 const deleteAttachment = async (serverId: number) => {
   const { error } = await deleteAttachmentAction(serverId)
@@ -60,7 +48,6 @@ const isErroredFileUpload = (upload: FileUploadState): upload is ErroredFileUplo
 export const AddAttachment = ({ attachments, meldingId }: Props) => {
   const t = useTranslations('add-attachment')
 
-  const [apiError, setApiError] = useState<string | null>(null)
   const [genericErrorAlertKey, setGenericErrorAlertKey] = useState(0)
   const [shouldFocusInvalidAlert, setShouldFocusInvalidAlert] = useState<boolean>(false)
 
@@ -73,26 +60,15 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     serverId: id,
   }))
 
-  const uploadFile = uploadAttachment(meldingId)
   const { deletedFileName, fileUploads, genericError, handleDelete, handleUpload } = useFileUploads({
     deleteAttachment,
     existingFiles,
     idPrefix: t('file-upload.id-prefix'),
     inputRef: fileUploadRef,
+    maxFileSizeBytes: MAX_ATTACHMENT_SIZE_BYTES,
     maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
     maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
-    uploadFile: async (file: File) => {
-      const { error, serverId } = await uploadFile(file)
-
-      if (error) {
-        // TODO: Log the error to an error reporting service
-        // eslint-disable-next-line no-console
-        console.error(error)
-        setApiError(error)
-      }
-
-      return { error, serverId }
-    },
+    uploadUrl: `${clientEnv.NEXT_PUBLIC_BASE_PATH}/api/melding/${meldingId}/attachment`,
   })
 
   const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
@@ -125,16 +101,13 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     setShouldFocusInvalidAlert(true)
   }, [hasErroredFileUploads])
 
+  const hasAttachments = fileUploads.length > 0
   const successfulUploadsCount = fileUploads.filter(({ status }) => status === 'success').length
-
-  const hasAttachments = successfulUploadsCount > 0
-  const validUploadedFilesCount = successfulUploadsCount - erroredFileUploads.length
 
   const meldingDetailLink = `/melding/${meldingId}`
 
   return (
     <PageWrapper backLink={{ href: meldingDetailLink, label: t('back-link') }}>
-      {Boolean(apiError) && <ApiErrorAlert shouldFocus={true} />}
       {genericError && (
         <FocusableAlert
           className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
@@ -159,8 +132,11 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
             {t('upload.title')}
           </Heading>
           <Paragraph id="file-upload-description">{t('upload.description')}</Paragraph>
-          <Paragraph>{t('upload.count', { currentCount: validUploadedFilesCount, maxCount: 5 })}</Paragraph>
+          <Paragraph>
+            {t('upload.count', { currentCount: successfulUploadsCount, maxCount: MAX_SUCCESSFUL_UPLOADS })}
+          </Paragraph>
         </Column>
+
         <FileUpload
           accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp,.pdf"
           aria-describedby={getAriaDescribedBy(fileUploadId, t('upload.description'))}

@@ -42,12 +42,6 @@ describe('AttachmentsList', () => {
     expect(screen.getByText('file-upload.progress-finished')).toBeInTheDocument()
   })
 
-  it('does not show the finished label when a successful upload is below 100%', () => {
-    render(<AttachmentsList files={[createFile({ progress: 99, status: 'success' })]} handleDelete={vi.fn()} />)
-
-    expect(screen.queryByText('file-upload.progress-finished')).not.toBeInTheDocument()
-  })
-
   it('shows the translated error message when a file errored', () => {
     render(
       <AttachmentsList
@@ -72,6 +66,7 @@ describe('AttachmentsList', () => {
 
   it('calls handleDelete with the file details when deletion is confirmed', async () => {
     const user = userEvent.setup()
+
     vi.spyOn(window, 'confirm').mockReturnValue(true)
     const handleDelete = vi.fn()
     const xhr = new XMLHttpRequest()
@@ -94,6 +89,7 @@ describe('AttachmentsList', () => {
 
   it('only deletes the file that was clicked when multiple files are present', async () => {
     const user = userEvent.setup()
+
     vi.spyOn(window, 'confirm').mockReturnValue(true)
     const handleDelete = vi.fn()
 
