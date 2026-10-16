@@ -15,7 +15,6 @@ export const InvalidFormAlert = ({ errors, focusTrigger, heading }: Props) => {
       errors={errors}
       focusTrigger={focusTrigger}
       heading={heading ?? t('invalid-form-alert-title')}
-      headingLevel={2}
     />
   )
 }
