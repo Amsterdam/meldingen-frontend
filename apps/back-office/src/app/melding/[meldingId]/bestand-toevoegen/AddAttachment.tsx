@@ -128,7 +128,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
       )}
       <InvalidFormAlert
         errors={validationErrors}
-        // Move focus to the alert whenever a new upload fails
+        // Move focus to the alert whenever the validation error list changes
         focusTrigger={erroredFileUploadIds}
         heading={t('validation-errors.alert-title', { count: validationErrors.length })}
       />
