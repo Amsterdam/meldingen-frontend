@@ -80,12 +80,12 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     uploadFile: async (file: File) => {
       const { error, serverId } = await uploadFile(file)
 
-      // if (error) {
-      // TODO: Log the error to an error reporting service
-      // eslint-disable-next-line no-console
-      console.error(error)
-      setApiError('error')
-      // }
+      if (error) {
+        // TODO: Log the error to an error reporting service
+        // eslint-disable-next-line no-console
+        console.error(error)
+        setApiError('error')
+      }
 
       return { error, serverId }
     },
