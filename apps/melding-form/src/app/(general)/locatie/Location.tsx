@@ -59,8 +59,8 @@ export const Location = ({ action, address, pageConfig, prevPage, selectedAssets
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
-        {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert focusTrigger={!isPending} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} focusTrigger={!isPending} />}
         <Field className="ams-mb-l" invalid={Boolean(validationErrors)}>
           <Heading level={1} size="level-3">
             {pageConfig?.label ?? t('question')}
