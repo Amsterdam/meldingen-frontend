@@ -14,6 +14,10 @@ export default function proxy(request: NextRequestWithAuth) {
 }
 
 export const config = {
-  // Exclude the attachment upload route from the NextAuth middleware
-  matcher: ['/((?!api/melding/[^/]+/attachment$).*)'],
+  matcher: [
+    // Exclude the attachment upload route from the proxy (and so from NextAuth's middleware).
+    // When the proxy runs, Next.js buffers the request body (capped by `proxyClientMaxBodySize`),
+    // which breaks streaming and truncates large uploads. The route handler checks the session itself.
+    '/((?!api/melding/[^/]+/attachment$).*)',
+  ],
 }
