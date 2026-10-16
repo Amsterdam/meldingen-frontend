@@ -2,7 +2,6 @@
 
 import type { ChangeEvent } from 'react'
 
-import { Alert } from '@amsterdam/design-system-react'
 import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
 import { useEffect, useId, useRef, useState } from 'react'
@@ -11,7 +10,7 @@ import type { ErroredFileUpload, FileUploadState } from '@meldingen/file-upload'
 
 import { FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
-import { Column, Heading, Link, Paragraph } from '@meldingen/ui'
+import { Column, FocusableAlert, Heading, Link, Paragraph } from '@meldingen/ui'
 
 import type { MeldingAttachment } from '../types'
 
@@ -49,8 +48,7 @@ const isErroredFileUpload = (upload: FileUploadState): upload is ErroredFileUplo
 export const AddAttachment = ({ attachments, meldingId }: Props) => {
   const t = useTranslations('add-attachment')
 
-  const genericErrorAlertRef = useRef<HTMLDivElement>(null)
-
+  const [genericErrorAlertKey, setGenericErrorAlertKey] = useState(0)
   const [shouldFocusInvalidAlert, setShouldFocusInvalidAlert] = useState<boolean>(false)
 
   const fileUploadId = useId()
@@ -74,6 +72,10 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   })
 
   const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    if (genericError) {
+      setGenericErrorAlertKey((key) => key + 1)
+    }
+
     setShouldFocusInvalidAlert(false)
     handleUpload(event)
   }
@@ -85,13 +87,6 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
 
     handleDelete(id, fileName, xhr, serverId)
   }
-
-  // Set focus on generic Alert when there is a generic error
-  useEffect(() => {
-    if (!genericError || !genericErrorAlertRef.current) return
-
-    genericErrorAlertRef.current.focus()
-  }, [genericError])
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
   const hasErroredFileUploads = erroredFileUploads.length > 0
@@ -114,17 +109,14 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   return (
     <PageWrapper backLink={{ href: meldingDetailLink, label: t('back-link') }}>
       {genericError && (
-        <Alert
+        <FocusableAlert
           className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
           heading={t(genericError.title, genericError.options)}
-          headingLevel={2}
-          ref={genericErrorAlertRef}
-          role="alert"
-          severity="error"
-          tabIndex={-1}
+          key={genericErrorAlertKey} // needed to focus when the same error is shown again after a new upload attempt
+          shouldFocus
         >
           {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
-        </Alert>
+        </FocusableAlert>
       )}
       <InvalidFormAlert
         errors={validationErrors}

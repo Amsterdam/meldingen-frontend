@@ -13,9 +13,9 @@
     "type-check": "tsc --project ./tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@formio/js": "5.6.1",
+    "@formio/js": "5.7.0",
     "bootstrap": "5.3.8",
-    "bootstrap-icons": "1.13.1"
+    "bootstrap-icons": "1.13.2"
   },
   "devDependencies": {
     "@formio/core": "2.9.0"

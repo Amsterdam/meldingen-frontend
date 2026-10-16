@@ -7,6 +7,7 @@ const defaultProps = {
     { key: '#', message: 'Vul een geldige datum in (bijvoorbeeld 6 januari 2030).' },
     { key: '#', message: 'De geldigheidsdatum van uw paspoort moet in de toekomst liggen.' },
   ],
+  heading: 'Verbeter de fouten voor u verder gaat',
   headingLevel: 2 as const,
   shouldFocus: false,
 }
@@ -15,7 +16,7 @@ describe('Invalid Form Alert', () => {
   it('renders', () => {
     render(<InvalidFormAlert {...defaultProps} />)
 
-    const heading = screen.getByRole('heading', { level: 2, name: 'Verbeter de fouten voor u verder gaat' })
+    const heading = screen.getByRole('heading', { level: 2, name: defaultProps.heading })
 
     expect(heading).toBeInTheDocument()
   })

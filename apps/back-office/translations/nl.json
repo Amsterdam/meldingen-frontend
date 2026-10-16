@@ -13,6 +13,7 @@
       "classification": "Categorie",
       "state": "Status",
       "urgency": "Urgentie",
+      "days_open": "Dagen open",
       "address": "Adres",
       "postal_code": "Postcode"
     },
@@ -86,6 +87,10 @@
         "term": "Labels",
         "link": "Wijzig labels",
         "no-data": "Geen labels"
+      },
+      "service-level-objective-days": {
+        "term": "Afhandeltermijn",
+        "no-data": "Afhandeltermijn onbekend"
       },
       "source": {
         "term": "Bron",
@@ -324,6 +329,13 @@
     },
     "title": "Er is iets misgegaan",
     "retry-button": "Probeer het opnieuw"
+  },
+  "not-found": {
+    "metadata": {
+      "title": "Pagina niet gevonden - Gemeente Amsterdam"
+    },
+    "title": "Pagina niet gevonden",
+    "description": "Controleer of de link correct is. Als u de link heeft gekopieerd, controleer dan of u de gehele link heeft gekopieerd."
   },
   "shared": {
     "document-title-error-count-prefix": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",

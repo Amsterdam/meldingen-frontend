@@ -142,6 +142,11 @@ describe('Page', () => {
         term: 'detail.melding-data.created_at',
       },
       {
+        description: '5 werkdagen',
+        key: 'service_level_objective',
+        term: 'detail.melding-data.service-level-objective-days.term',
+      },
+      {
         description: classification!.name,
         key: 'classification',
         link: {

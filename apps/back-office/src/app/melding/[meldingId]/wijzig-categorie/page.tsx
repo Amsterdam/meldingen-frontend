@@ -17,7 +17,7 @@ export default async ({ params }: Params) => {
 
   if (meldingError) throw new Error('Failed to fetch melding data.')
 
-  const { data: classifications, error: classificationsError } = await getClassification()
+  const { data: classifications, error: classificationsError } = await getClassification({ query: { limit: 0 } })
 
   if (classificationsError) throw new Error('Failed to fetch classifications.')
 

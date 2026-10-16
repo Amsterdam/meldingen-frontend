@@ -1,5 +1,7 @@
-import { Alert, Paragraph } from '@amsterdam/design-system-react'
+import { Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
+
+import { Alert } from '@meldingen/ui'
 
 import styles from './MapLoadingIndicator.module.css'
 
