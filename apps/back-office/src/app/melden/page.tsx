@@ -56,7 +56,7 @@ const fetchSourcesAndLabels = async () => {
 }
 
 const fetchClassifications = async () => {
-  const { data, error } = await getClassification()
+  const { data, error } = await getClassification({ query: { limit: 0 } })
 
   if (error) throw new Error('Failed to fetch classifications.')
   if (!data || data.length === 0) throw new Error('No classifications found.')
