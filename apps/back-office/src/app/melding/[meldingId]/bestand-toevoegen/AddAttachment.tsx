@@ -140,7 +140,9 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
             {t('upload.title')}
           </Heading>
           <Paragraph id="file-upload-description">{t('upload.description')}</Paragraph>
-          <Paragraph>{t('upload.count', { currentCount: successfulUploadsCount, maxCount: 5 })}</Paragraph>
+          <Paragraph>
+            {t('upload.count', { currentCount: successfulUploadsCount, maxCount: MAX_SUCCESSFUL_UPLOADS })}
+          </Paragraph>
         </Column>
 
         <FileUpload

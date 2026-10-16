@@ -150,7 +150,7 @@ describe('AddAttachment', () => {
 
     expect(validationLink).toHaveAttribute('href', '#file-upload.id-prefix-1')
 
-    const validationAlert = container.querySelectorAll('.ams-alert')[0]
+    const validationAlert = container.querySelector('.ams-alert')
 
     expect(validationAlert).toHaveTextContent('validation-errors.alert-titlevalidation-errors.file-too-large')
 
