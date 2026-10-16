@@ -8,7 +8,7 @@ const defaultProps = {
   heading: 'Heading',
 }
 
-describe('Alert', () => {
+describe('FocusableAlert', () => {
   it('renders an alert', () => {
     const { container } = render(<FocusableAlert {...defaultProps} />)
 
