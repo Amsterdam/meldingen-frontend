@@ -15,31 +15,32 @@ type ContentProps =
 
 export type FocusableAlertProps = ADSOriginalAlertProps &
   ContentProps & {
+    /**
+     * The alert is focused whenever this value changes to a truthy value (and on mount, if it is truthy).
+     * - With `useActionState`, `!isPending` works well: it is `false` on submit and `true` when the response arrives.
+     * - To refocus when the same error is shown again, pass a new object for each occurrence (e.g. the error object itself).
+     *   Strings and numbers do not work for this, as an identical value does not count as a change.
+     */
+    focusTrigger: unknown
     /** The hierarchical level of the Heading within the document. Defaults to 2 */
     headingLevel?: AlertProps['headingLevel']
-    /**
-     * Pass a value that changes to `true` to trigger focus on the alert.
-     * With `useActionState`, `!isPending` works well — it is `false` on submit and `true` when the response arrives.
-     * Without `useActionState`, manage it yourself via a state variable.
-     */
-    shouldFocus: boolean
   }
 
 export const FocusableAlert = ({
   children,
   className,
   description,
+  focusTrigger,
   heading,
   headingLevel = 2,
-  shouldFocus,
 }: FocusableAlertProps) => {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (shouldFocus) {
+    if (focusTrigger) {
       ref.current?.focus()
     }
-  }, [shouldFocus])
+  }, [focusTrigger])
 
   return (
     <ADSAlert

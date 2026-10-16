@@ -181,17 +181,14 @@ describe('AddAttachment', () => {
 
     fireEvent.change(fileInput, { target: { files } })
 
-    const firstAlert = container.querySelector('.ams-alert')
+    const alert = container.querySelector('.ams-alert')
 
-    expect(firstAlert).toHaveFocus()
+    expect(alert).toHaveFocus()
 
     fileInput.focus()
     fireEvent.change(fileInput, { target: { files } })
 
-    const secondAlert = container.querySelector('.ams-alert')
-
-    expect(secondAlert).toHaveFocus()
-    expect(secondAlert).not.toBe(firstAlert)
+    expect(alert).toHaveFocus()
   })
 
   it('shows a delete notification and removes only the deleted file when deletion succeeds', async () => {

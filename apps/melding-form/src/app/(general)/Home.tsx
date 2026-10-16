@@ -61,8 +61,8 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
   return (
     <main>
       <title>{documentTitle}</title>
-      {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
-      {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
+      {Boolean(apiError) && <ApiErrorAlert focusTrigger={!isPending} />}
+      {validationErrors && <InvalidFormAlert errors={validationErrors} focusTrigger={!isPending} />}
       <FormRenderer
         action={formAction}
         formComponents={formComponents}

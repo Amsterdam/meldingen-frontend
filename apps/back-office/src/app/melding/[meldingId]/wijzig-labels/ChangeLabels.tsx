@@ -54,7 +54,7 @@ export const ChangeLabels = ({ currentLabelIds, labels, meldingId, publicId }: P
   return (
     <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }} documentTitle={documentTitle}>
       {Boolean(apiError) && (
-        <ApiErrorAlert heading={t('errors.labels-change-failed-heading')} shouldFocus={!isPending} />
+        <ApiErrorAlert focusTrigger={!isPending} heading={t('errors.labels-change-failed-heading')} />
       )}
       <Heading className="ams-mb-m" level={1}>
         {t('title', { publicId })}

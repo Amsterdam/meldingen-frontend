@@ -26,7 +26,9 @@ const getPrefilledFormComponents = (components: Component[], formData: FormData)
       if (formData.get(`time___${component.key}-unknown`) === 'on') {
         return { ...component, defaultValue: null }
       }
+
       const timeValue = formData.get(`time___${component.key}`)
+
       if (typeof timeValue === 'string') {
         return { ...component, defaultValue: timeValue }
       }
@@ -103,8 +105,8 @@ export const AdditionalQuestions = ({
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
-        {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert focusTrigger={!isPending} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} focusTrigger={!isPending} />}
         <FormRenderer
           action={formAction}
           formComponents={formComponents}

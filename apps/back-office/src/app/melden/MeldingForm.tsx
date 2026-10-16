@@ -139,8 +139,8 @@ export const MeldingForm = ({
     >
       <title>{documentTitle}</title>
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
-        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
-        {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert focusTrigger={!isPending} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} focusTrigger={!isPending} />}
 
         <Heading className="ams-mb-m ams-visually-hidden" level={1}>
           {t('visually-hidden-title')}

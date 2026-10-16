@@ -267,4 +267,36 @@ describe('Attachments', () => {
     expect(alert).toHaveTextContent('errors.upload-in-progress.title')
     expect(alert).toHaveTextContent('errors.upload-in-progress.description')
   })
+
+  it('refocuses the generic error Alert when trying to navigate to the next page again while an upload is in progress', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, async () => {
+        await delay('infinite')
+
+        return HttpResponse.json({ id: 123 })
+      }),
+    )
+
+    const user = userEvent.setup()
+
+    const { container } = render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+
+    await user.upload(fileInput, [mockFile])
+
+    await screen.findByRole('button', { name: `file-upload.action-button-cancel ${mockFile.name}` })
+
+    const submitButton = screen.getByRole('button', { name: 'submit-button' })
+
+    await user.click(submitButton)
+
+    const alert = container.querySelector('.ams-alert')
+
+    expect(alert).toHaveFocus()
+
+    await user.click(submitButton)
+
+    expect(alert).toHaveFocus()
+  })
 })

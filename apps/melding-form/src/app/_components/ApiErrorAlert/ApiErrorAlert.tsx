@@ -4,17 +4,17 @@ import type { FocusableAlertProps } from '@meldingen/ui'
 
 import { FocusableAlert } from '@meldingen/ui'
 
-type Props = Pick<FocusableAlertProps, 'shouldFocus'>
+type Props = Pick<FocusableAlertProps, 'focusTrigger'>
 
-export const ApiErrorAlert = ({ shouldFocus }: Props) => {
+export const ApiErrorAlert = ({ focusTrigger }: Props) => {
   const t = useTranslations('shared.api-error-alert')
 
   return (
     <FocusableAlert
       className="ams-mb-m"
       description={t('description')}
+      focusTrigger={focusTrigger}
       heading={t('heading')}
-      shouldFocus={shouldFocus}
     />
   )
 }

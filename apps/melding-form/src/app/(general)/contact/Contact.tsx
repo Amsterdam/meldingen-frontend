@@ -63,8 +63,8 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
-        {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert focusTrigger={!isPending} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} focusTrigger={!isPending} />}
         <Heading className="ams-mb-s" level={1} size="level-3">
           {t('question')}
         </Heading>

@@ -69,8 +69,8 @@ export const DeleteAttachment = ({ attachments: initialAttachments, meldingId }:
       {!!apiError && (
         <ApiErrorAlert
           description={t('error-delete-failed.description')}
+          focusTrigger={apiError}
           heading={t('error-delete-failed.title')}
-          shouldFocus={true}
         />
       )}
       <Heading className="ams-mb-l" level={1}>
