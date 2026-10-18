@@ -36,6 +36,7 @@ export const postSummaryForm = async ({
   )
 
   const deletionError = deletionResults.find((result) => result.error)?.error
+
   if (deletionError) {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
@@ -58,6 +59,7 @@ export const postSummaryForm = async ({
   })
 
   const params = new URLSearchParams({ created_at, public_id })
+
   if (source) {
     params.set('id', meldingId)
     params.set('source', source)

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { redirect } from 'next/navigation'
 
-import Page, { generateMetadata } from './page'
+import Page, { generateMetadata, getTempSla } from './page'
 import { getClientEnv } from '~/env/client'
 
 vi.mock('next/headers', () => ({ cookies: vi.fn() }))
@@ -23,6 +23,17 @@ describe('generateMetadata', () => {
   })
 })
 
+describe('getTempSla', () => {
+  it('returns the temporary SLA values used by the page', async () => {
+    await expect(getTempSla()).resolves.toEqual({
+      date_start: '2026-10-08T08:10:24.728Z',
+      day_type: 'working_days',
+      days: 1,
+      days_passed: 1,
+    })
+  })
+})
+
 describe('Page', () => {
   it('renders page', async () => {
     const searchParams = Promise.resolve({ created_at: '2025-05-26T11:56:34.081Z', public_id: '1234' })
@@ -32,7 +43,9 @@ describe('Page', () => {
     render(PageComponent)
 
     const heading = screen.getByRole('heading', { name: 'title' })
-    const paragraph = screen.getByText('description:{"date":"26-05-2025","publicId":"1234","time":"13:56"}')
+    const paragraph = screen.getByText(
+      'description:{"date":"26-05-2025","days":1,"dayType":"working_days","publicId":"1234","time":"13:56"}',
+    )
     const link = screen.getByRole('link', { name: 'link' })
 
     expect(redirect).not.toHaveBeenCalledWith('/')
@@ -48,7 +61,9 @@ describe('Page', () => {
 
     render(PageComponent)
 
-    const description = screen.getByText('description:{"date":"26-05-2025","time":"13:56"}')
+    const description = screen.getByText(
+      'description:{"date":"26-05-2025","days":1,"dayType":"working_days","time":"13:56"}',
+    )
 
     expect(description).toBeInTheDocument()
   })
@@ -60,7 +75,7 @@ describe('Page', () => {
 
     render(PageComponent)
 
-    const description = screen.getByText('description:{"publicId":"1234"}')
+    const description = screen.getByText('description:{"days":1,"dayType":"working_days","publicId":"1234"}')
 
     expect(description).toBeInTheDocument()
   })
