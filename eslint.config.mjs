@@ -230,6 +230,12 @@ export default defineConfig(
     },
   },
   {
+    files: ['**/*.{ts,tsx}'],
+    rules: {
+      'no-undef': 'off', // TypeScript handles this
+    },
+  },
+  {
     files: ['**/error.tsx', '**/page.tsx', '**/layout.tsx', '**/not-found.tsx'],
     rules: {
       'import/no-default-export': 'off',

@@ -1,14 +1,7 @@
 import { render, screen } from '@testing-library/react'
-import { redirect } from 'next/navigation'
 
 import Page, { generateMetadata } from './page'
 import { getClientEnv } from '~/env/client'
-
-vi.mock('next/headers', () => ({ cookies: vi.fn() }))
-
-vi.mock('next/navigation', () => ({
-  redirect: vi.fn(),
-}))
 
 vi.mock('next-intl/server', async () => ({
   getTranslations: () =>
@@ -35,10 +28,25 @@ describe('Page', () => {
     const paragraph = screen.getByText('description:{"date":"26-05-2025","publicId":"1234","time":"13:56"}')
     const link = screen.getByRole('link', { name: 'link' })
 
-    expect(redirect).not.toHaveBeenCalledWith('/')
     expect(heading).toBeInTheDocument()
     expect(paragraph).toBeInTheDocument()
     expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '/#top')
+  })
+
+  it('uses the first value when search params are arrays', async () => {
+    const searchParams = Promise.resolve({
+      created_at: ['2025-05-26T11:56:34.081Z', '2026-01-01T00:00:00.000Z'],
+      public_id: ['1234', '5678'],
+    })
+
+    const PageComponent = await Page({ searchParams })
+
+    render(PageComponent)
+
+    const paragraph = screen.getByText('description:{"date":"26-05-2025","publicId":"1234","time":"13:56"}')
+
+    expect(paragraph).toBeInTheDocument()
   })
 
   it('renders a description without publicId', async () => {

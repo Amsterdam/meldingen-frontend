@@ -3,8 +3,11 @@ import { getTranslations } from 'next-intl/server'
 import { NotesOverview } from './NotesOverview'
 import { getClassification, getMeldingByMeldingId, getMeldingByMeldingIdNote, getUserMe } from '~/app/_api-client/proxy'
 
-export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
-  const { meldingId } = await params
+type Props = Pick<PageProps<'/melding/[meldingId]/notities'>, 'params'>
+
+export const generateMetadata = async ({ params }: Props) => {
+  const { meldingId: meldingIdParam } = await params
+  const meldingId = Number(meldingIdParam)
 
   const t = await getTranslations('notes-overview')
   const { data } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
@@ -14,8 +17,9 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
   }
 }
 
-export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
-  const { meldingId } = await params
+export default async ({ params }: Props) => {
+  const { meldingId: meldingIdParam } = await params
+  const meldingId = Number(meldingIdParam)
 
   const [meldingResultData, notesResult, currentUserResult, classificationsResult] = await Promise.all([
     getMeldingByMeldingId({ path: { melding_id: meldingId } }),

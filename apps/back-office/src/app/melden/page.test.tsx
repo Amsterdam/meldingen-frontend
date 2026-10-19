@@ -21,7 +21,7 @@ describe('Page', () => {
   it('throws an error if list of static forms cannot be fetched', async () => {
     server.use(http.get(ENDPOINTS.GET_STATIC_FORM, () => HttpResponse.json(null, { status: 500 })))
 
-    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Failed to fetch static forms.')
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrow('Failed to fetch static forms.')
   })
 
   it('throws an error if list of static forms does not contain a form with type "primary"', async () => {
@@ -36,13 +36,13 @@ describe('Page', () => {
       ),
     )
 
-    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Primary form id not found.')
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrow('Primary form id not found.')
   })
 
   it('throws an error if primary form data cannot be fetched', async () => {
     server.use(http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(null, { status: 500 })))
 
-    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Failed to fetch primary form data.')
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrow('Failed to fetch primary form data.')
   })
 
   it('throws an error if primary form does not contain a textarea component', async () => {
@@ -61,31 +61,31 @@ describe('Page', () => {
       ),
     )
 
-    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Primary form textarea not found.')
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrow('Primary form textarea not found.')
   })
 
   it('throws an error if sources cannot be fetched', async () => {
     server.use(http.get(ENDPOINTS.GET_SOURCE, () => HttpResponse.json(null, { status: 500 })))
 
-    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Failed to fetch sources.')
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrow('Failed to fetch sources.')
   })
 
   it('throws an error if sources list is empty', async () => {
     server.use(http.get(ENDPOINTS.GET_SOURCE, () => HttpResponse.json([])))
 
-    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('No sources found.')
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrow('No sources found.')
   })
 
   it('throws an error if labels cannot be fetched', async () => {
     server.use(http.get(ENDPOINTS.GET_LABEL, () => HttpResponse.json(null, { status: 500 })))
 
-    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('Failed to fetch labels.')
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrow('Failed to fetch labels.')
   })
 
   it('throws an error if labels list is empty', async () => {
     server.use(http.get(ENDPOINTS.GET_LABEL, () => HttpResponse.json([])))
 
-    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrowError('No labels found.')
+    await expect(Page({ searchParams: Promise.resolve({}) })).rejects.toThrow('No labels found.')
   })
 
   it('renders the MeldingForm component with form components', async () => {
@@ -136,7 +136,7 @@ describe('Page', () => {
       ),
     )
 
-    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: 'valid-token' }) })
 
     render(PageComponent)
 
@@ -162,7 +162,7 @@ describe('Page', () => {
       ),
     )
 
-    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: 'valid-token' }) })
 
     render(PageComponent)
 
@@ -183,7 +183,7 @@ describe('Page', () => {
 
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json([noteData])))
 
-    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: 'valid-token' }) })
 
     render(PageComponent)
 
@@ -200,7 +200,7 @@ describe('Page', () => {
 
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json([noteData])))
 
-    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: 'valid-token' }) })
 
     render(PageComponent)
 
@@ -219,7 +219,7 @@ describe('Page', () => {
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json('Test error', { status: 500 })),
     )
 
-    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: 'valid-token' }) })
 
     render(PageComponent)
 
@@ -240,7 +240,7 @@ describe('Page', () => {
 
     server.use(http.get(ENDPOINTS.GET_USER_ME, () => HttpResponse.json('Test error', { status: 500 })))
 
-    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: 'valid-token' }) })
 
     render(PageComponent)
 
@@ -268,7 +268,7 @@ describe('Page', () => {
       ),
     )
 
-    const PageComponent = await Page({ searchParams: Promise.resolve({ id: 1, token: 'valid-token' }) })
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: 'valid-token' }) })
 
     render(PageComponent)
 
@@ -280,6 +280,30 @@ describe('Page', () => {
           source: undefined,
           urgency: undefined,
         },
+      }),
+      undefined,
+    )
+  })
+
+  it('uses the first value when the token search param is an array', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () =>
+        HttpResponse.json({
+          components: [{ ...textAreaComponent, key: 'primary' }],
+          id: '123',
+          type: 'primary',
+        }),
+      ),
+    )
+
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: '1', token: ['valid-token', 'other'] }) })
+
+    render(PageComponent)
+
+    expect(MeldingForm).toHaveBeenCalledWith(
+      expect.objectContaining({
+        existingMelding: expect.objectContaining({ token: 'valid-token' }),
+        existingToken: 'valid-token',
       }),
       undefined,
     )
