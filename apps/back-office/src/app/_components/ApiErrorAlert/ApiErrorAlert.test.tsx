@@ -13,7 +13,7 @@ describe('ApiErrorAlert', () => {
     expect(description).toBeInTheDocument()
   })
 
-  it('sets focus on the alert when focusTrigger is true', () => {
+  it('sets focus on the alert when focusTrigger is truthy', () => {
     render(<ApiErrorAlert focusTrigger />)
 
     const heading = screen.getByRole('heading', { name: 'heading' })
@@ -22,7 +22,7 @@ describe('ApiErrorAlert', () => {
     expect(alert).toHaveFocus()
   })
 
-  it('does not set focus on the alert when focusTrigger is false', () => {
+  it('does not set focus on the alert when focusTrigger is falsy', () => {
     render(<ApiErrorAlert focusTrigger={false} />)
 
     const heading = screen.getByRole('heading', { name: 'heading' })

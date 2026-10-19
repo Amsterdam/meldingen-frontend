@@ -65,7 +65,7 @@ describe('Invalid Form Alert', () => {
     expect(heading).toBeInTheDocument()
   })
 
-  it('does not set focus on Alert when focusTrigger is false', () => {
+  it('does not set focus on Alert when focusTrigger is falsy', () => {
     const { container } = render(<InvalidFormAlert {...defaultProps} />)
 
     const alert = container.querySelector('.ams-alert')
@@ -73,7 +73,7 @@ describe('Invalid Form Alert', () => {
     expect(alert).not.toHaveFocus()
   })
 
-  it('sets focus on Alert when focusTrigger is true', () => {
+  it('sets focus on Alert when focusTrigger is truthy', () => {
     const { container } = render(<InvalidFormAlert {...defaultProps} focusTrigger />)
 
     const alert = container.querySelector('.ams-alert')
