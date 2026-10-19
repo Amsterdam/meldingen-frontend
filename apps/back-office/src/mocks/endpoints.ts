@@ -50,4 +50,11 @@ export const ENDPOINTS = {
 
   // User
   GET_USER_ME: '/user/me',
+
+  //
+  // Next.js API routes
+  //
+
+  // This app's own same-origin route (proxies the upload to the backend with the session's access token)
+  POST_API_MELDING_BY_MELDING_ID_ATTACHMENT: '/api/melding/:id/attachment',
 }

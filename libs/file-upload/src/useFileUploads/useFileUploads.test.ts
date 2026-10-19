@@ -5,16 +5,11 @@ import { act, renderHook } from '@testing-library/react'
 
 import type { ExistingFile, FileUploadState, PendingFileUpload } from './types'
 
-import { startServerActionUpload } from './startServerActionUpload'
 import { startUpload } from './startUpload'
 import { useFileUploads } from './useFileUploads'
 
 vi.mock('./startUpload', () => ({
   startUpload: vi.fn(),
-}))
-
-vi.mock('./startServerActionUpload', () => ({
-  startServerActionUpload: vi.fn(),
 }))
 
 const createChangeEvent = (files: File[] | null) =>
@@ -100,6 +95,7 @@ describe('useFileUploads', () => {
 
     it('clears the file input value after starting uploads', () => {
       const inputRef = createInputRef()
+
       inputRef.current!.value = 'C:\\fakepath\\test.png'
 
       const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef }))
@@ -179,56 +175,36 @@ describe('useFileUploads', () => {
       })
       expect(startUpload).toHaveBeenCalledTimes(1)
     })
-  })
 
-  describe('uploadFile adapter', () => {
-    const uploadFileMock = vi.fn()
-
-    const uploadFileParams = {
-      deleteAttachment: deleteAttachmentMock,
-      existingFiles: [] as ExistingFile[],
-      idPrefix: 'upload',
-      maxSuccessfulUploads: 3,
-      maxUploadAttempts: 10,
-      uploadFile: uploadFileMock,
-    }
-
-    it('starts the upload via the adapter instead of opening an XHR', () => {
-      const openSpy = vi.spyOn(XMLHttpRequest.prototype, 'open')
+    it('marks a file larger than maxFileSizeBytes as an error without uploading it', () => {
       const inputRef = createInputRef()
-      const file = new File(['content'], 'test.png')
-
-      const { result } = renderHook(() => useFileUploads({ ...uploadFileParams, inputRef }))
+      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef, maxFileSizeBytes: 5 }))
 
       act(() => {
-        result.current.handleUpload(createChangeEvent([file]))
+        result.current.handleUpload(
+          createChangeEvent([new File(['12345'], 'max-size.png'), new File(['123456'], 'too-large.png')]),
+        )
       })
 
-      expect(result.current.fileUploads).toHaveLength(1)
-
-      expect(openSpy).not.toHaveBeenCalled()
-
-      expect(startServerActionUpload).toHaveBeenCalledWith(
-        expect.objectContaining({ file, id: 'upload-1' }),
-        uploadFileMock,
-        expect.any(Function),
-      )
-
-      expect(startUpload).not.toHaveBeenCalled()
-
-      openSpy.mockRestore()
+      expect(result.current.fileUploads[0]).toMatchObject({ file: { name: 'max-size.png' }, status: 'pending' })
+      expect(result.current.fileUploads[1]).toMatchObject({
+        errorMessage: 'validation-errors.file-too-large',
+        file: { name: 'too-large.png' },
+        status: 'error',
+      })
+      expect(startUpload).toHaveBeenCalledTimes(1)
     })
 
-    it('reports supportsUploadCancellation as false when using the uploadFile adapter', () => {
-      const { result } = renderHook(() => useFileUploads({ ...uploadFileParams, inputRef: createInputRef() }))
+    it('does not check the file size when maxFileSizeBytes is not set', () => {
+      const inputRef = createInputRef()
+      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef }))
 
-      expect(result.current.supportsUploadCancellation).toBe(false)
-    })
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['a'.repeat(1024)], 'large.png')]))
+      })
 
-    it('reports supportsUploadCancellation as true when using uploadUrl', () => {
-      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
-
-      expect(result.current.supportsUploadCancellation).toBe(true)
+      expect(result.current.fileUploads[0]).toMatchObject({ status: 'pending' })
+      expect(startUpload).toHaveBeenCalledTimes(1)
     })
   })
 
