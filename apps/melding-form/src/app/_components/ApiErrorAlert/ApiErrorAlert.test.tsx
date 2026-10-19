@@ -4,7 +4,7 @@ import { ApiErrorAlert } from './ApiErrorAlert'
 
 describe('ApiErrorAlert', () => {
   it('renders', () => {
-    render(<ApiErrorAlert focusTrigger={false} />)
+    render(<ApiErrorAlert focusKey={false} />)
 
     const heading = screen.getByRole('heading', { name: 'heading' })
     const description = screen.getByText('description')
@@ -13,8 +13,8 @@ describe('ApiErrorAlert', () => {
     expect(description).toBeInTheDocument()
   })
 
-  it('sets focus on the alert when focusTrigger is truthy', () => {
-    render(<ApiErrorAlert focusTrigger />)
+  it('sets focus on the alert when focusKey is truthy', () => {
+    render(<ApiErrorAlert focusKey />)
 
     const heading = screen.getByRole('heading', { name: 'heading' })
     const alert = heading.closest('section')
@@ -22,8 +22,8 @@ describe('ApiErrorAlert', () => {
     expect(alert).toHaveFocus()
   })
 
-  it('does not set focus on the alert when focusTrigger is falsy', () => {
-    render(<ApiErrorAlert focusTrigger={false} />)
+  it('does not set focus on the alert when focusKey is falsy', () => {
+    render(<ApiErrorAlert focusKey={false} />)
 
     const heading = screen.getByRole('heading', { name: 'heading' })
     const alert = heading.closest('section')

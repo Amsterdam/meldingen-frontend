@@ -65,7 +65,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const tShared = useTranslations('shared')
 
   const [{ apiError }, formAction, isPending] = useActionState(submitAttachmentsForm, initialState)
-  const [invalidFormAlertFocusTrigger, setInvalidFormAlertFocusTrigger] = useState<string[]>([])
+  const [invalidFormAlertFocusKey, setInvalidFormAlertFocusKey] = useState<string[]>([])
 
   const { deletedFileName, fileUploads, genericError, handleDelete, handleSubmit, handleUpload } = useFileUploads({
     deleteAttachment: (serverId: number) => deleteAttachment(meldingId, token, serverId),
@@ -81,8 +81,8 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id)
 
   // Only update when a new upload fails, so deleting a failed upload does not refocus the alert
-  if (erroredFileUploadIds.some((id) => !invalidFormAlertFocusTrigger.includes(id))) {
-    setInvalidFormAlertFocusTrigger(erroredFileUploadIds)
+  if (erroredFileUploadIds.some((id) => !invalidFormAlertFocusKey.includes(id))) {
+    setInvalidFormAlertFocusKey(erroredFileUploadIds)
   }
 
   const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
@@ -113,17 +113,17 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(apiError) && <ApiErrorAlert focusTrigger={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
         <InvalidFormAlert
           errors={validationErrors}
-          focusTrigger={invalidFormAlertFocusTrigger}
+          focusKey={invalidFormAlertFocusKey}
           heading={t('validation-errors.alert-title', { count: validationErrors.length })}
         />
         {genericError && (
           <FocusableAlert
             className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
             // useFileUploads sets a new object for every error, so repeated errors refocus the alert too
-            focusTrigger={genericError}
+            focusKey={genericError}
             heading={t(genericError.title, genericError.options)}
           >
             {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}

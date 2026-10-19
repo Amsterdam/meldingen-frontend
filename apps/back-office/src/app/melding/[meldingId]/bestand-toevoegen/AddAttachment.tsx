@@ -59,7 +59,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   const t = useTranslations('add-attachment')
 
   const [apiError, setApiError] = useState<string | null>(null)
-  const [invalidFormAlertFocusTrigger, setInvalidFormAlertFocusTrigger] = useState<string[]>([])
+  const [invalidFormAlertFocusKey, setInvalidFormAlertFocusKey] = useState<string[]>([])
 
   const fileUploadId = useId()
   const fileUploadRef = useRef<HTMLInputElement>(null)
@@ -104,8 +104,8 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id)
 
   // Only update when a new upload fails, so deleting a failed upload does not refocus the alert
-  if (erroredFileUploadIds.some((id) => !invalidFormAlertFocusTrigger.includes(id))) {
-    setInvalidFormAlertFocusTrigger(erroredFileUploadIds)
+  if (erroredFileUploadIds.some((id) => !invalidFormAlertFocusKey.includes(id))) {
+    setInvalidFormAlertFocusKey(erroredFileUploadIds)
   }
 
   const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
@@ -122,12 +122,12 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
 
   return (
     <PageWrapper backLink={{ href: meldingDetailLink, label: t('back-link') }}>
-      {Boolean(apiError) && <ApiErrorAlert focusTrigger={apiError} />}
+      {Boolean(apiError) && <ApiErrorAlert focusKey={apiError} />}
       {genericError && (
         <FocusableAlert
           className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
           // useFileUploads sets a new object for every error, so repeated errors refocus the alert too
-          focusTrigger={genericError}
+          focusKey={genericError}
           heading={t(genericError.title, genericError.options)}
         >
           {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
@@ -135,7 +135,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
       )}
       <InvalidFormAlert
         errors={validationErrors}
-        focusTrigger={invalidFormAlertFocusTrigger}
+        focusKey={invalidFormAlertFocusKey}
         heading={t('validation-errors.alert-title', { count: validationErrors.length })}
       />
       <Heading className="ams-mb-l" level={1}>

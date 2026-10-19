@@ -67,7 +67,7 @@ export const ChangeUrgency = ({ currentUrgency, meldingId, publicId }: Props) =>
       {apiError && (
         <ApiErrorAlert
           description={t(`errors.${apiError.type}.description`)}
-          focusTrigger={!isPending}
+          focusKey={!isPending}
           heading={t(`errors.${apiError.type}.heading`)}
         />
       )}

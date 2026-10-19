@@ -69,9 +69,9 @@ export const DeleteAttachment = ({ attachments: initialAttachments, meldingId }:
       {!!apiError && (
         <ApiErrorAlert
           description={t('error-delete-failed.description')}
-          // apiError is a string, so we can't reliably use it as a focus trigger here
+          // apiError is a string, so we can't reliably use it as a focus key here
           // apiError is always set to undefined first though, so we rely on remounting the component to refocus the alert
-          focusTrigger={true}
+          focusKey={true}
           heading={t('error-delete-failed.title')}
         />
       )}

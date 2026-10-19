@@ -21,7 +21,7 @@ export type FocusableAlertProps = ADSOriginalAlertProps &
      * - To refocus when the same error is shown again, pass a new object for each occurrence (e.g. the error object itself).
      *   Strings and numbers do not work for this, as an identical value does not count as a change.
      */
-    focusTrigger: unknown
+    focusKey: unknown
     /** The hierarchical level of the Heading within the document. Defaults to 2 */
     headingLevel?: AlertProps['headingLevel']
   }
@@ -30,17 +30,17 @@ export const FocusableAlert = ({
   children,
   className,
   description,
-  focusTrigger,
+  focusKey,
   heading,
   headingLevel = 2,
 }: FocusableAlertProps) => {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (focusTrigger) {
+    if (focusKey) {
       ref.current?.focus()
     }
-  }, [focusTrigger])
+  }, [focusKey])
 
   return (
     <ADSAlert

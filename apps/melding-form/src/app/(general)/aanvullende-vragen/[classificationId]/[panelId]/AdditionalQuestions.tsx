@@ -105,8 +105,8 @@ export const AdditionalQuestions = ({
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(apiError) && <ApiErrorAlert focusTrigger={!isPending} />}
-        {validationErrors && <InvalidFormAlert errors={validationErrors} focusTrigger={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} focusKey={!isPending} />}
         <FormRenderer
           action={formAction}
           formComponents={formComponents}

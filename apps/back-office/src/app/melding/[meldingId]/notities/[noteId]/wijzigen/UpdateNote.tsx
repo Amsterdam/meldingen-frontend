@@ -51,9 +51,9 @@ export const UpdateNote = ({ meldingId, note }: Props) => {
 
   return (
     <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }} documentTitle={documentTitle}>
-      {Boolean(apiError) && <ApiErrorAlert focusTrigger={!isPending} />}
+      {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
       {validationErrors && (
-        <InvalidFormAlert errors={validationErrors} focusTrigger={!isPending} heading={t('invalid-form-alert-title')} />
+        <InvalidFormAlert errors={validationErrors} focusKey={!isPending} heading={t('invalid-form-alert-title')} />
       )}
       <Heading className="ams-mb-m" level={1}>
         {t('title')}

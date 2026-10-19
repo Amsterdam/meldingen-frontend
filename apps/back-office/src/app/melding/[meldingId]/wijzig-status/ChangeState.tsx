@@ -64,7 +64,7 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
       {apiError && (
         <ApiErrorAlert
           description={t(`errors.${apiError.type}.description`)}
-          focusTrigger={!isPending}
+          focusKey={!isPending}
           heading={t(`errors.${apiError.type}.heading`)}
         />
       )}

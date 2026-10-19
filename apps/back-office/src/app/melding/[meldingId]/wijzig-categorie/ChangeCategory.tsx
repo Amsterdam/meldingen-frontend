@@ -79,11 +79,11 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
       {Boolean(apiError) && (
         <ApiErrorAlert
           description={t('errors.reclassification-failed-description')}
-          focusTrigger={!isPending}
+          focusKey={!isPending}
           heading={t('errors.reclassification-failed-heading')}
         />
       )}
-      {validationErrors && <InvalidFormAlert errors={validationErrors} focusTrigger={!isPending} />}
+      {validationErrors && <InvalidFormAlert errors={validationErrors} focusKey={!isPending} />}
       <Heading className="ams-mb-m" level={1}>
         {t('title', { publicId })}
       </Heading>
