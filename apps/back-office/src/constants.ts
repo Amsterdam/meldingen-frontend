@@ -13,7 +13,3 @@ export const SORT = '["created_at","DESC"]'
 export const URGENCY_VALUES: readonly MeldingOutput['urgency'][] = [-1, 0, 1]
 
 export const MAX_NOTE_LENGTH = 1000
-
-// Checked both client-side (AddAttachment.tsx) and in the upload Route Handler, as a quick early rejection.
-// The backend is the source of truth for what it actually accepts.
-export const MAX_ATTACHMENT_SIZE_BYTES = 20 * 1024 * 1024
