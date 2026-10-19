@@ -4,8 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 
-import { AddAttachment } from './AddAttachment'
-import { MAX_ATTACHMENT_SIZE_BYTES } from '~/constants'
+import { AddAttachment, MAX_ATTACHMENT_SIZE_BYTES } from './AddAttachment'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 

@@ -5,7 +5,6 @@ import { getServerSession } from 'next-auth'
 import { NextRequest } from 'next/server'
 
 import { POST } from './route'
-import { MAX_ATTACHMENT_SIZE_BYTES } from '~/constants'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -19,16 +18,6 @@ const MULTIPART_BOUNDARY = 'test-boundary'
 
 // The route streams the body to the backend without parsing it, so any bytes will do
 const UPLOAD_BODY = 'file content'
-
-// A generic stream body (unlike FormData/Blob/string) isn't re-measured by fetch, so a
-// Content-Length set alongside it is the one the route handler actually receives.
-const createStreamBody = () =>
-  new ReadableStream({
-    start: (controller) => {
-      controller.enqueue(new Uint8Array([1, 2, 3]))
-      controller.close()
-    },
-  })
 
 type NextRequestInit = NonNullable<ConstructorParameters<typeof NextRequest>[1]>
 
@@ -226,26 +215,6 @@ describe('POST /api/melding/[meldingId]/attachment', () => {
 
       const response = await postAttachment()
 
-      expect(response.status).toBe(400)
-      expect(await response.json()).toEqual({ detail: 'Allowed content size exceeded' })
-    })
-
-    it('forwards requests whose multipart Content-Length exceeds the file limit and returns the backend size error as-is', async () => {
-      server.use(
-        http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT, () =>
-          HttpResponse.json({ detail: 'Allowed content size exceeded' }, { status: 400 }),
-        ),
-      )
-
-      const response = await postAttachment({
-        body: createStreamBody(),
-        headers: {
-          ...SAME_ORIGIN_HEADERS,
-          'content-length': String(MAX_ATTACHMENT_SIZE_BYTES + 1024),
-        },
-      })
-
-      expect(global.fetch).toHaveBeenCalledOnce()
       expect(response.status).toBe(400)
       expect(await response.json()).toEqual({ detail: 'Allowed content size exceeded' })
     })

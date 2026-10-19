@@ -18,7 +18,6 @@ import { PageWrapper } from '../_components/PageWrapper'
 import { deleteAttachmentAction } from './actions'
 import { AttachmentsList } from './AttachmentsList'
 import { InvalidFormAlert } from '~/app/_components'
-import { MAX_ATTACHMENT_SIZE_BYTES } from '~/constants'
 import { clientEnv } from '~/env/client'
 
 import styles from './AddAttachment.module.css'
@@ -30,6 +29,8 @@ type Props = {
 
 const MAX_SUCCESSFUL_UPLOADS = 5
 const MAX_UPLOAD_ATTEMPTS = 10
+
+export const MAX_ATTACHMENT_SIZE_BYTES = 20 * 1024 * 1024
 
 const deleteAttachment = async (serverId: number) => {
   const { error } = await deleteAttachmentAction(serverId)
