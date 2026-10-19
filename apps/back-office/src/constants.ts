@@ -1,6 +1,7 @@
 import type { MeldingOutput } from '@meldingen/api-client'
 
 export const COOKIES = {
+  OVERVIEW_PAGE: 'meldingen_bo_overview_page',
   PAGE_SIZE: 'meldingen_bo_overview_page_size',
 } as const
 
