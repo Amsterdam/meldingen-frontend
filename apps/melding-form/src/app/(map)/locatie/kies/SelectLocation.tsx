@@ -10,11 +10,12 @@ import { useActionState, useEffect, useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
+import { SubmitButton } from '@meldingen/ui'
+
 import type { Coordinates } from '~/types'
 
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
 import { postCoordinatesAndAssets } from './actions'
-import { SubmitButton } from '~/app/_components'
 import { getAssetLabelText, getAssetSubType } from '~/app/(general)/_utils'
 import { ASSET_FALLBACK_SRC } from '~/constants'
 
@@ -99,6 +100,7 @@ export const SelectLocation = ({
   const [{ error }, formAction, isPending] = useActionState(postCoordinatesAndAssetsWithExtraArgs, initialState)
 
   const t = useTranslations('select-location')
+  const tShared = useTranslations('shared')
   const isWideWindow = useViewportHasMinWidth('wide')
   const isNarrowWindow = !useViewportHasMinWidth('medium')
   const controlsTexts = {
@@ -162,6 +164,7 @@ export const SelectLocation = ({
           form="address"
           isLoading={isPending}
           label={t('submit-button.desktop')}
+          loadingLabel={tShared('submit-button-loading-label')}
         />
       </SideBarBottom>
 
@@ -203,10 +206,10 @@ export const SelectLocation = ({
       </div>
       <div className={clsx(styles.buttonWrapper, showAssetList && styles.assetListOpen)}>
         <SubmitButton
-          className={styles.submitButtonMobile}
           form="address"
           isLoading={isPending}
           label={t('submit-button.mobile')}
+          loadingLabel={tShared('submit-button-loading-label')}
         />
         {showAssetListToggleButton && (
           <Button onClick={() => setIsAssetListOpen((prevState) => !prevState)} variant="secondary">

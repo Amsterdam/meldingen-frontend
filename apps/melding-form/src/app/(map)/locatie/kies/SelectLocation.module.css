@@ -21,7 +21,6 @@
 
   @media screen and (min-width: 72.5rem) {
     display: inline-flex;
-    width: fit-content;
   }
 }
 
@@ -47,10 +46,6 @@
 
   > * {
     pointer-events: auto; /* Allow interaction with button child elements */
-  }
-
-  > .submitButtonMobile {
-    width: fit-content; /* Override default full-width behavior on mobile */
   }
 
   @media screen and (min-width: 72.5rem) {
