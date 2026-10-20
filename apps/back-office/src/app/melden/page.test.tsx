@@ -100,6 +100,7 @@ describe('Page', () => {
         defaultValues: {},
         existingId: undefined,
         existingMelding: undefined,
+        existingNoteId: undefined,
         existingToken: undefined,
         labels: [
           { id: 0, name: 'Label 1' },
@@ -304,6 +305,19 @@ describe('Page', () => {
       expect.objectContaining({
         existingMelding: expect.objectContaining({ token: 'valid-token' }),
         existingToken: 'valid-token',
+      }),
+      undefined,
+    )
+  })
+
+  it('uses the first value when the id search param is an array', async () => {
+    const PageComponent = await Page({ searchParams: Promise.resolve({ id: ['1', '2'], token: 'valid-token' }) })
+
+    render(PageComponent)
+
+    expect(MeldingForm).toHaveBeenCalledWith(
+      expect.objectContaining({
+        existingId: 1,
       }),
       undefined,
     )

@@ -130,15 +130,16 @@ type Props = Pick<PageProps<'/melden'>, 'searchParams'>
 
 export default async ({ searchParams }: Props) => {
   const { id: idParams, token: tokenParams } = await searchParams
-  const id = idParams ? Number(idParams) : undefined
   const token = Array.isArray(tokenParams) ? tokenParams[0] : tokenParams
+  const idParam = Array.isArray(idParams) ? idParams[0] : idParams
+  const meldingId = idParam ? Number(idParam) : undefined
 
   const [primaryTextArea, { labels, sources }, classifications, existingMelding, note] = await Promise.all([
     fetchPrimaryTextArea(),
     fetchSourcesAndLabels(),
     fetchClassifications(),
-    id && token ? fetchExistingMelding(id) : Promise.resolve(undefined),
-    id && token ? fetchNote(id) : Promise.resolve(undefined),
+    meldingId && token ? fetchExistingMelding(meldingId) : Promise.resolve(undefined),
+    meldingId && token ? fetchNote(meldingId) : Promise.resolve(undefined),
   ])
 
   const defaultValues = toDefaultValues(existingMelding, note)
@@ -148,7 +149,7 @@ export default async ({ searchParams }: Props) => {
     <MeldingForm
       classifications={classifications}
       defaultValues={defaultValues}
-      existingId={id}
+      existingId={meldingId}
       existingMelding={existingMeldingData}
       existingNoteId={note?.id}
       existingToken={token}
