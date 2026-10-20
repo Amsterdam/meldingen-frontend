@@ -64,7 +64,7 @@ describe('Page', () => {
 
     await Page({ params: Promise.resolve({ meldingId: '123' }) })
 
-    expect(getAttachmentsData).toHaveBeenCalledWith('123', 'optimized')
+    expect(getAttachmentsData).toHaveBeenCalledWith(123, 'optimized')
   })
 
   it('renders the error message when getAttachmentsData rejects', async () => {
@@ -96,7 +96,7 @@ describe('Page', () => {
     expect(DeleteAttachment).toHaveBeenCalledWith(
       {
         attachments,
-        meldingId: '123',
+        meldingId: 123,
       },
       undefined,
     )
