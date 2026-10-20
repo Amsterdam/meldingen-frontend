@@ -7,7 +7,7 @@ const defaultProps = {
     { key: 'field1', message: 'Field 1 is required' },
     { key: 'field2', message: 'Field 2 is invalid' },
   ],
-  shouldFocus: false,
+  focusKey: false,
 }
 
 describe('InvalidFormAlert', () => {

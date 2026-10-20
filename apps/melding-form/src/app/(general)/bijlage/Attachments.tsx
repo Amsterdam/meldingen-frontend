@@ -1,7 +1,5 @@
 'use client'
 
-import type { ChangeEvent } from 'react'
-
 import { Paragraph } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
@@ -66,10 +64,8 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const t = useTranslations('attachments')
   const tShared = useTranslations('shared')
 
-  const [genericErrorAlertKey, setGenericErrorAlertKey] = useState(0)
-  const [shouldFocusAlert, setShouldFocusAlert] = useState(false)
-
   const [{ apiError }, formAction, isPending] = useActionState(submitAttachmentsForm, initialState)
+  const [invalidFormAlertFocusKey, setInvalidFormAlertFocusKey] = useState<string[]>([])
 
   const { deletedFileName, fileUploads, genericError, handleDelete, handleSubmit, handleUpload } = useFileUploads({
     deleteAttachment: (serverId: number) => deleteAttachment(meldingId, token, serverId),
@@ -82,22 +78,19 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   })
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
-  const erroredFileUploadsKey = erroredFileUploads.map(({ id }) => id).join(',')
+  const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id)
+
+  // Only update when a new upload fails, so deleting a failed upload does not refocus the alert
+  if (erroredFileUploadIds.some((id) => !invalidFormAlertFocusKey.includes(id))) {
+    setInvalidFormAlertFocusKey(erroredFileUploadIds)
+  }
+
   const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
     key: id,
     message: t(errorMessage),
   }))
 
   const { description, label } = formData[0]
-
-  const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    if (genericError) {
-      setGenericErrorAlertKey((key) => key + 1)
-    }
-
-    setShouldFocusAlert(false)
-    handleUpload(event)
-  }
 
   // Update document title when there are API, validation or generic errors
   const baseDocumentTitle = `${label} - ${tShared('organisation-name')}`
@@ -106,11 +99,6 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     hasApiError: Boolean(apiError) || Boolean(genericError),
     validationErrorCount: validationErrors.length,
   })
-
-  // Set shouldFocusAlert to true when the list of validation errors changes
-  useEffect(() => {
-    if (erroredFileUploadsKey) setShouldFocusAlert(true)
-  }, [erroredFileUploadsKey])
 
   useEffect(() => {
     // TODO: Log the error to an error reporting service
@@ -125,18 +113,18 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
         <InvalidFormAlert
           errors={validationErrors}
+          focusKey={invalidFormAlertFocusKey}
           heading={t('validation-errors.alert-title', { count: validationErrors.length })}
-          shouldFocus={shouldFocusAlert}
         />
         {genericError && (
           <FocusableAlert
             className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
+            // useFileUploads sets a new object for every error, so repeated errors refocus the alert too
+            focusKey={genericError}
             heading={t(genericError.title, genericError.options)}
-            key={genericErrorAlertKey} // needed to focus when the same error is shown again after a new upload attempt
-            shouldFocus
           >
             {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
           </FocusableAlert>
@@ -172,7 +160,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
               dropAreaText={t('file-upload.drop-area')}
               id="file-upload"
               multiple
-              onChange={onUpload}
+              onChange={handleUpload}
               ref={inputRef}
             />
 
