@@ -9,9 +9,11 @@ describe('getMeldingData', () => {
 
     const { classification, created_at, id, labels, source } = melding
 
+    const createdAt = formatDateString(created_at)
+
     expect(result).toEqual([
       {
-        description: formatDateString(created_at).date,
+        description: `${createdAt.date} ${createdAt.time}`,
         key: 'created_at',
         term: 'detail.melding-data.created_at',
       },
