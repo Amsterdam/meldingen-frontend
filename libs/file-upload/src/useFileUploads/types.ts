@@ -4,11 +4,6 @@ export type ExistingFile = {
   serverId: number
 }
 
-export type UploadResult = {
-  error?: string
-  serverId?: number
-}
-
 export type FileUpload = {
   errorMessage?: string
   file: File | { name: string }
