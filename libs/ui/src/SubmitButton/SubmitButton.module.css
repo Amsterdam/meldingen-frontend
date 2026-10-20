@@ -1,11 +1,3 @@
-.button {
-  width: 100%;
-
-  @media screen and (min-width: 37.5rem) {
-    width: fit-content;
-  }
-}
-
 @keyframes rotate {
   to {
     transform: rotate(360deg);

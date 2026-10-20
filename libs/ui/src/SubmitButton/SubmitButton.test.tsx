@@ -19,22 +19,6 @@ describe('SubmitButton', () => {
     expect(button).toHaveAttribute('type', 'submit')
   })
 
-  it('renders the correct class', () => {
-    render(<SubmitButton {...defaultProps} />)
-
-    const button = screen.getByRole('button', { name: 'Test' })
-
-    expect(button).toHaveClass(/button/)
-  })
-
-  it('renders an extra class', () => {
-    render(<SubmitButton {...defaultProps} className="extra-class" />)
-
-    const button = screen.getByRole('button', { name: 'Test' })
-
-    expect(button).toHaveClass('extra-class')
-  })
-
   it('forwards extra props to the button', () => {
     render(<SubmitButton {...defaultProps} data-test="test" />)
 

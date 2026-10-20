@@ -3,7 +3,6 @@
 import type { ButtonHTMLAttributes, MouseEvent } from 'react'
 
 import { Button } from '@amsterdam/design-system-react/dist/Button'
-import { clsx } from 'clsx'
 import { useEffect, useState } from 'react'
 
 import styles from './SubmitButton.module.css'
@@ -16,7 +15,6 @@ export type SubmitButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'a
 
 export const SubmitButton = ({
   'aria-disabled': ariaDisabled,
-  className,
   isLoading,
   label,
   loadingLabel,
@@ -55,7 +53,6 @@ export const SubmitButton = ({
       // Updating aria-label is the most reliable way to inform screen readers of the loading state.
       // See https://github.com/w3c/aria/issues/2178
       aria-label={shouldConveyLoading ? `${label}, ${loadingLabel}` : undefined}
-      className={clsx(styles.button, className)}
       onClick={handleClick}
       type="submit"
     >
