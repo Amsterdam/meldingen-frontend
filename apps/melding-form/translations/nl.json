@@ -190,6 +190,18 @@
     "description": "U kunt ook bellen met telefoonnummer 14 020. Maandag tot en met vrijdag van 08.00 tot 18.00 uur.",
     "button": "Probeer het opnieuw"
   },
+  "global": {
+    "page-footer": {
+      "title": "Vragen over dit formulier",
+      "about-meldingen": "Lees meer over meldingen openbare ruimte",
+      "call": "Bel {phoneNumber}",
+      "phone": "14 020",
+      "contact": "Contact",
+      "about": "Over deze site",
+      "privacy": "Privacy",
+      "accessibility": "Toegankelijkheid"
+    }
+  },
   "shared": {
     "document-title-error-count-prefix": "({count, plural, =1 {1 invoerfout} other {# invoerfouten}})",
     "invalid-form-alert-title": "Verbeter de fouten voor u verder gaat",
