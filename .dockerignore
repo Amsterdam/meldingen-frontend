@@ -1,15 +1,24 @@
+# Docker
 Dockerfile
 .dockerignore
+
+# Generated locally
 **/node_modules
-npm-debug.log
-README.md
-**/.next
-.husky/
-.github/
-.vscode/
-docs/
-AGENTS.md
-azure-pipelines.yml
-.git
 **/coverage
 **/dist
+**/.next
+npm-debug.log
+
+# Tooling
+.husky/
+.vscode/
+
+# Documentation
+docs/
+AGENTS.md
+README.md
+
+# CI/CD and Git
+azure-pipelines.yml
+.github/
+.git
