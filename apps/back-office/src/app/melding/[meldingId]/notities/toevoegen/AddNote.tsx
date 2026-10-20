@@ -47,9 +47,9 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
 
   return (
     <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }} documentTitle={documentTitle}>
-      {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
+      {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
       {validationErrors && (
-        <InvalidFormAlert errors={validationErrors} heading={t('invalid-form-alert-title')} shouldFocus={!isPending} />
+        <InvalidFormAlert errors={validationErrors} focusKey={!isPending} heading={t('invalid-form-alert-title')} />
       )}
       <Heading className="ams-mb-m" level={1}>
         {t('title')}
