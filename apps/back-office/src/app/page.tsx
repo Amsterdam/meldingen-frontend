@@ -29,7 +29,7 @@ const getPageSizeFromCookie = async (): Promise<number> => {
 export default async ({ searchParams }: Props) => {
   const { pagina } = await searchParams
   const pageString = Array.isArray(pagina) ? pagina[0] : pagina
-  const page = pageString ? Number(pageString) : undefined
+  const page = pageString ? parseInt(pageString, 10) : undefined
   const pageSize = await getPageSizeFromCookie()
 
   if (page !== undefined && isNaN(page)) {
