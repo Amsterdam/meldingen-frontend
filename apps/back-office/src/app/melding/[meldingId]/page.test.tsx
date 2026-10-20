@@ -135,9 +135,11 @@ describe('Page', () => {
       },
     ]
 
+    const createdAt = formatDateString(created_at)
+
     const meldingData = [
       {
-        description: formatDateString(created_at).date,
+        description: `${createdAt.date} ${createdAt.time}`,
         key: 'created_at',
         term: 'detail.melding-data.created_at',
       },
