@@ -66,7 +66,11 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
       <FormRenderer
         action={formAction}
         formComponents={formComponents}
-        submitButtonText={t('submit-button')}
+        submitButton={{
+          isLoading: isPending,
+          label: t('submit-button'),
+          loadingLabel: tShared('submit-button-loading-label'),
+        }}
         validationErrors={validationErrors}
       />
     </main>

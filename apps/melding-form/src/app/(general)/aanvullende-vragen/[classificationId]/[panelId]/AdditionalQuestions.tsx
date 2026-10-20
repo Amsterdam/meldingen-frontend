@@ -112,7 +112,11 @@ export const AdditionalQuestions = ({
           formComponents={formComponents}
           panelTitle={panelTitle}
           previousAnswersByKey={previousAnswersByKey}
-          submitButtonText={t('submit-button')}
+          submitButton={{
+            isLoading: isPending,
+            label: t('submit-button'),
+            loadingLabel: tShared('submit-button-loading-label'),
+          }}
           validationErrors={validationErrors}
         />
       </main>
