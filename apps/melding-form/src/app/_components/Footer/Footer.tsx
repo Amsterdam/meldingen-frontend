@@ -4,7 +4,7 @@ import { Column, Grid, Heading, LinkList, PageFooter } from '@meldingen/ui'
 
 export const Footer = () => {
   const t = useTranslations('global.page-footer')
-  const phoneNumber = t('phone').replaceAll(' ', '')
+  const phoneNumber = t('phone')
 
   return (
     <PageFooter>
@@ -20,7 +20,7 @@ export const Footer = () => {
                 <LinkList.Link color="inverse" href="https://www.amsterdam.nl/leefomgeving/een-melding-doen/">
                   {t('about-meldingen')}
                 </LinkList.Link>
-                <LinkList.Link color="inverse" href={`tel:${phoneNumber.replaceAll(' ', '')}}`}>
+                <LinkList.Link color="inverse" href={`tel:${phoneNumber.replaceAll(' ', '')}`}>
                   {t('call', { phoneNumber })}
                 </LinkList.Link>
                 <LinkList.Link color="inverse" href="https://www.amsterdam.nl/contact/">
