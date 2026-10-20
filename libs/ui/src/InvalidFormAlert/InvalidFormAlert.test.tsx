@@ -7,9 +7,9 @@ const defaultProps = {
     { key: '#', message: 'Vul een geldige datum in (bijvoorbeeld 6 januari 2030).' },
     { key: '#', message: 'De geldigheidsdatum van uw paspoort moet in de toekomst liggen.' },
   ],
+  focusKey: false,
   heading: 'Verbeter de fouten voor u verder gaat',
   headingLevel: 2 as const,
-  shouldFocus: false,
 }
 
 describe('Invalid Form Alert', () => {
@@ -65,7 +65,7 @@ describe('Invalid Form Alert', () => {
     expect(heading).toBeInTheDocument()
   })
 
-  it('does not set focus on Alert when shouldFocus is false', () => {
+  it('does not set focus on Alert when focusKey is falsy', () => {
     const { container } = render(<InvalidFormAlert {...defaultProps} />)
 
     const alert = container.querySelector('.ams-alert')
@@ -73,8 +73,8 @@ describe('Invalid Form Alert', () => {
     expect(alert).not.toHaveFocus()
   })
 
-  it('sets focus on Alert when shouldFocus is true', () => {
-    const { container } = render(<InvalidFormAlert {...defaultProps} shouldFocus />)
+  it('sets focus on Alert when focusKey is truthy', () => {
+    const { container } = render(<InvalidFormAlert {...defaultProps} focusKey />)
 
     const alert = container.querySelector('.ams-alert')
 
