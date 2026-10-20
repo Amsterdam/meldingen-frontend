@@ -16,12 +16,12 @@ type Props = Pick<PageProps<'/melding/[meldingId]'>, 'params'>
 export const generateMetadata = async ({ params }: Props) => {
   const { meldingId } = await params
 
-  const t = await getTranslations('detail')
+  const t = await getTranslations()
 
   const { data } = await getMeldingByMeldingId({ path: { melding_id: Number(meldingId) } })
 
   return {
-    title: t('metadata.title', { publicId: data?.public_id ?? '' }),
+    title: t('detail.metadata.title', { publicId: data?.public_id ?? '' }),
   }
 }
 
