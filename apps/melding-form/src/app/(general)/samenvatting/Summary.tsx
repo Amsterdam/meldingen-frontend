@@ -6,7 +6,7 @@ import Form from 'next/form'
 import NextLink from 'next/link'
 import { useActionState, useEffect } from 'react'
 
-import { Link, SummaryList, UnorderedList } from '@meldingen/ui'
+import { Link, ResponsiveSubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
 import type { AssetItem } from '../_utils/formatAssetItem'
 import type { FormState } from '~/types'
@@ -14,7 +14,7 @@ import type { FormState } from '~/types'
 import { AssetElement } from '../_components/AssetElement/AssetElement'
 import { useDocumentTitleOnError } from '../_utils'
 import { AttachmentImage } from './_components/AttachmentImage'
-import { ApiErrorAlert, BackLink, SubmitButton } from '~/app/_components'
+import { ApiErrorAlert, BackLink } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 type GenericSummaryData = {
@@ -183,7 +183,11 @@ export const Summary = ({
         </SummaryList>
 
         <Form action={formAction} noValidate>
-          <SubmitButton isLoading={isPending} label={t('submit-button')} />
+          <ResponsiveSubmitButton
+            isLoading={isPending}
+            label={t('submit-button')}
+            loadingLabel={tShared('submit-button-loading-label')}
+          />
         </Form>
       </main>
     </>

@@ -11,7 +11,7 @@ import type { AnswersByKey } from '../../../_utils/conditions'
 import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from '../../../_utils'
-import { ApiErrorAlert, InvalidFormAlert, SubmitButton } from '~/app/_components'
+import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 import { BackLink } from '~/app/_components'
 
 const getPrefilledFormComponents = (components: Component[], formData: FormData): Component[] =>
@@ -112,10 +112,13 @@ export const AdditionalQuestions = ({
           formComponents={formComponents}
           panelTitle={panelTitle}
           previousAnswersByKey={previousAnswersByKey}
+          submitButton={{
+            isLoading: isPending,
+            label: t('submit-button'),
+            loadingLabel: tShared('submit-button-loading-label'),
+          }}
           validationErrors={validationErrors}
-        >
-          <SubmitButton isLoading={isPending} label={t('submit-button')} />
-        </FormRenderer>
+        />
       </main>
     </>
   )

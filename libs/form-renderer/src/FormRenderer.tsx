@@ -1,9 +1,7 @@
-import type { ReactNode } from 'react'
-
 import Form from 'next/form'
 import { useState } from 'react'
 
-import { Heading } from '@meldingen/ui'
+import { Heading, ResponsiveSubmitButton } from '@meldingen/ui'
 
 import type { AnswersByKey, Component } from './types'
 
@@ -126,10 +124,14 @@ const getComponent = (
 
 export type Props = {
   action: (formData: FormData) => void
-  children: ReactNode
   formComponents: Component[]
   panelTitle?: string
   previousAnswersByKey?: AnswersByKey
+  submitButton: {
+    isLoading: boolean
+    label: string
+    loadingLabel: string
+  }
   validationErrors?: {
     key: string
     message: string
@@ -138,10 +140,10 @@ export type Props = {
 
 export const FormRenderer = ({
   action,
-  children,
   formComponents,
   panelTitle,
   previousAnswersByKey = {},
+  submitButton,
   validationErrors,
 }: Props) => {
   const hasOneFormComponent = formComponents.length === 1
@@ -180,7 +182,11 @@ export const FormRenderer = ({
 
           return getComponent(component, hasOneFormComponent, onChange, errorMessage)
         })}
-        {children}
+        <ResponsiveSubmitButton
+          isLoading={submitButton.isLoading}
+          label={submitButton.label}
+          loadingLabel={submitButton.loadingLabel}
+        />
       </Form>
     </>
   )

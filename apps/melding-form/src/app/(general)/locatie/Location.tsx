@@ -6,12 +6,14 @@ import Form from 'next/form'
 import NextLink from 'next/link'
 import { useActionState, useEffect } from 'react'
 
+import { ResponsiveSubmitButton } from '@meldingen/ui'
+
 import type { AssetItem } from '../_utils/formatAssetItem'
 import type { FormState } from '~/types'
 
 import { AssetElement } from '../_components/AssetElement/AssetElement'
 import { useDocumentTitleOnError } from '../_utils'
-import { ApiErrorAlert, BackLink, InvalidFormAlert, SubmitButton } from '~/app/_components'
+import { ApiErrorAlert, BackLink, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 const initialState: Pick<FormState, 'apiError' | 'validationErrors'> = {}
@@ -79,7 +81,11 @@ export const Location = ({ action, address, pageConfig, prevPage, selectedAssets
           </StandaloneLink>
         </Field>
         <Form action={formAction} noValidate>
-          <SubmitButton isLoading={isPending} label={t('submit-button')} />
+          <ResponsiveSubmitButton
+            isLoading={isPending}
+            label={t('submit-button')}
+            loadingLabel={tShared('submit-button-loading-label')}
+          />
         </Form>
       </main>
     </>

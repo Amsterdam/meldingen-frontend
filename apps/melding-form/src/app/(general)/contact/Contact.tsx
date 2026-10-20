@@ -9,13 +9,13 @@ import type { StaticFormTextAreaComponent } from '@meldingen/form-renderer'
 
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { TextInput } from '@meldingen/ui'
+import { ResponsiveSubmitButton, TextInput } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from '../_utils'
 import { postContactForm } from './actions'
-import { ApiErrorAlert, BackLink, InvalidFormAlert, SubmitButton } from '~/app/_components'
+import { ApiErrorAlert, BackLink, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 const initialState: FormState = {}
@@ -113,7 +113,11 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
               type="tel"
             />
           </Field>
-          <SubmitButton isLoading={isPending} label={t('submit-button')} />
+          <ResponsiveSubmitButton
+            isLoading={isPending}
+            label={t('submit-button')}
+            loadingLabel={tShared('submit-button-loading-label')}
+          />
         </Form>
       </main>
     </>

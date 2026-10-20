@@ -8,10 +8,14 @@ import { form } from './mocks/data'
 
 const defaultProps: Props = {
   action: vi.fn(),
-  children: <></>,
   formComponents: form.components[0].components,
   panelTitle: form.components[0].title,
   previousAnswersByKey: {},
+  submitButton: {
+    isLoading: false,
+    label: 'Submit',
+    loadingLabel: 'Submitting...',
+  },
 }
 
 const components = [
@@ -68,16 +72,12 @@ describe('FormRenderer', () => {
     expect(component).not.toBeInTheDocument()
   })
 
-  it('renders children', () => {
-    render(
-      <FormRenderer {...defaultProps}>
-        <button>Hello</button>
-      </FormRenderer>,
-    )
+  it('renders a submit button', () => {
+    render(<FormRenderer {...defaultProps} />)
 
-    const childButton = screen.getByRole('button', { name: 'Hello' })
+    const submitButton = screen.getByRole('button', { name: 'Submit' })
 
-    expect(childButton).toBeInTheDocument()
+    expect(submitButton).toBeInTheDocument()
   })
 
   components.map(({ index, name }) => {

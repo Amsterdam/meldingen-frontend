@@ -15,13 +15,13 @@ import { deleteMeldingByMeldingIdAttachmentByAttachmentId } from '@meldingen/api
 import { FileList, FileUpload, useFileUploads } from '@meldingen/file-upload'
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { Column, Heading } from '@meldingen/ui'
+import { Column, Heading, ResponsiveSubmitButton } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from '../_utils'
 import { submitAttachmentsForm } from './actions'
-import { ApiErrorAlert, BackLink, InvalidFormAlert, SubmitButton } from '~/app/_components'
+import { ApiErrorAlert, BackLink, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 import { clientEnv } from '~/env/client'
 
@@ -215,7 +215,11 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           </div>
         </Column>
         <Form action={formAction} onSubmit={handleSubmit}>
-          <SubmitButton isLoading={isPending} label={t('submit-button')} />
+          <ResponsiveSubmitButton
+            isLoading={isPending}
+            label={t('submit-button')}
+            loadingLabel={tShared('submit-button-loading-label')}
+          />
         </Form>
       </main>
     </>
