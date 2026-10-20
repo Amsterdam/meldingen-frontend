@@ -108,7 +108,7 @@ describe('Page', () => {
       {
         description: melding.text,
         key: 'text',
-        term: 'melding-text',
+        term: 'detail.melding-text',
       },
       {
         description: additionalQuestions[0].text,

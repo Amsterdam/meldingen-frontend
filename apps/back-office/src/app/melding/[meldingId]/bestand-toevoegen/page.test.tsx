@@ -46,7 +46,7 @@ describe('Page', () => {
 
     await Page({ params: Promise.resolve({ meldingId: '123' }) })
 
-    expect(getAttachmentsData).toHaveBeenCalledWith('123', 'thumbnail')
+    expect(getAttachmentsData).toHaveBeenCalledWith(123, 'thumbnail')
   })
 
   it('renders the error message when getAttachmentsData rejects', async () => {
@@ -62,7 +62,7 @@ describe('Page', () => {
 
     render(result)
 
-    expect(AddAttachment).toHaveBeenCalledWith({ attachments, meldingId: '123' }, undefined)
+    expect(AddAttachment).toHaveBeenCalledWith({ attachments, meldingId: 123 }, undefined)
     expect(screen.getByText('AddAttachment Component')).toBeInTheDocument()
   })
 })
