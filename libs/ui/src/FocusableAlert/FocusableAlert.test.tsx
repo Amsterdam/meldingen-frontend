@@ -57,16 +57,16 @@ describe('FocusableAlert', () => {
     expect(heading).toBeInTheDocument()
   })
 
-  it('sets focus on the alert when focusKey is truthy', () => {
-    const { container } = render(<FocusableAlert {...defaultProps} focusKey />)
+  it.each([true, 'truthy string', {}])('sets focus on the alert when focusKey has truthy value "%s"', (value) => {
+    const { container } = render(<FocusableAlert {...defaultProps} focusKey={value} />)
 
     const alert = container.querySelector('.ams-alert')
 
     expect(alert).toHaveFocus()
   })
 
-  it('does not set focus on the alert when focusKey is falsy', () => {
-    const { container } = render(<FocusableAlert {...defaultProps} />)
+  it.each([false, '', 0])('does not set focus on the alert when focusKey has falsy value "%s"', (value) => {
+    const { container } = render(<FocusableAlert {...defaultProps} focusKey={value} />)
 
     const alert = container.querySelector('.ams-alert')
 
