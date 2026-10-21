@@ -1,24 +1,36 @@
 # Docker
+
 Dockerfile
 .dockerignore
 
 # Generated locally
+
 **/node_modules
 **/coverage
 **/dist
 **/.next
-npm-debug.log
+**/*.log
 
 # Tooling
+
 .husky/
 .vscode/
 
 # Documentation
+
 docs/
 AGENTS.md
 README.md
 
 # CI/CD and Git
+
 azure-pipelines.yml
 .github/
 .git
+
+# Secrets
+
+**/.env.*
+*.pem
+*.key
+*.der
