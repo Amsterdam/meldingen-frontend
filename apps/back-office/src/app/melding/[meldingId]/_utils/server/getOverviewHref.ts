@@ -2,15 +2,15 @@ import { cookies } from 'next/headers'
 
 import { COOKIES } from '~/constants'
 
+// Only same-origin relative paths are allowed, to prevent an open redirect via a tampered cookie.
+// `//` and `/\` are rejected because browsers treat them as protocol-relative URLs.
+const isRelativePath = (value: string) => value.startsWith('/') && !value.startsWith('//') && !value.startsWith('/\\')
+
 export const getOverviewHref = async () => {
   const cookieStore = await cookies()
-  const value = cookieStore.get(COOKIES.OVERVIEW_PAGE)?.value
+  const value = cookieStore.get(COOKIES.LAST_OVERVIEW_URL)?.value
 
-  if (!value) return '/'
+  if (!value || !isRelativePath(value)) return '/'
 
-  const page = parseInt(value, 10)
-
-  if (isNaN(page) || page <= 1) return '/'
-
-  return `/?pagina=${page}`
+  return value
 }

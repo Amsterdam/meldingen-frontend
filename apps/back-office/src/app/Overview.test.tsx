@@ -12,6 +12,12 @@ vi.mock('./_components/OverviewDesktop', () => ({
 vi.mock('./_components/PageSizeSelect', () => ({
   PageSizeSelect: () => <div>PageSizeSelect</div>,
 }))
+vi.mock('next/navigation', () => ({
+  redirect: vi.fn(),
+  usePathname: () => '/',
+  useSearchParams: () => new URLSearchParams('pagina=3'),
+}))
+
 import { Overview } from './Overview'
 
 describe('Overview', () => {
@@ -25,9 +31,9 @@ describe('Overview', () => {
     expect(screen.getByText('PageSizeSelect')).toBeInTheDocument()
   })
 
-  it('remembers the current overview page', () => {
+  it('remembers the current overview url', () => {
     render(<Overview meldingen={[melding]} meldingenCount={30} page={3} pageSize={10} totalPages={3} />)
 
-    expect(document.cookie).toContain(`${COOKIES.OVERVIEW_PAGE}=3`)
+    expect(document.cookie).toContain(`${COOKIES.LAST_OVERVIEW_URL}=${encodeURIComponent('/?pagina=3')}`)
   })
 })

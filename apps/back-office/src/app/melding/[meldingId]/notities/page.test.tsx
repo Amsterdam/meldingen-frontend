@@ -85,8 +85,8 @@ describe('Page', () => {
     )
   })
 
-  it('passes the overview page stored in the cookie to the NotesOverview component', async () => {
-    mockCookies({ [COOKIES.OVERVIEW_PAGE]: '4' })
+  it('passes the overview url stored in the cookie to the NotesOverview component', async () => {
+    mockCookies({ [COOKIES.LAST_OVERVIEW_URL]: '/?pagina=4' })
 
     const result = await Page({ params: Promise.resolve({ meldingId: 123 }) })
 
