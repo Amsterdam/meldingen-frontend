@@ -1,0 +1,7 @@
+.button {
+  inline-size: 100%;
+
+  @media screen and (min-width: 37.5rem) {
+    inline-size: fit-content;
+  }
+}
