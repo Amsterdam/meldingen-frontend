@@ -1,12 +1,11 @@
 import { ChangeState } from './ChangeState'
 import { getMeldingByMeldingId, getMeldingByMeldingIdNextPossibleStates } from '~/app/_api-client/proxy'
 
-type Params = {
-  params: Promise<{ meldingId: number }>
-}
+type Props = Pick<PageProps<'/melding/[meldingId]/wijzig-status'>, 'params'>
 
-export default async ({ params }: Params) => {
-  const { meldingId } = await params
+export default async ({ params }: Props) => {
+  const { meldingId: meldingIdParams } = await params
+  const meldingId = Number(meldingIdParams)
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 

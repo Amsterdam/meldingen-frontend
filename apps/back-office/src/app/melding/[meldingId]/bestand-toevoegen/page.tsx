@@ -4,8 +4,11 @@ import { getAttachmentsData } from '../_utils/server'
 import { AddAttachment } from './AddAttachment'
 import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
-export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
-  const { meldingId } = await params
+type Props = Pick<PageProps<'/melding/[meldingId]/bestand-toevoegen'>, 'params'>
+
+export const generateMetadata = async ({ params }: Props) => {
+  const { meldingId: meldingIdParams } = await params
+  const meldingId = Number(meldingIdParams)
 
   const t = await getTranslations('add-attachment')
 
@@ -16,8 +19,9 @@ export const generateMetadata = async ({ params }: { params: Promise<{ meldingId
   }
 }
 
-export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
-  const { meldingId } = await params
+export default async ({ params }: Props) => {
+  const { meldingId: meldingIdParams } = await params
+  const meldingId = Number(meldingIdParams)
 
   const attachments = await getAttachmentsData(meldingId, 'thumbnail')
 

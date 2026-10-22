@@ -4,15 +4,14 @@ import { isReclassificationAllowed } from '../_utils/server'
 import { ChangeCategory } from './ChangeCategory'
 import { getClassification, getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
-type Params = {
-  params: Promise<{ meldingId: string }>
-}
+type Props = Pick<PageProps<'/melding/[meldingId]/wijzig-categorie'>, 'params'>
 
-export default async ({ params }: Params) => {
-  const { meldingId } = await params
+export default async ({ params }: Props) => {
+  const { meldingId: meldingIdParams } = await params
+  const meldingId = Number(meldingIdParams)
 
   const { data: melding, error: meldingError } = await getMeldingByMeldingId({
-    path: { melding_id: Number(meldingId) },
+    path: { melding_id: meldingId },
   })
 
   if (meldingError) throw new Error('Failed to fetch melding data.')
@@ -31,7 +30,7 @@ export default async ({ params }: Params) => {
     <ChangeCategory
       classifications={classifications}
       meldingClassification={melding.classification}
-      meldingId={Number(meldingId)}
+      meldingId={meldingId}
       publicId={melding.public_id}
     />
   )

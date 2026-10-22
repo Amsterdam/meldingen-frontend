@@ -11,6 +11,8 @@ import { BackOfficeLayout, RegularLayout } from '../_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 import { clientEnv } from '~/env/client'
 
+type Props = Pick<PageProps<'/bedankt'>, 'searchParams'>
+
 // The "description" translation also accepts undefined values for conditional rendering
 type TWithUndefined = (key: string, values?: Record<string, string | number | Date | undefined>) => string
 
@@ -22,10 +24,14 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 }
 
-export default async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) => {
+export default async ({ searchParams }: Props) => {
   const t = (await getTranslations('thanks')) as TWithUndefined
 
-  const { created_at: createdAt, id, public_id: publicId, source } = await searchParams
+  const { created_at, id: idParam, public_id, source: sourceParam } = await searchParams
+  const createdAt = Array.isArray(created_at) ? created_at[0] : created_at
+  const id = Array.isArray(idParam) ? idParam[0] : idParam
+  const publicId = Array.isArray(public_id) ? public_id[0] : public_id
+  const source = Array.isArray(sourceParam) ? sourceParam[0] : sourceParam
 
   const { date, time } = createdAt ? formatDateString(createdAt) : { date: undefined, time: undefined }
 

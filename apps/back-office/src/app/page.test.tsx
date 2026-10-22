@@ -65,6 +65,21 @@ describe('Page', () => {
     )
   })
 
+  it('uses the first value when the "pagina" search param is an array', async () => {
+    const searchParams = Promise.resolve({ pagina: ['2', '3'] })
+
+    const result = await Page({ searchParams })
+
+    render(result)
+
+    expect(Overview).toHaveBeenCalledWith(
+      expect.objectContaining({
+        page: 2,
+      }),
+      undefined,
+    )
+  })
+
   it('uses the page size cookie when present and valid', async () => {
     mockCookies({
       [COOKIES.PAGE_SIZE]: '20',

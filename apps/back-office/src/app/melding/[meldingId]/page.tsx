@@ -12,20 +12,23 @@ import {
 import { Detail } from './Detail'
 import { getMeldingByMeldingId, getMeldingByMeldingIdNote } from '~/app/_api-client/proxy'
 
-export const generateMetadata = async ({ params }: { params: Promise<{ meldingId: number }> }) => {
+type Props = Pick<PageProps<'/melding/[meldingId]'>, 'params'>
+
+export const generateMetadata = async ({ params }: Props) => {
   const { meldingId } = await params
 
   const t = await getTranslations('detail')
 
-  const { data } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
+  const { data } = await getMeldingByMeldingId({ path: { melding_id: Number(meldingId) } })
 
   return {
     title: t('metadata.title', { publicId: data?.public_id ?? '' }),
   }
 }
 
-export default async ({ params }: { params: Promise<{ meldingId: number }> }) => {
-  const { meldingId } = await params
+export default async ({ params }: Props) => {
+  const { meldingId: meldingParams } = await params
+  const meldingId = Number(meldingParams)
 
   const t = await getTranslations()
 

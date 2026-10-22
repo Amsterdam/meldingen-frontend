@@ -6,6 +6,8 @@ import { COOKIES, DEFAULT_PAGE_SIZE, SORT } from '../constants'
 import { Overview } from './Overview'
 import { getMelding } from '~/app/_api-client/proxy'
 
+type Props = Pick<PageProps<'/'>, 'searchParams'>
+
 /* v8 ignore next */
 export const generateMetadata = async () => {
   const t = await getTranslations('overview')
@@ -13,10 +15,6 @@ export const generateMetadata = async () => {
   return {
     title: t('metadata.title'),
   }
-}
-
-type Props = {
-  searchParams: Promise<{ pagina?: string }>
 }
 
 const getPageSizeFromCookie = async (): Promise<number> => {
@@ -29,8 +27,9 @@ const getPageSizeFromCookie = async (): Promise<number> => {
 }
 
 export default async ({ searchParams }: Props) => {
-  const pageString = (await searchParams).pagina
-  const page = !pageString ? undefined : parseInt(pageString, 10)
+  const { pagina } = await searchParams
+  const pageString = Array.isArray(pagina) ? pagina[0] : pagina
+  const page = pageString ? parseInt(pageString, 10) : undefined
   const pageSize = await getPageSizeFromCookie()
 
   if (page !== undefined && isNaN(page)) {

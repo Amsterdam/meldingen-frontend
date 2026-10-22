@@ -22,7 +22,7 @@ vi.mock('next-intl/server', async () => ({
 
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
-    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: 123 }) })
+    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: '123' }) })
 
     expect(metadata).toEqual({ title: 'metadata.title: {"publicId":"ABC"}' })
   })
@@ -30,7 +30,7 @@ describe('generateMetadata', () => {
   it('returns a fallback title when public id is not available', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({ data: { public_id: null } })))
 
-    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: 123 }) })
+    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: '123' }) })
 
     expect(metadata).toEqual({ title: 'metadata.title: {"publicId":""}' })
   })
@@ -44,7 +44,7 @@ describe('Page', () => {
   it('throws an error when getMeldingByMeldingId returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 500 })))
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     await expect(Page({ params })).rejects.toThrow('Failed to fetch melding data.')
   })
@@ -52,7 +52,7 @@ describe('Page', () => {
   it('throws an error when getMeldingByMeldingIdNote returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () => HttpResponse.json({}, { status: 500 })))
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     await expect(Page({ params })).rejects.toThrow('Failed to fetch notes data.')
   })
@@ -60,7 +60,7 @@ describe('Page', () => {
   it('throws an error when getUserMe returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_USER_ME, () => HttpResponse.json({}, { status: 500 })))
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     await expect(Page({ params })).rejects.toThrow('Failed to fetch current user data.')
   })
@@ -68,13 +68,13 @@ describe('Page', () => {
   it('throws an error when getClassification returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_CLASSIFICATION, () => HttpResponse.json({}, { status: 500 })))
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     await expect(Page({ params })).rejects.toThrow('Failed to fetch classifications data.')
   })
 
   it('calls the NotesOverview component with the correct data', async () => {
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
     const result = await Page({ params })
 
     render(result)
@@ -88,7 +88,7 @@ describe('Page', () => {
   it('passes the overview url stored in the cookie to the NotesOverview component', async () => {
     mockCookies({ [COOKIES.LAST_OVERVIEW_URL]: '/?pagina=4' })
 
-    const result = await Page({ params: Promise.resolve({ meldingId: 123 }) })
+    const result = await Page({ params: Promise.resolve({ meldingId: '123' }) })
 
     render(result)
 

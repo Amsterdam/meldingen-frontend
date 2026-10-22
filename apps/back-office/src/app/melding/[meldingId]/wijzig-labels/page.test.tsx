@@ -19,21 +19,21 @@ describe('Page', () => {
       ),
     )
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
-    await expect(Page({ params })).rejects.toThrowError('Failed to fetch melding data.')
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch melding data.')
   })
 
   it('throws an error when labels data is not available', async () => {
     server.use(http.get(ENDPOINTS.GET_LABEL, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })))
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
-    await expect(Page({ params })).rejects.toThrowError('Failed to fetch labels.')
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch labels.')
   })
 
   it('renders the ChangeLabels component when data is available', async () => {
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     const result = await Page({ params })
 
@@ -53,7 +53,7 @@ describe('Page', () => {
       ),
     )
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     const result = await Page({ params })
 

@@ -126,15 +126,20 @@ const toExistingMeldingData = (melding?: MeldingOutput, token?: string) => {
   }
 }
 
-export default async ({ searchParams }: { searchParams: Promise<{ id?: number; token?: string }> }) => {
-  const { id, token } = await searchParams
+type Props = Pick<PageProps<'/melden'>, 'searchParams'>
+
+export default async ({ searchParams }: Props) => {
+  const { id: idParams, token: tokenParams } = await searchParams
+  const token = Array.isArray(tokenParams) ? tokenParams[0] : tokenParams
+  const idParam = Array.isArray(idParams) ? idParams[0] : idParams
+  const meldingId = idParam ? Number(idParam) : undefined
 
   const [primaryTextArea, { labels, sources }, classifications, existingMelding, note] = await Promise.all([
     fetchPrimaryTextArea(),
     fetchSourcesAndLabels(),
     fetchClassifications(),
-    id && token ? fetchExistingMelding(id) : Promise.resolve(undefined),
-    id && token ? fetchNote(id) : Promise.resolve(undefined),
+    meldingId && token ? fetchExistingMelding(meldingId) : Promise.resolve(undefined),
+    meldingId && token ? fetchNote(meldingId) : Promise.resolve(undefined),
   ])
 
   const defaultValues = toDefaultValues(existingMelding, note)
@@ -144,7 +149,7 @@ export default async ({ searchParams }: { searchParams: Promise<{ id?: number; t
     <MeldingForm
       classifications={classifications}
       defaultValues={defaultValues}
-      existingId={id}
+      existingId={meldingId}
       existingMelding={existingMeldingData}
       existingNoteId={note?.id}
       existingToken={token}

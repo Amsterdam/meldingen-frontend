@@ -187,6 +187,13 @@ export default defineConfig(
     },
   },
 
+  {
+    files: ['**/*.{ts,tsx}'],
+    rules: {
+      'no-undef': 'off', // TypeScript handles this
+    },
+  },
+
   // Don't force using type over interface in .d.ts files
   {
     files: ['**/*.d.ts'],

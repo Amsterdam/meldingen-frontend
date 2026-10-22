@@ -21,7 +21,7 @@ describe('Page', () => {
 
     const params = Promise.resolve({ meldingId: '123' })
 
-    await expect(Page({ params })).rejects.toThrowError('Failed to fetch melding data.')
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch melding data.')
   })
 
   it('throws an error when classifications are not available', async () => {
@@ -31,7 +31,7 @@ describe('Page', () => {
 
     const params = Promise.resolve({ meldingId: '123' })
 
-    await expect(Page({ params })).rejects.toThrowError('Failed to fetch classifications.')
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch classifications.')
   })
 
   it('redirects when the melding state does not allow reclassification', async () => {

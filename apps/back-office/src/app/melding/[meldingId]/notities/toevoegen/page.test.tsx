@@ -9,7 +9,7 @@ vi.mock('./AddNote', () => ({
 
 describe('Page', () => {
   it('renders', async () => {
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     const result = await Page({ params })
 

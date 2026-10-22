@@ -22,7 +22,7 @@ describe('Page', () => {
   it('throws an error when getMeldingByMeldingIdAttachments returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json({}, { status: 500 })))
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
     const searchParams = Promise.resolve({})
 
     await expect(Page({ params, searchParams })).rejects.toThrow('Failed to fetch melding attachments.')
@@ -31,14 +31,14 @@ describe('Page', () => {
   it('throws an error when getAttachmentById returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, () => HttpResponse.json({}, { status: 500 })))
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
     const searchParams = Promise.resolve({})
 
     await expect(Page({ params, searchParams })).rejects.toThrow('Failed to download image.')
   })
 
   it('calls Photos with the mapped images and no defaultSlideIndex when there is no id search param', async () => {
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
     const searchParams = Promise.resolve({})
 
     const result = await Page({ params, searchParams })
@@ -63,7 +63,7 @@ describe('Page', () => {
   })
 
   it('calls Photos with the matching defaultSlideIndex when the id search param matches an attachment', async () => {
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
     const searchParams = Promise.resolve({ id: '42' })
 
     const result = await Page({ params, searchParams })
@@ -73,8 +73,19 @@ describe('Page', () => {
     expect(Photos).toHaveBeenCalledWith(expect.objectContaining({ defaultSlideIndex: 0 }), undefined)
   })
 
+  it('uses the first value when the id search param is an array', async () => {
+    const params = Promise.resolve({ meldingId: '123' })
+    const searchParams = Promise.resolve({ id: ['42', '999'] })
+
+    const result = await Page({ params, searchParams })
+
+    render(result)
+
+    expect(Photos).toHaveBeenCalledWith(expect.objectContaining({ defaultSlideIndex: 0 }), undefined)
+  })
+
   it('calls Photos without a defaultSlideIndex when the id search param does not match an attachment', async () => {
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
     const searchParams = Promise.resolve({ id: '999' })
 
     const result = await Page({ params, searchParams })
@@ -94,7 +105,7 @@ describe('Page', () => {
       ),
     )
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
     const searchParams = Promise.resolve({})
 
     const result = await Page({ params, searchParams })

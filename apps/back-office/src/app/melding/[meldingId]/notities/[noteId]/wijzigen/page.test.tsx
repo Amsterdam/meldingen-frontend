@@ -12,7 +12,7 @@ vi.mock('./UpdateNote', () => ({
 
 describe('Page', () => {
   it('renders', async () => {
-    const params = Promise.resolve({ meldingId: 123, noteId: 456 })
+    const params = Promise.resolve({ meldingId: '123', noteId: '456' })
 
     const result = await Page({ params })
 
@@ -28,7 +28,7 @@ describe('Page', () => {
       ),
     )
 
-    const params = Promise.resolve({ meldingId: 123, noteId: 456 })
+    const params = Promise.resolve({ meldingId: '123', noteId: '456' })
 
     await expect(Page({ params })).rejects.toThrow('Failed to fetch note.')
   })
