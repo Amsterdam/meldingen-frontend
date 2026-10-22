@@ -31,6 +31,7 @@ type Props = {
   meldingData: MeldingDataItem[]
   meldingId: number
   notesCount?: number
+  overviewHref: string
   publicId: MeldingOutput['public_id']
 }
 
@@ -44,12 +45,13 @@ export const Detail = ({
   meldingData,
   meldingId,
   notesCount,
+  overviewHref,
   publicId,
 }: Props) => {
   const t = useTranslations('detail')
 
   return (
-    <PageWrapper backLink={{ href: `/`, label: t('back-link') }}>
+    <PageWrapper backLink={{ href: overviewHref, label: t('back-link') }}>
       <Heading className="ams-mb-l" level={1}>
         {t('title', { publicId })}
       </Heading>

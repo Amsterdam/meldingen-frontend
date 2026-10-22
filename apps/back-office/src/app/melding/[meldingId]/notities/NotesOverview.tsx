@@ -15,10 +15,11 @@ type Props = {
   currentUserId: number
   meldingId: number
   notes: NoteRetrieveOutput[]
+  overviewHref: string
   publicId: string
 }
 
-export const NotesOverview = ({ classifications, currentUserId, meldingId, notes, publicId }: Props) => {
+export const NotesOverview = ({ classifications, currentUserId, meldingId, notes, overviewHref, publicId }: Props) => {
   const t = useTranslations('notes-overview')
   const getClassification = (classificationId: NoteRetrieveOutput['classification_id']) =>
     classifications?.find((classification) => classification.id === classificationId)
@@ -26,7 +27,7 @@ export const NotesOverview = ({ classifications, currentUserId, meldingId, notes
   const hasNotes = notes.length > 0
 
   return (
-    <PageWrapper backLink={{ href: '/', label: t('back-link') }}>
+    <PageWrapper backLink={{ href: overviewHref, label: t('back-link') }}>
       <Heading className="ams-mb-l" level={1}>
         {t('title', { publicId })}
       </Heading>

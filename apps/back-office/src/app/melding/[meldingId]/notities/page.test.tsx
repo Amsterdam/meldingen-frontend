@@ -3,9 +3,13 @@ import { http, HttpResponse } from 'msw'
 
 import { NotesOverview } from './NotesOverview'
 import Page, { generateMetadata } from './page'
+import { COOKIES } from '~/constants'
 import { classifications, melding } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
+import { mockCookies } from '~/mocks/utils'
+
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('./NotesOverview', () => ({
   NotesOverview: vi.fn(() => <div>NotesOverview Component</div>),
@@ -33,6 +37,10 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
+  beforeEach(() => {
+    mockCookies({})
+  })
+
   it('throws an error when getMeldingByMeldingId returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 500 })))
 
@@ -72,8 +80,18 @@ describe('Page', () => {
     render(result)
 
     expect(NotesOverview).toHaveBeenCalledWith(
-      { classifications, currentUserId: 1, meldingId: 123, notes: [], publicId: melding.public_id },
+      { classifications, currentUserId: 1, meldingId: 123, notes: [], overviewHref: '/', publicId: melding.public_id },
       undefined,
     )
+  })
+
+  it('passes the overview url stored in the cookie to the NotesOverview component', async () => {
+    mockCookies({ [COOKIES.LAST_OVERVIEW_URL]: '/?pagina=4' })
+
+    const result = await Page({ params: Promise.resolve({ meldingId: 123 }) })
+
+    render(result)
+
+    expect(NotesOverview).toHaveBeenCalledWith(expect.objectContaining({ overviewHref: '/?pagina=4' }), undefined)
   })
 })
