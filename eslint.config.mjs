@@ -187,6 +187,13 @@ export default defineConfig(
     },
   },
 
+  {
+    files: ['**/*.{ts,tsx}'],
+    rules: {
+      'no-undef': 'off', // TypeScript handles this
+    },
+  },
+
   // Don't force using type over interface in .d.ts files
   {
     files: ['**/*.d.ts'],
@@ -227,12 +234,6 @@ export default defineConfig(
       ...pluginNext.configs.recommended.rules,
       ...pluginNext.configs['core-web-vitals'].rules,
       '@next/next/no-html-link-for-pages': ['error', ['apps/melding-form/src', 'apps/back-office/src']],
-    },
-  },
-  {
-    files: ['**/*.{ts,tsx}'],
-    rules: {
-      'no-undef': 'off', // TypeScript handles this
     },
   },
   {
