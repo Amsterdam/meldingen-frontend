@@ -12,9 +12,11 @@ const objectiveDayTypeLabels: Record<DaysType, string> = {
 export const getMeldingData = (data: MeldingOutput, t: (key: string) => string) => {
   const { classification, created_at, id, labels, service_level_objective, source, state, urgency } = data
 
+  const createdAt = formatDateString(created_at)
+
   return [
     {
-      description: formatDateString(created_at).date,
+      description: `${createdAt.date} ${createdAt.time}`,
       key: 'created_at',
       term: t('detail.melding-data.created_at'),
     },
