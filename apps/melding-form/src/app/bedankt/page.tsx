@@ -27,9 +27,9 @@ export const generateMetadata = async (): Promise<Metadata> => {
 export default async ({ searchParams }: Props) => {
   const t = (await getTranslations('thanks')) as TWithUndefined
 
-  const { created_at, id: isParam, public_id, source: sourceParam } = await searchParams
+  const { created_at, id: idParam, public_id, source: sourceParam } = await searchParams
   const createdAt = Array.isArray(created_at) ? created_at[0] : created_at
-  const id = Array.isArray(isParam) ? isParam[0] : isParam
+  const id = Array.isArray(idParam) ? idParam[0] : idParam
   const publicId = Array.isArray(public_id) ? public_id[0] : public_id
   const source = Array.isArray(sourceParam) ? sourceParam[0] : sourceParam
 
