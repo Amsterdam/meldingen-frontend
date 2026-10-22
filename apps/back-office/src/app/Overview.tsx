@@ -7,6 +7,7 @@ import type { MeldingOutput } from '~/app/_api-client/proxy'
 import { OverviewDesktop } from './_components/OverviewDesktop'
 import { OverviewMobile } from './_components/OverviewMobile'
 import { Pagination } from './_components/Pagination'
+import { RememberOverviewPage } from './_components/RememberOverviewUrl'
 import { getShortNLAddress } from './_utils/getShortNLAddress'
 
 export type MeldingWithAddress = MeldingOutput & { address?: string }
@@ -39,6 +40,7 @@ export const Overview = ({ meldingen, meldingenCount, page, pageSize, totalPages
         <OverviewMobile meldingen={meldingenWithAddress} />
         <OverviewDesktop meldingen={meldingenWithAddress} />
         <Pagination page={page} pageSize={pageSize} totalPages={totalPages} />
+        <RememberOverviewPage />
       </Grid.Cell>
     </Grid>
   )

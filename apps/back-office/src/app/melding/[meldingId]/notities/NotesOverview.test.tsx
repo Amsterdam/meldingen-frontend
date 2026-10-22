@@ -9,6 +9,7 @@ const defaultProps = {
   currentUserId: 1,
   meldingId: 123,
   notes: [],
+  overviewHref: '/',
   publicId: 'B100AA',
 }
 
@@ -30,6 +31,12 @@ describe('NotesOverview', () => {
 
     expect(link).toBeInTheDocument()
     expect(title).toBeInTheDocument()
+  })
+
+  it('links back to the given overview page', () => {
+    render(<NotesOverview {...defaultProps} overviewHref="/?pagina=4" />)
+
+    expect(screen.getByRole('link', { name: 'back-link' })).toHaveAttribute('href', '/?pagina=4')
   })
 
   it('renders a list of notes', () => {

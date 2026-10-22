@@ -78,6 +78,7 @@ const defaultProps = {
     },
   ],
   meldingId: 123,
+  overviewHref: '/',
   publicId: 'B100AA',
 } satisfies DetailProps
 
@@ -87,6 +88,12 @@ describe('Detail', () => {
 
     expect(screen.getByText('back-link')).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 1, name: 'title' })).toBeInTheDocument()
+  })
+
+  it('links back to the given overview page', () => {
+    render(<Detail {...defaultProps} overviewHref="/?pagina=4" />)
+
+    expect(screen.getByRole('link', { name: 'back-link' })).toHaveAttribute('href', '/?pagina=4')
   })
 
   it('renders the additional questions with melding text', () => {
