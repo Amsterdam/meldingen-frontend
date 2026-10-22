@@ -11,7 +11,7 @@ import {
 } from '@meldingen/api-client'
 
 import { resolveClassificationRedirect } from '../_utils/resolveClassificationRedirect'
-import { COOKIES } from '~/constants'
+import { COOKIES, SESSION_COOKIE_OPTIONS } from '~/constants'
 
 export type ArgsType = {
   existingId?: string
@@ -63,9 +63,9 @@ export const postPrimaryForm = async (
 
   // Set session variables in cookies
   const cookieStore = await cookies()
-  const oneDay = 24 * 60 * 60
-  cookieStore.set(COOKIES.ID, id.toString(), { maxAge: oneDay })
-  cookieStore.set(COOKIES.TOKEN, token, { maxAge: oneDay })
+
+  cookieStore.set(COOKIES.ID, id.toString(), SESSION_COOKIE_OPTIONS)
+  cookieStore.set(COOKIES.TOKEN, token, SESSION_COOKIE_OPTIONS)
 
   // The LAST_PANEL_PATH cookie might be populated by earlier additional questions.
   // Delete it here in case a reclassification occurs.

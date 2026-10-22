@@ -6,6 +6,12 @@ export const COOKIES = {
   TOKEN: 'meldingen_token',
 } as const
 
+export const SESSION_COOKIE_OPTIONS = {
+  httpOnly: true,
+  sameSite: 'lax',
+  secure: true,
+} as const
+
 export const TOP_ANCHOR_ID = 'top'
 
 export const ASSET_FALLBACK_SRC = '/asset-fallback.svg'

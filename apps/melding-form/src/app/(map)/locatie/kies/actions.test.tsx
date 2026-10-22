@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 
 import { postCoordinatesAndAssets } from './actions'
 import { getAssetLabelText } from '~/app/(general)/_utils/getAssetLabelText'
-import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { COOKIES, SESSION_COOKIE_OPTIONS, TOP_ANCHOR_ID } from '~/constants'
 import { containerAssets } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
@@ -191,7 +191,7 @@ describe('postCoordinatesAndAssets', () => {
 
     await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
-    expect(mockSetCookie).toHaveBeenCalledWith(COOKIES.ADDRESS, address, { maxAge: 86400 })
+    expect(mockSetCookie).toHaveBeenCalledWith(COOKIES.ADDRESS, address, SESSION_COOKIE_OPTIONS)
     expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
   })
 

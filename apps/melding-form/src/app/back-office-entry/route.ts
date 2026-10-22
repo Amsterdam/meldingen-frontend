@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server'
 import { client } from '@meldingen/api-client'
 
 import { resolveClassificationRedirect } from '../_utils/resolveClassificationRedirect'
-import { COOKIES } from '~/constants'
+import { COOKIES, SESSION_COOKIE_OPTIONS } from '~/constants'
 import { getClientEnv } from '~/env/client'
 import { serverEnv } from '~/env/server'
 
@@ -25,6 +25,7 @@ export const GET = async (request: NextRequest) => {
 
   // request.nextUrl.origin returns the internal server address, not the public URL, so we use an env var instead.
   const origin = getClientEnv().NEXT_PUBLIC_MELDING_FORM_BASE_URL
+
   // If id or token is missing, redirect to the home page
   if (!id || !token) {
     return NextResponse.redirect(new URL('/', origin))
@@ -32,10 +33,10 @@ export const GET = async (request: NextRequest) => {
 
   // Set session variables in cookies
   const cookieStore = await cookies()
-  const oneDay = 24 * 60 * 60
-  cookieStore.set(COOKIES.ID, id, { maxAge: oneDay })
-  cookieStore.set(COOKIES.TOKEN, token, { maxAge: oneDay })
-  cookieStore.set(COOKIES.SOURCE, 'back-office', { maxAge: oneDay })
+
+  cookieStore.set(COOKIES.ID, id, SESSION_COOKIE_OPTIONS)
+  cookieStore.set(COOKIES.TOKEN, token, SESSION_COOKIE_OPTIONS)
+  cookieStore.set(COOKIES.SOURCE, 'back-office', SESSION_COOKIE_OPTIONS)
 
   // The LAST_PANEL_PATH cookie might be populated by earlier additional questions.
   // Delete it here in case a reclassification occurs.
@@ -51,6 +52,7 @@ export const GET = async (request: NextRequest) => {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
     console.error(result.error)
+
     return NextResponse.redirect(new URL('/', origin))
   }
 

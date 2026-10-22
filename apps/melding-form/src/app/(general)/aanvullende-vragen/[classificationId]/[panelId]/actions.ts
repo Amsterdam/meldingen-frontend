@@ -12,7 +12,7 @@ import { shouldRenderComponent } from '../../../_utils/conditions'
 import { buildAnswerPromises } from './_utils'
 import { AFTER_ADDITIONAL_QUESTIONS_PATH, getNextPanelPath, refilterAnswersByKey } from './_utils/navigation'
 import { categorizeFormEntries, mergeCheckboxAnswers, mergeUnknownTimeAnswers } from './_utils/processEntries'
-import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { COOKIES, SESSION_COOKIE_OPTIONS, TOP_ANCHOR_ID } from '~/constants'
 
 type RequiredQuestionErrorMessage = { key: string; requiredErrorMessage: string }
 
@@ -177,11 +177,10 @@ export const postForm = async (
 
     // Set current panel path as last panel path in cookies,
     // so that the user can be redirected back to it from AFTER_ADDITIONAL_QUESTIONS_PATH
-    const oneDay = 24 * 60 * 60
     cookieStore.set(
       COOKIES.LAST_PANEL_PATH,
       `/aanvullende-vragen/${classificationId}/${panelComponentsConditions[currentPanelIndex].key}#${TOP_ANCHOR_ID}`,
-      { maxAge: oneDay },
+      SESSION_COOKIE_OPTIONS,
     )
   }
 

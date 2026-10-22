@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation'
 import type { ArgsType } from './actions'
 
 import { postForm } from './actions'
-import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { COOKIES, SESSION_COOKIE_OPTIONS, TOP_ANCHOR_ID } from '~/constants'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 import { mockIdAndTokenCookies } from '~/mocks/utils'
@@ -231,9 +231,7 @@ describe('postForm', () => {
     expect(cookieInstance.set).toHaveBeenCalledWith(
       COOKIES.LAST_PANEL_PATH,
       `/aanvullende-vragen/1/panel-2#${TOP_ANCHOR_ID}`,
-      {
-        maxAge: 86400,
-      },
+      SESSION_COOKIE_OPTIONS,
     )
   })
 })
