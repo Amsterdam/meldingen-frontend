@@ -22,11 +22,11 @@ services:
   back-office:
     image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-signalen/meldingen-frontend-back-office}:${VERSION:-latest}
     environment:
-      ISSUER_URL: http://localhost:8002/realms/meldingen
-      AUTH_URL: http://localhost:8002/realms/meldingen/protocol/openid-connect/auth
-      JWKS_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/certs
-      TOKEN_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/token
-      USERINFO_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/userinfo
+      KEYCLOAK_ISSUER_URL: http://localhost:8002/realms/meldingen
+      KEYCLOAK_AUTH_URL: http://localhost:8002/realms/meldingen/protocol/openid-connect/auth
+      KEYCLOAK_JWKS_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/certs
+      KEYCLOAK_TOKEN_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/token
+      KEYCLOAK_USERINFO_URL: http://keycloak:8002/realms/meldingen/protocol/openid-connect/userinfo
     build:
       context: .
       target: back_office_meldingen

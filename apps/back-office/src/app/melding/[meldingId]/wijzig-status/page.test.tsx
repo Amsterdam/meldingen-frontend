@@ -18,9 +18,9 @@ describe('Page', () => {
       ),
     )
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
-    await expect(Page({ params })).rejects.toThrowError('Failed to fetch melding data.')
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch melding data.')
   })
 
   it('throws an error when next possible states data is not available', async () => {
@@ -30,13 +30,13 @@ describe('Page', () => {
       ),
     )
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
-    await expect(Page({ params })).rejects.toThrowError('Failed to fetch next possible states.')
+    await expect(Page({ params })).rejects.toThrow('Failed to fetch next possible states.')
   })
 
   it('renders the ChangeState component when data is available', async () => {
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     const result = await Page({ params })
 

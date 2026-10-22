@@ -3,14 +3,13 @@ import type { LabelOutput } from '~/app/_api-client/proxy'
 import { ChangeLabels } from './ChangeLabels'
 import { getLabel, getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
-type Params = {
-  params: Promise<{ meldingId: number }>
-}
+type Props = Pick<PageProps<'/melding/[meldingId]/wijzig-labels'>, 'params'>
 
 const getLabelIds = (labels: LabelOutput[]) => labels.map(({ id }) => id)
 
-export default async ({ params }: Params) => {
-  const { meldingId } = await params
+export default async ({ params }: Props) => {
+  const { meldingId: meldingIdParams } = await params
+  const meldingId = Number(meldingIdParams)
 
   const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 

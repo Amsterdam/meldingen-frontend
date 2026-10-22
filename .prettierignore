@@ -18,3 +18,6 @@ pnpm-lock.yaml
 
 # Ignore generated api client
 libs/api-client/src/generated
+
+# Not supported by Prettier (gets formatted as Markdown in the editor)
+.dockerignore

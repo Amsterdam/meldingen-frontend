@@ -27,13 +27,14 @@ let capturedAction: ((argsObj: unknown, _: unknown, formData: FormData) => void)
 vi.mock('./AdditionalQuestions', () => ({
   AdditionalQuestions: vi.fn((props: { action: () => void }) => {
     capturedAction = props.action
+
     return <div>AdditionalQuestions Component</div>
   }),
 }))
 
 const MOCK_DATE = new Date('2026-03-03T12:00:00.000Z')
 
-const defaultProps = { params: Promise.resolve({ classificationId: 1, panelId: 'panel-1' }) }
+const defaultProps = { params: Promise.resolve({ classificationId: '1', panelId: 'panel-1' }) }
 
 describe('Page', () => {
   beforeEach(() => {
@@ -50,7 +51,7 @@ describe('Page', () => {
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(null, { status: 500 })),
     )
 
-    await expect(Page(defaultProps)).rejects.toThrowError('Failed to fetch form by classification.')
+    await expect(Page(defaultProps)).rejects.toThrow('Failed to fetch form by classification.')
   })
 
   it('redirects to /locatie page if the first component is not a panel', async () => {
@@ -77,7 +78,7 @@ describe('Page', () => {
 
     server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
 
-    const PageComponent = await Page({ params: Promise.resolve({ classificationId: 1, panelId: 'panel-2' }) })
+    const PageComponent = await Page({ params: Promise.resolve({ classificationId: '1', panelId: 'panel-2' }) })
 
     render(PageComponent)
 
@@ -476,7 +477,7 @@ describe('Page', () => {
     server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
 
     const PageComponent = await Page({
-      params: Promise.resolve({ classificationId: 1, panelId: 'panel-1' }),
+      params: Promise.resolve({ classificationId: '1', panelId: 'panel-1' }),
     })
 
     render(PageComponent)
@@ -509,7 +510,7 @@ describe('Page', () => {
 
     server.use(http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () => HttpResponse.json(formData)))
 
-    const PageComponent = await Page({ params: Promise.resolve({ classificationId: 1, panelId: 'panel-2' }) })
+    const PageComponent = await Page({ params: Promise.resolve({ classificationId: '1', panelId: 'panel-2' }) })
 
     render(PageComponent)
 

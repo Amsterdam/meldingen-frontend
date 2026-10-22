@@ -12,7 +12,7 @@
     "start": "next start --port 3002",
     "test": "vitest",
     "test:watch": "vitest watch",
-    "type-check": "tsc --incremental false"
+    "type-check": "next typegen && tsc --incremental false"
   },
   "dependencies": {
     "@meldingen/api-client": "workspace:*",

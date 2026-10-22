@@ -33,6 +33,7 @@ export const dynamic = 'force-dynamic'
 // but it does not accept that key when we send the answer back. For that reason, we strip it here.
 const stripPositionKey = <T extends { position?: unknown }>(obj: T): Omit<T, 'position'> => {
   const { position: _position, ...rest } = obj
+
   return rest
 }
 
@@ -75,24 +76,25 @@ const prefillFormComponents = (
         return { ...component, defaultValue: answer.text }
       case 'time':
         return { ...component, defaultValue: answer.time }
+
       case 'value_label': {
         if (component.type === 'selectboxes') {
           return { ...component, defaultValues: answer.values_and_labels.map(({ value }) => value) }
         }
+
         return { ...component, defaultValue: answer.values_and_labels[0]?.value ?? undefined }
       }
+
       default:
         return component
     }
   })
 
-type Params = Promise<{
-  classificationId: number
-  panelId: string
-}>
+type Props = Pick<PageProps<'/aanvullende-vragen/[classificationId]/[panelId]'>, 'params'>
 
-export default async ({ params }: { params: Params }) => {
-  const { classificationId, panelId } = await params
+export default async ({ params }: Props) => {
+  const { classificationId: classificationIdParams, panelId } = await params
+  const classificationId = Number(classificationIdParams)
   const t = await getTranslations('additional-questions.errors')
 
   const { data, error } = await getFormClassificationByClassificationId({
@@ -193,6 +195,7 @@ export default async ({ params }: { params: Params }) => {
     if (component.type === 'date') {
       return { ...component, type: 'radio' }
     }
+
     return component
   })
 

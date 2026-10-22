@@ -4,6 +4,8 @@ import { isFilePDF } from '../_utils'
 import { Photos } from './Photos'
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
 
+type Props = PageProps<'/melding/[meldingId]/foto'>
+
 export const generateMetadata = async () => {
   const t = await getTranslations('photos')
 
@@ -12,14 +14,11 @@ export const generateMetadata = async () => {
   }
 }
 
-type Params = {
-  params: Promise<{ meldingId: number }>
-  searchParams: Promise<{ id?: string }>
-}
-
-export default async ({ params, searchParams }: Params) => {
-  const { meldingId } = await params
-  const { id: attachmentIdString } = await searchParams
+export default async ({ params, searchParams }: Props) => {
+  const { meldingId: meldingIdParams } = await params
+  const meldingId = Number(meldingIdParams)
+  const { id: attachmentId } = await searchParams
+  const attachmentIdString = Array.isArray(attachmentId) ? attachmentId[0] : attachmentId
 
   const { data, error } = await getMeldingByMeldingIdAttachments({ path: { melding_id: meldingId } })
 
@@ -44,8 +43,7 @@ export default async ({ params, searchParams }: Params) => {
       }),
   )
 
-  const attachmentId = attachmentIdString ? parseInt(attachmentIdString, 10) : undefined
-  const attachmentIndex = images.findIndex((image) => image.id === attachmentId)
+  const attachmentIndex = images.findIndex((image) => image.id === Number(attachmentIdString))
   const defaultSlideIndex = attachmentIndex === -1 ? undefined : attachmentIndex
 
   return <Photos defaultSlideIndex={defaultSlideIndex} images={images} meldingId={meldingId} />

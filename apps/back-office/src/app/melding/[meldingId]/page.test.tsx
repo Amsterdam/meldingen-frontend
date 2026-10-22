@@ -8,9 +8,13 @@ import { formatDateString } from '@meldingen/utils'
 import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
 import Page, { generateMetadata } from './page'
+import { COOKIES } from '~/constants'
 import { additionalQuestions, asset, melding } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
+import { mockCookies } from '~/mocks/utils'
+
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('./Detail', () => ({
   Detail: vi.fn(() => <div>Detail Component</div>),
@@ -25,7 +29,7 @@ type DetailProps = ComponentProps<typeof Detail>
 
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
-    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: 123 }) })
+    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: '123' }) })
 
     expect(metadata).toEqual({ title: 'metadata.title: {"publicId":"ABC"}' })
   })
@@ -33,17 +37,21 @@ describe('generateMetadata', () => {
   it('returns a fallback title when public id is not available', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({ data: { public_id: null } })))
 
-    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: 123 }) })
+    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: '123' }) })
 
     expect(metadata).toEqual({ title: 'metadata.title: {"publicId":""}' })
   })
 })
 
 describe('Page', () => {
+  beforeEach(() => {
+    mockCookies({})
+  })
+
   it('throws when getMeldingByMeldingId returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 500 })))
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     await expect(Page({ params })).rejects.toThrow('Failed to fetch melding data.')
   })
@@ -55,7 +63,7 @@ describe('Page', () => {
       ),
     )
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     await expect(Page({ params })).rejects.toThrow('Failed to fetch additional questions.')
   })
@@ -67,7 +75,7 @@ describe('Page', () => {
       ),
     )
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     await expect(Page({ params })).rejects.toThrow('Failed to fetch melding attachments.')
   })
@@ -79,7 +87,7 @@ describe('Page', () => {
       ),
     )
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     await expect(Page({ params })).rejects.toThrow('Failed to fetch assets.')
   })
@@ -91,13 +99,13 @@ describe('Page', () => {
       ),
     )
 
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
 
     await expect(Page({ params })).rejects.toThrow('Failed to fetch notes.')
   })
 
   it('calls the Detail component with the correct data', async () => {
-    const params = Promise.resolve({ meldingId: 123 })
+    const params = Promise.resolve({ meldingId: '123' })
     const result = await Page({ params })
 
     render(result)
@@ -135,9 +143,11 @@ describe('Page', () => {
       },
     ]
 
+    const createdAt = formatDateString(created_at)
+
     const meldingData = [
       {
-        description: formatDateString(created_at).date,
+        description: `${createdAt.date} ${createdAt.time}`,
         key: 'created_at',
         term: 'detail.melding-data.created_at',
       },
@@ -208,9 +218,20 @@ describe('Page', () => {
         meldingData: meldingData,
         meldingId: 123,
         notesCount: 0,
+        overviewHref: '/',
         publicId: public_id,
       },
       undefined,
     )
+  })
+
+  it('passes the overview url stored in the cookie to the Detail component', async () => {
+    mockCookies({ [COOKIES.LAST_OVERVIEW_URL]: '/?pagina=4' })
+
+    const result = await Page({ params: Promise.resolve({ meldingId: '123' }) })
+
+    render(result)
+
+    expect(Detail).toHaveBeenCalledWith(expect.objectContaining({ overviewHref: '/?pagina=4' }), undefined)
   })
 })
