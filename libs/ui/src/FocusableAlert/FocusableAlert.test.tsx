@@ -4,11 +4,11 @@ import { FocusableAlert } from './FocusableAlert'
 
 const defaultProps = {
   description: 'Description',
+  focusKey: false,
   heading: 'Heading',
-  shouldFocus: false,
 }
 
-describe('Alert', () => {
+describe('FocusableAlert', () => {
   it('renders an alert', () => {
     const { container } = render(<FocusableAlert {...defaultProps} />)
 
@@ -25,7 +25,7 @@ describe('Alert', () => {
 
   it('renders its children when provided instead of a description', () => {
     render(
-      <FocusableAlert heading="Heading" shouldFocus={false}>
+      <FocusableAlert focusKey={false} heading="Heading">
         Child content
       </FocusableAlert>,
     )
@@ -57,18 +57,43 @@ describe('Alert', () => {
     expect(heading).toBeInTheDocument()
   })
 
-  it('sets focus on the alert when shouldFocus is true', () => {
-    const { container } = render(<FocusableAlert {...defaultProps} shouldFocus />)
+  it.each([true, 'truthy string', {}])('sets focus on the alert when focusKey has truthy value "%s"', (value) => {
+    const { container } = render(<FocusableAlert {...defaultProps} focusKey={value} />)
 
     const alert = container.querySelector('.ams-alert')
 
     expect(alert).toHaveFocus()
   })
 
-  it('does not set focus on the alert when shouldFocus is false', () => {
-    const { container } = render(<FocusableAlert {...defaultProps} />)
+  it.each([false, '', 0])('does not set focus on the alert when focusKey has falsy value "%s"', (value) => {
+    const { container } = render(<FocusableAlert {...defaultProps} focusKey={value} />)
 
     const alert = container.querySelector('.ams-alert')
+
+    expect(alert).not.toHaveFocus()
+  })
+
+  it('sets focus on the alert again when focusKey changes to a new truthy value', () => {
+    const { container, rerender } = render(<FocusableAlert {...defaultProps} focusKey={{}} />)
+
+    const alert = container.querySelector<HTMLElement>('.ams-alert')
+
+    alert?.blur()
+
+    rerender(<FocusableAlert {...defaultProps} focusKey={{}} />)
+
+    expect(alert).toHaveFocus()
+  })
+
+  it('does not set focus on the alert again when focusKey stays the same', () => {
+    const focusKey = {}
+    const { container, rerender } = render(<FocusableAlert {...defaultProps} focusKey={focusKey} />)
+
+    const alert = container.querySelector<HTMLElement>('.ams-alert')
+
+    alert?.blur()
+
+    rerender(<FocusableAlert {...defaultProps} description="Updated description" focusKey={focusKey} />)
 
     expect(alert).not.toHaveFocus()
   })

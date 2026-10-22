@@ -6,15 +6,14 @@ import Form from 'next/form'
 import NextLink from 'next/link'
 import { useActionState, useEffect } from 'react'
 
-import { SubmitButton } from '@meldingen/ui'
+import { ResponsiveSubmitButton } from '@meldingen/ui'
 
 import type { AssetItem } from '../_utils/formatAssetItem'
 import type { FormState } from '~/types'
 
 import { AssetElement } from '../_components/AssetElement/AssetElement'
 import { useDocumentTitleOnError } from '../_utils'
-import { BackLink } from '../../_components'
-import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
+import { ApiErrorAlert, BackLink, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 const initialState: Pick<FormState, 'apiError' | 'validationErrors'> = {}
@@ -59,8 +58,8 @@ export const Location = ({ action, address, pageConfig, prevPage, selectedAssets
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
-        {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} focusKey={!isPending} />}
         <Field className="ams-mb-l" invalid={Boolean(validationErrors)}>
           <Heading level={1} size="level-3">
             {pageConfig?.label ?? t('question')}
@@ -82,7 +81,11 @@ export const Location = ({ action, address, pageConfig, prevPage, selectedAssets
           </StandaloneLink>
         </Field>
         <Form action={formAction} noValidate>
-          <SubmitButton>{t('submit-button')}</SubmitButton>
+          <ResponsiveSubmitButton
+            isLoading={isPending}
+            label={t('submit-button')}
+            loadingLabel={tShared('submit-button-loading-label')}
+          />
         </Form>
       </main>
     </>

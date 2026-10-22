@@ -8,9 +8,13 @@ import { formatDateString } from '@meldingen/utils'
 import { getFullNLAddress } from '../../_utils/getFullNLAddress'
 import { Detail } from './Detail'
 import Page, { generateMetadata } from './page'
+import { COOKIES } from '~/constants'
 import { additionalQuestions, asset, melding } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
+import { mockCookies } from '~/mocks/utils'
+
+vi.mock('next/headers', () => ({ cookies: vi.fn() }))
 
 vi.mock('./Detail', () => ({
   Detail: vi.fn(() => <div>Detail Component</div>),
@@ -40,6 +44,10 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
+  beforeEach(() => {
+    mockCookies({})
+  })
+
   it('throws when getMeldingByMeldingId returns an error', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 500 })))
 
@@ -208,9 +216,20 @@ describe('Page', () => {
         meldingData: meldingData,
         meldingId: 123,
         notesCount: 0,
+        overviewHref: '/',
         publicId: public_id,
       },
       undefined,
     )
+  })
+
+  it('passes the overview url stored in the cookie to the Detail component', async () => {
+    mockCookies({ [COOKIES.LAST_OVERVIEW_URL]: '/?pagina=4' })
+
+    const result = await Page({ params: Promise.resolve({ meldingId: 123 }) })
+
+    render(result)
+
+    expect(Detail).toHaveBeenCalledWith(expect.objectContaining({ overviewHref: '/?pagina=4' }), undefined)
   })
 })

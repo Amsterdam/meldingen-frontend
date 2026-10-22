@@ -26,7 +26,9 @@ const getPrefilledFormComponents = (components: Component[], formData: FormData)
       if (formData.get(`time___${component.key}-unknown`) === 'on') {
         return { ...component, defaultValue: null }
       }
+
       const timeValue = formData.get(`time___${component.key}`)
+
       if (typeof timeValue === 'string') {
         return { ...component, defaultValue: timeValue }
       }
@@ -103,14 +105,18 @@ export const AdditionalQuestions = ({
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
-        {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} focusKey={!isPending} />}
         <FormRenderer
           action={formAction}
           formComponents={formComponents}
           panelTitle={panelTitle}
           previousAnswersByKey={previousAnswersByKey}
-          submitButtonText={t('submit-button')}
+          submitButton={{
+            isLoading: isPending,
+            label: t('submit-button'),
+            loadingLabel: tShared('submit-button-loading-label'),
+          }}
           validationErrors={validationErrors}
         />
       </main>

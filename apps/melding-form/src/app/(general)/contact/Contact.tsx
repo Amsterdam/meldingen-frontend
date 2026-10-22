@@ -9,14 +9,13 @@ import type { StaticFormTextAreaComponent } from '@meldingen/form-renderer'
 
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
 import { MarkdownToHtml } from '@meldingen/markdown-to-html'
-import { SubmitButton, TextInput } from '@meldingen/ui'
+import { ResponsiveSubmitButton, TextInput } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from '../_utils'
-import { BackLink } from '../../_components'
 import { postContactForm } from './actions'
-import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
+import { ApiErrorAlert, BackLink, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 const initialState: FormState = {}
@@ -63,8 +62,8 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
-        {validationErrors && <InvalidFormAlert errors={validationErrors} shouldFocus={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
+        {validationErrors && <InvalidFormAlert errors={validationErrors} focusKey={!isPending} />}
         <Heading className="ams-mb-s" level={1} size="level-3">
           {t('question')}
         </Heading>
@@ -114,7 +113,11 @@ export const Contact = ({ formComponents }: { formComponents: StaticFormTextArea
               type="tel"
             />
           </Field>
-          <SubmitButton>{t('submit-button')}</SubmitButton>
+          <ResponsiveSubmitButton
+            isLoading={isPending}
+            label={t('submit-button')}
+            loadingLabel={tShared('submit-button-loading-label')}
+          />
         </Form>
       </main>
     </>

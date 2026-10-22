@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 
+import { getOverviewHref } from '../_utils/server'
 import { NotesOverview } from './NotesOverview'
 import { getClassification, getMeldingByMeldingId, getMeldingByMeldingIdNote, getUserMe } from '~/app/_api-client/proxy'
 
@@ -39,6 +40,7 @@ export default async ({ params }: Props) => {
   const { data: notes } = notesResult
   const { data: currentUser } = currentUserResult
   const { data: classifications } = classificationsResult
+  const overviewHref = await getOverviewHref()
 
   return (
     <NotesOverview
@@ -46,6 +48,7 @@ export default async ({ params }: Props) => {
       currentUserId={currentUser.id}
       meldingId={meldingId}
       notes={notes}
+      overviewHref={overviewHref}
       publicId={meldingResultData.data.public_id}
     />
   )

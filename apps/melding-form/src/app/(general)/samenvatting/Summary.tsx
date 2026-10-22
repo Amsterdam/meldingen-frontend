@@ -6,16 +6,15 @@ import Form from 'next/form'
 import NextLink from 'next/link'
 import { useActionState, useEffect } from 'react'
 
-import { Link, SubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
+import { Link, ResponsiveSubmitButton, SummaryList, UnorderedList } from '@meldingen/ui'
 
 import type { AssetItem } from '../_utils/formatAssetItem'
 import type { FormState } from '~/types'
 
 import { AssetElement } from '../_components/AssetElement/AssetElement'
 import { useDocumentTitleOnError } from '../_utils'
-import { BackLink } from '../../_components'
 import { AttachmentImage } from './_components/AttachmentImage'
-import { ApiErrorAlert } from '~/app/_components'
+import { ApiErrorAlert, BackLink } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 
 type GenericSummaryData = {
@@ -96,7 +95,7 @@ export const Summary = ({
         {t('back-link')}
       </BackLink>
       <main>
-        {Boolean(apiError) && <ApiErrorAlert shouldFocus={!isPending} />}
+        {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
         <Heading className="ams-mb-s" level={1} size="level-3">
           {t('main-title')}
         </Heading>
@@ -184,7 +183,11 @@ export const Summary = ({
         </SummaryList>
 
         <Form action={formAction} noValidate>
-          <SubmitButton>{t('submit-button')}</SubmitButton>
+          <ResponsiveSubmitButton
+            isLoading={isPending}
+            label={t('submit-button')}
+            loadingLabel={tShared('submit-button-loading-label')}
+          />
         </Form>
       </main>
     </>

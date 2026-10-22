@@ -10,6 +10,8 @@ import { useActionState, useEffect, useState } from 'react'
 
 import type { Feature } from '@meldingen/api-client'
 
+import { SubmitButton } from '@meldingen/ui'
+
 import type { Coordinates } from '~/types'
 
 import { AddressInput, AssetList, MapLoadingIndicator, Notification, SideBarBottom, SideBarTop } from './_components'
@@ -95,9 +97,10 @@ export const SelectLocation = ({
   const postCoordinatesAndAssetsWithExtraArgs = postCoordinatesAndAssets.bind(null, {
     asset_type_id: assetConfig.wfsQuery.assetTypeId,
   })
-  const [{ error }, formAction] = useActionState(postCoordinatesAndAssetsWithExtraArgs, initialState)
+  const [{ error }, formAction, isPending] = useActionState(postCoordinatesAndAssetsWithExtraArgs, initialState)
 
   const t = useTranslations('select-location')
+  const tShared = useTranslations('shared')
   const isWideWindow = useViewportHasMinWidth('wide')
   const isNarrowWindow = !useViewportHasMinWidth('medium')
   const controlsTexts = {
@@ -156,9 +159,13 @@ export const SelectLocation = ({
           setNotificationType={setNotificationType}
           setSelectedAssets={setSelectedAssets}
         />
-        <Button className={styles.hideButtonMobile} form="address" type="submit">
-          {t('submit-button.desktop')}
-        </Button>
+        <SubmitButton
+          className={styles.hideButtonMobile}
+          form="address"
+          isLoading={isPending}
+          label={t('submit-button.desktop')}
+          loadingLabel={tShared('submit-button-loading-label')}
+        />
       </SideBarBottom>
 
       <div className={styles.map} inert={showAssetList}>
@@ -198,9 +205,12 @@ export const SelectLocation = ({
         </Map>
       </div>
       <div className={clsx(styles.buttonWrapper, showAssetList && styles.assetListOpen)}>
-        <Button form="address" type="submit">
-          {t('submit-button.mobile')}
-        </Button>
+        <SubmitButton
+          form="address"
+          isLoading={isPending}
+          label={t('submit-button.mobile')}
+          loadingLabel={tShared('submit-button-loading-label')}
+        />
         {showAssetListToggleButton && (
           <Button onClick={() => setIsAssetListOpen((prevState) => !prevState)} variant="secondary">
             {isAssetListOpen ? t('toggle-button.map') : t('toggle-button.list')}
