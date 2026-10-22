@@ -46,7 +46,7 @@ describe('Page', () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () =>
         HttpResponse.json({
-          id: '123',
+          id: 123,
           labels: undefined,
           public_id: 'MEL-123',
         }),
