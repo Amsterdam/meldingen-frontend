@@ -1,7 +1,7 @@
 import Form from 'next/form'
 import { useState } from 'react'
 
-import { Heading, SubmitButton } from '@meldingen/ui'
+import { Heading, ResponsiveSubmitButton } from '@meldingen/ui'
 
 import type { AnswersByKey, Component } from './types'
 
@@ -21,6 +21,7 @@ import styles from './FormRenderer.module.css'
 
 const getValue = (component: Component): string | string[] => {
   if (isSelectboxes(component)) return component.defaultValues ?? []
+
   return component.defaultValue ?? ''
 }
 
@@ -34,6 +35,7 @@ const getComponent = (
   const onChangeArray = (value: string[]) => onChange(value)
 
   const { key } = component
+
   if (isRadio(component)) {
     return (
       <Radio
@@ -46,6 +48,7 @@ const getComponent = (
       />
     )
   }
+
   if (isSelect(component)) {
     return (
       <Select
@@ -58,6 +61,7 @@ const getComponent = (
       />
     )
   }
+
   if (isSelectboxes(component)) {
     return (
       <Checkbox
@@ -70,6 +74,7 @@ const getComponent = (
       />
     )
   }
+
   if (isTextarea(component)) {
     return (
       <TextArea
@@ -82,6 +87,7 @@ const getComponent = (
       />
     )
   }
+
   if (isTextfield(component)) {
     return (
       <TextInput
@@ -94,6 +100,7 @@ const getComponent = (
       />
     )
   }
+
   if (isTimeInput(component)) {
     return (
       <TimeInput
@@ -108,8 +115,10 @@ const getComponent = (
       />
     )
   }
+
   // eslint-disable-next-line no-console
   console.error(`Type ${component.type} is unknown, please add it to FormRenderer.`)
+
   return undefined
 }
 
@@ -118,7 +127,11 @@ export type Props = {
   formComponents: Component[]
   panelTitle?: string
   previousAnswersByKey?: AnswersByKey
-  submitButtonText: string
+  submitButton: {
+    isLoading: boolean
+    label: string
+    loadingLabel: string
+  }
   validationErrors?: {
     key: string
     message: string
@@ -130,7 +143,7 @@ export const FormRenderer = ({
   formComponents,
   panelTitle,
   previousAnswersByKey = {},
-  submitButtonText,
+  submitButton,
   validationErrors,
 }: Props) => {
   const hasOneFormComponent = formComponents.length === 1
@@ -169,7 +182,11 @@ export const FormRenderer = ({
 
           return getComponent(component, hasOneFormComponent, onChange, errorMessage)
         })}
-        <SubmitButton>{submitButtonText}</SubmitButton>
+        <ResponsiveSubmitButton
+          isLoading={submitButton.isLoading}
+          label={submitButton.label}
+          loadingLabel={submitButton.loadingLabel}
+        />
       </Form>
     </>
   )
