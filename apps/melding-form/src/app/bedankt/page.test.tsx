@@ -108,6 +108,23 @@ describe('Page', () => {
     expect(link).toHaveAttribute('href', `${getClientEnv().NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melding/10?id=1234`)
   })
 
+  it('uses the first id value when id is an array', async () => {
+    const searchParams = Promise.resolve({
+      created_at: '2025-05-26T11:56:34.081Z',
+      id: ['10', '20'],
+      public_id: '1234',
+      source: 'back-office',
+    })
+
+    const PageComponent = await Page({ searchParams })
+
+    render(PageComponent)
+
+    const link = screen.getByRole('link', { name: '1234' })
+
+    expect(link).toHaveAttribute('href', `${getClientEnv().NEXT_PUBLIC_BACK_OFFICE_BASE_URL}/melding/10?id=1234`)
+  })
+
   it('links to the back-office melden page when source is back-office', async () => {
     const searchParams = Promise.resolve({
       created_at: '2025-05-26T11:56:34.081Z',
