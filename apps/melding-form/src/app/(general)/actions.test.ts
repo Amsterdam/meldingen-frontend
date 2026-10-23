@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 import { vi } from 'vitest'
 
 import { postPrimaryForm } from './actions'
-import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { COOKIES, SESSION_COOKIE_OPTIONS, TOP_ANCHOR_ID } from '~/constants'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -78,8 +78,8 @@ describe('postPrimaryForm', () => {
 
     await postPrimaryForm({ requiredErrorMessage: 'Dit veld is verplicht.' }, null, formData)
 
-    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: 86400 })
-    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', { maxAge: 86400 })
+    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.ID, '123', SESSION_COOKIE_OPTIONS)
+    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', SESSION_COOKIE_OPTIONS)
     expect(mockCookies.delete).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
   })
 
@@ -93,7 +93,7 @@ describe('postPrimaryForm', () => {
       formData,
     )
 
-    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'PATCH request', { maxAge: 86400 })
+    expect(mockCookies.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'PATCH request', SESSION_COOKIE_OPTIONS)
   })
 
   it('returns an API error when resolveClassificationRedirect returns an error', async () => {

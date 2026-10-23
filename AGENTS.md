@@ -294,11 +294,11 @@ export const generateMetadata = async () => {
 
 ### Overview
 
-| App          | Method               | Local Dev                | Production |
-| ------------ | -------------------- | ------------------------ | ---------- |
-| melding-form | Cookie token         | Cookie with 1-day expiry | Same       |
-| back-office  | NextAuth             | Keycloak                 | Entra ID   |
-| admin        | React-Admin provider | Keycloak                 | Entra ID   |
+| App          | Method               | Local Dev      | Production |
+| ------------ | -------------------- | -------------- | ---------- |
+| melding-form | Cookie token         | Session cookie | Same       |
+| back-office  | NextAuth             | Keycloak       | Entra ID   |
+| admin        | React-Admin provider | Keycloak       | Entra ID   |
 
 ### melding-form: Cookie-Based Session
 
@@ -317,7 +317,8 @@ if (!token || !id) {
 }
 ```
 
-Cookie expiry: **1 day** (SameSite=Strict, HttpOnly)
+Cookies are **session cookies** (HttpOnly, Secure, SameSite=Lax), set with `SESSION_COOKIE_OPTIONS` from `apps/melding-form/src/constants.ts`.
+The backend invalidates the token after 1 day.
 
 ### back-office: NextAuth with Token Refresh
 

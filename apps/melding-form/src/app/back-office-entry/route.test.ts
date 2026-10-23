@@ -6,7 +6,7 @@ import { NextRequest } from 'next/server'
 import { expect, vi } from 'vitest'
 
 import { GET } from './route'
-import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { COOKIES, SESSION_COOKIE_OPTIONS, TOP_ANCHOR_ID } from '~/constants'
 import { server } from '~/mocks/node'
 
 vi.mock('next/headers', () => ({
@@ -47,13 +47,12 @@ describe('GET', () => {
     expect(response2.headers.get('location')).toBe(`${BASE_URL}/`)
   })
 
-  it('sets cookies with correct values and maxAge', async () => {
+  it('sets session cookies with correct values', async () => {
     await GET(createRequest(requiredParams))
 
-    const oneDay = 24 * 60 * 60
-    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: oneDay })
-    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', { maxAge: oneDay })
-    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.SOURCE, 'back-office', { maxAge: oneDay })
+    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.ID, '123', SESSION_COOKIE_OPTIONS)
+    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', SESSION_COOKIE_OPTIONS)
+    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.SOURCE, 'back-office', SESSION_COOKIE_OPTIONS)
   })
 
   it('deletes LAST_PANEL_PATH cookie', async () => {
@@ -88,8 +87,8 @@ describe('GET', () => {
     )
 
     expect(response.headers.get('location')).toBe(`${BASE_URL}/locatie#${TOP_ANCHOR_ID}`)
-    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.ID, '123', { maxAge: 24 * 60 * 60 })
-    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', { maxAge: 24 * 60 * 60 })
+    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.ID, '123', SESSION_COOKIE_OPTIONS)
+    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.TOKEN, 'test-token', SESSION_COOKIE_OPTIONS)
     expect(mockCookieStore.delete).toHaveBeenCalledWith(COOKIES.LAST_PANEL_PATH)
   })
 })

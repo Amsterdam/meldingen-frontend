@@ -14,7 +14,7 @@ import { safeJSONParse } from '@meldingen/utils'
 import type { Coordinates } from '~/types'
 
 import { convertWktPointToCoordinates } from './_utils/convertWktPointToCoordinates'
-import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
+import { COOKIES, SESSION_COOKIE_OPTIONS, TOP_ANCHOR_ID } from '~/constants'
 
 export type SelectedAssetSubmission = {
   externalId: string
@@ -124,8 +124,7 @@ export const postCoordinatesAndAssets = async (
 
   /** Post coordinates and address */
 
-  const oneDay = 24 * 60 * 60
-  cookieStore.set(COOKIES.ADDRESS, address, { maxAge: oneDay })
+  cookieStore.set(COOKIES.ADDRESS, address, SESSION_COOKIE_OPTIONS)
 
   const { error } = await patchMeldingByMeldingIdLocation({
     body: {
