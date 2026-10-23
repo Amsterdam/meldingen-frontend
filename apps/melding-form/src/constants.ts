@@ -6,6 +6,8 @@ export const COOKIES = {
   TOKEN: 'meldingen_token',
 } as const
 
+// Do not add `maxAge` or `expires` here.
+// Session cookies should be deleted when the browser closes.
 export const SESSION_COOKIE_OPTIONS = {
   httpOnly: true,
   sameSite: 'lax',
