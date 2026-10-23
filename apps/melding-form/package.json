@@ -22,7 +22,7 @@
     "@meldingen/markdown-to-html": "workspace:*",
     "@meldingen/ui": "workspace:*",
     "@meldingen/utils": "workspace:*",
-    "next": "16.4.0",
+    "next": "16.4.1",
     "next-intl": "4.14.9"
   }
 }
