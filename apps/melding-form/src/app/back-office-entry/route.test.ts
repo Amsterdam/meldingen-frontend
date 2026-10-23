@@ -55,6 +55,16 @@ describe('GET', () => {
     expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.SOURCE, 'back-office', SESSION_COOKIE_OPTIONS)
   })
 
+  it('sets a short-lived new session flag that JavaScript can read', async () => {
+    await GET(createRequest(requiredParams))
+
+    expect(mockCookieStore.set).toHaveBeenCalledWith(COOKIES.NEW_SESSION, 'true', {
+      maxAge: 60,
+      sameSite: 'lax',
+      secure: true,
+    })
+  })
+
   it('deletes LAST_PANEL_PATH cookie', async () => {
     await GET(createRequest(requiredParams))
 
