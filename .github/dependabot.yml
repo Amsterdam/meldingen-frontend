@@ -41,4 +41,20 @@ updates:
     schedule:
       interval: 'weekly'
     cooldown:
-      default-days: 1 # Wait for one day after release before updating a dependency
+      default-days: 1
+
+    groups:
+      node-updates:
+        patterns:
+          - 'node'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      nginx-stable-patches:
+        patterns:
+          - 'nginx'
+        update-types:
+          - 'patch'
+
+    versioning-strategy: 'increase-if-necessary'
