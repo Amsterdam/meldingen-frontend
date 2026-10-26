@@ -11,7 +11,7 @@ help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
 build:
-	$(dc) build
+	$(dc) build --pull
 
 push: build
 	$(dc) push
