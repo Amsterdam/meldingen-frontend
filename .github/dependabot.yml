@@ -14,14 +14,6 @@ updates:
       interval: 'weekly'
     cooldown:
       default-days: 1 # Wait for one day after release before updating a dependency
-
-  - package-ecosystem: 'docker'
-    directory: '/'
-    schedule:
-      interval: 'weekly'
-    cooldown:
-      default-days: 1 # Wait for one day after release before updating a dependency
-
     groups:
       amsterdam-design-system:
         applies-to: 'version-updates'
@@ -43,3 +35,10 @@ updates:
 
     versioning-strategy: 'increase-if-necessary'
     open-pull-requests-limit: 20
+
+  - package-ecosystem: 'docker'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    cooldown:
+      default-days: 1 # Wait for one day after release before updating a dependency
