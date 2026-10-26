@@ -42,7 +42,6 @@ updates:
       interval: 'weekly'
     cooldown:
       default-days: 1
-
     groups:
       node-updates:
         patterns:
@@ -56,5 +55,3 @@ updates:
           - 'nginx'
         update-types:
           - 'patch'
-
-    versioning-strategy: 'increase-if-necessary'
