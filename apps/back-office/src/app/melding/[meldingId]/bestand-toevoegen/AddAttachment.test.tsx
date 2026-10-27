@@ -84,7 +84,7 @@ describe('AddAttachment', () => {
   it('shows an empty aria-live region when no file has been deleted', () => {
     render(<AddAttachment attachments={[createAttachment({ originalFilename: 'first.png' })]} meldingId={123} />)
 
-    const liveRegion = document.querySelector('[aria-live="polite"]')
+    const liveRegion = document.querySelector('[aria-live="assertive"]')
 
     expect(liveRegion).toBeInTheDocument()
     expect(liveRegion).toBeEmptyDOMElement()
