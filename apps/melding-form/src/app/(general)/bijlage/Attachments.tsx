@@ -141,7 +141,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           </Column>
 
           <div className={styles.needsJavaScript}>
-            <Paragraph aria-live="assertive" className="ams-mb-m">
+            <Paragraph aria-live="polite" className="ams-mb-m">
               {t('status', {
                 fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
                 maxFiles: MAX_SUCCESSFUL_UPLOADS,
