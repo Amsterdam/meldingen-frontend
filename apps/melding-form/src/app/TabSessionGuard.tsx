@@ -44,12 +44,7 @@ export const TabSessionGuard = () => {
       navigator.locks.request(LOCK_NAME, { mode: 'shared' }, () => new Promise(() => {}))
 
       if (isNewTab && !isOpenInOtherTab && !isNewSession) {
-        try {
-          await clearSession()
-        } catch {
-          // Remove the marker, so a refresh tries to clear the session again
-          sessionStorage.removeItem(TAB_MARKER_KEY)
-        }
+        await clearSession()
       }
     }
 

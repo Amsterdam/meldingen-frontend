@@ -73,5 +73,6 @@ export default async () => {
 
   const action = postPrimaryForm.bind(null, { existingId: meldingId, existingToken: token, requiredErrorMessage })
 
-  return <Home action={action} formComponents={formComponents} />
+  // The key remounts the form when the session changes, so values from a cleared session are not kept
+  return <Home action={action} formComponents={formComponents} key={meldingId ?? 'new'} />
 }
