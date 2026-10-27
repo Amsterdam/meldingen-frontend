@@ -42,16 +42,8 @@ updates:
       interval: 'weekly'
     cooldown:
       default-days: 1
-    groups:
-      node-updates:
-        patterns:
-          - 'node'
-        update-types:
-          - 'minor'
-          - 'patch'
-
-      nginx-stable-patches:
-        patterns:
-          - 'nginx'
-        update-types:
-          - 'patch'
+    ignore:
+      - dependency-name: 'node'
+        update-types: ['version-update:semver-major'] # Stay on the LTS major
+      - dependency-name: 'nginx'
+        update-types: ['version-update:semver-minor', 'version-update:semver-major'] # Odd minors are mainline, stay on stable
