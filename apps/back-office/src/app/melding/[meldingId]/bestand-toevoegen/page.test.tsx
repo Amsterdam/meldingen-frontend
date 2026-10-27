@@ -62,7 +62,19 @@ describe('Page', () => {
 
     render(result)
 
-    expect(AddAttachment).toHaveBeenCalledWith({ attachments, meldingId: 123 }, undefined)
+    expect(AddAttachment).toHaveBeenCalledWith({ attachments, meldingId: 123, publicId: 'ABC' }, undefined)
     expect(screen.getByText('AddAttachment Component')).toBeInTheDocument()
+  })
+
+  it('passes an empty public id to AddAttachment when public id is not available', async () => {
+    vi.mocked(getAttachmentsData).mockResolvedValueOnce(attachments)
+
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({ data: { public_id: null } })))
+
+    const result = await Page({ params: Promise.resolve({ meldingId: '123' }) })
+
+    render(result)
+
+    expect(AddAttachment).toHaveBeenCalledWith({ attachments, meldingId: 123, publicId: '' }, undefined)
   })
 })

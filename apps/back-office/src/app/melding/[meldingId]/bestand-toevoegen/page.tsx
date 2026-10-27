@@ -23,7 +23,10 @@ export default async ({ params }: Props) => {
   const { meldingId: meldingIdParams } = await params
   const meldingId = Number(meldingIdParams)
 
-  const attachments = await getAttachmentsData(meldingId, 'thumbnail')
+  const [{ data }, attachments] = await Promise.all([
+    getMeldingByMeldingId({ path: { melding_id: meldingId } }),
+    getAttachmentsData(meldingId, 'thumbnail'),
+  ])
 
-  return <AddAttachment attachments={attachments} meldingId={meldingId} />
+  return <AddAttachment attachments={attachments} meldingId={meldingId} publicId={data?.public_id ?? ''} />
 }

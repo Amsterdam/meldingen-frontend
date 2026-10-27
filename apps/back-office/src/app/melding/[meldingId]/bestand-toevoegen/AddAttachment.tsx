@@ -16,6 +16,7 @@ import { PageWrapper } from '../_components/PageWrapper'
 import { deleteAttachmentAction } from './actions'
 import { AttachmentsList } from './AttachmentsList'
 import { InvalidFormAlert } from '~/app/_components'
+import { useDocumentTitleOnError } from '~/app/_utils/useDocumentTitleOnError'
 import { clientEnv } from '~/env/client'
 
 import styles from './AddAttachment.module.css'
@@ -23,6 +24,7 @@ import styles from './AddAttachment.module.css'
 type Props = {
   attachments: MeldingAttachment[]
   meldingId: number
+  publicId: string
 }
 
 const MAX_SUCCESSFUL_UPLOADS = 5
@@ -44,7 +46,7 @@ const deleteAttachment = async (serverId: number) => {
 
 const isErroredFileUpload = (upload: FileUploadState): upload is ErroredFileUpload => upload.status === 'error'
 
-export const AddAttachment = ({ attachments, meldingId }: Props) => {
+export const AddAttachment = ({ attachments, meldingId, publicId }: Props) => {
   const t = useTranslations('add-attachment')
 
   const [invalidFormAlertFocusKey, setInvalidFormAlertFocusKey] = useState<string[]>([])
@@ -90,13 +92,20 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     message: t(errorMessage),
   }))
 
+  const documentTitle = useDocumentTitleOnError({
+    apiErrorMessage: genericError ? t(genericError.title, genericError.options) : undefined,
+    baseDocumentTitle: t('metadata.title', { publicId }),
+    hasApiError: Boolean(genericError),
+    validationErrorCount: validationErrors.length,
+  })
+
   const hasAttachments = fileUploads.length > 0
   const successfulUploadsCount = fileUploads.filter(({ status }) => status === 'success').length
 
   const meldingDetailLink = `/melding/${meldingId}`
 
   return (
-    <PageWrapper backLink={{ href: meldingDetailLink, label: t('back-link') }}>
+    <PageWrapper backLink={{ href: meldingDetailLink, label: t('back-link') }} documentTitle={documentTitle}>
       {genericError && (
         <FocusableAlert
           className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
