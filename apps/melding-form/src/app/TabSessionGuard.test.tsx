@@ -56,6 +56,25 @@ describe('TabSessionGuard', () => {
     await waitFor(() => expect(clearSession).toHaveBeenCalled())
   })
 
+  it('removes the tab marker when clearing the session fails, so a refresh tries again', async () => {
+    vi.mocked(clearSession).mockRejectedValueOnce(new Error('Network error'))
+    mockLocks()
+
+    render(<TabSessionGuard />)
+
+    await waitFor(() => expect(sessionStorage.getItem('meldingen_tab')).toBeNull())
+    expect(clearSession).toHaveBeenCalled()
+  })
+
+  it('keeps the tab marker when clearing the session succeeds', async () => {
+    mockLocks()
+
+    render(<TabSessionGuard />)
+
+    await waitFor(() => expect(clearSession).toHaveBeenCalled())
+    expect(sessionStorage.getItem('meldingen_tab')).toBe('true')
+  })
+
   it('keeps the session in a new tab when another tab holds the lock', async () => {
     const locks = mockLocks(['meldingen_session'])
 
