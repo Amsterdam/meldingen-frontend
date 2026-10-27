@@ -34,6 +34,17 @@ global.URL.createObjectURL = vi.fn()
 global.URL.revokeObjectURL = vi.fn()
 
 const mockFile = new File(['dummy content'], 'example.png', { type: 'image/png' })
+const existingFile = {
+  blob: new Blob(['dummy content'], { type: 'image/png' }),
+  fileName: 'existing.png',
+  serverId: 1,
+}
+const duplicateFile = new File(['dummy content'], 'existing.png', { type: 'image/png' })
+
+const changeFileInputWithoutRestoringFocus = (fileInput: HTMLElement, files: File[]) => {
+  // userEvent.upload restores focus to the file input after the change handler, masking alert focus.
+  fireEvent.change(fileInput, { target: { files } })
+}
 
 describe('Attachments', () => {
   it('renders the component with the correct document title', () => {
@@ -104,11 +115,7 @@ describe('Attachments', () => {
 
     const fileInput = screen.getByLabelText('File input')
 
-    // Using fireEvent instead of userEvent.upload here, because userEvent simulates the browser
-    // restoring focus to the file input once the (simulated) file picker closes. That happens
-    // after our change handler runs, so it would overwrite the focus we set on the alert and mask
-    // the behaviour under test.
-    fireEvent.change(fileInput, { target: { files: [mockFile] } })
+    changeFileInputWithoutRestoringFocus(fileInput, [mockFile])
 
     const link = await screen.findByRole('link', { name: 'validation-errors.file-too-large' })
     const alert = container.querySelector('.ams-alert')
@@ -121,18 +128,11 @@ describe('Attachments', () => {
   })
 
   it('refocuses the Invalid Form Alert when another upload fails with the same error', () => {
-    const { container } = render(
-      <Attachments
-        {...defaultProps}
-        files={[{ blob: new Blob(['dummy content'], { type: 'image/png' }), fileName: 'existing.png', serverId: 1 }]}
-      />,
-    )
+    const { container } = render(<Attachments {...defaultProps} files={[existingFile]} />)
 
     const fileInput = screen.getByLabelText('File input')
-    const duplicateFile = new File(['dummy content'], 'existing.png', { type: 'image/png' })
 
-    // Using fireEvent instead of userEvent.upload here, because userEvent restores focus to the file input
-    fireEvent.change(fileInput, { target: { files: [duplicateFile] } })
+    changeFileInputWithoutRestoringFocus(fileInput, [duplicateFile])
 
     expect(container.querySelector('.ams-alert')).toHaveFocus()
 
@@ -140,24 +140,19 @@ describe('Attachments', () => {
 
     expect(fileInput).toHaveFocus()
 
-    fireEvent.change(fileInput, { target: { files: [duplicateFile] } })
+    changeFileInputWithoutRestoringFocus(fileInput, [duplicateFile])
 
     expect(container.querySelector('.ams-alert')).toHaveFocus()
   })
 
   it('does not move focus to the Invalid Form Alert when a failed upload is deleted', () => {
-    const { container } = render(
-      <Attachments
-        {...defaultProps}
-        files={[{ blob: new Blob(['dummy content'], { type: 'image/png' }), fileName: 'existing.png', serverId: 1 }]}
-      />,
-    )
+    const { container } = render(<Attachments {...defaultProps} files={[existingFile]} />)
 
     const fileInput = screen.getByLabelText('File input')
-    const duplicateFile = new File(['dummy content'], 'existing.png', { type: 'image/png' })
 
-    fireEvent.change(fileInput, { target: { files: [duplicateFile] } })
-    fireEvent.change(fileInput, { target: { files: [duplicateFile] } })
+    changeFileInputWithoutRestoringFocus(fileInput, [duplicateFile])
+
+    changeFileInputWithoutRestoringFocus(fileInput, [duplicateFile])
 
     fileInput.focus()
 
@@ -179,16 +174,11 @@ describe('Attachments', () => {
 
     const fileInput = screen.getByLabelText('File input')
 
-    const file = new File(['dummy content'], 'example.png', { type: 'image/png' })
     const file2 = new File(['dummy content two'], 'example2.png', { type: 'image/png' })
     const file3 = new File(['dummy content three'], 'example3.png', { type: 'image/png' })
     const file4 = new File(['dummy content four'], 'example4.png', { type: 'image/png' })
 
-    // Using fireEvent instead of userEvent.upload here, because userEvent simulates the browser
-    // restoring focus to the file input once the (simulated) file picker closes. That happens
-    // after our change handler runs, so it would overwrite the focus we set on the alert and mask
-    // the behaviour under test.
-    fireEvent.change(fileInput, { target: { files: [file, file2, file3, file4] } })
+    changeFileInputWithoutRestoringFocus(fileInput, [mockFile, file2, file3, file4])
 
     const alert = container.querySelector('.ams-alert')
 
@@ -196,6 +186,30 @@ describe('Attachments', () => {
     expect(alert).toHaveFocus()
 
     expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
+  })
+
+  it('only shows a generic error as long as no validation errors are present', async () => {
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} files={[existingFile]} />)
+
+    const fileInput = screen.getByLabelText('File input')
+    const files = Array.from({ length: 4 }, (_, index) => new File(['x'], `file-${index}.png`, { type: 'image/png' }))
+
+    await user.upload(fileInput, files)
+
+    expect(screen.getByText('errors.too-many-files.title')).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'validation-errors.duplicate-upload' })).not.toBeInTheDocument()
+
+    await user.upload(fileInput, [duplicateFile])
+
+    expect(screen.getByRole('link', { name: 'validation-errors.duplicate-upload' })).toBeInTheDocument()
+    expect(screen.queryByText('errors.too-many-files.title')).not.toBeInTheDocument()
+
+    await user.upload(fileInput, files)
+
+    expect(screen.getByRole('link', { name: 'validation-errors.duplicate-upload' })).toBeInTheDocument()
+    expect(screen.queryByText('errors.too-many-files.title')).not.toBeInTheDocument()
   })
 
   it('renders an empty aria-live region when no file is deleted', () => {
