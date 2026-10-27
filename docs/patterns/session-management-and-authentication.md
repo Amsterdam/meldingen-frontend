@@ -34,7 +34,8 @@ It uses two signals:
   so a new tab can check whether the melding form is still open in another tab.
 
 If the tab is new and no other tab holds the lock, the `clearSession` server action deletes the cookies and redirects to the home page.
-The back-office entry route starts a new session in a new tab, so it sets a short-lived `meldingen_new_session` cookie to prevent this.
+The back-office entry route sets a new session, and the tab has no marker yet for the melding form.
+So the route sets a short-lived `meldingen_new_session` cookie that tells the guard not to clear this session.
 
 This is an enhancement. Without JavaScript or Web Locks, the session lasts until the browser closes.
 A known limitation: if the browser discards an inactive tab to save memory, that tab releases its lock.

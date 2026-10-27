@@ -8,7 +8,7 @@ import { COOKIES } from '~/constants'
 const TAB_MARKER_KEY = 'meldingen_tab'
 const LOCK_NAME = 'meldingen_session'
 
-// The back-office entry route sets a short-lived flag, because it starts a new session in a new tab.
+// The back-office entry route sets a short-lived flag, because it sets a new session in a tab without a marker.
 // Read and delete it, so that session is not cleared straight away.
 const consumeNewSessionFlag = () => {
   const hasFlag = document.cookie.split('; ').includes(`${COOKIES.NEW_SESSION}=true`)

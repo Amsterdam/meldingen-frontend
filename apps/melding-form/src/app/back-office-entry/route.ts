@@ -38,7 +38,7 @@ export const GET = async (request: NextRequest) => {
   cookieStore.set(COOKIES.TOKEN, token, SESSION_COOKIE_OPTIONS)
   cookieStore.set(COOKIES.SOURCE, 'back-office', SESSION_COOKIE_OPTIONS)
 
-  // Tells TabSessionGuard that this new tab starts a new session, so it doesn't clear it.
+  // Tells TabSessionGuard not to clear this new session, although the tab has no marker yet for the melding form.
   // TabSessionGuard reads and deletes it with JavaScript, so it can't be HttpOnly.
   cookieStore.set(COOKIES.NEW_SESSION, 'true', { maxAge: 60, sameSite: 'lax', secure: true })
 
