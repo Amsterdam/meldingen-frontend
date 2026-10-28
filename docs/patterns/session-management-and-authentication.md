@@ -15,9 +15,31 @@ When a melder finishes a melding, the cookies are removed.
 After that, the melder can go back to the first form page to start a new session.
 
 If a melder does not finish a melding, they will stay in the same session until they close the browser,
-or until the token expires. A refresh or a new tab keeps the session.
+close all tabs with the melding form, or until the token expires.
 It’s always possible to return to the first page and modify the melding text and category,
 but it will still be associated with the same melding id.
+
+### Sessions across tabs
+
+Session cookies are shared by all tabs, and only end when the browser closes.
+`TabSessionGuard` adds this behaviour:
+
+- A refresh, or a new tab while the melding form is open in another tab, keeps the session.
+- A new tab after all tabs with the melding form were closed starts a new session.
+
+It uses two signals:
+
+- A marker in `sessionStorage`. It survives a refresh, but a new tab starts without it.
+- A shared Web Lock that every tab holds. The browser releases it when the tab closes,
+  so a new tab can check whether the melding form is still open in another tab.
+
+If the tab is new and no other tab holds the lock, the `clearSession` server action deletes the cookies and redirects to the home page.
+The back-office entry route sets a new session, and the tab has no marker yet for the melding form.
+So the route sets a short-lived `meldingen_new_session` cookie that tells the guard not to clear this session.
+
+This is an enhancement. Without JavaScript or Web Locks, the session lasts until the browser closes.
+A known limitation: if the browser discards an inactive tab to save memory, that tab releases its lock.
+A new tab opened at that moment clears the session of the discarded tab.
 
 ## Admin
 
