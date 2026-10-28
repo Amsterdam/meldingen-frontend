@@ -121,7 +121,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
             {t('upload.title')}
           </Heading>
           <Paragraph id="file-upload-description">{t('upload.description')}</Paragraph>
-          <Paragraph aria-live="polite">
+          <Paragraph aria-live="polite" role="status">
             {t('upload.count', { currentCount: successfulUploadsCount, maxCount: MAX_SUCCESSFUL_UPLOADS })}
           </Paragraph>
         </Column>
@@ -142,7 +142,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
 
         {hasAttachments && <AttachmentsList files={fileUploads} handleDelete={handleOnDelete} />}
 
-        <div aria-live="assertive" className="ams-visually-hidden">
+        <div aria-live="polite" className="ams-visually-hidden" role="status">
           {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
         </div>
       </Column>

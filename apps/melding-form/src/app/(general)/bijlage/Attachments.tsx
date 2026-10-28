@@ -141,7 +141,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           </Column>
 
           <div className={styles.needsJavaScript}>
-            <Paragraph aria-live="polite" className="ams-mb-m">
+            <Paragraph aria-live="polite" className="ams-mb-m" role="status">
               {t('status', {
                 fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
                 maxFiles: MAX_SUCCESSFUL_UPLOADS,
@@ -184,7 +184,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
               </FileList>
             )}
 
-            <div aria-live="assertive" className="ams-visually-hidden">
+            <div aria-live="polite" className="ams-visually-hidden" role="status">
               {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
             </div>
           </div>
