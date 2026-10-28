@@ -26,13 +26,13 @@ Toggling questions in real time on a page requires evaluating conditions in the 
 
 ## Decision
 
-We evaluate all conditions in the front-end. Part of the logic has to run in the browser anyway, so evaluating conditions in the front-end keeps a single implementation of the condition logic. This logic is shared by the form renderer, the navigation between pages and the server actions. Evaluating conditions in the back-end as well would mean maintaining the same logic in two languages, which can drift apart.
+We evaluate all conditions in the front-end. Part of the logic has to run in the browser anyway, so evaluating conditions in the front-end keeps the condition logic together. Evaluating conditions in the back-end as well would mean maintaining the same logic in two languages, which can drift apart.
 
 How the condition logic works is described in [Additional questions form wizard](../patterns/additional-questions-form-wizard.md).
 
 ## Consequences
 
-- Condition logic lives in one place, in TypeScript, and works both on the server and in the browser.
+- Condition logic lives in the front-end, in TypeScript, and works both on the server and in the browser.
 - Without JavaScript, questions that depend on another question on the same page are not shown, because there is no script to reveal them when the answer changes. See [Implementation trade-off](../patterns/additional-questions-form-wizard.md#implementation-trade-off).
 - The back-end trusts the front-end with everything that depends on conditions:
   - **Required questions**: the back-end does not check whether required questions are answered. The check happens in the server action of the additional questions pages. We do not return a validation error for required questions that are conditionally hidden.
