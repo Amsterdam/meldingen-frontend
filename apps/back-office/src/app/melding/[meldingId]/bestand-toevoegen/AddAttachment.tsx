@@ -97,7 +97,12 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
 
   return (
     <PageWrapper backLink={{ href: meldingDetailLink, label: t('back-link') }}>
-      {genericError && (
+      <InvalidFormAlert
+        errors={validationErrors}
+        focusKey={invalidFormAlertFocusKey}
+        heading={t('validation-errors.alert-title', { count: validationErrors.length })}
+      />
+      {genericError && !validationErrors.length && (
         <FocusableAlert
           className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
           // useFileUploads sets a new object for every error, so repeated errors refocus the alert too
@@ -107,11 +112,6 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
           {genericError.description && <Paragraph>{t(genericError.description)}</Paragraph>}
         </FocusableAlert>
       )}
-      <InvalidFormAlert
-        errors={validationErrors}
-        focusKey={invalidFormAlertFocusKey}
-        heading={t('validation-errors.alert-title', { count: validationErrors.length })}
-      />
       <Heading className="ams-mb-l" level={1}>
         {t('title')}
       </Heading>

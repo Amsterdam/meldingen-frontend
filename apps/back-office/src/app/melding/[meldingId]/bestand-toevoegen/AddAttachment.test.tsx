@@ -307,4 +307,30 @@ describe('AddAttachment', () => {
 
     consoleErrorSpy.mockRestore()
   })
+
+  it('only shows a generic error as long as no validation errors are present', async () => {
+    const user = userEvent.setup()
+
+    render(<AddAttachment {...defaultProps} attachments={[createAttachment()]} />)
+
+    const fileInput = screen.getByLabelText('File input')
+    const files = Array.from({ length: 6 }, (_, index) => new File(['x'], `file-${index}.png`, { type: 'image/png' }))
+
+    await user.upload(fileInput, files)
+
+    expect(screen.getByText('errors.too-many-files.title')).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'validation-errors.duplicate-upload' })).not.toBeInTheDocument()
+
+    const duplicateFile = new File(['dummy content'], 'existing.png', { type: 'image/png' })
+
+    await user.upload(fileInput, [duplicateFile])
+
+    expect(screen.getByRole('link', { name: 'validation-errors.duplicate-upload' })).toBeInTheDocument()
+    expect(screen.queryByText('errors.too-many-files.title')).not.toBeInTheDocument()
+
+    await user.upload(fileInput, files)
+
+    expect(screen.getByRole('link', { name: 'validation-errors.duplicate-upload' })).toBeInTheDocument()
+    expect(screen.queryByText('errors.too-many-files.title')).not.toBeInTheDocument()
+  })
 })
