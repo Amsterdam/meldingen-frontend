@@ -15,7 +15,7 @@ type Props = {
 
 export const PageWrapper = ({ backLink, children, documentTitle }: Props) => (
   <div className="ams-page__area--body">
-    {documentTitle && <title key={documentTitle}>{documentTitle}</title>}
+    {documentTitle && <title>{documentTitle}</title>}
     <BackLink href={backLink.href}>{backLink.label}</BackLink>
     <Grid as="main">
       <Grid.Cell appearance="transparent" span={{ narrow: 4, medium: 6, wide: 6 }}>
