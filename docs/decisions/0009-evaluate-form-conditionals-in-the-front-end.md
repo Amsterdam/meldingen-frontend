@@ -13,7 +13,10 @@ Conditions affect the form in two places:
 - **On a page**: a question can be shown or hidden based on answers on previous pages, or toggled in real time based on another question on the same page.
 - **Between pages**: a page is skipped when none of its questions are visible, so navigating forward and back has to know which pages are visible.
 
-Toggling questions in real time on a page requires evaluating conditions in the browser. Because of [progressive enhancement](0006-apply-progressive-enhancement.md), the flow also has to work without JavaScript. Conditions are therefore also evaluated on the server: when a page is rendered on the server, to decide which questions to show based on answers given on previous pages, and when a page is submitted, to determine the next page and to check required questions that are conditionally visible.
+Toggling questions in real time on a page requires evaluating conditions in the browser. Because of [progressive enhancement](0006-apply-progressive-enhancement.md), the flow also has to work without JavaScript. Conditions are therefore also evaluated on the server:
+
+- **When a page is rendered**: to decide which questions to show, based on answers given on previous pages.
+- **When a page is submitted**: to determine the next page, and to check required questions that are conditionally visible.
 
 ## Options
 
