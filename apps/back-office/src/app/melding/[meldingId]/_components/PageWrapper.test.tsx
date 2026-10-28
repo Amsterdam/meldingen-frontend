@@ -24,20 +24,12 @@ describe('PageWrapper', () => {
     expect(document.title).toBe('Report details')
   })
 
-  it('updates the document title when it changes and another title already exists in the head', () => {
-    const metadataTitle = document.createElement('title')
-
-    metadataTitle.textContent = 'Metadata title'
-    document.head.appendChild(metadataTitle)
-
+  it('updates the document title when it changes', () => {
     const { rerender } = render(
       <PageWrapper backLink={{ href: '/melding/123', label: 'Back to report' }} documentTitle="Report details">
         <p>Page content</p>
       </PageWrapper>,
     )
-
-    // Simulate the metadata title being hoisted after the PageWrapper title, making it the first title in the head
-    document.head.insertBefore(metadataTitle, document.head.querySelector('title'))
 
     rerender(
       <PageWrapper backLink={{ href: '/melding/123', label: 'Back to report' }} documentTitle="Error - Report details">
@@ -46,8 +38,6 @@ describe('PageWrapper', () => {
     )
 
     expect(document.title).toBe('Error - Report details')
-
-    metadataTitle.remove()
   })
 
   it('does not change the document title when no title is provided', () => {

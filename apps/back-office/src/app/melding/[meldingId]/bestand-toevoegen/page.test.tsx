@@ -17,11 +17,6 @@ vi.mock('../_utils/server', () => ({
   getAttachmentsData: vi.fn(),
 }))
 
-vi.mock('next-intl/server', async () => ({
-  getTranslations: () =>
-    vi.fn().mockImplementation((key, params) => (params ? `${key}: ${JSON.stringify(params)}` : key)),
-}))
-
 const attachments: MeldingAttachment[] = []
 
 describe('Page', () => {
