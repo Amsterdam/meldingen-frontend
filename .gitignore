@@ -6,6 +6,10 @@ tmp
 /out-tsc
 coverage
 
+# Playwright
+playwright-report
+test-results
+
 # dependencies
 node_modules
 
@@ -40,6 +44,7 @@ Thumbs.db
 
 # Next.js
 .next
+.next-e2e
 out
 next-env.d.ts
 
