@@ -119,7 +119,7 @@
   },
   "add-attachment": {
     "metadata": {
-      "title": "Bestand toevoegen - Gemeente Amsterdam"
+      "title": "Bestand toevoegen - Melding {publicId} - Gemeente Amsterdam"
     },
     "title": "Voeg bestand toe",
     "back-link": "Meldingdetails",
