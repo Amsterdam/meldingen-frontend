@@ -13,20 +13,20 @@ importers:
   .:
     dependencies:
       '@amsterdam/design-system-assets':
-        specifier: 2.6.0
-        version: 2.6.0
+        specifier: 2.7.0
+        version: 2.7.0
       '@amsterdam/design-system-css':
-        specifier: 4.4.0
-        version: 4.4.0(@amsterdam/design-system-assets@2.6.0)(@amsterdam/design-system-tokens@4.3.0)
+        specifier: 4.5.0
+        version: 4.5.0(@amsterdam/design-system-assets@2.7.0)(@amsterdam/design-system-tokens@4.4.0)
       '@amsterdam/design-system-react':
-        specifier: 4.4.0
-        version: 4.4.0(@amsterdam/design-system-css@4.4.0(@amsterdam/design-system-assets@2.6.0)(@amsterdam/design-system-tokens@4.3.0))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: 4.5.0
+        version: 4.5.0(@amsterdam/design-system-css@4.5.0(@amsterdam/design-system-assets@2.7.0)(@amsterdam/design-system-tokens@4.4.0))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@amsterdam/design-system-react-icons':
-        specifier: 2.2.0
-        version: 2.2.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: 2.3.0
+        version: 2.3.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@amsterdam/design-system-tokens':
-        specifier: 4.3.0
-        version: 4.3.0
+        specifier: 4.4.0
+        version: 4.4.0
       '@headlessui/react':
         specifier: 2.2.10
         version: 2.2.10(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -400,30 +400,30 @@ packages:
   '@adobe/css-tools@4.5.0':
     resolution: {integrity: sha512-6OzddxPio9UiWTCemp4N8cYLV2ZN1ncRnV1cVGtve7dhPOtRkleRyx32GQCYSwDYgaHU3USMm84tNsvKzRCa1Q==}
 
-  '@amsterdam/design-system-assets@2.6.0':
-    resolution: {integrity: sha512-DJ5TP2oUvoD0wOaawJidVfrzxYGqfoQCuOWACBtPvtFKI+FRL2r+M7/+r+5DIY+JOw0/qDhaA4KLCoda/hWwpg==}
+  '@amsterdam/design-system-assets@2.7.0':
+    resolution: {integrity: sha512-O6vBpWhE6dl4hyeL9k//AkQyk1whRQtBU/2dLnS9dtiSr8pH5xZOnxYAJi0drMJUpntdKI82oXNnIvS6EnFF7Q==}
 
-  '@amsterdam/design-system-css@4.4.0':
-    resolution: {integrity: sha512-cxvTcdpNkwUo6y+PZwS4c8NKeClyQH1qWWld78lsezVGEL7YBi0O0MlEumrRBx0nC+8K76S8cB4Q4TIpoLK6hQ==}
+  '@amsterdam/design-system-css@4.5.0':
+    resolution: {integrity: sha512-FGomskU30LOJi0LyQVOdgJheRJ5meexyaXEfn0BiOrWuvZtueel+39fdaeLdbxtVq0dlUB8mnhAexcIcgCrG5Q==}
     peerDependencies:
-      '@amsterdam/design-system-assets': 2.6.0
-      '@amsterdam/design-system-tokens': 4.3.0
+      '@amsterdam/design-system-assets': 2.7.0
+      '@amsterdam/design-system-tokens': 4.4.0
 
-  '@amsterdam/design-system-react-icons@2.2.0':
-    resolution: {integrity: sha512-sE6tEN9wXYJMiGlznwCuGob3m2HoqMPc41JOEFUlGhg26lvBT/TejxERqeclHErdA5OsZIXihfi8fEEBFEW8xg==}
+  '@amsterdam/design-system-react-icons@2.3.0':
+    resolution: {integrity: sha512-Sm4WR3c70bwB9UpQd7VzLI5tnJGeRyBOwzJSlqrafY5wV3ESic2GNx7I9lruO1mJN3t9/6l8826sJpiMhzP9ow==}
     peerDependencies:
       react: 16 - 19
       react-dom: 16 - 19
 
-  '@amsterdam/design-system-react@4.4.0':
-    resolution: {integrity: sha512-SrPQNvNkXCllCPAuO5RR1y73lI6/VGGvS2IQSLndwXU1abx6fNdQa5YmYbGdCkcU0oGKod/P8LzXO/+n+hQDSQ==}
+  '@amsterdam/design-system-react@4.5.0':
+    resolution: {integrity: sha512-dtPhLJCLzEGioOONBicanYBd6ABRt98UCrZYDA8vQOhScrLlcZ/zF2LsVlS9/I4A4oPFDc5vqV5R9i5g8GJzWQ==}
     peerDependencies:
-      '@amsterdam/design-system-css': 4.4.0
+      '@amsterdam/design-system-css': 4.5.0
       react: 16 - 19
       react-dom: 16 - 19
 
-  '@amsterdam/design-system-tokens@4.3.0':
-    resolution: {integrity: sha512-liXQHm6hy1MYoA8wi6n5to+9MDSnqKYl1HtyBatw4YNnmC2dP+Jp/6xevZmO00dhfJp0NoNT8hOY3nXlR2B/KA==}
+  '@amsterdam/design-system-tokens@4.4.0':
+    resolution: {integrity: sha512-RDNfSJ1SHFOJxipGezkGkSAhF1S/Pt83rBzShx0D6vGEhtO/AwHo87h/j+sw+PNyRhJ5UQsOs6UltXsJLKjKvg==}
 
   '@asamuzakjp/css-color@6.0.7':
     resolution: {integrity: sha512-vC/bk1Lz7Tn/EfU9/apOTBk80/8dyGyWMowPoV1tJ52muDGsDqt2HPT2klrFUiY60MQmQv9q8yIht15JnBgDGw==}
@@ -518,8 +518,8 @@ packages:
     resolution: {integrity: sha512-Nq8OhGWiZIZGV6hLHoyAKLLcJihP/xFeBMGJoUrxTX2psI8dCifzLhZISFb+VWS3wFMRDmCGw5R+dOySCqPLhw==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/runtime@8.0.7':
-    resolution: {integrity: sha512-k0hagDDq/6w4v+0Sp4wFvIz/yswH5O7Va6aRTnD7N62Tnborp4X+YB+H3XUcWVSR4aE47WPEXiIIZchBs0GmYg==}
+  '@babel/runtime@8.0.8':
+    resolution: {integrity: sha512-dEu8nGlRqjsJsvviUUoSMfcRHpwomCiRlXsc2mPfJ79+ffTpDm+JtfUtTMzUrqCApHQnCsVPD3gT1ZT8RgBRCQ==}
 
   '@babel/template@7.29.7':
     resolution: {integrity: sha512-puq+Gf35oI24FeN11LkoUQFqv9uwNeWpxXZi/Ji3rRIoKAzKnxRaZ+Gkj0vKS9ZCiTESfng1N9LyOyXvo+m+Gg==}
@@ -5381,28 +5381,28 @@ snapshots:
 
   '@adobe/css-tools@4.5.0': {}
 
-  '@amsterdam/design-system-assets@2.6.0': {}
+  '@amsterdam/design-system-assets@2.7.0': {}
 
-  '@amsterdam/design-system-css@4.4.0(@amsterdam/design-system-assets@2.6.0)(@amsterdam/design-system-tokens@4.3.0)':
+  '@amsterdam/design-system-css@4.5.0(@amsterdam/design-system-assets@2.7.0)(@amsterdam/design-system-tokens@4.4.0)':
     dependencies:
-      '@amsterdam/design-system-assets': 2.6.0
-      '@amsterdam/design-system-tokens': 4.3.0
+      '@amsterdam/design-system-assets': 2.7.0
+      '@amsterdam/design-system-tokens': 4.4.0
 
-  '@amsterdam/design-system-react-icons@2.2.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
+  '@amsterdam/design-system-react-icons@2.3.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
 
-  '@amsterdam/design-system-react@4.4.0(@amsterdam/design-system-css@4.4.0(@amsterdam/design-system-assets@2.6.0)(@amsterdam/design-system-tokens@4.3.0))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
+  '@amsterdam/design-system-react@4.5.0(@amsterdam/design-system-css@4.5.0(@amsterdam/design-system-assets@2.7.0)(@amsterdam/design-system-tokens@4.4.0))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@amsterdam/design-system-css': 4.4.0(@amsterdam/design-system-assets@2.6.0)(@amsterdam/design-system-tokens@4.3.0)
-      '@amsterdam/design-system-react-icons': 2.2.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      '@babel/runtime': 7.29.7
+      '@amsterdam/design-system-css': 4.5.0(@amsterdam/design-system-assets@2.7.0)(@amsterdam/design-system-tokens@4.4.0)
+      '@amsterdam/design-system-react-icons': 2.3.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      '@babel/runtime': 7.29.10
       clsx: 2.1.1
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
 
-  '@amsterdam/design-system-tokens@4.3.0': {}
+  '@amsterdam/design-system-tokens@4.4.0': {}
 
   '@asamuzakjp/css-color@6.0.7':
     dependencies:
@@ -5522,7 +5522,7 @@ snapshots:
 
   '@babel/runtime@7.29.7': {}
 
-  '@babel/runtime@8.0.7': {}
+  '@babel/runtime@8.0.8': {}
 
   '@babel/template@7.29.7':
     dependencies:
@@ -6269,7 +6269,7 @@ snapshots:
 
   '@mui/icons-material@9.5.0(@mui/material@9.5.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@types/react@19.3.0)(react@19.3.1))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react@19.3.0)(react@19.3.1)':
     dependencies:
-      '@babel/runtime': 8.0.7
+      '@babel/runtime': 8.0.8
       '@mui/material': 9.5.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@types/react@19.3.0)(react@19.3.1))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       react: 19.3.1
     optionalDependencies:
@@ -6277,7 +6277,7 @@ snapshots:
 
   '@mui/material@9.5.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@types/react@19.3.0)(react@19.3.1))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@babel/runtime': 8.0.7
+      '@babel/runtime': 8.0.8
       '@mui/core-downloads-tracker': 9.5.0
       '@mui/system': 9.5.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@types/react@19.3.0)(react@19.3.1))(@types/react@19.3.0)(react@19.3.1)
       '@mui/types': 9.5.0(@types/react@19.3.0)
@@ -6298,7 +6298,7 @@ snapshots:
 
   '@mui/private-theming@9.5.0(@types/react@19.3.0)(react@19.3.1)':
     dependencies:
-      '@babel/runtime': 8.0.7
+      '@babel/runtime': 8.0.8
       '@mui/utils': 9.5.0(@types/react@19.3.0)(react@19.3.1)
       prop-types: 15.8.1
       react: 19.3.1
@@ -6307,7 +6307,7 @@ snapshots:
 
   '@mui/styled-engine@9.5.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@types/react@19.3.0)(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@babel/runtime': 8.0.7
+      '@babel/runtime': 8.0.8
       '@emotion/cache': 11.14.0
       '@emotion/serialize': 1.3.3
       '@emotion/sheet': 1.4.0
@@ -6320,7 +6320,7 @@ snapshots:
 
   '@mui/system@9.5.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@types/react@19.3.0)(react@19.3.1))(@types/react@19.3.0)(react@19.3.1)':
     dependencies:
-      '@babel/runtime': 8.0.7
+      '@babel/runtime': 8.0.8
       '@mui/private-theming': 9.5.0(@types/react@19.3.0)(react@19.3.1)
       '@mui/styled-engine': 9.5.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1))(@types/react@19.3.0)(react@19.3.1))(react@19.3.1)
       '@mui/types': 9.5.0(@types/react@19.3.0)
@@ -6336,13 +6336,13 @@ snapshots:
 
   '@mui/types@9.5.0(@types/react@19.3.0)':
     dependencies:
-      '@babel/runtime': 8.0.7
+      '@babel/runtime': 8.0.8
     optionalDependencies:
       '@types/react': 19.3.0
 
   '@mui/utils@9.5.0(@types/react@19.3.0)(react@19.3.1)':
     dependencies:
-      '@babel/runtime': 8.0.7
+      '@babel/runtime': 8.0.8
       '@mui/types': 9.5.0(@types/react@19.3.0)
       '@types/prop-types': 15.7.15
       clsx: 2.1.1

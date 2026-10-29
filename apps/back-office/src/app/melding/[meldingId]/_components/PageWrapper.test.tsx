@@ -24,6 +24,22 @@ describe('PageWrapper', () => {
     expect(document.title).toBe('Report details')
   })
 
+  it('updates the document title when it changes', () => {
+    const { rerender } = render(
+      <PageWrapper backLink={{ href: '/melding/123', label: 'Back to report' }} documentTitle="Report details">
+        <p>Page content</p>
+      </PageWrapper>,
+    )
+
+    rerender(
+      <PageWrapper backLink={{ href: '/melding/123', label: 'Back to report' }} documentTitle="Error - Report details">
+        <p>Page content</p>
+      </PageWrapper>,
+    )
+
+    expect(document.title).toBe('Error - Report details')
+  })
+
   it('does not change the document title when no title is provided', () => {
     document.title = 'Existing title'
 
