@@ -8,27 +8,6 @@ import { AddAttachment, MAX_ATTACHMENT_SIZE_BYTES } from './AddAttachment'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
-vi.mock('./AttachmentsList', () => ({
-  AttachmentsList: ({
-    files,
-    handleDelete,
-  }: {
-    files: Array<{ file: File; id: string; serverId?: number; xhr?: XMLHttpRequest }>
-    handleDelete: (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => void
-  }) => (
-    <ul>
-      {files.map(({ file, id, serverId, xhr }) => (
-        <li key={id}>
-          <span>{file.name}</span>
-          <button onClick={() => handleDelete(id, file.name, xhr, serverId)}>
-            {`file-upload.action-button-delete ${file.name}`}
-          </button>
-        </li>
-      ))}
-    </ul>
-  ),
-}))
-
 global.URL.createObjectURL = vi.fn()
 global.URL.revokeObjectURL = vi.fn()
 window.confirm = vi.fn(() => true)
@@ -85,7 +64,7 @@ describe('AddAttachment', () => {
   it('shows an empty aria-live region when no file has been deleted', () => {
     render(<AddAttachment {...defaultProps} attachments={[createAttachment({ originalFilename: 'first.png' })]} />)
 
-    const liveRegion = document.querySelector('[aria-live="polite"]')
+    const liveRegion = document.querySelector('.ams-visually-hidden[aria-live="polite"]')
 
     expect(liveRegion).toBeInTheDocument()
     expect(liveRegion).toBeEmptyDOMElement()
@@ -124,12 +103,89 @@ describe('AddAttachment', () => {
       />,
     )
 
-    await user.click(screen.getByRole('button', { name: 'file-upload.action-button-delete first.png' }))
+    const deleteButton = screen.getByRole('button', { name: 'file-upload.action-button-delete first.png' })
+
+    deleteButton.focus()
+    await user.keyboard('{Enter}')
 
     expect(confirmSpy).toHaveBeenCalledWith('confirmation-prompt')
     expect(confirmSpy).toHaveReturnedWith(true)
 
-    expect(screen.queryByText('first.png')).not.toBeInTheDocument()
+    await waitFor(() => expect(deleteButton).not.toBeInTheDocument())
+    expect(screen.getByRole('button', { name: /file-upload.select-file-button/ })).toHaveFocus()
+    expect(screen.getByRole('link', { name: 'cancel-link' })).toBeInTheDocument()
+  })
+
+  it('keeps focus on the delete button and does not delete when confirmation is cancelled', async () => {
+    const user = userEvent.setup()
+    const deleteHandler = vi.fn(() => new HttpResponse(null, { status: 204 }))
+
+    server.use(http.delete(ENDPOINTS.DELETE_ATTACHMENT_BY_ID, deleteHandler))
+    vi.spyOn(window, 'confirm').mockReturnValueOnce(false)
+
+    render(<AddAttachment attachments={[createAttachment()]} meldingId={123} />)
+
+    const deleteButton = screen.getByRole('button', { name: 'file-upload.action-button-delete existing.png' })
+
+    deleteButton.focus()
+    await user.keyboard('{Enter}')
+
+    expect(deleteButton).toHaveFocus()
+    expect(deleteButton).toBeInTheDocument()
+    expect(deleteHandler).not.toHaveBeenCalled()
+    expect(screen.queryByText('delete-notification')).not.toBeInTheDocument()
+  })
+
+  it.each([
+    ['keeps focus on the upload button', false],
+    ['respects navigation to another control', true],
+  ])('%s when a pending deletion succeeds', async (_, moveFocus) => {
+    const user = userEvent.setup()
+    let resolveDeletion = () => {}
+    const deletionResponse = new Promise<void>((resolve) => {
+      resolveDeletion = resolve
+    })
+    const deleteHandler = vi.fn(async () => {
+      await deletionResponse
+
+      return new HttpResponse(null, { status: 204 })
+    })
+
+    server.use(http.delete(ENDPOINTS.DELETE_ATTACHMENT_BY_ID, deleteHandler))
+
+    render(
+      <AddAttachment
+        attachments={[createAttachment(), createAttachment({ id: 2, originalFilename: 'second.png' })]}
+        meldingId={123}
+      />,
+    )
+
+    const deleteButton = screen.getByRole('button', { name: 'file-upload.action-button-delete existing.png' })
+    const uploadButton = screen.getByRole('button', { name: /file-upload.select-file-button/ })
+    const backLink = screen.getAllByRole('link', { name: 'back-link' })[0]
+
+    try {
+      deleteButton.focus()
+      await user.keyboard('{Enter}')
+
+      await waitFor(() => expect(deleteHandler).toHaveBeenCalledOnce())
+      expect(deleteButton).toBeInTheDocument()
+      expect(uploadButton).toHaveFocus()
+      expect(screen.queryByText('delete-notification')).not.toBeInTheDocument()
+
+      if (moveFocus) {
+        await user.tab({ shift: true })
+        expect(backLink).toHaveFocus()
+      }
+    } finally {
+      resolveDeletion()
+    }
+
+    await waitFor(() => expect(deleteButton).not.toBeInTheDocument())
+
+    expect(moveFocus ? backLink : uploadButton).toHaveFocus()
+    expect(screen.getByRole('button', { name: 'file-upload.action-button-delete second.png' })).toBeInTheDocument()
+    expect(screen.getByText('delete-notification')).toBeInTheDocument()
   })
 
   it('shows a validation error when the upload fails', async () => {
@@ -233,7 +289,8 @@ describe('AddAttachment', () => {
     expect(container.querySelector('.ams-alert')).toHaveFocus()
   })
 
-  it('does not move focus to the Invalid Form Alert when a failed upload is deleted', () => {
+  it('focuses the upload button rather than the Invalid Form Alert when a failed upload is deleted', async () => {
+    const user = userEvent.setup()
     const { container } = render(<AddAttachment {...defaultProps} attachments={[createAttachment()]} />)
 
     const fileInput = screen.getByLabelText('File input')
@@ -242,19 +299,18 @@ describe('AddAttachment', () => {
     fireEvent.change(fileInput, { target: { files: [duplicateFile] } })
     fireEvent.change(fileInput, { target: { files: [duplicateFile] } })
 
-    fileInput.focus()
-
     // The first button belongs to the existing file, the other two to the failed uploads
     const deleteButtons = screen.getAllByRole('button', { name: 'file-upload.action-button-delete existing.png' })
 
-    fireEvent.click(deleteButtons[2])
+    deleteButtons[2].focus()
+    await user.keyboard('{Enter}')
 
     const alert = container.querySelector('.ams-alert')
 
     expect(screen.getAllByRole('button', { name: 'file-upload.action-button-delete existing.png' })).toHaveLength(2)
     expect(alert).toBeInTheDocument()
     expect(alert).not.toHaveFocus()
-    expect(fileInput).toHaveFocus()
+    expect(screen.getByRole('button', { name: /file-upload.select-file-button/ })).toHaveFocus()
   })
 
   it('shows a delete notification and removes only the deleted file when deletion succeeds', async () => {

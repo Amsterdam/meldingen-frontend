@@ -76,6 +76,13 @@ export const AddAttachment = ({ attachments, meldingId, publicId }: Props) => {
 
     if (!shouldDelete) return
 
+    // Move focus to a surviving control before deletion removes the active button.
+    const uploadButton = document.getElementById(fileUploadId)
+
+    if (uploadButton instanceof HTMLButtonElement) {
+      uploadButton.focus()
+    }
+
     handleDelete(id, fileName, xhr, serverId)
   }
 
@@ -130,7 +137,7 @@ export const AddAttachment = ({ attachments, meldingId, publicId }: Props) => {
             {t('upload.title')}
           </Heading>
           <Paragraph id="file-upload-description">{t('upload.description')}</Paragraph>
-          <Paragraph>
+          <Paragraph aria-live="polite" role="status">
             {t('upload.count', { currentCount: successfulUploadsCount, maxCount: MAX_SUCCESSFUL_UPLOADS })}
           </Paragraph>
         </Column>
@@ -148,15 +155,12 @@ export const AddAttachment = ({ attachments, meldingId, publicId }: Props) => {
           onChange={handleUpload}
           ref={fileUploadRef}
         />
-        {hasAttachments && (
-          <>
-            <AttachmentsList files={fileUploads} handleDelete={handleOnDelete} />
 
-            <div aria-live="polite" className="ams-visually-hidden">
-              {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
-            </div>
-          </>
-        )}
+        {hasAttachments && <AttachmentsList files={fileUploads} handleDelete={handleOnDelete} />}
+
+        <div aria-live="polite" className="ams-visually-hidden" role="status">
+          {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
+        </div>
       </Column>
       <Link href={meldingDetailLink}>{hasAttachments ? t('back-link') : t('cancel-link')}</Link>
     </PageWrapper>
