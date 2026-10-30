@@ -8,10 +8,10 @@ Accepted on 31-03-2026
 
 The additional questions in the Melding Form can be conditional: a question is only shown when an earlier answer meets a condition. Conditions are configured in the Admin app and stored as part of the [Form.io schema](0004-use-form-io-schema-and-builder-for-forms.md). The back-end stores these `conditional` blocks and returns them with the form, but does not evaluate them.
 
-Conditions affect the form in two places:
+Conditions affect the form at two moments:
 
-- **On a page**: a question can be shown or hidden based on answers on previous pages, or toggled in real time based on another question on the same page.
-- **Between pages**: a page is skipped when none of its questions are visible, so navigating forward and back has to know which pages are visible.
+- **When on a page**: a question can be shown or hidden when the page is rendered, based on answers on **previous** pages, or toggled in real time based on another question on the **same** page.
+- **When navigating between pages**: when every question on a page has a condition that is not met, the whole page is skipped. Navigating forward and back therefore has to take these skipped pages into account.
 
 Toggling questions in real time on a page requires evaluating conditions in the browser. Because of [progressive enhancement](0006-apply-progressive-enhancement.md), the flow also has to work without JavaScript. Conditions are therefore also evaluated on the server:
 
