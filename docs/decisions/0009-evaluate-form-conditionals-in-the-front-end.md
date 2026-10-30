@@ -35,7 +35,7 @@ How the condition logic works is described in [Additional questions form wizard]
 - Condition logic lives in the front-end, in TypeScript, and works both on the server and in the browser.
 - Without JavaScript, questions that depend on another question on the same page are not shown, because there is no script to reveal them when the answer changes. See [Implementation trade-off](../patterns/additional-questions-form-wizard.md#implementation-trade-off).
 - The back-end trusts the front-end with everything that depends on conditions:
-  - **Required questions**: the back-end does not check whether required questions are answered at all. The check happens in the server action of the additional questions pages. We do not return a validation error for required questions that are conditionally hidden.
+  - **Required questions**: the back-end does not check whether required questions are answered at all. The check happens in the server action of the additional questions pages. A required question is only required when it is shown: when its condition is not met, the user never sees the question, so we do not return a validation error for it.
   - **Stale answers**: when a user changes an answer so that a previously answered question is hidden, the answer to that question stays stored in the back-end. The front-end ignores these answers when navigating and on the summary page, and deletes them when the melding is submitted from the summary page.
   - **Completing the questions**: `PUT /melding/{id}/answer-questions` does not check whether all required questions are answered. We accept this risk.
 - Other clients of the API, such as a future app, would have to implement the condition logic themselves.
