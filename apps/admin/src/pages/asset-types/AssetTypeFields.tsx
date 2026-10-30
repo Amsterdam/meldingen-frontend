@@ -2,10 +2,10 @@ import { minValue, NumberInput, required, TextInput } from 'react-admin'
 
 export const AssetTypeFields = () => (
   <>
-    <TextInput source="name" validate={required()} />
+    <TextInput helperText="Samenvattingspagina en URL copy" source="name" validate={required()} />
 
     <span>
-      <strong>Locatie pagina</strong>
+      <strong>Locatiepagina</strong>
     </span>
     <TextInput source="arguments.location_label" />
     <TextInput source="arguments.location_description" />

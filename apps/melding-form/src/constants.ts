@@ -11,7 +11,7 @@ export const COOKIES = {
 export const SESSION_COOKIE_OPTIONS = {
   httpOnly: true,
   sameSite: 'lax',
-  secure: true,
+  secure: process.env.NODE_ENV === 'production',
 } as const
 
 export const TOP_ANCHOR_ID = 'top'
