@@ -12,6 +12,10 @@
   }
 }
 
+.backLink {
+  inline-size: fit-content;
+}
+
 .intro {
   display: none;
 
