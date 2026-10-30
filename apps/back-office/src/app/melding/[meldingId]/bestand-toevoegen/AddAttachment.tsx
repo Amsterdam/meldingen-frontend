@@ -74,6 +74,13 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
 
     if (!shouldDelete) return
 
+    // Move focus to a surviving control before deletion removes the active button.
+    const uploadButton = document.getElementById(fileUploadId)
+
+    if (uploadButton instanceof HTMLButtonElement) {
+      uploadButton.focus()
+    }
+
     handleDelete(id, fileName, xhr, serverId)
   }
 
