@@ -131,6 +131,7 @@ export const AddAttachment = ({ attachments, meldingId, publicId }: Props) => {
       <Heading className="ams-mb-l" level={1}>
         {t('title')}
       </Heading>
+
       <Column className={clsx(styles.contentWrapper, 'ams-mb-m')}>
         <Column gap="small">
           <Heading id="file-upload-label" level={2} size="level-4">
@@ -144,7 +145,7 @@ export const AddAttachment = ({ attachments, meldingId, publicId }: Props) => {
 
         <FileUpload
           accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp,.pdf"
-          aria-describedby={getAriaDescribedBy(fileUploadId, t('upload.description'))}
+          aria-describedby={getAriaDescribedBy('file-upload', t('upload.description'))}
           aria-labelledby={`file-upload-label ${fileUploadId}`}
           button={{
             text: t('file-upload.select-file-button'),
