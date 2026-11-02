@@ -7,7 +7,7 @@ import { useActionState } from 'react'
 
 import type { Props } from './Attachments'
 
-import { Attachments } from './Attachments'
+import { Attachments, MAX_ATTACHMENT_SIZE_BYTES } from './Attachments'
 import { textAreaComponent } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
@@ -125,6 +125,25 @@ describe('Attachments', () => {
     await waitFor(() => expect(alert).toHaveFocus())
 
     expect(document.title).toBe(`document-title-error-count-prefix ${textAreaComponent.label} - organisation-name`)
+  })
+
+  it('shows a validation error without uploading when the file is too large', async () => {
+    const uploadHandler = vi.fn(() => HttpResponse.json({ id: 42 }))
+
+    server.use(http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, uploadHandler))
+
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} />)
+
+    const largeFile = new File(['x'], 'large.png', { type: 'image/png' })
+
+    Object.defineProperty(largeFile, 'size', { value: MAX_ATTACHMENT_SIZE_BYTES + 1 })
+
+    await user.upload(screen.getByLabelText('File input'), [largeFile])
+
+    expect(await screen.findByRole('link', { name: 'validation-errors.file-too-large' })).toBeInTheDocument()
+    expect(uploadHandler).not.toHaveBeenCalled()
   })
 
   it('refocuses the Invalid Form Alert when another upload fails with the same error', () => {
