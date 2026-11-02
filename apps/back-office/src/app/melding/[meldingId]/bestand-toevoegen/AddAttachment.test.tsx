@@ -51,6 +51,7 @@ const createAttachment = (
 const defaultProps = {
   attachments: [],
   meldingId: 123,
+  publicId: 'ABC',
 } satisfies AddAttachmentProps
 
 describe('AddAttachment', () => {
@@ -72,7 +73,7 @@ describe('AddAttachment', () => {
   })
 
   it('renders existing attachments and shows the back-link instead of the cancel-link', () => {
-    render(<AddAttachment attachments={[createAttachment({ id: 7 })]} meldingId={123} />)
+    render(<AddAttachment {...defaultProps} attachments={[createAttachment({ id: 7 })]} />)
 
     const fileName = screen.getAllByText('existing.png')[0]
     const links = screen.getAllByRole('link', { name: 'back-link' })
@@ -82,7 +83,7 @@ describe('AddAttachment', () => {
   })
 
   it('shows an empty aria-live region when no file has been deleted', () => {
-    render(<AddAttachment attachments={[createAttachment({ originalFilename: 'first.png' })]} meldingId={123} />)
+    render(<AddAttachment {...defaultProps} attachments={[createAttachment({ originalFilename: 'first.png' })]} />)
 
     const liveRegion = document.querySelector('[aria-live="polite"]')
 
@@ -113,13 +114,13 @@ describe('AddAttachment', () => {
 
     render(
       <AddAttachment
+        {...defaultProps}
         attachments={[
           createAttachment({
             blob: new Blob(['sample content']),
             originalFilename: 'first.png',
           }),
         ]}
-        meldingId={123}
       />,
     )
 
@@ -261,11 +262,11 @@ describe('AddAttachment', () => {
 
     render(
       <AddAttachment
+        {...defaultProps}
         attachments={[
           createAttachment({ originalFilename: 'first.png' }),
           createAttachment({ blob: new Blob(['b']), id: 2, originalFilename: 'second.png' }),
         ]}
-        meldingId={123}
       />,
     )
 
@@ -290,7 +291,7 @@ describe('AddAttachment', () => {
     const user = userEvent.setup()
 
     const { container } = render(
-      <AddAttachment attachments={[createAttachment({ originalFilename: 'first.png' })]} meldingId={123} />,
+      <AddAttachment {...defaultProps} attachments={[createAttachment({ originalFilename: 'first.png' })]} />,
     )
 
     const deleteButton = screen.getByRole('button', { name: 'file-upload.action-button-delete first.png' })
@@ -332,5 +333,80 @@ describe('AddAttachment', () => {
 
     expect(screen.getByRole('link', { name: 'validation-errors.duplicate-upload' })).toBeInTheDocument()
     expect(screen.queryByText('errors.too-many-files.title')).not.toBeInTheDocument()
+  })
+})
+
+describe('document title', () => {
+  const tooManyFiles = Array.from(
+    { length: 6 },
+    (_, index) => new File(['x'], `file-${index}.png`, { type: 'image/png' }),
+  )
+
+  it('sets the base document title when there are no errors', () => {
+    render(<AddAttachment {...defaultProps} />)
+
+    expect(document.title).toBe('metadata.title')
+  })
+
+  it('prefixes the error count on a failed upload and restores the base title once it is deleted', () => {
+    render(<AddAttachment {...defaultProps} attachments={[createAttachment()]} />)
+
+    const duplicateFile = new File(['dummy content'], 'existing.png', { type: 'image/png' })
+
+    fireEvent.change(screen.getByLabelText('File input'), { target: { files: [duplicateFile] } })
+
+    expect(document.title).toBe('document-title-error-count-prefix metadata.title')
+
+    // The first button belongs to the existing file, the second to the failed upload
+    fireEvent.click(screen.getAllByRole('button', { name: 'file-upload.action-button-delete existing.png' })[1])
+
+    expect(document.title).toBe('metadata.title')
+  })
+
+  it('uses the generic error heading instead of the API error heading and restores the base title once it is resolved', async () => {
+    const user = userEvent.setup()
+
+    render(<AddAttachment {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+
+    fireEvent.change(fileInput, { target: { files: tooManyFiles } })
+
+    expect(document.title).toBe('errors.too-many-files.title - metadata.title')
+
+    await user.upload(fileInput, [mockFile])
+
+    expect(document.title).toBe('metadata.title')
+  })
+
+  it('uses the delete failed heading when deleting an attachment fails', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    server.use(
+      http.delete(ENDPOINTS.DELETE_ATTACHMENT_BY_ID, () => HttpResponse.json({ detail: 'API error' }, { status: 404 })),
+    )
+
+    const user = userEvent.setup()
+
+    render(<AddAttachment {...defaultProps} attachments={[createAttachment({ originalFilename: 'first.png' })]} />)
+
+    await user.click(screen.getByRole('button', { name: 'file-upload.action-button-delete first.png' }))
+
+    await waitFor(() => expect(document.title).toBe('errors.delete-failed.title - metadata.title'))
+  })
+
+  it('keeps validation errors in the document title when upload attempts are exceeded', () => {
+    render(<AddAttachment {...defaultProps} attachments={[createAttachment()]} />)
+
+    const fileInput = screen.getByLabelText('File input')
+    const duplicateFile = new File(['dummy content'], 'existing.png', { type: 'image/png' })
+
+    fireEvent.change(fileInput, { target: { files: [duplicateFile] } })
+    // 1 existing + 1 failed + 9 new files exceeds the maximum number of upload attempts
+    fireEvent.change(fileInput, { target: { files: [...tooManyFiles, ...tooManyFiles.slice(0, 3)] } })
+
+    expect(screen.getByRole('link', { name: 'validation-errors.duplicate-upload' })).toBeInTheDocument()
+    expect(screen.queryByText('errors.too-many-attempts.title')).not.toBeInTheDocument()
+    expect(document.title).toBe('document-title-error-count-prefix metadata.title')
   })
 })
