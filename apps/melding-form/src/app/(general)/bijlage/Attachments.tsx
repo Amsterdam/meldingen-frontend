@@ -28,6 +28,8 @@ import styles from './Attachments.module.css'
 const MAX_SUCCESSFUL_UPLOADS = 3
 const MAX_UPLOAD_ATTEMPTS = 10
 
+export const MAX_ATTACHMENT_SIZE_BYTES = 20 * 1024 * 1024
+
 export type Props = {
   files: ExistingFile[]
   formData: StaticFormTextAreaComponentOutput[]
@@ -71,6 +73,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     existingFiles: files,
     idPrefix: t('file-upload.id-prefix'),
     inputRef,
+    maxFileSizeBytes: MAX_ATTACHMENT_SIZE_BYTES,
     maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
     maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
     uploadUrl: `${clientEnv.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment/melder?token=${encodeURIComponent(token)}`,
