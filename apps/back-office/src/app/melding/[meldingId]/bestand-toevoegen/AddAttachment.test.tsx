@@ -123,7 +123,7 @@ describe('AddAttachment', () => {
     server.use(http.delete(ENDPOINTS.DELETE_ATTACHMENT_BY_ID, deleteHandler))
     vi.spyOn(window, 'confirm').mockReturnValueOnce(false)
 
-    render(<AddAttachment attachments={[createAttachment()]} meldingId={123} />)
+    render(<AddAttachment {...defaultProps} attachments={[createAttachment()]} />)
 
     const deleteButton = screen.getByRole('button', { name: 'file-upload.action-button-delete existing.png' })
 
