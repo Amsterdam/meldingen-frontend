@@ -4,7 +4,7 @@ import { Paragraph } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useRef, useState } from 'react'
+import { useActionState, useEffect, useId, useRef, useState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import type { ErroredFileUpload, ExistingFile, FileUploadState } from '@meldingen/file-upload'
@@ -61,6 +61,7 @@ const isErroredFileUpload = (upload: FileUploadState): upload is ErroredFileUplo
 
 export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
+  const fileUploadId = useId()
 
   const t = useTranslations('attachments')
   const tShared = useTranslations('shared')
@@ -78,6 +79,17 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
     uploadUrl: `${clientEnv.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment/melder?token=${encodeURIComponent(token)}`,
   })
+
+  const handleOnDelete = (id: string, name: string, xhr?: XMLHttpRequest, serverId?: number) => {
+    // Move focus to a surviving control before deletion removes the active button.
+    const uploadButton = document.getElementById(fileUploadId)
+
+    if (uploadButton instanceof HTMLButtonElement) {
+      uploadButton.focus()
+    }
+
+    handleDelete(id, name, xhr, serverId)
+  }
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
   const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id)
@@ -160,7 +172,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
                 variant: 'secondary',
               }}
               dropAreaText={t('file-upload.drop-area')}
-              id="file-upload"
+              id={fileUploadId}
               multiple
               onChange={handleUpload}
               ref={inputRef}
@@ -180,7 +192,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
                       progressFinishedLabel: t('file-upload.progress-finished'),
                       progressLoadingLabel: t('file-upload.progress-loading', { percentage: Math.round(progress) }),
                     }}
-                    onDelete={() => handleDelete(id, file.name, xhr, serverId)}
+                    onDelete={() => handleOnDelete(id, file.name, xhr, serverId)}
                     status={status}
                   />
                 ))}

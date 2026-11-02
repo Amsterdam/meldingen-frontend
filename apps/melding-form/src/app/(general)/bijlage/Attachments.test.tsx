@@ -59,9 +59,7 @@ describe('Attachments', () => {
     const backLink = screen.getByRole('link', { name: 'back-link' })
     const heading = screen.getByRole('heading', { name: 'First question hint-text' })
     const description = screen.getByText('Test description')
-    const fileUpload = screen.getByRole('button', {
-      name: 'First question hint-text file-upload.buttonfile-upload.drop-area',
-    })
+    const fileUpload = screen.getByRole('button', { name: 'First question hint-text' })
     const noJSAlertHeading = screen.getByRole('heading', { name: 'no-js-alert-title' })
 
     expect(backLink).toBeInTheDocument()
@@ -168,6 +166,7 @@ describe('Attachments', () => {
     const { container } = render(<Attachments {...defaultProps} files={[existingFile]} />)
 
     const fileInput = screen.getByLabelText('File input')
+    const uploadButton = screen.getByRole('button', { name: 'First question hint-text' })
 
     changeFileInputWithoutRestoringFocus(fileInput, [duplicateFile])
 
@@ -185,7 +184,7 @@ describe('Attachments', () => {
     expect(screen.getAllByRole('button', { name: 'file-upload.action-button-delete existing.png' })).toHaveLength(2)
     expect(alert).toBeInTheDocument()
     expect(alert).not.toHaveFocus()
-    expect(fileInput).toHaveFocus()
+    expect(uploadButton).toHaveFocus()
   })
 
   it('renders a generic error Alert, focuses it and updates the document title when there is a generic error', () => {
@@ -255,6 +254,21 @@ describe('Attachments', () => {
 
     expect(notification).toHaveAttribute('aria-live', 'polite')
     expect(liveRegionsBeforeDelete).toContain(notification)
+  })
+
+  it('moves focus to the upload button when an existing file is deleted', async () => {
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} files={[existingFile]} />)
+
+    const uploadButton = screen.getByRole('button', { name: 'First question hint-text' })
+    const deleteButton = screen.getByRole('button', {
+      name: `file-upload.action-button-delete ${existingFile.fileName}`,
+    })
+
+    await user.click(deleteButton)
+
+    expect(uploadButton).toHaveFocus()
   })
 
   it('cancels an in-progress upload and removes it from the file list with the cancel button', async () => {
