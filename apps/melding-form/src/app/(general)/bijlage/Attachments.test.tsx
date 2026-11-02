@@ -168,6 +168,9 @@ describe('Attachments', () => {
     const { container } = render(<Attachments {...defaultProps} files={[existingFile]} />)
 
     const fileInput = screen.getByLabelText('File input')
+    const uploadButton = screen.getByRole('button', {
+      name: 'First question hint-text file-upload.buttonfile-upload.drop-area',
+    })
 
     changeFileInputWithoutRestoringFocus(fileInput, [duplicateFile])
 
@@ -185,7 +188,7 @@ describe('Attachments', () => {
     expect(screen.getAllByRole('button', { name: 'file-upload.action-button-delete existing.png' })).toHaveLength(2)
     expect(alert).toBeInTheDocument()
     expect(alert).not.toHaveFocus()
-    expect(fileInput).toHaveFocus()
+    expect(uploadButton).toHaveFocus()
   })
 
   it('renders a generic error Alert, focuses it and updates the document title when there is a generic error', () => {
@@ -231,19 +234,15 @@ describe('Attachments', () => {
     expect(screen.queryByText('errors.too-many-files.title')).not.toBeInTheDocument()
   })
 
-  it('renders an empty aria-live region when no file is deleted', () => {
-    render(<Attachments {...defaultProps} />)
-
-    const liveRegion = document.querySelector('[aria-live="polite"]')
-
-    expect(liveRegion).toBeInTheDocument()
-    expect(liveRegion).toBeEmptyDOMElement()
-  })
-
-  it('renders an aria-live region with a notification when a file is deleted', async () => {
+  it('announces a deleted file in a live region that is already present before the deletion', async () => {
     const user = userEvent.setup()
 
-    render(<Attachments {...defaultProps} />)
+    const { container } = render(<Attachments {...defaultProps} />)
+
+    // Screen readers only reliably announce changes to live regions that already exist in the DOM
+    const liveRegionsBeforeDelete = Array.from(container.querySelectorAll('[aria-live]'))
+
+    expect(screen.queryByText('delete-notification')).not.toBeInTheDocument()
 
     const fileInput = screen.getByLabelText('File input')
 
@@ -255,9 +254,27 @@ describe('Attachments', () => {
 
     await user.click(deleteButton)
 
-    const liveRegion = await screen.findByText('delete-notification')
+    const notification = await screen.findByText('delete-notification')
 
-    expect(liveRegion).toBeInTheDocument()
+    expect(notification).toHaveAttribute('aria-live', 'polite')
+    expect(liveRegionsBeforeDelete).toContain(notification)
+  })
+
+  it('moves focus to the upload button when an existing file is deleted', async () => {
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} files={[existingFile]} />)
+
+    const uploadButton = screen.getByRole('button', {
+      name: 'First question hint-text file-upload.buttonfile-upload.drop-area',
+    })
+    const deleteButton = screen.getByRole('button', {
+      name: `file-upload.action-button-delete ${existingFile.fileName}`,
+    })
+
+    await user.click(deleteButton)
+
+    expect(uploadButton).toHaveFocus()
   })
 
   it('cancels an in-progress upload and removes it from the file list with the cancel button', async () => {
