@@ -13,7 +13,9 @@ export const SideBarTop = ({ children }: PropsWithChildren) => {
 
   return (
     <div className={styles.container}>
-      <BackLink href={`/locatie#${TOP_ANCHOR_ID}`}>{t('back-link')}</BackLink>
+      <BackLink className={styles.backLink} href={`/locatie#${TOP_ANCHOR_ID}`}>
+        {t('back-link')}
+      </BackLink>
 
       <div className={styles.intro}>
         <Heading className="ams-mb-s" level={1} size="level-2">
