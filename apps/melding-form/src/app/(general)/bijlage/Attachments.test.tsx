@@ -59,7 +59,9 @@ describe('Attachments', () => {
     const backLink = screen.getByRole('link', { name: 'back-link' })
     const heading = screen.getByRole('heading', { name: 'First question hint-text' })
     const description = screen.getByText('Test description')
-    const fileUpload = screen.getByRole('button', { name: 'First question hint-text' })
+    const fileUpload = screen.getByRole('button', {
+      name: 'First question hint-text file-upload.buttonfile-upload.drop-area',
+    })
     const noJSAlertHeading = screen.getByRole('heading', { name: 'no-js-alert-title' })
 
     expect(backLink).toBeInTheDocument()
@@ -166,7 +168,9 @@ describe('Attachments', () => {
     const { container } = render(<Attachments {...defaultProps} files={[existingFile]} />)
 
     const fileInput = screen.getByLabelText('File input')
-    const uploadButton = screen.getByRole('button', { name: 'First question hint-text' })
+    const uploadButton = screen.getByRole('button', {
+      name: 'First question hint-text file-upload.buttonfile-upload.drop-area',
+    })
 
     changeFileInputWithoutRestoringFocus(fileInput, [duplicateFile])
 
@@ -261,7 +265,9 @@ describe('Attachments', () => {
 
     render(<Attachments {...defaultProps} files={[existingFile]} />)
 
-    const uploadButton = screen.getByRole('button', { name: 'First question hint-text' })
+    const uploadButton = screen.getByRole('button', {
+      name: 'First question hint-text file-upload.buttonfile-upload.drop-area',
+    })
     const deleteButton = screen.getByRole('button', {
       name: `file-upload.action-button-delete ${existingFile.fileName}`,
     })
