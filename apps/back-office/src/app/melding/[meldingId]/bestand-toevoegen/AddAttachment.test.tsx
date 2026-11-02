@@ -155,6 +155,7 @@ describe('AddAttachment', () => {
 
     render(
       <AddAttachment
+        {...defaultProps}
         attachments={[createAttachment(), createAttachment({ id: 2, originalFilename: 'second.png' })]}
         meldingId={123}
       />,
