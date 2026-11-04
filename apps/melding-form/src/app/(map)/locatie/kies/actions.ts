@@ -4,9 +4,11 @@ import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
+import type { MeldingAssetInputV2 } from '@meldingen/api-client'
+
 import {
   patchMeldingByMeldingIdLocation,
-  postMeldingByMeldingIdAsset,
+  putMeldingByMeldingIdAssets,
   putMeldingByMeldingIdSubmitLocation,
 } from '@meldingen/api-client'
 import { safeJSONParse } from '@meldingen/utils'
@@ -15,12 +17,6 @@ import type { Coordinates } from '~/types'
 
 import { convertWktPointToCoordinates } from './_utils/convertWktPointToCoordinates'
 import { COOKIES, SESSION_COOKIE_OPTIONS, TOP_ANCHOR_ID } from '~/constants'
-
-export type SelectedAssetSubmission = {
-  externalId: string
-  label: string
-  subtype: string
-}
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 
@@ -44,10 +40,7 @@ export const postCoordinatesAndAssets = async (
   const coordinatesFormData = formData.get('coordinates')
   const selectedAssetsValueRaw = formData.get('selectedAssetsValue')
 
-  const selectedAssetsValue = safeJSONParse<SelectedAssetSubmission[], SelectedAssetSubmission[]>(
-    selectedAssetsValueRaw,
-    [],
-  )
+  const selectedAssetsValue = safeJSONParse<MeldingAssetInputV2[], MeldingAssetInputV2[]>(selectedAssetsValueRaw, [])
 
   /** Post assets */
 
@@ -61,20 +54,14 @@ export const postCoordinatesAndAssets = async (
       }
     }
 
-    const results = await Promise.all(
-      selectedAssetsValue.map(({ externalId, label, subtype }) =>
-        postMeldingByMeldingIdAsset({
-          body: { asset_type_id, external_id: String(externalId), label, subtype },
-          path: { melding_id: meldingId },
-          query: { token },
-        }),
-      ),
-    )
+    const result = await putMeldingByMeldingIdAssets({
+      body: { asset_type_id, assets: selectedAssetsValue },
+      path: { melding_id: meldingId },
+      query: { token },
+    })
 
-    const errors = results.flatMap(({ error }) => (error ? [error] : []))
-
-    if (errors.length > 0) {
-      return { error: { cause: errors, message: t('errors.assets-post-failed') } }
+    if (result.error) {
+      return { error: { cause: result.error.detail, message: t('errors.assets-post-failed') } }
     }
   }
 
