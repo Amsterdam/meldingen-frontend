@@ -20,6 +20,36 @@ import { COOKIES, SESSION_COOKIE_OPTIONS, TOP_ANCHOR_ID } from '~/constants'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 
+const updateAssets = async ({
+  asset_type_id,
+  meldingId,
+  selectedAssetsValue,
+  token,
+}: {
+  asset_type_id?: number
+  meldingId: number
+  selectedAssetsValue: MeldingAssetInputV2[]
+  token: string
+}) => {
+  if (selectedAssetsValue.length === 0) return { error: null }
+
+  if (!asset_type_id) {
+    return { error: 'Missing asset_type_id for selected assets' }
+  }
+
+  const result = await putMeldingByMeldingIdAssets({
+    body: { asset_type_id, assets: selectedAssetsValue },
+    path: { melding_id: meldingId },
+    query: { token },
+  })
+
+  if (result.error) {
+    return { error: result.error.detail }
+  }
+
+  return { error: null }
+}
+
 export const postCoordinatesAndAssets = async (
   { asset_type_id }: { asset_type_id?: number },
   _: unknown,
@@ -42,27 +72,12 @@ export const postCoordinatesAndAssets = async (
 
   const selectedAssetsValue = safeJSONParse<MeldingAssetInputV2[], MeldingAssetInputV2[]>(selectedAssetsValueRaw, [])
 
-  /** Post assets */
+  /** Update assets */
 
-  if (selectedAssetsValue.length > 0) {
-    if (!asset_type_id) {
-      return {
-        error: {
-          cause: 'Missing asset_type_id for selected assets',
-          message: t('errors.assets-post-failed'),
-        },
-      }
-    }
+  const assetsResult = await updateAssets({ asset_type_id, meldingId, selectedAssetsValue, token })
 
-    const result = await putMeldingByMeldingIdAssets({
-      body: { asset_type_id, assets: selectedAssetsValue },
-      path: { melding_id: meldingId },
-      query: { token },
-    })
-
-    if (result.error) {
-      return { error: { cause: result.error.detail, message: t('errors.assets-post-failed') } }
-    }
+  if (assetsResult.error) {
+    return { error: { cause: assetsResult.error, message: t('errors.assets-post-failed') } }
   }
 
   /** Fetch coordinates from PDOK */
