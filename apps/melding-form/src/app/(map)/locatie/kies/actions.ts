@@ -121,7 +121,6 @@ export const postCoordinatesAndAssets = async (
   const selectedAssetsValue = safeJSONParse<MeldingAssetInputV2[], MeldingAssetInputV2[]>(selectedAssetsValueRaw, [])
 
   /** Update assets */
-
   const assetsResult = await updateAssets({ asset_type_id, meldingId, selectedAssetsValue, token })
 
   if (assetsResult.error) {
@@ -129,7 +128,6 @@ export const postCoordinatesAndAssets = async (
   }
 
   /** Fetch coordinates from PDOK */
-
   let address = addressFormData as string
   let coordinates = safeJSONParse<Coordinates, null>(coordinatesFormData, null)
 
@@ -154,7 +152,6 @@ export const postCoordinatesAndAssets = async (
   }
 
   /** Post coordinates and address */
-
   cookieStore.set(COOKIES.ADDRESS, address, SESSION_COOKIE_OPTIONS)
 
   const { error } = await patchMeldingByMeldingIdLocation({
@@ -171,6 +168,7 @@ export const postCoordinatesAndAssets = async (
     return { error: { cause: error, message: t('errors.location-patch-failed') } }
   }
 
+  /** Handle source-specific behavior for back-office users */
   const source = cookieStore.get(COOKIES.SOURCE)?.value
 
   // For users coming from the Back Office, the second visit to /locatie is skipped.
