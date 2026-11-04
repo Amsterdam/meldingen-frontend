@@ -71,6 +71,7 @@ export const handlers = [
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_ATTACHMENTS, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ADD_CONTACT_INFO, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ANSWER_QUESTIONS, () => new HttpResponse()),
+  http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ASSETS, () => HttpResponse.json()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_LOCATION, () => new HttpResponse()),
   http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_SUBMIT_MELDER, () => new HttpResponse()),
 

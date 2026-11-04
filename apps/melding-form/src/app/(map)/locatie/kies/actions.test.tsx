@@ -30,6 +30,7 @@ describe('postCoordinatesAndAssets', () => {
 
   it('falls back to empty array if selectedAssetsValue is not valid JSON', async () => {
     const formData = new FormData()
+
     formData.set('address', 'Amstel 1, Amsterdam')
     formData.set('selectedAssetsValue', 'invalid-json')
 
@@ -50,7 +51,11 @@ describe('postCoordinatesAndAssets', () => {
 
   it('returns an error when there are selected assets but asset_type_id is not provided', async () => {
     const formData = new FormData()
-    formData.set('selectedAssetsValue', JSON.stringify([{ externalId: 1 }, { externalId: 2 }]))
+
+    formData.set(
+      'selectedAssetsValue',
+      JSON.stringify([{ external_id: 'container.1' }, { external_id: 'container.2' }]),
+    )
 
     const result = await postCoordinatesAndAssets({}, undefined, formData)
 
@@ -59,43 +64,43 @@ describe('postCoordinatesAndAssets', () => {
     })
   })
 
-  it('returns errors when postMeldingByMeldingIdAsset fails', async () => {
+  it('returns an error when putMeldingByMeldingIdAssets fails', async () => {
     server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ASSET, () =>
+      http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ASSETS, () =>
         HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
       ),
     )
 
     const formData = new FormData()
+
     formData.set('selectedAssetsValue', JSON.stringify(containerAssets))
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
     expect(result).toEqual({
-      error: {
-        cause: [{ detail: 'Error message' }, { detail: 'Error message' }],
-        message: 'errors.assets-post-failed',
-      },
+      error: { cause: 'Error message', message: 'errors.assets-post-failed' },
     })
   })
 
-  it('posts each selected asset with the correct body', async () => {
+  it('sends all selected assets in one request with the correct body', async () => {
     const capturedBodies: unknown[] = []
 
     server.use(
-      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ASSET, async ({ request }) => {
+      http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ASSETS, async ({ request }) => {
         capturedBodies.push(await request.json())
+
         return HttpResponse.json()
       }),
     )
 
     const formData = new FormData()
+
     formData.set('address', 'Amstel 1, Amsterdam')
     formData.set(
       'selectedAssetsValue',
       JSON.stringify(
         containerAssets.map((asset) => ({
-          externalId: asset.id,
+          external_id: asset.id,
           label: getAssetLabelText(asset, '{{fractie_omschrijving}} container - {{id_nummer}}'),
           subtype: asset.properties?.fractie_omschrijving,
         })),
@@ -104,18 +109,21 @@ describe('postCoordinatesAndAssets', () => {
 
     await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
-    expect(capturedBodies).toHaveLength(2)
+    expect(capturedBodies).toHaveLength(1)
     expect(capturedBodies[0]).toEqual({
       asset_type_id: 123,
-      external_id: 'container.1',
-      label: 'Restafval container - Container-001',
-      subtype: 'Restafval',
-    })
-    expect(capturedBodies[1]).toEqual({
-      asset_type_id: 123,
-      external_id: 'container.2',
-      label: 'Glas container - Container-002',
-      subtype: 'Glas',
+      assets: [
+        {
+          external_id: 'container.1',
+          label: 'Restafval container - Container-001',
+          subtype: 'Restafval',
+        },
+        {
+          external_id: 'container.2',
+          label: 'Glas container - Container-002',
+          subtype: 'Glas',
+        },
+      ],
     })
     expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
   })
@@ -132,6 +140,7 @@ describe('postCoordinatesAndAssets', () => {
     server.use(http.get(ENDPOINTS.PDOK_FREE, () => new HttpResponse(null, { status: 500 })))
 
     const formData = new FormData()
+
     formData.set('address', 'Amstel 1, Amsterdam')
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
@@ -153,6 +162,7 @@ describe('postCoordinatesAndAssets', () => {
     const address = 'Amstel 1, Amsterdam'
 
     const formData = new FormData()
+
     formData.set('address', address)
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
@@ -174,6 +184,7 @@ describe('postCoordinatesAndAssets', () => {
     const address = 'Amstel 1, Amsterdam'
 
     const formData = new FormData()
+
     formData.set('address', address)
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
@@ -187,6 +198,7 @@ describe('postCoordinatesAndAssets', () => {
     const address = 'Amstel 1, Amsterdam'
 
     const formData = new FormData()
+
     formData.set('address', address)
 
     await postCoordinatesAndAssets(mockArgs, undefined, formData)
@@ -206,6 +218,7 @@ describe('postCoordinatesAndAssets', () => {
     const coordinates = '{"lat":52.37065901,"lng":4.89367338}'
 
     const formData = new FormData()
+
     formData.set('address', address)
     formData.set('coordinates', coordinates)
     formData.set('selectedAssets', JSON.stringify(containerAssets))
@@ -225,6 +238,7 @@ describe('postCoordinatesAndAssets', () => {
     )
 
     const formData = new FormData()
+
     formData.set('address', 'Amstel 1, Amsterdam')
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
@@ -236,6 +250,7 @@ describe('postCoordinatesAndAssets', () => {
     mockCookies({ [COOKIES.ID]: '123', [COOKIES.SOURCE]: 'back-office', [COOKIES.TOKEN]: 'test-token' }, mockSetCookie)
 
     const formData = new FormData()
+
     formData.set('address', 'Amstel 1, Amsterdam')
 
     await postCoordinatesAndAssets(mockArgs, undefined, formData)
