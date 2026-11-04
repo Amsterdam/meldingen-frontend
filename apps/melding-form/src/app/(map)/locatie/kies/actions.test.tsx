@@ -52,6 +52,8 @@ describe('postCoordinatesAndAssets', () => {
   it('returns an error when there are selected assets but asset_type_id is not provided', async () => {
     const formData = new FormData()
 
+    formData.set('address', 'Amstel 1, Amsterdam')
+    formData.set('coordinates', JSON.stringify({ lat: 52.37, lng: 4.89 }))
     formData.set(
       'selectedAssetsValue',
       JSON.stringify([{ external_id: 'container.1' }, { external_id: 'container.2' }]),
@@ -96,6 +98,8 @@ describe('postCoordinatesAndAssets', () => {
 
     const formData = new FormData()
 
+    formData.set('address', 'Amstel 1, Amsterdam')
+    formData.set('coordinates', JSON.stringify({ lat: 52.37, lng: 4.89 }))
     formData.set('selectedAssetsValue', JSON.stringify(containerAssets))
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
@@ -151,12 +155,50 @@ describe('postCoordinatesAndAssets', () => {
     expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
   })
 
-  it('returns an error when no location is provided', async () => {
+  it('does not update assets when no location is provided', async () => {
+    const updateAssets = vi.fn()
+
+    server.use(
+      http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ASSETS, () => {
+        updateAssets()
+
+        return HttpResponse.json()
+      }),
+    )
+
     const formData = new FormData()
+
+    formData.set('selectedAssetsValue', '[]')
 
     const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
 
     expect(result).toEqual({ error: { cause: 'No location provided by user', message: 'errors.no-location' } })
+    expect(updateAssets).not.toHaveBeenCalled()
+  })
+
+  it('does not update assets when PDOK cannot resolve the address', async () => {
+    const updateAssets = vi.fn()
+
+    server.use(
+      http.get(ENDPOINTS.PDOK_FREE, () => HttpResponse.json({ response: { docs: [] } })),
+      http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ASSETS, () => {
+        updateAssets()
+
+        return HttpResponse.json()
+      }),
+    )
+
+    const formData = new FormData()
+
+    formData.set('address', 'Amstel 1, Amsterdam')
+    formData.set('selectedAssetsValue', '[]')
+
+    const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
+
+    expect(result).toEqual({
+      error: { cause: 'PDOK returned no results for the given address', message: 'errors.pdok-no-address-found' },
+    })
+    expect(updateAssets).not.toHaveBeenCalled()
   })
 
   it('returns an error when PDOK free returns an error', async () => {
@@ -170,28 +212,6 @@ describe('postCoordinatesAndAssets', () => {
 
     expect(result).toEqual({
       error: { cause: 'PDOK request failed with status 500', message: 'errors.pdok-failed' },
-    })
-  })
-
-  it('returns an error when no address is found by PDOK free', async () => {
-    server.use(
-      http.get(ENDPOINTS.PDOK_FREE, () =>
-        HttpResponse.json({
-          response: { docs: [] },
-        }),
-      ),
-    )
-
-    const address = 'Amstel 1, Amsterdam'
-
-    const formData = new FormData()
-
-    formData.set('address', address)
-
-    const result = await postCoordinatesAndAssets(mockArgs, undefined, formData)
-
-    expect(result).toEqual({
-      error: { cause: 'PDOK returned no results for the given address', message: 'errors.pdok-no-address-found' },
     })
   })
 

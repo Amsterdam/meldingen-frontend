@@ -120,13 +120,6 @@ export const postCoordinatesAndAssets = async (
 
   const selectedAssetsValue = safeJSONParse<MeldingAssetInputV2[], MeldingAssetInputV2[]>(selectedAssetsValueRaw, [])
 
-  /** Update assets */
-  const assetsResult = await updateAssets({ asset_type_id, meldingId, selectedAssetsValue, token })
-
-  if (assetsResult.error) {
-    return { error: { cause: assetsResult.error, message: t('errors.assets-post-failed') } }
-  }
-
   /** Fetch coordinates from PDOK */
   let address = addressFormData as string
   let coordinates = safeJSONParse<Coordinates, null>(coordinatesFormData, null)
@@ -149,6 +142,13 @@ export const postCoordinatesAndAssets = async (
 
     coordinates = PDOKLocationResult.coordinates
     address = PDOKLocationResult.address
+  }
+
+  /** Update assets */
+  const assetsResult = await updateAssets({ asset_type_id, meldingId, selectedAssetsValue, token })
+
+  if (assetsResult.error) {
+    return { error: { cause: assetsResult.error, message: t('errors.assets-post-failed') } }
   }
 
   /** Post coordinates and address */
