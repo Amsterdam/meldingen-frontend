@@ -79,7 +79,7 @@ const updateAssets = async ({
   selectedAssetsValue: MeldingAssetInputV2[]
   token: string
 }) => {
-  if (selectedAssetsValue.length === 0) return { error: null }
+  if (selectedAssetsValue.length === 0 && !asset_type_id) return { error: null }
 
   if (!asset_type_id) {
     return { error: 'Missing asset_type_id for selected assets' }
@@ -92,7 +92,7 @@ const updateAssets = async ({
   })
 
   if (result.error) {
-    return { error: result.error.detail }
+    return { error: result.error.detail || result.error }
   }
 
   return { error: null }

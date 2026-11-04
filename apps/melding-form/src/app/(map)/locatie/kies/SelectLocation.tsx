@@ -122,7 +122,7 @@ export const SelectLocation = ({
 
   const selectedAssetsValue = JSON.stringify(
     selectedAssets.map((asset) => ({
-      external_id: asset.id,
+      external_id: String(asset.id),
       label: getAssetLabelText(asset, assetConfig.label),
       subtype: getAssetSubType(assetConfig.icon.entry, asset.properties),
     })),

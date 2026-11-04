@@ -64,6 +64,29 @@ describe('postCoordinatesAndAssets', () => {
     })
   })
 
+  it('skips updating assets when no assets are selected and asset_type_id is not provided', async () => {
+    const updateAssets = vi.fn()
+
+    server.use(
+      http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ASSETS, () => {
+        updateAssets()
+
+        return HttpResponse.json()
+      }),
+    )
+
+    const formData = new FormData()
+
+    formData.set('address', 'Amstel 1, Amsterdam')
+    formData.set('coordinates', JSON.stringify({ lat: 52.37, lng: 4.89 }))
+    formData.set('selectedAssetsValue', '[]')
+
+    await postCoordinatesAndAssets({}, undefined, formData)
+
+    expect(updateAssets).not.toHaveBeenCalled()
+    expect(redirect).toHaveBeenCalledWith(`/locatie#${TOP_ANCHOR_ID}`)
+  })
+
   it('returns an error when putMeldingByMeldingIdAssets fails', async () => {
     server.use(
       http.put(ENDPOINTS.PUT_MELDING_BY_MELDING_ID_ASSETS, () =>
