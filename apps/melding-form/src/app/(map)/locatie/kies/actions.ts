@@ -20,6 +20,54 @@ import { COOKIES, SESSION_COOKIE_OPTIONS, TOP_ANCHOR_ID } from '~/constants'
 
 const queryParams = 'fq=type:adres&fq=gemeentenaam:(amsterdam "ouder-amstel" weesp)&fl=centroide_ll,weergavenaam&rows=1'
 
+type PDOKError = {
+  cause: string
+  translationKey: 'errors.pdok-failed' | 'errors.pdok-no-address-found'
+}
+
+type PDOKLocation = {
+  address: string
+  coordinates: Coordinates
+}
+
+const fetchPDOKLocation = async (address: string): Promise<PDOKLocation | { error: PDOKError }> => {
+  const response = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`)
+
+  if (!response.ok) {
+    return {
+      error: {
+        cause: `PDOK request failed with status ${response.status}`,
+        translationKey: 'errors.pdok-failed',
+      },
+    }
+  }
+
+  const result = await response.json()
+  const location = result.response.docs[0]
+
+  if (!location) {
+    return {
+      error: {
+        cause: 'PDOK returned no results for the given address',
+        translationKey: 'errors.pdok-no-address-found',
+      },
+    }
+  }
+
+  const coordinates = convertWktPointToCoordinates(location.centroide_ll)
+
+  if (!coordinates) {
+    return {
+      error: {
+        cause: 'Failed to convert PDOK point to coordinates',
+        translationKey: 'errors.pdok-failed',
+      },
+    }
+  }
+
+  return { address: location.weergavenaam, coordinates }
+}
+
 const updateAssets = async ({
   asset_type_id,
   meldingId,
@@ -90,38 +138,19 @@ export const postCoordinatesAndAssets = async (
   }
 
   if (!coordinates) {
-    const response = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${address}&${queryParams}`)
+    const PDOKLocationResult = await fetchPDOKLocation(address)
 
-    if (!response.ok) {
+    if ('error' in PDOKLocationResult) {
       return {
         error: {
-          cause: `PDOK request failed with status ${response.status}`,
-          message: t('errors.pdok-failed'),
+          cause: PDOKLocationResult.error.cause,
+          message: t(PDOKLocationResult.error.translationKey),
         },
       }
     }
 
-    const result = await response.json()
-
-    if (!result.response.docs.length) {
-      return {
-        error: {
-          cause: 'PDOK returned no results for the given address',
-          message: t('errors.pdok-no-address-found'),
-        },
-      }
-    }
-
-    const PDOKCoordinates = convertWktPointToCoordinates(result.response.docs[0].centroide_ll)
-
-    if (!PDOKCoordinates) {
-      return {
-        error: { cause: 'Failed to convert PDOK point to coordinates', message: t('errors.pdok-failed') },
-      }
-    }
-
-    coordinates = PDOKCoordinates
-    address = result.response.docs[0].weergavenaam
+    coordinates = PDOKLocationResult.coordinates
+    address = PDOKLocationResult.address
   }
 
   /** Post coordinates and address */
