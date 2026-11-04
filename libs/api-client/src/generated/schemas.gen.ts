@@ -5259,6 +5259,30 @@ export const MeldingAssetInputSchema = {
     title: 'MeldingAssetInput'
 } as const;
 
+export const MeldingAssetInputV2Schema = {
+    properties: {
+        external_id: {
+            type: 'string',
+            title: 'External Id'
+        },
+        label: {
+            type: 'string',
+            title: 'Label'
+        },
+        subtype: {
+            type: 'string',
+            title: 'Subtype'
+        }
+    },
+    type: 'object',
+    required: [
+        'external_id',
+        'label',
+        'subtype'
+    ],
+    title: 'MeldingAssetInputV2'
+} as const;
+
 export const MeldingContactInputSchema = {
     properties: {
         email: {
@@ -5711,6 +5735,28 @@ export const MeldingServiceLevelObjectiveOutputSchema = {
         'days_passed'
     ],
     title: 'MeldingServiceLevelObjectiveOutput'
+} as const;
+
+export const MeldingSetAssetsInputSchema = {
+    properties: {
+        assets: {
+            items: {
+                $ref: '#/components/schemas/MeldingAssetInputV2'
+            },
+            type: 'array',
+            title: 'Assets'
+        },
+        asset_type_id: {
+            type: 'integer',
+            title: 'Asset Type Id'
+        }
+    },
+    type: 'object',
+    required: [
+        'assets',
+        'asset_type_id'
+    ],
+    title: 'MeldingSetAssetsInput'
 } as const;
 
 export const MeldingUpdateInputSchema = {
