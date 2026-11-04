@@ -118,7 +118,7 @@ export const AddAttachment = ({ attachments, meldingId, publicId }: Props) => {
         focusKey={invalidFormAlertFocusKey}
         heading={t('validation-errors.alert-title', { count: validationErrors.length })}
       />
-      {genericError && !validationErrors.length && (
+      {genericError && (
         <FocusableAlert
           className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
           // useFileUploads sets a new object for every error, so repeated errors refocus the alert too

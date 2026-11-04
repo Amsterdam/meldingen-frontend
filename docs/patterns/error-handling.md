@@ -33,7 +33,6 @@ There are a few exceptions, which are detailed below.
 - Form validation is also done by the back end.
   If a user’s submission fails validation, we show an `InvalidFormAlert` with the field-level errors, following [the form validation documentation](./form-validation.md).
 - A page only ever shows one alert at a time: either `ApiErrorAlert` or `InvalidFormAlert`, never both.
-  Validation errors take precedence over API errors: we check for and return validation errors before falling back to a generic API error.
 - If session tokens are missing when executing an action, we redirect to `/cookie-storing`.
   From there, a user can start the form flow again.
   Directly redirecting to the first page would be too abrupt, hence the intermediate page.
@@ -59,7 +58,7 @@ It distinguishes between three types of errors:
 All three types of errors are displayed at the top of the page.  
 However, validation errors also include an in-page link that takes the user directly to the corresponding upload, where the same error message is shown again.
 
-We still only show 1 alert at a time. The precedence order here is validation errors, then generic errors, and finally API errors.
+We still only show 1 alert at a time.
 
 ## Back office
 
@@ -82,7 +81,6 @@ There are a few exceptions, which are detailed below.
 - Form validation is also done by the back end.
   If a user’s submission fails validation, we show an `InvalidFormAlert` with the field-level errors, following [the form validation documentation](./form-validation.md).
 - A page only ever shows one alert at a time: either `ApiErrorAlert` or `InvalidFormAlert`, never both.
-  Validation errors take precedence over API errors: we check for and return validation errors before falling back to a generic API error.
 - When a user navigates to a path that does not exist, we show a `not-found` page.
 
 ### Exceptions
@@ -99,4 +97,4 @@ It distinguishes between three types of errors:
 All three types of errors are displayed at the top of the page.
 However, validation errors also include an in-page link that takes the user directly to the corresponding upload, where the same error message is shown again.
 
-We still only show 1 alert at a time. The precedence order here is validation errors, then generic errors, and finally API errors.
+We still only show 1 alert at a time.
