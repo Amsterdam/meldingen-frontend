@@ -58,8 +58,6 @@ It distinguishes between three types of errors:
 All three types of errors are displayed at the top of the page.  
 However, validation errors also include an in-page link that takes the user directly to the corresponding upload, where the same error message is shown again.
 
-We still only show 1 alert at a time.
-
 ## Back office
 
 Most pages in the Back Office also follow a common error handling strategy.
