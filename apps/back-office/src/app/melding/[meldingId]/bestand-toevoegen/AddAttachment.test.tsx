@@ -437,7 +437,7 @@ describe('document title', () => {
     fireEvent.change(fileInput, { target: { files: [...tooManyFiles, ...tooManyFiles.slice(0, 3)] } })
 
     expect(screen.getByRole('link', { name: 'validation-errors.duplicate-upload' })).toBeInTheDocument()
-    expect(screen.queryByText('errors.too-many-attempts.title')).not.toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'errors.too-many-attempts.title' })).toBeInTheDocument()
     expect(document.title).toBe('document-title-error-count-prefix metadata.title')
   })
 })
