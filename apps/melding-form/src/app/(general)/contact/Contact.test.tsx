@@ -8,13 +8,18 @@ import { contact as contactFormData } from '~/mocks/data'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
+
   return {
     ...(typeof actual === 'object' ? actual : {}),
     useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
   }
 })
 
-describe('Contact', () => {
+describe('Contact rendering', () => {
+  beforeEach(() => {
+    vi.mocked(useActionState).mockReturnValue([{}, vi.fn(), false])
+  })
+
   it('renders the component with the correct document title', () => {
     render(<Contact formComponents={contactFormData} />)
 
