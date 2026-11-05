@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 test('shows the cookie error page with a restart link', async ({ page }) => {
-  const response = await page.goto('/cookie-storing')
+  const response = await page.goto('cookie-storing')
 
   expect(response?.status()).toBe(200)
   await expect(page).toHaveTitle('Er is iets mis gegaan - Gemeente Amsterdam')
@@ -10,7 +10,7 @@ test('shows the cookie error page with a restart link', async ({ page }) => {
 })
 
 test('shows the Melding Form not-found page for an unknown URL', async ({ page }) => {
-  const response = await page.goto('/e2e-nonexistent-page')
+  const response = await page.goto('e2e-nonexistent-page')
 
   expect(response?.status()).toBe(404)
   await expect(page).toHaveTitle('Pagina niet gevonden - Gemeente Amsterdam')

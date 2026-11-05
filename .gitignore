@@ -9,6 +9,7 @@ coverage
 # Playwright
 playwright-report
 test-results
+/e2e/playwright/.auth/
 
 # dependencies
 node_modules
