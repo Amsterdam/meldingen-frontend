@@ -245,6 +245,35 @@ describe('Asset list toggle button', () => {
       undefined,
     )
   })
+
+  it('serializes selected assets with external_id for the server action', () => {
+    const { container } = render(
+      <SelectLocation
+        {...defaultProps}
+        assetConfig={{
+          ...defaultProps.assetConfig,
+          icon: { entry: 'fractie_omschrijving' },
+          label: '{{fractie_omschrijving}} container - {{id_nummer}}',
+        }}
+        selectedAssets={containerAssets}
+      />,
+    )
+
+    const selectedAssetsInput = container.querySelector<HTMLInputElement>('input[name="selectedAssetsValue"]')
+
+    expect(JSON.parse(selectedAssetsInput?.value ?? '[]')).toEqual([
+      {
+        external_id: 'container.1',
+        label: 'Restafval container - Container-001',
+        subtype: 'Restafval',
+      },
+      {
+        external_id: 'container.2',
+        label: 'Glas container - Container-002',
+        subtype: 'Glas',
+      },
+    ])
+  })
 })
 
 describe('Asset list loading state', () => {

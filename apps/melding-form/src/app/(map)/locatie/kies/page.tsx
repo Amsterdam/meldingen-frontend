@@ -5,7 +5,6 @@ import type { MeldingOutput } from '@meldingen/api-client'
 
 import { getMeldingByMeldingIdAssetsMelder, getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 
-import { deleteExistingAssets } from './_utils/deleteExistingAssets'
 import { fetchAssets } from './_utils/fetchAssets'
 import { SelectLocation } from './SelectLocation'
 import { COOKIES } from '~/constants'
@@ -58,11 +57,9 @@ const clearAndFetchAssets = async (meldingId: number, token: string, assetTypeId
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
     console.error(error)
+
     return []
   }
-
-  // Delete all assets to avoid conflicts with previously selected assets
-  await deleteExistingAssets(meldingId, token, assetIds)
 
   return await fetchAssets(assetTypeId, typeNames, assetIds)
 }

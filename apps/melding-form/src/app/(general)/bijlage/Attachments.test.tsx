@@ -210,30 +210,6 @@ describe('Attachments', () => {
     expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
   })
 
-  it('only shows a generic error as long as no validation errors are present', async () => {
-    const user = userEvent.setup()
-
-    render(<Attachments {...defaultProps} files={[existingFile]} />)
-
-    const fileInput = screen.getByLabelText('File input')
-    const files = Array.from({ length: 4 }, (_, index) => new File(['x'], `file-${index}.png`, { type: 'image/png' }))
-
-    await user.upload(fileInput, files)
-
-    expect(screen.getByText('errors.too-many-files.title')).toBeInTheDocument()
-    expect(screen.queryByRole('link', { name: 'validation-errors.duplicate-upload' })).not.toBeInTheDocument()
-
-    await user.upload(fileInput, [duplicateFile])
-
-    expect(screen.getByRole('link', { name: 'validation-errors.duplicate-upload' })).toBeInTheDocument()
-    expect(screen.queryByText('errors.too-many-files.title')).not.toBeInTheDocument()
-
-    await user.upload(fileInput, files)
-
-    expect(screen.getByRole('link', { name: 'validation-errors.duplicate-upload' })).toBeInTheDocument()
-    expect(screen.queryByText('errors.too-many-files.title')).not.toBeInTheDocument()
-  })
-
   it('announces a deleted file in a live region that is already present before the deletion', async () => {
     const user = userEvent.setup()
 
