@@ -20,7 +20,6 @@ export const handlers = [
   // Melding
   http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID, () => new HttpResponse()),
   http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID, () => new HttpResponse()),
-  http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, () => new HttpResponse()),
 
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER, () => HttpResponse.json(additionalQuestions)),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD, () =>
@@ -62,7 +61,6 @@ export const handlers = [
     }),
   ),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, () => HttpResponse.json({ id: 42 })),
-  http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ASSET, () => HttpResponse.json()),
   http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID, async ({ request }) =>
     // Echo back the request body as the response to make it easier to test if the correct body is sent in the request
     HttpResponse.json(await request.clone().json()),
@@ -93,10 +91,12 @@ export const handlers = [
     if (params.staticFormId === '1') {
       return HttpResponse.json(form.components[0])
     }
+
     // Attachments
     if (params.staticFormId === '2') {
       return HttpResponse.json(form.components[0])
     }
+
     // Contact
     if (params.staticFormId === '3') {
       return HttpResponse.json({ components: contact })
