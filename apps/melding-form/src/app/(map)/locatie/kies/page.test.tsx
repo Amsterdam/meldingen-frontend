@@ -129,24 +129,6 @@ describe('Page', () => {
     )
   })
 
-  it('logs an error when deleting assets from melding returns an error', async () => {
-    server.use(
-      http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, () =>
-        HttpResponse.json('Test error', { status: 500 }),
-      ),
-    )
-
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    expect(consoleSpy).toHaveBeenCalledWith('Test error')
-
-    consoleSpy.mockRestore()
-  })
-
   it('logs an error and does not return assets when the WFS endpoint returns an error', async () => {
     server.use(
       http.get(ENDPOINTS.GET_ASSET_TYPE_BY_ASSET_TYPE_ID_WFS, () => HttpResponse.json('Test error', { status: 500 })),
@@ -167,18 +149,6 @@ describe('Page', () => {
       }),
       undefined,
     )
-  })
-
-  it('deletes existing assets from melding', async () => {
-    const mockGetWfsByAssetTypeId = vi.fn()
-
-    server.use(http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID, mockGetWfsByAssetTypeId))
-
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    expect(mockGetWfsByAssetTypeId).toHaveBeenCalledTimes(2)
   })
 
   it('filters out assets when the WFS response has no features', async () => {

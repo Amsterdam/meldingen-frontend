@@ -28,6 +28,7 @@ export const ENDPOINTS = {
   PUT_MELDING_BY_MELDING_ID_ADD_ATTACHMENTS: '/melding/:id/add_attachments',
   PUT_MELDING_BY_MELDING_ID_ADD_CONTACT_INFO: '/melding/:id/add_contact_info',
   PUT_MELDING_BY_MELDING_ID_ANSWER_QUESTIONS: '/melding/:id/answer_questions',
+  PUT_MELDING_BY_MELDING_ID_ASSETS: '/melding/:melding_id/assets',
   PUT_MELDING_BY_MELDING_ID_SUBMIT_LOCATION: '/melding/:id/submit_location',
   PUT_MELDING_BY_MELDING_ID_SUBMIT_MELDER: '/melding/:id/submit/melder',
 
