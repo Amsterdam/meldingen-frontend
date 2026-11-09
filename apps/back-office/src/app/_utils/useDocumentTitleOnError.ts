@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl'
 type Args = {
   apiErrorMessage?: string
   hasApiError: boolean
-  validationErrorCount: number
+  validationErrorCount?: number
 }
 
 export const useDocumentTitleOnError = ({ apiErrorMessage, hasApiError, validationErrorCount }: Args) => {
