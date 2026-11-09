@@ -2,26 +2,18 @@ import { useTranslations } from 'next-intl'
 
 type Args = {
   apiErrorMessage?: string
-  baseDocumentTitle: string
-  hasApiError?: boolean
-  validationErrorCount?: number
+  hasApiError: boolean
+  validationErrorCount: number
 }
 
-export const useDocumentTitleOnError = ({
-  apiErrorMessage,
-  baseDocumentTitle,
-  hasApiError,
-  validationErrorCount,
-}: Args) => {
+export const useDocumentTitleOnError = ({ apiErrorMessage, hasApiError, validationErrorCount }: Args) => {
   const t = useTranslations('shared')
 
   if (validationErrorCount && validationErrorCount > 0) {
-    return `${t('document-title-error-count-prefix', { count: validationErrorCount })} ${baseDocumentTitle}`
+    return `${t('document-title-error-count-prefix', { count: validationErrorCount })} ${document.title}`
   }
 
   if (hasApiError) {
-    return `${apiErrorMessage ?? t('api-error-alert.heading')} - ${baseDocumentTitle}`
+    return `${apiErrorMessage ?? t('api-error-alert.heading')} - ${document.title}`
   }
-
-  return baseDocumentTitle
 }

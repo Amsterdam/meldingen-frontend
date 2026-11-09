@@ -10,3 +10,5 @@ export const STATES = {
 } as const
 
 export const STATES_LIST: string[] = Object.values(STATES)
+
+export const DOCUMENT_TITLE_PLACEHOLDER = '%s'
