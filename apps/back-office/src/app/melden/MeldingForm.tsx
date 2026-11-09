@@ -136,7 +136,7 @@ export const MeldingForm = ({
       gapVertical="large"
       paddingVertical="x-large"
     >
-      <title>{documentTitle}</title>
+      <title>{documentTitle ?? t('visually-hidden-title')}</title>
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
         {validationErrors && <InvalidFormAlert errors={validationErrors} focusKey={!isPending} />}

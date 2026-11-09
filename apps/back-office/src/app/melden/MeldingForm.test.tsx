@@ -47,7 +47,7 @@ describe('MeldingForm', () => {
     expect(input).toBeInTheDocument()
     expect(description).toBeInTheDocument()
     expect(submitButton).toBeInTheDocument()
-    expect(document.title).toBe('metadata.title')
+    expect(document.title).toBe('visually-hidden-title')
   })
 
   it('renders an API error alert with the correct document title when there is an API error', () => {
