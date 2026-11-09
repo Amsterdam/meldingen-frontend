@@ -22,10 +22,14 @@ const defaultProps = {
 }
 
 describe('ChangeState', () => {
-  it('renders the component with the correct document title', () => {
+  beforeEach(() => {
+    document.title = 'Wijzig status - Gemeente Amsterdam'
+  })
+
+  it('preserves the server-rendered document title when there are no errors', () => {
     render(<ChangeState {...defaultProps} />)
 
-    expect(document.title).toBe('metadata.title')
+    expect(document.title).toBe('Wijzig status - Gemeente Amsterdam')
   })
 
   it('renders the back link', () => {
@@ -85,7 +89,7 @@ describe('ChangeState', () => {
     expect(alert).toHaveTextContent('errors.invalid-state.description')
 
     // Doc title
-    expect(document.title).toBe('errors.invalid-state.heading - metadata.title')
+    expect(document.title).toBe('errors.invalid-state.heading - Wijzig status - Gemeente Amsterdam')
 
     // Select
     expect(select).toHaveValue('completed')
@@ -110,10 +114,34 @@ describe('ChangeState', () => {
     expect(alert).toHaveTextContent('errors.state-change-failed.description')
 
     // Doc title
-    expect(document.title).toBe('errors.state-change-failed.heading - metadata.title')
+    expect(document.title).toBe('errors.state-change-failed.heading - Wijzig status - Gemeente Amsterdam')
 
     // Select
     expect(select).toHaveValue('completed')
+  })
+
+  it('restores the server-rendered document title when the API error is resolved', () => {
+    vi.mocked(useActionState).mockReturnValueOnce([{ apiError: { type: 'state-change-failed' } }, vi.fn(), false])
+
+    const { rerender } = render(<ChangeState {...defaultProps} />)
+
+    expect(document.title).toBe('errors.state-change-failed.heading - Wijzig status - Gemeente Amsterdam')
+
+    rerender(<ChangeState {...defaultProps} />)
+
+    expect(document.title).toBe('Wijzig status - Gemeente Amsterdam')
+  })
+
+  it('restores the server-rendered document title when leaving the page after an API error', () => {
+    vi.mocked(useActionState).mockReturnValueOnce([{ apiError: { type: 'state-change-failed' } }, vi.fn(), false])
+
+    const { unmount } = render(<ChangeState {...defaultProps} />)
+
+    expect(document.title).toBe('errors.state-change-failed.heading - Wijzig status - Gemeente Amsterdam')
+
+    unmount()
+
+    expect(document.title).toBe('Wijzig status - Gemeente Amsterdam')
   })
 
   it('submits the form when the submit button is clicked', async () => {

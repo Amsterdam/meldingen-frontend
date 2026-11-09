@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { vi } from 'vitest'
 
-import Page from './page'
+import Page, { generateMetadata } from './page'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
@@ -11,6 +11,10 @@ vi.mock('./ChangeUrgency', () => ({
 }))
 
 describe('Page', () => {
+  it('generates the document title metadata', async () => {
+    expect(await generateMetadata()).toEqual({ title: 'metadata.title' })
+  })
+
   it('throws an error when melding data is not available', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () =>

@@ -17,10 +17,14 @@ vi.mock('react', async (importOriginal) => {
 const defaultProps = { meldingId: 123 }
 
 describe('AddNote', () => {
-  it('renders the component with the correct document title', () => {
+  beforeEach(() => {
+    document.title = 'Notitie toevoegen - Gemeente Amsterdam'
+  })
+
+  it('preserves the server-rendered document title when there are no errors', () => {
     render(<AddNote {...defaultProps} />)
 
-    expect(document.title).toBe('metadata.title')
+    expect(document.title).toBe('Notitie toevoegen - Gemeente Amsterdam')
   })
 
   it('renders the back link', () => {
@@ -61,7 +65,7 @@ describe('AddNote', () => {
     const alert = container.querySelector('.ams-alert')
 
     expect(alert).toBeInTheDocument()
-    expect(document.title).toBe('api-error-alert.heading - metadata.title')
+    expect(document.title).toBe('api-error-alert.heading - Notitie toevoegen - Gemeente Amsterdam')
   })
 
   it('displays an invalid form alert with the correct document title when there are validation errors', async () => {
@@ -80,7 +84,34 @@ describe('AddNote', () => {
     expect(screen.getByRole('link', { name: 'Error message' })).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: 'label' })).toHaveTextContent('Some note text')
 
-    expect(document.title).toBe('document-title-error-count-prefix metadata.title')
+    expect(document.title).toBe('document-title-error-count-prefix Notitie toevoegen - Gemeente Amsterdam')
+  })
+
+  it.each([
+    { apiError: { detail: 'Error message' } },
+    { validationErrors: [{ key: 'addNote', message: 'Error message' }] },
+  ])('restores the server-rendered document title when errors are resolved: %j', (state) => {
+    vi.mocked(useActionState).mockReturnValueOnce([state, vi.fn(), false])
+
+    const { rerender } = render(<AddNote {...defaultProps} />)
+
+    expect(document.title).not.toBe('Notitie toevoegen - Gemeente Amsterdam')
+
+    rerender(<AddNote {...defaultProps} />)
+
+    expect(document.title).toBe('Notitie toevoegen - Gemeente Amsterdam')
+  })
+
+  it('restores the server-rendered document title when leaving the page after an API error', () => {
+    vi.mocked(useActionState).mockReturnValueOnce([{ apiError: { detail: 'Error message' } }, vi.fn(), false])
+
+    const { unmount } = render(<AddNote {...defaultProps} />)
+
+    expect(document.title).toBe('api-error-alert.heading - Notitie toevoegen - Gemeente Amsterdam')
+
+    unmount()
+
+    expect(document.title).toBe('Notitie toevoegen - Gemeente Amsterdam')
   })
 
   it('submits the form when the submit button is clicked', async () => {

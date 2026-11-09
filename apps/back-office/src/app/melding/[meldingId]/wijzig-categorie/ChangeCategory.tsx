@@ -52,12 +52,10 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
 
   const t = useTranslations('change-category')
 
-  // Update document title when there is an API error
-  const documentTitle = useDocumentTitleOnError({
+  const errorDocumentTitle = useDocumentTitleOnError({
     apiErrorMessage: apiError ? t('errors.reclassification-failed-heading') : undefined,
-    baseDocumentTitle: t('metadata.title'),
     hasApiError: Boolean(apiError),
-    validationErrorCount: validationErrors?.length ?? undefined,
+    validationErrorCount: validationErrors?.length,
   })
 
   useEffect(() => {
@@ -75,7 +73,10 @@ export const ChangeCategory = ({ classifications, meldingClassification, melding
   const reasonValidationErrorMessage = validationErrors?.find((error) => error.key === 'reason')?.message
 
   return (
-    <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }} documentTitle={documentTitle}>
+    <PageWrapper
+      backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}
+      errorDocumentTitle={errorDocumentTitle}
+    >
       {Boolean(apiError) && (
         <ApiErrorAlert
           description={t('errors.reclassification-failed-description')}

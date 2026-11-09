@@ -24,10 +24,14 @@ const defaultProps: Props = {
 }
 
 describe('ChangeUrgency', () => {
-  it('renders the component with the correct document title', () => {
+  beforeEach(() => {
+    document.title = 'Wijzig urgentie - Gemeente Amsterdam'
+  })
+
+  it('preserves the server-rendered document title when there are no errors', () => {
     render(<ChangeUrgency {...defaultProps} />)
 
-    expect(document.title).toBe('metadata.title')
+    expect(document.title).toBe('Wijzig urgentie - Gemeente Amsterdam')
   })
 
   it('renders the back link', () => {
@@ -87,7 +91,7 @@ describe('ChangeUrgency', () => {
     expect(alert).toHaveTextContent('errors.invalid-urgency.description')
 
     // Doc title
-    expect(document.title).toBe('errors.invalid-urgency.heading - metadata.title')
+    expect(document.title).toBe('errors.invalid-urgency.heading - Wijzig urgentie - Gemeente Amsterdam')
 
     // Radio
     expect(screen.getByRole('radio', { name: 'urgency.1' })).toBeChecked()
@@ -111,10 +115,34 @@ describe('ChangeUrgency', () => {
     expect(alert).toHaveTextContent('errors.urgency-change-failed.description')
 
     // Doc title
-    expect(document.title).toBe('errors.urgency-change-failed.heading - metadata.title')
+    expect(document.title).toBe('errors.urgency-change-failed.heading - Wijzig urgentie - Gemeente Amsterdam')
 
     // Radio
     expect(screen.getByRole('radio', { name: 'urgency.-1' })).toBeChecked()
+  })
+
+  it('restores the server-rendered document title when the API error is resolved', () => {
+    vi.mocked(useActionState).mockReturnValueOnce([{ apiError: { type: 'urgency-change-failed' } }, vi.fn(), false])
+
+    const { rerender } = render(<ChangeUrgency {...defaultProps} />)
+
+    expect(document.title).toBe('errors.urgency-change-failed.heading - Wijzig urgentie - Gemeente Amsterdam')
+
+    rerender(<ChangeUrgency {...defaultProps} />)
+
+    expect(document.title).toBe('Wijzig urgentie - Gemeente Amsterdam')
+  })
+
+  it('restores the server-rendered document title when leaving the page after an API error', () => {
+    vi.mocked(useActionState).mockReturnValueOnce([{ apiError: { type: 'urgency-change-failed' } }, vi.fn(), false])
+
+    const { unmount } = render(<ChangeUrgency {...defaultProps} />)
+
+    expect(document.title).toBe('errors.urgency-change-failed.heading - Wijzig urgentie - Gemeente Amsterdam')
+
+    unmount()
+
+    expect(document.title).toBe('Wijzig urgentie - Gemeente Amsterdam')
   })
 
   it('submits the form when the submit button is clicked', async () => {

@@ -1,7 +1,15 @@
+import { getTranslations } from 'next-intl/server'
+
 import { ChangeState } from './ChangeState'
 import { getMeldingByMeldingId, getMeldingByMeldingIdNextPossibleStates } from '~/app/_api-client/proxy'
 
 type Props = Pick<PageProps<'/melding/[meldingId]/wijzig-status'>, 'params'>
+
+export const generateMetadata = async () => {
+  const t = await getTranslations('change-state')
+
+  return { title: t('metadata.title') }
+}
 
 export default async ({ params }: Props) => {
   const { meldingId: meldingIdParams } = await params

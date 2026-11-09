@@ -31,11 +31,9 @@ export const UpdateNote = ({ meldingId, note }: Props) => {
 
   const t = useTranslations('update-note')
 
-  // Update document title when there are validation errors or an API error
-  const documentTitle = useDocumentTitleOnError({
-    baseDocumentTitle: t('metadata.title'),
+  const errorDocumentTitle = useDocumentTitleOnError({
     hasApiError: Boolean(apiError),
-    validationErrorCount: validationErrors?.length ?? undefined,
+    validationErrorCount: validationErrors?.length,
   })
 
   useEffect(() => {
@@ -50,7 +48,10 @@ export const UpdateNote = ({ meldingId, note }: Props) => {
   const errorMessage = validationErrors?.find((error) => error.key === 'updateNote')?.message
 
   return (
-    <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }} documentTitle={documentTitle}>
+    <PageWrapper
+      backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}
+      errorDocumentTitle={errorDocumentTitle}
+    >
       {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
       {validationErrors && (
         <InvalidFormAlert errors={validationErrors} focusKey={!isPending} heading={t('invalid-form-alert-title')} />

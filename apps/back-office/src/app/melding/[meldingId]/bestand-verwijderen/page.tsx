@@ -3,20 +3,13 @@ import { redirect } from 'next/navigation'
 
 import { getAttachmentsData } from '../_utils/server'
 import { DeleteAttachment } from './DeleteAttachment'
-import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
 type Props = Pick<PageProps<'/melding/[meldingId]/bestand-verwijderen'>, 'params'>
 
-export const generateMetadata = async ({ params }: Props) => {
-  const { meldingId: meldingIdParams } = await params
-  const meldingId = Number(meldingIdParams)
-
+export const generateMetadata = async () => {
   const t = await getTranslations('remove-attachment')
-  const { data } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
-  return {
-    title: t('metadata.title', { publicId: data?.public_id ?? '' }),
-  }
+  return { title: t('metadata.title') }
 }
 
 export default async ({ params }: Props) => {

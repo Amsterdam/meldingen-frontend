@@ -65,11 +65,18 @@ const renderAttachments = (attachments: MeldingAttachment[]) =>
 
 describe('Attachments', () => {
   beforeEach(() => {
+    document.title = 'Bestand verwijderen - Gemeente Amsterdam'
     vi.mocked(useRouter).mockReturnValue(createMockRouter())
   })
 
   afterEach(() => {
     vi.restoreAllMocks()
+  })
+
+  it('preserves the server-rendered document title when there are no errors', () => {
+    renderAttachments([createAttachment()])
+
+    expect(document.title).toBe('Bestand verwijderen - Gemeente Amsterdam')
   })
 
   it('does not delete the attachment when confirmation is cancelled', async () => {
@@ -137,6 +144,47 @@ describe('Attachments', () => {
     expect(await screen.findByText('error-delete-failed.title')).toBeInTheDocument()
     expect(screen.getByText('error-delete-failed.description')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'bewijs.png' })).toBeEnabled()
+    expect(document.title).toBe('error-delete-failed.title - Bestand verwijderen - Gemeente Amsterdam')
+  })
+
+  it('restores the server-rendered document title after a successful retry', async () => {
+    const user = userEvent.setup()
+
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    vi.mocked(deleteAttachmentAction)
+      .mockResolvedValueOnce({ error: 'Could not delete attachment', status: 500 })
+      .mockResolvedValueOnce({ error: undefined, status: 204 })
+
+    renderAttachments([createAttachment(), createAttachment({ id: 2, originalFilename: 'foto.png' })])
+
+    await user.click(screen.getByRole('button', { name: 'bewijs.png' }))
+
+    expect(document.title).toBe('error-delete-failed.title - Bestand verwijderen - Gemeente Amsterdam')
+
+    await user.click(screen.getByRole('button', { name: 'bewijs.png' }))
+
+    await waitFor(() => {
+      expect(screen.queryByRole('button', { name: 'bewijs.png' })).not.toBeInTheDocument()
+    })
+
+    expect(document.title).toBe('Bestand verwijderen - Gemeente Amsterdam')
+  })
+
+  it('restores the server-rendered document title when leaving the page after an API error', async () => {
+    const user = userEvent.setup()
+
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    vi.mocked(deleteAttachmentAction).mockResolvedValue({ error: 'Could not delete attachment', status: 500 })
+
+    const { unmount } = renderAttachments([createAttachment()])
+
+    await user.click(screen.getByRole('button', { name: 'bewijs.png' }))
+
+    expect(document.title).toBe('error-delete-failed.title - Bestand verwijderen - Gemeente Amsterdam')
+
+    unmount()
+
+    expect(document.title).toBe('Bestand verwijderen - Gemeente Amsterdam')
   })
 
   it('redirects to the detail page after deleting the last attachment', async () => {

@@ -12,6 +12,7 @@ import { PageWrapper } from '../_components/PageWrapper'
 import { Attachment } from './_components/Attachment'
 import { deleteAttachmentAction } from './actions'
 import { ApiErrorAlert } from '~/app/_components'
+import { useDocumentTitleOnError } from '~/app/_utils/useDocumentTitleOnError'
 
 import styles from './DeleteAttachment.module.css'
 
@@ -29,6 +30,11 @@ export const DeleteAttachment = ({ attachments: initialAttachments, meldingId }:
   const [attachments, setAttachments] = useState(initialAttachments)
   const [deletedFileName, setDeletedFileName] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
+
+  const errorDocumentTitle = useDocumentTitleOnError({
+    apiErrorMessage: apiError ? t('error-delete-failed.title') : undefined,
+    hasApiError: Boolean(apiError),
+  })
 
   const handleDelete = async (id: number, fileName: string) => {
     if (isDeleting) return
@@ -65,7 +71,7 @@ export const DeleteAttachment = ({ attachments: initialAttachments, meldingId }:
   }
 
   return (
-    <PageWrapper backLink={{ href: backLinkHref, label: t('back-link') }}>
+    <PageWrapper backLink={{ href: backLinkHref, label: t('back-link') }} errorDocumentTitle={errorDocumentTitle}>
       {!!apiError && (
         <ApiErrorAlert
           description={t('error-delete-failed.description')}
