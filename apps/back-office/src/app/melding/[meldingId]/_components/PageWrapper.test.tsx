@@ -16,7 +16,7 @@ describe('PageWrapper', () => {
 
   it('sets the document title when provided', () => {
     render(
-      <PageWrapper backLink={{ href: '/melding/123', label: 'Back to report' }} documentTitle="Report details">
+      <PageWrapper backLink={{ href: '/melding/123', label: 'Back to report' }} errorDocumentTitle="Report details">
         <p>Page content</p>
       </PageWrapper>,
     )
@@ -26,13 +26,16 @@ describe('PageWrapper', () => {
 
   it('updates the document title when it changes', () => {
     const { rerender } = render(
-      <PageWrapper backLink={{ href: '/melding/123', label: 'Back to report' }} documentTitle="Report details">
+      <PageWrapper backLink={{ href: '/melding/123', label: 'Back to report' }} errorDocumentTitle="Report details">
         <p>Page content</p>
       </PageWrapper>,
     )
 
     rerender(
-      <PageWrapper backLink={{ href: '/melding/123', label: 'Back to report' }} documentTitle="Error - Report details">
+      <PageWrapper
+        backLink={{ href: '/melding/123', label: 'Back to report' }}
+        errorDocumentTitle="Error - Report details"
+      >
         <p>Page content</p>
       </PageWrapper>,
     )

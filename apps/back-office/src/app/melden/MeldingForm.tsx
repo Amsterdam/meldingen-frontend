@@ -101,7 +101,6 @@ export const MeldingForm = ({
 
   // Update document title when there are validation errors or an API error
   const documentTitle = useDocumentTitleOnError({
-    baseDocumentTitle: t('metadata.title'),
     hasApiError: Boolean(apiError),
     validationErrorCount: validationErrors?.length ?? undefined,
   })
