@@ -9,6 +9,7 @@
     - [Attachments](#attachments)
 - [Back office](#back-office)
   - [Common error handling strategy](#common-error-handling-strategy-1)
+  - [Document titles for melding detail subroutes](#document-titles-for-melding-detail-subroutes)
   - [Exceptions](#exceptions-1)
     - [Attachments](#attachments-1)
 
@@ -80,6 +81,20 @@ There are a few exceptions, which are detailed below.
   If a user’s submission fails validation, we show an `InvalidFormAlert` with the field-level errors, following [the form validation documentation](./form-validation.md).
 - A page only ever shows one alert at a time: either `ApiErrorAlert` or `InvalidFormAlert`, never both.
 - When a user navigates to a path that does not exist, we show a `not-found` page.
+
+### Document titles for melding detail subroutes
+
+Set the base document title with `generateMetadata` in the subroute's `page.tsx`, using its translated `metadata.title`.
+The [melding detail layout](../../apps/back-office/src/app/melding/[meldingId]/layout.tsx) supplies the title template, so subroutes do not need to append the melding title themselves.
+
+For action or upload errors, call [useDocumentTitleOnError](../../apps/back-office/src/app/_utils/useDocumentTitleOnError.ts) and pass its result to `PageWrapper` as `errorDocumentTitle`.
+Pass `hasApiError`, an optional `apiErrorMessage` matching the displayed error heading, and `validationErrorCount` only when the page has validation errors.
+If no custom API error message is supplied, the shared API error heading is used.
+
+Validation errors take precedence over API or generic upload errors in the document title.
+The hook preserves the unprefixed base title while errors persist, preventing repeated prefixes on rerenders.
+Without errors, it returns no override.
+`PageWrapper` renders `ErrorDocumentTitle`, which restores the previous title when the override is removed or the component unmounts, unless another update has already replaced the title.
 
 ### Exceptions
 

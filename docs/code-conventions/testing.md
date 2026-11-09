@@ -16,3 +16,21 @@ If an element is hard to query accessibly, fix the component rather than working
 We mock API requests with [MSW](https://mswjs.io/) rather than mocking `fetch` or the API client directly with `vi.mock`. MSW intercepts requests at the network level, so the same client code runs in tests as in production; only the response is mocked.
 
 See [Mocking API requests](../patterns/mocking-api-requests.md) for how this is set up and how to add a new endpoint.
+
+## Document titles
+
+Rendering a component in a unit test does not run Next.js metadata generation.
+For melding detail subroutes, seed `document.title` in `beforeEach` with the server-rendered base title, including the layout suffix.
+This also prevents title changes from leaking between tests.
+
+```typescript
+beforeEach(() => {
+  document.title = 'Notitie toevoegen - Melding ABC - Gemeente Amsterdam'
+})
+```
+
+Test `generateMetadata` separately in the route's `page.test.tsx`.
+Component tests should verify that the base title is preserved without errors, that errors prefix it, and that it is restored when errors clear or the component unmounts.
+Include a rerender with persistent errors to check that prefixes do not accumulate.
+
+See [Document titles for melding detail subroutes](../patterns/error-handling.md#document-titles-for-melding-detail-subroutes) for the implementation pattern.
