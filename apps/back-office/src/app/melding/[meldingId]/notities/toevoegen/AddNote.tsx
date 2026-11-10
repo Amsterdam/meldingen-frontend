@@ -27,7 +27,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
 
   const t = useTranslations('add-note')
 
-  const errorDocumentTitle = useDocumentTitleOnError({
+  useDocumentTitleOnError({
     hasApiError: Boolean(apiError),
     validationErrorCount: validationErrors?.length,
   })
@@ -44,10 +44,7 @@ export const AddNote = ({ meldingId }: { meldingId: number }) => {
   const errorMessage = validationErrors?.find((error) => error.key === 'addNote')?.message
 
   return (
-    <PageWrapper
-      backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}
-      errorDocumentTitle={errorDocumentTitle}
-    >
+    <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}>
       {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
       {validationErrors && (
         <InvalidFormAlert errors={validationErrors} focusKey={!isPending} heading={t('invalid-form-alert-title')} />

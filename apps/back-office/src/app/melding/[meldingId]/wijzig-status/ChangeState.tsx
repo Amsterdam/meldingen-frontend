@@ -42,7 +42,7 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
   const t = useTranslations('change-state')
   const tShared = useTranslations('shared')
 
-  const errorDocumentTitle = useDocumentTitleOnError({
+  useDocumentTitleOnError({
     apiErrorMessage: apiError ? t(`errors.${apiError.type}.heading`) : undefined,
     hasApiError: Boolean(apiError),
   })
@@ -58,10 +58,7 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
   const stateToDisplay = meldingStateFromAction ?? meldingState
 
   return (
-    <PageWrapper
-      backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}
-      errorDocumentTitle={errorDocumentTitle}
-    >
+    <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}>
       {apiError && (
         <ApiErrorAlert
           description={t(`errors.${apiError.type}.description`)}

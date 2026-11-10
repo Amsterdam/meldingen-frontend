@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl'
-import { useRef } from 'react'
+import { useEffect } from 'react'
 
 type Args = {
   apiErrorMessage?: string
@@ -9,24 +9,26 @@ type Args = {
 
 export const useDocumentTitleOnError = ({ apiErrorMessage, hasApiError, validationErrorCount }: Args) => {
   const t = useTranslations('shared')
-  const baseDocumentTitle = useRef<string | undefined>(undefined)
-
-  if (!hasApiError && !validationErrorCount) {
-    baseDocumentTitle.current = undefined
-
-    return
-  }
-
-  if (typeof document === 'undefined') return
-
-  // Keep the unprefixed title while errors persist across renders.
-  baseDocumentTitle.current ??= document.title
+  let error: string | undefined
 
   if (validationErrorCount && validationErrorCount > 0) {
-    return `${t('document-title-error-count-prefix', { count: validationErrorCount })} ${baseDocumentTitle.current}`
+    error = `${t('document-title-error-count-prefix', { count: validationErrorCount })}`
+  } else if (hasApiError) {
+    error = `${apiErrorMessage ?? t('api-error-alert.heading')}`
   }
 
-  if (hasApiError) {
-    return `${apiErrorMessage ?? t('api-error-alert.heading')} - ${baseDocumentTitle.current}`
-  }
+  useEffect(() => {
+    if (!error) return
+
+    const originalTitle = document.title
+    const title = `${error} - ${originalTitle}`
+
+    document.title = title
+
+    return () => {
+      if (document.title === title) {
+        document.title = originalTitle
+      }
+    }
+  }, [error])
 }

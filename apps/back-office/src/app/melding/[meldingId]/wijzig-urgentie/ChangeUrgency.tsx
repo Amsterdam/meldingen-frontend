@@ -45,7 +45,7 @@ export const ChangeUrgency = ({ currentUrgency, meldingId, publicId }: Props) =>
   const t = useTranslations('change-urgency')
   const tShared = useTranslations('shared')
 
-  const errorDocumentTitle = useDocumentTitleOnError({
+  useDocumentTitleOnError({
     apiErrorMessage: apiError ? t(`errors.${apiError.type}.heading`) : undefined,
     hasApiError: Boolean(apiError),
   })
@@ -61,10 +61,7 @@ export const ChangeUrgency = ({ currentUrgency, meldingId, publicId }: Props) =>
   const urgencyToDisplay = urgencyFromAction ?? String(currentUrgency)
 
   return (
-    <PageWrapper
-      backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}
-      errorDocumentTitle={errorDocumentTitle}
-    >
+    <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}>
       {apiError && (
         <ApiErrorAlert
           description={t(`errors.${apiError.type}.description`)}

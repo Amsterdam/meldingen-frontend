@@ -47,7 +47,7 @@ describe('MeldingForm', () => {
     expect(input).toBeInTheDocument()
     expect(description).toBeInTheDocument()
     expect(submitButton).toBeInTheDocument()
-    expect(document.title).toBe('visually-hidden-title')
+    expect(document.title).toBe('metadata.title')
   })
 
   it('renders an API error alert with the correct document title when there is an API error', () => {
@@ -75,6 +75,18 @@ describe('MeldingForm', () => {
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', '#key1')
     expect(document.title).toBe('document-title-error-count-prefix metadata.title')
+  })
+
+  it('restores the base document title when an API error is resolved', () => {
+    vi.mocked(useActionState).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
+
+    const { rerender } = render(<MeldingForm {...defaultProps} />)
+
+    expect(document.title).toBe('api-error-alert.heading - metadata.title')
+
+    rerender(<MeldingForm {...defaultProps} />)
+
+    expect(document.title).toBe('metadata.title')
   })
 
   it('renders an error message connected to the primary text area when there is a validation error for the primary field', () => {

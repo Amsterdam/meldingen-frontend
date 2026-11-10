@@ -31,7 +31,7 @@ export const DeleteAttachment = ({ attachments: initialAttachments, meldingId }:
   const [deletedFileName, setDeletedFileName] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const errorDocumentTitle = useDocumentTitleOnError({
+  useDocumentTitleOnError({
     apiErrorMessage: apiError ? t('error-delete-failed.title') : undefined,
     hasApiError: Boolean(apiError),
   })
@@ -71,7 +71,7 @@ export const DeleteAttachment = ({ attachments: initialAttachments, meldingId }:
   }
 
   return (
-    <PageWrapper backLink={{ href: backLinkHref, label: t('back-link') }} errorDocumentTitle={errorDocumentTitle}>
+    <PageWrapper backLink={{ href: backLinkHref, label: t('back-link') }}>
       {!!apiError && (
         <ApiErrorAlert
           description={t('error-delete-failed.description')}

@@ -98,7 +98,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     message: t(errorMessage),
   }))
 
-  const errorDocumentTitle = useDocumentTitleOnError({
+  useDocumentTitleOnError({
     apiErrorMessage: genericError ? t(genericError.title, genericError.options) : undefined,
     hasApiError: Boolean(genericError),
     validationErrorCount: validationErrors.length,
@@ -110,7 +110,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
   const meldingDetailLink = `/melding/${meldingId}`
 
   return (
-    <PageWrapper backLink={{ href: meldingDetailLink, label: t('back-link') }} errorDocumentTitle={errorDocumentTitle}>
+    <PageWrapper backLink={{ href: meldingDetailLink, label: t('back-link') }}>
       <InvalidFormAlert
         errors={validationErrors}
         focusKey={invalidFormAlertFocusKey}

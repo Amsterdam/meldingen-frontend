@@ -36,7 +36,7 @@ export const ChangeLabels = ({ currentLabelIds, labels, meldingId, publicId }: P
 
   const t = useTranslations('change-labels')
 
-  const errorDocumentTitle = useDocumentTitleOnError({
+  useDocumentTitleOnError({
     apiErrorMessage: apiError ? t('errors.labels-change-failed-heading') : undefined,
     hasApiError: Boolean(apiError),
   })
@@ -50,10 +50,7 @@ export const ChangeLabels = ({ currentLabelIds, labels, meldingId, publicId }: P
   }, [apiError])
 
   return (
-    <PageWrapper
-      backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}
-      errorDocumentTitle={errorDocumentTitle}
-    >
+    <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}>
       {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} heading={t('errors.labels-change-failed-heading')} />}
       <Heading className="ams-mb-m" level={1}>
         {t('title', { publicId })}

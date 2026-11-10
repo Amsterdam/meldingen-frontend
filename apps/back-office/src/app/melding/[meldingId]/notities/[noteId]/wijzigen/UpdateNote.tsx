@@ -31,7 +31,7 @@ export const UpdateNote = ({ meldingId, note }: Props) => {
 
   const t = useTranslations('update-note')
 
-  const errorDocumentTitle = useDocumentTitleOnError({
+  useDocumentTitleOnError({
     hasApiError: Boolean(apiError),
     validationErrorCount: validationErrors?.length,
   })
@@ -48,10 +48,7 @@ export const UpdateNote = ({ meldingId, note }: Props) => {
   const errorMessage = validationErrors?.find((error) => error.key === 'updateNote')?.message
 
   return (
-    <PageWrapper
-      backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}
-      errorDocumentTitle={errorDocumentTitle}
-    >
+    <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}>
       {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
       {validationErrors && (
         <InvalidFormAlert errors={validationErrors} focusKey={!isPending} heading={t('invalid-form-alert-title')} />
