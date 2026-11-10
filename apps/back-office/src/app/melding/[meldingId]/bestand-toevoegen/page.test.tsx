@@ -38,7 +38,7 @@ describe('Page', () => {
 
     render(result)
 
-    expect(AddAttachment).toHaveBeenCalledWith({ attachments, meldingId: 123, publicId: 'ABC' }, undefined)
+    expect(AddAttachment).toHaveBeenCalledWith({ attachments, meldingId: 123 }, undefined)
     expect(screen.getByText('AddAttachment Component')).toBeInTheDocument()
   })
 })
