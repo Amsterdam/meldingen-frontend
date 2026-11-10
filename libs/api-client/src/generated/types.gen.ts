@@ -1758,6 +1758,24 @@ export type MeldingAssetInput = {
 };
 
 /**
+ * MeldingAssetInputV2
+ */
+export type MeldingAssetInputV2 = {
+    /**
+     * External Id
+     */
+    external_id: string;
+    /**
+     * Label
+     */
+    label: string;
+    /**
+     * Subtype
+     */
+    subtype: string;
+};
+
+/**
  * MeldingContactInput
  */
 export type MeldingContactInput = {
@@ -1956,6 +1974,20 @@ export type MeldingServiceLevelObjectiveOutput = {
      * Days Passed
      */
     days_passed: number;
+};
+
+/**
+ * MeldingSetAssetsInput
+ */
+export type MeldingSetAssetsInput = {
+    /**
+     * Assets
+     */
+    assets: Array<MeldingAssetInputV2>;
+    /**
+     * Asset Type Id
+     */
+    asset_type_id: number;
 };
 
 /**
@@ -5944,6 +5976,123 @@ export type GetMeldingByMeldingIdAnswersResponses = {
 
 export type GetMeldingByMeldingIdAnswersResponse = GetMeldingByMeldingIdAnswersResponses[keyof GetMeldingByMeldingIdAnswersResponses];
 
+export type GetMeldingByMeldingIdAssetsData = {
+    body?: never;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query?: never;
+    url: '/melding/{melding_id}/assets';
+};
+
+export type GetMeldingByMeldingIdAssetsErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetMeldingByMeldingIdAssetsError = GetMeldingByMeldingIdAssetsErrors[keyof GetMeldingByMeldingIdAssetsErrors];
+
+export type GetMeldingByMeldingIdAssetsResponses = {
+    /**
+     * Response Melding Assets Melding  Melding Id  Assets Get
+     *
+     * Successful Response
+     */
+    200: Array<AssetOutput>;
+};
+
+export type GetMeldingByMeldingIdAssetsResponse = GetMeldingByMeldingIdAssetsResponses[keyof GetMeldingByMeldingIdAssetsResponses];
+
+export type PutMeldingByMeldingIdAssetsData = {
+    body: MeldingSetAssetsInput;
+    path: {
+        /**
+         * Melding Id
+         *
+         * The id of the melding.
+         */
+        melding_id: number;
+    };
+    query: {
+        /**
+         * Token
+         *
+         * The token of the melding.
+         */
+        token: string;
+    };
+    url: '/melding/{melding_id}/assets';
+};
+
+export type PutMeldingByMeldingIdAssetsErrors = {
+    /**
+     * ResponseWithDetail
+     *
+     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
+     */
+    401: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * ResponseWithDetail
+     *
+     * Not Found
+     */
+    404: {
+        /**
+         * Detail
+         */
+        detail: string;
+    };
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type PutMeldingByMeldingIdAssetsError = PutMeldingByMeldingIdAssetsErrors[keyof PutMeldingByMeldingIdAssetsErrors];
+
+export type PutMeldingByMeldingIdAssetsResponses = {
+    /**
+     * Successful Response
+     */
+    200: MeldingUpdateOutput;
+};
+
+export type PutMeldingByMeldingIdAssetsResponse = PutMeldingByMeldingIdAssetsResponses[keyof PutMeldingByMeldingIdAssetsResponses];
+
 export type PostMeldingByMeldingIdAssetData = {
     body: MeldingAssetInput;
     path: {
@@ -6067,62 +6216,6 @@ export type GetMeldingByMeldingIdAssetsMelderResponses = {
 };
 
 export type GetMeldingByMeldingIdAssetsMelderResponse = GetMeldingByMeldingIdAssetsMelderResponses[keyof GetMeldingByMeldingIdAssetsMelderResponses];
-
-export type GetMeldingByMeldingIdAssetsData = {
-    body?: never;
-    path: {
-        /**
-         * Melding Id
-         *
-         * The id of the melding.
-         */
-        melding_id: number;
-    };
-    query?: never;
-    url: '/melding/{melding_id}/assets';
-};
-
-export type GetMeldingByMeldingIdAssetsErrors = {
-    /**
-     * ResponseWithDetail
-     *
-     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
-     */
-    401: {
-        /**
-         * Detail
-         */
-        detail: string;
-    };
-    /**
-     * ResponseWithDetail
-     *
-     * Not Found
-     */
-    404: {
-        /**
-         * Detail
-         */
-        detail: string;
-    };
-    /**
-     * Validation Error
-     */
-    422: HttpValidationError;
-};
-
-export type GetMeldingByMeldingIdAssetsError = GetMeldingByMeldingIdAssetsErrors[keyof GetMeldingByMeldingIdAssetsErrors];
-
-export type GetMeldingByMeldingIdAssetsResponses = {
-    /**
-     * Response Melding Assets Melding  Melding Id  Assets Get
-     *
-     * Successful Response
-     */
-    200: Array<AssetOutput>;
-};
-
-export type GetMeldingByMeldingIdAssetsResponse = GetMeldingByMeldingIdAssetsResponses[keyof GetMeldingByMeldingIdAssetsResponses];
 
 export type DeleteMeldingByMeldingIdAssetByAssetIdData = {
     body?: never;

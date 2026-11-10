@@ -17,7 +17,9 @@ vi.mock('next-intl', async () => {
     ...actual,
     useTranslations: () => {
       const t = (key: string) => key
+
       t.rich = (key: string) => key
+
       return t
     },
   }
@@ -58,6 +60,6 @@ vi.stubGlobal(
 // Configure the API client for the test environment.
 client.setConfig({ baseUrl: 'http://localhost:3000' })
 
-beforeAll(() => server.listen())
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())

@@ -4,7 +4,7 @@ import { Paragraph } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useRef, useState } from 'react'
+import { useActionState, useEffect, useId, useRef, useState } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import type { ErroredFileUpload, ExistingFile, FileUploadState } from '@meldingen/file-upload'
@@ -27,6 +27,8 @@ import styles from './Attachments.module.css'
 
 const MAX_SUCCESSFUL_UPLOADS = 3
 const MAX_UPLOAD_ATTEMPTS = 10
+
+export const MAX_ATTACHMENT_SIZE_BYTES = 20 * 1024 * 1024
 
 export type Props = {
   files: ExistingFile[]
@@ -59,6 +61,7 @@ const isErroredFileUpload = (upload: FileUploadState): upload is ErroredFileUplo
 
 export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
+  const fileUploadId = useId()
 
   const t = useTranslations('attachments')
   const tShared = useTranslations('shared')
@@ -71,10 +74,22 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     existingFiles: files,
     idPrefix: t('file-upload.id-prefix'),
     inputRef,
+    maxFileSizeBytes: MAX_ATTACHMENT_SIZE_BYTES,
     maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
     maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
     uploadUrl: `${clientEnv.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment/melder?token=${encodeURIComponent(token)}`,
   })
+
+  const handleOnDelete = (id: string, name: string, xhr?: XMLHttpRequest, serverId?: number) => {
+    // Move focus to a surviving control before deletion removes the active button.
+    const uploadButton = document.getElementById(fileUploadId)
+
+    if (uploadButton instanceof HTMLButtonElement) {
+      uploadButton.focus()
+    }
+
+    handleDelete(id, name, xhr, serverId)
+  }
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
   const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id)
@@ -118,7 +133,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           focusKey={invalidFormAlertFocusKey}
           heading={t('validation-errors.alert-title', { count: validationErrors.length })}
         />
-        {genericError && !validationErrors.length && (
+        {genericError && (
           <FocusableAlert
             className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
             // useFileUploads sets a new object for every error, so repeated errors refocus the alert too
@@ -141,7 +156,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           </Column>
 
           <div className={styles.needsJavaScript}>
-            <Paragraph aria-live="assertive" className="ams-mb-m">
+            <Paragraph aria-live="polite" className="ams-mb-m" role="status">
               {t('status', {
                 fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
                 maxFiles: MAX_SUCCESSFUL_UPLOADS,
@@ -151,13 +166,13 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             <FileUpload
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp"
               aria-describedby={getAriaDescribedBy('file-upload', description)}
-              aria-labelledby="file-upload-label file-upload"
+              aria-labelledby={`file-upload-label ${fileUploadId}`}
               button={{
                 text: t('file-upload.button'),
                 variant: 'secondary',
               }}
               dropAreaText={t('file-upload.drop-area')}
-              id="file-upload"
+              id={fileUploadId}
               multiple
               onChange={handleUpload}
               ref={inputRef}
@@ -177,14 +192,14 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
                       progressFinishedLabel: t('file-upload.progress-finished'),
                       progressLoadingLabel: t('file-upload.progress-loading', { percentage: Math.round(progress) }),
                     }}
-                    onDelete={() => handleDelete(id, file.name, xhr, serverId)}
+                    onDelete={() => handleOnDelete(id, file.name, xhr, serverId)}
                     status={status}
                   />
                 ))}
               </FileList>
             )}
 
-            <div aria-live="polite" className="ams-visually-hidden">
+            <div aria-live="polite" className="ams-visually-hidden" role="status">
               {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
             </div>
           </div>

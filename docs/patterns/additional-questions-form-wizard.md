@@ -46,6 +46,8 @@ When the user submits the form, the `postForm` Server Action is called:
 
 ## Conditional panels
 
+Conditions are evaluated in the front-end only. See [ADR 0009](../decisions/0009-evaluate-form-conditionals-in-the-front-end.md) for why.
+
 Panels and their components can have conditions that control their visibility. A component is visible when its condition is met based on previously given answers. A panel is visible when it has at least one visible component (or no conditions at all).
 
 Both the previous and next panel paths are calculated by skipping over panels that are not visible given the current set of answers. This ensures the user only sees relevant panels.

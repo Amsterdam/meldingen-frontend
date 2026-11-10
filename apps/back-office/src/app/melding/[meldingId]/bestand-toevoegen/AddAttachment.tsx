@@ -76,6 +76,13 @@ export const AddAttachment = ({ attachments, meldingId, publicId }: Props) => {
 
     if (!shouldDelete) return
 
+    // Move focus to a surviving control before deletion removes the active button.
+    const uploadButton = document.getElementById(fileUploadId)
+
+    if (uploadButton instanceof HTMLButtonElement) {
+      uploadButton.focus()
+    }
+
     handleDelete(id, fileName, xhr, serverId)
   }
 
@@ -111,7 +118,7 @@ export const AddAttachment = ({ attachments, meldingId, publicId }: Props) => {
         focusKey={invalidFormAlertFocusKey}
         heading={t('validation-errors.alert-title', { count: validationErrors.length })}
       />
-      {genericError && !validationErrors.length && (
+      {genericError && (
         <FocusableAlert
           className={clsx(styles.genericErrorAlert, 'ams-mb-m')}
           // useFileUploads sets a new object for every error, so repeated errors refocus the alert too
@@ -124,20 +131,21 @@ export const AddAttachment = ({ attachments, meldingId, publicId }: Props) => {
       <Heading className="ams-mb-l" level={1}>
         {t('title')}
       </Heading>
+
       <Column className={clsx(styles.contentWrapper, 'ams-mb-m')}>
         <Column gap="small">
           <Heading id="file-upload-label" level={2} size="level-4">
             {t('upload.title')}
           </Heading>
           <Paragraph id="file-upload-description">{t('upload.description')}</Paragraph>
-          <Paragraph>
+          <Paragraph aria-live="polite" role="status">
             {t('upload.count', { currentCount: successfulUploadsCount, maxCount: MAX_SUCCESSFUL_UPLOADS })}
           </Paragraph>
         </Column>
 
         <FileUpload
           accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp,.pdf"
-          aria-describedby={getAriaDescribedBy(fileUploadId, t('upload.description'))}
+          aria-describedby={getAriaDescribedBy('file-upload', t('upload.description'))}
           aria-labelledby={`file-upload-label ${fileUploadId}`}
           button={{
             text: t('file-upload.select-file-button'),
@@ -148,15 +156,12 @@ export const AddAttachment = ({ attachments, meldingId, publicId }: Props) => {
           onChange={handleUpload}
           ref={fileUploadRef}
         />
-        {hasAttachments && (
-          <>
-            <AttachmentsList files={fileUploads} handleDelete={handleOnDelete} />
 
-            <div aria-live="polite" className="ams-visually-hidden">
-              {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
-            </div>
-          </>
-        )}
+        {hasAttachments && <AttachmentsList files={fileUploads} handleDelete={handleOnDelete} />}
+
+        <div aria-live="polite" className="ams-visually-hidden" role="status">
+          {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
+        </div>
       </Column>
       <Link href={meldingDetailLink}>{hasAttachments ? t('back-link') : t('cancel-link')}</Link>
     </PageWrapper>
