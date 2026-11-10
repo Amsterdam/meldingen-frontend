@@ -16,16 +16,16 @@ export const useDocumentTitleOnError = ({ apiErrorMessage, hasApiError, validati
   let error: string | undefined
 
   if (validationErrorCount && validationErrorCount > 0) {
-    error = `${t('document-title-error-count-prefix', { count: validationErrorCount })}`
+    error = `${t('document-title-error-count-prefix', { count: validationErrorCount })} `
   } else if (hasApiError) {
-    error = `${apiErrorMessage ?? t('api-error-alert.heading')}`
+    error = `${apiErrorMessage ?? t('api-error-alert.heading')} - `
   }
 
   useEffect(() => {
     if (!error) return
 
     const originalTitle = document.title
-    const title = `${error} - ${originalTitle}`
+    const title = `${error}${originalTitle}`
 
     document.title = title
 
