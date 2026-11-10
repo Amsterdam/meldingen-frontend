@@ -107,6 +107,22 @@ The Back Office test uses an encrypted NextAuth session cookie with a randomly g
 shared with its test server. This tests the real authentication middleware without requiring a running identity provider.
 Playwright saves traces for failed tests in `e2e/test-results`.
 
+### Authentication in UI mode
+
+Playwright UI mode does not run setup projects automatically. Before running Back Office tests:
+
+1. Start the UI with `pnpm test:e2e:ui`.
+2. Enable `back-office-auth` in the UI's project filters.
+3. Click the run button next to `auth.setup.ts` and wait for it to pass.
+4. Disable `back-office-auth` in the filters again and run the desired Back Office tests.
+
+The setup creates `e2e/playwright/.auth/back-office.json`. Without it, Back Office tests fail with
+`Error reading storage state` and `ENOENT`.
+Repeat the setup whenever you restart local UI mode: each launch generates a new session secret,
+so authentication state from a previous launch is no longer valid.
+Run setup inside the same UI session, not in a separate CLI run, so the session secret matches the running server.
+For deployed environments, rerun setup when the saved session expires.
+
 ### Testing a deployed environment
 
 Set `PLAYWRIGHT_MELDING_FORM_BASE_URL` and `PLAYWRIGHT_BACK_OFFICE_BASE_URL` to the deployed app URLs.
@@ -132,6 +148,5 @@ that NextAuth exposes a valid session before running assertions.
 Authentication state is saved to `e2e/playwright/.auth/back-office.json` and regenerated on each run.
 This directory is gitignored: it contains sensitive session cookies and must not be published as a pipeline artifact.
 The authentication setup disables traces, screenshots, and video to avoid recording login credentials.
-In Playwright UI mode, run the `back-office-auth` setup project before running Back Office tests.
 Test traces can still contain authenticated requests and data, so restrict access to pipeline artifacts.
 The deployment pipeline must run these tests after ACC is available; triggering tests from ACC alone does not select it.
