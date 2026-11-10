@@ -7,6 +7,10 @@ type Args = {
   validationErrorCount?: number
 }
 
+/**
+ * Updates the document title to include an error message if there is an API error or validation errors.
+ * The original title is restored when the component is unmounted or the error changes.
+ */
 export const useDocumentTitleOnError = ({ apiErrorMessage, hasApiError, validationErrorCount }: Args) => {
   const t = useTranslations('shared')
   let error: string | undefined
