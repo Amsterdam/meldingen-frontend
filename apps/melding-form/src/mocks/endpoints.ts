@@ -7,7 +7,6 @@ export const ENDPOINTS = {
   // Melding
   DELETE_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID: '/melding/:id/answer/:answerId',
   DELETE_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID: '/melding/:id/attachment/:attachmentId',
-  DELETE_MELDING_BY_MELDING_ID_ASSET_BY_ASSET_ID: '/melding/:melding_id/asset/:asset_id',
 
   GET_MELDING_BY_MELDING_ID_ANSWERS_MELDER: '/melding/:id/answers/melder',
   GET_MELDING_BY_MELDING_ID_ATTACHMENT_BY_ATTACHMENT_ID_DOWNLOAD: '/melding/:id/attachment/:attachmentId/download',
@@ -21,7 +20,6 @@ export const ENDPOINTS = {
   PATCH_MELDING_BY_MELDING_ID_MELDER: '/melding/:id/melder',
 
   POST_MELDING: '/melding',
-  POST_MELDING_BY_MELDING_ID_ASSET: '/melding/:id/asset',
   POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER: '/melding/:id/attachment/melder',
   POST_MELDING_BY_MELDING_ID_QUESTION_BY_QUESTION_ID: '/melding/:melding_id/question/:question_id',
 
