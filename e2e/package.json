@@ -1,0 +1,17 @@
+{
+  "name": "e2e",
+  "version": "0.0.0",
+  "description": "Playwright end-to-end tests for the Meldingen frontends",
+  "license": "EUPL-1.2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0",
+    "next-auth": "4.24.15"
+  }
+}

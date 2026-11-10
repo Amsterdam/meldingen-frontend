@@ -8,6 +8,9 @@ coverage
 dist
 tmp
 .next
+.next-e2e
+playwright-report
+test-results
 
 # The indentation of dependency JSON files should only be updated by `yarn` and
 # `npm` commands, so dependency automation scripts (such as Dependabot and

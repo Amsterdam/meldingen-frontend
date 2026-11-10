@@ -68,6 +68,15 @@ Run all tests:
 npm run test
 ```
 
+Run the separate Playwright end-to-end tests:
+
+```sh
+pnpm --filter e2e exec playwright install chromium firefox webkit
+pnpm test:e2e
+```
+
+See [End-to-end tests](./code-conventions/testing.md#end-to-end-tests) for details.
+
 Check for linting, formatting, and type errors:
 
 ```sh
@@ -112,6 +121,7 @@ This repository is a monorepo.
 
 - Applications live in `/apps`
 - Shared frontend packages live in `/libs`
+- Playwright end-to-end tests live in `/e2e`
 
 This structure treats large internal modules like external packages, which enforces cleaner boundaries and a more deliberate public interface.
 

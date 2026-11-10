@@ -29,6 +29,8 @@
     "prettier": "prettier --check .",
     "prettier-fix": "prettier --write .",
     "test": "pnpm -r --no-bail --sequential test",
+    "test:e2e": "pnpm --filter e2e test:e2e",
+    "test:e2e:ui": "pnpm --filter e2e test:e2e:ui",
     "test:watch": "pnpm -r --no-bail test:watch"
   },
   "dependencies": {
