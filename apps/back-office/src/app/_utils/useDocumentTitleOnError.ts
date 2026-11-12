@@ -30,9 +30,9 @@ export const useDocumentTitleOnError = ({ apiErrorMessage, hasApiError, validati
     document.title = title
 
     return () => {
-      if (document.title === title) {
-        document.title = originalTitle
-      }
+      if (document.title !== title) return
+
+      document.title = originalTitle
     }
   }, [error])
 }

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 
 import { getMeldingTitle } from './_utils/getMeldingTitle'
-import { DOCUMENT_TITLE_PLACEHOLDER } from './constants'
 
 type Props = LayoutProps<'/melding/[meldingId]'>
 
@@ -12,7 +11,7 @@ export const generateMetadata = async ({ params }: Pick<Props, 'params'>): Promi
   return {
     title: {
       default: title,
-      template: `${DOCUMENT_TITLE_PLACEHOLDER} - ${title}`,
+      template: `%s - ${title}`,
     },
   }
 }

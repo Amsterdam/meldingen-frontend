@@ -2,21 +2,24 @@ import { renderHook } from '@testing-library/react'
 
 import { useDocumentTitleOnError } from './useDocumentTitleOnError'
 
+const DOCUMENT_TITLE = 'Report details'
+const ERROR_PREFIX = 'api-error-alert.heading'
+
 describe('useDocumentTitleOnError', () => {
   beforeEach(() => {
-    document.title = 'Report details'
+    document.title = DOCUMENT_TITLE
   })
 
   it('preserves the document title when there are no errors', () => {
     renderHook(() => useDocumentTitleOnError({ hasApiError: false }))
 
-    expect(document.title).toBe('Report details')
+    expect(document.title).toBe(DOCUMENT_TITLE)
   })
 
   it('prefixes the document title when there is an API error', () => {
     renderHook(() => useDocumentTitleOnError({ hasApiError: true }))
 
-    expect(document.title).toBe('api-error-alert.heading - Report details')
+    expect(document.title).toBe(`${ERROR_PREFIX} - ${DOCUMENT_TITLE}`)
   })
 
   it('uses the given API error message instead of the default when provided', () => {
@@ -48,15 +51,15 @@ describe('useDocumentTitleOnError', () => {
       { initialProps: { validationErrorCount: 1 } },
     )
 
-    expect(document.title).toBe('document-title-error-count-prefix Report details')
+    expect(document.title).toBe(`document-title-error-count-prefix ${DOCUMENT_TITLE}`)
 
     rerender({ validationErrorCount: 2 })
 
-    expect(document.title).toBe('document-title-error-count-prefix Report details')
+    expect(document.title).toBe(`document-title-error-count-prefix ${DOCUMENT_TITLE}`)
 
     rerender({ validationErrorCount: 0 })
 
-    expect(document.title).toBe('api-error-alert.heading - Report details')
+    expect(document.title).toBe(`${ERROR_PREFIX} - ${DOCUMENT_TITLE}`)
   })
 
   it('restores the original title when API errors are resolved', () => {
@@ -64,11 +67,11 @@ describe('useDocumentTitleOnError', () => {
       initialProps: { hasApiError: true },
     })
 
-    expect(document.title).toBe('api-error-alert.heading - Report details')
+    expect(document.title).toBe(`${ERROR_PREFIX} - ${DOCUMENT_TITLE}`)
 
     rerender({ hasApiError: false })
 
-    expect(document.title).toBe('Report details')
+    expect(document.title).toBe(DOCUMENT_TITLE)
   })
 
   it('replaces the error prefix without stacking it when it changes', () => {
@@ -77,15 +80,15 @@ describe('useDocumentTitleOnError', () => {
       { initialProps: { apiErrorMessage: 'First error' } },
     )
 
-    expect(document.title).toBe('First error - Report details')
+    expect(document.title).toBe(`First error - ${DOCUMENT_TITLE}`)
 
     rerender({ apiErrorMessage: 'First error' })
 
-    expect(document.title).toBe('First error - Report details')
+    expect(document.title).toBe(`First error - ${DOCUMENT_TITLE}`)
 
     rerender({ apiErrorMessage: 'Second error' })
 
-    expect(document.title).toBe('Second error - Report details')
+    expect(document.title).toBe(`Second error - ${DOCUMENT_TITLE}`)
   })
 
   it('uses the current base title for the next error after errors clear', () => {
@@ -95,23 +98,23 @@ describe('useDocumentTitleOnError', () => {
 
     rerender({ hasApiError: false })
 
-    expect(document.title).toBe('Report details')
+    expect(document.title).toBe(DOCUMENT_TITLE)
 
     document.title = 'Updated report details'
 
     rerender({ hasApiError: true })
 
-    expect(document.title).toBe('api-error-alert.heading - Updated report details')
+    expect(document.title).toBe(`${ERROR_PREFIX} - Updated report details`)
   })
 
   it('restores the original title when unmounted', () => {
     const { unmount } = renderHook(() => useDocumentTitleOnError({ hasApiError: true }))
 
-    expect(document.title).toBe('api-error-alert.heading - Report details')
+    expect(document.title).toBe(`${ERROR_PREFIX} - ${DOCUMENT_TITLE}`)
 
     unmount()
 
-    expect(document.title).toBe('Report details')
+    expect(document.title).toBe(DOCUMENT_TITLE)
   })
 
   it('does not overwrite a title set by navigation when unmounted', () => {

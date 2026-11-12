@@ -18,6 +18,7 @@ type Props = Pick<PageProps<'/melding/[meldingId]'>, 'params'>
 export const generateMetadata = async ({ params }: Props) => {
   const { meldingId } = await params
 
+  // absolute ignores the title template defined in the layout.tsx
   return { title: { absolute: await getMeldingTitle(meldingId) } }
 }
 
