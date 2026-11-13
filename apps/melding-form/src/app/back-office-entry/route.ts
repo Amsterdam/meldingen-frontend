@@ -38,6 +38,10 @@ export const GET = async (request: NextRequest) => {
   cookieStore.set(COOKIES.TOKEN, token, SESSION_COOKIE_OPTIONS)
   cookieStore.set(COOKIES.SOURCE, 'back-office', SESSION_COOKIE_OPTIONS)
 
+  // Tells TabSessionGuard not to clear this new session, although the tab has no marker yet for the melding form.
+  // TabSessionGuard reads and deletes it with JavaScript, so it can't be HttpOnly.
+  cookieStore.set(COOKIES.NEW_SESSION, 'true', { maxAge: 60, sameSite: 'lax', secure: true })
+
   // The LAST_PANEL_PATH cookie might be populated by earlier additional questions.
   // Delete it here in case a reclassification occurs.
   cookieStore.delete(COOKIES.LAST_PANEL_PATH)
