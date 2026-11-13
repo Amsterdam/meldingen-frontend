@@ -6,16 +6,10 @@ import { getClassification, getMeldingByMeldingId, getMeldingByMeldingIdNote, ge
 
 type Props = Pick<PageProps<'/melding/[meldingId]/notities'>, 'params'>
 
-export const generateMetadata = async ({ params }: Props) => {
-  const { meldingId: meldingIdParam } = await params
-  const meldingId = Number(meldingIdParam)
-
+export const generateMetadata = async () => {
   const t = await getTranslations('notes-overview')
-  const { data } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
-  return {
-    title: t('metadata.title', { publicId: data?.public_id ?? '' }),
-  }
+  return { title: t('metadata.title') }
 }
 
 export default async ({ params }: Props) => {

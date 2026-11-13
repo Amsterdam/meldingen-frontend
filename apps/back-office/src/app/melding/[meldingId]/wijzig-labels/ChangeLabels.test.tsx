@@ -29,10 +29,14 @@ const defaultProps: Props = {
 }
 
 describe('ChangeLabels', () => {
-  it('renders the component with the correct document title', () => {
+  beforeEach(() => {
+    document.title = 'Wijzig labels - Gemeente Amsterdam'
+  })
+
+  it('preserves the server-rendered document title when there are no errors', () => {
     render(<ChangeLabels {...defaultProps} />)
 
-    expect(document.title).toBe('metadata.title')
+    expect(document.title).toBe('Wijzig labels - Gemeente Amsterdam')
   })
 
   it('renders the back link', () => {
@@ -97,11 +101,35 @@ describe('ChangeLabels', () => {
     expect(alert).toHaveTextContent('description')
 
     // Doc title
-    expect(document.title).toBe('errors.labels-change-failed-heading - metadata.title')
+    expect(document.title).toBe('errors.labels-change-failed-heading - Wijzig labels - Gemeente Amsterdam')
 
     // Checkboxes
     expect(screen.getByRole('checkbox', { name: 'Label 1' })).toBeChecked()
     expect(screen.getByRole('checkbox', { name: 'Label 3' })).toBeChecked()
+  })
+
+  it('restores the server-rendered document title when the API error is resolved', () => {
+    vi.mocked(useActionState).mockReturnValueOnce([{ apiError: 'Test error' }, vi.fn(), false])
+
+    const { rerender } = render(<ChangeLabels {...defaultProps} />)
+
+    expect(document.title).toBe('errors.labels-change-failed-heading - Wijzig labels - Gemeente Amsterdam')
+
+    rerender(<ChangeLabels {...defaultProps} />)
+
+    expect(document.title).toBe('Wijzig labels - Gemeente Amsterdam')
+  })
+
+  it('restores the server-rendered document title when leaving the page after an API error', () => {
+    vi.mocked(useActionState).mockReturnValueOnce([{ apiError: 'Test error' }, vi.fn(), false])
+
+    const { unmount } = render(<ChangeLabels {...defaultProps} />)
+
+    expect(document.title).toBe('errors.labels-change-failed-heading - Wijzig labels - Gemeente Amsterdam')
+
+    unmount()
+
+    expect(document.title).toBe('Wijzig labels - Gemeente Amsterdam')
   })
 
   it('uses labelIdsFromAction over currentLabelIds when both are present', () => {

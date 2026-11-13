@@ -1,7 +1,15 @@
+import { getTranslations } from 'next-intl/server'
+
 import { ChangeUrgency } from './ChangeUrgency'
 import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
 type Props = Pick<PageProps<'/melding/[meldingId]/wijzig-urgentie'>, 'params'>
+
+export const generateMetadata = async () => {
+  const t = await getTranslations('change-urgency')
+
+  return { title: t('metadata.title') }
+}
 
 export default async ({ params }: Props) => {
   const { meldingId: meldingIdParams } = await params

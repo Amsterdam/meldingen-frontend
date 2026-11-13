@@ -77,6 +77,18 @@ describe('MeldingForm', () => {
     expect(document.title).toBe('document-title-error-count-prefix metadata.title')
   })
 
+  it('restores the base document title when an API error is resolved', () => {
+    vi.mocked(useActionState).mockReturnValueOnce([{ apiError: 'Test error message' }, vi.fn(), false])
+
+    const { rerender } = render(<MeldingForm {...defaultProps} />)
+
+    expect(document.title).toBe('api-error-alert.heading - metadata.title')
+
+    rerender(<MeldingForm {...defaultProps} />)
+
+    expect(document.title).toBe('metadata.title')
+  })
+
   it('renders an error message connected to the primary text area when there is a validation error for the primary field', () => {
     ;(useActionState as Mock).mockReturnValueOnce([
       { validationErrors: [{ key: 'primary', message: 'Primary field error' }] },

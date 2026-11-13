@@ -14,6 +14,7 @@ const extractLabelIdsFromFormData = (formData: FormData) => formData.getAll('lab
 const sameLabels = (a: number[], b: number[]) => {
   const setA = new Set(a)
   const setB = new Set(b)
+
   return setA.size === setB.size && [...setA].every((id) => setB.has(id))
 }
 

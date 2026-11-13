@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 
+import { getMeldingTitle } from './_utils/getMeldingTitle'
 import {
   getAdditionalQuestionsData,
   getAssetsData,
@@ -17,13 +18,8 @@ type Props = Pick<PageProps<'/melding/[meldingId]'>, 'params'>
 export const generateMetadata = async ({ params }: Props) => {
   const { meldingId } = await params
 
-  const t = await getTranslations('detail')
-
-  const { data } = await getMeldingByMeldingId({ path: { melding_id: Number(meldingId) } })
-
-  return {
-    title: t('metadata.title', { publicId: data?.public_id ?? '' }),
-  }
+  // absolute ignores the title template defined in the layout.tsx
+  return { title: { absolute: await getMeldingTitle(meldingId) } }
 }
 
 export default async ({ params }: Props) => {

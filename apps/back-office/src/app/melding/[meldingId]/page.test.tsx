@@ -31,7 +31,7 @@ describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
     const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: '123' }) })
 
-    expect(metadata).toEqual({ title: 'metadata.title: {"publicId":"ABC"}' })
+    expect(metadata).toEqual({ title: { absolute: 'metadata.title: {"publicId":"ABC"}' } })
   })
 
   it('returns a fallback title when public id is not available', async () => {
@@ -39,7 +39,7 @@ describe('generateMetadata', () => {
 
     const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: '123' }) })
 
-    expect(metadata).toEqual({ title: 'metadata.title: {"publicId":""}' })
+    expect(metadata).toEqual({ title: { absolute: 'metadata.title-fallback' } })
   })
 })
 

@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
 
 import { isReclassificationAllowed } from '../_utils/server'
@@ -5,6 +6,12 @@ import { ChangeCategory } from './ChangeCategory'
 import { getClassification, getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
 type Props = Pick<PageProps<'/melding/[meldingId]/wijzig-categorie'>, 'params'>
+
+export const generateMetadata = async () => {
+  const t = await getTranslations('change-category')
+
+  return { title: t('metadata.title') }
+}
 
 export default async ({ params }: Props) => {
   const { meldingId: meldingIdParams } = await params

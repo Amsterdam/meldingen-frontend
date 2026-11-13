@@ -30,8 +30,11 @@ const createAttachment = (
 const defaultProps = {
   attachments: [],
   meldingId: 123,
-  publicId: 'ABC',
 } satisfies AddAttachmentProps
+
+beforeEach(() => {
+  document.title = 'metadata.title'
+})
 
 describe('AddAttachment', () => {
   it('renders correctly', () => {
@@ -373,7 +376,7 @@ describe('document title', () => {
     (_, index) => new File(['x'], `file-${index}.png`, { type: 'image/png' }),
   )
 
-  it('sets the base document title when there are no errors', () => {
+  it('preserves the server-rendered document title when there are no errors', () => {
     render(<AddAttachment {...defaultProps} />)
 
     expect(document.title).toBe('metadata.title')
