@@ -1,4 +1,4 @@
-import type { MeldingOutput, NoteRetrieveOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
+import type { MeldingOutput, NoteOutput, StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
 import { MeldingForm } from './MeldingForm'
 import {
@@ -99,7 +99,7 @@ const fetchNote = async (meldingId: number) => {
   return notes?.find((note) => note.user.id === currentUser?.id)
 }
 
-const toDefaultValues = (melding?: MeldingOutput, note?: NoteRetrieveOutput) => {
+const toDefaultValues = (melding?: MeldingOutput, note?: NoteOutput) => {
   if (!melding) return {}
 
   return {

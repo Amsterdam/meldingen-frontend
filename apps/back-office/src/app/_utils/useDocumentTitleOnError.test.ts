@@ -1,39 +1,129 @@
+import { renderHook } from '@testing-library/react'
+
 import { useDocumentTitleOnError } from './useDocumentTitleOnError'
 
+const DOCUMENT_TITLE = 'Report details'
+const ERROR_PREFIX = 'api-error-alert.heading'
+
 describe('useDocumentTitleOnError', () => {
-  const baseDocumentTitle = 'Test title'
-
-  it('returns original title when there are no errors', () => {
-    const title = useDocumentTitleOnError({ baseDocumentTitle })
-
-    expect(title).toBe(baseDocumentTitle)
+  beforeEach(() => {
+    document.title = DOCUMENT_TITLE
   })
 
-  it('returns API error title and original title when there is an API error', () => {
-    const title = useDocumentTitleOnError({ baseDocumentTitle, hasApiError: true })
+  it('preserves the document title when there are no errors', () => {
+    renderHook(() => useDocumentTitleOnError({ hasApiError: false }))
 
-    expect(title).toBe(`api-error-alert.heading - ${baseDocumentTitle}`)
+    expect(document.title).toBe(DOCUMENT_TITLE)
   })
 
-  it('returns the given API error message instead of the default when provided', () => {
-    const title = useDocumentTitleOnError({
-      apiErrorMessage: 'Custom error',
-      baseDocumentTitle,
-      hasApiError: true,
+  it('prefixes the document title when there is an API error', () => {
+    renderHook(() => useDocumentTitleOnError({ hasApiError: true }))
+
+    expect(document.title).toBe(`${ERROR_PREFIX} - ${DOCUMENT_TITLE}`)
+  })
+
+  it('uses the given API error message instead of the default when provided', () => {
+    renderHook(() =>
+      useDocumentTitleOnError({
+        apiErrorMessage: 'Custom error',
+        hasApiError: true,
+      }),
+    )
+
+    expect(document.title).toBe('Custom error - Report details')
+  })
+
+  it('preserves the document title when validationErrorCount is 0', () => {
+    renderHook(() => useDocumentTitleOnError({ hasApiError: false, validationErrorCount: 0 }))
+
+    expect(document.title).toBe('Report details')
+  })
+
+  it('prefixes the document title with the error count when validationErrorCount is > 0', () => {
+    renderHook(() => useDocumentTitleOnError({ hasApiError: false, validationErrorCount: 3 }))
+
+    expect(document.title).toBe('document-title-error-count-prefix Report details')
+  })
+
+  it('prioritizes validation errors over API errors and updates the prefix when they clear', () => {
+    const { rerender } = renderHook(
+      ({ validationErrorCount }) => useDocumentTitleOnError({ hasApiError: true, validationErrorCount }),
+      { initialProps: { validationErrorCount: 1 } },
+    )
+
+    expect(document.title).toBe(`document-title-error-count-prefix ${DOCUMENT_TITLE}`)
+
+    rerender({ validationErrorCount: 2 })
+
+    expect(document.title).toBe(`document-title-error-count-prefix ${DOCUMENT_TITLE}`)
+
+    rerender({ validationErrorCount: 0 })
+
+    expect(document.title).toBe(`${ERROR_PREFIX} - ${DOCUMENT_TITLE}`)
+  })
+
+  it('restores the original title when API errors are resolved', () => {
+    const { rerender } = renderHook(({ hasApiError }) => useDocumentTitleOnError({ hasApiError }), {
+      initialProps: { hasApiError: true },
     })
 
-    expect(title).toBe(`Custom error - ${baseDocumentTitle}`)
+    expect(document.title).toBe(`${ERROR_PREFIX} - ${DOCUMENT_TITLE}`)
+
+    rerender({ hasApiError: false })
+
+    expect(document.title).toBe(DOCUMENT_TITLE)
   })
 
-  it('returns original title when validationErrorCount is 0', () => {
-    const title = useDocumentTitleOnError({ baseDocumentTitle, validationErrorCount: 0 })
+  it('replaces the error prefix without stacking it when it changes', () => {
+    const { rerender } = renderHook(
+      ({ apiErrorMessage }) => useDocumentTitleOnError({ apiErrorMessage, hasApiError: true }),
+      { initialProps: { apiErrorMessage: 'First error' } },
+    )
 
-    expect(title).toBe(baseDocumentTitle)
+    expect(document.title).toBe(`First error - ${DOCUMENT_TITLE}`)
+
+    rerender({ apiErrorMessage: 'First error' })
+
+    expect(document.title).toBe(`First error - ${DOCUMENT_TITLE}`)
+
+    rerender({ apiErrorMessage: 'Second error' })
+
+    expect(document.title).toBe(`Second error - ${DOCUMENT_TITLE}`)
   })
 
-  it('returns error count label and original title when validationErrorCount is > 0', () => {
-    const title = useDocumentTitleOnError({ baseDocumentTitle, validationErrorCount: 3 })
+  it('uses the current base title for the next error after errors clear', () => {
+    const { rerender } = renderHook(({ hasApiError }) => useDocumentTitleOnError({ hasApiError }), {
+      initialProps: { hasApiError: true },
+    })
 
-    expect(title).toBe(`document-title-error-count-prefix ${baseDocumentTitle}`)
+    rerender({ hasApiError: false })
+
+    expect(document.title).toBe(DOCUMENT_TITLE)
+
+    document.title = 'Updated report details'
+
+    rerender({ hasApiError: true })
+
+    expect(document.title).toBe(`${ERROR_PREFIX} - Updated report details`)
+  })
+
+  it('restores the original title when unmounted', () => {
+    const { unmount } = renderHook(() => useDocumentTitleOnError({ hasApiError: true }))
+
+    expect(document.title).toBe(`${ERROR_PREFIX} - ${DOCUMENT_TITLE}`)
+
+    unmount()
+
+    expect(document.title).toBe(DOCUMENT_TITLE)
+  })
+
+  it('does not overwrite a title set by navigation when unmounted', () => {
+    const { unmount } = renderHook(() => useDocumentTitleOnError({ hasApiError: true }))
+
+    document.title = 'Another page'
+
+    unmount()
+
+    expect(document.title).toBe('Another page')
   })
 })

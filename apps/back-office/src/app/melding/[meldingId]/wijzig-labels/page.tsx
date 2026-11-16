@@ -1,3 +1,5 @@
+import { getTranslations } from 'next-intl/server'
+
 import type { LabelOutput } from '~/app/_api-client/proxy'
 
 import { ChangeLabels } from './ChangeLabels'
@@ -6,6 +8,12 @@ import { getLabel, getMeldingByMeldingId } from '~/app/_api-client/proxy'
 type Props = Pick<PageProps<'/melding/[meldingId]/wijzig-labels'>, 'params'>
 
 const getLabelIds = (labels: LabelOutput[]) => labels.map(({ id }) => id)
+
+export const generateMetadata = async () => {
+  const t = await getTranslations('change-labels')
+
+  return { title: t('metadata.title') }
+}
 
 export default async ({ params }: Props) => {
   const { meldingId: meldingIdParams } = await params

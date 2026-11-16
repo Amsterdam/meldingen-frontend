@@ -38,6 +38,9 @@ export const getAttachmentById = <ThrowOnError extends boolean = false>(options:
 
 /**
  * Classification:List
+ *
+ * Retrieve a list of classifications with optional filtering, sorting, and pagination.
+ * If the request is unauthenticated, only public fields (See `ClassificationOutputPublic` schema) will be included in the response.
  */
 export const getClassification = <ThrowOnError extends boolean = false>(options?: Options<GetClassificationData, ThrowOnError>): RequestResult<GetClassificationResponses, GetClassificationErrors, ThrowOnError> => (options?.client ?? client).get<GetClassificationResponses, GetClassificationErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],

@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 
-import type { ClassificationOutput, NoteRetrieveOutput } from '@meldingen/api-client'
+import type { ClassificationOutput, NoteOutput } from '@meldingen/api-client'
 
 import { Heading, StandaloneLink, TabNavigation, UnorderedList } from '@meldingen/ui'
 
@@ -14,14 +14,14 @@ type Props = {
   classifications?: ClassificationOutput[]
   currentUserId: number
   meldingId: number
-  notes: NoteRetrieveOutput[]
+  notes: NoteOutput[]
   overviewHref: string
   publicId: string
 }
 
 export const NotesOverview = ({ classifications, currentUserId, meldingId, notes, overviewHref, publicId }: Props) => {
   const t = useTranslations('notes-overview')
-  const getClassification = (classificationId: NoteRetrieveOutput['classification_id']) =>
+  const getClassification = (classificationId: NoteOutput['classification_id']) =>
     classifications?.find((classification) => classification.id === classificationId)
 
   const hasNotes = notes.length > 0

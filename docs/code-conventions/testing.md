@@ -22,7 +22,7 @@ A server-action test using the real API client and MSW provides frontend integra
 - Use focused unit tests for business rules, boundary values, and combinations such as conditional panel navigation.
 - Use component tests for accessible output and interactions. Prefer `userEvent.setup()` and awaited user interactions over invoking component handlers directly.
 - Use integration tests for representative submissions, request payloads, validation recovery, and coordination between components and actions. Keep edge-case combinations in focused tests instead of repeating every case at every layer.
-- Use browser E2E tests for critical complete journeys, cookies, navigation, hydration, and real server-action transport. Browser E2E is not currently configured in this repo; it remains a separate addition. Include a JavaScript-disabled public-form journey to verify progressive enhancement when adding it.
+- Use browser E2E tests for critical complete journeys, cookies, navigation, hydration, and real server-action transport. Include a JavaScript-disabled public-form journey to verify progressive enhancement.
 
 Coverage thresholds in each package's Vite configuration are regression guards, not proof that a workflow works. Prioritize meaningful assertions and risky behaviour over increasing percentages.
 
@@ -150,3 +150,21 @@ This directory is gitignored: it contains sensitive session cookies and must not
 The authentication setup disables traces, screenshots, and video to avoid recording login credentials.
 Test traces can still contain authenticated requests and data, so restrict access to pipeline artifacts.
 The deployment pipeline must run these tests after ACC is available; triggering tests from ACC alone does not select it.
+
+## Document titles
+
+Rendering a component in a unit test does not run Next.js metadata generation.
+For melding detail subroutes, seed `document.title` in `beforeEach` with the server-rendered base title, including the layout suffix.
+This also prevents title changes from leaking between tests.
+
+```typescript
+beforeEach(() => {
+  document.title = 'Notitie toevoegen - Melding ABC - Gemeente Amsterdam'
+})
+```
+
+Test `generateMetadata` separately in the route's `page.test.tsx`.
+Component tests should verify that the base title is preserved without errors, that errors prefix it, and that it is restored when errors clear or the component unmounts.
+Include a rerender with persistent errors to check that prefixes do not accumulate.
+
+See [Document titles for melding detail subroutes](../patterns/error-handling.md#document-titles-for-melding-detail-subroutes) for the implementation pattern.

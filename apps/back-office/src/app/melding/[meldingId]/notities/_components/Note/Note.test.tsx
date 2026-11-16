@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import type { ClassificationOutput, NoteRetrieveOutput } from '@meldingen/api-client'
+import type { ClassificationOutput, NoteOutput } from '@meldingen/api-client'
 
 import { Note } from './Note'
 
@@ -12,7 +12,7 @@ const mockNote = {
   user: {
     email: 'test@example.com',
   },
-} as NoteRetrieveOutput
+} as NoteOutput
 
 const mockClassification = {
   created_at: '2024-01-01T00:00:00Z',
@@ -34,7 +34,7 @@ describe('Note', () => {
     const noteFromSomeoneElse = {
       ...mockNote,
       user: { email: 'test@example.com', id: 2 },
-    } as NoteRetrieveOutput
+    } as NoteOutput
 
     render(<Note currentUserId={1} meldingId={123} note={noteFromSomeoneElse} />)
 
@@ -47,7 +47,7 @@ describe('Note', () => {
     const myNote = {
       ...mockNote,
       user: { email: 'test@example.com', id: 1 },
-    } as NoteRetrieveOutput
+    } as NoteOutput
 
     render(<Note currentUserId={1} meldingId={123} note={myNote} />)
 
@@ -69,7 +69,7 @@ describe('Note', () => {
     const editedNote = {
       ...mockNote,
       updated_at: '2024-03-05T09:09:00Z',
-    } as NoteRetrieveOutput
+    } as NoteOutput
 
     render(<Note currentUserId={1} meldingId={123} note={editedNote} />)
 
