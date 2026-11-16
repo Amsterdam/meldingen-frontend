@@ -22,12 +22,7 @@ A server-action test using the real API client and MSW provides frontend integra
 - Use focused unit tests for business rules, boundary values, and combinations such as conditional panel navigation.
 - Use component tests for accessible output and interactions. Prefer `userEvent.setup()` and awaited user interactions over invoking component handlers directly.
 - Use integration tests for representative submissions, request payloads, validation recovery, and coordination between components and actions. Keep edge-case combinations in focused tests instead of repeating every case at every layer.
-  <<<<<<< HEAD
-- Use browser E2E tests for critical complete journeys, cookies, navigation, hydration, and real server-action transport. Include a JavaScript-disabled public-form journey to verify progressive enhancement.
-  \=======
 - Use browser E2E tests for critical complete journeys, cookies, navigation, hydration, and real server-action transport. Include a JavaScript-disabled public-form journey to verify progressive enhancement when adding public-form journey coverage.
-
-> > > > > > > 82dcd724 (Simplify by using keycloak for local tests as well)
 
 Coverage thresholds in each package's Vite configuration are regression guards, not proof that a workflow works. Prioritize meaningful assertions and risky behaviour over increasing percentages.
 
