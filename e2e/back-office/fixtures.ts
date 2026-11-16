@@ -28,3 +28,6 @@ export const test = base.extend({
     }
   },
 })
+
+// Authentication runs inside each test, so runner tracing would capture credentials.
+test.use({ trace: 'off' })
