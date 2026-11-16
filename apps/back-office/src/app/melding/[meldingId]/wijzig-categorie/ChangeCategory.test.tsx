@@ -31,6 +31,16 @@ const defaultProps: Props = {
 }
 
 describe('ChangeCategory', () => {
+  beforeEach(() => {
+    document.title = 'Wijzig categorie - Gemeente Amsterdam'
+  })
+
+  it('preserves the server-rendered document title when there are no errors', () => {
+    render(<ChangeCategory {...defaultProps} />)
+
+    expect(document.title).toBe('Wijzig categorie - Gemeente Amsterdam')
+  })
+
   it('renders the back link', () => {
     render(<ChangeCategory {...defaultProps} />)
 
@@ -124,6 +134,7 @@ describe('ChangeCategory', () => {
       'Because this is the right classification',
     )
     expect(container.querySelector('#reason-error')).toHaveTextContent('reason-required')
+    expect(document.title).toBe('document-title-error-count-prefix Wijzig categorie - Gemeente Amsterdam')
   })
 
   it('displays an API error alert with the correct document title and preserves the form data', () => {
@@ -149,7 +160,34 @@ describe('ChangeCategory', () => {
     expect(screen.getByRole('textbox', { name: 'form-labels.reason' })).toHaveValue(
       'Because this is the right classification',
     )
-    expect(document.title).toBe('errors.reclassification-failed-heading - metadata.title')
+    expect(document.title).toBe('errors.reclassification-failed-heading - Wijzig categorie - Gemeente Amsterdam')
+  })
+
+  it.each([
+    { apiError: { detail: 'Error message' } },
+    { validationErrors: [{ key: 'reason', message: 'reason-required' }] },
+  ])('restores the server-rendered document title when errors are resolved: %j', (state) => {
+    vi.mocked(useActionState).mockReturnValueOnce([state, vi.fn(), false])
+
+    const { rerender } = render(<ChangeCategory {...defaultProps} />)
+
+    expect(document.title).not.toBe('Wijzig categorie - Gemeente Amsterdam')
+
+    rerender(<ChangeCategory {...defaultProps} />)
+
+    expect(document.title).toBe('Wijzig categorie - Gemeente Amsterdam')
+  })
+
+  it('restores the server-rendered document title when leaving the page after an API error', () => {
+    vi.mocked(useActionState).mockReturnValueOnce([{ apiError: { detail: 'Error message' } }, vi.fn(), false])
+
+    const { unmount } = render(<ChangeCategory {...defaultProps} />)
+
+    expect(document.title).toBe('errors.reclassification-failed-heading - Wijzig categorie - Gemeente Amsterdam')
+
+    unmount()
+
+    expect(document.title).toBe('Wijzig categorie - Gemeente Amsterdam')
   })
 
   it('submits the form when the submit button is clicked', async () => {

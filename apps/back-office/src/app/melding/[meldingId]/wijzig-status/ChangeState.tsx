@@ -42,10 +42,8 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
   const t = useTranslations('change-state')
   const tShared = useTranslations('shared')
 
-  // Update document title when there is an API error
-  const documentTitle = useDocumentTitleOnError({
+  useDocumentTitleOnError({
     apiErrorMessage: apiError ? t(`errors.${apiError.type}.heading`) : undefined,
-    baseDocumentTitle: t('metadata.title'),
     hasApiError: Boolean(apiError),
   })
 
@@ -60,7 +58,7 @@ export const ChangeState = ({ meldingId, meldingState, possibleStates, publicId 
   const stateToDisplay = meldingStateFromAction ?? meldingState
 
   return (
-    <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }} documentTitle={documentTitle}>
+    <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}>
       {apiError && (
         <ApiErrorAlert
           description={t(`errors.${apiError.type}.description`)}

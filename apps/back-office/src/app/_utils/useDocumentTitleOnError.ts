@@ -1,27 +1,38 @@
 import { useTranslations } from 'next-intl'
+import { useEffect } from 'react'
 
 type Args = {
   apiErrorMessage?: string
-  baseDocumentTitle: string
-  hasApiError?: boolean
+  hasApiError: boolean
   validationErrorCount?: number
 }
 
-export const useDocumentTitleOnError = ({
-  apiErrorMessage,
-  baseDocumentTitle,
-  hasApiError,
-  validationErrorCount,
-}: Args) => {
+/**
+ * Updates the document title to include an error message if there is an API error or validation errors.
+ * The original title is restored when the component is unmounted or the error changes.
+ */
+export const useDocumentTitleOnError = ({ apiErrorMessage, hasApiError, validationErrorCount }: Args) => {
   const t = useTranslations('shared')
+  let error: string | undefined
 
   if (validationErrorCount && validationErrorCount > 0) {
-    return `${t('document-title-error-count-prefix', { count: validationErrorCount })} ${baseDocumentTitle}`
+    error = `${t('document-title-error-count-prefix', { count: validationErrorCount })} `
+  } else if (hasApiError) {
+    error = `${apiErrorMessage ?? t('api-error-alert.heading')} - `
   }
 
-  if (hasApiError) {
-    return `${apiErrorMessage ?? t('api-error-alert.heading')} - ${baseDocumentTitle}`
-  }
+  useEffect(() => {
+    if (!error) return
 
-  return baseDocumentTitle
+    const originalTitle = document.title
+    const title = `${error}${originalTitle}`
+
+    document.title = title
+
+    return () => {
+      if (document.title !== title) return
+
+      document.title = originalTitle
+    }
+  }, [error])
 }

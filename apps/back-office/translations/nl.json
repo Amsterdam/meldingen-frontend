@@ -55,7 +55,8 @@
   },
   "detail": {
     "metadata": {
-      "title": "Melding {publicId} - Gemeente Amsterdam"
+      "title": "Melding {publicId} - Gemeente Amsterdam",
+      "title-fallback": "Melding - Gemeente Amsterdam"
     },
     "back-link": "Overzicht meldingen",
     "title": "Melding {publicId}",
@@ -119,7 +120,7 @@
   },
   "add-attachment": {
     "metadata": {
-      "title": "Bestand toevoegen - Melding {publicId} - Gemeente Amsterdam"
+      "title": "Bestand toevoegen"
     },
     "title": "Voeg bestand toe",
     "back-link": "Meldingdetails",
@@ -169,7 +170,7 @@
   "remove-attachment": {
     "melding-form-user": "Melder",
     "metadata": {
-      "title": "Bestand verwijderen - Gemeente Amsterdam"
+      "title": "Bestand verwijderen"
     },
     "back-link": "Meldingdetails",
     "title": "Bestand verwijderen",
@@ -183,7 +184,7 @@
   },
   "change-labels": {
     "metadata": {
-      "title": "Wijzig labels - Gemeente Amsterdam"
+      "title": "Wijzig labels"
     },
     "back-link": "Meldingdetails",
     "title": "Wijzig labels melding {publicId}",
@@ -196,7 +197,7 @@
   },
   "change-category": {
     "metadata": {
-      "title": "Wijzig categorie - Gemeente Amsterdam"
+      "title": "Wijzig categorie"
     },
     "back-link": "Meldingdetails",
     "title": "Wijzig categorie melding {publicId}",
@@ -221,7 +222,7 @@
   },
   "change-state": {
     "metadata": {
-      "title": "Wijzig status - Gemeente Amsterdam"
+      "title": "Wijzig status"
     },
     "back-link": "Meldingdetails",
     "title": "Wijzig status melding {publicId}",
@@ -241,7 +242,7 @@
   },
   "change-urgency": {
     "metadata": {
-      "title": "Wijzig urgentie - Gemeente Amsterdam"
+      "title": "Wijzig urgentie"
     },
     "back-link": "Meldingdetails",
     "title": "Wijzig urgentie melding {publicId}",
@@ -261,7 +262,7 @@
   },
   "notes-overview": {
     "metadata": {
-      "title": "Melding {publicId} - Gemeente Amsterdam"
+      "title": "Notities"
     },
     "back-link": "Overzicht meldingen",
     "title": "Melding {publicId}",
@@ -282,7 +283,7 @@
   },
   "add-note": {
     "metadata": {
-      "title": "Notitie toevoegen - Gemeente Amsterdam"
+      "title": "Notitie toevoegen"
     },
     "back-link": "Meldingdetails",
     "invalid-form-alert-title": "Verbeter de fouten om uw notitie toe te voegen",
@@ -297,7 +298,7 @@
   },
   "update-note": {
     "metadata": {
-      "title": "Wijzig notitie - Gemeente Amsterdam"
+      "title": "Notitie wijzigen"
     },
     "back-link": "Meldingdetails",
     "invalid-form-alert-title": "Verbeter de fouten om uw notitie te wijzigen",
@@ -311,7 +312,7 @@
   },
   "photos": {
     "metadata": {
-      "title": "Foto’s - Gemeente Amsterdam"
+      "title": "Foto’s"
     },
     "back-link": "Meldingdetails",
     "title": "Foto’s",

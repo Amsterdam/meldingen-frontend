@@ -64,3 +64,21 @@ For tests exercising real network request behaviour, use [MSW](https://mswjs.io/
 Melding form and Back office configure `onUnhandledRequest: 'error'` in their shared MSW setups so unexpected requests are rejected rather than sent to a real service. Admin and library suites do not currently have this safeguard. When adding an MSW server to another suite, use the same strict handling. Add an explicit handler instead of allowing unmatched requests. In submission tests, assert important request bodies and resulting UI or navigation, not just that a request occurred.
 
 See [Mocking API requests](../patterns/mocking-api-requests.md) for how this is set up and how to add a new endpoint.
+
+## Document titles
+
+Rendering a component in a unit test does not run Next.js metadata generation.
+For melding detail subroutes, seed `document.title` in `beforeEach` with the server-rendered base title, including the layout suffix.
+This also prevents title changes from leaking between tests.
+
+```typescript
+beforeEach(() => {
+  document.title = 'Notitie toevoegen - Melding ABC - Gemeente Amsterdam'
+})
+```
+
+Test `generateMetadata` separately in the route's `page.test.tsx`.
+Component tests should verify that the base title is preserved without errors, that errors prefix it, and that it is restored when errors clear or the component unmounts.
+Include a rerender with persistent errors to check that prefixes do not accumulate.
+
+See [Document titles for melding detail subroutes](../patterns/error-handling.md#document-titles-for-melding-detail-subroutes) for the implementation pattern.

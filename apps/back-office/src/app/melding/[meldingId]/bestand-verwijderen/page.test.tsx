@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import { http, HttpResponse } from 'msw'
 import { redirect } from 'next/navigation'
 
 import type { MeldingAttachment } from '../types'
@@ -7,8 +6,6 @@ import type { MeldingAttachment } from '../types'
 import { getAttachmentsData } from '../_utils/server'
 import { DeleteAttachment } from './DeleteAttachment'
 import Page, { generateMetadata } from './page'
-import { ENDPOINTS } from '~/mocks/endpoints'
-import { server } from '~/mocks/node'
 
 vi.mock('./DeleteAttachment', () => ({
   DeleteAttachment: vi.fn(() => <div>Attachments Component</div>),
@@ -16,11 +13,6 @@ vi.mock('./DeleteAttachment', () => ({
 
 vi.mock('../_utils/server', () => ({
   getAttachmentsData: vi.fn(),
-}))
-
-vi.mock('next-intl/server', async () => ({
-  getTranslations: () =>
-    vi.fn().mockImplementation((key, params) => (params ? `${key}: ${JSON.stringify(params)}` : key)),
 }))
 
 const attachments: MeldingAttachment[] = [
@@ -40,17 +32,9 @@ const attachments: MeldingAttachment[] = [
 
 describe('generateMetadata', () => {
   it('returns the correct metadata title', async () => {
-    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: '123' }) })
+    const metadata = await generateMetadata()
 
-    expect(metadata).toEqual({ title: 'metadata.title: {"publicId":"ABC"}' })
-  })
-
-  it('returns a fallback title when public id is not available', async () => {
-    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({ data: { public_id: null } })))
-
-    const metadata = await generateMetadata({ params: Promise.resolve({ meldingId: '123' }) })
-
-    expect(metadata).toEqual({ title: 'metadata.title: {"publicId":""}' })
+    expect(metadata).toEqual({ title: 'metadata.title' })
   })
 })
 

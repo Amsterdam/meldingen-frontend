@@ -99,9 +99,7 @@ export const MeldingForm = ({
 
   const [prefetchedMelding, setPrefetchedMelding] = useState<MeldingData | null>(existingMelding ?? null)
 
-  // Update document title when there are validation errors or an API error
-  const documentTitle = useDocumentTitleOnError({
-    baseDocumentTitle: t('metadata.title'),
+  useDocumentTitleOnError({
     hasApiError: Boolean(apiError),
     validationErrorCount: validationErrors?.length ?? undefined,
   })
@@ -137,7 +135,7 @@ export const MeldingForm = ({
       gapVertical="large"
       paddingVertical="x-large"
     >
-      <title>{documentTitle}</title>
+      <title>{t('metadata.title')}</title>
       <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }} start={{ narrow: 1, medium: 2, wide: 2 }}>
         {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
         {validationErrors && <InvalidFormAlert errors={validationErrors} focusKey={!isPending} />}
