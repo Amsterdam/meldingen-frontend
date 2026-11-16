@@ -1,4 +1,7 @@
+import type { PlaywrightTestOptions, PlaywrightWorkerOptions, Project } from '@playwright/test'
+
 import { defineConfig, devices } from '@playwright/test'
+import { encode } from 'next-auth/jwt'
 import { randomBytes } from 'node:crypto'
 import { resolve } from 'node:path'
 
@@ -13,6 +16,27 @@ if (backOfficeBaseURL) {
 } else {
   process.env.PLAYWRIGHT_AUTH_SECRET = localAuthSecret
 }
+
+const backOfficeStorageState: PlaywrightTestOptions['storageState'] = backOfficeBaseURL
+  ? resolve(import.meta.dirname, 'playwright/.auth/back-office.json')
+  : {
+      cookies: [
+        {
+          domain: '127.0.0.1',
+          expires: -1,
+          httpOnly: true,
+          name: 'next-auth.session-token',
+          path: '/',
+          sameSite: 'Lax',
+          secure: false,
+          value: await encode({
+            secret: localAuthSecret,
+            token: { sub: 'playwright-smoke-test' },
+          }),
+        },
+      ],
+      origins: [],
+    }
 
 const browserProjects = [
   {
@@ -40,32 +64,34 @@ const browserProjects = [
 export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   projects: [
-    {
-      name: 'back-office-auth',
-      testDir: './back-office',
-      testMatch: 'auth.setup.ts',
-      use: {
-        ...devices['Desktop Chrome'],
-        baseURL: `${(backOfficeBaseURL || 'http://127.0.0.1:3102').replace(/\/$/, '')}/`,
-        screenshot: 'off',
-        trace: 'off',
-        video: 'off',
-      },
-    },
+    ...(backOfficeBaseURL
+      ? [
+          {
+            name: 'back-office-auth',
+            testDir: './back-office',
+            testMatch: 'auth.setup.ts',
+            use: {
+              ...devices['Desktop Chrome'],
+              baseURL: `${backOfficeBaseURL.replace(/\/$/, '')}/`,
+              screenshot: 'off',
+              trace: 'off',
+              video: 'off',
+            },
+          } satisfies Project<PlaywrightTestOptions, PlaywrightWorkerOptions>,
+        ]
+      : []),
     ...[
       { baseURL: `${(meldingFormBaseURL || 'http://127.0.0.1:3100').replace(/\/$/, '')}/`, name: 'melding-form' },
       { baseURL: `${(backOfficeBaseURL || 'http://127.0.0.1:3102').replace(/\/$/, '')}/`, name: 'back-office' },
     ].flatMap((app) =>
       browserProjects.map((browser) => ({
-        dependencies: app.name === 'back-office' ? ['back-office-auth'] : [],
+        dependencies: app.name === 'back-office' && backOfficeBaseURL ? ['back-office-auth'] : [],
         name: `${app.name}-${browser.name}`,
         testDir: `./${app.name}`,
         use: {
           ...browser.use,
           baseURL: app.baseURL,
-          ...(app.name === 'back-office'
-            ? { storageState: resolve(import.meta.dirname, 'playwright/.auth/back-office.json') }
-            : {}),
+          ...(app.name === 'back-office' ? { storageState: backOfficeStorageState } : {}),
         },
       })),
     ),

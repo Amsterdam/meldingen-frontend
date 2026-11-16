@@ -73,8 +73,6 @@ They run separately from the unit tests.
 Tests are grouped by app in `e2e/melding-form` and `e2e/back-office`.
 Each app has its own projects and base URL, sharing desktop Chromium, Firefox, and WebKit,
 plus Mobile Chrome (Pixel 7) and Mobile Safari (iPhone 13) using device emulation.
-The `back-office-auth` setup project runs `back-office/auth.setup.ts` once before the Back Office browser projects.
-It saves an authenticated session that those projects reuse through Playwright's `storageState` option.
 Tests import `test` and `expect` directly from `@playwright/test`.
 
 After installing workspace dependencies with `pnpm install`, install the browsers:
@@ -109,19 +107,20 @@ Playwright saves traces for failed tests in `e2e/test-results`.
 
 ### Authentication in UI mode
 
-Playwright UI mode does not run setup projects automatically. Before running Back Office tests:
+Local Back Office tests work immediately with `pnpm test:e2e:ui`; no authentication setup project
+or saved authentication file is needed. The configuration generates an encrypted session cookie
+using the same test-only secret as the local Back Office server on each launch.
 
-1. Start the UI with `pnpm test:e2e:ui`.
+Playwright UI mode does not run setup projects automatically. If using UI mode against a deployed
+Back Office environment:
+
+1. Start the UI with the deployed environment variables and `pnpm test:e2e:ui`.
 2. Enable `back-office-auth` in the UI's project filters.
 3. Click the run button next to `auth.setup.ts` and wait for it to pass.
 4. Disable `back-office-auth` in the filters again and run the desired Back Office tests.
 
-The setup creates `e2e/playwright/.auth/back-office.json`. Without it, Back Office tests fail with
-`Error reading storage state` and `ENOENT`.
-Repeat the setup whenever you restart local UI mode: each launch generates a new session secret,
-so authentication state from a previous launch is no longer valid.
-Run setup inside the same UI session, not in a separate CLI run, so the session secret matches the running server.
-For deployed environments, rerun setup when the saved session expires.
+The deployed setup creates `e2e/playwright/.auth/back-office.json`. Rerun it when the saved session expires.
+CLI runs execute this setup automatically.
 
 ### Testing a deployed environment
 
