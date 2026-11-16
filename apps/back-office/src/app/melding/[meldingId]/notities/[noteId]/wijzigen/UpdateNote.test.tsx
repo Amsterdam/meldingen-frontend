@@ -4,12 +4,13 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 
-import type { NoteRetrieveOutput } from '@meldingen/api-client'
+import type { NoteOutput } from '@meldingen/api-client'
 
 import { UpdateNote } from './UpdateNote'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
+
   return {
     ...(typeof actual === 'object' ? actual : {}),
     useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
@@ -21,7 +22,7 @@ const defaultProps = {
   note: {
     id: 456,
     text: 'This is a note.',
-  } as NoteRetrieveOutput,
+  } as NoteOutput,
 }
 
 describe('UpdateNote', () => {
@@ -39,6 +40,7 @@ describe('UpdateNote', () => {
     render(<UpdateNote {...defaultProps} />)
 
     const backLink = screen.getByRole('link', { name: 'back-link' })
+
     expect(backLink).toBeInTheDocument()
     expect(backLink).toHaveAttribute('href', '/melding/123')
   })
@@ -61,6 +63,7 @@ describe('UpdateNote', () => {
     render(<UpdateNote {...defaultProps} />)
 
     const cancelLink = screen.getByRole('link', { name: 'cancel-link' })
+
     expect(cancelLink).toBeInTheDocument()
     expect(cancelLink).toHaveAttribute('href', '/melding/123')
   })
@@ -78,6 +81,7 @@ describe('UpdateNote', () => {
 
   it('displays an invalid form alert with the correct document title when there are validation errors', async () => {
     const formData = new FormData()
+
     formData.append('updateNote', 'Some note text')
     ;(useActionState as Mock).mockReturnValueOnce([
       { formData, validationErrors: [{ key: 'updateNote', message: 'Error message' }] },
@@ -133,11 +137,13 @@ describe('UpdateNote', () => {
     const user = userEvent.setup()
 
     const mockFormAction = vi.fn()
+
     ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
 
     render(<UpdateNote {...defaultProps} />)
 
     const submitButton = screen.getByRole('button', { name: 'submit-button' })
+
     await user.click(submitButton)
 
     expect(mockFormAction).toHaveBeenCalled()
