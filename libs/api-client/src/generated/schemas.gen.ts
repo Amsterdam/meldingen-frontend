@@ -827,6 +827,30 @@ export const AttachmentOutputSchema = {
                     type: 'null'
                 }
             ]
+        },
+        is_image: {
+            type: 'boolean',
+            title: 'Is Image'
+        },
+        thumbnail: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/ThumbnailObject'
+                },
+                {
+                    type: 'null'
+                }
+            ]
+        },
+        optimized: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/OptimizedMediaObject'
+                },
+                {
+                    type: 'null'
+                }
+            ]
         }
     },
     type: 'object',
@@ -836,7 +860,10 @@ export const AttachmentOutputSchema = {
         'updated_at',
         'original_filename',
         'original_media_type',
-        'user'
+        'user',
+        'is_image',
+        'thumbnail',
+        'optimized'
     ],
     title: 'AttachmentOutput'
 } as const;
@@ -1018,6 +1045,17 @@ export const ClassificationOutputSchema = {
             type: 'string',
             title: 'Name'
         },
+        service_level_objective_text: {
+            type: 'string',
+            title: 'Service Level Objective Text'
+        },
+        service_level_objective_days: {
+            type: 'integer',
+            title: 'Service Level Objective Days'
+        },
+        service_level_objective_day_type: {
+            $ref: '#/components/schemas/DaysType'
+        },
         instructions: {
             anyOf: [
                 {
@@ -1050,6 +1088,38 @@ export const ClassificationOutputSchema = {
                 }
             ],
             title: 'Asset Type'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'created_at',
+        'updated_at',
+        'name',
+        'service_level_objective_text',
+        'service_level_objective_days',
+        'service_level_objective_day_type'
+    ],
+    title: 'ClassificationOutput'
+} as const;
+
+export const ClassificationOutputPublicSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            title: 'Updated At'
+        },
+        name: {
+            type: 'string',
+            title: 'Name'
         },
         service_level_objective_text: {
             type: 'string',
@@ -1073,7 +1143,7 @@ export const ClassificationOutputSchema = {
         'service_level_objective_days',
         'service_level_objective_day_type'
     ],
-    title: 'ClassificationOutput'
+    title: 'ClassificationOutputPublic'
 } as const;
 
 export const ClassificationUpdateInputSchema = {
@@ -6890,6 +6960,17 @@ export const NoteInputSchema = {
             type: 'string',
             minLength: 1,
             title: 'Text'
+        },
+        parent_note_id: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Parent Note Id'
         }
     },
     type: 'object',
@@ -6900,56 +6981,6 @@ export const NoteInputSchema = {
 } as const;
 
 export const NoteOutputSchema = {
-    properties: {
-        id: {
-            type: 'integer',
-            title: 'Id'
-        },
-        created_at: {
-            type: 'string',
-            title: 'Created At'
-        },
-        updated_at: {
-            type: 'string',
-            title: 'Updated At'
-        },
-        text: {
-            type: 'string',
-            title: 'Text'
-        },
-        melding_id: {
-            type: 'integer',
-            title: 'Melding Id'
-        },
-        user_id: {
-            type: 'integer',
-            title: 'User Id'
-        },
-        classification_id: {
-            anyOf: [
-                {
-                    type: 'integer'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Classification Id'
-        }
-    },
-    type: 'object',
-    required: [
-        'id',
-        'created_at',
-        'updated_at',
-        'text',
-        'melding_id',
-        'user_id'
-    ],
-    title: 'NoteOutput'
-} as const;
-
-export const NoteRetrieveOutputSchema = {
     properties: {
         id: {
             type: 'integer',
@@ -6984,6 +7015,28 @@ export const NoteRetrieveOutputSchema = {
                 }
             ],
             title: 'Classification Id'
+        },
+        parent_note_id: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Parent Note Id'
+        },
+        parent_note_text_snapshot: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Parent Note Text Snapshot'
         }
     },
     type: 'object',
@@ -6995,7 +7048,7 @@ export const NoteRetrieveOutputSchema = {
         'melding_id',
         'user'
     ],
-    title: 'NoteRetrieveOutput'
+    title: 'NoteOutput'
 } as const;
 
 export const NoteUpdateInputSchema = {
@@ -7010,6 +7063,27 @@ export const NoteUpdateInputSchema = {
         'text'
     ],
     title: 'NoteUpdateInput'
+} as const;
+
+export const OptimizedMediaObjectSchema = {
+    properties: {
+        filename: {
+            type: 'string',
+            title: 'Filename'
+        },
+        media_type: {
+            type: 'string',
+            const: 'image/webp',
+            title: 'Media Type'
+        }
+    },
+    type: 'object',
+    required: [
+        'filename',
+        'media_type'
+    ],
+    title: 'OptimizedMediaObject',
+    description: 'Represents an optimized media file with its path and media type.\nExtendable to other media types if needed.'
 } as const;
 
 export const Or_InputSchema = {
@@ -9173,6 +9247,27 @@ export const TextAnswerQuestionOutputSchema = {
         'question'
     ],
     title: 'TextAnswerQuestionOutput'
+} as const;
+
+export const ThumbnailObjectSchema = {
+    properties: {
+        filename: {
+            type: 'string',
+            title: 'Filename'
+        },
+        media_type: {
+            type: 'string',
+            const: 'image/webp',
+            title: 'Media Type'
+        }
+    },
+    type: 'object',
+    required: [
+        'filename',
+        'media_type'
+    ],
+    title: 'ThumbnailObject',
+    description: 'Represents a thumbnail image with its path and media type.'
 } as const;
 
 export const TimeAnswerInputSchema = {
