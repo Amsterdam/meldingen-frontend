@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from './fixtures'
 
 test('shows the Back Office not-found page for an unknown URL', async ({ page }) => {
   const response = await page.goto('e2e-nonexistent-page')

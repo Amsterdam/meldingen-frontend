@@ -9,7 +9,7 @@ export const loginWithKeycloak = async (page: Page, baseURL: string, username: s
   await page.goto(`${appURL}api/auth/signin/keycloak?${new URLSearchParams({ callbackUrl: callbackURL })}`)
   await page.getByRole('button', { name: /sign in with keycloak/i }).click()
   await page.getByRole('textbox', { name: /username|email|gebruikersnaam|e-mailadres/i }).fill(username)
-  await page.getByLabel(/^(password|wachtwoord)$/i).fill(password)
+  await page.getByLabel(/^\s*(password|wachtwoord)\s*$/i).fill(password)
   await page.getByRole('button', { name: /^(sign in|log in|inloggen|aanmelden)$/i }).click()
   await expect(page).toHaveURL(callbackURL)
 

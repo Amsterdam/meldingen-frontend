@@ -22,7 +22,12 @@ A server-action test using the real API client and MSW provides frontend integra
 - Use focused unit tests for business rules, boundary values, and combinations such as conditional panel navigation.
 - Use component tests for accessible output and interactions. Prefer `userEvent.setup()` and awaited user interactions over invoking component handlers directly.
 - Use integration tests for representative submissions, request payloads, validation recovery, and coordination between components and actions. Keep edge-case combinations in focused tests instead of repeating every case at every layer.
+  <<<<<<< HEAD
 - Use browser E2E tests for critical complete journeys, cookies, navigation, hydration, and real server-action transport. Include a JavaScript-disabled public-form journey to verify progressive enhancement.
+  \=======
+- Use browser E2E tests for critical complete journeys, cookies, navigation, hydration, and real server-action transport. Include a JavaScript-disabled public-form journey to verify progressive enhancement when adding public-form journey coverage.
+
+> > > > > > > 82dcd724 (Simplify by using keycloak for local tests as well)
 
 Coverage thresholds in each package's Vite configuration are regression guards, not proof that a workflow works. Prioritize meaningful assertions and risky behaviour over increasing percentages.
 
@@ -37,7 +42,7 @@ Keep setup and mocks appropriate to each scope in its own file, and use descript
 
 We are adopting this split gradually. When adding or modifying component tests in a PR, separate unit and integration coverage for the tests being touched, moving integration tests to the `.integration.test` file. Existing mixed test files may remain until they are touched. Do not perform a repo-wide rename or split unrelated tests as part of the migration.
 
-For a future browser suite, use a root-level `e2e/` directory grouped by app, with shared setup for journeys that cross app boundaries. Run it separately from Vitest.
+Keep browser tests in the root-level `e2e/` directory grouped by app, with shared setup for journeys that cross app boundaries. Run them separately from Vitest.
 
 ## Mocking boundaries
 
@@ -73,97 +78,8 @@ They run separately from the unit tests.
 Tests are grouped by app in `e2e/melding-form` and `e2e/back-office`.
 Each app has its own projects and base URL, sharing desktop Chromium, Firefox, and WebKit,
 plus Mobile Chrome (Pixel 7) and Mobile Safari (iPhone 13) using device emulation.
-Tests import `test` and `expect` directly from `@playwright/test`.
+Melding Form tests import `test` and `expect` directly from `@playwright/test`.
+Back Office tests import them from `./fixtures` to sign in to Keycloak automatically in CLI and UI mode.
 
-After installing workspace dependencies with `pnpm install`, install the browsers:
-
-```sh
-pnpm --filter e2e exec playwright install chromium firefox webkit
-```
-
-Run the end-to-end tests from the repository root:
-
-```sh
-pnpm test:e2e
-```
-
-For Playwright's interactive UI, use `pnpm test:e2e:ui`.
-To run a single app and browser, use `pnpm test:e2e --project=back-office-firefox`.
-To run one app across all browsers, use `pnpm test:e2e --project='melding-form-*'`.
-To run Firefox for both apps, use `pnpm test:e2e --project='*-firefox'`.
-On Linux CI, install the browsers and their system dependencies with
-`pnpm --filter e2e exec playwright install --with-deps chromium firefox webkit`.
-
-The configuration starts Melding Form on `http://127.0.0.1:3100` and Back Office on
-`http://127.0.0.1:3102` automatically.
-It reuses an existing Melding Form server on that port outside CI, but always starts a fresh Back Office
-server so its test-only session secret matches the tests.
-Both apps use separate `.next-e2e` build directories so they can run alongside the normal dev servers.
-The test servers set local backend and frontend URLs and enable these directories with `PLAYWRIGHT_TEST=1`.
-The smoke tests check the Melding Form cookie-error page and both apps' not-found pages without a running backend.
-The Back Office test uses an encrypted NextAuth session cookie with a randomly generated test-only secret
-shared with its test server. This tests the real authentication middleware without requiring a running identity provider.
-Playwright saves traces for failed tests in `e2e/test-results`.
-
-### Authentication in UI mode
-
-Local Back Office tests work immediately with `pnpm test:e2e:ui`; no authentication setup project
-or saved authentication file is needed. The configuration generates an encrypted session cookie
-using the same test-only secret as the local Back Office server on each launch.
-
-Playwright UI mode does not run setup projects automatically. If using UI mode against a deployed
-Back Office environment:
-
-1. Start the UI with the deployed environment variables and `pnpm test:e2e:ui`.
-2. Enable `back-office-auth` in the UI's project filters.
-3. Click the run button next to `auth.setup.ts` and wait for it to pass.
-4. Disable `back-office-auth` in the filters again and run the desired Back Office tests.
-
-The deployed setup creates `e2e/playwright/.auth/back-office.json`. Rerun it when the saved session expires.
-CLI runs execute this setup automatically.
-
-### Testing a deployed environment
-
-Set `PLAYWRIGHT_MELDING_FORM_BASE_URL` and `PLAYWRIGHT_BACK_OFFICE_BASE_URL` to the deployed app URLs.
-Include a trailing slash and any deployment base path, for example `https://acc.example.org/back-office/`.
-Each configured URL disables the corresponding local server; omitted URLs retain local testing.
-Setting a URL does not deploy the apps.
-
-For deployed Back Office tests, also supply `PLAYWRIGHT_USERNAME` and `PLAYWRIGHT_PASSWORD` for a dedicated
-Keycloak test user. Store the password as a pipeline secret and explicitly map it into the test step's environment.
-The user must be allowed to sign in with a username and password without interactive MFA or required account actions.
-The login helper supports the standard English and Dutch Keycloak login labels.
-
-```sh
-PLAYWRIGHT_MELDING_FORM_BASE_URL=https://meldingen.acc.example.org/ \
-PLAYWRIGHT_BACK_OFFICE_BASE_URL=https://back-office.acc.example.org/ \
-pnpm test:e2e
-```
-
-This command assumes the test username and password are already provided in the environment.
-The deployed app keeps its existing Keycloak client configuration; Playwright does not need its client secret,
-token endpoint, or NextAuth secret. Tests sign in through NextAuth and Keycloak in the browser, then verify
-that NextAuth exposes a valid session before running assertions.
-Authentication state is saved to `e2e/playwright/.auth/back-office.json` and regenerated on each run.
-This directory is gitignored: it contains sensitive session cookies and must not be published as a pipeline artifact.
-The authentication setup disables traces, screenshots, and video to avoid recording login credentials.
-Test traces can still contain authenticated requests and data, so restrict access to pipeline artifacts.
-The deployment pipeline must run these tests after ACC is available; triggering tests from ACC alone does not select it.
-
-## Document titles
-
-Rendering a component in a unit test does not run Next.js metadata generation.
-For melding detail subroutes, seed `document.title` in `beforeEach` with the server-rendered base title, including the layout suffix.
-This also prevents title changes from leaking between tests.
-
-```typescript
-beforeEach(() => {
-  document.title = 'Notitie toevoegen - Melding ABC - Gemeente Amsterdam'
-})
-```
-
-Test `generateMetadata` separately in the route's `page.test.tsx`.
-Component tests should verify that the base title is preserved without errors, that errors prefix it, and that it is restored when errors clear or the component unmounts.
-Include a rerender with persistent errors to check that prefixes do not accumulate.
-
-See [Document titles for melding detail subroutes](../patterns/error-handling.md#document-titles-for-melding-detail-subroutes) for the implementation pattern.
+See the [E2E README](../../e2e/README.md) for installation, running tests, local authentication,
+UI mode, deployed environments, and trace output.
