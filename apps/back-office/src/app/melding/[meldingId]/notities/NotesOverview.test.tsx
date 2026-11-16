@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import type { ClassificationOutput, NoteRetrieveOutput } from '@meldingen/api-client'
+import type { ClassificationOutput, NoteOutput } from '@meldingen/api-client'
 
 import { NotesOverview } from './NotesOverview'
 
@@ -55,7 +55,7 @@ describe('NotesOverview', () => {
         text: 'This is another test note.',
         user: { email: 'test@example.com' },
       },
-    ] as NoteRetrieveOutput[]
+    ] as NoteOutput[]
 
     render(<NotesOverview {...defaultProps} classifications={classifications} notes={notes} />)
 

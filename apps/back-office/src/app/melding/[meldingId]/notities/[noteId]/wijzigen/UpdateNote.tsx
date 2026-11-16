@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect } from 'react'
 
-import type { NoteRetrieveOutput } from '@meldingen/api-client'
+import type { NoteOutput } from '@meldingen/api-client'
 
 import type { FormState } from '~/types'
 
@@ -21,7 +21,7 @@ const initialState: FormState = {}
 
 type Props = {
   meldingId: number
-  note: NoteRetrieveOutput
+  note: NoteOutput
 }
 
 export const UpdateNote = ({ meldingId, note }: Props) => {

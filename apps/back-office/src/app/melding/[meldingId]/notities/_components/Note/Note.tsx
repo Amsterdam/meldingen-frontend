@@ -2,7 +2,7 @@ import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 
-import type { ClassificationOutput, NoteRetrieveOutput } from '@meldingen/api-client'
+import type { ClassificationOutput, NoteOutput } from '@meldingen/api-client'
 
 import { Column, Paragraph, StandaloneLink, UnorderedList } from '@meldingen/ui'
 import { formatDateString } from '@meldingen/utils'
@@ -15,7 +15,7 @@ type Props = {
   classification?: ClassificationOutput
   currentUserId: number
   meldingId: number
-  note: NoteRetrieveOutput
+  note: NoteOutput
 }
 
 export const Note = ({ classification, currentUserId, meldingId, note }: Props) => {

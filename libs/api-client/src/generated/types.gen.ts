@@ -199,6 +199,12 @@ export type AttachmentOutput = {
      */
     original_media_type: string;
     user: UserOutput | null;
+    /**
+     * Is Image
+     */
+    is_image: boolean;
+    thumbnail: ThumbnailObject | null;
+    optimized: OptimizedMediaObject | null;
 };
 
 /**
@@ -291,6 +297,15 @@ export type ClassificationOutput = {
      */
     name: string;
     /**
+     * Service Level Objective Text
+     */
+    service_level_objective_text: string;
+    /**
+     * Service Level Objective Days
+     */
+    service_level_objective_days: number;
+    service_level_objective_day_type: DaysType;
+    /**
      * Instructions
      */
     instructions?: string | null;
@@ -302,6 +317,28 @@ export type ClassificationOutput = {
      * Asset Type
      */
     asset_type?: number | null;
+};
+
+/**
+ * ClassificationOutputPublic
+ */
+export type ClassificationOutputPublic = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+    /**
+     * Name
+     */
+    name: string;
     /**
      * Service Level Objective Text
      */
@@ -2321,6 +2358,10 @@ export type NoteInput = {
      * Text
      */
     text: string;
+    /**
+     * Parent Note Id
+     */
+    parent_note_id?: number | null;
 };
 
 /**
@@ -2347,45 +2388,19 @@ export type NoteOutput = {
      * Melding Id
      */
     melding_id: number;
-    /**
-     * User Id
-     */
-    user_id: number;
-    /**
-     * Classification Id
-     */
-    classification_id?: number | null;
-};
-
-/**
- * NoteRetrieveOutput
- */
-export type NoteRetrieveOutput = {
-    /**
-     * Id
-     */
-    id: number;
-    /**
-     * Created At
-     */
-    created_at: string;
-    /**
-     * Updated At
-     */
-    updated_at: string;
-    /**
-     * Text
-     */
-    text: string;
-    /**
-     * Melding Id
-     */
-    melding_id: number;
     user: UserOutput;
     /**
      * Classification Id
      */
     classification_id?: number | null;
+    /**
+     * Parent Note Id
+     */
+    parent_note_id?: number | null;
+    /**
+     * Parent Note Text Snapshot
+     */
+    parent_note_text_snapshot?: string | null;
 };
 
 /**
@@ -2396,6 +2411,23 @@ export type NoteUpdateInput = {
      * Text
      */
     text: string;
+};
+
+/**
+ * OptimizedMediaObject
+ *
+ * Represents an optimized media file with its path and media type.
+ * Extendable to other media types if needed.
+ */
+export type OptimizedMediaObject = {
+    /**
+     * Filename
+     */
+    filename: string;
+    /**
+     * Media Type
+     */
+    media_type: 'image/webp';
 };
 
 /**
@@ -3106,6 +3138,22 @@ export type TextAnswerQuestionOutput = {
 };
 
 /**
+ * ThumbnailObject
+ *
+ * Represents a thumbnail image with its path and media type.
+ */
+export type ThumbnailObject = {
+    /**
+     * Filename
+     */
+    filename: string;
+    /**
+     * Media Type
+     */
+    media_type: 'image/webp';
+};
+
+/**
  * TimeAnswerInput
  */
 export type TimeAnswerInput = {
@@ -3515,6 +3563,12 @@ export type GetAttachmentByIdResponse = GetAttachmentByIdResponses[keyof GetAtta
 
 export type GetClassificationData = {
     body?: never;
+    headers?: {
+        /**
+         * Authorization
+         */
+        authorization?: string | null;
+    };
     path?: never;
     query?: {
         /**
@@ -3545,17 +3599,6 @@ export type GetClassificationData = {
 
 export type GetClassificationErrors = {
     /**
-     * ResponseWithDetail
-     *
-     * Unauthorized, perhaps the token was invalid or expired, or the user could not be found.
-     */
-    401: {
-        /**
-         * Detail
-         */
-        detail: string;
-    };
-    /**
      * Validation Error
      */
     422: HttpValidationError;
@@ -3569,7 +3612,7 @@ export type GetClassificationResponses = {
      *
      * Successful Response
      */
-    200: Array<ClassificationOutput>;
+    200: Array<ClassificationOutput> | Array<ClassificationOutputPublic>;
 };
 
 export type GetClassificationResponse = GetClassificationResponses[keyof GetClassificationResponses];
@@ -6338,7 +6381,7 @@ export type GetMeldingByMeldingIdNoteResponses = {
      *
      * Successful Response
      */
-    200: Array<NoteRetrieveOutput>;
+    200: Array<NoteOutput>;
 };
 
 export type GetMeldingByMeldingIdNoteResponse = GetMeldingByMeldingIdNoteResponses[keyof GetMeldingByMeldingIdNoteResponses];
@@ -6452,7 +6495,7 @@ export type GetMeldingByMeldingIdNoteByNoteIdResponses = {
     /**
      * Successful Response
      */
-    200: NoteRetrieveOutput;
+    200: NoteOutput;
 };
 
 export type GetMeldingByMeldingIdNoteByNoteIdResponse = GetMeldingByMeldingIdNoteByNoteIdResponses[keyof GetMeldingByMeldingIdNoteByNoteIdResponses];
@@ -6523,7 +6566,7 @@ export type PatchMeldingByMeldingIdNoteByNoteIdResponses = {
     /**
      * Successful Response
      */
-    200: NoteRetrieveOutput;
+    200: NoteOutput;
 };
 
 export type PatchMeldingByMeldingIdNoteByNoteIdResponse = PatchMeldingByMeldingIdNoteByNoteIdResponses[keyof PatchMeldingByMeldingIdNoteByNoteIdResponses];
