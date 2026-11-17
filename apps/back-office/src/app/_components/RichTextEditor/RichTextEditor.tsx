@@ -1,11 +1,11 @@
 'use client'
 
-import { CharacterCount as ADSCharacterCount, ErrorMessage, Field, Label } from '@amsterdam/design-system-react'
 import { CharacterCount as TipTapCharacterCount, UndoRedo } from '@tiptap/extensions'
 import { EditorContent, useEditor } from '@tiptap/react'
 import { useState } from 'react'
 
 import { getAriaDescribedBy } from '@meldingen/form-renderer'
+import { ErrorMessage, Field, FormFieldStatus, Label } from '@meldingen/ui'
 
 import { Toolbar } from './Toolbar'
 import { markdownManager } from '~/app/_utils/parseNoteDocument'
@@ -81,17 +81,22 @@ export const RichTextEditor = ({
         {label}
       </Label>
       {errorMessage && <ErrorMessage id={errorId}>{errorMessage}</ErrorMessage>}
+
       {!editor || !hasLoaded ? (
         <div className={styles.loader} />
       ) : (
-        <>
+        <div className="ams-gap-m">
           <Toolbar editor={editor} id={id} />
           <EditorContent editor={editor} />
+
           {characterCount !== undefined && (
-            <ADSCharacterCount className={styles.characterCount} length={characterCount} maxLength={MAX_NOTE_LENGTH} />
+            <FormFieldStatus>
+              <FormFieldStatus.CharacterCount length={characterCount} maxLength={MAX_NOTE_LENGTH} />
+            </FormFieldStatus>
           )}
-        </>
+        </div>
       )}
+
       <input name={name} type="hidden" value={content} />
     </Field>
   )
