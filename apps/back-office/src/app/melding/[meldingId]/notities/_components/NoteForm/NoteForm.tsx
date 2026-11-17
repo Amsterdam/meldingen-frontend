@@ -27,7 +27,7 @@ type Props = {
   meldingId: number
   required?: boolean
   // All note forms share the same translation keys, only the namespace differs.
-  translationNamespace: 'add-note' | 'update-note'
+  translationNamespace: 'add-note' | 'react-note' | 'update-note'
 }
 
 export const NoteForm = ({

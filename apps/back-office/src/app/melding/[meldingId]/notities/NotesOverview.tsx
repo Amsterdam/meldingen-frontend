@@ -27,6 +27,10 @@ export const NotesOverview = ({ classifications, currentUserId, meldingId, notes
 
   const getNoteLink = (note: NoteOutput) => {
     const isNoteOwner = currentUserId === note.user.id
+    const isDeleted = note.text === ''
+
+    // Deleted notes can not be replied to.
+    if (!isNoteOwner && isDeleted) return undefined
 
     return {
       href: `/melding/${meldingId}/notities/${note.id}/${isNoteOwner ? 'wijzigen' : 'reageren'}`,
