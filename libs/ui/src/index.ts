@@ -10,6 +10,7 @@ export type { SubmitButtonProps } from './SubmitButton/SubmitButton'
 export { SummaryList } from './SummaryList/SummaryList'
 export { TextInput } from './TextInput/TextInput'
 
+export { ActionGroup } from '@amsterdam/design-system-react/dist/ActionGroup'
 export { Alert } from '@amsterdam/design-system-react/dist/Alert'
 export { Button } from '@amsterdam/design-system-react/dist/Button'
 export { Column } from '@amsterdam/design-system-react/dist/Column'
