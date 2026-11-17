@@ -21,8 +21,18 @@ type Props = {
 
 export const NotesOverview = ({ classifications, currentUserId, meldingId, notes, overviewHref, publicId }: Props) => {
   const t = useTranslations('notes-overview')
+
   const getClassification = (classificationId: NoteOutput['classification_id']) =>
     classifications?.find((classification) => classification.id === classificationId)
+
+  const getNoteLink = (note: NoteOutput) => {
+    const isNoteOwner = currentUserId === note.user.id
+
+    return {
+      href: `/melding/${meldingId}/notities/${note.id}/${isNoteOwner ? 'wijzigen' : 'reageren'}`,
+      label: isNoteOwner ? t('edit-link') : t('reply-link'),
+    }
+  }
 
   const hasNotes = notes.length > 0
 
@@ -45,16 +55,13 @@ export const NotesOverview = ({ classifications, currentUserId, meldingId, notes
       <StandaloneLink className="ams-mb-m" href={`/melding/${meldingId}/notities/toevoegen`} linkComponent={NextLink}>
         {t('add-note-link')}
       </StandaloneLink>
+
       {hasNotes && (
         <UnorderedList className={styles.list} markers={false}>
           {notes.map((note) => (
-            <Note
-              classification={getClassification(note.classification_id)}
-              currentUserId={currentUserId}
-              key={note.id}
-              meldingId={meldingId}
-              note={note}
-            />
+            <UnorderedList.Item key={note.id}>
+              <Note classification={getClassification(note.classification_id)} link={getNoteLink(note)} note={note} />
+            </UnorderedList.Item>
           ))}
         </UnorderedList>
       )}
