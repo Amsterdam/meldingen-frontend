@@ -2,10 +2,11 @@
 
 import type { ReactNode } from 'react'
 
-import { ActionGroup, Button, Heading } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect } from 'react'
+
+import { ActionGroup, Button, Heading } from '@meldingen/ui'
 
 import type { FormState } from '~/types'
 
@@ -62,13 +63,17 @@ export const NoteForm = ({
   return (
     <PageWrapper backLink={{ href: `/melding/${meldingId}`, label: t('back-link') }}>
       {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
+
       {validationErrors && (
         <InvalidFormAlert errors={validationErrors} focusKey={!isPending} heading={t('invalid-form-alert-title')} />
       )}
+
       <Heading className="ams-mb-m" level={1}>
         {t('title')}
       </Heading>
+
       {children}
+
       <Form action={formAction} noValidate>
         <div className={styles.whiteField}>
           <RichTextEditor
@@ -81,6 +86,7 @@ export const NoteForm = ({
             required={required}
           />
         </div>
+
         <ActionGroup>
           <Button type="submit">{t('submit-button')}</Button>
           <CancelLink href={`/melding/${meldingId}`}>{t('cancel-link')}</CancelLink>

@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 
 import type { ClassificationOutput, NoteOutput } from '@meldingen/api-client'
 
-import { Column, Paragraph, StandaloneLink } from '@meldingen/ui'
+import { Column, Link, Paragraph } from '@meldingen/ui'
 import { formatDateString } from '@meldingen/utils'
 
 import { TipTapMarkdownToHtml } from '../TipTapMarkdownToHtml'
@@ -51,20 +51,22 @@ export const Note = ({ classification, link, note }: Props) => {
 
       {text === '' ? <Paragraph>{t('deleted-note')}</Paragraph> : <TipTapMarkdownToHtml markdown={text} />}
 
-      <Column>
-        {link && (
-          <StandaloneLink className={styles.link} href={link.href} linkComponent={NextLink}>
-            {link.label}
-          </StandaloneLink>
-        )}
+      {(classification || link) && (
+        <Column>
+          {classification && (
+            <Paragraph className={styles.metadata}>
+              <span className={clsx(styles.classification)}>{t('classification')}</span>
+              <span>{classification.name}</span>
+            </Paragraph>
+          )}
 
-        {classification && (
-          <Paragraph className={styles.metadata}>
-            <span className={clsx(styles.classification)}>{t('classification')}</span>
-            <span>{classification.name}</span>
-          </Paragraph>
-        )}
-      </Column>
+          {link && (
+            <Link className={styles.link} href={link.href} linkComponent={NextLink}>
+              {link.label}
+            </Link>
+          )}
+        </Column>
+      )}
     </div>
   )
 }
