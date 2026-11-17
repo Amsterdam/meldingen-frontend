@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
 import { UpdateNote } from './UpdateNote'
 import { getMeldingByMeldingIdNoteByNoteId } from '~/app/_api-client/proxy'
@@ -16,9 +17,13 @@ export default async ({ params }: Props) => {
   const meldingId = Number(meldingIdParams)
   const noteId = Number(noteIdParams)
 
-  const { data, error } = await getMeldingByMeldingIdNoteByNoteId({ path: { melding_id: meldingId, note_id: noteId } })
+  const { data, error, response } = await getMeldingByMeldingIdNoteByNoteId({
+    path: { melding_id: meldingId, note_id: noteId },
+  })
 
-  if (error) throw new Error('Failed to fetch note.')
+  if (response?.status === 404) notFound()
+
+  if (error) throw new Error('Failed to fetch note.', { cause: error })
 
   return <UpdateNote meldingId={meldingId} note={data} />
 }
