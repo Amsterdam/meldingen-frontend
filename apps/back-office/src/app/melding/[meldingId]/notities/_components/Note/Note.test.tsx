@@ -30,6 +30,26 @@ describe('Note', () => {
     expect(screen.getByText('05-03-2024 09:09')).toBeInTheDocument()
   })
 
+  it('renders the parent note above the note when it is a reply', () => {
+    const parentNote = { createdAt: '2024-03-04T08:09:00Z', email: 'parent@example.com', text: 'The parent note.' }
+
+    render(<Note note={{ ...mockNote, parentNote }} />)
+
+    const quote = screen.getByRole('blockquote')
+
+    expect(quote).toHaveTextContent('The parent note.')
+    expect(screen.getByText('parent@example.com')).toBeInTheDocument()
+    expect(quote.compareDocumentPosition(screen.getByText('This is a test note.'))).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    )
+  })
+
+  it('does not render a parent note when the note is not a reply', () => {
+    render(<Note note={mockNote} />)
+
+    expect(screen.queryByRole('blockquote')).not.toBeInTheDocument()
+  })
+
   it('renders the given link', () => {
     render(<Note link={{ href: '/some-link', label: 'Some link' }} note={mockNote} />)
 

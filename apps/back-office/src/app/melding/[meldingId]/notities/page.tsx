@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { getOverviewHref } from '../_utils/server'
+import { addParentNotes } from './_utils/addParentNotes'
 import { NotesOverview } from './NotesOverview'
 import { getClassification, getMeldingByMeldingId, getMeldingByMeldingIdNote, getUserMe } from '~/app/_api-client/proxy'
 
@@ -41,7 +42,7 @@ export default async ({ params }: Props) => {
       classifications={classifications}
       currentUserId={currentUser.id}
       meldingId={meldingId}
-      notes={notes}
+      notes={addParentNotes(notes)}
       overviewHref={overviewHref}
       publicId={meldingResultData.data.public_id}
     />

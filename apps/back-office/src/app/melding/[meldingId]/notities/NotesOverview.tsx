@@ -5,6 +5,8 @@ import type { ClassificationOutput, NoteOutput } from '@meldingen/api-client'
 
 import { Heading, StandaloneLink, TabNavigation, UnorderedList } from '@meldingen/ui'
 
+import type { NoteWithParentNote } from './_utils/addParentNotes'
+
 import { PageWrapper } from '../_components/PageWrapper'
 import { Note } from './_components/Note/Note'
 
@@ -14,7 +16,7 @@ type Props = {
   classifications?: ClassificationOutput[]
   currentUserId: number
   meldingId: number
-  notes: NoteOutput[]
+  notes: NoteWithParentNote[]
   overviewHref: string
   publicId: string
 }

@@ -2,11 +2,14 @@ import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import NextLink from 'next/link'
 
-import type { ClassificationOutput, NoteOutput } from '@meldingen/api-client'
+import type { ClassificationOutput } from '@meldingen/api-client'
 
 import { Column, Link, Paragraph } from '@meldingen/ui'
 import { formatDateString } from '@meldingen/utils'
 
+import type { NoteWithParentNote } from '../../_utils/addParentNotes'
+
+import { ParentNote } from '../ParentNote/ParentNote'
 import { TipTapMarkdownToHtml } from '../TipTapMarkdownToHtml'
 
 import styles from './Note.module.css'
@@ -17,18 +20,20 @@ type Props = {
     href: string
     label: string
   }
-  note: NoteOutput
+  note: NoteWithParentNote
 }
 
 export const Note = ({ classification, link, note }: Props) => {
   const t = useTranslations('notes-overview')
-  const { created_at, text, updated_at, user } = note
+  const { created_at, parentNote, text, updated_at, user } = note
   const { date, time } = formatDateString(created_at)
 
   const wasEdited = new Date(updated_at) > new Date(created_at)
 
   return (
     <div className={styles.item}>
+      {parentNote && <ParentNote parentNote={parentNote} />}
+
       <Paragraph className={styles.metadata}>
         <span className="ams-visually-hidden">{t('visually-hidden-texts.created-at')}</span>
         <span>
