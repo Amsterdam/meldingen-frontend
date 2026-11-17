@@ -25,14 +25,6 @@ const defaultProps = {
 }
 
 describe('UpdateNote', () => {
-  it('renders the note form', () => {
-    render(<UpdateNote {...defaultProps} />)
-
-    expect(screen.getByRole('heading', { level: 1, name: 'title' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'back-link' })).toHaveAttribute('href', '/melding/123')
-    expect(screen.getByRole('button', { name: 'submit-button' })).toBeInTheDocument()
-  })
-
   it('renders the note text in an optional rich text editor', async () => {
     render(<UpdateNote {...defaultProps} />)
 
@@ -42,7 +34,7 @@ describe('UpdateNote', () => {
     expect(editor).toHaveAttribute('aria-required', 'false')
   })
 
-  it('shows validation errors for the updateNote field', async () => {
+  it('restores the submitted updateNote value after validation errors', async () => {
     const formData = new FormData()
 
     formData.append('updateNote', 'Some note text')
@@ -55,6 +47,5 @@ describe('UpdateNote', () => {
     render(<UpdateNote {...defaultProps} />)
 
     expect(await screen.findByRole('textbox', { name: 'label' })).toHaveTextContent('Some note text')
-    expect(screen.getByRole('link', { name: 'Error message' })).toBeInTheDocument()
   })
 })

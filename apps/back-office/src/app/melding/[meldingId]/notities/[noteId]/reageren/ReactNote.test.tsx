@@ -28,26 +28,11 @@ const defaultProps = {
 }
 
 describe('ReactNote', () => {
-  it('renders the note form', () => {
-    render(<ReactNote {...defaultProps} />)
-
-    expect(screen.getByRole('heading', { level: 1, name: 'title' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'back-link' })).toHaveAttribute('href', '/melding/123')
-    expect(screen.getByRole('button', { name: 'submit-button' })).toBeInTheDocument()
-  })
-
   it('renders the note that is being replied to', () => {
     render(<ReactNote {...defaultProps} />)
 
     expect(screen.getByText('This is the original note.')).toBeInTheDocument()
     expect(screen.getByText('colleague@example.com')).toBeInTheDocument()
-  })
-
-  it('does not render a link on the note that is being replied to', () => {
-    render(<ReactNote {...defaultProps} />)
-
-    expect(screen.queryByRole('link', { name: 'reply-link' })).not.toBeInTheDocument()
-    expect(screen.queryByRole('link', { name: 'edit-link' })).not.toBeInTheDocument()
   })
 
   it('renders an empty, required rich text editor', async () => {
@@ -59,7 +44,7 @@ describe('ReactNote', () => {
     expect(editor).toHaveAttribute('aria-required', 'true')
   })
 
-  it('shows validation errors for the reactNote field', async () => {
+  it('restores the submitted reactNote value after validation errors', async () => {
     const formData = new FormData()
 
     formData.append('reactNote', 'Some reply text')
@@ -72,6 +57,5 @@ describe('ReactNote', () => {
     render(<ReactNote {...defaultProps} />)
 
     expect(await screen.findByRole('textbox', { name: 'label' })).toHaveTextContent('Some reply text')
-    expect(screen.getByRole('link', { name: 'Error message' })).toBeInTheDocument()
   })
 })

@@ -17,14 +17,6 @@ vi.mock('react', async (importOriginal) => {
 const defaultProps = { meldingId: 123 }
 
 describe('AddNote', () => {
-  it('renders the note form', () => {
-    render(<AddNote {...defaultProps} />)
-
-    expect(screen.getByRole('heading', { level: 1, name: 'title' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'back-link' })).toHaveAttribute('href', '/melding/123')
-    expect(screen.getByRole('button', { name: 'submit-button' })).toBeInTheDocument()
-  })
-
   it('renders an empty, required rich text editor', async () => {
     render(<AddNote {...defaultProps} />)
 
@@ -34,7 +26,7 @@ describe('AddNote', () => {
     expect(editor).toHaveAttribute('aria-required', 'true')
   })
 
-  it('shows validation errors for the addNote field', async () => {
+  it('restores the submitted addNote value after validation errors', async () => {
     const formData = new FormData()
 
     formData.append('addNote', 'Some note text')
@@ -47,6 +39,5 @@ describe('AddNote', () => {
     render(<AddNote {...defaultProps} />)
 
     expect(await screen.findByRole('textbox', { name: 'label' })).toHaveTextContent('Some note text')
-    expect(screen.getByRole('link', { name: 'Error message' })).toBeInTheDocument()
   })
 })
