@@ -280,7 +280,11 @@
     "edit-link": "Wijzig notitie",
     "reply-link": "Beantwoord notitie",
     "add-note-link": "Voeg notitie toe",
-    "classification": "Categorie"
+    "classification": "Categorie",
+    "parent-note": {
+      "intro": "Reactie op notitie van {email}, geplaatst op {date}:",
+      "intro-without-author": "Reactie op notitie:"
+    }
   },
   "add-note": {
     "metadata": {
