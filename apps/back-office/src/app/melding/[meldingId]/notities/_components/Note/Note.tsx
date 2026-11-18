@@ -10,7 +10,7 @@ import { formatDateString } from '@meldingen/utils'
 import type { NoteWithParentNote } from '../../_utils/addParentNotes'
 
 import { ParentNote } from '../ParentNote/ParentNote'
-import { TipTapMarkdownToHtml } from '../TipTapMarkdownToHtml'
+import { TipTapMarkdownToHtml } from '../TipTapMarkdownToHtml/TipTapMarkdownToHtml'
 
 import styles from './Note.module.css'
 
