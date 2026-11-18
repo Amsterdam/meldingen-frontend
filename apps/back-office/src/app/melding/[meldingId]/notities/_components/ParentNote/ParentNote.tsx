@@ -23,12 +23,12 @@ export const ParentNote = ({ parentNote }: Props) => {
       <figure className={styles.figure}>
         <figcaption>
           <Paragraph className={styles.metadata}>
-            {/* Screen readers get one sentence; the separate visual lines are hidden for them. */}
             <span className="ams-visually-hidden">
               {hasAuthor
                 ? t('intro', { date: `${formattedDate.date} ${formattedDate.time}`, email })
                 : t('intro-without-author')}
             </span>
+
             {hasAuthor && (
               <>
                 <span aria-hidden="true">{email}</span>
@@ -39,6 +39,7 @@ export const ParentNote = ({ parentNote }: Props) => {
             )}
           </Paragraph>
         </figcaption>
+
         <blockquote className={styles.quote}>
           <Paragraph>{text}</Paragraph>
         </blockquote>

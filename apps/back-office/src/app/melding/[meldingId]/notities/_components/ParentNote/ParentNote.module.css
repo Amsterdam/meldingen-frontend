@@ -3,7 +3,6 @@
 }
 
 .figure {
-  /* Amsterdam neutral grey 2, which has no design system token. */
   border-inline-start: var(--ams-border-width-xl) solid #b4b4b4;
   margin-block: 0;
   margin-inline: 0;

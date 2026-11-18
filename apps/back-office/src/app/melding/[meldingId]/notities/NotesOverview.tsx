@@ -58,6 +58,7 @@ export const NotesOverview = ({ classifications, currentUserId, meldingId, notes
           </TabNavigation.Link>
         </TabNavigation.List>
       </TabNavigation>
+
       <StandaloneLink className="ams-mb-m" href={`/melding/${meldingId}/notities/toevoegen`} linkComponent={NextLink}>
         {t('add-note-link')}
       </StandaloneLink>
