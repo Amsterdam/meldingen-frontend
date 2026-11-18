@@ -3,8 +3,8 @@
 import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
 
+import { processNoteForm } from '../../_utils/processNoteForm'
 import { postMeldingByMeldingIdNote } from '~/app/_api-client/proxy'
-import { parseNoteDocument } from '~/app/_utils/parseNoteDocument'
 import { MAX_NOTE_LENGTH } from '~/constants'
 
 type Args = {
@@ -15,30 +15,22 @@ type Args = {
 export const postReactNoteForm = async ({ meldingId, parentNoteId }: Args, _: unknown, formData: FormData) => {
   const t = await getTranslations('react-note')
 
-  const formDataObj = Object.fromEntries(formData)
+  const note = processNoteForm(formData, 'reactNote', { required: true })
 
-  const { characterCount, isEmpty, markdown } = parseNoteDocument(formDataObj.reactNote)
-
-  // Replace the submitted JSON with the derived markdown, so RichTextEditor can reload it as
-  // its `defaultValue` (via contentType: 'markdown') if the form is redisplayed after an error.
-  formData.set('reactNote', markdown)
-
-  if (isEmpty) {
+  if (!note.isValid) {
     return {
       formData,
-      validationErrors: [{ key: 'reactNote', message: t('errors.required') }],
-    }
-  }
-
-  if (characterCount > MAX_NOTE_LENGTH) {
-    return {
-      formData,
-      validationErrors: [{ key: 'reactNote', message: t('errors.maxLength', { max: MAX_NOTE_LENGTH }) }],
+      validationErrors: [
+        {
+          key: 'reactNote',
+          message: note.error === 'required' ? t('errors.required') : t('errors.maxLength', { max: MAX_NOTE_LENGTH }),
+        },
+      ],
     }
   }
 
   const { error } = await postMeldingByMeldingIdNote({
-    body: { parent_note_id: parentNoteId, text: markdown },
+    body: { parent_note_id: parentNoteId, text: note.markdown },
     path: { melding_id: meldingId },
   })
 
