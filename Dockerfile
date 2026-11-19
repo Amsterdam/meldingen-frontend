@@ -21,7 +21,7 @@ RUN pnpm build
 ################################################
 #                   ADMIN                      #
 ################################################
-FROM nginx:1.30.6-alpine@sha256:583b7f2fce1cdb8da5ad5c39ebd3c33b98b87d493190e548bdee1fa8c619c311 AS admin_meldingen
+FROM nginx:1.30.6-alpine@sha256:901e593c95dc85f5a729f5765516321366ef4ac401821431d408897e95287d0a AS admin_meldingen
 
 WORKDIR /usr/share/nginx/html
 
