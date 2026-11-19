@@ -3,15 +3,19 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
+import type { SimpleClassificationOutput } from '@meldingen/api-client'
+
 import { deleteMeldingByMeldingIdAnswerByAnswerId, putMeldingByMeldingIdSubmitMelder } from '@meldingen/api-client'
 
 import { COOKIES, TOP_ANCHOR_ID } from '~/constants'
 
 export const postSummaryForm = async ({
+  classificationId,
   created_at,
   public_id,
   staleAnswerIds,
 }: {
+  classificationId?: SimpleClassificationOutput['id']
   created_at: string
   public_id: string
   staleAnswerIds: number[]
@@ -36,6 +40,7 @@ export const postSummaryForm = async ({
   )
 
   const deletionError = deletionResults.find((result) => result.error)?.error
+
   if (deletionError) {
     // TODO: Log the error to an error reporting service
     // eslint-disable-next-line no-console
@@ -57,7 +62,12 @@ export const postSummaryForm = async ({
     cookieStore.delete(cookie)
   })
 
-  const params = new URLSearchParams({ created_at, public_id })
+  const params = new URLSearchParams({
+    ...(classificationId ? { classification_id: classificationId.toString() } : {}),
+    created_at,
+    public_id,
+  })
+
   if (source) {
     params.set('id', meldingId)
     params.set('source', source)

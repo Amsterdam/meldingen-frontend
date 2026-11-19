@@ -59,9 +59,11 @@ describe('postSummaryForm', () => {
         if (name === COOKIES.ID) {
           return { value: '123' }
         }
+
         if (name === COOKIES.TOKEN) {
           return { value: 'test-token' }
         }
+
         return undefined
       },
     })
@@ -77,7 +79,29 @@ describe('postSummaryForm', () => {
     )
   })
 
-  it('includes source and id query params in redirect URL if source cookie is present', async () => {
+  it.each([undefined, 65])('includes classification %s in the redirect when provided', async (classificationId) => {
+    ;(cookies as Mock).mockReturnValue({
+      delete: vi.fn(),
+      get: (name: string) => {
+        if (name === COOKIES.ID) return { value: '123' }
+        if (name === COOKIES.TOKEN) return { value: 'test-token' }
+
+        return undefined
+      },
+    })
+
+    await postSummaryForm({ ...defaultArgs, classificationId })
+
+    const params = new URLSearchParams({
+      ...(classificationId ? { classification_id: classificationId.toString() } : {}),
+      created_at: defaultArgs.created_at,
+      public_id: defaultArgs.public_id,
+    })
+
+    expect(redirect).toHaveBeenCalledWith(`/bedankt?${params}#${TOP_ANCHOR_ID}`)
+  })
+
+  it('includes classification, source and id query params in the back-office redirect', async () => {
     const deleteMock = vi.fn()
 
     ;(cookies as Mock).mockReturnValue({
@@ -86,20 +110,23 @@ describe('postSummaryForm', () => {
         if (name === COOKIES.ID) {
           return { value: '123' }
         }
+
         if (name === COOKIES.TOKEN) {
           return { value: 'test-token' }
         }
+
         if (name === COOKIES.SOURCE) {
           return { value: 'test-source' }
         }
+
         return undefined
       },
     })
 
-    await postSummaryForm(defaultArgs)
+    await postSummaryForm({ ...defaultArgs, classificationId: 65 })
 
     expect(redirect).toHaveBeenCalledWith(
-      `/bedankt?created_at=${encodeURIComponent(defaultArgs.created_at)}&public_id=${defaultArgs.public_id}&id=123&source=test-source#${TOP_ANCHOR_ID}`,
+      `/bedankt?classification_id=65&created_at=${encodeURIComponent(defaultArgs.created_at)}&public_id=${defaultArgs.public_id}&id=123&source=test-source#${TOP_ANCHOR_ID}`,
     )
   })
 
@@ -109,14 +136,17 @@ describe('postSummaryForm', () => {
       get: (name: string) => {
         if (name === COOKIES.ID) return { value: '123' }
         if (name === COOKIES.TOKEN) return { value: 'test-token' }
+
         return undefined
       },
     })
 
     const deletedAnswerIds: string[] = []
+
     server.use(
       http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID, ({ params }) => {
         deletedAnswerIds.push(params.answerId as string)
+
         return new HttpResponse()
       }),
     )
@@ -133,11 +163,13 @@ describe('postSummaryForm', () => {
       get: (name: string) => {
         if (name === COOKIES.ID) return { value: '123' }
         if (name === COOKIES.TOKEN) return { value: 'test-token' }
+
         return undefined
       },
     })
 
     const submitMock = vi.fn(() => new HttpResponse())
+
     server.use(
       http.delete(ENDPOINTS.DELETE_MELDING_BY_MELDING_ID_ANSWER_BY_ANSWER_ID, () =>
         HttpResponse.json('Delete failed', { status: 500 }),
