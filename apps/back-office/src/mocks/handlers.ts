@@ -32,7 +32,19 @@ export const handlers = [
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ANSWERS, () => HttpResponse.json(additionalQuestions)),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ASSETS, () => HttpResponse.json([asset])),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
-    HttpResponse.json([{ id: 42, original_filename: 'IMG_0815.jpg' }]),
+    HttpResponse.json([
+      {
+        created_at: '2025-05-26T11:56:34.081Z',
+        id: 42,
+        is_image: true,
+        optimized: { filename: 'IMG_0815.webp', media_type: 'image/webp' },
+        original_filename: 'IMG_0815.jpg',
+        original_media_type: 'image/jpeg',
+        thumbnail: { filename: 'IMG_0815-thumbnail.webp', media_type: 'image/webp' },
+        updated_at: '2025-05-26T11:56:34.081Z',
+        user: null,
+      },
+    ]),
   ),
   http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NEXT_POSSIBLE_STATES, () =>
     HttpResponse.json({ states: ['processing_requested', 'completed'] }),
