@@ -1,0 +1,20 @@
+.container {
+  padding-inline-start: var(--ams-space-s);
+}
+
+.figure {
+  border-inline-start: var(--ams-border-width-xl) solid #b4b4b4;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-inline-start: var(--ams-space-s);
+}
+
+.metadata {
+  display: flex;
+  flex-direction: column;
+}
+
+.quote {
+  margin-block: 0;
+  margin-inline: 0;
+}

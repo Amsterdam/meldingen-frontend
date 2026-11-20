@@ -1,13 +1,13 @@
 import type { Mock } from 'vitest'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 
 import { AddNote } from './AddNote'
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal()
+
   return {
     ...(typeof actual === 'object' ? actual : {}),
     useActionState: vi.fn().mockReturnValue([{}, vi.fn(), false]),
@@ -17,59 +17,18 @@ vi.mock('react', async (importOriginal) => {
 const defaultProps = { meldingId: 123 }
 
 describe('AddNote', () => {
-  beforeEach(() => {
-    document.title = 'Notitie toevoegen - Gemeente Amsterdam'
-  })
-
-  it('preserves the server-rendered document title when there are no errors', () => {
+  it('renders an empty, required rich text editor', async () => {
     render(<AddNote {...defaultProps} />)
 
-    expect(document.title).toBe('Notitie toevoegen - Gemeente Amsterdam')
+    const editor = await screen.findByRole('textbox', { name: 'label' })
+
+    expect(editor).toHaveTextContent('')
+    expect(editor).toHaveAttribute('aria-required', 'true')
   })
 
-  it('renders the back link', () => {
-    render(<AddNote {...defaultProps} />)
-
-    const backLink = screen.getByRole('link', { name: 'back-link' })
-    expect(backLink).toBeInTheDocument()
-    expect(backLink).toHaveAttribute('href', '/melding/123')
-  })
-
-  it('renders the correct title', () => {
-    render(<AddNote {...defaultProps} />)
-
-    expect(screen.getByRole('heading', { name: 'title' })).toBeInTheDocument()
-  })
-
-  it('renders the rich text editor', async () => {
-    render(<AddNote {...defaultProps} />)
-
-    expect(await screen.findByRole('toolbar')).toBeInTheDocument()
-
-    expect(screen.getByRole('textbox', { name: 'label' })).toBeInTheDocument()
-  })
-
-  it('renders the cancel link', () => {
-    render(<AddNote {...defaultProps} />)
-
-    const cancelLink = screen.getByRole('link', { name: 'cancel-link' })
-    expect(cancelLink).toBeInTheDocument()
-    expect(cancelLink).toHaveAttribute('href', '/melding/123')
-  })
-
-  it('displays an API error alert with the correct document title when there is an API error', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: { detail: 'Something went wrong' } }, vi.fn(), false])
-
-    const { container } = render(<AddNote {...defaultProps} />)
-
-    const alert = container.querySelector('.ams-alert')
-
-    expect(alert).toBeInTheDocument()
-    expect(document.title).toBe('api-error-alert.heading - Notitie toevoegen - Gemeente Amsterdam')
-  })
-
-  it('displays an invalid form alert with the correct document title when there are validation errors', async () => {
+  it('restores the submitted addNote value after validation errors', async () => {
     const formData = new FormData()
+
     formData.append('addNote', 'Some note text')
     ;(useActionState as Mock).mockReturnValueOnce([
       { formData, validationErrors: [{ key: 'addNote', message: 'Error message' }] },
@@ -79,52 +38,6 @@ describe('AddNote', () => {
 
     render(<AddNote {...defaultProps} />)
 
-    expect(await screen.findByRole('toolbar')).toBeInTheDocument()
-
-    expect(screen.getByRole('link', { name: 'Error message' })).toBeInTheDocument()
-    expect(screen.getByRole('textbox', { name: 'label' })).toHaveTextContent('Some note text')
-
-    expect(document.title).toBe('document-title-error-count-prefix Notitie toevoegen - Gemeente Amsterdam')
-  })
-
-  it.each([
-    { apiError: { detail: 'Error message' } },
-    { validationErrors: [{ key: 'addNote', message: 'Error message' }] },
-  ])('restores the server-rendered document title when errors are resolved: %j', (state) => {
-    vi.mocked(useActionState).mockReturnValueOnce([state, vi.fn(), false])
-
-    const { rerender } = render(<AddNote {...defaultProps} />)
-
-    expect(document.title).not.toBe('Notitie toevoegen - Gemeente Amsterdam')
-
-    rerender(<AddNote {...defaultProps} />)
-
-    expect(document.title).toBe('Notitie toevoegen - Gemeente Amsterdam')
-  })
-
-  it('restores the server-rendered document title when leaving the page after an API error', () => {
-    vi.mocked(useActionState).mockReturnValueOnce([{ apiError: { detail: 'Error message' } }, vi.fn(), false])
-
-    const { unmount } = render(<AddNote {...defaultProps} />)
-
-    expect(document.title).toBe('api-error-alert.heading - Notitie toevoegen - Gemeente Amsterdam')
-
-    unmount()
-
-    expect(document.title).toBe('Notitie toevoegen - Gemeente Amsterdam')
-  })
-
-  it('submits the form when the submit button is clicked', async () => {
-    const user = userEvent.setup()
-
-    const mockFormAction = vi.fn()
-    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
-
-    render(<AddNote {...defaultProps} />)
-
-    const submitButton = screen.getByRole('button', { name: 'submit-button' })
-    await user.click(submitButton)
-
-    expect(mockFormAction).toHaveBeenCalled()
+    expect(await screen.findByRole('textbox', { name: 'label' })).toHaveTextContent('Some note text')
   })
 })

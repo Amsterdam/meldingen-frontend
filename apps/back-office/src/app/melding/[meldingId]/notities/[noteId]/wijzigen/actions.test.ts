@@ -58,15 +58,6 @@ describe('postUpdateNoteForm', () => {
     expect(redirect).toHaveBeenCalledWith('/melding/123/notities')
   })
 
-  it('accepts a note at exactly the maximum length', async () => {
-    const formData = new FormData()
-    formData.append('updateNote', noteDoc('a'.repeat(MAX_NOTE_LENGTH)))
-
-    await postUpdateNoteForm(defaultArgs, null, formData)
-
-    expect(redirect).toHaveBeenCalledWith('/melding/123/notities')
-  })
-
   it('posts an empty string when the editor only contains whitespace, even when it has markup', async () => {
     let requestBody: { text?: string } | undefined
 

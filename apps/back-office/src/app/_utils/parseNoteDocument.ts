@@ -39,3 +39,10 @@ export const parseNoteDocument = (value: File | string | undefined): ParsedNoteD
     return EMPTY_NOTE
   }
 }
+
+// Converts a note's markdown to plain text, e.g. for previews where formatting is not shown.
+export const markdownToPlainText = (markdown: string) => {
+  const doc = Node.fromJSON(schema, markdownManager.parse(markdown))
+
+  return doc.textBetween(0, doc.content.size, ' ', ' ').trim()
+}

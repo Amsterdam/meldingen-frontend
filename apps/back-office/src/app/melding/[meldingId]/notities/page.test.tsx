@@ -81,4 +81,42 @@ describe('Page', () => {
 
     expect(NotesOverview).toHaveBeenCalledWith(expect.objectContaining({ overviewHref: '/?pagina=4' }), undefined)
   })
+
+  it('passes the notes enriched with their parent note data to the NotesOverview component', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE, () =>
+        HttpResponse.json([
+          {
+            created_at: '2026-03-24T12:24:00Z',
+            id: 2,
+            parent_note_id: 1,
+            parent_note_text_snapshot: 'Container is **nu** leeg.',
+            text: 'Reply.',
+            user: { email: 'reply@example.com', id: 1 },
+          },
+          {
+            created_at: '2026-03-23T10:12:00Z',
+            id: 1,
+            parent_note_id: null,
+            parent_note_text_snapshot: null,
+            text: 'Parent.',
+            user: { email: 'parent@example.com', id: 2 },
+          },
+        ]),
+      ),
+    )
+
+    const result = await Page({ params: Promise.resolve({ meldingId: '123' }) })
+
+    render(result)
+
+    const { notes } = vi.mocked(NotesOverview).mock.lastCall![0]
+
+    expect(notes[0].parentNote).toEqual({
+      createdAt: '2026-03-23T10:12:00Z',
+      email: 'parent@example.com',
+      text: 'Container is nu leeg.',
+    })
+    expect(notes[1].parentNote).toBeUndefined()
+  })
 })
