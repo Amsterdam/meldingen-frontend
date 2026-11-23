@@ -9,6 +9,7 @@ import tsPlugin from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import eslintConfigPrettier from 'eslint-config-prettier/flat'
 import baselineJs from 'eslint-plugin-baseline-js'
+import { BASELINE } from 'eslint-plugin-baseline-js'
 import importPlugin from 'eslint-plugin-import'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import perfectionist from 'eslint-plugin-perfectionist'
@@ -122,7 +123,7 @@ export default defineConfig(
       ...workspaces.configs.recommended.rules,
 
       // Baseline
-      'baseline-js/use-baseline': ['error', { available: 'widely' }],
+      'baseline-js/use-baseline': ['error', { available: BASELINE.WIDELY }],
 
       // TypeScript
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
