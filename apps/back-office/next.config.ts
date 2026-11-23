@@ -5,7 +5,7 @@ import createNextIntlPlugin from 'next-intl/plugin'
 const nextConfig: NextConfig = {
   agentRules: false,
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
-  distDir: process.env.PLAYWRIGHT_TEST === '1' ? '.next-e2e' : '.next',
+  distDir: process.env.NEXT_DIST_DIR ?? '.next',
   output: 'standalone',
 }
 

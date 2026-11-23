@@ -35,7 +35,7 @@ The configuration starts Melding Form on `http://127.0.0.1:3100` and Back Office
 It reuses an existing Melding Form server on that port outside CI, but always starts a fresh Back Office
 server with the configured test URLs.
 Both apps use separate `.next-e2e` build directories so they can run alongside the normal dev servers.
-The test servers set local backend and frontend URLs and enable these directories with `PLAYWRIGHT_TEST=1`.
+The test servers set local backend and frontend URLs and enable these directories with `NEXT_DIST_DIR='.next-e2e'`.
 Back Office tests sign in to Keycloak automatically through the browser, using the same flow locally
 and against deployed environments. Start the normal local backend and Keycloak services first, and
 configure Back Office authentication as described in the
