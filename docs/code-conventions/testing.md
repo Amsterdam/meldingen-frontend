@@ -22,7 +22,7 @@ A server-action test using the real API client and MSW provides frontend integra
 - Use focused unit tests for business rules, boundary values, and combinations such as conditional panel navigation.
 - Use component tests for accessible output and interactions. Prefer `userEvent.setup()` and awaited user interactions over invoking component handlers directly.
 - Use integration tests for representative submissions, request payloads, validation recovery, and coordination between components and actions. Keep edge-case combinations in focused tests instead of repeating every case at every layer.
-- Use browser E2E tests for critical complete journeys, cookies, navigation, hydration, and real server-action transport. Browser E2E is not currently configured in this repo; it remains a separate addition. Include a JavaScript-disabled public-form journey to verify progressive enhancement when adding it.
+- Use browser E2E tests for critical complete journeys, cookies, navigation, hydration, and real server-action transport. Include a JavaScript-disabled public-form journey to verify progressive enhancement when adding public-form journey coverage.
 
 Coverage thresholds in each package's Vite configuration are regression guards, not proof that a workflow works. Prioritize meaningful assertions and risky behaviour over increasing percentages.
 
@@ -37,7 +37,7 @@ Keep setup and mocks appropriate to each scope in its own file, and use descript
 
 We are adopting this split gradually. When adding or modifying component tests in a PR, separate unit and integration coverage for the tests being touched, moving integration tests to the `.integration.test` file. Existing mixed test files may remain until they are touched. Do not perform a repo-wide rename or split unrelated tests as part of the migration.
 
-For a future browser suite, use a root-level `e2e/` directory grouped by app, with shared setup for journeys that cross app boundaries. Run it separately from Vitest.
+Keep browser tests in the root-level `e2e/` directory grouped by app, with shared setup for journeys that cross app boundaries. Run them separately from Vitest.
 
 ## Mocking boundaries
 
@@ -65,20 +65,16 @@ Melding form and Back office configure `onUnhandledRequest: 'error'` in their sh
 
 See [Mocking API requests](../patterns/mocking-api-requests.md) for how this is set up and how to add a new endpoint.
 
-## Document titles
+## End-to-end tests
 
-Rendering a component in a unit test does not run Next.js metadata generation.
-For melding detail subroutes, seed `document.title` in `beforeEach` with the server-rendered base title, including the layout suffix.
-This also prevents title changes from leaking between tests.
+Playwright tests live in the separate `e2e` workspace.
+They run separately from the unit tests.
 
-```typescript
-beforeEach(() => {
-  document.title = 'Notitie toevoegen - Melding ABC - Gemeente Amsterdam'
-})
-```
+Tests are grouped by app in `e2e/melding-form` and `e2e/back-office`.
+Each app has its own projects and base URL, sharing desktop Chromium, Firefox, and WebKit,
+plus Mobile Chrome (Pixel 7) and Mobile Safari (iPhone 13) using device emulation.
+Melding Form tests import `test` and `expect` directly from `@playwright/test`.
+Back Office tests import them from `./fixtures` to sign in to Keycloak automatically in CLI and UI mode.
 
-Test `generateMetadata` separately in the route's `page.test.tsx`.
-Component tests should verify that the base title is preserved without errors, that errors prefix it, and that it is restored when errors clear or the component unmounts.
-Include a rerender with persistent errors to check that prefixes do not accumulate.
-
-See [Document titles for melding detail subroutes](../patterns/error-handling.md#document-titles-for-melding-detail-subroutes) for the implementation pattern.
+See the [E2E README](../../e2e/README.md) for installation, running tests, local authentication,
+UI mode, deployed environments, and trace output.
