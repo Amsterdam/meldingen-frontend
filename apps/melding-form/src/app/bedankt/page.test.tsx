@@ -1,7 +1,12 @@
 import { render, screen } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
+import { createTranslator } from 'next-intl'
 
+import messages from '../../../translations/nl.json'
 import Page, { generateMetadata } from './page'
 import { getClientEnv } from '~/env/client'
+import { ENDPOINTS } from '~/mocks/endpoints'
+import { server } from '~/mocks/node'
 
 vi.mock('next-intl/server', async () => ({
   getTranslations: () =>
@@ -16,7 +21,84 @@ describe('generateMetadata', () => {
   })
 })
 
+describe('thanks description', () => {
+  it('omits the heading and objective text when no service objective is provided', () => {
+    const t = createTranslator({ locale: 'nl', messages, namespace: 'thanks' })
+
+    const description = t('description', {
+      date: 'undefined',
+      publicId: 'undefined',
+      serviceLevelObjectiveText: 'undefined',
+      time: 'undefined',
+    })
+
+    expect(description).not.toContain('Wat doen we met uw melding?')
+    expect(description).not.toContain('Meldingen pakken we binnen 3 werkdagen op.')
+    expect(description).toContain('U ontvangt een e-mail met alle gegevens van uw melding.\n\n## Vragen')
+  })
+
+  it('renders the heading and service objective when provided', () => {
+    const serviceLevelObjectiveText = 'Wij lossen uw melding binnen 5 werkdagen op.'
+    const t = createTranslator({ locale: 'nl', messages, namespace: 'thanks' })
+
+    const description = t('description', {
+      date: 'undefined',
+      publicId: 'undefined',
+      serviceLevelObjectiveText,
+      time: 'undefined',
+    })
+
+    expect(description).toContain(`## Wat doen we met uw melding?\n\n${serviceLevelObjectiveText}\n\n## Vragen`)
+  })
+})
+
 describe('Page', () => {
+  it.each([{ classificationId: '65' }, { classificationId: ['65', '66'] }])(
+    'fetches classification $classificationId with a numeric filter and renders its text',
+    async ({ classificationId }) => {
+      const serviceLevelObjectiveText = 'Wij lossen uw melding binnen 5 werkdagen op.'
+      const handler = vi.fn(({ request }: { request: Request }) => {
+        expect(new URL(request.url).searchParams.get('filter')).toBe('{"id_in":[65]}')
+
+        return HttpResponse.json([{ service_level_objective_text: serviceLevelObjectiveText }])
+      })
+
+      server.use(http.get(ENDPOINTS.GET_CLASSIFICATION, handler))
+
+      render(await Page({ searchParams: Promise.resolve({ classification_id: classificationId }) }))
+
+      expect(handler).toHaveBeenCalledTimes(1)
+      expect(screen.getByText(`description:${JSON.stringify({ serviceLevelObjectiveText })}`)).toBeInTheDocument()
+    },
+  )
+
+  it('does not fetch classifications when no classification ID is provided', async () => {
+    const handler = vi.fn(() => HttpResponse.json([]))
+
+    server.use(http.get(ENDPOINTS.GET_CLASSIFICATION, handler))
+
+    render(await Page({ searchParams: Promise.resolve({}) }))
+
+    expect(handler).not.toHaveBeenCalled()
+    expect(screen.getByText('description:{}')).toBeInTheDocument()
+  })
+
+  it('leaves the service objective undefined when no classification matches', async () => {
+    server.use(http.get(ENDPOINTS.GET_CLASSIFICATION, () => HttpResponse.json([])))
+
+    render(await Page({ searchParams: Promise.resolve({ classification_id: '65' }) }))
+
+    expect(screen.getByText('description:{}')).toBeInTheDocument()
+  })
+
+  it('leaves the service objective undefined when its text is empty', async () => {
+    server.use(http.get(ENDPOINTS.GET_CLASSIFICATION, () => HttpResponse.json([{ service_level_objective_text: '' }])))
+
+    render(await Page({ searchParams: Promise.resolve({ classification_id: '65' }) }))
+
+    expect(screen.getByText('description:{}')).toBeInTheDocument()
+  })
+
   it('renders page', async () => {
     const searchParams = Promise.resolve({ created_at: '2025-05-26T11:56:34.081Z', public_id: '1234' })
 

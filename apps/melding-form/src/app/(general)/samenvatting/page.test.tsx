@@ -170,7 +170,7 @@ describe('Page', () => {
     )
   })
 
-  it('binds staleAnswerIds into the action passed to Summary', async () => {
+  it('binds the classification ID and staleAnswerIds into the action passed to Summary', async () => {
     server.use(
       http.get(ENDPOINTS.GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID, () =>
         HttpResponse.json({
@@ -195,13 +195,39 @@ describe('Page', () => {
     mockIdAndTokenCookies()
 
     const PageComponent = await Page()
+
     render(PageComponent)
 
     const action = vi.mocked(Summary).mock.calls[0][0].action
+
     await action(undefined, new FormData())
 
     expect(postSummaryForm).toHaveBeenCalledWith(
-      expect.objectContaining({ staleAnswerIds: [additionalQuestions[1].id] }),
+      expect.objectContaining({
+        classificationId: melding.classification?.id,
+        staleAnswerIds: [additionalQuestions[1].id],
+      }),
+      undefined,
+      expect.any(FormData),
+    )
+  })
+
+  it('binds an undefined classification ID when the melding has no classification', async () => {
+    mockIdAndTokenCookies()
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_MELDER, () =>
+        HttpResponse.json({ ...melding, classification: null }),
+      ),
+    )
+
+    render(await Page())
+
+    const action = vi.mocked(Summary).mock.calls[0][0].action
+
+    await action(undefined, new FormData())
+
+    expect(postSummaryForm).toHaveBeenCalledWith(
+      expect.objectContaining({ classificationId: undefined }),
       undefined,
       expect.any(FormData),
     )
