@@ -1,6 +1,9 @@
 /* eslint-disable perfectionist/sort-objects */
 
 export const ENDPOINTS = {
+  // Classification
+  GET_CLASSIFICATION: '/classification/',
+
   // Form
   GET_FORM_CLASSIFICATION_BY_CLASSIFICATION_ID: '/form/classification/:id',
 
