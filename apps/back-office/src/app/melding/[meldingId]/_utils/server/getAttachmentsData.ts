@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation'
+
 import type { MeldingAttachment } from '../../types'
 import type { AttachmentTypes } from '~/app/_api-client/proxy'
 
@@ -8,11 +10,17 @@ export const getAttachmentsData = async (
   meldingId: number,
   imageAttachmentType: AttachmentTypes,
 ): Promise<MeldingAttachment[]> => {
-  const { data: meldingAttachments, error } = await getMeldingByMeldingIdAttachments({
+  const {
+    data: meldingAttachments,
+    error,
+    response,
+  } = await getMeldingByMeldingIdAttachments({
     path: { melding_id: meldingId },
   })
 
-  if (error) throw new Error('Failed to fetch melding attachments.')
+  if (response?.status === 404) notFound()
+
+  if (error) throw new Error('Failed to fetch melding attachments.', { cause: error })
 
   return Promise.all(
     meldingAttachments.map(async ({ created_at, id, original_filename, updated_at, user }) => {

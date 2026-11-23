@@ -16,11 +16,17 @@ describe('Page', () => {
     expect(await generateMetadata()).toEqual({ title: 'metadata.title' })
   })
 
-  it('throws an error when melding data is not available', async () => {
+  it('shows not found when the melding does not exist', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 404 })))
+
+    await expect(Page({ params: Promise.resolve({ meldingId: '123' }) })).rejects.toThrow(
+      'NEXT_HTTP_ERROR_FALLBACK;404',
+    )
+  })
+
+  it.each([403, 500])('throws an error when fetching the melding returns %s', async (status) => {
     server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
-      ),
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({ detail: 'Error message' }, { status })),
     )
 
     const params = Promise.resolve({ meldingId: '123' })
@@ -28,8 +34,8 @@ describe('Page', () => {
     await expect(Page({ params })).rejects.toThrow('Failed to fetch melding data.')
   })
 
-  it('throws an error when labels data is not available', async () => {
-    server.use(http.get(ENDPOINTS.GET_LABEL, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })))
+  it.each([404, 500])('throws an error when fetching labels returns %s', async (status) => {
+    server.use(http.get(ENDPOINTS.GET_LABEL, () => HttpResponse.json({ detail: 'Error message' }, { status })))
 
     const params = Promise.resolve({ meldingId: '123' })
 

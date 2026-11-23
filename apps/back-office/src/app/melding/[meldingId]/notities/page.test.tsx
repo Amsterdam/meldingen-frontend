@@ -28,8 +28,16 @@ describe('Page', () => {
     mockCookies({})
   })
 
-  it('throws an error when getMeldingByMeldingId returns an error', async () => {
-    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 500 })))
+  it('shows not found when the melding does not exist', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status: 404 })))
+
+    await expect(Page({ params: Promise.resolve({ meldingId: '123' }) })).rejects.toThrow(
+      'NEXT_HTTP_ERROR_FALLBACK;404',
+    )
+  })
+
+  it.each([403, 500])('throws an error when fetching the melding returns %s', async (status) => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID, () => HttpResponse.json({}, { status })))
 
     const params = Promise.resolve({ meldingId: '123' })
 
