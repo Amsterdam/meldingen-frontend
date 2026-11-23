@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
 import { isFilePDF } from '../_utils'
 import { Photos } from './Photos'
@@ -20,9 +21,11 @@ export default async ({ params, searchParams }: Props) => {
   const { id: attachmentId } = await searchParams
   const attachmentIdString = Array.isArray(attachmentId) ? attachmentId[0] : attachmentId
 
-  const { data, error } = await getMeldingByMeldingIdAttachments({ path: { melding_id: meldingId } })
+  const { data, error, response } = await getMeldingByMeldingIdAttachments({ path: { melding_id: meldingId } })
 
-  if (error) throw new Error('Failed to fetch melding attachments.')
+  if (response?.status === 404) notFound()
+
+  if (error) throw new Error('Failed to fetch melding attachments.', { cause: error })
 
   const images = await Promise.all(
     data

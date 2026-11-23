@@ -25,10 +25,20 @@ describe('Page', () => {
     expect(screen.getByText('UpdateNote Component')).toBeInTheDocument()
   })
 
-  it('throws an error when fetching note fails', async () => {
+  it('shows not found when the melding or note does not exist', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID, () => HttpResponse.json({}, { status: 404 })),
+    )
+
+    const params = Promise.resolve({ meldingId: '123', noteId: '456' })
+
+    await expect(Page({ params })).rejects.toThrow('NEXT_HTTP_ERROR_FALLBACK;404')
+  })
+
+  it.each([403, 500])('throws an error when fetching the note returns %s', async (status) => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+        HttpResponse.json({ detail: 'Error message' }, { status }),
       ),
     )
 

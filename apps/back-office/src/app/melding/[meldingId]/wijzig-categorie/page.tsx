@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server'
-import { redirect } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 
 import { isReclassificationAllowed } from '../_utils/server'
 import { ChangeCategory } from './ChangeCategory'
@@ -17,11 +17,17 @@ export default async ({ params }: Props) => {
   const { meldingId: meldingIdParams } = await params
   const meldingId = Number(meldingIdParams)
 
-  const { data: melding, error: meldingError } = await getMeldingByMeldingId({
+  const {
+    data: melding,
+    error: meldingError,
+    response,
+  } = await getMeldingByMeldingId({
     path: { melding_id: meldingId },
   })
 
-  if (meldingError) throw new Error('Failed to fetch melding data.')
+  if (response?.status === 404) notFound()
+
+  if (meldingError) throw new Error('Failed to fetch melding data.', { cause: meldingError })
 
   const { data: classifications, error: classificationsError } = await getClassification({ query: { limit: 0 } })
 
