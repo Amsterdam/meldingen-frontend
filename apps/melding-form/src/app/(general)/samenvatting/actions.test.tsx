@@ -126,7 +126,7 @@ describe('postSummaryForm', () => {
     await postSummaryForm({ ...defaultArgs, classificationId: 65 })
 
     expect(redirect).toHaveBeenCalledWith(
-      `/bedankt?classification_id=65&created_at=${encodeURIComponent(defaultArgs.created_at)}&public_id=${defaultArgs.public_id}&id=123&source=test-source#${TOP_ANCHOR_ID}`,
+      `/bedankt?created_at=${encodeURIComponent(defaultArgs.created_at)}&public_id=${defaultArgs.public_id}&classification_id=65&id=123&source=test-source#${TOP_ANCHOR_ID}`,
     )
   })
 
