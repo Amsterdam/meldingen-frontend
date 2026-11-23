@@ -30,7 +30,7 @@ pnpm --filter e2e exec playwright install --with-deps chromium firefox webkit
 
 ## Local servers and authentication
 
-The configuration starts Melding Form on `http://127.0.0.1:3100` and Back Office on
+The configuration starts Melding Form on `http://localhost:3100` and Back Office on
 `http://localhost:3102` automatically.
 It reuses an existing Melding Form server on that port outside CI, but always starts a fresh Back Office
 server with the configured test URLs.

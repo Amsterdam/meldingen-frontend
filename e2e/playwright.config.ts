@@ -32,7 +32,7 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   projects: [
     ...[
-      { baseURL: `${(meldingFormBaseURL || 'http://127.0.0.1:3100').replace(/\/$/, '')}/`, name: 'melding-form' },
+      { baseURL: `${(meldingFormBaseURL || 'http://localhost:3100').replace(/\/$/, '')}/`, name: 'melding-form' },
       { baseURL: `${(backOfficeBaseURL || 'http://localhost:3102').replace(/\/$/, '')}/`, name: 'back-office' },
     ].flatMap((app) =>
       browserProjects.map((browser) => ({
