@@ -64,13 +64,15 @@ export const NotesOverview = ({ classifications, currentUserId, meldingId, notes
       </StandaloneLink>
 
       {hasNotes && (
-        <UnorderedList className={styles.list} markers={false}>
-          {notes.map((note) => (
-            <UnorderedList.Item key={note.id}>
-              <Note classification={getClassification(note.classification_id)} link={getNoteLink(note)} note={note} />
-            </UnorderedList.Item>
-          ))}
-        </UnorderedList>
+        <section aria-label={t('list-label')}>
+          <UnorderedList className={styles.list} markers={false}>
+            {notes.map((note) => (
+              <UnorderedList.Item key={note.id}>
+                <Note classification={getClassification(note.classification_id)} link={getNoteLink(note)} note={note} />
+              </UnorderedList.Item>
+            ))}
+          </UnorderedList>
+        </section>
       )}
     </PageWrapper>
   )

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 
 import type { ClassificationOutput, NoteOutput } from '@meldingen/api-client'
 
@@ -64,6 +64,9 @@ describe('NotesOverview', () => {
     expect(screen.getAllByText('test@example.com')).toHaveLength(2)
     expect(screen.getByText('Test classification')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /tab-navigation\.notes\s*\(2\)/ })).toBeInTheDocument()
+    const notesRegion = screen.getByRole('region', { name: 'list-label' })
+
+    expect(within(notesRegion).getByRole('list')).toBeInTheDocument()
   })
 
   it('shows an edit link for notes that belong to the current user', () => {
