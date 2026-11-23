@@ -35,7 +35,7 @@ export const getWebServers = ({
         NEXT_INTERNAL_BACKEND_BASE_URL: 'http://localhost:8000',
         NEXT_PUBLIC_BACKEND_BASE_URL: 'http://localhost:8000',
         NEXT_PUBLIC_BASE_PATH: '',
-        NEXT_PUBLIC_MELDING_FORM_BASE_URL: 'http://localhost:3100',
+        NEXT_PUBLIC_MELDING_FORM_BASE_URL: (meldingFormBaseURL || 'http://localhost:3100').replace(/\/$/, ''),
         NEXTAUTH_URL: 'http://localhost:3102',
       },
       reuseExistingServer: false,
