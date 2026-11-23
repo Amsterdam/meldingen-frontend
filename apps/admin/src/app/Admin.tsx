@@ -17,7 +17,7 @@ import {
 } from './providers'
 
 export const Admin = () => (
-  <BrowserRouter>
+  <BrowserRouter basename={import.meta.env.BASE_URL}>
     <ReactAdmin
       authProvider={isEntraAuthEnabled ? entraAuthProvider : keycloakAuthProvider}
       dataProvider={isEntraAuthEnabled ? entraDataProvider : keycloakDataProvider}

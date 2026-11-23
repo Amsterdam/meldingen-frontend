@@ -2,7 +2,7 @@ import * as z from 'zod'
 
 const authProviderGroups = [
   ['VITE_KEYCLOAK_BASE_URL', 'VITE_KEYCLOAK_REALM', 'VITE_KEYCLOAK_CLIENT_ID'],
-  ['VITE_ENTRA_APP_BASE_URL', 'VITE_ENTRA_AUTHORITY', 'VITE_ENTRA_CLIENT_ID'],
+  ['VITE_ENTRA_APP_BASE_URL', 'VITE_ENTRA_REDIRECT_URL', 'VITE_ENTRA_AUTHORITY', 'VITE_ENTRA_CLIENT_ID'],
 ] as const
 
 const optionalNonEmptyString = z.string().trim().min(1).optional()
@@ -11,6 +11,7 @@ const authShape = {
   VITE_ENTRA_APP_BASE_URL: z.url().optional(),
   VITE_ENTRA_AUTHORITY: optionalNonEmptyString,
   VITE_ENTRA_CLIENT_ID: optionalNonEmptyString,
+  VITE_ENTRA_REDIRECT_URL: optionalNonEmptyString,
 
   VITE_KEYCLOAK_BASE_URL: z.url().optional(),
   VITE_KEYCLOAK_CLIENT_ID: optionalNonEmptyString,

@@ -10,7 +10,7 @@ export const entraAuthConfig: Configuration = {
     OIDCOptions: {
       serverResponseType: 'query',
     },
-    redirectUri: `${env.VITE_ENTRA_APP_BASE_URL}/auth-callback`,
+    redirectUri: env.VITE_ENTRA_REDIRECT_URL,
   },
   cache: {
     cacheLocation: 'sessionStorage',

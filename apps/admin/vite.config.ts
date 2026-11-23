@@ -1,9 +1,11 @@
 import react from '@vitejs/plugin-react'
+import { loadEnv } from 'vite'
 import { defineConfig } from 'vitest/config'
 
 import validateEnvPlugin from './vite/plugins/validateEnvPlugin.ts'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  base: loadEnv(mode, process.cwd(), 'VITE_').VITE_BASE_PATH || '/',
   plugins: [react(), validateEnvPlugin()],
   resolve: {
     tsconfigPaths: true,
@@ -28,4 +30,4 @@ export default defineConfig({
     testTimeout: 10_000,
     watch: false,
   },
-})
+}))
