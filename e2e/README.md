@@ -64,6 +64,11 @@ No manual login, setup-project run, or saved authentication file is needed, incl
 
 ## Testing a deployed environment
 
+See [env.example](./env.example) for the supported environment variables.
+Playwright automatically loads `e2e/.env.local` when present, regardless of the working directory.
+Exported variables, including inline overrides and pipeline variables, take precedence.
+The local file is gitignored; never commit credentials.
+
 Set `PLAYWRIGHT_MELDING_FORM_BASE_URL` and `PLAYWRIGHT_BACK_OFFICE_BASE_URL` to the deployed app URLs.
 Include a trailing slash and any deployment base path, for example `https://acc.example.org/back-office/`.
 Each configured URL disables the corresponding local server; omitted URLs retain local testing.

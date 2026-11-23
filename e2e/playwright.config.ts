@@ -1,6 +1,15 @@
 import { defineConfig, devices } from '@playwright/test'
+import { existsSync } from 'node:fs'
+import { loadEnvFile } from 'node:process'
+import { fileURLToPath } from 'node:url'
 
 import { getWebServers } from './getWebServers'
+
+const envFile = fileURLToPath(new URL('./.env.local', import.meta.url))
+
+if (existsSync(envFile)) {
+  loadEnvFile(envFile)
+}
 
 const meldingFormBaseURL = process.env.PLAYWRIGHT_MELDING_FORM_BASE_URL
 const backOfficeBaseURL = process.env.PLAYWRIGHT_BACK_OFFICE_BASE_URL
