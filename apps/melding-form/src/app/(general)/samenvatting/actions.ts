@@ -63,10 +63,13 @@ export const postSummaryForm = async ({
   })
 
   const params = new URLSearchParams({
-    ...(classificationId ? { classification_id: classificationId.toString() } : {}),
     created_at,
     public_id,
   })
+
+  if (classificationId) {
+    params.set('classification_id', classificationId.toString())
+  }
 
   if (source) {
     params.set('id', meldingId)
