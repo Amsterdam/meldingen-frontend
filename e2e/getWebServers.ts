@@ -17,7 +17,7 @@ export const getWebServers = ({
       env: {
         NEXT_DIST_DIR: '.next-e2e',
         NEXT_INTERNAL_BACKEND_BASE_URL: 'http://localhost:8000',
-        NEXT_PUBLIC_BACK_OFFICE_BASE_URL: 'http://localhost:3102',
+        NEXT_PUBLIC_BACK_OFFICE_BASE_URL: (backOfficeBaseURL || 'http://localhost:3102').replace(/\/$/, ''),
         NEXT_PUBLIC_BACKEND_BASE_URL: 'http://localhost:8000',
         NEXT_PUBLIC_MELDING_FORM_BASE_URL: 'http://localhost:3100',
       },
