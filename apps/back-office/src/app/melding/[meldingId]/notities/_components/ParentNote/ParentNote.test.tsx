@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react'
 
 import { ParentNote } from './ParentNote'
 
+import styles from './ParentNote.module.css'
+
 const parentNote = {
   createdAt: '2026-03-23T10:12:00Z',
   email: 'parent@example.com',
@@ -18,6 +20,7 @@ describe('ParentNote', () => {
     expect(container.querySelector('figure > figcaption')).toHaveTextContent('intro')
     expect(figure).toContainElement(screen.getByRole('blockquote'))
     expect(screen.getByRole('blockquote')).toHaveTextContent('Container is nu leeg.')
+    expect(screen.getByText('Container is nu leeg.')).toHaveClass(styles.paragraph)
   })
 
   it('shows the email and created date of the parent note', () => {

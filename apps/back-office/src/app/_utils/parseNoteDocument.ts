@@ -46,3 +46,11 @@ export const markdownToPlainText = (markdown: string) => {
 
   return doc.textBetween(0, doc.content.size, ' ', ' ').trim()
 }
+
+export const truncateMarkdown = (markdown: string, maxLength: number) => {
+  const plainText = markdownToPlainText(markdown)
+
+  if (plainText.length <= maxLength) return plainText
+
+  return plainText.slice(0, maxLength)
+}

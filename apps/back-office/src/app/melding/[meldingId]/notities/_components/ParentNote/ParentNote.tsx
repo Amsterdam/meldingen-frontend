@@ -41,7 +41,7 @@ export const ParentNote = ({ parentNote }: Props) => {
         </figcaption>
 
         <blockquote className={styles.quote}>
-          <Paragraph>{text}</Paragraph>
+          <Paragraph className={styles.paragraph}>{text}</Paragraph>
         </blockquote>
       </figure>
     </div>

@@ -1,6 +1,7 @@
 import type { NoteOutput } from '@meldingen/api-client'
 
-import { markdownToPlainText } from '~/app/_utils/parseNoteDocument'
+import { truncateMarkdown } from '~/app/_utils/parseNoteDocument'
+import { MAX_VISUAL_QUOTE_LENGTH } from '~/constants'
 
 export type ParentNote = {
   // Only available when the parent note is part of the given notes.
@@ -30,7 +31,7 @@ export const addParentNotes = (notes: NoteOutput[]): NoteWithParentNote[] => {
       parentNote: {
         createdAt: parent?.created_at,
         email: parent?.user.email,
-        text: markdownToPlainText(parent_note_text_snapshot),
+        text: truncateMarkdown(parent_note_text_snapshot, MAX_VISUAL_QUOTE_LENGTH),
       },
     }
   })
