@@ -11,7 +11,7 @@
     "type-check": "tsc --noEmit"
   },
   "devDependencies": {
-    "@playwright/test": "1.65.0",
+    "@playwright/test": "1.65.1",
     "back-office": "workspace:*",
     "melding-form": "workspace:*"
   }
