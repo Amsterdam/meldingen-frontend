@@ -92,13 +92,17 @@ describe('postSummaryForm', () => {
 
     await postSummaryForm({ ...defaultArgs, classificationId })
 
-    const params = new URLSearchParams({
+    expect(redirect).toHaveBeenCalledTimes(1)
+
+    const redirectUrl = new URL(vi.mocked(redirect).mock.calls[0][0], 'http://localhost')
+
+    expect(redirectUrl.pathname).toBe('/bedankt')
+    expect(redirectUrl.hash).toBe(`#${TOP_ANCHOR_ID}`)
+    expect(Object.fromEntries(redirectUrl.searchParams)).toEqual({
       ...(classificationId ? { classification_id: classificationId.toString() } : {}),
       created_at: defaultArgs.created_at,
       public_id: defaultArgs.public_id,
     })
-
-    expect(redirect).toHaveBeenCalledWith(`/bedankt?${params}#${TOP_ANCHOR_ID}`)
   })
 
   it('includes classification, source and id query params in the back-office redirect', async () => {
@@ -125,9 +129,19 @@ describe('postSummaryForm', () => {
 
     await postSummaryForm({ ...defaultArgs, classificationId: 65 })
 
-    expect(redirect).toHaveBeenCalledWith(
-      `/bedankt?created_at=${encodeURIComponent(defaultArgs.created_at)}&public_id=${defaultArgs.public_id}&classification_id=65&id=123&source=test-source#${TOP_ANCHOR_ID}`,
-    )
+    expect(redirect).toHaveBeenCalledTimes(1)
+
+    const redirectUrl = new URL(vi.mocked(redirect).mock.calls[0][0], 'http://localhost')
+
+    expect(redirectUrl.pathname).toBe('/bedankt')
+    expect(redirectUrl.hash).toBe(`#${TOP_ANCHOR_ID}`)
+    expect(Object.fromEntries(redirectUrl.searchParams)).toEqual({
+      classification_id: '65',
+      created_at: defaultArgs.created_at,
+      id: '123',
+      public_id: defaultArgs.public_id,
+      source: 'test-source',
+    })
   })
 
   it('deletes every stale answer before submitting the melding', async () => {
