@@ -324,6 +324,12 @@ importers:
       '@playwright/test':
         specifier: 1.65.0
         version: 1.65.0
+      back-office:
+        specifier: workspace:*
+        version: link:../apps/back-office
+      melding-form:
+        specifier: workspace:*
+        version: link:../apps/melding-form
 
   libs/api-client: {}
 
