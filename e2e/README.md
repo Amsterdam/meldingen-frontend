@@ -74,8 +74,10 @@ Include a trailing slash and any deployment base path, for example `https://acc.
 Each configured URL disables the corresponding local server; omitted URLs retain local testing.
 Setting a URL does not deploy the apps.
 
-For deployed Back Office tests, also supply `PLAYWRIGHT_USERNAME` and `PLAYWRIGHT_PASSWORD` for a dedicated
-Keycloak test user. Store the password as a pipeline secret and explicitly map it into the test step's environment.
+Deployed Back Office tests currently require a Keycloak-enabled deployment; Entra ID deployments
+(as described in the authentication documentation) are not supported by this fixture.
+Supply `PLAYWRIGHT_USERNAME` and `PLAYWRIGHT_PASSWORD` for a dedicated Keycloak test user.
+Store the password as a pipeline secret and explicitly map it into the test step's environment.
 Local development credentials are never used as defaults when `PLAYWRIGHT_BACK_OFFICE_BASE_URL` is set.
 The user must be allowed to sign in with a username and password without interactive MFA or required account actions.
 The login helper supports the standard English and Dutch Keycloak login labels.
