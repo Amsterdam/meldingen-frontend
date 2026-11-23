@@ -49,7 +49,7 @@ pnpm test:e2e
 ```
 
 The Keycloak client must allow callbacks to `http://localhost:3102/api/auth/callback/keycloak`.
-Playwright saves traces for failed tests in `e2e/test-results`.
+Playwright saves traces for failed Melding Form tests in `e2e/test-results`; Back Office tracing is disabled to avoid recording login credentials.
 
 ## Authentication in UI mode
 
