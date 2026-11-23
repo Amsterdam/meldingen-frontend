@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
 import type { LabelOutput } from '~/app/_api-client/proxy'
 
@@ -19,9 +20,11 @@ export default async ({ params }: Props) => {
   const { meldingId: meldingIdParams } = await params
   const meldingId = Number(meldingIdParams)
 
-  const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
+  const { data, error, response } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
-  if (error) throw new Error('Failed to fetch melding data.')
+  if (response?.status === 404) notFound()
+
+  if (error) throw new Error('Failed to fetch melding data.', { cause: error })
 
   const { data: labels, error: labelsError } = await getLabel()
 

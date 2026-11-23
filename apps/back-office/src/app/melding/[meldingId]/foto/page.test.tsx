@@ -19,8 +19,17 @@ describe('generateMetadata', () => {
 })
 
 describe('Page', () => {
-  it('throws an error when getMeldingByMeldingIdAttachments returns an error', async () => {
-    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json({}, { status: 500 })))
+  it('shows not found when the melding does not exist', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json({}, { status: 404 })))
+
+    const params = Promise.resolve({ meldingId: '123' })
+    const searchParams = Promise.resolve({})
+
+    await expect(Page({ params, searchParams })).rejects.toThrow('NEXT_HTTP_ERROR_FALLBACK;404')
+  })
+
+  it.each([403, 500])('throws an error when fetching melding attachments returns %s', async (status) => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json({}, { status })))
 
     const params = Promise.resolve({ meldingId: '123' })
     const searchParams = Promise.resolve({})
@@ -28,13 +37,26 @@ describe('Page', () => {
     await expect(Page({ params, searchParams })).rejects.toThrow('Failed to fetch melding attachments.')
   })
 
-  it('throws an error when getAttachmentById returns an error', async () => {
-    server.use(http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, () => HttpResponse.json({}, { status: 500 })))
+  it.each([404, 500])('throws an error when downloading an image returns %s', async (status) => {
+    server.use(http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, () => HttpResponse.json({}, { status })))
 
     const params = Promise.resolve({ meldingId: '123' })
     const searchParams = Promise.resolve({})
 
     await expect(Page({ params, searchParams })).rejects.toThrow('Failed to download image.')
+  })
+
+  it('renders an empty photo list when the melding has no attachments', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json([])))
+
+    const result = await Page({
+      params: Promise.resolve({ meldingId: '123' }),
+      searchParams: Promise.resolve({}),
+    })
+
+    render(result)
+
+    expect(Photos).toHaveBeenCalledWith({ defaultSlideIndex: undefined, images: [], meldingId: 123 }, undefined)
   })
 
   it('calls Photos with the mapped images and no defaultSlideIndex when there is no id search param', async () => {
