@@ -52,5 +52,13 @@ export const truncateMarkdown = (markdown: string, maxLength: number) => {
 
   if (plainText.length <= maxLength) return plainText
 
-  return plainText.slice(0, maxLength)
+  // Ensure we don't cut off a surrogate pair in the middle.
+  let end = maxLength
+  const lastCodeUnit = plainText.charCodeAt(end - 1)
+
+  if (lastCodeUnit >= 0xd800 && lastCodeUnit <= 0xdbff) {
+    end -= 1
+  }
+
+  return plainText.slice(0, end)
 }
