@@ -87,13 +87,13 @@ describe('getAttachmentsData', () => {
   it('shows not found when the melding does not exist', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json({}, { status: 404 })))
 
-    await expect(getAttachmentsData(mockMeldingId, imageAttachmentType)).rejects.toThrow('NEXT_HTTP_ERROR_FALLBACK;404')
+    await expect(getAttachmentsData(mockMeldingId, 'thumbnail')).rejects.toThrow('NEXT_HTTP_ERROR_FALLBACK;404')
   })
 
   it('returns an empty list when the melding has no attachments', async () => {
     server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json([])))
 
-    await expect(getAttachmentsData(mockMeldingId, imageAttachmentType)).resolves.toEqual([])
+    await expect(getAttachmentsData(mockMeldingId, 'thumbnail')).resolves.toEqual([])
   })
 
   it.each([403, 500])('throws an error when fetching melding attachments returns %s', async (status) => {
