@@ -1,26 +1,15 @@
 import { http, HttpResponse } from 'msw'
 
 import { getAttachmentsData } from './getAttachmentsData'
+import { attachmentImage } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
 import { server } from '~/mocks/node'
 
 const mockMeldingId = 88
 
-const imageMetadata = {
-  created_at: '2025-05-26T11:56:34.081Z',
-  id: 42,
-  is_image: true,
-  optimized: { filename: 'IMG_0815.webp', media_type: 'image/webp' },
-  original_filename: 'IMG_0815.jpg',
-  original_media_type: 'image/jpeg',
-  thumbnail: { filename: 'IMG_0815-thumbnail.webp', media_type: 'image/webp' },
-  updated_at: '2025-05-26T11:56:34.081Z',
-  user: null,
-}
-
 describe('getAttachmentsData', () => {
   it.each(['thumbnail', 'optimized'] as const)('requests the available %s variant for images', async (type) => {
-    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json([imageMetadata])))
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json([attachmentImage])))
 
     server.use(
       http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, ({ request }) => {
@@ -44,12 +33,12 @@ describe('getAttachmentsData', () => {
   })
 
   it.each([
-    { optimized: imageMetadata.optimized, thumbnail: null, type: 'thumbnail' },
-    { optimized: null, thumbnail: imageMetadata.thumbnail, type: 'optimized' },
+    { optimized: attachmentImage.optimized, thumbnail: null, type: 'thumbnail' },
+    { optimized: null, thumbnail: attachmentImage.thumbnail, type: 'optimized' },
   ] as const)('requests original when the $type variant is unavailable', async ({ optimized, thumbnail, type }) => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
-        HttpResponse.json([{ ...imageMetadata, optimized, thumbnail }]),
+        HttpResponse.json([{ ...attachmentImage, optimized, thumbnail }]),
       ),
     )
 
@@ -71,7 +60,7 @@ describe('getAttachmentsData', () => {
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
         HttpResponse.json([
           {
-            ...imageMetadata,
+            ...attachmentImage,
             is_image: false,
             optimized: null,
             original_filename: 'attachment.jpg',
