@@ -74,9 +74,9 @@ describe('getAttachmentsData', () => {
     await getAttachmentsData(mockMeldingId, 'thumbnail')
   })
 
-  it('throws an error when getAttachmentById returns an error', async () => {
+  it.each([404, 500])('throws an error when downloading an attachment returns %s', async (status) => {
     server.use(
-      http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, () => HttpResponse.json({ detail: 'Error message' }, { status: 500 })),
+      http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, () => HttpResponse.json({ detail: 'Error message' }, { status })),
     )
 
     await expect(getAttachmentsData(mockMeldingId, 'thumbnail')).rejects.toThrow(
@@ -84,10 +84,22 @@ describe('getAttachmentsData', () => {
     )
   })
 
-  it('throws an error when getMeldingByMeldingIdAttachments returns an error', async () => {
+  it('shows not found when the melding does not exist', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json({}, { status: 404 })))
+
+    await expect(getAttachmentsData(mockMeldingId, imageAttachmentType)).rejects.toThrow('NEXT_HTTP_ERROR_FALLBACK;404')
+  })
+
+  it('returns an empty list when the melding has no attachments', async () => {
+    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json([])))
+
+    await expect(getAttachmentsData(mockMeldingId, imageAttachmentType)).resolves.toEqual([])
+  })
+
+  it.each([403, 500])('throws an error when fetching melding attachments returns %s', async (status) => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
-        HttpResponse.json({ detail: 'Error message' }, { status: 500 }),
+        HttpResponse.json({ detail: 'Error message' }, { status }),
       ),
     )
 

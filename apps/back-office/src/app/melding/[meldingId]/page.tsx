@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
 import { getMeldingTitle } from './_utils/getMeldingTitle'
 import {
@@ -28,9 +29,13 @@ export default async ({ params }: Props) => {
 
   const t = await getTranslations()
 
-  const { data, error } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
+  const { data, error, response } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
 
-  if (error) throw new Error('Failed to fetch melding data.')
+  if (response?.status === 404) notFound()
+
+  if (error) {
+    throw new Error('Failed to fetch melding.', { cause: error })
+  }
 
   const additionalQuestions = await getAdditionalQuestionsData(meldingId)
 

@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
 import { getOverviewHref } from '../_utils/server'
 import { NotesOverview } from './NotesOverview'
@@ -26,7 +27,9 @@ export default async ({ params }: Props) => {
     getClassification({ query: { include_deleted: true, limit: 0 } }),
   ])
 
-  if (meldingResultData.error) throw new Error('Failed to fetch melding data.')
+  if (meldingResultData.response?.status === 404) notFound()
+
+  if (meldingResultData.error) throw new Error('Failed to fetch melding data.', { cause: meldingResultData.error })
   if (notesResult.error) throw new Error('Failed to fetch notes data.')
   if (currentUserResult.error) throw new Error('Failed to fetch current user data.')
   if (classificationsResult.error) throw new Error('Failed to fetch classifications data.')
