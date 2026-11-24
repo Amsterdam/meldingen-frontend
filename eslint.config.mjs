@@ -65,10 +65,13 @@ export default defineConfig(
       '**/coverage/',
       '**/dist/',
       '**/tmp/',
+      '**/playwright-report/',
+      '**/test-results/',
       // Ignore generated api client
       'libs/api-client/src/generated',
       // Next.js generated files
       '**/.next/',
+      '**/.next-e2e/',
       '**/next-env.d.ts',
     ],
   },
