@@ -1,6 +1,8 @@
 import { getTranslations } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
 import { AddNote } from './AddNote'
+import { getMeldingByMeldingId } from '~/app/_api-client/proxy'
 
 type Props = Pick<PageProps<'/melding/[meldingId]/notities/toevoegen'>, 'params'>
 
@@ -11,7 +13,14 @@ export const generateMetadata = async () => {
 }
 
 export default async ({ params }: Props) => {
-  const { meldingId } = await params
+  const { meldingId: meldingIdParams } = await params
+  const meldingId = Number(meldingIdParams)
 
-  return <AddNote meldingId={Number(meldingId)} />
+  const { error, response } = await getMeldingByMeldingId({ path: { melding_id: meldingId } })
+
+  if (response?.status === 404) notFound()
+
+  if (error) throw new Error('Failed to fetch melding data.', { cause: error })
+
+  return <AddNote meldingId={meldingId} />
 }

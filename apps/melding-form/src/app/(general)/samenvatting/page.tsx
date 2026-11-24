@@ -35,6 +35,7 @@ export default async () => {
 
   // Pass extra arguments to the postSummaryForm action
   const postSummaryFormWithExtraArgs = postSummaryForm.bind(null, {
+    classificationId: classification?.id,
     created_at,
     public_id,
     staleAnswerIds: additionalQuestions.staleAnswerIds,

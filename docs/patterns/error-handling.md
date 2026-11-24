@@ -73,6 +73,9 @@ There are a few exceptions, which are detailed below.
 - Session validity is enforced up front instead of being checked on each page.
   `next-auth` middleware (`src/proxy.ts`) requires a valid session for every route, and the API client config (`src/app/_api-client/proxy.ts`) redirects to `/api/auth/signin` if the access token is missing or its refresh has failed.
   This replaces the cookie-presence check the Melding form does, since Back office is an authenticated app rather than an anonymous one.
+- On the melding detail page and its subpages, a `404` response when fetching the melding or the note identified by the URL shows the `not-found` page.
+  Attachment subpages also handle a `404` from the melding's attachment list this way.
+  Other API errors still show the general error page; an empty list is not a missing resource.
 - When performing an action, an error may occur.
   This can be a server error, or a 4XX or 5XX response from the back end.
   In such cases, we display the current page with an `ApiErrorAlert` at the top of the `main` container, the same pattern the Melding form uses for action errors.

@@ -36,6 +36,9 @@ vi.mock('next-auth', () => ({
 }))
 
 vi.mock('next/navigation', () => ({
+  notFound: vi.fn(() => {
+    throw new Error('NEXT_HTTP_ERROR_FALLBACK;404')
+  }),
   redirect: vi.fn(),
 }))
 
