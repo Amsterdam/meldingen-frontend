@@ -14,10 +14,12 @@ import { ENDPOINTS } from './endpoints'
 export const handlers = [
   // Attachments
   http.delete(ENDPOINTS.DELETE_ATTACHMENT_BY_ID, () => new HttpResponse()),
-  http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, () =>
-    HttpResponse.json(new Blob(['mock content'], { type: 'image/webp' }), {
-      headers: { 'content-type': 'image/webp' },
-    }),
+  http.get(
+    ENDPOINTS.GET_ATTACHMENT_BY_ID,
+    () =>
+      new HttpResponse('mock content', {
+        headers: { 'content-type': 'image/webp' },
+      }),
   ),
 
   // Classifications
