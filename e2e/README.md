@@ -53,32 +53,6 @@ Playwright saves traces for failed tests in `e2e/test-results`.
 Back Office login runs in an isolated Node worker outside the test runner's tracing instrumentation,
 so traces and UI snapshots show the test page without recording credential entry.
 
-## Authentication in UI mode
-
-Launch UI mode directly:
-
-```sh
-pnpm test:e2e:ui
-```
-
-The Back Office authentication fixture signs in automatically before each test, in both CLI and UI mode.
-No manual login, setup-project run, or saved authentication file is needed, including on reruns.
-The UI preview shows snapshots of the authenticated test page; the login flow itself is not recorded.
-
-## Authentication smoke tests
-
-Run the authentication checks in Chromium:
-
-```sh
-pnpm test:e2e --project=back-office-chromium --grep 'signed-out|signed-in'
-```
-
-These check that signed-out visits to the overview and a report URL redirect to sign-in with
-the original URL preserved, and that a real Keycloak login grants access to the overview and
-a report opened directly by URL, including after reloading.
-The signed-in test requires at least one report visible in the overview.
-Token expiry and refresh behaviour are covered separately by authentication callback tests, not these smoke tests.
-
 ## Testing a deployed environment
 
 See [env.example](./env.example) for the supported environment variables.
