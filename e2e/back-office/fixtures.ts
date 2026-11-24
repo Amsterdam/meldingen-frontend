@@ -1,11 +1,14 @@
-import { test as base } from '@playwright/test'
+import type { BrowserContext } from '@playwright/test'
 
-import { loginWithKeycloak } from './loginWithKeycloak'
+import { test as base } from '@playwright/test'
+import { Worker } from 'node:worker_threads'
+
+import type { LoginOptions } from './loginWithKeycloak'
 
 export { expect } from '@playwright/test'
 
 export const test = base.extend({
-  storageState: async ({ baseURL, browser }, provideStorageState) => {
+  storageState: async ({ baseURL, browserName }, provideStorageState) => {
     if (!baseURL) throw new Error('The Back Office project must configure a baseURL')
 
     const isLocal = !process.env.PLAYWRIGHT_BACK_OFFICE_BASE_URL
@@ -16,18 +19,23 @@ export const test = base.extend({
       throw new Error('Back Office tests require non-empty PLAYWRIGHT_USERNAME and PLAYWRIGHT_PASSWORD')
     }
 
-    const context = await browser.newContext()
+    // A separate runtime keeps credential entry outside Playwright's runner instrumentation.
+    const worker = new Worker(new URL('./loginWithKeycloak.ts', import.meta.url), {
+      workerData: { baseURL, browserName, password, username } satisfies LoginOptions,
+    })
 
     try {
-      const page = await context.newPage()
+      const storageState = await new Promise<Awaited<ReturnType<BrowserContext['storageState']>>>((resolve, reject) => {
+        worker.once('message', resolve)
+        worker.once('error', reject)
+        worker.once('exit', (code) => {
+          reject(new Error(`Back Office authentication worker exited without returning a session (code ${code})`))
+        })
+      })
 
-      await loginWithKeycloak(page, baseURL, username, password)
-      await provideStorageState(await context.storageState())
+      await provideStorageState(storageState)
     } finally {
-      await context.close()
+      await worker.terminate()
     }
   },
 })
-
-// Authentication runs inside each test, so runner tracing would capture credentials.
-test.use({ trace: 'off' })
