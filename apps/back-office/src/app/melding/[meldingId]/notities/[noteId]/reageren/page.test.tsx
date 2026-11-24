@@ -56,6 +56,14 @@ describe('Page', () => {
     expect(redirect).toHaveBeenCalledWith('/melding/123/notities')
   })
 
+  it('shows not found when the melding or note does not exist', async () => {
+    server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID, () => HttpResponse.json({}, { status: 404 })),
+    )
+
+    await expect(Page({ params })).rejects.toThrow('NEXT_HTTP_ERROR_FALLBACK;404')
+  })
+
   it('throws an error when fetching the note fails', async () => {
     server.use(
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_NOTE_BY_NOTE_ID, () =>
