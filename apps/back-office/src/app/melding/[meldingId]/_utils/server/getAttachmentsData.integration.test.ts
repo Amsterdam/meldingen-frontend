@@ -1,5 +1,7 @@
 import { http, HttpResponse } from 'msw'
 
+import type { AttachmentOutput } from '@meldingen/api-client'
+
 import { getAttachmentsData } from './getAttachmentsData'
 import { attachmentImage } from '~/mocks/data'
 import { ENDPOINTS } from '~/mocks/endpoints'
@@ -7,20 +9,31 @@ import { server } from '~/mocks/node'
 
 const mockMeldingId = 88
 
+/** Mocks a melding with a single attachment and records the `type` query of every download request. */
+const mockAttachmentDownload = (attachment: AttachmentOutput) => {
+  const requestedTypes: (string | null)[] = []
+
+  server.use(
+    http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json([attachment])),
+    http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, ({ request }) => {
+      requestedTypes.push(new URL(request.url).searchParams.get('type'))
+
+      return new HttpResponse('mock content', {
+        headers: { 'content-type': 'application/octet-stream' },
+      })
+    }),
+  )
+
+  return requestedTypes
+}
+
 describe('getAttachmentsData', () => {
   it.each(['thumbnail', 'optimized'] as const)('requests the available %s variant for images', async (type) => {
-    server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json([attachmentImage])),
-      http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, ({ request }) => {
-        expect(new URL(request.url).searchParams.get('type')).toBe(type)
-
-        return HttpResponse.json(new Blob(['mock content'], { type: 'image/jpeg' }), {
-          headers: { 'content-type': 'image/jpeg' },
-        })
-      }),
-    )
+    const requestedTypes = mockAttachmentDownload(attachmentImage)
 
     const result = await getAttachmentsData(mockMeldingId, type)
+
+    expect(requestedTypes).toEqual([type])
 
     expect(result).toMatchObject([
       {
@@ -35,43 +48,25 @@ describe('getAttachmentsData', () => {
     { optimized: attachmentImage.optimized, thumbnail: null, type: 'thumbnail' },
     { optimized: null, thumbnail: attachmentImage.thumbnail, type: 'optimized' },
   ] as const)('requests original when the $type variant is unavailable', async ({ optimized, thumbnail, type }) => {
-    server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
-        HttpResponse.json([{ ...attachmentImage, optimized, thumbnail }]),
-      ),
-      http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, ({ request }) => {
-        expect(new URL(request.url).searchParams.get('type')).toBe('original')
-
-        return HttpResponse.json(new Blob(['mock content'], { type: 'image/jpeg' }), {
-          headers: { 'content-type': 'image/jpeg' },
-        })
-      }),
-    )
+    const requestedTypes = mockAttachmentDownload({ ...attachmentImage, optimized, thumbnail })
 
     await getAttachmentsData(mockMeldingId, type)
+
+    expect(requestedTypes).toEqual(['original'])
   })
 
   it('requests the original for non-image attachments regardless of filename extension', async () => {
-    server.use(
-      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
-        HttpResponse.json([
-          {
-            ...attachmentImage,
-            is_image: false,
-            optimized: null,
-            original_filename: 'attachment.jpg',
-            thumbnail: null,
-          },
-        ]),
-      ),
-      http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, ({ request }) => {
-        expect(new URL(request.url).searchParams.get('type')).toBe('original')
-
-        return HttpResponse.json(new Blob(['mock content'], { type: 'application/octet-stream' }))
-      }),
-    )
+    const requestedTypes = mockAttachmentDownload({
+      ...attachmentImage,
+      is_image: false,
+      optimized: null,
+      original_filename: 'attachment.jpg',
+      thumbnail: null,
+    })
 
     await getAttachmentsData(mockMeldingId, 'thumbnail')
+
+    expect(requestedTypes).toEqual(['original'])
   })
 
   it.each([404, 500])('throws an error when downloading an attachment returns %s', async (status) => {
