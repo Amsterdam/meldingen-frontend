@@ -9,9 +9,8 @@ const mockMeldingId = 88
 
 describe('getAttachmentsData', () => {
   it.each(['thumbnail', 'optimized'] as const)('requests the available %s variant for images', async (type) => {
-    server.use(http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json([attachmentImage])))
-
     server.use(
+      http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () => HttpResponse.json([attachmentImage])),
       http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, ({ request }) => {
         expect(new URL(request.url).searchParams.get('type')).toBe(type)
 
@@ -40,9 +39,6 @@ describe('getAttachmentsData', () => {
       http.get(ENDPOINTS.GET_MELDING_BY_MELDING_ID_ATTACHMENTS, () =>
         HttpResponse.json([{ ...attachmentImage, optimized, thumbnail }]),
       ),
-    )
-
-    server.use(
       http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, ({ request }) => {
         expect(new URL(request.url).searchParams.get('type')).toBe('original')
 
@@ -68,9 +64,6 @@ describe('getAttachmentsData', () => {
           },
         ]),
       ),
-    )
-
-    server.use(
       http.get(ENDPOINTS.GET_ATTACHMENT_BY_ID, ({ request }) => {
         expect(new URL(request.url).searchParams.get('type')).toBe('original')
 
