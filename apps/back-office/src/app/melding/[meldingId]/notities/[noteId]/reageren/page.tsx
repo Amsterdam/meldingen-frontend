@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server'
-import { redirect } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 
 import { ReactNote } from './ReactNote'
 import { getMeldingByMeldingIdNoteByNoteId, getUserMe } from '~/app/_api-client/proxy'
@@ -22,6 +22,7 @@ export default async ({ params }: Props) => {
     getUserMe(),
   ])
 
+  if (noteResult.response?.status === 404) notFound()
   if (noteResult.error) throw new Error('Failed to fetch note.')
   if (currentUserResult.error) throw new Error('Failed to fetch current user data.')
 
