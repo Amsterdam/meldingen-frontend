@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 /** @type {import('stylelint').Config} */
 export default {
   extends: ['stylelint-config-standard', 'stylelint-config-css-modules'],
-  plugins: ['stylelint-order', 'stylelint-value-no-unknown-custom-properties'],
+  plugins: ['stylelint-order', 'stylelint-value-no-unknown-custom-properties', 'stylelint-plugin-use-baseline'],
   rules: {
     'csstools/value-no-unknown-custom-properties': [
       true,
@@ -19,6 +19,13 @@ export default {
       ['composes'],
       {
         unspecified: 'bottomAlphabetical',
+      },
+    ],
+    'plugin/use-baseline': [
+      true,
+      {
+        available: 'widely',
+        severity: 'warning',
       },
     ],
     'property-disallowed-list': [
