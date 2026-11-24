@@ -104,6 +104,9 @@ importers:
       eslint-import-resolver-typescript:
         specifier: 4.4.5
         version: 4.4.5(eslint-plugin-import@2.32.0)(eslint@9.39.2(jiti@2.7.0))
+      eslint-plugin-baseline-js:
+        specifier: 0.7.7
+        version: 0.7.7(eslint@9.39.2(jiti@2.7.0))
       eslint-plugin-import:
         specifier: 2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.73.0(eslint@9.39.2(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-typescript@4.4.5)(eslint@9.39.2(jiti@2.7.0))
@@ -155,6 +158,9 @@ importers:
       stylelint-order:
         specifier: 8.1.3
         version: 8.1.3(stylelint@16.26.1(typescript@6.0.3))
+      stylelint-plugin-use-baseline:
+        specifier: 1.4.8
+        version: 1.4.8(stylelint@16.26.1(typescript@6.0.3))
       stylelint-value-no-unknown-custom-properties:
         specifier: 6.1.1
         version: 6.1.1(stylelint@16.26.1(typescript@6.0.3))
@@ -3040,6 +3046,18 @@ packages:
       eslint-import-resolver-webpack:
         optional: true
 
+  eslint-plugin-baseline-js@0.7.7:
+    resolution: {integrity: sha512-BACS9mwBXmtZaGzVeIlfKxjAw0KlJkZ9fBH3YYp6jKE6ZUMNkzrIwixuWnYtPEfDsD8EswCaK9FQLXKIMUuwgQ==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    peerDependencies:
+      eslint: '>=9.29.0 <11'
+
+  eslint-plugin-es-x@9.7.0:
+    resolution: {integrity: sha512-BT0pUw0toxtrHulYycGiUTL++qC11opyPYMuGUR7AgmuQ/N1YN1xLupF8rGxlaGqEqkqeedJuacCxxAcYgGkvg==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    peerDependencies:
+      eslint: '>=9.29.0'
+
   eslint-plugin-import@2.32.0:
     resolution: {integrity: sha512-whOE1HFo/qJDyX4SnXzP4N6zOWn79WhnCUY/iDR0mPfQZO8wcYE4JClzI2oZrhBnnMUCBCHZhO6VQyoBU95mZA==}
     engines: {node: '>=4'}
@@ -3091,6 +3109,12 @@ packages:
   eslint-scope@8.4.0:
     resolution: {integrity: sha512-sNXOfKCn74rt8RICKMvJS7XKV/Xk9kA7DyJr8mJik3S7Cwgy3qlkkmyS2uQB3jiJg6VNdZd/pDBJu0nvG2NlTg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  eslint-type-tracer@0.5.2:
+    resolution: {integrity: sha512-YiJmgk6OD1suPB4UC3M/PB+oxahf145jQQ5gFXFk9F9Y7puWwnqGYC2BtTB+FoHqdOohImeTt0rNk0lhhECNaQ==}
+    engines: {node: ^18 || >=20}
+    peerDependencies:
+      eslint: '>=8'
 
   eslint-visitor-keys@3.4.3:
     resolution: {integrity: sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag==}
@@ -4997,6 +5021,11 @@ packages:
     engines: {node: '>=20.19.0'}
     peerDependencies:
       stylelint: ^16.18.0 || ^17.0.0 || ^18.0.0
+
+  stylelint-plugin-use-baseline@1.4.8:
+    resolution: {integrity: sha512-AJtV32b6aOoZdbiaJaj0OEO8I/wh8TSZUGUHsR/15MHSWPon2IPPVcNfzhCodvB+nBEre9xC2wdVJ8QNOWHBLw==}
+    peerDependencies:
+      stylelint: ^16.0.2 || ^17.0.0
 
   stylelint-scss@7.0.0:
     resolution: {integrity: sha512-H88kCC+6Vtzj76NsC8rv6x/LW8slBzIbyeSjsKVlS+4qaEJoDrcJR4L+8JdrR2ORdTscrBzYWiiT2jq6leYR1Q==}
@@ -8127,6 +8156,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  eslint-plugin-baseline-js@0.7.7(eslint@9.39.2(jiti@2.7.0)):
+    dependencies:
+      eslint: 9.39.2(jiti@2.7.0)
+      eslint-plugin-es-x: 9.7.0(eslint@9.39.2(jiti@2.7.0))
+
+  eslint-plugin-es-x@9.7.0(eslint@9.39.2(jiti@2.7.0)):
+    dependencies:
+      '@eslint-community/eslint-utils': 4.10.1(eslint@9.39.2(jiti@2.7.0))
+      '@eslint-community/regexpp': 4.12.3
+      eslint: 9.39.2(jiti@2.7.0)
+      eslint-type-tracer: 0.5.2(eslint@9.39.2(jiti@2.7.0))
+
   eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.73.0(eslint@9.39.2(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-typescript@4.4.5)(eslint@9.39.2(jiti@2.7.0)):
     dependencies:
       '@rtsao/scc': 1.1.0
@@ -8238,6 +8279,11 @@ snapshots:
     dependencies:
       esrecurse: 4.3.0
       estraverse: 5.3.0
+
+  eslint-type-tracer@0.5.2(eslint@9.39.2(jiti@2.7.0)):
+    dependencies:
+      '@eslint-community/eslint-utils': 4.10.1(eslint@9.39.2(jiti@2.7.0))
+      eslint: 9.39.2(jiti@2.7.0)
 
   eslint-visitor-keys@3.4.3: {}
 
@@ -10552,6 +10598,14 @@ snapshots:
     dependencies:
       postcss: 8.5.32
       postcss-sorting: 10.0.0(postcss@8.5.32)
+      stylelint: 16.26.1(typescript@6.0.3)
+
+  stylelint-plugin-use-baseline@1.4.8(stylelint@16.26.1(typescript@6.0.3)):
+    dependencies:
+      css-tree: 3.2.1
+      is-plain-object: 5.0.0
+      postcss: 8.5.32
+      postcss-value-parser: 4.2.0
       stylelint: 16.26.1(typescript@6.0.3)
 
   stylelint-scss@7.0.0(stylelint@16.26.1(typescript@6.0.3)):
