@@ -7,6 +7,7 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { client } from '@meldingen/api-client'
 
 import { ApiClientInitializer } from './ApiClientInitializer'
+import { TabSessionGuard } from './TabSessionGuard'
 import { serverEnv } from '~/env/server'
 
 import './global.css'
@@ -32,6 +33,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
   return (
     <html dir="ltr" lang={locale}>
       <ApiClientInitializer />
+      <TabSessionGuard />
       <NextIntlClientProvider>
         <body className="ams-theme">{children}</body>
       </NextIntlClientProvider>

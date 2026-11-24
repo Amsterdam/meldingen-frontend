@@ -319,6 +319,7 @@ if (!token || !id) {
 
 Cookies are **session cookies** (HttpOnly, Secure, SameSite=Lax), set with `SESSION_COOKIE_OPTIONS` from `apps/melding-form/src/constants.ts`.
 The backend invalidates the token after 1 day.
+`TabSessionGuard` (`apps/melding-form/src/app/TabSessionGuard.tsx`) clears the session when a new tab is opened after all melding form tabs were closed. See [docs/patterns/session-management-and-authentication.md](docs/patterns/session-management-and-authentication.md).
 
 ### back-office: NextAuth with Token Refresh
 
