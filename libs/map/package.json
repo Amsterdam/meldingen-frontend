@@ -16,7 +16,7 @@
     "@meldingen/api-client": "workspace:*",
     "leaflet": "1.9.4",
     "leaflet.markercluster": "1.5.3",
-    "proj4": "2.22.0"
+    "proj4": "2.23.0"
   },
   "devDependencies": {
     "@types/geojson": "7946.0.16",

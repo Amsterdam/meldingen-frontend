@@ -23,6 +23,6 @@
     "@meldingen/ui": "workspace:*",
     "@meldingen/utils": "workspace:*",
     "next": "16.4.6",
-    "next-intl": "4.15.0"
+    "next-intl": "4.15.3"
   }
 }
