@@ -45,14 +45,17 @@ const expectReturnedAttachment = async (result: MeldingAttachment[], attachment:
 }
 
 describe('getAttachmentsData', () => {
-  it.each(['thumbnail', 'optimized'] as const)('requests the available %s variant for images', async (type) => {
-    const requestedTypes = mockAttachmentDownload(attachmentImage)
+  it.each(['thumbnail', 'optimized', 'original'] as const)(
+    'requests the available %s variant for images',
+    async (type) => {
+      const requestedTypes = mockAttachmentDownload(attachmentImage)
 
-    const result = await getAttachmentsData(mockMeldingId, type)
+      const result = await getAttachmentsData(mockMeldingId, type)
 
-    expect(requestedTypes).toEqual([type])
-    await expectReturnedAttachment(result, attachmentImage)
-  })
+      expect(requestedTypes).toEqual([type])
+      await expectReturnedAttachment(result, attachmentImage)
+    },
+  )
 
   it.each([
     { optimized: attachmentImage.optimized, thumbnail: null, type: 'thumbnail' },
