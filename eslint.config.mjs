@@ -198,7 +198,14 @@ export default defineConfig(
 
   {
     files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     rules: {
+      ...baselineJs.configs['recommended-ts']({ available: BASELINE.WIDELY }).rules,
       'no-undef': 'off', // TypeScript handles this
     },
   },
@@ -216,6 +223,18 @@ export default defineConfig(
     files: ['**/*.{js,ts,mjs,cjs}'],
     rules: {
       'import/no-default-export': 'off',
+    },
+  },
+
+  // Disable browser Baseline for server-only files
+  {
+    files: [
+      'apps/{back-office,melding-form}/src/app/**/route.{ts,tsx}',
+      'apps/{back-office,melding-form}/src/app/**/actions.ts',
+      'apps/{back-office,melding-form}/src/**/_utils/server/**/*.ts',
+    ],
+    rules: {
+      'baseline-js/use-baseline': 'off',
     },
   },
 

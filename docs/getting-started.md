@@ -141,6 +141,8 @@ For JavaScript / TypeScript, Markdown and JSON files we use ESLint and the TypeS
 For style files we use Stylelint.
 We use Prettier for code formatting of all these files.
 
+Baseline checks browser API availability. For TypeScript files, ESLint uses the nearest `tsconfig.json` to provide type information, including for instance-method checks.
+
 These linters and formatters run:
 
 - on save (requiring some configuration by developers, see below)
