@@ -134,6 +134,45 @@ describe('Attachments', () => {
     expect(document.title).toBe(`document-title-error-count-prefix ${textAreaComponent.label} - organisation-name`)
   })
 
+  // Regression: the alert used to remount with the old focus trigger and take focus on a later server error
+  it('keeps focus when the server rejects an upload after an earlier validation error was deleted', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, () =>
+        HttpResponse.json({ detail: 'Attachment not allowed' }, { status: 422 }),
+      ),
+    )
+
+    const user = userEvent.setup()
+
+    const { container } = render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+    const largeFile = new File(['x'], 'large.png', { type: 'image/png' })
+
+    Object.defineProperty(largeFile, 'size', { value: MAX_ATTACHMENT_SIZE_BYTES + 1 })
+
+    changeFileInputWithoutRestoringFocus(fileInput, [largeFile])
+
+    await waitFor(() => expect(container.querySelector('.ams-alert')).toHaveFocus())
+
+    await user.click(screen.getByRole('button', { name: `file-upload.action-button-delete ${largeFile.name}` }))
+
+    // With no errors left, the alert is removed, so the next error mounts it again
+    await waitFor(() =>
+      expect(screen.queryByRole('heading', { name: 'validation-errors.alert-title' })).not.toBeInTheDocument(),
+    )
+
+    const submitButton = screen.getByRole('button', { name: 'submit-button' })
+
+    changeFileInputWithoutRestoringFocus(fileInput, [mockFile])
+    // The user moves on while the file is uploading
+    submitButton.focus()
+
+    await screen.findByRole('link', { name: 'validation-errors.with-file-name' })
+
+    expect(submitButton).toHaveFocus()
+  })
+
   it('shows a validation error without uploading when the file is too large', async () => {
     const uploadHandler = vi.fn(() => HttpResponse.json({ id: 42 }))
 

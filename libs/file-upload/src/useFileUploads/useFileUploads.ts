@@ -202,6 +202,9 @@ export const useFileUploads = ({
 
   const removeLocalUpload = (id: string, fileName: string, type: 'cancelled' | 'deleted' = 'deleted') => {
     setFileUploads((prev) => prev.filter((upload) => upload.id !== id))
+    // The error alert focuses itself when it mounts with a truthy focus key.
+    // Without this reset, deleting the last error and then getting a server error would remount it and take focus.
+    setSelectionErrorFocusKey(undefined)
     announce([{ fileNames: [fileName], type }])
   }
 

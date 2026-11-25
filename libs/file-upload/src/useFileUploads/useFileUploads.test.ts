@@ -495,6 +495,22 @@ describe('useFileUploads', () => {
       expect(result.current.selectionErrorFocusKey).not.toBe(firstKey)
     })
 
+    it('is cleared when an upload is removed', () => {
+      const { result } = renderHook(() =>
+        useFileUploads({ ...defaultParams, inputRef: createInputRef(), maxFileSizeBytes: 5 }),
+      )
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['123456'], 'too-large.png')]))
+      })
+
+      act(() => {
+        result.current.handleDelete(result.current.fileUploads[0].id, 'too-large.png')
+      })
+
+      expect(result.current.selectionErrorFocusKey).toBeUndefined()
+    })
+
     it('does not change when an upload fails on the server', () => {
       let onError = () => {}
 
