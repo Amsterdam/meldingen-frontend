@@ -110,7 +110,8 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const baseDocumentTitle = `${label} - ${tShared('organisation-name')}`
   const documentTitle = useDocumentTitleOnError({
     baseDocumentTitle,
-    hasApiError: Boolean(apiError) || Boolean(genericError),
+    errorHeading: genericError && t(genericError.title, genericError.options),
+    hasApiError: Boolean(apiError),
     validationErrorCount: validationErrors.length,
   })
 

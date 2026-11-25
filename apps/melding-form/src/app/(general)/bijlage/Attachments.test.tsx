@@ -207,7 +207,7 @@ describe('Attachments', () => {
     expect(alert).toHaveTextContent('errors.too-many-files.title')
     expect(alert).toHaveFocus()
 
-    expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
+    expect(document.title).toBe(`errors.too-many-files.title - ${textAreaComponent.label} - organisation-name`)
   })
 
   it('announces a deleted file in a live region that is already present before the deletion', async () => {
@@ -314,6 +314,7 @@ describe('Attachments', () => {
 
     await waitFor(() => expect(alert).toHaveTextContent('errors.delete-failed.title'))
 
+    expect(document.title).toBe(`errors.delete-failed.title - ${textAreaComponent.label} - organisation-name`)
     expect(consoleErrorSpy).toHaveBeenCalledWith('API error')
 
     consoleErrorSpy.mockRestore()
@@ -346,5 +347,6 @@ describe('Attachments', () => {
 
     expect(alert).toHaveTextContent('errors.upload-in-progress.title')
     expect(alert).toHaveTextContent('errors.upload-in-progress.description')
+    expect(document.title).toBe(`errors.upload-in-progress.title - ${textAreaComponent.label} - organisation-name`)
   })
 })
