@@ -96,7 +96,12 @@
       "progress-finished": "Upload geslaagd",
       "progress-loading": "Upload {percentage}%"
     },
-    "delete-notification": "{fileName} is verwijderd",
+    "announcements": {
+      "cancelled": "Uploaden van {fileName} is geannuleerd.",
+      "deleted": "{fileName} is verwijderd.",
+      "upload-started": "{count, plural, =1 {{fileName} wordt toegevoegd.} other {# bestanden worden toegevoegd.}}",
+      "upload-succeeded": "{count, plural, =1 {{fileName} is toegevoegd.} other {# bestanden zijn toegevoegd.}}"
+    },
     "no-js-alert-title": "JavaScript is niet beschikbaar",
     "no-js-alert-description": "Wijzig dit in de instellingen van uw browser of probeer opnieuw de pagina te laden.",
     "submit-button": "Volgende vraag",

@@ -41,6 +41,9 @@ const existingFile = {
 }
 const duplicateFile = new File(['dummy content'], 'existing.png', { type: 'image/png' })
 
+// The translation mock returns keys, so a message reads as '<announcement key> <file count key>'
+const deletedMessage = 'announcements.deleted status'
+
 const changeFileInputWithoutRestoringFocus = (fileInput: HTMLElement, files: File[]) => {
   // userEvent.upload restores focus to the file input after the change handler, masking alert focus.
   fireEvent.change(fileInput, { target: { files } })
@@ -218,7 +221,7 @@ describe('Attachments', () => {
     // Screen readers only reliably announce changes to live regions that already exist in the DOM
     const liveRegionsBeforeDelete = Array.from(container.querySelectorAll('[aria-live]'))
 
-    expect(screen.queryByText('delete-notification')).not.toBeInTheDocument()
+    expect(screen.queryByText(deletedMessage)).not.toBeInTheDocument()
 
     const fileInput = screen.getByLabelText('File input')
 
@@ -230,11 +233,31 @@ describe('Attachments', () => {
 
     await user.click(deleteButton)
 
-    const notification = await screen.findByText('delete-notification')
+    const notification = await screen.findByText(deletedMessage)
     const liveRegion = notification.closest('[aria-live]')
 
     expect(liveRegion).toHaveAttribute('aria-live', 'polite')
     expect(liveRegionsBeforeDelete).toContain(liveRegion)
+  })
+
+  // Separate status regions that change at the same time interrupt each other in screen readers
+  it('has a single status region for upload messages', () => {
+    render(<Attachments {...defaultProps} />)
+
+    expect(screen.getAllByRole('status')).toHaveLength(1)
+  })
+
+  it('announces when an upload starts and when it succeeds', async () => {
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} />)
+
+    await user.upload(screen.getByLabelText('File input'), [mockFile])
+
+    const status = screen.getByRole('status')
+
+    await waitFor(() => expect(status).toHaveTextContent('announcements.upload-started status'))
+    await waitFor(() => expect(status).toHaveTextContent('announcements.upload-succeeded status'))
   })
 
   it('announces a deletion again when a file with the same name is deleted right after', async () => {
@@ -250,12 +273,12 @@ describe('Attachments', () => {
 
     await user.click(duplicateDeleteButton)
 
-    const firstNotification = await screen.findByText('delete-notification')
+    const firstNotification = await screen.findByText(deletedMessage)
 
     await user.click(screen.getByRole('button', { name: deleteButtonName }))
 
     // The same text in a new element counts as a change for screen readers, so the deletion is announced again
-    await waitFor(() => expect(screen.getByText('delete-notification')).not.toBe(firstNotification))
+    await waitFor(() => expect(screen.getByText(deletedMessage)).not.toBe(firstNotification))
   })
 
   it('moves focus to the upload button when an existing file is deleted', async () => {

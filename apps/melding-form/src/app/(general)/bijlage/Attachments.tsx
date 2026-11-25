@@ -19,6 +19,7 @@ import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from '../_utils'
 import { submitAttachmentsForm } from './actions'
+import { useAnnouncementMessage } from './useAnnouncementMessage'
 import { ApiErrorAlert, BackLink, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 import { clientEnv } from '~/env/client'
@@ -91,8 +92,17 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     handleDelete(id, name, xhr, serverId)
   }
 
-  const deleteAnnouncement =
-    announcement?.type === 'deleted' || announcement?.type === 'cancelled' ? announcement : undefined
+  const fileCountText = t('status', {
+    fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
+    maxFiles: MAX_SUCCESSFUL_UPLOADS,
+  })
+
+  // One status region for all upload results, so messages don't interrupt each other
+  const announcementMessage = useAnnouncementMessage(
+    announcement,
+    ({ fileNames, type }) =>
+      `${t(`announcements.${type}`, { count: fileNames.length, fileName: fileNames[0] })} ${fileCountText}`,
+  )
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
   const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id)
@@ -160,12 +170,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           </Column>
 
           <div className={styles.needsJavaScript}>
-            <Paragraph aria-live="polite" className="ams-mb-m" role="status">
-              {t('status', {
-                fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
-                maxFiles: MAX_SUCCESSFUL_UPLOADS,
-              })}
-            </Paragraph>
+            <Paragraph className="ams-mb-m">{fileCountText}</Paragraph>
 
             <FileUpload
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp"
@@ -204,11 +209,9 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             )}
 
             <div aria-live="polite" className="ams-visually-hidden" role="status">
-              {deleteAnnouncement && (
-                // A new key replaces the element, so deleting a file with the same name is announced again
-                <span key={deleteAnnouncement.id}>
-                  {t('delete-notification', { fileName: deleteAnnouncement.fileNames[0] })}
-                </span>
+              {announcementMessage && (
+                // A new key replaces the element, so an identical message is announced again
+                <span key={announcementMessage.id}>{announcementMessage.text}</span>
               )}
             </div>
           </div>
