@@ -70,8 +70,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     uploadUrl: `${clientEnv.NEXT_PUBLIC_BASE_PATH}/api/melding/${meldingId}/attachment`,
   })
 
-  const deleteAnnouncement =
-    announcement?.type === 'deleted' || announcement?.type === 'cancelled' ? announcement : undefined
+  const deleteEvent = announcement?.events.find(({ type }) => type === 'deleted' || type === 'cancelled')
 
   const handleOnDelete = (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => {
     const shouldDelete = window.confirm(t('confirmation-prompt', { fileName }))
@@ -161,11 +160,9 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
         {hasAttachments && <AttachmentsList files={fileUploads} handleDelete={handleOnDelete} />}
 
         <div aria-live="polite" className="ams-visually-hidden" role="status">
-          {deleteAnnouncement && (
+          {announcement && deleteEvent && (
             // A new key replaces the element, so deleting a file with the same name is announced again
-            <span key={deleteAnnouncement.id}>
-              {t('delete-notification', { fileName: deleteAnnouncement.fileNames[0] })}
-            </span>
+            <span key={announcement.id}>{t('delete-notification', { fileName: deleteEvent.fileNames[0] })}</span>
           )}
         </div>
       </Column>

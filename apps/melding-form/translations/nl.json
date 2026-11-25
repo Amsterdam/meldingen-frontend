@@ -99,6 +99,7 @@
     "announcements": {
       "cancelled": "Uploaden van {fileName} is geannuleerd.",
       "deleted": "{fileName} is verwijderd.",
+      "upload-failed": "{count, plural, =1 {Uploaden van {fileName} is mislukt.} other {Uploaden van # bestanden is mislukt.}}",
       "upload-started": "{count, plural, =1 {{fileName} wordt toegevoegd.} other {# bestanden worden toegevoegd.}}",
       "upload-succeeded": "{count, plural, =1 {{fileName} is toegevoegd.} other {# bestanden zijn toegevoegd.}}"
     },

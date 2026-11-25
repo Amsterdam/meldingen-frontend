@@ -4,7 +4,7 @@ import { Paragraph } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useId, useRef, useState } from 'react'
+import { useActionState, useEffect, useId, useRef } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import type { ErroredFileUpload, ExistingFile, FileUploadState } from '@meldingen/file-upload'
@@ -68,18 +68,17 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const tShared = useTranslations('shared')
 
   const [{ apiError }, formAction, isPending] = useActionState(submitAttachmentsForm, initialState)
-  const [invalidFormAlertFocusKey, setInvalidFormAlertFocusKey] = useState<string[]>([])
-
-  const { announcement, fileUploads, genericError, handleDelete, handleSubmit, handleUpload } = useFileUploads({
-    deleteAttachment: (serverId: number) => deleteAttachment(meldingId, token, serverId),
-    existingFiles: files,
-    idPrefix: t('file-upload.id-prefix'),
-    inputRef,
-    maxFileSizeBytes: MAX_ATTACHMENT_SIZE_BYTES,
-    maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
-    maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
-    uploadUrl: `${clientEnv.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment/melder?token=${encodeURIComponent(token)}`,
-  })
+  const { announcement, fileUploads, genericError, handleDelete, handleSubmit, handleUpload, selectionErrorFocusKey } =
+    useFileUploads({
+      deleteAttachment: (serverId: number) => deleteAttachment(meldingId, token, serverId),
+      existingFiles: files,
+      idPrefix: t('file-upload.id-prefix'),
+      inputRef,
+      maxFileSizeBytes: MAX_ATTACHMENT_SIZE_BYTES,
+      maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
+      maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
+      uploadUrl: `${clientEnv.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment/melder?token=${encodeURIComponent(token)}`,
+    })
 
   const handleOnDelete = (id: string, name: string, xhr?: XMLHttpRequest, serverId?: number) => {
     // Move focus to a surviving control before deletion removes the active button.
@@ -98,19 +97,15 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   })
 
   // One status region for all upload results, so messages don't interrupt each other
-  const announcementMessage = useAnnouncementMessage(
-    announcement,
-    ({ fileNames, type }) =>
-      `${t(`announcements.${type}`, { count: fileNames.length, fileName: fileNames[0] })} ${fileCountText}`,
-  )
+  const announcementMessage = useAnnouncementMessage(announcement, ({ events }) => {
+    const eventTexts = events.map(({ fileNames, type }) =>
+      t(`announcements.${type}`, { count: fileNames.length, fileName: fileNames[0] }),
+    )
+
+    return [...eventTexts, fileCountText].join(' ')
+  })
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
-  const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id)
-
-  // Only update when a new upload fails, so deleting a failed upload does not refocus the alert
-  if (erroredFileUploadIds.some((id) => !invalidFormAlertFocusKey.includes(id))) {
-    setInvalidFormAlertFocusKey(erroredFileUploadIds)
-  }
 
   const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
     key: id,
@@ -144,7 +139,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
         <InvalidFormAlert
           errors={validationErrors}
-          focusKey={invalidFormAlertFocusKey}
+          focusKey={selectionErrorFocusKey}
           heading={t('validation-errors.alert-title', { count: validationErrors.length })}
         />
         {genericError && (

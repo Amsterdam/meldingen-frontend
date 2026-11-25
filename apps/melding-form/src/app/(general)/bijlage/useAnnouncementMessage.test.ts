@@ -4,7 +4,7 @@ import type { Announcement } from '@meldingen/file-upload'
 
 import { ANNOUNCEMENT_CLEAR_DELAY_MS, useAnnouncementMessage } from './useAnnouncementMessage'
 
-const deleted: Announcement = { fileNames: ['a.png'], id: 1, type: 'deleted' }
+const deleted: Announcement = { events: [{ fileNames: ['a.png'], type: 'deleted' }], id: 1 }
 
 describe('useAnnouncementMessage', () => {
   beforeEach(() => {
@@ -22,7 +22,9 @@ describe('useAnnouncementMessage', () => {
   })
 
   it('returns the text and id of the announcement', () => {
-    const { result } = renderHook(() => useAnnouncementMessage(deleted, ({ fileNames }) => `${fileNames[0]} deleted`))
+    const { result } = renderHook(() =>
+      useAnnouncementMessage(deleted, ({ events }) => `${events[0].fileNames[0]} deleted`),
+    )
 
     expect(result.current).toEqual({ id: 1, text: 'a.png deleted' })
   })

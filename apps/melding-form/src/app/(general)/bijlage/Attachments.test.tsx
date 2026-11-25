@@ -107,26 +107,28 @@ describe('Attachments', () => {
     expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
   })
 
-  it('renders an Invalid Form Alert, focuses it and updates the document title when there are validation errors', async () => {
+  // A server error arrives later, when the user may be doing something else, so focus must stay where it is
+  it('renders an Invalid Form Alert and announces the failure, but keeps focus, when the server rejects an upload', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, () =>
         HttpResponse.json({ detail: 'Allowed content size exceeded' }, { status: 422 }),
       ),
     )
 
-    const { container } = render(<Attachments {...defaultProps} />)
+    render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText('File input')
+    const submitButton = screen.getByRole('button', { name: 'submit-button' })
 
     changeFileInputWithoutRestoringFocus(fileInput, [mockFile])
+    // The user moves on while the file is uploading
+    submitButton.focus()
 
     const link = await screen.findByRole('link', { name: 'validation-errors.file-too-large' })
-    const alert = container.querySelector('.ams-alert')
 
-    expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', '#file-upload.id-prefix-1')
-    await waitFor(() => expect(alert).toHaveFocus())
-
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('announcements.upload-failed status'))
+    expect(submitButton).toHaveFocus()
     expect(document.title).toBe(`document-title-error-count-prefix ${textAreaComponent.label} - organisation-name`)
   })
 
@@ -258,6 +260,35 @@ describe('Attachments', () => {
 
     await waitFor(() => expect(status).toHaveTextContent('announcements.upload-started status'))
     await waitFor(() => expect(status).toHaveTextContent('announcements.upload-succeeded status'))
+  })
+
+  it('announces uploads that succeed and fail at about the same time in one message', async () => {
+    let requestCount = 0
+
+    // Uploads are sent in the order they were chosen, so the second request belongs to rejected.png
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, () => {
+        requestCount += 1
+
+        return requestCount === 2
+          ? HttpResponse.json({ detail: 'Attachment not allowed' }, { status: 422 })
+          : HttpResponse.json({ id: 123 })
+      }),
+    )
+
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} />)
+
+    const rejectedFile = new File(['dummy content two'], 'rejected.png', { type: 'image/png' })
+
+    await user.upload(screen.getByLabelText('File input'), [mockFile, rejectedFile])
+
+    await waitFor(() =>
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'announcements.upload-succeeded announcements.upload-failed status',
+      ),
+    )
   })
 
   it('announces a deletion again when a file with the same name is deleted right after', async () => {

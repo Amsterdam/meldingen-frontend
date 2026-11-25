@@ -3,6 +3,7 @@ export { useObjectUrl } from './FileList/useObjectUrl'
 export { FileUpload } from './FileUpload/FileUpload'
 export type {
   Announcement,
+  AnnouncementEvent,
   AnnouncementType,
   ErroredFileUpload,
   ExistingFile,

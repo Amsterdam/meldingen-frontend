@@ -164,17 +164,20 @@ describe('startUpload', () => {
     expect(setFileUploadsMock).toHaveBeenCalledTimes(1)
   })
 
-  it('calls onSuccess when the server responds successfully', () => {
+  it('calls onSuccess and not onError when the server responds successfully', () => {
+    const onError = vi.fn()
     const onSuccess = vi.fn()
 
-    startUpload(fileUpload, setFileUploadsMock, onSuccess)
+    startUpload(fileUpload, setFileUploadsMock, { onError, onSuccess })
 
     xhrMock.onload?.(new ProgressEvent('load'))
 
     expect(onSuccess).toHaveBeenCalledTimes(1)
+    expect(onError).not.toHaveBeenCalled()
   })
 
-  it('does not call onSuccess when the server responds with an error', () => {
+  it('calls onError and not onSuccess when the server responds with an error', () => {
+    const onError = vi.fn()
     const onSuccess = vi.fn()
     const failingXhrMock = {
       response: JSON.stringify({}),
@@ -183,20 +186,23 @@ describe('startUpload', () => {
       upload: {} as XMLHttpRequestUpload,
     } as unknown as XMLHttpRequest
 
-    startUpload({ ...fileUpload, xhr: failingXhrMock }, setFileUploadsMock, onSuccess)
+    startUpload({ ...fileUpload, xhr: failingXhrMock }, setFileUploadsMock, { onError, onSuccess })
 
     failingXhrMock.onload?.(new ProgressEvent('load'))
 
+    expect(onError).toHaveBeenCalledTimes(1)
     expect(onSuccess).not.toHaveBeenCalled()
   })
 
-  it('does not call onSuccess on a network error', () => {
+  it('calls onError and not onSuccess on a network error', () => {
+    const onError = vi.fn()
     const onSuccess = vi.fn()
 
-    startUpload(fileUpload, setFileUploadsMock, onSuccess)
+    startUpload(fileUpload, setFileUploadsMock, { onError, onSuccess })
 
     xhrMock.onerror?.(new ProgressEvent('error'))
 
+    expect(onError).toHaveBeenCalledTimes(1)
     expect(onSuccess).not.toHaveBeenCalled()
   })
 
