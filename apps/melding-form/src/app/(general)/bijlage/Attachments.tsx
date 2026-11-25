@@ -107,9 +107,10 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
 
-  const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
+  // The file name makes links with the same error distinguishable, e.g. when two files are too large
+  const validationErrors = erroredFileUploads.map(({ errorMessage, file, id }) => ({
     key: id,
-    message: t(errorMessage),
+    message: t('validation-errors.with-file-name', { fileName: file.name, message: t(errorMessage) }),
   }))
 
   const { description, label } = formData[0]
@@ -193,6 +194,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
                     labels={{
                       actionButtonCancelLabel: t('file-upload.action-button-cancel'),
                       actionButtonDeleteLabel: t('file-upload.action-button-delete'),
+                      errorPrefix: t('file-upload.error-prefix'),
                       progressFinishedLabel: t('file-upload.progress-finished'),
                       progressLoadingLabel: t('file-upload.progress-loading', { percentage: Math.round(progress) }),
                     }}

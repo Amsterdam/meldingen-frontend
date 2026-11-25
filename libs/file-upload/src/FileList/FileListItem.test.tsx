@@ -95,7 +95,37 @@ describe('FileListItem', () => {
     expect(statusMessage).toBeInTheDocument()
 
     const container = screen.getByRole('listitem')
+
     expect(container).toHaveClass(/itemWithError/)
+  })
+
+  it('describes the delete button with the error message when an error occurs', () => {
+    render(<FileListItem {...defaultProps} errorMessage="errors.duplicate-upload" status="error" />)
+
+    expect(screen.getByRole('button', { name: 'Verwijderen sample.txt' })).toHaveAccessibleDescription(
+      'errors.duplicate-upload',
+    )
+  })
+
+  it('reads the error prefix before the error message', () => {
+    render(
+      <FileListItem
+        {...defaultProps}
+        errorMessage="errors.duplicate-upload"
+        labels={{ ...defaultProps.labels, errorPrefix: 'Invoerfout' }}
+        status="error"
+      />,
+    )
+
+    expect(screen.getByRole('button', { name: 'Verwijderen sample.txt' })).toHaveAccessibleDescription(
+      'Invoerfout: errors.duplicate-upload',
+    )
+  })
+
+  it('gives the delete button no description when there is no error', () => {
+    render(<FileListItem {...defaultProps} />)
+
+    expect(screen.getByRole('button', { name: 'Verwijderen sample.txt' })).not.toHaveAttribute('aria-describedby')
   })
 
   it('calls onDelete when the remove button is clicked', async () => {

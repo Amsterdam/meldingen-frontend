@@ -92,6 +92,7 @@
       "action-button-cancel": "Annuleren",
       "button": "Bestanden kiezen",
       "drop-area": "Of sleep de bestanden in dit vlak.",
+      "error-prefix": "Invoerfout",
       "id-prefix": "bestand",
       "progress-finished": "Upload geslaagd",
       "progress-loading": "Upload {percentage}%"
@@ -126,6 +127,7 @@
     "validation-errors": {
       "alert-title": "{count, plural, =1 {Verbeter de fout om uw foto’s toe te voegen} other {Verbeter de fouten om uw foto’s toe te voegen}}",
       "duplicate-upload": "Het gekozen bestand is al toegevoegd.",
+      "with-file-name": "{fileName}: {message}",
       "failed-upload": "Probeer het opnieuw.",
       "invalid-file-type": "Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp.",
       "file-too-large": "Een foto mag maximaal 20 MB groot zijn.",

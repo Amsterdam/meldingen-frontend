@@ -124,9 +124,11 @@ describe('Attachments', () => {
     // The user moves on while the file is uploading
     submitButton.focus()
 
-    const link = await screen.findByRole('link', { name: 'validation-errors.file-too-large' })
+    const link = await screen.findByRole('link', { name: 'validation-errors.with-file-name' })
 
+    // The link leads to the failed file, which shows the server's error
     expect(link).toHaveAttribute('href', '#file-upload.id-prefix-1')
+    expect(screen.getByText('validation-errors.file-too-large')).toBeInTheDocument()
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('announcements.upload-failed status'))
     expect(submitButton).toHaveFocus()
     expect(document.title).toBe(`document-title-error-count-prefix ${textAreaComponent.label} - organisation-name`)
@@ -147,7 +149,11 @@ describe('Attachments', () => {
 
     await user.upload(screen.getByLabelText('File input'), [largeFile])
 
-    expect(await screen.findByRole('link', { name: 'validation-errors.file-too-large' })).toBeInTheDocument()
+    expect(await screen.findByRole('link', { name: 'validation-errors.with-file-name' })).toBeInTheDocument()
+    // The error link leads to this button, so the error must be read there
+    expect(
+      screen.getByRole('button', { name: `file-upload.action-button-delete ${largeFile.name}` }),
+    ).toHaveAccessibleDescription('file-upload.error-prefix: validation-errors.file-too-large')
     expect(uploadHandler).not.toHaveBeenCalled()
   })
 
