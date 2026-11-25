@@ -2,6 +2,8 @@
 
 Playwright tests live in this separate workspace and run separately from Vitest.
 See the [testing conventions](../docs/code-conventions/testing.md) for guidance on writing and organising tests.
+For manual mobile coverage beyond Playwright emulation, see the
+[Melding Form real-device checklist](../docs/code-conventions/testing.md#real-device-checks-for-melding-form).
 
 ## Getting started
 
