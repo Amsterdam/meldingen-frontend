@@ -10,9 +10,16 @@ describe('FileUpload', () => {
   it('renders button and texts', () => {
     render(<FileUpload button={{ text: 'Button text' }} dropAreaText="Drop area text" onChange={vi.fn()} />)
 
-    const button = screen.getByRole('button', { name: 'Button textDrop area text' })
+    const button = screen.getByRole('button', { name: 'Button text' })
 
     expect(button).toBeInTheDocument()
+    expect(button).toHaveTextContent('Drop area text')
+  })
+
+  it('hides the drop area text from assistive technology', () => {
+    render(<FileUpload button={{ text: 'Button text' }} dropAreaText="Drop area text" onChange={vi.fn()} />)
+
+    expect(screen.getByText('Drop area text')).toHaveAttribute('aria-hidden', 'true')
   })
 
   it('prevents default on drop', () => {

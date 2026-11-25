@@ -60,7 +60,7 @@ describe('Attachments', () => {
     const heading = screen.getByRole('heading', { name: 'First question hint-text' })
     const description = screen.getByText('Test description')
     const fileUpload = screen.getByRole('button', {
-      name: 'First question hint-text file-upload.buttonfile-upload.drop-area',
+      name: 'First question hint-text file-upload.button',
     })
     const noJSAlertHeading = screen.getByRole('heading', { name: 'no-js-alert-title' })
 
@@ -169,7 +169,7 @@ describe('Attachments', () => {
 
     const fileInput = screen.getByLabelText('File input')
     const uploadButton = screen.getByRole('button', {
-      name: 'First question hint-text file-upload.buttonfile-upload.drop-area',
+      name: 'First question hint-text file-upload.button',
     })
 
     changeFileInputWithoutRestoringFocus(fileInput, [duplicateFile])
@@ -242,7 +242,7 @@ describe('Attachments', () => {
     render(<Attachments {...defaultProps} files={[existingFile]} />)
 
     const uploadButton = screen.getByRole('button', {
-      name: 'First question hint-text file-upload.buttonfile-upload.drop-area',
+      name: 'First question hint-text file-upload.button',
     })
     const deleteButton = screen.getByRole('button', {
       name: `file-upload.action-button-delete ${existingFile.fileName}`,
