@@ -51,18 +51,9 @@ pnpm test:e2e
 ```
 
 The Keycloak client must allow callbacks to `http://localhost:3102/api/auth/callback/keycloak`.
-Playwright saves traces for failed Melding Form tests in `e2e/test-results`; Back Office tracing is disabled to avoid recording login credentials.
-
-## Authentication in UI mode
-
-Launch UI mode directly:
-
-```sh
-pnpm test:e2e:ui
-```
-
-The Back Office authentication fixture signs in automatically before each test, in both CLI and UI mode.
-No manual login, setup-project run, or saved authentication file is needed, including on reruns.
+Playwright saves traces for failed tests in `e2e/test-results`.
+Back Office login runs in an isolated Node worker outside the test runner's tracing instrumentation,
+so traces and UI snapshots show the test page without recording credential entry.
 
 ## Testing a deployed environment
 
@@ -95,7 +86,7 @@ The deployed app keeps its existing Keycloak client configuration; Playwright do
 token endpoint, or NextAuth secret. Tests sign in through NextAuth and Keycloak in the browser, then verify
 that NextAuth exposes a valid session before running assertions.
 Authentication state is passed to the test in memory, without saving session cookies to disk.
-The authentication fixture uses a separate browser context without traces, screenshots, or video
+The authentication fixture uses a separate browser in an isolated Node worker without traces, screenshots, or video
 to avoid recording login credentials.
 Test traces can still contain authenticated requests and data, so restrict access to pipeline artifacts.
 The deployment pipeline must run these tests after ACC is available; triggering tests from ACC alone does not select it.
