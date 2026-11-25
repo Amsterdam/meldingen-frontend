@@ -69,7 +69,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const [{ apiError }, formAction, isPending] = useActionState(submitAttachmentsForm, initialState)
   const [invalidFormAlertFocusKey, setInvalidFormAlertFocusKey] = useState<string[]>([])
 
-  const { deletedFileName, fileUploads, genericError, handleDelete, handleSubmit, handleUpload } = useFileUploads({
+  const { announcement, fileUploads, genericError, handleDelete, handleSubmit, handleUpload } = useFileUploads({
     deleteAttachment: (serverId: number) => deleteAttachment(meldingId, token, serverId),
     existingFiles: files,
     idPrefix: t('file-upload.id-prefix'),
@@ -90,6 +90,9 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
 
     handleDelete(id, name, xhr, serverId)
   }
+
+  const deleteAnnouncement =
+    announcement?.type === 'deleted' || announcement?.type === 'cancelled' ? announcement : undefined
 
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
   const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id)
@@ -201,7 +204,12 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             )}
 
             <div aria-live="polite" className="ams-visually-hidden" role="status">
-              {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
+              {deleteAnnouncement && (
+                // A new key replaces the element, so deleting a file with the same name is announced again
+                <span key={deleteAnnouncement.id}>
+                  {t('delete-notification', { fileName: deleteAnnouncement.fileNames[0] })}
+                </span>
+              )}
             </div>
           </div>
 

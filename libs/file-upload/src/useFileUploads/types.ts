@@ -26,3 +26,15 @@ export type PendingFileUpload = Omit<FileUpload, 'status'> & {
 }
 
 export type FileUploadState = FileUpload | ErroredFileUpload | PendingFileUpload
+
+export type AnnouncementType = 'cancelled' | 'deleted' | 'upload-started' | 'upload-succeeded'
+
+/**
+ * A message for a screen-reader status region.
+ * `id` increases with every announcement, so an identical message can be announced again.
+ */
+export type Announcement = {
+  fileNames: string[]
+  id: number
+  type: AnnouncementType
+}

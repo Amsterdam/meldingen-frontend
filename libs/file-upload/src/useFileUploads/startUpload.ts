@@ -11,6 +11,7 @@ import { getValidationErrorMessageTranslationKey } from './utils'
 export const startUpload = (
   fileUpload: PendingFileUpload,
   setFileUploads: Dispatch<SetStateAction<FileUploadState[]>>,
+  onSuccess?: () => void,
 ) => {
   const xhr = fileUpload.xhr
 
@@ -46,6 +47,8 @@ export const startUpload = (
         return { ...upload, errorMessage: undefined, serverId: parsed?.id, status: 'success' }
       }),
     )
+
+    if (isOk) onSuccess?.()
   }
 
   xhr.onerror = () => {

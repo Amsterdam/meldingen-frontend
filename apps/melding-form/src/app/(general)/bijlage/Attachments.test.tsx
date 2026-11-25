@@ -231,9 +231,31 @@ describe('Attachments', () => {
     await user.click(deleteButton)
 
     const notification = await screen.findByText('delete-notification')
+    const liveRegion = notification.closest('[aria-live]')
 
-    expect(notification).toHaveAttribute('aria-live', 'polite')
-    expect(liveRegionsBeforeDelete).toContain(notification)
+    expect(liveRegion).toHaveAttribute('aria-live', 'polite')
+    expect(liveRegionsBeforeDelete).toContain(liveRegion)
+  })
+
+  it('announces a deletion again when a file with the same name is deleted right after', async () => {
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} files={[existingFile]} />)
+
+    // The duplicate gets a validation error, so there is no other announcement between the two deletions
+    await user.upload(screen.getByLabelText('File input'), [duplicateFile])
+
+    const deleteButtonName = `file-upload.action-button-delete ${existingFile.fileName}`
+    const [, duplicateDeleteButton] = await screen.findAllByRole('button', { name: deleteButtonName })
+
+    await user.click(duplicateDeleteButton)
+
+    const firstNotification = await screen.findByText('delete-notification')
+
+    await user.click(screen.getByRole('button', { name: deleteButtonName }))
+
+    // The same text in a new element counts as a change for screen readers, so the deletion is announced again
+    await waitFor(() => expect(screen.getByText('delete-notification')).not.toBe(firstNotification))
   })
 
   it('moves focus to the upload button when an existing file is deleted', async () => {

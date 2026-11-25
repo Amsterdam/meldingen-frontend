@@ -1,8 +1,10 @@
 import type { ChangeEvent, Dispatch, RefObject, SetStateAction, SubmitEvent } from 'react'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import type {
+  Announcement,
+  AnnouncementType,
   ErroredFileUpload,
   ExistingFile,
   FileUploadState,
@@ -46,15 +48,20 @@ const mapExistingFilesToUploads = (files: ExistingFile[], idPrefix: string): Fil
 const isPendingUpload = (upload: FileUploadState): upload is PendingFileUpload => upload.status === 'pending'
 
 const startPendingUploads = (
-  uploads: FileUploadState[],
+  uploads: PendingFileUpload[],
   uploadUrl: string,
   setFileUploads: Dispatch<SetStateAction<FileUploadState[]>>,
+  onUploadSuccess: (fileName: string) => void,
 ) => {
-  uploads.filter(isPendingUpload).forEach((upload) => {
+  uploads.forEach((upload) => {
     upload.xhr.open('POST', uploadUrl)
-    startUpload(upload, setFileUploads)
+    startUpload(upload, setFileUploads, () => onUploadSuccess(upload.file.name))
   })
 }
+
+// Uploads that finish within this time of each other are announced as one message,
+// because a new message in the same status region would interrupt the previous one.
+export const SUCCESS_ANNOUNCEMENT_GROUPING_MS = 300
 
 type UseFileUploadsParams = {
   /**
@@ -87,7 +94,28 @@ export const useFileUploads = ({
 
   const [fileUploads, setFileUploads] = useState<FileUploadState[]>(existingFileUploads)
   const [genericError, setGenericError] = useState<GenericErrorMessage>()
-  const [deletedFileName, setDeletedFileName] = useState<string>()
+  const [announcement, setAnnouncement] = useState<Announcement>()
+
+  const announcementIdCounter = useRef(0)
+  const succeededFileNames = useRef<string[]>([])
+  const successAnnouncementTimeout = useRef<ReturnType<typeof setTimeout>>(undefined)
+
+  useEffect(() => () => clearTimeout(successAnnouncementTimeout.current), [])
+
+  const announce = (type: AnnouncementType, fileNames: string[]) => {
+    announcementIdCounter.current += 1
+    setAnnouncement({ fileNames, id: announcementIdCounter.current, type })
+  }
+
+  const handleUploadSuccess = (fileName: string) => {
+    succeededFileNames.current.push(fileName)
+
+    clearTimeout(successAnnouncementTimeout.current)
+    successAnnouncementTimeout.current = setTimeout(() => {
+      announce('upload-succeeded', succeededFileNames.current)
+      succeededFileNames.current = []
+    }, SUCCESS_ANNOUNCEMENT_GROUPING_MS)
+  }
 
   const getNextUploadId = () => {
     uploadIdCounter.current += 1
@@ -143,17 +171,26 @@ export const useFileUploads = ({
     // so the input (and inputRef.current) must already exist when it fires.
     inputRef.current!.value = ''
 
-    startPendingUploads(newFileUploads, uploadUrl, setFileUploads)
+    const pendingUploads = newFileUploads.filter(isPendingUpload)
+
+    if (pendingUploads.length > 0) {
+      announce(
+        'upload-started',
+        pendingUploads.map((upload) => upload.file.name),
+      )
+    }
+
+    startPendingUploads(pendingUploads, uploadUrl, setFileUploads, handleUploadSuccess)
   }
 
-  const removeLocalUpload = (id: string, fileName: string) => {
+  const removeLocalUpload = (id: string, fileName: string, announcementType: AnnouncementType = 'deleted') => {
     setFileUploads((prev) => prev.filter((upload) => upload.id !== id))
-    setDeletedFileName(fileName)
+    announce(announcementType, [fileName])
   }
 
   const abortInProgressUpload = (id: string, fileName: string, xhr: XMLHttpRequest) => {
     xhr.abort()
-    removeLocalUpload(id, fileName)
+    removeLocalUpload(id, fileName, 'cancelled')
   }
 
   const deleteUploadFromServer = async (id: string, serverId: number, fileName: string) => {
@@ -202,7 +239,7 @@ export const useFileUploads = ({
   }
 
   return {
-    deletedFileName,
+    announcement,
     fileUploads,
     genericError,
     handleDelete,
