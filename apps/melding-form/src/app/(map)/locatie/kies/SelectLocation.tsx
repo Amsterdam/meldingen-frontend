@@ -94,9 +94,14 @@ export const SelectLocation = ({
     setIsAssetListLoading(false)
   }
 
-  const postCoordinatesAndAssetsWithExtraArgs = postCoordinatesAndAssets.bind(null, {
-    asset_type_id: assetConfig.wfsQuery.assetTypeId,
-  })
+  const postCoordinatesAndAssetsWithExtraArgs = postCoordinatesAndAssets.bind(
+    null,
+    assetConfig.wfsQuery.assetTypeId
+      ? {
+          asset_type_id: assetConfig.wfsQuery.assetTypeId,
+        }
+      : {},
+  )
   const [{ error }, formAction, isPending] = useActionState(postCoordinatesAndAssetsWithExtraArgs, initialState)
 
   const t = useTranslations('select-location')
