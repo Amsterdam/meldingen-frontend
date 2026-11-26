@@ -4,6 +4,8 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 
+import type { NoteOutput } from '@meldingen/api-client'
+
 import { NoteForm } from './NoteForm'
 
 vi.mock('react', async (importOriginal) => {
@@ -45,19 +47,23 @@ describe('NoteForm', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'title' })).toBeInTheDocument()
   })
 
-  it('renders children between the title and the form', () => {
-    render(
-      <NoteForm {...defaultProps}>
-        <p>Child content</p>
-      </NoteForm>,
-    )
+  it('renders the parent note between the title and the form', async () => {
+    const parentNote = {
+      created_at: '2024-03-05T08:09:00Z',
+      id: 1,
+      text: 'Parent note content',
+      updated_at: '2024-03-05T08:09:00Z',
+      user: { email: 'parent@example.com' },
+    } as NoteOutput
+
+    render(<NoteForm {...defaultProps} parentNote={parentNote} />)
 
     const heading = screen.getByRole('heading', { level: 1, name: 'title' })
-    const child = screen.getByText('Child content')
-    const submitButton = screen.getByRole('button', { name: 'submit-button' })
+    const note = screen.getByText('Parent note content')
+    const editor = await screen.findByRole('textbox', { name: 'label' })
 
-    expect(heading.compareDocumentPosition(child)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
-    expect(child.compareDocumentPosition(submitButton)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(heading.compareDocumentPosition(note)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(note.compareDocumentPosition(editor)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
   })
 
   it('renders the rich text editor', async () => {
