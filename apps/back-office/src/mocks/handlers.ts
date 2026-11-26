@@ -51,6 +51,7 @@ export const handlers = [
       created_at: '2025-05-26T11:56:34.081Z',
       id: 456,
       text: 'This is a note.',
+      user: { email: 'colleague@example.com', id: 2 },
     }),
   ),
 

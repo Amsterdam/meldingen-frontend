@@ -1,4 +1,4 @@
-import { parseNoteDocument } from './parseNoteDocument'
+import { markdownToPlainText, parseNoteDocument } from './parseNoteDocument'
 
 const doc = (content: unknown) => JSON.stringify({ content, type: 'doc' })
 
@@ -90,5 +90,23 @@ describe('parseNoteDocument', () => {
 
     expect(result.characterCount).toBe(11)
     expect(result.isEmpty).toBe(false)
+  })
+})
+
+describe('markdownToPlainText', () => {
+  it('strips inline formatting', () => {
+    expect(markdownToPlainText('Some **bold** and *italic* text')).toBe('Some bold and italic text')
+  })
+
+  it('joins paragraphs and list items with spaces', () => {
+    expect(markdownToPlainText('One\n\n- Two\n- Three')).toBe('One Two Three')
+  })
+
+  it('keeps text when markdown is cut off in the middle of formatting', () => {
+    expect(markdownToPlainText('Some **trunca')).toBe('Some **trunca')
+  })
+
+  it('returns an empty string for empty markdown', () => {
+    expect(markdownToPlainText('')).toBe('')
   })
 })

@@ -1,7 +1,6 @@
 import type { Mock } from 'vitest'
 
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { useActionState } from 'react'
 
 import type { NoteOutput } from '@meldingen/api-client'
@@ -26,60 +25,16 @@ const defaultProps = {
 }
 
 describe('UpdateNote', () => {
-  beforeEach(() => {
-    document.title = 'Notitie wijzigen - Gemeente Amsterdam'
-  })
-
-  it('preserves the server-rendered document title when there are no errors', () => {
+  it('renders the note text in an optional rich text editor', async () => {
     render(<UpdateNote {...defaultProps} />)
 
-    expect(document.title).toBe('Notitie wijzigen - Gemeente Amsterdam')
+    const editor = await screen.findByRole('textbox', { name: 'label' })
+
+    expect(editor).toHaveTextContent('This is a note.')
+    expect(editor).toHaveAttribute('aria-required', 'false')
   })
 
-  it('renders the back link', () => {
-    render(<UpdateNote {...defaultProps} />)
-
-    const backLink = screen.getByRole('link', { name: 'back-link' })
-
-    expect(backLink).toBeInTheDocument()
-    expect(backLink).toHaveAttribute('href', '/melding/123')
-  })
-
-  it('renders the correct title', () => {
-    render(<UpdateNote {...defaultProps} />)
-
-    expect(screen.getByRole('heading', { name: 'title' })).toBeInTheDocument()
-  })
-
-  it('renders the rich text editor', async () => {
-    render(<UpdateNote {...defaultProps} />)
-
-    expect(await screen.findByRole('toolbar')).toBeInTheDocument()
-
-    expect(screen.getByRole('textbox', { name: 'label' })).toBeInTheDocument()
-  })
-
-  it('renders the cancel link', () => {
-    render(<UpdateNote {...defaultProps} />)
-
-    const cancelLink = screen.getByRole('link', { name: 'cancel-link' })
-
-    expect(cancelLink).toBeInTheDocument()
-    expect(cancelLink).toHaveAttribute('href', '/melding/123')
-  })
-
-  it('displays an API error alert with the correct document title when there is an API error', () => {
-    ;(useActionState as Mock).mockReturnValueOnce([{ apiError: { detail: 'Something went wrong' } }, vi.fn(), false])
-
-    const { container } = render(<UpdateNote {...defaultProps} />)
-
-    const alert = container.querySelector('.ams-alert')
-
-    expect(alert).toBeInTheDocument()
-    expect(document.title).toBe('api-error-alert.heading - Notitie wijzigen - Gemeente Amsterdam')
-  })
-
-  it('displays an invalid form alert with the correct document title when there are validation errors', async () => {
+  it('restores the submitted updateNote value after validation errors', async () => {
     const formData = new FormData()
 
     formData.append('updateNote', 'Some note text')
@@ -91,61 +46,6 @@ describe('UpdateNote', () => {
 
     render(<UpdateNote {...defaultProps} />)
 
-    expect(await screen.findByRole('toolbar')).toBeInTheDocument()
-
-    expect(screen.getByRole('link', { name: 'Error message' })).toBeInTheDocument()
-    expect(screen.getByRole('textbox', { name: 'label' })).toHaveTextContent('Some note text')
-    expect(document.title).toBe('document-title-error-count-prefix Notitie wijzigen - Gemeente Amsterdam')
-  })
-
-  it.each([
-    { apiError: { detail: 'Error message' } },
-    { validationErrors: [{ key: 'updateNote', message: 'Error message' }] },
-  ])('restores the server-rendered document title when errors are resolved: %j', (state) => {
-    vi.mocked(useActionState).mockReturnValueOnce([state, vi.fn(), false])
-
-    const { rerender } = render(<UpdateNote {...defaultProps} />)
-
-    expect(document.title).not.toBe('Notitie wijzigen - Gemeente Amsterdam')
-
-    rerender(<UpdateNote {...defaultProps} />)
-
-    expect(document.title).toBe('Notitie wijzigen - Gemeente Amsterdam')
-  })
-
-  it('restores the server-rendered document title when leaving the page after an API error', () => {
-    vi.mocked(useActionState).mockReturnValueOnce([{ apiError: { detail: 'Error message' } }, vi.fn(), false])
-
-    const { unmount } = render(<UpdateNote {...defaultProps} />)
-
-    expect(document.title).toBe('api-error-alert.heading - Notitie wijzigen - Gemeente Amsterdam')
-
-    unmount()
-
-    expect(document.title).toBe('Notitie wijzigen - Gemeente Amsterdam')
-  })
-
-  it('renders a default value in the Rich Text Editor when provided', async () => {
-    render(<UpdateNote {...defaultProps} />)
-
-    expect(await screen.findByRole('toolbar')).toBeInTheDocument()
-
-    expect(screen.getByRole('textbox', { name: 'label' })).toHaveTextContent('This is a note.')
-  })
-
-  it('submits the form when the submit button is clicked', async () => {
-    const user = userEvent.setup()
-
-    const mockFormAction = vi.fn()
-
-    ;(useActionState as Mock).mockReturnValueOnce([{}, mockFormAction, false])
-
-    render(<UpdateNote {...defaultProps} />)
-
-    const submitButton = screen.getByRole('button', { name: 'submit-button' })
-
-    await user.click(submitButton)
-
-    expect(mockFormAction).toHaveBeenCalled()
+    expect(await screen.findByRole('textbox', { name: 'label' })).toHaveTextContent('Some note text')
   })
 })

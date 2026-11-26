@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 
 import type { ClassificationOutput, NoteOutput } from '@meldingen/api-client'
 
@@ -64,5 +64,52 @@ describe('NotesOverview', () => {
     expect(screen.getAllByText('test@example.com')).toHaveLength(2)
     expect(screen.getByText('Test classification')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /tab-navigation\.notes\s*\(2\)/ })).toBeInTheDocument()
+    const notesRegion = screen.getByRole('region', { name: 'list-label' })
+
+    expect(within(notesRegion).getByRole('list')).toBeInTheDocument()
+  })
+
+  it('shows an edit link for notes that belong to the current user', () => {
+    const notes = [
+      { created_at: '2024-03-05T14:07:00Z', id: 1, text: 'My note.', user: { email: 'test@example.com', id: 1 } },
+    ] as NoteOutput[]
+
+    render(<NotesOverview {...defaultProps} notes={notes} />)
+
+    expect(screen.getByRole('link', { name: 'edit-link' })).toHaveAttribute('href', '/melding/123/notities/1/wijzigen')
+    expect(screen.queryByRole('link', { name: 'reply-link' })).not.toBeInTheDocument()
+  })
+
+  it('shows a reply link for notes that do not belong to the current user', () => {
+    const notes = [
+      { created_at: '2024-03-05T14:07:00Z', id: 1, text: 'Their note.', user: { email: 'test@example.com', id: 2 } },
+    ] as NoteOutput[]
+
+    render(<NotesOverview {...defaultProps} notes={notes} />)
+
+    expect(screen.getByRole('link', { name: 'reply-link' })).toHaveAttribute('href', '/melding/123/notities/1/reageren')
+    expect(screen.queryByRole('link', { name: 'edit-link' })).not.toBeInTheDocument()
+  })
+
+  it('shows no reply link for deleted notes that do not belong to the current user', () => {
+    const notes = [
+      { created_at: '2024-03-05T14:07:00Z', id: 1, text: '', user: { email: 'test@example.com', id: 2 } },
+    ] as NoteOutput[]
+
+    render(<NotesOverview {...defaultProps} notes={notes} />)
+
+    expect(screen.getByText('deleted-note')).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'reply-link' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'edit-link' })).not.toBeInTheDocument()
+  })
+
+  it('still shows an edit link for deleted notes that belong to the current user', () => {
+    const notes = [
+      { created_at: '2024-03-05T14:07:00Z', id: 1, text: '', user: { email: 'test@example.com', id: 1 } },
+    ] as NoteOutput[]
+
+    render(<NotesOverview {...defaultProps} notes={notes} />)
+
+    expect(screen.getByRole('link', { name: 'edit-link' })).toHaveAttribute('href', '/melding/123/notities/1/wijzigen')
   })
 })

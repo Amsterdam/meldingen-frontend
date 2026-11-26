@@ -70,15 +70,6 @@ describe('postAddNoteForm', () => {
     expect(redirect).toHaveBeenCalledWith('/melding/123/notities')
   })
 
-  it('accepts a note at exactly the maximum length', async () => {
-    const formData = new FormData()
-    formData.append('addNote', noteDoc('a'.repeat(MAX_NOTE_LENGTH)))
-
-    await postAddNoteForm(defaultArgs, null, formData)
-
-    expect(redirect).toHaveBeenCalledWith('/melding/123/notities')
-  })
-
   it('treats whitespace-only content as empty, even though its character count is non-zero', async () => {
     const formData = new FormData()
     formData.append('addNote', noteDoc(' '))

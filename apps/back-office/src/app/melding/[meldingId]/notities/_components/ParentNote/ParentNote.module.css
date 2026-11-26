@@ -1,0 +1,45 @@
+.container {
+  padding-inline-start: var(--ams-space-s);
+}
+
+.figure {
+  border-inline-start: var(--ams-border-width-xl) solid #b4b4b4;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-inline-start: var(--ams-space-s);
+}
+
+.metadata {
+  display: flex;
+  flex-direction: column;
+}
+
+.quote {
+  container-name: quote-wrapper;
+  container-type: inline-size;
+  margin-block: 0;
+  margin-inline: 0;
+}
+
+.paragraph {
+  --quote-max-line: 5;
+
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: var(--quote-max-line);
+  line-clamp: var(--quote-max-line);
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @container quote-wrapper (min-width: 18rem) {
+    --quote-max-line: 4;
+  }
+
+  @container quote-wrapper (min-width: 28rem) {
+    --quote-max-line: 3;
+  }
+
+  @container quote-wrapper (min-width: 37.5rem) {
+    --quote-max-line: 2;
+  }
+}

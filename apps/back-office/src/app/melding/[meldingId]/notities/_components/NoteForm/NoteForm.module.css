@@ -1,0 +1,10 @@
+.whiteField {
+  background-color: var(--ams-color-background);
+  margin-block-end: var(--ams-space-m);
+  padding-block: var(--ams-space-l) var(--ams-space-s);
+  padding-inline: var(--ams-space-l);
+
+  @media screen and (min-width: 37.5rem) {
+    padding-block-end: var(--ams-space-l);
+  }
+}
