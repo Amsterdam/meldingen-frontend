@@ -226,12 +226,13 @@ export default defineConfig(
     },
   },
 
-  // Disable browser Baseline for server-only files
+  // Disable browser Baseline for server-only files and Node.js E2E tooling
   {
     files: [
       'apps/{back-office,melding-form}/src/app/**/route.{ts,tsx}',
       'apps/{back-office,melding-form}/src/app/**/actions.ts',
       'apps/{back-office,melding-form}/src/**/_utils/server/**/*.ts',
+      'e2e/**/*.{ts,tsx}',
     ],
     rules: {
       'baseline-js/use-baseline': 'off',

@@ -72,7 +72,7 @@ describe('Page', () => {
         defaultSlideIndex: undefined,
         images: [
           {
-            createdAt: undefined,
+            createdAt: '2025-05-26T11:56:34.081Z',
             data: expect.any(Blob),
             filename: 'IMG_0815.jpg',
             id: 42,

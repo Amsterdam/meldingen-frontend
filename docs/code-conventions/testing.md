@@ -78,3 +78,25 @@ Back Office tests import them from `./fixtures` to sign in to Keycloak automatic
 
 See the [E2E README](../../e2e/README.md) for installation, running tests, local authentication,
 UI mode, deployed environments, and trace output.
+
+## Real-device checks for Melding Form
+
+Playwright's mobile profiles emulate devices; they do not replace checks on real phones for
+camera capture, the on-screen keyboard, geolocation permissions, and mobile browser behaviour.
+In order to do so, use this manual checklist on an iPhone using Safari and an Android phone using Chrome.
+Use the HTTPS acceptance environment with non-sensitive test data and clearly identifiable test reports.
+
+| Area                     | What to test                                                                                                                      | Expected result                                                                                                                         |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Camera / photo library   | Choose an existing photo; take a new photo if the picker offers it; cancel and retry. Check actual phone photo formats and sizes. | Supported images upload and preview correctly; cancelling leaves the form usable. Unsupported images receive clear validation feedback. |
+| Keyboard                 | Enter a description, address, email address, and phone number; select an address suggestion with the keyboard open.               | Focused fields remain visible; suggestions and continue controls are reachable; the keyboard can be dismissed.                          |
+| Geolocation: allowed     | Reset site permissions, tap "Mijn locatie", then allow access.                                                                    | The location resolves and the user can confirm or change it.                                                                            |
+| Geolocation: denied      | Deny access, then try address search or map selection.                                                                            | Clear guidance appears; another location-selection method still works.                                                                  |
+| Geolocation: unavailable | Disable location services and try again.                                                                                          | No endless loading or blocked journey; a usable alternative remains available.                                                          |
+| Touch and layout         | Scroll, zoom and pan the map, select a location, and rotate the phone.                                                            | Controls respond correctly; content remains usable without unwanted horizontal scrolling.                                               |
+| Browser lifecycle        | Switch apps and return; use Back; reload a saved step.                                                                            | Saved data remains available and navigation works within the valid session.                                                             |
+| Complete journey         | Submit one report, including a photo.                                                                                             | The summary is correct and submission reaches confirmation with a report number.                                                        |
+
+Run these checks before the first release, before major releases, and after changes to maps,
+uploads, forms, or session handling, rather than necessarily for every PR.
+Allow roughly 10-15 minutes per device.
