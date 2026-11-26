@@ -3,9 +3,10 @@ import { MAX_NOTE_LENGTH } from '~/constants'
 
 type NoteFieldName = 'addNote' | 'reactNote' | 'updateNote'
 
-type ProcessNoteFormResult =
-  | { isEmpty: boolean; isValid: true; markdown: string }
-  | { error: 'required' | 'maxLength'; isEmpty: boolean; isValid: false; markdown: string }
+type ProcessNoteFormResult = {
+  isEmpty: boolean
+  markdown: string
+} & ({ isValid: true } | { error: 'required' | 'maxLength'; isValid: false })
 
 export const processNoteForm = (
   formData: FormData,
