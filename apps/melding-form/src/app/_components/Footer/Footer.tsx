@@ -11,7 +11,7 @@ export const Footer = () => {
   return (
     <PageFooter>
       <PageFooter.Spotlight>
-        <Grid paddingVertical="x-large">
+        <Grid paddingVertical="large">
           <Grid.Cell span={{ narrow: 4, medium: 6, wide: 6 }}>
             <Column gap="small">
               <Heading className={styles.footerTitle} color="inverse" level={2} size="level-5">

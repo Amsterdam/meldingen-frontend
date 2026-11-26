@@ -10,6 +10,7 @@
 
   display: flex;
   flex-direction: column;
+  padding-block: var(--ams-space-m) var(--ams-space-m);
 }
 
 .linkList a,
