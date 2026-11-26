@@ -46,7 +46,7 @@ const getAssetConfig = async (data?: MeldingOutput) => {
   }
 }
 
-const clearAndFetchAssets = async (meldingId: number, token: string, assetTypeId: number, typeNames: string) => {
+const fetchMeldingAssets = async (meldingId: number, token: string, assetTypeId: number, typeNames: string) => {
   // Get existing assets for this melding
   const { data: assetIds, error } = await getMeldingByMeldingIdAssetsMelder({
     path: { melding_id: meldingId },
@@ -88,7 +88,7 @@ export default async () => {
   } = assetConfig
 
   const selectedAssets =
-    assetTypeId && typeNames ? await clearAndFetchAssets(meldingId, token, assetTypeId, typeNames) : []
+    assetTypeId && typeNames ? await fetchMeldingAssets(meldingId, token, assetTypeId, typeNames) : []
 
   const coordinates = data?.geo_location?.geometry?.coordinates && {
     lat: data.geo_location.geometry.coordinates[0],
