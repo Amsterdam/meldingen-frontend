@@ -1,7 +1,8 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { startTransition, useActionState, useEffect } from 'react'
 
 import type { StaticFormTextAreaComponent } from '@meldingen/form-renderer'
 
@@ -10,16 +11,38 @@ import { FormRenderer } from '@meldingen/form-renderer'
 import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from './_utils'
+import { responseSchema } from './melding/responseSchema'
 import { ApiErrorAlert, InvalidFormAlert } from '~/app/_components'
 
 const initialState: FormState = {}
 
 type Props = {
-  action: (_: unknown, formData: FormData) => Promise<FormState>
   formComponents: StaticFormTextAreaComponent[]
 }
 
-export const Home = ({ action, formComponents: formComponentsFromServer }: Props) => {
+export const Home = ({ formComponents: formComponentsFromServer }: Props) => {
+  const router = useRouter()
+  const action = async (_: FormState, formData: FormData): Promise<FormState> => {
+    try {
+      const response = await fetch('/melding', {
+        body: formData,
+        method: 'POST',
+      })
+      const result = responseSchema.parse(await response.json())
+
+      if (result.type === 'success') {
+        if (!response.ok) throw new Error(`Failed to submit primary form: ${response.status}`)
+
+        router.push(result.redirectUrl)
+
+        return {}
+      }
+
+      return { ...result, formData }
+    } catch (error) {
+      return { apiError: error, formData }
+    }
+  }
   const [{ apiError, formData, validationErrors }, formAction, isPending] = useActionState(action, initialState)
 
   const t = useTranslations('homepage')
@@ -64,8 +87,16 @@ export const Home = ({ action, formComponents: formComponentsFromServer }: Props
       {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
       {validationErrors && <InvalidFormAlert errors={validationErrors} focusKey={!isPending} />}
       <FormRenderer
-        action={formAction}
+        action="/melding"
         formComponents={formComponents}
+        method="post"
+        onSubmit={(event) => {
+          event.preventDefault()
+
+          const submittedFormData = new FormData(event.currentTarget)
+
+          startTransition(() => formAction(submittedFormData))
+        }}
         submitButton={{
           isLoading: isPending,
           label: t('submit-button'),

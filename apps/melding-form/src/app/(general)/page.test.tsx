@@ -1,9 +1,6 @@
-import type { Mock } from 'vitest'
-
 import { render, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
-import * as actionsModule from './actions'
 import { Home } from './Home'
 import Page from './page'
 import { melding, textAreaComponent } from '~/mocks/data'
@@ -17,15 +14,8 @@ vi.mock('next/headers', () => ({
   }),
 }))
 
-vi.mock('./actions', () => ({ postPrimaryForm: vi.fn() }))
-
-let capturedAction: ((prevState: unknown, formData: FormData) => void) | null = null
-
 vi.mock('./Home', () => ({
-  Home: vi.fn((props: { action: () => void }) => {
-    capturedAction = props.action
-    return <div>Home Component</div>
-  }),
+  Home: vi.fn(() => <div>Home Component</div>),
 }))
 
 describe('Page', () => {
@@ -35,69 +25,7 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(screen.getByText('Home Component')).toBeInTheDocument()
-    expect(Home).toHaveBeenCalledWith({ action: expect.any(Function), formComponents: [textAreaComponent] }, undefined)
-  })
-
-  it('passes postPrimaryForm with the correct bounded args to Home', async () => {
-    mockIdAndTokenCookies()
-
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    // Call the bound action
-    if (capturedAction) {
-      capturedAction({}, new FormData())
-    }
-
-    expect(actionsModule.postPrimaryForm).toHaveBeenCalled()
-
-    const [extraArgs] = (actionsModule.postPrimaryForm as Mock).mock.calls[0]
-
-    expect(extraArgs).toMatchObject({
-      existingId: '123',
-      existingToken: 'test-token',
-      requiredErrorMessage: 'required-error-message-fallback',
-    })
-  })
-
-  it('passes a custom required error message when it is set', async () => {
-    const primaryFormWithCustomErrorMessage = {
-      components: [
-        {
-          ...textAreaComponent,
-          key: 'primary',
-          validate: {
-            required: true,
-            required_error_message: 'Custom error message',
-          },
-        },
-      ],
-    }
-    server.use(
-      http.get(ENDPOINTS.GET_STATIC_FORM_BY_STATIC_FORM_ID, () => HttpResponse.json(primaryFormWithCustomErrorMessage)),
-    )
-
-    mockIdAndTokenCookies()
-
-    const PageComponent = await Page()
-
-    render(PageComponent)
-
-    // Call the bound action
-    if (capturedAction) {
-      capturedAction({}, new FormData())
-    }
-
-    expect(actionsModule.postPrimaryForm).toHaveBeenCalled()
-
-    const [extraArgs] = (actionsModule.postPrimaryForm as Mock).mock.calls[0]
-
-    expect(extraArgs).toMatchObject({
-      existingId: '123',
-      existingToken: 'test-token',
-      requiredErrorMessage: 'Custom error message',
-    })
+    expect(Home).toHaveBeenCalledWith({ formComponents: [textAreaComponent] }, undefined)
   })
 
   it('passes prefilled formcomponents to Home when cookies are set', async () => {
@@ -108,7 +36,7 @@ describe('Page', () => {
     render(PageComponent)
 
     expect(Home).toHaveBeenCalledWith(
-      { action: expect.any(Function), formComponents: [{ ...textAreaComponent, defaultValue: melding.text }] },
+      { formComponents: [{ ...textAreaComponent, defaultValue: melding.text }] },
       undefined,
     )
   })

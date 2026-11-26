@@ -4,7 +4,7 @@ import { TOP_ANCHOR_ID } from '~/constants'
 
 type ClassificationRedirectResult = { type: 'redirect'; url: string } | { error: unknown; type: 'error' }
 
-// We've extracted this logic because it's used in Home's action and the Back Office entry route handler,
+// We've extracted this logic because it's used in the melding and Back Office entry route handlers,
 // and we want to keep the logic consistent between the two places.
 // This function determines where to redirect the user after they have submitted the primary form,
 // based on whether there are additional questions to answer.

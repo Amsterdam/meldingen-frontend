@@ -5,6 +5,7 @@
 - [Melding form](#melding-form)
   - [Common error handling strategy](#common-error-handling-strategy)
   - [Exceptions](#exceptions)
+    - [Homepage](#homepage)
     - [Map page](#map-page)
     - [Attachments](#attachments)
 - [Back office](#back-office)
@@ -39,6 +40,14 @@ There are a few exceptions, which are detailed below.
 - When a user navigates to a path that does not exist, we show a `not-found` page.
 
 ### Exceptions
+
+#### Homepage
+
+The homepage form stays at `/` and submits to the `/melding` route handler using a client-side fetch.
+Unlike the other forms, this submission requires JavaScript.
+The handler returns JSON validation or API errors, which are displayed with the same alerts and entered values as before.
+On success, it sets the session cookies and returns the classification-based destination for client-side navigation.
+The handler checks the request origin against `NEXT_PUBLIC_MELDING_FORM_BASE_URL` before processing submissions.
 
 #### Map page
 

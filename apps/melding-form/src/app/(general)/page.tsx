@@ -1,13 +1,11 @@
-import { getTranslations } from 'next-intl/server'
 import { cookies } from 'next/headers'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 
-import { getMeldingByMeldingIdMelder, getStaticForm, getStaticFormByStaticFormId } from '@meldingen/api-client'
+import { getMeldingByMeldingIdMelder } from '@meldingen/api-client'
 
-import { postPrimaryForm } from './actions'
+import { getPrimaryFormComponents } from './_utils/getPrimaryFormComponents'
 import { Home } from './Home'
-import { isTypeTextAreaComponent } from '~/app/_utils/isTypeTextAreaComponent'
 import { COOKIES } from '~/constants'
 
 // TODO: Force dynamic rendering for now, because the api isn't accessible in the pipeline yet.
@@ -37,41 +35,16 @@ const getPrefilledPrimaryFormComponents = async (
 }
 
 export default async () => {
-  const t = await getTranslations('homepage.errors')
-
-  const { data: staticFormsData, error: staticFormsError } = await getStaticForm()
-
-  if (staticFormsError) throw new Error('Failed to fetch static forms.')
-
-  const primaryFormId = staticFormsData.find((form) => form.type === 'primary')?.id
-
-  if (!primaryFormId) throw new Error('Primary form id not found.')
-
-  const { data: primaryForm, error } = await getStaticFormByStaticFormId({
-    path: { static_form_id: primaryFormId },
-  })
-
-  if (error) throw new Error('Failed to fetch primary form data.')
-
-  // A primary form is always an array with 1 text area component, but TypeScript doesn't know that
-  // We use a type guard here to make sure we're always working with the right type
-  const primaryFormComponents = primaryForm.components.filter(isTypeTextAreaComponent)
-
+  const primaryFormComponents = await getPrimaryFormComponents()
   const cookieStore = await cookies()
 
   const meldingId = cookieStore.get(COOKIES.ID)?.value
   const token = cookieStore.get(COOKIES.TOKEN)?.value
 
   const isExistingMelding = meldingId && token
-  const requiredErrorMessage =
-    primaryFormComponents.find((component) => component.key === 'primary')?.validate?.required_error_message ||
-    t('required-error-message-fallback')
-
   const formComponents = isExistingMelding
     ? await getPrefilledPrimaryFormComponents(meldingId, token, primaryFormComponents)
     : primaryFormComponents
 
-  const action = postPrimaryForm.bind(null, { existingId: meldingId, existingToken: token, requiredErrorMessage })
-
-  return <Home action={action} formComponents={formComponents} />
+  return <Home formComponents={formComponents} />
 }

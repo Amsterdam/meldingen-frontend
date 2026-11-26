@@ -389,7 +389,9 @@ const entraDataProvider = addRefreshAuthToDataProvider(
 
 ## Server Actions Pattern (Critical)
 
-All form submissions in melding-form and back-office use Next.js Server Actions. Follow this pattern, but be aware of the differences between apps/melding-form and apps/back-office:
+Form submissions in melding-form and back-office use Next.js Server Actions, except for the melding-form homepage.
+The homepage posts to `/melding` using a client-side fetch and requires JavaScript; its route handler returns JSON errors or a success destination.
+Follow this pattern for Server Actions, but be aware of the differences between apps/melding-form and apps/back-office:
 
 ```typescript
 // apps/melding-form/src/app/(general)/contact/actions.ts

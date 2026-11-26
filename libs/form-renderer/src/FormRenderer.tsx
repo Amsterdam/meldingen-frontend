@@ -1,3 +1,5 @@
+import type { ComponentProps } from 'react'
+
 import Form from 'next/form'
 import { useState } from 'react'
 
@@ -123,8 +125,10 @@ const getComponent = (
 }
 
 export type Props = {
-  action: (formData: FormData) => void
+  action: string | ((formData: FormData) => void)
   formComponents: Component[]
+  method?: ComponentProps<'form'>['method']
+  onSubmit?: ComponentProps<'form'>['onSubmit']
   panelTitle?: string
   previousAnswersByKey?: AnswersByKey
   submitButton: {
@@ -141,11 +145,14 @@ export type Props = {
 export const FormRenderer = ({
   action,
   formComponents,
+  method,
+  onSubmit,
   panelTitle,
   previousAnswersByKey = {},
   submitButton,
   validationErrors,
 }: Props) => {
+  const FormComponent = typeof action === 'string' ? 'form' : Form
   const hasOneFormComponent = formComponents.length === 1
 
   // These values track the user's answers so we can show/hide components conditionally.
@@ -169,7 +176,7 @@ export const FormRenderer = ({
           {panelTitle}
         </Heading>
       )}
-      <Form action={action} className={styles.form} noValidate>
+      <FormComponent action={action} className={styles.form} method={method} noValidate onSubmit={onSubmit}>
         {formComponents.map((component) => {
           if (!shouldRender(component, values)) return null
 
@@ -187,7 +194,7 @@ export const FormRenderer = ({
           label={submitButton.label}
           loadingLabel={submitButton.loadingLabel}
         />
-      </Form>
+      </FormComponent>
     </>
   )
 }

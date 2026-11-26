@@ -7,7 +7,7 @@ import { FormRenderer } from './FormRenderer'
 import { form } from './mocks/data'
 
 const defaultProps: Props = {
-  action: vi.fn(),
+  action: vi.fn<(formData: FormData) => void>(),
   formComponents: form.components[0].components,
   panelTitle: form.components[0].title,
   previousAnswersByKey: {},
@@ -42,6 +42,23 @@ describe('FormRenderer', () => {
     const formElement = container.querySelector('form')
 
     expect(formElement).toBeInTheDocument()
+  })
+
+  it('supports a URL action and a client submit handler without changing Server Action forms', async () => {
+    const user = userEvent.setup()
+    const onSubmit = vi.fn((event) => event.preventDefault())
+
+    render(<FormRenderer {...defaultProps} action="/melding" method="post" onSubmit={onSubmit} />)
+
+    const submitButton = screen.getByRole('button', { name: 'Submit' })
+
+    expect(submitButton.closest('form')).toHaveAttribute('action', '/melding')
+    expect(submitButton.closest('form')).toHaveAttribute('method', 'post')
+
+    await user.click(submitButton)
+
+    expect(onSubmit).toHaveBeenCalledOnce()
+    expect(defaultProps.action).not.toHaveBeenCalled()
   })
 
   components.map(({ index, name, role }) => {
