@@ -1,5 +1,6 @@
 import type {
   AssetOutput,
+  AttachmentOutput,
   ClassificationOutput,
   DateAnswerQuestionOutput,
   FormTextAreaComponentOutput,
@@ -215,4 +216,16 @@ export const asset: AssetOutput = {
   label: 'Asset 1',
   subtype: 'containers',
   updated_at: '2025-02-18T10:34:40.730569Z',
+}
+
+export const attachmentImage: AttachmentOutput = {
+  created_at: '2025-05-26T11:56:34.081Z',
+  id: 42,
+  is_image: true,
+  optimized: { filename: 'IMG_0815.webp', media_type: 'image/webp' },
+  original_filename: 'IMG_0815.jpg',
+  original_media_type: 'image/jpeg',
+  thumbnail: { filename: 'IMG_0815-thumbnail.webp', media_type: 'image/webp' },
+  updated_at: '2025-05-26T11:56:34.081Z',
+  user: null,
 }
