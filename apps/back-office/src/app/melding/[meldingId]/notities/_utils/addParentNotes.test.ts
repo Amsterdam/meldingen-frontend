@@ -1,7 +1,6 @@
 import type { NoteOutput } from '@meldingen/api-client'
 
 import { addParentNotes } from './addParentNotes'
-import { MAX_VISUAL_QUOTE_LENGTH } from '~/constants'
 
 const parent = {
   created_at: '2026-03-23T10:12:00Z',
@@ -36,11 +35,12 @@ describe('addParentNotes', () => {
     })
   })
 
-  it('truncates long parent snapshots to the visual quote limit', () => {
-    const snapshot = `**${'a'.repeat(MAX_VISUAL_QUOTE_LENGTH + 10)}**`
+  it('preserves long parent snapshots', () => {
+    const snapshotText = 'a'.repeat(300)
+    const snapshot = `**${snapshotText}**`
     const [, result] = addParentNotes([parent, { ...reply, parent_note_text_snapshot: snapshot }])
 
-    expect(result.parentNote?.text).toBe('a'.repeat(MAX_VISUAL_QUOTE_LENGTH))
+    expect(result.parentNote?.text).toBe(snapshotText)
   })
 
   it('uses the snapshot instead of the current text of the parent', () => {

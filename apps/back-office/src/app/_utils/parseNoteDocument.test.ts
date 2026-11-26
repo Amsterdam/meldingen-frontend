@@ -1,4 +1,4 @@
-import { markdownToPlainText, parseNoteDocument, truncateMarkdown } from './parseNoteDocument'
+import { markdownToPlainText, parseNoteDocument } from './parseNoteDocument'
 
 const doc = (content: unknown) => JSON.stringify({ content, type: 'doc' })
 
@@ -102,43 +102,11 @@ describe('markdownToPlainText', () => {
     expect(markdownToPlainText('One\n\n- Two\n- Three')).toBe('One Two Three')
   })
 
-  it('keeps text that was truncated in the middle of formatting', () => {
+  it('keeps text when markdown is cut off in the middle of formatting', () => {
     expect(markdownToPlainText('Some **trunca')).toBe('Some **trunca')
   })
 
   it('returns an empty string for empty markdown', () => {
     expect(markdownToPlainText('')).toBe('')
-  })
-})
-
-describe('truncateMarkdown', () => {
-  it('returns plain text when it fits within the limit', () => {
-    const markdown = 'Some **bold** text'
-
-    expect(truncateMarkdown(markdown, 14)).toBe('Some bold text')
-  })
-
-  it('truncates to the limit using plain text instead of retaining markdown syntax', () => {
-    const markdown = `**${'a'.repeat(10)}**`
-
-    expect(truncateMarkdown(markdown, 6)).toBe('a'.repeat(6))
-  })
-
-  it('omits an emoji when the limit would split its surrogate pair', () => {
-    const prefix = 'a'.repeat(239)
-    const markdown = `${prefix}\u{1F600} more text`
-
-    expect(truncateMarkdown(markdown, 240)).toBe(prefix)
-  })
-
-  it('keeps an emoji when its complete surrogate pair fits at the limit', () => {
-    const prefix = 'a'.repeat(238)
-    const markdown = `${prefix}\u{1F600} more text`
-
-    expect(truncateMarkdown(markdown, 240)).toBe(`${prefix}\u{1F600}`)
-  })
-
-  it('returns an empty string when the maximum length is zero', () => {
-    expect(truncateMarkdown('Some text', 0)).toBe('')
   })
 })
