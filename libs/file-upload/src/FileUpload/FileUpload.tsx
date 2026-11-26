@@ -99,7 +99,10 @@ export const FileUpload = ({
         >
           {buttonProps.text}
         </span>
-        <span className={styles.dropAreaText}>{dropAreaText}</span>
+        {/* The drop area text is a mouse-only instruction, so it is hidden from assistive technology */}
+        <span aria-hidden="true" className={styles.dropAreaText}>
+          {dropAreaText}
+        </span>
       </button>
 
       <input

@@ -92,11 +92,18 @@
       "action-button-cancel": "Annuleren",
       "button": "Bestanden kiezen",
       "drop-area": "Of sleep de bestanden in dit vlak.",
+      "error-prefix": "Invoerfout",
       "id-prefix": "bestand",
       "progress-finished": "Upload geslaagd",
       "progress-loading": "Upload {percentage}%"
     },
-    "delete-notification": "{fileName} is verwijderd",
+    "announcements": {
+      "cancelled": "Uploaden van {fileName} is geannuleerd.",
+      "deleted": "{fileName} is verwijderd.",
+      "upload-failed": "{count, plural, =1 {Uploaden van {fileName} is mislukt.} other {Uploaden van # bestanden is mislukt.}}",
+      "upload-started": "{count, plural, =1 {{fileName} wordt toegevoegd.} other {# bestanden worden toegevoegd.}}",
+      "upload-succeeded": "{count, plural, =1 {{fileName} is toegevoegd.} other {# bestanden zijn toegevoegd.}}"
+    },
     "no-js-alert-title": "JavaScript is niet beschikbaar",
     "no-js-alert-description": "Wijzig dit in de instellingen van uw browser of probeer opnieuw de pagina te laden.",
     "submit-button": "Volgende vraag",
@@ -120,6 +127,7 @@
     "validation-errors": {
       "alert-title": "{count, plural, =1 {Verbeter de fout om uw foto’s toe te voegen} other {Verbeter de fouten om uw foto’s toe te voegen}}",
       "duplicate-upload": "Het gekozen bestand is al toegevoegd.",
+      "with-file-name": "{fileName}: {message}",
       "failed-upload": "Probeer het opnieuw.",
       "invalid-file-type": "Voeg een foto toe met een toegestaan bestandstype: jpg, jpeg, png of webp.",
       "file-too-large": "Een foto mag maximaal 20 MB groot zijn.",

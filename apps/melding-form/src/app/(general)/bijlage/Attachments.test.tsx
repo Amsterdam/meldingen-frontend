@@ -41,6 +41,9 @@ const existingFile = {
 }
 const duplicateFile = new File(['dummy content'], 'existing.png', { type: 'image/png' })
 
+// The translation mock returns keys, so a message reads as '<announcement key> <file count key>'
+const deletedMessage = 'announcements.deleted status'
+
 const changeFileInputWithoutRestoringFocus = (fileInput: HTMLElement, files: File[]) => {
   // userEvent.upload restores focus to the file input after the change handler, masking alert focus.
   fireEvent.change(fileInput, { target: { files } })
@@ -60,7 +63,7 @@ describe('Attachments', () => {
     const heading = screen.getByRole('heading', { name: 'First question hint-text' })
     const description = screen.getByText('Test description')
     const fileUpload = screen.getByRole('button', {
-      name: 'First question hint-text file-upload.buttonfile-upload.drop-area',
+      name: 'First question hint-text file-upload.button',
     })
     const noJSAlertHeading = screen.getByRole('heading', { name: 'no-js-alert-title' })
 
@@ -104,27 +107,70 @@ describe('Attachments', () => {
     expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
   })
 
-  it('renders an Invalid Form Alert, focuses it and updates the document title when there are validation errors', async () => {
+  // A server error arrives later, when the user may be doing something else, so focus must stay where it is
+  it('renders an Invalid Form Alert and announces the failure, but keeps focus, when the server rejects an upload', async () => {
     server.use(
       http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, () =>
         HttpResponse.json({ detail: 'Allowed content size exceeded' }, { status: 422 }),
       ),
     )
 
+    render(<Attachments {...defaultProps} />)
+
+    const fileInput = screen.getByLabelText('File input')
+    const submitButton = screen.getByRole('button', { name: 'submit-button' })
+
+    changeFileInputWithoutRestoringFocus(fileInput, [mockFile])
+    // The user moves on while the file is uploading
+    submitButton.focus()
+
+    const link = await screen.findByRole('link', { name: 'validation-errors.with-file-name' })
+
+    // The link leads to the failed file, which shows the server's error
+    expect(link).toHaveAttribute('href', '#file-upload.id-prefix-1')
+    expect(screen.getByText('validation-errors.file-too-large')).toBeInTheDocument()
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('announcements.upload-failed status'))
+    expect(submitButton).toHaveFocus()
+    expect(document.title).toBe(`document-title-error-count-prefix ${textAreaComponent.label} - organisation-name`)
+  })
+
+  // Regression: the alert used to remount with the old focus trigger and take focus on a later server error
+  it('keeps focus when the server rejects an upload after an earlier validation error was deleted', async () => {
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, () =>
+        HttpResponse.json({ detail: 'Attachment not allowed' }, { status: 422 }),
+      ),
+    )
+
+    const user = userEvent.setup()
+
     const { container } = render(<Attachments {...defaultProps} />)
 
     const fileInput = screen.getByLabelText('File input')
+    const largeFile = new File(['x'], 'large.png', { type: 'image/png' })
+
+    Object.defineProperty(largeFile, 'size', { value: MAX_ATTACHMENT_SIZE_BYTES + 1 })
+
+    changeFileInputWithoutRestoringFocus(fileInput, [largeFile])
+
+    await waitFor(() => expect(container.querySelector('.ams-alert')).toHaveFocus())
+
+    await user.click(screen.getByRole('button', { name: `file-upload.action-button-delete ${largeFile.name}` }))
+
+    // With no errors left, the alert is removed, so the next error mounts it again
+    await waitFor(() =>
+      expect(screen.queryByRole('heading', { name: 'validation-errors.alert-title' })).not.toBeInTheDocument(),
+    )
+
+    const submitButton = screen.getByRole('button', { name: 'submit-button' })
 
     changeFileInputWithoutRestoringFocus(fileInput, [mockFile])
+    // The user moves on while the file is uploading
+    submitButton.focus()
 
-    const link = await screen.findByRole('link', { name: 'validation-errors.file-too-large' })
-    const alert = container.querySelector('.ams-alert')
+    await screen.findByRole('link', { name: 'validation-errors.with-file-name' })
 
-    expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '#file-upload.id-prefix-1')
-    await waitFor(() => expect(alert).toHaveFocus())
-
-    expect(document.title).toBe(`document-title-error-count-prefix ${textAreaComponent.label} - organisation-name`)
+    expect(submitButton).toHaveFocus()
   })
 
   it('shows a validation error without uploading when the file is too large', async () => {
@@ -142,7 +188,11 @@ describe('Attachments', () => {
 
     await user.upload(screen.getByLabelText('File input'), [largeFile])
 
-    expect(await screen.findByRole('link', { name: 'validation-errors.file-too-large' })).toBeInTheDocument()
+    expect(await screen.findByRole('link', { name: 'validation-errors.with-file-name' })).toBeInTheDocument()
+    // The error link leads to this button, so the error must be read there
+    expect(
+      screen.getByRole('button', { name: `file-upload.action-button-delete ${largeFile.name}` }),
+    ).toHaveAccessibleDescription('file-upload.error-prefix: validation-errors.file-too-large')
     expect(uploadHandler).not.toHaveBeenCalled()
   })
 
@@ -169,7 +219,7 @@ describe('Attachments', () => {
 
     const fileInput = screen.getByLabelText('File input')
     const uploadButton = screen.getByRole('button', {
-      name: 'First question hint-text file-upload.buttonfile-upload.drop-area',
+      name: 'First question hint-text file-upload.button',
     })
 
     changeFileInputWithoutRestoringFocus(fileInput, [duplicateFile])
@@ -207,7 +257,7 @@ describe('Attachments', () => {
     expect(alert).toHaveTextContent('errors.too-many-files.title')
     expect(alert).toHaveFocus()
 
-    expect(document.title).toBe(`api-error-alert.heading - ${textAreaComponent.label} - organisation-name`)
+    expect(document.title).toBe(`errors.too-many-files.title - ${textAreaComponent.label} - organisation-name`)
   })
 
   it('announces a deleted file in a live region that is already present before the deletion', async () => {
@@ -218,7 +268,7 @@ describe('Attachments', () => {
     // Screen readers only reliably announce changes to live regions that already exist in the DOM
     const liveRegionsBeforeDelete = Array.from(container.querySelectorAll('[aria-live]'))
 
-    expect(screen.queryByText('delete-notification')).not.toBeInTheDocument()
+    expect(screen.queryByText(deletedMessage)).not.toBeInTheDocument()
 
     const fileInput = screen.getByLabelText('File input')
 
@@ -230,10 +280,81 @@ describe('Attachments', () => {
 
     await user.click(deleteButton)
 
-    const notification = await screen.findByText('delete-notification')
+    const notification = await screen.findByText(deletedMessage)
+    const liveRegion = notification.closest('[aria-live]')
 
-    expect(notification).toHaveAttribute('aria-live', 'polite')
-    expect(liveRegionsBeforeDelete).toContain(notification)
+    expect(liveRegion).toHaveAttribute('aria-live', 'polite')
+    expect(liveRegionsBeforeDelete).toContain(liveRegion)
+  })
+
+  // Separate status regions that change at the same time interrupt each other in screen readers
+  it('has a single status region for upload messages', () => {
+    render(<Attachments {...defaultProps} />)
+
+    expect(screen.getAllByRole('status')).toHaveLength(1)
+  })
+
+  it('announces when an upload starts and when it succeeds', async () => {
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} />)
+
+    await user.upload(screen.getByLabelText('File input'), [mockFile])
+
+    const status = screen.getByRole('status')
+
+    await waitFor(() => expect(status).toHaveTextContent('announcements.upload-started status'))
+    await waitFor(() => expect(status).toHaveTextContent('announcements.upload-succeeded status'))
+  })
+
+  it('announces uploads that succeed and fail at about the same time in one message', async () => {
+    let requestCount = 0
+
+    // Uploads are sent in the order they were chosen, so the second request belongs to rejected.png
+    server.use(
+      http.post(ENDPOINTS.POST_MELDING_BY_MELDING_ID_ATTACHMENT_MELDER, () => {
+        requestCount += 1
+
+        return requestCount === 2
+          ? HttpResponse.json({ detail: 'Attachment not allowed' }, { status: 422 })
+          : HttpResponse.json({ id: 123 })
+      }),
+    )
+
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} />)
+
+    const rejectedFile = new File(['dummy content two'], 'rejected.png', { type: 'image/png' })
+
+    await user.upload(screen.getByLabelText('File input'), [mockFile, rejectedFile])
+
+    await waitFor(() =>
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'announcements.upload-succeeded announcements.upload-failed status',
+      ),
+    )
+  })
+
+  it('announces a deletion again when a file with the same name is deleted right after', async () => {
+    const user = userEvent.setup()
+
+    render(<Attachments {...defaultProps} files={[existingFile]} />)
+
+    // The duplicate gets a validation error, so there is no other announcement between the two deletions
+    await user.upload(screen.getByLabelText('File input'), [duplicateFile])
+
+    const deleteButtonName = `file-upload.action-button-delete ${existingFile.fileName}`
+    const [, duplicateDeleteButton] = await screen.findAllByRole('button', { name: deleteButtonName })
+
+    await user.click(duplicateDeleteButton)
+
+    const firstNotification = await screen.findByText(deletedMessage)
+
+    await user.click(screen.getByRole('button', { name: deleteButtonName }))
+
+    // The same text in a new element counts as a change for screen readers, so the deletion is announced again
+    await waitFor(() => expect(screen.getByText(deletedMessage)).not.toBe(firstNotification))
   })
 
   it('moves focus to the upload button when an existing file is deleted', async () => {
@@ -242,7 +363,7 @@ describe('Attachments', () => {
     render(<Attachments {...defaultProps} files={[existingFile]} />)
 
     const uploadButton = screen.getByRole('button', {
-      name: 'First question hint-text file-upload.buttonfile-upload.drop-area',
+      name: 'First question hint-text file-upload.button',
     })
     const deleteButton = screen.getByRole('button', {
       name: `file-upload.action-button-delete ${existingFile.fileName}`,
@@ -314,6 +435,7 @@ describe('Attachments', () => {
 
     await waitFor(() => expect(alert).toHaveTextContent('errors.delete-failed.title'))
 
+    expect(document.title).toBe(`errors.delete-failed.title - ${textAreaComponent.label} - organisation-name`)
     expect(consoleErrorSpy).toHaveBeenCalledWith('API error')
 
     consoleErrorSpy.mockRestore()
@@ -346,5 +468,6 @@ describe('Attachments', () => {
 
     expect(alert).toHaveTextContent('errors.upload-in-progress.title')
     expect(alert).toHaveTextContent('errors.upload-in-progress.description')
+    expect(document.title).toBe(`errors.upload-in-progress.title - ${textAreaComponent.label} - organisation-name`)
   })
 })

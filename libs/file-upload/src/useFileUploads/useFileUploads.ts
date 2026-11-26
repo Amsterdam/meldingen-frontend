@@ -1,8 +1,10 @@
 import type { ChangeEvent, Dispatch, RefObject, SetStateAction, SubmitEvent } from 'react'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import type {
+  Announcement,
+  AnnouncementEvent,
   ErroredFileUpload,
   ExistingFile,
   FileUploadState,
@@ -45,16 +47,26 @@ const mapExistingFilesToUploads = (files: ExistingFile[], idPrefix: string): Fil
 
 const isPendingUpload = (upload: FileUploadState): upload is PendingFileUpload => upload.status === 'pending'
 
+type UploadResult = 'failed' | 'succeeded'
+
 const startPendingUploads = (
-  uploads: FileUploadState[],
+  uploads: PendingFileUpload[],
   uploadUrl: string,
   setFileUploads: Dispatch<SetStateAction<FileUploadState[]>>,
+  onUploadFinished: (fileName: string, result: UploadResult) => void,
 ) => {
-  uploads.filter(isPendingUpload).forEach((upload) => {
+  uploads.forEach((upload) => {
     upload.xhr.open('POST', uploadUrl)
-    startUpload(upload, setFileUploads)
+    startUpload(upload, setFileUploads, {
+      onError: () => onUploadFinished(upload.file.name, 'failed'),
+      onSuccess: () => onUploadFinished(upload.file.name, 'succeeded'),
+    })
   })
 }
+
+// Uploads that finish within this time of each other are announced as one message,
+// because a new message in the same status region would interrupt the previous one.
+export const UPLOAD_RESULT_GROUPING_MS = 300
 
 type UseFileUploadsParams = {
   /**
@@ -87,7 +99,39 @@ export const useFileUploads = ({
 
   const [fileUploads, setFileUploads] = useState<FileUploadState[]>(existingFileUploads)
   const [genericError, setGenericError] = useState<GenericErrorMessage>()
-  const [deletedFileName, setDeletedFileName] = useState<string>()
+  const [announcement, setAnnouncement] = useState<Announcement>()
+  // Changes only when choosing files directly results in errors, so focus moves to the error alert
+  // in response to the user's own action, and not when a server error arrives later.
+  const [selectionErrorFocusKey, setSelectionErrorFocusKey] = useState<object>()
+
+  const announcementIdCounter = useRef(0)
+  const finishedUploadFileNames = useRef<Record<UploadResult, string[]>>({ failed: [], succeeded: [] })
+  const uploadResultAnnouncementTimeout = useRef<ReturnType<typeof setTimeout>>(undefined)
+
+  useEffect(() => () => clearTimeout(uploadResultAnnouncementTimeout.current), [])
+
+  const announce = (events: AnnouncementEvent[]) => {
+    announcementIdCounter.current += 1
+    setAnnouncement({ events, id: announcementIdCounter.current })
+  }
+
+  const announceFinishedUploads = () => {
+    const { failed, succeeded } = finishedUploadFileNames.current
+    const events: AnnouncementEvent[] = []
+
+    if (succeeded.length > 0) events.push({ fileNames: succeeded, type: 'upload-succeeded' })
+    if (failed.length > 0) events.push({ fileNames: failed, type: 'upload-failed' })
+
+    announce(events)
+    finishedUploadFileNames.current = { failed: [], succeeded: [] }
+  }
+
+  const handleUploadFinished = (fileName: string, result: UploadResult) => {
+    finishedUploadFileNames.current[result].push(fileName)
+
+    clearTimeout(uploadResultAnnouncementTimeout.current)
+    uploadResultAnnouncementTimeout.current = setTimeout(announceFinishedUploads, UPLOAD_RESULT_GROUPING_MS)
+  }
 
   const getNextUploadId = () => {
     uploadIdCounter.current += 1
@@ -143,17 +187,30 @@ export const useFileUploads = ({
     // so the input (and inputRef.current) must already exist when it fires.
     inputRef.current!.value = ''
 
-    startPendingUploads(newFileUploads, uploadUrl, setFileUploads)
+    if (newFileUploads.some((upload) => upload.status === 'error')) {
+      setSelectionErrorFocusKey({})
+    }
+
+    const pendingUploads = newFileUploads.filter(isPendingUpload)
+
+    if (pendingUploads.length > 0) {
+      announce([{ fileNames: pendingUploads.map((upload) => upload.file.name), type: 'upload-started' }])
+    }
+
+    startPendingUploads(pendingUploads, uploadUrl, setFileUploads, handleUploadFinished)
   }
 
-  const removeLocalUpload = (id: string, fileName: string) => {
+  const removeLocalUpload = (id: string, fileName: string, type: 'cancelled' | 'deleted' = 'deleted') => {
     setFileUploads((prev) => prev.filter((upload) => upload.id !== id))
-    setDeletedFileName(fileName)
+    // The error alert focuses itself when it mounts with a truthy focus key.
+    // Without this reset, deleting the last error and then getting a server error would remount it and take focus.
+    setSelectionErrorFocusKey(undefined)
+    announce([{ fileNames: [fileName], type }])
   }
 
   const abortInProgressUpload = (id: string, fileName: string, xhr: XMLHttpRequest) => {
     xhr.abort()
-    removeLocalUpload(id, fileName)
+    removeLocalUpload(id, fileName, 'cancelled')
   }
 
   const deleteUploadFromServer = async (id: string, serverId: number, fileName: string) => {
@@ -202,11 +259,12 @@ export const useFileUploads = ({
   }
 
   return {
-    deletedFileName,
+    announcement,
     fileUploads,
     genericError,
     handleDelete,
     handleSubmit,
     handleUpload,
+    selectionErrorFocusKey,
   }
 }

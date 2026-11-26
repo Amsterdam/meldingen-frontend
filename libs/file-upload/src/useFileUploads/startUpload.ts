@@ -6,11 +6,17 @@ import type { FileUploadState, PendingFileUpload } from './types'
 
 import { getValidationErrorMessageTranslationKey } from './utils'
 
+type UploadCallbacks = {
+  onError?: () => void
+  onSuccess?: () => void
+}
+
 // We're using XMLHttpRequest instead of fetch here,
 // because fetch does not allow you to track the upload progress.
 export const startUpload = (
   fileUpload: PendingFileUpload,
   setFileUploads: Dispatch<SetStateAction<FileUploadState[]>>,
+  { onError, onSuccess }: UploadCallbacks = {},
 ) => {
   const xhr = fileUpload.xhr
 
@@ -46,6 +52,12 @@ export const startUpload = (
         return { ...upload, errorMessage: undefined, serverId: parsed?.id, status: 'success' }
       }),
     )
+
+    if (isOk) {
+      onSuccess?.()
+    } else {
+      onError?.()
+    }
   }
 
   xhr.onerror = () => {
@@ -62,6 +74,8 @@ export const startUpload = (
         }
       }),
     )
+
+    onError?.()
   }
 
   setFileUploads((prev) =>

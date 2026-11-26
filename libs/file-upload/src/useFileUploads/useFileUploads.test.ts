@@ -6,7 +6,7 @@ import { act, renderHook } from '@testing-library/react'
 import type { ExistingFile, FileUploadState, PendingFileUpload } from './types'
 
 import { startUpload } from './startUpload'
-import { useFileUploads } from './useFileUploads'
+import { UPLOAD_RESULT_GROUPING_MS, useFileUploads } from './useFileUploads'
 
 vi.mock('./startUpload', () => ({
   startUpload: vi.fn(),
@@ -30,12 +30,12 @@ const defaultParams = {
 
 describe('useFileUploads', () => {
   describe('initial state', () => {
-    it('returns no file uploads, generic error or deleted file name when there are no existing files', () => {
+    it('returns no file uploads, generic error or announcement when there are no existing files', () => {
       const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
 
       expect(result.current.fileUploads).toEqual([])
       expect(result.current.genericError).toBeUndefined()
-      expect(result.current.deletedFileName).toBeUndefined()
+      expect(result.current.announcement).toBeUndefined()
     })
 
     it('maps an existing file with a blob to a successful upload', () => {
@@ -88,7 +88,11 @@ describe('useFileUploads', () => {
       expect(result.current.fileUploads).toHaveLength(1)
       expect(result.current.fileUploads[0]).toMatchObject({ file, progress: 0, status: 'pending' })
       expect(openSpy).toHaveBeenCalledWith('POST', defaultParams.uploadUrl)
-      expect(startUpload).toHaveBeenCalledWith(expect.objectContaining({ file, id: 'upload-1' }), expect.any(Function))
+      expect(startUpload).toHaveBeenCalledWith(
+        expect.objectContaining({ file, id: 'upload-1' }),
+        expect.any(Function),
+        { onError: expect.any(Function), onSuccess: expect.any(Function) },
+      )
 
       openSpy.mockRestore()
     })
@@ -229,7 +233,7 @@ describe('useFileUploads', () => {
 
       expect(abortSpy).toHaveBeenCalled()
       expect(result.current.fileUploads).toEqual([])
-      expect(result.current.deletedFileName).toBe('test.png')
+      expect(result.current.announcement?.events).toEqual([{ fileNames: ['test.png'], type: 'cancelled' }])
 
       abortSpy.mockRestore()
     })
@@ -250,7 +254,7 @@ describe('useFileUploads', () => {
 
       expect(deleteAttachmentMock).not.toHaveBeenCalled()
       expect(result.current.fileUploads).toEqual([])
-      expect(result.current.deletedFileName).toBe('test.png')
+      expect(result.current.announcement?.events).toEqual([{ fileNames: ['test.png'], type: 'deleted' }])
     })
 
     it('calls deleteAttachment and removes the upload on success', async () => {
@@ -267,7 +271,7 @@ describe('useFileUploads', () => {
 
       expect(deleteAttachmentMock).toHaveBeenCalledWith(42)
       expect(result.current.fileUploads).toEqual([])
-      expect(result.current.deletedFileName).toBe('test.png')
+      expect(result.current.announcement?.events).toEqual([{ fileNames: ['test.png'], type: 'deleted' }])
     })
 
     it('sets a delete-failed generic error and keeps the upload when deleteAttachment fails', async () => {
@@ -287,6 +291,244 @@ describe('useFileUploads', () => {
         title: 'errors.delete-failed.title',
       })
       expect(result.current.fileUploads).toHaveLength(1)
+    })
+  })
+
+  describe('announcement', () => {
+    type UploadCallbacks = { onError: () => void; onSuccess: () => void }
+
+    // Collects the callbacks the hook passes to startUpload, so a test can finish uploads when it wants
+    const captureUploadCallbacks = () => {
+      const callbacks: UploadCallbacks[] = []
+
+      ;(startUpload as Mock).mockImplementation((_upload, _setFileUploads, uploadCallbacks: UploadCallbacks) => {
+        callbacks.push(uploadCallbacks)
+      })
+
+      return callbacks
+    }
+
+    beforeEach(() => {
+      vi.useFakeTimers()
+    })
+
+    afterEach(() => {
+      ;(startUpload as Mock).mockReset()
+      vi.useRealTimers()
+    })
+
+    it('announces all started uploads of one selection in a single announcement', () => {
+      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['a'], 'a.png'), new File(['b'], 'b.png')]))
+      })
+
+      expect(result.current.announcement).toEqual({
+        events: [{ fileNames: ['a.png', 'b.png'], type: 'upload-started' }],
+        id: 1,
+      })
+    })
+
+    it('leaves files with a validation error out of the started announcement', () => {
+      const { result } = renderHook(() =>
+        useFileUploads({ ...defaultParams, inputRef: createInputRef(), maxFileSizeBytes: 5 }),
+      )
+
+      act(() => {
+        result.current.handleUpload(
+          createChangeEvent([new File(['12345'], 'max-size.png'), new File(['123456'], 'too-large.png')]),
+        )
+      })
+
+      expect(result.current.announcement?.events).toEqual([{ fileNames: ['max-size.png'], type: 'upload-started' }])
+    })
+
+    it('does not announce a start when every selected file has a validation error', () => {
+      const { result } = renderHook(() =>
+        useFileUploads({ ...defaultParams, inputRef: createInputRef(), maxFileSizeBytes: 5 }),
+      )
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['123456'], 'too-large.png')]))
+      })
+
+      expect(result.current.announcement).toBeUndefined()
+    })
+
+    it('groups uploads that succeed close together into one announcement', () => {
+      const callbacks = captureUploadCallbacks()
+      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['a'], 'a.png'), new File(['b'], 'b.png')]))
+      })
+
+      act(() => {
+        callbacks[0].onSuccess()
+        vi.advanceTimersByTime(UPLOAD_RESULT_GROUPING_MS - 1)
+        callbacks[1].onSuccess()
+      })
+
+      // Still the started announcement, because the grouping time restarts with every finished upload
+      expect(result.current.announcement?.events[0].type).toBe('upload-started')
+
+      act(() => {
+        vi.advanceTimersByTime(UPLOAD_RESULT_GROUPING_MS)
+      })
+
+      expect(result.current.announcement?.events).toEqual([{ fileNames: ['a.png', 'b.png'], type: 'upload-succeeded' }])
+    })
+
+    it('announces uploads that succeed further apart separately', () => {
+      const callbacks = captureUploadCallbacks()
+      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['a'], 'a.png'), new File(['b'], 'b.png')]))
+      })
+
+      act(() => {
+        callbacks[0].onSuccess()
+        vi.advanceTimersByTime(UPLOAD_RESULT_GROUPING_MS)
+      })
+
+      expect(result.current.announcement?.events).toEqual([{ fileNames: ['a.png'], type: 'upload-succeeded' }])
+
+      act(() => {
+        callbacks[1].onSuccess()
+        vi.advanceTimersByTime(UPLOAD_RESULT_GROUPING_MS)
+      })
+
+      expect(result.current.announcement?.events).toEqual([{ fileNames: ['b.png'], type: 'upload-succeeded' }])
+    })
+
+    it('announces a failed upload', () => {
+      const callbacks = captureUploadCallbacks()
+      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['a'], 'a.png')]))
+      })
+
+      act(() => {
+        callbacks[0].onError()
+        vi.advanceTimersByTime(UPLOAD_RESULT_GROUPING_MS)
+      })
+
+      expect(result.current.announcement?.events).toEqual([{ fileNames: ['a.png'], type: 'upload-failed' }])
+    })
+
+    it('combines uploads that succeed and fail close together into one announcement', () => {
+      const callbacks = captureUploadCallbacks()
+      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['a'], 'a.png'), new File(['b'], 'b.png')]))
+      })
+
+      act(() => {
+        callbacks[0].onError()
+        callbacks[1].onSuccess()
+        vi.advanceTimersByTime(UPLOAD_RESULT_GROUPING_MS)
+      })
+
+      expect(result.current.announcement?.events).toEqual([
+        { fileNames: ['b.png'], type: 'upload-succeeded' },
+        { fileNames: ['a.png'], type: 'upload-failed' },
+      ])
+    })
+
+    it('gives a repeated identical message a new id, so it can be announced again', () => {
+      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['content'], 'test.png')]))
+      })
+
+      act(() => {
+        result.current.handleDelete(result.current.fileUploads[0].id, 'test.png')
+      })
+
+      const firstDeleteId = result.current.announcement?.id
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['content'], 'test.png')]))
+      })
+
+      act(() => {
+        result.current.handleDelete(result.current.fileUploads[0].id, 'test.png')
+      })
+
+      expect(result.current.announcement?.events).toEqual([{ fileNames: ['test.png'], type: 'deleted' }])
+      expect(result.current.announcement?.id).not.toBe(firstDeleteId)
+    })
+  })
+
+  describe('selectionErrorFocusKey', () => {
+    it('is not set when the selected files are valid', () => {
+      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['a'], 'a.png')]))
+      })
+
+      expect(result.current.selectionErrorFocusKey).toBeUndefined()
+    })
+
+    it('changes every time choosing files results in a validation error', () => {
+      const { result } = renderHook(() =>
+        useFileUploads({ ...defaultParams, inputRef: createInputRef(), maxFileSizeBytes: 5 }),
+      )
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['123456'], 'too-large.png')]))
+      })
+
+      const firstKey = result.current.selectionErrorFocusKey
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['1234567'], 'also-too-large.png')]))
+      })
+
+      expect(firstKey).toBeDefined()
+      expect(result.current.selectionErrorFocusKey).not.toBe(firstKey)
+    })
+
+    it('is cleared when an upload is removed', () => {
+      const { result } = renderHook(() =>
+        useFileUploads({ ...defaultParams, inputRef: createInputRef(), maxFileSizeBytes: 5 }),
+      )
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['123456'], 'too-large.png')]))
+      })
+
+      act(() => {
+        result.current.handleDelete(result.current.fileUploads[0].id, 'too-large.png')
+      })
+
+      expect(result.current.selectionErrorFocusKey).toBeUndefined()
+    })
+
+    it('does not change when an upload fails on the server', () => {
+      let onError = () => {}
+
+      ;(startUpload as Mock).mockImplementationOnce((_upload, _setFileUploads, callbacks: { onError: () => void }) => {
+        onError = callbacks.onError
+      })
+
+      const { result } = renderHook(() => useFileUploads({ ...defaultParams, inputRef: createInputRef() }))
+
+      act(() => {
+        result.current.handleUpload(createChangeEvent([new File(['a'], 'a.png')]))
+      })
+
+      act(() => {
+        onError()
+      })
+
+      expect(result.current.selectionErrorFocusKey).toBeUndefined()
     })
   })
 

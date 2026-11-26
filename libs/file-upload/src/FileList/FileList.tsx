@@ -10,7 +10,10 @@ import styles from './FileList.module.css'
 type Props = PropsWithChildren<HTMLAttributes<HTMLUListElement>>
 
 export const FileListRoot = ({ children, ...restProps }: Props) => (
-  <ul className={styles.list} {...restProps}>
+  // Safari removes the list semantics from lists styled with `list-style: none`.
+  // The explicit role restores them, so VoiceOver also announces the list and its number of items.
+  // eslint-disable-next-line jsx-a11y/no-redundant-roles
+  <ul className={styles.list} role="list" {...restProps}>
     {children}
   </ul>
 )

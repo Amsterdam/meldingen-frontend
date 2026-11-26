@@ -59,7 +59,7 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     serverId: id,
   }))
 
-  const { deletedFileName, fileUploads, genericError, handleDelete, handleUpload } = useFileUploads({
+  const { announcement, fileUploads, genericError, handleDelete, handleUpload } = useFileUploads({
     deleteAttachment,
     existingFiles,
     idPrefix: t('file-upload.id-prefix'),
@@ -69,6 +69,8 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
     maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
     uploadUrl: `${clientEnv.NEXT_PUBLIC_BASE_PATH}/api/melding/${meldingId}/attachment`,
   })
+
+  const deleteEvent = announcement?.events.find(({ type }) => type === 'deleted' || type === 'cancelled')
 
   const handleOnDelete = (id: string, fileName: string, xhr?: XMLHttpRequest, serverId?: number) => {
     const shouldDelete = window.confirm(t('confirmation-prompt', { fileName }))
@@ -158,7 +160,10 @@ export const AddAttachment = ({ attachments, meldingId }: Props) => {
         {hasAttachments && <AttachmentsList files={fileUploads} handleDelete={handleOnDelete} />}
 
         <div aria-live="polite" className="ams-visually-hidden" role="status">
-          {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
+          {announcement && deleteEvent && (
+            // A new key replaces the element, so deleting a file with the same name is announced again
+            <span key={announcement.id}>{t('delete-notification', { fileName: deleteEvent.fileNames[0] })}</span>
+          )}
         </div>
       </Column>
       <Link href={meldingDetailLink}>{hasAttachments ? t('back-link') : t('cancel-link')}</Link>

@@ -4,7 +4,7 @@ import { Paragraph } from '@amsterdam/design-system-react'
 import { clsx } from 'clsx'
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
-import { useActionState, useEffect, useId, useRef, useState } from 'react'
+import { useActionState, useEffect, useId, useRef } from 'react'
 
 import type { StaticFormTextAreaComponentOutput } from '@meldingen/api-client'
 import type { ErroredFileUpload, ExistingFile, FileUploadState } from '@meldingen/file-upload'
@@ -19,6 +19,7 @@ import type { FormState } from '~/types'
 
 import { useDocumentTitleOnError } from '../_utils'
 import { submitAttachmentsForm } from './actions'
+import { useAnnouncementMessage } from './useAnnouncementMessage'
 import { ApiErrorAlert, BackLink, InvalidFormAlert } from '~/app/_components'
 import { TOP_ANCHOR_ID } from '~/constants'
 import { clientEnv } from '~/env/client'
@@ -67,18 +68,17 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const tShared = useTranslations('shared')
 
   const [{ apiError }, formAction, isPending] = useActionState(submitAttachmentsForm, initialState)
-  const [invalidFormAlertFocusKey, setInvalidFormAlertFocusKey] = useState<string[]>([])
-
-  const { deletedFileName, fileUploads, genericError, handleDelete, handleSubmit, handleUpload } = useFileUploads({
-    deleteAttachment: (serverId: number) => deleteAttachment(meldingId, token, serverId),
-    existingFiles: files,
-    idPrefix: t('file-upload.id-prefix'),
-    inputRef,
-    maxFileSizeBytes: MAX_ATTACHMENT_SIZE_BYTES,
-    maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
-    maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
-    uploadUrl: `${clientEnv.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment/melder?token=${encodeURIComponent(token)}`,
-  })
+  const { announcement, fileUploads, genericError, handleDelete, handleSubmit, handleUpload, selectionErrorFocusKey } =
+    useFileUploads({
+      deleteAttachment: (serverId: number) => deleteAttachment(meldingId, token, serverId),
+      existingFiles: files,
+      idPrefix: t('file-upload.id-prefix'),
+      inputRef,
+      maxFileSizeBytes: MAX_ATTACHMENT_SIZE_BYTES,
+      maxSuccessfulUploads: MAX_SUCCESSFUL_UPLOADS,
+      maxUploadAttempts: MAX_UPLOAD_ATTEMPTS,
+      uploadUrl: `${clientEnv.NEXT_PUBLIC_BACKEND_BASE_URL}/melding/${meldingId}/attachment/melder?token=${encodeURIComponent(token)}`,
+    })
 
   const handleOnDelete = (id: string, name: string, xhr?: XMLHttpRequest, serverId?: number) => {
     // Move focus to a surviving control before deletion removes the active button.
@@ -91,17 +91,26 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
     handleDelete(id, name, xhr, serverId)
   }
 
+  const fileCountText = t('status', {
+    fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
+    maxFiles: MAX_SUCCESSFUL_UPLOADS,
+  })
+
+  // One status region for all upload results, so messages don't interrupt each other
+  const announcementMessage = useAnnouncementMessage(announcement, ({ events }) => {
+    const eventTexts = events.map(({ fileNames, type }) =>
+      t(`announcements.${type}`, { count: fileNames.length, fileName: fileNames[0] }),
+    )
+
+    return [...eventTexts, fileCountText].join(' ')
+  })
+
   const erroredFileUploads = fileUploads.filter(isErroredFileUpload)
-  const erroredFileUploadIds = erroredFileUploads.map(({ id }) => id)
 
-  // Only update when a new upload fails, so deleting a failed upload does not refocus the alert
-  if (erroredFileUploadIds.some((id) => !invalidFormAlertFocusKey.includes(id))) {
-    setInvalidFormAlertFocusKey(erroredFileUploadIds)
-  }
-
-  const validationErrors = erroredFileUploads.map(({ errorMessage, id }) => ({
+  // The file name makes links with the same error distinguishable, e.g. when two files are too large
+  const validationErrors = erroredFileUploads.map(({ errorMessage, file, id }) => ({
     key: id,
-    message: t(errorMessage),
+    message: t('validation-errors.with-file-name', { fileName: file.name, message: t(errorMessage) }),
   }))
 
   const { description, label } = formData[0]
@@ -110,7 +119,8 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
   const baseDocumentTitle = `${label} - ${tShared('organisation-name')}`
   const documentTitle = useDocumentTitleOnError({
     baseDocumentTitle,
-    hasApiError: Boolean(apiError) || Boolean(genericError),
+    errorHeading: genericError && t(genericError.title, genericError.options),
+    hasApiError: Boolean(apiError),
     validationErrorCount: validationErrors.length,
   })
 
@@ -130,7 +140,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
         {Boolean(apiError) && <ApiErrorAlert focusKey={!isPending} />}
         <InvalidFormAlert
           errors={validationErrors}
-          focusKey={invalidFormAlertFocusKey}
+          focusKey={selectionErrorFocusKey}
           heading={t('validation-errors.alert-title', { count: validationErrors.length })}
         />
         {genericError && (
@@ -156,12 +166,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
           </Column>
 
           <div className={styles.needsJavaScript}>
-            <Paragraph aria-live="polite" className="ams-mb-m" role="status">
-              {t('status', {
-                fileCount: fileUploads.filter((upload) => upload.status === 'success').length,
-                maxFiles: MAX_SUCCESSFUL_UPLOADS,
-              })}
-            </Paragraph>
+            <Paragraph className="ams-mb-m">{fileCountText}</Paragraph>
 
             <FileUpload
               accept="image/jpeg,image/jpg,image/png,android/force-camera-workaround,image/webp"
@@ -189,6 +194,7 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
                     labels={{
                       actionButtonCancelLabel: t('file-upload.action-button-cancel'),
                       actionButtonDeleteLabel: t('file-upload.action-button-delete'),
+                      errorPrefix: t('file-upload.error-prefix'),
                       progressFinishedLabel: t('file-upload.progress-finished'),
                       progressLoadingLabel: t('file-upload.progress-loading', { percentage: Math.round(progress) }),
                     }}
@@ -200,7 +206,10 @@ export const Attachments = ({ files, formData, meldingId, token }: Props) => {
             )}
 
             <div aria-live="polite" className="ams-visually-hidden" role="status">
-              {deletedFileName ? t('delete-notification', { fileName: deletedFileName }) : ''}
+              {announcementMessage && (
+                // A new key replaces the element, so an identical message is announced again
+                <span key={announcementMessage.id}>{announcementMessage.text}</span>
+              )}
             </div>
           </div>
 

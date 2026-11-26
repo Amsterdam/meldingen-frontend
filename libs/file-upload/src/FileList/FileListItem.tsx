@@ -20,6 +20,8 @@ export type FileListItemProps = HTMLAttributes<HTMLLIElement> & {
   labels: {
     actionButtonCancelLabel?: string
     actionButtonDeleteLabel: string
+    /** Visually hidden text before the error message, e.g. 'Invoerfout', so screen-reader users know it is an error */
+    errorPrefix?: string
     progressFinishedLabel: string
     progressLoadingLabel: string
   }
@@ -36,10 +38,12 @@ export const FileListItem = ({
   onDelete,
   status,
 }: FileListItemProps) => {
-  const { actionButtonCancelLabel, actionButtonDeleteLabel, progressFinishedLabel, progressLoadingLabel } = labels
+  const { actionButtonCancelLabel, actionButtonDeleteLabel, errorPrefix, progressFinishedLabel, progressLoadingLabel } =
+    labels
 
   const isError = status === 'error'
   const isFinished = status === 'success'
+  const errorMessageId = `${deleteButtonId}-error`
 
   const actionButtonLabel = isFinished || isError ? actionButtonDeleteLabel : actionButtonCancelLabel
   const progressLabel = isFinished ? progressFinishedLabel : progressLoadingLabel
@@ -61,18 +65,24 @@ export const FileListItem = ({
       <div className={styles.description}>
         <span>{file.name}</span>
 
-        <span
-          className={clsx({
-            [styles.errorMessage]: isError,
-            [styles.statusMessage]: !isError,
-          })}
-        >
-          {isError ? errorMessage : progressLabel}
-        </span>
+        {isError ? (
+          <span className={styles.errorMessage} id={errorMessageId}>
+            {errorPrefix && (
+              <>
+                <span className="ams-visually-hidden">{`${errorPrefix}:`}</span>{' '}
+              </>
+            )}
+            {errorMessage}
+          </span>
+        ) : (
+          <span className={styles.statusMessage}>{progressLabel}</span>
+        )}
       </div>
 
       {actionButtonLabel && (
         <Button
+          // The error link in the alert leads to this button, so the error is read there as well
+          aria-describedby={isError ? errorMessageId : undefined}
           className={styles.deleteButton}
           disabled={!onDelete}
           id={deleteButtonId}
