@@ -15,7 +15,7 @@
   "dependencies": {
     "@meldingen/api-client": "workspace:*",
     "leaflet": "1.9.4",
-    "leaflet.markercluster": "1.5.3",
+    "leaflet.markercluster": "2.0.0",
     "proj4": "2.23.0"
   },
   "devDependencies": {
