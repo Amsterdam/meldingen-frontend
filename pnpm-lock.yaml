@@ -204,8 +204,8 @@ importers:
         specifier: 5.15.7
         version: 5.15.7(@tanstack/react-query@5.108.2(@types/react@19.3.2)(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react-hook-form@7.92.0(@types/react@19.3.2)(react@19.3.1))(react-router-dom@7.18.7(@types/react@19.3.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-router@7.18.7(@types/react@19.3.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
       ra-keycloak:
-        specifier: 2.0.0
-        version: 2.0.0(ra-core@5.15.7(@tanstack/react-query@5.108.2(@types/react@19.3.2)(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react-hook-form@7.92.0(@types/react@19.3.2)(react@19.3.1))(react-router-dom@7.18.7(@types/react@19.3.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-router@7.18.7(@types/react@19.3.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1))
+        specifier: 3.0.0
+        version: 3.0.0(ra-core@5.15.7(@tanstack/react-query@5.108.2(@types/react@19.3.2)(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react-hook-form@7.92.0(@types/react@19.3.2)(react@19.3.1))(react-router-dom@7.18.7(@types/react@19.3.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-router@7.18.7(@types/react@19.3.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1))
       react-admin:
         specifier: 5.15.7
         version: 5.15.7(@mui/system@9.5.0(@emotion/react@11.14.0(@types/react@19.3.2)(react@19.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.3.2)(react@19.3.1))(@types/react@19.3.2)(react@19.3.1))(@types/react@19.3.2)(react@19.3.1))(@mui/utils@9.5.0(@types/react@19.3.2)(react@19.3.1))(@types/react@19.3.2)(csstype@3.2.4)(react-dom@19.3.1(react@19.3.1))(react-is@19.3.1)(react@19.3.1)
@@ -4639,8 +4639,8 @@ packages:
   ra-i18n-polyglot@5.15.7:
     resolution: {integrity: sha512-lNznFPTqtdB9rEd0mLJsIhz3NA6tRkzBAGuz/SkHLO8rViQ5iLx9EHCHasensfgiVnOC+jq8ReXyo5TdN1tvAg==}
 
-  ra-keycloak@2.0.0:
-    resolution: {integrity: sha512-LO0VtZEpC4Qz8kCBn1OsiyLF5y5o5GeUxukDCzXsxlUO2NNLQw8lWDzKPM9FVCUtIi5A8vXritLIuLdBPZdNTg==}
+  ra-keycloak@3.0.0:
+    resolution: {integrity: sha512-v2Z7vQtQ9Qjt4EAoRZRa4K2FoHoh0PXXqmaF87ESI/ILH+EYiHGz6+J8vUrSp/pJf2HBKVboGa1h06U7W7FVKw==}
     peerDependencies:
       ra-core: '*'
 
@@ -10173,7 +10173,7 @@ snapshots:
       - react-router
       - react-router-dom
 
-  ra-keycloak@2.0.0(ra-core@5.15.7(@tanstack/react-query@5.108.2(@types/react@19.3.2)(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react-hook-form@7.92.0(@types/react@19.3.2)(react@19.3.1))(react-router-dom@7.18.7(@types/react@19.3.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-router@7.18.7(@types/react@19.3.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)):
+  ra-keycloak@3.0.0(ra-core@5.15.7(@tanstack/react-query@5.108.2(@types/react@19.3.2)(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react-hook-form@7.92.0(@types/react@19.3.2)(react@19.3.1))(react-router-dom@7.18.7(@types/react@19.3.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-router@7.18.7(@types/react@19.3.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)):
     dependencies:
       jwt-decode: 3.1.2
       keycloak-js: 26.2.5
