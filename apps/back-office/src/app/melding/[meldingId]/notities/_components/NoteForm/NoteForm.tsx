@@ -1,10 +1,10 @@
 'use client'
 
-import type { ReactNode } from 'react'
-
 import { useTranslations } from 'next-intl'
 import Form from 'next/form'
 import { useActionState, useEffect } from 'react'
+
+import type { NoteOutput } from '@meldingen/api-client'
 
 import { ActionGroup, Button, Heading } from '@meldingen/ui'
 
@@ -12,6 +12,7 @@ import type { FormState } from '~/types'
 
 import { CancelLink } from '../../../_components/CancelLink'
 import { PageWrapper } from '../../../_components/PageWrapper'
+import { Note } from '../Note/Note'
 import { ApiErrorAlert, InvalidFormAlert, RichTextEditor } from '~/app/_components'
 import { useDocumentTitleOnError } from '~/app/_utils/useDocumentTitleOnError'
 
@@ -21,11 +22,10 @@ const initialState: FormState = {}
 
 type Props = {
   action: (previousState: FormState, formData: FormData) => Promise<FormState>
-  // Rendered between the heading and the form, e.g. the note that is being replied to.
-  children?: ReactNode
   defaultValue?: string
   fieldName: string
   meldingId: number
+  parentNote?: NoteOutput
   required?: boolean
   // All note forms share the same translation keys, only the namespace differs.
   translationNamespace: 'add-note' | 'react-note' | 'update-note'
@@ -33,10 +33,10 @@ type Props = {
 
 export const NoteForm = ({
   action,
-  children,
   defaultValue = '',
   fieldName,
   meldingId,
+  parentNote,
   required,
   translationNamespace,
 }: Props) => {
@@ -72,7 +72,11 @@ export const NoteForm = ({
         {t('title')}
       </Heading>
 
-      {children}
+      {parentNote && (
+        <div className="ams-mb-m">
+          <Note note={parentNote} />
+        </div>
+      )}
 
       <Form action={formAction} noValidate>
         <div className={styles.whiteField}>
