@@ -1,10 +1,23 @@
 import { notFound } from 'next/navigation'
 
 import type { MeldingAttachment } from '../../types'
-import type { AttachmentTypes } from '~/app/_api-client/proxy'
+import type { AttachmentOutput, AttachmentTypes } from '~/app/_api-client/proxy'
 
-import { isFilePDF } from '../'
 import { getAttachmentById, getMeldingByMeldingIdAttachments } from '~/app/_api-client/proxy'
+
+const getImageTypeQuery = (
+  { optimized, thumbnail }: Pick<AttachmentOutput, 'optimized' | 'thumbnail'>,
+  targetType: AttachmentTypes,
+): AttachmentTypes => {
+  switch (targetType) {
+    case 'optimized':
+      return optimized ? 'optimized' : 'original'
+    case 'thumbnail':
+      return thumbnail ? 'thumbnail' : 'original'
+    default:
+      return 'original'
+  }
+}
 
 export const getAttachmentsData = async (
   meldingId: number,
@@ -23,28 +36,32 @@ export const getAttachmentsData = async (
   if (error) throw new Error('Failed to fetch melding attachments.', { cause: error })
 
   return Promise.all(
-    meldingAttachments.map(async ({ created_at, id, original_filename, updated_at, user }) => {
-      const { data: attachmentBlob, error: getAttachmentByIdError } = await getAttachmentById({
-        path: { id },
-        query: { type: isFilePDF(original_filename) ? 'original' : imageAttachmentType },
-      })
+    meldingAttachments.map(
+      async ({ created_at, id, is_image: isImage, optimized, original_filename, thumbnail, updated_at, user }) => {
+        const typeQuery = isImage ? getImageTypeQuery({ optimized, thumbnail }, imageAttachmentType) : 'original'
 
-      if (getAttachmentByIdError) throw new Error('Failed to fetch melding attachment file.')
+        const { data: attachmentBlob, error: getAttachmentByIdError } = await getAttachmentById({
+          path: { id },
+          query: { type: typeQuery },
+        })
 
-      return {
-        blob: attachmentBlob as Blob,
-        createdAt: created_at,
-        id,
-        originalFilename: original_filename,
-        updatedAt: updated_at,
-        ...(user && {
-          user: {
-            email: user.email,
-            id: user.id,
-            username: user.username,
-          },
-        }),
-      }
-    }),
+        if (getAttachmentByIdError) throw new Error('Failed to fetch melding attachment file.')
+
+        return {
+          blob: attachmentBlob as Blob,
+          createdAt: created_at,
+          id,
+          originalFilename: original_filename,
+          updatedAt: updated_at,
+          ...(user && {
+            user: {
+              email: user.email,
+              id: user.id,
+              username: user.username,
+            },
+          }),
+        }
+      },
+    ),
   )
 }
